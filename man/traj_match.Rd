@@ -5,16 +5,41 @@
 \alias{traj.match}
 \alias{traj.match.objfun,missing-method}
 \alias{traj.match.objfun,ANY-method}
+\alias{traj.match.objfun-data.frame}
+\alias{traj.match.objfun,data.frame-method}
 \alias{traj.match.objfun-pomp}
 \alias{traj.match.objfun}
 \alias{traj.match.objfun,pomp-method}
 \title{Trajectory matching}
 \usage{
-\S4method{traj.match.objfun}{pomp}(object, params, est, fail.value = NA,
-  ode_control = list(), ...)
+\S4method{traj.match.objfun}{data.frame}(data, rinit, skeleton, partrans,
+  params, est = character(0), fail.value = NA, ...,
+  ode_control = list(), verbose = getOption("verbose", FALSE))
+
+\S4method{traj.match.objfun}{pomp}(data, est, fail.value = NA,
+  ode_control = list(), ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
+
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{rinit=NULL} sets the initial-state simulator to its default.
+For more information, see \link[=rinit_spec]{here}.}
+
+\item{skeleton}{optional; the deterministic skeleton of the unobserved state process.
+Depending on whether the model operates in continuous or discrete time, this is either a vectorfield or a map.
+Accordingly, this is supplied using either the \code{\link[=skeleton_spec]{vectorfield}} or \code{\link[=skeleton_spec]{map}} fnctions.
+Setting \code{skeleton=NULL} removes the deterministic skeleton.
+For more information, see \link[=skeleton_spec]{here}.}
+
+\item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
+
+Many algorithms for parameter estimation search an unconstrained space of parameters.
+When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
+For more information, see \link[=parameter_trans]{here}.
+Setting \code{partrans=NULL} removes the parameter transformations.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -25,10 +50,12 @@ This will be coerced internally to storage mode \code{double}.}
 if non-\code{NA}, this value is substituted for non-finite values of the objective function.
 It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
 
+\item{\dots}{additional arguments will modify the model structure}
+
 \item{ode_control}{optional list;
 the elements of this list will be passed to \code{\link[=deSolve]{ode}}.}
 
-\item{\dots}{additional arguments will modify the model structure}
+\item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
 \code{traj.match.objfun} constructs a stateful objective function for spectrum matching.

@@ -125,7 +125,8 @@ Other particle filter methods: \code{\link{bsmc2}},
 Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{mif2}}, \code{\link{nlf}},
-  \code{\link{probe.match}}, \code{\link{spect.match}}
+  \code{\link{pomp-package}}, \code{\link{probe.match}},
+  \code{\link{spect.match}}
 }
 \author{
 Edward L. Ionides, Aaron A. King, Sebastian Funk

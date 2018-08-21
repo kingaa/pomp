@@ -17,7 +17,8 @@
 ##' @family \pkg{pomp} parameter estimation methods
 ##' @seealso \code{\link{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##'
-##' @inheritParams probe-pomp
+##' @inheritParams probe
+##' @inheritParams pomp
 ##' @param est character vector; the names of parameters to be estimated.
 ##' @param fail.value optional numeric scalar;
 ##' if non-\code{NA}, this value is substituted for non-finite values of the objective function.
@@ -74,20 +75,19 @@ setMethod(
 setMethod(
   "probe.match.objfun",
   signature=signature(data="data.frame"),
-  definition=function (data, rinit, rprocess, rmeasure, params,
-    est, probes, nsim, seed = NULL, fail.value = NA, ...,
+  definition=function (data,
+    rinit, rprocess, rmeasure, partrans, params,
+    est = character(0), probes, nsim, seed = NULL, fail.value = NA, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    object <- probe(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
-      params=params,probes=probes,nsim=nsim,seed=seed,params=params,...,
-      verbose=verbose)
-
-    probe.match.objfun(
-      object,
-      est=est,
-      fail.value=fail.value,
-      verbose=verbose
+    data <- tryCatch(
+      pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+        partrans=partrans,params=params,...,verbose=verbose),
+      error = function (e) pomp_stop(conditionMessage(e))
     )
+
+    probe.match.objfun(data,est=est,probes=probes,nsim=nsim,seed=seed,
+      fail.value=fail.value,verbose=verbose)
 
   }
 )
@@ -99,17 +99,11 @@ setMethod(
 setMethod(
   "probe.match.objfun",
   signature=signature(data="pomp"),
-  definition=function (data, est, probes, nsim, seed = NULL, fail.value = NA,
-    ..., verbose = getOption("verbose", FALSE)) {
+  definition=function (data, est = character(0), probes, nsim, seed = NULL,
+    fail.value = NA, ..., verbose = getOption("verbose", FALSE)) {
 
-    object <- probe(data,probes=probes,nsim=nsim,seed=seed,...,verbose=verbose)
-
-    probe.match.objfun(
-      object,
-      est=est,
-      fail.value=fail.value,
-      verbose=verbose
-    )
+    pmof.internal(data,est=est,probes=probes,nsim=nsim,seed=seed,
+      fail.value=fail.value,...,verbose=verbose)
 
   }
 )
@@ -121,22 +115,14 @@ setMethod(
 setMethod(
   "probe.match.objfun",
   signature=signature(data="probed_pomp"),
-  definition=function (data, est, probes, nsim, seed = NULL,
+  definition=function (data, est = character(0), probes, nsim, seed = NULL,
     fail.value = NA, ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(probes)) probes <- data@probes
     if (missing(nsim)) nsim <- data@nsim
 
-    pmof.internal(
-      data,
-      est=est,
-      probes=probes,
-      nsim=nsim,
-      seed=seed,
-      fail.value=fail.value,
-      ...,
-      verbose=verbose
-    )
+    probe.match.objfun(as(data,"pomp"),est=est,probes=probes,nsim=nsim,
+      seed=seed,fail.value=fail.value,...,verbose=verbose)
 
   }
 )
@@ -156,12 +142,14 @@ setMethod(
 pmof.internal <- function (object, est, probes, nsim, seed = NULL,
   fail.value = NA, ..., verbose) {
 
-  ep <- paste0("in ",sQuote("probe.match.objfun"),": ")
+  object <- tryCatch(
+    probe(object,probes=probes,nsim=nsim,seed=seed,...),
+    error = function (e) pomp_stop(conditionMessage(e))
+  )
 
   fail.value <- as.numeric(fail.value)
   loglik <- logLik(object)
 
-  if (missing(est)) est <- character(0)
   est <- as.character(est)
   est <- est[nzchar(est)]
 
@@ -170,9 +158,8 @@ pmof.internal <- function (object, est, probes, nsim, seed = NULL,
   idx <- match(est,names(params))
   if (any(is.na(idx))) {
     missing <- est[is.na(idx)]
-    stop(ep,ngettext(length(missing),"parameter","parameters")," ",
-      paste(sQuote(missing),collapse=","),
-      " not found in ",sQuote("params"),call.=FALSE)
+    pomp_stop(ngettext(length(missing),"parameter","parameters")," ",
+      paste(sQuote(missing),collapse=",")," not found in ",sQuote("params"),".")
   }
 
   pompLoad(object)
@@ -235,6 +222,6 @@ setMethod(
   signature=signature(data="probe_match_objfun"),
   definition=function (data, ...,
     verbose = getOption("verbose", FALSE)) {
-    probe(data@env$object,...)
+    probe(data@env$object,...,seed=data@env$seed,verbose=verbose)
   }
 )

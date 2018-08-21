@@ -131,7 +131,8 @@ moth (\emph{Bupalus piniarius}): dynamical tests of mechanistic hypotheses.
 Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{mif2}}, \code{\link{pmcmc}},
-  \code{\link{probe.match}}, \code{\link{spect.match}}
+  \code{\link{pomp-package}}, \code{\link{probe.match}},
+  \code{\link{spect.match}}
 }
 \author{
 Stephen P. Ellner, Bruce E. Kendall, Aaron A. King

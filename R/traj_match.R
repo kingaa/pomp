@@ -17,6 +17,14 @@
 ##' @include trajectory.R pomp_class.R workhorses.R
 ##' @aliases traj.match.objfun,missing-method traj.match.objfun,ANY-method
 ##'
+##' @inheritParams probe.match
+##' @inheritParams trajectory
+##' @inheritParams pomp
+##'
+##' @param ode_control optional list;
+##' the elements of this list will be passed to \code{\link[=deSolve]{ode}}.
+##' @param \dots additional arguments will modify the model structure
+##'
 ##' @return
 ##' \code{traj.match.objfun} constructs a stateful objective function for spectrum matching.
 ##' Specifically, \code{traj.match.objfun} returns an object of class \sQuote{traj_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
@@ -40,62 +48,74 @@ setClass(
 
 setGeneric(
   "traj.match.objfun",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("traj.match.objfun")
 )
 
 setMethod(
   "traj.match.objfun",
-  signature=signature(object="missing"),
+  signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("traj.match.objfun"),": ",sQuote("object")," is a required argument",call.=FALSE)
+    stop("in ",sQuote("traj.match.objfun"),": ",sQuote("data"),
+      " is a required argument",call.=FALSE)
   }
 )
 
 setMethod(
   "traj.match.objfun",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("traj.match.objfun")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
+    stop(sQuote("traj.match.objfun")," is not defined when ",
+      sQuote("data")," is of class ",sQuote(class(data)),call.=FALSE)
+  }
+)
+
+##' @name traj.match.objfun-data.frame
+##' @aliases traj.match.objfun,data.frame-method
+##' @rdname traj_match
+##' @export
+setMethod(
+  "traj.match.objfun",
+  signature=signature(data="data.frame"),
+  definition=function(data,
+    rinit, skeleton, partrans, params,
+    est = character(0), fail.value = NA, ...,
+    ode_control = list(),
+    verbose = getOption("verbose", FALSE)) {
+
+    tmof.internal(data,rinit=rinit,skeleton=skeleton,partrans=partrans,
+      params=params,...,est=est,fail.value=fail.value,
+      ode_control=ode_control,verbose=verbose)
+
   }
 )
 
 ##' @name traj.match.objfun-pomp
 ##' @aliases traj.match.objfun traj.match.objfun,pomp-method
 ##' @rdname traj_match
-##'
-##' @inheritParams probe.match
-##' @inheritParams trajectory
-##'
-##' @param ode_control optional list;
-##' the elements of this list will be passed to \code{\link[=deSolve]{ode}}.
-##' @param \dots additional arguments will modify the model structure
-##'
 ##' @export
 setMethod(
   "traj.match.objfun",
-  signature=signature(object="pomp"),
-  function (object, params, est, fail.value = NA,
-    ode_control = list(), ...) {
+  signature=signature(data="pomp"),
+  function (data, est, fail.value = NA, ode_control = list(), ...,
+    verbose = getOption("verbose", FALSE)) {
 
-    tmof.internal(
-      object=object,
-      params=params,
-      est=est,
-      fail.value=fail.value,
-      ode_control=ode_control,
-      ...
-    )
+    tmof.internal(data,est=est,fail.value=fail.value,
+      ode_control=ode_control,...)
 
   }
 )
 
-tmof.internal <- function (object, params, est, fail.value,
-  ode_control, ...) {
+tmof.internal <- function (object, est, fail.value, ode_control, ...) {
 
   ep <- paste0("in ",sQuote("traj.match.objfun"),": ")
 
-  object <- pomp(object,params=params,...)
+  object <- tryCatch(
+    pomp(object,...),
+    error = function (e) {
+      stop(ep,conditionMessage(e),call.=FALSE)
+    }
+  )
 
   fail.value <- as.numeric(fail.value)
 
@@ -115,19 +135,18 @@ tmof.internal <- function (object, params, est, fail.value,
 
   pompLoad(object)
 
-  loglik <- -traj.match.nll(object,ode_control=ode_control)
+  loglik <- traj.match.loglik(object,ode_control=ode_control)
 
   ofun <- function (par) {
     params[idx] <- par
     coef(object,transform=TRUE) <<- params
-    ll <- traj.match.nll(object,ode_control=ode_control)
-    loglik <<- -ll
-    if (is.finite(ll) || is.na(fail.value)) ll else fail.value
+    loglik <<- traj.match.loglik(object,ode_control=ode_control)
+    if (is.finite(loglik) || is.na(fail.value)) -loglik else fail.value
   }
 
   environment(ofun) <- list2env(
-    list(object=object,fail.value=fail.value,
-      params=params,idx=idx,loglik=loglik,ode_control=ode_control),
+    list(object=object,fail.value=fail.value,params=params,
+      idx=idx,loglik=loglik,ode_control=ode_control),
     parent=parent.frame(2)
   )
 
@@ -135,9 +154,9 @@ tmof.internal <- function (object, params, est, fail.value,
 
 }
 
-traj.match.nll <- function (object, seed, ode_control) {
+traj.match.loglik <- function (object, seed, ode_control) {
   object@states <- do.call(trajectory,c(list(object),ode_control))
-  -sum(dmeasure(object,y=obs(object),x=object@states,
+  sum(dmeasure(object,y=obs(object),x=object@states,
     times=time(object),params=coef(object),
     log=TRUE))
 }

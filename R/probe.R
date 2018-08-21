@@ -116,16 +116,18 @@ setMethod(
     probes, nsim, seed = NULL, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    object <- pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
-      params=params,...,verbose=verbose)
+    if (missing(rprocess) || missing(rmeasure) || missing(params))
+      pomp_stop(sQuote(c("rprocess","rmeasure","params")),
+        " are required arguments.")
 
-    probe(
-      object,
-      probes=probes,
-      nsim=nsim,
-      seed=seed,
-      verbose=verbose
+    object <- tryCatch(
+      pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+        params=params,...,verbose=verbose),
+      error = function (e)
+        pomp_stop(conditionMessage(e))
     )
+
+    probe(object,probes=probes,nsim=nsim,seed=seed,verbose=verbose)
 
   }
 )
@@ -144,14 +146,8 @@ setMethod(
     if (missing(probes)) probes <- NULL
     if (missing(nsim)) nsim <- NULL
 
-    probe.internal(
-      data,
-      probes=probes,
-      nsim=nsim,
-      seed=seed,
-      ...,
-      verbose=verbose
-    )
+    probe.internal(data,probes=probes,nsim=nsim,seed=seed,...,verbose=verbose)
+
   }
 )
 
@@ -168,24 +164,21 @@ setMethod(
     if (missing(probes)) probes <- data@probes
     if (missing(nsim)) nsim <- data@nsim
 
-    probe(
-      as(data,"pomp"),
-      probes=probes,
-      nsim=nsim,
-      seed=seed,
-      ...,
-      verbose=verbose
-    )
+    probe(as(data,"pomp"),probes=probes,nsim=nsim,seed=seed,...,verbose=verbose)
+
   }
 )
 
-probe.internal <- function (object, probes, nsim, seed,
-  .getnativesymbolinfo = TRUE, ..., verbose) {
+probe.internal <- function (object, probes, nsim, seed, ...,
+  .getnativesymbolinfo = TRUE, verbose) {
 
   ep <- paste0("in ",sQuote("probe"),": ")
   verbose <- as.logical(verbose)
 
-  object <- pomp(object,...)
+  object <- tryCatch(
+    pomp(object,...),
+    error = function (e) pomp_stop(conditionMessage(e),which=6)
+  )
 
   if (is.null(probes))
     stop(ep,sQuote("probes")," must be furnished.",call.=FALSE)

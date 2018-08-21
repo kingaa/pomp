@@ -30,7 +30,8 @@ Error : in ‘pomp’: ‘data’ is a required argument.
 Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘pomp’.
 > try(pomp(times=3))
 Error : in ‘pomp’: ‘data’ is a required argument.
-> stopifnot(is.null(pomp(NULL)))
+> try(pomp(NULL))
+Error : in ‘pomp’: ‘times’ is a required argument.
 > try(data.frame(a=1:10,a=1:10,check.names=FALSE) %>% pomp(t0=4))
 Error : in ‘pomp’: names of data variables must be unique.
 > try(data.frame(a=1:10,b=1:10) %>% pomp(t0=4))
@@ -338,5 +339,4 @@ in ‘pomp’: the unrecognized argument ‘larry’ is available for use by the
 Error : in ‘pomp’: bad option for ‘covar’.
 > try(po2 %>% pomp(rmeasure=function(x)x))
 Error : in ‘pomp’: in ‘rmeasure’: ‘rmeasure’ must be a function of prototype ‘rmeasure(x, t, params, ...)’
-> 
 > 

@@ -102,7 +102,7 @@ processes.
 }
 \seealso{
 Other elementary POMP methods: \code{\link{pfilter}},
-  \code{\link{probe}}
+  \code{\link{pomp-package}}, \code{\link{probe}}
 }
 \author{
 Aaron A. King

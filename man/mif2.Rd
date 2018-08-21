@@ -15,9 +15,9 @@
 \alias{mif2,mif2d_pomp-method}
 \title{Iterated filtering: maximum likelihood by iterated, perturbed Bayes maps}
 \usage{
-\S4method{mif2}{data.frame}(data, rinit, rprocess, dmeasure, Nmif = 1,
-  params, Np, rw.sd, cooling.type = c("hyperbolic", "geometric"),
-  cooling.fraction.50, tol = 1e-17, max.fail = Inf, ...,
+\S4method{mif2}{data.frame}(data, rinit, rprocess, dmeasure, partrans,
+  params, Nmif = 1, Np, rw.sd, cooling.type = c("hyperbolic",
+  "geometric"), cooling.fraction.50, tol = 1e-17, max.fail = Inf, ...,
   verbose = getOption("verbose", FALSE))
 
 \S4method{mif2}{pomp}(data, Nmif = 1, Np, rw.sd,
@@ -47,10 +47,18 @@ For more information, \link[=rprocess_spec]{see the documentation on these plugi
 Setting \code{dmeasure=NULL} removes the measurement density evaluator.
 For more information, see \link[=dmeasure_spec]{here}.}
 
-\item{Nmif}{The number of filtering iterations to perform.}
+\item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
+
+Many algorithms for parameter estimation search an unconstrained space of parameters.
+When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
+For more information, see \link[=parameter_trans]{here}.
+Setting \code{partrans=NULL} removes the parameter transformations.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
+
+\item{Nmif}{The number of filtering iterations to perform.}
 
 \item{Np}{the number of particles to use in filtering.
 This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
@@ -153,7 +161,8 @@ Other particle filter methods: \code{\link{bsmc2}},
 Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{nlf}}, \code{\link{pmcmc}},
-  \code{\link{probe.match}}, \code{\link{spect.match}}
+  \code{\link{pomp-package}}, \code{\link{probe.match}},
+  \code{\link{spect.match}}
 }
 \author{
 Aaron A. King, Edward L. Ionides, Dao Nguyen

@@ -17,19 +17,22 @@
 \title{Spectrum matching}
 \usage{
 \S4method{spect.match.objfun}{data.frame}(data, rinit, rprocess, rmeasure,
-  params, est = character(0), vars, nsim, seed = NULL, kernel.width,
-  transform.data, detrend, weights = 1, fail.value = NA, ...,
+  partrans, params, est = character(0), vars, nsim, seed = NULL,
+  kernel.width, transform.data = identity, detrend = c("none", "mean",
+  "linear", "quadratic"), weights = 1, fail.value = NA, ...,
   verbose = getOption("verbose", FALSE))
 
 \S4method{spect.match.objfun}{pomp}(data, est = character(0), vars, nsim,
   seed = NULL, kernel.width, transform.data, detrend, weights = 1,
   fail.value = NA, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{spect.match.objfun}{spectd_pomp}(data, est, vars, nsim,
-  seed = NULL, kernel.width, transform.data, detrend, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{spect.match.objfun}{spectd_pomp}(data, est = character(0),
+  vars, nsim, seed = NULL, kernel.width, transform.data, detrend,
+  weights = 1, fail.value = NA, ..., verbose = getOption("verbose",
+  FALSE))
 
-\S4method{spect.match.objfun}{spect_match_objfun}(data, ...)
+\S4method{spect.match.objfun}{spect_match_objfun}(data, ...,
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
@@ -46,6 +49,14 @@ For more information, \link[=rprocess_spec]{see the documentation on these plugi
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
 For more information, see \link[=rmeasure_spec]{here}.}
+
+\item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
+
+Many algorithms for parameter estimation search an unconstrained space of parameters.
+When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
+For more information, see \link[=parameter_trans]{here}.
+Setting \code{partrans=NULL} removes the parameter transformations.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -95,7 +106,7 @@ See the \link[=userdata]{userdata documentation here} for information on how to 
 \value{
 \code{spect.match.objfun} constructs a stateful objective function for spectrum matching.
 Specifically, \code{spect.match.objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
-In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
+This function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 When called, it will return the (optionally weighted) \eqn{L^2}{L2} distance between the data spectrum and simulated spectra.
 It is a stateful function:
 Each time it is called, it will remember the values of the parameters and the discrepancy measure.
@@ -116,12 +127,13 @@ The best practice is to evaluate the function on the parameters returned by the 
 }
 
 \seealso{
-\code{\link{spect}}, \code{\link{optim}},
-\code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
+\code{\link{spect}} \code{\link{optim}}
+\code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 
 Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{mif2}}, \code{\link{nlf}},
-  \code{\link{pmcmc}}, \code{\link{probe.match}}
+  \code{\link{pmcmc}}, \code{\link{pomp-package}},
+  \code{\link{probe.match}}
 }
 \concept{\pkg{pomp} parameter estimation methods}

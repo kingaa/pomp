@@ -127,8 +127,8 @@ A Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian Bayesian Track
 IEEE Trans. Sig. Proc. 50:174--188, 2002.
 }
 \seealso{
-Other elementary POMP methods: \code{\link{probe}},
-  \code{\link{simulate}}
+Other elementary POMP methods: \code{\link{pomp-package}},
+  \code{\link{probe}}, \code{\link{simulate}}
 
 Other particle filter methods: \code{\link{bsmc2}},
   \code{\link{cond.logLik}}, \code{\link{eff.sample.size}},

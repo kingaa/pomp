@@ -113,10 +113,22 @@ setMethod(
     detrend = c("none","mean","linear","quadratic"), ...,
     verbose = getOption("verbose", FALSE)) {
 
-    object <- pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
-      params=params,...,verbose=verbose)
+    if (missing(rprocess) || missing(rmeasure) || missing(params))
+      pomp_stop(sQuote(c("rprocess","rmeasure","params")),
+        " are required arguments.")
 
-    spect(
+    object <- tryCatch(
+      pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+        params=params,...,verbose=verbose),
+      error = function (e) {
+        pomp_stop(conditionMessage(e))
+      }
+    )
+
+    detrend <- match.arg(detrend)
+    transform.data <- match.fun(transform.data)
+
+    spect.internal(
       object,
       vars=vars,
       kernel.width=kernel.width,
@@ -193,6 +205,11 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
 
   ep <- paste0("in ",sQuote("spect"),": ")
 
+  object <- tryCatch(
+    pomp(object,...),
+    error = function (e) pomp_stop(which=6,conditionMessage(e))
+  )
+
   if (missing(vars)) vars <- rownames(object@data)
 
   if (missing(kernel.width) || length(kernel.width) > 1 ||
@@ -211,8 +228,6 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   verbose <- as.logical(verbose)
 
   ker <- reuman.kernel(kernel.width)
-
-  object <- pomp(object,...,verbose=verbose)
 
   params <- coef(object)
 

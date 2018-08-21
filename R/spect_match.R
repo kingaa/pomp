@@ -18,6 +18,7 @@
 ##' @inheritParams pomp
 ##' @inheritParams probe.match
 ##' @inheritParams spect
+##'
 ##' @param weights optional numeric or function.
 ##' The mismatch between model and data is measured by a weighted average of mismatch at each frequency.
 ##' By default, all frequencies are weighted equally.
@@ -27,15 +28,15 @@
 ##' @return
 ##' \code{spect.match.objfun} constructs a stateful objective function for spectrum matching.
 ##' Specifically, \code{spect.match.objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
-##' In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
+##' This function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 ##' When called, it will return the (optionally weighted) \eqn{L^2}{L2} distance between the data spectrum and simulated spectra.
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and the discrepancy measure.
 ##'
 ##' @inheritSection objfun Important Note
 ##'
-##' @seealso \code{\link{spect}}, \code{\link{optim}},
-##' \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
+##' @seealso \code{\link{spect}} \code{\link{optim}}
+##' \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##'
 NULL
 
@@ -78,27 +79,24 @@ setMethod(
 setMethod(
   "spect.match.objfun",
   signature=signature(data="data.frame"),
-  definition=function(data, rinit, rprocess, rmeasure, params,
-    est = character(0), vars, nsim, seed = NULL, kernel.width, transform.data,
-    detrend, weights = 1, fail.value = NA, ...,
+  definition=function(data,
+    rinit, rprocess, rmeasure, partrans, params,
+    est = character(0), vars, nsim, seed = NULL, kernel.width,
+    transform.data = identity,
+    detrend = c("none","mean","linear","quadratic"),
+    weights = 1, fail.value = NA, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    object <- pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
-      params=params,...,verbose=verbose)
-
-    spect.match.objfun(
-      object,
-      est=est,
-      vars=vars,
-      nsim=nsim,
-      seed=seed,
-      kernel.width=kernel.width,
-      transform.data=transform.data,
-      detrend=detrend,
-      weights=weights,
-      fail.value=fail.value,
-      verbose=verbose
+    data <- tryCatch(
+      pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+        partrans=partrans,params=params,...,verbose=verbose),
+      error = function (e)
+        pomp_stop(conditionMessage(e))
     )
+
+    spect.match.objfun(data,est=est,vars=vars,nsim=nsim,seed=seed,
+      kernel.width=kernel.width,transform.data=transform.data,detrend=detrend,
+      weights=weights,fail.value=fail.value,verbose=verbose)
 
   }
 )
@@ -115,21 +113,9 @@ setMethod(
     detrend, weights = 1, fail.value = NA, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    object <- pomp(data,...,verbose=verbose)
-
-    smof.internal(
-      object,
-      est=est,
-      vars=vars,
-      nsim=nsim,
-      seed=seed,
-      kernel.width=kernel.width,
-      transform.data=transform.data,
-      detrend=detrend,
-      weights=weights,
-      fail.value=fail.value,
-      verbose=verbose
-    )
+    smof.internal(data,est=est,vars=vars,nsim=nsim,seed=seed,
+      kernel.width=kernel.width,transform.data=transform.data,detrend=detrend,
+      weights=weights,fail.value=fail.value,...,verbose=verbose)
 
   }
 )
@@ -141,8 +127,9 @@ setMethod(
 setMethod(
   "spect.match.objfun",
   signature=signature(data="spectd_pomp"),
-  definition=function(data, est, vars, nsim, seed = NULL,
-    kernel.width, transform.data, detrend, ...,
+  definition=function(data, est = character(0), vars, nsim, seed = NULL,
+    kernel.width, transform.data, detrend,
+    weights = 1, fail.value = NA, ...,
     verbose = getOption("verbose", FALSE)) {
 
     if (missing(vars)) vars <- data@vars
@@ -151,18 +138,9 @@ setMethod(
     if (missing(transform.data)) transform.data <- data@transform.data
     if (missing(detrend)) detrend <- data@detrend
 
-    smof.internal(
-      data,
-      est=est,
-      vars=vars,
-      nsim=nsim,
-      seed=seed,
-      kernel.width=kernel.width,
-      transform.data=transform.data,
-      detrend=detrend,
-      ...,
-      verbose=verbose
-    )
+    spect.match.objfun(as(data,"pomp"),est=est,vars=vars,nsim=nsim,seed=seed,
+      kernel.width=kernel.width,transform.data=transform.data,detrend=detrend,
+      weights=weights,fail.value=fail.value,...,verbose=verbose)
 
   }
 )
@@ -174,9 +152,9 @@ setMethod(
 setMethod(
   "spect.match.objfun",
   signature=signature(data="spect_match_objfun"),
-  definition=function(data, ...) {
+  definition=function(data, ..., verbose = getOption("verbose", FALSE)) {
 
-    spect.match.objfun(data@env$object,...)
+    spect.match.objfun(data@env$object,...,verbose=verbose)
 
   }
 )
@@ -186,23 +164,10 @@ smof.internal <- function (object, est, vars, nsim, seed,
 
   ep <- paste0("in ",sQuote("spect.match.objfun"),": ")
 
+  object <- spect(object,vars=vars,nsim=nsim,seed=seed,...,
+    kernel.width=kernel.width,transform.data=transform.data,detrend=detrend)
+
   fail.value <- as.numeric(fail.value)
-
-  params <- coef(object)
-
-  if (missing(est)) est <- character(0)
-  est <- as.character(est)
-  est <- est[nzchar(est)]
-
-  if (missing(vars)) vars <- rownames(object@data)
-  if (missing(nsim)) stop(ep,sQuote("nsim")," must be supplied",call.=FALSE)
-  if (missing(kernel.width))
-    stop(ep,sQuote("kernel.width")," must be specified",call.=FALSE)
-  if (missing(transform.data)) transform.data <- identity
-
-  object <- spect(object,params=params,vars=vars,nsim=nsim,seed=seed,
-    kernel.width=kernel.width,transform.data=transform.data,detrend=detrend,
-    ...)
 
   if (is.numeric(weights)) {
     if (length(weights)==1) {
@@ -228,7 +193,12 @@ smof.internal <- function (object, est, vars, nsim, seed,
     stop(ep,sQuote("weights")," should be nonnegative and finite",call.=FALSE)
   weights <- weights/mean(weights)
 
+
   params <- coef(object,transform=TRUE)
+
+  if (missing(est)) est <- character(0)
+  est <- as.character(est)
+  est <- est[nzchar(est)]
 
   idx <- match(est,names(params))
   if (any(is.na(idx))) {
@@ -287,8 +257,8 @@ spect.discrep <- function (object, ker, weights) {
 setMethod(
   "spect",
   signature=signature(data="spect_match_objfun"),
-  definition=function (data, ...) {
-    spect(data@env$object,...)
+  definition=function (data, ..., verbose=getOption("verbose", FALSE)) {
+    spect(data@env$object,...,seed=data@env$seed,verbose=verbose)
   }
 )
 

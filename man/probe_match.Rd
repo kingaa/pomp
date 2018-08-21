@@ -17,15 +17,16 @@
 \title{Probe matching}
 \usage{
 \S4method{probe.match.objfun}{data.frame}(data, rinit, rprocess, rmeasure,
-  params, est, probes, nsim, seed = NULL, fail.value = NA, ...,
-  verbose = getOption("verbose", FALSE))
-
-\S4method{probe.match.objfun}{pomp}(data, est, probes, nsim, seed = NULL,
+  partrans, params, est = character(0), probes, nsim, seed = NULL,
   fail.value = NA, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{probe.match.objfun}{probed_pomp}(data, est, probes, nsim,
-  seed = NULL, fail.value = NA, ..., verbose = getOption("verbose",
-  FALSE))
+\S4method{probe.match.objfun}{pomp}(data, est = character(0), probes,
+  nsim, seed = NULL, fail.value = NA, ...,
+  verbose = getOption("verbose", FALSE))
+
+\S4method{probe.match.objfun}{probed_pomp}(data, est = character(0),
+  probes, nsim, seed = NULL, fail.value = NA, ...,
+  verbose = getOption("verbose", FALSE))
 
 \S4method{probe.match.objfun}{probe_match_objfun}(data, ...,
   verbose = getOption("verbose", FALSE))
@@ -45,6 +46,14 @@ For more information, \link[=rprocess_spec]{see the documentation on these plugi
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
 For more information, see \link[=rmeasure_spec]{here}.}
+
+\item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
+
+Many algorithms for parameter estimation search an unconstrained space of parameters.
+When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
+For more information, see \link[=parameter_trans]{here}.
+Setting \code{partrans=NULL} removes the parameter transformations.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -107,7 +116,8 @@ Other summary statistics methods: \code{\link{abc}},
 Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{mif2}}, \code{\link{nlf}},
-  \code{\link{pmcmc}}, \code{\link{spect.match}}
+  \code{\link{pmcmc}}, \code{\link{pomp-package}},
+  \code{\link{spect.match}}
 }
 \author{
 Aaron A. King

@@ -86,7 +86,8 @@ Assimilation Monthly Weather Review 129:2884--2903
 Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{mif2}},
   \code{\link{nlf}}, \code{\link{pmcmc}},
-  \code{\link{probe.match}}, \code{\link{spect.match}}
+  \code{\link{pomp-package}}, \code{\link{probe.match}},
+  \code{\link{spect.match}}
 }
 \author{
 Aaron A. King

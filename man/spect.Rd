@@ -28,7 +28,8 @@
   seed = NULL, transform.data, detrend, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{spect}{spect_match_objfun}(data, ...)
+\S4method{spect}{spect_match_objfun}(data, ...,
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}

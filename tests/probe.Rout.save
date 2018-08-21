@@ -118,7 +118,7 @@ Error : in ‘probe’: ‘nsim’ (=10), should be (much) larger than the numbe
 > try(probe(pb,params=NULL))
 Error : in ‘probe’: applying probes to simulated data: in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
 > try(probe(pb,params="I think so"))
-Error : in ‘pomp’: ‘params’ must be a named numeric vector.
+Error : in ‘probe’: in ‘pomp’: ‘params’ must be a named numeric vector.
 In addition: Warning message:
 In setNames(as.double(params), names(params)) : NAs introduced by coercion
 > try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})

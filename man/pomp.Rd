@@ -68,7 +68,8 @@ For more information, see \link[=prior_spec]{here}.}
 Many algorithms for parameter estimation search an unconstrained space of parameters.
 When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
-For more information, see \link[=parameter_trans]{here}.}
+For more information, see \link[=parameter_trans]{here}.
+Setting \code{partrans=NULL} removes the parameter transformations.}
 
 \item{covar}{optional covariate table, constructed using \code{\link{covariate_table}}.
 

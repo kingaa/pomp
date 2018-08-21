@@ -65,10 +65,27 @@ See the package website, \url{https://kingaa.github.io/pomp/}, for more
 references.
 }
 \seealso{
-\code{\link{pfilter}}, \code{\link[=simulate-pomp]{simulate}},
-\code{\link{mif2}}, \code{\link{nlf}}, \code{\link{probe}},
-\code{\link{traj.match}}, \code{\link{bsmc2}}, \code{\link{pmcmc}}
+Other information on model implementation: \code{\link{Csnippet}},
+  \code{\link{accumulators}},
+  \code{\link{covariate_table}},
+  \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
+  \code{\link{parameter_trans}}, \code{\link{prior_spec}},
+  \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
+  \code{\link{rprocess_spec}}, \code{\link{skeleton_spec}},
+  \code{\link{userdata}}
+
+Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
+  \code{\link{bsmc2}}, \code{\link{kalman}},
+  \code{\link{mif2}}, \code{\link{nlf}},
+  \code{\link{pmcmc}}, \code{\link{probe.match}},
+  \code{\link{spect.match}}
+
+Other elementary POMP methods: \code{\link{pfilter}},
+  \code{\link{probe}}, \code{\link{simulate}}
 }
 \author{
 Aaron A. King
 }
+\concept{\pkg{pomp} parameter estimation methods}
+\concept{elementary POMP methods}
+\concept{information on model implementation}

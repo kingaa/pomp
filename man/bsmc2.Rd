@@ -12,8 +12,8 @@
 \title{The Liu and West Bayesian particle filter}
 \usage{
 \S4method{bsmc2}{data.frame}(data, params, rprior, rinit, rprocess,
-  rmeasure, Np, est, smooth = 0.1, tol = 1e-17, max.fail = 0, ...,
-  verbose = getOption("verbose", FALSE))
+  rmeasure, partrans, Np, est, smooth = 0.1, tol = 1e-17,
+  max.fail = 0, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{bsmc2}{pomp}(data, params, Np, est, smooth = 0.1,
   tol = 1e-17, max.fail = 0, ..., verbose = getOption("verbose",
@@ -40,6 +40,14 @@ For more information, \link[=rprocess_spec]{see the documentation on these plugi
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
 For more information, see \link[=rmeasure_spec]{here}.}
+
+\item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
+
+Many algorithms for parameter estimation search an unconstrained space of parameters.
+When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
+For more information, see \link[=parameter_trans]{here}.
+Setting \code{partrans=NULL} removes the parameter transformations.}
 
 \item{Np}{number of particles}
 
@@ -104,7 +112,8 @@ Other particle filter methods: \code{\link{cond.logLik}},
 Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{kalman}}, \code{\link{mif2}},
   \code{\link{nlf}}, \code{\link{pmcmc}},
-  \code{\link{probe.match}}, \code{\link{spect.match}}
+  \code{\link{pomp-package}}, \code{\link{probe.match}},
+  \code{\link{spect.match}}
 }
 \author{
 Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
