@@ -1,5 +1,7 @@
 # pomp to-do list
 
+- revisit default initializer
+- should unspecified basic components return NAs?
 - "guide to upgrading to **pomp** version 2"
 - ~~take away option of passing `params` as a matrix to `pfilter`~~
 - **all methods use transforms if they exist**

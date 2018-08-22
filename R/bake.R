@@ -73,7 +73,8 @@ bake <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
     readRDS(file)
   } else {
     rng.control <- !missing(seed)
-    seed <- as.integer(seed)
+    if (missing(seed)) seed <- NULL
+    else seed <- as.integer(seed)
     if (length(seed) == 0) seed <- NULL
     if (rng.control) {
       if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
@@ -107,7 +108,8 @@ stew <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
       assign(obj,get(obj),envir=parent.frame())
   } else {
     rng.control <- !missing(seed)
-    seed <- as.integer(seed)
+    if (missing(seed)) seed <- NULL
+    else seed <- as.integer(seed)
     if (length(seed) == 0) seed <- NULL
     expr <- substitute(expr)
     e <- new.env()
@@ -137,6 +139,8 @@ stew <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
 ##' @export
 freeze <- function (expr, seed, kind = NULL, normal.kind = NULL) {
   rng.control <- !missing(seed)
+  if (missing(seed)) seed <- NULL
+  else seed <- as.integer(seed)
   seed <- as.integer(seed)
   if (length(seed) == 0) seed <- NULL
   if (rng.control) {
