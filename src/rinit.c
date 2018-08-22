@@ -27,7 +27,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
   npar = dim[0]; nrep = dim[1];
 
   if (ns % nrep != 0)
-    errorcall(R_NilValue,"in 'init.state': number of desired state-vectors 'nsim' is not a multiple of ncol('params')");
+    errorcall(R_NilValue,"in 'rinit': number of desired state-vectors 'nsim' is not a multiple of ncol('params')");
 
   SEXP pompfun, fcall, fn, covars = R_NilValue;
   pompfunmode mode = undef;
@@ -79,7 +79,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     PROTECT(Snames = GET_NAMES(x1)); nprotect++;
 
     if (!IS_NUMERIC(x1) || isNull(Snames)) {
-      errorcall(R_NilValue,"in 'init.state': user 'rinit' must return a named numeric vector");
+      errorcall(R_NilValue,"in 'rinit': user 'rinit' must return a named numeric vector");
     }
 
     nvar = LENGTH(x1);
@@ -88,7 +88,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
     for (j = 0; j < nvar; j++) {
       if (midx[j]!=0) {
-        errorcall(R_NilValue,"in 'init.state': a state variable and a parameter share a single name: '%s'",CHAR(STRING_ELT(Snames,j)));
+        errorcall(R_NilValue,"in 'rinit': a state variable and a parameter share a single name: '%s'",CHAR(STRING_ELT(Snames,j)));
       }
     }
 
@@ -105,7 +105,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       PROTECT(x2 = eval(fcall,rho));
       xp = REAL(x2);
       if (LENGTH(x2)!=nvar)
-        errorcall(R_NilValue,"in 'init.state': user rinit returns vectors of non-uniform length");
+        errorcall(R_NilValue,"in 'rinit': user 'rinit' returns vectors of non-uniform length");
       memcpy(xt,xp,nvar*sizeof(double));
       UNPROTECT(1);
     }

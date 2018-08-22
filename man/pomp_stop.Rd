@@ -3,6 +3,14 @@
 \name{pomp_stop}
 \alias{pomp_stop}
 \title{pomp_stop}
+\usage{
+pomp_stop(fn = NULL, ...)
+}
+\arguments{
+\item{fn}{name of function}
+
+\item{\dots}{message}
+}
 \description{
 Custom error function
 }

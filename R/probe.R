@@ -117,14 +117,14 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     if (missing(rprocess) || missing(rmeasure) || missing(params))
-      pomp_stop(sQuote(c("rprocess","rmeasure","params")),
-        " are required arguments.")
+      pomp_stop("probe",paste(sQuote(c("rprocess","rmeasure","params")),
+        collapse=", ")," are required arguments.")
 
     object <- tryCatch(
       pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
         params=params,...,verbose=verbose),
       error = function (e)
-        pomp_stop(conditionMessage(e))
+        pomp_stop("probe",conditionMessage(e))
     )
 
     probe(object,probes=probes,nsim=nsim,seed=seed,verbose=verbose)
@@ -177,7 +177,7 @@ probe.internal <- function (object, probes, nsim, seed, ...,
 
   object <- tryCatch(
     pomp(object,...),
-    error = function (e) pomp_stop(conditionMessage(e),which=6)
+    error = function (e) pomp_stop("probe",conditionMessage(e),which=6)
   )
 
   if (is.null(probes))

@@ -114,14 +114,14 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     if (missing(rprocess) || missing(rmeasure) || missing(params))
-      pomp_stop(sQuote(c("rprocess","rmeasure","params")),
+      pomp_stop("spect",sQuote(c("rprocess","rmeasure","params")),
         " are required arguments.")
 
     object <- tryCatch(
       pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
         params=params,...,verbose=verbose),
       error = function (e) {
-        pomp_stop(conditionMessage(e))
+        pomp_stop("spect",conditionMessage(e))
       }
     )
 
@@ -207,7 +207,7 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
 
   object <- tryCatch(
     pomp(object,...),
-    error = function (e) pomp_stop(which=6,conditionMessage(e))
+    error = function (e) pomp_stop("spect",conditionMessage(e))
   )
 
   if (missing(vars)) vars <- rownames(object@data)

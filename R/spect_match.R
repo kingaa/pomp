@@ -91,7 +91,7 @@ setMethod(
       pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
         partrans=partrans,params=params,...,verbose=verbose),
       error = function (e)
-        pomp_stop(conditionMessage(e))
+        pomp_stop("spect.match.objfun",conditionMessage(e))
     )
 
     spect.match.objfun(data,est=est,vars=vars,nsim=nsim,seed=seed,

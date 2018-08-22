@@ -3,9 +3,13 @@
 ##' Custom error function
 ##' @name pomp_stop
 ##' @keywords internal
-NULL
-
-pomp_stop <- function (..., which = 1) {
-  f <- sQuote(as.character(sys.call(which)[[1]]))
-  stop("in ",f,": ",...,call.=FALSE)
+##'
+##' @param fn name of function
+##' @param \dots message
+##'
+pomp_stop <- function (fn = NULL, ...) {
+  if (!is.null(fn))
+    stop("in ",sQuote(fn),": ",...,call.=FALSE)
+  else
+    stop(...,call.=FALSE)
 }

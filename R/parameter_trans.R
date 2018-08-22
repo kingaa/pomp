@@ -158,8 +158,8 @@ setMethod(
   "parameter_trans",
   signature=signature(toEst="ANY",fromEst="missing"),
   definition=function(toEst, fromEst, ...) {
-    pomp_stop("if one of ",sQuote("toEst"),", ",sQuote("fromEst"),
-      " is supplied, then so must the other be.")
+    pomp_stop("parameter_trans","if one of ",sQuote("toEst"),", ",
+      sQuote("fromEst")," is supplied, then so must the other be.")
   }
 )
 
