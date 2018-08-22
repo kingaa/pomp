@@ -110,7 +110,7 @@ extern SEXP do_rprior(SEXP object, SEXP params, SEXP gnsi);
 extern SEXP do_rprocess(SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset, SEXP gnsi);
 
 // simulate.c
-extern SEXP simulation_computations(SEXP object, SEXP params, SEXP times, SEXP t0, SEXP nsim, SEXP obs, SEXP states, SEXP gnsi);
+extern SEXP do_simulate(SEXP object, SEXP params, SEXP nsim, SEXP gnsi);
 
 // skeleton.c
 extern void eval_skeleton_native(double *f, double *time, double *x, double *p, int nvars, int npars, int ncovars, int ntimes, int nrepx, int nrepp, int nreps, int *sidx, int *pidx, int *cidx, lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args);

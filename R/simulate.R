@@ -8,39 +8,63 @@
 ##' @rdname simulate
 ##' @include workhorses.R pomp_class.R pomp.R
 ##' @importFrom stats simulate
+##'
 ##' @author Aaron A. King
 ##' @family elementary POMP methods
 ##'
 ##' @inheritParams pomp
+##'
 ##' @param object optional; if present, it should be the output of one of \pkg{pomp}'s methods
+##'
+##' @param params a named numeric vector or a matrix with rownames
+##' containing the parameters at which the simulations are to be performed.
+##'
 ##' @param nsim The number of simulations to perform.
 ##' Note that the number of replicates will be \code{nsim} times \code{ncol(params)}.
+##'
 ##' @param seed optional;
 ##' if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.  the random seed to use.
 ##' The RNG will be restored to its original state afterward.
-##' @param states Do we want the state trajectories?
-##' @param obs Do we want data-frames of the simulated observations?
-##' @param as.data.frame,include.data logical;
-##' if \code{as.data.frame=TRUE}, the results are returned as a data-frame.
-##' A factor variable, \sQuote{sim}, distinguishes one simulation from another.
-##' If, in addition, \code{include.data=TRUE}, the original data are included as an additional \sQuote{simulation}.
-##' If \code{as.data.frame=FALSE}, \code{include.data} is ignored.
 ##'
-##' @return If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of \code{nsim} \sQuote{pomp} objects is returned.
-##' Each has a simulated data set, together with the parameters used (in slot \code{params}) and the state trajectories also (in slot \code{states}).
-##' If \code{times} is specified, then the simulated observations will be at times \code{times}.
+##' @param format the format in which to return the results.
 ##'
-##' If \code{nsim=1}, then a single \sQuote{pomp} object is returned (and not a singleton list).
+##' \code{format = "pomps"} causes the results to be returned as a single \dQuote{pomp} object,
+##' identical to \code{object} except for the latent states and observations,
+##' which have been replaced by the simulated values.
 ##'
-##' If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories are returned as a rank-3 array with dimensions \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
+##' \code{format = "arrays"} causes the results to be returned as a list of two arrays.
+##' The \dQuote{states} element will contain the simulate state trajectories in a rank-3 array with dimensions
+##' \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
 ##' Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
-##' The measurement process is not simulated in this case.
-##'
-##' If \code{states=FALSE} and \code{obs=TRUE}, simulated observations are returned as a rank-3 array with dimensions \code{nobs} x \code{(ncol(params)*nsim)} x \code{ntimes}.
+##' The \dQuote{obs} element will contain the simulated data, returned as a rank-3 array with dimensions
+##' \code{nobs} x \code{(ncol(params)*nsim)} x \code{ntimes}.
 ##' Here, \code{nobs} is the number of observables.
 ##'
-##' If both \code{states=TRUE} and \code{obs=TRUE}, then a named list is returned.
-##' It contains the state trajectories and simulated observations as above.
+##' \code{format = "data.frame"} causes the results to be returned as a single data frame containing
+##' the time, states, and observations.
+##' An ordered factor variable, \sQuote{.id}, distinguishes one simulation from another.
+##'
+##' @param include.data if \code{TRUE}, the original data are included (with \code{.id = "rep"}).
+##' This option is ignored unless \code{format = "data.frame"}.
+##'
+##' @return
+##' A single \dQuote{pomp} object,
+##' a \dQuote{pompList} object,
+##' a named list of two arrays,
+##' or a data frame, according to the \code{format} option.
+##'
+##' If \code{params} is a matrix, each column is treated as a distinct parameter set.
+##' In this case, if \code{nsim=1},
+##' then \code{simulate} will return one simulation for each parameter set.
+##' If \code{nsim>1},
+##' then \code{simulate} will yield \code{nsim} simulations for each parameter set.
+##' These will be ordered such that
+##' the first \code{ncol(params)} simulations represent one simulation
+##' from each of the distinct parameter sets,
+##' the second \code{ncol(params)} simulations represent a second simulation from each,
+##' and so on.
+##'
+##' Adding column names to \code{params} can be helpful.
 ##'
 NULL
 
@@ -59,36 +83,32 @@ setMethod(
   signature=signature(object="missing"),
   definition=function (nsim = 1, seed = NULL,
     rinit, rprocess, rmeasure, params,
-    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
-    include.data = FALSE, ...,
-    verbose = getOption("verbose", FALSE)) {
+    times, t0,
+    format = c("pomps", "arrays", "data.frame"),
+    include.data = FALSE,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    ep <- paste0("in ",sQuote("simulate"),": ")
+    if (missing(times) || missing(t0))
+      pomp_stop("simulate",sQuote("times")," and ",sQuote("t0"),
+        " are required arguments.")
 
-    if (missing(times))
-      stop(ep,sQuote("times")," is a required argument.",call.=FALSE)
-    if (missing(t0))
-      stop(ep,sQuote("t0")," is a required argument.",call.=FALSE)
+    format <- match.arg(format)
 
     object <- tryCatch(
       pomp(data=NULL,times=times,t0=t0,
         rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
         verbose=verbose),
       error=function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
+        pomp_stop("simulate",conditionMessage(e))
       }
     )
 
-    simulate.internal(
-      object=object,
+    simulate(
+      object,
       nsim=nsim,
       seed=seed,
       params=params,
-      states=states,
-      obs=obs,
-      times=times,
-      t0=t0,
-      as.data.frame=as.data.frame,
+      format=format,
       include.data=include.data,
       verbose=verbose
     )
@@ -104,28 +124,28 @@ setMethod(
   signature=signature(object="data.frame"),
   definition=function (object, nsim = 1, seed = NULL,
     rinit, rprocess, rmeasure, params,
-    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
-    include.data = FALSE, ..., verbose = getOption("verbose", FALSE)) {
+    times, t0,
+    format = c("pomps", "arrays", "data.frame"),
+    include.data = FALSE,
+    ..., verbose = getOption("verbose", FALSE)) {
+
+    format <- match.arg(format)
 
     object <- tryCatch(
-      pomp(object,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
-        times=times,t0=t0,...,verbose=verbose),
+      pomp(data=object,times=times,t0=t0,
+        rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
+        verbose=verbose),
       error = function (e) {
-        ep <- paste0("in ",sQuote("simulate"),": ")
-        stop(ep,conditionMessage(e),call.=FALSE)
+        pomp_stop("simulate",conditionMessage(e))
       }
     )
 
     simulate(
-      object=object,
+      object,
       nsim=nsim,
       seed=seed,
       params=params,
-      states=states,
-      obs=obs,
-      times=time(object),
-      t0=timezero(object),
-      as.data.frame=as.data.frame,
+      format=format,
       include.data=include.data,
       verbose=verbose
     )
@@ -142,22 +162,24 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (object, nsim = 1, seed = NULL,
     rinit, rprocess, rmeasure, params,
-    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
-    include.data = FALSE, ..., verbose = getOption("verbose", FALSE)) {
+    times, t0,
+    format = c("pomps", "arrays", "data.frame"),
+    include.data = FALSE,
+    ..., verbose = getOption("verbose", FALSE)) {
+
+    format <- match.arg(format)
 
     simulate.internal(
-      object=object,
+      object,
       rinit=rinit,
       rprocess=rprocess,
       rmeasure=rmeasure,
       nsim=nsim,
       seed=seed,
       params=params,
-      states=states,
-      obs=obs,
       times=times,
       t0=t0,
-      as.data.frame=as.data.frame,
+      format=format,
       include.data=include.data,
       ...,
       verbose=verbose
@@ -167,21 +189,31 @@ setMethod(
 )
 
 simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
-  states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
-  include.data = FALSE, .getnativesymbolinfo = TRUE, ..., verbose) {
+  format, include.data = FALSE, ...,
+  .getnativesymbolinfo = TRUE, verbose) {
 
-  ep <- paste0("in ",sQuote("simulate"),": ")
+  object <- tryCatch(
+    pomp(object,...,verbose=verbose),
+    error = function (e) pomp_stop("simulate",conditionMessage(e))
+  )
+  object <- as(object,"pomp")
 
-  object <- pomp(object,...,verbose=verbose)
-
-  obs <- as.logical(obs)
-  states <- as.logical(states)
-  as.data.frame <- as.logical(as.data.frame)
   include.data <- as.logical(include.data)
 
   if (length(nsim)!=1 || !is.numeric(nsim) || !is.finite(nsim) || nsim < 1)
     stop(ep,sQuote("nsim")," must be a positive integer.",call.=FALSE)
   nsim <- as.integer(nsim)
+
+  if (missing(params)) params <- coef(object)
+  if (is.list(params)) params <- unlist(params)
+  if (is.null(params)) params <- numeric(0)
+  if (!is.numeric(params))
+    pomp_stop("simulate",sQuote("params")," must be named and numeric.")
+  params <- as.matrix(params)
+  storage.mode(params) <- "double"
+
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   ## set the random seed (be very careful about this)
   seed <- as.integer(seed)
@@ -191,116 +223,93 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
     set.seed(seed)
   }
 
-  if (missing(params)) params <- coef(object)
-  if (is.list(params)) params <- unlist(params)
-  if (is.null(params)) params <- numeric(0)
-
-  params <- as.matrix(params)
-  storage.mode(params) <- "double"
-
-  if (missing(times))
-    times <- time(object,t0=FALSE)
-  else
-    times <- as.numeric(times)
-
-  if (missing(t0))
-    t0 <- timezero(object)
-  else
-    t0 <- as.numeric(t0)
-
-  if (!obs && !states)
-    object <- as(object,"pomp")
-
-  pompLoad(object,verbose=verbose)
-  on.exit(pompUnload(object,verbose=verbose))
-
-  retval <- tryCatch(
-    .Call(
-      simulation_computations,
-      object,
-      params,
-      times,
-      t0,
-      nsim,
-      obs,
-      states,
-      .getnativesymbolinfo
-    ),
-    error = function (e) {
-      stop(ep,conditionMessage(e),call.=FALSE)
-    }
+  sims <- tryCatch(
+    .Call(do_simulate,object,params,nsim,.getnativesymbolinfo),
+    error = function (e) pomp_stop("simulate",conditionMessage(e))
   )
-  .getnativesymbolinfo <- FALSE
 
   ## restore the RNG state
   if (length(seed) > 0) {
     assign('.Random.seed',save.seed,envir=.GlobalEnv)
   }
 
-  if (as.data.frame) {
-    if (obs && states) {
-      dm <- dim(retval$obs)
-      nsim <- dm[2L]
-      nm <- rownames(retval$obs)
-      dim(retval$obs) <- c(dm[1L],prod(dm[-1L]))
-      rownames(retval$obs) <- nm
-      dm <- dim(retval$states)
-      nm <- rownames(retval$states)
-      dim(retval$states) <- c(dm[1L],prod(dm[-1L]))
-      rownames(retval$states) <- nm
-      retval <- cbind(
-        as.data.frame(t(retval$obs)),
-        as.data.frame(t(retval$states))
-      )
-      retval$sim <- seq_len(nsim)
-      retval$time <- rep(times,each=nsim)
-    } else if (obs || states) {
-      dm <- dim(retval)
-      nsim <- dm[2L]
-      nm <- rownames(retval)
-      dim(retval) <- c(dm[1L],prod(dm[-1L]))
-      rownames(retval) <- nm
-      retval <- as.data.frame(t(retval))
-      retval$sim <- seq_len(nsim)
-      retval$time <- rep(times,each=nsim)
-    } else {
-      nsim <- length(retval)
-      if (nsim > 1) {
-        retval <- lapply(
-          seq_len(nsim),
-          function (k) {
-            x <- as.data.frame(retval[[k]])
-            x$sim <- as.integer(k)
-            x
-          }
-        )
-        retval <- do.call(rbind,retval)
-      } else {
-        retval <- as.data.frame(retval)
-        retval$sim <- 1L
-      }
-    }
+  if (is.null(colnames(params)))
+    cnames <- seq_len(ncol(params))
+  else
+    cnames <- colnames(params)
+
+  simnames <- paste(
+    rep(cnames,times=nsim),
+    rep(seq_len(nsim),each=ncol(params)),
+    sep="_")
+
+  nsims <- ncol(sims$states)
+
+  if (format == "arrays") {
+
+    dimnames(sims$states) <- replace(dimnames(sims$states),2L,list(rep=simnames))
+    dimnames(sims$obs) <- replace(dimnames(sims$obs),2L,list(rep=simnames))
+
+    sims
+
+  } else if (format == "data.frame") {
+
+    dm <- dim(sims$states)
+    nm <- rownames(sims$states)
+    dim(sims$states) <- c(dm[1L],prod(dm[-1L]))
+    rownames(sims$states) <- nm
+
+    dm <- dim(sims$obs)
+    nm <- rownames(sims$obs)
+    dim(sims$obs) <- c(dm[1L],prod(dm[-1L]))
+    rownames(sims$obs) <- nm
+
+    sims <- cbind(
+      time=rep(time(object),each=nsims),
+      as.data.frame(t(sims$states)),
+      as.data.frame(t(sims$obs)),
+      .id=simnames
+    )
+
+    names(sims)[[1]] <- object@timename
 
     if (include.data) {
-      od <- as.data.frame(object)
-      od$sim <- 0L
-      tryCatch(
-        {
-          retval <- merge(od,retval,all=TRUE)
-        },
-        error = function (e) {
-          stop(ep,"error in merging actual and simulated data.\n",
-            "Check names of data, covariates, and states for conflicts.\n",
-            sQuote("merge")," error message: ",conditionMessage(e),call.=FALSE)
-        }
-      )
+      dat <- as.data.frame(object)
+      dat$.id <- "data"
+      allnm <- union(names(dat),names(sims))
+      for (n in setdiff(allnm,names(dat))) dat[[n]] <- NA
+      for (n in setdiff(allnm,names(sims))) sims[[n]] <- NA
+      sims <- rbind(dat,sims)
+      sims$.id <- ordered(sims$.id,levels=c("data",simnames))
+    } else {
+      sims$.id <- ordered(sims$.id,levels=simnames)
+    }
+    othernm <- setdiff(names(sims),c(object@timename,".id"))
+
+    sims[order(sims$.id,sims[[object@timename]]),c(object@timename,".id",othernm)]
+
+  } else {
+
+    statedim <- dim(sims$states)
+    obsdim <- dim(sims$obs)
+    statenames <- dimnames(sims$states)
+    obsnames <- dimnames(sims$obs)
+
+    rv <- rep(list(object),times=nsims)
+    names(rv) <- simnames
+
+    for (i in seq_len(nsims)) {
+      rv[[i]] <- object
+      rv[[i]]@states <- sims$states[,i,,drop=FALSE]
+      dim(rv[[i]]@states) <- statedim[-2L]
+      dimnames(rv[[i]]@states) <- statenames[-2L]
+      rv[[i]]@data <- sims$obs[,i,,drop=FALSE]
+      dim(rv[[i]]@data) <- obsdim[-2L]
+      dimnames(rv[[i]]@data) <- obsnames[-2L]
     }
 
-    retval$sim <- ordered(retval$sim)
-    if (include.data) levels(retval$sim)[1L] <- "data"
-    retval <- retval[order(retval$sim,retval[[object@timename]]),]
+    if (length(rv) > 1) do.call(c,rv) else rv[[1]]
 
   }
 
-  retval
 }

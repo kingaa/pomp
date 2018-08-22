@@ -3,6 +3,8 @@
 \docType{methods}
 \name{trajectory}
 \alias{trajectory}
+\alias{trajectory,missing-method}
+\alias{trajectory,ANY-method}
 \alias{trajectory-pomp}
 \alias{trajectory,pomp-method}
 \title{Trajectory of a deterministic model}

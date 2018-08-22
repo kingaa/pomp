@@ -27,7 +27,8 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (object, vars, ...) {
     if (length(object@states)==0) {
-      NULL
+      x <- array(NA_real_,dim=c(0,length(object@times)),
+        dimnames=setNames(list(NULL,NULL),c("variable",object@timename)))
     } else {
       varnames <- rownames(object@states)
       if (missing(vars)) vars <- varnames
@@ -35,9 +36,8 @@ setMethod(
         stop("in ",sQuote("states"),": some elements of ",
           sQuote("vars")," correspond to no state variable",call.=FALSE)
       x <- object@states[vars,,drop=FALSE]
-      dimnames(x) <- setNames(list(vars,time(object)),
-        c("variable",object@timename))
-      x
+      dimnames(x) <- setNames(list(vars,NULL),c("variable",object@timename))
     }
+    x
   }
 )

@@ -12,18 +12,18 @@
 \title{Simulations of a partially-observed Markov process}
 \usage{
 \S4method{simulate}{missing}(nsim = 1, seed = NULL, rinit, rprocess,
-  rmeasure, params, states = FALSE, obs = FALSE, times, t0,
-  as.data.frame = FALSE, include.data = FALSE, ...,
+  rmeasure, params, times, t0, format = c("pomps", "arrays",
+  "data.frame"), include.data = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 
 \S4method{simulate}{data.frame}(object, nsim = 1, seed = NULL, rinit,
-  rprocess, rmeasure, params, states = FALSE, obs = FALSE, times, t0,
-  as.data.frame = FALSE, include.data = FALSE, ...,
+  rprocess, rmeasure, params, times, t0, format = c("pomps", "arrays",
+  "data.frame"), include.data = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 
 \S4method{simulate}{pomp}(object, nsim = 1, seed = NULL, rinit,
-  rprocess, rmeasure, params, states = FALSE, obs = FALSE, times, t0,
-  as.data.frame = FALSE, include.data = FALSE, ...,
+  rprocess, rmeasure, params, times, t0, format = c("pomps", "arrays",
+  "data.frame"), include.data = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 }
 \arguments{
@@ -47,12 +47,8 @@ For more information, \link[=rprocess_spec]{see the documentation on these plugi
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
 For more information, see \link[=rmeasure_spec]{here}.}
 
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
-
-\item{states}{Do we want the state trajectories?}
-
-\item{obs}{Do we want data-frames of the simulated observations?}
+\item{params}{a named numeric vector or a matrix with rownames
+containing the parameters at which the simulations are to be performed.}
 
 \item{times}{the times at which observations are made.
 \code{times} must indicate the column of observation times by name or index.
@@ -62,11 +58,26 @@ Internally, \code{data} will be internally coerced to an array with storage-mode
 \item{t0}{The zero-time, i.e., the time of the initial state.
 This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
 
-\item{as.data.frame, include.data}{logical;
-if \code{as.data.frame=TRUE}, the results are returned as a data-frame.
-A factor variable, \sQuote{sim}, distinguishes one simulation from another.
-If, in addition, \code{include.data=TRUE}, the original data are included as an additional \sQuote{simulation}.
-If \code{as.data.frame=FALSE}, \code{include.data} is ignored.}
+\item{format}{the format in which to return the results.
+
+\code{format = "pomps"} causes the results to be returned as a single \dQuote{pomp} object,
+identical to \code{object} except for the latent states and observations,
+which have been replaced by the simulated values.
+
+\code{format = "arrays"} causes the results to be returned as a list of two arrays.
+The \dQuote{states} element will contain the simulate state trajectories in a rank-3 array with dimensions
+\code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
+Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
+The \dQuote{obs} element will contain the simulated data, returned as a rank-3 array with dimensions
+\code{nobs} x \code{(ncol(params)*nsim)} x \code{ntimes}.
+Here, \code{nobs} is the number of observables.
+
+\code{format = "data.frame"} causes the results to be returned as a single data frame containing
+the time, states, and observations.
+An ordered factor variable, \sQuote{.id}, distinguishes one simulation from another.}
+
+\item{include.data}{if \code{TRUE}, the original data are included (with \code{.id = "rep"}).
+This option is ignored unless \code{format = "data.frame"}.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
@@ -80,21 +91,23 @@ See the \link[=userdata]{userdata documentation here} for information on how to 
 \item{object}{optional; if present, it should be the output of one of \pkg{pomp}'s methods}
 }
 \value{
-If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of \code{nsim} \sQuote{pomp} objects is returned.
-Each has a simulated data set, together with the parameters used (in slot \code{params}) and the state trajectories also (in slot \code{states}).
-If \code{times} is specified, then the simulated observations will be at times \code{times}.
+A single \dQuote{pomp} object,
+a \dQuote{pompList} object,
+a named list of two arrays,
+or a data frame, according to the \code{format} option.
 
-If \code{nsim=1}, then a single \sQuote{pomp} object is returned (and not a singleton list).
+If \code{params} is a matrix, each column is treated as a distinct parameter set.
+In this case, if \code{nsim=1},
+then \code{simulate} will return one simulation for each parameter set.
+If \code{nsim>1},
+then \code{simulate} will yield \code{nsim} simulations for each parameter set.
+These will be ordered such that
+the first \code{ncol(params)} simulations represent one simulation
+from each of the distinct parameter sets,
+the second \code{ncol(params)} simulations represent a second simulation from each,
+and so on.
 
-If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories are returned as a rank-3 array with dimensions \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
-Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
-The measurement process is not simulated in this case.
-
-If \code{states=FALSE} and \code{obs=TRUE}, simulated observations are returned as a rank-3 array with dimensions \code{nobs} x \code{(ncol(params)*nsim)} x \code{ntimes}.
-Here, \code{nobs} is the number of observables.
-
-If both \code{states=TRUE} and \code{obs=TRUE}, then a named list is returned.
-It contains the state trajectories and simulated observations as above.
+Adding column names to \code{params} can be helpful.
 }
 \description{
 \code{simulate} generates simulations of the state and measurement

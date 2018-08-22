@@ -9,7 +9,8 @@
 ##' @name trajectory
 ##' @rdname trajectory
 ##' @include workhorses.R pomp_class.R
-##'
+##' @aliases trajectory trajectory,missing-method trajectory,ANY-method
+
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames
 ##'
@@ -20,12 +21,6 @@
 ##' @seealso \code{\link{skeleton}}
 NULL
 
-##' Generic trajectory
-##'
-##' @name trajectory-generic
-##' @aliases trajectory,missing-method trajectory,ANY-method
-##' @keywords internal
-##' @inheritParams trajectory
 setGeneric(
   "trajectory",
   function (object, ...)
@@ -50,10 +45,8 @@ setMethod(
   }
 )
 
-##' Trajectory
-##'
 ##' @name trajectory-pomp
-##' @aliases trajectory trajectory,pomp-method
+##' @aliases trajectory,pomp-method
 ##' @rdname trajectory
 ##'
 ##' @inheritParams rmeasure
@@ -61,6 +54,7 @@ setMethod(
 ##'
 ##' @param as.data.frame logical;
 ##' if \code{TRUE}, return the result as a data-frame.
+##'
 ##' @param verbose logical; if \code{TRUE}, more information will be displayed.
 ##'
 ##' @param \dots Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
@@ -201,12 +195,12 @@ trajectory.internal <- function (object, params, times, t0,
         y <- as.data.frame(t(y))
         names(y) <- nm
         y[[object@timename]] <- times
-        y$traj <- as.integer(k)
+        y$.id <- as.integer(k)
         y
       }
     )
     x <- do.call(rbind,x)
-    x$traj <- factor(x$traj)
+    x$.id <- ordered(x$.id)
   }
 
   x
