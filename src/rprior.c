@@ -8,10 +8,6 @@
 
 #include "pomp_internal.h"
 
-//_pomp_default_rprior (double *p, int *parindex) {
-//  return;
-//}
-
 SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 {
   int nprotect = 0;
@@ -36,7 +32,6 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   // extract 'userdata' as pairlist
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
-  // first do setup
   switch (mode) {
   case Rfun:			// use R function
 
@@ -119,7 +114,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
     PROTECT(P = duplicate(params)); nprotect++;
     fixdimnames(P,dimnms,2);
 
-    // construct state, parameter, covariate, observable indices
+    // construct parameter indices
     pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
 
     // address of native routine
@@ -142,9 +137,10 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"in 'rprior': unrecognized 'mode'"); // # nocov
+    PROTECT(P = duplicate(params)); nprotect++;
+    fixdimnames(P,dimnms,2);
 
-  break;
+    break;
 
   }
 
