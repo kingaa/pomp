@@ -4,9 +4,24 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
+#include <R_ext/Arith.h>
 #include <string.h>
 
 #include "pomp_internal.h"
+
+static SEXP pomp_default_rprocess (SEXP xstart, int nvars, int nreps, int ntimes)
+{
+  SEXP Snames, X;
+  int dim[3] = {nvars, nreps, ntimes};
+  int i, n = nvars*nreps*ntimes;
+  double *xp = 0;
+  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart)));
+  PROTECT(X = makearray(3,dim));
+  setrownames(X,Snames,3);
+  for (i= 0, xp = REAL(X); i < n; i++, xp++) *xp = R_NaReal;
+  UNPROTECT(2);
+  return X;
+}
 
 SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset, SEXP gnsi)
 {
@@ -92,8 +107,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     SEXP fn;
     double deltat = 1.0;
     PROTECT(fn = GET_SLOT(rproc,install("step.fn"))); nprotect++;
-    PROTECT(X = euler_model_simulator(
-      fn,xstart,times,params,deltat,type,
+    PROTECT(X = euler_model_simulator(fn,xstart,times,params,deltat,type,
       zeronames,covar,args,gnsi)); nprotect++;
   }
     break;
@@ -118,7 +132,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
   }
     break;
   case 0: default:
-    errorcall(R_NilValue,"'rprocess' is undefined.");
+    PROTECT(X = pomp_default_rprocess(xstart,nvars,nreps,ntimes)); nprotect++;
     break;
   }
 
