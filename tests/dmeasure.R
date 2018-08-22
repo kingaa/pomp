@@ -1,18 +1,14 @@
 library(pomp)
 library(magrittr)
-library(plyr)
-library(reshape2)
 
 pompExample(ou2)
 
 po <- window(ou2,end=10)
 
 set.seed(3434388L)
-simulate(po,nsim=5,as.data.frame=TRUE,include.data=FALSE)%>%
-  melt(id.vars=c("time","sim")) %>%
-  acast(variable~sim~time) -> y
-x <- y[c("x1","x2"),,,drop=FALSE]
-y <- y[c("y1","y2"),1,]
+simulate(po,nsim=5,format="arrays") -> y
+y %>% extract2("states") -> x
+y %>% extract2("obs") %>% extract(,1,) -> y
 t <- time(po)
 theta <- coef(po)
 
@@ -66,10 +62,12 @@ pompExample(dacca)
 set.seed(3434388L)
 po <- window(dacca,end=1892)
 po %>% simulate(nsim=5) -> dat
+
+library(reshape2)
 dat %>% lapply(states) %>% melt() %>%
   acast(variable~L1~time) -> x
 dat %>% lapply(obs) %>% melt() %>%
-  subset(L1==1) %>%
+  subset(L1=="1_1") %>%
   acast(variable~L1~time) -> y
 t <- time(po)
 theta <- coef(po)
