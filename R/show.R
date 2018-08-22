@@ -50,36 +50,11 @@ setMethod(
   }
 )
 
-##' @export
-setMethod(
-  "show",
-  signature=signature("pomp_fun"),
-  definition=function (object) {
-    mode <- object@mode
-    if (mode==pompfunmode$Rfun) { # R function
-      cat("\t\t")
-      show(object@R.fun)
-    } else if (mode==pompfunmode$native) { # user supplied native code
-      cat("\t\tnative function ",sQuote(object@native.fun),sep="")
-      if (length(object@PACKAGE)>0)
-        cat(", dynamically loaded from ",sQuote(object@PACKAGE),sep="")
-      cat("\n")
-    } else if (mode==pompfunmode$regNative) { # built from C snippets
-      cat("\t\tnative function ",sQuote(object@native.fun),sep="")
-      if (length(object@PACKAGE)>0)
-        cat(", defined by a C snippet in library ",sQuote(object@PACKAGE),sep="")
-      cat("\n")
-    } else {
-      cat("\t\tnot specified\n")
-    }
-  }
-)
-
 setMethod(
   "show",
   signature=signature(object="rprocPlugin"),
   definition=function (object) {
-    cat("  - undefined\n")
+    cat("<undefined>\n")
   }
 )
 
@@ -87,7 +62,8 @@ setMethod(
   "show",
   signature=signature(object="onestepRprocPlugin"),
   definition=function (object) {
-    cat("  - one-step process-model simulator, step.fun:\n")
+    cat("one-step process-model simulator\n")
+    cat("  - step.fun: ")
     show(object@step.fn)
   }
 )
@@ -96,9 +72,10 @@ setMethod(
   "show",
   signature=signature(object="discreteRprocPlugin"),
   definition=function (object) {
-    cat("  - discrete-time process-model simulator, step.fun:\n")
-    show(object@step.fn)
+    cat("discrete-time process-model simulator\n")
     cat("  - time-step =",object@delta.t,"\n")
+    cat("  - step.fun: ")
+    show(object@step.fn)
   }
 )
 
@@ -106,9 +83,10 @@ setMethod(
   "show",
   signature=signature(object="eulerRprocPlugin"),
   definition=function (object) {
-    cat("  - Euler-method process-model simulator, step.fun:\n")
-    show(object@step.fn)
+    cat("Euler-method process-model simulator\n")
     cat("  - time-step =",object@delta.t,"\n")
+    cat("  - step.fun: ")
+    show(object@step.fn)
   }
 )
 
@@ -116,21 +94,10 @@ setMethod(
   "show",
   signature=signature(object="gillespieRprocPlugin"),
   definition=function (object) {
-    cat("  - Gillespie-method process-model simulator, rate.fun:\n")
-    show(object@rate.fn)
+    cat("Gillespie-method process-model simulator\n")
     cat("  - stoichiometry matrix:\n")
     print(object@v)
-    cat("\n")
-  }
-)
-
-setMethod(
-  "show",
-  signature=signature(object="partransPlugin"),
-  definition=function (object) {
-    cat("  - to estimation scale:\n")
-    show(object@to)
-    cat("  - from estimation scale:\n")
-    show(object@from)
+    cat("  - rate.fun: ")
+    show(object@rate.fn)
   }
 )

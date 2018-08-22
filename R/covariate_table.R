@@ -42,14 +42,14 @@ setMethod(
   signature=signature(object="covartable"),
   definition=function (object) {
     if (length(object@times)>0) {
-      cat("  -",nrow(object@table),"records of",
+      cat("\n  -",nrow(object@table),"records of",
         ncol(object@table),"covariates,",
         "recorded from t =",min(object@times),
         "to",max(object@times),"\n")
       cat("  - summary of covariates:\n")
       print(summary(as.data.frame(object@table)))
     } else {
-      cat("\t\t<none>\n")
+      cat("<none>\n")
     }
   }
 )

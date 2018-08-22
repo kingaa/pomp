@@ -89,7 +89,7 @@ setMethod(
   "show",
   signature=signature(object="vectorfieldPlugin"),
   definition=function (object) {
-    cat("  - vectorfield:\n")
+    cat("vectorfield:\n  - ")
     show(object@skel.fn)
   }
 )
@@ -98,9 +98,10 @@ setMethod(
   "show",
   signature=signature(object="mapPlugin"),
   definition=function (object) {
-    cat("  - map:\n")
-    show(object@skel.fn)
+    cat("map:\n")
     cat("  - time-step =",object@delta.t,"\n")
+    cat("  - ")
+    show(object@skel.fn)
   }
 )
 

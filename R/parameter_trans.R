@@ -181,6 +181,19 @@ setMethod(
   }
 )
 
+##' @rdname show
+##' @export
+setMethod(
+  "show",
+  signature=signature(object="partransPlugin"),
+  definition=function (object) {
+    cat("  - to estimation scale: ")
+    show(object@to)
+    cat("  - from estimation scale: ")
+    show(object@from)
+  }
+)
+
 parameter_trans.internal <- function (toEst, fromEst, ...,
   log, logit, barycentric) {
 

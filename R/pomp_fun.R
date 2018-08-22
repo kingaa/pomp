@@ -152,6 +152,47 @@ setMethod(
   definition=function (f, ...) f
 )
 
+##' @export
+##' @rdname show
+setMethod(
+  "show",
+  signature=signature("pomp_fun"),
+  definition=function (object) {
+
+    mode <- object@mode
+
+    if (mode==pompfunmode$Rfun) { # R function
+
+      cat("R function\n  - definition: ")
+      f <- object@R.fun
+      environment(f) <- globalenv()
+      print(f)
+
+    } else if (mode==pompfunmode$native) { # user supplied native code
+
+      cat("native function\n  - name: ",sQuote(object@native.fun),"\n",sep="")
+      if (length(object@PACKAGE)>0)
+        cat("  - dynamically loaded from: ",
+          sQuote(object@PACKAGE),sep="")
+      cat("\n")
+
+    } else if (mode==pompfunmode$regNative) { # built from C snippets
+
+      cat("native function\n  - name: ",sQuote(object@native.fun),"\n",sep="")
+      if (length(object@PACKAGE)>0)
+        cat("  - defined by a C snippet in library ",
+          sQuote(object@PACKAGE),sep="")
+      cat("\n")
+
+    } else {
+
+      cat("<default>\n")
+
+    }
+    cat("\n")
+  }
+)
+
 is.undef.pomp_fun <- function (object) {
   is(object,"pomp_fun") && object@mode == pompfunmode$undef
 }
