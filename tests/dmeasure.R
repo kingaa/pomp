@@ -40,7 +40,7 @@ k <- which(names(theta)=="tau")
 try(dmeasure(po,x=x,y=y,times=t,params=theta[-k]))
 
 po %>% pomp(dmeasure=NULL) -> po1
-stopifnot(sum(is.na(dmeasure(po1,x=x,y=y,times=t,params=theta)))==60)
+stopifnot(sum(is.na(dmeasure(po1,x=x,y=y,times=t,params=theta)))==50)
 
 xx <- x
 xx[] <- as.integer(round(x))
