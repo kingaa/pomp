@@ -84,9 +84,10 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 
   case undef: default:
   {
-    const char *purp = (const char *) CHAR(STRING_ELT(GET_SLOT(pfun,install("purpose")),0));
 
-    errorcall(R_NilValue,"operation cannot be completed: %s has not been specified",purp);
+    PROTECT(f = R_NilValue); nprotect++;
+    *mode = undef;
+
   }
 
   }
