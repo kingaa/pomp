@@ -81,7 +81,7 @@ setMethod(
   "show",
   signature=signature(object="skelPlugin"),
   definition=function (object) {
-    cat("  - undefined\n")
+    cat("<default>\n\n")
   }
 )
 

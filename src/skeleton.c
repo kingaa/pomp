@@ -5,6 +5,7 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
+#include <R_ext/Arith.h>
 
 #include "pomp_internal.h"
 
@@ -138,7 +139,6 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     fixdimnames(F,dimnms,3);
   }
 
-  // first do setup
   switch (mode) {
 
   case Rfun: 			// R skeleton
@@ -184,7 +184,6 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
     // extract the address of the user function
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
-    // make userdata
     eval_skeleton_native(
       REAL(F),REAL(t),REAL(x),REAL(params),
       nvars,npars,ncovars,ntimes,nrepx,nrepp,nreps,
@@ -195,8 +194,11 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     break;
 
   default:
-
-    errorcall(R_NilValue,"in 'skeleton': unrecognized 'mode'"); // # nocov
+  {
+    double *fp = REAL(F);
+    int i, n = nvars*nreps*ntimes;
+    for (i = 0; i < n; i++, fp++) *fp = R_NaReal;
+  }
 
   break;
 

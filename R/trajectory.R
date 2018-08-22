@@ -184,7 +184,8 @@ trajectory.internal <- function (object, params, times, t0,
 
   } else {
 
-    stop(ep,"deterministic skeleton has not been properly specified",call.=FALSE)
+    x <- array(data=NA_real_,dim=c(dim(x0),length(times)),
+      dimnames=list(rownames(x0),NULL,NULL))
 
   }
 
