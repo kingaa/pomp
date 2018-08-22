@@ -479,10 +479,6 @@ pomp.internal <- function (data, times, t0, timename, ...,
       "you must also provide ",sQuote("statenames"),".",call.=FALSE)
   }
 
-  ## by default, use flat improper prior
-  if (is.null(dprior))
-    dprior <- pomp_fun(f="_flat_improper_dprior",PACKAGE="pomp")
-
   ## check and arrange covariates
   if (is.null(covar)) {
     covar <- covariate_table()

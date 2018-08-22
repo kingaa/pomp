@@ -8,10 +8,6 @@
 
 #include "pomp_internal.h"
 
-void _flat_improper_dprior (double *lik, double *p, int give_log, int *parindex) {
-  *lik = (give_log) ? 0.0 : 1.0;
-}
-
 SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 {
   int nprotect = 0;
@@ -37,7 +33,6 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
   // to store results
   PROTECT(F = NEW_NUMERIC(nreps)); nprotect++;
 
-  // first do setup
   switch (mode) {
   case Rfun:			// use R function
 
@@ -103,9 +98,19 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 
     break;
 
-  default:
+  default:  // flat, improper prior
 
-    errorcall(R_NilValue,"in 'dprior': unrecognized 'mode'"); // # nocov
+  {
+    int give_log, j;
+    double *pt;
+
+    give_log = *(INTEGER(AS_INTEGER(log)));
+
+    // loop over replicates
+    for (j = 0, pt = REAL(F); j < nreps; j++, pt++)
+      *pt = (give_log) ? 0.0 : 1.0;
+
+  }
 
   break;
 
