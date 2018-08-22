@@ -7,6 +7,64 @@
 
 #include "pomp_internal.h"
 
+SEXP pomp_default_rinit (SEXP params, SEXP Pnames, int npar, int nrep, int nsim)
+{
+  SEXP fcall, pat, repl, val, ivpnames, statenames, x;
+  int *pidx;
+  int nvar, j, k;
+  int xdim[2];
+  const char *dimnms[2] = {"variable","rep"};
+  double *xp, *pp;
+  int nprotect = 0;
+
+  PROTECT(pat = NEW_CHARACTER(1)); nprotect++;
+  SET_STRING_ELT(pat,0,mkChar("\\.0$"));
+  PROTECT(repl = NEW_CHARACTER(1)); nprotect++;
+  SET_STRING_ELT(repl,0,mkChar(""));
+  PROTECT(val = NEW_LOGICAL(1)); nprotect++;
+  *(INTEGER(val)) = 1;
+
+  // extract names of IVPs
+  PROTECT(fcall = LCONS(val,R_NilValue)); nprotect++;
+  SET_TAG(fcall,install("value"));
+  PROTECT(fcall = LCONS(Pnames,fcall)); nprotect++;
+  SET_TAG(fcall,install("x"));
+  PROTECT(fcall = LCONS(pat,fcall)); nprotect++;
+  SET_TAG(fcall,install("pattern"));
+  PROTECT(fcall = LCONS(install("grep"),fcall)); nprotect++;
+  PROTECT(ivpnames = eval(fcall,R_BaseEnv)); nprotect++;
+
+  nvar = LENGTH(ivpnames);
+  if (nvar < 1) {
+    errorcall(R_NilValue,"in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.");
+  }
+  pidx = INTEGER(PROTECT(match(Pnames,ivpnames,0))); nprotect++;
+  for (k = 0; k < nvar; k++) pidx[k]--;
+
+  // construct names of state variables
+  PROTECT(fcall = LCONS(ivpnames,R_NilValue)); nprotect++;
+  SET_TAG(fcall,install("x"));
+  PROTECT(fcall = LCONS(repl,fcall)); nprotect++;
+  SET_TAG(fcall,install("replacement"));
+  PROTECT(fcall = LCONS(pat,fcall)); nprotect++;
+  SET_TAG(fcall,install("pattern"));
+  PROTECT(fcall = LCONS(install("sub"),fcall)); nprotect++;
+  PROTECT(statenames = eval(fcall,R_BaseEnv)); nprotect++;
+
+  xdim[0] = nvar; xdim[1] = nsim;
+  PROTECT(x = makearray(2,xdim)); nprotect++;
+  setrownames(x,statenames,2);
+  fixdimnames(x,dimnms,2);
+
+  for (j = 0, xp = REAL(x); j < nsim; j++) {
+    pp = REAL(params) + npar*(j%nrep);
+    for (k = 0; k < nvar; k++, xp++) *xp = pp[pidx[k]];
+  }
+
+  UNPROTECT(nprotect);
+  return x;
+}
+
 SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 {
   int nprotect = 0;
@@ -31,53 +89,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
   if (definit) {		// default rinit
 
-    SEXP fcall, pat, repl, val, ivpnames, statenames;
-    int *pidx, j, k;
-    double *xp, *pp;
-
-    PROTECT(pat = NEW_CHARACTER(1)); nprotect++;
-    SET_STRING_ELT(pat,0,mkChar("\\.0$"));
-    PROTECT(repl = NEW_CHARACTER(1)); nprotect++;
-    SET_STRING_ELT(repl,0,mkChar(""));
-    PROTECT(val = NEW_LOGICAL(1)); nprotect++;
-    *(INTEGER(val)) = 1;
-
-    // extract names of IVPs
-    PROTECT(fcall = LCONS(val,R_NilValue)); nprotect++;
-    SET_TAG(fcall,install("value"));
-    PROTECT(fcall = LCONS(Pnames,fcall)); nprotect++;
-    SET_TAG(fcall,install("x"));
-    PROTECT(fcall = LCONS(pat,fcall)); nprotect++;
-    SET_TAG(fcall,install("pattern"));
-    PROTECT(fcall = LCONS(install("grep"),fcall)); nprotect++;
-    PROTECT(ivpnames = eval(fcall,R_BaseEnv)); nprotect++;
-
-    nvar = LENGTH(ivpnames);
-    if (nvar < 1) {
-      errorcall(R_NilValue,"in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.");
-    }
-    pidx = INTEGER(PROTECT(match(Pnames,ivpnames,0))); nprotect++;
-    for (k = 0; k < nvar; k++) pidx[k]--;
-
-    // construct names of state variables
-    PROTECT(fcall = LCONS(ivpnames,R_NilValue)); nprotect++;
-    SET_TAG(fcall,install("x"));
-    PROTECT(fcall = LCONS(repl,fcall)); nprotect++;
-    SET_TAG(fcall,install("replacement"));
-    PROTECT(fcall = LCONS(pat,fcall)); nprotect++;
-    SET_TAG(fcall,install("pattern"));
-    PROTECT(fcall = LCONS(install("sub"),fcall)); nprotect++;
-    PROTECT(statenames = eval(fcall,R_BaseEnv)); nprotect++;
-
-    xdim[0] = nvar; xdim[1] = ns;
-    PROTECT(x = makearray(2,xdim)); nprotect++;
-    setrownames(x,statenames,2);
-    fixdimnames(x,dimnms,2);
-
-    for (j = 0, xp = REAL(x); j < ns; j++) {
-      pp = REAL(params) + npar*(j%nrep);
-      for (k = 0; k < nvar; k++, xp++) *xp = pp[pidx[k]];
-    }
+    PROTECT(x = pomp_default_rinit(params,Pnames,npar,nrep,ns)); nprotect++;
 
   } else {			// user-supplied rinit
 
