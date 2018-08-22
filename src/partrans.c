@@ -28,17 +28,17 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
   switch (direc) {
   case -1:			// forward transformation
     PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("partrans")),
-          install("from"))); nprotect++;
-    PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
-    break;
+      install("from"))); nprotect++;
+      PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
+      break;
   case 1:			// inverse transformation
     PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("partrans")),
       install("to"))); nprotect++;
-    PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
-    break;
+      PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
+      break;
   default:
     errorcall(R_NilValue,"impossible error"); // # nocov
-    break;
+  break;
   }
 
   // extract 'userdata' as pairlist
@@ -83,7 +83,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
       PROTECT(nm = GET_NAMES(ans)); nprotect++;
       if (isNull(nm))
-	errorcall(R_NilValue,"in 'partrans': user transformation functions must return a named numeric vector");
+        errorcall(R_NilValue,"in 'partrans': user transformation functions must return a named numeric vector");
 
       // set up matrix to hold the results
       npar2 = LENGTH(ans);
@@ -99,16 +99,16 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
       ps += npar1;
       pt += npar2;
       for (k = 1; k < nreps; k++, ps += npar1, pt += npar2) {
-	memcpy(pp,ps,npar1*sizeof(double));
-	pa = REAL(AS_NUMERIC(eval(fcall,rho)));
-	memcpy(pt,pa,npar2*sizeof(double));
+        memcpy(pp,ps,npar1*sizeof(double));
+        pa = REAL(AS_NUMERIC(eval(fcall,rho)));
+        memcpy(pt,pa,npar2*sizeof(double));
       }
 
     } else {			// vector case
 
       PROTECT(tparams = eval(fcall,rho)); nprotect++;
       if (isNull(GET_NAMES(tparams)))
-	errorcall(R_NilValue,"in 'partrans': user transformation functions must return a named numeric vector");
+        errorcall(R_NilValue,"in 'partrans': user transformation functions must return a named numeric vector");
 
     }
 
@@ -139,7 +139,8 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"in 'partrans': unrecognized 'mode'"); // # nocov
+    UNPROTECT(nprotect);
+    return params;
 
     break;
 
