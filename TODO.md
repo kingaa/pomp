@@ -2,6 +2,7 @@
 
 - revisit default initializer
 - should unspecified basic components return NAs?
+- pass userdata as list to C snippets and as pairlist to R functions
 - "guide to upgrading to **pomp** version 2"
 - ~~take away option of passing `params` as a matrix to `pfilter`~~
 - **all methods use transforms if they exist**

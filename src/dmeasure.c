@@ -5,6 +5,7 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
+#include <R_ext/Arith.h>
 
 #include "pomp_internal.h"
 
@@ -122,9 +123,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   default:
 
-    errorcall(R_NilValue,"unrecognized 'mode'"); // # nocov
-
-  break;
+    break;
 
   }
 
@@ -230,7 +229,19 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   default:
 
-    errorcall(R_NilValue,"unrecognized 'mode'"); // # nocov
+    {
+      double *ft = REAL(F);
+      int j, k;
+
+      for (k = 0; k < ntimes; k++) { // loop over times
+
+        for (j = 0; j < nreps; j++, ft++) { // loop over replicates
+
+          *ft = R_NaReal;
+
+        }
+      }
+    }
 
   break;
 

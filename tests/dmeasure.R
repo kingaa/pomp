@@ -39,6 +39,9 @@ try(dmeasure(po,x=x[1,,,drop=FALSE],y=y,times=t,params=theta))
 k <- which(names(theta)=="tau")
 try(dmeasure(po,x=x,y=y,times=t,params=theta[-k]))
 
+po %>% pomp(dmeasure=NULL) -> po1
+stopifnot(sum(is.na(dmeasure(po1,x=x,y=y,times=t,params=theta)))==60)
+
 xx <- x
 xx[] <- as.integer(round(x))
 stopifnot(all.equal(dmeasure(po,x=xx,y=y,times=t,params=theta,log=TRUE),
