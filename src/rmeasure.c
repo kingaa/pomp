@@ -5,6 +5,7 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
+#include <R_ext/Arith.h>
 
 #include "pomp_internal.h"
 
@@ -89,7 +90,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
     break;
 
-  case native:				// use native routine
+  case native:
 
     // construct state, parameter, covariate, observable indices
     PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
@@ -106,9 +107,10 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"unrecognized 'mode'."); // # nocov
+    PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
+    nobs = LENGTH(Onames);
 
-  break;
+    break;
 
   }
 
@@ -236,9 +238,21 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"unrecognized 'mode'"); // # nocov
+  {
+    int dim[3] = {nobs, nreps, ntimes};
+    const char *dimnm[3] = {"variable","rep","time"};
+    double *yt = 0;
+    int i, n = nobs*nreps*ntimes;
 
-  break;
+    PROTECT(Y = makearray(3,dim)); nprotect++;
+    setrownames(Y,Onames,3);
+    fixdimnames(Y,dimnm,3);
+
+    for (i = 0, yt = REAL(Y); i < n; i++, yt++) *yt = R_NaReal;
+
+  }
+
+    break;
 
   }
 

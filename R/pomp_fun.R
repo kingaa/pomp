@@ -64,16 +64,30 @@ setGeneric(
 setMethod(
   "pomp_fun",
   signature=signature(f="missing"),
-  definition=function (f, slotname = NULL, ...) {
-    new("pomp_fun",purpose=as.character(slotname))
+  definition=function (f, slotname = NULL,
+    obsnames = character(0), statenames = character(0),
+    paramnames = character(0), covarnames = character(0), ...) {
+    new("pomp_fun",
+      obsnames=obsnames,
+      statenames=statenames,
+      paramnames=paramnames,
+      covarnames=covarnames,
+      purpose=as.character(slotname))
   }
 )
 
 setMethod(
   "pomp_fun",
   signature=signature(f="NULL"),
-  definition=function (f, slotname = NULL, ...) {
-    new("pomp_fun",purpose=as.character(slotname))
+  definition=function (f, slotname = NULL,
+    obsnames = character(0), statenames = character(0),
+    paramnames = character(0), covarnames = character(0), ...) {
+    new("pomp_fun",
+      obsnames=obsnames,
+      statenames=statenames,
+      paramnames=paramnames,
+      covarnames=covarnames,
+      purpose=as.character(slotname))
   }
 )
 
