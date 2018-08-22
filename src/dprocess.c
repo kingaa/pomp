@@ -4,6 +4,8 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
+#include <R_ext/Rdynload.h>
+#include <R_ext/Arith.h>
 
 #include "pomp_internal.h"
 
@@ -175,9 +177,7 @@ SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP covar,
 
   default:
 
-    errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // # nocov
-
-  break;
+    break;
 
   }
 
@@ -269,7 +269,16 @@ SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP covar,
 
   default:
 
-    errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // # nocov
+    {
+      double *fs = REAL(F);
+      int j, k;
+
+      for (k = 0; k < ntimes-1; k++) { // loop over times
+        for (j = 0; j < nreps; j++, fs++) { // loop over replicates
+          *fs = R_NaReal;
+        }
+      }
+    }
 
   break;
 
