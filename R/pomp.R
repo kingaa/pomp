@@ -474,10 +474,6 @@ pomp.internal <- function (data, times, t0, timename, ...,
       stop(sQuote("params")," must be a named numeric vector.",call.=FALSE)
   }
 
-  ## use default rinit?
-  default.init <- is.null(rinit) || is.undef.pomp_fun(rinit)
-  if (default.init) rinit <- pomp_fun(slotname="rinit")
-
   if (is(rinit,"Csnippet") && length(statenames)==0) {
     stop(ep,"when ",sQuote("rinit")," is provided as a C snippet, ",
       "you must also provide ",sQuote("statenames"),".",call.=FALSE)
@@ -538,7 +534,6 @@ pomp.internal <- function (data, times, t0, timename, ...,
     times = times,
     t0 = t0,
     timename = timename,
-    default.init = default.init,
     rinit = hitches$funs$rinit,
     rprocess = rproc_plugin(
       rprocess,
@@ -568,8 +563,4 @@ pomp.internal <- function (data, times, t0, timename, ...,
     },
     userdata = .userdata
   )
-}
-
-has_default_init <- function (object) {
-  object@default.init
 }
