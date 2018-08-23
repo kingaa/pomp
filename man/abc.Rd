@@ -27,7 +27,9 @@
   ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
-\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
+\item{data}{either a data frame holding the time series data,
+or an object of class \sQuote{pomp},
+i.e., the output of another \pkg{pomp} calculation.}
 
 \item{Nabc}{the number of ABC iterations to perform.}
 

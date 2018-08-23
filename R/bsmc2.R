@@ -2,6 +2,13 @@
 ##'
 ##' Modified version of the Liu and West (2001) algorithm.
 ##'
+##' \code{bsmc2} uses a version of the original algorithm, but discards the auxiliary particle filter.
+##' The modification appears to give superior performance for the same amount of effort.
+##'
+##' Samples from the prior distribution are drawn using the \code{rprior} component.
+##' This can depend on elements of \code{params}, i.e., some of the elements of \code{params} can be \dQuote{hyperparameters}.
+##' \code{Np} draws are made from the prior distribution.
+##'
 ##' @name bsmc2
 ##' @docType methods
 ##' @rdname bsmc2
@@ -13,20 +20,11 @@
 ##' @importFrom mvtnorm rmvnorm
 ##' @importFrom stats median cov setNames
 ##'
-##' @details
-##' There are two ways to specify the prior distribution of particles.
-##' If \code{params} is unspecified or is a named vector, \code{Np} draws are made from the prior distribution, as specified by \code{\link{rprior}}.
-##' Alternatively, \code{params} can be specified as an \code{npars} x \code{Np} matrix (with rownames).
-##'
-##' \code{bsmc2} uses a version of the original algorithm, but discards the auxiliary particle filter.
-##' The modification appears to give superior performance for the same amount of effort.
-##'
 ##' @inheritParams pomp
 ##' @inheritParams pfilter
-##' @param params parameters
+##'
 ##' @param Np number of particles
-##' @param est Names of the parameters that are to be estimated.  No updates will be made to the other parameters.
-##' If \code{est} is not specified, all parameters for which there is variation in \code{params} will be estimated.
+##'
 ##' @param smooth Kernel density smoothing parameter.
 ##' The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
 ##' Thus, \code{smooth=0} means that no noise will be added to parameters.
@@ -90,7 +88,8 @@ setMethod(
   "bsmc2",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    stop(sQuote("bsmc2")," is not defined when ",sQuote("data")," is of class ",sQuote(class(data)),call.=FALSE)
+    stop(sQuote("bsmc2")," is not defined for objects of class ",
+      sQuote(class(data)),call.=FALSE)
   }
 )
 
@@ -103,20 +102,18 @@ setMethod(
   signature=signature(data="data.frame"),
   definition = function (data,
     params, rprior, rinit, rprocess, rmeasure, partrans,
-    Np, est, smooth = 0.1, tol = 1e-17, max.fail = 0, ...,
+    Np, smooth = 0.1, tol = 1e-17, max.fail = 0, ...,
     verbose = getOption("verbose", FALSE)) {
 
     object <- tryCatch(
       pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
-        rprior=rprior,partrans=partrans,...,verbose=verbose),
+        rprior=rprior,partrans=partrans,params=params,...,verbose=verbose),
       error = function (e) pomp_stop("bsmc2",conditionMessage(e))
     )
 
     bsmc2(
       object,
-      params=params,
       Np=Np,
-      est=est,
       smooth=smooth,
       tol=tol,
       verbose=verbose,
@@ -133,19 +130,21 @@ setMethod(
 setMethod(
   "bsmc2",
   signature=signature(data="pomp"),
-  definition = function (data, params, Np, est, smooth = 0.1, tol = 1e-17,
+  definition = function (data, params, Np, smooth = 0.1, tol = 1e-17,
     max.fail = 0, ..., verbose = getOption("verbose", FALSE)) {
 
-    bsmc2.internal(
-      data,
-      params=params,
-      Np=Np,
-      est=est,
-      smooth=smooth,
-      tol=tol,
-      max.fail=max.fail,
-      ...,
-      verbose=verbose
+    tryCatch(
+      bsmc2.internal(
+        data,
+        params=params,
+        Np=Np,
+        smooth=smooth,
+        tol=tol,
+        max.fail=max.fail,
+        ...,
+        verbose=verbose
+      ),
+      error = function (e) pomp_stop("bsmc2",conditionMessage(e))
     )
 
   }
@@ -177,91 +176,58 @@ setMethod(
   }
 )
 
-bsmc2.internal <- function (object, params, Np, est, smooth, tol,
-  max.fail, .getnativesymbolinfo = TRUE, ..., verbose) {
+bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
+  .getnativesymbolinfo = TRUE, verbose) {
+
+  ep <- character(0)
 
   object <- tryCatch(
     pomp(object,...,verbose=verbose),
-    error = function (e) pomp_stop("bsmc2",conditionMessage(e))
+    error = function (e) pomp_stop(ep,conditionMessage(e))
   )
 
   gnsi <- as.logical(.getnativesymbolinfo)
 
-  if (missing(params)) {
-    params <- as.matrix(coef(object))
-  } else if (is.data.frame(params)) {
-    params <- t(data.matrix(params))
-  } else if (is.list(params)) {
-    params <- unlist(params)
-    params <- setNames(as.double(params),names(params))
-    params <- as.matrix(params)
-  } else if (is.numeric(params)) {
-    params <- as.matrix(params)
-  }
-
-  if (!is.numeric(params) || is.null(rownames(params)))
-    pomp_stop("bsmc2",sQuote("params")," should be a numeric matrix ",
-      "with rownames, a data frame, or a named numeric vector.")
-
+  if (missing(Np))
+    pomp_stop(ep,sQuote("Np")," must be specified.")
   if (!missing(Np) && (length(Np) > 1 || !is.finite(Np) || Np < 1))
-    pomp_stop("bsmc2",sQuote("Np")," must be a positive integer.")
-
-  if (missing(Np) && ncol(params) == 1)
-    pomp_stop("bsmc2",sQuote("Np")," must be specified.")
-  else if (missing(Np))
-    Np <- ncol(params)
-  else if (ncol(params) != 1) {
-    pomp_warn("bsmc2",sQuote("Np")," is ignored since multiple parameter",
-      " sets are supplied.")
-    Np <- ncol(params)
-  } else
-    params <- parmat(params,Np)
-
+    pomp_stop(ep,sQuote("Np")," must be a positive integer.")
   Np <- as.integer(Np)
+
+  params <- parmat(coef(object),Np)
+
+  smooth <- as.numeric(smooth)
+  if ((length(smooth)!=1) || (!is.finite(smooth)) || (smooth>1) || (smooth<=0))
+    pomp_stop(ep,sQuote("smooth")," must be a scalar in (0,1]")
+
+  tol <- as.numeric(tol)
+  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
+    pomp_stop(ep,sQuote("tol")," should be a small positive number.")
+
+  hsq <- smooth^2             #  see Liu & West eq(10.3.12)
+  shrink <- sqrt(1-hsq)       #  'a' parameter of Liu & West
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
-  params <- rprior(object,params=params,.getnativesymbolinfo=gnsi)
+  params <- rprior(object,params=params,nsim=nsim,
+    .getnativesymbolinfo=gnsi)
 
   ntimes <- length(time(object))
   npars <- nrow(params)
   paramnames <- rownames(params)
   prior <- params
 
-  smooth <- as.numeric(smooth)
-  if ((length(smooth)!=1) || (!is.finite(smooth)) || (smooth>1) || (smooth<=0))
-    pomp_stop("bsmc2",sQuote("smooth")," must be a scalar in (0,1]")
-
-  hsq <- smooth^2             #  see Liu & West eq(10.3.12)
-  shrink <- sqrt(1-hsq)       #  'a' parameter of Liu & West
-
-  tol <- as.numeric(tol)
-  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
-    pomp_stop("bsmc2",sQuote("tol")," should be a small positive number.")
-
   times <- time(object,t0=TRUE)
-  x <- rinit(
-    object,
-    params=partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi),
-    .getnativesymbolinfo=gnsi
-  )
+  x <- rinit(object,params=params,.getnativesymbolinfo=gnsi)
   nvars <- nrow(x)
 
   params <- partrans(object,params,dir="toEst",.getnativesymbolinfo=gnsi)
 
-  if (missing(est))
-    est <- paramnames[apply(params,1,function(x)diff(range(x))>0)]
-  estind <- match(est,paramnames)
-  npars.est <- length(estind)
-  if (any(is.na(estind))) {
-    ind <- which(is.na(estind))
-    pomp_stop("bsmc2",ngettext(length(ind),"parameter ","parameters "),
-      paste(sQuote(est[ind]),collapse=",")," not found.")
-  }
-
-  if (npars.est<1)
-    pomp_stop("bsmc2","no parameters to estimate")
+  estind <- which(apply(params,1,function(x) diff(range(x)) > 0))
+  est <- paramnames[estind]
+  nest <- length(est)
+  if (nest < 1) pomp_stop("","no parameters to estimate")
 
   evidence <- as.numeric(rep(NA,ntimes))
   eff.sample.size <- as.numeric(rep(NA,ntimes))
@@ -293,40 +259,23 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
 
     ## sample new parameter vector as per L&W AGM (3) and Liu & West eq(3.2)
     pert <- tryCatch(
-      rmvnorm(n=Np,mean=rep(0,npars.est),sigma=hsq*params.var,method="svd"),
+      rmvnorm(n=Np,mean=rep(0,nest),sigma=hsq*params.var,method="svd"),
       error = function (e)
-        pomp_stop("bsmc2","in ",sQuote("rmvnorm"),": ",conditionMessage(e))
+        pomp_stop("rmvnorm",conditionMessage(e))
     )
 
-    if (!all(is.finite(pert))) pomp_stop("bsmc2","extreme particle depletion")
+    if (!all(is.finite(pert))) pomp_stop(ep,"extreme particle depletion")
 
     params[estind,] <- m[estind,]+t(pert)
 
     tparams <- partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi)
 
-    xpred <- rprocess(
-      object,
-      xstart=x,
-      times=times[c(nt,nt+1)],
-      params=tparams,
-      offset=1L,
-      .getnativesymbolinfo=gnsi
-    )
+    xpred <- rprocess(object,xstart=x,times=times[c(nt,nt+1)],params=tparams,
+      offset=1L,.getnativesymbolinfo=gnsi)
 
     ## evaluate likelihood of observation given xpred (from L&W AGM (4))
-    weights <- tryCatch(
-      dmeasure(
-        object,
-        y=object@data[,nt,drop=FALSE],
-        x=xpred,
-        times=times[nt+1],
-        params=tparams,
-        .getnativesymbolinfo=gnsi
-      ),
-      error = function (e) {
-        pomp_stop("bsmc2",conditionMessage(e))
-      }
-    )
+    weights <- dmeasure(object,y=object@data[,nt,drop=FALSE],x=xpred,
+      times=times[nt+1],params=tparams,.getnativesymbolinfo=gnsi)
 
     gnsi <- FALSE  ## all native symbols have been looked up
 
@@ -346,7 +295,7 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
       }
       nfail <- nfail+1
       if (nfail > max.fail)
-        pomp_stop("bsmc2","too many filtering failures")
+        pomp_stop(ep,"too many filtering failures")
       evidence[nt] <- log(tol)          # worst log-likelihood
       weights <- rep(1/Np,Np)
       eff.sample.size[nt] <- 0
@@ -372,7 +321,7 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
   }
 
   if (nfail>0)
-    pomp_warn("bsmc2",nfail," filtering ",
+    pomp_warn(ep,nfail," filtering ",
       ngettext(nfail,"failure","failures")," occurred.")
 
   ## replace parameters with point estimate (posterior median)

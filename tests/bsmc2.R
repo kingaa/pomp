@@ -11,15 +11,16 @@ set.seed(398585L)
 
 time(gompertz) <- 1:10
 
-smc <- bsmc2(gompertz,rprior=Csnippet("
-              K = runif(0.1,1);
-              r = rlnorm(log(0.2),1);
-              sigma = rlnorm(log(0.1),0.5);"),
-  paramnames=c("r","K","sigma"),Np=1000,smooth=0.01,
-  est=c("r","K","sigma"),tol=1e-6)
+smc <- bsmc2(gompertz,
+  rprior=Csnippet("
+    K = runif(0.1,1);
+    r = rlnorm(log(0.2),1);
+    sigma = rlnorm(log(0.1),0.5);"),
+  paramnames=c("r","K","sigma"),
+  Np=1000,smooth=0.05,tol=1e-6)
 
 plot(smc,y=NA)
-plot(smc,pars=c("r","K"),thin=50)
+plot(smc,pars=c("r","K"),thin=20)
 try(plot(smc,pars="bob"))
 plot(smc,pars="K")
 try(plot(smc,pars=NULL))
@@ -41,23 +42,12 @@ try(bsmc2(po,params=list()))
 try(bsmc2(po,params=c(1,2,3)))
 theta <- coef(smc)
 try(bsmc2(po,params=as.list(theta)))
-try(bsmc2(po,params=as.list(theta),Np=10,est="bob"))
-try(bsmc2(po,params=as.list(theta),Np=1,est="r"))
-pp <- parmat(theta,100)
-capture.output(invisible(bsmc2(po,params=pp,est="r",Np=1,verbose=TRUE))) -> out
-stopifnot(sum(grepl("prior.mean",out))==10)
-try(bsmc2(po,params=pp,est="r",smooth=2))
-try(bsmc2(po,params=pp,est="r",smooth=NA))
-try(bsmc2(po,params=pp,est="r",smooth=NULL))
-try(bsmc2(po,params=pp,est="r",smooth=list(3)))
-try(bsmc2(po,params=pp,est="r",smooth=c(0.1,0.5)))
-rownames(pp) <- NULL
-try(bsmc2(po,params=pp,est="r"))
-try(bsmc2(smc,Np=-10,est="r"))
-try(bsmc2(smc,est="r",Np=100,tol=c(3,5)))
-try(bsmc2(smc,est="r",Np=100,max.fail=-1,tol=10))
-bsmc2(smc,est="r",Np=100,max.fail=Inf,tol=10)
-try(bsmc2(smc,params=theta,est="r",Np=100,
+try(bsmc2(po,params=as.list(theta),Np=1))
+try(bsmc2(smc,Np=-10))
+try(bsmc2(smc,Np=100,tol=c(3,5)))
+try(bsmc2(smc,Np=100,max.fail=-1,tol=10))
+bsmc2(smc,Np=100,max.fail=Inf,tol=10)
+try(bsmc2(smc,params=theta,Np=100,
   dmeasure=Csnippet("error(\"whoa nelly!\");")))
 
 theta <- coef(gompertz)
@@ -72,17 +62,16 @@ gompertz %>%
   as.data.frame() %>%
   bsmc2(
     times="time",t0=-5,
-    params=pp,
+    params=coef(gompertz),
     Np=1000,smooth=0.1,
-    # rprior=Csnippet("
-    #           K = runif(0.1,1);
-    #           r = rlnorm(log(0.2),1);
-    #           sigma = rlnorm(log(0.1),0.5);"),
+    rprior=Csnippet("
+      K = runif(0.1,1);
+      r = rlnorm(log(0.2),1);
+      sigma = rlnorm(log(0.1),0.5);"),
     rprocess=gompertz@rprocess,
     dmeasure=gompertz@dmeasure,
     statenames=c("X"),
-    paramnames=c("r","K","sigma"),
-    est=c("r","K","sigma")) -> smc4
+    paramnames=c("r","K","sigma")) -> smc4
 smc4 %>% plot()
 
 try(gompertz %>%
@@ -95,7 +84,6 @@ try(gompertz %>%
     rprocess=gompertz@rprocess,
     dmeasure=gompertz@dmeasure,
     statenames=c("X"),
-    paramnames=c("r","K","sigma"),
-    est=c("r","K","sigma")))
+    paramnames=c("r","K","sigma")))
 
 dev.off()

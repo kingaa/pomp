@@ -12,17 +12,19 @@
 \title{The Liu and West Bayesian particle filter}
 \usage{
 \S4method{bsmc2}{data.frame}(data, params, rprior, rinit, rprocess,
-  rmeasure, partrans, Np, est, smooth = 0.1, tol = 1e-17,
-  max.fail = 0, ..., verbose = getOption("verbose", FALSE))
+  rmeasure, partrans, Np, smooth = 0.1, tol = 1e-17, max.fail = 0,
+  ..., verbose = getOption("verbose", FALSE))
 
-\S4method{bsmc2}{pomp}(data, params, Np, est, smooth = 0.1,
-  tol = 1e-17, max.fail = 0, ..., verbose = getOption("verbose",
-  FALSE))
+\S4method{bsmc2}{pomp}(data, params, Np, smooth = 0.1, tol = 1e-17,
+  max.fail = 0, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
-\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
+\item{data}{either a data frame holding the time series data,
+or an object of class \sQuote{pomp},
+i.e., the output of another \pkg{pomp} calculation.}
 
-\item{params}{parameters}
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{rprior}{optional; prior distribution sampler, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rprior=NULL} removes the prior distribution sampler.
@@ -50,9 +52,6 @@ For more information, see \link[=parameter_trans]{here}.
 Setting \code{partrans=NULL} removes the parameter transformations.}
 
 \item{Np}{number of particles}
-
-\item{est}{Names of the parameters that are to be estimated.  No updates will be made to the other parameters.
-If \code{est} is not specified, all parameters for which there is variation in \code{params} will be estimated.}
 
 \item{smooth}{Kernel density smoothing parameter.
 The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
@@ -88,12 +87,12 @@ The following methods are avaiable:
 Modified version of the Liu and West (2001) algorithm.
 }
 \details{
-There are two ways to specify the prior distribution of particles.
-If \code{params} is unspecified or is a named vector, \code{Np} draws are made from the prior distribution, as specified by \code{\link{rprior}}.
-Alternatively, \code{params} can be specified as an \code{npars} x \code{Np} matrix (with rownames).
-
 \code{bsmc2} uses a version of the original algorithm, but discards the auxiliary particle filter.
 The modification appears to give superior performance for the same amount of effort.
+
+Samples from the prior distribution are drawn using the \code{rprior} component.
+This can depend on elements of \code{params}, i.e., some of the elements of \code{params} can be \dQuote{hyperparameters}.
+\code{Np} draws are made from the prior distribution.
 }
 \references{
 Liu, J. and M. West.

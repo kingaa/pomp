@@ -63,7 +63,7 @@ Type 'q()' to quit R.
                      se 
 75.25036908  0.08779528 
    user  system elapsed 
-  3.228   4.200   2.283 
+  2.824   3.624   2.362 
 
 > library(pomp)
 
@@ -103,7 +103,7 @@ The following objects are masked from ‘package:base’:
 +     theme_bw() + labs( .... [TRUNCATED] 
 Joining, by = c("n", "time", "rep", "type")
    user  system elapsed 
-  1.388   2.704   1.173 
+  1.252   2.072   1.086 
 
 > library(pomp)
 
@@ -121,7 +121,7 @@ Joining, by = c("n", "time", "rep", "type")
 
 > plot(pf)
    user  system elapsed 
-  1.348   2.668   0.839 
+  0.912   2.064   0.765 
 
 > library(pomp)
 
@@ -156,7 +156,7 @@ Joining, by = c("n", "time", "rep", "type")
 +     statenames = c("S", "I", "R", "in ..." ... [TRUNCATED] 
 [1] -671.6956
    user  system elapsed 
- 10.024   4.312   9.286 
+  9.516   3.960   8.907 
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 

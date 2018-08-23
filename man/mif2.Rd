@@ -32,7 +32,9 @@
   cooling.fraction.50, tol, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
-\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
+\item{data}{either a data frame holding the time series data,
+or an object of class \sQuote{pomp},
+i.e., the output of another \pkg{pomp} calculation.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.

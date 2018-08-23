@@ -32,7 +32,9 @@
 ##' @importFrom stats setNames
 ##' @keywords internal
 ##'
-##' @param data either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.
+##' @param data either a data frame holding the time series data,
+##' or an object of class \sQuote{pomp},
+##' i.e., the output of another \pkg{pomp} calculation.
 ##'
 ##' @param times the times at which observations are made.
 ##' \code{times} must indicate the column of observation times by name or index.
