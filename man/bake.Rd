@@ -33,7 +33,7 @@ After \code{stew} completes, these objects exist in the parent environment (that
 \code{freeze} returns the value of evaluated expression \code{expr}.
 However, \code{freeze} evaluates \code{expr} within the parent environment, so other objects created in the evaluation of \code{expr} will therefore exist after \code{freeze} completes.
 
-All these functions return information about the time used in evaluating the expression.
+\code{bake} and \code{stew} return information about the time used in evaluating the expression.
 This is recorded in the \code{system.time} attribute of the return value.
 In addition, if \code{seed} is specified, information about the seed (and the kind of random-number generator used) are stored as attributes of the return value.
 }

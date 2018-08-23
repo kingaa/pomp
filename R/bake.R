@@ -40,7 +40,7 @@
 ##' \code{freeze} returns the value of evaluated expression \code{expr}.
 ##' However, \code{freeze} evaluates \code{expr} within the parent environment, so other objects created in the evaluation of \code{expr} will therefore exist after \code{freeze} completes.
 ##'
-##' All these functions return information about the time used in evaluating the expression.
+##' \code{bake} and \code{stew} return information about the time used in evaluating the expression.
 ##' This is recorded in the \code{system.time} attribute of the return value.
 ##' In addition, if \code{seed} is specified, information about the seed (and the kind of random-number generator used) are stored as attributes of the return value.
 ##'
@@ -85,7 +85,7 @@ bake <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
     if (rng.control)
       assign(".Random.seed",save.seed,envir=.GlobalEnv)
     if (is.null(val)) {
-      warning("in ",sQuote("bake"),": expression evaluates to NULL",call.=FALSE)
+      pomp_warn("bake","expression evaluates to NULL")
       val <- paste0("NULL result returned by ",sQuote("bake"))
     }
     if (rng.control) {
@@ -147,18 +147,14 @@ freeze <- function (expr, seed, kind = NULL, normal.kind = NULL) {
     if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
     save.seed <- get(".Random.seed",envir=.GlobalEnv)
     set.seed(seed,kind=kind,normal.kind=normal.kind)
-  } else warning("in ",sQuote("freeze"),": seed not set!",call.=FALSE)
-  tmg <- system.time(val <- eval(expr))
-  if (is.null(val)) {
-    warning("in ",sQuote("freeze"),": expression evaluates to NULL",call.=FALSE)
-    val <- paste0("NULL result returned by ",sQuote("freeze"))
-  }
+  } else
+    pomp_warn("freeze","seed not set!",call.=FALSE)
+  val <- eval(expr)
   if (rng.control) {
     assign(".Random.seed",save.seed,envir=.GlobalEnv)
     attr(val,"seed") <- seed
     attr(val,"kind") <- kind
     attr(val,"normal.kind") <- normal.kind
   }
-  attr(val,"system.time") <- tmg
   val
 }
