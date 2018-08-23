@@ -354,13 +354,11 @@ setMethod(
 ##'
 ##' @inheritParams dmeasure
 ##' @param t0 the initial time, i.e., the time corresponding to the initial-state distribution.
-##' @param nsim optional integer; the number of initial states to simulate.
-##' By default, this is equal to the number of columns of \code{params}.
+##' @param nsim optional integer; the number of initial states to simulate per column of \code{params}.
 ##'
 ##' @return
-##' \code{rinit} returns an \code{nvar} x \code{nsim} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
+##' \code{rinit} returns an \code{nvar} x \code{nsim*ncol(params)} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
 ##' By default, \code{t0} is the initial time defined when the \sQuote{pomp} object ws constructed.
-##' If \code{nsim} is not specified, then \code{nsim=ncol(params)}.
 ##'
 ##' @export
 setMethod(
@@ -371,12 +369,11 @@ setMethod(
   }
 )
 
-rinit.internal <- function (object, params, t0, nsim,
+rinit.internal <- function (object, params, t0, nsim = 1,
   .getnativesymbolinfo = TRUE, ...) {
   if (missing(t0)) t0 <- object@t0
   if (missing(params)) params <- coef(object)
   else storage.mode(params) <- "double"
-  if (missing(nsim)) nsim <- NCOL(params)
   pompLoad(object)
   on.exit(pompUnload(object))
   .Call(do_rinit,object,params,t0,nsim,.getnativesymbolinfo)

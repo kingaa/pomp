@@ -125,7 +125,7 @@ Error : in ‘trajectory’: ‘params’ must have names (or rownames).
 > try(trajectory(fhn,params=NULL))
 Error : in ‘trajectory’: ‘params’ must be supplied.
 > try(trajectory(fhn,params=list(a=3,b=2)))
-Error : variable 'c' not found among the parameters
+Error : in ‘rinit’: variable 'c' not found among the parameters
 > try(trajectory(fhn,maxsteps=-1))
 DLSODA-  MXSTEP (=I1) .lt. 0  
 In above message, I1 = -1

@@ -13,21 +13,20 @@ static SEXP pomp_default_rinit(SEXP params, SEXP Pnames,
 SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 {
   int nprotect = 0;
-  SEXP Pnames, Snames;
+  SEXP Pnames, Snames, pcnames;
   SEXP x = R_NilValue;
   int *dim;
-  int npar, nrep, nvar, ns;
+  int npar, nrep, nvar, nsims, ns;
   int xdim[2];
   const char *dimnms[2] = {"variable","rep"};
 
-  ns = *(INTEGER(AS_INTEGER(nsim)));
+  nsims = *(INTEGER(AS_INTEGER(nsim)));
   PROTECT(params = as_matrix(params)); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
+  PROTECT(pcnames = GET_COLNAMES(GET_DIMNAMES(params))); nprotect++;
   dim = INTEGER(GET_DIM(params));
   npar = dim[0]; nrep = dim[1];
-
-  if (ns % nrep != 0)
-    errorcall(R_NilValue,"in 'rinit': number of desired state-vectors 'nsim' is not a multiple of ncol('params')");
+  ns = nsims*nrep;
 
   SEXP pompfun, fcall, fn, covars = R_NilValue;
   pompfunmode mode = undef;
@@ -163,6 +162,37 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
     break;
 
+  }
+
+  if (nrep > 1) {
+    SEXP c, dn, xn;
+    int k, *p;
+
+    if (isNull(pcnames)) {
+      PROTECT(pcnames = NEW_INTEGER(nrep)); nprotect++;
+      for (k = 0, p = INTEGER(pcnames); k < nrep; k++, p++) *p = k+1;
+    }
+
+    if (nsims > 1) {
+      int k, *sp;
+
+      PROTECT(xn = NEW_INTEGER(ns)); nprotect++;
+      for (k = 0, sp = INTEGER(xn); k < ns; k++, sp++) *sp = (k/nrep)+1;
+      PROTECT(c = LCONS(mkString("_"),R_NilValue)); nprotect++;
+      SET_TAG(c,install("sep"));
+      PROTECT(c = LCONS(install("paste"),LCONS(pcnames,LCONS(xn,c)))); nprotect++;
+      PROTECT(xn = eval(c,R_BaseEnv)); nprotect++;
+      PROTECT(dn = GET_DIMNAMES(x)); nprotect++;
+      SET_ELEMENT(dn,1,xn);
+      SET_DIMNAMES(x,dn);
+
+    } else {
+
+      PROTECT(dn = GET_DIMNAMES(x)); nprotect++;
+      SET_ELEMENT(dn,1,pcnames);
+      SET_DIMNAMES(x,dn);
+
+    }
   }
 
   UNPROTECT(nprotect);

@@ -3,10 +3,10 @@
 ## For pomp 2:
 
 - default workhorses
-- `do_simulate` should handle parameter column names
+- ~~`do_simulate` should handle parameter column names~~
 - `bsmc2` should only take vector `params` and rely on `rprior`
 - ~~`spect` should call `do_simulate`~~
-- `nsim` argument for rprior
+- ~~`nsim` argument for rprior~~
 - regularize use of `pomp_stop` and `tryCatch` on *.internals
 - ~~change `as.data.frame` argument to `format` in `trajectory`~~
 - pass userdata as list to C snippets and as pairlist to R functions

@@ -7,7 +7,7 @@
 \alias{rinit-pomp}
 \title{rinit}
 \usage{
-\S4method{rinit}{pomp}(object, params, t0, nsim, ...)
+\S4method{rinit}{pomp}(object, params, t0, nsim = 1, ...)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
@@ -17,15 +17,13 @@ Each column is an independent parameter set and is paired with the corresponding
 
 \item{t0}{the initial time, i.e., the time corresponding to the initial-state distribution.}
 
-\item{nsim}{optional integer; the number of initial states to simulate.
-By default, this is equal to the number of columns of \code{params}.}
+\item{nsim}{optional integer; the number of initial states to simulate per column of \code{params}.}
 
 \item{...}{additional arguments are ignored.}
 }
 \value{
-\code{rinit} returns an \code{nvar} x \code{nsim} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
+\code{rinit} returns an \code{nvar} x \code{nsim*ncol(params)} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
 By default, \code{t0} is the initial time defined when the \sQuote{pomp} object ws constructed.
-If \code{nsim} is not specified, then \code{nsim=ncol(params)}.
 }
 \description{
 Samples from the initial-state distribution.

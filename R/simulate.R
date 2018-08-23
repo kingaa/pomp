@@ -226,20 +226,11 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   )
 
   nsims <- ncol(sims$states)
-
-  if (is.null(colnames(params))) {
-    simnames <- as.character(seq_len(nsims))
-  } else {
-    simnames <- paste(
-      rep(colnames(params),times=nsim),
-      rep(seq_len(nsim),each=ncol(params)),
-      sep="_")
-  }
+  ntimes <- length(time(object))
+  simnames <- colnames(sims$states)
+  if (is.null(simnames)) simnames <- seq_len(nsims)
 
   if (format == "arrays") {
-
-    dimnames(sims$states) <- replace(dimnames(sims$states),2L,list(rep=simnames))
-    dimnames(sims$obs) <- replace(dimnames(sims$obs),2L,list(rep=simnames))
 
     sims
 
@@ -256,10 +247,10 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
     rownames(sims$obs) <- nm
 
     sims <- cbind(
-      time=rep(time(object),each=nsims),
+      time=rep(time(object),each=length(simnames)),
       as.data.frame(t(sims$states)),
       as.data.frame(t(sims$obs)),
-      .id=simnames
+      .id=rep(simnames,times=ntimes)
     )
 
     names(sims)[[1]] <- object@timename

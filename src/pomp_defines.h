@@ -87,6 +87,16 @@ static R_INLINE void setrownames (SEXP x, SEXP names, int n) {
   UNPROTECT(2);
 }
 
+// This only works if the dimnames have already been created and set
+// e.g., with 'setrownames'
+static R_INLINE void setcolnames (SEXP x, SEXP names) {
+  SEXP dn;
+  PROTECT(dn = GET_DIMNAMES(x));
+  SET_ELEMENT(dn,1,names);
+  SET_DIMNAMES(x,dn);
+  UNPROTECT(1);
+}
+
 static R_INLINE void fixdimnames (SEXP x, const char **names, int n) {
   int nprotect = 0;
   int i;

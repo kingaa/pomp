@@ -2,6 +2,10 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item The \code{as.data.frame}, \code{states}, and \code{obs} options for \code{simulate} have been done away with.
+    One now chooses the format of the returned simulations via the \code{format} argument.
+    When one simulates at multiple parameter sets, list names, array \code{dimnames}, or identifying variables in the output data frame help to correlate simulations with parameter sets.
+    \item The \code{as.data.frame} argument to \code{trajectory} has been removed in favor of a new \code{format} argument that allows one to choose between receiving the results in the form of an \code{"array"} or a \code{"data.frame"}.
     \item The old \code{probe.match} and \code{traj.match} functions have been removed.
     The new approach to parameter estimation based on numerical optimization involves constructing stateful objective functions.
     There are now three of these: \code{traj.match.objfun}, \code{probe.match.objfun}, and \code{spect.match.objfun}.

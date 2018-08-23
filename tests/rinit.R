@@ -17,7 +17,16 @@ try(rinit(po))
 
 pp <- parmat(coef(gompertz),10)
 stopifnot(gompertz %>% rinit(params=pp) %>% as.numeric()==1)
-try(rinit(gompertz,params=pp,nsim=5))
+rinit(gompertz,params=pp[,1:3],nsim=2) -> x0
+stopifnot(dim(x0)==c(1,6))
+dimnames(x0)
+colnames(pp) <- head(LETTERS,10)
+rinit(gompertz,params=pp[,1:5],nsim=2) -> x0
+stopifnot(dim(x0)==c(1,10))
+dimnames(x0)
+rinit(gompertz,params=pp[,1:5],nsim=1) -> x0
+stopifnot(dim(x0)==c(1,5),colnames(x0)==head(LETTERS,5))
+
 try(gompertz %>%
   pomp(rinit=function(t0,params,...)
     c(r=32)) %>%

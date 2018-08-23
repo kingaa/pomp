@@ -35,7 +35,7 @@ variable [,1]
 > 
 > p <- coef(gompertz)[-5]
 > try(rinit(gompertz,params=p))
-Error : in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 > 
 > gompertz %>% simulate(rinit=NULL)
 <object of class ‘pomp’>
@@ -43,17 +43,37 @@ Error : in default 'rinit': there are no parameters with suffix '.0' or '_0'. Se
 > gompertz %>%
 +   pomp(rinit=function (params, t0, ...) 5) -> po
 > try(rinit(po))
-Error : in 'rinit': user 'rinit' must return a named numeric vector
+Error : in ‘rinit’: in 'rinit': user 'rinit' must return a named numeric vector
 > 
 > pp <- parmat(coef(gompertz),10)
 > stopifnot(gompertz %>% rinit(params=pp) %>% as.numeric()==1)
-> try(rinit(gompertz,params=pp,nsim=5))
-Error : in 'rinit': number of desired state-vectors 'nsim' is not a multiple of ncol('params')
+> rinit(gompertz,params=pp[,1:3],nsim=2) -> x0
+> stopifnot(dim(x0)==c(1,6))
+> dimnames(x0)
+$variable
+[1] "X"
+
+$rep
+[1] "1_1" "2_1" "3_1" "1_2" "2_2" "3_2"
+
+> colnames(pp) <- head(LETTERS,10)
+> rinit(gompertz,params=pp[,1:5],nsim=2) -> x0
+> stopifnot(dim(x0)==c(1,10))
+> dimnames(x0)
+$variable
+[1] "X"
+
+$rep
+ [1] "A_1" "B_1" "C_1" "D_1" "E_1" "A_2" "B_2" "C_2" "D_2" "E_2"
+
+> rinit(gompertz,params=pp[,1:5],nsim=1) -> x0
+> stopifnot(dim(x0)==c(1,5),colnames(x0)==head(LETTERS,5))
+> 
 > try(gompertz %>%
 +   pomp(rinit=function(t0,params,...)
 +     c(r=32)) %>%
 +   rinit())
-Error : in 'rinit': a state variable and a parameter share a single name: 'r'
+Error : in ‘rinit’: in 'rinit': a state variable and a parameter share a single name: 'r'
 > try({
 +   pp <- matrix(c(1:5),1,5)
 +   rownames(pp) <- "a"
@@ -62,7 +82,7 @@ Error : in 'rinit': a state variable and a parameter share a single name: 'r'
 +       c(X=rep(1,params["a"]))) %>%
 +     rinit(params=pp)
 + })
-Error : in 'rinit': user 'rinit' returns vectors of non-uniform length
+Error : in ‘rinit’: in 'rinit': user 'rinit' returns vectors of non-uniform length
 > 
 > 
 > pompExample(sir)

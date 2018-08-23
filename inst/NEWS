@@ -2,6 +2,18 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
 
+        • The ‘as.data.frame’, ‘states’, and ‘obs’ options for
+          ‘simulate’ have been done away with.  One now chooses the
+          format of the returned simulations via the ‘format’ argument.
+          When one simulates at multiple parameter sets, list names,
+          array ‘dimnames’, or identifying variables in the output data
+          frame help to correlate simulations with parameter sets.
+
+        • The ‘as.data.frame’ argument to ‘trajectory’ has been removed
+          in favor of a new ‘format’ argument that allows one to choose
+          between receiving the results in the form of an ‘"array"’ or
+          a ‘"data.frame"’.
+
         • The old ‘probe.match’ and ‘traj.match’ functions have been
           removed.  The new approach to parameter estimation based on
           numerical optimization involves constructing stateful
