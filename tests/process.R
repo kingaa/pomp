@@ -6,7 +6,9 @@ library(magrittr)
 pompExample(ou2,envir=NULL) -> ou2
 ou2[[1]] %>% window(end=10) -> po
 
-po %>% simulate(states=TRUE,obs=FALSE,nsim=3,seed=3434388L) -> x
+po %>%
+  simulate(format="arrays",nsim=3,seed=3434388L) %>%
+  extract2("states") -> x
 po %>% time() -> t
 coef(po) %>% parmat(7) -> p
 p["sigma.1",] <- seq(from=1,to=7,by=1)

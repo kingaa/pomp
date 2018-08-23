@@ -82,7 +82,7 @@ setMethod(
   "bsmc2",
   signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("bsmc2"),": ",sQuote("data")," is a required argument",call.=FALSE)
+    pomp_stop("bsmc2",sQuote("data")," is a required argument")
   }
 )
 
@@ -109,10 +109,7 @@ setMethod(
     object <- tryCatch(
       pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
         rprior=rprior,partrans=partrans,...,verbose=verbose),
-      error = function (e) {
-        ep <- paste0("in ",sQuote("bsmc2"),": ")
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
+      error = function (e) pomp_stop("bsmc2",conditionMessage(e))
     )
 
     bsmc2(
@@ -166,10 +163,9 @@ setMethod(
   "plot",
   signature=signature(x="bsmcd_pomp"),
   definition=function (x, pars, thin, ...) {
-    ep <- paste0("in ",sQuote("plot"),": ")
     if (missing(pars)) pars <- x@est
     pars <- as.character(pars)
-    if (length(pars)<1) stop(ep,"no parameters to plot.",call.=FALSE)
+    if (length(pars)<1) pomp_stop("plot","no parameters to plot.")
     if (missing(thin)) thin <- Inf
     bsmc.plot(
       prior=partrans(x,x@prior,dir="fromEst"),
@@ -184,9 +180,10 @@ setMethod(
 bsmc2.internal <- function (object, params, Np, est, smooth, tol,
   max.fail, .getnativesymbolinfo = TRUE, ..., verbose) {
 
-  ep <- paste0("in ",sQuote("bsmc2"),": ")
-
-  object <- pomp(object,...,verbose=verbose)
+  object <- tryCatch(
+    pomp(object,...,verbose=verbose),
+    error = function (e) pomp_stop("bsmc2",conditionMessage(e))
+  )
 
   gnsi <- as.logical(.getnativesymbolinfo)
 
@@ -200,47 +197,58 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
     params <- as.matrix(params)
   } else if (is.numeric(params)) {
     params <- as.matrix(params)
-  } else {
-    stop(ep,sQuote("params")," should be a numeric matrix with rownames,",
-      " a data frame, or a named numeric vector.",call.=FALSE)
   }
 
+  if (!is.numeric(params) || is.null(rownames(params)))
+    pomp_stop("bsmc2",sQuote("params")," should be a numeric matrix ",
+      "with rownames, a data frame, or a named numeric vector.")
+
   if (!missing(Np) && (length(Np) > 1 || !is.finite(Np) || Np < 1))
-    stop(ep,sQuote("Np")," must be a positive integer.",call.=FALSE)
+    pomp_stop("bsmc2",sQuote("Np")," must be a positive integer.")
+
   if (missing(Np) && ncol(params) == 1)
-    stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
+    pomp_stop("bsmc2",sQuote("Np")," must be specified.")
   else if (missing(Np))
     Np <- ncol(params)
-  else if (ncol(params) != 1 && Np != ncol(params)) {
-    warning(ep,sQuote("Np")," is ignored since ",sQuote("params"),
-      " is a matrix.",call.=FALSE)
+  else if (ncol(params) != 1) {
+    pomp_warn("bsmc2",sQuote("Np")," is ignored since multiple parameter",
+      " sets are supplied.")
     Np <- ncol(params)
-  }
-  else
+  } else
     params <- parmat(params,Np)
 
   Np <- as.integer(Np)
 
-  if (length(params)==0)
-    stop(ep,"no parameter to be estimated.",call.=FALSE)
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
-  params <- tryCatch(
-    rprior(object,params=params,.getnativesymbolinfo=gnsi),
-    error = function (e) {
-      stop(ep,sQuote("rprior")," error: ",conditionMessage(e),call.=FALSE)
-    }
-  )
-
-  if (!is.numeric(params) || is.null(rownames(params)))
-    stop(ep,sQuote("params")," should be suppled as a numeric matrix with rownames",
-      " or a named numeric vector.",call.=FALSE)
-
-  params <- partrans(object,params,dir="toEst",.getnativesymbolinfo=gnsi)
+  params <- rprior(object,params=params,.getnativesymbolinfo=gnsi)
 
   ntimes <- length(time(object))
   npars <- nrow(params)
   paramnames <- rownames(params)
   prior <- params
+
+  smooth <- as.numeric(smooth)
+  if ((length(smooth)!=1) || (!is.finite(smooth)) || (smooth>1) || (smooth<=0))
+    pomp_stop("bsmc2",sQuote("smooth")," must be a scalar in (0,1]")
+
+  hsq <- smooth^2             #  see Liu & West eq(10.3.12)
+  shrink <- sqrt(1-hsq)       #  'a' parameter of Liu & West
+
+  tol <- as.numeric(tol)
+  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
+    pomp_stop("bsmc2",sQuote("tol")," should be a small positive number.")
+
+  times <- time(object,t0=TRUE)
+  x <- rinit(
+    object,
+    params=partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi),
+    .getnativesymbolinfo=gnsi
+  )
+  nvars <- nrow(x)
+
+  params <- partrans(object,params,dir="toEst",.getnativesymbolinfo=gnsi)
 
   if (missing(est))
     est <- paramnames[apply(params,1,function(x)diff(range(x))>0)]
@@ -248,44 +256,19 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
   npars.est <- length(estind)
   if (any(is.na(estind))) {
     ind <- which(is.na(estind))
-    stop(ep,"parameter(s) ",
-      paste(sapply(est[ind],sQuote),collapse=","),
-      " not found.",call.=FALSE)
+    pomp_stop("bsmc2",ngettext(length(ind),"parameter ","parameters "),
+      paste(sQuote(est[ind]),collapse=",")," not found.")
   }
 
   if (npars.est<1)
-    stop(ep,"no parameters to estimate",call.=FALSE)
-
-  smooth <- as.numeric(smooth)
-  if ((length(smooth)!=1) || (!is.finite(smooth)) || (smooth>1) || (smooth<=0))
-    stop(ep,sQuote("smooth")," must be a scalar in (0,1]",call.=FALSE)
-
-  hsq <- smooth^2             #  see Liu & West eq(10.3.12)
-  shrink <- sqrt(1-hsq)       #  'a' parameter of Liu & West
-
-  tol <- as.numeric(tol)
-  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
-    stop(ep,sQuote("tol")," should be a small positive number.",call.=FALSE)
-
-  pompLoad(object,verbose=verbose)
-  on.exit(pompUnload(object,verbose=verbose))
-
-  xstart <- rinit(
-    object,
-    params=partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi),
-    .getnativesymbolinfo=gnsi
-  )
-  nvars <- nrow(xstart)
-
-  times <- time(object,t0=TRUE)
-  x <- xstart
+    pomp_stop("bsmc2","no parameters to estimate")
 
   evidence <- as.numeric(rep(NA,ntimes))
   eff.sample.size <- as.numeric(rep(NA,ntimes))
   nfail <- 0L
 
   mu <- array(data=NA,dim=c(nvars,Np,1L))
-  rownames(mu) <- rownames(xstart)
+  rownames(mu) <- rownames(x)
   m  <- array(data=NA,dim=c(npars,Np))
   rownames(m) <- rownames(params)
 
@@ -310,18 +293,12 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
 
     ## sample new parameter vector as per L&W AGM (3) and Liu & West eq(3.2)
     pert <- tryCatch(
-      rmvnorm(
-        n=Np,
-        mean=rep(0,npars.est),
-        sigma=hsq*params.var,
-        method="svd"
-      ),
-      error = function (e) {
-        stop(ep,"in ",sQuote("rmvnorm"),": ",conditionMessage(e),call.=FALSE)
-      }
+      rmvnorm(n=Np,mean=rep(0,npars.est),sigma=hsq*params.var,method="svd"),
+      error = function (e)
+        pomp_stop("bsmc2","in ",sQuote("rmvnorm"),": ",conditionMessage(e))
     )
-    if (!all(is.finite(pert)))
-      stop(ep,"extreme particle depletion",call.=FALSE) # nocov
+
+    if (!all(is.finite(pert))) pomp_stop("bsmc2","extreme particle depletion")
 
     params[estind,] <- m[estind,]+t(pert)
 
@@ -347,7 +324,7 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
         .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
+        pomp_stop("bsmc2",conditionMessage(e))
       }
     )
 
@@ -369,7 +346,7 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
       }
       nfail <- nfail+1
       if (nfail > max.fail)
-        stop(ep,"too many filtering failures",call.=FALSE)
+        pomp_stop("bsmc2","too many filtering failures")
       evidence[nt] <- log(tol)          # worst log-likelihood
       weights <- rep(1/Np,Np)
       eff.sample.size[nt] <- 0
@@ -382,9 +359,8 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
       eff.sample.size[nt] <- 1/crossprod(weights)
     }
 
-    if (verbose) {
+    if (verbose)
       cat("effective sample size =",round(eff.sample.size[nt],1),"\n")
-    }
 
     ## Matrix with samples (columns) from filtering distribution theta.t | Y.t
     if (!all.fail) {
@@ -396,15 +372,8 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
   }
 
   if (nfail>0)
-    warning(
-      ep,nfail,
-      ngettext(
-        nfail,
-        msg1=" filtering failure occurred.",
-        msg2=" filtering failures occurred."
-      ),
-      call.=FALSE
-    )
+    pomp_warn("bsmc2",nfail," filtering ",
+      ngettext(nfail,"failure","failures")," occurred.")
 
   ## replace parameters with point estimate (posterior median)
   coef(object,transform=TRUE) <- apply(params,1,median)
@@ -412,7 +381,7 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
   new(
     "bsmcd_pomp",
     object,
-    post=params,
+    post=partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi),
     prior=prior,
     est=as.character(est),
     eff.sample.size=eff.sample.size,
@@ -424,13 +393,11 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
 }
 
 bsmc.plot <- function (prior, post, pars, thin, ...) {
-  ep <- paste0("in ",sQuote("plot"),": ")
   p1 <- sample.int(n=ncol(prior),size=min(thin,ncol(prior)))
   p2 <- sample.int(n=ncol(post),size=min(thin,ncol(post)))
   if (!all(pars %in% rownames(prior))) {
     missing <- which(!(pars%in%rownames(prior)))
-    stop(ep,"unrecognized parameters: ",
-      paste(sQuote(pars[missing]),collapse=","),call.=FALSE)
+    pomp_stop("plot","unrecognized parameters: ",paste(sQuote(pars[missing]),collapse=","))
   }
   prior <- t(prior[pars,,drop=FALSE])
   post <- t(post[pars,,drop=FALSE])

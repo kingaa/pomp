@@ -41,12 +41,12 @@ params <- cbind(
 )
 
 po %>% trajectory(params=params,as.data.frame=TRUE) %>%
-  rename(rep=traj) %>%
+  rename(rep=.id) %>%
   mutate(type="deterministic") -> traj
-po %>% simulate(params=params,as.data.frame=TRUE,seed=34597368L,states=TRUE) %>%
-  rename(rep=sim) %>%
+po %>% simulate(params=params,format="data.frame",seed=34597368L) %>%
+  rename(rep=.id) %>%
   mutate(type="stochastic") -> sim
-rbind(traj,sim) %>%
+full_join(traj,sim) %>%
   ggplot(aes(x=time,y=n,group=interaction(rep,type),color=type))+
   geom_line()+
   theme_bw()+

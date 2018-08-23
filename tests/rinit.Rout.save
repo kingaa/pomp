@@ -35,7 +35,7 @@ variable [,1]
 > 
 > p <- coef(gompertz)[-5]
 > try(rinit(gompertz,params=p))
-Error : in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
+Error : in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 > 
 > gompertz %>% simulate(rinit=NULL)
 <object of class ‘pomp’>
@@ -43,17 +43,17 @@ Error : in default 'rinit': there are no parameters with suffix '.0'. See '?rini
 > gompertz %>%
 +   pomp(rinit=function (params, t0, ...) 5) -> po
 > try(rinit(po))
-Error : in 'init.state': user 'rinit' must return a named numeric vector
+Error : in 'rinit': user 'rinit' must return a named numeric vector
 > 
 > pp <- parmat(coef(gompertz),10)
 > stopifnot(gompertz %>% rinit(params=pp) %>% as.numeric()==1)
 > try(rinit(gompertz,params=pp,nsim=5))
-Error : in 'init.state': number of desired state-vectors 'nsim' is not a multiple of ncol('params')
+Error : in 'rinit': number of desired state-vectors 'nsim' is not a multiple of ncol('params')
 > try(gompertz %>%
 +   pomp(rinit=function(t0,params,...)
 +     c(r=32)) %>%
 +   rinit())
-Error : in 'init.state': a state variable and a parameter share a single name: 'r'
+Error : in 'rinit': a state variable and a parameter share a single name: 'r'
 > try({
 +   pp <- matrix(c(1:5),1,5)
 +   rownames(pp) <- "a"
@@ -62,14 +62,14 @@ Error : in 'init.state': a state variable and a parameter share a single name: '
 +       c(X=rep(1,params["a"]))) %>%
 +     rinit(params=pp)
 + })
-Error : in 'init.state': user rinit returns vectors of non-uniform length
+Error : in 'rinit': user 'rinit' returns vectors of non-uniform length
 > 
 > 
 > pompExample(sir)
 newly created object(s):
  sir 
 > try(sir %>% simulate(rinit=NULL))
-Error : in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
+Error : in ‘simulate’: variable 'cases' not found among the state variables
 > sir %>%
 +   pomp(rinit=function(params,t0,covars,...)
 +     c(S=covars["seas1"])) %>%

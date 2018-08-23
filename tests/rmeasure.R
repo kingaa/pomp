@@ -7,7 +7,7 @@ pompExample(ou2)
 po <- window(ou2,end=10)
 
 set.seed(3434388L)
-x <- simulate(po,obs=F,states=T,nsim=100)
+x <- simulate(po,format="arrays",nsim=100)$states
 t <- time(po)
 theta <- coef(po)
 
@@ -54,4 +54,4 @@ try(rmeasure(po,params=pp[,1:7],x=x,t=t))
 pompExample(dacca)
 set.seed(3434388L)
 po <- window(dacca,end=1892)
-dat <- simulate(po,obs=T,states=T,nsim=2)
+dat <- simulate(po,format="arrays",nsim=2)

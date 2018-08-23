@@ -201,7 +201,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   include.data <- as.logical(include.data)
 
   if (length(nsim)!=1 || !is.numeric(nsim) || !is.finite(nsim) || nsim < 1)
-    stop(ep,sQuote("nsim")," must be a positive integer.",call.=FALSE)
+    pomp_stop("simulate",sQuote("nsim")," must be a positive integer.")
   nsim <- as.integer(nsim)
 
   if (missing(params)) params <- coef(object)
@@ -211,6 +211,8 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
     pomp_stop("simulate",sQuote("params")," must be named and numeric.")
   params <- as.matrix(params)
   storage.mode(params) <- "double"
+
+  if (ncol(params) == 1) coef(object) <- params[,1L]
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
@@ -233,17 +235,16 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
     assign('.Random.seed',save.seed,envir=.GlobalEnv)
   }
 
-  if (is.null(colnames(params)))
-    cnames <- seq_len(ncol(params))
-  else
-    cnames <- colnames(params)
-
-  simnames <- paste(
-    rep(cnames,times=nsim),
-    rep(seq_len(nsim),each=ncol(params)),
-    sep="_")
-
   nsims <- ncol(sims$states)
+
+  if (is.null(colnames(params))) {
+    simnames <- as.character(seq_len(nsims))
+  } else {
+    simnames <- paste(
+      rep(colnames(params),times=nsim),
+      rep(seq_len(nsim),each=ncol(params)),
+      sep="_")
+  }
 
   if (format == "arrays") {
 
@@ -298,14 +299,19 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
     rv <- rep(list(object),times=nsims)
     names(rv) <- simnames
 
-    for (i in seq_len(nsims)) {
-      rv[[i]] <- object
-      rv[[i]]@states <- sims$states[,i,,drop=FALSE]
-      dim(rv[[i]]@states) <- statedim[-2L]
-      dimnames(rv[[i]]@states) <- statenames[-2L]
-      rv[[i]]@data <- sims$obs[,i,,drop=FALSE]
-      dim(rv[[i]]@data) <- obsdim[-2L]
-      dimnames(rv[[i]]@data) <- obsnames[-2L]
+    i <- 1
+    for (j in seq_len(nsim)) {
+      for (k in seq_len(ncol(params))) {
+        rv[[i]] <- object
+        coef(rv[[i]]) <- params[,k]
+        rv[[i]]@states <- sims$states[,i,,drop=FALSE]
+        dim(rv[[i]]@states) <- statedim[-2L]
+        dimnames(rv[[i]]@states) <- statenames[-2L]
+        rv[[i]]@data <- sims$obs[,i,,drop=FALSE]
+        dim(rv[[i]]@data) <- obsdim[-2L]
+        dimnames(rv[[i]]@data) <- obsnames[-2L]
+        i <- i+1
+      }
     }
 
     if (length(rv) > 1) do.call(c,rv) else rv[[1]]

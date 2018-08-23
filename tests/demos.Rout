@@ -49,15 +49,13 @@ Type 'q()' to quit R.
 
 > X <- trajectory(Gompertz, params = p, as.data.frame = TRUE)
 
-> X %>% ggplot(aes(x = time, y = X, group = traj, color = traj)) + 
-+     geom_line() + theme_bw() + labs(title = "Gompertz model", 
-+     subtitle =  .... [TRUNCATED] 
+> X %>% ggplot(aes(x = time, y = X, group = .id, color = .id)) + 
++     guides(color = FALSE) + geom_line() + theme_bw() + labs(title = "Gompertz mode ..." ... [TRUNCATED] 
 
-> x <- simulate(Gompertz, params = p, as.data.frame = TRUE)
+> x <- simulate(Gompertz, params = p, format = "data.frame")
 
-> x %>% ggplot(aes(x = time, y = X, group = sim, color = sim)) + 
-+     geom_line() + theme_bw() + labs(title = "Gompertz model", 
-+     subtitle = "s ..." ... [TRUNCATED] 
+> x %>% ggplot(aes(x = time, y = X, group = .id, color = .id)) + 
++     geom_line() + guides(color = FALSE) + theme_bw() + labs(title = "Gompertz mode ..." ... [TRUNCATED] 
 
 > pf <- replicate(n = 10, pfilter(Gompertz, Np = 500))
 
@@ -65,7 +63,7 @@ Type 'q()' to quit R.
                      se 
 75.25036908  0.08779528 
    user  system elapsed 
-  1.256   0.064   1.377 
+  1.116   0.068   1.237 
 
 > library(pomp)
 
@@ -95,16 +93,17 @@ The following objects are masked from ‘package:base’:
 +     tau = 0.1), c( .... [TRUNCATED] 
 
 > traj <- po %>% trajectory(params = params, as.data.frame = TRUE) %>% 
-+     rename(rep = traj) %>% mutate(type = "deterministic")
++     rename(rep = .id) %>% mutate(type = "deterministic")
 
-> sim <- po %>% simulate(params = params, as.data.frame = TRUE, 
-+     seed = 34597368, states = TRUE) %>% rename(rep = sim) %>% 
-+     mutate(type =  .... [TRUNCATED] 
+> sim <- po %>% simulate(params = params, format = "data.frame", 
++     seed = 34597368) %>% rename(rep = .id) %>% mutate(type = "stochastic")
 
-> rbind(traj, sim) %>% ggplot(aes(x = time, y = n, group = interaction(rep, 
-+     type), color = type)) + geom_line() + theme_bw() + labs(title = "Lo ..." ... [TRUNCATED] 
+> full_join(traj, sim) %>% ggplot(aes(x = time, y = n, 
++     group = interaction(rep, type), color = type)) + geom_line() + 
++     theme_bw() + labs( .... [TRUNCATED] 
+Joining, by = c("n", "time", "rep", "type")
    user  system elapsed 
-  0.336   0.040   0.434 
+  0.336   0.076   0.463 
 
 > library(pomp)
 
@@ -122,7 +121,7 @@ The following objects are masked from ‘package:base’:
 
 > plot(pf)
    user  system elapsed 
-  0.180   0.052   0.289 
+  0.200   0.028   0.283 
 
 > library(pomp)
 
@@ -134,28 +133,30 @@ The following objects are masked from ‘package:base’:
 
 > skel <- "\n  double rate[6];\t\t// transition rates\n  double term[6];\t\t// transition numbers\n  double beta;\t\t\t// transmission rate\n  int k;\ ..." ... [TRUNCATED] 
 
-> initlzr <- "\n  double m = popsize/(S_0+I_0+R_0);\n  S = nearbyint(m*S_0);\n  I = nearbyint(m*I_0);\n  R = nearbyint(m*R_0);\n  incid = 0;\n  W = 0; ..." ... [TRUNCATED] 
+> rinit <- "\n  double m = popsize/(S_0+I_0+R_0);\n  S = nearbyint(m*S_0);\n  I = nearbyint(m*I_0);\n  R = nearbyint(m*R_0);\n  incid = 0;\n  W = 0;\n ..." ... [TRUNCATED] 
 
-> po <- pomp(data = subset(LondonYorke, subset = town == 
-+     "New York" & disease == "measles" & year >= 1928 & year <= 
-+     1933, select = c(tim .... [TRUNCATED] 
+> library(magrittr)
+
+> library(dplyr)
+
+> po <- LondonYorke %>% filter(town == "New York" & 
++     disease == "measles" & year >= 1928 & year <= 1933) %>% select(time, 
++     cases) %>% pomp .... [TRUNCATED] 
 
 > X <- trajectory(po, hmax = 1/52, as.data.frame = TRUE)
 
 > plot(incid ~ time, data = X, type = "l")
 
-> x <- simulate(po, nsim = 3, as.data.frame = TRUE)
+> x <- simulate(po, nsim = 3, format = "data.frame")
 
-> plot(incid ~ time, data = x, col = as.factor(x$sim), 
+> points(incid ~ time, data = x, col = as.factor(x$.id), 
 +     pch = 16)
 
-> po <- pomp(po, dmeasure = Csnippet("\n  lik = dnbinom_mu(cases,theta,rho*incid,give_log);\n"), 
-+     statenames = c("S", "I", "R", "incid", "W"), p .... [TRUNCATED] 
-
-> logLik(pfilter(po, Np = 1000))
+> po %>% pfilter(Np = 1000, dmeasure = Csnippet("\n      lik = dnbinom_mu(cases,theta,rho*incid,give_log);"), 
++     statenames = c("S", "I", "R", "in ..." ... [TRUNCATED] 
 [1] -671.6956
    user  system elapsed 
-  6.708   0.072   6.888 
+  6.676   0.068   6.853 
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 

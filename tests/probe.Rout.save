@@ -44,21 +44,21 @@ newly created object(s):
 > pb %>% values() %>% head(3) %>% knitr::kable()
 
 
-|   |  mean|    sd| marg.1| marg.2| marg.3| acf.1.Y| acf.3.Y| acf.5.Y|   25%|  75%|.id  |
-|:--|-----:|-----:|------:|------:|------:|-------:|-------:|-------:|-----:|----:|:----|
-|0  | 1.054| 0.127|  1.000|  0.000|  0.000|   0.728|   0.547|   0.486| 0.918| 1.30|data |
-|1  | 0.978| 0.127|  0.904|  0.172| -0.296|   0.774|   0.671|   0.483| 0.803| 1.14|sim  |
-|2  | 1.017| 0.109|  1.084|  0.338| -0.166|   0.550|   0.399|   0.278| 0.865| 1.23|sim  |
+|   | mean|    sd| marg.1| marg.2| marg.3| acf.1.Y| acf.3.Y| acf.5.Y|   25%|  75%|.id  |
+|:--|----:|-----:|------:|------:|------:|-------:|-------:|-------:|-----:|----:|:----|
+|0  | 1.05| 0.127|  1.000|  0.000|   0.00|   0.728|   0.547|   0.486| 0.918| 1.30|data |
+|1  | 0.98| 0.092|  0.730|  0.131|   0.52|   0.638|   0.530|   0.420| 0.834| 1.12|sim  |
+|2  | 1.05| 0.124|  0.856|  0.155|   1.79|   0.687|   0.542|   0.471| 0.933| 1.29|sim  |
 Warning message:
 ‘values’ is deprecated and will be removed in a forthcoming release.  Please use ‘as.data.frame’ instead. 
 > pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
 
 
-|   |  mean|    sd| marg.1| marg.2| marg.3| acf.1.Y| acf.3.Y| acf.5.Y|   25%|  75%|.id  |
-|:--|-----:|-----:|------:|------:|------:|-------:|-------:|-------:|-----:|----:|:----|
-|0  | 1.054| 0.127|  1.000|  0.000|  0.000|   0.728|   0.547|   0.486| 0.918| 1.30|data |
-|1  | 0.978| 0.127|  0.904|  0.172| -0.296|   0.774|   0.671|   0.483| 0.803| 1.14|sim  |
-|2  | 1.017| 0.109|  1.084|  0.338| -0.166|   0.550|   0.399|   0.278| 0.865| 1.23|sim  |
+|   | mean|    sd| marg.1| marg.2| marg.3| acf.1.Y| acf.3.Y| acf.5.Y|   25%|  75%|.id  |
+|:--|----:|-----:|------:|------:|------:|-------:|-------:|-------:|-----:|----:|:----|
+|0  | 1.05| 0.127|  1.000|  0.000|   0.00|   0.728|   0.547|   0.486| 0.918| 1.30|data |
+|1  | 0.98| 0.092|  0.730|  0.131|   0.52|   0.638|   0.530|   0.420| 0.834| 1.12|sim  |
+|2  | 1.05| 0.124|  0.856|  0.155|   1.79|   0.687|   0.542|   0.471| 0.933| 1.29|sim  |
 > summary(pb)
 $coef
     K     r sigma   tau   X.0 
@@ -69,16 +69,16 @@ $nsim
 
 $quantiles
    mean      sd  marg.1  marg.2  marg.3 acf.1.Y acf.3.Y acf.5.Y     25%     75% 
-  0.844   0.728   0.764   0.166   0.428   0.626   0.582   0.762   0.740   0.822 
+  0.834   0.750   0.830   0.198   0.374   0.652   0.592   0.760   0.712   0.836 
 
 $pvals
    mean      sd  marg.1  marg.2  marg.3 acf.1.Y acf.3.Y acf.5.Y     25%     75% 
-  0.315   0.547   0.475   0.335   0.858   0.750   0.838   0.479   0.523   0.359 
+  0.335   0.503   0.343   0.399   0.750   0.699   0.818   0.483   0.579   0.331 
 
 $synth.loglik
-[1] 17.2
+[1] 16.7
 
-> stopifnot(all.equal(logLik(pb),17.17,tolerance=0.005))
+> stopifnot(all.equal(logLik(pb),16.7,tolerance=0.005))
 > 
 > try(probe(po,nsim=10))
 Error : in ‘probe’: ‘probes’ must be furnished.
@@ -116,13 +116,13 @@ Error : in ‘probe’: ‘nsim’ (=10), should be (much) larger than the numbe
 > 
 > invisible(probe(pb,params=as.list(coef(pb))))
 > try(probe(pb,params=NULL))
-Error : in ‘probe’: applying probes to simulated data: in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
+Error : in ‘probe’: applying probes to simulated data: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 > try(probe(pb,params="I think so"))
 Error : in ‘probe’: in ‘pomp’: ‘params’ must be a named numeric vector.
 In addition: Warning message:
 In setNames(as.double(params), names(params)) : NAs introduced by coercion
 > try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
-Error : in ‘probe’: applying probes to simulated data: in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
+Error : in ‘probe’: applying probes to simulated data: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 > 
 > dev.off()
 null device 

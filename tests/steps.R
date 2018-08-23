@@ -12,7 +12,7 @@ po <- ricker
 coef(po,"sigma") <- 0
 tm <- sort(runif(n=20,max=3))
 x <- trajectory(po,times=tm)["N",,]
-y <- simulate(po,times=tm,states=TRUE)["N",,]
+y <- simulate(po,times=tm,format="arrays")$states["N",,]
 stopifnot(identical(x,y))
 
 po <- simulate(ricker,
@@ -77,8 +77,10 @@ sir %>%
     zeronames=c("cases","steps"),
     paramnames=c("mu","gamma","iota","beta1","beta.sd","pop",
       "S_0","I_0","R_0"),
-    seed=1232934371,states=TRUE
+    seed=1232934371,
+    format="arrays"
   ) %>%
+  extract2("states") %>%
   extract("steps",,) -> x
 plot(diff(c(0,tm)),x)
 abline(0,1/0.01)

@@ -19,8 +19,6 @@ Type 'q()' to quit R.
 
 > library(pomp)
 > library(magrittr)
-> library(plyr)
-> library(reshape2)
 > 
 > pompExample(ou2)
 newly created object(s):
@@ -29,11 +27,9 @@ newly created object(s):
 > po <- window(ou2,end=10)
 > 
 > set.seed(3434388L)
-> simulate(po,nsim=5,as.data.frame=TRUE,include.data=FALSE)%>%
-+   melt(id.vars=c("time","sim")) %>%
-+   acast(variable~sim~time) -> y
-> x <- y[c("x1","x2"),,,drop=FALSE]
-> y <- y[c("y1","y2"),1,]
+> simulate(po,nsim=5,format="arrays") -> y
+> y %>% extract2("states") -> x
+> y %>% extract2("obs") %>% extract(,1,) -> y
 > t <- time(po)
 > theta <- coef(po)
 > 
@@ -75,6 +71,9 @@ Error : in ‘dmeasure’: variable 'x2' not found among the state variables
 > try(dmeasure(po,x=x,y=y,times=t,params=theta[-k]))
 Error : in ‘dmeasure’: variable 'tau' not found among the parameters
 > 
+> po %>% pomp(dmeasure=NULL) -> po1
+> stopifnot(sum(is.na(dmeasure(po1,x=x,y=y,times=t,params=theta)))==50)
+> 
 > xx <- x
 > xx[] <- as.integer(round(x))
 > stopifnot(all.equal(dmeasure(po,x=xx,y=y,times=t,params=theta,log=TRUE),
@@ -103,10 +102,12 @@ newly created object(s):
 > set.seed(3434388L)
 > po <- window(dacca,end=1892)
 > po %>% simulate(nsim=5) -> dat
+> 
+> library(reshape2)
 > dat %>% lapply(states) %>% melt() %>%
 +   acast(variable~L1~time) -> x
 > dat %>% lapply(obs) %>% melt() %>%
-+   subset(L1==1) %>%
++   subset(L1=="1") %>%
 +   acast(variable~L1~time) -> y
 > t <- time(po)
 > theta <- coef(po)

@@ -104,7 +104,7 @@ NULL
 > pmcmc(mcmc1,params=as.list(coef(mcmc3)))
 <object of class ‘pmcmcd_pomp’>
 > try(pmcmc(mcmc1,params=NULL))
-Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
+Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try(pmcmc(mcmc1,params=-7))
@@ -114,11 +114,11 @@ Error : in ‘pmcmc’: in ‘pomp’: ‘params’ must be a named numeric vect
 In addition: Warning message:
 In setNames(as.double(params), names(params)) : NAs introduced by coercion
 > try(pmcmc(mcmc1,params=list()))
-Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
+Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try({tmp <- mcmc1; coef(tmp) <- NULL; pmcmc(tmp)})
-Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
+Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try(pmcmc(mcmc1,proposal=function(...)c(3,2)))

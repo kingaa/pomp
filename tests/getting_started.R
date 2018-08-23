@@ -62,7 +62,7 @@ parus <- pomp(data=parus.dat,time="year",t0=1959,
   statenames="N",paramnames=c("r","K","sigma"))
 
 ## ----logistic-simul1-----------------------------------------------------
-simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),states=TRUE)
+simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),format="arrays")$states
 
 ## ----logistic-plot1,echo=FALSE-------------------------------------------
 library(magrittr)
@@ -84,8 +84,8 @@ rmeas <- Csnippet("
 parus <- pomp(parus,rmeasure=rmeas,statenames="N")
 
 ## ----logistic-simul2-----------------------------------------------------
-sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),
-  nsim=10,obs=TRUE,states=TRUE)
+sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),nsim=10,
+  format="arrays")
 
 ## ----logistic-plot2,echo=FALSE-------------------------------------------
 sim %>% melt() %>%
@@ -129,7 +129,7 @@ traj <- trajectory(parus,params=pars,times=seq(1959,1970,by=0.01))
 ## ----logistic-plot3,echo=FALSE-------------------------------------------
 parus %>%
   trajectory(params=pars,times=seq(1959,1970,by=0.01),as.data.frame=TRUE) %>%
-  ggplot(mapping=aes(x=year,y=N,group=traj,color=traj))+
+  ggplot(mapping=aes(x=year,y=N,group=.id,color=.id))+
   guides(color=FALSE)+
   geom_line()+
   theme_bw()
@@ -179,8 +179,8 @@ stopifnot(all.equal(
 ## ----parus-tm-sim1-------------------------------------------------------
 tm <- as.pomp(tm)
 coef(tm,"sigma") <- 0
-simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
-  ggplot(aes(x=year,y=P,group=sim,alpha=(sim=="data")))+
+simulate(tm,nsim=10,format="data.frame",include.data=TRUE) %>%
+  ggplot(aes(x=year,y=P,group=.id,alpha=(.id=="data")))+
     scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
                        labels=c(`FALSE`="simulation",`TRUE`="data"))+
     geom_line()+

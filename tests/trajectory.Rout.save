@@ -84,7 +84,28 @@ variable  [,1] [,2]
 > 
 > invisible(skeleton(fhn1,x,t=c(0,3),params=params))
 > y <- trajectory(fhn1,params=params,hmax=0.01)
-> invisible(y[,,199:201])
+> y[,,199:201]
+, , 1
+
+        rep
+variable   [,1]   [,2]
+       V -0.133 -0.538
+       R  1.184  0.632
+
+, , 2
+
+        rep
+variable   [,1]   [,2]
+       V -0.161 -0.600
+       R  1.182  0.632
+
+, , 3
+
+        rep
+variable   [,1]   [,2]
+       V -0.189 -0.660
+       R  1.180  0.631
+
 > matplot(time(fhn1),t(y["V",,]),type='l',lty=1)
 > plot(y[1,,],y[2,,],type='n')
 > points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
@@ -160,8 +181,12 @@ Warning messages:
   Returning early. Results are accurate, as far as they go
 3: in ‘trajectory’: abnormal exit from ODE integrator, istate = -1 
 > fhn@skeleton@type <- 3L
-> try(trajectory(fhn))
-Error : in ‘trajectory’: deterministic skeleton has not been properly specified
+> stopifnot(
++   {
++     trajectory(fhn) -> x
++     sum(is.na(x))==1202
++   }
++ )
 > 
 > pompExample(sir)
 newly created object(s):

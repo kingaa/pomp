@@ -177,7 +177,7 @@ probe.internal <- function (object, probes, nsim, seed, ...,
 
   object <- tryCatch(
     pomp(object,...),
-    error = function (e) pomp_stop("probe",conditionMessage(e),which=6)
+    error = function (e) pomp_stop("probe",conditionMessage(e))
   )
 
   if (is.null(probes))

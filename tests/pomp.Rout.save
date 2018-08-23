@@ -35,22 +35,22 @@ Error : in ‘pomp’: ‘times’ is a required argument.
 > try(data.frame(a=1:10,a=1:10,check.names=FALSE) %>% pomp(t0=4))
 Error : in ‘pomp’: names of data variables must be unique.
 > try(data.frame(a=1:10,b=1:10) %>% pomp(t0=4))
-Error : in ‘pomp’: ‘times’ is a required argument
+Error : in ‘pomp’: ‘times’ and ‘t0’ are required arguments.
 > try(data.frame(a=1:10,b=1:10) %>% pomp(times="b"))
-Error : in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
+Error : in ‘pomp’: ‘times’ and ‘t0’ are required arguments.
 > try(data.frame(a=10:1,b=1:10) %>% pomp(times="a",t0=0))
 Error : in ‘pomp’: ‘times’ must be specified as an increasing sequence of numbers.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times=1:10))
+> try(data.frame(a=1:10,b=1:10) %>% pomp(times=1:10,t0=0))
 Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
 > try(data.frame(a=1:10,b=1:10) %>% pomp(times=1))
-Error : in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times=3))
+Error : in ‘pomp’: ‘times’ and ‘t0’ are required arguments.
+> try(data.frame(a=1:10,b=1:10) %>% pomp(times=3,t0=0))
 Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times="c"))
+> try(data.frame(a=1:10,b=1:10) %>% pomp(times="c",t0=0))
 Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times=NA))
+> try(data.frame(a=1:10,b=1:10) %>% pomp(times=NA,t0=0))
 Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times=NULL))
+> try(data.frame(a=1:10,b=1:10) %>% pomp(times=NULL,t0=0))
 Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
 > try(data.frame(a=1:10,b=1:10) %>% pomp(times=1,t0=11))
 Error : in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
@@ -70,8 +70,6 @@ Error : in ‘pomp’: in ‘covariate_table’: names of covariates must be uni
 > stopifnot(data.frame(a=1:10,b=1:10) %>%
 +     pomp(times="a",t0=0) %>% class() %>%
 +     equals("pomp"))
-> try(simulate())
-Error : in ‘simulate’: ‘times’ is a required argument.
 > try(NULL %>% pomp(t0=4))
 Error : in ‘pomp’: ‘times’ is a required argument.
 > try(NULL %>% pomp(times="a",t0=0))
@@ -83,17 +81,18 @@ Error : in ‘pomp’: bad option for ‘rinit’ argument
 > stopifnot(NULL %>% pomp(times=1:10,t0=1) %>% class() %>% equals("pomp"))
 > 
 > pompExample(gompertz,envir=NULL) %>% extract2(1) -> po
-> try(po %>% pomp(rprocess=NULL) %>% simulate())
-Error : in ‘simulate’: 'rprocess' is undefined.
+> stopifnot({
++   po %>% pomp(rprocess=NULL) %>% simulate() %>% states() -> x
++   sum(is.na(x))==101
++ })
 > po %>% pomp(rprocess=NULL) %>% slot("rprocess")
-  - undefined
+<undefined>
 > po %>% pomp(skeleton=NULL) %>% slot("skeleton")
-  - undefined
+<default>
+
 > po %>% pomp(partrans=NULL) %>% slot("partrans")
-  - to estimation scale:
-NULL
-  - from estimation scale:
-NULL
+  - to estimation scale: NULL
+  - from estimation scale: NULL
 > stopifnot({
 +   po %>% pomp(partrans=NULL) %>% coef(transform=TRUE) -> theta1
 +   coef(po) -> theta2
@@ -102,12 +101,12 @@ NULL
 +   po %>% pomp(times=1:5) %>% class() %>% equals("pomp"))
 > 
 > stopifnot(po %>%
-+   pomp(rprocess=onestep.sim(function(x,t,params,delta.t,...)x),
-+     skeleton=map(function(x,t,params,...)x),
-+     rmeasure=function(x,t,params,...)3,
-+     dmeasure=function(x,y,t,params,log,...)1,
-+     covar=covariate_table(a=1:20,b=1:20,times="a")) %>% class() %>%
-+   equals("pomp"))
++     pomp(rprocess=onestep.sim(function(x,t,params,delta.t,...)x),
++       skeleton=map(function(x,t,params,...)x),
++       rmeasure=function(x,t,params,...)3,
++       dmeasure=function(x,y,t,params,log,...)1,
++       covar=covariate_table(a=1:20,b=1:20,times="a")) %>% class() %>%
++     equals("pomp"))
 Warning messages:
 1: in ‘pomp’: a covariate table has been given, yet the ‘rmeasure’ function does not have ‘covars’ as a formal argument. 
 2: in ‘pomp’: a covariate table has been given, yet the ‘dmeasure’ function does not have ‘covars’ as a formal argument. 
@@ -134,195 +133,6 @@ Error : in ‘pomp’: ‘params’ must be a named numeric vector.
 > try(po %>% pomp(params=c(a=1,b=2,3)))
 Error : in ‘pomp’: ‘params’ must be a named numeric vector.
 > 
-> coef(po)
-    K     r sigma   tau   X.0 
-  1.0   0.1   0.1   0.1   1.0 
-> coef(po,transform=TRUE)
-    K     r sigma   tau   X.0 
-  0.0  -2.3  -2.3  -2.3   0.0 
-> coef(po,c("r","tau"))
-  r tau 
-0.1 0.1 
-> try(coef(po,c("bob","tau")))
-Error : in ‘coef’: name(s) ‘bob’ correspond to no parameter(s).
-> try(coef(po) <- c(1,2,3))
-Error : in ‘coef<-’: ‘value’ must be a named vector
-> try(coef(po,transform=TRUE) <- c(1,2,3))
-Error : in 'partrans': user transformation functions must return a named numeric vector
-> coef(po) <- list(as.list(coef(po)))
-> coef(po,"r") <- 0.2
-> coef(po,"r") <- list(r=0.2)
-Warning message:
-in ‘coef<-’:  names of ‘value’ are being discarded 
-> coef(po,c("r","theta")) <- list(r=0.2)
-Warning messages:
-1: in ‘coef<-’:  names of ‘value’ are being discarded 
-2: in ‘coef<-’: name(s) ‘theta’ do not refer to existing parameter(s); they are being concatenated 
-> coef(po,"sigma",transform=TRUE) <- 0
-> coef(po)
-    K     r sigma   tau   X.0 theta 
-  1.0   0.2   1.0   0.1   1.0   0.2 
-> coef(po) <- NULL
-> stopifnot(identical(coef(po),numeric(0)))
-> coef(po,c("r","sigma")) <- 1
-> stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
-> coef(po) <- NULL
-> coef(po,c("r","sigma"),transform=TRUE) <- 0
-> stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
-> coef(po) <- NULL
-> coef(po) <- c(r=1,sigma=1)
-> stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
-> coef(po) <- NULL
-> coef(po,transform=TRUE) <- c(r=0,sigma=0)
-> stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
-> 
-> pompExample(ou2,envir=NULL) -> ou2
-> ou2[[1]] -> po
-> po1 <- simulate(po)
-> 
-> as(po,"data.frame") %>% head()
-  time     y1    y2
-1    1 -1.701  4.25
-2    2  0.242  7.04
-3    3  3.768  2.98
-4    4  5.686 -1.47
-5    5  3.775 -4.43
-6    6 -3.080 -3.92
-> as.data.frame(po1) %>% head()
-  time    y1    y2     x1    x2
-1    1 -1.61  8.43 -0.465  6.94
-2    2 -4.17 10.48 -3.771  9.72
-3    3 -7.72 11.50 -6.085 11.34
-4    4 -2.72  9.73 -1.778 10.01
-5    5  3.90  5.89  4.874  5.21
-6    6  5.67  1.17  5.699  1.01
-> 
-> obs(po)[,1:3]
-        time
-variable     1     2    3
-      y1 -1.70 0.242 3.77
-      y2  4.25 7.039 2.98
-> obs(po,"y2")[,1:3]
-   1    2    3 
-4.25 7.04 2.98 
-> try(obs(po,c("y2","z")))
-Error : in ‘obs’: some elements of ‘vars’ correspond to no observed variable
-> 
-> states(po)
-NULL
-> states(po1,"x1")[,1:3]
-     1      2      3 
--0.465 -3.771 -6.085 
-> try(states(po1,"z"))
-Error : in ‘states’: some elements of ‘vars’ correspond to no state variable
-> states(po1)[,1:3]
-        time
-variable      1     2     3
-      x1 -0.465 -3.77 -6.08
-      x2  6.941  9.72 11.34
-> 
-> time(po)[1:3]
-[1] 1 2 3
-> time(po,t0=TRUE)[1:3]
-[1] 0 1 2
-> 
-> time(po) <- 1:10
-> try(time(po) <- c("bob","nancy"))
-Error : in ‘time<-’: ‘value’ must be a numeric vector.
-> time(po1,t0=TRUE) <- 0:10
-> try(time(po) <- 10:0)
-Error : in ‘time<-’: the times specified must be an increasing sequence.
-> try(time(po,t0=TRUE) <- c(4,1:10))
-Error : in ‘time<-’: the zero-time ‘t0’ must occur no later than the first observation.
-> 
-> window(po,end=5)
-<object of class ‘pomp’>
-> window(po,start=5)
-<object of class ‘pomp’>
-> window(po,start=5,end=10)
-<object of class ‘pomp’>
-> try(window(po,start=5,end=3))
-Error : in ‘window’: ‘start’ must not be later than ‘end’.
-> try(window(po,start=NA,end=3))
-Error : in ‘window’: ‘start’ and ‘end’ must be finite times.
-> try(window(po,start=1,end=NULL))
-Error : in ‘window’: ‘start’ and ‘end’ must be finite times.
-> 
-> timezero(po)
-[1] 0
-> timezero(po) <- -3
-> try(timezero(po) <- NA)
-Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single finite number.
-> try(timezero(po) <- c(1,2,3))
-Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single finite number.
-> try(timezero(po) <- 20)
-Error : in ‘timezero<-’: the zero-time ‘t0’ must occur no later than the first observation.
-> 
-> coef(po)
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
-> coef(po,c("alpha.3","tau"))
-alpha.3     tau 
-    0.3     1.0 
-> try(coef(po,c("alpha.3","z")))
-Error : in ‘coef’: name(s) ‘z’ correspond to no parameter(s).
-> 
-> coef(po,"alpha.3") <- 4
-> coef(po,"z") <- 9
-Warning message:
-in ‘coef<-’: name(s) ‘z’ do not refer to existing parameter(s); they are being concatenated 
-> coef(po)
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-    0.8    -0.5     4.0     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
-      z 
-    9.0 
-> coef(po) <- NULL
-> coef(po)
-numeric(0)
-> coef(po) <- list(a=3,b=12)
-> 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
-> gompertz -> po
-> 
-> coef(po)
-    K     r sigma   tau   X.0 
-  1.0   0.1   0.1   0.1   1.0 
-> coef(po,transform=TRUE,pars=c("r","K"))
-   r    K 
--2.3  0.0 
-> coef(po,"sigma",transform=TRUE) <- 0
-> coef(po)
-    K     r sigma   tau   X.0 
-  1.0   0.1   1.0   0.1   1.0 
-> coef(po,c("r","K")) <- c(a=1,b=2)
-Warning message:
-in ‘coef<-’:  names of ‘value’ are being discarded 
-> coef(po,transform=TRUE) <- c(r=1,K=1)
-> coef(po) <- NULL
-> try(coef(po,transform=FALSE) <- c(5,3))
-Error : in ‘coef<-’: ‘value’ must be a named vector
-> try(coef(po,transform=TRUE) <- c(5,3))
-Error : in 'partrans': user transformation functions must return a named numeric vector
-> coef(po,transform=TRUE) <- c(r=1,K=1)
-> coef(po)
-   r    K 
-2.72 2.72 
-> po %>%
-+   window(start=5,end=20) %>%
-+   pomp(covar=covariate_table(times=0:20,q=0:20),
-+     larry=3L) -> po1
-in ‘pomp’: the unrecognized argument ‘larry’ is available for use by the POMP basic components.
-> as(po1,"data.frame") %>% head()
-  time     Y  q
-1    5 0.873  5
-2    6 1.041  6
-3    7 1.060  7
-4    8 1.144  8
-5    9 1.176  9
-6   10 1.161 10
-> 
 > pompExample(sir,envir=NULL) %>% extract2(1) %>%
 +   window(end=0.12) -> po2
 > po2 %>% simulate(seed=4358686) %>% as.data.frame()
@@ -334,7 +144,7 @@ in ‘pomp’: the unrecognized argument ‘larry’ is available for use by the
 5 0.0962     686 134729 2332 1962895  1139 -0.0201 0.595 0.341 0.0641
 6 0.1154     742 134298 2353 1963336  1184 -0.0699 0.567 0.379 0.0536
 > pomp(po2,covar=NULL)@covar
-		<none>
+<none>
 > try(po2 %>% pomp(covar="bob"))
 Error : in ‘pomp’: bad option for ‘covar’.
 > try(po2 %>% pomp(rmeasure=function(x)x))

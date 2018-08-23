@@ -43,15 +43,12 @@ newly created object(s):
 > 
 > time(gompertz) <- 1:10
 > 
-> try(bsmc2(gompertz,Np=1000,smooth=0.01,est=c("r","K"),tol=1e-6))
-Error : in ‘bsmc2’: ‘rprior’ error: operation cannot be completed: rprior has not been specified
-> 
 > smc <- bsmc2(gompertz,rprior=Csnippet("
 +               K = runif(0.1,1);
 +               r = rlnorm(log(0.2),1);
 +               sigma = rlnorm(log(0.1),0.5);"),
-+              paramnames=c("r","K","sigma"),Np=1000,smooth=0.01,
-+              est=c("r","K","sigma"),tol=1e-6)
++   paramnames=c("r","K","sigma"),Np=1000,smooth=0.01,
++   est=c("r","K","sigma"),tol=1e-6)
 > 
 > plot(smc,y=NA)
 > plot(smc,pars=c("r","K"),thin=50)
@@ -61,11 +58,11 @@ Error : in ‘plot’: unrecognized parameters: ‘bob’
 > try(plot(smc,pars=NULL))
 Error : in ‘plot’: no parameters to plot.
 > range(eff.sample.size(smc))
-[1] 251 743
+[1]  68 654
 > logLik(smc)
-[1] 2.7
+[1] -0.69
 > range(cond.logLik(smc))
-[1] -0.68  0.98
+[1] -1.91  0.82
 > stopifnot(sum(cond.logLik(smc))==logLik(smc))
 > 
 > try(bsmc2())
@@ -78,26 +75,26 @@ Error : ‘bsmc2’ is not defined when ‘data’ is of class ‘integer’
 > try(bsmc2(smc))
 Error : in ‘bsmc2’: ‘Np’ must be specified.
 > try(bsmc2(po))
-Error : in ‘bsmc2’: ‘Np’ must be specified.
+Error : in ‘bsmc2’: ‘params’ should be a numeric matrix with rownames, a data frame, or a named numeric vector.
 > try(bsmc2(po,params=NULL))
 Error : in ‘bsmc2’: ‘params’ should be a numeric matrix with rownames, a data frame, or a named numeric vector.
 > try(bsmc2(po,params="yes"))
 Error : in ‘bsmc2’: ‘params’ should be a numeric matrix with rownames, a data frame, or a named numeric vector.
 > try(bsmc2(po,params=list()))
-Error : in ‘bsmc2’: ‘Np’ must be specified.
+Error : in ‘bsmc2’: ‘params’ should be a numeric matrix with rownames, a data frame, or a named numeric vector.
 > try(bsmc2(po,params=c(1,2,3)))
-Error : in ‘bsmc2’: ‘Np’ must be specified.
+Error : in ‘bsmc2’: ‘params’ should be a numeric matrix with rownames, a data frame, or a named numeric vector.
 > theta <- coef(smc)
 > try(bsmc2(po,params=as.list(theta)))
 Error : in ‘bsmc2’: ‘Np’ must be specified.
 > try(bsmc2(po,params=as.list(theta),Np=10,est="bob"))
-Error : in ‘bsmc2’: parameter(s) ‘bob’ not found.
+Error : in ‘bsmc2’: parameter ‘bob’ not found.
 > try(bsmc2(po,params=as.list(theta),Np=1,est="r"))
 Error : in ‘bsmc2’: in ‘rmvnorm’: infinite or missing values in 'x'
 > pp <- parmat(theta,100)
 > capture.output(invisible(bsmc2(po,params=pp,est="r",Np=1,verbose=TRUE))) -> out
 Warning message:
-in ‘bsmc2’: ‘Np’ is ignored since ‘params’ is a matrix. 
+in ‘bsmc2’: ‘Np’ is ignored since multiple parameter sets are supplied. 
 > stopifnot(sum(grepl("prior.mean",out))==10)
 > try(bsmc2(po,params=pp,est="r",smooth=2))
 Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
@@ -111,7 +108,7 @@ Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > rownames(pp) <- NULL
 > try(bsmc2(po,params=pp,est="r"))
-Error : in ‘bsmc2’: ‘rprior’ error: variable 'r' not found among the parameters
+Error : in ‘bsmc2’: ‘params’ should be a numeric matrix with rownames, a data frame, or a named numeric vector.
 > try(bsmc2(smc,Np=-10,est="r"))
 Error : in ‘bsmc2’: ‘Np’ must be a positive integer.
 > try(bsmc2(smc,est="r",Np=100,tol=c(3,5)))
@@ -123,7 +120,7 @@ Error : in ‘bsmc2’: too many filtering failures
 Warning message:
 in ‘bsmc2’: 10 filtering failures occurred. 
 > try(bsmc2(smc,params=theta,est="r",Np=100,
-+           dmeasure=Csnippet("error(\"whoa nelly!\");")))
++   dmeasure=Csnippet("error(\"whoa nelly!\");")))
 Error : in ‘bsmc2’: in ‘dmeasure’: whoa nelly!
 > 
 > theta <- coef(gompertz)
@@ -132,6 +129,43 @@ Error : in ‘bsmc2’: in ‘dmeasure’: whoa nelly!
 filtering failure at time t = 1
 filtering failure at time t = 2
 Error : in ‘bsmc2’: too many filtering failures
+> 
+> smc %>% as.data.frame() %>%
++   filter(.id=="posterior") %>%
++   select(-.id) -> pp
+> 
+> gompertz %>%
++   as.data.frame() %>%
++   bsmc2(
++     times="time",t0=-5,
++     params=pp,
++     Np=1000,smooth=0.1,
++     # rprior=Csnippet("
++     #           K = runif(0.1,1);
++     #           r = rlnorm(log(0.2),1);
++     #           sigma = rlnorm(log(0.1),0.5);"),
++     rprocess=gompertz@rprocess,
++     dmeasure=gompertz@dmeasure,
++     statenames=c("X"),
++     paramnames=c("r","K","sigma"),
++     est=c("r","K","sigma")) -> smc4
+Warning message:
+in ‘bsmc2’: ‘Np’ is ignored since multiple parameter sets are supplied. 
+> smc4 %>% plot()
+> 
+> try(gompertz %>%
++   as.data.frame() %>%
++   bsmc2(
++     times="time",t0=-5,
++     params=coef(gompertz),
++     Np=1000,smooth=0.1,
++     rprior=3,
++     rprocess=gompertz@rprocess,
++     dmeasure=gompertz@dmeasure,
++     statenames=c("X"),
++     paramnames=c("r","K","sigma"),
++     est=c("r","K","sigma")))
+Error : in ‘bsmc2’: in ‘pomp’: bad option for ‘rprior’ argument
 > 
 > dev.off()
 null device 

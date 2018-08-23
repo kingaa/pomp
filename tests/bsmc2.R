@@ -11,14 +11,12 @@ set.seed(398585L)
 
 time(gompertz) <- 1:10
 
-try(bsmc2(gompertz,Np=1000,smooth=0.01,est=c("r","K"),tol=1e-6))
-
 smc <- bsmc2(gompertz,rprior=Csnippet("
               K = runif(0.1,1);
               r = rlnorm(log(0.2),1);
               sigma = rlnorm(log(0.1),0.5);"),
-             paramnames=c("r","K","sigma"),Np=1000,smooth=0.01,
-             est=c("r","K","sigma"),tol=1e-6)
+  paramnames=c("r","K","sigma"),Np=1000,smooth=0.01,
+  est=c("r","K","sigma"),tol=1e-6)
 
 plot(smc,y=NA)
 plot(smc,pars=c("r","K"),thin=50)
@@ -60,10 +58,44 @@ try(bsmc2(smc,est="r",Np=100,tol=c(3,5)))
 try(bsmc2(smc,est="r",Np=100,max.fail=-1,tol=10))
 bsmc2(smc,est="r",Np=100,max.fail=Inf,tol=10)
 try(bsmc2(smc,params=theta,est="r",Np=100,
-          dmeasure=Csnippet("error(\"whoa nelly!\");")))
+  dmeasure=Csnippet("error(\"whoa nelly!\");")))
 
 theta <- coef(gompertz)
 theta["K"] <- 1
 try(capture.output(bsmc2(po,Np=2,params=theta,tol=1,max.fail=1,verbose=TRUE)) -> out)
+
+smc %>% as.data.frame() %>%
+  filter(.id=="posterior") %>%
+  select(-.id) -> pp
+
+gompertz %>%
+  as.data.frame() %>%
+  bsmc2(
+    times="time",t0=-5,
+    params=pp,
+    Np=1000,smooth=0.1,
+    # rprior=Csnippet("
+    #           K = runif(0.1,1);
+    #           r = rlnorm(log(0.2),1);
+    #           sigma = rlnorm(log(0.1),0.5);"),
+    rprocess=gompertz@rprocess,
+    dmeasure=gompertz@dmeasure,
+    statenames=c("X"),
+    paramnames=c("r","K","sigma"),
+    est=c("r","K","sigma")) -> smc4
+smc4 %>% plot()
+
+try(gompertz %>%
+  as.data.frame() %>%
+  bsmc2(
+    times="time",t0=-5,
+    params=coef(gompertz),
+    Np=1000,smooth=0.1,
+    rprior=3,
+    rprocess=gompertz@rprocess,
+    dmeasure=gompertz@dmeasure,
+    statenames=c("X"),
+    paramnames=c("r","K","sigma"),
+    est=c("r","K","sigma")))
 
 dev.off()

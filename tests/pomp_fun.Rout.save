@@ -23,28 +23,48 @@ Type 'q()' to quit R.
 > library(magrittr)
 > 
 > pomp:::pomp_fun()
-		not specified
+<default>
+
 > pomp:::pomp_fun(NULL)
-		not specified
+<default>
+
 > try(pomp:::pomp_fun(36,slotname="silly"))
 Error : bad option for ‘silly’ argument
 > pomp:::pomp_fun(function(x,y)x+y,proto=quote(bob(x,y)),slotname="blarp")
-		function(x,y)x+y
+R function
+  - definition: function(x,y)x+y
+
 > try(pomp:::pomp_fun(function(x)x+y,proto=quote(bob(x,y)),slotname="blarp"))
 Error : in ‘blarp’: ‘bob’ must be a function of prototype ‘bob(x, y)’
 > pomp:::pomp_fun(function(x)x+y,slotname="blarp") -> f
 > print(f)
-		function(x)x+y
+R function
+  - definition: function(x)x+y
+
 > pomp:::pomp_fun("jehosaphat",PACKAGE="harglebarge",slotname="blurp")
-		native function ‘jehosaphat’, dynamically loaded from ‘harglebarge’
+native function
+  - name: ‘jehosaphat’
+  - dynamically loaded from: ‘harglebarge’
+
 > pomp:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork")
-		native function 
+native function
+  - name: 
+
+
 > pomp:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp")
-		native function 
+native function
+  - name: 
+
+
 > pomp:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp",
 +   libname="splarm")
-		native function ‘yurp’, defined by a C snippet in library ‘splarm’
+native function
+  - name: ‘yurp’
+  - defined by a C snippet in library ‘splarm’
+
 > pomp:::pomp_fun(f)
-		function(x)x+y
+R function
+  - definition: function(x)x+y
+
 > 
 > 

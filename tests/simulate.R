@@ -46,12 +46,17 @@ simulate(times=1:100,t0=0,seed=450738202,
   rinit=Csnippet("z = 0;"),
   statenames="z",obsnames="w") %>% plot()
 
-try(simulate(times=1:100,t0=0,
-  rmeasure=Csnippet("w = rnorm(z,1);"),
-  rinit=Csnippet("z = 0;"),
-  statenames="z",obsnames="w"))
+stopifnot(
+  {
+    simulate(times=1:100,t0=0,
+      rmeasure=Csnippet("w = rnorm(z,1);"),
+      rinit=Csnippet("z = 0;"),
+      statenames="z",obsnames="w") %>% states() -> x
+    sum(is.na(x))==100
+  }
+)
 
-invisible(simulate(times=1:100,t0=0,
+simulate(times=1:100,t0=0,
   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
     z <- x["z"]
     c(z=runif(1,z-0.5,z+0.5))
@@ -59,25 +64,30 @@ invisible(simulate(times=1:100,t0=0,
   rmeasure=function(x,t,params,...) {
     z <- x["z"]
     c(w = rnorm(1,z,1))
-  },params=c(z.0=0)))
+  },params=c(z.0=0))
 
-try(simulate(times=1:100,t0=0,
-  rprocess=onestep.sim(function(x,t,params,delta.t,...) {
-    z <- x["z"]
-    c(z=runif(1,z-0.5,z+0.5))
-  }),params=c(z.0=0)))
+stopifnot(
+  {
+    simulate(times=1:100,t0=0,
+      rprocess=onestep.sim(function(x,t,params,delta.t,...) {
+        z <- x["z"]
+        c(z=runif(1,z-0.5,z+0.5))
+      }),params=c(z.0=0)) %>% obs() -> y
+    dim(y)==c(0,100)
+  }
+)
 
-invisible(simulate(times=1:100,t0=0,
-  rprocess=onestep.sim(function(x,t,params,delta.t,...) {
-    z <- x["z"]
-    c(z=runif(1,z-0.5,z+0.5))
-  }),params=c(z.0=0),states=TRUE))
-
-try(simulate(times=1:100,t0=0,
-  rprocess=onestep.sim(function(x,t,params,delta.t,...) {
-    z <- x["z"]
-    c(z=runif(1,z-0.5,z+0.5))
-  }),params=c(z.0=0),obs=TRUE))
+stopifnot(
+  {
+    simulate(times=1:100,t0=0,
+      rprocess=onestep.sim(function(x,t,params,delta.t,...) {
+        z <- x["z"]
+        c(z=runif(1,z-0.5,z+0.5))
+      }),params=c(z.0=0),format="arrays") -> s
+    dim(s$states)==c(1,1,100)
+    dim(s$obs)==c(0,1,100)
+  }
+)
 
 try(simulate(times=1:100,t0=0,
   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
@@ -132,19 +142,15 @@ try(simulate(ou2,nsim=NULL))
 try(simulate(ou2,nsim="bob"))
 
 ou2 %>% window(end=3) -> po
-simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3) %>%
-  count(sim) %>% as.data.frame()
-simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3,include.data=TRUE) %>%
-  count(sim) %>% as.data.frame()
-simulate(po,as.data.frame=TRUE,states=TRUE,seed=49569969)
-simulate(po,as.data.frame=TRUE,obs=TRUE,seed=49569969)
-simulate(po,as.data.frame=TRUE,obs=FALSE,states=FALSE,seed=49569969)
-simulate(po,as.data.frame=TRUE,obs=TRUE,states=TRUE,seed=49569969)
-simulate(po,as.data.frame=TRUE,include.data=TRUE,seed=49569969)
-simulate(po,as.data.frame=FALSE,include.data=TRUE,seed=49569969)
-simulate(po,states=TRUE) %>% rownames()
-simulate(po,obs=TRUE) %>% rownames()
-simulate(po,obs=TRUE,states=TRUE) %>% names()
+simulate(po,format="data.frame",seed=49569969,nsim=3) %>%
+  count(.id) %>% as.data.frame()
+simulate(po,format="data.frame",seed=49569969,nsim=3,include.data=TRUE) %>%
+  count(.id) %>% as.data.frame()
+simulate(po,format="data.frame",seed=49569969)
+simulate(po,format="data.frame",include.data=TRUE,seed=49569969)
+simulate(po,format="arrays") -> s
+s$states %>% rownames()
+s$obs %>% rownames()
 simulate(po,nsim=3) %>% show()
 
 data.frame(u=1:10,v=runif(10)) %>%
@@ -152,7 +158,7 @@ data.frame(u=1:10,v=runif(10)) %>%
   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
     rinit=Csnippet("w=0;"),
-    statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE) -> dat
+    statenames="w",obsnames="y",format="data.frame",include.data=TRUE) -> dat
 dat %>% names()
 dat %>% dim()
 

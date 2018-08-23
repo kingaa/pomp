@@ -83,7 +83,7 @@ skel <- "
   DW = 0;
 "
 
-initlzr <- "
+rinit <- "
   double m = popsize/(S_0+I_0+R_0);
   S = nearbyint(m*S_0);
   I = nearbyint(m*I_0);
@@ -92,75 +92,73 @@ initlzr <- "
   W = 0;
 "
 
-pomp(
-  data=subset(
-    LondonYorke,
-    subset=town=="New York"&disease=="measles"&year>=1928&year<=1933,
-    select=c(time,cases)
-  ),
-  times="time",
-  t0=1928,
-  params=c(
-    gamma=26,mu=0.02,iota=0.01,
-    beta1=120,beta2=140,beta3=100,
-    beta.sd=0.01,
-    popsize=5e6,
-    rho=0.1,theta=1,
-    S.0=0.22,I.0=0.0018,R.0=0.78
-  ),
-  globals=globals,
-  rmeasure=Csnippet(rmeas),
-  rprocess=euler.sim(
-    step.fun=Csnippet(step.fun),
-    delta.t=1/52/20
-  ),
-  skeleton=vectorfield(Csnippet(skel)),
-  covar=covariate_table(
-    times=seq(from=1928,to=1934,by=0.01),
-    periodic.bspline.basis(
-      x=seq(from=1928,to=1934,by=0.01),
-      nbasis=3,
-      degree=3,
-      period=1,
-      names="seas%d"
-    )
-  ),
-  partrans=parameter_trans(
-    log=c("gamma","mu","iota","beta_sd","theta",sprintf("beta%d",1:3)),
-    logit="rho",
-    barycentric=c("S_0","I_0","R_0")
-  ),
-  statenames=c("S","I","R","incid","W"),
-  paramnames=c(
-    "gamma","mu","iota","beta1","beta2","beta3","beta.sd",
-    "popsize","rho","theta","S.0","I.0","R.0"
-  ),
-  zeronames=c("incid","W"),
-  rinit=Csnippet(initlzr)
-) -> po
+library(magrittr)
+library(dplyr)
+
+LondonYorke %>%
+  filter(town=="New York" & disease=="measles" & year>=1928 & year<=1933) %>%
+  select(time,cases) %>%
+  pomp(
+    times="time",
+    t0=1928,
+    params=c(
+      gamma=26,mu=0.02,iota=0.01,
+      beta1=120,beta2=140,beta3=100,
+      beta.sd=0.01,
+      popsize=5e6,
+      rho=0.1,theta=1,
+      S.0=0.22,I.0=0.0018,R.0=0.78
+    ),
+    globals=globals,
+    rmeasure=Csnippet(rmeas),
+    rprocess=euler.sim(
+      step.fun=Csnippet(step.fun),
+      delta.t=1/52/20
+    ),
+    skeleton=vectorfield(Csnippet(skel)),
+    covar=covariate_table(
+      times=seq(from=1928,to=1934,by=0.01),
+      periodic.bspline.basis(
+        x=seq(from=1928,to=1934,by=0.01),
+        nbasis=3,
+        degree=3,
+        period=1,
+        names="seas%d"
+      )
+    ),
+    partrans=parameter_trans(
+      log=c("gamma","mu","iota","beta_sd","theta",sprintf("beta%d",1:3)),
+      logit="rho",
+      barycentric=c("S_0","I_0","R_0")
+    ),
+    statenames=c("S","I","R","incid","W"),
+    paramnames=c(
+      "gamma","mu","iota","beta1","beta2","beta3","beta.sd",
+      "popsize","rho","theta","S.0","I.0","R.0"
+    ),
+    zeronames=c("incid","W"),
+    rinit=Csnippet(rinit)
+  ) -> po
 
 ## compute a trajectory of the deterministic skeleton
 X <- trajectory(po,hmax=1/52,as.data.frame=TRUE)
 plot(incid~time,data=X,type='l')
 
 ## simulate from the model
-x <- simulate(po,nsim=3,as.data.frame=TRUE)
-plot(incid~time,data=x,col=as.factor(x$sim),pch=16)
+x <- simulate(po,nsim=3,format="data.frame")
+points(incid~time,data=x,col=as.factor(x$.id),pch=16)
 
-## compute the likelihood.
-## first add a dmeasure
-po <- pomp(
-  po,
-  dmeasure=Csnippet('
-  lik = dnbinom_mu(cases,theta,rho*incid,give_log);
-'
-  ),
-  statenames=c("S","I","R","incid","W"),
-  paramnames=c(
-    "gamma","mu","iota","beta1","beta.sd",
-    "popsize","rho","theta","S.0","I.0","R.0"
-  )
-)
-
-## then run a particle filter
-logLik(pfilter(po,Np=1000))
+## Compute the likelihood by running a particle filter.
+## Note, we must add a 'dmeasure'.
+po %>%
+  pfilter(
+    Np=1000,
+    dmeasure=Csnippet("
+      lik = dnbinom_mu(cases,theta,rho*incid,give_log);"
+    ),
+    statenames=c("S","I","R","incid","W"),
+    paramnames=c(
+      "gamma","mu","iota","beta1","beta.sd",
+      "popsize","rho","theta","S.0","I.0","R.0"
+    )
+  ) %>% logLik()

@@ -170,14 +170,12 @@ pomp <- function (data, times, t0, ...,
   PACKAGE, globals, cdir, cfile, shlib.args,
   verbose = getOption("verbose", FALSE)) {
 
-  ep <- paste0("in ",sQuote("pomp"),": ")
-
   if (missing(data))
-    stop(ep,sQuote("data")," is a required argument.",call.=FALSE)
+    pomp_stop("pomp",sQuote("data")," is a required argument.")
 
   if (!inherits(data,what=c("data.frame","pomp","NULL")))
-    stop(ep,sQuote("data")," must be a data frame or an object of class ",
-      sQuote("pomp"),".",call.=FALSE)
+    pomp_stop("pomp",sQuote("data")," must be a data frame or an object of ",
+      "class ",sQuote("pomp"),".")
 
   ## return as quickly as possible if no work is to be done
   if (is(data,"pomp") && missing(times) && missing(t0) &&
@@ -207,22 +205,21 @@ setGeneric("construct_pomp",
 setMethod(
   "construct_pomp",
   signature=signature(data="data.frame"),
-  definition = function (data, times, ...) {
-
-    ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
+  definition = function (data, times, t0, ...) {
 
     if (anyDuplicated(names(data))) {
-      stop(ep,"names of data variables must be unique.", call.=FALSE)
+      pomp_stop("pomp","names of data variables must be unique.")
     }
-    if (missing(times))
-      stop(ep,sQuote("times")," is a required argument",call.=FALSE)
+    if (missing(times) || missing(t0))
+      pomp_stop("pomp",sQuote("times")," and ",sQuote("t0"),
+        " are required arguments.")
     if ((is.numeric(times) && (times<1 || times>ncol(data) ||
         times!=as.integer(times))) ||
         (is.character(times) && (!(times%in%names(data)))) ||
         (!is.numeric(times) && !is.character(times)) || length(times)!=1) {
-      stop(ep,"when ",sQuote("data")," is a data frame, ",sQuote("times"),
+      pomp_stop("pomp","when ",sQuote("data")," is a data frame, ",sQuote("times"),
         " must identify a single column of ",sQuote("data"),
-        " either by name or by index.",call.=FALSE)
+        " either by name or by index.")
     }
     if (is.numeric(times)) {
       tpos <- as.integer(times)
@@ -234,7 +231,8 @@ setMethod(
     times <- data[[tpos]]
     data <- do.call(rbind,lapply(data[-tpos],as.double))
 
-    construct_pomp(data=data,times=times,...,timename=timename)
+    construct_pomp(data=data,times=times,t0=t0,...,timename=timename)
+
   }
 )
 
@@ -243,12 +241,11 @@ setMethod(
   signature=signature(data="NULL"),
   definition = function (data, times, ...) {
 
-    ep <- paste0("in ",sQuote("pomp"),": ")
-
     if (missing(times))
-      stop(ep,sQuote("times")," is a required argument.",call.=FALSE)
+      pomp_stop("pomp",sQuote("times")," is a required argument.")
 
     construct_pomp(data=array(dim=c(0,length(times))),times=times,...)
+
   }
 )
 
@@ -258,8 +255,6 @@ setMethod(
   definition = function (data, times, t0, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
     partrans, params, covar, timename) {
-
-    ep <- paste0("in ",sQuote("pomp"),": ")
 
     if (missing(rinit)) rinit <- NULL
 
@@ -307,7 +302,7 @@ setMethod(
         ...
       ),
       error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
+        pomp_stop("pomp",conditionMessage(e))
       }
     )
   }
@@ -319,8 +314,6 @@ setMethod(
   definition = function (data, times, t0, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
     partrans, params, covar, zeronames, timename) {
-
-    ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
 
     if (missing(times)) {
       times <- data@times
@@ -385,7 +378,7 @@ setMethod(
         ...
       ),
       error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
+        pomp_stop("pomp",conditionMessage(e))
       }
     )
   }
@@ -398,20 +391,19 @@ pomp.internal <- function (data, times, t0, timename, ...,
   .userdata, .solibs = list(), verbose = getOption("verbose", FALSE)) {
 
   ep <- character(0)
-  wp <- paste0("in ",sQuote("pomp"),": ")
 
   ## check times
   if (missing(times) || !is.numeric(times) || !all(is.finite(times)) ||
       (length(times)>1 && !all(diff(times)>0)))
-    stop(ep,sQuote("times")," must be specified as an increasing sequence ",
-      "of numbers.",call.=FALSE)
+    pomp_stop(ep,sQuote("times")," must be specified as an increasing sequence ",
+      "of numbers.")
   storage.mode(times) <- "double"
 
   ## check t0
   if (missing(t0) || !is.numeric(t0) || !is.finite(t0) ||
       length(t0) > 1 ||  t0 > times[1])
-    stop(ep,sQuote("t0")," must be specified as a single number not ",
-      "greater than ",sQuote("times[1]"),".",call.=FALSE)
+    pomp_stop(ep,sQuote("t0")," must be specified as a single number not ",
+      "greater than ",sQuote("times[1]"),".")
   storage.mode(t0) <- "double"
 
   if (missing(timename) || is.null(timename))
@@ -422,7 +414,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (missing(.userdata)) .userdata <- list()
   added.userdata <- list(...)
   if (length(added.userdata)>0) {
-    message(wp,"the unrecognized ",
+    message("in ",sQuote("pomp"),": the unrecognized ",
       ngettext(length(added.userdata),"argument","arguments")," ",
       paste(sQuote(names(added.userdata)),collapse=","),
       ngettext(length(added.userdata)," is"," are"),
@@ -432,21 +424,21 @@ pomp.internal <- function (data, times, t0, timename, ...,
   }
 
   if (!is(rprocess,"rprocPlugin")) {
-    stop(ep,sQuote("rprocess"),
+    pomp_stop(ep,sQuote("rprocess"),
       " must be specified using one of the plugins:\n",
       sQuote("onestep.sim"),", ",sQuote("discrete.time.sim"),
       ", ",sQuote("euler.sim"),", ",sQuote("gillespie.sim"),
-      ", or ",sQuote("gillespie.hl.sim"),".",call.=FALSE)
+      ", or ",sQuote("gillespie.hl.sim"),".")
   }
 
   if (!is(skeleton,"skelPlugin")) {
-    stop(ep,sQuote("skeleton")," must be specified using either ",
-      sQuote("map")," or ",sQuote("vectorfield"),".",call.=FALSE)
+    pomp_stop(ep,sQuote("skeleton")," must be specified using either ",
+      sQuote("map")," or ",sQuote("vectorfield"),".")
   }
 
   if (!is(partrans,"partransPlugin")) {
-    stop(ep,sQuote("partrans")," must be specified using ",
-      sQuote("parameter_trans"),".",call.=FALSE)
+    pomp_stop(ep,sQuote("partrans")," must be specified using ",
+      sQuote("parameter_trans"),".")
   }
 
   if (missing(statenames)) statenames <- NULL
@@ -471,19 +463,19 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (length(params) > 0) {
     if (is.null(names(params)) || !is.numeric(params) ||
         !all(nzchar(names(params))))
-      stop(sQuote("params")," must be a named numeric vector.",call.=FALSE)
+      pomp_stop(ep,sQuote("params")," must be a named numeric vector.")
   }
 
   if (is(rinit,"Csnippet") && length(statenames)==0) {
-    stop(ep,"when ",sQuote("rinit")," is provided as a C snippet, ",
-      "you must also provide ",sQuote("statenames"),".",call.=FALSE)
+    pomp_stop(ep,"when ",sQuote("rinit")," is provided as a C snippet, ",
+      "you must also provide ",sQuote("statenames"),".")
   }
 
   ## check and arrange covariates
   if (is.null(covar)) {
     covar <- covariate_table()
   } else if (!is(covar,"covartable")) {
-    stop(ep,"bad option for ",sQuote("covar"),".",call.=FALSE)
+    pomp_stop(ep,"bad option for ",sQuote("covar"),".")
   }
 
   if (length(covarnames) == 0)
@@ -515,14 +507,14 @@ pomp.internal <- function (data, times, t0, timename, ...,
   )
 
   ## check to make sure 'covars' is included as an argument where needed
-  covar_fun_warning(covar,"rprocess",hitches$funs,wp)
-  covar_fun_warning(covar,"dprocess",hitches$funs,wp)
-  covar_fun_warning(covar,"rmeasure",hitches$funs,wp)
-  covar_fun_warning(covar,"dmeasure",hitches$funs,wp)
-  covar_fun_warning(covar,"skeleton",hitches$funs,wp)
+  covar_fun_warning(covar,"rprocess",hitches$funs,"pomp")
+  covar_fun_warning(covar,"dprocess",hitches$funs,"pomp")
+  covar_fun_warning(covar,"rmeasure",hitches$funs,"pomp")
+  covar_fun_warning(covar,"dmeasure",hitches$funs,"pomp")
+  covar_fun_warning(covar,"skeleton",hitches$funs,"pomp")
 
   ## check to see if covariate times embrace the data times
-  covar_time_warning(covar,times,t0,wp)
+  covar_time_warning(covar,times,t0,"pomp")
 
   new(
     "pomp",

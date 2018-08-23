@@ -67,7 +67,7 @@ library(reshape2)
 dat %>% lapply(states) %>% melt() %>%
   acast(variable~L1~time) -> x
 dat %>% lapply(obs) %>% melt() %>%
-  subset(L1=="1_1") %>%
+  subset(L1=="1") %>%
   acast(variable~L1~time) -> y
 t <- time(po)
 theta <- coef(po)

@@ -89,17 +89,19 @@ p["X.0",] <- c(0.5,0.9,1.1,1.5)
 ## compute a trajectory of the deterministic skeleton
 X <- trajectory(Gompertz,params=p,as.data.frame=TRUE)
 X %>%
-  ggplot(aes(x=time,y=X,group=traj,color=traj))+
+  ggplot(aes(x=time,y=X,group=.id,color=.id))+
+  guides(color=FALSE)+
   geom_line()+
   theme_bw()+
   labs(title="Gompertz model",subtitle="deterministic trajectories")
 
 ## simulate from the model
-x <- simulate(Gompertz,params=p,as.data.frame=TRUE)
+x <- simulate(Gompertz,params=p,format="data.frame")
 
 x %>%
-  ggplot(aes(x=time,y=X,group=sim,color=sim))+
+  ggplot(aes(x=time,y=X,group=.id,color=.id))+
   geom_line()+
+  guides(color=FALSE)+
   theme_bw()+
   labs(title="Gompertz model",subtitle="stochastic simulations")
 

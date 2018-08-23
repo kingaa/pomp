@@ -46,13 +46,13 @@ newly created object(s):
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘times’ is a required argument.
+Error : in ‘simulate’: ‘times’ and ‘t0’ are required arguments.
 > try(simulate(times=1:10,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘t0’ is a required argument.
+Error : in ‘simulate’: ‘times’ and ‘t0’ are required arguments.
 > try(simulate(times=c(1:5,NA,7:10),t0=0,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
@@ -84,13 +84,17 @@ Error : in ‘simulate’: in ‘pomp’: ‘t0’ must be specified as a single
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w") %>% plot()
 > 
-> try(simulate(times=1:100,t0=0,
-+   rmeasure=Csnippet("w = rnorm(z,1);"),
-+   rinit=Csnippet("z = 0;"),
-+   statenames="z",obsnames="w"))
-Error : in ‘simulate’: 'rprocess' is undefined.
+> stopifnot(
++   {
++     simulate(times=1:100,t0=0,
++       rmeasure=Csnippet("w = rnorm(z,1);"),
++       rinit=Csnippet("z = 0;"),
++       statenames="z",obsnames="w") %>% states() -> x
++     sum(is.na(x))==100
++   }
++ )
 > 
-> invisible(simulate(times=1:100,t0=0,
+> simulate(times=1:100,t0=0,
 +   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
 +     z <- x["z"]
 +     c(z=runif(1,z-0.5,z+0.5))
@@ -98,27 +102,31 @@ Error : in ‘simulate’: 'rprocess' is undefined.
 +   rmeasure=function(x,t,params,...) {
 +     z <- x["z"]
 +     c(w = rnorm(1,z,1))
-+   },params=c(z.0=0)))
++   },params=c(z.0=0))
+<object of class ‘pomp’>
 > 
-> try(simulate(times=1:100,t0=0,
-+   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
-+     z <- x["z"]
-+     c(z=runif(1,z-0.5,z+0.5))
-+   }),params=c(z.0=0)))
-Error : in ‘simulate’: operation cannot be completed: rmeasure has not been specified
+> stopifnot(
++   {
++     simulate(times=1:100,t0=0,
++       rprocess=onestep.sim(function(x,t,params,delta.t,...) {
++         z <- x["z"]
++         c(z=runif(1,z-0.5,z+0.5))
++       }),params=c(z.0=0)) %>% obs() -> y
++     dim(y)==c(0,100)
++   }
++ )
 > 
-> invisible(simulate(times=1:100,t0=0,
-+   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
-+     z <- x["z"]
-+     c(z=runif(1,z-0.5,z+0.5))
-+   }),params=c(z.0=0),states=TRUE))
-> 
-> try(simulate(times=1:100,t0=0,
-+   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
-+     z <- x["z"]
-+     c(z=runif(1,z-0.5,z+0.5))
-+   }),params=c(z.0=0),obs=TRUE))
-Error : in ‘simulate’: operation cannot be completed: rmeasure has not been specified
+> stopifnot(
++   {
++     simulate(times=1:100,t0=0,
++       rprocess=onestep.sim(function(x,t,params,delta.t,...) {
++         z <- x["z"]
++         c(z=runif(1,z-0.5,z+0.5))
++       }),params=c(z.0=0),format="arrays") -> s
++     dim(s$states)==c(1,1,100)
++     dim(s$obs)==c(0,1,100)
++   }
++ )
 > 
 > try(simulate(times=1:100,t0=0,
 +   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
@@ -180,63 +188,45 @@ Error : in ‘simulate’: ‘nsim’ must be a positive integer.
 Error : in ‘simulate’: ‘nsim’ must be a positive integer.
 > 
 > ou2 %>% window(end=3) -> po
-> simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3) %>%
-+   count(sim) %>% as.data.frame()
-  sim n
+> simulate(po,format="data.frame",seed=49569969,nsim=3) %>%
++   count(.id) %>% as.data.frame()
+  .id n
 1   1 3
 2   2 3
 3   3 3
-> simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3,include.data=TRUE) %>%
-+   count(sim) %>% as.data.frame()
-   sim n
+> simulate(po,format="data.frame",seed=49569969,nsim=3,include.data=TRUE) %>%
++   count(.id) %>% as.data.frame()
+   .id n
 1 data 3
 2    1 3
 3    2 3
 4    3 3
-> simulate(po,as.data.frame=TRUE,states=TRUE,seed=49569969)
-       x1   x2 sim time
-1 -1.5048 6.11   1    1
-2 -0.6614 4.80   1    2
-3  0.0843 5.75   1    3
-> simulate(po,as.data.frame=TRUE,obs=TRUE,seed=49569969)
-      y1   y2 sim time
-1 -1.033 6.49   1    1
-2 -0.486 3.18   1    2
-3  2.609 3.41   1    3
-> simulate(po,as.data.frame=TRUE,obs=FALSE,states=FALSE,seed=49569969)
-  time     y1   y2      x1   x2 sim
-1    1 -1.033 6.49 -1.5048 6.11   1
-2    2 -0.486 3.18 -0.6614 4.80   1
-3    3  2.609 3.41  0.0843 5.75   1
-> simulate(po,as.data.frame=TRUE,obs=TRUE,states=TRUE,seed=49569969)
-      y1   y2      x1   x2 sim time
-1 -1.033 6.49 -1.5048 6.11   1    1
-2 -0.486 3.18 -0.6614 4.80   1    2
-3  2.609 3.41  0.0843 5.75   1    3
-> simulate(po,as.data.frame=TRUE,include.data=TRUE,seed=49569969)
-  time     y1   y2  sim      x1   x2
-1    1 -1.701 4.25 data      NA   NA
-4    2  0.242 7.04 data      NA   NA
-6    3  3.768 2.98 data      NA   NA
-2    1 -1.033 6.49    1 -1.5048 6.11
-3    2 -0.486 3.18    1 -0.6614 4.80
-5    3  2.609 3.41    1  0.0843 5.75
-> simulate(po,as.data.frame=FALSE,include.data=TRUE,seed=49569969)
-<object of class ‘pomp’>
-> simulate(po,states=TRUE) %>% rownames()
+> simulate(po,format="data.frame",seed=49569969)
+  time .id      x1   x2     y1   y2
+1    1   1 -1.5048 6.11 -1.033 6.49
+2    2   1 -0.6614 4.80 -0.486 3.18
+3    3   1  0.0843 5.75  2.609 3.41
+> simulate(po,format="data.frame",include.data=TRUE,seed=49569969)
+  time  .id     y1   y2      x1   x2
+1    1 data -1.701 4.25      NA   NA
+2    2 data  0.242 7.04      NA   NA
+3    3 data  3.768 2.98      NA   NA
+4    1    1 -1.033 6.49 -1.5048 6.11
+5    2    1 -0.486 3.18 -0.6614 4.80
+6    3    1  2.609 3.41  0.0843 5.75
+> simulate(po,format="arrays") -> s
+> s$states %>% rownames()
 [1] "x1" "x2"
-> simulate(po,obs=TRUE) %>% rownames()
+> s$obs %>% rownames()
 [1] "y1" "y2"
-> simulate(po,obs=TRUE,states=TRUE) %>% names()
-[1] "states" "obs"   
 > simulate(po,nsim=3) %>% show()
-[[1]]
+$`1`
 <object of class ‘pomp’>
 
-[[2]]
+$`2`
 <object of class ‘pomp’>
 
-[[3]]
+$`3`
 <object of class ‘pomp’>
 
 > 
@@ -245,9 +235,9 @@ Error : in ‘simulate’: ‘nsim’ must be a positive integer.
 +   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
 +     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
 +     rinit=Csnippet("w=0;"),
-+     statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE) -> dat
++     statenames="w",obsnames="y",format="data.frame",include.data=TRUE) -> dat
 > dat %>% names()
-[1] "u"   "sim" "v"   "y"   "w"  
+[1] "u"   ".id" "v"   "w"   "y"  
 > dat %>% dim()
 [1] 20  5
 > 

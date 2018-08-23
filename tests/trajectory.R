@@ -51,7 +51,7 @@ pomp(
 
 invisible(skeleton(fhn1,x,t=c(0,3),params=params))
 y <- trajectory(fhn1,params=params,hmax=0.01)
-invisible(y[,,199:201])
+y[,,199:201]
 matplot(time(fhn1),t(y["V",,]),type='l',lty=1)
 plot(y[1,,],y[2,,],type='n')
 points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
@@ -68,7 +68,12 @@ try(trajectory(fhn,params=list(a=3,b=2)))
 try(trajectory(fhn,maxsteps=-1))
 try(trajectory(fhn,maxsteps=1,verbose=TRUE) -> x)
 fhn@skeleton@type <- 3L
-try(trajectory(fhn))
+stopifnot(
+  {
+    trajectory(fhn) -> x
+    sum(is.na(x))==1202
+  }
+)
 
 pompExample(sir)
 trajectory(sir,as.data.frame=TRUE) -> x

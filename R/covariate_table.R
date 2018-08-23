@@ -59,9 +59,8 @@ setMethod(
   "covariate_table",
   signature=signature(times="missing"),
   definition=function (...) {
-    ep <- paste0("in ",sQuote("covariate_table"),": ")
     if (nargs() > 0)
-      stop(ep,sQuote("times")," is a required argument",call.=FALSE)
+      pomp_stop("covariate_table",sQuote("times")," is a required argument.")
     new("covartable")
   }
 )
@@ -81,24 +80,22 @@ setMethod(
   signature=signature(times="ANY"),
   definition=function (..., times) {
 
-    ep <- paste0("in ",sQuote("covariate_table"),": ")
-
     df <- tryCatch(
       data.frame(...,check.names=FALSE),
       error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
+        pomp_stop("covariate_table",conditionMessage(e))
       }
     )
 
     if (anyDuplicated(names(df))) {
-      stop(ep,"names of covariates must be unique.", call.=FALSE)
+      pomp_stop("covariate_table","names of covariates must be unique.")
     }
 
     if (length(times) == 0 ||
         (length(times) > 1 && !is.numeric(times)) ||
         (length(times) == 1 && !is.numeric(times) && !is.character(times)))
-      stop(ep,sQuote("times")," should either be a vector of times or ",
-        "identify a single time variable.",call.=FALSE)
+      pomp_stop("covariate_table",sQuote("times")," should either be a vector ",
+        "of times or identify a single time variable.")
 
     if (length(times) == 1) {
       if (is.character(times)) {
@@ -107,22 +104,22 @@ setMethod(
         tpos <- as.integer(times)
       }
       if (tpos < 1 || tpos > length(df) || !is.finite(tpos))
-        stop(ep,sQuote("times")," must identify a single variable ",
-          "either by name or by index.",call.=FALSE)
+        pomp_stop("covariate_table",sQuote("times")," must identify a single ",
+          "variable either by name or by index.")
       times <- df[[tpos]]
       df <- df[-tpos]
     }
 
     if (length(df) == 0)
-      stop(ep,"no covariates specified.",call.=FALSE)
+      pomp_stop("covariate_table","no covariates specified.")
 
     if (length(times) != nrow(df))
-      stop(ep,sQuote("times")," must agree in length with the covariates.",
-        call.=FALSE)
+      pomp_stop("covariate_table",sQuote("times"),
+        " must agree in length with the covariates.")
 
     if (any(!is.finite(times)) || !all(diff(times)>0))
-      stop(ep,sQuote("times")," should be an increasing sequence of times ",
-        "(without missing values).",call.=FALSE)
+      pomp_stop("covariate_table",sQuote("times"),
+        " should be an increasing sequence of times (without missing values).")
 
     new("covartable",times=as.double(times),
       table=do.call(cbind,lapply(df,as.double)))
@@ -138,8 +135,9 @@ select_covariates <- function (object, vars) {
   cnames <- colnames(object@table)
   if (!all(vars %in% cnames)) {
     missing <- vars[!(vars%in%cnames)]
-    stop("variable(s) ",paste(sapply(missing,sQuote),collapse=","),
-      " are not among the covariates.",call.=FALSE)
+    pomp_stop("select_covariates","variable(s) ",
+      paste(sapply(missing,sQuote),collapse=","),
+      " are not among the covariates.")
   }
   object@table <- object@table[,vars,drop=FALSE]
   object
@@ -149,15 +147,15 @@ covar_fun_warning <- function (object, slotname, funs, wp) {
   if (length(object@times) > 0 && !is.null(funs[[slotname]])) {
     if (funs[[slotname]]@mode == pompfunmode$Rfun &&
         !("covars" %in% names(formals(funs[[slotname]]@R.fun))))
-      warning(wp,"a covariate table has been given, yet the ",
+      pomp_warn(wp,"a covariate table has been given, yet the ",
         sQuote(slotname)," function does not have ",
-        sQuote("covars")," as a formal argument.",call.=FALSE)
+        sQuote("covars")," as a formal argument.")
   }
 }
 
 covar_time_warning <- function (object, times, t0, wp) {
   if ((length(object@times)>0) &&
       ((min(object@times)>t0) || (max(object@times)<max(times))))
-    warning(wp,"the supplied covariate times do not embrace the ",
-      "data times: covariates may be extrapolated.",call.=FALSE)
+    pomp_warn(wp,"the supplied covariate times do not embrace the ",
+      "data times: covariates may be extrapolated.")
 }
