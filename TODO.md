@@ -3,6 +3,7 @@
 - revisit default initializer
 - should unspecified basic components return NAs?
 - `nsim` argument for rprior
+- `do_simulate` should handle parameter column names
 - pass userdata as list to C snippets and as pairlist to R functions
 - "guide to upgrading to **pomp** version 2"
 - ~~take away option of passing `params` as a matrix to `pfilter`~~
