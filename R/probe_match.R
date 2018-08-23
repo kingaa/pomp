@@ -185,17 +185,20 @@ pmof.internal <- function (object, est, probes, nsim, seed = NULL,
 probe.eval <- function (object) {
 
   ep <- "in objective function: "
+
   ## apply probes to model simulations
   simvals <- tryCatch(
-    .Call(
-      apply_probe_sim,
-      object=object,
-      nsim=object@nsim,
-      params=object@params,
-      seed=object@seed,
-      probes=object@probes,
-      datval=object@datvals,
-      .getnativesymbolinfo=TRUE
+    freeze(
+      .Call(
+        apply_probe_sim,
+        object=object,
+        nsim=object@nsim,
+        params=object@params,
+        probes=object@probes,
+        datval=object@datvals,
+        .getnativesymbolinfo=TRUE
+      ),
+      seed=object@seed
     ),
     error = function (e) {
       stop(ep,"applying probes to simulated data: ",
