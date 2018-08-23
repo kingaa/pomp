@@ -36,7 +36,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
   if (ntimes < 2) {
-    errorcall(R_NilValue,"in 'rprocess': length(times) < 2: with no transitions, there is no work to do.");
+    errorcall(R_NilValue,"length(times) < 2: with no transitions, there is no work to do.");
   }
 
   off = *(INTEGER(AS_INTEGER(offset)));
@@ -55,7 +55,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
 
   if (nrepsx > nreps) {		// more ICs than parameters
     if (nrepsx % nreps != 0) {
-      errorcall(R_NilValue,"in 'rprocess': the larger number of replicates is not a multiple of smaller.");
+      errorcall(R_NilValue,"the larger number of replicates is not a multiple of smaller.");
     } else {
       double *src, *tgt;
       int dims[2];
@@ -75,7 +75,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     nreps = nrepsx;
   } else if (nrepsx < nreps) {	// more parameters than ICs
     if (nreps % nrepsx != 0) {
-      errorcall(R_NilValue,"in 'rprocess': the larger number of replicates is not a multiple of smaller.");
+      errorcall(R_NilValue,"the larger number of replicates is not a multiple of smaller.");
     } else {
       double *src, *tgt;
       int dims[2];

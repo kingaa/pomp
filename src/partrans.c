@@ -26,7 +26,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
   direc = *(INTEGER(dir));
   // extract the user-defined function
   switch (direc) {
-  case -1:			// forward transformation
+  case -1: default:	// forward transformation
     PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("partrans")),
       install("from"))); nprotect++;
       PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
@@ -36,8 +36,6 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
       install("to"))); nprotect++;
       PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
       break;
-  default:
-    errorcall(R_NilValue,"impossible error"); // # nocov
   break;
   }
 
@@ -83,7 +81,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
       PROTECT(nm = GET_NAMES(ans)); nprotect++;
       if (isNull(nm))
-        errorcall(R_NilValue,"in 'partrans': user transformation functions must return a named numeric vector");
+        errorcall(R_NilValue,"user transformation functions must return a named numeric vector");
 
       // set up matrix to hold the results
       npar2 = LENGTH(ans);
@@ -108,7 +106,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
       PROTECT(tparams = eval(fcall,rho)); nprotect++;
       if (isNull(GET_NAMES(tparams)))
-        errorcall(R_NilValue,"in 'partrans': user transformation functions must return a named numeric vector");
+        errorcall(R_NilValue,"user transformation functions must return a named numeric vector");
 
     }
 

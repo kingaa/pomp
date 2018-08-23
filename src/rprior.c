@@ -70,7 +70,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
         // evaluate the call
         PROTECT(ans = eval(fcall,rho)); nprotect++;
         if (LENGTH(ans) != npars) {
-          errorcall(R_NilValue,"in 'rprior': user 'rprior' returns a vector of %d parameters but %d are expected",LENGTH(ans),npars);
+          errorcall(R_NilValue,"user 'rprior' returns a vector of %d parameters but %d are expected",LENGTH(ans),npars);
         }
 
         // get name information to fix potential alignment problems

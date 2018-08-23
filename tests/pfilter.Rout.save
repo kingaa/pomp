@@ -138,7 +138,7 @@ Error : in ‘pfilter’: non-finite state variable(s): x1
 > 
 > try(pfilter(pf,rprocess=onestep.sim(
 +   function(x, t, params, delta.t, ...)stop("yikes!"))))
-Error : in ‘pfilter’: process simulation error: yikes!
+Error : in ‘pfilter’: process simulation error: in ‘rprocess’: yikes!
 > try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 Error : in ‘pfilter’: in ‘dmeasure’: ouch!
 > try(pfilter(pf,dmeasure=function(y,x,t,params,log,...) -Inf))

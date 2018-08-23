@@ -43,7 +43,7 @@ Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix 
 > gompertz %>%
 +   pomp(rinit=function (params, t0, ...) 5) -> po
 > try(rinit(po))
-Error : in ‘rinit’: in 'rinit': user 'rinit' must return a named numeric vector
+Error : in ‘rinit’: user 'rinit' must return a named numeric vector
 > 
 > pp <- parmat(coef(gompertz),10)
 > stopifnot(gompertz %>% rinit(params=pp) %>% as.numeric()==1)
@@ -73,7 +73,7 @@ $rep
 +   pomp(rinit=function(t0,params,...)
 +     c(r=32)) %>%
 +   rinit())
-Error : in ‘rinit’: in 'rinit': a state variable and a parameter share a single name: 'r'
+Error : in ‘rinit’: a state variable and a parameter share a single name: 'r'
 > try({
 +   pp <- matrix(c(1:5),1,5)
 +   rownames(pp) <- "a"
@@ -82,7 +82,7 @@ Error : in ‘rinit’: in 'rinit': a state variable and a parameter share a sin
 +       c(X=rep(1,params["a"]))) %>%
 +     rinit(params=pp)
 + })
-Error : in ‘rinit’: in 'rinit': user 'rinit' returns vectors of non-uniform length
+Error : in ‘rinit’: user 'rinit' returns vectors of non-uniform length
 > 
 > 
 > pompExample(sir)

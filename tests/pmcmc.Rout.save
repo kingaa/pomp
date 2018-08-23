@@ -124,7 +124,7 @@ In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try(pmcmc(mcmc1,proposal=function(...)c(3,2)))
 Error : in ‘pmcmc’: ‘proposal’ must return a named numeric vector
 > try(pmcmc(mcmc1,proposal=function(...)c(a=3,b=2,X.0=1)))
-Error : in ‘pmcmc’: in ‘pfilter’: process simulation error: variable 'r' not found among the parameters
+Error : in ‘pmcmc’: in ‘pfilter’: process simulation error: in ‘rprocess’: variable 'r' not found among the parameters
 > try(pmcmc(mcmc1,proposal=function(...)stop("oh no!")))
 Error : in ‘pmcmc’: error in proposal function: oh no!
 > try({

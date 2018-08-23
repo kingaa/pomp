@@ -38,7 +38,7 @@ Error : in ‘coef’: name(s) ‘bob’ correspond to no parameter(s).
 > try(coef(po) <- c(1,2,3))
 Error : in ‘coef<-’: ‘value’ must be a named vector
 > try(coef(po,transform=TRUE) <- c(1,2,3))
-Error : in 'partrans': user transformation functions must return a named numeric vector
+Error : in ‘partrans’: user transformation functions must return a named numeric vector
 > coef(po) <- list(as.list(coef(po)))
 > coef(po,"r") <- 0.2
 > coef(po,"r") <- list(r=0.2)
@@ -210,7 +210,7 @@ in ‘coef<-’:  names of ‘value’ are being discarded
 > try(coef(po,transform=FALSE) <- c(5,3))
 Error : in ‘coef<-’: ‘value’ must be a named vector
 > try(coef(po,transform=TRUE) <- c(5,3))
-Error : in 'partrans': user transformation functions must return a named numeric vector
+Error : in ‘partrans’: user transformation functions must return a named numeric vector
 > coef(po,transform=TRUE) <- c(r=1,K=1)
 > coef(po)
        r        K 

@@ -89,27 +89,22 @@ setMethod(
   "dmeasure",
   signature=signature(object="pomp"),
   definition=function (object, y, x, times, params, log = FALSE, ...) {
-    dmeasure.internal(object=object,y=y,x=x,times=times,
-      params=params,log=log,...)
+    tryCatch(
+      dmeasure.internal(object=object,y=y,x=x,times=times,
+        params=params,log=log,...),
+      error = function (e) pomp_stop("dmeasure",conditionMessage(e))
+    )
   }
 )
 
 dmeasure.internal <- function (object, y, x, times, params, log = FALSE,
   .getnativesymbolinfo = TRUE, ...) {
-  tryCatch(
-    {
-      storage.mode(y) <- "double"
-      storage.mode(x) <- "double"
-      storage.mode(params) <- "double"
-      pompLoad(object)
-      on.exit(pompUnload(object))
-      rv <- .Call(do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)
-      rv
-    },
-    error = function (e) {
-      stop("in ",sQuote("dmeasure"),": ",conditionMessage(e),call.=FALSE)
-    }
-  )
+  storage.mode(y) <- "double"
+  storage.mode(x) <- "double"
+  storage.mode(params) <- "double"
+  pompLoad(object)
+  on.exit(pompUnload(object))
+  .Call(do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)
 }
 
 ##' Generic dprior
@@ -159,23 +154,20 @@ setMethod(
 setMethod(
   "dprior",
   signature=signature(object="pomp"),
-  definition=function (object, params, log = FALSE, ...)
-    dprior.internal(object=object,params=params,log=log,...)
+  definition=function (object, params, log = FALSE, ...) {
+    tryCatch(
+      dprior.internal(object=object,params=params,log=log,...),
+      error = function (e) pomp_stop("dprior",conditionMessage(e))
+    )
+  }
 )
 
 dprior.internal <- function (object, params, log = FALSE,
   .getnativesymbolinfo = TRUE, ...) {
-  tryCatch(
-    {
-      storage.mode(params) <- "double"
-      pompLoad(object)
-      on.exit(pompUnload(object))
-      .Call(do_dprior,object,params,log,.getnativesymbolinfo)
-    },
-    error = function (e) {
-      stop("in ",sQuote("dprior"),": ",conditionMessage(e),call.=FALSE)
-    }
-  )
+  storage.mode(params) <- "double"
+  pompLoad(object)
+  on.exit(pompUnload(object))
+  .Call(do_dprior,object,params,log,.getnativesymbolinfo)
 }
 
 ##' Generic dprocess
@@ -228,8 +220,12 @@ setMethod(
 setMethod(
   "dprocess",
   signature=signature(object="pomp"),
-  definition = function (object, x, times, params, log = FALSE, ...)
-    dprocess.internal(object=object,x=x,times=times,params=params,log=log,...)
+  definition = function (object, x, times, params, log = FALSE, ...) {
+    tryCatch(
+      dprocess.internal(object=object,x=x,times=times,params=params,log=log,...),
+      error = function (e) pomp_stop("dprocess",conditionMessage(e))
+    )
+  }
 )
 
 dprocess.internal <- function (object, x, times, params, log = FALSE, .getnativesymbolinfo = TRUE, ...) {
@@ -237,12 +233,7 @@ dprocess.internal <- function (object, x, times, params, log = FALSE, .getnative
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
-  tryCatch(
-    .Call(do_dprocess,object,x,times,params,log,.getnativesymbolinfo),
-    error=function (e) {
-      stop("in ",sQuote("dprocess"),": ",conditionMessage(e),call.=FALSE)
-    }
-  )
+  .Call(do_dprocess,object,x,times,params,log,.getnativesymbolinfo)
 }
 
 ##' Generic partrans
@@ -298,13 +289,15 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (object, params, dir = c("fromEst", "toEst"), ...) {
     dir <- match.arg(dir)
-    partrans.internal(object=object,params=params,dir=dir,...)
+    tryCatch(
+      partrans.internal(object=object,params=params,dir=dir,...),
+      error = function (e) pomp_stop("partrans",conditionMessage(e))
+    )
   }
 )
 
 partrans.internal <- function (object, params, dir = c("fromEst", "toEst"),
   .getnativesymbolinfo = TRUE, ...) {
-
   if (object@partrans@has) {
     dir <- switch(dir,fromEst=-1L,toEst=1L)
     pompLoad(object)
@@ -364,8 +357,11 @@ setMethod(
 setMethod(
   "rinit",
   signature=signature("pomp"),
-  definition=function (object, params, t0, nsim, ...) {
-    rinit.internal(object=object,params=params,t0=t0,nsim=nsim,...)
+  definition=function (object, params, t0, nsim = 1, ...) {
+    tryCatch(
+      rinit.internal(object=object,params=params,t0=t0,nsim=nsim,...),
+      error = function (e) pomp_stop("rinit",conditionMessage(e))
+    )
   }
 )
 
@@ -426,24 +422,21 @@ setMethod(
 setMethod(
   "rmeasure",
   signature=signature(object="pomp"),
-  definition=function (object, x, times, params, ...)
-    rmeasure.internal(object=object,x=x,times=times,params=params,...)
+  definition=function (object, x, times, params, ...) {
+    tryCatch(
+      rmeasure.internal(object=object,x=x,times=times,params=params,...),
+      error = function (e) pomp_stop("rmeasure",conditionMessage(e))
+    )
+  }
 )
 
 rmeasure.internal <- function (object, x, times, params,
   .getnativesymbolinfo = TRUE, ...) {
-  tryCatch(
-    {
-      storage.mode(x) <- "double"
-      storage.mode(params) <- "double"
-      pompLoad(object)
-      on.exit(pompUnload(object))
-      .Call(do_rmeasure,object,x,times,params,.getnativesymbolinfo)
-    },
-    error = function (e) {
-      stop("in ",sQuote("rmeasure"),": ",conditionMessage(e),call.=FALSE)
-    }
-  )
+  storage.mode(x) <- "double"
+  storage.mode(params) <- "double"
+  pompLoad(object)
+  on.exit(pompUnload(object))
+  .Call(do_rmeasure,object,x,times,params,.getnativesymbolinfo)
 }
 
 ##' Generic rprior
@@ -494,7 +487,10 @@ setMethod(
   "rprior",
   signature=signature(object="pomp"),
   definition=function (object, params, ...)
-    rprior.internal(object=object,params=params,...)
+    tryCatch(
+      rprior.internal(object=object,params=params,...),
+      error = function (e) pomp_stop("rprior",conditionMessage(e))
+    )
 )
 
 rprior.internal <- function (object, params, .getnativesymbolinfo = TRUE, ...) {
@@ -568,7 +564,10 @@ setMethod(
   "rprocess",
   signature=signature(object="pomp"),
   definition=function (object, xstart, times, params, offset = 0L, ...) {
-    rprocess.internal(object=object,xstart=xstart,times=times,params=params,offset=offset,...)
+    tryCatch(
+      rprocess.internal(object=object,xstart=xstart,times=times,params=params,offset=offset,...),
+      error = function (e) pomp_stop("rprocess",conditionMessage(e))
+    )
   }
 )
 
@@ -633,7 +632,10 @@ setMethod(
   "skeleton",
   signature=signature("pomp"),
   definition=function (object, x, times, params, ...)
-    skeleton.internal(object=object,x=x,times=times,params=params,...)
+    tryCatch(
+      skeleton.internal(object=object,x=x,times=times,params=params,...),
+      error = function (e) pomp_stop("skeleton",conditionMessage(e))
+    )
 )
 
 skeleton.internal <- function (object, x, times, params, .getnativesymbolinfo = TRUE, ...) {
