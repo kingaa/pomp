@@ -37,6 +37,24 @@ setGeneric(
     standardGeneric("dmeasure")
 )
 
+setMethod(
+  "dmeasure",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("dmeasure"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "dmeasure",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("dmeasure")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
 ##' dmeasure
 ##'
 ##' \code{dmeasure} evaluates the probability density of observations given states.
@@ -105,6 +123,24 @@ setGeneric(
     standardGeneric("dprior")
 )
 
+setMethod(
+  "dprior",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("dprior"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "dprior",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("dprior")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
 ##' dprior
 ##'
 ##' Evaluates the prior probability density.
@@ -155,6 +191,24 @@ setGeneric(
     standardGeneric("dprocess")
 )
 
+setMethod(
+  "dprocess",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("dprocess"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "dprocess",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("dprocess")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
 ##' dprocess
 ##'
 ##' Evaluates the probability density of a sequence of consecutive state transitions.
@@ -201,6 +255,24 @@ setGeneric(
   "partrans",
   function (object, ...)
     standardGeneric("partrans")
+)
+
+setMethod(
+  "partrans",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("partrans"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "partrans",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("partrans")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
 )
 
 ##' partrans
@@ -253,6 +325,24 @@ setGeneric(
     standardGeneric("rinit")
 )
 
+setMethod(
+  "rinit",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("rinit"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "rinit",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("rinit")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
 ##' rinit
 ##'
 ##' Samples from the initial-state distribution.
@@ -301,6 +391,24 @@ setGeneric(
   "rmeasure",
   function (object, ...)
     standardGeneric("rmeasure")
+)
+
+setMethod(
+  "rmeasure",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("rmeasure"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "rmeasure",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("rmeasure")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
 )
 
 ##' rmeasure
@@ -352,6 +460,24 @@ setGeneric(
     standardGeneric("rprior")
 )
 
+setMethod(
+  "rprior",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("rprior"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "rprior",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("rprior")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
 ##' rprior
 ##'
 ##' Sample from the prior probability distribution.
@@ -390,6 +516,24 @@ setGeneric(
   "rprocess",
   function (object, ...)
     standardGeneric("rprocess")
+)
+
+setMethod(
+  "rprocess",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("rprocess"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "rprocess",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("rprocess")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
 )
 
 ##' rprocess
@@ -448,6 +592,24 @@ setGeneric(
   "skeleton",
   function (object, ...)
     standardGeneric("skeleton")
+)
+
+setMethod(
+  "skeleton",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("skeleton"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "skeleton",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("skeleton")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
 )
 
 ##' skeleton
