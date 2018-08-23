@@ -203,8 +203,6 @@ setMethod(
 spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   transform.data, detrend, ..., verbose) {
 
-  ep <- paste0("in ",sQuote("spect"),": ")
-
   object <- tryCatch(
     pomp(object,...),
     error = function (e) pomp_stop("spect",conditionMessage(e))
