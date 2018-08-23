@@ -210,8 +210,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
-  params <- rprior(object,params=params,nsim=nsim,
-    .getnativesymbolinfo=gnsi)
+  params <- rprior(object,params=params,.getnativesymbolinfo=gnsi)
 
   ntimes <- length(time(object))
   npars <- nrow(params)
