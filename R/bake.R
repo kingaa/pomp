@@ -28,8 +28,9 @@
 ##' for \code{stew}, this will contain one or more named objects and hence be an RDA file (extension \sQuote{rda}).
 ##' @param expr Expression to be evaluated.
 ##' @param seed,kind,normal.kind optional.
-##' To set the state and, optionally, kind of RNG used.
+##' To set the state and of the RNG.
 ##' See \code{\link{set.seed}}.
+##' The default, \code{seed = NULL}, will not change the RNG state.
 ##'
 ##' @return \code{bake} returns the value of the evaluated expression \code{expr}.
 ##' Other objects created in the evaluation of \code{expr} are discarded along with the temporary, local environment created for the evaluation.
@@ -68,14 +69,12 @@
 
 ##' @rdname bake
 ##' @export
-bake <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
+bake <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
   if (file.exists(file)) {
     readRDS(file)
   } else {
-    rng.control <- !missing(seed)
-    if (missing(seed)) seed <- NULL
-    else seed <- as.integer(seed)
-    if (length(seed) == 0) seed <- NULL
+    seed <- as.integer(seed)
+    rng.control <- length(seed) > 0
     if (rng.control) {
       if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
       save.seed <- get(".Random.seed",envir=.GlobalEnv)
@@ -101,16 +100,14 @@ bake <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
 
 ##' @rdname bake
 ##' @export
-stew <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
+stew <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
   if (file.exists(file)) {
     objlist <- load(file)
     for (obj in objlist)
       assign(obj,get(obj),envir=parent.frame())
   } else {
-    rng.control <- !missing(seed)
-    if (missing(seed)) seed <- NULL
-    else seed <- as.integer(seed)
-    if (length(seed) == 0) seed <- NULL
+    seed <- as.integer(seed)
+    rng.control <- length(seed) > 0
     expr <- substitute(expr)
     e <- new.env()
     if (rng.control) {
@@ -137,24 +134,22 @@ stew <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
 
 ##' @rdname bake
 ##' @export
-freeze <- function (expr, seed, kind = NULL, normal.kind = NULL) {
-  rng.control <- !missing(seed)
-  if (missing(seed)) seed <- NULL
-  else seed <- as.integer(seed)
+freeze <- function (expr, seed = NULL, kind = NULL, normal.kind = NULL) {
   seed <- as.integer(seed)
-  if (length(seed) == 0) seed <- NULL
+  rng.control <- length(seed) > 0
   if (rng.control) {
     if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
     save.seed <- get(".Random.seed",envir=.GlobalEnv)
     set.seed(seed,kind=kind,normal.kind=normal.kind)
-  } else
-    pomp_warn("freeze","seed not set!",call.=FALSE)
+  }
   val <- eval(expr)
   if (rng.control) {
     assign(".Random.seed",save.seed,envir=.GlobalEnv)
-    attr(val,"seed") <- seed
-    attr(val,"kind") <- kind
-    attr(val,"normal.kind") <- normal.kind
+    if (!is.null(val)) {
+      attr(val,"seed") <- seed
+      attr(val,"kind") <- kind
+      attr(val,"normal.kind") <- normal.kind
+    }
   }
   val
 }

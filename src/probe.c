@@ -26,7 +26,7 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
   return retval;
 }
 
-SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed,
+SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
   SEXP probes, SEXP datval, SEXP gnsi) {
   int nprotect = 0;
   SEXP x, y, names, sims;

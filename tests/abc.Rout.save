@@ -93,7 +93,7 @@ Error : in ‘plot-abc’: can't make a scatterplot with only one variable
 > try(abc())
 Error : in ‘abc’: ‘data’ is a required argument
 > try(abc(3))
-Error : ‘abc’ is not defined when ‘data’ is of class ‘numeric’
+Error : ‘abc’ is not defined for objects of class ‘numeric’
 > 
 > try(abc(abc1,Nabc=-5))
 Error : in ‘abc’: ‘Nabc’ must be a positive integer.
@@ -101,7 +101,7 @@ Error : in ‘abc’: ‘Nabc’ must be a positive integer.
 > 
 > try(abc(ou2,Nabc=50,scale=scale.dat[1:2],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘probes’ must be specified
+Error : in ‘abc’: ‘probes’ must be specified.
 > try(abc(ou2,Nabc=50,probes=plist,scale=scale.dat[1:2],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 Error : in ‘abc’: ‘scale’ must have either length 1 or length equal to the number of probes (here, 7).
@@ -126,7 +126,7 @@ Error : in ‘abc’: in proposal function: yikes!
 +   proposal=function(...)3))
 Error : in ‘abc’: ‘proposal’ must return a named numeric vector.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7))
-Error : in ‘abc’: ‘proposal’ must be specified
+Error : in ‘abc’: ‘proposal’ must be specified.
 > try(abc(ou2,Nabc=100,proposal=function(theta,...)theta,probes="mary",
 +   scale=scale.dat,epsilon=1.7))
 Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
@@ -134,13 +134,13 @@ Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
 Error : in ‘abc’: ‘proposal’ must be a function.
 > try(abc(ou2,Nabc=100,probes=plist,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘scale’ must be specified
+Error : in ‘abc’: ‘scale’ must be specified.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified
+Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified.
 > 
 > try(abc(abc1,Nabc=100,epsilon=NULL,scale=scale.dat))
-Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified
+Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified.
 > try(abc(ou2,params=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 Error : in ‘pomp’: ‘params’ must be a named numeric vector.
@@ -149,23 +149,23 @@ Error : in ‘pomp’: ‘params’ must be a named numeric vector.
 Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
 > try(abc(ou2,Nabc=100,probes=function(x,y)x+y,scale=scale.dat[1],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: each probe must be a function of a single argument
+Error : in ‘abc’: each probe must be a function of a single argument.
 > try(abc(abc1,dprior=function(params,log,...)stop("ouch!")))
-Error : in ‘abc’: ‘dprior’ error: ouch!
+Error : in ‘dprior’: ouch!
 > try(abc(abc1,dprior=function(params,log,...)Inf))
 Error : in ‘abc’: inadmissible value of ‘dprior’ at starting parameters.
 > try(abc(abc1,probes=function(x)stop("piff!")))
-Error : in ‘abc’: in ‘apply_probe_data’: piff!
+Error : in ‘abc’: applying probes to data: piff!
 > count <- 0
 > delayed.failure <- function (x) {count <<- count+1; if (count>2) stop("paff!") else 1}
 > try(abc(abc1,scale=1,probes=delayed.failure))
-Error : in ‘abc’: in ‘apply_probe_sim’: paff!
+Error : in ‘abc’: applying probes to simulations: paff!
 > try(abc(abc1,proposal=function(...)stop("urp!")))
 Error : in ‘abc’: in proposal function: urp!
 > count <- 0
 > delayed.failure <- function (params,log,...) {count <<- count+1; if (count>5) stop("no sir!") else 1}
 > try(abc(abc1,dprior=delayed.failure))
-Error : in ‘abc’: ‘dprior’ error: no sir!
+Error : in ‘dprior’: no sir!
 > count <- 0
 > delayed.failure <- function (theta,...) {count <<- count+1; if (count>5) stop("'fraid not!") else theta}
 > try(abc(abc1,proposal=delayed.failure))
@@ -232,9 +232,11 @@ $three
 > capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
 +   verbose=TRUE) -> abc1) -> out
-> stopifnot(length(out)==41)
-> stopifnot(sum(grepl("acceptance",out))==20)
-> stopifnot(sum(grepl("ABC iteration",out))==21)
+> stopifnot(
++   length(out)==40,
++   sum(grepl("acceptance",out))==20,
++   sum(grepl("ABC iteration",out))==20
++ )
 > 
 > try(continue())
 Error : in ‘continue’: ‘object’ is a required argument

@@ -139,9 +139,11 @@ print(c(one=abc1,two=abc2,three=abc3))
 capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
   verbose=TRUE) -> abc1) -> out
-stopifnot(length(out)==41)
-stopifnot(sum(grepl("acceptance",out))==20)
-stopifnot(sum(grepl("ABC iteration",out))==21)
+stopifnot(
+  length(out)==40,
+  sum(grepl("acceptance",out))==20,
+  sum(grepl("ABC iteration",out))==20
+)
 
 try(continue())
 try(continue(44))

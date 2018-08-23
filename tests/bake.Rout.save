@@ -57,17 +57,16 @@ newly created object(s):
 > window(sir2,end=0.5) -> po
 > simulate(po,seed=1347484107L) -> x
 > freeze(simulate(po),seed=1347484107L) -> y
-> attr(y,"system.time") <- NULL
 > attr(y,"seed") <- NULL
 > attr(y,"kind") <- NULL
 > attr(y,"normal.kind") <- NULL
 > stopifnot(identical(x,y))
 > 
-> invisible(freeze({rnorm(5); NULL},seed=3494995))
-Warning message:
-in ‘freeze’: expression evaluates to NULL 
-> invisible(bake({rnorm(5); NULL},seed=3494995,
-+   file=file.path(tempdir(),"bake4.rds")))
+> stopifnot(
++   is.null(freeze({rnorm(5); NULL},seed=3494995)),
++   is.character(bake({rnorm(5); NULL},seed=3494995,
++     file=file.path(tempdir(),"bake4.rds")))
++ )
 Warning message:
 in ‘bake’: expression evaluates to NULL 
 > 
@@ -78,8 +77,6 @@ in ‘bake’: expression evaluates to NULL
 > rm(.Random.seed)
 > invisible(freeze({runif(4)},seed=32765883))
 > invisible(freeze({runif(4)}))
-Warning message:
-in ‘freeze’: seed not set! 
 > 
 > detach("package:pomp", unload=TRUE)
 > 

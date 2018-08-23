@@ -65,18 +65,18 @@ Error : in ‘plot’: ‘quantile.styles’ must be a list.
 Error : in ‘plot’: ‘data.styles’ must be a list
 > 
 > try(spect(sp,kernel.width=-3))
-Error : in ‘spect’: ‘kernel.width’ must be specified as a single positive integer.
+Error : in ‘spect’: ‘kernel.width’ must be a positive integer.
 > try(spect(sp,kernel.width=NA))
-Error : in ‘spect’: ‘kernel.width’ must be specified as a single positive integer.
+Error : in ‘spect’: ‘kernel.width’ must be a positive integer.
 > try(spect(sp,kernel.width=NULL))
-Error : in ‘spect’: ‘kernel.width’ must be specified as a single positive integer.
+Error : in ‘spect’: ‘kernel.width’ must be a positive integer.
 > 
 > try(spect(sp,nsim=-100))
-Error : in ‘spect’: ‘nsim’ must be specified as a positive integer.
+Error : in ‘spect’: ‘nsim’ must be a positive integer.
 > try(spect(sp,nsim=Inf))
-Error : in ‘spect’: ‘nsim’ must be specified as a positive integer.
+Error : in ‘spect’: ‘nsim’ must be a positive integer.
 > try(spect(sp,nsim=NULL))
-Error : in ‘spect’: ‘nsim’ must be specified as a positive integer.
+Error : in ‘spect’: ‘nsim’ must be a positive integer.
 > 
 > sp4@data[17] <- NA
 > try(spect(sp4))
@@ -92,7 +92,7 @@ Error : in ‘spect’: missing or infinite values in simulated data.
 Error : in ‘spect’: ‘spect’ assumes evenly spaced times.
 > 
 > try(spect(sp2,rmeasure=function(x,t,params,...) stop("yikes!")))
-Error : in ‘spect’: in ‘simulate’: yikes!
+Error : in ‘spect’: in simulation: yikes!
 > 
 > simulate(times=1:100,t0=0,
 +   rprocess=euler.sim(Csnippet("

@@ -3,6 +3,8 @@ library(magrittr)
 
 pompExample(gompertz,envir=NULL) %>% extract2(1) -> po
 
+set.seed(530370883)
+
 coef(po)
 coef(po,transform=TRUE)
 coef(po,c("r","tau"))

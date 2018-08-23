@@ -84,7 +84,7 @@ extern SEXP probe_ccf(SEXP x, SEXP y, SEXP lags, SEXP corr);
 
 // probe.c
 extern SEXP apply_probe_data(SEXP object, SEXP probes);
-extern SEXP apply_probe_sim(SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP datval, SEXP gnsi);
+extern SEXP apply_probe_sim(SEXP object, SEXP nsim, SEXP params, SEXP probes, SEXP datval, SEXP gnsi);
 
 // probe_marginal.c
 extern SEXP probe_marginal_setup(SEXP ref, SEXP order, SEXP diff);

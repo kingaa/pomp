@@ -129,10 +129,17 @@ setMethod(
 
 dprior.internal <- function (object, params, log = FALSE,
   .getnativesymbolinfo = TRUE, ...) {
-  storage.mode(params) <- "double"
-  pompLoad(object)
-  on.exit(pompUnload(object))
-  .Call(do_dprior,object,params,log,.getnativesymbolinfo)
+  tryCatch(
+    {
+      storage.mode(params) <- "double"
+      pompLoad(object)
+      on.exit(pompUnload(object))
+      .Call(do_dprior,object,params,log,.getnativesymbolinfo)
+    },
+    error = function (e) {
+      stop("in ",sQuote("dprior"),": ",conditionMessage(e),call.=FALSE)
+    }
+  )
 }
 
 ##' Generic dprocess

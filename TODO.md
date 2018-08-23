@@ -1,32 +1,35 @@
 # pomp to-do list
 
-- revisit default initializer
-- should unspecified basic components return NAs?
-- `nsim` argument for rprior
+## For pomp 2:
+
+- default workhorses
 - `do_simulate` should handle parameter column names
+- ~~`spect` should call `do_simulate`~~
+- `nsim` argument for rprior
 - change `as.data.frame` argument to `format` in `trajectory` 
 - pass userdata as list to C snippets and as pairlist to R functions
+- provide full suite of methods for `traj.match.objfun`
+- ~~revisit default initializer~~
+- ~~should unspecified basic components return NAs?~~
+
 - "guide to upgrading to **pomp** version 2"
 - ~~take away option of passing `params` as a matrix to `pfilter`~~
-- **all methods use transforms if they exist**
+- ~~all methods use transforms if they exist~~
 - `as.data.frame` and ?? for `listies`
 - index by concept using `\concept{}` in the help files
-- document user-data functions
-- provide full suite of methods for `traj.match.objfun`
+- ~~document user-data functions~~
 - matching functions will go away, in favor of objective function constructors:
     - 'probe.match.objfun' looks good: needs testing
     - 'traj.match.objfun' looks good: needs testing
     - 'spect.match.objfun' looks good: needs testing
 	- 'nlf' needs to be reworked
-- **revisit whether `pomp` can handle all `params` chopping and changing**
+- ~~revisit whether `pomp` can handle all `params` chopping and changing~~
 - if `pomp` becomes essentially hidden, where will `zeronames` be documented?
-- put all NLF codes into one file
+- ~~put all NLF codes into one file~~
 - import and re-export `reshape2::melt`?
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
-
-## For pomp 2:
 
 - on-the-fly modification of basic components
 	- needed for nlf

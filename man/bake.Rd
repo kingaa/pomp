@@ -6,11 +6,11 @@
 \alias{freeze}
 \title{Bake, stew, and freeze}
 \usage{
-bake(file, expr, seed, kind = NULL, normal.kind = NULL)
+bake(file, expr, seed = NULL, kind = NULL, normal.kind = NULL)
 
-stew(file, expr, seed, kind = NULL, normal.kind = NULL)
+stew(file, expr, seed = NULL, kind = NULL, normal.kind = NULL)
 
-freeze(expr, seed, kind = NULL, normal.kind = NULL)
+freeze(expr, seed = NULL, kind = NULL, normal.kind = NULL)
 }
 \arguments{
 \item{file}{Name of the binary data file in which the result will be stored or retrieved, as appropriate.
@@ -20,8 +20,9 @@ for \code{stew}, this will contain one or more named objects and hence be an RDA
 \item{expr}{Expression to be evaluated.}
 
 \item{seed, kind, normal.kind}{optional.
-To set the state and, optionally, kind of RNG used.
-See \code{\link{set.seed}}.}
+To set the state and of the RNG.
+See \code{\link{set.seed}}.
+The default, \code{seed = NULL}, will not change the RNG state.}
 }
 \value{
 \code{bake} returns the value of the evaluated expression \code{expr}.

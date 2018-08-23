@@ -215,13 +215,11 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   if (missing(kernel.width) || length(kernel.width) > 1 ||
       !is.numeric(kernel.width) ||
       !is.finite(kernel.width) || kernel.width < 0)
-    stop(ep,sQuote("kernel.width"),
-      " must be specified as a single positive integer.",call.=FALSE)
+    pomp_stop("spect",sQuote("kernel.width")," must be a positive integer.")
 
   if (missing(nsim) || length(nsim) > 1 || !is.numeric(nsim)||
       !is.finite(nsim) || (nsim<1))
-    stop(ep,sQuote("nsim")," must be specified as a positive integer.",
-      call.=FALSE)
+    pomp_stop("spect",sQuote("nsim")," must be a positive integer.")
 
   nsim <- as.integer(nsim)
   seed <- as.integer(seed)
@@ -295,17 +293,15 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
 
 compute.spect.data <- function (object, vars, transform.data, detrend, ker) {
 
-  ep <- paste0("in ",sQuote("spect"),": ")
-
   dat <- obs(object,vars)
   if (any(!is.finite(dat)))
-    stop(ep,"missing or infinite values in the data.",call.=FALSE)
+    pomp_stop("spect","missing or infinite values in the data.")
 
   dt <- diff(time(object,t0=FALSE))
   base.freq <- 1/mean(dt)
   dt.tol <- 0.025
   if (max(dt)-min(dt)>dt.tol*mean(dt))
-    stop(ep,sQuote("spect")," assumes evenly spaced times.",call.=FALSE)
+    pomp_stop("spect",sQuote("spect")," assumes evenly spaced times.")
 
   for (j in seq_along(vars)) {
     sp <- spec.pgram(
@@ -327,18 +323,17 @@ compute.spect.data <- function (object, vars, transform.data, detrend, ker) {
 compute.spect.sim <- function (object, params, vars, nsim, seed,
   transform.data, detrend, ker) {
 
-  ep <- paste0("in ",sQuote("spect"),": ")
-
   sims <- tryCatch(
     {
-      s <- simulate(object,params=params,nsim=nsim,seed=seed,format="arrays")
+      s <- freeze(.Call(do_simulate,object,params,nsim,gnsi=TRUE),seed=seed)
       s$obs[vars,,,drop=FALSE]
     },
-    error = function (e) pomp_stop("spect",conditionMessage(e))
+    error = function (e) pomp_stop("spect","in simulation: ",
+      conditionMessage(e))
   )
 
   if (any(!is.finite(sims)))
-    stop(ep,"missing or infinite values in simulated data.",call.=FALSE)
+    pomp_stop("spect","missing or infinite values in simulated data.")
 
   nobs <- length(vars)
   for (j in seq_len(nobs)) {

@@ -217,23 +217,13 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
-  ## set the random seed (be very careful about this)
-  seed <- as.integer(seed)
-  if (length(seed)>0) {
-    if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
-    save.seed <- get(".Random.seed",envir=.GlobalEnv)
-    set.seed(seed)
-  }
-
   sims <- tryCatch(
-    .Call(do_simulate,object,params,nsim,.getnativesymbolinfo),
+    freeze(
+      .Call(do_simulate,object,params,nsim,.getnativesymbolinfo),
+      seed=seed
+    ),
     error = function (e) pomp_stop("simulate",conditionMessage(e))
   )
-
-  ## restore the RNG state
-  if (length(seed) > 0) {
-    assign('.Random.seed',save.seed,envir=.GlobalEnv)
-  }
 
   nsims <- ncol(sims$states)
 

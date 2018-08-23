@@ -290,12 +290,8 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
         stop(ep,conditionMessage(e),call.=FALSE)
       }
     )
-    log.prior <- tryCatch(
-      dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi),
-      error = function (e) {
-        stop(ep,sQuote("dprior")," error: ",conditionMessage(e),call.=FALSE)
-      }
-    )
+    log.prior <- dprior(object,params=theta,log=TRUE,
+      .getnativesymbolinfo=gnsi)
     gnsi <- FALSE
   } else { ## has been computed previously
     pfp <- .prev.pfp
@@ -319,12 +315,8 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
     )
 
     ## compute log prior
-    log.prior.prop <- tryCatch(
-      dprior(object,params=theta.prop,log=TRUE,.getnativesymbolinfo=gnsi),
-      error = function (e) {
-        stop(ep,sQuote("dprior")," error: ",conditionMessage(e),call.=FALSE)
-      }
-    )
+    log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,
+      .getnativesymbolinfo=gnsi)
 
     if (is.finite(log.prior.prop)) {
 
@@ -341,7 +333,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
           .getnativesymbolinfo=gnsi
         ),
         error = function (e) {
-          stop(ep,conditionMessage(e),call.=FALSE) # nocov
+          stop(ep,conditionMessage(e),call.=FALSE)
         }
       )
       gnsi <- FALSE

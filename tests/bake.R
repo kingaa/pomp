@@ -35,15 +35,16 @@ pompExample(sir2)
 window(sir2,end=0.5) -> po
 simulate(po,seed=1347484107L) -> x
 freeze(simulate(po),seed=1347484107L) -> y
-attr(y,"system.time") <- NULL
 attr(y,"seed") <- NULL
 attr(y,"kind") <- NULL
 attr(y,"normal.kind") <- NULL
 stopifnot(identical(x,y))
 
-invisible(freeze({rnorm(5); NULL},seed=3494995))
-invisible(bake({rnorm(5); NULL},seed=3494995,
-  file=file.path(tempdir(),"bake4.rds")))
+stopifnot(
+  is.null(freeze({rnorm(5); NULL},seed=3494995)),
+  is.character(bake({rnorm(5); NULL},seed=3494995,
+    file=file.path(tempdir(),"bake4.rds")))
+)
 
 rm(.Random.seed)
 invisible(bake({runif(4)},file=file.path(tempdir(),"b99.rds"),seed=32765883))

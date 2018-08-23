@@ -172,7 +172,6 @@ setMethod(
 probe.internal <- function (object, probes, nsim, seed, ...,
   .getnativesymbolinfo = TRUE, verbose) {
 
-  ep <- paste0("in ",sQuote("probe"),": ")
   verbose <- as.logical(verbose)
 
   object <- tryCatch(
@@ -181,20 +180,19 @@ probe.internal <- function (object, probes, nsim, seed, ...,
   )
 
   if (is.null(probes))
-    stop(ep,sQuote("probes")," must be furnished.",call.=FALSE)
+    pomp_stop("probe",sQuote("probes")," must be furnished.")
   if (!is.list(probes)) probes <- list(probes)
   if (!all(sapply(probes,is.function)))
-    stop(ep,sQuote("probes")," must be a function or a list of functions.",
-      call.=FALSE)
+    pomp_stop("probe",sQuote("probes")," must be a function or a list of functions.")
   if (!all(sapply(probes,function(f)length(formals(f))==1)))
-    stop(ep,"each probe must be a function of a single argument.",call.=FALSE)
+    pomp_stop("probe","each probe must be a function of a single argument.")
 
   nsim <- as.integer(nsim)
   if (length(nsim) < 1)
-    stop(ep,sQuote("nsim")," must be specified.",call.=FALSE)
+    pomp_stop("probe",sQuote("nsim")," must be specified.")
   if (length(nsim) > 1 || !is.finite(nsim) || nsim <= 0)
-    stop(ep,"number of simulations, ",sQuote("nsim"),
-      ", must be a single positive integer.",call.=FALSE)
+    pomp_stop("probe","number of simulations, ",sQuote("nsim"),
+      ", must be a single positive integer.")
 
   seed <- as.integer(seed)
   gnsi <- as.logical(.getnativesymbolinfo)
@@ -207,34 +205,25 @@ probe.internal <- function (object, probes, nsim, seed, ...,
   ## apply probes to data
   datval <- tryCatch(
     .Call(apply_probe_data,object,probes),
-    error = function (e) {
-      stop(ep,"applying probes to actual data: ",
-        conditionMessage(e),call.=FALSE)
-    }
+    error = function (e)
+      pomp_stop("probe","applying probes to actual data: ",conditionMessage(e))
   )
 
   nprobes <- length(datval)
 
   if (nprobes >= nsim)
-    stop(ep,sQuote("nsim")," (=",nsim,"), should be (much) larger than the ",
-      "number of probes (=",nprobes,").",call.=FALSE)
+    pomp_stop("probe",sQuote("nsim")," (=",nsim,"), should be (much) larger than the ",
+      "number of probes (=",nprobes,").")
 
   ## apply probes to model simulations
   simval <- tryCatch(
-    .Call(
-      apply_probe_sim,
-      object=object,
-      nsim=nsim,
-      params=params,
-      seed=seed,
-      probes=probes,
-      datval=datval,
-      gnsi=gnsi
+    freeze(
+      .Call(apply_probe_sim,object=object,nsim=nsim,params=params,probes=probes,
+        datval=datval,gnsi=gnsi),
+      seed=seed
     ),
-    error = function (e) {
-      stop(ep,"applying probes to simulated data: ",
-        conditionMessage(e),call.=FALSE)
-    }
+    error = function (e)
+      pomp_stop("probe","applying probes to simulated data: ",conditionMessage(e))
   )
 
   pvals <- numeric(nprobes)
@@ -251,10 +240,8 @@ probe.internal <- function (object, probes, nsim, seed, ...,
 
   ll <- tryCatch(
     .Call(synth_loglik,simval,datval),
-    error = function (e) {
-      stop(ep,"in synthetic likelihood computation: ",  # nocov
-        conditionMessage(e),call.=FALSE)                # nocov
-    }
+    error = function (e)
+      pomp_stop("probe","in synthetic likelihood computation: ",conditionMessage(e))
   )
 
   names(dimnames(simval)) <- c("rep","probe")

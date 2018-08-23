@@ -23,7 +23,7 @@ plot(pb,y=NULL)
 pb %>% values() %>% head(3) %>% knitr::kable()
 pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
 summary(pb)
-stopifnot(all.equal(logLik(pb),16.7,tolerance=0.005))
+stopifnot(all.equal(logLik(pb),17.2,tolerance=0.005))
 
 try(probe(po,nsim=10))
 try(probe(po,probes=plist[1:3]))
@@ -48,7 +48,7 @@ try({
 })
 try(probe(pb,nsim=10))
 
-invisible(probe(pb,params=as.list(coef(pb))))
+probe(pb,params=as.list(coef(pb)))
 try(probe(pb,params=NULL))
 try(probe(pb,params="I think so"))
 try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
