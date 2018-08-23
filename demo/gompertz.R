@@ -87,7 +87,7 @@ p <- parmat(coef(Gompertz),nrep=4)
 p["X.0",] <- c(0.5,0.9,1.1,1.5)
 
 ## compute a trajectory of the deterministic skeleton
-X <- trajectory(Gompertz,params=p,as.data.frame=TRUE)
+X <- trajectory(Gompertz,params=p,format="data.frame")
 X %>%
   ggplot(aes(x=time,y=X,group=.id,color=.id))+
   guides(color=FALSE)+

@@ -15,5 +15,5 @@ stopifnot(sum(obs(po))==2040)
 pf <- pfilter(ricker,Np=1000)
 stopifnot(all.equal(round(mean(eff.sample.size(pf))),581))
 
-tj <- trajectory(ricker,as.data.frame=TRUE)
+tj <- trajectory(ricker,format="data.frame")
 stopifnot(all.equal(round(mean(tj$N)),4))

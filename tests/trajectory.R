@@ -76,7 +76,7 @@ stopifnot(
 )
 
 pompExample(sir)
-trajectory(sir,as.data.frame=TRUE) -> x
+trajectory(sir,format="data.frame") -> x
 plot(cases~time,data=x,type='l')
 
 pompExample(gompertz)

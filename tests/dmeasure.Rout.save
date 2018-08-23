@@ -39,11 +39,9 @@ newly created object(s):
 > stopifnot(identical(dim(ll),c(5L,10L)))
 > 
 > try(dmeasure(x=x,y=y,times=t,params=theta))
-Error in (function (classes, fdef, mtable)  : 
-  unable to find an inherited method for function ‘dmeasure’ for signature ‘"missing"’
+Error : in ‘dmeasure’: ‘object’ is a required argument
 > try(dmeasure(x,y=y,times=t,params=theta))
-Error in (function (classes, fdef, mtable)  : 
-  unable to find an inherited method for function ‘dmeasure’ for signature ‘"array"’
+Error : ‘dmeasure’ is not defined for objects of class ‘array’
 > try(dmeasure(po,x=x,y=y,times=t))
 Error : in ‘dmeasure’: argument "params" is missing, with no default
 > try(dmeasure(po,x=x,y=y,params=theta))

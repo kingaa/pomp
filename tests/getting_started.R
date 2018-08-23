@@ -128,7 +128,7 @@ traj <- trajectory(parus,params=pars,times=seq(1959,1970,by=0.01))
 
 ## ----logistic-plot3,echo=FALSE-------------------------------------------
 parus %>%
-  trajectory(params=pars,times=seq(1959,1970,by=0.01),as.data.frame=TRUE) %>%
+  trajectory(params=pars,times=seq(1959,1970,by=0.01),format="data.frame") %>%
   ggplot(mapping=aes(x=year,y=N,group=.id,color=.id))+
   guides(color=FALSE)+
   geom_line()+

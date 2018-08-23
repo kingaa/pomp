@@ -40,7 +40,7 @@ params <- cbind(
   c(n_0=100,K=30000,r=0.3,sigma=0.2,tau=0.1)
 )
 
-po %>% trajectory(params=params,as.data.frame=TRUE) %>%
+po %>% trajectory(params=params,format="data.frame") %>%
   rename(rep=.id) %>%
   mutate(type="deterministic") -> traj
 po %>% simulate(params=params,format="data.frame",seed=34597368L) %>%

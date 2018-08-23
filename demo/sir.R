@@ -141,7 +141,7 @@ LondonYorke %>%
   ) -> po
 
 ## compute a trajectory of the deterministic skeleton
-X <- trajectory(po,hmax=1/52,as.data.frame=TRUE)
+X <- trajectory(po,hmax=1/52,format="data.frame")
 plot(incid~time,data=X,type='l')
 
 ## simulate from the model

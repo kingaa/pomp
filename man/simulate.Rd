@@ -65,7 +65,7 @@ identical to \code{object} except for the latent states and observations,
 which have been replaced by the simulated values.
 
 \code{format = "arrays"} causes the results to be returned as a list of two arrays.
-The \dQuote{states} element will contain the simulate state trajectories in a rank-3 array with dimensions
+The \dQuote{states} element will contain the simulated state trajectories in a rank-3 array with dimensions
 \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
 Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
 The \dQuote{obs} element will contain the simulated data, returned as a rank-3 array with dimensions

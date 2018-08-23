@@ -16,7 +16,7 @@ pf <- pfilter(window(po,end=0.5),Np=1000)
 stopifnot(
   round(mean(eff.sample.size(pf)))==558)
 
-tj <- trajectory(po,maxsteps=10000,as.data.frame=TRUE)
+tj <- trajectory(po,maxsteps=10000,format="data.frame")
 stopifnot(
   round(mean(tj$cases))==701,
   mean(tj$W)==0,

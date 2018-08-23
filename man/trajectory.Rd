@@ -10,7 +10,8 @@
 \title{Trajectory of a deterministic model}
 \usage{
 \S4method{trajectory}{pomp}(object, params, times, t0,
-  as.data.frame = FALSE, ..., verbose = getOption("verbose", FALSE))
+  format = c("array", "data.frame"), ...,
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
@@ -23,8 +24,16 @@ These must be in non-decreasing order.}
 
 \item{t0}{the initial time, i.e., the time corresponding to the initial-state distribution.}
 
-\item{as.data.frame}{logical;
-if \code{TRUE}, return the result as a data-frame.}
+\item{format}{the format in which to return the results.
+
+\code{format = "array"} causes the trajectories to be returned
+in a rank-3 array with dimensions
+\code{nvar} x \code{ncol(params)} x \code{ntimes}.
+Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
+
+\code{format = "data.frame"} causes the results to be returned as a single data frame containing
+the time and states.
+An ordered factor variable, \sQuote{.id}, distinguishes the trajectories from one another.}
 
 \item{\dots}{Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
 See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.

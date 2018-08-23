@@ -6,7 +6,7 @@
 - `do_simulate` should handle parameter column names
 - ~~`spect` should call `do_simulate`~~
 - `nsim` argument for rprior
-- change `as.data.frame` argument to `format` in `trajectory` 
+- ~~change `as.data.frame` argument to `format` in `trajectory`~~
 - pass userdata as list to C snippets and as pairlist to R functions
 - provide full suite of methods for `traj.match.objfun`
 - ~~revisit default initializer~~

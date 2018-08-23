@@ -47,7 +47,7 @@ Type 'q()' to quit R.
 
 > p["X.0", ] <- c(0.5, 0.9, 1.1, 1.5)
 
-> X <- trajectory(Gompertz, params = p, as.data.frame = TRUE)
+> X <- trajectory(Gompertz, params = p, format = "data.frame")
 
 > X %>% ggplot(aes(x = time, y = X, group = .id, color = .id)) + 
 +     guides(color = FALSE) + geom_line() + theme_bw() + labs(title = "Gompertz mode ..." ... [TRUNCATED] 
@@ -63,7 +63,7 @@ Type 'q()' to quit R.
                      se 
 75.25036908  0.08779528 
    user  system elapsed 
-  1.116   0.068   1.237 
+  1.080   0.044   1.176 
 
 > library(pomp)
 
@@ -92,7 +92,7 @@ The following objects are masked from ‘package:base’:
 +     tau = 0.1), c(n_0 = 100, K = 20000, r = 0.1, sigma = 0.4, 
 +     tau = 0.1), c( .... [TRUNCATED] 
 
-> traj <- po %>% trajectory(params = params, as.data.frame = TRUE) %>% 
+> traj <- po %>% trajectory(params = params, format = "data.frame") %>% 
 +     rename(rep = .id) %>% mutate(type = "deterministic")
 
 > sim <- po %>% simulate(params = params, format = "data.frame", 
@@ -103,7 +103,7 @@ The following objects are masked from ‘package:base’:
 +     theme_bw() + labs( .... [TRUNCATED] 
 Joining, by = c("n", "time", "rep", "type")
    user  system elapsed 
-  0.336   0.076   0.463 
+  0.352   0.052   0.450 
 
 > library(pomp)
 
@@ -121,7 +121,7 @@ Joining, by = c("n", "time", "rep", "type")
 
 > plot(pf)
    user  system elapsed 
-  0.200   0.028   0.283 
+  0.184   0.048   0.285 
 
 > library(pomp)
 
@@ -143,7 +143,7 @@ Joining, by = c("n", "time", "rep", "type")
 +     disease == "measles" & year >= 1928 & year <= 1933) %>% select(time, 
 +     cases) %>% pomp .... [TRUNCATED] 
 
-> X <- trajectory(po, hmax = 1/52, as.data.frame = TRUE)
+> X <- trajectory(po, hmax = 1/52, format = "data.frame")
 
 > plot(incid ~ time, data = X, type = "l")
 
@@ -156,7 +156,7 @@ Joining, by = c("n", "time", "rep", "type")
 +     statenames = c("S", "I", "R", "in ..." ... [TRUNCATED] 
 [1] -671.6956
    user  system elapsed 
-  6.676   0.068   6.853 
+  6.656   0.064   6.833 
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 

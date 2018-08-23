@@ -38,8 +38,7 @@ newly created object(s):
 [1] -3.22774 -0.72443 -0.00876  0.64728  4.12427
 > 
 > try(rmeasure(x=x,times=t,params=theta))
-Error in (function (classes, fdef, mtable)  : 
-  unable to find an inherited method for function ‘rmeasure’ for signature ‘"missing"’
+Error : in ‘rmeasure’: ‘object’ is a required argument
 > try(rmeasure(po,x=x,times=t))
 Error : in ‘rmeasure’: argument "params" is missing, with no default
 > try(rmeasure(po,x=x,params=theta))
