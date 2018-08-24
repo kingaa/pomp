@@ -110,8 +110,8 @@ SEXP do_simulate (SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi)
 
         // copy x[,k,] and y[,k,] into po2
         for (j = 0; j < ntim; j++) {
-          for (i = 0; i < nvar; i++, xt++) *xt = xs[i+nvar*(j+nsim*k)];
-          for (i = 0; i < nobs; i++, yt++) *yt = ys[i+nobs*(j+nsim*k)];
+          for (i = 0; i < nvar; i++, xt++) *xt = xs[i+nvar*(k+nsim*j)];
+          for (i = 0; i < nobs; i++, yt++) *yt = ys[i+nobs*(k+nsim*j)];
         }
 
         SET_ELEMENT(ans,k,po2);
