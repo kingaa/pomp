@@ -51,7 +51,7 @@ workhorse_templates <- list(
   dmeasure=list(
     slotname="dmeasure",
     Cname= "__pomp_dmeasure",
-    proto=quote(dmeasure(y,x,t,params,log,...)),
+    proto=quote(dmeasure(log,...)),
     header="\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
     footer="\n}\n\n",
     vars=list(

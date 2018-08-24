@@ -141,7 +141,7 @@ Error : in ‘pfilter’: non-finite state variable: x1
 Error : in ‘pfilter’: in ‘rprocess’: yikes!
 > try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 Error : in ‘pfilter’: in ‘dmeasure’: ouch!
-> try(pfilter(pf,dmeasure=function(y,x,t,params,log,...) -Inf))
+> try(pfilter(pf,dmeasure=function(log,...) -Inf))
 Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value.
 likelihood, data, states, and parameters are:
    time:            1

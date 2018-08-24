@@ -64,13 +64,15 @@ y %>% melt() %>%
     rmeasure=function(x,t,params,...){
       C%*%x+sqrtR%*%rnorm(n=nrow(C))
     },
-    dmeasure=function(y,x,t,params,log,...){
+    dmeasure=function(x1,x2,x3,x4,y1,y2,log,...){
+      x <- c(x1,x2,x3,x4)
+      y <- c(y1,y2)
       dmvnorm(x=t(y-C%*%x),sigma=R,log=log)
     },
     rinit=function(params,t0,...){
       X0
     },
-    params=c(dummy=1)) %>%
+    params=c()) %>%
   pfilter(Np=1000,filter.mean=TRUE) -> pf
 
 enkf <- enkf(pf,h=function(x)C%*%x,R=R,Np=1000)

@@ -44,13 +44,13 @@ stopifnot(all.equal(dmeasure(po,x=xx,y=y,times=t,params=theta,log=TRUE),
                     dmeasure(po,x=round(x),y=y,times=t,params=theta,log=TRUE)))
 
 stopifnot({
-  dmeasure(pomp(po,dmeasure=function(y,x,t,params,log,...)3),
+  dmeasure(pomp(po,dmeasure=function(log,...)3),
            x=x,y=y,times=t,params=theta,log=TRUE) -> z
   dimnames(z)
   all(z[]==3)
 })
 
-try(dmeasure(pomp(po,dmeasure=function(y,x,t,params,log,...)c(3,2,1)),
+try(dmeasure(pomp(po,dmeasure=function(log,...)c(3,2,1)),
              x=x,y=y,times=t,params=theta,log=TRUE))
 
 pp <- parmat(theta,10)

@@ -72,12 +72,12 @@ mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,rprocess=onestep.sim(function(x,t,params,covars,delta.t,...)stop("boink"))))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
-  cooling.fraction.50=0.1,dmeasure=function(y,x,t,params,covars,log,...)stop("blop")))
+  cooling.fraction.50=0.1,dmeasure=function(log,...)stop("blop")))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
-  cooling.fraction.50=0.1,dmeasure=function(y,x,t,params,covars,log,...)NA))
+  cooling.fraction.50=0.1,dmeasure=function(log,...)NA))
 mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,
   drpocess="oops",
-  dmeasure=function(t,x,y,params,log,...)0) -> mf3
+  dmeasure=function(log,...)0) -> mf3
 try(mif2(mf3,max.fail=1))
 
 theta <- coef(po)

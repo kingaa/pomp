@@ -32,16 +32,8 @@ simulate(times=1:100,t0=0,
     y <- c(Y=unname(rlnorm(n=1,meanlog=log(X),sdlog=tau)))
     return(y)
   },
-  dmeasure=function (y, x, t, params, log, ...) { # measurement model density
-    ## unpack the parameters:
-    tau <- params["tau"]
-    ## state at time t:
-    X <- x["X"]
-    ## observation at time t:
-    Y <- y["Y"]
-    ## compute the likelihood of Y|X,tau
-    f <- dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
-    return(f)
+  dmeasure=function (tau, X, Y, log, ...) { # measurement model density
+    dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
   },
   partrans=parameter_trans(
     toEst=function(params,...){

@@ -30,16 +30,10 @@ In writing a \code{dmeasure} C snippet, observe that:
 
 If \code{dmeasure} is to be provided instead as an \R function, this is accomplished by supplying \preformatted{
   dmeasure = f}
-to \code{pomp}, where \code{f} has prototype \preformatted{
-  f(y, x, t, params, log, \dots)}
-Again, it can take additional arguments that are passed with it in the call to \code{pomp}.
-When \code{f} is called,
-\itemize{
-  \item \code{y} will be a named numeric vector of length \code{nobs} containing values of the observed variables;
-  \item \code{x} will be a named numeric vector of length \code{nvar} containing state variables;
-  \item \code{params} will be a named numeric vector of length \code{npar} containing parameters;
-  \item \code{t} will be a scalar, the corresponding observation time.
-}
+to \code{pomp}, where \code{f} is a function.
+The arguments of \code{f} should be chosen from among the observables, state variables, parameters, covariates, and time.
+It must also have the arguments \code{\dots}, and \code{log}.
+It can take additional arguments via the \link[=userdata]{facility}.
 \code{f} must return a single numeric value, the probability density (or log probability density) of \code{y} given \code{x} at time \code{t}.
 }
 \section{Important note}{

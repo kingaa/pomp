@@ -65,7 +65,7 @@ try(pfilter(pf,params=theta,pred.var=TRUE))
 try(pfilter(pf,rprocess=onestep.sim(
   function(x, t, params, delta.t, ...)stop("yikes!"))))
 try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
-try(pfilter(pf,dmeasure=function(y,x,t,params,log,...) -Inf))
+try(pfilter(pf,dmeasure=function(log,...) -Inf))
 
 set.seed(388966382L)
 capture.output(try(pfilter(pf,Np=2,max.fail=20,verbose=TRUE,filter.mean=TRUE)),

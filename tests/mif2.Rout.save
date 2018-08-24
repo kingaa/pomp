@@ -173,10 +173,10 @@ in ‘mif2’: Np[k] ignored for k > ‘length(time(object))’.
 +   cooling.fraction.50=0.1,rprocess=onestep.sim(function(x,t,params,covars,delta.t,...)stop("boink"))))
 Error : in ‘mif2’: in ‘mif2.pfilter’: process simulation error: in ‘rprocess’: boink
 > try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
-+   cooling.fraction.50=0.1,dmeasure=function(y,x,t,params,covars,log,...)stop("blop")))
++   cooling.fraction.50=0.1,dmeasure=function(log,...)stop("blop")))
 Error : in ‘mif2’: in ‘mif2.pfilter’: in ‘dmeasure’: blop
 > try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
-+   cooling.fraction.50=0.1,dmeasure=function(y,x,t,params,covars,log,...)NA))
++   cooling.fraction.50=0.1,dmeasure=function(log,...)NA))
 Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
 likelihood, data, states, and parameters are:
  time:            0
@@ -190,7 +190,7 @@ sigma:     0.100133
   X.0:     0.996592
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,
 +   drpocess="oops",
-+   dmeasure=function(t,x,y,params,log,...)0) -> mf3
++   dmeasure=function(log,...)0) -> mf3
 in ‘pomp’: the unrecognized argument ‘drpocess’ is available for use by the POMP basic components.
 Warning messages:
 1: in ‘mif2.pfilter’: filtering failure at last filter iteration; using unweighted mean for point estimate. 

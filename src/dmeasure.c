@@ -17,14 +17,15 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
   SEXP Snames, Pnames, Cnames, Onames;
   SEXP pompfun;
-  SEXP cvec, tvec = R_NilValue;
-  SEXP xvec = R_NilValue, yvec = R_NilValue, pvec = R_NilValue;
+  SEXP cvec;
   SEXP fn, ans, fcall, rho = R_NilValue;
   SEXP F;
   int *sidx = 0, *pidx = 0, *cidx = 0, *oidx = 0;
   int *dim;
   lookup_table_t covariate_table;
   pomp_measure_model_density *ff = NULL;
+  SEXP var;
+  int v;
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
@@ -80,27 +81,32 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   case Rfun:			// R function
 
-    PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
-    PROTECT(xvec = NEW_NUMERIC(nvars)); nprotect++;
-    PROTECT(yvec = NEW_NUMERIC(nobs)); nprotect++;
-    PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
-    SET_NAMES(xvec,Snames);
-    SET_NAMES(yvec,Onames);
-    SET_NAMES(pvec,Pnames);
-
-    // set up the function call
-    PROTECT(fcall = LCONS(cvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("covars"));
-    PROTECT(fcall = LCONS(AS_LOGICAL(log),fcall)); nprotect++;
+    PROTECT(fcall = LCONS(log,fcall)); nprotect++;
     SET_TAG(fcall,install("log"));
-    PROTECT(fcall = LCONS(pvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("params"));
-    PROTECT(fcall = LCONS(tvec,fcall)); nprotect++;
+    for (v = LENGTH(Cnames)-1; v >= 0; v--) {
+      PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+      PROTECT(fcall = LCONS(var,fcall)); nprotect++;
+      SET_TAG(fcall,install(CHAR(STRING_ELT(Cnames,v))));
+    }
+    for (v = LENGTH(Pnames)-1; v >= 0; v--) {
+      PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+      PROTECT(fcall = LCONS(var,fcall)); nprotect++;
+      SET_TAG(fcall,install(CHAR(STRING_ELT(Pnames,v))));
+    }
+    for (v = LENGTH(Snames)-1; v >= 0; v--) {
+      PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+      PROTECT(fcall = LCONS(var,fcall)); nprotect++;
+      SET_TAG(fcall,install(CHAR(STRING_ELT(Snames,v))));
+    }
+    for (v = LENGTH(Onames)-1; v >= 0; v--) {
+      PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+      PROTECT(fcall = LCONS(var,fcall)); nprotect++;
+      SET_TAG(fcall,install(CHAR(STRING_ELT(Onames,v))));
+    }
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(fcall = LCONS(var,fcall)); nprotect++;
     SET_TAG(fcall,install("t"));
-    PROTECT(fcall = LCONS(xvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("x"));
-    PROTECT(fcall = LCONS(yvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("y"));
+
     PROTECT(fcall = LCONS(fn,fcall)); nprotect++;
 
     // get the function's environment
@@ -146,10 +152,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     double *xs = REAL(x);
     double *ps = REAL(params);
     double *cp = REAL(cvec);
-    double *tp = REAL(tvec);
-    double *xp = REAL(xvec);
-    double *yp = REAL(yvec);
-    double *pp = REAL(pvec);
     double *ft = REAL(F);
     double *time = REAL(times);
     int j, k;
@@ -158,16 +160,21 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
       R_CheckUserInterrupt();	// check for user interrupt
 
-      *tp = *time;				 // copy the time
       table_lookup(&covariate_table,*time,cp); // interpolate the covariates
-
-      memcpy(yp,ys,nobs*sizeof(double));
 
       for (j = 0; j < nreps; j++, ft++) { // loop over replicates
 
+        var = CDR(fcall);
         // copy the states and parameters into place
-        memcpy(xp,&xs[nvars*((j%nrepsx)+nrepsx*k)],nvars*sizeof(double));
-        memcpy(pp,&ps[npars*(j%nrepsp)],npars*sizeof(double));
+        *(REAL(CAR(var))) = *time; var = CDR(var);
+        for (v = 0; v < nobs; v++, var=CDR(var))
+          *(REAL(CAR(var))) = ys[v];
+        for (v = 0; v < nvars; v++, var=CDR(var))
+          *(REAL(CAR(var))) = xs[v+nvars*((j%nrepsx)+nrepsx*k)];
+        for (v = 0; v < npars; v++, var=CDR(var))
+          *(REAL(CAR(var))) = ps[v+npars*(j%nrepsp)];
+        for (v = 0; v < ncovars; v++, var=CDR(var))
+          *(REAL(CAR(var))) = cp[v];
 
         if (first) {
           // evaluate the call
