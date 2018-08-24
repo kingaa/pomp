@@ -8,7 +8,7 @@
 ##'
 ##' @name pomp_fun
 ##' @rdname pomp_fun
-##' @include pomp-package.R csnippet.R
+##' @include pomp-package.R csnippet.R pstop.R
 ##' @docType methods
 ##' @keywords programming internal
 ##'

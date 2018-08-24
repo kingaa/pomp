@@ -4,7 +4,7 @@
 ##' @name pStop
 ##' @keywords internal
 ##'
-##' @param fn name of function
+##' @param fn name of function (will be enclosed in single quotes)
 ##' @param \dots message
 ##'
 pStop <- function (fn, ...) {

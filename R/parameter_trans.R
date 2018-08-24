@@ -5,7 +5,7 @@
 ##' @name parameter_trans
 ##' @rdname parameter_trans
 ##' @docType methods
-##' @include pomp_fun.R csnippet.R pStop.R
+##' @include pomp_fun.R csnippet.R pstop.R
 ##' @aliases parameter_trans parameter_trans,missing,missing-method
 ##' parameter_trans,ANY,ANY-method parameter_trans,ANY,missing-method
 ##' parameter_trans,NULL,NULL-method parameter_trans,function,function-method
