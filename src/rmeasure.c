@@ -90,7 +90,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
     break;
 
-  case native:
+  case native: case regNative:
 
     // construct state, parameter, covariate, observable indices
     PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
@@ -192,7 +192,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
     break;
 
-  case native: 			// native routine
+  case native: case regNative:			// native routine
 
   {
     int dim[3] = {nobs, nreps, ntimes};

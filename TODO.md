@@ -2,8 +2,11 @@
 
 ## For pomp 2:
 
+- let `pomp_fun_handler` to the variable lookups?
+- pass userdata as list to C snippets and as pairlist to R functions
 - it should be possible to refer to times inside `covariate_table`
-- revisit `enum`s
+- do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
+- ~~revisit use of `enum`~~
 - combine documentation: (dmeasure,rmeasure), (dprocess,rprocess)
 - regularize use of `pomp_stop` and `tryCatch` on *.internals
 - index by concept using `\concept{}` in the help files
@@ -20,7 +23,6 @@
 - ~~`spect` should call `do_simulate`~~
 - ~~`nsim` argument for rprior~~
 - ~~change `as.data.frame` argument to `format` in `trajectory`~~
-- pass userdata as list to C snippets and as pairlist to R functions
 - provide full suite of methods for `traj.match.objfun`
 - ~~revisit default initializer~~
 - ~~should unspecified basic components return NAs?~~

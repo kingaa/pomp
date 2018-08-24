@@ -35,8 +35,7 @@ setMethod(
       stop("in ",sQuote("obs"),": some elements of ",
         sQuote("vars")," correspond to no observed variable",call.=FALSE)
     y <- object@data[vars,,drop=FALSE]
-    dimnames(y) <- setNames(list(vars,time(object)),
-      c("variable",object@timename))
+    dimnames(y) <- setNames(list(vars,NULL),c("variable","time"))
     y
   }
 )
