@@ -8,7 +8,7 @@
 ##'
 ##' @name trajectory
 ##' @rdname trajectory
-##' @include workhorses.R pomp_class.R
+##' @include workhorses.R pomp_class.R skeleton_spec.R
 ##' @aliases trajectory trajectory,missing-method trajectory,ANY-method
 
 ##' @importFrom deSolve ode diagnostics
@@ -53,8 +53,7 @@ setMethod(
   "trajectory",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("trajectory"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    pStop("trajectory",sQuote("object")," is a required argument")
   }
 )
 
@@ -62,8 +61,8 @@ setMethod(
   "trajectory",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("trajectory")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    pStop_(sQuote("trajectory")," is not defined for objects of class ",
+      sQuote(class(object)))
   }
 )
 
@@ -78,8 +77,11 @@ setMethod(
     format = c("array", "data.frame"), ...,
     verbose = getOption("verbose", FALSE)) {
 
-    trajectory.internal(object=object,params=params,times=times,t0=t0,
-      format=format,...,verbose=verbose)
+    tryCatch(
+      trajectory.internal(object=object,params=params,times=times,t0=t0,
+        format=format,...,verbose=verbose),
+      error = function (e) pStop("trajectory",conditionMessage(e))
+    )
 
   }
 )
@@ -89,28 +91,22 @@ trajectory.internal <- function (object, params, times, t0,
   verbose) {
 
   format <- match.arg(format)
-
   verbose <- as.logical(verbose)
 
-  if (missing(times))
-    times <- time(object,t0=FALSE)
-  else
-    times <- as.numeric(times)
+  if (missing(times)) times <- time(object,t0=FALSE)
+  else times <- as.numeric(times)
 
   if (length(times)==0)
-    pStop("trajectory",sQuote("times")," is empty, there is no work to do.")
+    pStop_(sQuote("times")," is empty, there is no work to do.")
 
   if (any(diff(times)<=0))
-    pStop("trajectory",sQuote("times"),
-      " must be an increasing sequence of times.")
+    pStop_(sQuote("times")," must be an increasing numeric sequence.")
 
-  if (missing(t0))
-    t0 <- timezero(object)
-  else
-    t0 <- as.numeric(t0)
+  if (missing(t0)) t0 <- timezero(object)
+  else t0 <- as.numeric(t0)
 
   if (t0>times[1L])
-    pStop("trajectory","the zero-time ",sQuote("t0"),
+    pStop_("the zero-time ",sQuote("t0"),
       " must occur no later than the first observation.")
   ntimes <- length(times)
 
@@ -118,15 +114,15 @@ trajectory.internal <- function (object, params, times, t0,
   if (is.list(params)) params <- unlist(params)
   if (is.null(params)) params <- numeric(0)
 
-  if (length(params)==0)
-    pStop("trajectory",sQuote("params")," must be supplied.")
+  # if (length(params)==0)
+  #   pStop_(sQuote("params")," must be supplied.")
   storage.mode(params) <- "double"
 
   params <- as.matrix(params)
   nrep <- ncol(params)
-  paramnames <- rownames(params)
-  if (is.null(paramnames))
-    pStop("trajectory",sQuote("params")," must have names (or rownames).")
+  # paramnames <- rownames(params)
+  # if (is.null(paramnames))
+  #   pStop_(sQuote("params")," must have names (or rownames).")
 
   x0 <- rinit(object,params=params,t0=t0)
   nvar <- nrow(x0)
@@ -139,16 +135,12 @@ trajectory.internal <- function (object, params, times, t0,
   pompLoad(object)
   on.exit(pompUnload(object))
 
-  if (type == 2L) {          ## MAP
+  if (type == skeletontype$map) {                  ## MAP
 
-    x <- tryCatch(
-      .Call(iterate_map,object,times,t0,x0,params,.getnativesymbolinfo),
-      error = function (e)
-        pStop("trajectory","in map iterator: ",conditionMessage(e))
-    )
+    x <- .Call(iterate_map,object,times,t0,x0,params,.getnativesymbolinfo)
     .getnativesymbolinfo <- FALSE
 
-  } else if (type == 1L) {   ## VECTORFIELD
+  } else if (type == skeletontype$vectorfield) {   ## VECTORFIELD
 
     znames <- object@zeronames
     if (length(znames)>0) x0[znames,,] <- 0
@@ -167,13 +159,13 @@ trajectory.internal <- function (object, params, times, t0,
         ...
       ),
       error = function (e) {
-        pStop("trajectory","error in ODE integrator: ",conditionMessage(e))
+        pStop_("error in ODE integrator: ",conditionMessage(e))
       }
     )
 
     .Call(pomp_desolve_takedown)
 
-    if (attr(X,"istate")[1L]!=2)
+    if (attr(X,"istate")[1L] != 2)
       pWarn("trajectory",
         "abnormal exit from ODE integrator, istate = ",attr(X,'istate')[1L])
 
@@ -186,7 +178,7 @@ trajectory.internal <- function (object, params, times, t0,
       for (r in seq_len(ncol(x)))
         x[z,r,-1] <- diff(x[z,r,])
 
-  } else {
+  } else {                  ## DEFAULT SKELETON
 
     x <- array(data=NA_real_,dim=c(dim(x0),length(times)),
       dimnames=list(rownames(x0),NULL,NULL))

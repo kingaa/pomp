@@ -156,6 +156,9 @@
 ##' @param hmax maximum time step allowed (see below)
 NULL
 
+## also defined in 'pomp_internal.h'
+rprocmode <- list(default=0L,onestep=1L,discrete=2L,euler=3L,gillespie=4L)
+
 setClass(
   "rprocPlugin",
   slots=c(
@@ -168,7 +171,7 @@ setClass(
   prototype=prototype(
     csnippet=FALSE,
     slotname=character(0),
-    type=0L,
+    type=rprocmode$default,
     step.fn=NULL,
     rate.fn=NULL
   )
@@ -176,7 +179,10 @@ setClass(
 
 setClass(
   "onestepRprocPlugin",
-  contains="rprocPlugin"
+  contains="rprocPlugin",
+  prototype=prototype(
+    type=rprocmode$onestep
+  )
 )
 
 setClass(
@@ -184,6 +190,10 @@ setClass(
   contains="rprocPlugin",
   slots=c(
     delta.t="numeric"
+  ),
+  prototype=prototype(
+    type=rprocmode$discrete,
+    delta.t=1.0
   )
 )
 
@@ -192,6 +202,10 @@ setClass(
   contains="rprocPlugin",
   slots=c(
     delta.t="numeric"
+  ),
+  prototype=prototype(
+    type=rprocmode$euler,
+    delta.t=NA_real_
   )
 )
 
@@ -201,6 +215,9 @@ setClass(
   slots=c(
     hmax="numeric",
     v="matrix"
+  ),
+  prototype=prototype(
+    type=rprocmode$gillespie
   )
 )
 
@@ -221,8 +238,8 @@ onestep.sim <- function (step.fun) {
   new("onestepRprocPlugin",
     step.fn=step.fun,
     slotname="step.fun",
-    csnippet=is(step.fun,"Csnippet"),
-    type=1L)
+    csnippet=is(step.fun,"Csnippet")
+  )
 }
 
 ##' @rdname rprocess_spec
@@ -233,8 +250,8 @@ discrete.time.sim <- function (step.fun, delta.t = 1) {
     step.fn=step.fun,
     delta.t=delta.t,
     slotname="step.fun",
-    csnippet=is(step.fun,"Csnippet"),
-    type=2L)
+    csnippet=is(step.fun,"Csnippet")
+  )
 }
 
 ##' @rdname rprocess_spec
@@ -245,8 +262,8 @@ euler.sim <- function (step.fun, delta.t) {
     step.fn=step.fun,
     delta.t=delta.t,
     slotname="step.fun",
-    csnippet=is(step.fun,"Csnippet"),
-    type=3L)
+    csnippet=is(step.fun,"Csnippet")
+  )
 }
 
 ##' @rdname rprocess_spec
@@ -267,8 +284,8 @@ gillespie.sim <- function (rate.fun, v, hmax = Inf) {
     v=v,
     hmax=hmax,
     slotname="rate.fun",
-    csnippet=is(rate.fun,"Csnippet"),
-    type=4L)
+    csnippet=is(rate.fun,"Csnippet")
+  )
 }
 
 ##' @rdname rprocess_spec
@@ -346,6 +363,6 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
     v=v,
     hmax=hmax,
     slotname="rate.fun",
-    csnippet=TRUE,
-    type=4L)
+    csnippet=TRUE
+  )
 }

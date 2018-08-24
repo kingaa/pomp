@@ -115,17 +115,17 @@ variable   [,1]   [,2]
 > try(trajectory(fhn,times=NULL))
 Error : in ‘trajectory’: ‘times’ is empty, there is no work to do.
 > try(trajectory(fhn,times=c(1,1,1)))
-Error : in ‘trajectory’: ‘times’ must be an increasing sequence of times.
+Error : in ‘trajectory’: ‘times’ must be an increasing numeric sequence.
 > try(trajectory(fhn,t0=10))
 Error : in ‘trajectory’: the zero-time ‘t0’ must occur no later than the first observation.
 > try(trajectory(fhn,params=c(3,2,1)))
-Error : in ‘trajectory’: ‘params’ must have names (or rownames).
+Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters
 > try(trajectory(fhn,params=matrix(c(3,2,1,5),2,2)))
-Error : in ‘trajectory’: ‘params’ must have names (or rownames).
+Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters
 > try(trajectory(fhn,params=NULL))
-Error : in ‘trajectory’: ‘params’ must be supplied.
+Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters
 > try(trajectory(fhn,params=list(a=3,b=2)))
-Error : in ‘rinit’: variable 'c' not found among the parameters
+Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters
 > try(trajectory(fhn,maxsteps=-1))
 DLSODA-  MXSTEP (=I1) .lt. 0  
 In above message, I1 = -1
@@ -201,7 +201,7 @@ newly created object(s):
 > try(gompertz %>%
 +     pomp(skeleton=map(function(t,x,params,...)c(3,2))) %>%
 +     trajectory() -> x)
-Error : in ‘trajectory’: in map iterator: user 'skeleton' returns a vector of 2 state variables but 1 are expected
+Error : in ‘trajectory’: user 'skeleton' returns a vector of 2 state variables but 1 are expected
 > try(gompertz %>% pomp(skeleton=map(function(t,x,params,...)x,delta.t=-1)))
 Error : in ‘map’: ‘delta.t’ must be a positive number.
 > 

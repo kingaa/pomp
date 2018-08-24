@@ -23,7 +23,7 @@
 NULL
 
 ## also defined in 'pomp_defines.h'
-pompfunmode <- list(undef=-1L,Rfun=0L,native=1L,regNative=2L)
+pompfunmode <- list(undef=0L,Rfun=1L,native=2L,regNative=3L)
 
 setClass(
   "pomp_fun",

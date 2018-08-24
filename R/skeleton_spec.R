@@ -52,25 +52,28 @@
 ##'
 NULL
 
+skeletontype <- list(undef=0L,vectorfield=1L,map=2L)
+
 setClass(
   "skelPlugin",
   slots=c(
     csnippet='logical',
-    slotname='character',
     type='integer',
     skel.fn="ANY"
   ),
   prototype=prototype(
     csnippet=FALSE,
-    slotname=character(0),
-    type=0L,
+    type=skeletontype$undef,
     skel.fn=NULL
   )
 )
 
 setClass(
   "vectorfieldPlugin",
-  contains="skelPlugin"
+  contains="skelPlugin",
+  prototype=prototype(
+    type=skeletontype$vectorfield
+  )
 )
 
 setClass(
@@ -78,6 +81,10 @@ setClass(
   contains="skelPlugin",
   slots=c(
     delta.t="numeric"
+  ),
+  prototype=prototype(
+    type=skeletontype$map,
+    delta.t=1.0
   )
 )
 
@@ -125,7 +132,7 @@ skel_plugin <- function (object, skel.fn) {
 ##' @export
 ##'
 vectorfield <- function (f) {
-  new("vectorfieldPlugin",skel.fn=f,type=1L)
+  new("vectorfieldPlugin",skel.fn=f)
 }
 
 ##' @name map
@@ -137,5 +144,5 @@ map <- function (f, delta.t = 1) {
   if (!isTRUE(delta.t > 0 && length(delta.t)==1))
     stop("in ",sQuote("map"),": ",sQuote("delta.t"),
       " must be a positive number.",call.=FALSE)
-  new("mapPlugin",skel.fn=f,delta.t=delta.t,type=2L)
+  new("mapPlugin",skel.fn=f,delta.t=delta.t)
 }

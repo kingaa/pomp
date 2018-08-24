@@ -184,7 +184,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   SEXP statenames, paramnames, covarnames;
   int nstates, nparams, ncovars, covdim;
   int nzeros = LENGTH(zeronames);
-  pompfunmode use_native = undef;
+  pompfunmode mode = undef;
   SEXP X, pindex, sindex, cindex, zindex, vindex;
   int *sidx, *pidx, *cidx, *zidx, *vidx;
   SEXP fn, Snames, Pnames, Cnames, Vnames;
@@ -217,11 +217,24 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 
   PROTECT(hmax = AS_NUMERIC(hmax)); nprotect++;
 
-  PROTECT(fn = pomp_fun_handler(func,gnsi,&use_native)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode)); nprotect++;
 
-  if (use_native) {
+  switch (mode) {
+
+  case undef: default:
+
+    errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // # nocov
+
+  case native: case regNative:
+
     *((void **) (&(RXR))) = R_ExternalPtrAddr(fn);
-  } else {
+
+    set_pomp_userdata(args);
+
+    break;
+
+  case Rfun:
+
     RXR = (pomp_ssa_rate_fn *) default_ssa_rate_fn;
     PROTECT(RHO = (CLOENV(fn))); nprotect++;
     NVAR = nvar;
@@ -247,6 +260,9 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     SET_TAG(FCALL,install("j"));
     PROTECT(FCALL = LCONS(fn,FCALL)); nprotect++;
     FIRST = 1;
+
+    break;
+
   }
 
   xdim[0] = nvar; xdim[1] = nrep; xdim[2] = ntimes;
@@ -284,10 +300,6 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     vidx = 0;
   }
 
-  if (use_native) {
-    set_pomp_userdata(args);
-  }
-
   GetRNGstate();
   {
     int i;
@@ -301,7 +313,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   }
   PutRNGstate();
 
-  if (use_native) {
+  if (mode == native || mode == regNative) {
     unset_pomp_userdata();
   }
 

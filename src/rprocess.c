@@ -102,7 +102,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
   // extract the process function
   type = *(INTEGER(GET_SLOT(rproc,install("type"))));
   switch (type) {
-  case 1: // one-step simulator
+  case onestep: // one-step simulator
   {
     SEXP fn;
     double deltat = 1.0;
@@ -111,7 +111,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
       zeronames,covar,args,gnsi)); nprotect++;
   }
     break;
-  case 2: case 3: // discrete-time and Euler
+  case discrete: case euler: // discrete-time and Euler
   {
     SEXP fn;
     double deltat;
@@ -121,7 +121,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
         zeronames,covar,args,gnsi)); nprotect++;
   }
     break;
-  case 4: // Gillespie's method
+  case gill: // Gillespie's method
   {
     SEXP fn, vmatrix, hmax;
     PROTECT(fn = GET_SLOT(rproc,install("rate.fn"))); nprotect++;
@@ -131,7 +131,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
         zeronames,hmax,args,gnsi)); nprotect++;
   }
     break;
-  case 0: default:
+  case dflt: default:
     PROTECT(X = pomp_default_rprocess(xstart,nvars,nreps,ntimes)); nprotect++;
     break;
   }

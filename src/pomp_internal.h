@@ -10,6 +10,8 @@
 
 #include "pomp_defines.h"
 
+typedef enum {dflt=0,onestep=1,discrete=2,euler=3,gill=4} rprocmode;
+
 // PROTOTYPES
 // Make with, e.g.,
 // cproto -I `R RHOME`/include -e *.c | perl -pe 's/\/\*(.+?)\*\//\n\/\/$1/g'
@@ -33,7 +35,7 @@ extern SEXP onestep_density(SEXP func, SEXP x, SEXP times, SEXP params, SEXP cov
 
 // euler.c
 extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params,
-  double deltat, int method, SEXP zeronames, SEXP covar, SEXP args, SEXP gnsi);
+  double deltat, rprocmode method, SEXP zeronames, SEXP covar, SEXP args, SEXP gnsi);
 extern int num_euler_steps(double t1, double t2, double *Rf_dt);
 extern int num_map_steps(double t1, double t2, double Rf_dt);
 
