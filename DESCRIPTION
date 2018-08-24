@@ -33,7 +33,7 @@ Encoding: UTF-8
 Collate: 
     'pomp-package.R'
     'aaa.R'
-    'pomp_stop.R'
+    'pStop.R'
     'csnippet.R'
     'pomp_fun.R'
     'parameter_trans.R'

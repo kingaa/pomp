@@ -182,6 +182,12 @@ When the process is non-autonomous (i.e., the event rates depend explicitly on t
 By default, the elementary event rates will be recomputed at least once per observation interval.
 }
 
+\section{Default behavior}{
+
+The default \code{rprocess} is undefined.
+It will yield missing values (\code{NA}) for all state variables.
+}
+
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{accumulators}},

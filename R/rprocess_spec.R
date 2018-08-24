@@ -124,6 +124,10 @@
 ##' When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
 ##' By default, the elementary event rates will be recomputed at least once per observation interval.
 ##'
+##' @section Default behavior:
+##' The default \code{rprocess} is undefined.
+##' It will yield missing values (\code{NA}) for all state variables.
+##'
 ##' @name rprocess_spec
 ##' @rdname rprocess_spec
 ##' @docType methods

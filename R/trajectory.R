@@ -98,10 +98,10 @@ trajectory.internal <- function (object, params, times, t0,
     times <- as.numeric(times)
 
   if (length(times)==0)
-    pomp_stop("trajectory",sQuote("times")," is empty, there is no work to do.")
+    pStop("trajectory",sQuote("times")," is empty, there is no work to do.")
 
   if (any(diff(times)<=0))
-    pomp_stop("trajectory",sQuote("times"),
+    pStop("trajectory",sQuote("times"),
       " must be an increasing sequence of times.")
 
   if (missing(t0))
@@ -110,7 +110,7 @@ trajectory.internal <- function (object, params, times, t0,
     t0 <- as.numeric(t0)
 
   if (t0>times[1L])
-    pomp_stop("trajectory","the zero-time ",sQuote("t0"),
+    pStop("trajectory","the zero-time ",sQuote("t0"),
       " must occur no later than the first observation.")
   ntimes <- length(times)
 
@@ -119,14 +119,14 @@ trajectory.internal <- function (object, params, times, t0,
   if (is.null(params)) params <- numeric(0)
 
   if (length(params)==0)
-    pomp_stop("trajectory",sQuote("params")," must be supplied.")
+    pStop("trajectory",sQuote("params")," must be supplied.")
   storage.mode(params) <- "double"
 
   params <- as.matrix(params)
   nrep <- ncol(params)
   paramnames <- rownames(params)
   if (is.null(paramnames))
-    pomp_stop("trajectory",sQuote("params")," must have names (or rownames).")
+    pStop("trajectory",sQuote("params")," must have names (or rownames).")
 
   x0 <- rinit(object,params=params,t0=t0)
   nvar <- nrow(x0)
@@ -144,7 +144,7 @@ trajectory.internal <- function (object, params, times, t0,
     x <- tryCatch(
       .Call(iterate_map,object,times,t0,x0,params,.getnativesymbolinfo),
       error = function (e)
-        pomp_stop("trajectory","in map iterator: ",conditionMessage(e))
+        pStop("trajectory","in map iterator: ",conditionMessage(e))
     )
     .getnativesymbolinfo <- FALSE
 
@@ -167,14 +167,14 @@ trajectory.internal <- function (object, params, times, t0,
         ...
       ),
       error = function (e) {
-        pomp_stop("trajectory","error in ODE integrator: ",conditionMessage(e))
+        pStop("trajectory","error in ODE integrator: ",conditionMessage(e))
       }
     )
 
     .Call(pomp_desolve_takedown)
 
     if (attr(X,"istate")[1L]!=2)
-      pomp_warn("trajectory",
+      pWarn("trajectory",
         "abnormal exit from ODE integrator, istate = ",attr(X,'istate')[1L])
 
     if (verbose) diagnostics(X)

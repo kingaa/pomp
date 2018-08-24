@@ -173,10 +173,10 @@ pomp <- function (data, times, t0, ...,
   verbose = getOption("verbose", FALSE)) {
 
   if (missing(data))
-    pomp_stop("pomp",sQuote("data")," is a required argument.")
+    pStop("pomp",sQuote("data")," is a required argument.")
 
   if (!inherits(data,what=c("data.frame","pomp","NULL")))
-    pomp_stop("pomp",sQuote("data")," must be a data frame or an object of ",
+    pStop("pomp",sQuote("data")," must be a data frame or an object of ",
       "class ",sQuote("pomp"),".")
 
   ## return as quickly as possible if no work is to be done
@@ -188,16 +188,19 @@ pomp <- function (data, times, t0, ...,
       length(list(...)) == 0)
     return(data)
 
-  construct_pomp(
-    data=data,times=times,t0=t0,...,
-    rinit=rinit,rprocess=rprocess,dprocess=dprocess,
-    rmeasure=rmeasure,dmeasure=dmeasure,
-    skeleton=skeleton,rprior=rprior,dprior=dprior,partrans=partrans,
-    params=params, covar=covar,zeronames=zeronames,
-    obsnames=obsnames,statenames=statenames,paramnames=paramnames,
-    covarnames=covarnames,PACKAGE=PACKAGE,
-    globals=globals,cdir=cdir,cfile=cfile,shlib.args=shlib.args,
-    verbose=verbose
+  tryCatch(
+    construct_pomp(
+      data=data,times=times,t0=t0,...,
+      rinit=rinit,rprocess=rprocess,dprocess=dprocess,
+      rmeasure=rmeasure,dmeasure=dmeasure,
+      skeleton=skeleton,rprior=rprior,dprior=dprior,partrans=partrans,
+      params=params, covar=covar,zeronames=zeronames,
+      obsnames=obsnames,statenames=statenames,paramnames=paramnames,
+      covarnames=covarnames,PACKAGE=PACKAGE,
+      globals=globals,cdir=cdir,cfile=cfile,shlib.args=shlib.args,
+      verbose=verbose
+    ),
+    error = function (e) pStop_(conditionMessage(e))
   )
 }
 
@@ -210,16 +213,16 @@ setMethod(
   definition = function (data, times, t0, ...) {
 
     if (anyDuplicated(names(data))) {
-      pomp_stop("pomp","names of data variables must be unique.")
+      pStop_("names of data variables must be unique.")
     }
     if (missing(times) || missing(t0))
-      pomp_stop("pomp",sQuote("times")," and ",sQuote("t0"),
+      pStop_(sQuote("times")," and ",sQuote("t0"),
         " are required arguments.")
     if ((is.numeric(times) && (times<1 || times>ncol(data) ||
         times!=as.integer(times))) ||
         (is.character(times) && (!(times%in%names(data)))) ||
         (!is.numeric(times) && !is.character(times)) || length(times)!=1) {
-      pomp_stop("pomp","when ",sQuote("data")," is a data frame, ",sQuote("times"),
+      pStop_("when ",sQuote("data")," is a data frame, ",sQuote("times"),
         " must identify a single column of ",sQuote("data"),
         " either by name or by index.")
     }
@@ -244,7 +247,7 @@ setMethod(
   definition = function (data, times, ...) {
 
     if (missing(times))
-      pomp_stop("pomp",sQuote("times")," is a required argument.")
+      pStop_(sQuote("times")," is a required argument.")
 
     construct_pomp(data=array(dim=c(0,length(times))),times=times,...)
 
@@ -284,29 +287,25 @@ setMethod(
 
     if (missing(covar)) covar <- covariate_table()
 
-    tryCatch(
-      pomp.internal(
-        data=data,
-        times=times,
-        t0=t0,
-        timename=timename,
-        rinit=rinit,
-        rprocess=rprocess,
-        dprocess=dprocess,
-        rmeasure=rmeasure,
-        dmeasure=dmeasure,
-        skeleton=skeleton,
-        dprior=dprior,
-        rprior=rprior,
-        partrans=partrans,
-        params=params,
-        covar=covar,
-        ...
-      ),
-      error = function (e) {
-        pomp_stop("pomp",conditionMessage(e))
-      }
+    pomp.internal(
+      data=data,
+      times=times,
+      t0=t0,
+      timename=timename,
+      rinit=rinit,
+      rprocess=rprocess,
+      dprocess=dprocess,
+      rmeasure=rmeasure,
+      dmeasure=dmeasure,
+      skeleton=skeleton,
+      dprior=dprior,
+      rprior=rprior,
+      partrans=partrans,
+      params=params,
+      covar=covar,
+      ...
     )
+
   }
 )
 
@@ -357,32 +356,28 @@ setMethod(
     if (missing(covar)) covar <- data@covar
     if (missing(zeronames)) zeronames <- data@zeronames
 
-    tryCatch(
-      pomp.internal(
-        data=data@data,
-        times=times,
-        t0=t0,
-        timename=timename,
-        rinit=rinit,
-        rprocess=rprocess,
-        dprocess=dprocess,
-        rmeasure=rmeasure,
-        dmeasure=dmeasure,
-        skeleton=skeleton,
-        rprior=rprior,
-        dprior=dprior,
-        partrans=partrans,
-        covar=covar,
-        zeronames=zeronames,
-        params=params,
-        .solibs=data@solibs,
-        .userdata=data@userdata,
-        ...
-      ),
-      error = function (e) {
-        pomp_stop("pomp",conditionMessage(e))
-      }
+    pomp.internal(
+      data=data@data,
+      times=times,
+      t0=t0,
+      timename=timename,
+      rinit=rinit,
+      rprocess=rprocess,
+      dprocess=dprocess,
+      rmeasure=rmeasure,
+      dmeasure=dmeasure,
+      skeleton=skeleton,
+      rprior=rprior,
+      dprior=dprior,
+      partrans=partrans,
+      covar=covar,
+      zeronames=zeronames,
+      params=params,
+      .solibs=data@solibs,
+      .userdata=data@userdata,
+      ...
     )
+
   }
 )
 
@@ -392,20 +387,17 @@ pomp.internal <- function (data, times, t0, timename, ...,
   paramnames, covarnames, PACKAGE, globals, cdir, cfile, shlib.args,
   .userdata, .solibs = list(), verbose = getOption("verbose", FALSE)) {
 
-  ep <- character(0)
-
   ## check times
   if (missing(times) || !is.numeric(times) || !all(is.finite(times)) ||
       (length(times)>1 && !all(diff(times)>0)))
-    pomp_stop(ep,sQuote("times")," must be specified as an increasing sequence ",
-      "of numbers.")
+    pStop_(sQuote("times")," must be an increasing sequence of numbers.")
   storage.mode(times) <- "double"
 
   ## check t0
   if (missing(t0) || !is.numeric(t0) || !is.finite(t0) ||
       length(t0) > 1 ||  t0 > times[1])
-    pomp_stop(ep,sQuote("t0")," must be specified as a single number not ",
-      "greater than ",sQuote("times[1]"),".")
+    pStop_(sQuote("t0")," must be a single number not greater than ",
+      sQuote("times[1]"),".")
   storage.mode(t0) <- "double"
 
   if (missing(timename) || is.null(timename))
@@ -426,7 +418,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
   }
 
   if (!is(rprocess,"rprocPlugin")) {
-    pomp_stop(ep,sQuote("rprocess"),
+    pStop_(sQuote("rprocess"),
       " must be specified using one of the plugins:\n",
       sQuote("onestep.sim"),", ",sQuote("discrete.time.sim"),
       ", ",sQuote("euler.sim"),", ",sQuote("gillespie.sim"),
@@ -434,12 +426,12 @@ pomp.internal <- function (data, times, t0, timename, ...,
   }
 
   if (!is(skeleton,"skelPlugin")) {
-    pomp_stop(ep,sQuote("skeleton")," must be specified using either ",
+    pStop_(sQuote("skeleton")," must be specified using either ",
       sQuote("map")," or ",sQuote("vectorfield"),".")
   }
 
   if (!is(partrans,"partransPlugin")) {
-    pomp_stop(ep,sQuote("partrans")," must be specified using ",
+    pStop_(sQuote("partrans")," must be specified using ",
       sQuote("parameter_trans"),".")
   }
 
@@ -465,11 +457,11 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (length(params) > 0) {
     if (is.null(names(params)) || !is.numeric(params) ||
         !all(nzchar(names(params))))
-      pomp_stop(ep,sQuote("params")," must be a named numeric vector.")
+      pStop_(sQuote("params")," must be a named numeric vector.")
   }
 
   if (is(rinit,"Csnippet") && length(statenames)==0) {
-    pomp_stop(ep,"when ",sQuote("rinit")," is provided as a C snippet, ",
+    pStop_("when ",sQuote("rinit")," is provided as a C snippet, ",
       "you must also provide ",sQuote("statenames"),".")
   }
 
@@ -477,7 +469,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (is.null(covar)) {
     covar <- covariate_table()
   } else if (!is(covar,"covartable")) {
-    pomp_stop(ep,"bad option for ",sQuote("covar"),".")
+    pStop_("bad option for ",sQuote("covar"),".")
   }
 
   if (length(covarnames) == 0)

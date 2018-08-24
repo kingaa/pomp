@@ -80,13 +80,13 @@ Error : in ‘bsmc2’: ‘Np’ must be specified.
 > try(bsmc2(po,params=NULL))
 Error : in ‘bsmc2’: ‘Np’ must be specified.
 > try(bsmc2(po,params="yes"))
-Error : in ‘bsmc2’: in ‘pomp’: ‘params’ must be a named numeric vector.
+Error : in ‘bsmc2’: ‘params’ must be a named numeric vector.
 In addition: Warning message:
 In setNames(as.double(params), names(params)) : NAs introduced by coercion
 > try(bsmc2(po,params=list()))
 Error : in ‘bsmc2’: ‘Np’ must be specified.
 > try(bsmc2(po,params=c(1,2,3)))
-Error : in ‘bsmc2’: in ‘pomp’: ‘params’ must be a named numeric vector.
+Error : in ‘bsmc2’: ‘params’ must be a named numeric vector.
 > theta <- coef(smc)
 > try(bsmc2(po,params=as.list(theta)))
 Error : in ‘bsmc2’: ‘Np’ must be specified.
@@ -144,7 +144,7 @@ Error : in ‘bsmc2’: too many filtering failures
 +     dmeasure=gompertz@dmeasure,
 +     statenames=c("X"),
 +     paramnames=c("r","K","sigma")))
-Error : in ‘bsmc2’: in ‘pomp’: bad option for ‘rprior’ argument
+Error : in ‘bsmc2’: bad option for ‘rprior’ argument
 > 
 > dev.off()
 null device 

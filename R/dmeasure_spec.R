@@ -42,6 +42,10 @@
 ##' }
 ##' \code{f} must return a single numeric value, the probability density (or log probability density) of \code{y} given \code{x} at time \code{t}.
 ##'
-##' \strong{NB: it is a common error to fail to account for both \code{log = TRUE} and \code{log = FALSE} when writing the \code{dmeasure} C snippet or function.}
+##' @section Important note:
+##' \strong{It is a common error to fail to account for both \code{log = TRUE} and \code{log = FALSE} when writing the \code{dmeasure} C snippet or function.}
+##'
+##' @section Default behavior:
+##' By default, \code{dmeasure} returns missing values (\code{NA}).
 ##'
 NULL

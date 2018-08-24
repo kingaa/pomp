@@ -42,4 +42,7 @@
 ##' }
 ##' \code{f} must return a named numeric vector of length \code{nobs}, the number of observable variables.
 ##'
+##' @section Default behavior:
+##' The default \code{rmeasure} is undefined.
+##' It will yield missing values (\code{NA}).
 NULL

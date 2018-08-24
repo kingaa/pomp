@@ -46,6 +46,10 @@
 ##' As with the other basic components, \code{f} may take additional arguments, provided these are passed along with it in the call to \code{pomp}.
 ##' The function \code{f} must return a numeric vector of the same length as \code{x}, which contains the value of the map or vectorfield at the required point and time.
 ##'
+##' @section Default behavior:
+##' The default \code{skeleton} is undefined.
+##' It will yield missing values (\code{NA}) for all state variables.
+##'
 NULL
 
 setClass(

@@ -2,19 +2,8 @@
 ##'
 ##' Specification of rinit
 ##'
-##' @name rinit_spec
-##' @rdname rinit_spec
-##' @family information on model implementation
-##'
-##' @details
 ##' To fully specify the unobserved Markov state process, one must give its distribution at the zero-time (\code{t0}).
-##'
-##' By default, \code{pomp} assumes that this initial distribution is concentrated on a single point.
-##' In particular, any parameters in \code{params}, the names of which end in \dQuote{\code{.0}}, are assumed to be initial values of states.
-##' When the state process is initialized, these are simply copied over as initial conditions.
-##' The names of the resulting state variables are obtained by dropping the \dQuote{\code{.0}} suffix.
-##'
-##' One can override this default behavior by furnishing a value for the \code{rinit} argument of most \pkg{pomp} methods.
+##' One does this by furnishing a value for the \code{rinit} argument.
 ##' As usual, this can be provided either as a C snippet or as an \R function.
 ##' In the former case, bear in mind that:
 ##' \enumerate{
@@ -24,11 +13,16 @@
 ##'    In particular, every state variable must be named in \code{statenames}.
 ##'    \strong{Failure to follow this rule will result in undefined behavior.}
 ##'  }
+##' \link[=Csnippet]{General rules for writing C snippets can be found here}.
 ##'
-##' If an \R function is to be used, pass \preformatted{
-##'    rinit = f}
-##' to \code{pomp}, where \code{f} is a function with prototype \preformatted{
-##'    f(params, t0, \dots)}
+##' If an \R function is to be used, pass
+##' \preformatted{
+##'    rinit = f
+##' }
+##' to \code{pomp}, where \code{f} is a function with prototype
+##'  \preformatted{
+##'    f(params, t0, \dots)
+##' }
 ##' When \code{f} is called,
 ##' \itemize{
 ##'   \item \code{params} will be a named numeric vector of parameters.
@@ -38,7 +32,17 @@
 ##' \code{f} must return a named numeric vector of initial states.
 ##' It is of course important that the names of the states match the expectations of the other basic components.
 ##'
-##' Note that the state-process \code{rinit} can be either deterministic (the default) or stochastic.
+##' Note that the state-process \code{rinit} can be either deterministic (as in the default) or stochastic.
 ##' In the latter case, it samples from the distribution of the state process at the zero-time, \code{t0}.
+##'
+##' @section Default behavior:
+##' By default, \code{pomp} assumes that the initial distribution is concentrated on a single point.
+##' In particular, any parameters in \code{params}, the names of which end in \dQuote{\code{_0}} or \dQuote{\code{.0}}, are assumed to be initial values of states.
+##' When the state process is initialized, these are simply copied over as initial conditions.
+##' The names of the resulting state variables are obtained by dropping the suffix.
+##'
+##' @name rinit_spec
+##' @rdname rinit_spec
+##' @family information on model implementation
 ##'
 NULL

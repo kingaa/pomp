@@ -32,6 +32,13 @@ The \code{dprior} function must be of prototype \preformatted{
   f(params, log = FALSE, \dots).}
 Its role is to evaluate the prior probability density (or log density if \code{log == TRUE}) and return that single scalar value.
 }
+\section{Default behavior}{
+
+By default, the prior is assumed flat and improper.
+In particular, \code{dprior} returns \code{1} (\code{0} if \code{log = TRUE}) for every parameter set.
+Since it is impossible to simulate from a flat improper prior, \code{rprocess} returns missing values (\code{NA}s).
+}
+
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{accumulators}},

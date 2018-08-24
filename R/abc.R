@@ -80,7 +80,7 @@ setClass(
     probes = list(),
     scale = numeric(0),
     epsilon = 1.0,
-    proposal = function (...) pomp_stop("abc","proposal not specified."),
+    proposal = function (...) pStop("abc","proposal not specified."),
     traces=array(dim=c(0,0))
   )
 )
@@ -95,7 +95,7 @@ setMethod(
   "abc",
   signature=signature(data="missing"),
   definition=function (...) {
-    pomp_stop("abc",sQuote("data")," is a required argument")
+    pStop("abc",sQuote("data")," is a required argument")
   }
 )
 
@@ -103,7 +103,7 @@ setMethod(
   "abc",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pomp_stop("",sQuote("abc")," is not defined for objects of class ",
+    pStop("",sQuote("abc")," is not defined for objects of class ",
       sQuote(class(data)))
   }
 )
@@ -149,15 +149,18 @@ setMethod(
     if (missing(scale)) scale <- NULL
     if (missing(epsilon)) epsilon <- NULL
 
-    abc.internal(
-      data,
-      Nabc=Nabc,
-      proposal=proposal,
-      probes=probes,
-      scale=scale,
-      epsilon=epsilon,
-      verbose=verbose,
-      ...
+    tryCatch(
+      abc.internal(
+        data,
+        Nabc=Nabc,
+        proposal=proposal,
+        probes=probes,
+        scale=scale,
+        epsilon=epsilon,
+        verbose=verbose,
+        ...
+      ),
+      error = function (e) pStop("abc",conditionMessage(e))
     )
   }
 )
@@ -250,31 +253,30 @@ abc.internal <- function (object, Nabc, proposal, probes, epsilon, scale,
 
   Nabc <- as.integer(Nabc)
   if (!is.finite(Nabc) || Nabc < 0)
-    pomp_stop("abc",sQuote("Nabc")," must be a positive integer.")
+    pStop_(sQuote("Nabc")," must be a positive integer.")
 
   param.names <- names(params)
   if (is.null(param.names) || !is.numeric(params))
-    pomp_stop("abc",sQuote("params")," must be a named numeric vector.")
+    pStop_(sQuote("params")," must be a named numeric vector.")
 
   if (is.null(proposal))
-    pomp_stop("abc",sQuote("proposal")," must be specified.")
+    pStop_(sQuote("proposal")," must be specified.")
   if (!is.function(proposal))
-    pomp_stop("abc",sQuote("proposal")," must be a function.")
+    pStop_(sQuote("proposal")," must be a function.")
 
   if (is.null(probes))
-    pomp_stop("abc",sQuote("probes")," must be specified.")
+    pStop_(sQuote("probes")," must be specified.")
   if (!is.list(probes)) probes <- list(probes)
   if (!all(sapply(probes,is.function)))
-    pomp_stop("abc",sQuote("probes")," must be a function or a list of functions.")
+    pStop_(sQuote("probes")," must be a function or a list of functions.")
   if (!all(sapply(probes,function(f)length(formals(f))==1)))
-    pomp_stop("abc","each probe must be a function of a single argument.")
+    pStop_("each probe must be a function of a single argument.")
 
   if (length(scale)==0)
-    pomp_stop("abc",sQuote("scale")," must be specified.")
+    pStop_(sQuote("scale")," must be specified.")
 
   if (length(epsilon)==0)
-    pomp_stop("abc","abc match criterion, ",sQuote("epsilon"),
-      ", must be specified.")
+    pStop_("abc match criterion, ",sQuote("epsilon"),", must be specified.")
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
@@ -283,17 +285,16 @@ abc.internal <- function (object, Nabc, proposal, probes, epsilon, scale,
   theta <- tryCatch(
     proposal(params,.n=0),
     error = function (e)
-      pomp_stop("abc","in proposal function: ",conditionMessage(e))
+      pStop_("in proposal function: ",conditionMessage(e))
   )
   if (is.null(names(theta)) || !is.numeric(theta) || any(!nzchar(names(theta))))
-    pomp_stop("abc",sQuote("proposal")," must return a named numeric vector.")
+    pStop_(sQuote("proposal")," must return a named numeric vector.")
 
   theta <- params
   log.prior <-dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
 
   if (!is.finite(log.prior))
-    pomp_stop("abc","inadmissible value of ",sQuote("dprior"),
-      " at starting parameters.")
+    pStop_("inadmissible value of ",sQuote("dprior")," at starting parameters.")
   ## we suppose that theta is a "match",
   ## which does the right thing for continue() and
   ## should have negligible effect unless doing many short calls to continue()
@@ -312,12 +313,12 @@ abc.internal <- function (object, Nabc, proposal, probes, epsilon, scale,
   datval <- tryCatch(
     .Call(apply_probe_data,object,probes),
     error = function (e) {
-      pomp_stop("abc","applying probes to data: ",conditionMessage(e))
+      pStop_("applying probes to data: ",conditionMessage(e))
     }
   )
 
   if (length(scale) != 1 && length(scale) != length(datval))
-    pomp_stop("abc",sQuote("scale")," must have either length 1 or length equal to the",
+    pStop_(sQuote("scale")," must have either length 1 or length equal to the",
       " number of probes (here, ",length(datval),").")
 
   traces[1,names(theta)] <- theta
@@ -327,7 +328,7 @@ abc.internal <- function (object, Nabc, proposal, probes, epsilon, scale,
     theta.prop <- tryCatch(
       proposal(theta,.n=n+.ndone,.accepts=.accepts,verbose=verbose),
       error = function (e)
-        pomp_stop("abc","in proposal function: ",conditionMessage(e))
+        pStop_("in proposal function: ",conditionMessage(e))
     )
     log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,
       .getnativesymbolinfo=gnsi)
@@ -340,7 +341,7 @@ abc.internal <- function (object, Nabc, proposal, probes, epsilon, scale,
         .Call(apply_probe_sim,object=object,nsim=1L,params=theta.prop,
           probes=probes,datval=datval,gnsi=gnsi),
         error = function (e)
-          pomp_stop("abc","applying probes to simulations: ",conditionMessage(e))
+          pStop_("applying probes to simulations: ",conditionMessage(e))
       )
 
       ## ABC update rule

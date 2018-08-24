@@ -83,7 +83,7 @@ setMethod(
     data <- tryCatch(
       pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
         partrans=partrans,params=params,...,verbose=verbose),
-      error = function (e) pomp_stop("probe.match.objfun",conditionMessage(e))
+      error = function (e) pStop("probe.match.objfun",conditionMessage(e))
     )
 
     probe.match.objfun(data,est=est,probes=probes,nsim=nsim,seed=seed,
@@ -144,7 +144,7 @@ pmof.internal <- function (object, est, probes, nsim, seed = NULL,
 
   object <- tryCatch(
     probe(object,probes=probes,nsim=nsim,seed=seed,...),
-    error = function (e) pomp_stop("probe.match.objfun",conditionMessage(e))
+    error = function (e) pStop("probe.match.objfun",conditionMessage(e))
   )
 
   fail.value <- as.numeric(fail.value)
@@ -158,7 +158,7 @@ pmof.internal <- function (object, est, probes, nsim, seed = NULL,
   idx <- match(est,names(params))
   if (any(is.na(idx))) {
     missing <- est[is.na(idx)]
-    pomp_stop("probe.match.objfun",ngettext(length(missing),"parameter",
+    pStop("probe.match.objfun",ngettext(length(missing),"parameter",
       "parameters")," ",paste(sQuote(missing),collapse=",")," not found in ",
       sQuote("params"),".")
   }

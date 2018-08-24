@@ -2,7 +2,11 @@
 
 ## For pomp 2:
 
-- default workhorses
+- ~~document default workhorses~~
+- get rid of 'times' as dimnames
+- it should be possible to refer to times inside `covariate_table`
+- revisit `enum`s
+- combine documentation: (dmeasure,rmeasure), (dprocess,rprocess)
 - ~~`do_simulate` should handle parameter column names~~
 - `bsmc2` should only take vector `params` and rely on `rprior`
 - ~~`spect` should call `do_simulate`~~

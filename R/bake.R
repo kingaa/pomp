@@ -84,7 +84,7 @@ bake <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
     if (rng.control)
       assign(".Random.seed",save.seed,envir=.GlobalEnv)
     if (is.null(val)) {
-      pomp_warn("bake","expression evaluates to NULL")
+      pWarn("bake","expression evaluates to NULL")
       val <- paste0("NULL result returned by ",sQuote("bake"))
     }
     if (rng.control) {

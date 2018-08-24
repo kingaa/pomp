@@ -41,9 +41,17 @@ When \code{f} is called,
   \item \code{t} will be a scalar, the corresponding observation time.
 }
 \code{f} must return a single numeric value, the probability density (or log probability density) of \code{y} given \code{x} at time \code{t}.
-
-\strong{NB: it is a common error to fail to account for both \code{log = TRUE} and \code{log = FALSE} when writing the \code{dmeasure} C snippet or function.}
 }
+\section{Important note}{
+
+\strong{It is a common error to fail to account for both \code{log = TRUE} and \code{log = FALSE} when writing the \code{dmeasure} C snippet or function.}
+}
+
+\section{Default behavior}{
+
+By default, \code{dmeasure} returns missing values (\code{NA}).
+}
+
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{accumulators}},

@@ -60,7 +60,7 @@ setMethod(
   signature=signature(times="missing"),
   definition=function (...) {
     if (nargs() > 0)
-      pomp_stop("covariate_table",sQuote("times")," is a required argument.")
+      pStop("covariate_table",sQuote("times")," is a required argument.")
     new("covartable")
   }
 )
@@ -80,49 +80,50 @@ setMethod(
   signature=signature(times="ANY"),
   definition=function (..., times) {
 
-    df <- tryCatch(
-      data.frame(...,check.names=FALSE),
-      error = function (e) {
-        pomp_stop("covariate_table",conditionMessage(e))
-      }
+    tryCatch(
+      {
+
+        df <- data.frame(...,check.names=FALSE)
+
+        if (anyDuplicated(names(df))) {
+          pStop_("names of covariates must be unique.")
+        }
+
+        if (length(times) == 0 ||
+            (length(times) > 1 && !is.numeric(times)) ||
+            (length(times) == 1 && !is.numeric(times) && !is.character(times)))
+          pStop_(sQuote("times")," should either be a vector ",
+            "of times or identify a single time variable.")
+
+        if (length(times) == 1) {
+          if (is.character(times)) {
+            tpos <- match(times,names(df))
+          } else if (is.numeric(times)) {
+            tpos <- as.integer(times)
+          }
+          if (tpos < 1 || tpos > length(df) || !is.finite(tpos))
+            pStop_(sQuote("times")," must identify a single ",
+              "variable either by name or by index.")
+          times <- df[[tpos]]
+          df <- df[-tpos]
+        }
+
+        if (length(df) == 0)
+          pStop_("no covariates specified.")
+
+        if (length(times) != nrow(df))
+          pStop_(sQuote("times")," must agree in length with the covariates.")
+
+        if (any(!is.finite(times)) || !all(diff(times)>0))
+          pStop_(sQuote("times"),
+            " must be an increasing numeric sequence (without missing values).")
+
+        new("covartable",times=as.double(times),
+          table=do.call(cbind,lapply(df,as.double)))
+
+      },
+      error = function (e) pStop("covariate_table",conditionMessage(e))
     )
-
-    if (anyDuplicated(names(df))) {
-      pomp_stop("covariate_table","names of covariates must be unique.")
-    }
-
-    if (length(times) == 0 ||
-        (length(times) > 1 && !is.numeric(times)) ||
-        (length(times) == 1 && !is.numeric(times) && !is.character(times)))
-      pomp_stop("covariate_table",sQuote("times")," should either be a vector ",
-        "of times or identify a single time variable.")
-
-    if (length(times) == 1) {
-      if (is.character(times)) {
-        tpos <- match(times,names(df))
-      } else if (is.numeric(times)) {
-        tpos <- as.integer(times)
-      }
-      if (tpos < 1 || tpos > length(df) || !is.finite(tpos))
-        pomp_stop("covariate_table",sQuote("times")," must identify a single ",
-          "variable either by name or by index.")
-      times <- df[[tpos]]
-      df <- df[-tpos]
-    }
-
-    if (length(df) == 0)
-      pomp_stop("covariate_table","no covariates specified.")
-
-    if (length(times) != nrow(df))
-      pomp_stop("covariate_table",sQuote("times"),
-        " must agree in length with the covariates.")
-
-    if (any(!is.finite(times)) || !all(diff(times)>0))
-      pomp_stop("covariate_table",sQuote("times"),
-        " should be an increasing sequence of times (without missing values).")
-
-    new("covartable",times=as.double(times),
-      table=do.call(cbind,lapply(df,as.double)))
 
   }
 )
@@ -135,9 +136,10 @@ select_covariates <- function (object, vars) {
   cnames <- colnames(object@table)
   if (!all(vars %in% cnames)) {
     missing <- vars[!(vars%in%cnames)]
-    pomp_stop("select_covariates","variable(s) ",
-      paste(sapply(missing,sQuote),collapse=","),
-      " are not among the covariates.")
+    m1 <- ngettext(length(missing),"variable ","variables ")
+    m2 <- ngettext(length(missing)," is"," are")
+    pStop_(m1,paste(sapply(missing,sQuote),collapse=","),m2,
+      " not among the covariates.")
   }
   object@table <- object@table[,vars,drop=FALSE]
   object
@@ -147,7 +149,7 @@ covar_fun_warning <- function (object, slotname, funs, wp) {
   if (length(object@times) > 0 && !is.null(funs[[slotname]])) {
     if (funs[[slotname]]@mode == pompfunmode$Rfun &&
         !("covars" %in% names(formals(funs[[slotname]]@R.fun))))
-      pomp_warn(wp,"a covariate table has been given, yet the ",
+      pWarn(wp,"a covariate table has been given, yet the ",
         sQuote(slotname)," function does not have ",
         sQuote("covars")," as a formal argument.")
   }
@@ -156,6 +158,6 @@ covar_fun_warning <- function (object, slotname, funs, wp) {
 covar_time_warning <- function (object, times, t0, wp) {
   if ((length(object@times)>0) &&
       ((min(object@times)>t0) || (max(object@times)<max(times))))
-    pomp_warn(wp,"the supplied covariate times do not embrace the ",
+    pWarn(wp,"the supplied covariate times do not embrace the ",
       "data times: covariates may be extrapolated.")
 }

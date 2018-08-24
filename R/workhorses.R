@@ -92,7 +92,7 @@ setMethod(
     tryCatch(
       dmeasure.internal(object=object,y=y,x=x,times=times,
         params=params,log=log,...),
-      error = function (e) pomp_stop("dmeasure",conditionMessage(e))
+      error = function (e) pStop("dmeasure",conditionMessage(e))
     )
   }
 )
@@ -157,7 +157,7 @@ setMethod(
   definition=function (object, params, log = FALSE, ...) {
     tryCatch(
       dprior.internal(object=object,params=params,log=log,...),
-      error = function (e) pomp_stop("dprior",conditionMessage(e))
+      error = function (e) pStop("dprior",conditionMessage(e))
     )
   }
 )
@@ -223,7 +223,7 @@ setMethod(
   definition = function (object, x, times, params, log = FALSE, ...) {
     tryCatch(
       dprocess.internal(object=object,x=x,times=times,params=params,log=log,...),
-      error = function (e) pomp_stop("dprocess",conditionMessage(e))
+      error = function (e) pStop("dprocess",conditionMessage(e))
     )
   }
 )
@@ -291,7 +291,7 @@ setMethod(
     dir <- match.arg(dir)
     tryCatch(
       partrans.internal(object=object,params=params,dir=dir,...),
-      error = function (e) pomp_stop("partrans",conditionMessage(e))
+      error = function (e) pStop("partrans",conditionMessage(e))
     )
   }
 )
@@ -360,7 +360,7 @@ setMethod(
   definition=function (object, params, t0, nsim = 1, ...) {
     tryCatch(
       rinit.internal(object=object,params=params,t0=t0,nsim=nsim,...),
-      error = function (e) pomp_stop("rinit",conditionMessage(e))
+      error = function (e) pStop("rinit",conditionMessage(e))
     )
   }
 )
@@ -425,7 +425,7 @@ setMethod(
   definition=function (object, x, times, params, ...) {
     tryCatch(
       rmeasure.internal(object=object,x=x,times=times,params=params,...),
-      error = function (e) pomp_stop("rmeasure",conditionMessage(e))
+      error = function (e) pStop("rmeasure",conditionMessage(e))
     )
   }
 )
@@ -489,7 +489,7 @@ setMethod(
   definition=function (object, params, ...)
     tryCatch(
       rprior.internal(object=object,params=params,...),
-      error = function (e) pomp_stop("rprior",conditionMessage(e))
+      error = function (e) pStop("rprior",conditionMessage(e))
     )
 )
 
@@ -566,7 +566,7 @@ setMethod(
   definition=function (object, xstart, times, params, offset = 0L, ...) {
     tryCatch(
       rprocess.internal(object=object,xstart=xstart,times=times,params=params,offset=offset,...),
-      error = function (e) pomp_stop("rprocess",conditionMessage(e))
+      error = function (e) pStop("rprocess",conditionMessage(e))
     )
   }
 )
@@ -634,7 +634,7 @@ setMethod(
   definition=function (object, x, times, params, ...)
     tryCatch(
       skeleton.internal(object=object,x=x,times=times,params=params,...),
-      error = function (e) pomp_stop("skeleton",conditionMessage(e))
+      error = function (e) pStop("skeleton",conditionMessage(e))
     )
 )
 

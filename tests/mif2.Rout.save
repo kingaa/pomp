@@ -158,9 +158,9 @@ Error : in ‘mif2’: the following parameter(s), given random walks in ‘rw.s
 > try(mif2(po,params=list(),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
 Error : in ‘mif2’: the following parameter(s), given random walks in ‘rw.sd’, are not present in ‘start’: ‘sigma’
 > try(mif2(po,params=list(NULL),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
-Error : in ‘pomp’: (list) object cannot be coerced to type 'double'
+Error : (list) object cannot be coerced to type 'double'
 > try(mif2(po,params=c(3,2,1),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
-Error : in ‘pomp’: ‘params’ must be a named numeric vector.
+Error : ‘params’ must be a named numeric vector.
 > try(mif2(po,Nmif=1,Np=100:1000,rw.sd=rw.sd(sigma=0.1)))
 Error : in ‘mif2’: ‘cooling.fraction.50’ is a required argument.
 In addition: Warning message:

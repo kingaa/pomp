@@ -108,9 +108,9 @@ Error : in ‘pmcmc’: in ‘rinit’: in default 'rinit': there are no paramet
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try(pmcmc(mcmc1,params=-7))
-Error : in ‘pmcmc’: in ‘pomp’: ‘params’ must be a named numeric vector.
+Error : in ‘pmcmc’: ‘params’ must be a named numeric vector.
 > try(pmcmc(mcmc1,params="yes"))
-Error : in ‘pmcmc’: in ‘pomp’: ‘params’ must be a named numeric vector.
+Error : in ‘pmcmc’: ‘params’ must be a named numeric vector.
 In addition: Warning message:
 In setNames(as.double(params), names(params)) : NAs introduced by coercion
 > try(pmcmc(mcmc1,params=list()))

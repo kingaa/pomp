@@ -51,10 +51,10 @@ The following objects are masked from ‘package:base’:
 > 
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +   simulate(times=1:50))
-Error : in ‘simulate’: in ‘pomp’: ‘times’ and ‘t0’ are required arguments.
+Error : in ‘simulate’: ‘times’ and ‘t0’ are required arguments.
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +     simulate(times="t"))
-Error : in ‘simulate’: in ‘pomp’: ‘times’ and ‘t0’ are required arguments.
+Error : in ‘simulate’: ‘times’ and ‘t0’ are required arguments.
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +     simulate(times="t",t0=0))
 Error : in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.

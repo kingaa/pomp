@@ -143,7 +143,7 @@ Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified.
 Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified.
 > try(abc(ou2,params=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘pomp’: ‘params’ must be a named numeric vector.
+Error : in ‘abc’: ‘params’ must be a named numeric vector.
 > try(abc(ou2,Nabc=100,probes="plist[[1]]",scale=scale.dat[1],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
@@ -151,7 +151,7 @@ Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 Error : in ‘abc’: each probe must be a function of a single argument.
 > try(abc(abc1,dprior=function(params,log,...)stop("ouch!")))
-Error : in ‘dprior’: ouch!
+Error : in ‘abc’: in ‘dprior’: ouch!
 > try(abc(abc1,dprior=function(params,log,...)Inf))
 Error : in ‘abc’: inadmissible value of ‘dprior’ at starting parameters.
 > try(abc(abc1,probes=function(x)stop("piff!")))
@@ -165,7 +165,7 @@ Error : in ‘abc’: in proposal function: urp!
 > count <- 0
 > delayed.failure <- function (params,log,...) {count <<- count+1; if (count>5) stop("no sir!") else 1}
 > try(abc(abc1,dprior=delayed.failure))
-Error : in ‘dprior’: no sir!
+Error : in ‘abc’: in ‘dprior’: no sir!
 > count <- 0
 > delayed.failure <- function (theta,...) {count <<- count+1; if (count>5) stop("'fraid not!") else theta}
 > try(abc(abc1,proposal=delayed.failure))

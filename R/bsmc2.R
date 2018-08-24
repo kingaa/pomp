@@ -80,7 +80,7 @@ setMethod(
   "bsmc2",
   signature=signature(data="missing"),
   definition=function (...) {
-    pomp_stop("bsmc2",sQuote("data")," is a required argument")
+    pStop("bsmc2",sQuote("data")," is a required argument")
   }
 )
 
@@ -88,8 +88,8 @@ setMethod(
   "bsmc2",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    stop(sQuote("bsmc2")," is not defined for objects of class ",
-      sQuote(class(data)),call.=FALSE)
+    pStop_(sQuote("bsmc2")," is not defined for objects of class ",
+      sQuote(class(data)))
   }
 )
 
@@ -108,7 +108,7 @@ setMethod(
     object <- tryCatch(
       pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
         rprior=rprior,partrans=partrans,params=params,...,verbose=verbose),
-      error = function (e) pomp_stop("bsmc2",conditionMessage(e))
+      error = function (e) pStop("bsmc2",conditionMessage(e))
     )
 
     bsmc2(
@@ -144,7 +144,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pomp_stop("bsmc2",conditionMessage(e))
+      error = function (e) pStop("bsmc2",conditionMessage(e))
     )
 
   }
@@ -164,7 +164,7 @@ setMethod(
   definition=function (x, pars, thin, ...) {
     if (missing(pars)) pars <- x@est
     pars <- as.character(pars)
-    if (length(pars)<1) pomp_stop("plot","no parameters to plot.")
+    if (length(pars)<1) pStop("plot","no parameters to plot.")
     if (missing(thin)) thin <- Inf
     bsmc.plot(
       prior=partrans(x,x@prior,dir="fromEst"),
@@ -179,30 +179,23 @@ setMethod(
 bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
   .getnativesymbolinfo = TRUE, verbose) {
 
-  ep <- character(0)
-
-  object <- tryCatch(
-    pomp(object,...,verbose=verbose),
-    error = function (e) pomp_stop(ep,conditionMessage(e))
-  )
-
+  object <- pomp(object,...,verbose=verbose)
   gnsi <- as.logical(.getnativesymbolinfo)
 
-  if (missing(Np))
-    pomp_stop(ep,sQuote("Np")," must be specified.")
+  if (missing(Np)) pStop_(sQuote("Np")," must be specified.")
   if (!missing(Np) && (length(Np) > 1 || !is.finite(Np) || Np < 1))
-    pomp_stop(ep,sQuote("Np")," must be a positive integer.")
+    pStop_(sQuote("Np")," must be a positive integer.")
   Np <- as.integer(Np)
 
   params <- parmat(coef(object),Np)
 
   smooth <- as.numeric(smooth)
   if ((length(smooth)!=1) || (!is.finite(smooth)) || (smooth>1) || (smooth<=0))
-    pomp_stop(ep,sQuote("smooth")," must be a scalar in (0,1]")
+    pStop_(sQuote("smooth")," must be a scalar in (0,1]")
 
   tol <- as.numeric(tol)
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
-    pomp_stop(ep,sQuote("tol")," should be a small positive number.")
+    pStop_(sQuote("tol")," should be a small positive number.")
 
   hsq <- smooth^2             #  see Liu & West eq(10.3.12)
   shrink <- sqrt(1-hsq)       #  'a' parameter of Liu & West
@@ -226,7 +219,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
   estind <- which(apply(params,1,function(x) diff(range(x)) > 0))
   est <- paramnames[estind]
   nest <- length(est)
-  if (nest < 1) pomp_stop("","no parameters to estimate")
+  if (nest < 1) pStop("","no parameters to estimate")
 
   evidence <- as.numeric(rep(NA,ntimes))
   eff.sample.size <- as.numeric(rep(NA,ntimes))
@@ -260,10 +253,10 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
     pert <- tryCatch(
       rmvnorm(n=Np,mean=rep(0,nest),sigma=hsq*params.var,method="svd"),
       error = function (e)
-        pomp_stop("rmvnorm",conditionMessage(e))
+        pStop("rmvnorm",conditionMessage(e))
     )
 
-    if (!all(is.finite(pert))) pomp_stop(ep,"extreme particle depletion")
+    if (!all(is.finite(pert))) pStop_("extreme particle depletion")
 
     params[estind,] <- m[estind,]+t(pert)
 
@@ -285,7 +278,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
     x[,] <- xpred
 
     ## test for failure to filter
-    dim(weights) <- NULL   ### needed?
+    dim(weights) <- NULL   ### needed?  FIXME
     failures <- ((weights<tol) | (!is.finite(weights))) # test for NA weights
     all.fail <- all(failures)
     if (all.fail) {                     # all particles are lost
@@ -293,8 +286,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
         message("filtering failure at time t = ",times[nt+1])
       }
       nfail <- nfail+1
-      if (nfail > max.fail)
-        pomp_stop(ep,"too many filtering failures")
+      if (nfail > max.fail) pStop_("too many filtering failures")
       evidence[nt] <- log(tol)          # worst log-likelihood
       weights <- rep(1/Np,Np)
       eff.sample.size[nt] <- 0
@@ -320,8 +312,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
   }
 
   if (nfail>0)
-    pomp_warn(ep,nfail," filtering ",
-      ngettext(nfail,"failure","failures")," occurred.")
+    pWarn_(nfail," filtering ",ngettext(nfail,"failure","failures")," occurred.")
 
   ## replace parameters with point estimate (posterior median)
   coef(object,transform=TRUE) <- apply(params,1,median)
@@ -345,7 +336,7 @@ bsmc.plot <- function (prior, post, pars, thin, ...) {
   p2 <- sample.int(n=ncol(post),size=min(thin,ncol(post)))
   if (!all(pars %in% rownames(prior))) {
     missing <- which(!(pars%in%rownames(prior)))
-    pomp_stop("plot","unrecognized parameters: ",paste(sQuote(pars[missing]),collapse=","))
+    pStop("plot","unrecognized parameters: ",paste(sQuote(pars[missing]),collapse=","))
   }
   prior <- t(prior[pars,,drop=FALSE])
   post <- t(post[pars,,drop=FALSE])

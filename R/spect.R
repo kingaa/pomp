@@ -114,14 +114,14 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     if (missing(rprocess) || missing(rmeasure) || missing(params))
-      pomp_stop("spect",sQuote(c("rprocess","rmeasure","params")),
+      pStop("spect",sQuote(c("rprocess","rmeasure","params")),
         " are required arguments.")
 
     object <- tryCatch(
       pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
         params=params,...,verbose=verbose),
       error = function (e) {
-        pomp_stop("spect",conditionMessage(e))
+        pStop("spect",conditionMessage(e))
       }
     )
 
@@ -205,7 +205,7 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
 
   object <- tryCatch(
     pomp(object,...),
-    error = function (e) pomp_stop("spect",conditionMessage(e))
+    error = function (e) pStop("spect",conditionMessage(e))
   )
 
   if (missing(vars)) vars <- rownames(object@data)
@@ -213,11 +213,11 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   if (missing(kernel.width) || length(kernel.width) > 1 ||
       !is.numeric(kernel.width) ||
       !is.finite(kernel.width) || kernel.width < 0)
-    pomp_stop("spect",sQuote("kernel.width")," must be a positive integer.")
+    pStop("spect",sQuote("kernel.width")," must be a positive integer.")
 
   if (missing(nsim) || length(nsim) > 1 || !is.numeric(nsim)||
       !is.finite(nsim) || (nsim<1))
-    pomp_stop("spect",sQuote("nsim")," must be a positive integer.")
+    pStop("spect",sQuote("nsim")," must be a positive integer.")
 
   nsim <- as.integer(nsim)
   seed <- as.integer(seed)
@@ -293,13 +293,13 @@ compute.spect.data <- function (object, vars, transform.data, detrend, ker) {
 
   dat <- obs(object,vars)
   if (any(!is.finite(dat)))
-    pomp_stop("spect","missing or infinite values in the data.")
+    pStop("spect","missing or infinite values in the data.")
 
   dt <- diff(time(object,t0=FALSE))
   base.freq <- 1/mean(dt)
   dt.tol <- 0.025
   if (max(dt)-min(dt)>dt.tol*mean(dt))
-    pomp_stop("spect",sQuote("spect")," assumes evenly spaced times.")
+    pStop("spect",sQuote("spect")," assumes evenly spaced times.")
 
   for (j in seq_along(vars)) {
     sp <- spec.pgram(
@@ -326,12 +326,12 @@ compute.spect.sim <- function (object, params, vars, nsim, seed,
       s <- freeze(.Call(do_simulate,object,params,nsim,gnsi=TRUE),seed=seed)
       s$obs[vars,,,drop=FALSE]
     },
-    error = function (e) pomp_stop("spect","in simulation: ",
+    error = function (e) pStop("spect","in simulation: ",
       conditionMessage(e))
   )
 
   if (any(!is.finite(sims)))
-    pomp_stop("spect","missing or infinite values in simulated data.")
+    pStop("spect","missing or infinite values in simulated data.")
 
   nobs <- length(vars)
   for (j in seq_len(nobs)) {

@@ -89,7 +89,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(times) || missing(t0))
-      pomp_stop("simulate",sQuote("times")," and ",sQuote("t0"),
+      pStop("simulate",sQuote("times")," and ",sQuote("t0"),
         " are required arguments.")
 
     format <- match.arg(format)
@@ -99,7 +99,7 @@ setMethod(
         rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
         verbose=verbose),
       error=function (e) {
-        pomp_stop("simulate",conditionMessage(e))
+        pStop("simulate",conditionMessage(e))
       }
     )
 
@@ -136,7 +136,7 @@ setMethod(
         rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
         verbose=verbose),
       error = function (e) {
-        pomp_stop("simulate",conditionMessage(e))
+        pStop("simulate",conditionMessage(e))
       }
     )
 
@@ -194,21 +194,21 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
 
   object <- tryCatch(
     pomp(object,...,verbose=verbose),
-    error = function (e) pomp_stop("simulate",conditionMessage(e))
+    error = function (e) pStop("simulate",conditionMessage(e))
   )
   object <- as(object,"pomp")
 
   include.data <- as.logical(include.data)
 
   if (length(nsim)!=1 || !is.numeric(nsim) || !is.finite(nsim) || nsim < 1)
-    pomp_stop("simulate",sQuote("nsim")," must be a positive integer.")
+    pStop("simulate",sQuote("nsim")," must be a positive integer.")
   nsim <- as.integer(nsim)
 
   if (missing(params)) params <- coef(object)
   if (is.list(params)) params <- unlist(params)
   if (is.null(params)) params <- numeric(0)
   if (!is.numeric(params))
-    pomp_stop("simulate",sQuote("params")," must be named and numeric.")
+    pStop("simulate",sQuote("params")," must be named and numeric.")
   params <- as.matrix(params)
   storage.mode(params) <- "double"
 
@@ -222,7 +222,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
       .Call(do_simulate,object,params,nsim,.getnativesymbolinfo),
       seed=seed
     ),
-    error = function (e) pomp_stop("simulate",conditionMessage(e))
+    error = function (e) pStop("simulate",conditionMessage(e))
   )
 
   nsims <- ncol(sims$states)
