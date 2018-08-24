@@ -5,37 +5,30 @@
 \title{Examples of the construction of POMP models}
 \arguments{
 \item{example}{example to load given as a name or literal character string.
-Evoked without an argument, \code{pompExample} lists all available
-examples.}
+Evoked without an argument, \code{pompExample} lists all available examples.}
 
-\item{\dots}{additional arguments define symbols in the environment within
-which the example code is executed.}
+\item{\dots}{additional arguments define symbols in the environment within which the example code is executed.}
 
-\item{show}{logical; if \code{TRUE}, display, but do not execute, the
-example code.}
+\item{show}{logical;
+if \code{TRUE}, display, but do not execute, the example code.}
 
-\item{envir}{the environment into which the objects should be loaded.  If
-\code{envir=NULL}, then the created objects are returned in a list.}
+\item{envir}{the environment into which the objects should be loaded.
+If \code{envir=NULL}, then the created objects are returned in a list.}
 }
 \value{
-By default, \code{pompExample} has the side effect of creating one
-or more objects in the global workspace.  If \code{envir=NULL}, there are
-no side effects; rather, the objects are returned as a list.
+By default, \code{pompExample} has the side effect of creating one or more objects in the global workspace.
+If \code{envir=NULL}, there are no side effects; rather, the objects are returned as a list.
 }
 \description{
 \code{pompExample} loads pre-built example \sQuote{pomp} objects.
 }
 \details{
-Directories listed in the global option \code{pomp.examples} (which can be
-changed using \code{options()}) are searched for file named
-\file{<example>.R}.  If found, this file will be \code{source}d in a
-temporary environment.  Additional arguments to \code{pompExample} define
-variables within this environment and will therefore be available when the
-code in \file{<example>.R} is \code{source}d.
+Directories listed in the global option \code{pomp.examples} (which can be changed using \code{options()}) are searched for file named \file{<example>.R}.
+If found, this file will be \code{source}d in a temporary environment.
+Additional arguments to \code{pompExample} define variables within this environment and will therefore be available when the code in \file{<example>.R} is \code{source}d.
 
-The codes that construct these \sQuote{pomp} objects can be found in the
-\file{examples} directory in the installed package.  Do
-\code{system.file("examples",package="pomp"))} to find this directory.
+The codes that construct these \sQuote{pomp} objects can be found in the \file{examples} directory in the installed package.
+Do \code{system.file("examples",package="pomp"))} to find this directory.
 }
 \examples{
 

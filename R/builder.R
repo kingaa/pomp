@@ -81,10 +81,10 @@ hitch <- function (..., templates,
   PACKAGE, globals, cfile, cdir, shlib.args,
   verbose = getOption("verbose", FALSE)) {
 
-  ep <- paste0("in ",sQuote("hitch"),": ")
+  ep <- "hitch"
 
   if (missing(templates))
-    stop(ep,sQuote("templates")," must be supplied.",call.=FALSE)
+    pStop(ep,sQuote("templates")," must be supplied.")
 
   if (missing(cfile)) cfile <- NULL
   if (missing(cdir)) cdir <- NULL
@@ -105,10 +105,9 @@ hitch <- function (..., templates,
   covarnames <- as.character(covarnames)
 
   if (anyDuplicated(c(statenames,paramnames,obsnames,covarnames))) {
-    stop(ep,"the variable names in ",sQuote("statenames"),", ",
+    pStop(ep,"the variable names in ",sQuote("statenames"),", ",
       sQuote("paramnames"),", ",sQuote("covarnames"),", ",
-      ", and ",sQuote("obsnames")," must be unique and disjoint.",
-      call.=FALSE)
+      ", and ",sQuote("obsnames")," must be unique and disjoint.")
   }
 
   horses <- list(...)
@@ -136,8 +135,8 @@ hitch <- function (..., templates,
         )
       ),
       error = function (e) {
-        stop("error in building shared-object library from C snippets: ",
-          conditionMessage(e),call.=FALSE)
+        pStop_("error in building shared-object library from C snippets: ",
+          conditionMessage(e))
       }
     )
     libname <- lib$name
@@ -273,7 +272,7 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
       verbose=verbose
     ),
     error = function (e) {
-      stop("in ",sQuote("Cbuilder"),": compilation error: ",conditionMessage(e),call.=FALSE)
+      pStop("Cbuilder","compilation error: ",conditionMessage(e))
     }
   )
 
@@ -291,7 +290,7 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
   tryCatch(
     cat(src,file=modelfile),
     error = function (e) {
-      stop("cannot write file ",sQuote(modelfile),call.=FALSE)   #nocov
+      pStop_("cannot write file ",sQuote(modelfile))   #nocov
     }
   )
   if (verbose) cat("model codes written to",sQuote(modelfile),"\n")
@@ -318,13 +317,13 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
       )
     },
     error = function (e) {
-      stop("error compiling C snippets: ",conditionMessage(e),call.=FALSE) #nocov
+      pStop_("error compiling C snippets: ",conditionMessage(e)) #nocov
     }
   )
   stat <- as.integer(attr(rv,"status"))
   if (length(stat) > 0 && stat != 0L) {
-    stop("cannot compile shared-object library ",sQuote(solib),": status = ",stat,
-      "\ncompiler messages:\n",paste(rv,collapse="\n"),call.=FALSE)
+    pStop_("cannot compile shared-object library ",sQuote(solib),": status = ",
+      stat,"\ncompiler messages:\n",paste(rv,collapse="\n"))
   } else if (verbose) {
     cat("compiler messages:",rv,sep="\n")
   }
@@ -345,7 +344,7 @@ srcDir <- function (dir, verbose) {
         stopifnot(dir.exists(dir))
       },
       error = function (e) {
-        stop("cannot create cache directory ",sQuote(dir),call.=FALSE)
+        pStop_("cannot create cache directory ",sQuote(dir))
       }
     )
   }
@@ -364,7 +363,7 @@ render <- function (template, ...) {
   if (length(vars)==0) return(template)
   n <- sapply(vars,length)
   if (!all((n==max(n))|(n==1)))
-    stop("in ",sQuote("render")," incommensurate lengths of replacements",call.=FALSE)
+    pStop("render","incommensurate lengths of replacements.")
   short <- which(n==1)
   n <- max(n)
   for (i in short) vars[[i]] <- rep(vars[[i]],n)

@@ -75,27 +75,27 @@ newly created object(s):
 +   length(sm$pvals)==26,length(sm$quantiles)==26)
 > 
 > try(probe.mean(c("y1","y2")))
-Error : ‘probe.mean’ is a univariate probe
+Error : ‘probe.mean’ is a univariate probe.
 > try(probe.median(c("y1","y2")))
-Error : ‘probe.median’ is a univariate probe
+Error : ‘probe.median’ is a univariate probe.
 > try(probe.var(c("y1","y2")))
-Error : ‘probe.var’ is a univariate probe
+Error : ‘probe.var’ is a univariate probe.
 > try(probe.sd(c("y1","y2")))
-Error : ‘probe.sd’ is a univariate probe
+Error : ‘probe.sd’ is a univariate probe.
 > try(probe.period(c("y1","y2")))
-Error : ‘probe.period’ is a univariate probe
+Error : ‘probe.period’ is a univariate probe.
 > try(probe.quantile(c("y1","y2")))
-Error : ‘probe.quantile’ is a univariate probe
+Error : ‘probe.quantile’ is a univariate probe.
 > try(probe.marginal(c("y1","y2")))
-Error : ‘probe.marginal’ is a univariate probe
+Error : ‘probe.marginal’ is a univariate probe.
 > try(probe.ccf("y1"))
-Error : in ‘probe.ccf’: ‘vars’ must name two variables
+Error : in ‘probe.ccf’: ‘vars’ must name two variables.
 > try(probe.nlar(c("y1","y2")))
-Error : ‘probe.nlar’ is a univariate probe
+Error : ‘probe.nlar’ is a univariate probe.
 > 
 > probe.acf(c("y1","y2"),lags=c(0,1),type="cor") -> f
 Warning message:
-in ‘probe.acf’: useless zero lag discarded in ‘probe.acf’ 
+in ‘probe.acf’: useless zero lag discarded. 
 > probe.acf(c("y1","y2"),lags=c(1,5),type="cor") -> f
 > ou2 %>% simulate() %>% obs() %>% f() -> v
 > stopifnot(names(v)==c("acf.1.y1", "acf.5.y1", "acf.1.y2", "acf.5.y2"))
@@ -147,9 +147,9 @@ Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ must be positive intege
 > try(probe.nlar("y1",lags=list(0,1,2),powers=1))
 Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ must be positive integers.
 > try(probe.nlar("y1",lags=list(1,2),powers=c(1,2,3)))
-Error : in ‘probe.nlar’: ‘lags’ must match ‘powers’ in length, or have length 1
+Error : in ‘probe.nlar’: ‘lags’ must match ‘powers’ in length, or have length 1.
 > try(probe.nlar("y1",lags=list(1,2,3),powers=c(1,2)))
-Error : in ‘probe.nlar’: ‘powers’ must match ‘lags’ in length, or have length 1
+Error : in ‘probe.nlar’: ‘powers’ must match ‘lags’ in length, or have length 1.
 > 
 > plist <- list(
 +   probe.nlar("y1",lags=c(1,2,3),powers=2),

@@ -58,41 +58,47 @@ setMethod(
   "time<-",
   signature=signature(object="pomp"),
   definition=function (object, t0 = FALSE, ..., value) {
-    ep <- paste0("in ",sQuote("time<-"),": ")
-    if (!is.numeric(value))
-      stop(ep,sQuote("value")," must be a numeric vector.",call.=FALSE)
-    storage.mode(value) <- "double"
-    tt <- object@times
-    dd <- object@data
-    ss <- object@states
-    if (t0) {
-      object@t0 <- value[1]
-      object@times <- value[-1]
-    } else {
-      object@times <- value
-    }
-    if (!all(diff(object@times)>0))
-      stop(ep,"the times specified must be an increasing sequence.",call.=FALSE)
-    if (object@t0>object@times[1])
-      stop(ep,"the zero-time ",sQuote("t0")," must occur no later than the first observation.",call.=FALSE)
-    object@data <- array(
-      data=NA,
-      dim=c(nrow(dd),length(object@times)),
-      dimnames=list(rownames(dd),NULL)
+    tryCatch(
+      time.repl.internal(object,t0=t0,...,value=value),
+      error = function (e) pStop("time<-",conditionMessage(e))
     )
-    object@data[,object@times%in%tt] <- dd[,tt%in%object@times]
-    if (length(ss)>0) {
-      object@states <- array(
-        data=NA,
-        dim=c(nrow(ss),length(object@times)),
-        dimnames=list(rownames(ss),NULL)
-      )
-      for (kt in seq_along(object@times)) {
-        wr <- which(object@times[kt]==tt)
-        if (length(wr)>0)
-          object@states[,kt] <- ss[,wr[1]]
-      }
-    }
-    object
   }
 )
+
+time.repl.internal <- function (object, t0 = FALSE, ..., value) {
+  if (!is.numeric(value)) pStop_(sQuote("value")," must be a numeric vector.")
+  storage.mode(value) <- "double"
+  tt <- object@times
+  dd <- object@data
+  ss <- object@states
+  if (t0) {
+    object@t0 <- value[1]
+    object@times <- value[-1]
+  } else {
+    object@times <- value
+  }
+  if (!all(diff(object@times)>0))
+    pStop_(sQuote("value")," must be an increasing sequence.")
+  if (object@t0>object@times[1])
+    pStop_("the zero-time ",sQuote("t0"),
+      " must occur no later than the first observation.")
+  object@data <- array(
+    data=NA,
+    dim=c(nrow(dd),length(object@times)),
+    dimnames=list(rownames(dd),NULL)
+  )
+  object@data[,object@times%in%tt] <- dd[,tt%in%object@times]
+  if (length(ss)>0) {
+    object@states <- array(
+      data=NA,
+      dim=c(nrow(ss),length(object@times)),
+      dimnames=list(rownames(ss),NULL)
+    )
+    for (kt in seq_along(object@times)) {
+      wr <- which(object@times[kt]==tt)
+      if (length(wr)>0)
+        object@states[,kt] <- ss[,wr[1]]
+    }
+  }
+  object
+}

@@ -270,13 +270,12 @@ euler.sim <- function (step.fun, delta.t) {
 ##' @name gillespie.sim
 ##' @export
 gillespie.sim <- function (rate.fun, v, hmax = Inf) {
-  ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
+  ep <- "gillespie.sim"
   if (!is.matrix(v)) {
-    stop(ep,sQuote("v")," must be a matrix.",
-      call.=FALSE)
+    pStop(ep,sQuote("v")," must be a matrix.")
   }
   if (anyDuplicated(rownames(v))){
-    stop(ep,"duplicates in rownames of ",sQuote("v"), call.=FALSE)
+    pStop(ep,"duplicates in rownames of ",sQuote("v"))
   }
 
   new("gillespieRprocPlugin",
@@ -293,13 +292,12 @@ gillespie.sim <- function (rate.fun, v, hmax = Inf) {
 ##'
 ##' @export
 gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
-  ep <- paste0("in ",sQuote("gillespie.hl.sim")," plugin: ")
+  ep <- "gillespie.hl.sim"
   args <- list(...)
 
   for (k in seq_along(args)) {
     if (!is.list(args[[k]]) || length(args[[k]]) != 2) {
-      stop(ep,"each of the events should be specified using a length-2 list",
-        call.=FALSE)
+      pStop(ep,"each of the events should be specified using a length-2 list")
     }
   }
 
@@ -309,12 +307,11 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   checkCode <- function (x) {
     inh <- inherits(x, what = c("Csnippet", "character"))
     if (!any(inh)) {
-      stop(ep,"for each event, the first list-element should be a",
-        " C snippet or string.", call.=FALSE)
+      pStop(ep,"for each event, the first list-element should be a",
+        " C snippet or string.")
     }
     if (length(x) != 1){
-      stop(ep,"for each event, the length of the first list-element",
-        " should be 1.", call.=FALSE)
+      pStop(ep,"for each event, the length of the first list-element should be 1.")
     }
     as(x,"character")
   }
@@ -326,14 +323,14 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
     .post <- paste(as.character(.post),collapse="\n")
   },
     error = function (e) {
-      stop(ep,sQuote(".pre")," and ",sQuote(".post"),
-        " must be C snippets or strings.",call.=FALSE)
+      pStop(ep,sQuote(".pre")," and ",sQuote(".post"),
+        " must be C snippets or strings.")
     })
 
   for (k in seq_along(stoich)) {
     if (!is.numeric(stoich[[k]]) || is.null(names(stoich[[k]]))) {
-      stop(ep,"for each event, the second list-element should be",
-        " a named numeric vector", call.=FALSE)
+      pStop(ep,"for each event, the second list-element should be",
+        " a named numeric vector.")
     }
   }
 
@@ -355,7 +352,7 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   stoichdf <- lapply(stoich, function (x) data.frame(as.list(x),check.names=FALSE))
   v <- t(data.matrix(do.call(rbind, stoichdf)))
   if (anyDuplicated(rownames(v))){
-    stop(ep,"redundant or conflicting stoichiometry.",call.=FALSE)
+    pStop(ep,"redundant or conflicting stoichiometry.")
   }
 
   new("gillespieRprocPlugin",

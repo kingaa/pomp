@@ -27,8 +27,7 @@ setMethod(
   "coef",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("coef"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    pStop("coef",sQuote("object")," is a required argument")
   }
 )
 
@@ -36,8 +35,8 @@ setMethod(
   "coef",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("coef")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    pStop_(sQuote("coef")," is not defined for objects of class ",
+      sQuote(class(object)))
   }
 )
 
@@ -45,8 +44,7 @@ setMethod(
   "coef<-",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("coef<-"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    pStop("coef<-",sQuote("object")," is a required argument")
   }
 )
 
@@ -54,8 +52,8 @@ setMethod(
   "coef<-",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("coef<-")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    pStop_(sQuote("coef<-")," is not defined for objects of class ",
+      sQuote(class(object)))
   }
 )
 
@@ -100,11 +98,12 @@ setMethod(
         pars <- names(params)
       else {
         excl <- setdiff(pars,names(params))
-        if (length(excl)>0) {
-          stop("in ",sQuote("coef"),": name(s) ",
+        nexcl <- length(excl)
+        if (nexcl > 0) {
+          pStop("coef","name",ngettext(nexcl," ","s "),
             paste(sQuote(excl),collapse=","),
-            " correspond to no parameter(s).",
-            call.=FALSE)
+            " correspond",ngettext(nexcl,"s",""),
+            " to no parameter",ngettext(nexcl,".","s."))
         }
       }
       params[pars]
@@ -135,7 +134,6 @@ setMethod(
   "coef<-",
   signature=signature(object="pomp"),
   definition=function (object, pars, transform = FALSE, ..., value) {
-    ep <- paste0("in ",sQuote("coef<-"),": ")
     if (is.null(value)) value <- numeric(0)
     if (is.list(value)) value <- unlist(value)
     if (missing(pars)) {          ## replace the whole params slot with 'value'
@@ -144,13 +142,13 @@ setMethod(
           value <- partrans(object,params=value,dir="fromEst")
         pars <- names(value)
         if (is.null(pars)) {
-          stop(ep,sQuote("value")," must be a named vector",call.=FALSE)
+          pStop("coef<-",sQuote("value")," must be a named vector.")
         }
       }
       object@params <- value
     } else { ## replace or append only the parameters named in 'pars'
       if (!is.null(names(value))) ## we ignore the names of 'value'
-        warning(ep," names of ",sQuote("value")," are being discarded",call.=FALSE)
+        pWarn("coef<-","names of ",sQuote("value")," are being discarded.")
       if (length(object@params)==0) { ## no pre-existing 'params' slot
         val <- numeric(length(pars))
         names(val) <- pars
@@ -164,16 +162,16 @@ setMethod(
         val[] <- value
         excl <- !(pars%in%names(params)) ## new parameter names
         if (any(excl)) { ## append parameters
-          warning(ep,"name(s) ",
+          nexcl <- sum(excl)
+          pWarn("coef<-","name",ngettext(nexcl,"","s")," ",
             paste(sQuote(pars[excl]),collapse=","),
-            " do not refer to existing parameter(s);",
-            " they are being concatenated",
-            call.=FALSE)
+            " refer",ngettext(nexcl,"s","")," to no existing parameter",
+            ngettext(nexcl,"","s"),"; ",
+            ngettext(nexcl,"it is","they are")," being concatenated.")
           params <- c(params,val[excl])
         }
         params[pars] <- val
-        if (transform)
-          params <- partrans(object,params=params,dir="fromEst")
+        if (transform) params <- partrans(object,params=params,dir="fromEst")
         object@params <- params
       }
     }

@@ -3,7 +3,6 @@
 ## For pomp 2:
 
 - let `pomp_fun_handler` to the variable lookups?
-- pass userdata as list to C snippets and as pairlist to R functions
 - it should be possible to refer to times inside `covariate_table`
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
 - ~~revisit use of `enum`~~

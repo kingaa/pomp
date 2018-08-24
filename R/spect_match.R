@@ -58,8 +58,7 @@ setMethod(
   "spect.match.objfun",
   signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("spect.match.objfun"),": ",sQuote("data"),
-      " is a required argument",call.=FALSE)
+    pStop("spect.match.objfun",sQuote("data")," is a required argument")
   }
 )
 
@@ -67,8 +66,8 @@ setMethod(
   "spect.match.objfun",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    stop(sQuote("spect.match.objfun")," is not defined for objects of class ",
-      sQuote(class(data)),call.=FALSE)
+    pStop_(sQuote("spect.match.objfun")," is not defined for objects of class ",
+      sQuote(class(data)))
   }
 )
 
@@ -162,8 +161,6 @@ setMethod(
 smof.internal <- function (object, est, vars, nsim, seed,
   kernel.width, transform.data, detrend, weights, fail.value, ...) {
 
-  ep <- paste0("in ",sQuote("spect.match.objfun"),": ")
-
   object <- spect(object,vars=vars,nsim=nsim,seed=seed,...,
     kernel.width=kernel.width,transform.data=transform.data,detrend=detrend)
 
@@ -173,24 +170,24 @@ smof.internal <- function (object, est, vars, nsim, seed,
     if (length(weights)==1) {
       weights <- rep(weights,length(object@freq))
     } else if ((length(weights) != length(object@freq)))
-      stop(ep,"if ",sQuote("weights"),
+      pStop_("if ",sQuote("weights"),
         " is provided as a vector, it must have length ",
-        length(object@freq),call.=FALSE)
+        length(object@freq))
   } else if (is.function(weights)) {
     weights <- tryCatch(
       vapply(object@freq,weights,numeric(1)),
       error = function (e) {
-        stop(ep,"problem with ",sQuote("weights")," function: ",
-          conditionMessage(e),call.=FALSE)
+        pStop_("problem with ",sQuote("weights")," function: ",
+          conditionMessage(e))
       }
     )
   } else {
-    stop(ep,sQuote("weights"),
-      " must be specified as a vector or as a function",call.=FALSE)
+    pStop_(sQuote("weights"),
+      " must be specified as a vector or as a function")
   }
 
   if (any(!is.finite(weights) | weights<0))
-    stop(ep,sQuote("weights")," should be nonnegative and finite",call.=FALSE)
+    pStop_(sQuote("weights")," should be nonnegative and finite")
   weights <- weights/mean(weights)
 
 
@@ -203,9 +200,9 @@ smof.internal <- function (object, est, vars, nsim, seed,
   idx <- match(est,names(params))
   if (any(is.na(idx))) {
     missing <- est[is.na(idx)]
-    stop(ep,ngettext(length(missing),"parameter","parameters")," ",
+    pStop_(ngettext(length(missing),"parameter","parameters")," ",
       paste(sQuote(missing),collapse=","),
-      " not found in ",sQuote("params"),call.=FALSE)
+      " not found in ",sQuote("params"))
   }
 
   pompLoad(object)

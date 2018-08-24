@@ -34,20 +34,20 @@ Type 'q()' to quit R.
   r tau 
 0.1 0.1 
 > try(coef(po,c("bob","tau")))
-Error : in ‘coef’: name(s) ‘bob’ correspond to no parameter(s).
+Error : in ‘coef’: name ‘bob’ corresponds to no parameter.
 > try(coef(po) <- c(1,2,3))
-Error : in ‘coef<-’: ‘value’ must be a named vector
+Error : in ‘coef<-’: ‘value’ must be a named vector.
 > try(coef(po,transform=TRUE) <- c(1,2,3))
 Error : in ‘partrans’: user transformation functions must return a named numeric vector
 > coef(po) <- list(as.list(coef(po)))
 > coef(po,"r") <- 0.2
 > coef(po,"r") <- list(r=0.2)
 Warning message:
-in ‘coef<-’:  names of ‘value’ are being discarded 
+in ‘coef<-’: names of ‘value’ are being discarded. 
 > coef(po,c("r","theta")) <- list(r=0.2)
 Warning messages:
-1: in ‘coef<-’:  names of ‘value’ are being discarded 
-2: in ‘coef<-’: name(s) ‘theta’ do not refer to existing parameter(s); they are being concatenated 
+1: in ‘coef<-’: names of ‘value’ are being discarded. 
+2: in ‘coef<-’: name ‘theta’ refers to no existing parameter; it is being concatenated. 
 > coef(po,"sigma",transform=TRUE) <- 0
 > coef(po)
     K     r sigma   tau   X.0 theta 
@@ -136,7 +136,7 @@ variable     [,1]      [,2]      [,3]
 Error : in ‘time<-’: ‘value’ must be a numeric vector.
 > time(po1,t0=TRUE) <- 0:10
 > try(time(po) <- 10:0)
-Error : in ‘time<-’: the times specified must be an increasing sequence.
+Error : in ‘time<-’: ‘value’ must be an increasing sequence.
 > try(time(po,t0=TRUE) <- c(4,1:10))
 Error : in ‘time<-’: the zero-time ‘t0’ must occur no later than the first observation.
 > 
@@ -170,12 +170,12 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 alpha.3     tau 
     0.3     1.0 
 > try(coef(po,c("alpha.3","z")))
-Error : in ‘coef’: name(s) ‘z’ correspond to no parameter(s).
+Error : in ‘coef’: name ‘z’ corresponds to no parameter.
 > 
 > coef(po,"alpha.3") <- 4
 > coef(po,"z") <- 9
 Warning message:
-in ‘coef<-’: name(s) ‘z’ do not refer to existing parameter(s); they are being concatenated 
+in ‘coef<-’: name ‘z’ refers to no existing parameter; it is being concatenated. 
 > coef(po)
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
     0.8    -0.5     4.0     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
@@ -203,11 +203,11 @@ newly created object(s):
   1.0   0.1   1.0   0.1   1.0 
 > coef(po,c("r","K")) <- c(a=1,b=2)
 Warning message:
-in ‘coef<-’:  names of ‘value’ are being discarded 
+in ‘coef<-’: names of ‘value’ are being discarded. 
 > coef(po,transform=TRUE) <- c(r=1,K=1)
 > coef(po) <- NULL
 > try(coef(po,transform=FALSE) <- c(5,3))
-Error : in ‘coef<-’: ‘value’ must be a named vector
+Error : in ‘coef<-’: ‘value’ must be a named vector.
 > try(coef(po,transform=TRUE) <- c(5,3))
 Error : in ‘partrans’: user transformation functions must return a named numeric vector
 > coef(po,transform=TRUE) <- c(r=1,K=1)

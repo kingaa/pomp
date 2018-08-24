@@ -72,8 +72,7 @@ setMethod(
   "eakf",
   signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("eakf"),": ",sQuote("data"),
-      " is a required argument",call.=FALSE)
+    pStop("eakf",sQuote("data")," is a required argument")
   }
 )
 
@@ -81,8 +80,8 @@ setMethod(
   "eakf",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    stop(sQuote("eakf")," is not defined when ",sQuote("data")," is of class ",
-      sQuote(class(data)),call.=FALSE)
+    pStop_(sQuote("eakf")," is not defined for objects of class ",
+      sQuote(class(data)))
   }
 )
 
@@ -90,8 +89,7 @@ setMethod(
   "enkf",
   signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("enkf"),": ",sQuote("data"),
-      " is a required argument",call.=FALSE)
+    pStop("enkf",sQuote("data")," is a required argument")
   }
 )
 
@@ -99,8 +97,8 @@ setMethod(
   "enkf",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    stop(sQuote("enkf")," is not defined when ",sQuote("data"),
-      " is of class ",sQuote(class(data)),call.=FALSE)
+    pStop_(sQuote("enkf")," is not defined for objects of class ",
+      sQuote(class(data)))
   }
 )
 
@@ -129,17 +127,13 @@ setMethod(
     Np, h, R, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    object <- pomp(data,rinit=rinit,rprocess=rprocess,params=params,...,
-      verbose=verbose)
-
-    enkf(
-      object,
-      params=params,
-      h=h,
-      R=R,
-      Np=Np,
-      verbose=verbose
+    object <- tryCatch(
+      pomp(data,rinit=rinit,rprocess=rprocess,params=params,...,
+        verbose=verbose),
+      error = function (e) pStop("enkf",conditionMessage(e))
     )
+
+    enkf(object,params=params,h=h,R=R,Np=Np,verbose=verbose)
 
   }
 )
@@ -154,13 +148,9 @@ setMethod(
   function (data, Np, h, R, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    enkf.internal(
-      data,
-      h=h,
-      R=R,
-      Np=Np,
-      ...,
-      verbose=verbose
+    tryCatch(
+      enkf.internal(data,h=h,R=R,Np=Np,...,verbose=verbose),
+      error = function (e) pStop("enkf",conditionMessage(e))
     )
 
   }
@@ -189,16 +179,13 @@ setMethod(
     Np, C, R, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    object <- pomp(data,rinit=rinit,rprocess=rprocess,params=params,...,
-      verbose=verbose)
-
-    eakf(
-      object,
-      C=C,
-      R=R,
-      Np=Np,
-      verbose=verbose
+    object <- tryCatch(
+      pomp(data,rinit=rinit,rprocess=rprocess,params=params,...,
+        verbose=verbose),
+      error = function (e) pStop("eakf",conditionMessage(e))
     )
+
+    eakf(object,C=C,R=R,Np=Np,verbose=verbose)
 
   }
 )
@@ -213,21 +200,15 @@ setMethod(
   function (data, Np, C, R, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    eakf.internal(
-      data,
-      C=C,
-      R=R,
-      Np=Np,
-      ...,
-      verbose=verbose
+    tryCatch(
+      eakf.internal(data,C=C,R=R,Np=Np,...,verbose=verbose),
+      error = function (e) pStop("eakf",conditionMessage(e))
     )
 
   }
 )
 
 enkf.internal <- function (object, h, R, Np, ..., verbose) {
-
-  ep <- paste0("in ",sQuote("enkf"),": ")
 
   Np <- as.integer(Np)
   R <- as.matrix(R)
@@ -256,7 +237,7 @@ enkf.internal <- function (object, h, R, Np, ..., verbose) {
   sqrtR <- tryCatch(
     t(chol(R)),                     # t(sqrtR)%*%sqrtR == R
     error = function (e) {
-      stop(ep,"degenerate ",sQuote("R"),": ",conditionMessage(e),call.=FALSE)
+      pStop_("degenerate ",sQuote("R"),": ",conditionMessage(e))
     }
   )
 
@@ -297,8 +278,6 @@ enkf.internal <- function (object, h, R, Np, ..., verbose) {
 
 eakf.internal <- function (object, params, C, R, Np, ..., verbose) {
 
-  ep <- paste0("in ",sQuote("eakf"),": ")
-
   Np <- as.integer(Np)
   R <- as.matrix(R)
   verbose <- as.logical(verbose)
@@ -328,7 +307,7 @@ eakf.internal <- function (object, params, C, R, Np, ..., verbose) {
   ri <- tryCatch(
     solve(R),
     error = function (e) {
-      stop(ep,"degenerate ",sQuote("R"),": ",conditionMessage(e),call.=FALSE)
+      pStop_("degenerate ",sQuote("R"),": ",conditionMessage(e))
     }
   )
 

@@ -78,7 +78,7 @@ Warning message:
 [1,]  101  101
 [2,]   10   10
 > try(abclist %>% plot(pars="alpha.3",scatter=TRUE))
-Error : in ‘plot-abc’: can't make a scatterplot with only one variable
+Error : in ‘plot’: can't make a scatterplot with only one variable.
 > 
 > abc1 %>%
 +   abc(Nabc=500,dprior=Csnippet("

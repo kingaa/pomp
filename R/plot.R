@@ -133,9 +133,12 @@ setMethod(
     quantile.styles = list(lwd=1, lty=1, col="gray70"),
     data.styles = list(lwd=2, lty=2, col="black")) {
 
-    plot_spect.internal(x,max.plots.per.page=max.plots.per.page,
-      plot.data=plot.data,quantiles=quantiles,quantile.styles=quantile.styles,
-      data.styles=data.styles)
+    tryCatch(
+      plot_spect.internal(x,max.plots.per.page=max.plots.per.page,
+        plot.data=plot.data,quantiles=quantiles,quantile.styles=quantile.styles,
+        data.styles=data.styles),
+      error = function (e) pStop("plot",conditionMessage(e))
+    )
 
   }
 )
@@ -245,8 +248,7 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
     x <- lapply(seq_along(x),function(n)cbind(x[[n]],.num=n))
     x <- do.call(rbind,x)
     if (ncol(x)<3) {
-      stop("in ",sQuote("plot-abc"),
-        ": can't make a scatterplot with only one variable",call.=FALSE)
+      pStop("plot","can't make a scatterplot with only one variable.")
     } else {
       pairs(x[,pars],col=x[,".num"],...)
     }
@@ -272,14 +274,7 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
       for (i in seq(from=low,to=hi,by=1)) {
         n <- i-low+1
         dat <- sapply(z,traces,pars=plotnames[i])
-        matplot(
-          y=dat,
-          x=iteration,
-          axes = FALSE,
-          xlab = "",
-          ylab = "",
-          type = "l"
-        )
+        matplot(y=dat,x=iteration,axes = FALSE,xlab = "",ylab = "",type = "l")
         box()
         y.side <- 2
         axis(y.side,xpd=NA)
@@ -445,13 +440,11 @@ probeplot.internal <- function (x, ...) {
 plot_spect.internal <- function (x, max.plots.per.page, plot.data,
   quantiles, quantile.styles, data.styles) {
 
-  ep <- paste0("in ",sQuote("plot"),": ")
-
   spomp <- x
   nquants <- length(quantiles)
 
   if (!is.list(quantile.styles))
-    stop(ep,sQuote("quantile.styles")," must be a list.",call.=FALSE)
+    pStop_(sQuote("quantile.styles")," must be a list.")
 
   for (i in c("lwd", "lty", "col")) {
     if (is.null(quantile.styles[[i]]))
@@ -459,9 +452,9 @@ plot_spect.internal <- function (x, max.plots.per.page, plot.data,
     if (length(quantile.styles[[i]])==1)
       quantile.styles[[i]] <- rep(quantile.styles[[i]],nquants)
     if (length(quantile.styles[[i]])<nquants) {
-      warning(ep,sQuote("quantile.styles"),
-        " contains an element with more than 1 entry but fewer entries than quantiles",
-        call.=FALSE)
+      pWarn("plot",sQuote("quantile.styles"),
+        " contains an element with more than 1 entry but ",
+        "fewer entries than quantiles.")
       quantile.styles[[i]]<-rep(quantile.styles[[i]],nquants)
     }
   }
@@ -470,7 +463,7 @@ plot_spect.internal <- function (x, max.plots.per.page, plot.data,
     nreps <- ncol(spomp@datspec)
 
     if (!is.list(data.styles))
-      stop(ep,sQuote("data.styles")," must be a list",call.=FALSE)
+      pStop_(sQuote("data.styles")," must be a list")
 
     for (i in c("lwd", "lty", "col")) {
       if(is.null(data.styles[[i]]))
@@ -478,10 +471,9 @@ plot_spect.internal <- function (x, max.plots.per.page, plot.data,
       if(length(data.styles[[i]])==1)
         data.styles[[i]] <- rep(data.styles[[i]],nreps)
       if(length(data.styles[[i]]) < nreps) {
-        warning(ep,sQuote("data.styles"),
-          "contains an element with more than 1 entry but ",
-          "fewer entries than observed variables",
-          call.=FALSE)
+        pWarn("plot",sQuote("data.styles"),
+          " contains an element with more than 1 entry but ",
+          "fewer entries than observed variables.")
         data.styles[[i]] <- rep(data.styles[[i]],nreps)
       }
     }

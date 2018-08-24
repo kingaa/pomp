@@ -116,7 +116,7 @@ Warning messages:
 4: in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > 
 > try(po %>% pomp(times=3:1))
-Error : in ‘time<-’: the times specified must be an increasing sequence.
+Error : in ‘time<-’: ‘value’ must be an increasing sequence.
 > 
 > try(po %>% pomp(rinit=Csnippet("X=3;")))
 Error : when ‘rinit’ is provided as a C snippet, you must also provide ‘statenames’.

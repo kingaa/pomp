@@ -85,8 +85,8 @@ NULL
 ##' @export
 sannbox <- function (par, fn, control = list(), ...) {
 
+  ep <- "sannbox"
   big <- 1e35  ## a very large number
-  ep <- paste0("in ",sQuote("sannbox"),": ")
 
   npar <- length(par)
   neval <- 0
@@ -122,8 +122,8 @@ sannbox <- function (par, fn, control = list(), ...) {
   else if (is.numeric(control$sched)) {
     temps <- control$sched
     if (length(temps)<control$maxit)
-      stop(ep,"insufficiently many temperatures supplied in ",
-        sQuote("control$sched"),call.=FALSE)
+      pStop(ep,"insufficiently many temperatures supplied in ",
+        sQuote("control$sched"))
   }
 
   if (is.null(control$candidate.dist))
@@ -132,10 +132,10 @@ sannbox <- function (par, fn, control = list(), ...) {
   else if (is.function(control$candidate.dist)) {
     candidate.dist <- control$candidate.dist
     if (!all(c("par","temp","scale") %in% names(formals(candidate.dist))))
-      stop(ep,sQuote("candidate.dist")," must be a function of prototype ",
-        sQuote("candidate.dist(par, temp, scale, ...)"),".",call.=FALSE)
+      pStop(ep,sQuote("candidate.dist")," must be a function of prototype ",
+        sQuote("candidate.dist(par, temp, scale, ...)"),".")
   } else
-    stop(ep,sQuote("control$candidate.dist")," must be a function.",call.=FALSE)
+    pStop(ep,sQuote("control$candidate.dist")," must be a function.")
 
   if (length(control$lower)<npar)
     control$lower <- rep(control$lower,npar)

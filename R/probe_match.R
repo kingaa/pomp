@@ -54,8 +54,7 @@ setMethod(
   "probe.match.objfun",
   signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("probe.match.objfun"),": ",sQuote("data"),
-      " is a required argument",call.=FALSE)
+    pStop("probe.match.objfun",sQuote("data")," is a required argument")
   }
 )
 
@@ -63,8 +62,8 @@ setMethod(
   "probe.match.objfun",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    stop(sQuote("probe.match.objfun")," is not defined for objects of class ",
-      sQuote(class(data)),call.=FALSE)
+    pStop_(sQuote("probe.match.objfun")," is not defined for objects of class ",
+      sQuote(class(data)))
   }
 )
 
@@ -184,8 +183,6 @@ pmof.internal <- function (object, est, probes, nsim, seed = NULL,
 
 probe.eval <- function (object) {
 
-  ep <- "in objective function: "
-
   ## apply probes to model simulations
   simvals <- tryCatch(
     freeze(
@@ -201,15 +198,14 @@ probe.eval <- function (object) {
       seed=object@seed
     ),
     error = function (e) {
-      stop(ep,"applying probes to simulated data: ",
-        conditionMessage(e),call.=FALSE)
+      pStop_("applying probes to simulated data: ",conditionMessage(e))
     }
   )
 
   loglik <- tryCatch(
     .Call(synth_loglik,simvals,object@datvals),
     error = function (e) {
-      stop(ep,"in synthetic likelihood computation: ",
+      pStop_("in synthetic likelihood computation: ",
         conditionMessage(e),call.=FALSE)
     }
   )

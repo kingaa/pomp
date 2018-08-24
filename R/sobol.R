@@ -1,31 +1,28 @@
 ##' @rdname design
 ##' @export
 sobolDesign <- function (lower = numeric(0), upper = numeric(0), nseq) {
-  ep <- paste0("in ",sQuote("sobolDesign"),": ")
+  ep <- "sobolDesign"
   if (length(lower)!=length(upper))
-    stop(ep,sQuote("lower")," and ",sQuote("upper")," must have same length",call.=FALSE)
+    pStop(ep,sQuote("lower")," and ",sQuote("upper")," must have same length.")
   lnames <- names(lower)
   if (is.null(lnames))
-    stop(ep,sQuote("lower")," and ",sQuote("upper")," must be named vectors",call.=FALSE)
+    pStop(ep,sQuote("lower")," and ",sQuote("upper")," must be named vectors.")
   if (!all(sort(lnames)==sort(names(upper))))
-    stop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match",call.=FALSE)
+    pStop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match.")
   upper <- upper[lnames]
   ranges <- lapply(lnames,function(k)c(lower[k],upper[k]))
   names(ranges) <- lnames
-  sobol(ranges,n=as.integer(nseq))
+  tryCatch(
+    sobol(ranges,n=as.integer(nseq)),
+    error = function (e) pStop(ep,conditionMessage(e))
+  )
 }
 
 sobol <- function (vars, n) {
-  ep <- paste0("in ",sQuote("sobolDesign"),": ")
   d <- length(vars)
   if (!is.finite(n) || (n > 1073741824L))
-    stop(ep,"too many points requested",call.=FALSE);
-  x <- tryCatch(
-    .Call(sobol_sequence,as.integer(d),as.integer(n)),
-    error = function (e) {
-      stop(ep,conditionMessage(e),call.=FALSE)
-    }
-  )
+    pStop_("too many points requested.")
+  x <- .Call(sobol_sequence,as.integer(d),as.integer(n))
   y <- vapply(
     seq_len(d),
     function (k) {

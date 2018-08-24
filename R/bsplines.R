@@ -58,16 +58,15 @@ NULL
 ##' @rdname bsplines
 ##' @export
 bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL) {
-  ep <- paste0("in ",sQuote("bspline.basis"),": ")
+  ep <- "bspline.basis"
   y <- tryCatch(
     .Call(bspline_basis,x,nbasis,degree,deriv),
     error = function (e) {
-      stop(ep,conditionMessage(e),call.=FALSE)
+      pStop(ep,conditionMessage(e))
     }
   )
   if (deriv > degree)
-    warning(ep,"returning 0 since ",sQuote("deriv")," > ",sQuote("degree"),
-      call.=FALSE)
+    pWarn(ep,"returning 0 since ",sQuote("deriv")," > ",sQuote("degree"))
   if (!is.null(names)) {
     if (length(names)==1) {
       nm <- sprintf(names,seq_len(nbasis))
@@ -77,7 +76,7 @@ bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL) {
     } else if (length(names)==nbasis) {
       colnames(y) <- names
     } else {
-      stop(ep,sQuote("names")," must be of length 1 or ",nbasis,call.=FALSE)
+      pStop(ep,sQuote("names")," must be of length 1 or ",nbasis)
     }
   }
   y
@@ -87,16 +86,15 @@ bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL) {
 ##' @export
 periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1,
   deriv = 0, names = NULL) {
-  ep <- paste0("in ",sQuote("periodic.bspline.basis"),": ")
+  ep <- "periodic.bspline.basis"
   y <- tryCatch(
     .Call(periodic_bspline_basis,x,nbasis,degree,period,deriv),
     error = function (e) {
-      stop(ep,conditionMessage(e),call.=FALSE)
+      pStop(ep,conditionMessage(e))
     }
   )
   if (deriv > degree)
-    warning(ep,"returning 0 since ",sQuote("deriv")," > ",sQuote("degree"),
-      call.=FALSE)
+    pWarn(ep,"returning 0 since ",sQuote("deriv")," > ",sQuote("degree"))
   if (!is.null(names)) {
     if (length(names)==1) {
       nm <- sprintf(names,seq_len(nbasis))
@@ -106,7 +104,7 @@ periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1,
     } else if (length(names)==nbasis) {
       colnames(y) <- names
     } else {
-      stop(ep,sQuote("names")," must be of length 1 or ",nbasis,call.=FALSE)
+      pStop(ep,sQuote("names")," must be of length 1 or ",nbasis)
     }
   }
   y

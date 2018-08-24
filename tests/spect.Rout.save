@@ -57,7 +57,7 @@ $pvals
 > plot(sp4,plot.data=FALSE,quantile.styles=list(col="grey10",lty=1:5))
 > plot(sp4,plot.data=FALSE,quantile.styles=list(col="grey10",lty=1:3))
 Warning message:
-in ‘plot’: ‘quantile.styles’ contains an element with more than 1 entry but fewer entries than quantiles 
+in ‘plot’: ‘quantile.styles’ contains an element with more than 1 entry but fewer entries than quantiles. 
 > try(plot(sp4,plot.data=FALSE,quantile.styles=c(col="grey10",lty=1:3)))
 Error : in ‘plot’: ‘quantile.styles’ must be a list.
 > plot(sp4,plot.data=TRUE,data.styles=list(col="red",lty=1))
@@ -112,7 +112,7 @@ Error : in ‘spect’: in simulation: yikes!
 > plot(spect(bob,kernel.width=3,nsim=500),
 +   data.style=list(lwd=c(2,3),lty=2,col='red'))
 Warning message:
-in ‘plot’: ‘data.styles’contains an element with more than 1 entry but fewer entries than observed variables 
+in ‘plot’: ‘data.styles’ contains an element with more than 1 entry but fewer entries than observed variables. 
 > 
 > dev.off()
 null device 

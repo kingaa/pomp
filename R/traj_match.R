@@ -56,8 +56,7 @@ setMethod(
   "traj.match.objfun",
   signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("traj.match.objfun"),": ",sQuote("data"),
-      " is a required argument",call.=FALSE)
+    pStop("traj.match.objfun",sQuote("data")," is a required argument.")
   }
 )
 
@@ -65,8 +64,8 @@ setMethod(
   "traj.match.objfun",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    stop(sQuote("traj.match.objfun")," is not defined when ",
-      sQuote("data")," is of class ",sQuote(class(data)),call.=FALSE)
+    pStop_(sQuote("traj.match.objfun")," is not defined for object of class ",
+      sQuote(class(data)))
   }
 )
 
@@ -83,9 +82,12 @@ setMethod(
     ode_control = list(),
     verbose = getOption("verbose", FALSE)) {
 
-    tmof.internal(data,rinit=rinit,skeleton=skeleton,partrans=partrans,
-      params=params,...,est=est,fail.value=fail.value,
-      ode_control=ode_control,verbose=verbose)
+    tryCatch(
+      tmof.internal(data,rinit=rinit,skeleton=skeleton,partrans=partrans,
+        params=params,...,est=est,fail.value=fail.value,
+        ode_control=ode_control,verbose=verbose),
+      error = function (e) pStop("traj.match.objfun",conditionMessage(e))
+    )
 
   }
 )
@@ -100,22 +102,18 @@ setMethod(
   function (data, est, fail.value = NA, ode_control = list(), ...,
     verbose = getOption("verbose", FALSE)) {
 
-    tmof.internal(data,est=est,fail.value=fail.value,
-      ode_control=ode_control,...)
+    tryCatch(
+      tmof.internal(data,est=est,fail.value=fail.value,
+        ode_control=ode_control,...),
+      error = function (e) pStop("traj.match.objfun",conditionMessage(e))
+    )
 
   }
 )
 
 tmof.internal <- function (object, est, fail.value, ode_control, ...) {
 
-  ep <- paste0("in ",sQuote("traj.match.objfun"),": ")
-
-  object <- tryCatch(
-    pomp(object,...),
-    error = function (e) {
-      stop(ep,conditionMessage(e),call.=FALSE)
-    }
-  )
+  object <- pomp(object,...)
 
   fail.value <- as.numeric(fail.value)
 
@@ -128,9 +126,9 @@ tmof.internal <- function (object, est, fail.value, ode_control, ...) {
   idx <- match(est,names(params))
   if (any(is.na(idx))) {
     missing <- est[is.na(idx)]
-    stop(ep,ngettext(length(missing),"parameter","parameters")," ",
+    pStop_(ngettext(length(missing),"parameter","parameters")," ",
       paste(sQuote(missing),collapse=","),
-      " not found in ",sQuote("params"),call.=FALSE)
+      " not found in ",sQuote("params"))
   }
 
   pompLoad(object)
