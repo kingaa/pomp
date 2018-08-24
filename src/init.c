@@ -16,7 +16,7 @@ static const R_CallMethodDef callMethods[] = {
   {"R_GammaWN", (DL_FUNC) &R_GammaWN, 3},
   {"pfilter_computations", (DL_FUNC) &pfilter_computations, 10},
   {"randwalk_perturbation", (DL_FUNC) &randwalk_perturbation, 2},
-  {"do_simulate", (DL_FUNC) &do_simulate, 4},
+  {"do_simulate", (DL_FUNC) &do_simulate, 5},
   {"iterate_map", (DL_FUNC) &iterate_map, 6},
   {"pomp_desolve_setup", (DL_FUNC) &pomp_desolve_setup, 4},
   {"pomp_desolve_takedown", (DL_FUNC) &pomp_desolve_takedown, 0},

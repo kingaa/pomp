@@ -430,7 +430,7 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   if (!save.states) xparticles <- list()
 
   if (nfail>0)
-    pWarn_(nfail," filtering failure",ngettext(nfail,"","s")," occurred.")
+    pWarn("pfilter",nfail," filtering failure",ngettext(nfail,"","s")," occurred.")
 
   new(
     "pfilterd_pomp",

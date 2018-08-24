@@ -31,7 +31,7 @@ Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘
 > try(pomp(times=3))
 Error : in ‘pomp’: ‘data’ is a required argument.
 > try(pomp(NULL))
-Error : ‘times’ is a required argument.
+Error : ‘times’ and ‘t0’ are required arguments.
 > try(data.frame(a=1:10,a=1:10,check.names=FALSE) %>% pomp(t0=4))
 Error : names of data variables must be unique.
 > try(data.frame(a=1:10,b=1:10) %>% pomp(t0=4))
@@ -71,7 +71,7 @@ Error : in ‘covariate_table’: names of covariates must be unique.
 +     pomp(times="a",t0=0) %>% class() %>%
 +     equals("pomp"))
 > try(NULL %>% pomp(t0=4))
-Error : ‘times’ is a required argument.
+Error : ‘times’ and ‘t0’ are required arguments.
 > try(NULL %>% pomp(times="a",t0=0))
 Error : ‘times’ must be an increasing sequence of numbers.
 > try(NULL %>% pomp(times=1:10,t0=3))

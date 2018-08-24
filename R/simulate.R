@@ -87,10 +87,10 @@ setMethod(
     format = c("pomps", "arrays", "data.frame"),
     include.data = FALSE,
     ..., verbose = getOption("verbose", FALSE)) {
-
-    if (missing(times) || missing(t0))
-      pStop("simulate",sQuote("times")," and ",sQuote("t0"),
-        " are required arguments.")
+    #
+    #     if (missing(times) || missing(t0))
+    #       pStop("simulate",sQuote("times")," and ",sQuote("t0"),
+    #         " are required arguments.")
 
     format <- match.arg(format)
 
@@ -112,6 +112,7 @@ setMethod(
       include.data=include.data,
       verbose=verbose
     )
+
   }
 )
 
@@ -169,20 +170,23 @@ setMethod(
 
     format <- match.arg(format)
 
-    simulate.internal(
-      object,
-      rinit=rinit,
-      rprocess=rprocess,
-      rmeasure=rmeasure,
-      nsim=nsim,
-      seed=seed,
-      params=params,
-      times=times,
-      t0=t0,
-      format=format,
-      include.data=include.data,
-      ...,
-      verbose=verbose
+    tryCatch(
+      simulate.internal(
+        object,
+        rinit=rinit,
+        rprocess=rprocess,
+        rmeasure=rmeasure,
+        nsim=nsim,
+        seed=seed,
+        params=params,
+        times=times,
+        t0=t0,
+        format=format,
+        include.data=include.data,
+        ...,
+        verbose=verbose
+      ),
+      error = function (e) pStop("simulate",conditionMessage(e))
     )
 
   }
@@ -192,23 +196,19 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   format, include.data = FALSE, ...,
   .getnativesymbolinfo = TRUE, verbose) {
 
-  object <- tryCatch(
-    pomp(object,...,verbose=verbose),
-    error = function (e) pStop("simulate",conditionMessage(e))
-  )
-  object <- as(object,"pomp")
+  object <- pomp(object,...,verbose=verbose)
 
   include.data <- as.logical(include.data)
 
   if (length(nsim)!=1 || !is.numeric(nsim) || !is.finite(nsim) || nsim < 1)
-    pStop("simulate",sQuote("nsim")," must be a positive integer.")
+    pStop_(sQuote("nsim")," must be a positive integer.")
   nsim <- as.integer(nsim)
 
   if (missing(params)) params <- coef(object)
   if (is.list(params)) params <- unlist(params)
   if (is.null(params)) params <- numeric(0)
   if (!is.numeric(params))
-    pStop("simulate",sQuote("params")," must be named and numeric.")
+    pStop_(sQuote("params")," must be named and numeric.")
   params <- as.matrix(params)
   storage.mode(params) <- "double"
 
@@ -217,24 +217,22 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
+  return.type <- switch(format,arrays=0L,data.frame=0L,pomps=1L)
+
   sims <- tryCatch(
     freeze(
-      .Call(do_simulate,object,params,nsim,.getnativesymbolinfo),
+      .Call(do_simulate,object,params,nsim,return.type,.getnativesymbolinfo),
       seed=seed
     ),
-    error = function (e) pStop("simulate",conditionMessage(e))
+    error = function (e) pStop_(conditionMessage(e))
   )
 
-  nsims <- ncol(sims$states)
-  ntimes <- length(time(object))
-  simnames <- colnames(sims$states)
-  if (is.null(simnames)) simnames <- seq_len(nsims)
+  if (format == "data.frame") {
 
-  if (format == "arrays") {
-
-    sims
-
-  } else if (format == "data.frame") {
+    nsims <- ncol(sims$states)
+    ntimes <- length(time(object))
+    simnames <- colnames(sims$states)
+    if (is.null(simnames)) simnames <- seq_len(nsims)
 
     dm <- dim(sims$states)
     nm <- rownames(sims$states)
@@ -268,35 +266,15 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
     }
     othernm <- setdiff(names(sims),c(object@timename,".id"))
 
-    sims[order(sims$.id,sims[[object@timename]]),c(object@timename,".id",othernm)]
+    sims <- sims[,c(object@timename,".id",othernm)]
 
-  } else {
+  } else if (format == "pomps") {
 
-    statedim <- dim(sims$states)
-    obsdim <- dim(sims$obs)
-    statenames <- dimnames(sims$states)
-    obsnames <- dimnames(sims$obs)
-
-    rv <- rep(list(object),times=nsims)
-    names(rv) <- simnames
-
-    i <- 1
-    for (j in seq_len(nsim)) {
-      for (k in seq_len(ncol(params))) {
-        rv[[i]] <- object
-        coef(rv[[i]]) <- params[,k]
-        rv[[i]]@states <- sims$states[,i,,drop=FALSE]
-        dim(rv[[i]]@states) <- statedim[-2L]
-        dimnames(rv[[i]]@states) <- statenames[-2L]
-        rv[[i]]@data <- sims$obs[,i,,drop=FALSE]
-        dim(rv[[i]]@data) <- obsdim[-2L]
-        dimnames(rv[[i]]@data) <- obsnames[-2L]
-        i <- i+1
-      }
-    }
-
-    if (length(rv) > 1) do.call(c,rv) else rv[[1]]
+    if (length(sims) == 1) sims <- sims[[1]]
+    else sims <- do.call(concat,sims)
 
   }
+
+  sims
 
 }

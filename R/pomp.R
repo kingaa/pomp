@@ -216,8 +216,7 @@ setMethod(
       pStop_("names of data variables must be unique.")
     }
     if (missing(times) || missing(t0))
-      pStop_(sQuote("times")," and ",sQuote("t0"),
-        " are required arguments.")
+      pStop_(sQuote("times")," and ",sQuote("t0")," are required arguments.")
     if ((is.numeric(times) && (times<1 || times>ncol(data) ||
         times!=as.integer(times))) ||
         (is.character(times) && (!(times%in%names(data)))) ||
@@ -244,12 +243,12 @@ setMethod(
 setMethod(
   "construct_pomp",
   signature=signature(data="NULL"),
-  definition = function (data, times, ...) {
+  definition = function (data, times, t0, ...) {
 
-    if (missing(times))
-      pStop_(sQuote("times")," is a required argument.")
+    if (missing(times) || missing(t0))
+      pStop_(sQuote("times")," and ",sQuote("t0")," are required arguments.")
 
-    construct_pomp(data=array(dim=c(0,length(times))),times=times,...)
+    construct_pomp(data=array(dim=c(0,length(times))),times=times,t0=t0,...)
 
   }
 )
@@ -257,9 +256,9 @@ setMethod(
 setMethod(
   "construct_pomp",
   signature=signature(data="array"),
-  definition = function (data, times, t0, ...,
+  definition = function (data, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-    partrans, params, covar, timename) {
+    partrans, params, covar) {
 
     if (missing(rinit)) rinit <- NULL
 
@@ -275,12 +274,12 @@ setMethod(
       skeleton <- skel_plugin()
     }
 
+    if (missing(rprior)) rprior <- NULL
+    if (missing(dprior)) dprior <- NULL
+
     if (missing(partrans) || is.null(partrans)) {
       partrans <- parameter_trans()
     }
-
-    if (missing(rprior)) rprior <- NULL
-    if (missing(dprior)) dprior <- NULL
 
     if (missing(params)) params <- numeric(0)
     if (is.list(params)) params <- unlist(params)
@@ -289,9 +288,6 @@ setMethod(
 
     pomp.internal(
       data=data,
-      times=times,
-      t0=t0,
-      timename=timename,
       rinit=rinit,
       rprocess=rprocess,
       dprocess=dprocess,
@@ -312,45 +308,33 @@ setMethod(
 setMethod(
   "construct_pomp",
   signature=signature(data="pomp"),
-  definition = function (data, times, t0, ...,
+  definition = function (data, times, t0, timename, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-    partrans, params, covar, zeronames, timename) {
+    partrans, params, covar, zeronames) {
 
-    if (missing(times)) {
-      times <- data@times
-    } else {
-      time(data) <- times
-    }
+    if (missing(times)) times <- data@times
+    else time(data) <- times
 
     if (missing(t0)) t0 <- data@t0
     if (missing(timename)) timename <- data@timename
 
     if (missing(rinit)) rinit <- data@rinit
 
-    if (missing(rprocess)) {
-      rprocess <- data@rprocess
-    } else if (is.null(rprocess)) {
-      rprocess <- rproc_plugin()
-    }
+    if (missing(rprocess)) rprocess <- data@rprocess
+    else if (is.null(rprocess)) rprocess <- rproc_plugin()
 
     if (missing(dprocess)) dprocess <- data@dprocess
     if (missing(rmeasure)) rmeasure <- data@rmeasure
     if (missing(dmeasure)) dmeasure <- data@dmeasure
 
-    if (missing(skeleton)) {
-      skeleton <- data@skeleton
-    } else if (is.null(skeleton)) {
-      skeleton <- skel_plugin()
-    }
-
-    if (missing(partrans)) {
-      partrans <- data@partrans
-    } else if (is.null(partrans)) {
-      partrans <- parameter_trans()
-    }
+    if (missing(skeleton)) skeleton <- data@skeleton
+    else if (is.null(skeleton)) skeleton <- skel_plugin()
 
     if (missing(rprior)) rprior <- data@rprior
     if (missing(dprior)) dprior <- data@dprior
+
+    if (missing(partrans)) partrans <- data@partrans
+    else if (is.null(partrans)) partrans <- parameter_trans()
 
     if (missing(params)) params <- data@params
     if (missing(covar)) covar <- data@covar

@@ -30,7 +30,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
   SEXP probes, SEXP datval, SEXP gnsi) {
   int nprotect = 0;
   SEXP x, y, names, sims;
-  SEXP retval, val, valnames;
+  SEXP returntype, retval, val, valnames;
   int nprobe, nsims, nobs, ntimes, nvals;
   int xdim[2];
   double *xp, *yp;
@@ -47,7 +47,9 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
   nprobe = LENGTH(probes);
   nvals = LENGTH(datval);
   PROTECT(names = GET_NAMES(datval)); nprotect++;
-  PROTECT(sims = do_simulate(object,params,nsim,gnsi)); nprotect++;
+  PROTECT(returntype = NEW_INTEGER(1)); nprotect++;
+  *(INTEGER(returntype)) = 0;
+  PROTECT(sims = do_simulate(object,params,nsim,returntype,gnsi)); nprotect++;
   PROTECT(y = VECTOR_ELT(sims,1)); nprotect++;
   *(INTEGER(gnsi)) = 0;
 

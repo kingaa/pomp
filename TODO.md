@@ -2,16 +2,23 @@
 
 ## For pomp 2:
 
-- ~~document default workhorses~~
-- get rid of 'times' as dimnames
 - it should be possible to refer to times inside `covariate_table`
 - revisit `enum`s
 - combine documentation: (dmeasure,rmeasure), (dprocess,rprocess)
+- regularize use of `pomp_stop` and `tryCatch` on *.internals
+- index by concept using `\concept{}` in the help files
+- better scheme for indicating derivatives and maps in C snippets
+- should the default process model be persistence?
+	- what would the corresponding `dprocess` be?
+- covariates:
+	- ~~covariates provided using a constructor function~~
+   	- piecewise constant interpolation of covariates
+- ~~document default workhorses~~
+- ~~get rid of 'times' as dimnames~~
 - ~~`do_simulate` should handle parameter column names~~
-- `bsmc2` should only take vector `params` and rely on `rprior`
+- ~~`bsmc2` should only take vector `params` and rely on `rprior`~~
 - ~~`spect` should call `do_simulate`~~
 - ~~`nsim` argument for rprior~~
-- regularize use of `pomp_stop` and `tryCatch` on *.internals
 - ~~change `as.data.frame` argument to `format` in `trajectory`~~
 - pass userdata as list to C snippets and as pairlist to R functions
 - provide full suite of methods for `traj.match.objfun`
@@ -22,7 +29,6 @@
 - ~~take away option of passing `params` as a matrix to `pfilter`~~
 - ~~all methods use transforms if they exist~~
 - `as.data.frame` and ?? for `listies`
-- index by concept using `\concept{}` in the help files
 - ~~document user-data functions~~
 - matching functions will go away, in favor of objective function constructors:
     - 'probe.match.objfun' looks good: needs testing
@@ -39,11 +45,7 @@
 
 - on-the-fly modification of basic components
 	- needed for nlf
-- better scheme for indicating derivatives and maps in C snippets
 - perhaps `dinit`?
-- covariates:
-	- ~~covariates provided using a constructor function~~
-   	- piecewise constant interpolation of covariates
 - change specification of horsemen
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification

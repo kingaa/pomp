@@ -43,7 +43,7 @@ newly created object(s):
 > try(pfilter())
 Error : in ‘pfilter’: ‘data’ is a required argument
 > try(pfilter("bob"))
-Error : ‘pfilter’ is not defined when ‘data’ is of class ‘character’
+Error : ‘pfilter’ is not defined for objects of class ‘character’
 > 
 > try(pfilter(ou2))
 Error : in ‘pfilter’: ‘Np’ must be specified.
@@ -67,17 +67,17 @@ Error : in ‘pfilter’: ‘tol’ should be a small positive number.
 > po <- ou2
 > coef(po) <- NULL
 > try(pfilter(po,Np=100))
-Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘pfilter’: in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 > try(pfilter(po,Np=100,params=c()))
-Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘pfilter’: in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 > try(pfilter(po,Np=100,params=NULL))
-Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘pfilter’: in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 > try(pfilter(po,Np=100,params=c(1,2,3)))
 Error : in ‘pfilter’: ‘params’ must be a named numeric vector.
 > try(pfilter(po,Np=100,params=c(a=1,b=2,c=3)))
-Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘pfilter’: in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 > try(pfilter(po,Np=100,params=list()))
-Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘pfilter’: in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 > pf <- pfilter(po,Np=100,params=as.list(coef(ou2)))
 > 
 > pf <- pfilter(pf)
@@ -94,7 +94,7 @@ in ‘pfilter’: 2 filtering failures occurred.
 > stopifnot(identical(coef(pf1),theta))
 > 
 > try(pfilter(ou2,params=parmat(coef(ou2),100)))
-Error : in ‘pfilter’: ‘Np’ must be specified.
+Error : in ‘pfilter’: ‘params’ must be a named numeric vector.
 > try(pfilter(ou2,Np=100,params=parmat(coef(ou2),100)))
 Error : in ‘pfilter’: ‘params’ must be a named numeric vector.
 > 
@@ -134,11 +134,11 @@ sigma.3:            2
 > theta <- coef(ou2)
 > theta["alpha.1"] <- 1e60
 > try(pfilter(pf,params=theta,pred.var=TRUE))
-Error : in ‘pfilter’: non-finite state variable(s): x1
+Error : in ‘pfilter’: non-finite state variable: x1
 > 
 > try(pfilter(pf,rprocess=onestep.sim(
 +   function(x, t, params, delta.t, ...)stop("yikes!"))))
-Error : in ‘pfilter’: process simulation error: in ‘rprocess’: yikes!
+Error : in ‘pfilter’: in ‘rprocess’: yikes!
 > try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 Error : in ‘pfilter’: in ‘dmeasure’: ouch!
 > try(pfilter(pf,dmeasure=function(y,x,t,params,log,...) -Inf))

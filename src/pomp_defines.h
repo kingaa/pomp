@@ -78,10 +78,10 @@ static R_INLINE SEXP name_index (SEXP names, SEXP object, const char *slot, cons
   return index;
 }
 
-static R_INLINE void setrownames (SEXP x, SEXP names, int n) {
+static R_INLINE void setrownames (SEXP x, SEXP names, int rank) {
   SEXP dimnms, nm;
   PROTECT(nm = AS_CHARACTER(names));
-  PROTECT(dimnms = allocVector(VECSXP,n));
+  PROTECT(dimnms = allocVector(VECSXP,rank));
   SET_ELEMENT(dimnms,0,nm);	// set row names
   SET_DIMNAMES(x,dimnms);
   UNPROTECT(2);

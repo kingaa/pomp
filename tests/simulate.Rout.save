@@ -220,13 +220,13 @@ Error : in ‘simulate’: ‘nsim’ must be a positive integer.
 > s$obs %>% rownames()
 [1] "y1" "y2"
 > simulate(po,nsim=3) %>% show()
-$`1`
+[[1]]
 <object of class ‘pomp’>
 
-$`2`
+[[2]]
 <object of class ‘pomp’>
 
-$`3`
+[[3]]
 <object of class ‘pomp’>
 
 > 
