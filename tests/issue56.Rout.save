@@ -21,8 +21,8 @@ Type 'q()' to quit R.
 > 
 > create_example <- function(times, t0 = 0, mu = 0.001, N_0 = 1) {
 + 
-+   rmeasure <- function (t, x, params, covars, ...) {
-+     c(y=rpois(n=1,x["ct"]))
++   rmeasure <- function (ct, ...) {
++     c(y=rpois(n=1,ct))
 +   }
 + 
 +   rate.fun <- function(j, x, t, params, covars, ...) {

@@ -29,19 +29,19 @@ stopifnot(all.equal(as.numeric(y1),as.numeric(y2)))
 try(rmeasure(po,x=x[1,,,drop=FALSE],times=t,params=theta))
 k <- which(names(theta)=="tau")
 try(rmeasure(po,x=x,y=y,times=t,params=theta[-k]))
-try(rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(3,3)),
+try(rmeasure(pomp(po,rmeasure=function(...)c(3,3)),
   x=x,y=y,times=t,params=theta))
-try(rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c()),
+try(rmeasure(pomp(po,rmeasure=function(...)c()),
   x=x,y=y,times=t,params=theta))
 
-rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(y2=3,y1=3)),
+rmeasure(pomp(po,rmeasure=function(...)c(y2=3,y1=3)),
   x=x,y=y,times=t,params=theta) -> z
 stopifnot(dim(z)==c(2,100,10),rownames(z)==c("y2","y1"),z[]==3)
 
-try(rmeasure(pomp(po,rmeasure=function(x,t,params,...)c(3,2,1)),
+try(rmeasure(pomp(po,rmeasure=function(...)c(3,2,1)),
   x=x,y=y,times=t,params=theta))
 
-rmeasure(pomp(po,rmeasure=function(x,t,params,...)c(a=3,b=2,c=1)),
+rmeasure(pomp(po,rmeasure=function(...)c(a=3,b=2,c=1)),
   x=x,y=y,times=t,params=theta) -> z
 
 stopifnot(dim(z)==c(3,100,10),rownames(z)==c("a","b","c"),

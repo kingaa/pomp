@@ -61,7 +61,8 @@ y %>% melt() %>%
         A%*%x+sqrtQ%*%rnorm(n=ncol(A))
       },
       delta.t=1),
-    rmeasure=function(x,t,params,...){
+    rmeasure=function(x1,x2,x3,x4,...){
+      x <- c(x1,x2,x3,x4)
       C%*%x+sqrtR%*%rnorm(n=nrow(C))
     },
     dmeasure=function(x1,x2,x3,x4,y1,y2,log,...){

@@ -487,8 +487,6 @@ pomp.internal <- function (data, times, t0, timename, ...,
   ## check to make sure 'covars' is included as an argument where needed
   covar_fun_warning(covar,"rprocess",hitches$funs,"pomp")
   covar_fun_warning(covar,"dprocess",hitches$funs,"pomp")
-  covar_fun_warning(covar,"rmeasure",hitches$funs,"pomp")
-  covar_fun_warning(covar,"dmeasure",hitches$funs,"pomp")
   covar_fun_warning(covar,"skeleton",hitches$funs,"pomp")
 
   ## check to see if covariate times embrace the data times

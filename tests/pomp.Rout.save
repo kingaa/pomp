@@ -105,15 +105,13 @@ Error : bad option for ‘rinit’ argument
 > stopifnot(po %>%
 +     pomp(rprocess=onestep.sim(function(x,t,params,delta.t,...)x),
 +       skeleton=map(function(x,t,params,...)x),
-+       rmeasure=function(x,t,params,...)3,
++       rmeasure=function(...)3,
 +       dmeasure=function(log,...)1,
 +       covar=covariate_table(a=1:20,b=1:20,times="a")) %>% class() %>%
 +     equals("pomp"))
 Warning messages:
-1: in ‘pomp’: a covariate table has been given, yet the ‘rmeasure’ function does not have ‘covars’ as a formal argument. 
-2: in ‘pomp’: a covariate table has been given, yet the ‘dmeasure’ function does not have ‘covars’ as a formal argument. 
-3: in ‘pomp’: a covariate table has been given, yet the ‘skeleton’ function does not have ‘covars’ as a formal argument. 
-4: in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
+1: in ‘pomp’: a covariate table has been given, yet the ‘skeleton’ function does not have ‘covars’ as a formal argument. 
+2: in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > 
 > try(po %>% pomp(times=3:1))
 Error : in ‘time<-’: ‘value’ must be an increasing sequence.
@@ -150,5 +148,5 @@ Error : ‘params’ must be a named numeric vector.
 > try(po2 %>% pomp(covar="bob"))
 Error : bad option for ‘covar’.
 > try(po2 %>% pomp(rmeasure=function(x)x))
-Error : in ‘rmeasure’: ‘rmeasure’ must be a function of prototype ‘rmeasure(x, t, params, ...)’
+Error : in ‘rmeasure’: ‘rmeasure’ must be a function of prototype ‘rmeasure(...)’
 > 

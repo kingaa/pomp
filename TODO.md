@@ -3,6 +3,7 @@
 ## For pomp 2:
 
 - let `pomp_fun_handler` to the variable lookups?
+- `valid_names` function to check for non-null, non-zero-length names
 - it should be possible to refer to times inside `covariate_table`
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
 - `nsim` argument for rprior?

@@ -26,7 +26,7 @@ workhorse_templates <- list(
   rmeasure=list(
     slotname="rmeasure",
     Cname="__pomp_rmeasure",
-    proto=quote(rmeasure(x,t,params,...)),
+    proto=quote(rmeasure(...)),
     header="\nvoid __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
     footer="\n}\n\n",
     vars=list(

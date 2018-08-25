@@ -100,22 +100,22 @@ in ‘probe.acf’: useless zero lag discarded.
 > ou2 %>% simulate() %>% obs() %>% f() -> v
 > stopifnot(names(v)==c("acf.1.y1", "acf.5.y1", "acf.1.y2", "acf.5.y2"))
 > 
-> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
+> try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
 Error : in ‘probe.acf’: subscript out of bounds
-> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f())
+> try(ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f())
 Error : in ‘probe.acf’: series 1 has no data
-> ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
+> ou2 %>% simulate(rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f()
 acf.1.y1 acf.5.y1 acf.1.y2 acf.5.y2 
    0.980    0.895    0.980    0.895 
 > probe.ccf(c("y2","y1"),lags=c(0,1,2),type="cor") -> f
 > ou2 %>% simulate() %>% obs() %>% f()
 ccf.0 ccf.1 ccf.2 
 0.159 0.515 0.700 
-> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
+> try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
 Error : in ‘probe.ccf’: subscript out of bounds
-> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f())
+> try(ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f())
 Error : in ‘probe.ccf’: series 1 has no data
-> ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
+> ou2 %>% simulate(times=1:10,rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f()
  ccf.0  ccf.1  ccf.2 
 -1.000 -0.778 -0.515 
 > 
@@ -123,13 +123,13 @@ Error : in ‘probe.ccf’: series 1 has no data
 > ou2 %>% simulate() %>% obs() %>% f()
    marg.1    marg.2    marg.3    marg.4    marg.5    marg.6 
  1.08e+00  1.30e-02 -1.59e-03 -4.50e-04  2.47e-05  3.46e-06 
-> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
+> try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
 Error : in ‘probe.marginal’: subscript out of bounds
-> ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
+> ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
 > stopifnot(all(is.na(x)))
-> try(ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f())
+> try(ou2 %>% simulate(times=1:10,rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f())
 Error : in ‘probe.marginal’: length of 'ref' must equal length of data
-> ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f() -> x
+> ou2 %>% simulate(rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f() -> x
 > stopifnot(x==0)
 > 
 > try(probe.nlar("y1",lags=c(0,-1)))
@@ -159,11 +159,11 @@ Error : in ‘probe.nlar’: ‘powers’ must match ‘lags’ in length, or ha
 > ou2 %>% simulate() %>% obs() %>% f()
 nlar.1^1 nlar.1^2 nlar.1^3 
 8.89e-01 1.78e-04 4.17e-05 
-> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
+> try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
 Error : in ‘probe.nlar’: subscript out of bounds
-> ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
+> ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
 > stopifnot(x==0)
-> ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
+> ou2 %>% simulate(times=1:10,rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f()
 nlar.1^1 nlar.1^2 nlar.1^3 
   0.8815   0.0988   0.0149 
 > 

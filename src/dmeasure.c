@@ -78,11 +78,11 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   case Rfun:			// R function
 
     PROTECT(args = LCONS(log,args)); SET_TAG(args,install("log")); nprotect++;
-    PROTECT(args = pomp_fun_R_call(args,Onames,Snames,Pnames,Cnames)); nprotect++;
+    PROTECT(args = pomp_fun_args(args,Onames,Snames,Pnames,Cnames)); nprotect++;
 
     break;
 
-  case native:			// native code
+  case native: case regNative:		// native code
 
     // construct state, parameter, covariate, observable indices
     PROTECT(indices = pomp_fun_indices(pompfun,Onames,Snames,Pnames,Cnames)); nprotect++;
@@ -164,7 +164,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
     break;
 
-  case native:			// native code
+  case native: case regNative:	// native code
 
     set_pomp_userdata(args);
 

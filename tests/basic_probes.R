@@ -46,22 +46,22 @@ probe.acf(c("y1","y2"),lags=c(1,5),type="cor") -> f
 ou2 %>% simulate() %>% obs() %>% f() -> v
 stopifnot(names(v)==c("acf.1.y1", "acf.5.y1", "acf.1.y2", "acf.5.y2"))
 
-try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
-try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f())
-ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
+try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
+try(ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f())
+ou2 %>% simulate(rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f()
 probe.ccf(c("y2","y1"),lags=c(0,1,2),type="cor") -> f
 ou2 %>% simulate() %>% obs() %>% f()
-try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
-try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f())
-ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
+try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
+try(ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f())
+ou2 %>% simulate(times=1:10,rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f()
 
 probe.marginal("y1",ref=obs(ou2,"y1"),order=6,diff=2) -> f
 ou2 %>% simulate() %>% obs() %>% f()
-try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
-ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
+try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
+ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
 stopifnot(all(is.na(x)))
-try(ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f())
-ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f() -> x
+try(ou2 %>% simulate(times=1:10,rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f())
+ou2 %>% simulate(rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f() -> x
 stopifnot(x==0)
 
 try(probe.nlar("y1",lags=c(0,-1)))
@@ -80,7 +80,7 @@ plist <- list(
 )
 probe.nlar("y2",lags=1,powers=c(1,2,3)) -> f
 ou2 %>% simulate() %>% obs() %>% f()
-try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
-ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
+try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
+ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
 stopifnot(x==0)
-ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
+ou2 %>% simulate(times=1:10,rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f()

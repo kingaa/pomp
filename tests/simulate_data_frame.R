@@ -12,7 +12,7 @@ data.frame(t=0:10,y=runif(11)) %>%
       step.fun=function(x,t,params,delta.t,...) {
         setNames(c(params["r"]*x*exp(-x)),"x")
       }),
-    rmeasure=function(x,t,params,...) {
+    rmeasure=function(x,...) {
       c(y=rpois(n=1,100*x))
     },
     params=c(r=15,x.0=0.1)

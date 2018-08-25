@@ -131,8 +131,8 @@
 ##'     },
 ##'     delta.t=1
 ##'   ),
-##'   rmeasure=function(x, t, params, phi, ...) {
-##'       c(y=unname(rpois(n=1,lambda=phi*x["N"])))
+##'   rmeasure=function(phi, N, ...) {
+##'       c(y=rpois(n=1,lambda=phi*N))
 ##'   }
 ##' ) -> rick3
 ##'

@@ -82,8 +82,8 @@ Error : in ‘spect’: ‘nsim’ must be a positive integer.
 > try(spect(sp4))
 Error : in ‘spect’: missing or infinite values in the data.
 > 
-> try(spect(sp3,rmeasure=function(x,t,params,...){
-+   if (t==13) c(Y=NA) else c(Y=unname(x["N"]))
+> try(spect(sp3,rmeasure=function(t,X,...){
++   if (t==13) c(Y=NA) else c(Y=X)
 + }))
 Error : in ‘spect’: missing or infinite values in simulated data.
 > 
@@ -91,7 +91,7 @@ Error : in ‘spect’: missing or infinite values in simulated data.
 > try(spect(sp3))
 Error : in ‘spect’: ‘spect’ assumes evenly spaced times.
 > 
-> try(spect(sp2,rmeasure=function(x,t,params,...) stop("yikes!")))
+> try(spect(sp2,rmeasure=function(...) stop("yikes!")))
 Error : in ‘spect’: in simulation: yikes!
 > 
 > simulate(times=1:100,t0=0,

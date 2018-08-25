@@ -39,14 +39,14 @@ try(spect(sp,nsim=NULL))
 sp4@data[17] <- NA
 try(spect(sp4))
 
-try(spect(sp3,rmeasure=function(x,t,params,...){
-  if (t==13) c(Y=NA) else c(Y=unname(x["N"]))
+try(spect(sp3,rmeasure=function(t,X,...){
+  if (t==13) c(Y=NA) else c(Y=X)
 }))
 
 time(sp3) <- c(0:7,10:40)
 try(spect(sp3))
 
-try(spect(sp2,rmeasure=function(x,t,params,...) stop("yikes!")))
+try(spect(sp2,rmeasure=function(...) stop("yikes!")))
 
 simulate(times=1:100,t0=0,
   rprocess=euler.sim(Csnippet("

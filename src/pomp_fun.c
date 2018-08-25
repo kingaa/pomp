@@ -135,7 +135,7 @@ SEXP load_stack_decr (SEXP pack) {
 //   return retval;
 // }
 
-SEXP pomp_fun_R_call (SEXP args, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnames)
+SEXP pomp_fun_args (SEXP args, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnames)
 {
   int nprotect = 0;
   SEXP var;

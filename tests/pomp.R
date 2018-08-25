@@ -56,7 +56,7 @@ stopifnot({
 stopifnot(po %>%
     pomp(rprocess=onestep.sim(function(x,t,params,delta.t,...)x),
       skeleton=map(function(x,t,params,...)x),
-      rmeasure=function(x,t,params,...)3,
+      rmeasure=function(...)3,
       dmeasure=function(log,...)1,
       covar=covariate_table(a=1:20,b=1:20,times="a")) %>% class() %>%
     equals("pomp"))

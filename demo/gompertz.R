@@ -23,14 +23,8 @@ simulate(times=1:100,t0=0,
     },
     delta.t=1                  # the size of the discrete time-step
   ),
-  rmeasure=function (x, t, params, ...) {# the measurement model simulator
-    ## unpack the parameters:
-    tau <- params["tau"]
-    ## state at time t:
-    X <- x["X"]
-    ## generate a simulated observation:
-    y <- c(Y=unname(rlnorm(n=1,meanlog=log(X),sdlog=tau)))
-    return(y)
+  rmeasure=function (X, tau, ...) {
+    c(Y=rlnorm(n=1,meanlog=log(X),sdlog=tau))
   },
   dmeasure=function (tau, X, Y, ..., log) {
     dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)

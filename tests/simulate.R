@@ -61,8 +61,7 @@ simulate(times=1:100,t0=0,
     z <- x["z"]
     c(z=runif(1,z-0.5,z+0.5))
   }),
-  rmeasure=function(x,t,params,...) {
-    z <- x["z"]
+  rmeasure=function(z,...) {
     c(w = rnorm(1,z,1))
   },params=c(z.0=0))
 
@@ -91,13 +90,13 @@ stopifnot(
 
 try(simulate(times=1:100,t0=0,
   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
-  rmeasure=function(t,x,params,...) c(w=rnorm(n=t,x["z"],1)),
+  rmeasure=function(t,z,...) c(w=rnorm(n=t,z,1)),
   rinit=Csnippet("z = 2;"),
   statenames="z"))
 
 simulate(times=1:100,t0=0,seed=993523767,
   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
-  rmeasure=function(t,x,params,...) c(w=rnorm(1,x["z"],1)),
+  rmeasure=function(z,...) c(w=rnorm(1,z,1)),
   rinit=Csnippet("z = 0;"),
   statenames="z") -> po
 po %>% plot()
@@ -105,7 +104,7 @@ po %>% plot()
 simulate(times=1:100,t0=0,seed=378047885,
   rprocess=onestep.sim(function(x,t,params,delta.t,...)
     c(z=runif(n=1,x["z"]-0.5,x["z"]+0.5))),
-  rmeasure=function(t,x,params,...) c(w=rnorm(1,x["z"],1)),
+  rmeasure=function(z,...) c(w=rnorm(1,z,1)),
   rinit=function(params,t0,...)c(z=0)) %>% plot()
 
 rm(.Random.seed)
@@ -118,8 +117,8 @@ set.seed(1041414791L)
 data.frame(u=1:10,v=runif(10)) %>%
   pomp(times="u",t0=0) %>%
   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
-    rmeasure=function(t,x,params,...){
-      p <- x["w"]+c(-0.5,0.5)
+    rmeasure=function(w,...){
+      p <- w+c(-0.5,0.5)
       c(y=runif(n=1,p[1],p[2]))
     },
     rinit=Csnippet("w=0;"),
