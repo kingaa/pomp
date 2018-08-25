@@ -134,3 +134,98 @@ SEXP load_stack_decr (SEXP pack) {
 //   SET_ELEMENT(retval,0,mode);
 //   return retval;
 // }
+
+SEXP pomp_fun_R_call (SEXP args, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnames)
+{
+  int nprotect = 0;
+  SEXP var;
+  int v;
+
+  // we construct the call from end to beginning
+  // covariates, parameter, states, observables, then time
+
+  // Covariates
+  for (v = LENGTH(Cnames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Cnames,v))));
+  }
+
+  // Parameters
+  for (v = LENGTH(Pnames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Pnames,v))));
+  }
+
+  // Latent state variables
+  for (v = LENGTH(Snames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Snames,v))));
+  }
+
+  // Observables
+  for (v = LENGTH(Onames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Onames,v))));
+  }
+
+  // Time
+  PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+  PROTECT(args = LCONS(var,args)); nprotect++;
+  SET_TAG(args,install("t"));
+
+  UNPROTECT(nprotect);
+  return args;
+
+}
+
+SEXP eval_pomp_fun_R_call (
+    SEXP fn, SEXP args,
+    double *t,
+    double *y, int nobs,
+    double *x, int nvar,
+    double *p, int npar,
+    double *c, int ncov)
+{
+
+  SEXP var = args, ans;
+  int v;
+
+  *(REAL(CAR(var))) = *t; var = CDR(var);
+  for (v = 0; v < nobs; v++, y++, var=CDR(var)) *(REAL(CAR(var))) = *y;
+  for (v = 0; v < nvar; v++, x++, var=CDR(var)) *(REAL(CAR(var))) = *x;
+  for (v = 0; v < npar; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
+  for (v = 0; v < ncov; v++, c++, var=CDR(var)) *(REAL(CAR(var))) = *c;
+
+  PROTECT(ans = eval(LCONS(fn,args),CLOENV(fn)));
+
+  UNPROTECT(1);
+  return ans;
+
+}
+
+SEXP pomp_fun_indices (SEXP fn, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnames)
+{
+  SEXP O, S, P, C;
+  SEXP ans;
+
+  // construct state, parameter, covariate, observable indices
+  PROTECT(O = name_index(Onames,fn,"obsnames","observables"));
+  PROTECT(S = name_index(Snames,fn,"statenames","state variables"));
+  PROTECT(P = name_index(Pnames,fn,"paramnames","parameters"));
+  PROTECT(C = name_index(Cnames,fn,"covarnames","covariates"));
+
+  PROTECT(ans = NEW_LIST(4));
+  SET_ELEMENT(ans,0,O);
+  SET_ELEMENT(ans,1,S);
+  SET_ELEMENT(ans,2,P);
+  SET_ELEMENT(ans,3,C);
+
+  UNPROTECT(5);
+  return ans;
+
+}
+

@@ -51,13 +51,13 @@ Error : in ‘dmeasure’: argument "y" is missing, with no default
 > try(dmeasure(po,y=y,times=t,params=theta))
 Error : in ‘dmeasure’: argument "x" is missing, with no default
 > try(dmeasure(po,x=as.numeric(x),y=y,times=t,params=theta))
-Error : in ‘dmeasure’: length of 'times' and 3rd dimension of 'x' do not agree
+Error : in ‘dmeasure’: length of 'times' and 3rd dimension of 'x' do not agree.
 > try(dmeasure(po,x=x,y=as.numeric(y),times=t,params=theta))
-Error : in ‘dmeasure’: length of 'times' and 2nd dimension of 'y' do not agree
+Error : in ‘dmeasure’: length of 'times' and 2nd dimension of 'y' do not agree.
 > try(dmeasure(po,x=x,y=y,times=NULL,params=theta))
-Error : in ‘dmeasure’: length('times') = 0, no work to do
+Error : in ‘dmeasure’: length('times') = 0, no work to do.
 > try(dmeasure(po,x=x[,,1],y=y[,1,drop=FALSE],times=t[1],params=theta))
-Error : in ‘dmeasure’: length of 'times' and 3rd dimension of 'x' do not agree
+Error : in ‘dmeasure’: length of 'times' and 3rd dimension of 'x' do not agree.
 > invisible(dmeasure(po,x=x[,,1,drop=FALSE],y=y[,1],times=t[1],params=theta))
 > stopifnot(all.equal(dmeasure(po,x=x[,1,,drop=FALSE],y=y,times=t,params=theta),
 +                     dmeasure(po,x=x[,1,],y=y,times=t,params=theta)))
@@ -86,13 +86,13 @@ Error : in ‘dmeasure’: variable 'tau' not found among the parameters
 > 
 > try(dmeasure(pomp(po,dmeasure=function(log,...)c(3,2,1)),
 +              x=x,y=y,times=t,params=theta,log=TRUE))
-Error : in ‘dmeasure’: user 'dmeasure' returns a vector of length 3 when it should return a scalar
+Error : in ‘dmeasure’: user 'dmeasure' returns a vector of length 3 when it should return a scalar.
 > 
 > pp <- parmat(theta,10)
 > dmeasure(po,params=pp,x=x,y=y,t=t,log=TRUE) -> ll
 > stopifnot(all.equal(ll[1:5,],ll[6:10,]))
 > try(dmeasure(po,params=pp[,1:7],x=x,y=y,t=t,log=TRUE))
-Error : in ‘dmeasure’: larger number of replicates is not a multiple of smaller
+Error : in ‘dmeasure’: larger number of replicates is not a multiple of smaller.
 > 
 > pompExample(dacca)
 newly created object(s):

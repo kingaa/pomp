@@ -32,7 +32,7 @@ simulate(times=1:100,t0=0,
     y <- c(Y=unname(rlnorm(n=1,meanlog=log(X),sdlog=tau)))
     return(y)
   },
-  dmeasure=function (tau, X, Y, log, ...) { # measurement model density
+  dmeasure=function (tau, X, Y, ..., log) {
     dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
   },
   partrans=parameter_trans(
@@ -41,7 +41,8 @@ simulate(times=1:100,t0=0,
     },
     fromEst=function(params,...){
       exp(params)
-    })
+    }
+  )
 ) -> gompertz
 
 ## Now code up the Gompertz example using C snippets: results in much faster computations.
