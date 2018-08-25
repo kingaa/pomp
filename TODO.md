@@ -5,6 +5,7 @@
 - let `pomp_fun_handler` to the variable lookups?
 - it should be possible to refer to times inside `covariate_table`
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
+- `nsim` argument for rprior?
 - ~~revisit use of `enum`~~
 - combine documentation: (dmeasure,rmeasure), (dprocess,rprocess)
 - regularize use of `pomp_stop` and `tryCatch` on *.internals
@@ -20,7 +21,6 @@
 - ~~`do_simulate` should handle parameter column names~~
 - ~~`bsmc2` should only take vector `params` and rely on `rprior`~~
 - ~~`spect` should call `do_simulate`~~
-- ~~`nsim` argument for rprior~~
 - ~~change `as.data.frame` argument to `format` in `trajectory`~~
 - provide full suite of methods for `traj.match.objfun`
 - ~~revisit default initializer~~
@@ -47,12 +47,12 @@
 - on-the-fly modification of basic components
 	- needed for nlf
 - perhaps `dinit`?
-- change specification of horsemen
+- change specification of horsemen?
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification
 	- allow "R snippets": expressions evaluated in proper context?
 - ~~remove `obs` and `states` arguments in `simulate`? or hide them?~~
-- `do_simulate` in C?
+- ~~`do_simulate` in C~~
 - easier interface for lists of probes in `probe`
 - documentation on `mifList`, `pmcmcList`, etc.?
 - methods to change data (`obs<-`)?

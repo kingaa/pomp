@@ -2,6 +2,25 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
 
+        • ‘simulate’ now returns more informative results when
+          simulations from multiple parameter sets are simultaneously
+          computed.  Specifically, if ‘params’ has column names, these
+          are used to identify the resulting simulations.  Thus when
+          ‘format = "pomps"’ (the default), the names of the resulting
+          list will be constructed from the column names of ‘params’.
+          Likewise, when ‘format = "arrays"’, the resulting arrays will
+          have informative column names; When ‘format = "data.frame"’,
+          the identifier variable will make use of the column names.
+
+        • The basic particle filter, ‘pfilter’, has a simpler mode of
+          operation: ‘params’ should be a single parameter set only.
+          That is, it is no longer possible to pass a matrix of
+          parameters to ‘pfilter’.
+
+        • The Liu-West algorithm, ‘bsmc2’, has a simpler mode of
+          operation: ‘params’ should be a single parameter set only:
+          the SMC particles are drawn from ‘rprior’.
+
         • The ‘as.data.frame’, ‘states’, and ‘obs’ options for
           ‘simulate’ have been done away with.  One now chooses the
           format of the returned simulations via the ‘format’ argument.
@@ -13,6 +32,33 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
           in favor of a new ‘format’ argument that allows one to choose
           between receiving the results in the form of an ‘"array"’ or
           a ‘"data.frame"’.
+
+        • All the basic model components now have defaults.
+
+            • The default ‘rinit’ behavior remains as it was: it
+              assumes the initial state distribution is concentrated at
+              a point mass determined by parameters with “‘.0’” or
+              “‘_0’” suffices.
+
+            • The default process model is “missing”: calls to
+              ‘dprocess’ and ‘rprocess’ will result in missing values
+              (‘NA’).
+
+            • The default measurement model is “missing” as well.
+
+            • The default prior is flat and improper: all calls to the
+              default ‘dprior’ result in ‘1’ (‘0’ if ‘log = TRUE’, and
+              all calls to ‘rprior’ result in ‘NA’.
+
+            • The default skeleton is missing.
+
+            • The default parameter transformations remain the
+              identity.
+
+        • The ‘transform’ argument present in many ‘pomp’ algorithms
+          has been removed.  Parameter transformations are now
+          automatically performed when appropriate.  The default
+          parameter transformation remains the identity.
 
         • The old ‘probe.match’ and ‘traj.match’ functions have been
           removed.  The new approach to parameter estimation based on

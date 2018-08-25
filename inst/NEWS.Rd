@@ -2,10 +2,36 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item \code{simulate} now returns more informative results when simulations from multiple parameter sets are simultaneously computed.
+    Specifically, if \code{params} has column names, these are used to identify the resulting simulations.
+    Thus when \code{format = "pomps"} (the default), the names of the resulting list will be constructed from the column names of \code{params}.
+    Likewise, when \code{format = "arrays"}, the resulting arrays will have informative column names;
+    When \code{format = "data.frame"}, the identifier variable will make use of the column names.
+    \item The basic particle filter, \code{pfilter}, has a simpler mode of operation:
+    \code{params} should be a single parameter set only.
+    That is, it is no longer possible to pass a matrix of parameters to \code{pfilter}.
+    \item The Liu-West algorithm, \code{bsmc2}, has a simpler mode of operation:
+    \code{params} should be a single parameter set only:
+    the SMC particles are drawn from \code{rprior}.
     \item The \code{as.data.frame}, \code{states}, and \code{obs} options for \code{simulate} have been done away with.
     One now chooses the format of the returned simulations via the \code{format} argument.
     When one simulates at multiple parameter sets, list names, array \code{dimnames}, or identifying variables in the output data frame help to correlate simulations with parameter sets.
     \item The \code{as.data.frame} argument to \code{trajectory} has been removed in favor of a new \code{format} argument that allows one to choose between receiving the results in the form of an \code{"array"} or a \code{"data.frame"}.
+    \item All the basic model components now have defaults.
+    \itemize{
+      \item The default \code{rinit} behavior remains as it was:
+      it assumes the initial state distribution is concentrated at a point mass determined by parameters with \dQuote{\code{.0}} or \dQuote{\code{_0}} suffices.
+      
+      \item The default process model is \dQuote{missing}: calls to \code{dprocess} and \code{rprocess} will result in missing values (\code{NA}).
+      \item The default measurement model is \dQuote{missing} as well.
+      \item The default prior is flat and improper:
+      all calls to the default \code{dprior} result in \code{1} (\code{0} if \code{log = TRUE}, and all calls to \code{rprior} result in \code{NA}.
+      \item The default skeleton is missing.
+      \item The default parameter transformations remain the identity.
+    }
+    \item The \code{transform} argument present in many \pkg{pomp} algorithms has been removed.
+    Parameter transformations are now automatically performed when appropriate.
+    The default parameter transformation remains the identity.
     \item The old \code{probe.match} and \code{traj.match} functions have been removed.
     The new approach to parameter estimation based on numerical optimization involves constructing stateful objective functions.
     There are now three of these: \code{traj.match.objfun}, \code{probe.match.objfun}, and \code{spect.match.objfun}.
