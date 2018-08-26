@@ -10,14 +10,14 @@ They are low-level functions that do the work needed by the package's inference 
 }
 \details{
 They include \describe{
-\item{dmeasure}{which evaluates the measurement model density,}
-\item{rmeasure}{which samples from the measurement model distribution,}
-\item{dprocess}{which evaluates the process model density,}
-\item{rprocess}{which samples from the process model distribution,}
-\item{dprior}{which evaluates the prior probability density,}
-\item{rprior}{which samples from the prior distribution,}
-\item{skeleton}{which evaluates the model's deterministic skeleton,}
-\item{partrans}{which performs parameter transformations associated with the model.}
+\item{\code{\link{dmeasure}}}{which evaluates the measurement model density,}
+\item{\code{\link{rmeasure}}}{which samples from the measurement model distribution,}
+\item{\code{\link{dprocess}}}{which evaluates the process model density,}
+\item{\code{\link{rprocess}}}{which samples from the process model distribution,}
+\item{\code{\link{dprior}}}{which evaluates the prior probability density,}
+\item{\code{\link{rprior}}}{which samples from the prior distribution,}
+\item{\code{\link{skeleton}}}{which evaluates the model's deterministic skeleton,}
+\item{\code{\link{partrans}}}{which performs parameter transformations associated with the model.}
 }
 }
 \seealso{

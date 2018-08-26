@@ -8,13 +8,47 @@
 
 #include "pomp_internal.h"
 
+static R_INLINE SEXP dprior_args (SEXP names, SEXP log, SEXP args) {
+
+  int nprotect = 0;
+  SEXP var;
+  int v;
+
+  PROTECT(args = LCONS(AS_LOGICAL(log),args)); nprotect++;
+  SET_TAG(args,install("log"));
+
+  for (v = LENGTH(names)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(names,v))));
+  }
+
+  UNPROTECT(nprotect);
+  return args;
+
+}
+
+static R_INLINE SEXP dprior_call (SEXP fn, SEXP args, double *p, int n) {
+
+  SEXP var = args, ans;
+  int v;
+
+  for (v = 0; v < n; v++, p++, var=CDR(var))
+    *(REAL(CAR(var))) = *p;
+
+  PROTECT(ans = eval(LCONS(fn,args),CLOENV(fn)));
+
+  UNPROTECT(1);
+  return ans;
+
+}
+
 SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 {
   int nprotect = 0;
   pompfunmode mode = undef;
   int npars, nreps;
-  SEXP Pnames, F, fn, fcall;
-  SEXP pompfun;
+  SEXP Pnames, pompfun, fn, args, F;
   int *dim;
 
   PROTECT(params = as_matrix(params)); nprotect++;
@@ -28,7 +62,7 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
   PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
 
   // extract 'userdata' as pairlist
-  PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
   // to store results
   PROTECT(F = NEW_NUMERIC(nreps)); nprotect++;
@@ -37,31 +71,16 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
   case Rfun:			// use R function
 
   {
-    SEXP pvec, rho;
-    double *pp, *ps, *pt;
+    SEXP ans;
+    double *ps, *pt;
     int j;
 
-    // temporary storage
-    PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
-    SET_NAMES(pvec,Pnames);
-
-    // set up the function call
-    PROTECT(fcall = LCONS(AS_LOGICAL(log),fcall)); nprotect++;
-    SET_TAG(fcall,install("log"));
-    PROTECT(fcall = LCONS(pvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("params"));
-    PROTECT(fcall = LCONS(fn,fcall)); nprotect++;
-
-    // get the function's environment
-    PROTECT(rho = (CLOENV(fn))); nprotect++;
-
-    pp = REAL(pvec);
+    PROTECT(args = dprior_args(Pnames,log,args)); nprotect++;
 
     for (j = 0, ps = REAL(params), pt = REAL(F); j < nreps; j++, ps += npars, pt++) {
 
-      memcpy(pp,ps,npars*sizeof(double));
-
-      *pt = *(REAL(AS_NUMERIC(PROTECT(eval(fcall,rho)))));
+      PROTECT(ans = dprior_call(fn,args,ps,npars));
+      *pt = *(REAL(AS_NUMERIC(ans)));
       UNPROTECT(1);
 
     }
@@ -87,7 +106,7 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 
     R_CheckUserInterrupt();	// check for user interrupt
 
-    set_pomp_userdata(fcall);
+    set_pomp_userdata(args);
 
     // loop over replicates
     for (j = 0, pt = REAL(F), ps = REAL(params); j < nreps; j++, ps += npars, pt++)

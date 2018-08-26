@@ -4,14 +4,14 @@
 ##' They are low-level functions that do the work needed by the package's inference methods.
 ##'
 ##' They include \describe{
-##' \item{dmeasure}{which evaluates the measurement model density,}
-##' \item{rmeasure}{which samples from the measurement model distribution,}
-##' \item{dprocess}{which evaluates the process model density,}
-##' \item{rprocess}{which samples from the process model distribution,}
-##' \item{dprior}{which evaluates the prior probability density,}
-##' \item{rprior}{which samples from the prior distribution,}
-##' \item{skeleton}{which evaluates the model's deterministic skeleton,}
-##' \item{partrans}{which performs parameter transformations associated with the model.}
+##' \item{\code{\link{dmeasure}}}{which evaluates the measurement model density,}
+##' \item{\code{\link{rmeasure}}}{which samples from the measurement model distribution,}
+##' \item{\code{\link{dprocess}}}{which evaluates the process model density,}
+##' \item{\code{\link{rprocess}}}{which samples from the process model distribution,}
+##' \item{\code{\link{dprior}}}{which evaluates the prior probability density,}
+##' \item{\code{\link{rprior}}}{which samples from the prior distribution,}
+##' \item{\code{\link{skeleton}}}{which evaluates the model's deterministic skeleton,}
+##' \item{\code{\link{partrans}}}{which performs parameter transformations associated with the model.}
 ##' }
 ##'
 ##' @name workhorses
@@ -25,12 +25,40 @@
 ##' @keywords programming internal
 NULL
 
-##' Generic dmeasure
+##' dmeasure
 ##'
-##' @name dmeasure-generic
-##' @aliases dmeasure,missing-method dmeasure,ANY-method
+##' \code{dmeasure} evaluates the probability density of observations given states.
+##'
+##' @name dmeasure
+##' @docType methods
+##' @aliases dmeasure dmeasure,pomp-method dmeasure-pomp
+##' dmeasure,ANY-method dmeasure,missing-method
 ##' @keywords internal
+##' @family pomp workhorses
 ##'
+##' @param object an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
+##' This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.
+##' @param x a rank-3 array containing states of the unobserved process.
+##' The dimensions of \code{x} are \code{nvars} x \code{nrep} x \code{ntimes},
+##' where \code{nvars} is the number of state variables,
+##' \code{nrep} is the number of replicates,
+##' and \code{ntimes} is the length of \code{times}.
+##' @param y a matrix containing observations.
+##' The dimensions of \code{y} are \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observables
+##' and \code{ntimes} is the length of \code{times}.
+##' @param times a numeric vector (length \code{ntimes}) containing times.
+##' These must be in non-decreasing order.
+##' @param params a \code{npar} x \code{nrep} matrix of parameters.
+##' Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.
+##' @param log if TRUE, log probabilities are returned.
+##' @param \dots additional arguments are ignored.
+##'
+##' @return
+##' \code{dmeasure} returns a matrix of dimensions \code{nreps} x \code{ntimes}.
+##' If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or log likelihood if \code{log = TRUE}) of the observation \code{y[,k]} at time \code{times[k]} given the state \code{x[,j,k]}.
+##'
+NULL
+
 setGeneric(
   "dmeasure",
   function (object, ...)
@@ -55,40 +83,12 @@ setMethod(
   }
 )
 
-##' dmeasure
-##'
-##' \code{dmeasure} evaluates the probability density of observations given states.
-##'
-##' @name dmeasure
-##' @aliases dmeasure dmeasure,pomp-method dmeasure-pomp
-##' @keywords internal
-##' @family pomp workhorses
-##'
-##' @param object an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
-##' @param x a rank-3 array containing states of the unobserved process.
-##' The dimensions of \code{x} are \code{nvars} x \code{nrep} x \code{ntimes},
-##' where \code{nvars} is the number of state variables,
-##' \code{nrep} is the number of replicates,
-##' and \code{ntimes} is the length of \code{times}.
-##' @param y a matrix containing observations.
-##' The dimensions of \code{y} are \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observables
-##' and \code{ntimes} is the length of \code{times}.
-##' @param times a numeric vector (length \code{ntimes}) containing times.
-##' These must be in non-decreasing order.
-##' @param params a \code{npar} x \code{nrep} matrix of parameters.
-##' Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.
-##' @param log if TRUE, log probabilities are returned.
-##' @param \dots additional arguments are ignored.
-##'
-##' @return
-##' \code{dmeasure} returns a matrix of dimensions \code{nreps} x \code{ntimes}.
-##' If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or log likelihood if \code{log = TRUE}) of the observation \code{y[,k]} at time \code{times[k]} given the state \code{x[,j,k]}.
-##'
 ##' @export
+##' @rdname dmeasure
 setMethod(
   "dmeasure",
   signature=signature(object="pomp"),
-  definition=function (object, y, x, times, params, log = FALSE, ...) {
+  definition=function (object, y, x, times, params, ..., log = FALSE) {
     tryCatch(
       dmeasure.internal(object=object,y=y,x=x,times=times,
         params=params,log=log,...),
@@ -97,8 +97,8 @@ setMethod(
   }
 )
 
-dmeasure.internal <- function (object, y, x, times, params, log = FALSE,
-  .getnativesymbolinfo = TRUE, ...) {
+dmeasure.internal <- function (object, y, x, times, params, ..., log = FALSE,
+  .getnativesymbolinfo = TRUE) {
   storage.mode(y) <- "double"
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
@@ -107,11 +107,24 @@ dmeasure.internal <- function (object, y, x, times, params, log = FALSE,
   .Call(do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)
 }
 
-##' Generic dprior
+##' dprior
 ##'
-##' @name dprior-generic
-##' @aliases dprior,missing-method dprior,ANY-method
+##' Evaluates the prior probability density.
+##'
+##' @name dprior
+##' @docType methods
+##' @aliases dprior dprior,pomp-method dprior-pomp
+##' dprior,ANY-method dprior,missing-method
 ##' @keywords internal
+##' @family pomp workhorses
+##'
+##' @inheritParams dmeasure
+##'
+##' @return
+##' The required density (or log density), as a numeric vector.
+##'
+NULL
+
 setGeneric(
   "dprior",
   function (object, ...)
@@ -136,25 +149,12 @@ setMethod(
   }
 )
 
-##' dprior
-##'
-##' Evaluates the prior probability density.
-##'
-##' @name dprior
-##' @aliases dprior dprior,pomp-method dprior-pomp
-##' @keywords internal
-##' @family pomp workhorses
-##'
-##' @inheritParams dmeasure
-##'
-##' @return
-##' The required density (or log density), as a numeric vector.
-##'
 ##' @export
+##' @rdname dprior
 setMethod(
   "dprior",
   signature=signature(object="pomp"),
-  definition=function (object, params, log = FALSE, ...) {
+  definition=function (object, params, ..., log = FALSE) {
     tryCatch(
       dprior.internal(object=object,params=params,log=log,...),
       error = function (e) pStop("dprior",conditionMessage(e))
@@ -170,12 +170,24 @@ dprior.internal <- function (object, params, log = FALSE,
   .Call(do_dprior,object,params,log,.getnativesymbolinfo)
 }
 
-##' Generic dprocess
+##' dprocess
 ##'
-##' @name dprocess-generic
-##' @aliases dprocess,missing-method dprocess,ANY-method
+##' Evaluates the probability density of a sequence of consecutive state transitions.
+##'
+##' @name dprocess
+##' @docType methods
+##' @aliases dprocess dprocess,pomp-method dprocess-pomp
+##' dprocess,ANY-method dprocess,missing-method
 ##' @keywords internal
+##' @family pomp workhorses
+##'
 ##' @inheritParams dmeasure
+##'
+##' @return
+##' \code{dprocess} returns a matrix of dimensions \code{nrep} x \code{ntimes-1}.
+##' If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or the log likelihood if \code{log=TRUE}) of the transition from state \code{x[,j,k-1]} at time \code{times[k-1]} to state \code{x[,j,k]} at time \code{times[k]}.
+##'
+NULL
 
 setGeneric(
   "dprocess",
@@ -201,26 +213,12 @@ setMethod(
   }
 )
 
-##' dprocess
-##'
-##' Evaluates the probability density of a sequence of consecutive state transitions.
-##'
-##' @name dprocess
-##' @aliases dprocess dprocess,pomp-method dprocess-pomp
-##' @keywords internal
-##' @family pomp workhorses
-##'
-##' @inheritParams dmeasure
-##'
-##' @return
-##' \code{dprocess} returns a matrix of dimensions \code{nrep} x \code{ntimes-1}.
-##' If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or the log likelihood if \code{log=TRUE}) of the transition from state \code{x[,j,k-1]} at time \code{times[k-1]} to state \code{x[,j,k]} at time \code{times[k]}.
-##'
 ##' @export
+##' @rdname dprocess
 setMethod(
   "dprocess",
   signature=signature(object="pomp"),
-  definition = function (object, x, times, params, log = FALSE, ...) {
+  definition = function (object, x, times, params, ..., log = FALSE) {
     tryCatch(
       dprocess.internal(object=object,x=x,times=times,params=params,log=log,...),
       error = function (e) pStop("dprocess",conditionMessage(e))
@@ -236,12 +234,27 @@ dprocess.internal <- function (object, x, times, params, log = FALSE, .getnative
   .Call(do_dprocess,object,x,times,params,log,.getnativesymbolinfo)
 }
 
-##' Generic partrans
+##' partrans
 ##'
-##' @name partrans-generic
-##' @aliases partrans,missing-method partrans,ANY-method
+##' Performs parameter transformations.
+##'
+##' @name partrans
+##' @docType methods
+##' @aliases  partrans partrans,pomp-method partrans-pomp
+##' partrans,ANY-method partrans,missing-method
 ##' @keywords internal
+##' @family pomp workhorses
 ##'
+##' @inheritParams dmeasure
+##' @param dir the direction of the transformation to perform.
+##'
+##' @return
+##' If \code{dir=fromEst}, the parameters in \code{params} are assumed to be on the estimation scale and are transformed onto the natural scale.
+##' If \code{dir=toEst}, they are transformed onto the estimation scale.
+##' In both cases, the parameters are returned as a named numeric vector or an array with rownames, as appropriate.
+##'
+NULL
+
 setGeneric(
   "partrans",
   function (object, ...)
@@ -266,24 +279,8 @@ setMethod(
   }
 )
 
-##' partrans
-##'
-##' Performs parameter transformations.
-##'
-##' @name partrans
-##' @aliases partrans partrans,pomp-method partrans-pomp
-##' @keywords internal
-##' @family pomp workhorses
-##'
-##' @inheritParams dmeasure
-##' @param dir the direction of the transformation to perform.
-##'
-##' @return
-##' If \code{dir=fromEst}, the parameters in \code{params} are assumed to be on the estimation scale and are transformed onto the natural scale.
-##' If \code{dir=toEst}, they are transformed onto the estimation scale.
-##' In both cases, the parameters are returned as a named numeric vector or an array with rownames, as appropriate.
-##'
 ##' @export
+##' @rdname partrans
 setMethod(
   "partrans",
   signature=signature(object="pomp"),
@@ -307,11 +304,27 @@ partrans.internal <- function (object, params, dir = c("fromEst", "toEst"),
   params
 }
 
-##' Generic rinit
+##' rinit
 ##'
-##' @name rinit-generic
-##' @aliases rinit,missing-method rinit,ANY-method
+##' Samples from the initial-state distribution.
+##'
+##' @name rinit
+##' @docType methods
+##' @aliases rinit rinit,pomp-method rinit-pomp
+##' rinit,ANY-method rinit,missing-method
 ##' @keywords internal
+##' @family pomp workhorses
+##'
+##' @inheritParams dmeasure
+##' @param t0 the initial time, i.e., the time corresponding to the initial-state distribution.
+##' @param nsim optional integer; the number of initial states to simulate per column of \code{params}.
+##'
+##' @return
+##' \code{rinit} returns an \code{nvar} x \code{nsim*ncol(params)} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
+##' By default, \code{t0} is the initial time defined when the \sQuote{pomp} object ws constructed.
+##'
+NULL
+
 setGeneric(
   "rinit",
   function (object, ...)
@@ -336,24 +349,8 @@ setMethod(
   }
 )
 
-##' rinit
-##'
-##' Samples from the initial-state distribution.
-##'
-##' @name rinit
-##' @aliases rinit rinit,pomp-method rinit-pomp
-##' @keywords internal
-##' @family pomp workhorses
-##'
-##' @inheritParams dmeasure
-##' @param t0 the initial time, i.e., the time corresponding to the initial-state distribution.
-##' @param nsim optional integer; the number of initial states to simulate per column of \code{params}.
-##'
-##' @return
-##' \code{rinit} returns an \code{nvar} x \code{nsim*ncol(params)} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
-##' By default, \code{t0} is the initial time defined when the \sQuote{pomp} object ws constructed.
-##'
 ##' @export
+##' @rdname rinit
 setMethod(
   "rinit",
   signature=signature("pomp"),
@@ -375,11 +372,26 @@ rinit.internal <- function (object, params, t0, nsim = 1,
   .Call(do_rinit,object,params,t0,nsim,.getnativesymbolinfo)
 }
 
-##' Generic rmeasure
+##' rmeasure
 ##'
-##' @name rmeasure-generic
-##' @aliases rmeasure,missing-method rmeasure,ANY-method
-##' @keywords internal
+##' Sample from the measurement model distribution, given values of the latent states and the parameters.
+##'
+##' @name rmeasure
+##' @docType methods
+##' @aliases rmeasure rmeasure,pomp-method rmeasure-pomp
+##' rmeasure,ANY-method rmeasure,missing-method
+###' @keywords internal
+##' @family pomp workhorses
+##'
+##' @inheritParams dmeasure
+##'
+##' @return
+##' \code{rmeasure} returns a rank-3 array of dimensions
+##' \code{nobs} x \code{nrep} x \code{ntimes},
+##' where \code{nobs} is the number of observed variables.
+##'
+NULL
+
 setGeneric(
   "rmeasure",
   function (object, ...)
@@ -404,21 +416,8 @@ setMethod(
   }
 )
 
-##' rmeasure
-##'
-##' Sample from the measurement model distribution, given values of the latent states and the parameters.
-##'
-##' @name rmeasure
-##' @aliases rmeasure rmeasure,pomp-method rmeasure-pomp
-##' @keywords internal
-##' @family pomp workhorses
-##'
-##' @inheritParams dmeasure
-##'
-##' @return
-##' \code{rmeasure} returns a rank-3 array of dimensions \code{nobs} x \code{nrep} x \code{ntimes}, where \code{nobs} is the number of observed variables.
-##'
 ##' @export
+##' @rdname rmeasure
 setMethod(
   "rmeasure",
   signature=signature(object="pomp"),
@@ -439,11 +438,24 @@ rmeasure.internal <- function (object, x, times, params,
   .Call(do_rmeasure,object,x,times,params,.getnativesymbolinfo)
 }
 
-##' Generic rprior
+##' rprior
 ##'
-##' @name rprior-generic
-##' @aliases rprior,missing-method rprior,ANY-method
+##' Sample from the prior probability distribution.
+##'
+##' @name rprior
+##' @docType methods
+##' @aliases rprior rprior,pomp-method rprior-pomp
+##' rprior,ANY-method rprior,missing-method
 ##' @keywords internal
+##' @family pomp workhorses
+##'
+##' @inheritParams dmeasure
+##'
+##' @return
+##' A numeric matrix containing the required samples.
+##'
+NULL
+
 setGeneric(
   "rprior",
   function (object, ...)
@@ -468,21 +480,8 @@ setMethod(
   }
 )
 
-##' rprior
-##'
-##' Sample from the prior probability distribution.
-##'
-##' @name rprior
-##' @aliases rprior rprior,pomp-method rprior-pomp
-##' @keywords internal
-##' @family pomp workhorses
-##'
-##' @inheritParams dmeasure
-##'
-##' @return
-##' A numeric matrix containing the required samples.
-##'
 ##' @export
+##' @rdname rprior
 setMethod(
   "rprior",
   signature=signature(object="pomp"),
@@ -500,11 +499,40 @@ rprior.internal <- function (object, params, .getnativesymbolinfo = TRUE, ...) {
   .Call(do_rprior,object,params,.getnativesymbolinfo)
 }
 
-##' Generic rprocess
+##' rprocess
 ##'
-##' @name rprocess-generic
-##' @aliases rprocess,missing-method rprocess,ANY-method
+##' \code{rprocess} simulates the process-model portion of partially-observed Markov process.
+##'
+##' When \code{rprocess} is called, the first entry of \code{times} is taken to be the initial time (i.e., that corresponding to \code{xstart}).
+##' Subsequent times are the additional times at which the state of the simulated processes are required.
+##'
+##' @name rprocess
+##' @docType methods
+##' @aliases rprocess rprocess,pomp-method rprocess-pomp
+##' rprocess,ANY-method rprocess,missing-method
 ##' @keywords internal
+##' @family pomp workhorses
+##'
+##' @inheritParams dmeasure
+##' @param xstart an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
+##' Columns of \code{xstart} correspond to states;
+##' rows to components of the state vector.
+##' One independent simulation will be performed for each column.
+##' Note that in this case, \code{params} must also have \code{nrep} columns.
+##' @param offset integer; the first \code{offset} times in \code{times} will be discarded.
+##'
+##' @return
+##' \code{rprocess} returns a rank-3 array with rownames.
+##' Suppose \code{x} is the array returned.
+##' Then \preformatted{dim(x)=c(nvars,nrep,ntimes-offset),}
+##' where \code{nvars} is the number of state variables (=\code{nrow(xstart)}),
+##' \code{nrep} is the number of independent realizations simulated (=\code{ncol(xstart)}), and
+##' \code{ntimes} is the length of the vector \code{times}.
+##' \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k+offset]}.
+##' The rownames of \code{x} must correspond to those of \code{xstart}.
+##'
+NULL
+
 setGeneric(
   "rprocess",
   function (object, ...)
@@ -529,49 +557,22 @@ setMethod(
   }
 )
 
-##' rprocess
-##'
-##' \code{rprocess} simulates the process-model portion of partially-observed Markov process.
-##'
-##' When \code{rprocess} is called, the first entry of \code{times} is taken to be the initial time (i.e., that corresponding to \code{xstart}).
-##' Subsequent times are the additional times at which the state of the simulated processes are required.
-##'
-##' @name rprocess
-##' @aliases rprocess rprocess,pomp-method rprocess-pomp
-##' @keywords internal
-##' @family pomp workhorses
-##'
-##' @inheritParams dmeasure
-##' @param xstart an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
-##' Columns of \code{xstart} correspond to states;
-##' rows to components of the state vector.
-##' One independent simulation will be performed for each column.
-##' Note that in this case, \code{params} must also have \code{nrep} columns.
-##' @param offset integer; the first \code{offset} times in \code{times} will be discarded.
-##'
-##' @return
-##' \code{rprocess} returns a rank-3 array with rownames.
-##' Suppose \code{x} is the array returned.
-##' Then \preformatted{dim(x)=c(nvars,nrep,ntimes-offset),}
-##' where \code{nvars} is the number of state variables (=\code{nrow(xstart)}),
-##' \code{nrep} is the number of independent realizations simulated (=\code{ncol(xstart)}), and
-##' \code{ntimes} is the length of the vector \code{times}.
-##' \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k+offset]}.
-##' The rownames of \code{x} must correspond to those of \code{xstart}.
-##'
 ##' @export
+##' @rdname rprocess
 setMethod(
   "rprocess",
   signature=signature(object="pomp"),
   definition=function (object, xstart, times, params, offset = 0L, ...) {
     tryCatch(
-      rprocess.internal(object=object,xstart=xstart,times=times,params=params,offset=offset,...),
+      rprocess.internal(object=object,xstart=xstart,times=times,params=params,
+        offset=offset,...),
       error = function (e) pStop("rprocess",conditionMessage(e))
     )
   }
 )
 
-rprocess.internal <- function (object, xstart, times, params, offset = 0L, .getnativesymbolinfo = TRUE, ...) {
+rprocess.internal <- function (object, xstart, times, params, offset = 0L,
+  .getnativesymbolinfo = TRUE, ...) {
   storage.mode(xstart) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)
@@ -579,11 +580,29 @@ rprocess.internal <- function (object, xstart, times, params, offset = 0L, .getn
   .Call(do_rprocess,object,xstart,times,params,offset,.getnativesymbolinfo)
 }
 
-##' Generic skeleton
+##' skeleton
 ##'
-##' @name skeleton-generic
-##' @aliases skeleton,missing-method skeleton,ANY-method
+##' Evaluates the deterministic skeleton at a point or points in state space, given parameters.
+##' In the case of a discrete-time system, the skeleton is a map.
+##' In the case of a continuous-time system, the skeleton is a vectorfield.
+##' NB: \code{skeleton} just evaluates the deterministic skeleton;
+##' it does not iterate or integrate (see \code{\link{trajectory}} for this).
+##'
+##' @name skeleton
+##' @docType methods
+##' @aliases skeleton skeleton,pomp-method skeleton-pomp
+##' skeleton,ANY-method skeleton,missing-method
 ##' @keywords internal
+##' @family pomp workhorses
+##'
+##' @inheritParams dmeasure
+##'
+##' @return
+##' \code{skeleton} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
+##' If \code{f} is the returned matrix, \code{f[i,j,k]} is the i-th component of the deterministic skeleton at time \code{times[k]} given the state \code{x[,j,k]} and parameters \code{params[,j]}.
+##'
+NULL
+
 setGeneric(
   "skeleton",
   function (object, ...)
@@ -608,26 +627,8 @@ setMethod(
   }
 )
 
-##' skeleton
-##'
-##' Evaluates the deterministic skeleton at a point or points in state space, given parameters.
-##' In the case of a discrete-time system, the skeleton is a map.
-##' In the case of a continuous-time system, the skeleton is a vectorfield.
-##' NB: \code{skeleton} just evaluates the deterministic skeleton;
-##' it does not iterate or integrate (see \code{\link{trajectory}} for this).
-##'
-##' @name skeleton
-##' @aliases skeleton skeleton,pomp-method skeleton-pomp
-##' @keywords internal
-##' @family pomp workhorses
-##'
-##' @inheritParams dmeasure
-##'
-##' @return
-##' \code{skeleton} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
-##' If \code{f} is the returned matrix, \code{f[i,j,k]} is the i-th component of the deterministic skeleton at time \code{times[k]} given the state \code{x[,j,k]} and parameters \code{params[,j]}.
-##'
 ##' @export
+##' @rdname skeleton
 setMethod(
   "skeleton",
   signature=signature("pomp"),

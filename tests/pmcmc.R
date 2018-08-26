@@ -1,9 +1,9 @@
 options(digits=3)
 png(filename="pmcmc-%02d.png",res=100)
 
-set.seed(857075216L)
-
 library(pomp)
+
+set.seed(857075216L)
 
 pompExample(gompertz,envir=NULL) -> po
 
@@ -76,10 +76,10 @@ try(pmcmc(mcmc1,Nmcmc=-20))
 try(pmcmc(mcmc1,Nmcmc=NA))
 try(pmcmc(mcmc1,Nmcmc=c(5,10,15)))
 
-try(pmcmc(mcmc1,dprior=function(params,log,...)stop("not again!")))
+try(pmcmc(mcmc1,dprior=function(log,...)stop("not again!")))
 try({
   count <- 0
-  delayed.failure <- function (params, log, ...) {
+  delayed.failure <- function (log, ...) {
     count <<- count+1
     if (count>5) stop("uh huh") else 1
   }

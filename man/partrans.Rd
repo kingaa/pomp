@@ -5,13 +5,16 @@
 \alias{partrans}
 \alias{partrans,pomp-method}
 \alias{partrans-pomp}
+\alias{partrans,ANY-method}
+\alias{partrans,missing-method}
 \title{partrans}
 \usage{
 \S4method{partrans}{pomp}(object, params, dir = c("fromEst", "toEst"),
   ...)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
+\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
+This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.}

@@ -5,6 +5,7 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 #include <Rversion.h>
+#include <stdarg.h>
 
 #include "pomp_internal.h"
 
@@ -227,5 +228,23 @@ SEXP pomp_fun_indices (SEXP fn, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnam
   UNPROTECT(5);
   return ans;
 
+}
+
+SEXP concat_names (int nargs, ...) {
+  int nprotect = 0;
+  va_list ap;
+  SEXP f = R_NilValue;
+  int i;
+
+  va_start(ap,nargs);
+  for (i = 0; i < nargs; i++) {
+    PROTECT(f = LCONS(va_arg(ap,SEXP),f)); nprotect++;
+  }
+  va_end(ap);
+
+  PROTECT(f = eval(LCONS(install("c"),f),R_BaseEnv)); nprotect++;
+
+  UNPROTECT(nprotect);
+  return f;
 }
 

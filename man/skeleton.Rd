@@ -5,12 +5,15 @@
 \alias{skeleton}
 \alias{skeleton,pomp-method}
 \alias{skeleton-pomp}
+\alias{skeleton,ANY-method}
+\alias{skeleton,missing-method}
 \title{skeleton}
 \usage{
 \S4method{skeleton}{pomp}(object, x, times, params, ...)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
+\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
+This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
 \item{x}{a rank-3 array containing states of the unobserved process.
 The dimensions of \code{x} are \code{nvars} x \code{nrep} x \code{ntimes},

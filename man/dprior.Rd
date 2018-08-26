@@ -5,19 +5,22 @@
 \alias{dprior}
 \alias{dprior,pomp-method}
 \alias{dprior-pomp}
+\alias{dprior,ANY-method}
+\alias{dprior,missing-method}
 \title{dprior}
 \usage{
-\S4method{dprior}{pomp}(object, params, log = FALSE, ...)
+\S4method{dprior}{pomp}(object, params, ..., log = FALSE)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
+\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
+This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.}
 
-\item{log}{if TRUE, log probabilities are returned.}
-
 \item{...}{additional arguments are ignored.}
+
+\item{log}{if TRUE, log probabilities are returned.}
 }
 \value{
 The required density (or log density), as a numeric vector.

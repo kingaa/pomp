@@ -5,12 +5,15 @@
 \alias{dmeasure}
 \alias{dmeasure,pomp-method}
 \alias{dmeasure-pomp}
+\alias{dmeasure,ANY-method}
+\alias{dmeasure,missing-method}
 \title{dmeasure}
 \usage{
-\S4method{dmeasure}{pomp}(object, y, x, times, params, log = FALSE, ...)
+\S4method{dmeasure}{pomp}(object, y, x, times, params, ..., log = FALSE)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
+\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
+This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
 \item{y}{a matrix containing observations.
 The dimensions of \code{y} are \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observables
@@ -28,9 +31,9 @@ These must be in non-decreasing order.}
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.}
 
-\item{log}{if TRUE, log probabilities are returned.}
-
 \item{\dots}{additional arguments are ignored.}
+
+\item{log}{if TRUE, log probabilities are returned.}
 }
 \value{
 \code{dmeasure} returns a matrix of dimensions \code{nreps} x \code{ntimes}.

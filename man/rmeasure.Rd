@@ -5,12 +5,15 @@
 \alias{rmeasure}
 \alias{rmeasure,pomp-method}
 \alias{rmeasure-pomp}
+\alias{rmeasure,ANY-method}
+\alias{rmeasure,missing-method}
 \title{rmeasure}
 \usage{
 \S4method{rmeasure}{pomp}(object, x, times, params, ...)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
+\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
+This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
 \item{x}{a rank-3 array containing states of the unobserved process.
 The dimensions of \code{x} are \code{nvars} x \code{nrep} x \code{ntimes},
@@ -27,7 +30,9 @@ Each column is an independent parameter set and is paired with the corresponding
 \item{...}{additional arguments are ignored.}
 }
 \value{
-\code{rmeasure} returns a rank-3 array of dimensions \code{nobs} x \code{nrep} x \code{ntimes}, where \code{nobs} is the number of observed variables.
+\code{rmeasure} returns a rank-3 array of dimensions
+\code{nobs} x \code{nrep} x \code{ntimes},
+where \code{nobs} is the number of observed variables.
 }
 \description{
 Sample from the measurement model distribution, given values of the latent states and the parameters.

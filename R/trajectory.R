@@ -14,7 +14,7 @@
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames
 ##'
-##' @inheritParams rmeasure
+##' @inheritParams dmeasure
 ##' @inheritParams rinit
 ##'
 ##' @param format the format in which to return the results.

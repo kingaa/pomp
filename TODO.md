@@ -7,6 +7,7 @@
 - it should be possible to refer to times inside `covariate_table`
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
 - `nsim` argument for rprior?
+- do we need `ncovars` in workhorse C function calls?
 - ~~revisit use of `enum`~~
 - combine documentation: (dmeasure,rmeasure), (dprocess,rprocess)
 - regularize use of `pomp_stop` and `tryCatch` on *.internals

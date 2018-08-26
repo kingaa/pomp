@@ -156,7 +156,8 @@ Each basic component can be furnished using C snippets, \R functions, or pre-com
 
 \strong{ It is not typically necessary (or even feasible) to define all of the basic components for any given purpose.
 Each \pkg{pomp} algorithm makes use of only a subset of these components.
-Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.  }
+Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.
+FIXME }
 }
 
 \references{

@@ -398,7 +398,7 @@ typedef void pomp_skeleton (double *f, const double *x, const double *p,
 // PROTOTYPE FOR MEASUREMENT MODEL SIMULATION
 typedef void pomp_measure_model_simulator (double *y, const double *x, const double *p,
 					   const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
-					   int ncovars, const double *covars, double t);
+					   const double *covars, double t);
 // Description:
 //  on input:
 // x          = pointer to state vector at time t
@@ -411,7 +411,6 @@ typedef void pomp_measure_model_simulator (double *y, const double *x, const dou
 //                the 'paramnames' slot
 // covindex   = pointer to vector of integers indexing the parameters in 'covar'' in the order specified by
 //                the 'covarnames' slot
-// ncovars    = number of covariates
 // covars     = pointer to a vector containing the values of the covariates at time t, as interpolated
 //                from the covariate table supplied to 'pomp.skeleton'
 // t          = time at the beginning of the Euler step
@@ -425,7 +424,7 @@ typedef void pomp_measure_model_simulator (double *y, const double *x, const dou
 // PROTOTYPE FOR MEASUREMENT MODEL DENSITY EVALUATOR
 typedef void pomp_measure_model_density (double *lik, const double *y, const double *x, const double *p, int give_log,
 					 const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
-					 int ncovars, const double *covars, double t);
+					 const double *covars, double t);
 // Description:
 //  on input:
 // y          = pointer to vector of observables at time t
@@ -440,7 +439,6 @@ typedef void pomp_measure_model_density (double *lik, const double *y, const dou
 //                the 'paramnames' slot
 // covindex   = pointer to vector of integers indexing the parameters in 'covar'' in the order specified by
 //                the 'covarnames' slot
-// ncovars    = number of covariates
 // covars     = pointer to a vector containing the values of the covariates at time t, as interpolated
 //                from the covariate table supplied to 'pomp.skeleton'
 // t          = time at the beginning of the Euler step

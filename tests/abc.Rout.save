@@ -44,7 +44,11 @@ newly created object(s):
 > 
 > ou2 %>%
 +   abc(Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-+     proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))) -> abc1
++     proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
++     dprior=function(alpha.1,alpha.2,...,log) {
++       ll <- sum(dnorm(x=c(alpha.1,alpha.2),mean=c(0.6,0),sd=4,log=TRUE))
++       if (log) ll else exp(ll)
++     }) -> abc1
 > plot(abc1)
 > plot(abc1,scatter=TRUE)
 > 
@@ -150,9 +154,9 @@ Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
 > try(abc(ou2,Nabc=100,probes=function(x,y)x+y,scale=scale.dat[1],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 Error : in ‘abc’: each probe must be a function of a single argument.
-> try(abc(abc1,dprior=function(params,log,...)stop("ouch!")))
+> try(abc(abc1,dprior=function(log,...)stop("ouch!")))
 Error : in ‘abc’: in ‘dprior’: ouch!
-> try(abc(abc1,dprior=function(params,log,...)Inf))
+> try(abc(abc1,dprior=function(log,...)Inf))
 Error : in ‘abc’: inadmissible value of ‘dprior’ at starting parameters.
 > try(abc(abc1,probes=function(x)stop("piff!")))
 Error : in ‘abc’: applying probes to data: piff!
@@ -163,7 +167,7 @@ Error : in ‘abc’: applying probes to simulations: paff!
 > try(abc(abc1,proposal=function(...)stop("urp!")))
 Error : in ‘abc’: in proposal function: urp!
 > count <- 0
-> delayed.failure <- function (params,log,...) {count <<- count+1; if (count>5) stop("no sir!") else 1}
+> delayed.failure <- function (log,...) {count <<- count+1; if (count>5) stop("no sir!") else 1}
 > try(abc(abc1,dprior=delayed.failure))
 Error : in ‘abc’: in ‘dprior’: no sir!
 > count <- 0

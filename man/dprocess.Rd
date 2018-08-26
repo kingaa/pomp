@@ -5,12 +5,15 @@
 \alias{dprocess}
 \alias{dprocess,pomp-method}
 \alias{dprocess-pomp}
+\alias{dprocess,ANY-method}
+\alias{dprocess,missing-method}
 \title{dprocess}
 \usage{
-\S4method{dprocess}{pomp}(object, x, times, params, log = FALSE, ...)
+\S4method{dprocess}{pomp}(object, x, times, params, ..., log = FALSE)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
+\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
+This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
 \item{x}{a rank-3 array containing states of the unobserved process.
 The dimensions of \code{x} are \code{nvars} x \code{nrep} x \code{ntimes},
@@ -24,9 +27,9 @@ These must be in non-decreasing order.}
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.}
 
-\item{log}{if TRUE, log probabilities are returned.}
-
 \item{...}{additional arguments are ignored.}
+
+\item{log}{if TRUE, log probabilities are returned.}
 }
 \value{
 \code{dprocess} returns a matrix of dimensions \code{nrep} x \code{ntimes-1}.

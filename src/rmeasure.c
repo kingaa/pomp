@@ -9,6 +9,84 @@
 
 #include "pomp_internal.h"
 
+
+static R_INLINE SEXP rmeas_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
+{
+  int nprotect = 0;
+  SEXP var;
+  int v;
+
+  // we construct the call from end to beginning
+  // covariates, parameter, states, then time
+
+  // Covariates
+  for (v = LENGTH(Cnames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Cnames,v))));
+  }
+
+  // Parameters
+  for (v = LENGTH(Pnames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Pnames,v))));
+  }
+
+  // Latent state variables
+  for (v = LENGTH(Snames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Snames,v))));
+  }
+
+  // Time
+  PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+  PROTECT(args = LCONS(var,args)); nprotect++;
+  SET_TAG(args,install("t"));
+
+  UNPROTECT(nprotect);
+  return args;
+
+}
+
+static R_INLINE SEXP eval_call (
+    SEXP fn, SEXP args,
+    double *t,
+    double *x, int nvar,
+    double *p, int npar,
+    double *c, int ncov)
+{
+
+  SEXP var = args, ans;
+  int v;
+
+  *(REAL(CAR(var))) = *t; var = CDR(var);
+  for (v = 0; v < nvar; v++, x++, var=CDR(var)) *(REAL(CAR(var))) = *x;
+  for (v = 0; v < npar; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
+  for (v = 0; v < ncov; v++, c++, var=CDR(var)) *(REAL(CAR(var))) = *c;
+
+  PROTECT(ans = eval(LCONS(fn,args),CLOENV(fn)));
+
+  UNPROTECT(1);
+  return ans;
+
+}
+
+static R_INLINE SEXP rmeas_array (int nobs, int nreps, int ntimes, SEXP Onames) {
+  int dim[3] = {nobs, nreps, ntimes};
+  const char *dimnm[3] = {"variable", "rep", "time"};
+  SEXP Y;
+
+  PROTECT(Y = makearray(3,dim));
+  setrownames(Y,Onames,3);
+  fixdimnames(Y,dimnm,3);
+
+  UNPROTECT(1);
+  return Y;
+
+}
+
 SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 {
   int nprotect = 0;
@@ -16,14 +94,11 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp;
   int nobs = 0;
   SEXP Snames, Pnames, Cnames, Onames = R_NilValue;
-  SEXP cvec, indices;
   SEXP fn, args;
   SEXP pompfun;
   SEXP Y = R_NilValue;
   int *dim;
-  int *sidx = 0, *pidx = 0, *cidx = 0, *oidx = 0;
   lookup_table_t covariate_table;
-  pomp_measure_model_simulator *ff = NULL;
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
@@ -53,10 +128,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
 
-  // vector for interpolated covariates
-  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
-  SET_NAMES(cvec,Cnames);
-
   // extract the user-defined function
   PROTECT(pompfun = GET_SLOT(object,install("rmeasure"))); nprotect++;
   PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
@@ -66,73 +137,34 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   // first do setup
   switch (mode) {
-  case Rfun:			// use R function
-
-    PROTECT(args = pomp_fun_args(args,R_NilValue,Snames,Pnames,Cnames)); nprotect++;
-
-    break;
-
-  case native: case regNative:
-
-    // construct observable, state, parameter covariate indices
-    PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
-    PROTECT(indices = pomp_fun_indices(pompfun,Onames,Snames,Pnames,Cnames)); nprotect++;
-    oidx = INTEGER(VECTOR_ELT(indices,0));
-    sidx = INTEGER(VECTOR_ELT(indices,1));
-    pidx = INTEGER(VECTOR_ELT(indices,2));
-    cidx = INTEGER(VECTOR_ELT(indices,3));
-    nobs = LENGTH(Onames);
-
-    // address of native routine
-    *((void **) (&ff)) = R_ExternalPtrAddr(fn);
-
-    break;
-
-  default:
-
-    PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
-    nobs = LENGTH(Onames);
-
-    break;
-
-  }
-
-  // now do computations
-  switch (mode) {
-
-  case Rfun:			// R function
+  case Rfun:
 
   {
-    double *yt = 0;
-    double *time = REAL(times);
-    double *cs = REAL(cvec);
-    double *xs = REAL(x);
-    double *ps = REAL(params);
-    double *ys;
+    double *ys, *yt = 0;
+    double *time = REAL(times), *xs = REAL(x), *ps = REAL(params);
+    double cov[ncovars];
     SEXP ans;
-    int i, j, k;
+    int j, k;
+
+    PROTECT(args = rmeas_args(args,Snames,Pnames,Cnames)); nprotect++;
 
     for (k = 0; k < ntimes; k++, time++) { // loop over times
 
       R_CheckUserInterrupt();	// check for user interrupt
 
-      table_lookup(&covariate_table,*time,cs); // interpolate the covariates
+      table_lookup(&covariate_table,*time,cov); // interpolate the covariates
 
       for (j = 0; j < nreps; j++) { // loop over replicates
 
         if (k == 0 && j == 0) {
 
-          const char *dimnm[3] = {"variable","rep","time"};
-          int dim[3];
-
           PROTECT(
-            ans = eval_pomp_fun_R_call(
+            ans = eval_call(
               fn,args,
               time,
-              0,0,
               xs+nvars*((j%nrepsx)+nrepsx*k),nvars,
               ps+npars*(j%nrepsp),npars,
-              cs,ncovars
+              cov,ncovars
             )
           ); nprotect++;
 
@@ -142,10 +174,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
           if (isNull(Onames))
             errorcall(R_NilValue,"'rmeasure' must return a named numeric vector.");
 
-          dim[0] = nobs; dim[1] = nreps; dim[2] = ntimes;
-          PROTECT(Y = makearray(3,dim)); nprotect++;
-          setrownames(Y,Onames,3);
-          fixdimnames(Y,dimnm,3);
+          PROTECT(Y = rmeas_array(nobs,nreps,ntimes,Onames)); nprotect++;
 
           yt = REAL(Y);
           ys = REAL(AS_NUMERIC(ans));
@@ -156,13 +185,12 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
         } else {
 
           PROTECT(
-            ans = eval_pomp_fun_R_call(
+            ans = eval_call(
               fn,args,
               time,
-              0,0,
               xs+nvars*((j%nrepsx)+nrepsx*k),nvars,
               ps+npars*(j%nrepsp),npars,
-              cs,ncovars
+              cov,ncovars
             )
           );
 
@@ -180,27 +208,36 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
       }
     }
+
   }
 
     break;
 
-  case native: case regNative:			// native routine
+  case native: case regNative:
 
   {
-    int dim[3] = {nobs, nreps, ntimes};
-    const char *dimnm[3] = {"variable","rep","time"};
-
-    PROTECT(Y = makearray(3,dim)); nprotect++;
-    setrownames(Y,Onames,3);
-    fixdimnames(Y,dimnm,3);
-
-    double *yt = REAL(Y);
-    double *time = REAL(times);
-    double *xs = REAL(x);
-    double *ps = REAL(params);
-    double *cp = REAL(cvec);
-    double *xp, *pp;
+    double *yt = 0, *xp, *pp;
+    double *time = REAL(times), *xs = REAL(x), *ps = REAL(params);
+    double cov[ncovars];
+    SEXP indices;
+    int *oidx, *sidx, *pidx, *cidx;
+    pomp_measure_model_simulator *ff = NULL;
     int j, k;
+
+    // construct observable, state, parameter covariate indices
+    PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
+    PROTECT(indices = pomp_fun_indices(pompfun,Onames,Snames,Pnames,Cnames)); nprotect++;
+    oidx = INTEGER(VECTOR_ELT(indices,0));
+    sidx = INTEGER(VECTOR_ELT(indices,1));
+    pidx = INTEGER(VECTOR_ELT(indices,2));
+    cidx = INTEGER(VECTOR_ELT(indices,3));
+    nobs = LENGTH(Onames);
+
+    // address of native routine
+    *((void **) (&ff)) = R_ExternalPtrAddr(fn);
+
+    PROTECT(Y = rmeas_array(nobs,nreps,ntimes,Onames)); nprotect++;
+    yt = REAL(Y);
 
     set_pomp_userdata(args);
     GetRNGstate();
@@ -210,20 +247,21 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
       R_CheckUserInterrupt();	// check for user interrupt
 
       // interpolate the covar functions for the covariates
-      table_lookup(&covariate_table,*time,cp);
+      table_lookup(&covariate_table,*time,cov);
 
       for (j = 0; j < nreps; j++, yt += nobs) { // loop over replicates
 
         xp = &xs[nvars*((j%nrepsx)+nrepsx*k)];
         pp = &ps[npars*(j%nrepsp)];
 
-        (*ff)(yt,xp,pp,oidx,sidx,pidx,cidx,ncovars,cp,*time);
+        (*ff)(yt,xp,pp,oidx,sidx,pidx,cidx,cov,*time);
 
       }
     }
 
     PutRNGstate();
     unset_pomp_userdata();
+
   }
 
     break;
@@ -231,6 +269,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   default:
 
   {
+    PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
+    nobs = LENGTH(Onames);
     int dim[3] = {nobs, nreps, ntimes};
     const char *dimnm[3] = {"variable","rep","time"};
     double *yt = 0;
@@ -241,7 +281,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     fixdimnames(Y,dimnm,3);
 
     for (i = 0, yt = REAL(Y); i < n; i++, yt++) *yt = R_NaReal;
-
   }
 
   break;

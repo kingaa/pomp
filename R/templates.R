@@ -27,7 +27,7 @@ workhorse_templates <- list(
     slotname="rmeasure",
     Cname="__pomp_rmeasure",
     proto=quote(rmeasure(...)),
-    header="\nvoid __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
+    header="\nvoid __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)\n{\n",
     footer="\n}\n\n",
     vars=list(
       params=list(
@@ -52,7 +52,7 @@ workhorse_templates <- list(
     slotname="dmeasure",
     Cname= "__pomp_dmeasure",
     proto=quote(dmeasure(log,...)),
-    header="\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
+    header="\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)\n{\n",
     footer="\n}\n\n",
     vars=list(
       params=list(
@@ -235,7 +235,7 @@ workhorse_templates <- list(
   dprior=list(
     slotname="dprior",
     Cname="__pomp_dprior",
-    proto=quote(dprior(params,log,...)),
+    proto=quote(dprior(log,...)),
     header="\nvoid __pomp_dprior (double *__lik, const double *__p, int give_log, const int *__parindex)\n{\n",
     footer="\n}\n\n",
     vars=list(

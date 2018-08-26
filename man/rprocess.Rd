@@ -5,13 +5,16 @@
 \alias{rprocess}
 \alias{rprocess,pomp-method}
 \alias{rprocess-pomp}
+\alias{rprocess,ANY-method}
+\alias{rprocess,missing-method}
 \title{rprocess}
 \usage{
 \S4method{rprocess}{pomp}(object, xstart, times, params, offset = 0L,
   ...)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
+\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
+This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
 \item{xstart}{an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
 Columns of \code{xstart} correspond to states;

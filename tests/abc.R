@@ -23,7 +23,11 @@ sqrt(diag(covmat(pb))) -> scale.dat
 
 ou2 %>%
   abc(Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-    proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))) -> abc1
+    proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
+    dprior=function(alpha.1,alpha.2,...,log) {
+      ll <- sum(dnorm(x=c(alpha.1,alpha.2),mean=c(0.6,0),sd=4,log=TRUE))
+      if (log) ll else exp(ll)
+    }) -> abc1
 plot(abc1)
 plot(abc1,scatter=TRUE)
 
@@ -101,15 +105,15 @@ try(abc(ou2,Nabc=100,probes="plist[[1]]",scale=scale.dat[1],epsilon=1.7,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 try(abc(ou2,Nabc=100,probes=function(x,y)x+y,scale=scale.dat[1],epsilon=1.7,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-try(abc(abc1,dprior=function(params,log,...)stop("ouch!")))
-try(abc(abc1,dprior=function(params,log,...)Inf))
+try(abc(abc1,dprior=function(log,...)stop("ouch!")))
+try(abc(abc1,dprior=function(log,...)Inf))
 try(abc(abc1,probes=function(x)stop("piff!")))
 count <- 0
 delayed.failure <- function (x) {count <<- count+1; if (count>2) stop("paff!") else 1}
 try(abc(abc1,scale=1,probes=delayed.failure))
 try(abc(abc1,proposal=function(...)stop("urp!")))
 count <- 0
-delayed.failure <- function (params,log,...) {count <<- count+1; if (count>5) stop("no sir!") else 1}
+delayed.failure <- function (log,...) {count <<- count+1; if (count>5) stop("no sir!") else 1}
 try(abc(abc1,dprior=delayed.failure))
 count <- 0
 delayed.failure <- function (theta,...) {count <<- count+1; if (count>5) stop("'fraid not!") else theta}

@@ -5,12 +5,15 @@
 \alias{rprior}
 \alias{rprior,pomp-method}
 \alias{rprior-pomp}
+\alias{rprior,ANY-method}
+\alias{rprior,missing-method}
 \title{rprior}
 \usage{
 \S4method{rprior}{pomp}(object, params, ...)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
+\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
+This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.}

@@ -12,12 +12,12 @@ set.seed(1835425749L)
 
 po %>%
   pomp(
-    dprior=function(params,log,...) {
+    dprior=function(alpha.1,alpha.2,alpha.3,alpha.4,alpha.sd,...,log) {
       ll <- sum(
         dnorm(
-          x=params[c("alpha.1","alpha.2","alpha.3","alpha.4")],
+          x=c(alpha.1,alpha.2,alpha.3,alpha.4),
           mean=c(0.8,-0.5,0.3,0.9),
-          sd=params["alpha.sd"],
+          sd=alpha.sd,
           log=TRUE
         )
       )
