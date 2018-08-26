@@ -62,12 +62,12 @@ Error : in ‘dmeasure’: length of 'times' and 3rd dimension of 'x' do not agr
 > stopifnot(all.equal(dmeasure(po,x=x[,1,,drop=FALSE],y=y,times=t,params=theta),
 +                     dmeasure(po,x=x[,1,],y=y,times=t,params=theta)))
 > try(dmeasure(po,x=x,y=y[1,,drop=FALSE],times=t,params=theta))
-Error : in ‘dmeasure’: variable 'y2' not found among the observables
+Error : in ‘dmeasure’: variable 'y2' not found among the observables.
 > try(dmeasure(po,x=x[1,,,drop=FALSE],y=y,times=t,params=theta))
-Error : in ‘dmeasure’: variable 'x2' not found among the state variables
+Error : in ‘dmeasure’: variable 'x2' not found among the state variables.
 > k <- which(names(theta)=="tau")
 > try(dmeasure(po,x=x,y=y,times=t,params=theta[-k]))
-Error : in ‘dmeasure’: variable 'tau' not found among the parameters
+Error : in ‘dmeasure’: variable 'tau' not found among the parameters.
 > 
 > po %>% pomp(dmeasure=NULL) -> po1
 > stopifnot(sum(is.na(dmeasure(po1,x=x,y=y,times=t,params=theta)))==50)

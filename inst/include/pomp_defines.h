@@ -51,14 +51,14 @@ static R_INLINE SEXP makearray (int rank, int *dim) {
 static R_INLINE SEXP matchnames (SEXP x, SEXP names, const char *where) {
   int n = length(names);
   int *idx, k;
-  SEXP index, nm;
-  PROTECT(nm = AS_CHARACTER(names));
-  PROTECT(index = match(x,nm,0));
+  SEXP index;
+  PROTECT(names = AS_CHARACTER(names));
+  PROTECT(index = match(x,names,0));
   idx = INTEGER(index);
   for (k = 0; k < n; k++) {
     if (idx[k]==0)
-      errorcall(R_NilValue,"variable '%s' not found among the %s",
-		CHAR(STRING_ELT(nm,k)),
+      errorcall(R_NilValue,"variable '%s' not found among the %s.",
+		CHAR(STRING_ELT(names,k)),
 		where);
     idx[k] -= 1;
   }

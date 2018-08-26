@@ -43,10 +43,10 @@ newly created object(s):
 Error : in ‘parameter_trans’: if one of ‘toEst’, ‘fromEst’ is supplied, then so must the other be.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("K = exp(T_K);"),
 +   to=Csnippet("T_K = log(K);")),paramnames="K"),theta3))
-Error : in ‘partrans’: variable 'K' not found among the parameters
+Error : in ‘partrans’: variable 'K' not found among the parameters.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(log="K"),paramnames="K"),
 +   theta3))
-Error : in ‘partrans’: variable 'K' not found among the parameters
+Error : in ‘partrans’: variable 'K' not found among the parameters.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=function(params,...)unname(params),
 +   to=function(params,...)unname(params))),theta3))
 Error : in ‘partrans’: user transformation functions must return a named numeric vector

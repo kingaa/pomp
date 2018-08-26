@@ -23,13 +23,13 @@ po %>%
       )
       if (log) ll else exp(ll)
     },
-    rprior=function(params,...) {
-      params[c("alpha.1","alpha.2","alpha.3","alpha.4")] <- rnorm(
-        n=4,
-        mean=c(0.8,-0.5,0.3,0.9),
-        sd=params["alpha.sd"]
+    rprior=function(alpha.1,alpha.2,alpha.3,alpha.4,alpha.sd,...) {
+      c(
+        alpha.1=rnorm(n=1,mean=0.8,sd=alpha.sd),
+        alpha.2=rnorm(n=1,mean=-0.5,sd=alpha.sd),
+        alpha.3=rnorm(n=1,mean=0.3,sd=alpha.sd),
+        alpha.4=rnorm(n=1,mean=0.9,sd=alpha.sd)
       )
-      params
     }
   ) -> po
 

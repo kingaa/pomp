@@ -88,7 +88,7 @@ Error : in ‘rinit’: user 'rinit' returns vectors of non-uniform length
 newly created object(s):
  sir 
 > try(sir %>% simulate(rinit=NULL))
-Error : in ‘simulate’: variable 'cases' not found among the state variables
+Error : in ‘simulate’: variable 'cases' not found among the state variables.
 > sir %>%
 +   pomp(rinit=function(seas1,...)
 +     c(S=seas1)) %>%

@@ -218,14 +218,10 @@ workhorse_templates <- list(
   rprior=list(
     slotname="rprior",
     Cname="__pomp_rprior",
-    proto=quote(rprior(params,...)),
+    proto=quote(rprior(...)),
     header="\nvoid __pomp_rprior (double *__p, const int *__parindex)\n{\n",
     footer="\n}\n\n",
     vars=list(
-      covars=list(
-        names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
-      ),
       params=list(
         names=quote(paramnames),
         cref="__p[__parindex[{%v%}]]"
@@ -239,10 +235,6 @@ workhorse_templates <- list(
     header="\nvoid __pomp_dprior (double *__lik, const double *__p, int give_log, const int *__parindex)\n{\n",
     footer="\n}\n\n",
     vars=list(
-      covars=list(
-        names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
-      ),
       params=list(
         names=quote(paramnames),
         cref="__p[__parindex[{%v%}]]"

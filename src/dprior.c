@@ -8,7 +8,8 @@
 
 #include "pomp_internal.h"
 
-static R_INLINE SEXP dprior_args (SEXP names, SEXP log, SEXP args) {
+static R_INLINE SEXP add_args (SEXP names, SEXP log, SEXP args)
+{
 
   int nprotect = 0;
   SEXP var;
@@ -28,7 +29,8 @@ static R_INLINE SEXP dprior_args (SEXP names, SEXP log, SEXP args) {
 
 }
 
-static R_INLINE SEXP dprior_call (SEXP fn, SEXP args, double *p, int n) {
+static R_INLINE SEXP eval_call (SEXP fn, SEXP args, double *p, int n)
+{
 
   SEXP var = args, ans;
   int v;
@@ -75,11 +77,11 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
     double *ps, *pt;
     int j;
 
-    PROTECT(args = dprior_args(Pnames,log,args)); nprotect++;
+    PROTECT(args = add_args(Pnames,log,args)); nprotect++;
 
     for (j = 0, ps = REAL(params), pt = REAL(F); j < nreps; j++, ps += npars, pt++) {
 
-      PROTECT(ans = dprior_call(fn,args,ps,npars));
+      PROTECT(ans = eval_call(fn,args,ps,npars));
       *pt = *(REAL(AS_NUMERIC(ans)));
       UNPROTECT(1);
 

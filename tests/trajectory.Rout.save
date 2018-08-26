@@ -123,13 +123,13 @@ Error : in ‘trajectory’: ‘times’ must be an increasing numeric sequence.
 > try(trajectory(fhn,t0=10))
 Error : in ‘trajectory’: the zero-time ‘t0’ must occur no later than the first observation.
 > try(trajectory(fhn,params=c(3,2,1)))
-Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters
+Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters.
 > try(trajectory(fhn,params=matrix(c(3,2,1,5),2,2)))
-Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters
+Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters.
 > try(trajectory(fhn,params=NULL))
-Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters
+Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters.
 > try(trajectory(fhn,params=list(a=3,b=2)))
-Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters
+Error : in ‘trajectory’: in ‘rinit’: variable 'c' not found among the parameters.
 > try(trajectory(fhn,maxsteps=-1))
 DLSODA-  MXSTEP (=I1) .lt. 0  
 In above message, I1 = -1

@@ -8,16 +8,60 @@
 
 #include "pomp_internal.h"
 
+static R_INLINE SEXP add_args (SEXP args, SEXP names)
+{
+
+  int nprotect = 0;
+  SEXP var;
+  int v;
+
+  for (v = LENGTH(names)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(names,v))));
+  }
+
+  UNPROTECT(nprotect);
+  return args;
+
+}
+
+static R_INLINE SEXP eval_call (SEXP fn, SEXP args, double *p, int n)
+{
+
+  SEXP var = args, ans;
+  int v;
+
+  for (v = 0; v < n; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
+
+  PROTECT(ans = eval(LCONS(fn,args),CLOENV(fn)));
+
+  UNPROTECT(1);
+  return ans;
+
+}
+
+static R_INLINE SEXP ret_array (SEXP params)
+{
+  const char *dimnm[2] = {"variable", "rep"};
+  SEXP P;
+
+  PROTECT(P = duplicate(params));
+  fixdimnames(P,dimnm,2);
+
+  UNPROTECT(1);
+  return P;
+
+}
+
 SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 {
   int nprotect = 0;
   pompfunmode mode = undef;
   int npars, nreps;
-  SEXP Pnames, fn, fcall;
+  SEXP Pnames, pompfun, fn, args;
   SEXP P = R_NilValue;
-  SEXP pompfun;
   int *dim;
-  const char *dimnms[2] = {"variable","rep"};
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
@@ -30,89 +74,56 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
 
   // extract 'userdata' as pairlist
-  PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(P = ret_array(params)); nprotect++;
 
   switch (mode) {
-  case Rfun:			// use R function
 
-  {
-    SEXP pvec, rho, ans, nm;
-    int first = 1;
-    int use_names = 0;
-    double *pa, *pp, *ps, *pt;
-    int *posn;
+  case Rfun: {
+
+    SEXP ans, nm;
+    double *pa, *ps = REAL(params), *pt = REAL(P);
+    int *posn = 0;
     int i, j;
 
-    // to store results
-    PROTECT(P = makearray(2,dim)); nprotect++;
-    setrownames(P,Pnames,2);
-    fixdimnames(P,dimnms,2);
-
-    // temporary storage
-    PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
-    SET_NAMES(pvec,Pnames);
-
     // set up the function call
-    PROTECT(fcall = LCONS(pvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("params"));
-    PROTECT(fcall = LCONS(fn,fcall)); nprotect++;
+    PROTECT(args = add_args(args,Pnames)); nprotect++;
 
-    // get the function's environment
-    PROTECT(rho = (CLOENV(fn))); nprotect++;
+    for (j = 0; j < nreps; j++, ps += npars, pt += npars) {
 
-    pp = REAL(pvec);
+      if (j == 0) {
 
-    for (j = 0, ps = REAL(params), pt = REAL(P); j < nreps; j++, ps += npars, pt += npars) {
+        PROTECT(ans = eval_call(fn,args,ps,npars)); nprotect++;
 
-      for (i = 0; i < npars; i++) pp[i] = ps[i];
-
-      if (first) {
-        // evaluate the call
-        PROTECT(ans = eval(fcall,rho)); nprotect++;
-        if (LENGTH(ans) != npars) {
-          errorcall(R_NilValue,"user 'rprior' returns a vector of %d parameters but %d are expected",LENGTH(ans),npars);
-        }
-
-        // get name information to fix potential alignment problems
         PROTECT(nm = GET_NAMES(ans)); nprotect++;
-        use_names = !isNull(nm);
-        if (use_names) {   // match names against names from params slot
-          posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters"))); nprotect++;
-        } else {
-          posn = 0;
-        }
+        if (isNull(nm))
+          errorcall(R_NilValue,"'rprior' must return a named numeric vector.");
+        posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters"))); nprotect++;
 
         pa = REAL(AS_NUMERIC(ans));
 
-        first = 0;
+        for (i = 0; i < LENGTH(ans); i++) pt[posn[i]] = pa[i];
 
       } else {
 
-        pa = REAL(AS_NUMERIC(PROTECT(eval(fcall,rho))));
+        PROTECT(ans = eval_call(fn,args,ps,npars));
+        pa = REAL(AS_NUMERIC(ans));
+        for (i = 0; i < LENGTH(ans); i++) pt[posn[i]] = pa[i];
         UNPROTECT(1);
 
       }
-
-      if (use_names) {
-        for (i = 0; i < npars; i++) pt[posn[i]] = pa[i];
-      } else {
-        for (i = 0; i < npars; i++) pt[i] = pa[i];
-      }
     }
+
   }
 
     break;
 
-  case native:			// use native routine
+  case native: {
 
-  {
     double *ps;
     int *pidx = 0;
     pomp_rprior *ff = NULL;
     int j;
-
-    PROTECT(P = duplicate(params)); nprotect++;
-    fixdimnames(P,dimnms,2);
 
     // construct parameter indices
     pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
@@ -122,7 +133,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
     R_CheckUserInterrupt();	// check for user interrupt
 
-    set_pomp_userdata(fcall);
+    set_pomp_userdata(args);
     GetRNGstate();
 
     // loop over replicates
@@ -135,10 +146,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
     break;
 
-  default:
-
-    PROTECT(P = duplicate(params)); nprotect++;
-    fixdimnames(P,dimnms,2);
+  default: // just duplicate
 
     break;
 
