@@ -17,22 +17,21 @@
 // normal measurement model density
 void _gompertz_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
 				int *obsindex, int *stateindex, int *parindex, int *covindex,
-				int ncovars, double *covars, double t) {
+				double *covars, double t) {
   *lik = dlnorm(Y,log(X),TAU,give_log);
 }
 
 // normal measurement model simulator
-void _gompertz_normal_rmeasure (double *y, double *x, double *p, 
+void _gompertz_normal_rmeasure (double *y, double *x, double *p,
 				int *obsindex, int *stateindex, int *parindex, int *covindex,
-				int ncovars, double *covars, double t) {
+			double *covars, double t) {
   Y = rlnorm(log(X),TAU);
 }
 
 // stochastic Gompertz model with log-normal process noise
-void _gompertz_simulator (double *x, const double *p, 
+void _gompertz_simulator (double *x, const double *p,
 			  const int *stateindex, const int *parindex, const int *covindex,
-			  int covdim, const double *covar, 
-			  double t, double dt)
+			  int covdim, const double *covar, double t, double dt)
 {
   double S = exp(-R*dt);
   double eps = (SIGMA > 0.0) ? exp(rnorm(0,SIGMA)) : 1.0;
@@ -40,9 +39,9 @@ void _gompertz_simulator (double *x, const double *p,
 }
 
 // the deterministic skeleton
-void _gompertz_skeleton (double *f, double *x, const double *p, 
+void _gompertz_skeleton (double *f, double *x, const double *p,
 			 const int *stateindex, const int *parindex, const int *covindex,
-			 int covdim, const double *covar, double t) 
+			 int covdim, const double *covar, double t)
 {
   double dt = 1.0;
   double S = exp(-R*dt);

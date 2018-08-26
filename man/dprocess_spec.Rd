@@ -26,11 +26,9 @@ In the context of such a C snippet, the parameters, and covariates will be defin
 The state variables at time \code{t_1} will have their usual name (see \code{statenames}) with a \dQuote{\code{_1}} appended.
 Likewise, the state variables at time \code{t_2} will have a \dQuote{\code{_2}} appended.
 
-If \code{f} is given as an \R function, it should have prototype
-\preformatted{
-    f(x1, x2, t1, t2, params, ...).
-}
-When \code{f} is called, \code{x1} will be a named numeric vector containing the value of the state process at time \code{t1}, \code{x2} will be a named numeric vector containing the value of the state process at time \code{t2}, and \code{params} will be a named numeric vector containing parameters.
+If \code{f} is given as an \R function, it should take as arguments any or all of the state variables, parameter, covariates, and time.
+The state-variable and time arguments will have suffices \dQuote{\code{_1}} and \dQuote{\code{_2}} appended.
+Thus for example, if \code{var} is a state variable, when \code{f} is called, \code{var_1} will value of state variable \code{var} at time \code{t_1}, \code{var_2} will have the value of \code{var} at time \code{t_2}.
 \code{f} should return the \emph{log} likelihood of a transition from \code{x1} at time \code{t1} to \code{x2} at time \code{t2},
 assuming that no intervening transitions have occurred.
 

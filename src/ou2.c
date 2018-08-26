@@ -61,8 +61,7 @@ static double dens_ou2 (double x1, double x2, double z1, double z2,
 // onestep simulator for use in 'discrete.time.sim' plug-in
 void _ou2_step (double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
-  int ncovars, const double *covars,
-  double t, double dt)
+  int ncov, const double *covars, double t, double dt)
 {
   sim_ou2(&x[X1],&x[X2],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3);
 }
@@ -72,11 +71,12 @@ void _ou2_step (double *x, const double *p,
 void _ou2_pdf (double *f,
   double *x, double *z, double t1, double t2, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
-  int ncovars, const double *covars)
+  const double *covars)
 {
   if (t2-t1 != 1)
     errorcall(R_NilValue,"ou2_pdf error: transitions must be consecutive");
-  f[0] = dens_ou2(x[X1],x[X2],z[X1],z[X2],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3,1);
+  f[0] = dens_ou2(x[X1],x[X2],z[X1],z[X2],ALPHA1,ALPHA2,ALPHA3,ALPHA4,
+    SIGMA1,SIGMA2,SIGMA3,1);
 }
 
 void _ou2_skel (double *f, double *x, double *p,
@@ -90,7 +90,7 @@ void _ou2_skel (double *f, double *x, double *p,
 // bivariate normal measurement error density
 void _ou2_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
   int *obsindex, int *stateindex, int *parindex, int *covindex,
-  int covdim, double *covar, double t)
+  double *covar, double t)
 {
   double sd = fabs(TAU);
   double f = 0.0;
@@ -102,8 +102,7 @@ void _ou2_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
 // bivariate normal measurement error simulator
 void _ou2_rmeasure (double *y, double *x, double *p,
   int *obsindex, int *stateindex, int *parindex, int *covindex,
-  int ncovar, double *covar,
-  double t)
+  double *covar, double t)
 {
   double sd = fabs(TAU);
   Y1 = rnorm(x[X1],sd);

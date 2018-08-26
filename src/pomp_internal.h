@@ -16,6 +16,7 @@ typedef enum {dflt=0,onestep=1,discrete=2,euler=3,gill=4} rprocmode;
 // Make with, e.g.,
 // cproto -I `R RHOME`/include -e *.c | perl -pe 's/\/\*(.+?)\*\//\n\/\/$1/g'
 
+
 // bspline.c 
 extern SEXP bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP deriv);
 extern SEXP periodic_bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP period, SEXP deriv);
@@ -30,7 +31,6 @@ extern SEXP do_dprior(SEXP object, SEXP params, SEXP log, SEXP gnsi);
 
 // dprocess.c 
 extern SEXP do_dprocess(SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi);
-extern SEXP onestep_density(SEXP func, SEXP x, SEXP times, SEXP params, SEXP covar, SEXP log, SEXP args, SEXP gnsi);
 
 // euler.c 
 extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, double deltat, rprocmode method, SEXP zeronames, SEXP covar, SEXP args, SEXP gnsi);
@@ -43,8 +43,8 @@ extern SEXP D_Euler_Multinom(SEXP x, SEXP size, SEXP rate, SEXP Rf_dt, SEXP log)
 extern SEXP R_GammaWN(SEXP n, SEXP sigma, SEXP deltat);
 
 // gompertz.c 
-extern void _gompertz_normal_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
-extern void _gompertz_normal_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
+extern void _gompertz_normal_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
+extern void _gompertz_normal_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_simulator(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t, double Rf_dt);
 extern void _gompertz_skeleton(double *f, double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t);
 
@@ -61,11 +61,11 @@ extern void table_lookup(lookup_table_t *tab, double x, double *y);
 extern SEXP randwalk_perturbation(SEXP params, SEXP rw_sd);
 
 // ou2.c 
-extern void _ou2_step(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int ncovars, const double *covars, double t, double Rf_dt);
-extern void _ou2_pdf(double *f, double *x, double *z, double t1, double t2, const double *p, const int *stateindex, const int *parindex, const int *covindex, int ncovars, const double *covars);
-extern void _ou2_skel(double *f, double *x, double *p, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
-extern void _ou2_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, int covdim, double *covar, double t);
-extern void _ou2_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovar, double *covar, double t);
+extern void _ou2_step(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int ncov, const double *covars, double t, double Rf_dt);
+extern void _ou2_pdf(double *f, double *x, double *z, double t1, double t2, const double *p, const int *stateindex, const int *parindex, const int *covindex, const double *covars);
+extern void _ou2_skel(double *f, double *x, double *p, int *stateindex, int *parindex, int *covindex, int ncov, double *covars, double t);
+extern void _ou2_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
+extern void _ou2_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
 
 // partrans.c 
 extern SEXP do_partrans(SEXP object, SEXP params, SEXP dir, SEXP gnsi);

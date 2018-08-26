@@ -353,7 +353,7 @@ typedef void pomp_onestep_sim(double *x, const double *p,
 typedef void pomp_onestep_pdf(double *loglik,
 			      const double *x1, const double *x2, double t1, double t2, const double *p,
 			      const int *stateindex, const int *parindex, const int *covindex,
-			      int ncovars, const double *covars);
+			      const double *covars);
 // Description:
 //  on input:
 // x1         = pointer to state vector at time t1
@@ -367,7 +367,6 @@ typedef void pomp_onestep_pdf(double *loglik,
 //                the 'paramnames' argument of 'euler.density'
 // covindex   = pointer to vector of integers indexing the parameters in 'covar'' in the order specified by
 //                the 'covarnames' argument of 'euler.density'
-// ncovars    = number of covariates
 // covars     = pointer to a vector containing the values of the covariates at time t, as interpolated
 //                from the covariate table supplied to 'euler.density'
 //  on output:

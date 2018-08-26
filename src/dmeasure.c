@@ -96,7 +96,6 @@ static R_INLINE SEXP dmeas_array (int nreps, int ntimes) {
   return F;
 }
 
-
 SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi)
 {
   int nprotect = 0;

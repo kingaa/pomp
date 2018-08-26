@@ -122,8 +122,8 @@ workhorse_templates <- list(
   dprocess=list(
     slotname="dprocess",
     Cname="__pomp_dproc",
-    proto=quote(dprocess(x1,x2,t1,t2,params,...)),
-    header="\nvoid __pomp_dproc (double *__loglik, const double *__x1, const double *__x2, double t_1, double t_2, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars)\n{\n",
+    proto=quote(dprocess(...)),
+    header="\nvoid __pomp_dproc (double *__loglik, const double *__x1, const double *__x2, double t_1, double t_2, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
     footer="\n}\n\n",
     vars=list(
       params=list(
