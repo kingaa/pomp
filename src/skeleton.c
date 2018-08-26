@@ -9,82 +9,173 @@
 
 #include "pomp_internal.h"
 
-void eval_skeleton_native (double *f,
-  double *time, double *x, double *p,
-  int nvars, int npars, int ncovars, int ntimes,
-  int nrepx, int nrepp, int nreps,
-  int *sidx, int *pidx, int *cidx,
-  lookup_table_t *covar_table,
-  pomp_skeleton *fun, SEXP args)
-{
-  double *xp, *pp;
-  double *covars = NULL;
-  int j, k;
-  set_pomp_userdata(args);
-  if (ncovars > 0) covars = (double *) Calloc(ncovars, double);
-  for (k = 0; k < ntimes; k++, time++) { // loop over times
-    R_CheckUserInterrupt();	// check for user interrupt
-    // interpolate the covar functions for the covariates
-    table_lookup(covar_table,*time,covars);
-    for (j = 0; j < nreps; j++, f += nvars) { // loop over replicates
-      xp = &x[nvars*((j%nrepx)+nrepx*k)];
-      pp = &p[npars*(j%nrepp)];
-      (*fun)(f,xp,pp,sidx,pidx,cidx,ncovars,covars,*time);
-    }
-  }
-  if (ncovars > 0) Free(covars);
-  unset_pomp_userdata();
-}
-
-void eval_skeleton_R (double *f,
-  double *time, double *x, double *p,
-  SEXP fcall, SEXP rho, SEXP Snames,
-  double *tp, double *xp, double *pp, double *cp,
-  int nvars, int npars, int ntimes,
-  int nrepx, int nrepp, int nreps,
-  lookup_table_t *covar_table)
+SEXP add_skel_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 {
   int nprotect = 0;
-  int first = 1;
-  int use_names;
+  SEXP var;
+  int v;
+
+  // Covariates
+  for (v = LENGTH(Cnames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Cnames,v))));
+  }
+
+  // Parameters
+  for (v = LENGTH(Pnames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Pnames,v))));
+  }
+
+  // Latent state variables
+  for (v = LENGTH(Snames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Snames,v))));
+  }
+
+  // Time
+  PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+  PROTECT(args = LCONS(var,args)); nprotect++;
+  SET_TAG(args,install("t"));
+
+  UNPROTECT(nprotect);
+  return args;
+
+}
+
+static R_INLINE SEXP eval_call (
+    SEXP fn, SEXP args,
+    double *t,
+    double *x, int nvar,
+    double *p, int npar,
+    double *c, int ncov)
+{
+
+  SEXP var = args, ans;
+  int v;
+
+  *(REAL(CAR(var))) = *t; var = CDR(var);
+  for (v = 0; v < nvar; v++, x++, var=CDR(var)) *(REAL(CAR(var))) = *x;
+  for (v = 0; v < npar; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
+  for (v = 0; v < ncov; v++, c++, var=CDR(var)) *(REAL(CAR(var))) = *c;
+
+  PROTECT(ans = eval(LCONS(fn,args),CLOENV(fn)));
+
+  UNPROTECT(1);
+  return ans;
+
+}
+
+static R_INLINE SEXP ret_array (int nvars, int nreps, int ntimes, SEXP Snames)
+{
+  SEXP X;
+  int dim[3] = {nvars, nreps, ntimes};
+  const char *dimnms[3] = {"variable","rep","time"};
+  PROTECT(X = makearray(3,dim));
+  setrownames(X,Snames,3);
+  fixdimnames(X,dimnms,3);
+  UNPROTECT(1);
+  return X;
+}
+
+void eval_skeleton_R (
+    double *f, double *time, double *x, double *p,
+    SEXP fn, SEXP args, SEXP Snames,
+    int nvars, int npars, int ncovars, int ntimes,
+    int nrepx, int nrepp, int nreps,
+    lookup_table_t *covar_table)
+{
+  int nprotect = 0;
   SEXP ans, nm;
   double *fs;
-  int *posn;
+  int *posn = 0;
+  double cov[ncovars];
   int i, j, k;
 
-  for (k = 0; k < ntimes; k++, time++) { // loop over times
-    R_CheckUserInterrupt();	// check for user interrupt
-    *tp = *time;		// copy the time
+  for (k = 0; k < ntimes; k++, time++) {
+
+    R_CheckUserInterrupt();
+
     // interpolate the covar functions for the covariates
-    table_lookup(covar_table,*time,cp);
-    for (j = 0; j < nreps; j++, f += nvars) { // loop over replicates
-      memcpy(xp,&x[nvars*((j%nrepx)+nrepx*k)],nvars*sizeof(double));
-      memcpy(pp,&p[npars*(j%nrepp)],npars*sizeof(double));
-      if (first) {
-        PROTECT(ans = eval(fcall,rho)); nprotect++;
+    table_lookup(covar_table,*time,cov);
+
+    for (j = 0; j < nreps; j++, f += nvars) {
+
+      if (k == 0 && j == 0) {
+
+        PROTECT(ans = eval_call(fn,args,time,
+          x+nvars*((j%nrepx)+nrepx*k),nvars,
+          p+npars*(j%nrepp),npars,
+          cov,ncovars)); nprotect++;
+
         if (LENGTH(ans)!=nvars)
-          errorcall(R_NilValue,"user 'skeleton' returns a vector of %d state variables but %d are expected",LENGTH(ans),nvars);
-        // get name information to fix possible alignment problems
+          errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
+
+        // get name information to fix alignment problems
         PROTECT(nm = GET_NAMES(ans)); nprotect++;
-        use_names = !isNull(nm);
-        if (use_names) {
-          posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
-        } else {
-          posn = 0;
-        }
+        if (isNull(nm))
+          errorcall(R_NilValue,"'skeleton' must return a named numeric vector.");
+        posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
         fs = REAL(AS_NUMERIC(ans));
-        first = 0;
-      } else {
-        fs = REAL(AS_NUMERIC(PROTECT(eval(fcall,rho))));
-        UNPROTECT(1);
-      }
-      if (use_names)
+
         for (i = 0; i < nvars; i++) f[posn[i]] = fs[i];
-      else
-        for (i = 0; i < nvars; i++) f[i] = fs[i];
+
+      } else {
+
+        PROTECT(ans = eval_call(fn,args,time,
+          x+nvars*((j%nrepx)+nrepx*k),nvars,
+          p+npars*(j%nrepp),npars,
+          cov,ncovars));
+
+        fs = REAL(AS_NUMERIC(ans));
+
+        for (i = 0; i < nvars; i++) f[posn[i]] = fs[i];
+
+        UNPROTECT(1);
+
+      }
+
     }
   }
+
   UNPROTECT(nprotect);
+
+}
+
+void eval_skeleton_native (
+    double *f, double *time, double *x, double *p,
+    int nvars, int npars, int ncovars, int ntimes,
+    int nrepx, int nrepp, int nreps,
+    int *sidx, int *pidx, int *cidx,
+    lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args)
+{
+  double *xp, *pp;
+  double cov[ncovars];
+  int j, k;
+
+  set_pomp_userdata(args);
+
+  for (k = 0; k < ntimes; k++, time++) {
+
+    R_CheckUserInterrupt();
+
+    table_lookup(covar_table,*time,cov);
+
+    for (j = 0; j < nreps; j++, f += nvars) {
+
+      xp = &x[nvars*((j%nrepx)+nrepx*k)];
+      pp = &p[npars*(j%nrepp)];
+
+      (*fun)(f,xp,pp,sidx,pidx,cidx,cov,*time);
+
+    }
+  }
+
+  unset_pomp_userdata();
+
 }
 
 SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
@@ -130,74 +221,47 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
-  // set up the array to hold results
-  {
-    int dim[3] = {nvars, nreps, ntimes};
-    const char *dimnms[3] = {"variable","rep","time"};
-    PROTECT(F = makearray(3,dim)); nprotect++;
-    setrownames(F,Snames,3);
-    fixdimnames(F,dimnms,3);
-  }
+  PROTECT(F = ret_array(nvars,nreps,ntimes,Snames)); nprotect++;
 
   switch (mode) {
 
-  case Rfun: 			// R skeleton
-  {
-    SEXP tvec, xvec, pvec, cvec, fcall, rho;
+  case Rfun: {
 
-    PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
-    PROTECT(xvec = NEW_NUMERIC(nvars)); nprotect++;
-    PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
-    PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
-    SET_NAMES(xvec,Snames);
-    SET_NAMES(pvec,Pnames);
-    SET_NAMES(cvec,Cnames);
-
-    // set up the function call
-    PROTECT(fcall = LCONS(cvec,args)); nprotect++;
-    SET_TAG(fcall,install("covars"));
-    PROTECT(fcall = LCONS(pvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("params"));
-    PROTECT(fcall = LCONS(tvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("t"));
-    PROTECT(fcall = LCONS(xvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("x"));
-    PROTECT(fcall = LCONS(fn,fcall)); nprotect++;
-    // environment of the user-defined function
-    PROTECT(rho = (CLOENV(fn))); nprotect++;
+    PROTECT(args = add_skel_args(args,Snames,Pnames,Cnames)); nprotect++;
 
     eval_skeleton_R(REAL(F),REAL(t),REAL(x),REAL(params),
-      fcall,rho,Snames,
-      REAL(tvec),REAL(xvec),REAL(pvec),REAL(cvec),
-      nvars,npars,ntimes,nrepx,nrepp,nreps,&covariate_table);
+      fn,args,Snames,
+      nvars,npars,ncovars,ntimes,nrepx,nrepp,nreps,
+      &covariate_table);
+
   }
 
     break;
 
-  case native:			// native skeleton
-  {
+  case native: {
     int *sidx, *pidx, *cidx;
     pomp_skeleton *ff = NULL;
-    // construct state, parameter, covariate, observable indices
+
     sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
     pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
     cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
-    // extract the address of the user function
+
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
+
     eval_skeleton_native(
       REAL(F),REAL(t),REAL(x),REAL(params),
       nvars,npars,ncovars,ntimes,nrepx,nrepp,nreps,
-      sidx,pidx,cidx,&covariate_table,ff,args
-    );
+      sidx,pidx,cidx,&covariate_table,ff,args);
+
   }
 
     break;
 
-  default:
-  {
-    double *fp = REAL(F);
+  default: {
+
+    double *ft = REAL(F);
     int i, n = nvars*nreps*ntimes;
-    for (i = 0; i < n; i++, fp++) *fp = R_NaReal;
+    for (i = 0; i < n; i++, ft++) *ft = R_NaReal;
   }
 
   break;

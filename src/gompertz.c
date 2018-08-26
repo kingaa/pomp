@@ -41,7 +41,7 @@ void _gompertz_simulator (double *x, const double *p,
 // the deterministic skeleton
 void _gompertz_skeleton (double *f, double *x, const double *p,
 			 const int *stateindex, const int *parindex, const int *covindex,
-			 int covdim, const double *covar, double t)
+			 const double *covar, double t)
 {
   double dt = 1.0;
   double S = exp(-R*dt);

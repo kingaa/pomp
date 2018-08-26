@@ -16,7 +16,6 @@ typedef enum {dflt=0,onestep=1,discrete=2,euler=3,gill=4} rprocmode;
 // Make with, e.g.,
 // cproto -I `R RHOME`/include -e *.c | perl -pe 's/\/\*(.+?)\*\//\n\/\/$1/g'
 
-
 // bspline.c 
 extern SEXP bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP deriv);
 extern SEXP periodic_bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP period, SEXP deriv);
@@ -46,7 +45,7 @@ extern SEXP R_GammaWN(SEXP n, SEXP sigma, SEXP deltat);
 extern void _gompertz_normal_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_normal_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_simulator(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t, double Rf_dt);
-extern void _gompertz_skeleton(double *f, double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t);
+extern void _gompertz_skeleton(double *f, double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, const double *covar, double t);
 
 // init.c 
 extern void R_init_pomp(DllInfo *info);
@@ -63,7 +62,7 @@ extern SEXP randwalk_perturbation(SEXP params, SEXP rw_sd);
 // ou2.c 
 extern void _ou2_step(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int ncov, const double *covars, double t, double Rf_dt);
 extern void _ou2_pdf(double *f, double *x, double *z, double t1, double t2, const double *p, const int *stateindex, const int *parindex, const int *covindex, const double *covars);
-extern void _ou2_skel(double *f, double *x, double *p, int *stateindex, int *parindex, int *covindex, int ncov, double *covars, double t);
+extern void _ou2_skel(double *f, double *x, double *p, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _ou2_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
 extern void _ou2_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
 
@@ -117,8 +116,9 @@ extern SEXP do_rprocess(SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP 
 extern SEXP do_simulate(SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi);
 
 // skeleton.c 
+extern SEXP add_skel_args(SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames);
+extern void eval_skeleton_R(double *f, double *time, double *x, double *p, SEXP fn, SEXP args, SEXP Snames, int nvars, int npars, int ncovars, int ntimes, int nrepx, int nrepp, int nreps, lookup_table_t *covar_table);
 extern void eval_skeleton_native(double *f, double *time, double *x, double *p, int nvars, int npars, int ncovars, int ntimes, int nrepx, int nrepp, int nreps, int *sidx, int *pidx, int *cidx, lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args);
-extern void eval_skeleton_R(double *f, double *time, double *x, double *p, SEXP fcall, SEXP rho, SEXP Snames, double *tp, double *xp, double *pp, double *cp, int nvars, int npars, int ntimes, int nrepx, int nrepp, int nreps, lookup_table_t *covar_table);
 extern SEXP do_skeleton(SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi);
 
 // sobolseq.c 

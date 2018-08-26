@@ -151,8 +151,8 @@ workhorse_templates <- list(
   skeleton=list(
     slotname="skeleton",
     Cname="__pomp_skelfn",
-    proto=quote(skeleton(x,t,params,...)),
-    header="\nvoid __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
+    proto=quote(skeleton(...)),
+    header="\nvoid __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)\n{\n",
     footer="\n}\n\n",
     vars=list(
       params=list(

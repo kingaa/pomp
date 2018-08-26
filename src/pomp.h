@@ -375,7 +375,7 @@ typedef void pomp_onestep_pdf(double *loglik,
 // PROTOTYPE FOR DETERMINISTIC SKELETON EVALUATION
 typedef void pomp_skeleton (double *f, const double *x, const double *p,
 			    const int *stateindex, const int *parindex, const int *covindex,
-			    int ncovars, const double *covars, double t);
+			    const double *covars, double t);
 
 // Description:
 //  on input:
@@ -387,7 +387,6 @@ typedef void pomp_skeleton (double *f, const double *x, const double *p,
 //                the 'paramnames' slot
 // covindex   = pointer to vector of integers indexing the parameters in 'covar'' in the order specified by
 //                the 'covarnames' slot
-// ncovars    = number of covariates
 // covars     = pointer to a vector containing the values of the covariates at time t, as interpolated
 //                from the covariate table supplied to 'pomp.skeleton'
 // t          = time at the beginning of the Euler step

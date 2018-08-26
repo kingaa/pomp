@@ -109,9 +109,8 @@ Error : bad option for ‘rinit’ argument
 +       dmeasure=function(log,...)1,
 +       covar=covariate_table(a=1:20,b=1:20,times="a")) %>% class() %>%
 +     equals("pomp"))
-Warning messages:
-1: in ‘pomp’: a covariate table has been given, yet the ‘skeleton’ function does not have ‘covars’ as a formal argument. 
-2: in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
+Warning message:
+in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > 
 > try(po %>% pomp(times=3:1))
 Error : in ‘time<-’: ‘value’ must be an increasing sequence.

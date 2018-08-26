@@ -27,7 +27,7 @@ static void iterate_map_native (double *X, double *time, double *p,
     for (h = 0; h < nsteps; h++) {
       table_lookup(covar_table,t,covars);
       for (j = 0, Xs = X, xs = x, ps = p; j < nreps; j++, Xs += nvars, xs += nvars, ps += npars) {
-        (*ff)(Xs,xs,ps,sidx,pidx,cidx,ncovars,covars,t);
+        (*ff)(Xs,xs,ps,sidx,pidx,cidx,covars,t);
       }
       memcpy(x,X,nvars*nreps*sizeof(double));
       t += deltat;
@@ -234,10 +234,9 @@ static struct {
   } common;
   union {
     struct {
-      SEXP fcall;
-      SEXP rho;
+      SEXP fn;
+      SEXP args;
       SEXP Snames;
-      SEXP tvec, xvec, pvec, cvec;
     } R_fun;
     struct {
       SEXP args;
@@ -263,8 +262,7 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   int nvars, npars, nreps, ncovars;
 
   // extract user-defined skeleton function
-  PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("skeleton")),
-      install("skel.fn"))); nprotect++;
+  PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("skeleton")),install("skel.fn"))); nprotect++;
   PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -297,65 +295,45 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
 
   switch (COMMON(mode)) {
 
-  case Rfun:			// R function
-    // arguments of the R function
-    PROTECT(RFUN(tvec) = NEW_NUMERIC(1)); nprotect++;
-    PROTECT(RFUN(xvec) = NEW_NUMERIC(nvars)); nprotect++;
-    PROTECT(RFUN(pvec) = NEW_NUMERIC(npars)); nprotect++;
-    PROTECT(RFUN(cvec) = NEW_NUMERIC(ncovars)); nprotect++;
-    SET_NAMES(RFUN(xvec),Snames);
-    SET_NAMES(RFUN(pvec),Pnames);
-    SET_NAMES(RFUN(cvec),Cnames);
-    // set up the function call
-    PROTECT(RFUN(fcall) = LCONS(RFUN(cvec),args)); nprotect++;
-    SET_TAG(RFUN(fcall),install("covars"));
-    PROTECT(RFUN(fcall) = LCONS(RFUN(pvec),RFUN(fcall))); nprotect++;
-    SET_TAG(RFUN(fcall),install("params"));
-    PROTECT(RFUN(fcall) = LCONS(RFUN(tvec),RFUN(fcall))); nprotect++;
-    SET_TAG(RFUN(fcall),install("t"));
-    PROTECT(RFUN(fcall) = LCONS(RFUN(xvec),RFUN(fcall))); nprotect++;
-    SET_TAG(RFUN(fcall),install("x"));
-    PROTECT(RFUN(fcall) = LCONS(fn,RFUN(fcall))); nprotect++;
-    // environment of the user-defined function
-    PROTECT(RFUN(rho) = (CLOENV(fn))); nprotect++;
+  case Rfun: {
 
+    PROTECT(RFUN(fn) = fn); nprotect++;
+    PROTECT(RFUN(args) = add_skel_args(args,Snames,Pnames,Cnames)); nprotect++;
     PROTECT(RFUN(Snames) = Snames); nprotect++;
 
-    if (!isNull(RFUN(fcall))) R_ReleaseObject(RFUN(fcall));
-    if (!isNull(RFUN(rho))) R_ReleaseObject(RFUN(rho));
+    if (!isNull(RFUN(fn))) R_ReleaseObject(RFUN(fn));
+    if (!isNull(RFUN(args))) R_ReleaseObject(RFUN(args));
     if (!isNull(RFUN(Snames))) R_ReleaseObject(RFUN(Snames));
-    if (!isNull(RFUN(tvec))) R_ReleaseObject(RFUN(tvec));
-    if (!isNull(RFUN(xvec))) R_ReleaseObject(RFUN(xvec));
-    if (!isNull(RFUN(pvec))) R_ReleaseObject(RFUN(pvec));
-    if (!isNull(RFUN(cvec))) R_ReleaseObject(RFUN(cvec));
-    R_PreserveObject(RFUN(fcall));
-    R_PreserveObject(RFUN(rho));
+
+    R_PreserveObject(RFUN(fn));
+    R_PreserveObject(RFUN(args));
     R_PreserveObject(RFUN(Snames));
-    R_PreserveObject(RFUN(tvec));
-    R_PreserveObject(RFUN(xvec));
-    R_PreserveObject(RFUN(pvec));
-    R_PreserveObject(RFUN(cvec));
+
+  }
 
     break;
 
-  case native:			// native code
-    // set aside userdata
+  case native: case regNative: {
+
     NAT(args) = args;
-    // construct index vectors
+
     PROTECT(NAT(sindex) = name_index(Snames,pompfun,"statenames","state variables")); nprotect++;
     PROTECT(NAT(pindex) = name_index(Pnames,pompfun,"paramnames","parameters")); nprotect++;
     PROTECT(NAT(cindex) = name_index(Cnames,pompfun,"covarnames","covariates")); nprotect++;
-    // extract pointer to user-defined function
+
     *((void **) (&(NAT(fun)))) = R_ExternalPtrAddr(fn);
 
     if (!isNull(NAT(args))) R_ReleaseObject(NAT(args));
     if (!isNull(NAT(sindex))) R_ReleaseObject(NAT(sindex));
     if (!isNull(NAT(pindex))) R_ReleaseObject(NAT(pindex));
     if (!isNull(NAT(cindex))) R_ReleaseObject(NAT(cindex));
+
     R_PreserveObject(NAT(args));
     R_PreserveObject(NAT(sindex));
     R_PreserveObject(NAT(pindex));
     R_PreserveObject(NAT(cindex));
+
+  }
 
     break;
 
@@ -377,10 +355,11 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
   switch (COMMON(mode)) {
 
   case Rfun:			// R function
+
     eval_skeleton_R(ydot,t,y,REAL(COMMON(params)),
-      RFUN(fcall),RFUN(rho),RFUN(Snames),
-      REAL(RFUN(tvec)),REAL(RFUN(xvec)),REAL(RFUN(pvec)),REAL(RFUN(cvec)),
-      COMMON(nvars),COMMON(npars),1,COMMON(nreps),COMMON(nreps),COMMON(nreps),
+      RFUN(fn),RFUN(args),RFUN(Snames),
+      COMMON(nvars),COMMON(npars),COMMON(ncovars),1,
+      COMMON(nreps),COMMON(nreps),COMMON(nreps),
       &COMMON(covar_table));
 
     break;
@@ -415,25 +394,21 @@ void pomp_desolve_takedown (void) {
 
   switch (COMMON(mode)) {
 
-  case Rfun:			// R function
-    R_ReleaseObject(RFUN(fcall));
-    R_ReleaseObject(RFUN(rho));
+  case Rfun: {
+
+    R_ReleaseObject(RFUN(fn));
+    R_ReleaseObject(RFUN(args));
     R_ReleaseObject(RFUN(Snames));
-    R_ReleaseObject(RFUN(tvec));
-    R_ReleaseObject(RFUN(xvec));
-    R_ReleaseObject(RFUN(pvec));
-    R_ReleaseObject(RFUN(cvec));
-    RFUN(fcall) = R_NilValue;
-    RFUN(rho) = R_NilValue;
+    RFUN(fn) = R_NilValue;
+    RFUN(args) = R_NilValue;
     RFUN(Snames) = R_NilValue;
-    RFUN(tvec) = R_NilValue;
-    RFUN(xvec) = R_NilValue;
-    RFUN(pvec) = R_NilValue;
-    RFUN(cvec) = R_NilValue;
+
+  }
 
     break;
 
-  case native:			// native code
+  case native: case regNative: {
+
     NAT(fun) = 0;
     R_ReleaseObject(NAT(args));
     R_ReleaseObject(NAT(sindex));
@@ -443,6 +418,8 @@ void pomp_desolve_takedown (void) {
     NAT(sindex) = R_NilValue;
     NAT(pindex) = R_NilValue;
     NAT(cindex) = R_NilValue;
+
+  }
 
     break;
 
@@ -454,7 +431,7 @@ void pomp_desolve_takedown (void) {
 
   }
 
-  COMMON(mode) = -1;
+  COMMON(mode) = undef;
 
 }
 

@@ -81,7 +81,7 @@ void _ou2_pdf (double *f,
 
 void _ou2_skel (double *f, double *x, double *p,
   int *stateindex, int *parindex, int *covindex,
-  int ncovars, double *covars, double t)
+  double *covars, double t)
 {
   f[X1] = ALPHA1*x[X1]+ALPHA3*x[X2];
   f[X2] = ALPHA2*x[X1]+ALPHA4*x[X2];

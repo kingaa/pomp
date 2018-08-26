@@ -39,16 +39,20 @@ pomp(
     i=sin(2*pi*seq(0,101,by=0.1)),
     times=seq(0,101,by=0.1)
   ),
+  rinit=function(...) {
+    c(V=1,R=0)
+  },
   skeleton=vectorfield(
-    function(x,t,params,covars,...) {
+    function(V,R,a,b,c,i,...) {
       c(
-        V=unname(params['c']*(x['V']-(x['V']^3)/3-x['R']+covars['i'])),
-        R=unname((x['V']+params['a']-params['b']*x['R'])/params['c'])
+        V=c*(V-(V^3)/3-R+i),
+        R=(V+a-b*R)/c
       )
     }
   )
 ) -> fhn1
 
+params <- params[c("a","b","c"),]
 invisible(skeleton(fhn1,x,t=c(0,3),params=params))
 y <- trajectory(fhn1,params=params,hmax=0.01)
 y[,,199:201]
