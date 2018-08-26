@@ -225,6 +225,19 @@ static R_INLINE SEXP getPairListElement (SEXP list, const char *name)
   return CAR(list);
 }
 
+static R_INLINE SEXP paste0 (SEXP a, SEXP b) {
+  return eval(LCONS(install("paste0"),LCONS(a,LCONS(b,R_NilValue))),R_BaseEnv);
+}
+
+static R_INLINE SEXP paste (SEXP a, SEXP b, SEXP sep) {
+  SEXP x;
+  PROTECT(x = LCONS(sep,R_NilValue));
+  SET_TAG(x,install("sep"));
+  PROTECT(x = LCONS(install("paste"),LCONS(a,LCONS(b,x))));
+  PROTECT(x = eval(x,R_BaseEnv));
+  UNPROTECT(3);
+  return x;
+}
 
 #ifdef __cplusplus
 

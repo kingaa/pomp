@@ -9,7 +9,6 @@
 
 #include "pomp_internal.h"
 
-
 static R_INLINE SEXP dmeas_args (SEXP args, SEXP Onames, SEXP Snames,
   SEXP Pnames, SEXP Cnames, SEXP log)
 {
@@ -207,7 +206,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   {
     int *oidx, *sidx, *pidx, *cidx;
     int give_log;
-    SEXP indices;
     pomp_measure_model_density *ff = NULL;
     double *yp = REAL(y), *xs = REAL(x), *ps = REAL(params), *time = REAL(times);
     double *ft = REAL(F);
@@ -216,11 +214,10 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     int j, k;
 
     // construct state, parameter, covariate, observable indices
-    PROTECT(indices = pomp_fun_indices(pompfun,Onames,Snames,Pnames,Cnames)); nprotect++;
-    oidx = INTEGER(VECTOR_ELT(indices,0));
-    sidx = INTEGER(VECTOR_ELT(indices,1));
-    pidx = INTEGER(VECTOR_ELT(indices,2));
-    cidx = INTEGER(VECTOR_ELT(indices,3));
+    oidx = INTEGER(PROTECT(name_index(Onames,pompfun,"obsnames","observables"))); nprotect++;
+    sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
+    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
+    cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
 
     give_log = *(INTEGER(AS_INTEGER(log)));
 

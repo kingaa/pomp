@@ -210,7 +210,7 @@ SEXP eval_pomp_fun_R_call (
 
 SEXP pomp_fun_indices (SEXP fn, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnames)
 {
-  SEXP O, S, P, C;
+  SEXP O = R_NilValue, S = R_NilValue, P = R_NilValue, C = R_NilValue;
   SEXP ans;
 
   // construct state, parameter, covariate, observable indices
@@ -230,7 +230,7 @@ SEXP pomp_fun_indices (SEXP fn, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnam
 
 }
 
-SEXP concat_names (int nargs, ...) {
+SEXP concat (int nargs, ...) {
   int nprotect = 0;
   va_list ap;
   SEXP f = R_NilValue;
@@ -247,4 +247,3 @@ SEXP concat_names (int nargs, ...) {
   UNPROTECT(nprotect);
   return f;
 }
-

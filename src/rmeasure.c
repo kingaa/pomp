@@ -219,18 +219,16 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     double *yt = 0, *xp, *pp;
     double *time = REAL(times), *xs = REAL(x), *ps = REAL(params);
     double cov[ncovars];
-    SEXP indices;
     int *oidx, *sidx, *pidx, *cidx;
     pomp_measure_model_simulator *ff = NULL;
     int j, k;
 
     // construct observable, state, parameter covariate indices
     PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
-    PROTECT(indices = pomp_fun_indices(pompfun,Onames,Snames,Pnames,Cnames)); nprotect++;
-    oidx = INTEGER(VECTOR_ELT(indices,0));
-    sidx = INTEGER(VECTOR_ELT(indices,1));
-    pidx = INTEGER(VECTOR_ELT(indices,2));
-    cidx = INTEGER(VECTOR_ELT(indices,3));
+    oidx = INTEGER(PROTECT(name_index(Onames,pompfun,"obsnames","observables"))); nprotect++;
+    sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
+    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
+    cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
     nobs = LENGTH(Onames);
 
     // address of native routine

@@ -5,7 +5,7 @@ workhorse_templates <- list(
   rinit=list(
     slotname="rinit",
     Cname="__pomp_rinit",
-    proto=quote(rinit(params,t0,...)),
+    proto=quote(rinit(...)),
     header="\nvoid __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
     footer="\n}\n\n",
     vars=list(

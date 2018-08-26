@@ -12,7 +12,7 @@ try(rinit(gompertz,params=p))
 gompertz %>% simulate(rinit=NULL)
 
 gompertz %>%
-  pomp(rinit=function (params, t0, ...) 5) -> po
+  pomp(rinit=function (...) 5) -> po
 try(rinit(po))
 
 pp <- parmat(coef(gompertz),10)
@@ -28,22 +28,21 @@ rinit(gompertz,params=pp[,1:5],nsim=1) -> x0
 stopifnot(dim(x0)==c(1,5),colnames(x0)==head(LETTERS,5))
 
 try(gompertz %>%
-  pomp(rinit=function(t0,params,...)
+  pomp(rinit=function(...)
     c(r=32)) %>%
   rinit())
 try({
   pp <- matrix(c(1:5),1,5)
   rownames(pp) <- "a"
   gompertz %>%
-    pomp(rinit=function(t0,params,...)
-      c(X=rep(1,params["a"]))) %>%
+    pomp(rinit=function(a,...)
+      c(X=rep(1,a))) %>%
     rinit(params=pp)
 })
-
 
 pompExample(sir)
 try(sir %>% simulate(rinit=NULL))
 sir %>%
-  pomp(rinit=function(params,t0,covars,...)
-    c(S=covars["seas1"])) %>%
+  pomp(rinit=function(seas1,...)
+    c(S=seas1)) %>%
   rinit()

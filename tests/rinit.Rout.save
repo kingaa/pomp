@@ -41,7 +41,7 @@ Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix 
 <object of class ‘pomp’>
 > 
 > gompertz %>%
-+   pomp(rinit=function (params, t0, ...) 5) -> po
++   pomp(rinit=function (...) 5) -> po
 > try(rinit(po))
 Error : in ‘rinit’: user 'rinit' must return a named numeric vector
 > 
@@ -70,20 +70,19 @@ $rep
 > stopifnot(dim(x0)==c(1,5),colnames(x0)==head(LETTERS,5))
 > 
 > try(gompertz %>%
-+   pomp(rinit=function(t0,params,...)
++   pomp(rinit=function(...)
 +     c(r=32)) %>%
 +   rinit())
-Error : in ‘rinit’: a state variable and a parameter share a single name: 'r'
+Error : in ‘rinit’: a state variable and a parameter share the name: 'r'
 > try({
 +   pp <- matrix(c(1:5),1,5)
 +   rownames(pp) <- "a"
 +   gompertz %>%
-+     pomp(rinit=function(t0,params,...)
-+       c(X=rep(1,params["a"]))) %>%
++     pomp(rinit=function(a,...)
++       c(X=rep(1,a))) %>%
 +     rinit(params=pp)
 + })
 Error : in ‘rinit’: user 'rinit' returns vectors of non-uniform length
-> 
 > 
 > pompExample(sir)
 newly created object(s):
@@ -91,10 +90,10 @@ newly created object(s):
 > try(sir %>% simulate(rinit=NULL))
 Error : in ‘simulate’: variable 'cases' not found among the state variables
 > sir %>%
-+   pomp(rinit=function(params,t0,covars,...)
-+     c(S=covars["seas1"])) %>%
++   pomp(rinit=function(seas1,...)
++     c(S=seas1)) %>%
 +   rinit()
-         rep
-variable       [,1]
-  S.seas1 0.6666667
+        rep
+variable      [,1]
+       S 0.6666667
 > 

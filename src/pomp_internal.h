@@ -77,8 +77,10 @@ extern SEXP pfilter_computations(SEXP x, SEXP params, SEXP Np, SEXP predmean, SE
 extern SEXP pomp_fun_handler(SEXP pfun, SEXP gnsi, pompfunmode *mode);
 extern SEXP load_stack_incr(SEXP pack);
 extern SEXP load_stack_decr(SEXP pack);
+extern SEXP pomp_fun_args(SEXP args, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnames);
+extern SEXP eval_pomp_fun_R_call(SEXP fn, SEXP args, double *t, double *y, int nobs, double *x, int nvar, double *p, int npar, double *c, int ncov);
 extern SEXP pomp_fun_indices(SEXP fn, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnames);
-extern SEXP concat_names(int nargs, ...);
+extern SEXP concat(int nargs, ...);
 
 // probe_acf.c 
 extern SEXP probe_acf(SEXP x, SEXP lags, SEXP corr);
