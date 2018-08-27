@@ -2,6 +2,7 @@
 
 #include <Rdefines.h>
 #include <R_ext/Constants.h>
+#include <string.h>
 
 #include "pomp_internal.h"
 

@@ -2,6 +2,7 @@
 
 #include "pomp_internal.h"
 #include <R_ext/Constants.h>
+#include <string.h>
 
 // method: 1 = one-step, 2 = fixed step, 3 = Euler
 

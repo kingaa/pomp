@@ -1,5 +1,6 @@
 #include "pomp_internal.h"
 #include <R_ext/Constants.h>
+#include <string.h>
 
 static void gillespie (double *t, double tmax, double *f, double *y,
   const double *v, int nvar, int nevent, Rboolean hasvname,
