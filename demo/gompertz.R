@@ -7,19 +7,13 @@ library(magrittr)
 simulate(times=1:100,t0=0,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
   rprocess=discrete.time.sim( # a discrete-time process (see ?plugins)
-    step.fun=function (x, t, params, delta.t, ...) { # this function takes one step t -> t+delta.t
-      ## unpack the parameters:
-      r <- params["r"]
-      K <- params["K"]
-      sigma <- params["sigma"]
-      ## the state at time t:
-      X <- x["X"]
-      ## generate a log-normal random variable:
+    step.fun=function (X,r,K,sigma,...,delta.t) {
+      ## This function takes one step t -> t+delta.t.
+      ## Generate a log-normal random variable:
       eps <- exp(rnorm(n=1,mean=0,sd=sigma))
-      ## compute the state at time t+delta.t:
+      ## Compute the state at time t+delta.t:
       S <- exp(-r*delta.t)
-      xnew <- c(X=unname(K^(1-S)*X^S*eps))
-      return(xnew)
+      c(X=K^(1-S)*X^S*eps)
     },
     delta.t=1                  # the size of the discrete time-step
   ),

@@ -302,8 +302,7 @@ typedef void pomp_rinit(double *x, const double *p, double t,
 
 // PROTOTYPE FOR STOCHASTIC SIMULATION ALGORITHM REACTION-RATE FUNCTION, AS USED BY "GILLESPIE.SIM":
 typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const double *p,
-				const int *stateindex, const int *parindex, const int *covindex,
-				int ncovar, const double *covars);
+				const int *stateindex, const int *parindex, const int *covindex, const double *covars);
 // Description:
 //  on input:
 // event      = integer specifying the number of the reaction whose rate is desired
@@ -317,7 +316,6 @@ typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const doub
 //                the 'paramnames' argument of 'SSA.simulator'
 // covindex   = pointer to vector of integers pointing to the covariates in 'covars' in the order
 //                specified by the 'covarnames' argument of 'SSA.simulator'
-// ncovars    = number of covariates
 // covars     = pointer to a vector containing the values of the covariates at time t, as interpolated
 //                from the covariate table supplied to 'SSA.simulator'
 //  returns the rate of the j-th reaction
@@ -325,8 +323,7 @@ typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const doub
 // PROTOTYPE FOR ONE-STEP SIMULATOR, AS USED BY "EULER.SIM" AND "ONESTEP.SIM":
 typedef void pomp_onestep_sim(double *x, const double *p,
 			      const int *stateindex, const int *parindex, const int *covindex,
-			      int ncovars, const double *covars,
-			      double t, double dt);
+			      const double *covars, double t, double dt);
 // Description:
 //  on input:
 // x          = pointer to state vector
@@ -337,7 +334,6 @@ typedef void pomp_onestep_sim(double *x, const double *p,
 //                the 'paramnames' argument of 'euler.simulator'
 // covindex   = pointer to vector of integers pointing to the covariates in 'covars' in the order
 //                specified by the 'covarnames' argument of 'euler.simulator'
-// ncovars    = number of covariates
 // covars     = pointer to a vector containing the values of the covariates at time t, as interpolated
 //                from the covariate table supplied to 'euler.simulator'
 // t          = time at the beginning of the Euler step

@@ -135,12 +135,11 @@ simulate(times=1:100,t0=0,
 
 simulate(times=1:100,t0=0,
   phi=100,
-  params=c(r=3.8,sigma=0.3,N.0=7),
+  params=c(r=3.8,sigma=0.3,N_0=7),
   rprocess=discrete.time.sim(
-    step.fun=function (t, x, params, delta.t, ...) {
-      e <- rnorm(n=1,mean=0,sd=params["sigma"])
-      n <- params["r"]*x["N"]*exp(-x["N"]+e)
-      c(N=unname(n))
+    step.fun=function (r, N, sigma, ...) {
+      e <- rnorm(n=1,mean=0,sd=sigma)
+       c(N=r*N*exp(-N+e))
     },
     delta.t=1
   ),

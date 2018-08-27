@@ -1,10 +1,97 @@
 // dear emacs, please treat this as -*- C++ -*-
 
-#include "pomp_internal.h"
+#include <R.h>
+#include <Rmath.h>
+#include <Rdefines.h>
+#include <Rinternals.h>
 #include <R_ext/Constants.h>
 #include <string.h>
 
-// method: 1 = one-step, 2 = fixed step, 3 = Euler
+#include "pomp_internal.h"
+
+static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
+{
+  int nprotect = 0;
+  SEXP var;
+  int v;
+
+  // we construct the call from end to beginning
+  // delta.t, covariates, parameter, states, then time
+
+  // 'delta.t'
+  PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+  PROTECT(args = LCONS(var,args)); nprotect++;
+  SET_TAG(args,install("delta.t"));
+
+  // Covariates
+  for (v = LENGTH(Cnames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Cnames,v))));
+  }
+
+  // Parameters
+  for (v = LENGTH(Pnames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Pnames,v))));
+  }
+
+  // Latent state variables
+  for (v = LENGTH(Snames)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(Snames,v))));
+  }
+
+  // Time
+  PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+  PROTECT(args = LCONS(var,args)); nprotect++;
+  SET_TAG(args,install("t"));
+
+  UNPROTECT(nprotect);
+  return args;
+
+}
+
+static R_INLINE SEXP eval_call (
+    SEXP fn, SEXP args,
+    double *t, double *dt,
+    double *x, int nvar,
+    double *p, int npar,
+    double *c, int ncov)
+{
+
+  SEXP var = args, ans;
+  int v;
+
+  *(REAL(CAR(var))) = *t; var = CDR(var);
+  for (v = 0; v < nvar; v++, x++, var=CDR(var)) *(REAL(CAR(var))) = *x;
+  for (v = 0; v < npar; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
+  for (v = 0; v < ncov; v++, c++, var=CDR(var)) *(REAL(CAR(var))) = *c;
+  *(REAL(CAR(var))) = *dt; var = CDR(var);
+
+  PROTECT(ans = eval(LCONS(fn,args),CLOENV(fn)));
+
+  UNPROTECT(1);
+  return ans;
+
+}
+
+static R_INLINE SEXP ret_array (int n, int nreps, int ntimes, SEXP names)
+{
+  int dim[3] = {n, nreps, ntimes};
+  const char *dimnm[3] = {"variable", "rep", "time"};
+  SEXP Y;
+
+  PROTECT(Y = makearray(3,dim));
+  setrownames(Y,names,3);
+  fixdimnames(Y,dimnm,3);
+
+  UNPROTECT(1);
+  return Y;
+
+}
 
 SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   double deltat, rprocmode method, SEXP zeronames, SEXP covar, SEXP args, SEXP gnsi)
@@ -12,23 +99,17 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   int nprotect = 0;
   pompfunmode mode = undef;
   int nvars, npars, nreps, ntimes, nzeros, ncovars;
-  int *dim, nstep = 0;
-  double dt;
-  SEXP X;
-  SEXP ans, nm, fn, fcall = R_NilValue, rho = R_NilValue;
-  SEXP Snames, Pnames, Cnames;
-  SEXP cvec, tvec = R_NilValue;
-  SEXP xvec = R_NilValue, pvec = R_NilValue, dtvec = R_NilValue;
-  int *pidx = 0, *sidx = 0, *cidx = 0, *zidx = 0;
-  pomp_onestep_sim *ff = NULL;
+  SEXP X, fn;
 
   if (deltat <= 0)
-    errorcall(R_NilValue,"'delta.t' should be a positive number");
+    errorcall(R_NilValue,"'delta.t' should be a positive number.");
 
+  int *dim;
   dim = INTEGER(GET_DIM(xstart)); nvars = dim[0]; nreps = dim[1];
   dim = INTEGER(GET_DIM(params)); npars = dim[0];
   ntimes = LENGTH(times);
 
+  SEXP Snames, Pnames, Cnames;
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = get_covariate_names(covar)); nprotect++;
@@ -36,48 +117,36 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   // set up the covariate table
   lookup_table_t covariate_table = make_covariate_table(covar,&ncovars);
 
-  // vector for interpolated covariates
-  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
-  SET_NAMES(cvec,Cnames);
-
   // indices of accumulator variables
   nzeros = LENGTH(zeronames);
-  zidx = INTEGER(PROTECT(matchnames(Snames,zeronames,"state variables"))); nprotect++;
+  int *zidx = INTEGER(PROTECT(matchnames(Snames,zeronames,"state variables"))); nprotect++;
 
   // extract user function
   PROTECT(fn = pomp_fun_handler(func,gnsi,&mode)); nprotect++;
 
+  // array to hold results
+  PROTECT(X = ret_array(nvars,nreps,ntimes,Snames)); nprotect++;
+
+  // copy the start values into the result array
+  memcpy(REAL(X),REAL(xstart),nvars*nreps*sizeof(double));
+
   // set up
+
+  int *pidx = 0, *sidx = 0, *cidx = 0;
+  pomp_onestep_sim *ff = NULL;
+
   switch (mode) {
 
-  case Rfun:			// R function
+  case Rfun: {
 
-    PROTECT(dtvec = NEW_NUMERIC(1)); nprotect++;
-    PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
-    PROTECT(xvec = NEW_NUMERIC(nvars)); nprotect++;
-    PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
-    SET_NAMES(xvec,Snames);
-    SET_NAMES(pvec,Pnames);
+    // construct list of all arguments
+    PROTECT(args = add_args(args,Snames,Pnames,Cnames));
 
-    // set up the function call
-    PROTECT(fcall = LCONS(cvec,args)); nprotect++;
-    SET_TAG(fcall,install("covars"));
-    PROTECT(fcall = LCONS(dtvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("delta.t"));
-    PROTECT(fcall = LCONS(pvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("params"));
-    PROTECT(fcall = LCONS(tvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("t"));
-    PROTECT(fcall = LCONS(xvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("x"));
-    PROTECT(fcall = LCONS(fn,fcall)); nprotect++;
-
-    // get function's environment
-    PROTECT(rho = (CLOENV(fn))); nprotect++;
+  }
 
     break;
 
-  case native: case regNative:		// native code
+  case native: case regNative: {
 
     // construct state, parameter, covariate indices
     sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames")),"state variables"))); nprotect++;
@@ -89,6 +158,8 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     set_pomp_userdata(args);
     GetRNGstate();
 
+  }
+
     break;
 
   default:
@@ -97,151 +168,137 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 
   }
 
-  // create array to hold results
-  {
-    int dim[3] = {nvars, nreps, ntimes};
-    PROTECT(X = makearray(3,dim)); nprotect++;
-    setrownames(X,Snames,3);
-  }
+  // main computation loop
+  int step;
+  double *xs, *xt, *time, t;
+  for (step = 1, xs = REAL(X), xt = xs+nvars*nreps, time = REAL(times), t = time[0];
+    step < ntimes;
+    step++, xs = xt, xt += nvars*nreps) {
 
-  // copy the start values into the result array
-  memcpy(REAL(X),REAL(xstart),nvars*nreps*sizeof(double));
+    double cov[ncovars];
+    double dt;
+    int *posn = NULL;
+    int nstep = 0;
+    int i, j, k;
 
-  // now do computations
-  {
-    int first = 1;
-    int use_names = 0;
-    int *posn = 0;
-    double *time = REAL(times);
-    double *xs = REAL(X);
-    double *xt = REAL(X)+nvars*nreps;
-    double *cp = REAL(cvec);
-    double *ps = REAL(params);
-    double t = time[0];
-    double *pm, *xm;
-    int i, j, k, step;
+    R_CheckUserInterrupt();
 
-    for (step = 1; step < ntimes; step++, xs = xt, xt += nvars*nreps) {
+    if (t > time[step])
+      errorcall(R_NilValue,"'times' must be an increasing sequence.");
 
-      R_CheckUserInterrupt();
+    memcpy(xt,xs,nreps*nvars*sizeof(double));
 
-      if (t > time[step]) {
-        errorcall(R_NilValue,"'times' is not an increasing sequence");
-      }
+    // set accumulator variables to zero
+    for (j = 0; j < nreps; j++)
+      for (i = 0; i < nzeros; i++)
+        xt[zidx[i]+nvars*j] = 0.0;
 
-      memcpy(xt,xs,nreps*nvars*sizeof(double));
-
-      // set accumulator variables to zero
-      for (j = 0; j < nreps; j++)
-        for (i = 0; i < nzeros; i++)
-          xt[zidx[i]+nvars*j] = 0.0;
-
-      switch (method) {
-      case onestep:			// one step
-        dt = time[step]-t;
-        nstep = (dt > 0) ? 1 : 0;
-        break;
-      case discrete:			// fixed step
-        dt = deltat;
-        nstep = num_map_steps(t,time[step],dt);
-        break;
-      case euler:			// Euler method
-        dt = deltat;
-        nstep = num_euler_steps(t,time[step],&dt);
-        break;
-      default:
-        errorcall(R_NilValue,"unrecognized 'method'"); // # nocov
-      }
-
-      for (k = 0; k < nstep; k++) { // loop over Euler steps
-
-        // interpolate the covar functions for the covariates
-        table_lookup(&covariate_table,t,cp);
-
-        for (j = 0, pm = ps, xm = xt; j < nreps; j++, pm += npars, xm += nvars) { // loop over replicates
-
-          switch (mode) {
-
-          case Rfun: 		// R function
-
-          {
-            double *xp = REAL(xvec);
-            double *pp = REAL(pvec);
-            double *tp = REAL(tvec);
-            double *dtp = REAL(dtvec);
-            double *ap;
-
-            *tp = t;
-            *dtp = dt;
-            memcpy(xp,xm,nvars*sizeof(double));
-            memcpy(pp,pm,npars*sizeof(double));
-
-            if (first) {
-
-              PROTECT(ans = eval(fcall,rho));	nprotect++; // evaluate the call
-              if (LENGTH(ans) != nvars) {
-                errorcall(R_NilValue,"user 'step.fun' returns a vector of %d state variables but %d are expected: compare initial conditions?",
-                  LENGTH(ans),nvars);
-              }
-
-              PROTECT(nm = GET_NAMES(ans)); nprotect++;
-              use_names = !isNull(nm);
-              if (use_names) {
-                posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
-              }
-
-              ap = REAL(AS_NUMERIC(ans));
-
-              first = 0;
-
-            } else {
-
-              ap = REAL(AS_NUMERIC(PROTECT(eval(fcall,rho))));
-              UNPROTECT(1);
-
-            }
-
-            if (use_names) {
-              for (i = 0; i < nvars; i++) xm[posn[i]] = ap[i];
-            } else {
-              for (i = 0; i < nvars; i++) xm[i] = ap[i];
-            }
-
-          }
-
-            break;
-
-          case native: case regNative:	// native code
-
-            (*ff)(xm,pm,sidx,pidx,cidx,ncovars,cp,t,dt);
-
-            break;
-
-          default:
-
-            errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // # nocov
-
-          }
-
-        }
-
-        t += dt;
-
-        if ((method == euler) && (k == nstep-2)) { // penultimate step
-          dt = time[step]-t;
-          t = time[step]-dt;
-        }
-      }
+    // determine size and number of time-steps
+    switch (method) {
+    case onestep: default:	// one step
+      dt = time[step]-t;
+      nstep = (dt > 0) ? 1 : 0;
+      break;
+    case discrete:			// fixed step
+      dt = deltat;
+      nstep = num_map_steps(t,time[step],dt);
+      break;
+    case euler:			// Euler method
+      dt = deltat;
+      nstep = num_euler_steps(t,time[step],&dt);
+      break;
     }
+
+    // loop over individual steps
+    for (k = 0; k < nstep; k++) {
+
+      // interpolate the covar functions for the covariates
+      table_lookup(&covariate_table,t,cov);
+
+      // loop over replicates
+      double *ap, *pm, *xm, *ps = REAL(params);
+
+      for (j = 0, pm = ps, xm = xt; j < nreps; j++, pm += npars, xm += nvars) {
+
+        switch (mode) {
+
+        case Rfun: {
+
+          SEXP ans, nm;
+
+          if (j == 0 && k == 0) {
+
+            PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars)); nprotect++;
+
+            PROTECT(nm = GET_NAMES(ans)); nprotect++;
+            if (isNull(nm))
+              errorcall(R_NilValue,"'rprocess' must return a named numeric vector.");
+            posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
+
+            ap = REAL(AS_NUMERIC(ans));
+
+            for (i = 0; i < nvars; i++) xm[posn[i]] = ap[i];
+
+          } else {
+
+            PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
+            ap = REAL(AS_NUMERIC(ans));
+            for (i = 0; i < nvars; i++) xm[posn[i]] = ap[i];
+            UNPROTECT(1);
+
+          }
+
+        }
+
+          break;
+
+        case native: case regNative: {
+
+          (*ff)(xm,pm,sidx,pidx,cidx,cov,t,dt);
+
+        }
+
+          break;
+
+        default:
+
+          errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // # nocov
+
+        }
+
+      }
+
+      t += dt;
+
+      if ((method == euler) && (k == nstep-2)) { // penultimate step
+        dt = time[step]-t;
+        t = time[step]-dt;
+      }
+
+    }
+
   }
 
-  if (mode == native || mode == regNative) {
+  // clean up
+  switch (mode) {
+
+  case native: case regNative: {
     PutRNGstate();
     unset_pomp_userdata();
+
+  }
+
+    break;
+
+  case Rfun: default:
+
+    break;
+
   }
 
   UNPROTECT(nprotect);
   return X;
+
 }
 
 int num_euler_steps (double t1, double t2, double *dt) {

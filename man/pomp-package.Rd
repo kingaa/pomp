@@ -15,9 +15,7 @@ inference methods for \acronym{POMP} models can be implemented.
 }
 \section{Data analysis using \pkg{pomp}}{
 
-
-\pkg{pomp} version \Sexpr{packageDescription("pomp",fields="Version")}
-provides algorithms for
+\pkg{pomp} provides algorithms for
 \enumerate{
 \item simulation of stochastic
 dynamical systems; see \code{\link[=simulate-pomp]{simulate}}

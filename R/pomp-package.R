@@ -8,7 +8,6 @@
 ##' both a set of tools for data analysis and a platform upon which statistical
 ##' inference methods for \acronym{POMP} models can be implemented.
 ##'
-##'
 ##' @name pomp-package
 ##' @docType package
 ##' @author Aaron A. King
@@ -17,9 +16,7 @@
 ##' @family elementary POMP methods
 ##'
 ##' @section Data analysis using \pkg{pomp}:
-##'
-##' \pkg{pomp} version \Sexpr{packageDescription("pomp",fields="Version")}
-##' provides algorithms for
+##' \pkg{pomp} provides algorithms for
 ##' \enumerate{
 ##' \item simulation of stochastic
 ##' dynamical systems; see \code{\link[=simulate-pomp]{simulate}}

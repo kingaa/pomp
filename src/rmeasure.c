@@ -10,8 +10,7 @@
 
 #include "pomp_internal.h"
 
-
-static R_INLINE SEXP rmeas_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
+static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 {
   int nprotect = 0;
   SEXP var;
@@ -74,13 +73,13 @@ static R_INLINE SEXP eval_call (
 
 }
 
-static R_INLINE SEXP rmeas_array (int nobs, int nreps, int ntimes, SEXP Onames) {
-  int dim[3] = {nobs, nreps, ntimes};
+static R_INLINE SEXP ret_array (int n, int nreps, int ntimes, SEXP names) {
+  int dim[3] = {n, nreps, ntimes};
   const char *dimnm[3] = {"variable", "rep", "time"};
   SEXP Y;
 
   PROTECT(Y = makearray(3,dim));
-  setrownames(Y,Onames,3);
+  setrownames(Y,names,3);
   fixdimnames(Y,dimnm,3);
 
   UNPROTECT(1);
@@ -147,7 +146,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     SEXP ans;
     int j, k;
 
-    PROTECT(args = rmeas_args(args,Snames,Pnames,Cnames)); nprotect++;
+    PROTECT(args = add_args(args,Snames,Pnames,Cnames)); nprotect++;
 
     for (k = 0; k < ntimes; k++, time++) { // loop over times
 
@@ -175,7 +174,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
           if (isNull(Onames))
             errorcall(R_NilValue,"'rmeasure' must return a named numeric vector.");
 
-          PROTECT(Y = rmeas_array(nobs,nreps,ntimes,Onames)); nprotect++;
+          PROTECT(Y = ret_array(nobs,nreps,ntimes,Onames)); nprotect++;
 
           yt = REAL(Y);
           ys = REAL(AS_NUMERIC(ans));
@@ -235,7 +234,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     // address of native routine
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
-    PROTECT(Y = rmeas_array(nobs,nreps,ntimes,Onames)); nprotect++;
+    PROTECT(Y = ret_array(nobs,nreps,ntimes,Onames)); nprotect++;
     yt = REAL(Y);
 
     set_pomp_userdata(args);

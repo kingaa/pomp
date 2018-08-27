@@ -9,8 +9,8 @@ set.seed(1041414791L)
 data.frame(t=0:10,y=runif(11)) %>%
   simulate(times="t",t0=0,
     rprocess=discrete.time.sim(
-      step.fun=function(x,t,params,delta.t,...) {
-        setNames(c(params["r"]*x*exp(-x)),"x")
+      step.fun=function(r,x,...) {
+        c(x=r*x*exp(-x))
       }),
     rmeasure=function(x,...) {
       c(y=rpois(n=1,100*x))

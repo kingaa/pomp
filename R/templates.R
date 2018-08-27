@@ -80,8 +80,8 @@ workhorse_templates <- list(
   step.fn=list(
     slotname="step.fun",
     Cname="__pomp_stepfn",
-    proto=quote(step.fun(x,t,params,delta.t,...)),
-    header="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
+    proto=quote(step.fun(...)),
+    header="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t, double dt)\n{\n",
     footer="\n}\n\n",
     vars=list(
       params=list(
@@ -101,8 +101,8 @@ workhorse_templates <- list(
   rate.fn=list(
     slotname="rate.fun",
     Cname="__pomp_ratefn",
-    proto=quote(rate.fun(j,x,t,params,...)),
-    header="\ndouble __pomp_ratefn (int j, double t, double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars)\n{\n  double rate = 0.0;  \n",
+    proto=quote(rate.fun(j,...)),
+    header="\ndouble __pomp_ratefn (int j, double t, double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n  double rate = 0.0;  \n",
     footer="  return rate;\n}\n\n",
     vars=list(
       params=list(

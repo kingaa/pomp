@@ -57,8 +57,7 @@ stopifnot(
 )
 
 simulate(times=1:100,t0=0,
-  rprocess=onestep.sim(function(x,t,params,delta.t,...) {
-    z <- x["z"]
+  rprocess=onestep.sim(function(z,...) {
     c(z=runif(1,z-0.5,z+0.5))
   }),
   rmeasure=function(z,...) {
@@ -68,8 +67,7 @@ simulate(times=1:100,t0=0,
 stopifnot(
   {
     simulate(times=1:100,t0=0,
-      rprocess=onestep.sim(function(x,t,params,delta.t,...) {
-        z <- x["z"]
+      rprocess=onestep.sim(function(z,...) {
         c(z=runif(1,z-0.5,z+0.5))
       }),params=c(z.0=0)) %>% obs() -> y
     dim(y)==c(0,100)
@@ -79,8 +77,7 @@ stopifnot(
 stopifnot(
   {
     simulate(times=1:100,t0=0,
-      rprocess=onestep.sim(function(x,t,params,delta.t,...) {
-        z <- x["z"]
+      rprocess=onestep.sim(function(z,...) {
         c(z=runif(1,z-0.5,z+0.5))
       }),params=c(z.0=0),format="arrays") -> s
     dim(s$states)==c(1,1,100)
@@ -102,8 +99,8 @@ simulate(times=1:100,t0=0,seed=993523767,
 po %>% plot()
 
 simulate(times=1:100,t0=0,seed=378047885,
-  rprocess=onestep.sim(function(x,t,params,delta.t,...)
-    c(z=runif(n=1,x["z"]-0.5,x["z"]+0.5))),
+  rprocess=onestep.sim(function(z,...)
+    c(z=runif(n=1,z-0.5,z+0.5))),
   rmeasure=function(z,...) c(w=rnorm(1,z,1)),
   rinit=function(params,t0,...)c(z=0)) %>% plot()
 

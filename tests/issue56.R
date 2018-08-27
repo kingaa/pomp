@@ -6,8 +6,8 @@ create_example <- function(times, t0 = 0, mu = 0.001, N_0 = 1) {
     c(y=rpois(n=1,ct))
   }
 
-  rate.fun <- function(j, x, t, params, covars, ...) {
-    switch(j, params["mu"]*x["N"], stop("unrecognized event ",j))
+  rate.fun <- function(j, mu, N, ...) {
+    switch(j, mu*N, stop("unrecognized event ",j))
   }
 
   rprocess <- gillespie.sim(rate.fun = rate.fun, v=rbind(N=-1, ct=1))
