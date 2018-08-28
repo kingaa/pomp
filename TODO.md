@@ -3,8 +3,8 @@
 ## For pomp 2:
 
 - make R-level functions for various distributions and transformations
-- `valid_names` function to check for non-null, non-zero-length names
-- `compile = FALSE` option for `pomp`
+- ~~`valid_names` function to check for non-null, non-zero-length names~~
+- ~~`compile = FALSE` option for `pomp`~~
 - it should be possible to refer to `times` inside `covariate_table`
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
 - `nsim` argument for `rprior`?
@@ -23,7 +23,7 @@
 		- helper functions get their own test scripts
 - ~~we don't need `ncovars` in workhorse C function calls~~
 - combine documentation: (dmeasure,rmeasure), (dprocess,rprocess)?
-- regularize use of `pomp_stop` and `tryCatch` on *.internals
+- regularize use of `pStop` and `tryCatch` on *.internals
 - index by concept using `\concept{}` in the help files
 	- extending \pkg{pomp}
 	- low-level interface (incl. `hitch` and workhorses)

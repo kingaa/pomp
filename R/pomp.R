@@ -32,6 +32,8 @@
 ##' @importFrom stats setNames
 ##' @keywords internal
 ##'
+##' @inheritParams hitch
+##'
 ##' @param data either a data frame holding the time series data,
 ##' or an object of class \sQuote{pomp},
 ##' i.e., the output of another \pkg{pomp} calculation.
@@ -114,25 +116,6 @@
 ##' @param zeronames optional character vector specifying the names of accumulator variables.
 ##' See \link[=accumulators]{here} for a definition and discussion of accumulator variables.
 ##'
-##' @param PACKAGE optional character;
-##' the name (without extension) of the external, dynamically loaded library in which any native routines are to be found.
-##' This is only useful if one or more of the model components has been specified using a precompiled dynamically loaded library;
-##' it is not used for any component specified using C snippets.
-##' \code{PACKAGE} can name at most one library.
-##'
-##' @param globals optional character;
-##' arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
-##' If no C snippets are used, \code{globals} has no effect.
-##'
-##' @param cdir,cfile optional character variables.
-##' \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
-##' By default, this is in a temporary directory specific to the \R session.
-##' \code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
-##' By default, a random filename is used.
-##'
-##' @param shlib.args optional character variables.
-##' Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.
-##'
 ##' @param \dots additional arguments supply new or modify existing model characteristics or components.
 ##' See \code{\link{pomp}} for a full list of recognized arguments.
 ##'
@@ -170,7 +153,7 @@ pomp <- function (data, times, t0, ...,
   skeleton, rprior, dprior, partrans, covar,
   params, zeronames,
   obsnames, statenames, paramnames, covarnames,
-  PACKAGE, globals, cdir, cfile, shlib.args,
+  PACKAGE, globals, cdir, cfile, shlib.args, compile = TRUE,
   verbose = getOption("verbose", FALSE)) {
 
   if (missing(data))
@@ -199,14 +182,17 @@ pomp <- function (data, times, t0, ...,
       obsnames=obsnames,statenames=statenames,paramnames=paramnames,
       covarnames=covarnames,PACKAGE=PACKAGE,
       globals=globals,cdir=cdir,cfile=cfile,shlib.args=shlib.args,
-      verbose=verbose
+      compile=compile,verbose=verbose
     ),
     error = function (e) pStop_(conditionMessage(e))
   )
 }
 
-setGeneric("construct_pomp",
-  function(data,...)standardGeneric("construct_pomp"))
+setGeneric(
+  "construct_pomp",
+  function (data, ...)
+    standardGeneric("construct_pomp")
+)
 
 setMethod(
   "construct_pomp",
@@ -370,7 +356,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
   rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
   partrans, params, covar, zeronames, obsnames, statenames,
   paramnames, covarnames, PACKAGE, globals, cdir, cfile, shlib.args,
-  .userdata, .solibs = list(), verbose = getOption("verbose", FALSE)) {
+  compile, .userdata, .solibs = list(), verbose = getOption("verbose", FALSE)) {
 
   ## check times
   if (missing(times) || !is.numeric(times) || !all(is.finite(times)) ||
@@ -482,6 +468,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
     cfile=cfile,
     cdir=cdir,
     shlib.args=shlib.args,
+    compile=compile,
     verbose=verbose
   )
 

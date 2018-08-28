@@ -21,7 +21,8 @@ They include \describe{
 }
 }
 \seealso{
-\code{\link[=simulate-pomp]{simulate}} \code{\link{trajectory}}
+\code{\link[=simulate-pomp]{simulate}}, \code{\link{trajectory}},
+\code{\link{pfilter}}, \code{\link{probe}}
 
 Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{dprior}}, \code{\link{dprocess}},

@@ -7,7 +7,7 @@
 pomp(data, times, t0, ..., rinit, rprocess, dprocess, rmeasure, dmeasure,
   skeleton, rprior, dprior, partrans, covar, params, zeronames, obsnames,
   statenames, paramnames, covarnames, PACKAGE, globals, cdir, cfile,
-  shlib.args, verbose = getOption("verbose", FALSE))
+  shlib.args, compile = TRUE, verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -109,7 +109,13 @@ it is not used for any component specified using C snippets.
 arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
 If no C snippets are used, \code{globals} has no effect.}
 
-\item{cdir, cfile}{optional character variables.
+\item{cdir}{optional character variables.
+\code{cdir} specifies the name of the directory within which C snippet code will be compiled.
+By default, this is in a temporary directory specific to the \R session.
+\code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
+By default, a random filename is used.}
+
+\item{cfile}{optional character variables.
 \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
 By default, this is in a temporary directory specific to the \R session.
 \code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
@@ -117,6 +123,9 @@ By default, a random filename is used.}
 
 \item{shlib.args}{optional character variables.
 Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.}
+
+\item{compile}{logical;
+if \code{FALSE}, compilation of the C snippets will be postponed until they are needed.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

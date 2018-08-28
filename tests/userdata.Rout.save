@@ -58,29 +58,29 @@ hello!
 +       SEXP Msg = get_pomp_userdata(\"bob\");
 +       char *msg = CHAR(STRING_ELT(Msg,0));
 +       Rprintf(\"%s\\n\",msg);"))))
-Error : in ‘simulate’: no user-provided element 'bob' is found.
+Error : in ‘simulate’: no user-data element 'bob' is found.
 > try(po %>%
 +     simulate(rprocess=onestep.sim(
 +       Csnippet("double nbasis = *(get_pomp_userdata_double(\"nbasis\"));"))))
-Error : in ‘simulate’: user-provided element 'nbasis' is not a numeric vector.
+Error : in ‘simulate’: user-data element 'nbasis' is not a numeric vector.
 > try(po %>%
 +     simulate(rprocess=onestep.sim(
 +       Csnippet("double nbasis = *(get_pomp_userdata_double(\"bob\"));"))))
-Error : in ‘simulate’: no user-provided element named 'bob' is found.
+Error : in ‘simulate’: no user-data element 'bob' is found.
 > try(po %>%
 +     simulate(rprocess=onestep.sim(
 +       Csnippet("int nbasis = *(get_pomp_userdata_int(\"period\"));"))))
-Error : in ‘simulate’: user-provided element 'period' is not an integer.
+Error : in ‘simulate’: user-data element 'period' is not an integer.
 > try(po %>%
 +     simulate(rprocess=onestep.sim(
 +       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));"))))
-Error : in ‘simulate’: no user-provided element named 'bob' is found.
+Error : in ‘simulate’: no user-data element 'bob' is found.
 > try(po %>%
 +     simulate(rprocess=onestep.sim(
 +       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));")),
 +       bob=3))
 in ‘pomp’: the unrecognized argument ‘bob’ is available for use by the POMP basic components.
-Error : in ‘simulate’: user-provided element 'bob' is not an integer.
+Error : in ‘simulate’: user-data element 'bob' is not an integer.
 > stopifnot(po %>%
 +     simulate(rprocess=onestep.sim(
 +       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));")),

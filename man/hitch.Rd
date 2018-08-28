@@ -6,46 +6,48 @@
 \title{Hitching C snippets and R functions to pomp_fun objects}
 \usage{
 hitch(..., templates, obsnames, statenames, paramnames, covarnames,
-  PACKAGE, globals, cfile, cdir, shlib.args,
+  PACKAGE, globals, cfile, cdir, shlib.args, compile = TRUE,
   verbose = getOption("verbose", FALSE))
 }
 \arguments{
-\item{\dots}{named arguments representing the workhorses.  These can be
-functions, character strings naming routines in external,
-dynamically-linked libraries, C snippets, or \code{NULL}.  The first three
-are converted by \code{hitch} to \sQuote{pomp_fun} objects which perform
-the indicated computations.  \code{NULL} arguments are translated to
-default \sQuote{pomp_fun} objects, which trigger an error when they are
-asked to perform a computation.}
+\item{\dots}{named arguments representing the user procedures to be hitched.
+These can be functions, character strings naming routines in external, dynamically-linked libraries, C snippets, or \code{NULL}.
+The first three are converted by \code{hitch} to \sQuote{pomp_fun} objects which perform the indicated computations.
+\code{NULL} arguments are translated to default \sQuote{pomp_fun} objects.
+If any of these procedures are already \sQuote{pomp_fun} objects, they are returned unchanged.}
 
-\item{templates}{named list of templates.  Each workhorse must have a
-corresponding template.  See \code{pomp:::workhorse_templates} for a list.}
+\item{templates}{named list of templates.
+Each workhorse must have a corresponding template.
+See \code{pomp:::workhorse_templates} for a list.}
 
 \item{obsnames, statenames, paramnames, covarnames}{character vectors
-specifying the names of observable variables, latent state variables,
-parameters, and covariates, respectively.  These are only needed if one or
-more of the horses are furnished as C snippets.}
+specifying the names of observable variables, latent state variables, parameters, and covariates, respectively.
+These are only needed if one or more of the horses are furnished as C snippets.}
 
-\item{PACKAGE}{If one or more of the horses is specified as the name of a
-function in an external library, the library (without file extension)
-should be named here.}
+\item{PACKAGE}{optional character;
+the name (without extension) of the external, dynamically loaded library in which any native routines are to be found.
+This is only useful if one or more of the model components has been specified using a precompiled dynamically loaded library;
+it is not used for any component specified using C snippets.
+\code{PACKAGE} can name at most one library.}
 
-\item{globals}{optional character; C code that will be included in the
-source for (and therefore hard-coded into) the shared-object library
-created when the call to \code{pomp} uses C snippets.  If no C snippets are
-used, \code{globals} has no effect.}
+\item{globals}{optional character;
+arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
+If no C snippets are used, \code{globals} has no effect.}
 
-\item{cdir, cfile, shlib.args}{optional character variables.  \code{cdir}
-specifies the name of the directory within which C snippet code will be
-compiled.  By default, this is in a temporary directory specific to the
-running instance of .  \code{cfile} gives the name of the file (in
-directory \code{cdir}) into which C snippet codes will be written.  By
-default, a random filename is used.  The \code{shlib.args} can be used to
-pass command-line arguments to the \code{R CMD SHLIB} call that will
-compile the C snippets.}
+\item{cdir, cfile}{optional character variables.
+\code{cdir} specifies the name of the directory within which C snippet code will be compiled.
+By default, this is in a temporary directory specific to the \R session.
+\code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
+By default, a random filename is used.}
 
-\item{verbose}{logical.  Setting \code{verbose=TRUE} will cause additional
-information to be displayed.}
+\item{shlib.args}{optional character variables.
+Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.}
+
+\item{compile}{logical;
+if \code{FALSE}, compilation of the C snippets will be postponed until they are needed.}
+
+\item{verbose}{logical.
+Setting \code{verbose=TRUE} will cause additional information to be displayed.}
 }
 \value{
 \code{hitch} returns a named list of length two.  The element named
@@ -64,16 +66,15 @@ library was created in the session's temporary directory.  }
 character string with the full contents of the C snippet file.  } }
 }
 \description{
-The algorithms in \pkg{pomp} make use of user-defined functions
-implementing the various elementary model computations (\code{rprocess},
-\code{dprocess}, \code{rmeasure}, \code{dmeasure}, etc.).  For short, we
-refer to these elementary computations as \dQuote{workhorses}.  The user
-defines these functions using functions, links to native functions in
-dynamically-linked libraries, or C snippets.  For efficiency, \pkg{pomp}
-encodes the workhorses using \sQuote{pomp_fun} objects.  The construction
-of \sQuote{pomp_fun} objects is handled by the \code{hitch} function, which
-conceptually \dQuote{hitches} the workhorses to \code{pomp_fun}s for use in
-\pkg{pomp}.
+The algorithms in \pkg{pomp} are formulated in terms of elementary functions
+that access the basic model components
+(\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, etc.).
+For short, we refer to these elementary functions as \dQuote{\link{workhorses}}.
+In implementing a model, the user specifies basic model components
+using functions, procedures in dynamically-linked libraries, or C snippets.
+Each component is then packaged into a \sQuote{pomp_fun} objects, which gives a uniform interface.
+The construction of \sQuote{pomp_fun} objects is handled by the \code{hitch} function,
+which conceptually \dQuote{hitches} the workhorses to the user-defined procedures.
 }
 \seealso{
 \code{\link{pomp}}, \code{\link{spy}}
