@@ -18,7 +18,11 @@ p["sigma.1",] <- seq(from=1,to=7,by=1)
 try(dprocess("ou2",x=x,times=t,params=p))
 try(dprocess(x=x,times=t,params=p))
 try(po %>% dprocess(x=x,times=t,params=p,log=TRUE))
-po %>% dprocess(x=x,times=t,params=p[,1:3],log=TRUE)
+try(po %>% dprocess(x=x,times=t,params=p[,1:2],log=TRUE))
+try(po %>% dprocess(x=x,times=t[1:5],params=p,log=TRUE))
+po %>% dprocess(x=x,times=t,params=p[,1:3],log=TRUE) -> d1
+po %>% dprocess(x=x,times=t,params=p[,2],log=TRUE) -> d2
+stopifnot(d1[2,]==d2[2,])
 try(po %>% dprocess(x=x[,,2],times=t[2],params=p[,1:3],log=FALSE))
 try(po %>% dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:2],log=FALSE))
 po %>% dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
@@ -70,6 +74,7 @@ po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:3]) %>%
 simulate(
   times=seq(0,10), t0=0,
   params=c(s=3,x_0=0,tau=1),
+  covar=covariate_table(z=c(1,1),times=c(0,10)),
   rprocess = onestep.sim(
     function (t, x, s, delta.t, ...) {
       c(x=rnorm(n=1,mean=x,sd=s*sqrt(delta.t)))

@@ -94,6 +94,7 @@ t <- time(po)
 p <- coef(po)
 
 po %>% dmeasure(x=x,y=y,params=p,times=t,log=TRUE) -> d
-po %>% rmeasure(x=x,params=p,times=t) -> y
+po %>% rmeasure(x=x,params=p,times=t) -> yy
 
+po %>% pomp(dmeasure=function(...,log)1) %>% dmeasure(x=x,y=y,params=p,times=t) -> d
 
