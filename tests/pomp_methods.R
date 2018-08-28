@@ -22,14 +22,13 @@ stopifnot(identical(coef(po),numeric(0)))
 coef(po,c("r","sigma")) <- 1
 stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
 coef(po) <- NULL
-coef(po,c("r","sigma"),transform=TRUE) <- 0
-stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
+try(coef(po,c("r","sigma"),transform=TRUE) <- 0)
 coef(po) <- NULL
 coef(po) <- c(r=1,sigma=1)
 stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
 coef(po) <- NULL
-coef(po,transform=TRUE) <- c(r=0,sigma=0)
-stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
+coef(po,transform=TRUE) <- c(r=0,sigma=0,K=0,tau=0,X.0=0)
+stopifnot(all.equal(coef(po),c(r=1,sigma=1,K=1,tau=1,X.0=1)))
 
 pompExample(ou2,envir=NULL) -> ou2
 ou2[[1]] -> po
@@ -87,12 +86,11 @@ coef(po)
 coef(po,transform=TRUE,pars=c("r","K"))
 coef(po,"sigma",transform=TRUE) <- 0
 coef(po)
-coef(po,c("r","K")) <- c(a=1,b=2)
-coef(po,transform=TRUE) <- c(r=1,K=1)
+coef(po,c("r","K","sigma","tau","X.0")) <- c(a=1,b=2,c=3,d=4,e=5)
+coef(po) <- c(r=1,K=1)
 coef(po) <- NULL
 try(coef(po,transform=FALSE) <- c(5,3))
 try(coef(po,transform=TRUE) <- c(5,3))
-coef(po,transform=TRUE) <- c(r=1,K=1)
 coef(po)
 po %>%
   window(start=5,end=20) %>%

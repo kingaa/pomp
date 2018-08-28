@@ -38,7 +38,7 @@ Error : in ‘coef’: name ‘bob’ corresponds to no parameter.
 > try(coef(po) <- c(1,2,3))
 Error : in ‘coef<-’: ‘value’ must be a named vector.
 > try(coef(po,transform=TRUE) <- c(1,2,3))
-Error : in ‘partrans’: user transformation functions must return a named numeric vector
+Error : in ‘partrans’: variable 'r' not found among the parameters.
 > coef(po) <- list(as.list(coef(po)))
 > coef(po,"r") <- 0.2
 > coef(po,"r") <- list(r=0.2)
@@ -57,14 +57,14 @@ Warning messages:
 > coef(po,c("r","sigma")) <- 1
 > stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
 > coef(po) <- NULL
-> coef(po,c("r","sigma"),transform=TRUE) <- 0
-> stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
+> try(coef(po,c("r","sigma"),transform=TRUE) <- 0)
+Error : in ‘partrans’: variable 'K' not found among the parameters.
 > coef(po) <- NULL
 > coef(po) <- c(r=1,sigma=1)
 > stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
 > coef(po) <- NULL
-> coef(po,transform=TRUE) <- c(r=0,sigma=0)
-> stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
+> coef(po,transform=TRUE) <- c(r=0,sigma=0,K=0,tau=0,X.0=0)
+> stopifnot(all.equal(coef(po),c(r=1,sigma=1,K=1,tau=1,X.0=1)))
 > 
 > pompExample(ou2,envir=NULL) -> ou2
 > ou2[[1]] -> po
@@ -201,19 +201,17 @@ newly created object(s):
 > coef(po)
     K     r sigma   tau   X.0 
   1.0   0.1   1.0   0.1   1.0 
-> coef(po,c("r","K")) <- c(a=1,b=2)
+> coef(po,c("r","K","sigma","tau","X.0")) <- c(a=1,b=2,c=3,d=4,e=5)
 Warning message:
 in ‘coef<-’: names of ‘value’ are being discarded. 
-> coef(po,transform=TRUE) <- c(r=1,K=1)
+> coef(po) <- c(r=1,K=1)
 > coef(po) <- NULL
 > try(coef(po,transform=FALSE) <- c(5,3))
 Error : in ‘coef<-’: ‘value’ must be a named vector.
 > try(coef(po,transform=TRUE) <- c(5,3))
-Error : in ‘partrans’: user transformation functions must return a named numeric vector
-> coef(po,transform=TRUE) <- c(r=1,K=1)
+Error : in ‘partrans’: variable 'r' not found among the parameters.
 > coef(po)
-       r        K 
-2.718282 2.718282 
+numeric(0)
 > po %>%
 +   window(start=5,end=20) %>%
 +   pomp(covar=covariate_table(times=0:20,q=0:20),

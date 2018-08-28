@@ -8,143 +8,149 @@
 
 #include "pomp_internal.h"
 
+typedef enum {to = 1, from = -1} direction_t;
+
+static R_INLINE SEXP add_args (SEXP args, SEXP names)
+{
+
+  int nprotect = 0;
+  SEXP var;
+  int v;
+
+  for (v = LENGTH(names)-1; v >= 0; v--) {
+    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(args = LCONS(var,args)); nprotect++;
+    SET_TAG(args,install(CHAR(STRING_ELT(names,v))));
+  }
+
+  UNPROTECT(nprotect);
+  return args;
+
+}
+
+static R_INLINE SEXP eval_call (SEXP fn, SEXP args, double *p, int n)
+{
+
+  SEXP var = args, ans;
+  int v;
+
+  for (v = 0; v < n; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
+
+  PROTECT(ans = eval(LCONS(fn,args),CLOENV(fn)));
+
+  UNPROTECT(1);
+  return ans;
+
+}
+
 SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 {
   int nprotect = 0;
-  SEXP fn, fcall, rho, ans, nm;
-  SEXP pdim, pvec;
-  SEXP pompfun;
-  SEXP tparams = R_NilValue;
+  SEXP Pnames, tparams, pompfun, fn, args;
   pompfunmode mode = undef;
-  char direc;
-  int qmat;
-  int ndim[2], *dim, *idx;
-  double *pp, *ps, *pt, *pa;
-  int npar1, npar2, nreps;
-  pomp_transform_fn *ff = NULL;
-  int k;
+  direction_t direc;
+  int qvec, npars, nreps;
+  int *dim;
 
-  direc = *(INTEGER(dir));
-  // extract the user-defined function
+  qvec = isNull(GET_DIM(params)); // is 'params' a vector?
+
+  PROTECT(tparams = duplicate(params)); nprotect++;
+
+  // coerce 'params' to matrix
+  PROTECT(tparams = as_matrix(tparams)); nprotect++;
+  dim = INTEGER(GET_DIM(tparams));
+  npars = dim[0]; nreps = dim[1];
+
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(tparams))); nprotect++;
+
+  // determine direction of transformation and extract corresponding pomp_fun
+  direc = (direction_t) *(INTEGER(dir));
   switch (direc) {
-  case -1: default:	// forward transformation
-    PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("partrans")),
-      install("from"))); nprotect++;
-      PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
-      break;
-  case 1:			// inverse transformation
-    PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("partrans")),
-      install("to"))); nprotect++;
-      PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
-      break;
-  break;
+  case from: default:	// from estimation scale
+    PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("partrans")),install("from"))); nprotect++;
+    break;
+  case to:			// to estimation scale
+    PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("partrans")),install("to"))); nprotect++;
+    break;
   }
+
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
 
   // extract 'userdata' as pairlist
-  PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
-
-  PROTECT(pdim = GET_DIM(params)); nprotect++;
-  if (isNull(pdim)) {		// a single vector
-    npar1 = LENGTH(params); nreps = 1;
-    qmat = 0;
-  } else {			// a parameter matrix
-    dim = INTEGER(pdim);
-    npar1 = dim[0]; nreps = dim[1];
-    qmat = 1;
-  }
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
   switch (mode) {
 
-  case Rfun: 			// use user-supplied R function
+  case Rfun: {
 
-    // set up the function call
-    if (qmat) {		// matrix case
-      PROTECT(pvec = NEW_NUMERIC(npar1)); nprotect++;
-      SET_NAMES(pvec,GET_ROWNAMES(GET_DIMNAMES(params)));
-      PROTECT(fcall = LCONS(pvec,fcall)); nprotect++;
-    } else {			// vector case
-      PROTECT(fcall = LCONS(params,fcall)); nprotect++;
-    }
-    SET_TAG(fcall,install("params"));
-    PROTECT(fcall = LCONS(fn,fcall)); nprotect++;
+    SEXP ans, nm;
+    double *pa, *ps = REAL(tparams);
+    int *posn;
+    int i, j;
 
-    // the function's environment
-    PROTECT(rho = (CLOENV(fn))); nprotect++;
+    PROTECT(args = add_args(args,Pnames)); nprotect++;
 
-    if (qmat) {		// matrix case
-      const char *dimnm[2] = {"variable","rep"};
-      ps = REAL(params);
-      pp = REAL(pvec);
+    PROTECT(ans = eval_call(fn,args,ps,npars)); nprotect++;
 
-      memcpy(pp,ps,npar1*sizeof(double));
+    PROTECT(nm = GET_NAMES(ans)); nprotect++;
+    if (isNull(nm))
+      errorcall(R_NilValue,"user transformation functions must return named numeric vectors.");
+    posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters"))); nprotect++;
 
-      PROTECT(ans = eval(fcall,rho)); nprotect++;
+    pa = REAL(AS_NUMERIC(ans));
 
-      PROTECT(nm = GET_NAMES(ans)); nprotect++;
-      if (isNull(nm))
-        errorcall(R_NilValue,"user transformation functions must return a named numeric vector");
+    for (i = 0; i < LENGTH(ans); i++) ps[posn[i]] = pa[i];
 
-      // set up matrix to hold the results
-      npar2 = LENGTH(ans);
-      ndim[0] = npar2; ndim[1] = nreps;
-      PROTECT(tparams = makearray(2,ndim)); nprotect++;
-      setrownames(tparams,nm,2);
-      fixdimnames(tparams,dimnm,2);
-      pt = REAL(tparams);
+    for (j = 1, ps += npars; j < nreps; j++, ps += npars) {
 
+      PROTECT(ans = eval_call(fn,args,ps,npars));
       pa = REAL(AS_NUMERIC(ans));
-      memcpy(pt,pa,npar2*sizeof(double));
-
-      ps += npar1;
-      pt += npar2;
-      for (k = 1; k < nreps; k++, ps += npar1, pt += npar2) {
-        memcpy(pp,ps,npar1*sizeof(double));
-        pa = REAL(AS_NUMERIC(eval(fcall,rho)));
-        memcpy(pt,pa,npar2*sizeof(double));
-      }
-
-    } else {			// vector case
-
-      PROTECT(tparams = eval(fcall,rho)); nprotect++;
-      if (isNull(GET_NAMES(tparams)))
-        errorcall(R_NilValue,"user transformation functions must return a named numeric vector");
+      for (i = 0; i < LENGTH(ans); i++) ps[posn[i]] = pa[i];
+      UNPROTECT(1);
 
     }
+
+  }
 
     break;
 
-  case native:			// use native routine
+  case native: {
+
+    pomp_transform_fn *ff;
+    double *ps, *pt;
+    int *idx;
+    int j;
 
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
-    if (qmat) {
-      idx = INTEGER(PROTECT(name_index(GET_ROWNAMES(GET_DIMNAMES(params)),pompfun,"paramnames","parameters"))); nprotect++;
-    } else {
-      idx = INTEGER(PROTECT(name_index(PROTECT(GET_NAMES(params)),pompfun,"paramnames","parameters"))); nprotect+=2;
-    }
+    R_CheckUserInterrupt();
 
-    set_pomp_userdata(fcall);
+    idx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
 
-    PROTECT(tparams = duplicate(params)); nprotect++;
+    set_pomp_userdata(args);
 
-    for (k = 0, ps = REAL(params), pt = REAL(tparams); k < nreps; k++, ps += npar1, pt += npar1) {
-      R_CheckUserInterrupt();
+    for (j = 0, ps = REAL(params), pt = REAL(tparams); j < nreps; j++, ps += npars, pt += npars)
       (*ff)(pt,ps,idx);
-    }
 
     unset_pomp_userdata();
+
+  }
 
     break;
 
   default:
 
-    UNPROTECT(nprotect);
-    return params;
-
     break;
 
   }
 
+  if (qvec) {
+    PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(tparams))); nprotect++;
+    SET_DIM(tparams,R_NilValue);
+    SET_NAMES(tparams,Pnames);
+  }
+
   UNPROTECT(nprotect);
   return tparams;
+
 }

@@ -2,20 +2,36 @@
 
 ## For pomp 2:
 
-- let `pomp_fun_handler` to the variable lookups?
 - make R-level functions for various distributions and transformations
 - `valid_names` function to check for non-null, non-zero-length names
-- it should be possible to refer to times inside `covariate_table`
+- `compile = FALSE` option for `pomp`
+- it should be possible to refer to `times` inside `covariate_table`
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
-- `nsim` argument for rprior?
-- do we need `ncovars` in workhorse C function calls?
-- ~~revisit use of `enum`~~
-- combine documentation: (dmeasure,rmeasure), (dprocess,rprocess)
+- `nsim` argument for `rprior`?
+- should parameter transformations allow renaming of variables?
+	- would require attention to `rw.sd`, e.g.
+- refurbish entire test suite
+	- for each example and each demo,
+		- tests of each basic component
+		- plot of data, simulation, and particle filter (+ probes?)
+		- rough likelihood check
+	- order of testing development:
+		- workhorses
+		- simulate, trajectory, probe, pfilter
+		- abc, pmcmc, mif2, bsmc2, objfun methods
+		- test extractor methods, etc. as appropriate
+		- helper functions get their own test scripts
+- ~~we don't need `ncovars` in workhorse C function calls~~
+- combine documentation: (dmeasure,rmeasure), (dprocess,rprocess)?
 - regularize use of `pomp_stop` and `tryCatch` on *.internals
 - index by concept using `\concept{}` in the help files
+	- extending \pkg{pomp}
+	- low-level interface (incl. `hitch` and workhorses)
+	- 
 - better scheme for indicating derivatives and maps in C snippets
 - should the default process model be persistence?
 	- what would the corresponding `dprocess` be?
+- ~~revisit use of `enum`~~
 - covariates:
 	- ~~covariates provided using a constructor function~~
    	- piecewise constant interpolation of covariates
@@ -60,8 +76,6 @@
 - documentation on `mifList`, `pmcmcList`, etc.?
 - methods to change data (`obs<-`)?
 	- perhaps recognized data variables, states, covariates in calls to `pomp` are replaceed?
-- refurbish entire test suite
-	- perhaps use more, smaller method and function specific tests?
 - put Kalman check in 'gompertz' test: **is it correct?**
 - put Kalman check in 'ou2' test
 - MCMC proposals as pomp slots?

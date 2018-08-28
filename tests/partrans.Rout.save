@@ -26,18 +26,15 @@ newly created object(s):
 > 
 > theta1 <- coef(gompertz)
 > theta2 <- coef(gompertz,transform=TRUE)
-> stopifnot(all.equal(partrans(gompertz,theta1,dir="toEst"),
-+   theta2))
-> stopifnot(all.equal(partrans(gompertz,theta2,dir="fromEst"),
-+   theta1))
+> stopifnot(all.equal(partrans(gompertz,theta1,dir="toEst"),theta2))
+> stopifnot(all.equal(partrans(gompertz,theta2,dir="fromEst"),theta1))
 > theta3 <- theta2[order(runif(5))]
 > stopifnot(any(names(theta1)!=names(theta3)))
 > stopifnot(all.equal(partrans(gompertz,theta3)[names(theta1)],theta1))
 > 
 > theta3 <- theta2[-1]
-> partrans(gompertz,theta3)
-    r sigma   tau   X.0 
-  0.1   0.1   0.1   1.0 
+> try(partrans(gompertz,theta3))
+Error : in ‘partrans’: variable 'K' not found among the parameters.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("K = exp(T_K);")),
 +   paramnames="K"),theta3))
 Error : in ‘parameter_trans’: if one of ‘toEst’, ‘fromEst’ is supplied, then so must the other be.
@@ -49,14 +46,17 @@ Error : in ‘partrans’: variable 'K' not found among the parameters.
 Error : in ‘partrans’: variable 'K' not found among the parameters.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=function(params,...)unname(params),
 +   to=function(params,...)unname(params))),theta3))
-Error : in ‘partrans’: user transformation functions must return a named numeric vector
+Error : in ‘partrans’: argument "params" is missing, with no default
 > 
 > pp <- parmat(coef(gompertz),100)
 > pp["r",] <- runif(100,0,100)
 > stopifnot(all.equal(partrans(gompertz,partrans(gompertz,pp,dir="to")),pp))
 > try(partrans(pomp(gompertz,partrans=parameter_trans(
-+   from=function(params,...)unname(params),to=function(params,...)unname(params))),pp))
-Error : in ‘partrans’: user transformation functions must return a named numeric vector
++   from=function(...)unname(list(...)),to=function(...)unname(list(...)))),pp))
+Error : in ‘partrans’: user transformation functions must return named numeric vectors.
+> try(partrans(pomp(gompertz,partrans=parameter_trans(
++   from=function(...)unname(list(...)),to=NULL)),pp))
+Error : ‘parameter_trans’ not defined for objects of class ‘NULL’, ‘function’.
 > 
 > pompExample(ou2)
 newly created object(s):

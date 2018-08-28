@@ -24,11 +24,11 @@ simulate(times=1:100,t0=0,
     dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
   },
   partrans=parameter_trans(
-    toEst=function(params,...){
-      log(params)
+    toEst=function(r,K,sigma,tau,X.0,...){
+      log(c(r=r,K=K,sigma=sigma,tau=tau,X.0=X.0))
     },
-    fromEst=function(params,...){
-      exp(params)
+    fromEst=function(r,K,sigma,tau,X.0,...){
+      exp(c(r=r,K=K,sigma=sigma,tau=tau,X.0=X.0))
     }
   )
 ) -> gompertz

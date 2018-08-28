@@ -176,7 +176,7 @@ workhorse_templates <- list(
   fromEst=list(
     slotname="fromEst",
     Cname="__pomp_from_trans",
-    proto=quote(from.trans(params,...)),
+    proto=quote(from.trans(...)),
     header="\nvoid __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)\n{\n",
     footer="\n}\n\n",
     vars=list(
@@ -197,7 +197,7 @@ workhorse_templates <- list(
   toEst=list(
     slotname="toEst",
     Cname="__pomp_to_trans",
-    proto=quote(to.trans(params,...)),
+    proto=quote(to.trans(...)),
     header="\nvoid __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
     footer="\n}\n\n",
     vars=list(

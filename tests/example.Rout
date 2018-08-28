@@ -26,7 +26,7 @@ Type 'q()' to quit R.
 examples in /home/kingaa/projects/Rpkg/library/pomp/examples:
 [1] "bbs"       "blowflies" "dacca"     "gompertz"  "ou2"       "ricker"   
 [7] "rw2"       "sir"       "sir2"     
-> pompExample(ricker,show=TRUE)
+> pompExample("ricker",show=TRUE)
 library(pomp)
 
 dat <- '"time";"y"
