@@ -69,9 +69,9 @@ static R_INLINE SEXP eval_call (
 
   *(REAL(CAR(var))) = *t1; var = CDR(var);
   *(REAL(CAR(var))) = *t2; var = CDR(var);
-  for (v = 0; v < nvar; v++, x1++, x2++, var=CDR(var)) {
-    *(REAL(CAR(var))) = *x1;
-    *(REAL(CAR(var))) = *x2;
+  for (v = 0; v < nvar; v++, x1++, x2++) {
+    *(REAL(CAR(var))) = *x1; var = CDR(var);
+    *(REAL(CAR(var))) = *x2; var = CDR(var);
   }
   for (v = 0; v < npar; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
   for (v = 0; v < ncov; v++, c++, var=CDR(var)) *(REAL(CAR(var))) = *c;
@@ -104,7 +104,8 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
   int nvars, npars, nreps, ntimes, ncovars;
   SEXP Snames, Pnames, Cnames;
   SEXP fn;
-  SEXP F;
+  SEXP F, cvec;
+  double *cov;
   int *dim;
 
   dim = INTEGER(GET_DIM(x)); nvars = dim[0]; nreps = dim[1];
@@ -119,6 +120,8 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
 
   // set up the covariate table
   lookup_table_t covariate_table = make_covariate_table(covar,&ncovars);
+  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
+  cov = REAL(cvec);
 
   PROTECT(fn = pomp_fun_handler(func,gnsi,&mode)); nprotect++;
 
@@ -129,9 +132,8 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
   case Rfun: {
 
     SEXP ans;
-    double cov[ncovars];
     double *t1 = REAL(times), *t2 = REAL(times)+1;
-    double *ps = REAL(params);
+    double *ps;
     double *x1 = REAL(x), *x2 = REAL(x)+nvars*nreps;
     double *ft = REAL(F);
     int j, k;
@@ -145,9 +147,11 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
       // interpolate the covariates at time t1
       table_lookup(&covariate_table,*t1,cov);
 
-      for (j = 0; j < nreps; j++, ft++, x1 += nvars, x2 += nvars, ps += npars) {
+      for (j = 0, ps = REAL(params);
+        j < nreps;
+        j++, ft++, x1 += nvars, x2 += nvars, ps += npars) {
 
-        PROTECT(ans = eval_call(fn,args,t1,t2,x1,x2,nvars,ps,npars,cov,ncovars)); nprotect++;
+        PROTECT(ans = eval_call(fn,args,t1,t2,x1,x2,nvars,ps,npars,cov,ncovars));
 
         *ft = *(REAL(AS_NUMERIC(ans)));
 
@@ -166,7 +170,6 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
   case native: case regNative: {
 
     int *sidx, *pidx, *cidx;
-    double cov[ncovars];
     double *t1 = REAL(times), *t2 = REAL(times)+1;
     double *ps = REAL(params);
     double *x1 = REAL(x), *x2 = REAL(x)+nvars*nreps;

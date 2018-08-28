@@ -27,6 +27,9 @@ try(po %>% dprocess(x=x[,1:2,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
     apply(1,sum))
 po %>% dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
   apply(1,sum)
+po %>% pomp(dprocess=NULL) %>%
+  dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>% is.na() %>%
+  stopifnot()
 
 po %>% rinit(params=coef(po)) -> x0
 freeze(po %>%
@@ -63,3 +66,25 @@ try(po %>% rprocess(xstart=x0[,2],times=t[2],params=p[,1:3]))
 try(po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:2]))
 po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:3]) %>%
   apply(1,sum)
+
+simulate(
+  times=seq(0,10), t0=0,
+  params=c(s=3,x_0=0,tau=1),
+  rprocess = onestep.sim(
+    function (t, x, s, delta.t, ...) {
+      c(x=rnorm(n=1,mean=x,sd=s*sqrt(delta.t)))
+    }
+  ),
+  dprocess = function (x_1, x_2, s, t_1, t_2, ...) {
+    delta.t <- t_2-t_1
+    dnorm(x=x_2,mean=x_1,sd=s*sqrt(delta.t),log=TRUE)
+  },
+  seed=3434388L
+) -> rw
+
+dprocess(rw,x=states(rw),params=coef(rw),times=time(rw),log=TRUE) -> d
+stopifnot(
+  round(sum(d),1)==-23.2,
+  dim(d)==c(1,10),
+  names(dimnames(d))==c("rep","time")
+)
