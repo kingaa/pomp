@@ -12,6 +12,8 @@ stopifnot(any(names(theta1)!=names(theta3)))
 stopifnot(all.equal(partrans(gompertz,theta3)[names(theta1)],theta1))
 
 theta3 <- theta2[-1]
+try(partrans(params=theta1))
+try(partrans("gompertz",params=theta1))
 try(partrans(gompertz,theta3))
 try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("K = exp(T_K);")),
   paramnames="K"),theta3))

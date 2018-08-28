@@ -16,7 +16,7 @@
 		- plot of data, simulation, and particle filter (+ probes?)
 		- rough likelihood check
 	- order of testing development:
-		- workhorses
+		- ~~workhorses~~
 		- simulate, trajectory, probe, pfilter
 		- abc, pmcmc, mif2, bsmc2, objfun methods
 		- test extractor methods, etc. as appropriate
@@ -121,9 +121,6 @@
 ## Tests
 
 ### Unreconstructed:
-
-tests/logistic.R
-tests/rw2.R
 
 tests/filtfail.R
 tests/forecast.R

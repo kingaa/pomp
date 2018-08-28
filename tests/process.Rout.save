@@ -25,6 +25,8 @@ Type 'q()' to quit R.
 > pompExample(ou2,envir=NULL) -> ou2
 > ou2[[1]] %>% window(end=10) -> po
 > 
+> set.seed(293982095)
+> 
 > po %>%
 +   simulate(format="arrays",nsim=3,seed=3434388L) %>%
 +   extract2("states") -> x
@@ -32,6 +34,10 @@ Type 'q()' to quit R.
 > coef(po) %>% parmat(7) -> p
 > p["sigma.1",] <- seq(from=1,to=7,by=1)
 > 
+> try(dprocess("ou2",x=x,times=t,params=p))
+Error : ‘dprocess’ is not defined for objects of class ‘character’
+> try(dprocess(x=x,times=t,params=p))
+Error : in ‘dprocess’: ‘object’ is a required argument
 > try(po %>% dprocess(x=x,times=t,params=p,log=TRUE))
 Error : in ‘dprocess’: the larger number of replicates is not a multiple of smaller.
 > po %>% dprocess(x=x,times=t,params=p[,1:3],log=TRUE)
@@ -48,10 +54,10 @@ Error : in ‘dprocess’: the larger number of replicates is not a multiple of 
 +   apply(1,sum)
 [1] -30.7 -12.2 -14.3
 > try(po %>% dprocess(x=x[,1:2,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
-+   apply(1,sum))
++     apply(1,sum))
 Error : in ‘dprocess’: the larger number of replicates is not a multiple of smaller.
 > po %>% dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
-+     apply(1,sum)
++   apply(1,sum)
 [1] -30.7 -20.1 -19.1
 > 
 > po %>% rinit(params=coef(po)) -> x0
@@ -61,4 +67,29 @@ Error : in ‘dprocess’: the larger number of replicates is not a multiple of 
 +   seed=3434388L) -> x1
 > 
 > stopifnot(max(abs(x-x1))==0)
+> 
+> po %>% rinit(nsim=6) -> x0
+> try(rprocess("ou2",xstart=x0,times=t,params=p))
+Error : ‘rprocess’ is not defined for objects of class ‘character’
+> try(rprocess(xstart=x0,times=t,params=p))
+Error : in ‘rprocess’: ‘object’ is a required argument
+> try(po %>% rprocess(times=t,params=p))
+Error : in ‘rprocess’: argument "xstart" is missing, with no default
+> try(po %>% rprocess(xstart=x0,params=p))
+Error : in ‘rprocess’: argument "times" is missing, with no default
+> try(po %>% rprocess(xstart=x0,times=t))
+Error : in ‘rprocess’: argument "params" is missing, with no default
+> po %>% rprocess(xstart=x0,times=t,params=p[,1:3],log=TRUE) -> x
+> stopifnot(
++   dim(x)==c(2,6,10),
++   names(dimnames(x))==c("variable","rep","time")
++ )
+> try(po %>% rprocess(xstart=x0[,2],times=t[2],params=p[,1:3],log=FALSE))
+Error : in ‘rprocess’: length(times) < 2: with no transitions, there is no work to do.
+> try(po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:2],log=FALSE))
+Error : in ‘rprocess’: the larger number of replicates is not a multiple of smaller.
+> po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:3],log=TRUE) %>%
++   apply(1,sum)
+   x1    x2 
+ 3.08 57.49 
 > 

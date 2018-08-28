@@ -17,9 +17,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> options(digits=3)
-> 
 > library(pomp)
+> library(magrittr)
 > 
 > pompExample(ou2)
 newly created object(s):
@@ -28,68 +27,114 @@ newly created object(s):
 > po <- window(ou2,end=10)
 > 
 > set.seed(3434388L)
-> x <- simulate(po,format="arrays",nsim=100)$states
+> simulate(po,nsim=5,format="arrays") -> y
+> y %>% extract2("states") -> x
 > t <- time(po)
-> theta <- coef(po)
+> p <- coef(po)
 > 
-> rmeasure(po,x=x,times=t,params=theta) -> y
-> stopifnot(identical(dim(y),c(2L,100L,10L)))
-> fivenum(as.numeric(y-x)/coef(po,"tau"))
-[1] -3.22774 -0.72443 -0.00876  0.64728  4.12427
+> rmeasure(po,x=x,times=t,params=p) -> y
+> stopifnot(
++   dim(y)==c(2,5,10),
++   names(dimnames(y))==c("variable","rep","time")
++ )
 > 
-> try(rmeasure(x=x,times=t,params=theta))
+> try(rmeasure("ou2",x=x,times=t,params=p))
+Error : ‘rmeasure’ is not defined for objects of class ‘character’
+> try(rmeasure(x=x,times=t,params=p))
 Error : in ‘rmeasure’: ‘object’ is a required argument
+> try(rmeasure(x,times=t,params=p))
+Error : ‘rmeasure’ is not defined for objects of class ‘array’
 > try(rmeasure(po,x=x,times=t))
 Error : in ‘rmeasure’: argument "params" is missing, with no default
-> try(rmeasure(po,x=x,params=theta))
+> try(rmeasure(po,x=x,params=p))
 Error : in ‘rmeasure’: argument "times" is missing, with no default
-> try(rmeasure(po,times=t,params=theta))
-Error : in ‘rmeasure’: argument "x" is missing, with no default
-> try(rmeasure(po,x=as.numeric(x),y=y,times=t,params=theta))
+> try(rmeasure(po,x=x,times=t,params=p))
+, , 1
+
+        rep
+variable      [,1]      [,2]      [,3]      [,4]       [,5]
+      y1 -1.898813 -2.149436 0.7251438 -6.155223 -0.5667733
+      y2  6.265247  6.259881 4.8719129  4.682367  6.6767418
+
+, , 2
+
+        rep
+variable     [,1]     [,2]     [,3]      [,4]       [,5]
+      y1 2.131121 -5.77319 5.441811 0.3315662  0.6400511
+      y2 4.524364  3.00811 3.017195 8.1874124 12.0747195
+
+, , 3
+
+        rep
+variable     [,1]     [,2]      [,3]     [,4]         [,5]
+      y1 3.998190 1.123652  7.617665 1.624805  0.001204963
+      y2 1.980709 1.727393 -3.287055 4.617323 14.022744768
+
+, , 4
+
+        rep
+variable       [,1]     [,2]       [,3]     [,4]     [,5]
+      y1 -0.6529852 3.398032   4.334036 4.937457 5.379318
+      y2  0.8277290 2.584567 -10.358024 1.732512 9.771234
+
+, , 5
+
+        rep
+variable       [,1]     [,2]       [,3]      [,4]     [,5]
+      y1 -0.2585985 3.149037   1.568659  4.703346 8.213450
+      y2 -1.5383470 2.866436 -15.321798 -4.151083 7.199807
+
+, , 6
+
+        rep
+variable      [,1]     [,2]       [,3]      [,4]       [,5]
+      y1 -4.415454 5.358031  -2.797841  4.584664  8.6955747
+      y2 -1.312635 1.905209 -16.180481 -7.278861 -0.9549446
+
+, , 7
+
+        rep
+variable       [,1]      [,2]       [,3]       [,4]      [,5]
+      y1  1.6192773 2.8821320 -10.681696 -0.5226538  9.862165
+      y2 -0.9271601 0.3802523  -9.708891 -5.7703553 -4.821622
+
+, , 8
+
+        rep
+variable       [,1]     [,2]      [,3]      [,4]      [,5]
+      y1  0.5625332 2.353611 -7.056233  2.403723  3.708461
+      y2 -4.2866410 4.164423 -4.861476 -8.545374 -7.088482
+
+, , 9
+
+        rep
+variable      [,1]      [,2]        [,3]      [,4]       [,5]
+      y1 -4.213595 4.5395752 -13.2344731 -3.572157   4.261491
+      y2 -4.635659 0.5046898   0.6141841 -8.242153 -10.009567
+
+, , 10
+
+        rep
+variable      [,1]      [,2]       [,3]      [,4]      [,5]
+      y1 -4.175412  2.284606 -12.239060 -4.184590 -6.385012
+      y2 -2.723123 -1.858752   5.376943 -4.752826 -8.353459
+
+> try(rmeasure(po,x=as.numeric(x),times=t,params=p))
 Error : in ‘rmeasure’: length of 'times' and 3rd dimension of 'x' do not agree.
-> try(rmeasure(po,x=x,times=NULL,params=theta))
+> try(rmeasure(po,x=x,times=NULL,params=p))
 Error : in ‘rmeasure’: length('times') = 0, no work to do.
-> try(rmeasure(po,x=x[,,1],times=t[1],params=theta))
+> try(rmeasure(po,x=x[,,1],times=t[1],params=p))
 Error : in ‘rmeasure’: length of 'times' and 3rd dimension of 'x' do not agree.
-> invisible(rmeasure(po,x=x[,,1,drop=FALSE],times=t[1],params=theta))
-> freeze(rmeasure(po,x=x[,1,],times=t,params=theta),seed=349596L) -> y1
-> freeze(rmeasure(po,x=x[,1,,drop=FALSE],times=t,params=theta),seed=349596L) -> y2
-> stopifnot(all.equal(as.numeric(y1),as.numeric(y2)))
-> try(rmeasure(po,x=x[1,,,drop=FALSE],times=t,params=theta))
+> invisible(rmeasure(po,x=x[,,1,drop=FALSE],times=t[1],params=p))
+> try(rmeasure(po,x=x[1,,,drop=FALSE],times=t,params=p))
 Error : in ‘rmeasure’: variable 'x2' not found among the state variables.
-> k <- which(names(theta)=="tau")
-> try(rmeasure(po,x=x,y=y,times=t,params=theta[-k]))
+> k <- which(names(p)=="tau")
+> try(rmeasure(po,x=x,y=y,times=t,params=p[-k]))
 Error : in ‘rmeasure’: variable 'tau' not found among the parameters.
-> try(rmeasure(pomp(po,rmeasure=function(...)c(3,3)),
-+   x=x,y=y,times=t,params=theta))
-Error : in ‘rmeasure’: 'rmeasure' must return a named numeric vector.
-> try(rmeasure(pomp(po,rmeasure=function(...)c()),
-+   x=x,y=y,times=t,params=theta))
-Error : in ‘rmeasure’: 'rmeasure' must return a named numeric vector.
 > 
-> rmeasure(pomp(po,rmeasure=function(...)c(y2=3,y1=3)),
-+   x=x,y=y,times=t,params=theta) -> z
-> stopifnot(dim(z)==c(2,100,10),rownames(z)==c("y2","y1"),z[]==3)
-> 
-> try(rmeasure(pomp(po,rmeasure=function(...)c(3,2,1)),
-+   x=x,y=y,times=t,params=theta))
-Error : in ‘rmeasure’: 'rmeasure' must return a named numeric vector.
-> 
-> rmeasure(pomp(po,rmeasure=function(...)c(a=3,b=2,c=1)),
-+   x=x,y=y,times=t,params=theta) -> z
-> 
-> stopifnot(dim(z)==c(3,100,10),rownames(z)==c("a","b","c"),
-+   max(abs(z-c(3,2,1)))==0)
-> 
-> pp <- parmat(theta,10)
-> rmeasure(po,params=pp,x=x,y=y,t=t) -> y
-> try(rmeasure(po,params=pp[,1:7],x=x,t=t))
+> pp <- parmat(p,5)
+> try(rmeasure(po,x=x,times=t,params=pp[,1:3]))
 Error : in ‘rmeasure’: larger number of replicates is not a multiple of smaller.
-> 
-> pompExample(dacca)
-newly created object(s):
- dacca 
-> set.seed(3434388L)
-> po <- window(dacca,end=1892)
-> dat <- simulate(po,format="arrays",nsim=2)
+> rmeasure(po,x=x,times=t,params=pp) -> y
+> stopifnot(dim(y)==c(2,5,10),names(dimnames(y))==c("variable","rep","time"))
 > 

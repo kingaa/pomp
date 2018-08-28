@@ -8,6 +8,7 @@ library(plyr)
 
 pompExample(ricker)
 
+
 ricker <- simulate(ricker,times=1:500,seed=366829807L)
 x <- states(ricker)
 p <- parmat(coef(ricker),3)
@@ -24,6 +25,9 @@ f %>% melt() %>%
   geom_line()+
   labs(y=expression(N[t+1]),x=expression(N[t]),color=expression(log(r)))+
   theme_classic()
+
+try(skeleton(x=x,times=time(ricker),params=p))
+try(skeleton("ricker",x=x,times=time(ricker),params=p))
 
 pompExample(sir)
 p <- parmat(coef(sir),nrep=3)

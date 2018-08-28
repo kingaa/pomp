@@ -29,6 +29,7 @@ Type 'q()' to quit R.
 newly created object(s):
  ricker 
 > 
+> 
 > ricker <- simulate(ricker,times=1:500,seed=366829807L)
 > x <- states(ricker)
 > p <- parmat(coef(ricker),3)
@@ -45,6 +46,11 @@ newly created object(s):
 +   geom_line()+
 +   labs(y=expression(N[t+1]),x=expression(N[t]),color=expression(log(r)))+
 +   theme_classic()
+> 
+> try(skeleton(x=x,times=time(ricker),params=p))
+Error : in ‘skeleton’: ‘object’ is a required argument
+> try(skeleton("ricker",x=x,times=time(ricker),params=p))
+Error : ‘skeleton’ is not defined for objects of class ‘character’
 > 
 > pompExample(sir)
 newly created object(s):
