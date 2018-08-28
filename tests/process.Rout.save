@@ -79,17 +79,35 @@ Error : in ‘rprocess’: argument "xstart" is missing, with no default
 Error : in ‘rprocess’: argument "times" is missing, with no default
 > try(po %>% rprocess(xstart=x0,times=t))
 Error : in ‘rprocess’: argument "params" is missing, with no default
-> po %>% rprocess(xstart=x0,times=t,params=p[,1:3],log=TRUE) -> x
+> try(po %>% rprocess(xstart=x0,times=t,params=p))
+Error : in ‘rprocess’: the larger number of replicates is not a multiple of smaller.
+> try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=-3))
+Error : in ‘rprocess’: illegal 'offset' value.
+> try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=500))
+Error : in ‘rprocess’: illegal 'offset' value.
+> try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=NA))
+Error : in ‘rprocess’: invalid ‘offset’.
+> try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=Inf))
+Error : in ‘rprocess’: invalid ‘offset’.
+> po %>% rprocess(xstart=x0,times=t,params=p[,1:3]) -> x
 > stopifnot(
 +   dim(x)==c(2,6,10),
 +   names(dimnames(x))==c("variable","rep","time")
 + )
-> try(po %>% rprocess(xstart=x0[,2],times=t[2],params=p[,1:3],log=FALSE))
+> po %>% rprocess(xstart=x0[,2],times=t,params=p[,1:3]) -> x
+> stopifnot(
++   dim(x)==c(2,3,10),
++   names(dimnames(x))==c("variable","rep","time")
++ )
+> 
+> try(po %>% rprocess(xstart=x0,times=t[2],params=p))
 Error : in ‘rprocess’: length(times) < 2: with no transitions, there is no work to do.
-> try(po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:2],log=FALSE))
+> try(po %>% rprocess(xstart=x0[,2],times=t[2],params=p[,1:3]))
+Error : in ‘rprocess’: length(times) < 2: with no transitions, there is no work to do.
+> try(po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:2]))
 Error : in ‘rprocess’: the larger number of replicates is not a multiple of smaller.
-> po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:3],log=TRUE) %>%
+> po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:3]) %>%
 +   apply(1,sum)
    x1    x2 
- 3.08 57.49 
+-27.5  36.2 
 > 

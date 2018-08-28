@@ -25,6 +25,8 @@ Type 'q()' to quit R.
 > pompExample(ou2,envir=NULL) -> ou2
 > ou2[[1]] -> po
 > 
+> stopifnot(po %>% rprior(params=coef(po)) %>% extract(,1)==coef(po))
+> 
 > coef(po,"alpha.sd") <- 5
 Warning message:
 in ‘coef<-’: name ‘alpha.sd’ refers to no existing parameter; it is being concatenated. 
@@ -61,7 +63,7 @@ in ‘coef<-’: name ‘alpha.sd’ refers to no existing parameter; it is bein
 > 
 > replicate(5,rprior(po,params=coef(po))) %>% parmat() -> theta
 > stopifnot(round(dprior(po,params=theta,log=TRUE),3) ==
-+   c(-12.237, -10.848, -15.806, -10.847, -11.526))
++     c(-12.237, -10.848, -15.806, -10.847, -11.526))
 > 
 > try(dprior("ou2",params=theta))
 Error : ‘dprior’ is not defined for objects of class ‘character’
@@ -72,4 +74,13 @@ Error : in ‘dprior’: ‘object’ is a required argument
 Error : ‘rprior’ is not defined for objects of class ‘character’
 > try(rprior(params=theta))
 Error : in ‘rprior’: ‘object’ is a required argument
+> 
+> try(po %>% pomp(rprior=function(...)c(1,3,3)) %>% rprior(params=theta))
+Error : in ‘rprior’: 'rprior' must return a named numeric vector.
+> po %>% rprior(params=parmat(theta,3)) -> p
+> stopifnot(
++   dim(p)==c(11,15),
++   names(dimnames(p))==c("variable","rep"),
++   rownames(p)==names(coef(po))
++ )
 > 

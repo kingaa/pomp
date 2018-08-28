@@ -575,6 +575,7 @@ rprocess.internal <- function (object, xstart, times, params, offset = 0L,
   .getnativesymbolinfo = TRUE, ...) {
   storage.mode(xstart) <- "double"
   storage.mode(params) <- "double"
+  if (!is.finite(offset)) pStop_("invalid ",sQuote("offset"),".")
   pompLoad(object)
   on.exit(pompUnload(object))
   .Call(do_rprocess,object,xstart,times,params,offset,.getnativesymbolinfo)

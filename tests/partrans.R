@@ -32,6 +32,35 @@ try(partrans(pomp(gompertz,partrans=parameter_trans(
 try(partrans(pomp(gompertz,partrans=parameter_trans(
   from=function(...)unname(list(...)),to=NULL)),pp))
 
+stopifnot(
+  {
+    partrans(
+      pomp(gompertz,
+        partrans=parameter_trans(
+          from=function(r,...) c(r=exp(r)),
+          to=function(r,...) c(r=log(r))
+        )
+      ),
+      params=parmat(coef(gompertz),2),
+      dir="to"
+    ) -> p1
+
+    partrans(
+      pomp(gompertz,
+        partrans=parameter_trans(
+          from=function(r,...) c(r=exp(r)),
+          to=function(r,...) c(r=log(r))
+        )
+      ),
+      params=p1,
+      dir="from"
+    ) -> p2
+
+    all.equal(p2,parmat(coef(gompertz),2))
+
+  }
+)
+
 pompExample(ou2)
 pp <- parmat(coef(ou2),10)
 stopifnot(all.equal(partrans(ou2,partrans(ou2,pp,dir="to"),dir="from"),pp))

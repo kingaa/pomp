@@ -41,7 +41,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
 
   off = *(INTEGER(AS_INTEGER(offset)));
   if ((off < 0)||(off>=ntimes))
-    errorcall(R_NilValue,"illegal 'offset' value %d",off);
+    errorcall(R_NilValue,"illegal 'offset' value.");
 
   PROTECT(xstart = as_matrix(xstart)); nprotect++;
   PROTECT(dimXstart = GET_DIM(xstart)); nprotect++;

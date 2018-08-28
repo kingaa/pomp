@@ -8,7 +8,6 @@ library(plyr)
 
 pompExample(ricker)
 
-
 ricker <- simulate(ricker,times=1:500,seed=366829807L)
 x <- states(ricker)
 p <- parmat(coef(ricker),3)
@@ -45,5 +44,19 @@ join(f,dtj,by=c("time","variable","rep")) %>%
   guides(color=FALSE)+
   labs(x="derivative",y="finite difference")+
   theme_bw()
+
+try(ricker %>% pomp(skeleton=map(function(...)c(5))) %>%
+    skeleton(x=x,times=time(ricker),params=coef(ricker)))
+try(ricker %>% pomp(skeleton=map(function(...)c(5,3))) %>%
+    skeleton(x=x,times=time(ricker),params=coef(ricker)))
+ricker %>% skeleton(x=x,times=time(ricker),params=parmat(coef(ricker),2)) -> xx
+try(ricker %>% skeleton(x=xx,times=time(ricker),params=parmat(coef(ricker),3)))
+try(ricker %>% skeleton(x=xx,times=time(ricker)[1:5],params=parmat(coef(ricker),2)))
+
+stopifnot(
+  ricker %>% pomp(skeleton=NULL) %>%
+    skeleton(x=x,times=time(ricker),params=coef(ricker)) %>%
+    is.na()
+)
 
 dev.off()

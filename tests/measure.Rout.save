@@ -81,3 +81,71 @@ Error : in ‘dmeasure’: larger number of replicates is not a multiple of smal
 > dmeasure(po,x=x,y=y,times=t,params=pp) -> d
 > stopifnot(dim(d)==c(5,10),names(dimnames(d))==c("rep","time"))
 > 
+> rmeasure(po,x=x,times=t,params=p) -> y
+> stopifnot(
++   dim(y)==c(2,5,10),
++   names(dimnames(y))==c("variable","rep","time")
++ )
+> 
+> try(rmeasure("ou2",x=x,times=t,params=p))
+Error : ‘rmeasure’ is not defined for objects of class ‘character’
+> try(rmeasure(x=x,times=t,params=p))
+Error : in ‘rmeasure’: ‘object’ is a required argument
+> try(rmeasure(x,times=t,params=p))
+Error : ‘rmeasure’ is not defined for objects of class ‘array’
+> try(rmeasure(po,x=x,times=t))
+Error : in ‘rmeasure’: argument "params" is missing, with no default
+> try(rmeasure(po,x=x,params=p))
+Error : in ‘rmeasure’: argument "times" is missing, with no default
+> try(rmeasure(po,x=as.numeric(x),times=t,params=p))
+Error : in ‘rmeasure’: length of 'times' and 3rd dimension of 'x' do not agree.
+> try(rmeasure(po,x=x,times=NULL,params=p))
+Error : in ‘rmeasure’: length('times') = 0, no work to do.
+> try(rmeasure(po,x=x[,,1],times=t[1],params=p))
+Error : in ‘rmeasure’: length of 'times' and 3rd dimension of 'x' do not agree.
+> invisible(rmeasure(po,x=x[,,1,drop=FALSE],times=t[1],params=p))
+> try(rmeasure(po,x=x[1,,,drop=FALSE],times=t,params=p))
+Error : in ‘rmeasure’: variable 'x2' not found among the state variables.
+> k <- which(names(p)=="tau")
+> try(rmeasure(po,x=x,y=y,times=t,params=p[-k]))
+Error : in ‘rmeasure’: variable 'tau' not found among the parameters.
+> 
+> pp <- parmat(p,5)
+> try(rmeasure(po,x=x,times=t,params=pp[,1:3]))
+Error : in ‘rmeasure’: larger number of replicates is not a multiple of smaller.
+> rmeasure(po,x=x,times=t,params=pp) -> y
+> stopifnot(dim(y)==c(2,5,10),names(dimnames(y))==c("variable","rep","time"))
+> 
+> po %>% pomp(
++   rmeasure=function(...)c(1,2,3),
++   dmeasure=function(...,log)c(3,2)
++ ) -> po1
+> try(po1 %>% rmeasure(x=x,times=t,params=p))
+Error : in ‘rmeasure’: 'rmeasure' must return a named numeric vector.
+> try(po1 %>% dmeasure(x=x,y=y[,1,],times=t,params=p))
+Error : in ‘dmeasure’: user 'dmeasure' returns a vector of length 2 when it should return a scalar.
+> 
+> po %>% pomp(
++   rmeasure=NULL,
++   dmeasure=NULL
++ ) -> po1
+> po1 %>% rmeasure(x=x,times=t,params=p) %>% is.na() %>% stopifnot()
+> po1 %>% dmeasure(x=x,y=y[,1,],times=t,params=p) %>% is.na() %>% stopifnot()
+> 
+> pompExample(sir)
+newly created object(s):
+ sir 
+> po <- window(sir,end=0.5)
+> 
+> set.seed(3434388L)
+> simulate(po,nsim=5,format="arrays") -> y
+> y %>% extract2("states") -> x
+> y %>% extract2("obs") %>% extract(,1,,drop=FALSE) -> y
+> t <- time(po)
+> p <- coef(po)
+> 
+> po %>% dmeasure(x=x,y=y,params=p,times=t,log=TRUE) -> d
+> po %>% rmeasure(x=x,params=p,times=t) -> y
+> 
+> 
+> 

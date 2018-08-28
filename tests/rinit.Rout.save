@@ -44,6 +44,10 @@ Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix 
 +   pomp(rinit=function (...) 5) -> po
 > try(rinit(po))
 Error : in ‘rinit’: user 'rinit' must return a named numeric vector
+> try(rinit("gompertz"))
+Error : ‘rinit’ is not defined for objects of class ‘character’
+> try(rinit())
+Error : in ‘rinit’: ‘object’ is a required argument
 > 
 > pp <- parmat(coef(gompertz),10)
 > stopifnot(gompertz %>% rinit(params=pp) %>% as.numeric()==1)

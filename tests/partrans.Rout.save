@@ -62,6 +62,35 @@ Error : in ‘partrans’: user transformation functions must return named numer
 +   from=function(...)unname(list(...)),to=NULL)),pp))
 Error : ‘parameter_trans’ not defined for objects of class ‘NULL’, ‘function’.
 > 
+> stopifnot(
++   {
++     partrans(
++       pomp(gompertz,
++         partrans=parameter_trans(
++           from=function(r,...) c(r=exp(r)),
++           to=function(r,...) c(r=log(r))
++         )
++       ),
++       params=parmat(coef(gompertz),2),
++       dir="to"
++     ) -> p1
++ 
++     partrans(
++       pomp(gompertz,
++         partrans=parameter_trans(
++           from=function(r,...) c(r=exp(r)),
++           to=function(r,...) c(r=log(r))
++         )
++       ),
++       params=p1,
++       dir="from"
++     ) -> p2
++ 
++     all.equal(p2,parmat(coef(gompertz),2))
++ 
++   }
++ )
+> 
 > pompExample(ou2)
 newly created object(s):
  ou2 

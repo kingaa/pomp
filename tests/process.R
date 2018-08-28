@@ -42,12 +42,24 @@ try(rprocess(xstart=x0,times=t,params=p))
 try(po %>% rprocess(times=t,params=p))
 try(po %>% rprocess(xstart=x0,params=p))
 try(po %>% rprocess(xstart=x0,times=t))
-po %>% rprocess(xstart=x0,times=t,params=p[,1:3],log=TRUE) -> x
+try(po %>% rprocess(xstart=x0,times=t,params=p))
+try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=-3))
+try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=500))
+try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=NA))
+try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=Inf))
+po %>% rprocess(xstart=x0,times=t,params=p[,1:3]) -> x
 stopifnot(
   dim(x)==c(2,6,10),
   names(dimnames(x))==c("variable","rep","time")
 )
-try(po %>% rprocess(xstart=x0[,2],times=t[2],params=p[,1:3],log=FALSE))
-try(po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:2],log=FALSE))
-po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:3],log=TRUE) %>%
+po %>% rprocess(xstart=x0[,2],times=t,params=p[,1:3]) -> x
+stopifnot(
+  dim(x)==c(2,3,10),
+  names(dimnames(x))==c("variable","rep","time")
+)
+
+try(po %>% rprocess(xstart=x0,times=t[2],params=p))
+try(po %>% rprocess(xstart=x0[,2],times=t[2],params=p[,1:3]))
+try(po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:2]))
+po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:3]) %>%
   apply(1,sum)

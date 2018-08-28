@@ -14,6 +14,8 @@ gompertz %>% simulate(rinit=NULL)
 gompertz %>%
   pomp(rinit=function (...) 5) -> po
 try(rinit(po))
+try(rinit("gompertz"))
+try(rinit())
 
 pp <- parmat(coef(gompertz),10)
 stopifnot(gompertz %>% rinit(params=pp) %>% as.numeric()==1)
