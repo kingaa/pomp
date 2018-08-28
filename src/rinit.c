@@ -120,7 +120,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     PROTECT(ans = eval_call(fn,args,time,ps,npar,cov,ncovars)); nprotect++;
     PROTECT(Snames = GET_NAMES(ans)); nprotect++;
 
-    if (!IS_NUMERIC(ans) || isNull(Snames))
+    if (!IS_NUMERIC(ans) || invalid_names(Snames))
       errorcall(R_NilValue,"user 'rinit' must return a named numeric vector");
 
     nvar = LENGTH(ans);

@@ -231,7 +231,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
             PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars)); nprotect++;
 
             PROTECT(nm = GET_NAMES(ans)); nprotect++;
-            if (isNull(nm))
+            if (invalid_names(nm))
               errorcall(R_NilValue,"'rprocess' must return a named numeric vector.");
             posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
 

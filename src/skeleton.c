@@ -116,7 +116,7 @@ void eval_skeleton_R (
 
         // get name information to fix alignment problems
         PROTECT(nm = GET_NAMES(ans)); nprotect++;
-        if (isNull(nm))
+        if (invalid_names(nm))
           errorcall(R_NilValue,"'skeleton' must return a named numeric vector.");
         posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
         fs = REAL(AS_NUMERIC(ans));

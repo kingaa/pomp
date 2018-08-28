@@ -239,6 +239,15 @@ static R_INLINE SEXP paste (SEXP a, SEXP b, SEXP sep) {
   return x;
 }
 
+// check if names exist and are nonempty
+static R_INLINE int invalid_names (SEXP names) {
+  int i, ok;
+  ok = !isNull(names);
+  for (i = 0; ok && i < LENGTH(names); i++)
+    ok = ok && LENGTH(STRING_ELT(names,i)) > 0;
+  return !ok;
+}
+
 #ifdef __cplusplus
 
 template <class Scalar>

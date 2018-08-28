@@ -96,7 +96,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
         PROTECT(ans = eval_call(fn,args,ps,npars)); nprotect++;
 
         PROTECT(nm = GET_NAMES(ans)); nprotect++;
-        if (isNull(nm))
+        if (invalid_names(nm))
           errorcall(R_NilValue,"'rprior' must return a named numeric vector.");
         posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters"))); nprotect++;
 

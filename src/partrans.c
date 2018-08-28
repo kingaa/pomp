@@ -93,7 +93,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     PROTECT(ans = eval_call(fn,args,ps,npars)); nprotect++;
 
     PROTECT(nm = GET_NAMES(ans)); nprotect++;
-    if (isNull(nm))
+    if (invalid_names(nm))
       errorcall(R_NilValue,"user transformation functions must return named numeric vectors.");
     posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters"))); nprotect++;
 

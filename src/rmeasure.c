@@ -171,7 +171,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
           nobs = LENGTH(ans);
 
           PROTECT(Onames = GET_NAMES(ans)); nprotect++;
-          if (isNull(Onames))
+          if (invalid_names(Onames))
             errorcall(R_NilValue,"'rmeasure' must return a named numeric vector.");
 
           PROTECT(Y = ret_array(nobs,nreps,ntimes,Onames)); nprotect++;
