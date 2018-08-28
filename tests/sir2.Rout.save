@@ -17,20 +17,43 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> options(digits=3)
+> png(filename="sir2-%02d.png",res=100)
+> 
 > library(pomp)
 > 
-> pompExample(sir2,envir=NULL)[[1]] -> po
-> po <- window(po,end=1)
+> pompExample(sir2)
+newly created object(s):
+ sir2 
 > 
 > set.seed(48832734L)
 > 
-> stopifnot(all.equal(coef(po),partrans(po,coef(po,transform=TRUE),dir="from")))
-> po <- simulate(po)
-> stopifnot(sum(obs(po))==133)
-> stopifnot(round(mean(states(po,"S")),2)==56282.28)
-> pf <- pfilter(window(po,end=0.5),Np=1000)
-> stopifnot(all.equal(round(range(eff.sample.size(pf)),1),c(159.3,1000.0)))
-> tj <- trajectory(po,maxsteps=10000)
-> stopifnot(all.equal(round(apply(tj,1,mean),1),
-+   c(S=56327.1,I=38.7,R=943634.2,N=1e6,cases=17.2)))
+> plot(sir2)
+> coef(sir2)
+   gamma       mu     iota    beta1    beta2    beta3      rho      S_0 
+2.40e+01 1.43e-02 1.00e-01 3.30e+02 4.10e+02 4.90e+02 1.00e-01 5.00e-02 
+     I_0      R_0      pop  beta.sd 
+1.00e-04 9.50e-01 1.00e+06 0.00e+00 
+> rinit(sir2)
+        rep
+variable    [,1]
+   S       50000
+   I         100
+   R      949900
+   N     1000000
+   cases       0
+> 
+> stopifnot(all.equal(coef(sir2),
++   partrans(sir2,coef(sir2,transform=TRUE),dir="from")))
+> 
+> plot(simulate(sir2,seed=48832734L))
+> pf <- freeze(pfilter(window(sir2,end=0.5),Np=1000),seed=48832734L)
+> plot(pf)
+> stopifnot(round(logLik(pf),1)==-38.1)
+> tj <- trajectory(sir2,maxsteps=10000)
+> matplot(time(sir2),t(tj[c("I","cases"),1,]),type="l",ylab="")
+> 
+> dev.off()
+null device 
+          1 
 > 

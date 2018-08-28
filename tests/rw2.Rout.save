@@ -18,25 +18,36 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > options(digits=3)
-> png(filename="bbs-%02d.png",res=100)
+> png(filename="rw2-%02d.png",res=100)
 > 
 > library(pomp)
 > 
-> pompExample(bbs)
+> pompExample(rw2)
 newly created object(s):
- bbs 
+ rw2 
 > 
-> plot(bbs)
+> set.seed(1438408329L)
 > 
-> set.seed(48832734L)
+> rinit(rw2)
+        rep
+variable [,1]
+      x1    0
+      x2    0
+> coef(rw2)
+x1.0 x2.0   s1   s2  tau 
+   0    0    1    3    1 
 > 
-> stopifnot(all.equal(coef(bbs),partrans(bbs,coef(bbs,transform=TRUE),dir="from")))
-> po <- simulate(bbs,seed=48832734L)
-> plot(po)
-> pf <- pfilter(bbs,Np=1000)
+> stopifnot(all.equal(coef(rw2),partrans(rw2,coef(rw2,transform=TRUE),dir="from")))
+> plot(simulate(rw2,seed=1438408329L))
+> pf <- freeze(pfilter(rw2,Np=1000),seed=1438408329L)
+> stopifnot(round(logLik(pf),1)==-483.2)
 > plot(pf)
-> tj <- trajectory(bbs)
-> matplot(t(tj[,1,]),type='l',ylab="")
+> tj <- trajectory(rw2)
+> try(matplot(time(rw2),t(tj[,1,]),type="l",ylab=""))
+Error in plot.window(...) : need finite 'ylim' values
+In addition: Warning messages:
+1: In min(x) : no non-missing arguments to min; returning Inf
+2: In max(x) : no non-missing arguments to max; returning -Inf
 > 
 > dev.off()
 null device 

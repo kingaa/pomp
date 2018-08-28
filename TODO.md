@@ -123,7 +123,6 @@
 ### Unreconstructed:
 
 tests/logistic.R
-tests/ou2.R
 tests/rw2.R
 
 tests/filtfail.R
@@ -151,9 +150,3 @@ R/probe_match.R
 R/spect_match.R
 
 R/traj_match.R
-
-### Examples:
-
-- ou2.R
-- rw2.R
-- gompertz.R

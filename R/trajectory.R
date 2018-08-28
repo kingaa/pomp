@@ -180,7 +180,7 @@ trajectory.internal <- function (object, params, times, t0,
 
   } else {                  ## DEFAULT SKELETON
 
-    x <- array(data=NA_real_,dim=c(dim(x0),length(times)),
+    x <- array(data=NA_real_,dim=c(nrow(x0),ncol(x0),length(times)),
       dimnames=list(rownames(x0),NULL,NULL))
 
   }

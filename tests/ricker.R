@@ -1,19 +1,22 @@
+options(digits=3)
+png(filename="ricker-%02d.png",res=100)
+
 library(pomp)
 
 pompExample(ricker)
 
-set.seed(48832734L)
+set.seed(1438408329L)
 
-stopifnot(
-  all.equal(
-    coef(ricker),
-    partrans(ricker,coef(ricker,transform=TRUE),dir="from")))
+rinit(ricker)
+coef(ricker)
+plot(ricker)
 
-po <- simulate(ricker)
-stopifnot(sum(obs(po))==2040)
+stopifnot(all.equal(coef(ricker),partrans(ricker,coef(ricker,transform=TRUE),dir="from")))
+plot(simulate(ricker,seed=1438408329L))
+pf <- freeze(pfilter(ricker,Np=1000),seed=1438408329L)
+stopifnot(round(logLik(pf),1)==-139.3)
+plot(pf)
+tj <- trajectory(ricker)
+plot(time(ricker),tj["N",1,],type="l",ylab="N")
 
-pf <- pfilter(ricker,Np=1000)
-stopifnot(all.equal(round(mean(eff.sample.size(pf))),581))
-
-tj <- trajectory(ricker,format="data.frame")
-stopifnot(all.equal(round(mean(tj$N)),4))
+dev.off()

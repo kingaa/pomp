@@ -17,27 +17,94 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> options(digits=3)
+> png(filename="blowflies-%02d.png",res=100)
+> 
 > library(pomp)
 > 
 > capture.output(
 +   pompExample(blowflies,envir=NULL) -> flies,
 +   type="message") -> out
-> stopifnot(sum(grepl("unrecognized argument",out))==2)
+> stopifnot(
++   sum(grepl("unrecognized argument",out))==2,
++   sum(grepl("y.init",out))==2
++ )
 > 
 > set.seed(599688L)
 > 
-> stopifnot(sum(rinit(flies[[1]]))==11401.5)
-> x1 <- simulate(flies[[1]])
-> stopifnot(sum(obs(x1))==499937)
-> stopifnot(sum(states(x1,"N3"))==496254)
-> f1 <- pfilter(flies[[1]],Np=1000)
-> stopifnot(round(logLik(f1),2)==-1466.70)
+> plot(flies[[1]])
+> rinit(flies[[1]])
+        rep
+variable [,1]
+     N1   397
+     N2   450
+     N3   504
+     N4   590
+     N5   676
+     N6   738
+     N7   801
+     N8   830
+     N9   858
+     N10  884
+     N11  911
+     N12  926
+     N13  942
+     N14  945
+     N15  948
+     R      0
+     S      0
+     e      0
+     eps    0
+> coef(flies[[1]])
+       P    delta       N0  sigma.P  sigma.d  sigma.y 
+  3.2838   0.1607 679.9369   1.3512   0.7468   0.0266 
+> plot(simulate(flies[[1]],seed=599688L),var=c("y","R","S","N15"))
+> pf<- freeze(pfilter(flies[[1]],Np=1000),seed=599688L)
+> plot(pf)
+> stopifnot(
++   round(logLik(pf),2)==-1467.07,
++   partrans(
++     flies[[1]],
++     partrans(flies[[1]],dir="to",coef(flies[[1]])),
++     dir="from"
++   )==coef(flies[[1]]
++   )
++ )
 > 
 > set.seed(1598688L)
-> stopifnot(sum(rinit(flies[[2]]))==6037)
-> x2 <- simulate(flies[[2]])
-> stopifnot(sum(obs(x2))==561415)
-> stopifnot(sum(states(x2,"N1"))==560213)
-> f2 <- pfilter(flies[[2]],Np=1000)
-> stopifnot(round(logLik(f2),2)==-1477.25)
+> plot(flies[[2]])
+> rinit(flies[[2]])
+        rep
+variable [,1]
+     N1   397
+     N2   504
+     N3   676
+     N4   801
+     N5   858
+     N6   911
+     N7   942
+     N8   948
+     R      0
+     S      0
+     e      0
+     eps    0
+> coef(flies[[2]])
+       P    delta       N0  sigma.P  sigma.d  sigma.y 
+  2.7319   0.1738 800.3107   1.4420   0.7603   0.0108 
+> plot(simulate(flies[[2]],seed=599688L),var=c("y","R","S","N8"))
+> pf <- freeze(pfilter(flies[[2]],Np=1000),seed=599688L)
+> plot(pf)
+> stopifnot(
++   round(logLik(pf),2)==-1469.89,
++   partrans(
++     flies[[2]],
++     partrans(flies[[2]],dir="to",coef(flies[[2]])),
++     dir="from"
++   )==coef(flies[[2]]
++   )
++ )
+> 
+> dev.off()
+null device 
+          1 
 > 

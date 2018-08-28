@@ -18,6 +18,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > options(digits=3)
+> png(filename="dacca-%02d.png",res=100)
+> 
 > library(pomp)
 > 
 > pompExample(dacca)
@@ -26,12 +28,38 @@ newly created object(s):
 > 
 > set.seed(1420306530L)
 > 
+> plot(dacca)
+> rinit(dacca)
+        rep
+variable    [,1]
+  S      1502003
+  I       914263
+  Y            0
+  R1        2039
+  R2        2351
+  R3           0
+  deaths       0
+  W            0
+  count        0
+> coef(dacca)
+     gamma        eps        rho      delta     deltaI       clin      alpha 
+  2.08e+01   1.91e+01   0.00e+00   2.00e-02   6.00e-02   1.00e+00   1.00e+00 
+beta_trend   logbeta1   logbeta2   logbeta3   logbeta4   logbeta5   logbeta6 
+ -4.98e-03   7.47e-01   6.38e+00  -3.44e+00   4.23e+00   3.33e+00   4.55e+00 
+ logomega1  logomega2  logomega3  logomega4  logomega5  logomega6    sd_beta 
+ -1.69e+00  -2.54e+00  -2.84e+00  -4.69e+00  -8.48e+00  -4.39e+00   3.13e+00 
+       tau        S_0        I_0        Y_0       R1_0       R2_0       R3_0 
+  2.30e-01   6.21e-01   3.78e-01   0.00e+00   8.43e-04   9.72e-04   1.16e-07 
+> 
 > stopifnot(all.equal(coef(dacca)[1:22],
 +   partrans(dacca,coef(dacca,transform=TRUE),dir="from")[1:22]))
 > 
-> x <- simulate(window(dacca,end=1893),nsim=3,format="d")
-> stopifnot(all.equal(round(mean(x$cholera.deaths)),1003))
+> plot(simulate(window(dacca,end=1893,seed=1420306530L)),yax.flip=TRUE)
+> pf <- freeze(pfilter(window(dacca,end=1893),Np=1000),seed=1420306530L)
+> stopifnot(abs(-149.78-logLik(pf))<1)
+> plot(pf)
 > 
-> pf <- pfilter(window(dacca,end=1893),Np=1000)
-> stopifnot(abs(-150.9-logLik(pf))<2)
+> dev.off()
+null device 
+          1 
 > 

@@ -18,25 +18,33 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > options(digits=3)
-> png(filename="bbs-%02d.png",res=100)
+> png(filename="ou2-%02d.png",res=100)
 > 
 > library(pomp)
 > 
-> pompExample(bbs)
+> pompExample(ou2)
 newly created object(s):
- bbs 
+ ou2 
 > 
-> plot(bbs)
+> set.seed(1438408329L)
 > 
-> set.seed(48832734L)
+> plot(ou2)
+> rinit(ou2)
+        rep
+variable [,1]
+      x1   -3
+      x2    4
+> coef(ou2)
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
 > 
-> stopifnot(all.equal(coef(bbs),partrans(bbs,coef(bbs,transform=TRUE),dir="from")))
-> po <- simulate(bbs,seed=48832734L)
-> plot(po)
-> pf <- pfilter(bbs,Np=1000)
+> stopifnot(all.equal(coef(ou2),partrans(ou2,coef(ou2,transform=TRUE),dir="from")))
+> plot(simulate(ou2,seed=1438408329L))
+> pf <- freeze(pfilter(ou2,Np=1000),seed=1438408329L)
+> stopifnot(round(logLik(pf),1)==-480.1)
 > plot(pf)
-> tj <- trajectory(bbs)
-> matplot(t(tj[,1,]),type='l',ylab="")
+> tj <- trajectory(ou2)
+> matplot(time(ou2),t(tj[,1,]),type="l",ylab="")
 > 
 > dev.off()
 null device 
