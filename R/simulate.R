@@ -98,9 +98,7 @@ setMethod(
       pomp(data=NULL,times=times,t0=t0,
         rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
         verbose=verbose),
-      error=function (e) {
-        pStop("simulate",conditionMessage(e))
-      }
+      error = function (e) pStop("simulate",conditionMessage(e))
     )
 
     simulate(

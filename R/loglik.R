@@ -29,8 +29,7 @@ setMethod(
   "logLik",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("logLik"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("logLik","object")
   }
 )
 

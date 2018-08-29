@@ -33,8 +33,7 @@ setMethod(
   "cond.logLik",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("cond.logLik"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("cond.logLik","object")
   }
 )
 
@@ -42,8 +41,7 @@ setMethod(
   "cond.logLik",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("cond.logLik")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("cond.logLik",object)
   }
 )
 

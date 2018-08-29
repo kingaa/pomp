@@ -91,8 +91,7 @@ setMethod(
   "probe",
   signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("probe"),": ",sQuote("data"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("probe","data")
   }
 )
 
@@ -100,8 +99,7 @@ setMethod(
   "probe",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    stop(sQuote("probe")," is not defined when ",sQuote("data")," is of class ",
-      sQuote(class(data)),call.=FALSE)
+    undef_method("probe",data)
   }
 )
 

@@ -157,7 +157,7 @@ pomp <- function (data, times, t0, ...,
   verbose = getOption("verbose", FALSE)) {
 
   if (missing(data))
-    pStop("pomp",sQuote("data")," is a required argument.")
+    reqd_arg("pomp","data")
 
   if (!inherits(data,what=c("data.frame","pomp","NULL")))
     pStop("pomp",sQuote("data")," must be a data frame or an object of ",

@@ -54,7 +54,7 @@ setMethod(
   "probe.match.objfun",
   signature=signature(data="missing"),
   definition=function (...) {
-    pStop("probe.match.objfun",sQuote("data")," is a required argument")
+    reqd_arg("probe.match.objfun","data")
   }
 )
 
@@ -62,8 +62,7 @@ setMethod(
   "probe.match.objfun",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pStop_(sQuote("probe.match.objfun")," is not defined for objects of class ",
-      sQuote(class(data)))
+    undef_method("probe.match.objfun",data)
   }
 )
 

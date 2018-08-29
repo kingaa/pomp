@@ -44,15 +44,13 @@ NULL
 ##' @export
 mvn.diag.rw <- function (rw.sd) {
   if (missing(rw.sd) || !is.numeric(rw.sd)) {
-    stop("in ",sQuote("mvn.diag.rw"),": ",
-      sQuote("rw.sd")," must be a named numeric vector",call.=FALSE)
+    pStop("mvn.diag.rw",sQuote("rw.sd")," must be a named numeric vector.")
   }
   rw.sd <- rw.sd[rw.sd>0]
   parnm <- names(rw.sd)
   n <- length(rw.sd)
   if (is.null(parnm))
-    stop("in ",sQuote("mvn.diag.rw"),": ",
-      sQuote("rw.sd")," must have names",call.=FALSE)
+    pStop("mvn.diag.rw",sQuote("rw.sd")," must have names.")
   function (theta, ...) {
     theta[parnm] <- rnorm(n=n,mean=theta[parnm],sd=rw.sd)
     theta
@@ -64,14 +62,14 @@ mvn.diag.rw <- function (rw.sd) {
 mvn.rw <- function (rw.var) {
   rw.var <- as.matrix(rw.var)
   parnm <- colnames(rw.var)
-  ep <- paste0("in ",sQuote("mvn.rw"),": ")
+  ep <- "mvn.rw"
   if (is.null(parnm))
-    stop(ep,sQuote("rw.var")," must have row- and column-names",call.=FALSE)
+    pStop(ep,sQuote("rw.var")," must have row- and column-names.")
   if (nrow(rw.var)!=ncol(rw.var))
-    stop(ep,sQuote("rw.var")," must be a square matrix",call.=FALSE)
+    pStop(ep,sQuote("rw.var")," must be a square matrix.")
   ch <- chol(rw.var,pivot=TRUE)
   if (attr(ch,"rank") < ncol(ch))
-    warning(ep,"rank-deficient covariance matrix",call.=FALSE)
+    pWarn(ep,"rank-deficient covariance matrix")
   oo <- order(attr(ch,"pivot"))
   n <- Q <- NULL                 # to evade R CMD check false positive
   e <- new.env()
@@ -92,25 +90,24 @@ mvn.rw <- function (rw.var) {
 mvn.rw.adaptive <- function (rw.sd, rw.var, scale.start = NA,
   scale.cooling = 0.999,shape.start = NA, target = 0.234, max.scaling = 50) {
 
-  ep <- paste0("in ",sQuote("mvn.rw.adaptive"),": ")
+  ep <- "mvn.rw.adaptive"
 
   if (!xor(missing(rw.sd),missing(rw.var))) {
-    stop(ep,"exactly one of ",sQuote("rw.sd")," and ",sQuote("rw.var"),
-      " must be supplied",call.=FALSE)
+    pStop(ep,"exactly one of ",sQuote("rw.sd")," and ",sQuote("rw.var"),
+      " must be supplied.")
   }
   if (!missing(rw.var)) { ## variance supplied
     rw.var <- as.matrix(rw.var)
     parnm <- colnames(rw.var)
     if (is.null(parnm))
-      stop(ep,sQuote("rw.var")," must have row- and column-names",call.=FALSE)
+      pStop(ep,sQuote("rw.var")," must have row- and column-names.")
     if (nrow(rw.var)!=ncol(rw.var))
-      stop(ep,sQuote("rw.var")," must be a square matrix",call.=FALSE)
+      pStop(ep,sQuote("rw.var")," must be a square matrix.")
     if (any(parnm!=rownames(rw.var)))
-      stop(ep,"row- and column-names of ",sQuote("rw.var"),
-        " must agree",call.=FALSE)
+      pStop(ep,"row- and column-names of ",sQuote("rw.var")," must agree.")
   } else if (!missing(rw.sd)) { ## sd supplied (diagonal)
     if (!is.numeric(rw.sd) || is.null(names(rw.sd))) {
-      stop(ep,sQuote("rw.sd")," must be a named numeric vector",call.=FALSE)
+      pStop(ep,sQuote("rw.sd")," must be a named numeric vector.")
     }
     rw.sd <- rw.sd[rw.sd>0]
     parnm <- names(rw.sd)
@@ -123,13 +120,13 @@ mvn.rw.adaptive <- function (rw.sd, rw.var, scale.start = NA,
   shape.start <- as.integer(shape.start)
   target <- as.numeric(target) ## target acceptance ratio
   if (!isTRUE(scale.start > 0))
-    stop(ep,sQuote("scale.start")," must be a positive integer",call.=FALSE)
+    pStop(ep,sQuote("scale.start")," must be a positive integer.")
   if (!isTRUE((scale.cooling > 0) && (scale.cooling <= 1)))
-    stop(ep,sQuote("scale.cooling")," must be in (0,1]",call.=FALSE)
+    pStop(ep,sQuote("scale.cooling")," must be in (0,1].")
   if (!isTRUE(shape.start > 0))
-    stop(ep,sQuote("shape.start")," must be a positive integer",call.=FALSE)
+    pStop(ep,sQuote("shape.start")," must be a positive integer.")
   if (!isTRUE(target > 0 && target < 1)) {
-    stop(ep,sQuote("target")," must be a number in (0,1)",call.=FALSE)
+    pStop(ep,sQuote("target")," must be a number in (0,1).")
   }
 
   ## variables that will follow 'f'
@@ -163,7 +160,7 @@ mvn.rw.adaptive <- function (rw.sd, rw.var, scale.start = NA,
     }
     ch <- chol(covmat,pivot=TRUE)
     if (attr(ch,"rank")<length(parnm))
-      warning(ep,"degenerate proposal",call.=FALSE)
+      pWarn(ep,"degenerate proposal.")
     oo <- order(attr(ch,"pivot"))
     Q <- ch[,oo]
     theta[parnm] <- theta[parnm]+rnorm(n=length(parnm),mean=0,sd=1)%*%Q

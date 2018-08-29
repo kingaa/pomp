@@ -41,9 +41,9 @@ newly created object(s):
 [1] TRUE
 > 
 > try(pfilter())
-Error : in ‘pfilter’: ‘data’ is a required argument
+Error : in ‘pfilter’: ‘data’ is a required argument.
 > try(pfilter("bob"))
-Error : ‘pfilter’ is not defined for objects of class ‘character’
+Error : ‘pfilter’ is undefined for objects of class ‘character’.
 > 
 > try(pfilter(ou2))
 Error : in ‘pfilter’: ‘Np’ must be specified.
@@ -212,4 +212,24 @@ $time
  [85] "85"  "86"  "87"  "88"  "89"  "90"  "91"  "92"  "93"  "94"  "95"  "96" 
  [97] "97"  "98"  "99"  "100"
 
+> 
+> library(magrittr)
+> 
+> ou2 %>%
++   as.data.frame() %>%
++   pfilter(
++     times="time",t0=0,Np=500,
++     params=list(x1_0=-3,x2_0=4),
++     rprocess=onestep.sim(
++     step.fun=function(x1,x2,delta.t,...) {
++       setNames(rnorm(n=2,mean=c(x1,x2),sd=5*delta.t),c("x1","x2"))
++     }
++   ),
++     dmeasure=function(x1,x2,y1,y2,...,log) {
++       ll <- sum(dnorm(x=c(y1,y2),mean=c(x1,x2),sd=5,log=TRUE))
++       if (log) ll else exp(ll)
++     }
++   )
+<object of class ‘pfilterd_pomp’>
+> 
 > 

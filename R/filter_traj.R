@@ -31,8 +31,7 @@ setMethod(
   "filter.traj",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("filter.traj"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("filter.traj","object")
   }
 )
 
@@ -40,8 +39,7 @@ setMethod(
   "filter.traj",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("filter.traj")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("filter.traj",object)
   }
 )
 

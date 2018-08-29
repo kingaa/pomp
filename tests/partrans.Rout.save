@@ -34,9 +34,9 @@ newly created object(s):
 > 
 > theta3 <- theta2[-1]
 > try(partrans(params=theta1))
-Error : in ‘partrans’: ‘object’ is a required argument
+Error : in ‘partrans’: ‘object’ is a required argument.
 > try(partrans("gompertz",params=theta1))
-Error : ‘partrans’ is not defined for objects of class ‘character’
+Error : ‘partrans’ is undefined for objects of class ‘character’.
 > try(partrans(gompertz,theta3))
 Error : in ‘partrans’: variable 'K' not found among the parameters.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("K = exp(T_K);")),

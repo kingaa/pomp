@@ -45,7 +45,7 @@ The following objects are masked from ‘package:base’:
 +     rmeasure=function(x,...) {
 +       c(y=rpois(n=1,100*x))
 +     },
-+     params=c(r=15,x.0=0.1)
++     params=list(r=15,x.0=0.1)
 +   )
 <object of class ‘pomp’>
 > 

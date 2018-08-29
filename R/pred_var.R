@@ -28,8 +28,7 @@ setMethod(
   "pred.var",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("pred.var"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("pred.var","object")
   }
 )
 
@@ -37,8 +36,7 @@ setMethod(
   "pred.var",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("pred.var")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("pred.var",object)
   }
 )
 

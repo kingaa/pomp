@@ -66,14 +66,14 @@ in ‘coef<-’: name ‘alpha.sd’ refers to no existing parameter; it is bein
 +     c(-12.237, -10.848, -15.806, -10.847, -11.526))
 > 
 > try(dprior("ou2",params=theta))
-Error : ‘dprior’ is not defined for objects of class ‘character’
+Error : ‘dprior’ is undefined for objects of class ‘character’.
 > try(dprior(params=theta))
-Error : in ‘dprior’: ‘object’ is a required argument
+Error : in ‘dprior’: ‘object’ is a required argument.
 > 
 > try(rprior("ou2",params=theta))
-Error : ‘rprior’ is not defined for objects of class ‘character’
+Error : ‘rprior’ is undefined for objects of class ‘character’.
 > try(rprior(params=theta))
-Error : in ‘rprior’: ‘object’ is a required argument
+Error : in ‘rprior’: ‘object’ is a required argument.
 > 
 > try(po %>% pomp(rprior=function(...)c(1,3,3)) %>% rprior(params=theta))
 Error : in ‘rprior’: 'rprior' must return a named numeric vector.

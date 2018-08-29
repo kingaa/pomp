@@ -60,7 +60,7 @@ setMethod(
   signature=signature(times="missing"),
   definition=function (...) {
     if (nargs() > 0)
-      pStop("covariate_table",sQuote("times")," is a required argument.")
+      reqd_arg("covariate_table","times")
     new("covartable")
   }
 )

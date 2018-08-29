@@ -104,7 +104,7 @@ setMethod(
   "mif2",
   signature=signature(data="missing"),
   definition=function (...) {
-    pStop("mif2",sQuote("data")," is a required argument.")
+    reqd_arg("mif2","data")
   }
 )
 
@@ -112,8 +112,7 @@ setMethod(
   "mif2",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pStop_(sQuote("mif2")," is not defined for objects of class ",
-      sQuote(class(data)),".")
+    undef_method("mif2",data)
   }
 )
 

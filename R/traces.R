@@ -18,7 +18,7 @@ setMethod(
   "traces",
   signature=signature(object="missing"),
   definition=function (...) {
-    pStop("traces",sQuote("object")," is a required argument")
+    reqd_arg("traces","object")
   }
 )
 
@@ -26,8 +26,7 @@ setMethod(
   "traces",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    pStop_(sQuote("traces")," is not defined for objects of class ",
-      sQuote(class(object)))
+    undef_method("traces",object)
   }
 )
 

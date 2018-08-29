@@ -157,8 +157,7 @@ setMethod(
   "nlf",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("nlf"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("nlf","object")
   }
 )
 
@@ -166,8 +165,7 @@ setMethod(
   "nlf",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("nlf")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("nlf",object)
   }
 )
 
@@ -194,7 +192,7 @@ setMethod(
     eval.only = FALSE,
     transform = FALSE, ...)
   {
-    ep <- paste0("in ",sQuote("nlf"),": ")
+    ep <- "nlf"
     transform <- as.logical(transform)
     if (missing(transform.data)) transform.data <- identity
     transform.data <- match.fun(transform.data)
@@ -219,11 +217,10 @@ setMethod(
     if (missing(start)) start <- coef(object)
     if (is.list(start)) start <- unlist(start)
     if (!is.character(est))
-      stop(ep,sQuote("est")," must name the parameters to be estimated",
-        call.=FALSE)
+      pStop(ep,sQuote("est")," must name the parameters to be estimated.")
     if (!all(est%in%names(start)))
-      stop(ep,"parameters named in ",sQuote("est"),
-        " must exist in ",sQuote("start"),call.=FALSE)
+      pStop(ep,"parameters named in ",sQuote("est"),
+        " must exist in ",sQuote("start"),".")
 
     nlf.internal(
       object=object,
@@ -305,17 +302,17 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
   guess <- params[par.index]
 
   if ((lql.frac<=0)||(lql.frac>=1))
-    stop(ep,sQuote("lql.frac")," must be in (0,1)",call.=FALSE)
+    pStop(ep,sQuote("lql.frac")," must be in (0,1).")
 
   if ((se.par.frac<=0)||(se.par.frac>=1))
-    stop(ep,sQuote("se.par.frac")," must be in (0,1)",call.=FALSE)
+    pStop(ep,sQuote("se.par.frac")," must be in (0,1).")
 
   dt.tol <- 1e-3
   times <- time(object,t0=FALSE)
   t0 <- timezero(object)
   dt <- diff(times)
   if (diff(range(dt))>dt.tol*mean(dt))
-    stop(ep,sQuote("nlf")," requires evenly spaced sampling times",call.=FALSE)
+    pStop(ep,sQuote("nlf")," requires evenly spaced sampling times.")
   dt <- times[2]-times[1]
 
   ## Vector of times to output the simulation
@@ -660,20 +657,8 @@ nlf.lql <- function (params.fitted, object, params, par.index,
 
   data.ts <- obs(object)
 
-  y <- tryCatch(
-    freeze(
-      {
-        x0 <- rinit(object,params=params,t0=t0)
-        x <- rprocess(object,params=params,times=time(object,t0=TRUE),
-          xstart=x0)
-        rmeasure(object,x=x,times=time(object),params=params)
-      },
-      seed=seed
-    ),
-    error = function (e) {
-      stop(ep,"simulation error: ",conditionMessage(e),call.=FALSE) # nocov
-    }
-  )
+  y <- simulate(object,params=params,t0=t0,times=time(object,t0=TRUE),seed=seed,
+    format="arrays")$obs
 
   ## Test whether the model time series is valid
   if (!all(is.finite(y))) return(FAILED)
@@ -698,9 +683,7 @@ nlf.lql <- function (params.fitted, object, params, par.index,
       bootstrap=bootstrap,
       bootsamp=bootsamp
     ),
-    error = function (e) {
-      stop(ep,conditionMessage(e),call.=FALSE) # nocov
-    }
+    error = function (e) pStop(ep,conditionMessage(e))
   )
 }
 
@@ -880,8 +863,7 @@ make.lags.nlf <- function(x, lags, cov = NULL, nobs = 10000) {
   N <- min(nobs,nrow(x)-max(lags))
   n <- min(nobs,N)
   if (N > nobs)
-    warning("in ",sQuote("make.lags.nlf"),
-      ": series length truncated to default in make.lags",call.=FALSE)
+    pWarn("make.lags.nlf","series length truncated to default.")
   start <- max(lags)+1
   temp <- matrix(0,ncol=xd*length(lags),nrow=n)
   for (k in seq_len(length(lags))) {
@@ -949,8 +931,7 @@ Newey.West <- function(x, y, maxlag) {
 
 make.tensorbasis.nlf <- function(A,B) {
   if(nrow(A)!=nrow(B))
-    stop("in ",sQuote("make.tensorbasis.nlf"),
-      ": incompatible matrices in make.tensorbasis",call.=FALSE)
+    pStop("make.tensorbasis.nlf","incompatible matrices.")
   ncol.A <- ncol(A)
   ncol.B <- ncol(B)
   Tmat <- matrix(0,nrow(A),ncol.A*ncol.B)

@@ -47,9 +47,9 @@ newly created object(s):
 +   theme_classic()
 > 
 > try(skeleton(x=x,times=time(ricker),params=p))
-Error : in ‘skeleton’: ‘object’ is a required argument
+Error : in ‘skeleton’: ‘object’ is a required argument.
 > try(skeleton("ricker",x=x,times=time(ricker),params=p))
-Error : ‘skeleton’ is not defined for objects of class ‘character’
+Error : ‘skeleton’ is undefined for objects of class ‘character’.
 > 
 > pompExample(sir)
 newly created object(s):

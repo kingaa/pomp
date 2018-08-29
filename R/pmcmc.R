@@ -60,7 +60,7 @@ setClass(
     Nmcmc = 0L,
     accepts = 0L,
     proposal = function (...)
-      stop("in ",sQuote("pmcmc"),": proposal not specified",call.=FALSE),
+      pStop("pmcmc","proposal not specified."),
     traces=array(dim=c(0,0)),
     log.prior=numeric(0)
   )
@@ -76,7 +76,7 @@ setMethod(
   "pmcmc",
   signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("pmcmc"),": ",sQuote("data")," is a required argument",call.=FALSE)
+    reqd_arg("pmcmc","data")
   }
 )
 
@@ -84,7 +84,7 @@ setMethod(
   "pmcmc",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    stop(sQuote("pmcmc")," is not defined when ",sQuote("data")," is of class ",sQuote(class(data)),call.=FALSE)
+    undef_method("pmcmc",data)
   }
 )
 
@@ -125,15 +125,18 @@ setMethod(
   function (data, Nmcmc = 1, proposal, Np, tol = 1e-17,
     max.fail = Inf, ..., verbose = getOption("verbose", FALSE)) {
 
-    pmcmc.internal(
-      data,
-      Nmcmc=Nmcmc,
-      proposal=proposal,
-      Np=Np,
-      tol=tol,
-      max.fail=max.fail,
-      verbose=verbose,
-      ...
+    tryCatch(
+      pmcmc.internal(
+        data,
+        Nmcmc=Nmcmc,
+        proposal=proposal,
+        Np=Np,
+        tol=tol,
+        max.fail=max.fail,
+        verbose=verbose,
+        ...
+      ),
+      error = function (e) pStop("pmcmc",conditionMessage(e))
     )
 
   }
@@ -152,7 +155,7 @@ setMethod(
     if (missing(Np)) Np <- data@Np
     if (missing(tol)) tol <- data@tol
 
-    pmcmc(as(data,"pomp"),Nmcmc=Nmcmc,Np=Np,tol=tol,...)
+    pmcmc(as(data,"pomp"),Nmcmc=Nmcmc,Np=Np,tol=tol,...,verbose=verbose)
   }
 )
 
@@ -172,7 +175,7 @@ setMethod(
     if (missing(tol)) tol <- data@tol
 
     pmcmc(as(data,"pomp"),Nmcmc=Nmcmc,proposal=proposal,
-      Np=Np,tol=tol,max.fail=max.fail,verbose=verbose,...)
+      Np=Np,tol=tol,max.fail=max.fail,...,verbose=verbose)
   }
 )
 
@@ -223,27 +226,19 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   verbose, .ndone = 0L, .accepts = 0L, .prev.pfp = NULL, .prev.log.prior = NULL,
   .getnativesymbolinfo = TRUE) {
 
-  ep <- paste0("in ",sQuote("pmcmc"),": ")
-
   gnsi <- as.logical(.getnativesymbolinfo)
   verbose <- as.logical(verbose)
   .ndone <- as.integer(.ndone)
   .accepts <- as.integer(.accepts)
 
-  object <- tryCatch(
-    pomp(object,...,verbose=verbose),
-    error = function (e) {
-      stop(ep,conditionMessage(e),call.=FALSE)
-    }
-  )
+  object <- pomp(object,...,verbose=verbose)
 
   if (missing(proposal) || is.null(proposal))
-    stop(ep,sQuote("proposal")," must be specified",call.=FALSE)
+    pStop_(sQuote("proposal")," must be specified")
   proposal <- tryCatch(
     match.fun(proposal),
     error = function (e) {
-      stop(ep,sQuote("proposal")," must be a function: ",conditionMessage(e),
-        call.=FALSE)
+      pStop_(sQuote("proposal")," must be a function: ",conditionMessage(e))
     }
   )
 
@@ -256,15 +251,15 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   theta <- tryCatch(
     proposal(start,.n=0),
     error = function (e) {
-      stop(ep,"error in proposal function: ",conditionMessage(e),call.=FALSE)
+      pStop_("error in proposal function: ",conditionMessage(e))
     }
   )
   if (is.null(names(theta)) || !is.numeric(theta) || any(names(theta)==""))
-    stop(ep,sQuote("proposal")," must return a named numeric vector",call.=FALSE)
+    pStop_(sQuote("proposal")," must return a named numeric vector.")
 
   Nmcmc <- as.integer(Nmcmc)
   if (length(Nmcmc)!=1 || !is.finite(Nmcmc) || Nmcmc < 0)
-    stop(ep,sQuote("Nmcmc")," must be a positive integer",call.=FALSE)
+    pStop_(sQuote("Nmcmc")," must be a positive integer")
 
   if (verbose)
     cat("performing",Nmcmc,"PMCMC iteration(s) using",Np[1L],"particles\n")
@@ -287,7 +282,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
         .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
+        pStop_(conditionMessage(e))
       }
     )
     log.prior <- dprior(object,params=theta,log=TRUE,
@@ -310,7 +305,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
     theta.prop <- tryCatch(
       proposal(theta,.n=n+.ndone,.accepts=.accepts,verbose=verbose),
       error = function (e) {
-        stop(ep,"error in proposal function: ",conditionMessage(e),call.=FALSE)
+        pStop_("error in proposal function: ",conditionMessage(e))
       }
     )
 
@@ -321,21 +316,17 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
     if (is.finite(log.prior.prop)) {
 
       ## run the particle filter on the proposed new parameter values
-      pfp.prop <- tryCatch(
-        pfilter(
-          pfp,
-          params=theta.prop,
-          Np=Np,
-          tol=tol,
-          max.fail=max.fail,
-          filter.traj=TRUE,
-          verbose=verbose,
-          .getnativesymbolinfo=gnsi
-        ),
-        error = function (e) {
-          stop(ep,conditionMessage(e),call.=FALSE)
-        }
+      pfp.prop <- pfilter(
+        pfp,
+        params=theta.prop,
+        Np=Np,
+        tol=tol,
+        max.fail=max.fail,
+        filter.traj=TRUE,
+        verbose=verbose,
+        .getnativesymbolinfo=gnsi
       )
+
       gnsi <- FALSE
 
       ## PMCMC update rule (OK because proposal is symmetric)

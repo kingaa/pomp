@@ -92,7 +92,7 @@ Error : in ‘probe’: number of simulations, ‘nsim’, must be a single posi
 Error : in ‘probe’: number of simulations, ‘nsim’, must be a single positive integer.
 > 
 > try(probe(33L))
-Error : ‘probe’ is not defined when ‘data’ is of class ‘integer’
+Error : ‘probe’ is undefined for objects of class ‘integer’.
 > invisible(probe(pb))
 > plot(probe(pb,probes=plist[[1]]))
 > try(probe(pb,probes="okay"))

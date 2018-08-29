@@ -58,7 +58,7 @@ setMethod(
   "spect.match.objfun",
   signature=signature(data="missing"),
   definition=function (...) {
-    pStop("spect.match.objfun",sQuote("data")," is a required argument")
+    reqd_arg("spect.match.objfun","data")
   }
 )
 
@@ -66,8 +66,7 @@ setMethod(
   "spect.match.objfun",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pStop_(sQuote("spect.match.objfun")," is not defined for objects of class ",
-      sQuote(class(data)))
+    undef_method("spect.match.objfun",data)
   }
 )
 

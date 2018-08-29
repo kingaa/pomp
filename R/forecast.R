@@ -17,8 +17,7 @@ setMethod(
   "forecast",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("forecast"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("forecast","object")
   }
 )
 
@@ -26,8 +25,7 @@ setMethod(
   "forecast",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("forecast")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("forecast",object)
   }
 )
 

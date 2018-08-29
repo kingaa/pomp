@@ -37,9 +37,9 @@ Type 'q()' to quit R.
 +   proposal=prop1)
 > 
 > try(pmcmc())
-Error : in ‘pmcmc’: ‘data’ is a required argument
+Error : in ‘pmcmc’: ‘data’ is a required argument.
 > try(pmcmc("bob"))
-Error : ‘pmcmc’ is not defined when ‘data’ is of class ‘character’
+Error : ‘pmcmc’ is undefined for objects of class ‘character’.
 > try(pmcmc(po))
 Error : in ‘pmcmc’: ‘proposal’ must be specified
 > try(pmcmc(po,proposal="yes"))
@@ -122,7 +122,7 @@ Error : in ‘pmcmc’: in ‘pfilter’: in ‘rinit’: in default 'rinit': th
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try(pmcmc(mcmc1,proposal=function(...)c(3,2)))
-Error : in ‘pmcmc’: ‘proposal’ must return a named numeric vector
+Error : in ‘pmcmc’: ‘proposal’ must return a named numeric vector.
 > try(pmcmc(mcmc1,proposal=function(...)c(a=3,b=2,X.0=1)))
 Error : in ‘pmcmc’: in ‘pfilter’: in ‘rprocess’: variable 'r' not found among the parameters.
 > try(pmcmc(mcmc1,proposal=function(...)stop("oh no!")))
@@ -144,7 +144,7 @@ Error : in ‘pmcmc’: ‘Nmcmc’ must be a positive integer
 Error : in ‘pmcmc’: ‘Nmcmc’ must be a positive integer
 > 
 > try(pmcmc(mcmc1,dprior=function(log,...)stop("not again!")))
-Error : in ‘dprior’: not again!
+Error : in ‘pmcmc’: in ‘dprior’: not again!
 > try({
 +   count <- 0
 +   delayed.failure <- function (log, ...) {
@@ -152,7 +152,7 @@ Error : in ‘dprior’: not again!
 +     if (count>5) stop("uh huh") else 1
 +   }
 +   pmcmc(mcmc1,dprior=delayed.failure)})
-Error : in ‘dprior’: uh huh
+Error : in ‘pmcmc’: in ‘dprior’: uh huh
 > 
 > capture.output(invisible(pmcmc(mcmc1,Nmcmc=10,verbose=TRUE))) -> out
 > stopifnot(sum(grepl("acceptance ratio",out))==10)

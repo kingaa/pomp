@@ -125,7 +125,7 @@ setMethod(
   "pfilter",
   signature=signature(data="missing"),
   definition=function (...) {
-    pStop("pfilter",sQuote("data")," is a required argument")
+    reqd_arg("pfilter","data")
   }
 )
 
@@ -133,8 +133,7 @@ setMethod(
   "pfilter",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pStop_(sQuote("pfilter")," is not defined for objects of class ",
-      sQuote(class(data)))
+    undef_method("pfilter",data)
   }
 )
 
@@ -290,12 +289,6 @@ pfilter.internal <- function (object, Np, tol, max.fail,
 
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
     pStop_(sQuote("tol")," should be a small positive number.")
-
-  if (length(params) > 0 &&
-      (is.null(names(params)) || !all(nzchar(names(params)))))
-    pStop_(sQuote("params")," must be a named numeric vector.")
-
-  coef(object) <- params      ## set params slot to the parameters
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))

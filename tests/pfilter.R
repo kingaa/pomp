@@ -81,3 +81,22 @@ pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 names(as(pf2,"data.frame"))
 dim(filter.traj(pf3))
 dimnames(filter.traj(pf3))
+
+library(magrittr)
+
+ou2 %>%
+  as.data.frame() %>%
+  pfilter(
+    times="time",t0=0,Np=500,
+    params=list(x1_0=-3,x2_0=4),
+    rprocess=onestep.sim(
+    step.fun=function(x1,x2,delta.t,...) {
+      setNames(rnorm(n=2,mean=c(x1,x2),sd=5*delta.t),c("x1","x2"))
+    }
+  ),
+    dmeasure=function(x1,x2,y1,y2,...,log) {
+      ll <- sum(dnorm(x=c(y1,y2),mean=c(x1,x2),sd=5,log=TRUE))
+      if (log) ll else exp(ll)
+    }
+  )
+

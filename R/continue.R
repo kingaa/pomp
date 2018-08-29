@@ -24,8 +24,7 @@ setMethod(
   "continue",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("continue"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("continue","object")
   }
 )
 
@@ -33,7 +32,6 @@ setMethod(
   "continue",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("continue")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("continue",object)
   }
 )

@@ -15,7 +15,7 @@
 ##' }
 ##'
 ##' @name workhorses
-##' @include pomp_class.R pomp_fun.R load.R
+##' @include pomp_class.R pomp_fun.R load.R pstop.R
 ##' @docType methods
 ##' @family pomp workhorses
 ##' @seealso \code{\link[=simulate-pomp]{simulate}}, \code{\link{trajectory}},
@@ -70,8 +70,7 @@ setMethod(
   "dmeasure",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("dmeasure"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("dmeasure","object")
   }
 )
 
@@ -79,8 +78,7 @@ setMethod(
   "dmeasure",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("dmeasure")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("dmeasure",object)
   }
 )
 
@@ -136,8 +134,7 @@ setMethod(
   "dprior",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("dprior"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("dprior","object")
   }
 )
 
@@ -145,8 +142,7 @@ setMethod(
   "dprior",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("dprior")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("dprior",object)
   }
 )
 
@@ -200,8 +196,7 @@ setMethod(
   "dprocess",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("dprocess"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("dprocess","object")
   }
 )
 
@@ -209,8 +204,7 @@ setMethod(
   "dprocess",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("dprocess")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("dprocess",object)
   }
 )
 
@@ -266,8 +260,7 @@ setMethod(
   "partrans",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("partrans"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("partrans","object")
   }
 )
 
@@ -275,8 +268,7 @@ setMethod(
   "partrans",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("partrans")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("partrans",object)
   }
 )
 
@@ -336,8 +328,7 @@ setMethod(
   "rinit",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("rinit"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("rinit","object")
   }
 )
 
@@ -345,8 +336,7 @@ setMethod(
   "rinit",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("rinit")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("rinit",object)
   }
 )
 
@@ -403,8 +393,7 @@ setMethod(
   "rmeasure",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("rmeasure"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("rmeasure","object")
   }
 )
 
@@ -412,8 +401,7 @@ setMethod(
   "rmeasure",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("rmeasure")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("rmeasure",object)
   }
 )
 
@@ -467,8 +455,7 @@ setMethod(
   "rprior",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("rprior"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("rprior","object")
   }
 )
 
@@ -476,8 +463,7 @@ setMethod(
   "rprior",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("rprior")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("rprior",object)
   }
 )
 
@@ -544,8 +530,7 @@ setMethod(
   "rprocess",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("rprocess"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("rprocess","object")
   }
 )
 
@@ -553,8 +538,7 @@ setMethod(
   "rprocess",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("rprocess")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("rprocess",object)
   }
 )
 
@@ -615,8 +599,7 @@ setMethod(
   "skeleton",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("skeleton"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("skeleton","object")
   }
 )
 
@@ -624,8 +607,7 @@ setMethod(
   "skeleton",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("skeleton")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("skeleton",object)
   }
 )
 

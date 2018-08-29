@@ -27,7 +27,7 @@ setMethod(
   "coef",
   signature=signature(object="missing"),
   definition=function (...) {
-    pStop("coef",sQuote("object")," is a required argument")
+    reqd_arg("coef","object")
   }
 )
 
@@ -35,8 +35,7 @@ setMethod(
   "coef",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    pStop_(sQuote("coef")," is not defined for objects of class ",
-      sQuote(class(object)))
+    undef_method("coef",object)
   }
 )
 
@@ -44,7 +43,7 @@ setMethod(
   "coef<-",
   signature=signature(object="missing"),
   definition=function (...) {
-    pStop("coef<-",sQuote("object")," is a required argument")
+    reqd_arg("coef<-","object")
   }
 )
 
@@ -52,8 +51,7 @@ setMethod(
   "coef<-",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    pStop_(sQuote("coef<-")," is not defined for objects of class ",
-      sQuote(class(object)))
+    undef_method("coef<-",object)
   }
 )
 

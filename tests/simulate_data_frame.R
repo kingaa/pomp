@@ -15,7 +15,7 @@ data.frame(t=0:10,y=runif(11)) %>%
     rmeasure=function(x,...) {
       c(y=rpois(n=1,100*x))
     },
-    params=c(r=15,x.0=0.1)
+    params=list(r=15,x.0=0.1)
   )
 
 try(data.frame(t=0:10,y=runif(11)) %>%

@@ -2,9 +2,18 @@
 % Please edit documentation in R/pstop.R
 \name{pStop}
 \alias{pStop}
+\alias{pStop_}
+\alias{pWarn}
+\alias{pWarn_}
 \title{pStop}
 \usage{
 pStop(fn, ...)
+
+pStop_(...)
+
+pWarn(fn, ...)
+
+pWarn_(...)
 }
 \arguments{
 \item{fn}{name of function (will be enclosed in single quotes)}

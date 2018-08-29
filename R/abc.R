@@ -95,7 +95,7 @@ setMethod(
   "abc",
   signature=signature(data="missing"),
   definition=function (...) {
-    pStop("abc",sQuote("data")," is a required argument")
+    reqd_arg("abc","data")
   }
 )
 
@@ -103,8 +103,7 @@ setMethod(
   "abc",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pStop("",sQuote("abc")," is not defined for objects of class ",
-      sQuote(class(data)))
+    undef_method("abc",data)
   }
 )
 

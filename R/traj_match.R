@@ -56,7 +56,7 @@ setMethod(
   "traj.match.objfun",
   signature=signature(data="missing"),
   definition=function (...) {
-    pStop("traj.match.objfun",sQuote("data")," is a required argument.")
+    reqd_arg("traj.match.objfun","data")
   }
 )
 
@@ -64,8 +64,7 @@ setMethod(
   "traj.match.objfun",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pStop_(sQuote("traj.match.objfun")," is not defined for object of class ",
-      sQuote(class(data)))
+    undef_method("traj.match.objfun",data)
   }
 )
 

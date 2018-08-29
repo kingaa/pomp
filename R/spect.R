@@ -87,7 +87,7 @@ setMethod(
   "spect",
   signature=signature(data="missing"),
   definition=function (...) {
-    pStop("spect",sQuote("data")," is a required argument.")
+    reqd_arg("spect","data")
   }
 )
 
@@ -95,8 +95,7 @@ setMethod(
   "spect",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pStop_(sQuote("spect")," is not defined for objects of class ",
-      sQuote(class(data)))
+    undef_method("spect",data)
   }
 )
 

@@ -53,7 +53,7 @@ setMethod(
   "trajectory",
   signature=signature(object="missing"),
   definition=function (...) {
-    pStop("trajectory",sQuote("object")," is a required argument")
+    reqd_arg("trajectory","object")
   }
 )
 
@@ -61,8 +61,7 @@ setMethod(
   "trajectory",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    pStop_(sQuote("trajectory")," is not defined for objects of class ",
-      sQuote(class(object)))
+    undef_method("trajectory",object)
   }
 )
 

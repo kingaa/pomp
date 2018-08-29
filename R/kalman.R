@@ -72,7 +72,7 @@ setMethod(
   "eakf",
   signature=signature(data="missing"),
   definition=function (...) {
-    pStop("eakf",sQuote("data")," is a required argument")
+    reqd_arg("eakf","data")
   }
 )
 
@@ -80,8 +80,7 @@ setMethod(
   "eakf",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pStop_(sQuote("eakf")," is not defined for objects of class ",
-      sQuote(class(data)))
+    undef_method("eakf",data)
   }
 )
 
@@ -89,7 +88,7 @@ setMethod(
   "enkf",
   signature=signature(data="missing"),
   definition=function (...) {
-    pStop("enkf",sQuote("data")," is a required argument")
+    reqd_arg("enkf","data")
   }
 )
 
@@ -97,8 +96,7 @@ setMethod(
   "enkf",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pStop_(sQuote("enkf")," is not defined for objects of class ",
-      sQuote(class(data)))
+    undef_method("enkf",data)
   }
 )
 

@@ -28,8 +28,7 @@ setMethod(
   "pred.mean",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("pred.mean"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    reqd_arg("pred.mean","object")
   }
 )
 
@@ -37,8 +36,7 @@ setMethod(
   "pred.mean",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("pred.mean")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    undef_method("pred.mean",object)
   }
 )
 

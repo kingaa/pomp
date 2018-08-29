@@ -80,7 +80,7 @@ setMethod(
   "bsmc2",
   signature=signature(data="missing"),
   definition=function (...) {
-    pStop("bsmc2",sQuote("data")," is a required argument")
+    reqd_arg("bsmc2","data")
   }
 )
 
@@ -88,8 +88,7 @@ setMethod(
   "bsmc2",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    pStop_(sQuote("bsmc2")," is not defined for objects of class ",
-      sQuote(class(data)))
+    undef_method("bsmc2",data)
   }
 )
 
