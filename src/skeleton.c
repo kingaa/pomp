@@ -111,17 +111,17 @@ void eval_skeleton_R (
           p+npars*(j%nrepp),npars,
           cov,ncovars)); nprotect++;
 
-        if (LENGTH(ans)!=nvars)
-          errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
+          if (LENGTH(ans)!=nvars)
+            errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
 
-        // get name information to fix alignment problems
-        PROTECT(nm = GET_NAMES(ans)); nprotect++;
-        if (invalid_names(nm))
-          errorcall(R_NilValue,"'skeleton' must return a named numeric vector.");
-        posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
-        fs = REAL(AS_NUMERIC(ans));
+          // get name information to fix alignment problems
+          PROTECT(nm = GET_NAMES(ans)); nprotect++;
+          if (invalid_names(nm))
+            errorcall(R_NilValue,"'skeleton' must return a named numeric vector.");
+          posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
+          fs = REAL(AS_NUMERIC(ans));
 
-        for (i = 0; i < nvars; i++) f[posn[i]] = fs[i];
+          for (i = 0; i < nvars; i++) f[posn[i]] = fs[i];
 
       } else {
 
@@ -139,6 +139,91 @@ void eval_skeleton_R (
       }
 
     }
+  }
+
+  UNPROTECT(nprotect);
+
+}
+
+void iterate_skeleton_R (
+    double *X, double t, double deltat,
+    double *time, double *x, double *p,
+    SEXP fn, SEXP args, SEXP Snames,
+    int nvars, int npars, int ncovars, int ntimes,
+    int nrepp, int nreps, int nzeros,
+    lookup_table_t *covar_table, int *zeroindex)
+{
+  int nprotect = 0;
+  int first = 1;
+  SEXP ans, nm;
+  double cov[ncovars];
+  double *ap, *xs;
+  int nsteps;
+  int *posn = 0;
+  int h, i, j, k;
+
+  for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
+
+    R_CheckUserInterrupt();
+
+    // compute number of steps needed
+    nsteps = num_map_steps(t,*time,deltat);
+    //  Rprintf("k = %d, time = %lg,%lg, steps = %d\n",k,t,*time,nsteps);
+
+    // set accumulator variables to zero
+    for (i = 0; i < nzeros; i++)
+      for (j = 0, xs = &x[zeroindex[i]]; j < nreps; j++, xs += nvars)
+        *xs = 0.0;
+
+    for (h = 0; h < nsteps; h++) {
+
+      // interpolate the covariates
+      table_lookup(covar_table,t,cov);
+
+      for (j = 0, xs = x; j < nreps; j++, xs += nvars) {
+
+        if (first) {
+
+          first = 0;
+
+          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,cov,ncovars)); nprotect++;
+
+          if (LENGTH(ans) != nvars)
+            errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
+
+          // get name information to fix alignment problems
+          PROTECT(nm = GET_NAMES(ans)); nprotect++;
+          if (invalid_names(nm)) errorcall(R_NilValue,"'skeleton' must return a named numeric vector.");
+          posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
+          ap = REAL(AS_NUMERIC(ans));
+
+          for (i = 0; i < nvars; i++) xs[posn[i]] = ap[i];
+
+        } else {
+
+          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,cov,ncovars));
+
+          ap = REAL(AS_NUMERIC(ans));
+
+          for (i = 0; i < nvars; i++) xs[posn[i]] = ap[i];
+
+          UNPROTECT(1);
+
+        }
+
+      }
+
+      if (h != nsteps-1) {
+        t += deltat;
+      } else {
+        deltat = *time - t;
+        t = *time;
+      }
+
+    }
+
+    memcpy(X,x,nvars*nreps*sizeof(double));
+
   }
 
   UNPROTECT(nprotect);
@@ -172,6 +257,64 @@ void eval_skeleton_native (
       (*fun)(f,xp,pp,sidx,pidx,cidx,cov,*time);
 
     }
+  }
+
+  unset_pomp_userdata();
+
+}
+
+void iterate_skeleton_native (
+    double *X, double t, double deltat,
+    double *time, double *x, double *p,
+    int nvars, int npars, int ncovars, int ntimes,
+    int nrepp, int nreps, int nzeros,
+    int *sidx, int *pidx, int *cidx,
+    lookup_table_t *covar_table, int *zeroindex,
+    pomp_skeleton *fun, SEXP args)
+{
+  double cov[ncovars];
+  int nsteps;
+  double *xs, *Xs;
+  int h, i, j, k;
+
+  set_pomp_userdata(args);
+
+  for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
+
+    R_CheckUserInterrupt();
+
+    // compute number of steps needed
+    nsteps = num_map_steps(t,*time,deltat);
+
+    // set accumulator variables to zero
+    for (i = 0; i < nzeros; i++)
+      for (j = 0, xs = &x[zeroindex[i]]; j < nreps; j++, xs += nvars)
+        *xs = 0.0;
+
+    for (h = 0; h < nsteps; h++) {
+
+      // interpolate the covariates
+      table_lookup(covar_table,t,cov);
+
+      for (j = 0, Xs = X, xs = x; j < nreps; j++, Xs += nvars, xs += nvars) {
+
+        (*fun)(Xs,xs,p+npars*(j%nrepp),sidx,pidx,cidx,cov,t);
+
+      }
+
+      memcpy(x,X,nvars*nreps*sizeof(double));
+
+      if (h != nsteps-1) {
+        t += deltat;
+      } else {
+        deltat = *time - t;
+        t = *time;
+      }
+
+    }
+
+    if (nsteps == 0) memcpy(X,x,nvars*nreps*sizeof(double));
+
   }
 
   unset_pomp_userdata();

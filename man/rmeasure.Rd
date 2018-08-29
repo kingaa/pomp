@@ -15,17 +15,18 @@
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
-\item{x}{a rank-3 array containing states of the unobserved process.
+\item{x}{an array containing states of the unobserved process.
 The dimensions of \code{x} are \code{nvars} x \code{nrep} x \code{ntimes},
 where \code{nvars} is the number of state variables,
 \code{nrep} is the number of replicates,
-and \code{ntimes} is the length of \code{times}.}
+and \code{ntimes} is the length of \code{times}.
+One can also pass \code{x} as a named numeric vector, which is equivalent to the \code{nrep=1}, \code{ntimes=1} case.}
 
 \item{times}{a numeric vector (length \code{ntimes}) containing times.
 These must be in non-decreasing order.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
-Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.}
+Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
 
 \item{...}{additional arguments are ignored.}
 }

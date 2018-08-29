@@ -202,12 +202,12 @@ newly created object(s):
 newly created object(s):
  gompertz 
 > gompertz %>% trajectory() -> x
-> try(gompertz %>%
-+     pomp(skeleton=map(function(t,x,params,...)c(3,2))) %>%
-+     trajectory() -> x)
-Error : in ‘trajectory’: user 'skeleton' returns a vector of 2 state variables but 1 are expected
-> try(gompertz %>% pomp(skeleton=map(function(t,x,params,...)x,delta.t=-1)))
-Error : in ‘map’: ‘delta.t’ must be a positive number.
+> gompertz %>%
++   pomp(skeleton=map(function(r,X,K,...){
++     c(X=r*X*exp(-X/K))
++   })) %>%
++   trajectory(params=c(r=17,X_0=1,K=100),format="data.frame") -> dat
+> plot(X~time,data=dat,type='l')
 > 
 > dev.off()
 null device 

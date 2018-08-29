@@ -46,6 +46,8 @@ extern void _gompertz_normal_dmeasure(double *lik, double *y, double *x, double 
 extern void _gompertz_normal_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_simulator(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t, double Rf_dt);
 extern void _gompertz_skeleton(double *f, double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, const double *covar, double t);
+extern void _gompertz_to_trans(double *__pt, const double *__p, const int *__parindex);
+extern void _gompertz_from_trans(double *__p, const double *__pt, const int *__parindex);
 
 // init.c 
 extern void R_init_pomp(DllInfo *info);
@@ -76,10 +78,6 @@ extern SEXP pfilter_computations(SEXP x, SEXP params, SEXP Np, SEXP predmean, SE
 extern SEXP pomp_fun_handler(SEXP pfun, SEXP gnsi, pompfunmode *mode);
 extern SEXP load_stack_incr(SEXP pack);
 extern SEXP load_stack_decr(SEXP pack);
-extern SEXP pomp_fun_args(SEXP args, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnames);
-extern SEXP eval_pomp_fun_R_call(SEXP fn, SEXP args, double *t, double *y, int nobs, double *x, int nvar, double *p, int npar, double *c, int ncov);
-extern SEXP pomp_fun_indices(SEXP fn, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnames);
-extern SEXP concat(int nargs, ...);
 
 // probe_acf.c 
 extern SEXP probe_acf(SEXP x, SEXP lags, SEXP corr);
@@ -118,7 +116,9 @@ extern SEXP do_simulate(SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP 
 // skeleton.c 
 extern SEXP add_skel_args(SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames);
 extern void eval_skeleton_R(double *f, double *time, double *x, double *p, SEXP fn, SEXP args, SEXP Snames, int nvars, int npars, int ncovars, int ntimes, int nrepx, int nrepp, int nreps, lookup_table_t *covar_table);
+extern void iterate_skeleton_R(double *X, double t, double deltat, double *time, double *x, double *p, SEXP fn, SEXP args, SEXP Snames, int nvars, int npars, int ncovars, int ntimes, int nrepp, int nreps, int nzeros, lookup_table_t *covar_table, int *zeroindex);
 extern void eval_skeleton_native(double *f, double *time, double *x, double *p, int nvars, int npars, int ncovars, int ntimes, int nrepx, int nrepp, int nreps, int *sidx, int *pidx, int *cidx, lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args);
+extern void iterate_skeleton_native(double *X, double t, double deltat, double *time, double *x, double *p, int nvars, int npars, int ncovars, int ntimes, int nrepp, int nreps, int nzeros, int *sidx, int *pidx, int *cidx, lookup_table_t *covar_table, int *zeroindex, pomp_skeleton *fun, SEXP args);
 extern SEXP do_skeleton(SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi);
 
 // sobolseq.c 

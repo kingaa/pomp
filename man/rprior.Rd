@@ -16,7 +16,7 @@
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
-Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.}
+Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
 
 \item{...}{additional arguments are ignored.}
 }

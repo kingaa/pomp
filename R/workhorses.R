@@ -39,19 +39,26 @@ NULL
 ##'
 ##' @param object an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 ##' This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.
-##' @param x a rank-3 array containing states of the unobserved process.
+##'
+##' @param x an array containing states of the unobserved process.
 ##' The dimensions of \code{x} are \code{nvars} x \code{nrep} x \code{ntimes},
 ##' where \code{nvars} is the number of state variables,
 ##' \code{nrep} is the number of replicates,
 ##' and \code{ntimes} is the length of \code{times}.
+##' One can also pass \code{x} as a named numeric vector, which is equivalent to the \code{nrep=1}, \code{ntimes=1} case.
+##'
 ##' @param y a matrix containing observations.
 ##' The dimensions of \code{y} are \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observables
 ##' and \code{ntimes} is the length of \code{times}.
+##'
 ##' @param times a numeric vector (length \code{ntimes}) containing times.
 ##' These must be in non-decreasing order.
+##'
 ##' @param params a \code{npar} x \code{nrep} matrix of parameters.
-##' Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.
+##' Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.
+##'
 ##' @param log if TRUE, log probabilities are returned.
+##'
 ##' @param \dots additional arguments are ignored.
 ##'
 ##' @return
@@ -501,11 +508,16 @@ rprior.internal <- function (object, params, .getnativesymbolinfo = TRUE, ...) {
 ##' @family pomp workhorses
 ##'
 ##' @inheritParams dmeasure
+##'
 ##' @param xstart an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
 ##' Columns of \code{xstart} correspond to states;
 ##' rows to components of the state vector.
 ##' One independent simulation will be performed for each column.
 ##' Note that in this case, \code{params} must also have \code{nrep} columns.
+##'
+##' @param params a \code{npar} x \code{nrep} matrix of parameters.
+##' Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{xstart}.
+##'
 ##' @param offset integer; the first \code{offset} times in \code{times} will be discarded.
 ##'
 ##' @return

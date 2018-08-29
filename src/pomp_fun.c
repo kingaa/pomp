@@ -119,28 +119,6 @@ SEXP load_stack_decr (SEXP pack) {
   return s;
 }
 
-SEXP pomp_fun_indices (SEXP fn, SEXP Onames, SEXP Snames, SEXP Pnames, SEXP Cnames)
-{
-  SEXP O = R_NilValue, S = R_NilValue, P = R_NilValue, C = R_NilValue;
-  SEXP ans;
-
-  // construct state, parameter, covariate, observable indices
-  PROTECT(O = name_index(Onames,fn,"obsnames","observables"));
-  PROTECT(S = name_index(Snames,fn,"statenames","state variables"));
-  PROTECT(P = name_index(Pnames,fn,"paramnames","parameters"));
-  PROTECT(C = name_index(Cnames,fn,"covarnames","covariates"));
-
-  PROTECT(ans = NEW_LIST(4));
-  SET_ELEMENT(ans,0,O);
-  SET_ELEMENT(ans,1,S);
-  SET_ELEMENT(ans,2,P);
-  SET_ELEMENT(ans,3,C);
-
-  UNPROTECT(5);
-  return ans;
-
-}
-
 // SEXP concat (int nargs, ...) {
 //   int nprotect = 0;
 //   va_list ap;

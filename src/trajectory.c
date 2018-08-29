@@ -6,93 +6,16 @@
 
 #include "pomp_internal.h"
 
-static void iterate_map_native (double *X, double *time, double *p,
-  double deltat, double t, double *x,
-  int ntimes, int nvars, int npars, int ncovars, int nzeros, int nreps,
-  int *sidx, int *pidx, int *cidx, int *zidx,
-  lookup_table_t *covar_table,
-  pomp_skeleton *ff, SEXP args)
+static R_INLINE SEXP ret_array (int nvars, int nreps, int ntimes, SEXP Snames)
 {
-  double *covars = NULL;
-  int nsteps;
-  double *Xs, *xs, *ps;
-  int h, i, j, k;
-  set_pomp_userdata(args);
-  if (ncovars > 0) covars = (double *) Calloc(ncovars, double);
-  for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
-    R_CheckUserInterrupt();
-    for (i = 0; i < nzeros; i++)
-      for (j = 0, xs = &x[zidx[i]]; j < nreps; j++, xs += nvars)
-        *xs = 0.0;
-    nsteps = num_map_steps(t,*time,deltat);
-    for (h = 0; h < nsteps; h++) {
-      table_lookup(covar_table,t,covars);
-      for (j = 0, Xs = X, xs = x, ps = p; j < nreps; j++, Xs += nvars, xs += nvars, ps += npars) {
-        (*ff)(Xs,xs,ps,sidx,pidx,cidx,covars,t);
-      }
-      memcpy(x,X,nvars*nreps*sizeof(double));
-      t += deltat;
-    }
-    if (nsteps == 0) memcpy(X,x,nvars*nreps*sizeof(double));
-  }
-  if (ncovars > 0) Free(covars);
-  unset_pomp_userdata();
-}
-
-static void iterate_map_R (double *X, double *time, double *p,
-  double deltat, double t, double *x,
-  double *tp, double *xp, double *pp, double *cp,
-  int ntimes, int nvars, int npars, int nzeros, int nreps,
-  lookup_table_t *covar_table, int *zidx,
-  SEXP Snames, SEXP fcall, SEXP rho)
-{
-  int nprotect = 0;
-  int first = 1;
-  int use_names;
-  int nsteps;
-  SEXP ans, nm;
-  double *fs, *xs, *ps;
-  int *posn = 0;
-  int h, i, j, k;
-
-  for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
-    R_CheckUserInterrupt();
-    nsteps = num_map_steps(t,*time,deltat);
-    for (i = 0; i < nzeros; i++)
-      for (j = 0, xs = &x[zidx[i]]; j < nreps; j++, xs += nvars)
-        *xs = 0.0;
-    for (h = 0; h < nsteps; h++) {
-      table_lookup(covar_table,t,cp);
-      for (j = 0, xs = x, ps = p; j < nreps; j++, xs += nvars, ps += npars) {
-        *tp = t;
-        memcpy(xp,xs,nvars*sizeof(double));
-        memcpy(pp,ps,npars*sizeof(double));
-        if (first) {
-          PROTECT(ans = eval(fcall,rho)); nprotect++;
-          if (LENGTH(ans)!=nvars)
-            errorcall(R_NilValue,"user 'skeleton' returns a vector of %d state variables but %d are expected",LENGTH(ans),nvars);
-          // get name information to fix possible alignment problems
-          PROTECT(nm = GET_NAMES(ans)); nprotect++;
-          use_names = !isNull(nm);
-          if (use_names) {
-            posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
-          }
-          fs = REAL(AS_NUMERIC(ans));
-          first = 0;
-        } else {
-          fs = REAL(AS_NUMERIC(PROTECT(eval(fcall,rho))));
-          UNPROTECT(1);
-        }
-        if (use_names)
-          for (i = 0; i < nvars; i++) xs[posn[i]] = fs[i];
-        else
-          for (i = 0; i < nvars; i++) xs[i] = fs[i];
-      }
-      t += deltat;
-    }
-    memcpy(X,x,nvars*nreps*sizeof(double));
-  }
-  UNPROTECT(nprotect);
+  SEXP X;
+  int dim[3] = {nvars, nreps, ntimes};
+  const char *dimnms[3] = {"variable","rep","time"};
+  PROTECT(X = makearray(3,dim));
+  setrownames(X,Snames,3);
+  fixdimnames(X,dimnms,3);
+  UNPROTECT(1);
+  return X;
 }
 
 SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP gnsi)
@@ -105,7 +28,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   SEXP skel, pompfun;
   SEXP zeronames;
   int *zidx = 0;
-  int nvars, npars, nreps, ntimes, ncovars, nzeros;
+  int nvars, npars, nreps, nrepp, ntimes, ncovars, nzeros;
   int *dim;
   lookup_table_t covariate_table;
   double deltat, t;
@@ -114,16 +37,14 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   deltat = *(REAL(GET_SLOT(skel,install("delta.t"))));
   t = *(REAL(AS_NUMERIC(t0)));
 
-  PROTECT(x0 = as_matrix(PROTECT(duplicate(x0)))); nprotect += 2;
+  PROTECT(x0 = duplicate(x0)); nprotect++;
+  PROTECT(x0 = as_matrix(x0)); nprotect++;
   dim = INTEGER(GET_DIM(x0));
   nvars = dim[0]; nreps = dim[1];
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
-  npars = dim[0];
-
-  if (nreps != dim[1])
-    errorcall(R_NilValue,"dimension mismatch between 'x0' and 'params'"); // # nocov
+  npars = dim[0]; nrepp = dim[1];
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = LENGTH(times);
@@ -150,69 +71,49 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   }
 
   // create array to store results
-  {
-    int dim[3] = {nvars, nreps, ntimes};
-    PROTECT(X = makearray(3,dim)); nprotect++;
-    setrownames(X,Snames,3);
-  }
+  PROTECT(X = ret_array(nvars,nreps,ntimes,Snames)); nprotect++;
 
   // set up the computations
   switch (mode) {
 
-  case Rfun:                       // R function
-  {
-    SEXP cvec, tvec, xvec, pvec;
-    SEXP fcall, rho;
-    PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
-    PROTECT(xvec = NEW_NUMERIC(nvars)); nprotect++;
-    PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
-    PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
-    SET_NAMES(xvec,Snames);
-    SET_NAMES(pvec,Pnames);
-    SET_NAMES(cvec,Cnames);
-    // set up the function call
-    PROTECT(fcall = LCONS(cvec,args)); nprotect++;
-    SET_TAG(fcall,install("covars"));
-    PROTECT(fcall = LCONS(pvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("params"));
-    PROTECT(fcall = LCONS(tvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("t"));
-    PROTECT(fcall = LCONS(xvec,fcall)); nprotect++;
-    SET_TAG(fcall,install("x"));
-    PROTECT(fcall = LCONS(fn,fcall)); nprotect++;
-    // get function's environment
-    PROTECT(rho = (CLOENV(fn))); nprotect++;
+  case Rfun: {
 
-    iterate_map_R(REAL(X),REAL(times),REAL(params),
-      deltat,t,REAL(x0),
-      REAL(tvec),REAL(xvec),REAL(pvec),REAL(cvec),
-      ntimes,nvars,npars,nzeros,nreps,
-      &covariate_table,zidx,Snames,fcall,rho);
+    PROTECT(args = add_skel_args(args,Snames,Pnames,Cnames)); nprotect++;
+
+    iterate_skeleton_R(REAL(X),t,deltat,REAL(times),REAL(x0),REAL(params),
+      fn,args,Snames,nvars,npars,ncovars,ntimes,nrepp,nreps,nzeros,
+      &covariate_table,zidx);
+
   }
 
     break;
 
-  case native:                       // native skeleton
-  {
+  case native: {
     int *sidx, *pidx, *cidx;
     pomp_skeleton *ff;
+
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
+
     // construct state, parameter, covariate indices
     sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
     pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
     cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
 
-    iterate_map_native(REAL(X),REAL(times),REAL(params),deltat,t,REAL(x0),
-      ntimes,nvars,npars,ncovars,nzeros,nreps,
-      sidx,pidx,cidx,zidx,&covariate_table,ff,args);
+    iterate_skeleton_native(REAL(X),t,deltat,REAL(times),REAL(x0),REAL(params),
+      nvars,npars,ncovars,ntimes,nrepp,nreps,nzeros,sidx,pidx,cidx,
+      &covariate_table,zidx,ff,args);
 
   }
 
     break;
 
-  default:
+  default: {
 
-    errorcall(R_NilValue,"unrecognized 'mode'"); // # nocov
+    double *Xs = REAL(X);
+    int i, n = nvars*nreps*ntimes;
+    for (i = 0; i < n; i++, Xs++) *Xs = R_NaReal;
+
+  }
 
   break;
 

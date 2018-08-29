@@ -85,9 +85,11 @@ plot(cases~time,data=x,type='l')
 
 pompExample(gompertz)
 gompertz %>% trajectory() -> x
-try(gompertz %>%
-    pomp(skeleton=map(function(t,x,params,...)c(3,2))) %>%
-    trajectory() -> x)
-try(gompertz %>% pomp(skeleton=map(function(t,x,params,...)x,delta.t=-1)))
+gompertz %>%
+  pomp(skeleton=map(function(r,X,K,...){
+    c(X=r*X*exp(-X/K))
+  })) %>%
+  trajectory(params=c(r=17,X_0=1,K=100),format="data.frame") -> dat
+plot(X~time,data=dat,type='l')
 
 dev.off()

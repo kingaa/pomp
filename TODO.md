@@ -10,7 +10,7 @@
 	- it should be possible to refer to `times` inside `covariate_table`
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
 - `nsim` argument for `rprior`?
-- regularize use of `pStop` and `tryCatch` on *.internals
+- ~~regularize use of `pStop` and `tryCatch` on *.internals~~
 - refurbish entire test suite
 	- for each example and each demo,
 		- tests of each basic component
