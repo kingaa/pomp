@@ -60,7 +60,7 @@ Error : in ‘partrans’: argument "params" is missing, with no default
 Error : in ‘partrans’: user transformation functions must return named numeric vectors.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(
 +   from=function(...)unname(list(...)),to=NULL)),pp))
-Error : ‘parameter_trans’ not defined for objects of class ‘NULL’, ‘function’.
+Error : ‘parameter_trans’ not defined for arguments of class ‘NULL’, ‘function’.
 > 
 > stopifnot(
 +   {

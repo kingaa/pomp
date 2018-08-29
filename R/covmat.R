@@ -108,8 +108,9 @@ covmat.internal <- function (traces, start, thin, expand = 2.38, ...) {
   nms <- colnames(traces)
   keep <- seq.int(from=as.integer(start),to=dd[1],by=as.integer(thin))
   if (length(keep) < 100)
-    warning("in ",sQuote("covmat"),": only ",length(keep),
-      " points being used to estimate covariance matrix",call.=FALSE)
+    pWarn("covmat","only ",length(keep),
+      ngettext(length(keep)," point is"," points are"),
+      " being used to estimate covariance matrix.")
   if (length(dd)==2L) {
     traces <- traces[keep,,drop=FALSE]
   } else if (length(dd)==3L) {

@@ -56,5 +56,5 @@ newly created object(s):
 > try(mif2(gompertz,Nmif=1,Np=100,
 +   .indices=1:5,rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
 +   cooling.fraction=0.5))
-Error : in ‘mif2’: in ‘mif2.pfilter’: ‘.indices’ has improper length
+Error : in ‘mif2’: ‘.indices’ has improper length.
 > 

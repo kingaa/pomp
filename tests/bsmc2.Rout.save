@@ -144,7 +144,7 @@ Error : in ‘bsmc2’: too many filtering failures
 +     dmeasure=gompertz@dmeasure,
 +     statenames=c("X"),
 +     paramnames=c("r","K","sigma")))
-Error : in ‘bsmc2’: bad option for ‘rprior’ argument
+Error : in ‘bsmc2’: bad option for ‘rprior’ argument.
 > 
 > dev.off()
 null device 

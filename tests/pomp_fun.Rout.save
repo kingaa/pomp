@@ -29,7 +29,7 @@ Type 'q()' to quit R.
 <default>
 
 > try(pomp:::pomp_fun(36,slotname="silly"))
-Error : bad option for ‘silly’ argument
+Error : bad option for ‘silly’ argument.
 > pomp:::pomp_fun(function(x,y)x+y,proto=quote(bob(x,y)),slotname="blarp")
 R function
   - definition: function(x,y)x+y

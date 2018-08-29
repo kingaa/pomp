@@ -5,11 +5,11 @@ profileDesign <- function (..., lower, upper, nprof,
   prof <- list(...)
   pvars <- names(prof)
   if (any(pvars==""))
-    stop("in ",sQuote("profileDesign"),": you cannot profile over an unnamed variable!",call.=FALSE)
+    pStop("profileDesign","you cannot profile over an unnamed variable!")
   ovars <- names(lower)
   if (!all(sort(ovars)==sort(names(upper))))
-    stop("in ",sQuote("profileDesign"),": names of ",sQuote("lower")," and ",
-      sQuote("upper")," must match!",call.=FALSE)
+    pStop("profileDesign","names of ",sQuote("lower")," and ",
+      sQuote("upper")," must match!")
   x <- expand.grid(...,stringsAsFactors=stringsAsFactors)
   y <- sobolDesign(lower=lower,upper=upper,nseq=nprof)
   z <- vector(mode='list',length=nrow(x)*nprof)

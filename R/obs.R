@@ -32,8 +32,8 @@ setMethod(
     if (missing(vars))
       vars <- varnames
     else if (!all(vars%in%varnames))
-      stop("in ",sQuote("obs"),": some elements of ",
-        sQuote("vars")," correspond to no observed variable",call.=FALSE)
+      pStop("obs","some elements of ",
+        sQuote("vars")," correspond to no observed variable.")
     y <- object@data[vars,,drop=FALSE]
     dimnames(y) <- setNames(list(vars,NULL),c("variable","time"))
     y

@@ -57,7 +57,7 @@ Error : in ‘sliceDesign’: ‘center’ must be a named numeric vector
 > try(x <- sliceDesign(center=c(A="3"),B=seq(0,10,by=1),C=c(1,2,3)))
 Error : in ‘sliceDesign’: ‘center’ must be a named numeric vector
 > try(x <- sliceDesign(center=c(A=3,B=2),seq(1,3),A=seq(0,5)))
-Error : in ‘sliceDesign’: you cannot slice along an unnamed parameter
+Error : in ‘sliceDesign’: cannot slice along an unnamed parameter.
 > 
 > dev.off()
 null device 

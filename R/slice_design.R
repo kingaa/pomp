@@ -3,21 +3,17 @@
 sliceDesign <- function (center, ...) {
   slices <- list(...)
   if ((!is.numeric(center))||is.null(names(center)))
-    stop("in ",sQuote("sliceDesign"),": ",
-      sQuote("center")," must be a named numeric vector",call.=FALSE)
+    pStop("sliceDesign",sQuote("center")," must be a named numeric vector")
   slnm <- names(slices)
   if (any(slnm==""))
-    stop("in ",sQuote("sliceDesign"),": you cannot slice along an unnamed parameter",call.=FALSE)
+    pStop("sliceDesign","cannot slice along an unnamed parameter.")
   if (!all(slnm%in%names(center))) {
     problems <- slnm[!(slnm%in%names(center))]
-    stop(
-      "in ",sQuote("sliceDesign"),": ",
+    pStop("sliceDesign",
       ngettext(length(problems),"variable ","variables "),
       paste(sapply(problems,sQuote),collapse=","),
       ngettext(length(problems)," does "," do "),
-      "not appear in ",sQuote("center"),
-      call.=FALSE
-    )
+      "not appear in ",sQuote("center"))
   }
   nslice <- length(slices)
   nvars <- length(center)

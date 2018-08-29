@@ -95,7 +95,7 @@ variable      [,1]      [,2]     [,3]
 > obs(po,"y2")[,1:3]
 [1] 4.247465 7.039416 2.975209
 > try(obs(po,c("y2","z")))
-Error : in ‘obs’: some elements of ‘vars’ correspond to no observed variable
+Error : in ‘obs’: some elements of ‘vars’ correspond to no observed variable.
 > 
 > states(po)
         time

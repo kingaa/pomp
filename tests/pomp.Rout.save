@@ -77,7 +77,7 @@ Error : ‘times’ must be an increasing sequence of numbers.
 > try(NULL %>% pomp(times=1:10,t0=3))
 Error : ‘t0’ must be a single number not greater than ‘times[1]’.
 > try(NULL %>% pomp(times=1:10,t0=1,rinit=3))
-Error : bad option for ‘rinit’ argument
+Error : bad option for ‘rinit’ argument.
 > stopifnot(NULL %>% pomp(times=1:10,t0=1) %>% class() %>% equals("pomp"))
 > 
 > pompExample(gompertz,envir=NULL) %>% extract2(1) -> po

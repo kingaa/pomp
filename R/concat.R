@@ -27,8 +27,7 @@ setMethod(
   "concat",
   signature=signature(...="ANY"),
   definition=function(...) {
-    stop(sQuote("c")," is not defined for objects of mixed class.",
-      call.=FALSE)
+    pStop_(sQuote("c")," is not defined for objects of mixed class.")
   }
 )
 

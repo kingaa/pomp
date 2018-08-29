@@ -41,8 +41,7 @@ setClass(
   ),
   prototype=prototype(
     R.fun=function (...) {
-      stop("in ",sQuote("pomp_fun"),
-        ": unreachable error: please report this bug!",call.=FALSE)
+      pStop("pomp_fun","unreachable error: please report this bug!")
     },
     native.fun=character(0),
     PACKAGE=character(0),
@@ -95,7 +94,7 @@ setMethod(
   "pomp_fun",
   signature=signature(f="ANY"),
   definition=function (f, slotname = NULL, ...) {
-    stop("bad option for ",sQuote(slotname)," argument",call.=FALSE)
+    pStop_("bad option for ",sQuote(slotname)," argument.")
   }
 )
 
@@ -108,9 +107,9 @@ setMethod(
       fname <- prototype[1]
       args <- prototype[-1]
       if (is.function(f)&&(!all(args%in%names(formals(f)))))
-        stop("in ",sQuote(slotname),": ",
+        pStop(slotname,
           sQuote(fname)," must be a function of prototype ",
-          sQuote(deparse(proto)),call.=FALSE)
+          sQuote(deparse(proto)))
     }
     new("pomp_fun",R.fun=f,mode=pompfunmode$Rfun,purpose=as.character(slotname))
   }

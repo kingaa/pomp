@@ -142,7 +142,7 @@ vectorfield <- function (f) {
 ##'
 map <- function (f, delta.t = 1) {
   if (!isTRUE(delta.t > 0 && length(delta.t)==1))
-    stop("in ",sQuote("map"),": ",sQuote("delta.t"),
-      " must be a positive number.",call.=FALSE)
+    pStop("map",sQuote("delta.t"),
+      " must be a positive number.")
   new("mapPlugin",skel.fn=f,delta.t=delta.t)
 }

@@ -167,8 +167,8 @@ setMethod(
   "parameter_trans",
   signature=signature(toEst="missing",fromEst="ANY"),
   definition=function(toEst, fromEst, ...) {
-    stop("in ",sQuote("parameter_trans"),": if one of ",sQuote("toEst"),", ",
-      sQuote("fromEst")," is supplied, then so must the other be.",call.=FALSE)
+    pStop("parameter_trans","if one of ",sQuote("toEst"),", ",
+      sQuote("fromEst")," is supplied, then so must the other be.")
   }
 )
 
@@ -176,8 +176,8 @@ setMethod(
   "parameter_trans",
   signature=signature(toEst="ANY",fromEst="ANY"),
   definition=function(toEst, fromEst, ...) {
-    stop(sQuote("parameter_trans")," not defined for objects of class ",
-      sQuote(class(toEst)),", ",sQuote(class(fromEst)),".",call.=FALSE)
+    pStop_(sQuote("parameter_trans")," not defined for arguments of class ",
+      sQuote(class(toEst)),", ",sQuote(class(fromEst)),".")
   }
 )
 

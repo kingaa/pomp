@@ -106,7 +106,7 @@ r     -0.01028  0.043239  0.00238 -0.000358
 sigma -0.00213  0.002378  0.00296 -0.003189
 tau    0.00991 -0.000358 -0.00319  0.023313
 Warning message:
-in ‘covmat’: only 26 points being used to estimate covariance matrix 
+in ‘covmat’: only 26 points are being used to estimate covariance matrix. 
 > 
 > po <- window(gompertz,end=10)
 > 

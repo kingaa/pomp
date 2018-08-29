@@ -206,7 +206,7 @@ probe.eval <- function (object) {
     .Call(synth_loglik,simvals,object@datvals),
     error = function (e) {
       pStop_("in synthetic likelihood computation: ",
-        conditionMessage(e),call.=FALSE)
+        conditionMessage(e))
     }
   )
 

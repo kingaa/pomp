@@ -18,8 +18,7 @@ setMethod(
   "traces",
   signature=signature(object="missing"),
   definition=function (...) {
-    stop("in ",sQuote("traces"),": ",sQuote("object"),
-      " is a required argument",call.=FALSE)
+    pStop("traces",sQuote("object")," is a required argument")
   }
 )
 
@@ -27,8 +26,8 @@ setMethod(
   "traces",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("traces")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+    pStop_(sQuote("traces")," is not defined for objects of class ",
+      sQuote(class(object)))
   }
 )
 
@@ -158,10 +157,9 @@ traces.internal <- function (object, pars, transform = FALSE, ...) {
     pars <- as.character(pars)
     bad.pars <- setdiff(pars,colnames(retval))
     if (length(bad.pars)>0)
-      stop(
-        "in ",sQuote("traces"),": ",
+      pStop("traces",
         ngettext(length(bad.pars),"parameter ","parameters "),
-        paste(sQuote(bad.pars),collapse=",")," not found.",call.=FALSE)
+        paste(sQuote(bad.pars),collapse=",")," not found.")
 
     retval[,pars,drop=FALSE]
 
