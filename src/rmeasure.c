@@ -99,6 +99,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   SEXP Y = R_NilValue;
   int *dim;
   lookup_table_t covariate_table;
+  SEXP cvec;
+  double *cov;
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
@@ -127,6 +129,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
+  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
+  cov = REAL(cvec);
 
   // extract the user-defined function
   PROTECT(pompfun = GET_SLOT(object,install("rmeasure"))); nprotect++;
@@ -137,12 +141,10 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   // first do setup
   switch (mode) {
-  case Rfun:
 
-  {
+  case Rfun: {
     double *ys, *yt = 0;
     double *time = REAL(times), *xs = REAL(x), *ps = REAL(params);
-    double cov[ncovars];
     SEXP ans;
     int j, k;
 
@@ -213,12 +215,9 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
     break;
 
-  case native: case regNative:
-
-  {
+  case native: case regNative: {
     double *yt = 0, *xp, *pp;
     double *time = REAL(times), *xs = REAL(x), *ps = REAL(params);
-    double cov[ncovars];
     int *oidx, *sidx, *pidx, *cidx;
     pomp_measure_model_simulator *ff = NULL;
     int j, k;
@@ -264,9 +263,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
     break;
 
-  default:
-
-  {
+  default: {
     PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
     nobs = LENGTH(Onames);
     int dim[3] = {nobs, nreps, ntimes};
@@ -281,7 +278,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     for (i = 0, yt = REAL(Y); i < n; i++, yt++) *yt = R_NaReal;
   }
 
-  break;
+    break;
 
   }
 

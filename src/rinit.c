@@ -79,6 +79,8 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
   SEXP pompfun, fn, args;
   pompfunmode mode = undef;
   lookup_table_t covariate_table;
+  SEXP cvec;
+  double *cov;
   int *dim;
   int npar, nrep, nvar, ncovars, nsims, ns;
 
@@ -98,8 +100,9 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
   PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
+  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
+  cov = REAL(cvec);
 
-  double cov[ncovars];
   table_lookup(&covariate_table,*(REAL(t0)),cov);
 
   // extract userdata

@@ -102,11 +102,12 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   pompfunmode mode = undef;
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
   SEXP Snames, Pnames, Cnames, Onames;
-  SEXP pompfun;
+  SEXP cvec, pompfun;
   SEXP fn, args, ans;
   SEXP F;
   int *dim;
   lookup_table_t covariate_table;
+  double *cov;
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
@@ -143,6 +144,8 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
+  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
+  cov = REAL(cvec);
 
   // extract the user-defined function
   PROTECT(pompfun = GET_SLOT(object,install("dmeasure"))); nprotect++;
@@ -161,7 +164,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   {
     double *ys = REAL(y), *xs = REAL(x), *ps = REAL(params), *time = REAL(times);
     double *ft = REAL(F);
-    double cov[ncovars];
     int j, k;
 
     // build argument list
@@ -208,7 +210,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     pomp_measure_model_density *ff = NULL;
     double *yp = REAL(y), *xs = REAL(x), *ps = REAL(params), *time = REAL(times);
     double *ft = REAL(F);
-    double cov[ncovars];
     double *xp, *pp;
     int j, k;
 

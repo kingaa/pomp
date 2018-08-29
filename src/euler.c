@@ -99,7 +99,8 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   int nprotect = 0;
   pompfunmode mode = undef;
   int nvars, npars, nreps, ntimes, nzeros, ncovars;
-  SEXP X, fn;
+  double *cov;
+  SEXP cvec, X, fn;
 
   if (deltat <= 0)
     errorcall(R_NilValue,"'delta.t' should be a positive number.");
@@ -116,6 +117,8 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 
   // set up the covariate table
   lookup_table_t covariate_table = make_covariate_table(covar,&ncovars);
+  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
+  cov = REAL(cvec);
 
   // indices of accumulator variables
   nzeros = LENGTH(zeronames);
@@ -140,7 +143,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   case Rfun: {
 
     // construct list of all arguments
-    PROTECT(args = add_args(args,Snames,Pnames,Cnames));
+    PROTECT(args = add_args(args,Snames,Pnames,Cnames)); nprotect++;
 
   }
 
@@ -175,7 +178,6 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     step < ntimes;
     step++, xs = xt, xt += nvars*nreps) {
 
-    double cov[ncovars];
     double dt;
     int *posn = NULL;
     int nstep = 0;
