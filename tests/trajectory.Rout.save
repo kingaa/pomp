@@ -207,11 +207,26 @@ newly created object(s):
  gompertz 
 > gompertz %>% trajectory() -> x
 > gompertz %>%
-+   pomp(skeleton=map(function(r,X,K,...){
-+     c(X=r*X*exp(-X/K))
-+   })) %>%
-+   trajectory(params=c(r=17,X_0=1,K=100),format="data.frame") -> dat
-> plot(X~time,data=dat,type='l')
++   pomp(
++     skeleton=map(function(r,X,Y,K,...){
++       c(X=r*X*exp(-X/K),Y=Y+X)
++     }),
++     zeronames=c("Y"),
++     params=c(r=17,X_0=1,Y.0=0,K=100)
++   ) -> po3
+> po3 %>%
++   trajectory(times=seq(1,1000),format="data.frame") -> dat
+> plot(X~time,data=dat,subset=(time<100),type='l')
+> plot(X~Y,data=dat)
+> 
+> try(
++   po3 %>%
++     pomp(skeleton=map(function(...)c(X=1,Y=2,Z=3))) %>%
++     trajectory(params=c(X_0=1,Y_0=0))
++ )
+Error : in ‘trajectory’: 'skeleton' returns a vector of 3 state variables but 2 are expected.
+> 
+> stopifnot(po3 %>% trajectory(times=seq(0,100,by=5)) %>% dim()==c(2,1,21))
 > 
 > dev.off()
 null device 

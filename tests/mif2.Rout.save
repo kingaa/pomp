@@ -104,6 +104,10 @@ X.0   1.0000 1.0000
 > try(mfl %>% traces(pars="bob"))
 Error : in ‘traces’: parameter ‘bob’ not found.
 > 
+> try(mif2())
+Error : in ‘mif2’: ‘data’ is a required argument.
+> try(mif2("po"))
+Error : ‘mif2’ is undefined for objects of class ‘character’.
 > try(mif2(po,Nmif=NA,Np=100))
 Error : in ‘mif2’: ‘Nmif’ must be a positive integer.
 > try(mif2(po,Nmif=NULL,Np=100))
@@ -233,6 +237,19 @@ Warning messages:
 1: in ‘mif2’: 11 filtering failures occurred. 
 2: in ‘mif2’: 11 filtering failures occurred. 
 > stopifnot(sum(grepl("filtering failure at time",out))==22)
+> 
+> po %>%
++   as.data.frame() %>%
++   mif2(Nmif=3,Np=100,
++     times="time",t0=0,
++     params=c(sigma=5),
++     rw.sd=rw.sd(sigma=0.01),
++     cooling.fraction.50=1,cooling.type="hyperbolic",
++     rprocess=onestep.sim(function(X,...)c(X=X)),
++     dmeasure=function(Y,X,sigma,log,...)dnorm(x=Y,mean=X,sd=sigma,log=log),
++     rinit=function(...)c(X=0)
++   )
+<object of class ‘mif2d_pomp’>
 > 
 > dev.off()
 null device 

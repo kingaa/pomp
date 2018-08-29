@@ -33,6 +33,7 @@ try(probe(po,probes=plist[1:3]))
 try(probe(po,probes=plist[1:3],nsim=-100))
 try(probe(po,probes=plist[1:3],nsim=c(10,20)))
 try(probe(po,probes=plist[1:3],nsim=NA))
+try(probe(po,nsim=100,probes=function(x)rep(1,times=ceiling(runif(1,max=10)))))
 
 try(probe(33L))
 invisible(probe(pb))
@@ -40,6 +41,7 @@ plot(probe(pb,probes=plist[[1]]))
 try(probe(pb,probes="okay"))
 try(probe(pb,probes=function(x,y)x+y))
 try(probe(pb,probes=function(x)stop("hold on now!")))
+try(probe(pb,probes=function(x)"bob"))
 try({
   count <- 0
   delayed.error <- function (y) {

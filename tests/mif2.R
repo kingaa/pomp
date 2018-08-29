@@ -37,6 +37,8 @@ mfl %>%
 
 try(mfl %>% traces(pars="bob"))
 
+try(mif2())
+try(mif2("po"))
 try(mif2(po,Nmif=NA,Np=100))
 try(mif2(po,Nmif=NULL,Np=100))
 try(mif2(po,Nmif=-10,Np=100))
@@ -103,5 +105,17 @@ capture.output(
   type="message"
 ) -> out
 stopifnot(sum(grepl("filtering failure at time",out))==22)
+
+po %>%
+  as.data.frame() %>%
+  mif2(Nmif=3,Np=100,
+    times="time",t0=0,
+    params=c(sigma=5),
+    rw.sd=rw.sd(sigma=0.01),
+    cooling.fraction.50=1,cooling.type="hyperbolic",
+    rprocess=onestep.sim(function(X,...)c(X=X)),
+    dmeasure=function(Y,X,sigma,log,...)dnorm(x=Y,mean=X,sd=sigma,log=log),
+    rinit=function(...)c(X=0)
+  )
 
 dev.off()

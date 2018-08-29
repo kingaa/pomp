@@ -96,6 +96,8 @@ Error : in ‘probe’: number of simulations, ‘nsim’, must be a single posi
 Error : in ‘probe’: number of simulations, ‘nsim’, must be a single positive integer.
 > try(probe(po,probes=plist[1:3],nsim=NA))
 Error : in ‘probe’: number of simulations, ‘nsim’, must be a single positive integer.
+> try(probe(po,nsim=100,probes=function(x)rep(1,times=ceiling(runif(1,max=10)))))
+Error : in ‘probe’: applying probes to simulated data: probes return different number of values on different datasets.
 > 
 > try(probe(33L))
 Error : ‘probe’ is undefined for objects of class ‘integer’.
@@ -107,6 +109,8 @@ Error : in ‘probe’: ‘probes’ must be a function or a list of functions.
 Error : in ‘probe’: each probe must be a function of a single argument.
 > try(probe(pb,probes=function(x)stop("hold on now!")))
 Error : in ‘probe’: applying probes to actual data: hold on now!
+> try(probe(pb,probes=function(x)"bob"))
+Error : in ‘probe’: applying probes to actual data: probe 1 returns a non-numeric result
 > try({
 +   count <- 0
 +   delayed.error <- function (y) {
