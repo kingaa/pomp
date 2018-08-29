@@ -78,6 +78,8 @@ stopifnot(
     sum(is.na(x))==1202
   }
 )
+try(trajectory("fhn"))
+try(trajectory())
 
 pompExample(sir)
 trajectory(sir,format="data.frame") -> x

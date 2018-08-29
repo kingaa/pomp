@@ -161,14 +161,18 @@ setMethod(
     ...,
     verbose = getOption("verbose", FALSE)) {
 
+    if (missing(rprocess) || missing(dmeasure))
+      pStop("pfilter",paste(sQuote(c("rprocess","dmeasure")),
+        collapse=", ")," are needed basic components.")
+
     object <- tryCatch(
-      pomp(data,rinit=rinit,rprocess=rprocess,dmeasure=dmeasure,...),
+      pomp(data,rinit=rinit,rprocess=rprocess,dmeasure=dmeasure,params=params,
+        ...,verbose=verbose),
       error = function (e) pStop("pfilter",conditionMessage(e))
     )
 
     pfilter(
       object,
-      params=params,
       Np=Np,
       tol=tol,
       max.fail=max.fail,
@@ -192,7 +196,6 @@ setMethod(
   signature=signature(data="pomp"),
   definition=function (
     data,
-    params,
     Np,
     tol = 1e-17,
     max.fail = Inf,
@@ -207,7 +210,6 @@ setMethod(
     tryCatch(
       pfilter.internal(
         data,
-        params=params,
         Np=Np,
         tol=tol,
         max.fail=max.fail,
@@ -216,8 +218,8 @@ setMethod(
         filter.mean=filter.mean,
         filter.traj=filter.traj,
         save.states=save.states,
-        verbose=verbose,
-        ...
+        ...,
+        verbose=verbose
       ),
       error = function (e) pStop("pfilter",conditionMessage(e))
     )
@@ -232,13 +234,13 @@ setMethod(
 setMethod(
   "pfilter",
   signature=signature(data="pfilterd_pomp"),
-  function (data, params, Np, tol, ...,
+  function (data, Np, tol, ...,
     verbose = getOption("verbose", FALSE)) {
 
     if (missing(Np)) Np <- data@Np
     if (missing(tol)) tol <- data@tol
 
-    pfilter(as(data,"pomp"),params=params,Np=Np,tol=tol,...,verbose=verbose)
+    pfilter(as(data,"pomp"),Np=Np,tol=tol,...,verbose=verbose)
 
   }
 )

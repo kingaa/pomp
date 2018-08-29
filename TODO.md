@@ -2,7 +2,6 @@
 
 ## For pomp 2:
 
-- make R-level functions for various distributions and transformations
 - should parameter transformations allow renaming of variables?
 	- would require attention to `rw.sd`, e.g.
 - covariates:
@@ -10,6 +9,7 @@
 	- it should be possible to refer to `times` inside `covariate_table`
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
 - `nsim` argument for `rprior`?
+- make R-level functions for various distributions and transformations
 - ~~regularize use of `pStop` and `tryCatch` on *.internals~~
 - refurbish entire test suite
 	- for each example and each demo,
@@ -18,7 +18,7 @@
 		- rough likelihood check
 	- order of testing development:
 		- ~~workhorses~~
-		- simulate, trajectory, probe, pfilter
+		- ~~simulate, trajectory, probe, pfilter~~
 		- abc, pmcmc, mif2, bsmc2, objfun methods
 		- test extractor methods, etc. as appropriate
 		- helper functions get their own test scripts
@@ -99,33 +99,3 @@
 - SDE examples
 - LPA beetle examples
 - budmoth examples
-
-## Tests
-
-### Unreconstructed:
-
-tests/filtfail.R
-tests/forecast.R
-
-tests/gillespie2.R
-tests/gillespie.R
-
-tests/nlf.R
-
-tests/trajmatch.R
-
-### Groups of related functions:
-
-R/builder.R
-R/plugins.R
-
-R/nlf.R
-R/nlf_objfun.R
-R/nlf_funcs.R
-R/nlf_guts.R
-
-R/probe_match.R
-
-R/spect_match.R
-
-R/traj_match.R

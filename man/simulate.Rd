@@ -21,10 +21,9 @@
   "data.frame"), include.data = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{simulate}{pomp}(object, nsim = 1, seed = NULL, rinit,
-  rprocess, rmeasure, params, times, t0, format = c("pomps", "arrays",
-  "data.frame"), include.data = FALSE, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{simulate}{pomp}(object, nsim = 1, seed = NULL, params,
+  format = c("pomps", "arrays", "data.frame"), include.data = FALSE,
+  ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{nsim}{The number of simulations to perform.

@@ -114,9 +114,9 @@ setMethod(
     probes, nsim, seed = NULL, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    if (missing(rprocess) || missing(rmeasure) || missing(params))
-      pStop("probe",paste(sQuote(c("rprocess","rmeasure","params")),
-        collapse=", ")," are required arguments.")
+    if (missing(rprocess) || missing(rmeasure))
+      pStop("probe",paste(sQuote(c("rprocess","rmeasure")),
+        collapse=", ")," are needed basic components.")
 
     object <- tryCatch(
       pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,

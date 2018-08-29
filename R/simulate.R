@@ -87,10 +87,6 @@ setMethod(
     format = c("pomps", "arrays", "data.frame"),
     include.data = FALSE,
     ..., verbose = getOption("verbose", FALSE)) {
-    #
-    #     if (missing(times) || missing(t0))
-    #       pStop("simulate",sQuote("times")," and ",sQuote("t0"),
-    #         " are required arguments.")
 
     format <- match.arg(format)
 
@@ -134,9 +130,7 @@ setMethod(
       pomp(data=object,times=times,t0=t0,
         rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
         verbose=verbose),
-      error = function (e) {
-        pStop("simulate",conditionMessage(e))
-      }
+      error = function (e) pStop("simulate",conditionMessage(e))
     )
 
     simulate(
@@ -160,8 +154,7 @@ setMethod(
   "simulate",
   signature=signature(object="pomp"),
   definition=function (object, nsim = 1, seed = NULL,
-    rinit, rprocess, rmeasure, params,
-    times, t0,
+    params,
     format = c("pomps", "arrays", "data.frame"),
     include.data = FALSE,
     ..., verbose = getOption("verbose", FALSE)) {
@@ -171,14 +164,9 @@ setMethod(
     tryCatch(
       simulate.internal(
         object,
-        rinit=rinit,
-        rprocess=rprocess,
-        rmeasure=rmeasure,
         nsim=nsim,
         seed=seed,
         params=params,
-        times=times,
-        t0=t0,
         format=format,
         include.data=include.data,
         ...,

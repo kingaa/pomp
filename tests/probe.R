@@ -25,6 +25,9 @@ pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
 summary(pb)
 stopifnot(all.equal(logLik(pb),17.2,tolerance=0.005))
 
+try(probe())
+try(probe("po"))
+try(probe(NULL))
 try(probe(po,nsim=10))
 try(probe(po,probes=plist[1:3]))
 try(probe(po,probes=plist[1:3],nsim=-100))
@@ -52,5 +55,26 @@ probe(pb,params=as.list(coef(pb)))
 try(probe(pb,params=NULL))
 try(probe(pb,params="I think so"))
 try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
+
+try(data.frame(t=1:10,a=1:10) %>% probe())
+
+data.frame(t=1:10,a=1:10) %>%
+  probe(
+    times="t",t0=0,
+    rprocess=euler.sim(
+      function(t,x,delta.t,...){
+        c(x=rlnorm(n=1,meanlog=log(x),sd=sqrt(delta.t)))
+      },delta.t=0.1),
+    rmeasure=function(t,x,...){
+      c(a=rpois(n=1,lambda=x))
+    },
+    nsim=1000,
+    params=c(x_0=1),
+    probes=list(
+      f=probe.mean("a",transform=sqrt),
+      g=probe.median("a"),
+      h=function(y)range(y)
+    )
+  )
 
 dev.off()

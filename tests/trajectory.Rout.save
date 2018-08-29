@@ -191,6 +191,10 @@ Warning messages:
 +     sum(is.na(x))==1202
 +   }
 + )
+> try(trajectory("fhn"))
+Error : ‘trajectory’ is undefined for objects of class ‘character’.
+> try(trajectory())
+Error : in ‘trajectory’: ‘object’ is a required argument.
 > 
 > pompExample(sir)
 newly created object(s):

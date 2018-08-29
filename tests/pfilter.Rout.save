@@ -17,7 +17,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> options(digits=4)
+> options(digits=3)
 > 
 > library(pomp)
 > 
@@ -29,12 +29,12 @@ newly created object(s):
 > 
 > pf <- pfilter(ou2,Np=1000)
 > logLik(pf)
-[1] -478.2
+[1] -478
 > stopifnot(logLik(pf)==sum(cond.logLik(pf)))
 > range(eff.sample.size(pf))
-[1]   5.083 241.359
+[1]   5.08 241.36
 > range(cond.logLik(pf))
-[1] -8.157 -3.856
+[1] -8.16 -3.86
 > names(as(pf,"data.frame"))
 [1] "time"        "y1"          "y2"          "ess"         "cond.loglik"
 > identical(as(pf,"data.frame"),as.data.frame(pf))
@@ -214,6 +214,9 @@ $time
 
 > 
 > library(magrittr)
+> 
+> try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
+Error : in ‘pfilter’: ‘rprocess’, ‘dmeasure’ are needed basic components.
 > 
 > ou2 %>%
 +   as.data.frame() %>%

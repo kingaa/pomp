@@ -20,12 +20,12 @@
   filter.mean = FALSE, filter.traj = FALSE, save.states = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{pfilter}{pomp}(data, params, Np, tol = 1e-17, max.fail = Inf,
+\S4method{pfilter}{pomp}(data, Np, tol = 1e-17, max.fail = Inf,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
   filter.traj = FALSE, save.states = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{pfilter}{pfilterd_pomp}(data, params, Np, tol, ...,
+\S4method{pfilter}{pfilterd_pomp}(data, Np, tol, ...,
   verbose = getOption("verbose", FALSE))
 }
 \arguments{

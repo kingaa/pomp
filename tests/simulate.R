@@ -160,5 +160,6 @@ dat %>% dim()
 
 pompExample(rw2)
 simulate(rw2,zeronames="x2") %>% plot()
+try(simulate(rw2,params=c(a="bob",b="nancy")))
 
 dev.off()

@@ -241,6 +241,8 @@ Error : in ‘simulate’: ‘nsim’ must be a positive integer.
 newly created object(s):
  rw2 
 > simulate(rw2,zeronames="x2") %>% plot()
+> try(simulate(rw2,params=c(a="bob",b="nancy")))
+Error : in ‘simulate’: ‘params’ must be named and numeric.
 > 
 > dev.off()
 null device 

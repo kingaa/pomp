@@ -1,4 +1,4 @@
-options(digits=4)
+options(digits=3)
 
 library(pomp)
 
@@ -83,6 +83,8 @@ dim(filter.traj(pf3))
 dimnames(filter.traj(pf3))
 
 library(magrittr)
+
+try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
 
 ou2 %>%
   as.data.frame() %>%
