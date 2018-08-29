@@ -5,15 +5,15 @@
 #include "pomp_internal.h"
 
 SEXP get_covariate_names (SEXP object) {
-  return GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("table"))));
+  return GET_ROWNAMES(GET_DIMNAMES(GET_SLOT(object,install("table"))));
 }
 
 lookup_table_t make_covariate_table (SEXP object, int *ncovar) {
   lookup_table_t tab;
   int *dim;
   dim = INTEGER(GET_DIM(GET_SLOT(object,install("table"))));
-  tab.length = dim[0];
-  *ncovar = tab.width = dim[1];
+  *ncovar = tab.width = dim[0];
+  tab.length = dim[1];
   tab.index = 0;
   tab.x = REAL(GET_SLOT(object,install("times")));
   tab.y = REAL(GET_SLOT(object,install("table")));
@@ -59,11 +59,11 @@ void table_lookup (lookup_table_t *tab, double x, double *y)
   tab->index = findInterval(tab->x,tab->length,x,TRUE,TRUE,tab->index,&flag);
   // warn only if we are *outside* the interval
   if ((x < tab->x[0]) || (x > tab->x[(tab->length)-1]))
-    warningcall(R_NilValue,"in 'table_lookup': extrapolating at %le", x);
+    warningcall(R_NilValue,"in 'table_lookup': extrapolating at %le.", x);
   e = (x - tab->x[tab->index-1]) / (tab->x[tab->index] - tab->x[tab->index-1]);
   for (j = 0; j < tab->width; j++) {
-    k = j*(tab->length)+(tab->index);
-    y[j] = e*(tab->y[k])+(1-e)*(tab->y[k-1]);
+    k = j+(tab->width)*(tab->index);
+    y[j] = e*(tab->y[k])+(1-e)*(tab->y[k-tab->width]);
     //    if (dydt != 0)
     //      dydt[j] = ((tab->y[k])-(tab->y[k-1]))/((tab->x[tab->index])-(tab->x[tab->index-1]));
   }

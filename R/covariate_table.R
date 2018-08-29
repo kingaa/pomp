@@ -42,12 +42,12 @@ setMethod(
   signature=signature(object="covartable"),
   definition=function (object) {
     if (length(object@times)>0) {
-      cat("\n  -",nrow(object@table),"records of",
-        ncol(object@table),"covariates,",
+      cat("\n  -",ncol(object@table),"records of",
+        nrow(object@table),"covariates,",
         "recorded from t =",min(object@times),
         "to",max(object@times),"\n")
       cat("  - summary of covariates:\n")
-      print(summary(as.data.frame(object@table)))
+      print(summary(as.data.frame(t(object@table))))
     } else {
       cat("<none>\n")
     }
@@ -119,7 +119,7 @@ setMethod(
             " must be an increasing numeric sequence (without missing values).")
 
         new("covartable",times=as.double(times),
-          table=do.call(cbind,lapply(df,as.double)))
+          table=do.call(rbind,lapply(df,as.double)))
 
       },
       error = function (e) pStop("covariate_table",conditionMessage(e))
@@ -129,11 +129,11 @@ setMethod(
 )
 
 get_covariate_names <- function (object) {
-  colnames(object@table)
+  rownames(object@table)
 }
 
 select_covariates <- function (object, vars) {
-  cnames <- colnames(object@table)
+  cnames <- rownames(object@table)
   if (!all(vars %in% cnames)) {
     missing <- vars[!(vars%in%cnames)]
     m1 <- ngettext(length(missing),"variable ","variables ")
@@ -141,18 +141,8 @@ select_covariates <- function (object, vars) {
     pStop_(m1,paste(sapply(missing,sQuote),collapse=","),m2,
       " not among the covariates.")
   }
-  object@table <- object@table[,vars,drop=FALSE]
+  object@table <- object@table[vars,,drop=FALSE]
   object
-}
-
-covar_fun_warning <- function (object, slotname, funs, wp) {
-  if (length(object@times) > 0 && !is.null(funs[[slotname]])) {
-    if (funs[[slotname]]@mode == pompfunmode$Rfun &&
-        !("covars" %in% names(formals(funs[[slotname]]@R.fun))))
-      pWarn(wp,"a covariate table has been given, yet the ",
-        sQuote(slotname)," function does not have ",
-        sQuote("covars")," as a formal argument.")
-  }
 }
 
 covar_time_warning <- function (object, times, t0, wp) {
