@@ -100,20 +100,25 @@
 ##' This will be coerced internally to storage mode \code{double}.
 ##'
 ##' @param obsnames optional character vector;
-##' names the observables.
-##' It is usually unnecessary to specify \code{obsnames}, as by default, these are read from the names of the data variables.
+##' names of the observables.
+##' It is not usually necessary to specify \code{obsnames} since, by default,
+##' these are read from the names of the data variables.
 ##'
 ##' @param statenames optional character vector;
-##' names the latent state variables.
+##' names of the latent state variables.
+##' It is typically only necessary to supply \code{statenames} when C snippets are in use.
 ##'
 ##' @param paramnames optional character vector;
-##' names model parameters.
+##' names of model parameters.
+##' It is typically only necessary to supply \code{paramnames} when C snippets are in use.
 ##'
 ##' @param covarnames optional character vector;
-##' names the covariates.
-##' It is usually unnecessary to specify \code{covarnames}, as by default, these are read from the names of the covariates.
+##' names of the covariates.
+##' It is not usually necessary to specify \code{covarnames} since, by default,
+##' these are read from the names of the covariates.
 ##'
-##' @param zeronames optional character vector specifying the names of accumulator variables.
+##' @param zeronames optional character vector;
+##' contains the names of accumulator variables.
 ##' See \link[=accumulators]{here} for a definition and discussion of accumulator variables.
 ##'
 ##' @param \dots additional arguments supply new or modify existing model characteristics or components.
@@ -172,6 +177,8 @@ pomp <- function (data, times, t0, ...,
       length(list(...)) == 0)
     return(data)
 
+  if (missing(times)) times <- NULL
+
   tryCatch(
     construct_pomp(
       data=data,times=times,t0=t0,...,
@@ -190,35 +197,46 @@ pomp <- function (data, times, t0, ...,
 
 setGeneric(
   "construct_pomp",
-  function (data, ...)
+  function (data, times, ...)
     standardGeneric("construct_pomp")
 )
 
 setMethod(
   "construct_pomp",
-  signature=signature(data="data.frame"),
+  signature=signature(data="ANY", times="missing"),
+  definition = function (data, times, t0, ...) {
+    reqd_arg(NULL,"times")
+  }
+)
+
+setMethod(
+  "construct_pomp",
+  signature=signature(data="ANY", times="ANY"),
+  definition = function (data, times, t0, ...) {
+    pStop_(sQuote("times")," should either be a numeric vector of observation",
+      " times or a single name identifying the column of data that represents",
+      " the observation times.")
+  }
+)
+
+setMethod(
+  "construct_pomp",
+  signature=signature(data="data.frame", times="character"),
   definition = function (data, times, t0, ...) {
 
-    if (anyDuplicated(names(data))) {
+    if (anyDuplicated(names(data)))
       pStop_("names of data variables must be unique.")
-    }
-    if (missing(times) || missing(t0))
-      pStop_(sQuote("times")," and ",sQuote("t0")," are required arguments.")
-    if ((is.numeric(times) && (times<1 || times>ncol(data) ||
-        times!=as.integer(times))) ||
-        (is.character(times) && (!(times%in%names(data)))) ||
-        (!is.numeric(times) && !is.character(times)) || length(times)!=1) {
-      pStop_("when ",sQuote("data")," is a data frame, ",sQuote("times"),
-        " must identify a single column of ",sQuote("data"),
-        " either by name or by index.")
-    }
-    if (is.numeric(times)) {
-      tpos <- as.integer(times)
-      timename <- names(data)[tpos]
-    } else if (is.character(times)) {
-      tpos <- match(times,names(data))
-      timename <- times
-    }
+
+    if (missing(t0)) reqd_arg(NULL,"t0")
+
+    tpos <- match(times,names(data),nomatch=0L)
+
+    if (length(times) != 1 || tpos == 0L)
+      pStop_(sQuote("times")," does not identify a single column of ",
+        sQuote("data")," by name.")
+
+    timename <- times
+
     times <- data[[tpos]]
     data <- do.call(rbind,lapply(data[-tpos],as.double))
 
@@ -229,11 +247,32 @@ setMethod(
 
 setMethod(
   "construct_pomp",
-  signature=signature(data="NULL"),
+  signature=signature(data="data.frame", times="numeric"),
   definition = function (data, times, t0, ...) {
 
-    if (missing(times) || missing(t0))
-      pStop_(sQuote("times")," and ",sQuote("t0")," are required arguments.")
+    if (anyDuplicated(names(data)))
+      pStop_("names of data variables must be unique.")
+
+    if (missing(t0)) reqd_arg(NULL,"t0")
+
+    if (length(times) != nrow(data))
+      pStop_("the length of ",sQuote("times"),
+        " does not match that of the data.")
+
+    timename <- "time"
+    data <- do.call(rbind,lapply(data,as.double))
+
+    construct_pomp(data=data,times=times,t0=t0,...,timename=timename)
+
+  }
+)
+
+setMethod(
+  "construct_pomp",
+  signature=signature(data="NULL", times="numeric"),
+  definition = function (data, times, t0, ...) {
+
+    if (missing(t0)) reqd_arg(NULL,"t0")
 
     construct_pomp(data=array(dim=c(0,length(times))),times=times,t0=t0,...)
 
@@ -242,8 +281,8 @@ setMethod(
 
 setMethod(
   "construct_pomp",
-  signature=signature(data="array"),
-  definition = function (data, ...,
+  signature=signature(data="array", times="numeric"),
+  definition = function (data, times, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
     partrans, params, covar) {
 
@@ -275,6 +314,7 @@ setMethod(
 
     pomp.internal(
       data=data,
+      times=times,
       rinit=rinit,
       rprocess=rprocess,
       dprocess=dprocess,
@@ -294,14 +334,21 @@ setMethod(
 
 setMethod(
   "construct_pomp",
-  signature=signature(data="pomp"),
+  signature=signature(data="pomp", times="numeric"),
+  definition = function (data, times, ...) {
+    time(data) <- times
+    construct_pomp(data,times=NULL,...)
+  }
+)
+
+setMethod(
+  "construct_pomp",
+  signature=signature(data="pomp", times="NULL"),
   definition = function (data, times, t0, timename, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
     partrans, params, covar, zeronames) {
 
-    if (missing(times)) times <- data@times
-    else time(data) <- times
-
+    times <- data@times
     if (missing(t0)) t0 <- data@t0
     if (missing(timename)) timename <- data@timename
 

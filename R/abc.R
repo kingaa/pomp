@@ -247,7 +247,7 @@ abc.internal <- function (object, Nabc, proposal, probes, epsilon, scale,
   .ndone <- as.integer(.ndone)
   .accepts <- as.integer(.accepts)
 
-  object <- pomp(object,...)
+  object <- pomp(object,...,verbose=verbose)
   params <- coef(object)
 
   Nabc <- as.integer(Nabc)

@@ -82,22 +82,27 @@ See the documentation for \code{\link{covariate_table}} for details.}
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
 
-\item{zeronames}{optional character vector specifying the names of accumulator variables.
+\item{zeronames}{optional character vector;
+contains the names of accumulator variables.
 See \link[=accumulators]{here} for a definition and discussion of accumulator variables.}
 
 \item{obsnames}{optional character vector;
-names the observables.
-It is usually unnecessary to specify \code{obsnames}, as by default, these are read from the names of the data variables.}
+names of the observables.
+It is not usually necessary to specify \code{obsnames} since, by default,
+these are read from the names of the data variables.}
 
 \item{statenames}{optional character vector;
-names the latent state variables.}
+names of the latent state variables.
+It is typically only necessary to supply \code{statenames} when C snippets are in use.}
 
 \item{paramnames}{optional character vector;
-names model parameters.}
+names of model parameters.
+It is typically only necessary to supply \code{paramnames} when C snippets are in use.}
 
 \item{covarnames}{optional character vector;
-names the covariates.
-It is usually unnecessary to specify \code{covarnames}, as by default, these are read from the names of the covariates.}
+names of the covariates.
+It is not usually necessary to specify \code{covarnames} since, by default,
+these are read from the names of the covariates.}
 
 \item{PACKAGE}{optional character;
 the name (without extension) of the external, dynamically loaded library in which any native routines are to be found.

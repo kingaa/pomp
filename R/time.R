@@ -78,7 +78,7 @@ time.repl.internal <- function (object, t0 = FALSE, ..., value) {
     object@times <- value
   }
   if (!all(diff(object@times)>0))
-    pStop_(sQuote("value")," must be an increasing sequence.")
+    pStop_("times must be an increasing numeric sequence.")
   if (object@t0>object@times[1])
     pStop_("the zero-time ",sQuote("t0"),
       " must occur no later than the first observation.")

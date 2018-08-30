@@ -199,7 +199,7 @@ setMethod(
 
     } else {
 
-      cat("<default>\n")
+      cat("<default>")
 
     }
     cat("\n")

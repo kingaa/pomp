@@ -40,6 +40,12 @@ undef_method <- function (method, object) {
 }
 
 reqd_arg <- function (method, object) {
-  pStop(method,sQuote(object)," is a required argument.")
+  if (is.null(method) || length(method)==0)
+    pStop_(sQuote(object)," is a required argument.")
+  else
+    pStop(method,sQuote(object)," is a required argument.")
 }
 
+invalid_names <- function (names) {
+  is.null(names) || !all(nzchar(names))
+}
