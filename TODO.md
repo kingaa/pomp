@@ -6,8 +6,8 @@
 	- would require attention to `rw.sd`, e.g.
 - covariates:
 	- piecewise constant interpolation of covariates
-	- it should be possible to refer to `times` inside `covariate_table`
-- do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
+	- ~~it should be possible to refer to `times` inside `covariate_table`~~
+- we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes
 - `nsim` argument for `rprior`?
 - make R-level functions for various distributions and transformations
 - ~~regularize use of `pStop` and `tryCatch` on *.internals~~

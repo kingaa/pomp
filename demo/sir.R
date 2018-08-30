@@ -23,7 +23,7 @@ step.fun <- "
 
   // seasonality in transmission
   for (k = 0, beta = 0.0; k < nbasis; k++)
-     beta += (&beta1)[k]*(&seas1)[k];
+     beta += (&beta1)[k]*(&seas_1)[k];
 
   // compute the environmental stochasticity
   dW = rgammawn(beta_sd,dt);
@@ -57,7 +57,7 @@ skel <- "
   int k;
 
   for (k = 0, beta = 0.0; k < nbasis; k++)
-     beta += (&beta1)[k]*(&seas1)[k];
+     beta += (&beta1)[k]*(&seas_1)[k];
 
   // compute the transition rates
   rate[0] = mu*popsize;		// birth into susceptible class
@@ -118,12 +118,11 @@ LondonYorke %>%
     skeleton=vectorfield(Csnippet(skel)),
     covar=covariate_table(
       times=seq(from=1928,to=1934,by=0.01),
-      periodic.bspline.basis(
-        x=seq(from=1928,to=1934,by=0.01),
+      seas=periodic.bspline.basis(
+        x=times,
         nbasis=3,
         degree=3,
-        period=1,
-        names="seas%d"
+        period=1
       )
     ),
     partrans=parameter_trans(

@@ -2,6 +2,31 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
 
+        • In the course of ordinary work, one should never need to
+          interact with the low-level ‘pomp’ constructor function now.
+
+        • One can now modify basic model components at (almost) any
+          stage in a pipeline of ‘pomp’ computations.  All the
+          top-level inference functions, plus ‘probe’, ‘pfilter’, and
+          ‘simulate’ now allow modification of basic model components.
+
+        • One can now call ‘simulate’ on a model without reference to
+          any data.
+
+        • The syntax with which one includes covariates via
+          ‘covariate_table’ has become more flexible.  Specifically,
+          the arguments to ‘covariate_table’ are now evaluated
+          sequentially, so that later ones can depend on earlier ones.
+          Once evaluated, the covariates are bound column-wise into a
+          single data frame.
+
+        • The manner in which one writes R functions to specify basic
+          model components has been totally changed.  Before, one wrote
+          functions that took specific arguments such as 'x', 'params',
+          and 'covars'.  Now, one writes such functions with any or all
+          state variables, observables, covariates, and/or time as
+          arguments.
+
         • ‘simulate’ now returns more informative results when
           simulations from multiple parameter sets are simultaneously
           computed.  Specifically, if ‘params’ has column names, these
@@ -91,9 +116,10 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
           ‘T_alpha = log(alpha);’ and the ‘fromEst’ snippet would
           include ‘alpha = exp(T_alpha);’.
 
-        • The ‘parameter_trans’ function now takes arguments ‘log’,
-          ‘logit’, and ‘barycentric’, with names of parameters to be
-          log-, logit-, and log-barycentric transformed, respectively.
+        • The ‘parameter_trans’ function now takes optional arguments
+          ‘log’, ‘logit’, and ‘barycentric’, with names of parameters
+          to be log-, logit-, and log-barycentric transformed,
+          respectively.
 
         • The ‘measurement.model’ argument to ‘pomp’ has been removed.
           It is now necessary to specify the measurement model directly
@@ -103,8 +129,6 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
           is now ‘rinit’, since it draws from the distribution of the
           latent state at the initial time.  The low-level function
           ‘init.state’ has been replaced by ‘rinit’.
-
-        • ‘values’ has been deprecated and replaced by ‘probevals’.
 
         • The ‘conv.rec’ method has been deprecated, replaced by the
           new ‘traces’ method.
@@ -139,10 +163,6 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
 
         • The old and deprecated ‘mif’ and ‘bsmc’ methods have been
           removed.
-
-        • One can now directly create a pomp by calling ‘simulate’,
-          specifying ‘rprocess’ and, optionally, ‘rmeasure’, without
-          having to first create a dummy data frame.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._7:
 

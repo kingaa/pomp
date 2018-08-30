@@ -43,7 +43,7 @@ sir %>%
       double beta;
       double dW;
 
-      beta = dot_product(3,&beta1,&seas1);
+      beta = dot_product(3,&beta1,&seas_1);
       dW = rgammawn(beta_sd,dt);
 
       rate[0] = mu*pop;

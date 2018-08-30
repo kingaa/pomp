@@ -45,6 +45,6 @@ try({
 pompExample(sir)
 try(sir %>% simulate(rinit=NULL))
 sir %>%
-  pomp(rinit=function(seas1,...)
-    c(S=seas1)) %>%
+  pomp(rinit=function(seas_1,...)
+    c(S=seas_1)) %>%
   rinit()

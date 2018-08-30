@@ -94,8 +94,8 @@ newly created object(s):
 > try(sir %>% simulate(rinit=NULL))
 Error : in ‘simulate’: variable 'cases' not found among the state variables.
 > sir %>%
-+   pomp(rinit=function(seas1,...)
-+     c(S=seas1)) %>%
++   pomp(rinit=function(seas_1,...)
++     c(S=seas_1)) %>%
 +   rinit()
         rep
 variable      [,1]

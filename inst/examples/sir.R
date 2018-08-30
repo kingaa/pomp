@@ -224,14 +224,13 @@ pomp(
     S_0=26/400,I_0=0.001,R_0=1-26/400-0.001
   ),
   covar=covariate_table(
-    periodic.bspline.basis(
-      x=seq(0,4.2,by=0.01),
+    times=seq(0,4.2,by=0.01),
+    seas=periodic.bspline.basis(
+      x=times,
       period=1,
       nbasis=3,
-      degree=3,
-      names="seas%d"
-    ),
-    times=seq(0,4.2,by=0.01)
+      degree=3
+    )
   ),
   globals=Csnippet("
     static int nbasis = 3;"
@@ -252,7 +251,7 @@ pomp(
     double beta;
     double dW;
 
-    beta = dot_product(nbasis,&beta1,&seas1);
+    beta = dot_product(nbasis,&beta1,&seas_1);
 
     // gamma noise, mean=dt, variance=(beta_sd^2 dt)
     dW = rgammawn(beta_sd,dt);
@@ -287,7 +286,7 @@ pomp(
     double beta;
     double dW;
 
-    beta = dot_product(nbasis,&beta1,&seas1);
+    beta = dot_product(nbasis,&beta1,&seas_1);
 
     // compute the transition rates
     rate[0] = mu*pop;		// birth into susceptible class

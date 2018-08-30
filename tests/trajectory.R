@@ -36,7 +36,7 @@ pomp(
   data=fhn,
   times=seq(0,100,by=0.01),t0=0,
   covar=covariate_table(
-    i=sin(2*pi*seq(0,101,by=0.1)),
+    i=sin(2*pi*times),
     times=seq(0,101,by=0.1)
   ),
   rinit=function(...) {

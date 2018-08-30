@@ -5,17 +5,23 @@
 \alias{covariate_table}
 \alias{covariate_table,missing-method}
 \alias{covariate_table,ANY-method}
-\alias{covariate_table-ANY}
+\alias{covariate_table,numeric-method}
+\alias{covariate_table-numeric,covariate_table,numeric-method}
+\alias{covariate_table,character-method}
+\alias{covariate_table-character,covariate_table,character-method}
 \title{Covariates}
 \usage{
-\S4method{covariate_table}{ANY}(..., times)
+\S4method{covariate_table}{numeric}(..., times)
+
+\S4method{covariate_table}{character}(..., times)
 }
 \arguments{
-\item{\dots}{numeric vectors or data frames containing time-varying covariates}
+\item{\dots}{numeric vectors or data frames containing time-varying covariates.
+It must be possible to bind these into a data frame.}
 
 \item{times}{the times corresponding to the covariates.
 This may be given as a vector of (increasing, finite) numerical values.
-Alternatively, one can indicate one of the variables given (either as a vector or as a data-frame column) by name or by index.}
+Alternatively, one can specify by name which of the given variables is the time variable.}
 }
 \description{
 Including time-varying covariates in a model.

@@ -2,6 +2,16 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item In the course of ordinary work, one should never need to interact with the low-level \code{pomp} constructor function now.
+    \item One can now modify basic model components at (almost) any stage in a pipeline of \pkg{pomp} computations.
+    All the top-level inference functions, plus \code{probe}, \code{pfilter}, and \code{simulate} now allow modification of basic model components.
+    \item One can now call \code{simulate} on a model without reference to any data.
+    \item The syntax with which one includes covariates via \code{covariate_table} has become more flexible.
+    Specifically, the arguments to \code{covariate_table} are now evaluated sequentially, so that later ones can depend on earlier ones.
+    Once evaluated, the covariates are bound column-wise into a single data frame.
+    \item The manner in which one writes \R functions to specify basic model components has been totally changed.
+    Before, one wrote functions that took specific arguments such as 'x', 'params', and 'covars'.
+    Now, one writes such functions with any or all state variables, observables, covariates, and/or time as arguments.
     \item \code{simulate} now returns more informative results when simulations from multiple parameter sets are simultaneously computed.
     Specifically, if \code{params} has column names, these are used to identify the resulting simulations.
     Thus when \code{format = "pomps"} (the default), the names of the resulting list will be constructed from the column names of \code{params}.
@@ -43,13 +53,12 @@
     In addition, references to \dQuote{fromEstimationScale} and \dQuote{toEstimationScale} have been abbreviated to \dQuote{fromEst} and \dQuote{toEst}, respectively, throughout the package.
     \item When writing C snippets for parameter transformations, the notation \code{T_p} refers to the value of \code{p} on the estimation scale.
     Thus, if parameter \eqn{alpha} is to be log-transformed for estimation, the \code{toEst} snippet would contain the line \code{T_alpha = log(alpha);} and the \code{fromEst} snippet would include \code{alpha = exp(T_alpha);}.
-    \item The \code{parameter_trans} function now takes arguments \code{log}, \code{logit}, and \code{barycentric}, with names of parameters to be log-, logit-, and log-barycentric transformed, respectively.
+    \item The \code{parameter_trans} function now takes optional arguments \code{log}, \code{logit}, and \code{barycentric}, with names of parameters to be log-, logit-, and log-barycentric transformed, respectively.
     \item The \code{measurement.model} argument to \code{pomp} has been removed.
     It is now necessary to specify the measurement model directly using \code{rmeasure} and/or \code{dmeasure}.
     \item The \code{initializer} is no longer referred to by that name.
     It is now \code{rinit}, since it draws from the distribution of the latent state at the initial time.
     The low-level function \code{init.state} has been replaced by \code{rinit}.
-    \item \code{values} has been deprecated and replaced by \code{probevals}.
     \item The \code{conv.rec} method has been deprecated, replaced by the new \code{traces} method.
     \item The \code{euler.sir} example has been renamed \code{sir}.
     \item The \code{gillespie.sir} example has been renamed \code{sir2}.
@@ -63,7 +72,6 @@
     These classes are no longer exported (for the most part).
     \item The \code{transform} argument to the \code{probe.quantile} function has been removed (as it is entirely redundant!).
     \item The old and deprecated \code{mif} and \code{bsmc} methods have been removed.
-    \item One can now directly create a pomp by calling \code{simulate}, specifying \code{rprocess} and, optionally, \code{rmeasure}, without having to first create a dummy data frame.
   }
 }
 \section{Changes in \pkg{pomp} version 1.18.7}{

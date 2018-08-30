@@ -24,10 +24,8 @@ Type 'q()' to quit R.
 > 
 > pomp:::pomp_fun()
 <default>
-
 > pomp:::pomp_fun(NULL)
 <default>
-
 > try(pomp:::pomp_fun(36,slotname="silly"))
 Error : bad option for ‘silly’ argument.
 > pomp:::pomp_fun(function(x,y)x+y,proto=quote(bob(x,y)),slotname="blarp")

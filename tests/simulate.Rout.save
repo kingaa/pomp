@@ -46,13 +46,13 @@ newly created object(s):
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘times’ and ‘t0’ are required arguments.
+Error : in ‘simulate’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > try(simulate(times=1:10,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘times’ and ‘t0’ are required arguments.
+Error : in ‘simulate’: ‘t0’ is a required argument.
 > try(simulate(times=c(1:5,NA,7:10),t0=0,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
@@ -64,7 +64,7 @@ Error : in ‘simulate’: ‘times’ must be an increasing sequence of numbers
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘times’ must be an increasing sequence of numbers.
+Error : in ‘simulate’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > try(simulate(times=1:10,t0=NA,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),

@@ -2,14 +2,6 @@
 ##'
 ##' Including time-varying covariates in a model.
 ##'
-##' @name covariate_table
-##' @rdname covariate_table
-##' @aliases covariate_table covariate_table,missing-method
-##' covariate_table,ANY-method
-##' @include pomp_class.R
-##' @family information on model implementation
-##'
-##' @details
 ##' If the \sQuote{pomp} object contains covariates (specified via the \code{covar} argument), then interpolated values of the covariates will be available to each of the model components whenever it is called.
 ##' In particular, variables with names as they appear in the \code{covar} covariate table will be available to any C snippet.
 ##' When a basic component is defined using an \R function, that function will be called with an extra argument, \code{covars}, which will be a named numeric vector containing the interpolated values from the covariate table.
@@ -17,6 +9,21 @@
 ##' An exception to this rule is the prior (\code{rprior} and \code{dprior}):
 ##' covariate-dependent priors are not allowed.
 ##' Nor are parameter transformations permitted to depend upon covariates.
+##'
+##' @name covariate_table
+##' @rdname covariate_table
+##' @aliases covariate_table covariate_table,missing-method
+##' covariate_table,ANY-method
+##' @include pomp_class.R pstop.R
+##' @family information on model implementation
+##'
+##' @param times the times corresponding to the covariates.
+##' This may be given as a vector of (increasing, finite) numerical values.
+##' Alternatively, one can specify by name which of the given variables is the time variable.
+##'
+##' @param \dots numeric vectors or data frames containing time-varying covariates.
+##' It must be possible to bind these into a data frame.
+##'
 NULL
 
 setClass(
@@ -54,95 +61,113 @@ setMethod(
   }
 )
 
-##' @export
 setMethod(
   "covariate_table",
   signature=signature(times="missing"),
   definition=function (...) {
-    if (nargs() > 0)
-      reqd_arg("covariate_table","times")
+    if (nargs() > 0) reqd_arg("covariate_table","times")
     new("covartable")
   }
 )
 
-##' @name covariate_table-ANY
-##' @aliases covariate_table,ANY-method
-##' @rdname covariate_table
-##'
-##' @param times the times corresponding to the covariates.
-##' This may be given as a vector of (increasing, finite) numerical values.
-##' Alternatively, one can indicate one of the variables given (either as a vector or as a data-frame column) by name or by index.
-##' @param \dots numeric vectors or data frames containing time-varying covariates
-##' @export
-##'
 setMethod(
   "covariate_table",
   signature=signature(times="ANY"),
   definition=function (..., times) {
+    undef_method("covariate_table",times)
+  }
+)
+
+##' @rdname covariate_table
+##' @aliases covariate_table-numeric,covariate_table,numeric-method
+##' @export
+##'
+setMethod(
+  "covariate_table",
+  signature=signature(times="numeric"),
+  definition=function (..., times) {
 
     tryCatch(
-      {
-
-        df <- data.frame(...,check.names=FALSE)
-
-        if (anyDuplicated(names(df))) {
-          pStop_("names of covariates must be unique.")
-        }
-
-        if (length(times) == 0 ||
-            (length(times) > 1 && !is.numeric(times)) ||
-            (length(times) == 1 && !is.numeric(times) && !is.character(times)))
-          pStop_(sQuote("times")," should either be a vector ",
-            "of times or identify a single time variable.")
-
-        if (length(times) == 1) {
-          if (is.character(times)) {
-            tpos <- match(times,names(df))
-          } else if (is.numeric(times)) {
-            tpos <- as.integer(times)
-          }
-          if (tpos < 1 || tpos > length(df) || !is.finite(tpos))
-            pStop_(sQuote("times")," must identify a single ",
-              "variable either by name or by index.")
-          times <- df[[tpos]]
-          df <- df[-tpos]
-        }
-
-        if (length(df) == 0)
-          pStop_("no covariates specified.")
-
-        if (length(times) != nrow(df))
-          pStop_(sQuote("times")," must agree in length with the covariates.")
-
-        if (any(!is.finite(times)) || !all(diff(times)>0))
-          pStop_(sQuote("times"),
-            " must be an increasing numeric sequence (without missing values).")
-
-        new("covartable",times=as.double(times),
-          table=do.call(rbind,lapply(df,as.double)))
-
-      },
+      covariate.table.internal(...,times=times),
       error = function (e) pStop("covariate_table",conditionMessage(e))
     )
 
   }
 )
 
-get_covariate_names <- function (object) {
-  rownames(object@table)
+##' @rdname covariate_table
+##' @aliases covariate_table-character,covariate_table,character-method
+##' @export
+##'
+setMethod(
+  "covariate_table",
+  signature=signature(times="character"),
+  definition=function (..., times) {
+
+    tryCatch(
+      covariate.table.internal(...,.timevar=times),
+      error = function (e) pStop("covariate_table",conditionMessage(e))
+    )
+
+  }
+)
+
+covariate.table.internal <- function (..., times = NULL, .timevar = NULL) {
+
+  d <- as.list(substitute(list(...)))[-1]
+  if (length(d)==0) pStop_("no covariates specified.")
+  nm <- names(d)
+  if (is.null(nm)) nm <- character(length(d))
+  noname <- !nzchar(nm)
+  nm[noname] <- paste0(".cov.int.",seq_len(sum(noname)))
+  names(d) <- nm
+
+  e <- new.env(parent=parent.frame(2))
+
+  e$times <- as.numeric(times)
+
+  for (i in names(d)) e[[i]] <- eval(d[[i]],envir=e)
+
+  remove(list=c("times"),pos=e)
+
+  e <- as.list(e,all.names=TRUE)
+  names(e) <- sub(".cov.int.*","",names(e))
+
+  df <- tryCatch(
+    data.frame(e,check.names=FALSE),
+    error = function (e) pStop_("binding columns: ",conditionMessage(e))
+  )
+
+  if (anyDuplicated(names(df))) pStop_("names of covariates must be unique.")
+
+  if (!is.null(times) && (length(times) != nrow(df)))
+    pStop_(sQuote("times")," must agree in length with the covariates.")
+
+  if (!is.null(.timevar)) {
+
+    tpos <- match(.timevar,names(df),nomatch=0L)
+    if (tpos == 0L)
+      pStop_(sQuote("times")," does not identify a unique time variable.")
+    times <- df[[tpos]]
+    df <- df[-tpos]
+
+  }
+
+  if (length(df) == 0) pStop_("no covariates specified.")
+
+  if (any(!is.finite(times)) || !all(diff(times)>0))
+    pStop_(sQuote("times"),
+      " must be an increasing numeric sequence (without missing values).")
+
+  names(df) <- cleanForC(names(df))
+
+  new("covartable",times=as.double(times),
+    table=do.call(rbind,lapply(df,as.double)))
+
 }
 
-select_covariates <- function (object, vars) {
-  cnames <- rownames(object@table)
-  if (!all(vars %in% cnames)) {
-    missing <- vars[!(vars%in%cnames)]
-    m1 <- ngettext(length(missing),"variable ","variables ")
-    m2 <- ngettext(length(missing)," is"," are")
-    pStop_(m1,paste(sapply(missing,sQuote),collapse=","),m2,
-      " not among the covariates.")
-  }
-  object@table <- object@table[vars,,drop=FALSE]
-  object
+get_covariate_names <- function (object) {
+  rownames(object@table)
 }
 
 covar_time_warning <- function (object, times, t0, wp) {

@@ -89,18 +89,6 @@ cholera <- data.frame(
   )
 )
 
-covar.dt <- 0.01
-
-t0 <- with(cholera,2*time[1]-time[2])
-tcovar <- seq(from=t0,to=max(cholera$time)+2/12,by=covar.dt)
-covartable <- data.frame(
-  time=tcovar,
-  periodic.bspline.basis(tcovar-1/12,nbasis=nbasis,degree=3,period=1,names="seas%d"),
-  pop=predict(smooth.spline(x=census$year,y=census$census),x=tcovar)$y,
-  dpopdt=predict(smooth.spline(x=census$year,y=census$census),x=tcovar,deriv=1)$y,
-  trend=tcovar-mean(tcovar)
-)
-
 rinit <- Csnippet("
   int k;
   double sum = S_0+I_0+Y_0;
@@ -165,8 +153,8 @@ cholmodel_one <- Csnippet("
 
   neps = eps*nrstage;
 
-  beta = exp(dot_product(nbasis,&seas1,&logbeta1)+beta_trend*trend);
-  omega = exp(dot_product(nbasis,&seas1,&logomega1));
+  beta = exp(dot_product(nbasis,&seas_1,&logbeta1)+beta_trend*trend);
+  omega = exp(dot_product(nbasis,&seas_1,&logomega1));
 
   dw = rnorm(0,sqrt(dt));	// white noise
 
@@ -225,6 +213,8 @@ cholmodel_one <- Csnippet("
   }
 ")
 
+t0 <- with(cholera,2*time[1]-time[2])
+
 pomp(
   data=cholera,
   times='time',
@@ -243,7 +233,14 @@ pomp(
     barycentric=c("S_0","I_0","Y_0",sprintf("R%01d_0",1:nrstage))
   ),
   rinit=rinit,
-  covar=covariate_table(covartable,times='time'),
+  covar=covariate_table(
+    t=seq(from=t0,to=max(cholera$time)+2/12,by=0.01),
+    seas=periodic.bspline.basis(t-1/12,nbasis=nbasis,degree=3,period=1),
+    pop=predict(smooth.spline(x=census$year,y=census$census),x=t)$y,
+    dpopdt=predict(smooth.spline(x=census$year,y=census$census),x=t,deriv=1)$y,
+    trend=t-mean(t),
+    times="t"
+  ),
   zeronames = c("deaths","count"),
   statenames = c("S","I","Y",sprintf("R%d",seq_len(nrstage)),"deaths","W","count"),
   paramnames = c("tau","gamma","eps","delta","deltaI",

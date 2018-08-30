@@ -58,7 +58,6 @@ pomp object ‘po1’:
  Max.   :20  
 
 - initial state simulator, rinit: <default>
-
 - process-model simulator, rprocess: discrete-time process-model simulator
   - time-step = 1 
   - step.fun: native function
@@ -66,7 +65,6 @@ pomp object ‘po1’:
   - dynamically loaded from: ‘pomp’
 
 - process model density, dprocess: <default>
-
 - measurement model simulator, rmeasure: native function
   - name: ‘_gompertz_normal_rmeasure’
   - dynamically loaded from: ‘pomp’
@@ -76,9 +74,7 @@ pomp object ‘po1’:
   - dynamically loaded from: ‘pomp’
 
 - prior simulator, rprior: <default>
-
 - prior density, dprior: <default>
-
 - deterministic skeleton: map:
   - time-step = 1 
   - native function
@@ -87,9 +83,7 @@ pomp object ‘po1’:
 
 - parameter transformations:
   - to estimation scale: <default>
-
   - from estimation scale: <default>
-
 - parameter vector:
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -142,7 +136,6 @@ params
   - dynamically loaded from: ‘pomp’
 
 - process model density, dprocess: <default>
-
 - measurement model simulator, rmeasure: native function
   - name: ‘_gompertz_normal_rmeasure’
   - dynamically loaded from: ‘pomp’
@@ -152,9 +145,7 @@ params
   - dynamically loaded from: ‘pomp’
 
 - prior simulator, rprior: <default>
-
 - prior density, dprior: <default>
-
 - deterministic skeleton: map:
   - time-step = 1 
   - native function
@@ -164,20 +155,20 @@ params
 - parameter transformations:
   - to estimation scale: native function
   - name: ‘__pomp_to_trans’
-  - defined by a C snippet in library ‘pomp_de4fe1143d7241e8f36f9b4a40b97a0a’
+  - defined by a C snippet in library ‘pomp_3ef6b15f32d86abfca025088c36ca0f1’
 
   - from estimation scale: native function
   - name: ‘__pomp_from_trans’
-  - defined by a C snippet in library ‘pomp_de4fe1143d7241e8f36f9b4a40b97a0a’
+  - defined by a C snippet in library ‘pomp_3ef6b15f32d86abfca025088c36ca0f1’
 
 - parameter vector unspecified
 - extra user-defined variables:  ‘bob’ 
 
 - C snippet file  1 :
 
-/* pomp C snippet file: pomp_de4fe1143d7241e8f36f9b4a40b97a0a */
-/* Time: 2018-08-29 07:35:58.153 -0400 */
-/* Salt: 148313CF791FACB914BC52A2 */
+/* pomp C snippet file: pomp_3ef6b15f32d86abfca025088c36ca0f1 */
+/* Time: 2018-08-30 11:50:53.751 -0400 */
+/* Salt: ECBB31151615835694AEFA24 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -219,12 +210,12 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_de4fe1143d7241e8f36f9b4a40b97a0a (DllInfo *info)
+void R_init_pomp_3ef6b15f32d86abfca025088c36ca0f1 (DllInfo *info)
 {
-R_RegisterCCallable("pomp_de4fe1143d7241e8f36f9b4a40b97a0a", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_de4fe1143d7241e8f36f9b4a40b97a0a", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_de4fe1143d7241e8f36f9b4a40b97a0a", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("pomp_de4fe1143d7241e8f36f9b4a40b97a0a", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_3ef6b15f32d86abfca025088c36ca0f1", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_3ef6b15f32d86abfca025088c36ca0f1", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_3ef6b15f32d86abfca025088c36ca0f1", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_3ef6b15f32d86abfca025088c36ca0f1", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
 }
 
 > 
@@ -251,7 +242,7 @@ pomp object ‘sir’:
 - covariates: 
   - 421 records of 3 covariates, recorded from t = 0 to 4.2 
   - summary of covariates:
-     seas1           seas2           seas3      
+     seas_1          seas_2          seas_3     
  Min.   :0.042   Min.   :0.042   Min.   :0.042  
  1st Qu.:0.118   1st Qu.:0.122   1st Qu.:0.099  
  Median :0.335   Median :0.322   Median :0.289  
@@ -261,41 +252,38 @@ pomp object ‘sir’:
 
 - initial state simulator, rinit: native function
   - name: ‘__pomp_rinit’
-  - defined by a C snippet in library ‘pomp_86b9b84f345e27d6e8828dc6a2865000’
+  - defined by a C snippet in library ‘pomp_9dd0773cfc5e38eeaa747fbda73c7fbe’
 
 - process-model simulator, rprocess: Euler-method process-model simulator
   - time-step = 0.000962 
   - step.fun: native function
   - name: ‘__pomp_stepfn’
-  - defined by a C snippet in library ‘pomp_86b9b84f345e27d6e8828dc6a2865000’
+  - defined by a C snippet in library ‘pomp_9dd0773cfc5e38eeaa747fbda73c7fbe’
 
 - process model density, dprocess: <default>
-
 - measurement model simulator, rmeasure: native function
   - name: ‘__pomp_rmeasure’
-  - defined by a C snippet in library ‘pomp_86b9b84f345e27d6e8828dc6a2865000’
+  - defined by a C snippet in library ‘pomp_9dd0773cfc5e38eeaa747fbda73c7fbe’
 
 - measurement model density, dmeasure: native function
   - name: ‘__pomp_dmeasure’
-  - defined by a C snippet in library ‘pomp_86b9b84f345e27d6e8828dc6a2865000’
+  - defined by a C snippet in library ‘pomp_9dd0773cfc5e38eeaa747fbda73c7fbe’
 
 - prior simulator, rprior: <default>
-
 - prior density, dprior: <default>
-
 - deterministic skeleton: vectorfield:
   - native function
   - name: ‘__pomp_skelfn’
-  - defined by a C snippet in library ‘pomp_86b9b84f345e27d6e8828dc6a2865000’
+  - defined by a C snippet in library ‘pomp_9dd0773cfc5e38eeaa747fbda73c7fbe’
 
 - parameter transformations:
   - to estimation scale: native function
   - name: ‘__pomp_to_trans’
-  - defined by a C snippet in library ‘pomp_86b9b84f345e27d6e8828dc6a2865000’
+  - defined by a C snippet in library ‘pomp_9dd0773cfc5e38eeaa747fbda73c7fbe’
 
   - from estimation scale: native function
   - name: ‘__pomp_from_trans’
-  - defined by a C snippet in library ‘pomp_86b9b84f345e27d6e8828dc6a2865000’
+  - defined by a C snippet in library ‘pomp_9dd0773cfc5e38eeaa747fbda73c7fbe’
 
 - parameter vector:
    gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
@@ -305,9 +293,9 @@ pomp object ‘sir’:
 
 - C snippet file  1 :
 
-/* pomp C snippet file: pomp_86b9b84f345e27d6e8828dc6a2865000 */
-/* Time: 2018-08-29 07:35:58.437 -0400 */
-/* Salt: 15599CC6471EC41DCA26C997 */
+/* pomp C snippet file: pomp_9dd0773cfc5e38eeaa747fbda73c7fbe */
+/* Time: 2018-08-30 11:50:54.020 -0400 */
+/* Salt: 035191CB3FA207F06417F576 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -327,9 +315,9 @@ pomp object ‘sir’:
 #define S_0		(__p[__parindex[7]])
 #define I_0		(__p[__parindex[8]])
 #define R_0		(__p[__parindex[9]])
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define S		(__x[__stateindex[0]])
 #define I		(__x[__stateindex[1]])
 #define R		(__x[__stateindex[2]])
@@ -357,9 +345,9 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 #undef S_0
 #undef I_0
 #undef R_0
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef S
 #undef I
 #undef R
@@ -377,9 +365,9 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 #define S_0		(__p[__parindex[7]])
 #define I_0		(__p[__parindex[8]])
 #define R_0		(__p[__parindex[9]])
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define S		(__x[__stateindex[0]])
 #define I		(__x[__stateindex[1]])
 #define R		(__x[__stateindex[2]])
@@ -395,7 +383,7 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, con
     double beta;
     double dW;
 
-    beta = dot_product(nbasis,&beta1,&seas1);
+    beta = dot_product(nbasis,&beta1,&seas_1);
 
     // gamma noise, mean=dt, variance=(beta_sd^2 dt)
     dW = rgammawn(beta_sd,dt);
@@ -432,9 +420,9 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, con
 #undef S_0
 #undef I_0
 #undef R_0
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef S
 #undef I
 #undef R
@@ -452,9 +440,9 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, con
 #define S_0		(__p[__parindex[7]])
 #define I_0		(__p[__parindex[8]])
 #define R_0		(__p[__parindex[9]])
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define S		(__x[__stateindex[0]])
 #define I		(__x[__stateindex[1]])
 #define R		(__x[__stateindex[2]])
@@ -483,9 +471,9 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #undef S_0
 #undef I_0
 #undef R_0
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef S
 #undef I
 #undef R
@@ -504,9 +492,9 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #define S_0		(__p[__parindex[7]])
 #define I_0		(__p[__parindex[8]])
 #define R_0		(__p[__parindex[9]])
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define S		(__x[__stateindex[0]])
 #define I		(__x[__stateindex[1]])
 #define R		(__x[__stateindex[2]])
@@ -540,9 +528,9 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #undef S_0
 #undef I_0
 #undef R_0
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef S
 #undef I
 #undef R
@@ -552,9 +540,9 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #undef lik
 
 /* C snippet: 'toEst' */
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define gamma		(__p[__parindex[0]])
 #define mu		(__p[__parindex[1]])
 #define iota		(__p[__parindex[2]])
@@ -591,9 +579,9 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 	to_log_barycentric(&T_S_0,&S_0,3); 
 }
 
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef gamma
 #undef mu
 #undef iota
@@ -616,9 +604,9 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 #undef T_R_0
 
 /* C snippet: 'fromEst' */
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define gamma		(__p[__parindex[0]])
 #define mu		(__p[__parindex[1]])
 #define iota		(__p[__parindex[2]])
@@ -655,9 +643,9 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 	from_log_barycentric(&S_0,&T_S_0,3); 
 }
 
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef gamma
 #undef mu
 #undef iota
@@ -690,9 +678,9 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 #define S_0		(__p[__parindex[7]])
 #define I_0		(__p[__parindex[8]])
 #define R_0		(__p[__parindex[9]])
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define S		(__x[__stateindex[0]])
 #define I		(__x[__stateindex[1]])
 #define R		(__x[__stateindex[2]])
@@ -713,7 +701,7 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int
     double beta;
     double dW;
 
-    beta = dot_product(nbasis,&beta1,&seas1);
+    beta = dot_product(nbasis,&beta1,&seas_1);
 
     // compute the transition rates
     rate[0] = mu*pop;		// birth into susceptible class
@@ -749,9 +737,9 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int
 #undef S_0
 #undef I_0
 #undef R_0
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef S
 #undef I
 #undef R
@@ -769,17 +757,17 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_86b9b84f345e27d6e8828dc6a2865000 (DllInfo *info)
+void R_init_pomp_9dd0773cfc5e38eeaa747fbda73c7fbe (DllInfo *info)
 {
-R_RegisterCCallable("pomp_86b9b84f345e27d6e8828dc6a2865000", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_86b9b84f345e27d6e8828dc6a2865000", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_86b9b84f345e27d6e8828dc6a2865000", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-R_RegisterCCallable("pomp_86b9b84f345e27d6e8828dc6a2865000", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
-R_RegisterCCallable("pomp_86b9b84f345e27d6e8828dc6a2865000", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("pomp_86b9b84f345e27d6e8828dc6a2865000", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("pomp_86b9b84f345e27d6e8828dc6a2865000", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("pomp_86b9b84f345e27d6e8828dc6a2865000", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("pomp_86b9b84f345e27d6e8828dc6a2865000", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
+R_RegisterCCallable("pomp_9dd0773cfc5e38eeaa747fbda73c7fbe", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_9dd0773cfc5e38eeaa747fbda73c7fbe", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_9dd0773cfc5e38eeaa747fbda73c7fbe", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_9dd0773cfc5e38eeaa747fbda73c7fbe", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+R_RegisterCCallable("pomp_9dd0773cfc5e38eeaa747fbda73c7fbe", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_9dd0773cfc5e38eeaa747fbda73c7fbe", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_9dd0773cfc5e38eeaa747fbda73c7fbe", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_9dd0773cfc5e38eeaa747fbda73c7fbe", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_9dd0773cfc5e38eeaa747fbda73c7fbe", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
 }
 
 > 
@@ -806,44 +794,39 @@ pomp object ‘rw2’:
 - covariates: <none>
 
 - initial state simulator, rinit: <default>
-
 - process-model simulator, rprocess: one-step process-model simulator
   - step.fun: native function
   - name: ‘__pomp_stepfn’
-  - defined by a C snippet in library ‘pomp_3240e56d6e3a784c28bf9df713617aec’
+  - defined by a C snippet in library ‘pomp_c1067f7abf94d630706ea5e77a430f5f’
 
 - process model density, dprocess: native function
   - name: ‘__pomp_dproc’
-  - defined by a C snippet in library ‘pomp_3240e56d6e3a784c28bf9df713617aec’
+  - defined by a C snippet in library ‘pomp_c1067f7abf94d630706ea5e77a430f5f’
 
 - measurement model simulator, rmeasure: native function
   - name: ‘__pomp_rmeasure’
-  - defined by a C snippet in library ‘pomp_3240e56d6e3a784c28bf9df713617aec’
+  - defined by a C snippet in library ‘pomp_c1067f7abf94d630706ea5e77a430f5f’
 
 - measurement model density, dmeasure: native function
   - name: ‘__pomp_dmeasure’
-  - defined by a C snippet in library ‘pomp_3240e56d6e3a784c28bf9df713617aec’
+  - defined by a C snippet in library ‘pomp_c1067f7abf94d630706ea5e77a430f5f’
 
 - prior simulator, rprior: <default>
-
 - prior density, dprior: <default>
-
 - deterministic skeleton: <default>
 
 - parameter transformations:
   - to estimation scale: <default>
-
   - from estimation scale: <default>
-
 - parameter vector:
 x1.0 x2.0   s1   s2  tau 
    0    0    1    3    1 
 
 - C snippet file  1 :
 
-/* pomp C snippet file: pomp_3240e56d6e3a784c28bf9df713617aec */
-/* Time: 2018-08-29 07:35:58.734 -0400 */
-/* Salt: 8361EDB6805534B467BF503C */
+/* pomp C snippet file: pomp_c1067f7abf94d630706ea5e77a430f5f */
+/* Time: 2018-08-30 11:50:54.315 -0400 */
+/* Salt: 18B1D6F59309957B01DCE163 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -954,14 +937,14 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_3240e56d6e3a784c28bf9df713617aec (DllInfo *info)
+void R_init_pomp_c1067f7abf94d630706ea5e77a430f5f (DllInfo *info)
 {
-R_RegisterCCallable("pomp_3240e56d6e3a784c28bf9df713617aec", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_3240e56d6e3a784c28bf9df713617aec", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_3240e56d6e3a784c28bf9df713617aec", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
-R_RegisterCCallable("pomp_3240e56d6e3a784c28bf9df713617aec", "__pomp_dproc", (DL_FUNC) __pomp_dproc);
-R_RegisterCCallable("pomp_3240e56d6e3a784c28bf9df713617aec", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("pomp_3240e56d6e3a784c28bf9df713617aec", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_c1067f7abf94d630706ea5e77a430f5f", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_c1067f7abf94d630706ea5e77a430f5f", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_c1067f7abf94d630706ea5e77a430f5f", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+R_RegisterCCallable("pomp_c1067f7abf94d630706ea5e77a430f5f", "__pomp_dproc", (DL_FUNC) __pomp_dproc);
+R_RegisterCCallable("pomp_c1067f7abf94d630706ea5e77a430f5f", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_c1067f7abf94d630706ea5e77a430f5f", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
 }
 
 > 
@@ -988,7 +971,7 @@ pomp object ‘sir2’:
 - covariates: 
   - 1021 records of 3 covariates, recorded from t = 0 to 10.2 
   - summary of covariates:
-     seas1           seas2           seas3      
+     seas_1          seas_2          seas_3     
  Min.   :0.042   Min.   :0.042   Min.   :0.042  
  1st Qu.:0.118   1st Qu.:0.114   1st Qu.:0.103  
  Median :0.335   Median :0.322   Median :0.302  
@@ -998,7 +981,7 @@ pomp object ‘sir2’:
 
 - initial state simulator, rinit: native function
   - name: ‘__pomp_rinit’
-  - defined by a C snippet in library ‘pomp_2bec8f01275cdeaea97478be002aba3a’
+  - defined by a C snippet in library ‘pomp_e27ec42c54a9b9f99096df43ba6894c3’
 
 - process-model simulator, rprocess: Gillespie-method process-model simulator
   - stoichiometry matrix:
@@ -1010,35 +993,32 @@ N         1         -1         0        -1        0          -1
 cases     0          0         0         0        1           0
   - rate.fun: native function
   - name: ‘__pomp_ratefn’
-  - defined by a C snippet in library ‘pomp_2bec8f01275cdeaea97478be002aba3a’
+  - defined by a C snippet in library ‘pomp_e27ec42c54a9b9f99096df43ba6894c3’
 
 - process model density, dprocess: <default>
-
 - measurement model simulator, rmeasure: native function
   - name: ‘__pomp_rmeasure’
-  - defined by a C snippet in library ‘pomp_2bec8f01275cdeaea97478be002aba3a’
+  - defined by a C snippet in library ‘pomp_e27ec42c54a9b9f99096df43ba6894c3’
 
 - measurement model density, dmeasure: native function
   - name: ‘__pomp_dmeasure’
-  - defined by a C snippet in library ‘pomp_2bec8f01275cdeaea97478be002aba3a’
+  - defined by a C snippet in library ‘pomp_e27ec42c54a9b9f99096df43ba6894c3’
 
 - prior simulator, rprior: <default>
-
 - prior density, dprior: <default>
-
 - deterministic skeleton: vectorfield:
   - native function
   - name: ‘__pomp_skelfn’
-  - defined by a C snippet in library ‘pomp_2bec8f01275cdeaea97478be002aba3a’
+  - defined by a C snippet in library ‘pomp_e27ec42c54a9b9f99096df43ba6894c3’
 
 - parameter transformations:
   - to estimation scale: native function
   - name: ‘__pomp_to_trans’
-  - defined by a C snippet in library ‘pomp_2bec8f01275cdeaea97478be002aba3a’
+  - defined by a C snippet in library ‘pomp_e27ec42c54a9b9f99096df43ba6894c3’
 
   - from estimation scale: native function
   - name: ‘__pomp_from_trans’
-  - defined by a C snippet in library ‘pomp_2bec8f01275cdeaea97478be002aba3a’
+  - defined by a C snippet in library ‘pomp_e27ec42c54a9b9f99096df43ba6894c3’
 
 - parameter vector:
    gamma       mu     iota    beta1    beta2    beta3      rho      S_0 
@@ -1048,9 +1028,9 @@ cases     0          0         0         0        1           0
 
 - C snippet file  1 :
 
-/* pomp C snippet file: pomp_2bec8f01275cdeaea97478be002aba3a */
-/* Time: 2018-08-29 07:35:58.955 -0400 */
-/* Salt: 6FDD3EFC6421CBE90C771861 */
+/* pomp C snippet file: pomp_e27ec42c54a9b9f99096df43ba6894c3 */
+/* Time: 2018-08-30 11:50:54.545 -0400 */
+/* Salt: 793B9B305FBD0A88D8C6B1AF */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1072,9 +1052,9 @@ cases     0          0         0         0        1           0
 #define S_0		(__p[__parindex[9]])
 #define I_0		(__p[__parindex[10]])
 #define R_0		(__p[__parindex[11]])
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define S		(__x[__stateindex[0]])
 #define I		(__x[__stateindex[1]])
 #define R		(__x[__stateindex[2]])
@@ -1105,9 +1085,9 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 #undef S_0
 #undef I_0
 #undef R_0
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef S
 #undef I
 #undef R
@@ -1127,9 +1107,9 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 #define S_0		(__p[__parindex[9]])
 #define I_0		(__p[__parindex[10]])
 #define R_0		(__p[__parindex[11]])
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define S		(__x[__stateindex[0]])
 #define I		(__x[__stateindex[1]])
 #define R		(__x[__stateindex[2]])
@@ -1158,7 +1138,7 @@ break;
 case 3:
 {
 
-      beta = dot_product(nbasis,&beta1,&seas1);
+      beta = dot_product(nbasis,&beta1,&seas_1);
       rate = (beta*I+iota)*S/pop;
 }
 break;
@@ -1200,9 +1180,9 @@ break;
 #undef S_0
 #undef I_0
 #undef R_0
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef S
 #undef I
 #undef R
@@ -1222,9 +1202,9 @@ break;
 #define S_0		(__p[__parindex[9]])
 #define I_0		(__p[__parindex[10]])
 #define R_0		(__p[__parindex[11]])
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define S		(__x[__stateindex[0]])
 #define I		(__x[__stateindex[1]])
 #define R		(__x[__stateindex[2]])
@@ -1250,9 +1230,9 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #undef S_0
 #undef I_0
 #undef R_0
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef S
 #undef I
 #undef R
@@ -1273,9 +1253,9 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #define S_0		(__p[__parindex[9]])
 #define I_0		(__p[__parindex[10]])
 #define R_0		(__p[__parindex[11]])
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define S		(__x[__stateindex[0]])
 #define I		(__x[__stateindex[1]])
 #define R		(__x[__stateindex[2]])
@@ -1302,9 +1282,9 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #undef S_0
 #undef I_0
 #undef R_0
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef S
 #undef I
 #undef R
@@ -1314,9 +1294,9 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #undef lik
 
 /* C snippet: 'toEst' */
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define gamma		(__p[__parindex[0]])
 #define mu		(__p[__parindex[1]])
 #define iota		(__p[__parindex[2]])
@@ -1355,9 +1335,9 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 	to_log_barycentric(&T_S_0,&S_0,3); 
 }
 
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef gamma
 #undef mu
 #undef iota
@@ -1384,9 +1364,9 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 #undef T_R_0
 
 /* C snippet: 'fromEst' */
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define gamma		(__p[__parindex[0]])
 #define mu		(__p[__parindex[1]])
 #define iota		(__p[__parindex[2]])
@@ -1425,9 +1405,9 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 	from_log_barycentric(&S_0,&T_S_0,3); 
 }
 
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef gamma
 #undef mu
 #undef iota
@@ -1466,9 +1446,9 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 #define S_0		(__p[__parindex[9]])
 #define I_0		(__p[__parindex[10]])
 #define R_0		(__p[__parindex[11]])
-#define seas1		(__covars[__covindex[0]])
-#define seas2		(__covars[__covindex[1]])
-#define seas3		(__covars[__covindex[2]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
 #define S		(__x[__stateindex[0]])
 #define I		(__x[__stateindex[1]])
 #define R		(__x[__stateindex[2]])
@@ -1488,7 +1468,7 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int
       double term[nrate];
       double beta;
 
-      beta = dot_product(nbasis,&beta1,&seas1);
+      beta = dot_product(nbasis,&beta1,&seas_1);
 
       rate[0] = mu*pop;
       rate[1] = (iota+beta*I)/pop;
@@ -1523,9 +1503,9 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int
 #undef S_0
 #undef I_0
 #undef R_0
-#undef seas1
-#undef seas2
-#undef seas3
+#undef seas_1
+#undef seas_2
+#undef seas_3
 #undef S
 #undef I
 #undef R
@@ -1543,17 +1523,17 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_2bec8f01275cdeaea97478be002aba3a (DllInfo *info)
+void R_init_pomp_e27ec42c54a9b9f99096df43ba6894c3 (DllInfo *info)
 {
-R_RegisterCCallable("pomp_2bec8f01275cdeaea97478be002aba3a", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_2bec8f01275cdeaea97478be002aba3a", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_2bec8f01275cdeaea97478be002aba3a", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-R_RegisterCCallable("pomp_2bec8f01275cdeaea97478be002aba3a", "__pomp_ratefn", (DL_FUNC) __pomp_ratefn);
-R_RegisterCCallable("pomp_2bec8f01275cdeaea97478be002aba3a", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("pomp_2bec8f01275cdeaea97478be002aba3a", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("pomp_2bec8f01275cdeaea97478be002aba3a", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("pomp_2bec8f01275cdeaea97478be002aba3a", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("pomp_2bec8f01275cdeaea97478be002aba3a", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
+R_RegisterCCallable("pomp_e27ec42c54a9b9f99096df43ba6894c3", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_e27ec42c54a9b9f99096df43ba6894c3", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_e27ec42c54a9b9f99096df43ba6894c3", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_e27ec42c54a9b9f99096df43ba6894c3", "__pomp_ratefn", (DL_FUNC) __pomp_ratefn);
+R_RegisterCCallable("pomp_e27ec42c54a9b9f99096df43ba6894c3", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_e27ec42c54a9b9f99096df43ba6894c3", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_e27ec42c54a9b9f99096df43ba6894c3", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_e27ec42c54a9b9f99096df43ba6894c3", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_e27ec42c54a9b9f99096df43ba6894c3", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
 }
 
 > 

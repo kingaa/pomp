@@ -537,14 +537,14 @@ pomp(
     beta.sd=0
   ),
   covar=covariate_table(
-    periodic.bspline.basis(
-      x=seq(0,10.2,by=0.01),
+    t=seq(0,10.2,by=0.01),
+    seas=periodic.bspline.basis(
+      x=t,
       period=1,
       nbasis=3,
-      degree=3,
-      names="seas%d"
+      degree=3
     ),
-    times=seq(0,10.2,by=0.01)
+    times="t"
   ),
   globals=Csnippet("
       static int nbasis = 3;"
@@ -560,7 +560,7 @@ pomp(
       "rate = mu*S;",
       c(S=-1,I=0,R=0,N=-1,cases=0)),
     infection=list("
-      beta = dot_product(nbasis,&beta1,&seas1);
+      beta = dot_product(nbasis,&beta1,&seas_1);
       rate = (beta*I+iota)*S/pop;",
       c(S=-1,I=1,N=0,R=0,cases=0)),
     inf.death=list(
@@ -580,7 +580,7 @@ pomp(
       double term[nrate];
       double beta;
 
-      beta = dot_product(nbasis,&beta1,&seas1);
+      beta = dot_product(nbasis,&beta1,&seas_1);
 
       rate[0] = mu*pop;
       rate[1] = (iota+beta*I)/pop;
