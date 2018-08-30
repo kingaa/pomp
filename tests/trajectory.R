@@ -108,4 +108,6 @@ try(
 
 stopifnot(po3 %>% trajectory(times=seq(0,100,by=5)) %>% dim()==c(2,1,21))
 
+stopifnot(po3 %>% pomp(skeleton=NULL) %>% trajectory() %>% is.na())
+
 dev.off()
