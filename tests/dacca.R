@@ -16,7 +16,6 @@ stopifnot(all.equal(coef(dacca)[1:22],
 
 plot(simulate(window(dacca,end=1893,seed=1420306530L)),yax.flip=TRUE)
 pf <- freeze(pfilter(window(dacca,end=1893),Np=1000),seed=1420306530L)
-stopifnot(abs(-149.78-logLik(pf))<1)
 plot(pf)
 
 dev.off()

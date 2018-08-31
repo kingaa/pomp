@@ -41,7 +41,6 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > stopifnot(all.equal(coef(ou2),partrans(ou2,coef(ou2,transform=TRUE),dir="from")))
 > plot(s <- simulate(ou2,seed=1438408329L))
 > pf <- freeze(pfilter(ou2,Np=1000),seed=1438408329L)
-> stopifnot(round(logLik(pf),1)==-480.1)
 > plot(pf)
 > tj <- trajectory(ou2)
 > matplot(time(ou2),t(tj[,1,]),type="l",ylab="")

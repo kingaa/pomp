@@ -56,7 +56,6 @@ beta_trend   logbeta1   logbeta2   logbeta3   logbeta4   logbeta5   logbeta6
 > 
 > plot(simulate(window(dacca,end=1893,seed=1420306530L)),yax.flip=TRUE)
 > pf <- freeze(pfilter(window(dacca,end=1893),Np=1000),seed=1420306530L)
-> stopifnot(abs(-149.78-logLik(pf))<1)
 > plot(pf)
 > 
 > dev.off()

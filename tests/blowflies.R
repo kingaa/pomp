@@ -20,7 +20,6 @@ plot(simulate(flies[[1]],seed=599688L),var=c("y","R","S","N15"))
 pf<- freeze(pfilter(flies[[1]],Np=1000),seed=599688L)
 plot(pf)
 stopifnot(
-  round(logLik(pf),2)==-1467.07,
   partrans(
     flies[[1]],
     partrans(flies[[1]],dir="to",coef(flies[[1]])),
