@@ -12,8 +12,11 @@ gompertz %>%
     .indices=seq.int(1000),
     rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
     cooling.fraction=0.5) %>%
-  slot("indices") %>%
-  table()
+  slot("indices") -> idx
+stopifnot(
+  length(idx)==1000,
+  class(idx)=="integer"
+)
 
 set.seed(962724905)
 
@@ -22,9 +25,11 @@ gompertz %>%
     .indices=as.list(seq.int(100)),
     rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
     cooling.fraction=0.5) %>%
-  slot("indices") %>%
-  unlist() %>%
-  table()
+  slot("indices") -> idx
+stopifnot(
+  length(idx)==100,
+  class(idx)=="list"
+)
 
 try(mif2(gompertz,Nmif=1,Np=100,
   .indices=1:5,rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),

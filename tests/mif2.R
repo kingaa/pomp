@@ -21,19 +21,31 @@ c(a=mf1,b=c(mf1,mf2))
 mfl[1]
 mfl["b"]
 mfl[5]
-traces(mfl) %>% melt() %>%
-  filter(variable %in% c("sigma","K","r")) %>%
-  group_by(L1,variable) %>%
-  filter(value==max(value)) %>%
-  ungroup() %>%
-  as.data.frame()
-coef(mfl)
+traces(mfl) -> tr
+stopifnot(
+  length(tr)==2,
+  names(tr)==c("a","b"),
+  dim(tr$a)==dim(tr$b),
+  identical(dimnames(tr$a),dimnames(tr$b)),
+  colnames(tr$a)==c("loglik","nfail","K","r","sigma","tau","X.0")
+)
+coef(mfl) -> m
+stopifnot(
+  dim(m)==c(5,2),
+  colnames(m)==c("a","b"),
+  rownames(m)==names(coef(po))
+)
 
 mfl %>%
-  traces(transform=TRUE,pars=c("r","sigma")) %>%
-  melt() %>%
-  filter(iteration==50) %>%
-  as.data.frame()
+  traces(transform=TRUE,pars=c("r","sigma")) -> tr
+stopifnot(
+  length(tr)==2,
+  names(tr)==c("a","b"),
+  dim(tr$a)==dim(tr$b),
+  identical(dimnames(tr$a),dimnames(tr$b)),
+  colnames(tr$a)==c("r","sigma")
+)
+
 
 try(mfl %>% traces(pars="bob"))
 

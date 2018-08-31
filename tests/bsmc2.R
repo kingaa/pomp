@@ -24,9 +24,6 @@ plot(smc,pars=c("r","K"),thin=20)
 try(plot(smc,pars="bob"))
 plot(smc,pars="K")
 try(plot(smc,pars=NULL))
-range(eff.sample.size(smc))
-logLik(smc)
-range(cond.logLik(smc))
 stopifnot(sum(cond.logLik(smc))==logLik(smc))
 
 try(bsmc2())
@@ -52,7 +49,7 @@ try(bsmc2(smc,params=theta,Np=100,
 
 theta <- coef(gompertz)
 theta["K"] <- 1
-try(capture.output(bsmc2(po,Np=2,params=theta,tol=1,max.fail=1,verbose=TRUE)) -> out)
+try(capture.output(bsmc2(po,Np=2,params=theta,tol=10,max.fail=1,verbose=TRUE)) -> out)
 
 smc %>% as.data.frame() %>%
   filter(.id=="posterior") %>%

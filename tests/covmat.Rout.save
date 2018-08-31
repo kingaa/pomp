@@ -86,27 +86,17 @@ newly created object(s):
 +   )) -> a1
 > do.call(c,a1) -> a1
 > 
-> covmat(a1[[1]])
-              K         r     sigma       tau
-K      0.002857 -0.000019 -6.89e-04 -3.24e-04
-r     -0.000019  0.050648 -4.68e-04  2.92e-02
-sigma -0.000689 -0.000468  1.05e-03 -3.22e-05
-tau   -0.000324  0.029233 -3.22e-05  1.84e-02
-> covmat(a1)
-             K        r    sigma      tau
-K      0.01234 -0.01004 -0.00207  0.00981
-r     -0.01004  0.04172  0.00279 -0.00186
-sigma -0.00207  0.00279  0.00315 -0.00296
-tau    0.00981 -0.00186 -0.00296  0.02267
-> 
-> covmat(a1,thin=20)
-             K         r    sigma       tau
-K      0.01315 -0.010279 -0.00213  0.009913
-r     -0.01028  0.043239  0.00238 -0.000358
-sigma -0.00213  0.002378  0.00296 -0.003189
-tau    0.00991 -0.000358 -0.00319  0.023313
+> covmat(a1[[1]]) -> v1
+> covmat(a1) -> v2
+> covmat(a1,thin=20) -> v3
 Warning message:
 in ‘covmat’: only 26 points are being used to estimate covariance matrix. 
+> stopifnot(
++   dim(v1)==dim(v2),
++   dim(v1)==dim(v3),
++   identical(dimnames(v1),dimnames(v2)),
++   identical(dimnames(v1),dimnames(v3))
++ )
 > 
 > po <- window(gompertz,end=10)
 > 
@@ -117,13 +107,11 @@ in ‘covmat’: only 26 points are being used to estimate covariance matrix.
 +     lik = (give_log) ? lik : exp(lik);"),
 +   paramnames=c("r","sigma"),
 +   proposal=prop1)
-> covmat(mcmc1)
-             r    sigma
-r      0.01526 -0.00183
-sigma -0.00183  0.00190
-> covmat(c(mcmc1,mcmc1))
-             r    sigma
-r      0.01518 -0.00182
-sigma -0.00182  0.00189
 > 
+> covmat(mcmc1) -> v1
+> covmat(c(mcmc1,mcmc1)) -> v2
+> stopifnot(
++   dim(v1)==dim(v2),
++   identical(dimnames(v1),dimnames(v2))
++ )
 > 

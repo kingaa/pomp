@@ -33,11 +33,11 @@ newly created object(s):
 +     .indices=seq.int(1000),
 +     rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
 +     cooling.fraction=0.5) %>%
-+   slot("indices") %>%
-+   table()
-.
-217 801 
-765 235 
++   slot("indices") -> idx
+> stopifnot(
++   length(idx)==1000,
++   class(idx)=="integer"
++ )
 > 
 > set.seed(962724905)
 > 
@@ -46,12 +46,11 @@ newly created object(s):
 +     .indices=as.list(seq.int(100)),
 +     rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
 +     cooling.fraction=0.5) %>%
-+   slot("indices") %>%
-+   unlist() %>%
-+   table()
-.
- 21 
-100 
++   slot("indices") -> idx
+> stopifnot(
++   length(idx)==100,
++   class(idx)=="list"
++ )
 > 
 > try(mif2(gompertz,Nmif=1,Np=100,
 +   .indices=1:5,rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),

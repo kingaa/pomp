@@ -23,7 +23,6 @@ plot(pb,y=NULL)
 pb %>% values() %>% head(3) %>% knitr::kable()
 pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
 summary(pb)
-stopifnot(all.equal(logLik(pb),17.2,tolerance=0.005))
 
 try(probe())
 try(probe("po"))

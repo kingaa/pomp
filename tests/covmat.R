@@ -47,10 +47,15 @@ replicate(3,
   )) -> a1
 do.call(c,a1) -> a1
 
-covmat(a1[[1]])
-covmat(a1)
-
-covmat(a1,thin=20)
+covmat(a1[[1]]) -> v1
+covmat(a1) -> v2
+covmat(a1,thin=20) -> v3
+stopifnot(
+  dim(v1)==dim(v2),
+  dim(v1)==dim(v3),
+  identical(dimnames(v1),dimnames(v2)),
+  identical(dimnames(v1),dimnames(v3))
+)
 
 po <- window(gompertz,end=10)
 
@@ -61,6 +66,10 @@ mcmc1 <- pmcmc(po,Nmcmc=100,Np=100,dprior=Csnippet("
     lik = (give_log) ? lik : exp(lik);"),
   paramnames=c("r","sigma"),
   proposal=prop1)
-covmat(mcmc1)
-covmat(c(mcmc1,mcmc1))
 
+covmat(mcmc1) -> v1
+covmat(c(mcmc1,mcmc1)) -> v2
+stopifnot(
+  dim(v1)==dim(v2),
+  identical(dimnames(v1),dimnames(v2))
+)

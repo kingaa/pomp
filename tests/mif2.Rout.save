@@ -69,37 +69,31 @@ $b
 [[1]]
 NULL
 
-> traces(mfl) %>% melt() %>%
-+   filter(variable %in% c("sigma","K","r")) %>%
-+   group_by(L1,variable) %>%
-+   filter(value==max(value)) %>%
-+   ungroup() %>%
-+   as.data.frame()
-  iteration variable value L1
-1        30        K 1.280  a
-2        50        r 0.138  a
-3         2    sigma 0.101  a
-4        25        K 1.319  b
-5        24        r 0.109  b
-6         1    sigma 0.102  b
-> coef(mfl)
-           a      b
-K     1.0974 1.1471
-r     0.1383 0.1042
-sigma 0.0581 0.0587
-tau   0.1000 0.1000
-X.0   1.0000 1.0000
+> traces(mfl) -> tr
+> stopifnot(
++   length(tr)==2,
++   names(tr)==c("a","b"),
++   dim(tr$a)==dim(tr$b),
++   identical(dimnames(tr$a),dimnames(tr$b)),
++   colnames(tr$a)==c("loglik","nfail","K","r","sigma","tau","X.0")
++ )
+> coef(mfl) -> m
+> stopifnot(
++   dim(m)==c(5,2),
++   colnames(m)==c("a","b"),
++   rownames(m)==names(coef(po))
++ )
 > 
 > mfl %>%
-+   traces(transform=TRUE,pars=c("r","sigma")) %>%
-+   melt() %>%
-+   filter(iteration==50) %>%
-+   as.data.frame()
-  iteration variable value L1
-1        50        r  1.15  a
-2        50    sigma  1.06  a
-3        50        r  1.11  b
-4        50    sigma  1.06  b
++   traces(transform=TRUE,pars=c("r","sigma")) -> tr
+> stopifnot(
++   length(tr)==2,
++   names(tr)==c("a","b"),
++   dim(tr$a)==dim(tr$b),
++   identical(dimnames(tr$a),dimnames(tr$b)),
++   colnames(tr$a)==c("r","sigma")
++ )
+> 
 > 
 > try(mfl %>% traces(pars="bob"))
 Error : in ‘traces’: parameter ‘bob’ not found.

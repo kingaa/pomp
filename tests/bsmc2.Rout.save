@@ -58,12 +58,6 @@ Error : in ‘plot’: unrecognized parameters: ‘bob’
 > plot(smc,pars="K")
 > try(plot(smc,pars=NULL))
 Error : in ‘plot’: no parameters to plot.
-> range(eff.sample.size(smc))
-[1] 236 738
-> logLik(smc)
-[1] 2.7
-> range(cond.logLik(smc))
-[1] -0.72  0.99
 > stopifnot(sum(cond.logLik(smc))==logLik(smc))
 > 
 > try(bsmc2())
@@ -108,9 +102,9 @@ Error : in ‘bsmc2’: in ‘dmeasure’: whoa nelly!
 > 
 > theta <- coef(gompertz)
 > theta["K"] <- 1
-> try(capture.output(bsmc2(po,Np=2,params=theta,tol=1,max.fail=1,verbose=TRUE)) -> out)
+> try(capture.output(bsmc2(po,Np=2,params=theta,tol=10,max.fail=1,verbose=TRUE)) -> out)
 filtering failure at time t = 1
-filtering failure at time t = 3
+filtering failure at time t = 2
 Error : in ‘bsmc2’: too many filtering failures
 > 
 > smc %>% as.data.frame() %>%
