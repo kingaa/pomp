@@ -1,0 +1,42 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> 
+> library(pomp)
+> 
+> set.seed(770238753)
+> 
+> p <- runif(50)
+> x <- rcauchy(50,scale=0.1)
+> stopifnot(
++   all.equal(expit(logit(p)),p),
++   all.equal(logit(expit(x)),x)
++ )
+> 
+> Y <- matrix(rcauchy(50,scale=0.1),5,10)
+> X <- matrix(rexp(50),5,10)
+> X <- apply(X,2,function(x)x/sum(x))
+> 
+> stopifnot(
++   all.equal(apply(apply(X,2,log_barycentric),2,inv_log_barycentric),X),
++   all.equal(apply(apply(Y,2,inv_log_barycentric),2,sum),rep(1,ncol(Y))),
++   all.equal(apply(apply(apply(apply(Y,2,inv_log_barycentric),2,log_barycentric)-Y,2,range),2,diff),rep(0,ncol(Y)))
++ )
+> 

@@ -80,10 +80,11 @@ The log barycentric transformation of variables \eqn{\theta_1,\dots,\theta_n}{th
 Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{accumulators}},
   \code{\link{covariate_table}},
-  \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
-  \code{\link{pomp-package}}, \code{\link{prior_spec}},
-  \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
-  \code{\link{rprocess_spec}}, \code{\link{skeleton_spec}},
-  \code{\link{userdata}}
+  \code{\link{distributions}}, \code{\link{dmeasure_spec}},
+  \code{\link{dprocess_spec}}, \code{\link{pomp-package}},
+  \code{\link{prior_spec}}, \code{\link{rinit_spec}},
+  \code{\link{rmeasure_spec}}, \code{\link{rprocess_spec}},
+  \code{\link{skeleton_spec}},
+  \code{\link{transformations}}, \code{\link{userdata}}
 }
 \concept{information on model implementation}

@@ -78,8 +78,8 @@ Collate:
     'traces.R'
     'deprecated.R'
     'design.R'
+    'distributions.R'
     'eff_sample_size.R'
-    'eulermultinom.R'
     'simulate.R'
     'example.R'
     'extract.R'
@@ -117,6 +117,7 @@ Collate:
     'states.R'
     'time.R'
     'timezero.R'
+    'transformations.R'
     'userdata.R'
     'window.R'
 RoxygenNote: 6.1.0

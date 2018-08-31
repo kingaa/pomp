@@ -192,10 +192,12 @@ It will yield missing values (\code{NA}) for all state variables.
 Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{accumulators}},
   \code{\link{covariate_table}},
-  \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
+  \code{\link{distributions}}, \code{\link{dmeasure_spec}},
+  \code{\link{dprocess_spec}},
   \code{\link{parameter_trans}},
   \code{\link{pomp-package}}, \code{\link{prior_spec}},
   \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
-  \code{\link{skeleton_spec}}, \code{\link{userdata}}
+  \code{\link{skeleton_spec}},
+  \code{\link{transformations}}, \code{\link{userdata}}
 }
 \concept{information on model implementation}

@@ -1,5 +1,6 @@
 ##' Compartmental epidemiological models
 ##'
+##' @description
 ##' \code{sir} is a \sQuote{pomp} object encoding a simple seasonal SIR model.
 ##' Simulation is performed using an Euler multinomial approximation.
 ##'
@@ -12,6 +13,14 @@
 ##' available on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
 ##' The boarding school influenza outbreak is described in Anonymous (1978).
+##'
+##' @details
+##' Do \preformatted{
+##'     pompExample(sir,show=TRUE)
+##'     pompExample(sir2,show=TRUE)
+##'     pompExample(bbs,show=TRUE)
+##' }
+##' to see the codes that generate these examples.
 ##'
 ##' @name sir_models
 ##' @rdname sir
@@ -36,5 +45,6 @@
 ##' pompExample(bbs)
 ##' plot(bbs)
 ##' coef(bbs)
+##' as.data.frame(bbs)
 ##'
 NULL

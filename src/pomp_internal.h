@@ -22,6 +22,11 @@ extern SEXP periodic_bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP period
 extern void periodic_bspline_basis_eval(double x, double period, int degree, int nbasis, double *y);
 extern void periodic_bspline_basis_eval_deriv(double x, double period, int degree, int nbasis, int deriv, double *y);
 
+// distributions.c 
+extern SEXP R_Euler_Multinom(SEXP n, SEXP size, SEXP rate, SEXP Rf_dt);
+extern SEXP D_Euler_Multinom(SEXP x, SEXP size, SEXP rate, SEXP Rf_dt, SEXP log);
+extern SEXP R_GammaWN(SEXP n, SEXP sigma, SEXP deltat);
+
 // dmeasure.c 
 extern SEXP do_dmeasure(SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi);
 
@@ -35,11 +40,6 @@ extern SEXP do_dprocess(SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, 
 extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, double deltat, rprocmode method, SEXP zeronames, SEXP covar, SEXP args, SEXP gnsi);
 extern int num_euler_steps(double t1, double t2, double *Rf_dt);
 extern int num_map_steps(double t1, double t2, double Rf_dt);
-
-// eulermultinom.c 
-extern SEXP R_Euler_Multinom(SEXP n, SEXP size, SEXP rate, SEXP Rf_dt);
-extern SEXP D_Euler_Multinom(SEXP x, SEXP size, SEXP rate, SEXP Rf_dt, SEXP log);
-extern SEXP R_GammaWN(SEXP n, SEXP sigma, SEXP deltat);
 
 // gompertz.c 
 extern void _gompertz_normal_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
@@ -135,6 +135,12 @@ extern SEXP iterate_map(SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, 
 extern SEXP pomp_desolve_setup(SEXP object, SEXP x0, SEXP params, SEXP gnsi);
 extern void pomp_vf_eval(int *neq, double *t, double *y, double *ydot, double *yout, int *ip);
 extern void pomp_desolve_takedown(void);
+
+// transformations.c 
+extern SEXP LogitTransform(SEXP P);
+extern SEXP ExpitTransform(SEXP X);
+extern SEXP LogBarycentricTransform(SEXP X);
+extern SEXP InverseLogBarycentricTransform(SEXP Y);
 
 // userdata.c 
 extern void set_pomp_userdata(SEXP userdata);
