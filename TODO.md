@@ -5,17 +5,17 @@
 - should parameter transformations allow renaming of variables?
 	- would require attention to `rw.sd`, e.g.
 - covariates:
-	- piecewise constant interpolation of covariates
+	- ~~piecewise constant interpolation of covariates~~
 	- ~~it should be possible to refer to `times` inside `covariate_table`~~
 - we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes
 - `nsim` argument for `rprior`?
 - make R-level functions for various distributions and transformations
-- ~~regularize use of `pStop` and `tryCatch` on *.internals~~
+	- `dmultinom`
+	- BetaBinom
+	- BetaNegBinom
+	- logit, expit
+	- log-barycentric and inverse
 - refurbish entire test suite
-	- for each example and each demo,
-		- tests of each basic component
-		- plot of data, simulation, and particle filter (+ probes?)
-		- rough likelihood check
 	- order of testing development:
 		- ~~workhorses~~
 		- ~~simulate, trajectory, probe, pfilter~~
@@ -33,10 +33,7 @@
 - provide full suite of methods for `traj.match.objfun`
 
 - "guide to upgrading to **pomp** version 2"
-- ~~take away option of passing `params` as a matrix to `pfilter`~~
-- ~~all methods use transforms if they exist~~
 - `as.data.frame` and ?? for `listies`
-- ~~document user-data functions~~
 - matching functions will go away, in favor of objective function constructors:
     - 'probe.match.objfun' looks good: needs testing
     - 'traj.match.objfun' looks good: needs testing

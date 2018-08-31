@@ -13,6 +13,9 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
         • One can now call ‘simulate’ on a model without reference to
           any data.
 
+        • The covariate table facility (‘covariate_table’) now supports
+          piecewise constant interpolation.
+
         • The syntax with which one includes covariates via
           ‘covariate_table’ has become more flexible.  Specifically,
           the arguments to ‘covariate_table’ are now evaluated

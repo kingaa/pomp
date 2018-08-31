@@ -11,13 +11,20 @@
 \alias{covariate_table-character,covariate_table,character-method}
 \title{Covariates}
 \usage{
-\S4method{covariate_table}{numeric}(..., times)
+\S4method{covariate_table}{numeric}(..., order = c("linear", "constant"),
+  times)
 
-\S4method{covariate_table}{character}(..., times)
+\S4method{covariate_table}{character}(..., order = c("linear",
+  "constant"), times)
 }
 \arguments{
 \item{\dots}{numeric vectors or data frames containing time-varying covariates.
 It must be possible to bind these into a data frame.}
+
+\item{order}{the order of interpolation to be used.
+Options are \dQuote{linear} (the default) and \dQuote{constant}.
+Setting \code{order="linear"} treats the covariates as piecewise linear functions of time;
+\code{order="constant"} treats them as right-continuous piecewise constant functions.}
 
 \item{times}{the times corresponding to the covariates.
 This may be given as a vector of (increasing, finite) numerical values.

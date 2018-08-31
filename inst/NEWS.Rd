@@ -6,6 +6,7 @@
     \item One can now modify basic model components at (almost) any stage in a pipeline of \pkg{pomp} computations.
     All the top-level inference functions, plus \code{probe}, \code{pfilter}, and \code{simulate} now allow modification of basic model components.
     \item One can now call \code{simulate} on a model without reference to any data.
+    \item The covariate table facility (\code{covariate_table}) now supports piecewise constant interpolation.
     \item The syntax with which one includes covariates via \code{covariate_table} has become more flexible.
     Specifically, the arguments to \code{covariate_table} are now evaluated sequentially, so that later ones can depend on earlier ones.
     Once evaluated, the covariates are bound column-wise into a single data frame.
@@ -31,7 +32,7 @@
     \itemize{
       \item The default \code{rinit} behavior remains as it was:
       it assumes the initial state distribution is concentrated at a point mass determined by parameters with \dQuote{\code{.0}} or \dQuote{\code{_0}} suffices.
-      
+
       \item The default process model is \dQuote{missing}: calls to \code{dprocess} and \code{rprocess} will result in missing values (\code{NA}).
       \item The default measurement model is \dQuote{missing} as well.
       \item The default prior is flat and improper:

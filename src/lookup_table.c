@@ -17,6 +17,7 @@ lookup_table_t make_covariate_table (SEXP object, int *ncovar) {
   tab.index = 0;
   tab.x = REAL(GET_SLOT(object,install("times")));
   tab.y = REAL(GET_SLOT(object,install("table")));
+  tab.order = *(INTEGER(GET_SLOT(object,install("order"))));
   return tab;
 }
 
@@ -60,12 +61,20 @@ void table_lookup (lookup_table_t *tab, double x, double *y)
   // warn only if we are *outside* the interval
   if ((x < tab->x[0]) || (x > tab->x[(tab->length)-1]))
     warningcall(R_NilValue,"in 'table_lookup': extrapolating at %le.", x);
-  e = (x - tab->x[tab->index-1]) / (tab->x[tab->index] - tab->x[tab->index-1]);
-  for (j = 0; j < tab->width; j++) {
-    k = j+(tab->width)*(tab->index);
-    y[j] = e*(tab->y[k])+(1-e)*(tab->y[k-tab->width]);
-    //    if (dydt != 0)
-    //      dydt[j] = ((tab->y[k])-(tab->y[k-1]))/((tab->x[tab->index])-(tab->x[tab->index-1]));
+  switch (tab->order) {
+  case 1: default: // linear interpolation
+    e = (x - tab->x[tab->index-1]) / (tab->x[tab->index] - tab->x[tab->index-1]);
+    for (j = 0; j < tab->width; j++) {
+      k = j+(tab->width)*(tab->index);
+      y[j] = e*(tab->y[k])+(1-e)*(tab->y[k-tab->width]);
+    }
+    break;
+  case 0: // piecewise constant
+    for (j = 0; j < tab->width; j++) {
+      k = j+(tab->width)*(tab->index);
+      y[j] = tab->y[k-tab->width];
+    }
+    break;
   }
 }
 

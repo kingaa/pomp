@@ -19,6 +19,7 @@ typedef enum {undef=0,Rfun=1,native=2,regNative=3} pompfunmode;
 typedef struct {
   int length, width;
   int index;
+  int order;
   double *x;
   double *y;
 } lookup_table_t;

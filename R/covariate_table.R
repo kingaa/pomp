@@ -21,6 +21,11 @@
 ##' This may be given as a vector of (increasing, finite) numerical values.
 ##' Alternatively, one can specify by name which of the given variables is the time variable.
 ##'
+##' @param order the order of interpolation to be used.
+##' Options are \dQuote{linear} (the default) and \dQuote{constant}.
+##' Setting \code{order="linear"} treats the covariates as piecewise linear functions of time;
+##' \code{order="constant"} treats them as right-continuous piecewise constant functions.
+##'
 ##' @param \dots numeric vectors or data frames containing time-varying covariates.
 ##' It must be possible to bind these into a data frame.
 ##'
@@ -30,11 +35,13 @@ setClass(
   "covartable",
   slots=c(
     times="numeric",
-    table="matrix"
+    table="matrix",
+    order="integer"
   ),
   prototype=prototype(
     times=numeric(0),
-    table=array(data=numeric(0),dim=c(0,0))
+    table=array(data=numeric(0),dim=c(0,0)),
+    order=1L
   )
 )
 
@@ -85,10 +92,12 @@ setMethod(
 setMethod(
   "covariate_table",
   signature=signature(times="numeric"),
-  definition=function (..., times) {
+  definition=function (..., order = c("linear", "constant"), times) {
+
+    order <- match.arg(order)
 
     tryCatch(
-      covariate.table.internal(...,times=times),
+      covariate.table.internal(...,times=times,order=order),
       error = function (e) pStop("covariate_table",conditionMessage(e))
     )
 
@@ -102,17 +111,20 @@ setMethod(
 setMethod(
   "covariate_table",
   signature=signature(times="character"),
-  definition=function (..., times) {
+  definition=function (..., order = c("linear", "constant"), times) {
+
+    order <- match.arg(order)
 
     tryCatch(
-      covariate.table.internal(...,.timevar=times),
+      covariate.table.internal(...,.timevar=times,order=order),
       error = function (e) pStop("covariate_table",conditionMessage(e))
     )
 
   }
 )
 
-covariate.table.internal <- function (..., times = NULL, .timevar = NULL) {
+covariate.table.internal <- function (..., times = NULL, .timevar = NULL,
+  order) {
 
   d <- as.list(substitute(list(...)))[-1]
   if (length(d)==0) pStop_("no covariates specified.")
@@ -122,7 +134,7 @@ covariate.table.internal <- function (..., times = NULL, .timevar = NULL) {
   nm[noname] <- paste0(".cov.int.",seq_len(sum(noname)))
   names(d) <- nm
 
-  e <- new.env(parent=parent.frame(2))
+  e <- new.env(parent=parent.frame(3))
 
   e$times <- as.numeric(times)
 
@@ -162,7 +174,8 @@ covariate.table.internal <- function (..., times = NULL, .timevar = NULL) {
   names(df) <- cleanForC(names(df))
 
   new("covartable",times=as.double(times),
-    table=do.call(rbind,lapply(df,as.double)))
+    table=do.call(rbind,lapply(df,as.double)),
+    order=switch(order,linear=1L,constant=0L))
 
 }
 

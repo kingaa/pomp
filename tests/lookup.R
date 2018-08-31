@@ -2,6 +2,8 @@ library(pomp)
 
 ct <- covariate_table(x=20:30,y=10:0,times=seq(0,10))
 .Call(pomp:::lookup_in_table,covar=ct,t=c(1,2.3,4,7))
+ct <- covariate_table(x=20:30,y=10:0,times=seq(0,10),order="constant")
+.Call(pomp:::lookup_in_table,covar=ct,t=c(1,2.3,4,7))
 
 try(covariate_table(x=20:30,y=10:0,times=seq(10,0)))
 try(covariate_table(x=20:23,y=10:0,times=seq(0,10)))

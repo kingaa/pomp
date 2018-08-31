@@ -24,6 +24,11 @@ Type 'q()' to quit R.
   [,1] [,2] [,3] [,4]
 x   21 22.3   24   27
 y    9  7.7    6    3
+> ct <- covariate_table(x=20:30,y=10:0,times=seq(0,10),order="constant")
+> .Call(pomp:::lookup_in_table,covar=ct,t=c(1,2.3,4,7))
+  [,1] [,2] [,3] [,4]
+x   21   22   24   27
+y    9    8    6    3
 > 
 > try(covariate_table(x=20:30,y=10:0,times=seq(10,0)))
 Error : in ‘covariate_table’: ‘times’ must be an increasing numeric sequence (without missing values).
