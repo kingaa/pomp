@@ -15,18 +15,18 @@
 \alias{pmcmc,pmcmcd_pomp-method}
 \title{The particle Markov chain Metropolis-Hastings algorithm}
 \usage{
-\S4method{pmcmc}{data.frame}(data, Nmcmc = 1, params, rinit, rprocess,
-  dmeasure, dprior, proposal, Np, tol = 1e-17, max.fail = Inf, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{pmcmc}{data.frame}(data, Nmcmc = 1, proposal, Np,
+  tol = 1e-17, max.fail = Inf, params, rinit, rprocess, dmeasure,
+  dprior, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{pmcmc}{pomp}(data, Nmcmc = 1, proposal, Np, tol = 1e-17,
   max.fail = Inf, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{pmcmc}{pfilterd_pomp}(data, Nmcmc = 1, Np, tol,
+\S4method{pmcmc}{pfilterd_pomp}(data, Nmcmc = 1, proposal, Np, tol,
   max.fail = Inf, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{pmcmc}{pmcmcd_pomp}(data, Nmcmc, proposal, Np, tol,
-  max.fail = Inf, ..., verbose = getOption("verbose", FALSE))
+\S4method{pmcmc}{pmcmcd_pomp}(data, Nmcmc, proposal, ...,
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -34,26 +34,6 @@ or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.}
 
 \item{Nmcmc}{The number of PMCMC iterations to perform.}
-
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
-
-\item{rinit}{simulator of the initial-state distribution.
-This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit_spec]{here}.}
-
-\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
-Setting \code{rprocess=NULL} removes the latent-state simulator.
-For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
-
-\item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{dmeasure=NULL} removes the measurement density evaluator.
-For more information, see \link[=dmeasure_spec]{here}.}
-
-\item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{dprior=NULL} removes the prior distribution density evaluator.
-For more information, see \link[=prior_spec]{here}.}
 
 \item{proposal}{optional function that draws from the proposal
 distribution.  Currently, the proposal distribution must be symmetric for
@@ -77,6 +57,26 @@ See the section on \emph{Filtering Failures} below for more information.}
 \item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
 If the number of filtering failures exceeds this number, execution will terminate with an error.
 By default, \code{max.fail} is set to infinity, so no error can be triggered.}
+
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
+
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{rinit=NULL} sets the initial-state simulator to its default.
+For more information, see \link[=rinit_spec]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
+Setting \code{rprocess=NULL} removes the latent-state simulator.
+For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
+
+\item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{dmeasure=NULL} removes the measurement density evaluator.
+For more information, see \link[=dmeasure_spec]{here}.}
+
+\item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{dprior=NULL} removes the prior distribution density evaluator.
+For more information, see \link[=prior_spec]{here}.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

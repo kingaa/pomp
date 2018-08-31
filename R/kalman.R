@@ -121,17 +121,29 @@ setMethod(
 setMethod(
   "enkf",
   signature=signature(data="data.frame"),
-  function (data, rinit, rprocess, params,
-    Np, h, R, ...,
-    verbose = getOption("verbose", FALSE)) {
+  function (data,
+    Np, h, R,
+    params, rinit, rprocess,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    object <- tryCatch(
-      pomp(data,rinit=rinit,rprocess=rprocess,params=params,...,
-        verbose=verbose),
+    if (missing(params) || missing(rprocess))
+      pStop("enkf",paste(sQuote(c("params","rprocess")),
+        collapse=", ")," are needed basic components.")
+
+    tryCatch(
+      enkf.internal(
+        data,
+        Np=Np,
+        h=h,
+        R=R,
+        params=params,
+        rinit=rinit,
+        rprocess=rprocess,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("enkf",conditionMessage(e))
     )
-
-    enkf(object,params=params,h=h,R=R,Np=Np,verbose=verbose)
 
   }
 )
@@ -143,11 +155,19 @@ setMethod(
 setMethod(
   "enkf",
   signature=signature(data="pomp"),
-  function (data, Np, h, R, ...,
-    verbose = getOption("verbose", FALSE)) {
+  function (data,
+    Np, h, R,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      enkf.internal(data,h=h,R=R,Np=Np,...,verbose=verbose),
+      enkf.internal(
+        data,
+        Np=Np,
+        h=h,
+        R=R,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("enkf",conditionMessage(e))
     )
 
@@ -173,17 +193,29 @@ setMethod(
 setMethod(
   "eakf",
   signature=signature(data="data.frame"),
-  function (data, rinit, rprocess, params,
-    Np, C, R, ...,
-    verbose = getOption("verbose", FALSE)) {
+  function (data,
+    Np, C, R,
+    params, rinit, rprocess,
+    ...,verbose = getOption("verbose", FALSE)) {
 
-    object <- tryCatch(
-      pomp(data,rinit=rinit,rprocess=rprocess,params=params,...,
-        verbose=verbose),
+    if (missing(params) || missing(rprocess))
+      pStop("eakf",paste(sQuote(c("params","rprocess")),
+        collapse=", ")," are needed basic components.")
+
+    tryCatch(
+      eakf.internal(
+        data,
+        Np=Np,
+        C=C,
+        R=R,
+        params=params,
+        rinit=rinit,
+        rprocess=rprocess,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("eakf",conditionMessage(e))
     )
-
-    eakf(object,C=C,R=R,Np=Np,verbose=verbose)
 
   }
 )
@@ -195,25 +227,35 @@ setMethod(
 setMethod(
   "eakf",
   signature=signature(data="pomp"),
-  function (data, Np, C, R, ...,
-    verbose = getOption("verbose", FALSE)) {
+  function (data,
+    Np, C, R,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      eakf.internal(data,C=C,R=R,Np=Np,...,verbose=verbose),
+      eakf.internal(
+        data,
+        Np=Np,
+        C=C,
+        R=R,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("eakf",conditionMessage(e))
     )
 
   }
 )
 
-enkf.internal <- function (object, h, R, Np, ..., verbose) {
+enkf.internal <- function (object,
+  Np, h, R,
+  ..., verbose) {
+
+  verbose <- as.logical(verbose)
+
+  object <- pomp(object,...,verbose=verbose)
 
   Np <- as.integer(Np)
   R <- as.matrix(R)
-  verbose <- as.logical(verbose)
-
-  object <- pomp(object,...)
-
   params <- coef(object)
 
   t <- time(object)
@@ -222,6 +264,9 @@ enkf.internal <- function (object, h, R, Np, ..., verbose) {
 
   y <- obs(object)
   nobs <- nrow(y)
+
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   Y <- array(dim=c(nobs,Np),dimnames=list(variable=rownames(y),rep=NULL))
   X <- rinit(object,params=params,nsim=Np)
@@ -272,15 +317,19 @@ enkf.internal <- function (object, h, R, Np, ..., verbose) {
     forecast=forecast,
     cond.loglik=condlogLik,
     loglik=sum(condlogLik))
+
 }
 
-eakf.internal <- function (object, params, C, R, Np, ..., verbose) {
+eakf.internal <- function (object,
+  Np, C, R,
+  ..., verbose) {
+
+  verbose <- as.logical(verbose)
+
+  object <- pomp(object,...,verbose=verbose)
 
   Np <- as.integer(Np)
   R <- as.matrix(R)
-  verbose <- as.logical(verbose)
-
-  object <- pomp(object,...)
 
   params <- coef(object)
 
@@ -288,6 +337,9 @@ eakf.internal <- function (object, params, C, R, Np, ..., verbose) {
   tt <- time(object,t0=TRUE)
 
   y <- obs(object)
+
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   X <- rinit(object,params=params,nsim=Np)
 
@@ -351,44 +403,63 @@ eakf.internal <- function (object, params, C, R, Np, ..., verbose) {
     forecast=forecast,
     cond.loglik=condlogLik,
     loglik=sum(condlogLik))
+
 }
 
 ## Basic Kalman filter. Currently for internal consumption only.
 ## X(t) ~ MVN(A*X(t-1),Q)
 ## Y(t) ~ MVN(C*X(t),R)
+
 kalmanFilter <- function (t, y, X0, A, Q, C, R) {
+
   N <- ncol(y)
   nvar <- length(X0)
   nobs <- nrow(y)
+
   filterMeans <- array(dim=c(nvar,N),
     dimnames=list(variable=names(X0),time=NULL))
   predMeans <- filterMeans
   forecast <- array(dim=c(nobs,N),dimnames=dimnames(y))
   condlogLik <- numeric(N)
+
   ri <- solve(R)
   cric <- crossprod(C,ri)%*%C
   fm <- X0
   fv <- matrix(0,nvar,nvar)
+
   for (k in seq_along(t)) {
+
     predMeans[,k] <- pm <- A%*%fm      # prediction mean
     pv <- A%*%tcrossprod(fv,A)+Q       # prediction variance
+
     svdV <- svd(pv,nv=0)
+
     resid <- y[,k]-C%*%pm              # forecast error
     w <- tcrossprod(C%*%pv,C)+R        # forecast variance
+
     svdW <- svd(w,nv=0)
+
     condlogLik[k] <- sum(dnorm(x=crossprod(svdW$u,resid),mean=0,
       sd=sqrt(svdW$d),log=TRUE))
+
     pvi <- svdV$u%*%(t(svdV$u)/svdV$d) # prediction precision
     fvi <- pvi+cric                    # filter precision
+
     svdv <- svd(fvi,nv=0)
+
     fv <- svdv$u%*%(t(svdv$u)/svdv$d)  # filter variance
     K <- fv%*%crossprod(C,ri)          # Kalman gain
+
     filterMeans[,k] <- fm <- pm+K%*%resid  # filter mean
     forecast[,k] <- C %*% pm
   }
-  list(filterMeans=filterMeans,
+
+  list(
+    filterMeans=filterMeans,
     predMeans=predMeans,
     forecast=forecast,
     cond.loglik=condlogLik,
-    loglik=sum(condlogLik))
+    loglik=sum(condlogLik)
+  )
+
 }

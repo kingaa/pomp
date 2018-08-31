@@ -12,9 +12,9 @@
 \alias{traj.match.objfun,pomp-method}
 \title{Trajectory matching}
 \usage{
-\S4method{traj.match.objfun}{data.frame}(data, rinit, skeleton, partrans,
-  params, est = character(0), fail.value = NA, ...,
-  ode_control = list(), verbose = getOption("verbose", FALSE))
+\S4method{traj.match.objfun}{data.frame}(data, est = character(0),
+  fail.value = NA, ode_control = list(), params, rinit, skeleton,
+  dmeasure, partrans, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{traj.match.objfun}{pomp}(data, est, fail.value = NA,
   ode_control = list(), ..., verbose = getOption("verbose", FALSE))
@@ -23,6 +23,18 @@
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.}
+
+\item{est}{character vector; the names of parameters to be estimated.}
+
+\item{fail.value}{optional numeric scalar;
+if non-\code{NA}, this value is substituted for non-finite values of the objective function.
+It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
+
+\item{ode_control}{optional list;
+the elements of this list will be passed to \code{\link[=deSolve]{ode}}.}
+
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
@@ -35,6 +47,10 @@ Accordingly, this is supplied using either the \code{\link[=skeleton_spec]{vecto
 Setting \code{skeleton=NULL} removes the deterministic skeleton.
 For more information, see \link[=skeleton_spec]{here}.}
 
+\item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{dmeasure=NULL} removes the measurement density evaluator.
+For more information, see \link[=dmeasure_spec]{here}.}
+
 \item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
 
 Many algorithms for parameter estimation search an unconstrained space of parameters.
@@ -43,19 +59,7 @@ One should supply the \code{partrans} argument via a call to \code{\link{paramet
 For more information, see \link[=parameter_trans]{here}.
 Setting \code{partrans=NULL} removes the parameter transformations.}
 
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
-
-\item{est}{character vector; the names of parameters to be estimated.}
-
-\item{fail.value}{optional numeric scalar;
-if non-\code{NA}, this value is substituted for non-finite values of the objective function.
-It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
-
 \item{\dots}{additional arguments will modify the model structure}
-
-\item{ode_control}{optional list;
-the elements of this list will be passed to \code{\link[=deSolve]{ode}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

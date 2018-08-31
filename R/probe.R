@@ -111,22 +111,21 @@ setMethod(
   "probe",
   signature=signature(data="data.frame"),
   definition=function (data,
-    rinit, rprocess, rmeasure, params,
-    probes, nsim, seed = NULL, ...,
-    verbose = getOption("verbose", FALSE)) {
+    probes, nsim, seed = NULL,
+    params, rinit, rprocess, rmeasure,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(rprocess) || missing(rmeasure) || missing(params))
-      pStop("probe",paste(sQuote(c("rprocess","rmeasure","params")),
+    if (missing(params) || missing(rprocess) || missing(rmeasure))
+      pStop("probe",paste(sQuote(c("params","rprocess","rmeasure")),
         collapse=", ")," are needed basic components.")
 
-    object <- tryCatch(
-      pomp(data,
+    tryCatch(
+      probe.internal(data,probes=probes,nsim=nsim,seed=seed,
         rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,params=params,
         ...,verbose=verbose),
       error = function (e) pStop("probe",conditionMessage(e))
     )
 
-    probe(object,probes=probes,nsim=nsim,seed=seed,verbose=verbose)
 
   }
 )
@@ -139,17 +138,12 @@ setMethod(
   "probe",
   signature=signature(data="pomp"),
   definition=function (data,
-    rinit, rprocess, rmeasure, params,
     probes, nsim, seed = NULL, ...,
     verbose = getOption("verbose", FALSE))
   {
 
-    if (missing(probes)) probes <- NULL
-    if (missing(nsim)) nsim <- NULL
-
     tryCatch(
       probe.internal(data,probes=probes,nsim=nsim,seed=seed,
-        rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,params=params,
         ...,verbose=verbose),
       error = function (e) pStop("probe",conditionMessage(e))
     )
@@ -165,7 +159,6 @@ setMethod(
   "probe",
   signature=signature(data="probed_pomp"),
   definition=function (data,
-    rinit, rprocess, rmeasure, params,
     probes, nsim, seed = NULL, ...,
     verbose = getOption("verbose", FALSE)) {
 
@@ -173,7 +166,6 @@ setMethod(
     if (missing(nsim)) nsim <- data@nsim
 
     probe(as(data,"pomp"),probes=probes,nsim=nsim,seed=seed,
-      rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,params=params,
       ...,verbose=verbose)
 
   }
@@ -185,6 +177,9 @@ probe.internal <- function (object, probes, nsim, seed, ...,
   verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
+
+  if (missing(probes)) probes <- NULL
+  if (missing(nsim)) nsim <- NULL
 
   if (is.null(probes)) pStop_(sQuote("probes")," must be furnished.")
   if (!is.list(probes)) probes <- list(probes)

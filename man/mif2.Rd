@@ -15,26 +15,63 @@
 \alias{mif2,mif2d_pomp-method}
 \title{Iterated filtering: maximum likelihood by iterated, perturbed Bayes maps}
 \usage{
-\S4method{mif2}{data.frame}(data, rinit, rprocess, dmeasure, partrans,
-  params, Nmif = 1, Np, rw.sd, cooling.type = c("hyperbolic",
-  "geometric"), cooling.fraction.50, tol = 1e-17, max.fail = Inf, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{mif2}{data.frame}(data, Nmif = 1, rw.sd,
+  cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50, Np,
+  tol = 1e-17, max.fail = Inf, params, rinit, rprocess, dmeasure,
+  partrans, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{mif2}{pomp}(data, Nmif = 1, Np, rw.sd,
-  cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
+\S4method{mif2}{pomp}(data, Nmif = 1, rw.sd,
+  cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50, Np,
   tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose",
   FALSE))
 
-\S4method{mif2}{pfilterd_pomp}(data, Nmif = 1, Np, tol, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{mif2}{pfilterd_pomp}(data, Nmif = 1, Np, tol, max.fail = Inf,
+  ..., verbose = getOption("verbose", FALSE))
 
-\S4method{mif2}{mif2d_pomp}(data, Nmif, Np, rw.sd, cooling.type,
-  cooling.fraction.50, tol, ..., verbose = getOption("verbose", FALSE))
+\S4method{mif2}{mif2d_pomp}(data, Nmif, rw.sd, cooling.type,
+  cooling.fraction.50, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.}
+
+\item{Nmif}{The number of filtering iterations to perform.}
+
+\item{rw.sd}{specification of the magnitude of the random-walk perturbations that will be applied to some or all model parameters.
+Parameters that are to be estimated should have positive perturbations specified here.
+The specification is given using the \code{\link{rw.sd}} function, which creates a list of unevaluated expressions.
+The latter are evaluated in a context where the model time variable is defined (as \code{time}).
+The expression \code{ivp(s)} can be used in this context as shorthand for \preformatted{ifelse(time==time[1],s,0).}
+Likewise, \code{ivp(s,lag)} is equivalent to \preformatted{ifelse(time==time[lag],s,0).}
+See below for some examples.
+The perturbations that are applied are normally distributed with the specified s.d.
+If \code{transform = TRUE}, then they are applied on the estimation scale.}
+
+\item{cooling.type, cooling.fraction.50}{specifications for the cooling schedule,
+i.e., the manner and rate with which the intensity of the parameter perturbations is reduced with successive filtering iterations.
+\code{cooling.type} specifies the nature of the cooling schedule.
+See below (under \dQuote{Specifying the perturbations}) for more detail.}
+
+\item{Np}{the number of particles to use in filtering.
+This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
+Alternatively, if one wishes the number of particles to vary across timestep, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object))}) or as a function taking a positive integer argument.
+In the latter case, \code{Np(n)} must be a single positive integer,
+representing the number of particles to be used at the \code{n}-th timestep:
+\code{Np(1)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
+\code{Np(2)}, from \code{time(object)[1]} to \code{time(object)[2]},
+and so on.}
+
+\item{tol}{positive numeric scalar;
+particles with likelihood less than \code{tol} are considered to be incompatible with the data.
+See the section on \emph{Filtering Failures} below for more information.}
+
+\item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
+If the number of filtering failures exceeds this number, execution will terminate with an error.
+By default, \code{max.fail} is set to infinity, so no error can be triggered.}
+
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
@@ -56,43 +93,6 @@ When working with such an algorithm and a model for which the parameters are con
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{here}.
 Setting \code{partrans=NULL} removes the parameter transformations.}
-
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
-
-\item{Nmif}{The number of filtering iterations to perform.}
-
-\item{Np}{the number of particles to use in filtering.
-This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
-Alternatively, if one wishes the number of particles to vary across timestep, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object))}) or as a function taking a positive integer argument.
-In the latter case, \code{Np(n)} must be a single positive integer,
-representing the number of particles to be used at the \code{n}-th timestep:
-\code{Np(1)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
-\code{Np(2)}, from \code{time(object)[1]} to \code{time(object)[2]},
-and so on.}
-
-\item{rw.sd}{specification of the magnitude of the random-walk perturbations that will be applied to some or all model parameters.
-Parameters that are to be estimated should have positive perturbations specified here.
-The specification is given using the \code{\link{rw.sd}} function, which creates a list of unevaluated expressions.
-The latter are evaluated in a context where the model time variable is defined (as \code{time}).
-The expression \code{ivp(s)} can be used in this context as shorthand for \preformatted{ifelse(time==time[1],s,0).}
-Likewise, \code{ivp(s,lag)} is equivalent to \preformatted{ifelse(time==time[lag],s,0).}
-See below for some examples.
-The perturbations that are applied are normally distributed with the specified s.d.
-If \code{transform = TRUE}, then they are applied on the estimation scale.}
-
-\item{cooling.type, cooling.fraction.50}{specifications for the cooling schedule,
-i.e., the manner and rate with which the intensity of the parameter perturbations is reduced with successive filtering iterations.
-\code{cooling.type} specifies the nature of the cooling schedule.
-See below (under \dQuote{Specifying the perturbations}) for more detail.}
-
-\item{tol}{positive numeric scalar;
-particles with likelihood less than \code{tol} are considered to be incompatible with the data.
-See the section on \emph{Filtering Failures} below for more information.}
-
-\item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
-If the number of filtering failures exceeds this number, execution will terminate with an error.
-By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

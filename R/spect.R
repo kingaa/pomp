@@ -106,35 +106,33 @@ setMethod(
 setMethod(
   "spect",
   signature(data="data.frame"),
-  function (data, rinit, rprocess, rmeasure, params,
+  function (data,
     vars, kernel.width, nsim, seed = NULL, transform.data = identity,
-    detrend = c("none","mean","linear","quadratic"), ...,
-    verbose = getOption("verbose", FALSE)) {
+    detrend = c("none","mean","linear","quadratic"),
+    params, rinit, rprocess, rmeasure,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(rprocess) || missing(rmeasure) || missing(params))
-      pStop("spect",sQuote(c("rprocess","rmeasure","params")),
+    if (missing(params) || missing(rprocess) || missing(rmeasure))
+      pStop("spect",sQuote(c("params","rprocess","rmeasure")),
         " are required arguments.")
 
-    object <- tryCatch(
-      pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
-        params=params,...,verbose=verbose),
-      error = function (e) {
-        pStop("spect",conditionMessage(e))
-      }
-    )
-
-    detrend <- match.arg(detrend)
-    transform.data <- match.fun(transform.data)
-
-    spect.internal(
-      object,
-      vars=vars,
-      kernel.width=kernel.width,
-      nsim=nsim,
-      seed=seed,
-      transform.data=transform.data,
-      detrend=detrend,
-      verbose=verbose
+    tryCatch(
+      spect.internal(
+        data,
+        vars=vars,
+        kernel.width=kernel.width,
+        nsim=nsim,
+        seed=seed,
+        transform.data=match.fun(transform.data),
+        detrend=match.arg(detrend),
+        params=params,
+        rinit=rinit,
+        rprocess=rprocess,
+        rmeasure=rmeasure,
+        ...,
+        verbose=verbose
+      ),
+      error = function (e) pStop("spect",conditionMessage(e))
     )
 
   }
@@ -146,23 +144,24 @@ setMethod(
 setMethod(
   "spect",
   signature(data="pomp"),
-  function (data, vars, kernel.width, nsim, seed = NULL,
-    transform.data = identity, detrend = c("none","mean","linear","quadratic"),
+  function (data,
+    vars, kernel.width, nsim, seed = NULL, transform.data = identity,
+    detrend = c("none","mean","linear","quadratic"),
     ..., verbose = getOption("verbose", FALSE)) {
 
-    detrend <- match.arg(detrend)
-    transform.data <- match.fun(transform.data)
-
-    spect.internal(
-      data,
-      vars=vars,
-      kernel.width=kernel.width,
-      nsim=nsim,
-      seed=seed,
-      transform.data=transform.data,
-      detrend=detrend,
-      ...,
-      verbose=verbose
+    tryCatch(
+      spect.internal(
+        data,
+        vars=vars,
+        kernel.width=kernel.width,
+        nsim=nsim,
+        seed=seed,
+        transform.data=match.fun(transform.data),
+        detrend=match.arg(detrend),
+        ...,
+        verbose=verbose
+      ),
+      error = function (e) pStop("spect",conditionMessage(e))
     )
 
   }
@@ -175,8 +174,10 @@ setMethod(
 setMethod(
   "spect",
   signature=signature(data="spectd_pomp"),
-  definition=function (data, vars, kernel.width, nsim, seed = NULL,
-    transform.data, detrend, ..., verbose = getOption("verbose", FALSE)) {
+  definition=function (data,
+    vars, kernel.width, nsim, seed = NULL, transform.data,
+    detrend,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(vars)) vars <- colnames(data@datspec)
     if (missing(kernel.width)) kernel.width <- data@kernel.width
@@ -192,7 +193,8 @@ setMethod(
       seed=seed,
       transform.data=transform.data,
       detrend=detrend,
-      ...
+      ...,
+      verbose=verbose
     )
 
   }
@@ -201,25 +203,23 @@ setMethod(
 spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   transform.data, detrend, ..., verbose) {
 
-  object <- tryCatch(
-    pomp(object,...),
-    error = function (e) pStop("spect",conditionMessage(e))
-  )
+  verbose <- as.logical(verbose)
+
+  object <- pomp(object,...,verbose=verbose)
 
   if (missing(vars)) vars <- rownames(object@data)
 
   if (missing(kernel.width) || length(kernel.width) > 1 ||
       !is.numeric(kernel.width) ||
       !is.finite(kernel.width) || kernel.width < 0)
-    pStop("spect",sQuote("kernel.width")," must be a positive integer.")
+    pStop_(sQuote("kernel.width")," must be a positive integer.")
 
   if (missing(nsim) || length(nsim) > 1 || !is.numeric(nsim)||
       !is.finite(nsim) || (nsim<1))
-    pStop("spect",sQuote("nsim")," must be a positive integer.")
+    pStop_(sQuote("nsim")," must be a positive integer.")
 
   nsim <- as.integer(nsim)
   seed <- as.integer(seed)
-  verbose <- as.logical(verbose)
 
   ker <- reuman.kernel(kernel.width)
 
@@ -291,13 +291,13 @@ compute.spect.data <- function (object, vars, transform.data, detrend, ker) {
 
   dat <- obs(object,vars)
   if (any(!is.finite(dat)))
-    pStop("spect","missing or infinite values in the data.")
+    pStop_("missing or infinite values in the data.")
 
   dt <- diff(time(object,t0=FALSE))
   base.freq <- 1/mean(dt)
   dt.tol <- 0.025
   if (max(dt)-min(dt)>dt.tol*mean(dt))
-    pStop("spect",sQuote("spect")," assumes evenly spaced times.")
+    pStop_(sQuote("spect")," assumes evenly spaced times.")
 
   for (j in seq_along(vars)) {
     sp <- spec.pgram(
@@ -324,12 +324,12 @@ compute.spect.sim <- function (object, params, vars, nsim, seed,
       s <- freeze(.Call(P_do_simulate,object,params,nsim,0L,gnsi=TRUE),seed=seed)
       s$obs[vars,,,drop=FALSE]
     },
-    error = function (e) pStop("spect","in simulation: ",
+    error = function (e) pStop_("in simulation: ",
       conditionMessage(e))
   )
 
   if (any(!is.finite(sims)))
-    pStop("spect","missing or infinite values in simulated data.")
+    pStop_("missing or infinite values in simulated data.")
 
   nobs <- length(vars)
   for (j in seq_len(nobs)) {
@@ -370,7 +370,7 @@ pomp.detrend <- function (tseries, type) {
 ## The default smoothing kernel for the R spec.pgram function is weird.
 ## This function creates a better one.
 reuman.kernel <- function (kernel.width) {
-  ker <- kernel("modified.daniell",m=kernel.width)
+  ker <- kernel("modified.daniell",m=kernel.width,r=NA)
   x <- seq.int(from=0,to=kernel.width,by=1)/kernel.width
   ker[[1L]] <- (15/(16*2*pi))*((x-1)^2)*((x+1)^2)
   ker[[1L]] <- ker[[1L]]/(2*sum(ker[[1L]][-1])+ker[[1L]][1L])

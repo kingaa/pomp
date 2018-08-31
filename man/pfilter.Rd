@@ -15,39 +15,23 @@
 \alias{pfilter,pfilterd_pomp-method}
 \title{Particle filter}
 \usage{
-\S4method{pfilter}{data.frame}(data, rinit, rprocess, dmeasure, params, Np,
-  tol = 1e-17, max.fail = Inf, pred.mean = FALSE, pred.var = FALSE,
-  filter.mean = FALSE, filter.traj = FALSE, save.states = FALSE, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{pfilter}{data.frame}(data, Np, tol = 1e-17, max.fail = Inf,
+  params, rinit, rprocess, dmeasure, pred.mean = FALSE,
+  pred.var = FALSE, filter.mean = FALSE, filter.traj = FALSE,
+  save.states = FALSE, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{pfilter}{pomp}(data, Np, tol = 1e-17, max.fail = Inf,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
-  filter.traj = FALSE, save.states = FALSE, ..., rinit, rprocess,
-  dmeasure, params, verbose = getOption("verbose", FALSE))
+  filter.traj = FALSE, save.states = FALSE, ...,
+  verbose = getOption("verbose", FALSE))
 
-\S4method{pfilter}{pfilterd_pomp}(data, Np, tol, ..., rinit, rprocess,
-  dmeasure, params, verbose = getOption("verbose", FALSE))
+\S4method{pfilter}{pfilterd_pomp}(data, Np, tol, ...,
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.}
-
-\item{rinit}{simulator of the initial-state distribution.
-This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit_spec]{here}.}
-
-\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
-Setting \code{rprocess=NULL} removes the latent-state simulator.
-For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
-
-\item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{dmeasure=NULL} removes the measurement density evaluator.
-For more information, see \link[=dmeasure_spec]{here}.}
-
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
 
 \item{Np}{the number of particles to use.
 This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
@@ -65,6 +49,22 @@ See the section on \emph{Filtering Failures} below for more information.}
 \item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
 If the number of filtering failures exceeds this number, execution will terminate with an error.
 By default, \code{max.fail} is set to infinity, so no error can be triggered.}
+
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
+
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{rinit=NULL} sets the initial-state simulator to its default.
+For more information, see \link[=rinit_spec]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
+Setting \code{rprocess=NULL} removes the latent-state simulator.
+For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
+
+\item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{dmeasure=NULL} removes the measurement density evaluator.
+For more information, see \link[=dmeasure_spec]{here}.}
 
 \item{pred.mean}{logical; if \code{TRUE}, the prediction means are calculated for the state variables and parameters.}
 

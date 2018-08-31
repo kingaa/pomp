@@ -76,15 +76,29 @@ setMethod(
   "traj.match.objfun",
   signature=signature(data="data.frame"),
   definition=function(data,
-    rinit, skeleton, partrans, params,
-    est = character(0), fail.value = NA, ...,
+    est = character(0), fail.value = NA,
     ode_control = list(),
-    verbose = getOption("verbose", FALSE)) {
+    params, rinit, skeleton, dmeasure, partrans,
+    ..., verbose = getOption("verbose", FALSE)) {
+
+    if (missing(params) || missing(skeleton) || missing(dmeasure))
+      pStop("spect.match.objfun",paste(sQuote(c("params","skeleton","dmeasure")),
+        collapse=", ")," are needed basic components.")
 
     tryCatch(
-      tmof.internal(data,rinit=rinit,skeleton=skeleton,partrans=partrans,
-        params=params,...,est=est,fail.value=fail.value,
-        ode_control=ode_control,verbose=verbose),
+      tmof.internal(
+        data,
+        est=est,
+        fail.value=fail.value,
+        ode_control=ode_control,
+        params=params,
+        rinit=rinit,
+        skeleton=skeleton,
+        dmeasure=dmeasure,
+        partrans=partrans,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("traj.match.objfun",conditionMessage(e))
     )
 
@@ -98,21 +112,31 @@ setMethod(
 setMethod(
   "traj.match.objfun",
   signature=signature(data="pomp"),
-  function (data, est, fail.value = NA, ode_control = list(), ...,
-    verbose = getOption("verbose", FALSE)) {
+  function (data,
+    est, fail.value = NA, ode_control = list(),
+    ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      tmof.internal(data,est=est,fail.value=fail.value,
-        ode_control=ode_control,...),
+      tmof.internal(
+        data,
+        est=est,
+        fail.value=fail.value,
+        ode_control=ode_control,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("traj.match.objfun",conditionMessage(e))
     )
 
   }
 )
 
-tmof.internal <- function (object, est, fail.value, ode_control, ...) {
+tmof.internal <- function (object,
+  est, fail.value, ode_control,
+  ..., verbose) {
 
-  object <- pomp(object,...)
+  verbose <- as.logical(verbose)
+  object <- pomp(object,...,verbose=verbose)
 
   fail.value <- as.numeric(fail.value)
 
@@ -125,12 +149,11 @@ tmof.internal <- function (object, est, fail.value, ode_control, ...) {
   idx <- match(est,names(params))
   if (any(is.na(idx))) {
     missing <- est[is.na(idx)]
-    pStop_(ngettext(length(missing),"parameter","parameters")," ",
-      paste(sQuote(missing),collapse=","),
-      " not found in ",sQuote("params"))
+    pStop_("parameter",ngettext(length(missing),"","s")," ",
+      paste(sQuote(missing),collapse=",")," not found in ",sQuote("params"))
   }
 
-  pompLoad(object)
+  pompLoad(object,verbose=verbose)
 
   loglik <- traj.match.loglik(object,ode_control=ode_control)
 

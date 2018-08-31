@@ -124,27 +124,35 @@ setMethod(
   "mif2",
   signature=signature(data="data.frame"),
   definition = function (data,
-    rinit, rprocess, dmeasure, partrans, params,
-    Nmif = 1, Np, rw.sd,
+    Nmif = 1, rw.sd,
     cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
-    tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose", FALSE)) {
+    Np, tol = 1e-17, max.fail = Inf,
+    params, rinit, rprocess, dmeasure, partrans,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    object <- tryCatch(
-      pomp(data,rinit=rinit,rprocess=rprocess,dmeasure=dmeasure,
-        partrans=partrans,params=params,...,verbose=verbose),
+    if (missing(params) || missing(rprocess) || missing(dmeasure))
+      pStop("mif2",paste(sQuote(c("params","rprocess","dmeasure")),
+        collapse=", ")," are needed basic components.")
+
+    tryCatch(
+      mif2.internal(
+        data,
+        Nmif=Nmif,
+        rw.sd=rw.sd,
+        cooling.type=cooling.type,
+        cooling.fraction.50=cooling.fraction.50,
+        Np=Np,
+        tol=tol,
+        max.fail=max.fail,
+        params=params,
+        rinit=rinit,
+        rprocess=rprocess,
+        dmeasure=dmeasure,
+        partrans=partrans,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("mif2",conditionMessage(e))
-    )
-
-    mif2(
-      object,
-      Nmif=Nmif,
-      Np=Np,
-      rw.sd=rw.sd,
-      cooling.type=cooling.type,
-      cooling.fraction.50=cooling.fraction.50,
-      tol=tol,
-      max.fail=max.fail,
-      verbose=verbose
     )
 
   }
@@ -157,18 +165,20 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="pomp"),
-  definition = function (data, Nmif = 1, Np, rw.sd,
+  definition = function (data,
+    Nmif = 1, rw.sd,
     cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
-    tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose", FALSE)) {
+    Np, tol = 1e-17, max.fail = Inf,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
       mif2.internal(
         data,
         Nmif=Nmif,
-        Np=Np,
         rw.sd=rw.sd,
         cooling.type=cooling.type,
         cooling.fraction.50=cooling.fraction.50,
+        Np=Np,
         tol=tol,
         max.fail=max.fail,
         ...,
@@ -187,13 +197,22 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="pfilterd_pomp"),
-  definition = function (data, Nmif = 1, Np, tol, ...,
-    verbose = getOption("verbose", FALSE)) {
+  definition = function (data,
+    Nmif = 1, Np, tol, max.fail = Inf,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(Np)) Np <- data@Np
     if (missing(tol)) tol <- data@tol
 
-    mif2(as(data,"pomp"),Nmif=Nmif,Np=Np,tol=tol,...,verbose=verbose)
+    mif2(
+      as(data,"pomp"),
+      Nmif=Nmif,
+      Np=Np,
+      tol=tol,
+      max.fail=max.fail,
+      ...,
+      verbose=verbose
+    )
   }
 )
 
@@ -204,22 +223,26 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="mif2d_pomp"),
-  definition = function (data, Nmif, Np, rw.sd,
-    cooling.type, cooling.fraction.50, tol, ...,
-    verbose = getOption("verbose", FALSE)) {
+  definition = function (data,
+    Nmif, rw.sd,
+    cooling.type, cooling.fraction.50,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(Nmif)) Nmif <- data@Nmif
-    if (missing(Np)) Np <- data@Np
     if (missing(rw.sd)) rw.sd <- data@rw.sd
     if (missing(cooling.type)) cooling.type <- data@cooling.type
-    if (missing(cooling.fraction.50))
-      cooling.fraction.50 <- data@cooling.fraction.50
-    if (missing(tol)) tol <- data@tol
+    if (missing(cooling.fraction.50)) cooling.fraction.50 <- data@cooling.fraction.50
 
-    mif2(as(data,"pomp"),Nmif=Nmif,Np=Np,rw.sd=rw.sd,
+    mif2(
+      as(data,"pfilterd_pomp"),
+      Nmif=Nmif,
+      rw.sd=rw.sd,
       cooling.type=cooling.type,
-      cooling.fraction.50=cooling.fraction.50,tol=tol,...,
-      verbose=verbose)
+      cooling.fraction.50=cooling.fraction.50,
+      ...,
+      verbose=verbose
+    )
+
   }
 )
 
@@ -252,16 +275,18 @@ setMethod(
   }
 )
 
-mif2.internal <- function (object, Nmif, Np, rw.sd,
+mif2.internal <- function (object, Nmif, rw.sd,
   cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
-  tol = 1e-17, max.fail = Inf, verbose = FALSE, .ndone = 0L,
-  .indices = integer(0), .paramMatrix = NULL,
-  .getnativesymbolinfo = TRUE, ...) {
+  Np, tol = 1e-17, max.fail = Inf,
+  ..., verbose,
+  .ndone = 0L, .indices = integer(0), .paramMatrix = NULL,
+  .getnativesymbolinfo = TRUE) {
 
   verbose <- as.logical(verbose)
-  gnsi <- as.logical(.getnativesymbolinfo)
 
   object <- pomp(object,...,verbose=verbose)
+
+  gnsi <- as.logical(.getnativesymbolinfo)
 
   if (length(Nmif) != 1 || !is.numeric(Nmif) || !is.finite(Nmif) || Nmif < 1)
     pStop_(sQuote("Nmif")," must be a positive integer.")

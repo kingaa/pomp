@@ -100,23 +100,32 @@ setMethod(
   "bsmc2",
   signature=signature(data="data.frame"),
   definition = function (data,
-    params, rprior, rinit, rprocess, rmeasure, partrans,
-    Np, smooth = 0.1, tol = 1e-17, max.fail = 0, ...,
-    verbose = getOption("verbose", FALSE)) {
+    Np, smooth = 0.1, tol = 1e-17, max.fail = 0,
+    params, rprior, rinit, rprocess, dmeasure, partrans,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    object <- tryCatch(
-      pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
-        rprior=rprior,partrans=partrans,params=params,...,verbose=verbose),
+    if (missing(params) || missing(rprior) ||
+        missing(rprocess) || missing(dmeasure))
+      pStop("bsmc2",paste(sQuote(c("params","rprior","rprocess","dmeasure")),
+        collapse=", ")," are needed basic components.")
+
+    tryCatch(
+      bsmc2.internal(
+        data,
+        Np=Np,
+        smooth=smooth,
+        tol=tol,
+        max.fail=max.fail,
+        params=params,
+        rprior=rprior,
+        rinit=rinit,
+        rprocess=rprocess,
+        dmeasure=dmeasure,
+        partrans=partrans,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("bsmc2",conditionMessage(e))
-    )
-
-    bsmc2(
-      object,
-      Np=Np,
-      smooth=smooth,
-      tol=tol,
-      verbose=verbose,
-      max.fail=max.fail
     )
 
   }
@@ -129,13 +138,13 @@ setMethod(
 setMethod(
   "bsmc2",
   signature=signature(data="pomp"),
-  definition = function (data, params, Np, smooth = 0.1, tol = 1e-17,
-    max.fail = 0, ..., verbose = getOption("verbose", FALSE)) {
+  definition = function (data,
+    Np, smooth = 0.1, tol = 1e-17, max.fail = 0,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
       bsmc2.internal(
         data,
-        params=params,
         Np=Np,
         smooth=smooth,
         tol=tol,
@@ -175,10 +184,13 @@ setMethod(
   }
 )
 
-bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
-  .getnativesymbolinfo = TRUE, verbose) {
+bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
+  ..., verbose, .getnativesymbolinfo = TRUE) {
+
+  verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
+
   gnsi <- as.logical(.getnativesymbolinfo)
 
   if (missing(Np)) pStop_(sQuote("Np")," must be specified.")
@@ -188,9 +200,10 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
 
   params <- parmat(coef(object),Np)
 
-  smooth <- as.numeric(smooth)
-  if ((length(smooth)!=1) || (!is.finite(smooth)) || (smooth>1) || (smooth<=0))
+  if (!is.numeric(smooth) || length(smooth) != 1 || (!is.finite(smooth)) ||
+      (smooth>1) || (smooth<=0))
     pStop_(sQuote("smooth")," must be a scalar in (0,1]")
+  smooth <- as.numeric(smooth)
 
   tol <- as.numeric(tol)
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
@@ -328,6 +341,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
     cond.log.evidence=evidence,
     log.evidence=sum(evidence)
   )
+
 }
 
 bsmc.plot <- function (prior, post, pars, thin, ...) {

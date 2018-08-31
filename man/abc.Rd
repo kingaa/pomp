@@ -13,17 +13,17 @@
 \alias{abc,abcd_pomp-method}
 \title{Approximate Bayesian computation}
 \usage{
-\S4method{abc}{data.frame}(data, Nabc = 1, params, rinit, rprocess,
-  rmeasure, dprior, proposal, probes, scale, epsilon, ...,
+\S4method{abc}{data.frame}(data, Nabc = 1, proposal, scale, epsilon,
+  probes, params, rinit, rprocess, rmeasure, dprior, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{abc}{pomp}(data, Nabc = 1, proposal, probes, scale, epsilon,
+\S4method{abc}{pomp}(data, Nabc = 1, proposal, scale, epsilon, probes,
   ..., verbose = getOption("verbose", FALSE))
 
 \S4method{abc}{probed_pomp}(data, probes, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{abc}{abcd_pomp}(data, Nabc, proposal, probes, scale, epsilon,
+\S4method{abc}{abcd_pomp}(data, Nabc, proposal, scale, epsilon, probes,
   ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
@@ -32,6 +32,22 @@ or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.}
 
 \item{Nabc}{the number of ABC iterations to perform.}
+
+\item{proposal}{optional function that draws from the proposal
+distribution.  Currently, the proposal distribution must be symmetric for
+proper inference: it is the user's responsibility to ensure that it is.
+Several functions that construct appropriate proposal function are
+provided: see \link[=proposals]{MCMC proposals} for more information.}
+
+\item{scale}{named numeric vector of scales.}
+
+\item{epsilon}{ABC tolerance.}
+
+\item{probes}{a single probe or a list of one or more probes.
+A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
+A vector-valued probe must always return a vector of the same size.
+A number of useful probes are provided with the package:
+see \link[=basic_probes]{basic probes}.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -52,22 +68,6 @@ For more information, see \link[=rmeasure_spec]{here}.}
 \item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{dprior=NULL} removes the prior distribution density evaluator.
 For more information, see \link[=prior_spec]{here}.}
-
-\item{proposal}{optional function that draws from the proposal
-distribution.  Currently, the proposal distribution must be symmetric for
-proper inference: it is the user's responsibility to ensure that it is.
-Several functions that construct appropriate proposal function are
-provided: see \link[=proposals]{MCMC proposals} for more information.}
-
-\item{probes}{a single probe or a list of one or more probes.
-A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
-A vector-valued probe must always return a vector of the same size.
-A number of useful probes are provided with the package:
-see \link[=basic_probes]{basic probes}.}
-
-\item{scale}{named numeric vector of scales.}
-
-\item{epsilon}{ABC tolerance.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

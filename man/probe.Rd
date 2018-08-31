@@ -15,16 +15,14 @@
 \alias{probe,probe_match_objfun-method}
 \title{Probes (AKA summary statistics)}
 \usage{
-\S4method{probe}{data.frame}(data, rinit, rprocess, rmeasure, params,
-  probes, nsim, seed = NULL, ..., verbose = getOption("verbose",
-  FALSE))
+\S4method{probe}{data.frame}(data, probes, nsim, seed = NULL, params,
+  rinit, rprocess, rmeasure, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{probe}{pomp}(data, rinit, rprocess, rmeasure, params, probes,
-  nsim, seed = NULL, ..., verbose = getOption("verbose", FALSE))
+\S4method{probe}{pomp}(data, probes, nsim, seed = NULL, ...,
+  verbose = getOption("verbose", FALSE))
 
-\S4method{probe}{probed_pomp}(data, rinit, rprocess, rmeasure, params,
-  probes, nsim, seed = NULL, ..., verbose = getOption("verbose",
-  FALSE))
+\S4method{probe}{probed_pomp}(data, probes, nsim, seed = NULL, ...,
+  verbose = getOption("verbose", FALSE))
 
 \S4method{probe}{probe_match_objfun}(data, ...,
   verbose = getOption("verbose", FALSE))
@@ -33,6 +31,21 @@
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.}
+
+\item{probes}{a single probe or a list of one or more probes.
+A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
+A vector-valued probe must always return a vector of the same size.
+A number of useful probes are provided with the package:
+see \link[=basic_probes]{basic probes}.}
+
+\item{nsim}{the number of model simulations to be computed.}
+
+\item{seed}{optional integer;
+if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
+See \code{\link[=simulate-pomp]{simulate}}.}
+
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
@@ -46,21 +59,6 @@ For more information, \link[=rprocess_spec]{see the documentation on these plugi
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
 For more information, see \link[=rmeasure_spec]{here}.}
-
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
-
-\item{probes}{a single probe or a list of one or more probes.
-A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
-A vector-valued probe must always return a vector of the same size.
-A number of useful probes are provided with the package:
-see \link[=basic_probes]{basic probes}.}
-
-\item{nsim}{the number of model simulations to be computed.}
-
-\item{seed}{optional integer;
-if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
-See \code{\link[=simulate-pomp]{simulate}}.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

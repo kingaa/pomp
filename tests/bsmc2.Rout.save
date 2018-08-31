@@ -111,9 +111,6 @@ Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > try(bsmc2(smc,Np=100,smooth="yes"))
 Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
-In addition: Warning message:
-In bsmc2.internal(data, params = params, Np = Np, smooth = smooth,  :
-  NAs introduced by coercion
 > try(bsmc2(smc,Np=100,smooth=c(1,2)))
 Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > try(bsmc2(smc,Np=100,smooth=list(1,2)))

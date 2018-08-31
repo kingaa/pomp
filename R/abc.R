@@ -114,22 +114,35 @@ setMethod(
 setMethod(
   "abc",
   signature=signature(data="data.frame"),
-  definition=function (data, Nabc = 1, params,
-    rinit, rprocess, rmeasure, dprior, proposal, probes, scale,
-    epsilon, ..., verbose = getOption("verbose", FALSE)) {
+  definition=function (data,
+    Nabc = 1, proposal, scale, epsilon,
+    probes,
+    params, rinit, rprocess, rmeasure, dprior,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    object <- pomp(data,params=params,rinit=rinit,rprocess=rprocess,
-      rmeasure=rmeasure,dprior=dprior,...,verbose=verbose)
+    if (missing(params) || missing(rprocess) || missing(rmeasure))
+      pStop("abc",paste(sQuote(c("params","rprocess","rmeasure")),collapse=", "),
+        " are needed basic components.")
 
-    abc(
-      object,
-      Nabc=Nabc,
-      proposal=proposal,
-      probes=probes,
-      scale=scale,
-      epsilon=epsilon,
-      verbose=verbose
+    tryCatch(
+      abc.internal(
+        data,
+        Nabc=Nabc,
+        proposal=proposal,
+        scale=scale,
+        epsilon=epsilon,
+        probes=probes,
+        params=params,
+        rinit=rinit,
+        rprocess=rprocess,
+        rmeasure=rmeasure,
+        dprior=dprior,
+        ...,
+        verbose=verbose
+      ),
+      error = function (e) pStop("abc",conditionMessage(e))
     )
+
   }
 )
 
@@ -140,27 +153,25 @@ setMethod(
 setMethod(
   "abc",
   signature=signature(data="pomp"),
-  definition=function (data, Nabc = 1, proposal, probes, scale,
-    epsilon, ..., verbose = getOption("verbose", FALSE)) {
-
-    if (missing(proposal)) proposal <- NULL
-    if (missing(probes)) probes <- NULL
-    if (missing(scale)) scale <- NULL
-    if (missing(epsilon)) epsilon <- NULL
+  definition=function (data,
+    Nabc = 1, proposal, scale, epsilon,
+    probes,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
       abc.internal(
         data,
         Nabc=Nabc,
         proposal=proposal,
-        probes=probes,
         scale=scale,
         epsilon=epsilon,
-        verbose=verbose,
-        ...
+        probes=probes,
+        ...,
+        verbose=verbose
       ),
       error = function (e) pStop("abc",conditionMessage(e))
     )
+
   }
 )
 
@@ -174,7 +185,12 @@ setMethod(
 
     if (missing(probes)) probes <- data@probes
 
-    abc(as(data,"pomp"),probes=probes,...)
+    abc(
+      as(data,"pomp"),
+      probes=probes,
+      ...,
+      verbose=verbose
+    )
 
   }
 )
@@ -184,25 +200,28 @@ setMethod(
 setMethod(
   "abc",
   signature=signature(data="abcd_pomp"),
-  definition=function (data, Nabc, proposal, probes, scale, epsilon,
+  definition=function (data,
+    Nabc, proposal, scale, epsilon,
+    probes,
     ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(Nabc)) Nabc <- data@Nabc
     if (missing(proposal)) proposal <- data@proposal
-    if (missing(probes)) probes <- data@probes
     if (missing(scale)) scale <- data@scale
     if (missing(epsilon)) epsilon <- data@epsilon
+    if (missing(probes)) probes <- data@probes
 
     abc(
       as(data,"pomp"),
       Nabc=Nabc,
       proposal=proposal,
-      probes=probes,
       scale=scale,
       epsilon=epsilon,
-      verbose=verbose,
-      ...
+      probes=probes,
+      ...,
+      verbose=verbose
     )
+
   }
 )
 
@@ -235,19 +254,28 @@ setMethod(
   }
 )
 
-abc.internal <- function (object, Nabc, proposal, probes, epsilon, scale,
-  verbose, .ndone = 0L, .accepts = 0L, .getnativesymbolinfo = TRUE,
-  ...) {
+abc.internal <- function (object,
+  Nabc, proposal, scale, epsilon, probes,
+  ...,
+  verbose,
+  .ndone = 0L, .accepts = 0L, .getnativesymbolinfo = TRUE) {
+
+  verbose <- as.logical(verbose)
+
+  object <- pomp(object,...,verbose=verbose)
+
+  if (missing(proposal)) proposal <- NULL
+  if (missing(probes)) probes <- NULL
+  if (missing(scale)) scale <- NULL
+  if (missing(epsilon)) epsilon <- NULL
 
   gnsi <- as.logical(.getnativesymbolinfo)
   scale <- as.numeric(scale)
   epsilon <- as.numeric(epsilon)
   epssq <- epsilon*epsilon
-  verbose <- as.logical(verbose)
   .ndone <- as.integer(.ndone)
   .accepts <- as.integer(.accepts)
 
-  object <- pomp(object,...,verbose=verbose)
   params <- coef(object)
 
   Nabc <- as.integer(Nabc)

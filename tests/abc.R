@@ -149,7 +149,21 @@ stopifnot(
   sum(grepl("ABC iteration",out))==20
 )
 
-try(continue())
-try(continue(44))
+pompExample(gompertz)
+set.seed(2079015564L)
+
+gompertz %>%
+  as.data.frame() %>%
+  abc(Nabc=20,times="time",t0=0,
+    scale=1,epsilon=10,
+    probes=list(probe.mean("Y"),probe.median("Y")),
+    partrans=parameter_trans(log=c("r","K")),
+    paramnames=c("r","K"),
+    proposal=mvn.diag.rw(rw.sd=c(r=0.01,K=0.01)),
+    params=coef(gompertz),
+    rinit=function(...)c(X=1),
+    rprocess=discrete_time(function (X, r, K, ...) c(X=r*X*exp(-X/K))),
+    rmeasure=function (Y, X, ...) c(Y = rnorm(n=1,mean=X,sd=2))
+    ) %>% plot()
 
 dev.off()

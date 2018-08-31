@@ -113,15 +113,10 @@ trajectory.internal <- function (object, params, times, t0,
   if (is.list(params)) params <- unlist(params)
   if (is.null(params)) params <- numeric(0)
 
-  # if (length(params)==0)
-  #   pStop_(sQuote("params")," must be supplied.")
   storage.mode(params) <- "double"
 
   params <- as.matrix(params)
   nrep <- ncol(params)
-  # paramnames <- rownames(params)
-  # if (is.null(paramnames))
-  #   pStop_(sQuote("params")," must have names (or rownames).")
 
   x0 <- rinit(object,params=params,t0=t0)
   nvar <- nrow(x0)

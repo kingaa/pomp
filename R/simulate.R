@@ -82,29 +82,29 @@ setMethod(
   "simulate",
   signature=signature(object="missing"),
   definition=function (nsim = 1, seed = NULL,
-    rinit, rprocess, rmeasure, params,
     times, t0,
+    params, rinit, rprocess, rmeasure,
     format = c("pomps", "arrays", "data.frame"),
     include.data = FALSE,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    format <- match.arg(format)
-
-    object <- tryCatch(
-      pomp(data=NULL,times=times,t0=t0,
-        rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
-        verbose=verbose),
+    tryCatch(
+      simulate.internal(
+        object=NULL,
+        nsim=nsim,
+        seed=seed,
+        times=times,
+        t0=t0,
+        params=params,
+        rinit=rinit,
+        rprocess=rprocess,
+        rmeasure=rmeasure,
+        format=match.arg(format),
+        include.data=include.data,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("simulate",conditionMessage(e))
-    )
-
-    simulate(
-      object,
-      nsim=nsim,
-      seed=seed,
-      params=params,
-      format=format,
-      include.data=include.data,
-      verbose=verbose
     )
 
   }
@@ -117,30 +117,31 @@ setMethod(
 setMethod(
   "simulate",
   signature=signature(object="data.frame"),
-  definition=function (object, nsim = 1, seed = NULL,
-    rinit, rprocess, rmeasure, params,
+  definition=function (object,
+    nsim = 1, seed = NULL,
     times, t0,
+    params, rinit, rprocess, rmeasure,
     format = c("pomps", "arrays", "data.frame"),
     include.data = FALSE,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    format <- match.arg(format)
-
-    object <- tryCatch(
-      pomp(data=object,times=times,t0=t0,
-        rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
-        verbose=verbose),
+    tryCatch(
+      simulate.internal(
+        object,
+        nsim=nsim,
+        seed=seed,
+        times=times,
+        t0=t0,
+        params=params,
+        rinit=rinit,
+        rprocess=rprocess,
+        rmeasure=rmeasure,
+        format=match.arg(format),
+        include.data=include.data,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("simulate",conditionMessage(e))
-    )
-
-    simulate(
-      object,
-      nsim=nsim,
-      seed=seed,
-      params=params,
-      format=format,
-      include.data=include.data,
-      verbose=verbose
     )
 
   }
@@ -153,8 +154,8 @@ setMethod(
 setMethod(
   "simulate",
   signature=signature(object="pomp"),
-  definition=function (object, nsim = 1, seed = NULL,
-    rinit, rprocess, rmeasure, params,
+  definition=function (object,
+    nsim = 1, seed = NULL,
     format = c("pomps", "arrays", "data.frame"),
     include.data = FALSE,
     ..., verbose = getOption("verbose", FALSE)) {
@@ -166,11 +167,7 @@ setMethod(
         object,
         nsim=nsim,
         seed=seed,
-        rinit=rinit,
-        rprocess=rprocess,
-        rmeasure=rmeasure,
-        params=params,
-        format=format,
+        format=match.arg(format),
         include.data=include.data,
         ...,
         verbose=verbose

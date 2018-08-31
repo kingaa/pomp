@@ -11,17 +11,32 @@
 \alias{bsmc2,pomp-method}
 \title{The Liu and West Bayesian particle filter}
 \usage{
-\S4method{bsmc2}{data.frame}(data, params, rprior, rinit, rprocess,
-  rmeasure, partrans, Np, smooth = 0.1, tol = 1e-17, max.fail = 0,
-  ..., verbose = getOption("verbose", FALSE))
+\S4method{bsmc2}{data.frame}(data, Np, smooth = 0.1, tol = 1e-17,
+  max.fail = 0, params, rprior, rinit, rprocess, dmeasure, partrans, ...,
+  verbose = getOption("verbose", FALSE))
 
-\S4method{bsmc2}{pomp}(data, params, Np, smooth = 0.1, tol = 1e-17,
+\S4method{bsmc2}{pomp}(data, Np, smooth = 0.1, tol = 1e-17,
   max.fail = 0, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.}
+
+\item{Np}{number of particles}
+
+\item{smooth}{Kernel density smoothing parameter.
+The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
+Thus, \code{smooth=0} means that no noise will be added to parameters.
+The general recommendation is that the value of \code{smooth} should be chosen close to 0 (e.g., \code{shrink} ~ 0.1).}
+
+\item{tol}{positive numeric scalar;
+particles with likelihood less than \code{tol} are considered to be incompatible with the data.
+See the section on \emph{Filtering Failures} below for more information.}
+
+\item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
+If the number of filtering failures exceeds this number, execution will terminate with an error.
+By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -39,9 +54,9 @@ For more information, see \link[=rinit_spec]{here}.}
 Setting \code{rprocess=NULL} removes the latent-state simulator.
 For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
 
-\item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{rmeasure=NULL} removes the measurement model simulator.
-For more information, see \link[=rmeasure_spec]{here}.}
+\item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{dmeasure=NULL} removes the measurement density evaluator.
+For more information, see \link[=dmeasure_spec]{here}.}
 
 \item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
 
@@ -50,21 +65,6 @@ When working with such an algorithm and a model for which the parameters are con
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{here}.
 Setting \code{partrans=NULL} removes the parameter transformations.}
-
-\item{Np}{number of particles}
-
-\item{smooth}{Kernel density smoothing parameter.
-The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
-Thus, \code{smooth=0} means that no noise will be added to parameters.
-The general recommendation is that the value of \code{smooth} should be chosen close to 0 (e.g., \code{shrink} ~ 0.1).}
-
-\item{tol}{positive numeric scalar;
-particles with likelihood less than \code{tol} are considered to be incompatible with the data.
-See the section on \emph{Filtering Failures} below for more information.}
-
-\item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
-If the number of filtering failures exceeds this number, execution will terminate with an error.
-By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

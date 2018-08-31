@@ -11,20 +11,18 @@
 \alias{simulate,pomp-method}
 \title{Simulations of a partially-observed Markov process}
 \usage{
-\S4method{simulate}{missing}(nsim = 1, seed = NULL, rinit, rprocess,
-  rmeasure, params, times, t0, format = c("pomps", "arrays",
+\S4method{simulate}{missing}(nsim = 1, seed = NULL, times, t0, params,
+  rinit, rprocess, rmeasure, format = c("pomps", "arrays", "data.frame"),
+  include.data = FALSE, ..., verbose = getOption("verbose", FALSE))
+
+\S4method{simulate}{data.frame}(object, nsim = 1, seed = NULL, times,
+  t0, params, rinit, rprocess, rmeasure, format = c("pomps", "arrays",
   "data.frame"), include.data = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{simulate}{data.frame}(object, nsim = 1, seed = NULL, rinit,
-  rprocess, rmeasure, params, times, t0, format = c("pomps", "arrays",
-  "data.frame"), include.data = FALSE, ...,
-  verbose = getOption("verbose", FALSE))
-
-\S4method{simulate}{pomp}(object, nsim = 1, seed = NULL, rinit,
-  rprocess, rmeasure, params, format = c("pomps", "arrays",
-  "data.frame"), include.data = FALSE, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{simulate}{pomp}(object, nsim = 1, seed = NULL,
+  format = c("pomps", "arrays", "data.frame"), include.data = FALSE,
+  ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{nsim}{The number of simulations to perform.
@@ -33,6 +31,17 @@ Note that the number of replicates will be \code{nsim} times \code{ncol(params)}
 \item{seed}{optional;
 if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.  the random seed to use.
 The RNG will be restored to its original state afterward.}
+
+\item{times}{the times at which observations are made.
+\code{times} must indicate the column of observation times by name or index.
+The time vector must be numeric and strictly increasing.
+Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.}
+
+\item{t0}{The zero-time, i.e., the time of the initial state.
+This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
+
+\item{params}{a named numeric vector or a matrix with rownames
+containing the parameters at which the simulations are to be performed.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
@@ -46,17 +55,6 @@ For more information, \link[=rprocess_spec]{see the documentation on these plugi
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
 For more information, see \link[=rmeasure_spec]{here}.}
-
-\item{params}{a named numeric vector or a matrix with rownames
-containing the parameters at which the simulations are to be performed.}
-
-\item{times}{the times at which observations are made.
-\code{times} must indicate the column of observation times by name or index.
-The time vector must be numeric and strictly increasing.
-Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.}
-
-\item{t0}{The zero-time, i.e., the time of the initial state.
-This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
 
 \item{format}{the format in which to return the results.
 

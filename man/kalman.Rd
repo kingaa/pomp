@@ -19,13 +19,13 @@
 \alias{eakf,pomp-method}
 \title{Ensemble Kalman filters}
 \usage{
-\S4method{enkf}{data.frame}(data, rinit, rprocess, params, Np, h, R, ...,
+\S4method{enkf}{data.frame}(data, Np, h, R, params, rinit, rprocess, ...,
   verbose = getOption("verbose", FALSE))
 
 \S4method{enkf}{pomp}(data, Np, h, R, ..., verbose = getOption("verbose",
   FALSE))
 
-\S4method{eakf}{data.frame}(data, rinit, rprocess, params, Np, C, R, ...,
+\S4method{eakf}{data.frame}(data, Np, C, R, params, rinit, rprocess, ...,
   verbose = getOption("verbose", FALSE))
 
 \S4method{eakf}{pomp}(data, Np, C, R, ..., verbose = getOption("verbose",
@@ -36,6 +36,16 @@
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.}
 
+\item{Np}{the number of particles to use.}
+
+\item{h}{function returning the expected value of the observation given the
+state.}
+
+\item{R}{matrix; variance of the measurement noise.}
+
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
+
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
@@ -44,16 +54,6 @@ For more information, see \link[=rinit_spec]{here}.}
 \item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
 Setting \code{rprocess=NULL} removes the latent-state simulator.
 For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
-
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
-
-\item{Np}{the number of particles to use.}
-
-\item{h}{function returning the expected value of the observation given the
-state.}
-
-\item{R}{matrix; variance of the measurement noise.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

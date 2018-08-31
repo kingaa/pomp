@@ -16,16 +16,16 @@
 \alias{probe.match.objfun,probe_match_objfun-method}
 \title{Probe matching}
 \usage{
-\S4method{probe.match.objfun}{data.frame}(data, rinit, rprocess, rmeasure,
-  partrans, params, est = character(0), probes, nsim, seed = NULL,
-  fail.value = NA, ..., verbose = getOption("verbose", FALSE))
+\S4method{probe.match.objfun}{data.frame}(data, est = character(0),
+  fail.value = NA, probes, nsim, seed = NULL, params, rinit, rprocess,
+  rmeasure, partrans, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{probe.match.objfun}{pomp}(data, est = character(0), probes,
-  nsim, seed = NULL, fail.value = NA, ...,
+\S4method{probe.match.objfun}{pomp}(data, est = character(0),
+  fail.value = NA, probes, nsim, seed = NULL, ...,
   verbose = getOption("verbose", FALSE))
 
 \S4method{probe.match.objfun}{probed_pomp}(data, est = character(0),
-  probes, nsim, seed = NULL, fail.value = NA, ...,
+  fail.value = NA, probes, nsim, seed = NULL, ...,
   verbose = getOption("verbose", FALSE))
 
 \S4method{probe.match.objfun}{probe_match_objfun}(data, ...,
@@ -35,6 +35,27 @@
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.}
+
+\item{est}{character vector; the names of parameters to be estimated.}
+
+\item{fail.value}{optional numeric scalar;
+if non-\code{NA}, this value is substituted for non-finite values of the objective function.
+It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
+
+\item{probes}{a single probe or a list of one or more probes.
+A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
+A vector-valued probe must always return a vector of the same size.
+A number of useful probes are provided with the package:
+see \link[=basic_probes]{basic probes}.}
+
+\item{nsim}{the number of model simulations to be computed.}
+
+\item{seed}{optional integer;
+if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
+See \code{\link[=simulate-pomp]{simulate}}.}
+
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
@@ -56,27 +77,6 @@ When working with such an algorithm and a model for which the parameters are con
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{here}.
 Setting \code{partrans=NULL} removes the parameter transformations.}
-
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
-
-\item{est}{character vector; the names of parameters to be estimated.}
-
-\item{probes}{a single probe or a list of one or more probes.
-A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
-A vector-valued probe must always return a vector of the same size.
-A number of useful probes are provided with the package:
-see \link[=basic_probes]{basic probes}.}
-
-\item{nsim}{the number of model simulations to be computed.}
-
-\item{seed}{optional integer;
-if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
-See \code{\link[=simulate-pomp]{simulate}}.}
-
-\item{fail.value}{optional numeric scalar;
-if non-\code{NA}, this value is substituted for non-finite values of the objective function.
-It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

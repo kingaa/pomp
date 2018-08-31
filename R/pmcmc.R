@@ -95,21 +95,33 @@ setMethod(
 setMethod(
   "pmcmc",
   signature=signature(data="data.frame"),
-  function (data, Nmcmc = 1, params, rinit, rprocess, dmeasure, dprior,
-    proposal, Np, tol = 1e-17, max.fail = Inf, ...,
-    verbose = getOption("verbose", FALSE)) {
+  function (data,
+    Nmcmc = 1, proposal,
+    Np, tol = 1e-17, max.fail = Inf,
+    params, rinit, rprocess, dmeasure, dprior,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    object <- pomp(data,params=params,rinit=rinit,rprocess=rprocess,
-      dmeasure=dmeasure,dprior=dprior,...,verbose=verbose)
+    if (missing(params) || missing(rprocess) || missing(dmeasure))
+      pStop("pfilter",paste(sQuote(c("params","dmeasure")),
+        collapse=", ")," are needed basic components.")
 
-    pmcmc(
-      object,
-      Nmcmc=Nmcmc,
-      proposal=proposal,
-      Np=Np,
-      tol=tol,
-      max.fail=max.fail,
-      verbose=verbose
+    tryCatch(
+      pmcmc.internal(
+        data,
+        Nmcmc=Nmcmc,
+        proposal=proposal,
+        Np=Np,
+        tol=tol,
+        max.fail=max.fail,
+        params=params,
+        rinit=rinit,
+        rprocess=rprocess,
+        dmeasure=dmeasure,
+        dprior=dprior,
+        ...,
+        verbose=verbose
+      ),
+      error = function (e) pStop("pmcmc",conditionMessage(e))
     )
 
   }
@@ -122,8 +134,10 @@ setMethod(
 setMethod(
   "pmcmc",
   signature=signature(data="pomp"),
-  function (data, Nmcmc = 1, proposal, Np, tol = 1e-17,
-    max.fail = Inf, ..., verbose = getOption("verbose", FALSE)) {
+  function (data,
+    Nmcmc = 1, proposal,
+    Np, tol = 1e-17, max.fail = Inf,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
       pmcmc.internal(
@@ -133,8 +147,8 @@ setMethod(
         Np=Np,
         tol=tol,
         max.fail=max.fail,
-        verbose=verbose,
-        ...
+        ...,
+        verbose=verbose
       ),
       error = function (e) pStop("pmcmc",conditionMessage(e))
     )
@@ -149,13 +163,25 @@ setMethod(
 setMethod(
   "pmcmc",
   signature=signature(data="pfilterd_pomp"),
-  function (data, Nmcmc = 1, Np, tol, max.fail=Inf, ...,
-    verbose = getOption("verbose", FALSE)) {
+  function (data,
+    Nmcmc = 1, proposal,
+    Np, tol, max.fail = Inf,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(Np)) Np <- data@Np
     if (missing(tol)) tol <- data@tol
 
-    pmcmc(as(data,"pomp"),Nmcmc=Nmcmc,Np=Np,tol=tol,...,verbose=verbose)
+    pmcmc(
+      as(data,"pomp"),
+      Nmcmc=Nmcmc,
+      proposal=proposal,
+      Np=Np,
+      tol=tol,
+      max.fail=max.fail,
+      ...,
+      verbose=verbose
+    )
+
   }
 )
 
@@ -166,16 +192,21 @@ setMethod(
 setMethod(
   "pmcmc",
   signature=signature(data="pmcmcd_pomp"),
-  function (data, Nmcmc, proposal, Np, tol, max.fail = Inf,
+  function (data,
+    Nmcmc, proposal,
     ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(Nmcmc)) Nmcmc <- data@Nmcmc
     if (missing(proposal)) proposal <- data@proposal
-    if (missing(Np)) Np <- data@Np
-    if (missing(tol)) tol <- data@tol
 
-    pmcmc(as(data,"pomp"),Nmcmc=Nmcmc,proposal=proposal,
-      Np=Np,tol=tol,max.fail=max.fail,...,verbose=verbose)
+    pmcmc(
+      as(data,"pfilterd_pomp"),
+      Nmcmc=Nmcmc,
+      proposal=proposal,
+      ...,
+      verbose=verbose
+    )
+
   }
 )
 
@@ -226,12 +257,13 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   verbose, .ndone = 0L, .accepts = 0L, .prev.pfp = NULL, .prev.log.prior = NULL,
   .getnativesymbolinfo = TRUE) {
 
-  gnsi <- as.logical(.getnativesymbolinfo)
   verbose <- as.logical(verbose)
-  .ndone <- as.integer(.ndone)
-  .accepts <- as.integer(.accepts)
 
   object <- pomp(object,...,verbose=verbose)
+
+  gnsi <- as.logical(.getnativesymbolinfo)
+  .ndone <- as.integer(.ndone)
+  .accepts <- as.integer(.accepts)
 
   if (missing(proposal) || is.null(proposal))
     pStop_(sQuote("proposal")," must be specified")

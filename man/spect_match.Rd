@@ -16,20 +16,21 @@
 \alias{spect.match.objfun,spect_match_objfun-method}
 \title{Spectrum matching}
 \usage{
-\S4method{spect.match.objfun}{data.frame}(data, rinit, rprocess, rmeasure,
-  partrans, params, est = character(0), vars, nsim, seed = NULL,
-  kernel.width, transform.data = identity, detrend = c("none", "mean",
-  "linear", "quadratic"), weights = 1, fail.value = NA, ...,
+\S4method{spect.match.objfun}{data.frame}(data, est = character(0),
+  weights = 1, fail.value = NA, vars, kernel.width, nsim,
+  seed = NULL, transform.data = identity, detrend = c("none", "mean",
+  "linear", "quadratic"), params, rinit, rprocess, rmeasure, partrans, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{spect.match.objfun}{pomp}(data, est = character(0), vars, nsim,
-  seed = NULL, kernel.width, transform.data, detrend, weights = 1,
-  fail.value = NA, ..., verbose = getOption("verbose", FALSE))
+\S4method{spect.match.objfun}{pomp}(data, est = character(0),
+  weights = 1, fail.value = NA, vars, kernel.width, nsim,
+  seed = NULL, transform.data = identity, detrend = c("none", "mean",
+  "linear", "quadratic"), ..., verbose = getOption("verbose", FALSE))
 
 \S4method{spect.match.objfun}{spectd_pomp}(data, est = character(0),
-  vars, nsim, seed = NULL, kernel.width, transform.data, detrend,
-  weights = 1, fail.value = NA, ..., verbose = getOption("verbose",
-  FALSE))
+  weights = 1, fail.value = NA, vars, kernel.width, nsim,
+  seed = NULL, transform.data = identity, detrend, ...,
+  verbose = getOption("verbose", FALSE))
 
 \S4method{spect.match.objfun}{spect_match_objfun}(data, ...,
   verbose = getOption("verbose", FALSE))
@@ -38,6 +39,42 @@
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.}
+
+\item{est}{character vector; the names of parameters to be estimated.}
+
+\item{weights}{optional numeric or function.
+The mismatch between model and data is measured by a weighted average of mismatch at each frequency.
+By default, all frequencies are weighted equally.
+\code{weights} can be specified either as a vector (which must have length equal to the number of frequencies) or as a function of frequency.
+If the latter, \code{weights(freq)} must return a nonnegative weight for each frequency.}
+
+\item{fail.value}{optional numeric scalar;
+if non-\code{NA}, this value is substituted for non-finite values of the objective function.
+It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
+
+\item{vars}{optional; names of observed variables for which the power spectrum will be computed.
+By default, the spectrum will be computed for all observables.}
+
+\item{kernel.width}{width parameter for the smoothing kernel used for
+calculating the estimate of the spectrum.}
+
+\item{nsim}{the number of model simulations to be computed.}
+
+\item{seed}{optional integer;
+if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
+See \code{\link[=simulate-pomp]{simulate}}.}
+
+\item{transform.data}{function; this transformation will be applied to the
+observables prior to estimation of the spectrum, and prior to any
+detrending.}
+
+\item{detrend}{de-trending operation to perform.  Options include no
+detrending, and subtraction of constant, linear, and quadratic trends from
+the data.  Detrending is applied to each data series and to each model
+simulation independently.}
+
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
@@ -59,42 +96,6 @@ When working with such an algorithm and a model for which the parameters are con
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{here}.
 Setting \code{partrans=NULL} removes the parameter transformations.}
-
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
-
-\item{est}{character vector; the names of parameters to be estimated.}
-
-\item{vars}{optional; names of observed variables for which the power spectrum will be computed.
-By default, the spectrum will be computed for all observables.}
-
-\item{nsim}{the number of model simulations to be computed.}
-
-\item{seed}{optional integer;
-if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
-See \code{\link[=simulate-pomp]{simulate}}.}
-
-\item{kernel.width}{width parameter for the smoothing kernel used for
-calculating the estimate of the spectrum.}
-
-\item{transform.data}{function; this transformation will be applied to the
-observables prior to estimation of the spectrum, and prior to any
-detrending.}
-
-\item{detrend}{de-trending operation to perform.  Options include no
-detrending, and subtraction of constant, linear, and quadratic trends from
-the data.  Detrending is applied to each data series and to each model
-simulation independently.}
-
-\item{weights}{optional numeric or function.
-The mismatch between model and data is measured by a weighted average of mismatch at each frequency.
-By default, all frequencies are weighted equally.
-\code{weights} can be specified either as a vector (which must have length equal to the number of frequencies) or as a function of frequency.
-If the latter, \code{weights(freq)} must return a nonnegative weight for each frequency.}
-
-\item{fail.value}{optional numeric scalar;
-if non-\code{NA}, this value is substituted for non-finite values of the objective function.
-It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

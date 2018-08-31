@@ -78,23 +78,38 @@ setMethod(
   "spect.match.objfun",
   signature=signature(data="data.frame"),
   definition=function(data,
-    rinit, rprocess, rmeasure, partrans, params,
-    est = character(0), vars, nsim, seed = NULL, kernel.width,
-    transform.data = identity,
+    est = character(0), weights = 1, fail.value = NA,
+    vars, kernel.width, nsim, seed = NULL, transform.data = identity,
     detrend = c("none","mean","linear","quadratic"),
-    weights = 1, fail.value = NA, ...,
-    verbose = getOption("verbose", FALSE)) {
+    params, rinit, rprocess, rmeasure, partrans,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    data <- tryCatch(
-      pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
-        partrans=partrans,params=params,...,verbose=verbose),
-      error = function (e)
-        pStop("spect.match.objfun",conditionMessage(e))
+    if (missing(params) || missing(rprocess) || missing(rmeasure))
+      pStop("spect.match.objfun",paste(sQuote(c("params","rprocess","rmeasure")),
+        collapse=", ")," are needed basic components.")
+
+    tryCatch(
+      smof.internal(
+        data,
+        est=est,
+        weights=weights,
+        fail.value=fail.value,
+        vars=vars,
+        kernel.width=kernel.width,
+        nsim=nsim,
+        seed=seed,
+        transform.data=transform.data,
+        detrend=detrend,
+        params=params,
+        rinit=rinit,
+        rprocess=rprocess,
+        rmeasure=rmeasure,
+        partrans=partrans,
+        ...,
+        verbose=verbose
+      ),
+      error = function (e) pStop("spect.match.objfun",conditionMessage(e))
     )
-
-    spect.match.objfun(data,est=est,vars=vars,nsim=nsim,seed=seed,
-      kernel.width=kernel.width,transform.data=transform.data,detrend=detrend,
-      weights=weights,fail.value=fail.value,verbose=verbose)
 
   }
 )
@@ -106,14 +121,29 @@ setMethod(
 setMethod(
   "spect.match.objfun",
   signature=signature(data="pomp"),
-  definition=function(data, est = character(0),
-    vars, nsim, seed = NULL, kernel.width, transform.data,
-    detrend, weights = 1, fail.value = NA, ...,
-    verbose = getOption("verbose", FALSE)) {
+  definition=function(data,
+    est = character(0), weights = 1, fail.value = NA,
+    vars, kernel.width, nsim, seed = NULL, transform.data = identity,
+    detrend = c("none","mean","linear","quadratic"),
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    smof.internal(data,est=est,vars=vars,nsim=nsim,seed=seed,
-      kernel.width=kernel.width,transform.data=transform.data,detrend=detrend,
-      weights=weights,fail.value=fail.value,...,verbose=verbose)
+    tryCatch(
+      smof.internal(
+        data,
+        est=est,
+        weights=weights,
+        fail.value=fail.value,
+        vars=vars,
+        kernel.width=kernel.width,
+        nsim=nsim,
+        seed=seed,
+        transform.data=transform.data,
+        detrend=detrend,
+        ...,
+        verbose=verbose
+      ),
+      error = function (e) pStop("spect.match.objfun",conditionMessage(e))
+    )
 
   }
 )
@@ -125,20 +155,32 @@ setMethod(
 setMethod(
   "spect.match.objfun",
   signature=signature(data="spectd_pomp"),
-  definition=function(data, est = character(0), vars, nsim, seed = NULL,
-    kernel.width, transform.data, detrend,
-    weights = 1, fail.value = NA, ...,
-    verbose = getOption("verbose", FALSE)) {
+  definition=function(data,
+    est = character(0), weights = 1, fail.value = NA,
+    vars, kernel.width, nsim, seed = NULL, transform.data = identity,
+    detrend,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(vars)) vars <- data@vars
-    if (missing(nsim)) nsim <- data@nsim
     if (missing(kernel.width)) kernel.width <- data@kernel.width
+    if (missing(nsim)) nsim <- data@nsim
     if (missing(transform.data)) transform.data <- data@transform.data
     if (missing(detrend)) detrend <- data@detrend
 
-    spect.match.objfun(as(data,"pomp"),est=est,vars=vars,nsim=nsim,seed=seed,
-      kernel.width=kernel.width,transform.data=transform.data,detrend=detrend,
-      weights=weights,fail.value=fail.value,...,verbose=verbose)
+    spect.match.objfun(
+      as(data,"pomp"),
+      est=est,
+      weights=weights,
+      fail.value=fail.value,
+      vars=vars,
+      kernel.width=kernel.width,
+      nsim=nsim,
+      seed=seed,
+      transform.data=transform.data,
+      detrend=detrend,
+      ...,
+      verbose=verbose
+    )
 
   }
 )
@@ -150,18 +192,28 @@ setMethod(
 setMethod(
   "spect.match.objfun",
   signature=signature(data="spect_match_objfun"),
-  definition=function(data, ..., verbose = getOption("verbose", FALSE)) {
+  definition=function(data,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    spect.match.objfun(data@env$object,...,verbose=verbose)
+    spect.match.objfun(
+      data@env$object,
+      ...,
+      verbose=verbose
+    )
 
   }
 )
 
-smof.internal <- function (object, est, vars, nsim, seed,
-  kernel.width, transform.data, detrend, weights, fail.value, ...) {
+smof.internal <- function (object,
+  est, weights, fail.value,
+  vars, kernel.width, nsim, seed, transform.data, detrend,
+  ..., verbose) {
 
-  object <- spect(object,vars=vars,nsim=nsim,seed=seed,...,
-    kernel.width=kernel.width,transform.data=transform.data,detrend=detrend)
+  verbose <- as.logical(verbose)
+
+  object <- spect(object,vars=vars,kernel.width=kernel.width,
+    nsim=nsim,seed=seed, transform.data=transform.data,detrend=detrend,
+    ...,verbose=verbose)
 
   fail.value <- as.numeric(fail.value)
 
@@ -189,7 +241,6 @@ smof.internal <- function (object, est, vars, nsim, seed,
     pStop_(sQuote("weights")," should be nonnegative and finite")
   weights <- weights/mean(weights)
 
-
   params <- coef(object,transform=TRUE)
 
   if (missing(est)) est <- character(0)
@@ -212,9 +263,16 @@ smof.internal <- function (object, est, vars, nsim, seed,
   ofun <- function (par) {
     params[idx] <- par
     coef(object,transform=TRUE) <<- params
-    object@simspec <- compute.spect.sim(object,vars=object@vars,
-      params=object@params,nsim=object@nsim,seed=object@seed,
-      transform.data=object@transform.data,detrend=object@detrend,ker=ker)
+    object@simspec <- compute.spect.sim(
+      object,
+      vars=object@vars,
+      params=object@params,
+      nsim=object@nsim,
+      seed=object@seed,
+      transform.data=object@transform.data,
+      detrend=object@detrend,
+      ker=ker
+    )
     discrep <<- spect.discrep(object,ker=ker,weights=weights)
     if (is.finite(discrep) || is.na(fail.value)) discrep else fail.value
   }
@@ -227,6 +285,7 @@ smof.internal <- function (object, est, vars, nsim, seed,
   )
 
   new("spect_match_objfun",ofun,env=environment(ofun))
+
 }
 
 ## compute a measure of the discrepancies between simulations and data
@@ -253,8 +312,16 @@ spect.discrep <- function (object, ker, weights) {
 setMethod(
   "spect",
   signature=signature(data="spect_match_objfun"),
-  definition=function (data, ..., verbose=getOption("verbose", FALSE)) {
-    spect(data@env$object,...,seed=data@env$seed,verbose=verbose)
+  definition=function (data,
+    ..., verbose=getOption("verbose", FALSE)) {
+
+    spect(
+      data@env$object,
+      seed=data@env$seed,
+      ...,
+      verbose=verbose
+    )
+
   }
 )
 

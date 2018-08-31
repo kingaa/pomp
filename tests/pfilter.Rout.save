@@ -222,7 +222,7 @@ Error : in ‘filter.traj’: incommensurate dimensions.
 > library(magrittr)
 > 
 > try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
-Error : in ‘pfilter’: ‘rprocess’, ‘dmeasure’ are needed basic components.
+Error : in ‘pfilter’: ‘params’, ‘rprocess’, ‘dmeasure’ are needed basic components.
 > 
 > ou2 %>%
 +   as.data.frame() %>%

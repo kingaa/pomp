@@ -146,13 +146,8 @@ setMethod(
   signature=signature(data="data.frame"),
   definition=function (
     data,
-    rinit,
-    rprocess,
-    dmeasure,
-    params,
-    Np,
-    tol = 1e-17,
-    max.fail = Inf,
+    Np, tol = 1e-17, max.fail = Inf,
+    params, rinit, rprocess, dmeasure,
     pred.mean = FALSE,
     pred.var = FALSE,
     filter.mean = FALSE,
@@ -161,27 +156,29 @@ setMethod(
     ...,
     verbose = getOption("verbose", FALSE)) {
 
-    if (missing(rprocess) || missing(dmeasure))
-      pStop("pfilter",paste(sQuote(c("rprocess","dmeasure")),
+    if (missing(params) || missing(rprocess) || missing(dmeasure))
+      pStop("pfilter",paste(sQuote(c("params","rprocess","dmeasure")),
         collapse=", ")," are needed basic components.")
 
-    object <- tryCatch(
-      pomp(data,rinit=rinit,rprocess=rprocess,dmeasure=dmeasure,params=params,
-        ...,verbose=verbose),
+    tryCatch(
+      pfilter.internal(
+        data,
+        Np=Np,
+        tol=tol,
+        max.fail=max.fail,
+        pred.mean=pred.mean,
+        pred.var=pred.var,
+        filter.mean=filter.mean,
+        filter.traj=filter.traj,
+        save.states=save.states,
+        rinit=rinit,
+        rprocess=rprocess,
+        dmeasure=dmeasure,
+        params=params,
+        ...,
+        verbose=verbose
+      ),
       error = function (e) pStop("pfilter",conditionMessage(e))
-    )
-
-    pfilter(
-      object,
-      Np=Np,
-      tol=tol,
-      max.fail=max.fail,
-      pred.mean=pred.mean,
-      pred.var=pred.var,
-      filter.mean=filter.mean,
-      filter.traj=filter.traj,
-      save.states=save.states,
-      verbose=verbose
     )
 
   }
@@ -196,19 +193,13 @@ setMethod(
   signature=signature(data="pomp"),
   definition=function (
     data,
-    Np,
-    tol = 1e-17,
-    max.fail = Inf,
+    Np, tol = 1e-17, max.fail = Inf,
     pred.mean = FALSE,
     pred.var = FALSE,
     filter.mean = FALSE,
     filter.traj = FALSE,
     save.states = FALSE,
     ...,
-    rinit,
-    rprocess,
-    dmeasure,
-    params,
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -223,10 +214,6 @@ setMethod(
         filter.traj=filter.traj,
         save.states=save.states,
         ...,
-        rinit=rinit,
-        rprocess=rprocess,
-        dmeasure=dmeasure,
-        params=params,
         verbose=verbose
       ),
       error = function (e) pStop("pfilter",conditionMessage(e))
@@ -242,16 +229,14 @@ setMethod(
 setMethod(
   "pfilter",
   signature=signature(data="pfilterd_pomp"),
-  function (data, Np, tol, ...,
-    rinit, rprocess, dmeasure, params,
-    verbose = getOption("verbose", FALSE)) {
+  function (data, Np, tol,
+    ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(Np)) Np <- data@Np
     if (missing(tol)) tol <- data@tol
 
-    pfilter(as(data,"pomp"),Np=Np,tol=tol,...,
-      rinit=rinit,rprocess=rprocess,dmeasure=dmeasure,params=params,
-      verbose=verbose)
+    pfilter(as(data,"pomp"),Np=Np,tol=tol,
+      ...,verbose=verbose)
 
   }
 )
@@ -260,6 +245,8 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
   filter.traj = FALSE, cooling, cooling.m, save.states = FALSE, ...,
   .getnativesymbolinfo = TRUE, verbose = FALSE) {
+
+  verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
 
@@ -270,7 +257,6 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   filter.mean <- as.logical(filter.mean)
   filter.traj <- as.logical(filter.traj)
   save.states <- as.logical(save.states)
-  verbose <- as.logical(verbose)
 
   params <- coef(object)
   times <- time(object,t0=TRUE)
