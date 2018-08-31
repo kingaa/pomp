@@ -205,6 +205,10 @@ setMethod(
     filter.traj = FALSE,
     save.states = FALSE,
     ...,
+    rinit,
+    rprocess,
+    dmeasure,
+    params,
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -219,6 +223,10 @@ setMethod(
         filter.traj=filter.traj,
         save.states=save.states,
         ...,
+        rinit=rinit,
+        rprocess=rprocess,
+        dmeasure=dmeasure,
+        params=params,
         verbose=verbose
       ),
       error = function (e) pStop("pfilter",conditionMessage(e))
@@ -235,12 +243,15 @@ setMethod(
   "pfilter",
   signature=signature(data="pfilterd_pomp"),
   function (data, Np, tol, ...,
+    rinit, rprocess, dmeasure, params,
     verbose = getOption("verbose", FALSE)) {
 
     if (missing(Np)) Np <- data@Np
     if (missing(tol)) tol <- data@tol
 
-    pfilter(as(data,"pomp"),Np=Np,tol=tol,...,verbose=verbose)
+    pfilter(as(data,"pomp"),Np=Np,tol=tol,...,
+      rinit=rinit,rprocess=rprocess,dmeasure=dmeasure,params=params,
+      verbose=verbose)
 
   }
 )

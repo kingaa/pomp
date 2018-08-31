@@ -13,8 +13,8 @@
 	- `dmultinom`
 	- BetaBinom
 	- BetaNegBinom
-	- logit, expit
-	- log-barycentric and inverse
+	- ~~logit, expit~~
+	- ~~log-barycentric and inverse~~
 - refurbish entire test suite
 	- order of testing development:
 		- ~~workhorses~~

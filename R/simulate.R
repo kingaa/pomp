@@ -154,7 +154,7 @@ setMethod(
   "simulate",
   signature=signature(object="pomp"),
   definition=function (object, nsim = 1, seed = NULL,
-    params,
+    rinit, rprocess, rmeasure, params,
     format = c("pomps", "arrays", "data.frame"),
     include.data = FALSE,
     ..., verbose = getOption("verbose", FALSE)) {
@@ -166,6 +166,9 @@ setMethod(
         object,
         nsim=nsim,
         seed=seed,
+        rinit=rinit,
+        rprocess=rprocess,
+        rmeasure=rmeasure,
         params=params,
         format=format,
         include.data=include.data,

@@ -110,19 +110,20 @@ setMethod(
 setMethod(
   "probe",
   signature=signature(data="data.frame"),
-  definition=function (data, rinit, rprocess, rmeasure, params,
+  definition=function (data,
+    rinit, rprocess, rmeasure, params,
     probes, nsim, seed = NULL, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    if (missing(rprocess) || missing(rmeasure))
-      pStop("probe",paste(sQuote(c("rprocess","rmeasure")),
+    if (missing(rprocess) || missing(rmeasure) || missing(params))
+      pStop("probe",paste(sQuote(c("rprocess","rmeasure","params")),
         collapse=", ")," are needed basic components.")
 
     object <- tryCatch(
-      pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
-        params=params,...,verbose=verbose),
-      error = function (e)
-        pStop("probe",conditionMessage(e))
+      pomp(data,
+        rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,params=params,
+        ...,verbose=verbose),
+      error = function (e) pStop("probe",conditionMessage(e))
     )
 
     probe(object,probes=probes,nsim=nsim,seed=seed,verbose=verbose)
@@ -137,14 +138,21 @@ setMethod(
 setMethod(
   "probe",
   signature=signature(data="pomp"),
-  definition=function (data, probes, nsim, seed = NULL, ...,
+  definition=function (data,
+    rinit, rprocess, rmeasure, params,
+    probes, nsim, seed = NULL, ...,
     verbose = getOption("verbose", FALSE))
   {
 
     if (missing(probes)) probes <- NULL
     if (missing(nsim)) nsim <- NULL
 
-    probe.internal(data,probes=probes,nsim=nsim,seed=seed,...,verbose=verbose)
+    tryCatch(
+      probe.internal(data,probes=probes,nsim=nsim,seed=seed,
+        rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,params=params,
+        ...,verbose=verbose),
+      error = function (e) pStop("probe",conditionMessage(e))
+    )
 
   }
 )
@@ -156,13 +164,17 @@ setMethod(
 setMethod(
   "probe",
   signature=signature(data="probed_pomp"),
-  definition=function (data, probes, nsim, seed = NULL, ...,
+  definition=function (data,
+    rinit, rprocess, rmeasure, params,
+    probes, nsim, seed = NULL, ...,
     verbose = getOption("verbose", FALSE)) {
 
     if (missing(probes)) probes <- data@probes
     if (missing(nsim)) nsim <- data@nsim
 
-    probe(as(data,"pomp"),probes=probes,nsim=nsim,seed=seed,...,verbose=verbose)
+    probe(as(data,"pomp"),probes=probes,nsim=nsim,seed=seed,
+      rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,params=params,
+      ...,verbose=verbose)
 
   }
 )
@@ -172,25 +184,19 @@ probe.internal <- function (object, probes, nsim, seed, ...,
 
   verbose <- as.logical(verbose)
 
-  object <- tryCatch(
-    pomp(object,...),
-    error = function (e) pStop("probe",conditionMessage(e))
-  )
+  object <- pomp(object,...,verbose=verbose)
 
-  if (is.null(probes))
-    pStop("probe",sQuote("probes")," must be furnished.")
+  if (is.null(probes)) pStop_(sQuote("probes")," must be furnished.")
   if (!is.list(probes)) probes <- list(probes)
   if (!all(sapply(probes,is.function)))
-    pStop("probe",sQuote("probes")," must be a function or a list of functions.")
+    pStop_(sQuote("probes")," must be a function or a list of functions.")
   if (!all(sapply(probes,function(f)length(formals(f))==1)))
-    pStop("probe","each probe must be a function of a single argument.")
+    pStop_("each probe must be a function of a single argument.")
 
   nsim <- as.integer(nsim)
-  if (length(nsim) < 1)
-    pStop("probe",sQuote("nsim")," must be specified.")
+  if (length(nsim) < 1) pStop_(sQuote("nsim")," must be specified.")
   if (length(nsim) > 1 || !is.finite(nsim) || nsim <= 0)
-    pStop("probe","number of simulations, ",sQuote("nsim"),
-      ", must be a single positive integer.")
+    pStop_("number of simulations, ",sQuote("nsim"),", must be a single positive integer.")
 
   seed <- as.integer(seed)
   gnsi <- as.logical(.getnativesymbolinfo)
@@ -204,14 +210,13 @@ probe.internal <- function (object, probes, nsim, seed, ...,
   datval <- tryCatch(
     .Call(apply_probe_data,object,probes),
     error = function (e)
-      pStop("probe","applying probes to actual data: ",conditionMessage(e))
+      pStop_("applying probes to actual data: ",conditionMessage(e))
   )
 
   nprobes <- length(datval)
 
   if (nprobes >= nsim)
-    pStop("probe",sQuote("nsim")," (=",nsim,"), should be (much) larger than the ",
-      "number of probes (=",nprobes,").")
+    pStop_(sQuote("nsim")," (=",nsim,"), should be (much) larger than the ", "number of probes (=",nprobes,").")
 
   ## apply probes to model simulations
   simval <- tryCatch(
@@ -221,7 +226,7 @@ probe.internal <- function (object, probes, nsim, seed, ...,
       seed=seed
     ),
     error = function (e)
-      pStop("probe","applying probes to simulated data: ",conditionMessage(e))
+      pStop_("applying probes to simulated data: ",conditionMessage(e))
   )
 
   pvals <- numeric(nprobes)
@@ -239,7 +244,7 @@ probe.internal <- function (object, probes, nsim, seed, ...,
   ll <- tryCatch(
     .Call(synth_loglik,simval,datval),
     error = function (e)
-      pStop("probe","in synthetic likelihood computation: ",conditionMessage(e))
+      pStop_("in synthetic likelihood computation: ",conditionMessage(e))
   )
 
   names(dimnames(simval)) <- c("rep","probe")

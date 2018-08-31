@@ -22,11 +22,11 @@
 
 \S4method{pfilter}{pomp}(data, Np, tol = 1e-17, max.fail = Inf,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
-  filter.traj = FALSE, save.states = FALSE, ...,
-  verbose = getOption("verbose", FALSE))
+  filter.traj = FALSE, save.states = FALSE, ..., rinit, rprocess,
+  dmeasure, params, verbose = getOption("verbose", FALSE))
 
-\S4method{pfilter}{pfilterd_pomp}(data, Np, tol, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{pfilter}{pfilterd_pomp}(data, Np, tol, ..., rinit, rprocess,
+  dmeasure, params, verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,

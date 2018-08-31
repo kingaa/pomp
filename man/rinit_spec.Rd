@@ -12,7 +12,7 @@ One does this by furnishing a value for the \code{rinit} argument.
 As usual, this can be provided either as a C snippet or as an \R function.
 In the former case, bear in mind that:
 \enumerate{
-  \item The goal of a this snippet is the construction of a state vector, i.e., the setting of the dynamical states at time \eqn{t_0}{\code{t0}}.
+  \item The goal of a this snippet is the construction of a state vector, i.e., the setting of the dynamical states at time \eqn{t_0}{t0}.
   \item In addition to the parameters and covariates (if any), the variable \code{t}, containing the zero-time, will be defined in the context in which the snippet is executed.
   \item \strong{NB:} The \code{statenames} argument plays a particularly important role when the rinit is specified using a C snippet.
    In particular, every state variable must be named in \code{statenames}.
@@ -24,15 +24,7 @@ If an \R function is to be used, pass
 \preformatted{
    rinit = f
 }
-to \code{pomp}, where \code{f} is a function with prototype
- \preformatted{
-   f(params, t0, \dots)
-}
-When \code{f} is called,
-\itemize{
-  \item \code{params} will be a named numeric vector of parameters.
-  \item \code{t0} will be the time at which initial conditions are desired.
-}
+to \code{pomp}, where \code{f} is a function with arguments that can include the initial time \code{t0}, any of the model parameters, and any covariates.
 As usual, \code{f} may take additional arguments, provided these are passed along with it in the call to \code{pomp}.
 \code{f} must return a named numeric vector of initial states.
 It is of course important that the names of the states match the expectations of the other basic components.
@@ -48,6 +40,37 @@ When the state process is initialized, these are simply copied over as initial c
 The names of the resulting state variables are obtained by dropping the suffix.
 }
 
+\examples{
+
+## We set up a trivial process model:
+
+trivial <- function (X, Y, ...) {
+    c(X = X+1, Y = Y-1)
+}
+
+## We specify \\code{rinit} with a function that
+sets state variables X and Y to the values in
+parameters X0, Y0:
+
+f <- function (X0, Y0, ...) {
+    c(X = X0, Y = Y0)
+}
+
+plot(simulate(times=1:5,t0=0,params=c(X0=3,Y0=-7),
+  rinit=f,rprocess=onestep.sim(trivial)))
+
+## A function that depends on covariate P and
+time t0, as well as parameter X0:
+
+g <- function (t0, X0, P, ...) {
+    c(X = X0, Y = P + sin(2*pi*t0))
+}
+
+plot(simulate(times=1:5,t0=0,params=c(X0=3,Y0=-7),
+  covar=covariate_table(t=0:10,P=3:13,times="t"),
+  rinit=g,rprocess=onestep.sim(trivial)))
+
+}
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{accumulators}},

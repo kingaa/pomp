@@ -19,11 +19,12 @@
   probes, nsim, seed = NULL, ..., verbose = getOption("verbose",
   FALSE))
 
-\S4method{probe}{pomp}(data, probes, nsim, seed = NULL, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{probe}{pomp}(data, rinit, rprocess, rmeasure, params, probes,
+  nsim, seed = NULL, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{probe}{probed_pomp}(data, probes, nsim, seed = NULL, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{probe}{probed_pomp}(data, rinit, rprocess, rmeasure, params,
+  probes, nsim, seed = NULL, ..., verbose = getOption("verbose",
+  FALSE))
 
 \S4method{probe}{probe_match_objfun}(data, ...,
   verbose = getOption("verbose", FALSE))

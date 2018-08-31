@@ -314,6 +314,7 @@ partrans.internal <- function (object, params, dir = c("fromEst", "toEst"),
 ##' rinit,ANY-method rinit,missing-method
 ##' @keywords internal
 ##' @family pomp workhorses
+##' @seealso Specification of the initial-state distribution: \code{\link{rinit_spec}}
 ##'
 ##' @inheritParams dmeasure
 ##' @param t0 the initial time, i.e., the time corresponding to the initial-state distribution.
