@@ -1,3 +1,4 @@
+options(digits=3)
 png(filename="skeleton-%02d.png",res=100)
 
 library(pomp)
@@ -58,5 +59,11 @@ stopifnot(
     skeleton(x=x,times=time(ricker),params=coef(ricker)) %>%
     is.na()
 )
+
+try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=-5)))
+try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=NA)))
+try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=c(1,2,3))))
+try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=NULL)))
+try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=Inf)))
 
 dev.off()

@@ -24,3 +24,6 @@ spy(rw2)
 pompExample(sir2)
 spy(sir2)
 
+try(spy())
+try(spy(list()))
+

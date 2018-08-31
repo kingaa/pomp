@@ -82,6 +82,13 @@ Error : in ‘pmcmc’: in ‘pfilter’: number of particles, ‘Np’, must be
 > plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
 > try(plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","bob"))))
 Error : in ‘traces’: parameter ‘bob’ not found.
+> 
+> filter.traj(c(mcmc1,mcmc2,mcmc3)) -> ft
+> stopifnot(
++   dim(ft)==c(1,100,11,3),
++   names(dimnames(ft))==c("variable","rep","time","chain")
++ )
+> 
 > print(mcmc1)
 <object of class ‘pmcmcd_pomp’>
 > c(mcmc1,mcmc2) -> mcl

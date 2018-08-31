@@ -100,8 +100,8 @@ Error : bad option for ‘rinit’ argument.
 <default>
 
 > po %>% pomp(partrans=NULL) %>% slot("partrans")
-  - to estimation scale: <default>
-  - from estimation scale: <default>
+  - to estimation scale: <identity>
+  - from estimation scale: <identity>
 > 
 > stopifnot({
 +   po %>% pomp(partrans=NULL) %>% coef(transform=TRUE) -> theta1

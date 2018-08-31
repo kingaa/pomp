@@ -45,6 +45,13 @@ plot(c(mcmc1,c(mcmc2,mcmc3)),pars=c("r","sigma"),trace=FALSE)
 invisible(window(traces(c(c(mcmc1,c(mcmc2,mcmc3)))),thin=10))
 plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
 try(plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","bob"))))
+
+filter.traj(c(mcmc1,mcmc2,mcmc3)) -> ft
+stopifnot(
+  dim(ft)==c(1,100,11,3),
+  names(dimnames(ft))==c("variable","rep","time","chain")
+)
+
 print(mcmc1)
 c(mcmc1,mcmc2) -> mcl
 mcl[1]

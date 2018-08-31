@@ -39,22 +39,6 @@ setMethod(
   }
 )
 
-setMethod(
-  "coef<-",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    reqd_arg("coef<-","object")
-  }
-)
-
-setMethod(
-  "coef<-",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    undef_method("coef<-",object)
-  }
-)
-
 ##' @name coef-listies
 ##' @aliases coef,listies-method
 ##' @rdname coef

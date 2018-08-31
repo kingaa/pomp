@@ -46,6 +46,14 @@ try(bsmc2(smc,Np=100,max.fail=-1,tol=10))
 bsmc2(smc,Np=100,max.fail=Inf,tol=10)
 try(bsmc2(smc,params=theta,Np=100,
   dmeasure=Csnippet("error(\"whoa nelly!\");")))
+try(bsmc2(smc,Np=100,smooth=5))
+try(bsmc2(smc,Np=100,smooth=NA))
+try(bsmc2(smc,Np=100,smooth=-2))
+try(bsmc2(smc,Np=100,smooth=NULL))
+try(bsmc2(smc,Np=100,smooth=Inf))
+try(bsmc2(smc,Np=100,smooth="yes"))
+try(bsmc2(smc,Np=100,smooth=c(1,2)))
+try(bsmc2(smc,Np=100,smooth=list(1,2)))
 
 theta <- coef(gompertz)
 theta["K"] <- 1

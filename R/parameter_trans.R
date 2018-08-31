@@ -90,7 +90,7 @@ setMethod(
   "parameter_trans",
   signature=signature(toEst="pomp_fun",fromEst="pomp_fun"),
   definition=function(toEst, fromEst, ...) {
-    if (toEst@mode == -1L || fromEst@mode == -1L)
+    if (is.undef.pomp_fun(toEst) || is.undef.pomp_fun(fromEst))
       new("partransPlugin",has=FALSE)
     else
       new("partransPlugin",has=TRUE,to=toEst,from=fromEst)
@@ -187,10 +187,15 @@ setMethod(
   "show",
   signature=signature(object="partransPlugin"),
   definition=function (object) {
-    cat("  - to estimation scale: ")
-    show(object@to)
-    cat("  - from estimation scale: ")
-    show(object@from)
+    if (object@has) {
+      cat("  - to estimation scale: ")
+      show(object@to)
+      cat("  - from estimation scale: ")
+      show(object@from)
+    } else {
+      cat("  - to estimation scale: <identity>\n")
+      cat("  - from estimation scale: <identity>\n")
+    }
   }
 )
 

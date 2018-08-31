@@ -99,6 +99,25 @@ Warning message:
 > try(bsmc2(smc,params=theta,Np=100,
 +   dmeasure=Csnippet("error(\"whoa nelly!\");")))
 Error : in ‘bsmc2’: in ‘dmeasure’: whoa nelly!
+> try(bsmc2(smc,Np=100,smooth=5))
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
+> try(bsmc2(smc,Np=100,smooth=NA))
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
+> try(bsmc2(smc,Np=100,smooth=-2))
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
+> try(bsmc2(smc,Np=100,smooth=NULL))
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
+> try(bsmc2(smc,Np=100,smooth=Inf))
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
+> try(bsmc2(smc,Np=100,smooth="yes"))
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
+In addition: Warning message:
+In bsmc2.internal(data, params = params, Np = Np, smooth = smooth,  :
+  NAs introduced by coercion
+> try(bsmc2(smc,Np=100,smooth=c(1,2)))
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
+> try(bsmc2(smc,Np=100,smooth=list(1,2)))
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > 
 > theta <- coef(gompertz)
 > theta["K"] <- 1

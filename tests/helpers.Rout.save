@@ -1,0 +1,74 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> 
+> library(pomp)
+> 
+> try(eff.sample.size())
+Error : in ‘eff.sample.size’: ‘object’ is a required argument.
+> try(eff.sample.size("bob"))
+Error : ‘eff.sample.size’ is undefined for ‘object’ of class ‘character’.
+> 
+> try(filter.mean())
+Error : in ‘filter.mean’: ‘object’ is a required argument.
+> try(filter.mean("bob"))
+Error : ‘filter.mean’ is undefined for ‘object’ of class ‘character’.
+> 
+> try(forecast())
+Error : in ‘forecast’: ‘object’ is a required argument.
+> try(forecast("bob"))
+Error : ‘forecast’ is undefined for ‘object’ of class ‘character’.
+> 
+> try(pred.mean())
+Error : in ‘pred.mean’: ‘object’ is a required argument.
+> try(pred.mean("bob"))
+Error : ‘pred.mean’ is undefined for ‘object’ of class ‘character’.
+> 
+> try(pred.var())
+Error : in ‘pred.var’: ‘object’ is a required argument.
+> try(pred.var("bob"))
+Error : ‘pred.var’ is undefined for ‘object’ of class ‘character’.
+> 
+> try(filter.traj())
+Error : in ‘filter.traj’: ‘object’ is a required argument.
+> try(filter.traj("bob"))
+Error : ‘filter.traj’ is undefined for ‘object’ of class ‘character’.
+> 
+> try(continue())
+Error : in ‘continue’: ‘object’ is a required argument.
+> try(continue("bob"))
+Error : ‘continue’ is undefined for ‘object’ of class ‘character’.
+> 
+> try(cond.logLik())
+Error : in ‘cond.logLik’: ‘object’ is a required argument.
+> try(cond.logLik("bob"))
+Error : ‘cond.logLik’ is undefined for ‘object’ of class ‘character’.
+> 
+> try(coef() <- 3)
+Error in coef() <- 3 : invalid (NULL) left side of assignment
+> try(coef("bob") <- 3)
+Error in coef("bob") <- 3 : 
+  target of assignment expands to non-language object
+> 
+> try(logLik())
+Error : in ‘logLik’: ‘object’ is a required argument.
+> logLik("bob")
+[1] NA
+> 

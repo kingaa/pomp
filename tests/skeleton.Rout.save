@@ -17,6 +17,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> options(digits=3)
 > png(filename="skeleton-%02d.png",res=100)
 > 
 > library(pomp)
@@ -89,6 +90,17 @@ Error : in ‘skeleton’: length of 't' and 3rd dimension of 'x' do not agree.
 +     skeleton(x=x,times=time(ricker),params=coef(ricker)) %>%
 +     is.na()
 + )
+> 
+> try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=-5)))
+Error : in ‘map’: ‘delta.t’ must be a positive number.
+> try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=NA)))
+Error : in ‘map’: ‘delta.t’ must be a positive number.
+> try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=c(1,2,3))))
+Error : in ‘map’: ‘delta.t’ must be a positive number.
+> try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=NULL)))
+Error : in ‘map’: ‘delta.t’ must be a positive number.
+> try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=Inf)))
+Error : in ‘map’: ‘delta.t’ must be a positive number.
 > 
 > dev.off()
 null device 
