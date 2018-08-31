@@ -32,6 +32,13 @@ try(partrans(pomp(gompertz,partrans=parameter_trans(
 try(partrans(pomp(gompertz,partrans=parameter_trans(
   from=function(...)unname(list(...)),to=NULL)),pp))
 
+parameter_trans(toEst=NULL,fromEst=NULL)
+try(parameter_trans(toEst=NULL))
+try(parameter_trans(fromEst=NULL))
+
+parameter_trans(logit=c("a","b","c"))
+pomp:::has_partrans(gompertz)
+
 stopifnot(
   {
     partrans(

@@ -62,6 +62,26 @@ Error : in ‘partrans’: user transformation functions must return named numer
 +   from=function(...)unname(list(...)),to=NULL)),pp))
 Error : ‘parameter_trans’ not defined for arguments of class ‘NULL’, ‘function’.
 > 
+> parameter_trans(toEst=NULL,fromEst=NULL)
+  - to estimation scale: <identity>
+  - from estimation scale: <identity>
+> try(parameter_trans(toEst=NULL))
+Error : in ‘parameter_trans’: if one of ‘toEst’, ‘fromEst’ is supplied, then so must the other be.
+> try(parameter_trans(fromEst=NULL))
+Error : in ‘parameter_trans’: if one of ‘toEst’, ‘fromEst’ is supplied, then so must the other be.
+> 
+> parameter_trans(logit=c("a","b","c"))
+  - to estimation scale: An object of class "Csnippet"
+Slot "text":
+[1] "\tT_a = logit(a);\n\tT_b = logit(b);\n\tT_c = logit(c);"
+
+  - from estimation scale: An object of class "Csnippet"
+Slot "text":
+[1] "\ta = expit(T_a);\n\tb = expit(T_b);\n\tc = expit(T_c);"
+
+> pomp:::has_partrans(gompertz)
+[1] TRUE
+> 
 > stopifnot(
 +   {
 +     partrans(
