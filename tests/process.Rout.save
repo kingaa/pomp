@@ -35,7 +35,7 @@ Type 'q()' to quit R.
 > p["sigma.1",] <- seq(from=1,to=7,by=1)
 > 
 > try(dprocess("ou2",x=x,times=t,params=p))
-Error : ‘dprocess’ is undefined for objects of class ‘character’.
+Error : ‘dprocess’ is undefined for ‘object’ of class ‘character’.
 > try(dprocess(x=x,times=t,params=p))
 Error : in ‘dprocess’: ‘object’ is a required argument.
 > try(po %>% dprocess(x=x,times=t,params=p,log=TRUE))
@@ -74,7 +74,7 @@ Error : in ‘dprocess’: the larger number of replicates is not a multiple of 
 > 
 > po %>% rinit(nsim=6) -> x0
 > try(rprocess("ou2",xstart=x0,times=t,params=p))
-Error : ‘rprocess’ is undefined for objects of class ‘character’.
+Error : ‘rprocess’ is undefined for ‘object’ of class ‘character’.
 > try(rprocess(xstart=x0,times=t,params=p))
 Error : in ‘rprocess’: ‘object’ is a required argument.
 > try(po %>% rprocess(times=t,params=p))

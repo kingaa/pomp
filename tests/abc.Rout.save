@@ -97,7 +97,7 @@ Error : in ‘plot’: can't make a scatterplot with only one variable.
 > try(abc())
 Error : in ‘abc’: ‘data’ is a required argument.
 > try(abc(3))
-Error : ‘abc’ is undefined for objects of class ‘numeric’.
+Error : ‘abc’ is undefined for ‘data’ of class ‘numeric’.
 > 
 > try(abc(abc1,Nabc=-5))
 Error : in ‘abc’: ‘Nabc’ must be a positive integer.
@@ -245,7 +245,7 @@ $three
 > try(continue())
 Error : in ‘continue’: ‘object’ is a required argument.
 > try(continue(44))
-Error : ‘continue’ is undefined for objects of class ‘numeric’.
+Error : ‘continue’ is undefined for ‘object’ of class ‘numeric’.
 > 
 > dev.off()
 null device 

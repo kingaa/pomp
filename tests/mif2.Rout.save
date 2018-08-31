@@ -107,7 +107,7 @@ Error : in ‘traces’: parameter ‘bob’ not found.
 > try(mif2())
 Error : in ‘mif2’: ‘data’ is a required argument.
 > try(mif2("po"))
-Error : ‘mif2’ is undefined for objects of class ‘character’.
+Error : ‘mif2’ is undefined for ‘data’ of class ‘character’.
 > try(mif2(po,Nmif=NA,Np=100))
 Error : in ‘mif2’: ‘Nmif’ must be a positive integer.
 > try(mif2(po,Nmif=NULL,Np=100))

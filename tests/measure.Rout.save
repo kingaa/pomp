@@ -41,11 +41,11 @@ newly created object(s):
 + )
 > 
 > try(dmeasure("ou2",x=x,y=y,times=t,params=p))
-Error : ‘dmeasure’ is undefined for objects of class ‘character’.
+Error : ‘dmeasure’ is undefined for ‘object’ of class ‘character’.
 > try(dmeasure(x=x,y=y,times=t,params=p))
 Error : in ‘dmeasure’: ‘object’ is a required argument.
 > try(dmeasure(x,y=y,times=t,params=p))
-Error : ‘dmeasure’ is undefined for objects of class ‘array’.
+Error : ‘dmeasure’ is undefined for ‘object’ of class ‘array’.
 > try(dmeasure(po,x=x,y=y,times=t))
 Error : in ‘dmeasure’: argument "params" is missing, with no default
 > try(dmeasure(po,x=x,y=y,params=p))
@@ -88,11 +88,11 @@ Error : in ‘dmeasure’: larger number of replicates is not a multiple of smal
 + )
 > 
 > try(rmeasure("ou2",x=x,times=t,params=p))
-Error : ‘rmeasure’ is undefined for objects of class ‘character’.
+Error : ‘rmeasure’ is undefined for ‘object’ of class ‘character’.
 > try(rmeasure(x=x,times=t,params=p))
 Error : in ‘rmeasure’: ‘object’ is a required argument.
 > try(rmeasure(x,times=t,params=p))
-Error : ‘rmeasure’ is undefined for objects of class ‘array’.
+Error : ‘rmeasure’ is undefined for ‘object’ of class ‘array’.
 > try(rmeasure(po,x=x,times=t))
 Error : in ‘rmeasure’: argument "params" is missing, with no default
 > try(rmeasure(po,x=x,params=p))

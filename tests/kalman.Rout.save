@@ -158,11 +158,11 @@ Error : in ‘eakf’: degenerate ‘R’: Lapack routine dgesv: system is exact
 > try(enkf())
 Error : in ‘enkf’: ‘data’ is a required argument.
 > try(enkf("bob"))
-Error : ‘enkf’ is undefined for objects of class ‘character’.
+Error : ‘enkf’ is undefined for ‘data’ of class ‘character’.
 > try(eakf())
 Error : in ‘eakf’: ‘data’ is a required argument.
 > try(eakf("bob"))
-Error : ‘eakf’ is undefined for objects of class ‘character’.
+Error : ‘eakf’ is undefined for ‘data’ of class ‘character’.
 > 
 > dev.off()
 null device 

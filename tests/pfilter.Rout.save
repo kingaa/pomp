@@ -43,7 +43,7 @@ newly created object(s):
 > try(pfilter())
 Error : in ‘pfilter’: ‘data’ is a required argument.
 > try(pfilter("bob"))
-Error : ‘pfilter’ is undefined for objects of class ‘character’.
+Error : ‘pfilter’ is undefined for ‘data’ of class ‘character’.
 > 
 > try(pfilter(ou2))
 Error : in ‘pfilter’: ‘Np’ must be specified.

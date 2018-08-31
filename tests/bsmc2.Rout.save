@@ -69,7 +69,7 @@ Error : in ‘plot’: no parameters to plot.
 > try(bsmc2())
 Error : in ‘bsmc2’: ‘data’ is a required argument.
 > try(bsmc2(3L))
-Error : ‘bsmc2’ is undefined for objects of class ‘integer’.
+Error : ‘bsmc2’ is undefined for ‘data’ of class ‘integer’.
 > 
 > po <- smc
 > coef(po) <- NULL

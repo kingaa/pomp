@@ -77,5 +77,5 @@ Error : in ‘covariate_table’: ‘times’ must be an increasing numeric sequ
 > try(covariate_table(a=1:10,b=10:1,times="c"))
 Error : in ‘covariate_table’: ‘times’ does not identify a unique time variable.
 > try(covariate_table(a=1:10,b=10:1,times=NA))
-Error : ‘covariate_table’ is undefined for objects of class ‘logical’.
+Error : ‘covariate_table’ is undefined for ‘times’ of class ‘logical’.
 > 

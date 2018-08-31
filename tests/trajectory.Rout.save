@@ -192,7 +192,7 @@ Warning messages:
 +   }
 + )
 > try(trajectory("fhn"))
-Error : ‘trajectory’ is undefined for objects of class ‘character’.
+Error : ‘trajectory’ is undefined for ‘object’ of class ‘character’.
 > try(trajectory())
 Error : in ‘trajectory’: ‘object’ is a required argument.
 > 

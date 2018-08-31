@@ -39,7 +39,7 @@ Type 'q()' to quit R.
 > try(pmcmc())
 Error : in ‘pmcmc’: ‘data’ is a required argument.
 > try(pmcmc("bob"))
-Error : ‘pmcmc’ is undefined for objects of class ‘character’.
+Error : ‘pmcmc’ is undefined for ‘data’ of class ‘character’.
 > try(pmcmc(po))
 Error : in ‘pmcmc’: ‘proposal’ must be specified
 > try(pmcmc(po,proposal="yes"))

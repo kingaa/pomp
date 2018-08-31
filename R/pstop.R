@@ -35,8 +35,9 @@ pWarn_ <- function (...) {
 }
 
 undef_method <- function (method, object) {
- pStop_(sQuote(method)," is undefined for objects of class ",
-   sQuote(class(object)),".")
+  o <- deparse(substitute(object))
+  pStop_(sQuote(method)," is undefined for ",sQuote(o)," of class ",
+    sQuote(class(object)),".")
 }
 
 reqd_arg <- function (method, object) {
