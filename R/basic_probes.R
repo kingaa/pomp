@@ -8,16 +8,18 @@
 ##' @importFrom stats median spec.pgram kernel quantile sd var
 ##'
 ##' @param var,vars character; the name(s) of the observed variable(s).
-##' @param trim the fraction of observations to be trimmed (see
-##' \code{\link{mean}}).
-##' @param transform transformation to be applied to the data before the probe
-##' is computed.
-##' @param na.rm if \code{TRUE}, remove all NA observations prior to computing
-##' the probe.
+##'
+##' @param trim the fraction of observations to be trimmed (see \code{\link{mean}}).
+##'
+##' @param transform transformation to be applied to the data before the probe is computed.
+##'
+##' @param na.rm if \code{TRUE}, remove all NA observations prior to computing the probe.
+##'
 ##' @param kernel.width width of modified Daniell smoothing kernel to be used
 ##' in power-spectrum computation: see \code{\link{kernel}}.
-##' @param prob a single probability; the quantile to compute: see
-##' \code{\link{quantile}}.
+##'
+##' @param prob a single probability; the quantile to compute: see \code{\link{quantile}}.
+##'
 ##' @param lags In \code{probe.ccf}, a vector of lags between time series.
 ##' Positive lags correspond to \code{x} advanced relative to \code{y};
 ##' negative lags, to the reverse.
@@ -25,24 +27,35 @@
 ##' In \code{probe.nlar}, a vector of lags present in the nonlinear
 ##' autoregressive model that will be fit to the actual and simulated data.
 ##' See Details, below, for a precise description.
+##'
 ##' @param powers the powers of each term (corresponding to \code{lags}) in the
 ##' the nonlinear autoregressive model that will be fit to the actual and
 ##' simulated data.  See Details, below, for a precise description.
+##'
 ##' @param type Compute autocorrelation or autocovariance?
+##'
 ##' @param ref empirical reference distribution.  Simulated data will be
 ##' regressed against the values of \code{ref}, sorted and, optionally,
 ##' differenced.  The resulting regression coefficients capture information
 ##' about the shape of the marginal distribution.  A good choice for \code{ref}
 ##' is the data itself.
+##'
 ##' @param order order of polynomial regression.
+##'
 ##' @param diff order of differencing to perform.
-##' @return A call to any one of these functions returns a probe function,
+##'
+##' @param ... additional arguments passed to the underlying algorithms.
+##'
+##' @return
+##' A call to any one of these functions returns a probe function,
 ##' suitable for use in \code{\link{probe}} or \code{\link{probe.match}}.  That
 ##' is, the function returned by each of these takes a data array (such as
 ##' comes from a call to \code{\link{obs}}) as input and returns a single
 ##' numerical value.
+##'
 ##' @author Daniel C. Reuman, Aaron A. King
 ##' @family summary statistics methods
+##' @concept diagnostics
 ##'
 ##' @references
 ##' B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P.
@@ -110,12 +123,11 @@ probe.period <- function (var, kernel.width, transform = identity) {
   }
 }
 
-##'@rdname basic_probes
+##' @rdname basic_probes
 ##' @export
-probe.quantile <- function (var, prob) {
-  if (length(var)>1)
-    pStop_(sQuote("probe.quantile")," is a univariate probe.")
-  function (y) quantile(y[var,],probs=prob)
+probe.quantile <- function (var, prob, ...) {
+  if (length(var)>1) pStop_(sQuote("probe.quantile")," is a univariate probe.")
+  function (y) quantile(y[var,],probs=prob, ...)
 }
 
 ##'@rdname basic_probes

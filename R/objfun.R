@@ -6,7 +6,7 @@
 ##' @rdname objfun
 ##' @keywords internal
 ##' @include traj_match.R spect_match.R probe_match.R
-##' @include loglik.R summary.R coef.R
+##' @include loglik.R summary.R coef.R as_data_frame.R as_pomp.R
 ##'
 ##' @section Important Note:
 ##' Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
@@ -67,6 +67,19 @@ setAs(
   from="objfun",
   to="pomp",
   def = function (from) {
-    from@env$object
+    as(from@env$object,"pomp")
   }
 )
+
+##' @name coerce-objfun-data.frame
+##' @aliases coerce,objfun,data.frame-method
+##' @rdname as_data_frame
+##'
+setAs(
+  from="objfun",
+  to="data.frame",
+  def = function (from) {
+    as(as(from@env$object,"pomp"),"data.frame")
+  }
+)
+

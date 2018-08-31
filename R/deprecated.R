@@ -3,7 +3,7 @@
 ##' @name deprecated
 ##' @rdname deprecated
 ##' @keywords internal
-##' @include traces.R rprocess_spec.R coerce_df.R
+##' @include traces.R rprocess_spec.R as_data_frame.R
 NULL
 
 ##' @name conv.rec

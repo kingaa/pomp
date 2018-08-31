@@ -4,7 +4,6 @@
 
 - we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes
 - streamline the R snippets so that ... is unnecessary
-- `nsim` argument for `rprior`?
 - make R-level functions for various distributions and transformations
 	- `dmultinom`
 	- BetaBinom

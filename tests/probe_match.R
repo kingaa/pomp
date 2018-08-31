@@ -12,7 +12,7 @@ plist <- list(
   sd=probe.sd("Y",transform=sqrt),
   probe.marginal("Y",ref=obs(po)),
   probe.acf("Y",lags=c(1,3,5),type="correlation",transform=sqrt),
-  probe.quantile("Y",prob=c(0.25,0.75))
+  probe.quantile("Y",prob=c(0.25,0.75),na.rm=TRUE)
 )
 
 gompertz %>%
@@ -37,5 +37,16 @@ f1(1.1)
 library(subplex)
 subplex(fn=f1,par=0.4,control=list(reltol=1e-3)) -> out
 f1(out$par)
+
+try(probe.match.objfun())
+try(probe.match.objfun("bob"))
+
+try(probe.match.objfun(f,est="harry"))
+
+f1 %>% probe() %>% plot()
+
+f1 %>% as.pomp() %>% as.data.frame() %>% names()
+
+f1 %>% probe.match.objfun(fail.value=1e10) -> f2
 
 dev.off()

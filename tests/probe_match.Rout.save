@@ -33,7 +33,7 @@ newly created object(s):
 +   sd=probe.sd("Y",transform=sqrt),
 +   probe.marginal("Y",ref=obs(po)),
 +   probe.acf("Y",lags=c(1,3,5),type="correlation",transform=sqrt),
-+   probe.quantile("Y",prob=c(0.25,0.75))
++   probe.quantile("Y",prob=c(0.25,0.75),na.rm=TRUE)
 + )
 > 
 > gompertz %>%
@@ -60,6 +60,21 @@ newly created object(s):
 > subplex(fn=f1,par=0.4,control=list(reltol=1e-3)) -> out
 > f1(out$par)
 [1] -16.6
+> 
+> try(probe.match.objfun())
+Error : in ‘probe.match.objfun’: ‘data’ is a required argument.
+> try(probe.match.objfun("bob"))
+Error : ‘probe.match.objfun’ is undefined for ‘data’ of class ‘character’.
+> 
+> try(probe.match.objfun(f,est="harry"))
+Error : in ‘probe.match.objfun’: parameter ‘harry’ not found in ‘params’.
+> 
+> f1 %>% probe() %>% plot()
+> 
+> f1 %>% as.pomp() %>% as.data.frame() %>% names()
+[1] "time" "Y"   
+> 
+> f1 %>% probe.match.objfun(fail.value=1e10) -> f2
 > 
 > dev.off()
 null device 

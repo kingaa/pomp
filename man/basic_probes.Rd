@@ -24,7 +24,7 @@ probe.sd(var, transform = identity, na.rm = TRUE)
 
 probe.period(var, kernel.width, transform = identity)
 
-probe.quantile(var, prob)
+probe.quantile(var, prob, ...)
 
 probe.acf(var, lags, type = c("covariance", "correlation"),
   transform = identity)
@@ -39,20 +39,18 @@ probe.nlar(var, lags, powers, transform = identity)
 \arguments{
 \item{var, vars}{character; the name(s) of the observed variable(s).}
 
-\item{trim}{the fraction of observations to be trimmed (see
-\code{\link{mean}}).}
+\item{trim}{the fraction of observations to be trimmed (see \code{\link{mean}}).}
 
-\item{transform}{transformation to be applied to the data before the probe
-is computed.}
+\item{transform}{transformation to be applied to the data before the probe is computed.}
 
-\item{na.rm}{if \code{TRUE}, remove all NA observations prior to computing
-the probe.}
+\item{na.rm}{if \code{TRUE}, remove all NA observations prior to computing the probe.}
 
 \item{kernel.width}{width of modified Daniell smoothing kernel to be used
 in power-spectrum computation: see \code{\link{kernel}}.}
 
-\item{prob}{a single probability; the quantile to compute: see
-\code{\link{quantile}}.}
+\item{prob}{a single probability; the quantile to compute: see \code{\link{quantile}}.}
+
+\item{...}{additional arguments passed to the underlying algorithms.}
 
 \item{lags}{In \code{probe.ccf}, a vector of lags between time series.
 Positive lags correspond to \code{x} advanced relative to \code{y};
@@ -106,4 +104,5 @@ Other summary statistics methods: \code{\link{abc}},
 \author{
 Daniel C. Reuman, Aaron A. King
 }
+\concept{diagnostics}
 \concept{summary statistics methods}
