@@ -41,7 +41,6 @@ The names of the resulting state variables are obtained by dropping the suffix.
 }
 
 \examples{
-
 ## We set up a trivial process model:
 
 trivial <- function (X, Y, ...) {
@@ -49,8 +48,8 @@ trivial <- function (X, Y, ...) {
 }
 
 ## We specify \\code{rinit} with a function that
-sets state variables X and Y to the values in
-parameters X0, Y0:
+## sets state variables X and Y to the values in
+## parameters X0, Y0:
 
 f <- function (X0, Y0, ...) {
     c(X = X0, Y = Y0)
@@ -60,7 +59,7 @@ plot(simulate(times=1:5,t0=0,params=c(X0=3,Y0=-7),
   rinit=f,rprocess=onestep.sim(trivial)))
 
 ## A function that depends on covariate P and
-time t0, as well as parameter X0:
+## time t0, as well as parameter X0:
 
 g <- function (t0, X0, P, ...) {
     c(X = X0, Y = P + sin(2*pi*t0))
