@@ -442,7 +442,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
 
     ## perturb parameters
     pmag <- cooling.fn(nt,mifiter)$alpha*rw.sd[,nt]
-    params <- .Call(randwalk_perturbation,params,pmag)
+    params <- .Call(P_randwalk_perturbation,params,pmag)
 
     tparams <- partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi)
 
@@ -497,7 +497,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
 
     ## compute effective sample size, log-likelihood
     ## also do resampling if filtering has not failed
-    xx <- .Call(pfilter_computations,x=X,params=params,Np=Np[nt+1],
+    xx <- .Call(P_pfilter_computations,x=X,params=params,Np=Np[nt+1],
       predmean=FALSE,predvar=FALSE,filtmean=FALSE,trackancestry=do_ta,
       doparRS=TRUE,weights=weights,tol=tol)
 

@@ -303,7 +303,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
 
     ## Matrix with samples (columns) from filtering distribution theta.t | Y.t
     if (!all.fail) {
-      smp <- .Call(systematic_resampling,weights)
+      smp <- .Call(P_systematic_resampling,weights)
       x <- x[,smp,drop=FALSE]
       params[estind,] <- params[estind,smp,drop=FALSE]
     }

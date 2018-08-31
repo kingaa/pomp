@@ -94,7 +94,7 @@ pompLoad.internal <- function (object, ...,
       }
       if (verbose) cat("loading",sQuote(solib),"\n")
     }
-    .Call(load_stack_incr,lib$name)
+    .Call(P_load_stack_incr,lib$name)
   }
   invisible(NULL)
 }
@@ -103,7 +103,7 @@ pompUnload.internal <- function (object, ...,
   verbose = getOption("verbose", FALSE)) {
   for (lib in object@solibs) {
     if (is.loaded("__pomp_load_stack_decr",PACKAGE=lib$name)) {
-      st <- .Call(load_stack_decr,lib$name)
+      st <- .Call(P_load_stack_decr,lib$name)
       if (st==0) {
         dir <- srcDir(lib$dir,verbose=verbose)
         solib <- file.path(dir,paste0(lib$name,.Platform$dynlib.ext))

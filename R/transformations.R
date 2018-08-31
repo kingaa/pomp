@@ -22,7 +22,7 @@ NULL
 ##' It maps the unit interval \eqn{[0,1]} into the extended real line \eqn{[-\infty,\infty]}.
 ##'
 logit <- function (p) {
-  .Call(LogitTransform,p)
+  .Call(P_LogitTransform,p)
 }
 
 ##' @export
@@ -33,7 +33,7 @@ logit <- function (p) {
 ##' @details The inverse of the logit transformation is the expit transformation.
 ##'
 expit <- function (x) {
-  .Call(ExpitTransform,x)
+  .Call(P_ExpitTransform,x)
 }
 
 ##' @export
@@ -46,7 +46,7 @@ expit <- function (x) {
 ##' If \eqn{X} is an \eqn{n}-vector, it takes every simplex defined by \eqn{\sum_i X_i = c}{sum(Xi)=c}, \eqn{c} constant, to n-dimensional Euclidean space \eqn{R^n}{R^n}.
 ##'
 log_barycentric <- function (X) {
-  .Call(LogBarycentricTransform,X)
+  .Call(P_LogBarycentricTransform,X)
 }
 
 ##' @export
@@ -64,5 +64,5 @@ log_barycentric <- function (X) {
 ##' } only if \code{sum(X) == 1}.
 ##'
 inv_log_barycentric <- function (Y) {
-  .Call(InverseLogBarycentricTransform,Y)
+  .Call(P_InverseLogBarycentricTransform,Y)
 }

@@ -208,7 +208,7 @@ probe.internal <- function (object, probes, nsim, seed, ...,
 
   ## apply probes to data
   datval <- tryCatch(
-    .Call(apply_probe_data,object,probes),
+    .Call(P_apply_probe_data,object,probes),
     error = function (e)
       pStop_("applying probes to actual data: ",conditionMessage(e))
   )
@@ -221,7 +221,7 @@ probe.internal <- function (object, probes, nsim, seed, ...,
   ## apply probes to model simulations
   simval <- tryCatch(
     freeze(
-      .Call(apply_probe_sim,object=object,nsim=nsim,params=params,probes=probes,
+      .Call(P_apply_probe_sim,object=object,nsim=nsim,params=params,probes=probes,
         datval=datval,gnsi=gnsi),
       seed=seed
     ),
@@ -242,7 +242,7 @@ probe.internal <- function (object, probes, nsim, seed, ...,
   }
 
   ll <- tryCatch(
-    .Call(synth_loglik,simval,datval),
+    .Call(P_synth_loglik,simval,datval),
     error = function (e)
       pStop_("in synthetic likelihood computation: ",conditionMessage(e))
   )

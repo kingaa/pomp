@@ -186,7 +186,7 @@ probe.eval <- function (object) {
   simvals <- tryCatch(
     freeze(
       .Call(
-        apply_probe_sim,
+        P_apply_probe_sim,
         object=object,
         nsim=object@nsim,
         params=object@params,
@@ -202,7 +202,7 @@ probe.eval <- function (object) {
   )
 
   loglik <- tryCatch(
-    .Call(synth_loglik,simvals,object@datvals),
+    .Call(P_synth_loglik,simvals,object@datvals),
     error = function (e) {
       pStop_("in synthetic likelihood computation: ",
         conditionMessage(e))

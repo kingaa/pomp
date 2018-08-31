@@ -22,7 +22,7 @@ sobol <- function (vars, n) {
   d <- length(vars)
   if (!is.finite(n) || (n > 1073741824L))
     pStop_("too many points requested.")
-  x <- .Call(sobol_sequence,as.integer(d),as.integer(n))
+  x <- .Call(P_sobol_sequence,as.integer(d),as.integer(n))
   y <- vapply(
     seq_len(d),
     function (k) {

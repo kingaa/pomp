@@ -321,7 +321,7 @@ compute.spect.sim <- function (object, params, vars, nsim, seed,
 
   sims <- tryCatch(
     {
-      s <- freeze(.Call(do_simulate,object,params,nsim,0L,gnsi=TRUE),seed=seed)
+      s <- freeze(.Call(P_do_simulate,object,params,nsim,0L,gnsi=TRUE),seed=seed)
       s$obs[vars,,,drop=FALSE]
     },
     error = function (e) pStop("spect","in simulation: ",

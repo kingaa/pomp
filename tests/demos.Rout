@@ -38,7 +38,7 @@ Type 'q()' to quit R.
 > library(magrittr)
 
 > gompertz <- simulate(times = 1:100, t0 = 0, params = c(K = 1, 
-+     r = 0.1, sigma = 0.1, tau = 0.1, X.0 = 1), rprocess = discrete.time.sim(step.fu .... [TRUNCATED] 
++     r = 0.1, sigma = 0.1, tau = 0.1, X.0 = 1), rprocess = discrete_time(step.fun =  .... [TRUNCATED] 
 
 > Gompertz <- simulate(times = 0:100, t0 = 0, params = c(K = 1, 
 +     r = 0.1, sigma = 0.1, tau = 0.1, X.0 = 1), dmeasure = Csnippet("\n    lik = dln ..." ... [TRUNCATED] 
@@ -63,7 +63,7 @@ Type 'q()' to quit R.
                      se 
 75.25036908  0.08779528 
    user  system elapsed 
-  1.052   0.060   1.164 
+  1.084   0.072   1.210 
 
 > library(pomp)
 
@@ -103,14 +103,14 @@ The following objects are masked from ‘package:base’:
 +     theme_bw() + labs( .... [TRUNCATED] 
 Joining, by = c("n", "time", "rep", "type")
    user  system elapsed 
-  0.356   0.032   0.444 
+  0.336   0.064   0.452 
 
 > library(pomp)
 
 > library(magrittr)
 
 > rw2 <- simulate(times = seq(1, 100), t0 = 0, params = c(s1 = 3, 
-+     s2 = 1, x1.0 = 0, x2.0 = 1, tau = 10), rprocess = onestep.sim(step.fun = Csni .... [TRUNCATED] 
++     s2 = 1, x1.0 = 0, x2.0 = 1, tau = 10), rprocess = onestep(step.fun = Csnippet .... [TRUNCATED] 
 
 > plot(rw2)
 
@@ -121,7 +121,7 @@ Joining, by = c("n", "time", "rep", "type")
 
 > plot(pf)
    user  system elapsed 
-  0.192   0.040   0.282 
+  0.180   0.052   0.289 
 
 > library(pomp)
 
@@ -156,7 +156,7 @@ Joining, by = c("n", "time", "rep", "type")
 +     statenames = c("S", "I", "R", "in ..." ... [TRUNCATED] 
 [1] -671.6956
    user  system elapsed 
-  6.652   0.076   6.841 
+  6.692   0.088   6.895 
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03. 
 2: in 'table_lookup': extrapolating at 1.934011e+03. 

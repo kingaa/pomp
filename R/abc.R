@@ -310,7 +310,7 @@ abc.internal <- function (object, Nabc, proposal, probes, epsilon, scale,
 
   ## apply probes to data
   datval <- tryCatch(
-    .Call(apply_probe_data,object,probes),
+    .Call(P_apply_probe_data,object,probes),
     error = function (e) {
       pStop_("applying probes to data: ",conditionMessage(e))
     }
@@ -337,7 +337,7 @@ abc.internal <- function (object, Nabc, proposal, probes, epsilon, scale,
       ## compute the probes for the proposed new parameter values
 
       simval <- tryCatch(
-        .Call(apply_probe_sim,object=object,nsim=1L,params=theta.prop,
+        .Call(P_apply_probe_sim,object=object,nsim=1L,params=theta.prop,
           probes=probes,datval=datval,gnsi=gnsi),
         error = function (e)
           pStop_("applying probes to simulations: ",conditionMessage(e))

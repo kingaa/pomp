@@ -17,18 +17,26 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> options(digits=3)
+> png(filename="lookup-%02d.png",res=100)
+> 
 > library(pomp)
 > 
+> 
 > ct <- covariate_table(x=20:30,y=10:0,times=seq(0,10))
-> .Call(pomp:::lookup_in_table,covar=ct,t=c(1,2.3,4,7))
-  [,1] [,2] [,3] [,4]
-x   21 22.3   24   27
-y    9  7.7    6    3
+> lookup(ct,t=c(1,2.3,4,7))
+    t    x   y
+1 1.0 21.0 9.0
+2 2.3 22.3 7.7
+3 4.0 24.0 6.0
+4 7.0 27.0 3.0
 > ct <- covariate_table(x=20:30,y=10:0,times=seq(0,10),order="constant")
-> .Call(pomp:::lookup_in_table,covar=ct,t=c(1,2.3,4,7))
-  [,1] [,2] [,3] [,4]
-x   21   22   24   27
-y    9    8    6    3
+> lookup(ct,t=c(1,2.3,4,7))
+    t  x y
+1 1.0 21 9
+2 2.3 22 8
+3 4.0 24 6
+4 7.0 27 3
 > 
 > try(covariate_table(x=20:30,y=10:0,times=seq(10,0)))
 Error : in ‘covariate_table’: ‘times’ must be an increasing numeric sequence (without missing values).
@@ -78,4 +86,34 @@ Error : in ‘covariate_table’: ‘times’ must be an increasing numeric sequ
 Error : in ‘covariate_table’: ‘times’ does not identify a unique time variable.
 > try(covariate_table(a=1:10,b=10:1,times=NA))
 Error : ‘covariate_table’ is undefined for ‘times’ of class ‘logical’.
+> 
+> library(magrittr)
+> library(tidyr)
+
+Attaching package: ‘tidyr’
+
+The following object is masked from ‘package:magrittr’:
+
+    extract
+
+> library(ggplot2)
+> 
+> covariate_table(
++   bspline.basis(times,nbasis=8,degree=3,deriv=0,names="f0"),
++   bspline.basis(times,nbasis=8,degree=3,deriv=1,names="f1"),
++   times=seq(0,10,by=0.1)
++ ) %>%
++   lookup(t=seq(0,10,by=0.01)) %>%
++   gather(variable,value,-t) %>%
++   separate(variable,into=c("variable","n")) %>%
++   ggplot(aes(x=t,y=value,color=factor(n)))+
++   labs(color="element",y="",x="")+
++   geom_line()+
++   facet_grid(variable~.,
++     labeller=labeller(variable=c(f1="derivative",f0="function")))+
++   theme_bw()
+> 
+> dev.off()
+null device 
+          1 
 > 

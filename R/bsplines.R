@@ -60,7 +60,7 @@ NULL
 bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL) {
   ep <- "bspline.basis"
   y <- tryCatch(
-    .Call(bspline_basis,x,nbasis,degree,deriv),
+    .Call(P_bspline_basis,x,nbasis,degree,deriv),
     error = function (e) {
       pStop(ep,conditionMessage(e))
     }
@@ -88,7 +88,7 @@ periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1,
   deriv = 0, names = NULL) {
   ep <- "periodic.bspline.basis"
   y <- tryCatch(
-    .Call(periodic_bspline_basis,x,nbasis,degree,period,deriv),
+    .Call(P_periodic_bspline_basis,x,nbasis,degree,period,deriv),
     error = function (e) {
       pStop(ep,conditionMessage(e))
     }

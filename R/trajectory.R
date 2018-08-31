@@ -136,7 +136,7 @@ trajectory.internal <- function (object, params, times, t0,
 
   if (type == skeletontype$map) {                  ## MAP
 
-    x <- .Call(iterate_map,object,times,t0,x0,params,.getnativesymbolinfo)
+    x <- .Call(P_iterate_map,object,times,t0,x0,params,.getnativesymbolinfo)
     .getnativesymbolinfo <- FALSE
 
   } else if (type == skeletontype$vectorfield) {   ## VECTORFIELD
@@ -144,7 +144,7 @@ trajectory.internal <- function (object, params, times, t0,
     znames <- object@zeronames
     if (length(znames)>0) x0[znames,,] <- 0
 
-    .Call(pomp_desolve_setup,object,x0,params,.getnativesymbolinfo)
+    .Call(P_pomp_desolve_setup,object,x0,params,.getnativesymbolinfo)
     .getnativesymbolinfo <- FALSE
 
     X <- tryCatch(
@@ -162,7 +162,7 @@ trajectory.internal <- function (object, params, times, t0,
       }
     )
 
-    .Call(pomp_desolve_takedown)
+    .Call(P_pomp_desolve_takedown)
 
     if (attr(X,"istate")[1L] != 2)
       pWarn("trajectory",

@@ -385,7 +385,7 @@ pfilter.internal <- function (object, Np, tol, max.fail,
     ## compute prediction mean, prediction variance, filtering mean,
     ## effective sample size, log-likelihood
     ## also do resampling if filtering has not failed
-    xx <- .Call(pfilter_computations,x=X,params=params,Np=Np[nt+1],
+    xx <- .Call(P_pfilter_computations,x=X,params=params,Np=Np[nt+1],
       predmean=pred.mean,predvar=pred.var,filtmean=filter.mean,
       trackancestry=filter.traj,doparRS=FALSE,weights=weights,tol=tol)
 

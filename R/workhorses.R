@@ -110,7 +110,7 @@ dmeasure.internal <- function (object, y, x, times, params, ..., log = FALSE,
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
-  .Call(do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)
+  .Call(P_do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)
 }
 
 ##' dprior
@@ -171,7 +171,7 @@ dprior.internal <- function (object, params, log = FALSE,
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
-  .Call(do_dprior,object,params,log,.getnativesymbolinfo)
+  .Call(P_do_dprior,object,params,log,.getnativesymbolinfo)
 }
 
 ##' dprocess
@@ -233,7 +233,7 @@ dprocess.internal <- function (object, x, times, params, log = FALSE, .getnative
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
-  .Call(do_dprocess,object,x,times,params,log,.getnativesymbolinfo)
+  .Call(P_do_dprocess,object,x,times,params,log,.getnativesymbolinfo)
 }
 
 ##' partrans
@@ -299,7 +299,7 @@ partrans.internal <- function (object, params, dir = c("fromEst", "toEst"),
     dir <- switch(dir,fromEst=-1L,toEst=1L)
     pompLoad(object)
     on.exit(pompUnload(object))
-    params <- .Call(do_partrans,object,params,dir,.getnativesymbolinfo)
+    params <- .Call(P_do_partrans,object,params,dir,.getnativesymbolinfo)
   }
   params
 }
@@ -368,7 +368,7 @@ rinit.internal <- function (object, params, t0, nsim = 1,
   else storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
-  .Call(do_rinit,object,params,t0,nsim,.getnativesymbolinfo)
+  .Call(P_do_rinit,object,params,t0,nsim,.getnativesymbolinfo)
 }
 
 ##' rmeasure
@@ -432,7 +432,7 @@ rmeasure.internal <- function (object, x, times, params,
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
-  .Call(do_rmeasure,object,x,times,params,.getnativesymbolinfo)
+  .Call(P_do_rmeasure,object,x,times,params,.getnativesymbolinfo)
 }
 
 ##' rprior
@@ -491,7 +491,7 @@ rprior.internal <- function (object, params, .getnativesymbolinfo = TRUE, ...) {
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
-  .Call(do_rprior,object,params,.getnativesymbolinfo)
+  .Call(P_do_rprior,object,params,.getnativesymbolinfo)
 }
 
 ##' rprocess
@@ -576,7 +576,7 @@ rprocess.internal <- function (object, xstart, times, params, offset = 0L,
   if (!is.finite(offset)) pStop_("invalid ",sQuote("offset"),".")
   pompLoad(object)
   on.exit(pompUnload(object))
-  .Call(do_rprocess,object,xstart,times,params,offset,.getnativesymbolinfo)
+  .Call(P_do_rprocess,object,xstart,times,params,offset,.getnativesymbolinfo)
 }
 
 ##' skeleton
@@ -641,5 +641,5 @@ skeleton.internal <- function (object, x, times, params, .getnativesymbolinfo = 
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
-  .Call(do_skeleton,object,x,times,params,.getnativesymbolinfo)
+  .Call(P_do_skeleton,object,x,times,params,.getnativesymbolinfo)
 }

@@ -33,7 +33,7 @@ setAs(
     cnames <- get_covariate_names(from@covar)
     if (length(cnames) > 0) {
       nm <- c(names(x),cnames)  # perhaps not strictly necessary (but see issue #56)
-      y <- .Call(lookup_in_table,from@covar,from@times)
+      y <- .Call(P_lookup_in_table,from@covar,from@times)
       x <- cbind(x,t(y))
       names(x) <- nm
     }

@@ -210,7 +210,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
 
   sims <- tryCatch(
     freeze(
-      .Call(do_simulate,object,params,nsim,return.type,.getnativesymbolinfo),
+      .Call(P_do_simulate,object,params,nsim,return.type,.getnativesymbolinfo),
       seed=seed
     ),
     error = function (e) pStop_(conditionMessage(e))

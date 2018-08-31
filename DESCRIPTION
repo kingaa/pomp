@@ -90,6 +90,7 @@ Collate:
     'nlf.R'
     'loglik.R'
     'logmeanexp.R'
+    'lookup.R'
     'measles.R'
     'summary.R'
     'probe_match.R'

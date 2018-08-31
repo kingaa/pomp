@@ -2,12 +2,8 @@
 
 ## For pomp 2:
 
-- should parameter transformations allow renaming of variables?
-	- would require attention to `rw.sd`, e.g.
-- covariates:
-	- ~~piecewise constant interpolation of covariates~~
-	- ~~it should be possible to refer to `times` inside `covariate_table`~~
 - we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes
+- streamline the R snippets so that ... is unnecessary
 - `nsim` argument for `rprior`?
 - make R-level functions for various distributions and transformations
 	- `dmultinom`
@@ -20,13 +16,11 @@
 		- ~~workhorses~~
 		- ~~simulate, trajectory, probe, pfilter~~
 		- abc, pmcmc, mif2, bsmc2, objfun methods
-		- test extractor methods, etc. as appropriate
-		- helper functions get their own test scripts
-- combine documentation: (dmeasure,rmeasure), (dprocess,rprocess)?
+		- ~~test extractor methods, etc. as appropriate~~
+		- auxiliary functions get their own test scripts
 - index by concept using `\concept{}` in the help files
 	- extending \pkg{pomp}
 	- low-level interface (incl. `hitch` and workhorses)
-	- 
 - better scheme for indicating derivatives and maps in C snippets
 - should the default process model be persistence?
 	- what would the corresponding `dprocess` be?
@@ -61,7 +55,8 @@
 - probes as pomp slots?
 - what does a generic `pomp.fun` interface look like?
 - more/better demos and examples
-- document Beta-binomial and other distributions
+- should parameter transformations allow renaming of variables?
+	- would require attention to `rw.sd`, e.g.
 
 ## For pomp:
 
