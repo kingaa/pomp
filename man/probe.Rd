@@ -13,6 +13,8 @@
 \alias{probe,probed_pomp-method}
 \alias{probe-probe_match_obfjun}
 \alias{probe,probe_match_objfun-method}
+\alias{coerce-probe_match_objfun-probed_pomp}
+\alias{coerce,probe_match_objfun,probed_pomp-method}
 \title{Probes (AKA summary statistics)}
 \usage{
 \S4method{probe}{data.frame}(data, probes, nsim, seed = NULL, params,

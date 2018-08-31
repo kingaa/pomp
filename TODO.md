@@ -14,7 +14,7 @@
 	- order of testing development:
 		- ~~workhorses~~
 		- ~~simulate, trajectory, probe, pfilter~~
-		- abc, pmcmc, mif2, bsmc2, objfun methods
+		- abc, pmcmc, mif2, bsmc2, kalman, objfun methods
 		- ~~test extractor methods, etc. as appropriate~~
 		- auxiliary functions get their own test scripts
 - index by concept using `\concept{}` in the help files

@@ -43,6 +43,10 @@ try(probe.match.objfun("bob"))
 
 try(probe.match.objfun(f,est="harry"))
 
+f1 %>% as("probed_pomp") %>% plot()
+
+f1 %>% summary() %>% names()
+
 f1 %>% probe() %>% plot()
 
 f1 %>% as.pomp() %>% as.data.frame() %>% names()

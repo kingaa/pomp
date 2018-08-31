@@ -13,6 +13,8 @@
 \alias{spect,spectd_pomp-method}
 \alias{spect-spect_match_objfun}
 \alias{spect,spect_match_objfun-method}
+\alias{coerce-spect_match_objfun-spectd_pomp}
+\alias{coerce,spect_match_objfun,spectd_pomp-method}
 \title{Power spectrum}
 \usage{
 \S4method{spect}{data.frame}(data, vars, kernel.width, nsim, seed = NULL,

@@ -29,6 +29,19 @@ plot(spect(f1))
 library(subplex)
 subplex(fn=f1,par=0.4,control=list(reltol=1e-3)) -> out
 f1(out$par)
-plot(spect(f1))
+
+try(spect.match.objfun())
+try(spect.match.objfun("bob"))
+try(spect.match.objfun(f1,est="harry"))
+
+f1 %>% as("spectd_pomp") %>% plot()
+
+f1 %>% summary() %>% names()
+
+f1 %>% spect() %>% plot()
+
+f1 %>% as.pomp() %>% as.data.frame() %>% names()
+
+f1 %>% spect.match.objfun(fail.value=1e10) -> f2
 
 dev.off()

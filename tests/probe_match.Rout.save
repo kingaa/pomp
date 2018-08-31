@@ -69,6 +69,11 @@ Error : ‘probe.match.objfun’ is undefined for ‘data’ of class ‘charact
 > try(probe.match.objfun(f,est="harry"))
 Error : in ‘probe.match.objfun’: parameter ‘harry’ not found in ‘params’.
 > 
+> f1 %>% as("probed_pomp") %>% plot()
+> 
+> f1 %>% summary() %>% names()
+[1] "coef"         "nsim"         "quantiles"    "pvals"        "synth.loglik"
+> 
 > f1 %>% probe() %>% plot()
 > 
 > f1 %>% as.pomp() %>% as.data.frame() %>% names()

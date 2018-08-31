@@ -338,3 +338,15 @@ setMethod(
     -discrep
   }
 )
+
+##' @name coerce-spect_match_objfun-spectd_pomp
+##' @aliases coerce,spect_match_objfun,spectd_pomp-method
+##' @rdname spect
+##'
+setAs(
+  from="spect_match_objfun",
+  to="spectd_pomp",
+  def = function (from) {
+    from@env$object
+  }
+)

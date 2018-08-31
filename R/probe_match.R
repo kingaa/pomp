@@ -277,11 +277,7 @@ setMethod(
 
 ##' @name coerce-probe_match_objfun-probed_pomp
 ##' @aliases coerce,probe_match_objfun,probed_pomp-method
-##' @rdname as_data_frame
-##' @details
-##' When \code{object} is a \sQuote{probe_match_objfun} object,
-##' the result of \code{as(object,"data.frame")} or \code{as.data.frame(object)}
-##' is similar to that of \code{as.data.frame} applied to a \sQuote{probed_pomp} object.
+##' @rdname probe
 ##'
 setAs(
   from="probe_match_objfun",
