@@ -132,7 +132,25 @@ list(R=as.data.frame(gsir),
   geom_line()+
   theme_bw()+theme(legend.position=c(0.2,0.8))
 
-try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix))))
+try(gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix)))
+w <- Vmatrix
+colnames(w) <- c(letters[1:5],"a")
+try(gillespie.sim(rate.fun=rate.fun,v=w))
+w <- Vmatrix
+rownames(w) <- c(letters[1:4],"a")
+try(gillespie.sim(rate.fun=rate.fun,v=w))
+try(gillespie.hl.sim(a="bob"))
+try(gillespie.hl.sim(a=list(c("bob","mary"),2)))
+try(gillespie.hl.sim(a=list(1,2)))
+try(gillespie.hl.sim(.pre=3,a=list("bob",c(a=2,b=1))))
+try(gillespie.hl.sim(a=list("bob",c(a="h",b="k"))))
+try(gillespie.hl.sim(a=list("bob",c(2,1))))
+try(gillespie.hl.sim(a=list("bob",list(a=2,b=1))))
+try(gillespie.hl.sim(a=list("bob",c(a=2,1))))
+try(gillespie.hl.sim(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,a=2))))
+try(gillespie.hl.sim(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,c=2))))
+gillespie.hl.sim(A=list("bob",c(a=2,b=1)),B=list("mary",c(a=1,c=2))) -> f
+f@v
 
 stopifnot(
   gsir %>%

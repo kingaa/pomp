@@ -154,8 +154,43 @@ newly created object(s):
 +   geom_line()+
 +   theme_bw()+theme(legend.position=c(0.2,0.8))
 > 
-> try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix))))
+> try(gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix)))
 Error : in ‘gillespie.sim’: ‘v’ must be a matrix.
+> w <- Vmatrix
+> colnames(w) <- c(letters[1:5],"a")
+> try(gillespie.sim(rate.fun=rate.fun,v=w))
+Error : in ‘gillespie.sim’: duplicates in column names of ‘v’.
+> w <- Vmatrix
+> rownames(w) <- c(letters[1:4],"a")
+> try(gillespie.sim(rate.fun=rate.fun,v=w))
+Error : in ‘gillespie.sim’: duplicates in row names of ‘v’.
+> try(gillespie.hl.sim(a="bob"))
+Error : in ‘gillespie.hl.sim’: each event should be specified using a length-2 list.
+> try(gillespie.hl.sim(a=list(c("bob","mary"),2)))
+Error : in ‘gillespie.hl.sim’: for each event, the first list-element should be a C snippet or string.
+> try(gillespie.hl.sim(a=list(1,2)))
+Error : in ‘gillespie.hl.sim’: for each event, the first list-element should be a C snippet or string.
+> try(gillespie.hl.sim(.pre=3,a=list("bob",c(a=2,b=1))))
+Error : in ‘gillespie.hl.sim’: ‘.pre’ and ‘.post’ must be C snippets or strings.
+> try(gillespie.hl.sim(a=list("bob",c(a="h",b="k"))))
+Error : in ‘gillespie.hl.sim’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+> try(gillespie.hl.sim(a=list("bob",c(2,1))))
+Error : in ‘gillespie.hl.sim’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+> try(gillespie.hl.sim(a=list("bob",list(a=2,b=1))))
+Error : in ‘gillespie.hl.sim’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+> try(gillespie.hl.sim(a=list("bob",c(a=2,1))))
+Error : in ‘gillespie.hl.sim’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+> try(gillespie.hl.sim(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,a=2))))
+Error : in ‘gillespie.hl.sim’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+> try(gillespie.hl.sim(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,c=2))))
+Error : in ‘gillespie.hl.sim’: duplicated elementary event names.
+> gillespie.hl.sim(A=list("bob",c(a=2,b=1)),B=list("mary",c(a=1,c=2))) -> f
+> f@v
+        event
+variable A B
+       a 2 1
+       b 1 0
+       c 0 2
 > 
 > stopifnot(
 +   gsir %>%

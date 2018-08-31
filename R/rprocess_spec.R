@@ -271,12 +271,11 @@ euler.sim <- function (step.fun, delta.t) {
 ##' @export
 gillespie.sim <- function (rate.fun, v, hmax = Inf) {
   ep <- "gillespie.sim"
-  if (!is.matrix(v)) {
-    pStop(ep,sQuote("v")," must be a matrix.")
-  }
-  if (anyDuplicated(rownames(v))){
-    pStop(ep,"duplicates in rownames of ",sQuote("v"))
-  }
+  if (!is.matrix(v)) pStop(ep,sQuote("v")," must be a matrix.")
+  if (anyDuplicated(rownames(v)))
+    pStop(ep,"duplicates in row names of ",sQuote("v"),".")
+  if (!is.null(colnames(v)) && anyDuplicated(colnames(v)))
+    pStop(ep,"duplicates in column names of ",sQuote("v"),".")
 
   new("gillespieRprocPlugin",
     rate.fn=rate.fun,
@@ -289,50 +288,40 @@ gillespie.sim <- function (rate.fun, v, hmax = Inf) {
 
 ##' @rdname rprocess_spec
 ##' @name gillespie.hl.sim
-##'
 ##' @export
 gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
+
   ep <- "gillespie.hl.sim"
+
   args <- list(...)
 
-  for (k in seq_along(args)) {
-    if (!is.list(args[[k]]) || length(args[[k]]) != 2) {
-      pStop(ep,"each of the events should be specified using a length-2 list")
-    }
-  }
+  if (!all(sapply(args,inherits,what="list")) ||
+      !all(sapply(args,length) == 2L))
+    pStop(ep,"each event should be specified using a length-2 list.")
 
-  codeChunks <- lapply(args, "[[", 1)
-  stoich <- lapply(args, "[[", 2)
+  codeChunks <- lapply(args,"[[",1)
+  stoich <- lapply(args,"[[",2)
 
   checkCode <- function (x) {
-    inh <- inherits(x, what = c("Csnippet", "character"))
-    if (!any(inh)) {
-      pStop(ep,"for each event, the first list-element should be a",
-        " C snippet or string.")
-    }
-    if (length(x) != 1){
-      pStop(ep,"for each event, the length of the first list-element should be 1.")
-    }
+    inh <- inherits(x,what=c("Csnippet", "character"))
+    if (!any(inh) || length(x) != 1)
+      pStop(ep,"for each event, the first list-element should be a C snippet or string.")
     as(x,"character")
   }
 
-  codeChunks <- lapply(codeChunks, checkCode)
+  codeChunks <- lapply(codeChunks,checkCode)
 
-  tryCatch({
-    .pre <- paste(as.character(.pre),collapse="\n")
-    .post <- paste(as.character(.post),collapse="\n")
-  },
-    error = function (e) {
-      pStop(ep,sQuote(".pre")," and ",sQuote(".post"),
-        " must be C snippets or strings.")
-    })
+  if (!inherits(.pre,what=c("character","Csnippet")) ||
+      !inherits(.post,what=c("character","Csnippet")))
+    pStop(ep,sQuote(".pre")," and ",sQuote(".post")," must be C snippets or strings.")
 
-  for (k in seq_along(stoich)) {
-    if (!is.numeric(stoich[[k]]) || is.null(names(stoich[[k]]))) {
-      pStop(ep,"for each event, the second list-element should be",
-        " a named numeric vector.")
-    }
-  }
+  .pre <- paste(as(.pre,"character"),collapse="\n")
+  .post <- paste(as(.post,"character"),collapse="\n")
+
+  if (!all(sapply(stoich,is.numeric)) ||
+      any(sapply(stoich,function(x)invalid_names(names(x)))))
+    pStop(ep,"for each event, the second list-element should be ",
+      "a named numeric vector (without duplicate names).")
 
   ## Create C snippet of switch statement
   header <- paste0(.pre, "\nswitch (j) {")
@@ -343,17 +332,13 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   footer <- paste0("default:\nerror(\"unrecognized event %d\",j);\nbreak;\n}\n",.post)
   rate.fn <- Csnippet(paste(header, body, footer, sep="\n"))
 
-  ## Create v matrix
-  ## By coercing the vectors to a data frame and then using rbind,
-  ## we can ensure that all stoichiometric coefficients for the same
-  ## state variables are in the same column even if the vectors in
-  ## stoich have differently ordered names. Also, rbind will fail if
-  ## the set of variables in each data frame is not the same.
-  stoichdf <- lapply(stoich, function (x) data.frame(as.list(x),check.names=FALSE))
-  v <- t(data.matrix(do.call(rbind, stoichdf)))
-  if (anyDuplicated(rownames(v))){
-    pStop(ep,"redundant or conflicting stoichiometry.")
-  }
+  ## now put together the stoichiometry matrix
+  if (anyDuplicated(names(stoich))) pStop(ep,"duplicated elementary event names.")
+  vars <- unique(do.call(c,lapply(stoich,names)))
+  v <- array(data=0,dim=c(length(vars),length(stoich)),
+    dimnames=list(variable=vars,event=names(stoich)))
+  for (s in seq_along(stoich))
+    v[names(stoich[[s]]),s] <- stoich[[s]]
 
   new("gillespieRprocPlugin",
     rate.fn=rate.fn,
