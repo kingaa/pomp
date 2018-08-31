@@ -203,14 +203,6 @@ setGeneric(
 
 setMethod(
   "construct_pomp",
-  signature=signature(data="ANY", times="missing"),
-  definition = function (data, times, t0, ...) {
-    reqd_arg(NULL,"times")
-  }
-)
-
-setMethod(
-  "construct_pomp",
   signature=signature(data="ANY", times="ANY"),
   definition = function (data, times, t0, ...) {
     pStop_(sQuote("times")," should either be a numeric vector of observation",

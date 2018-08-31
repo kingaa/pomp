@@ -51,6 +51,11 @@ Error : in ‘filter.traj’: ‘object’ is a required argument.
 > try(filter.traj("bob"))
 Error : ‘filter.traj’ is undefined for ‘object’ of class ‘character’.
 > 
+> try(traces())
+Error : in ‘traces’: ‘object’ is a required argument.
+> try(traces("bob"))
+Error : ‘traces’ is undefined for ‘object’ of class ‘character’.
+> 
 > try(continue())
 Error : in ‘continue’: ‘object’ is a required argument.
 > try(continue("bob"))
@@ -60,6 +65,11 @@ Error : ‘continue’ is undefined for ‘object’ of class ‘character’.
 Error : in ‘cond.logLik’: ‘object’ is a required argument.
 > try(cond.logLik("bob"))
 Error : ‘cond.logLik’ is undefined for ‘object’ of class ‘character’.
+> 
+> try(coef())
+Error : in ‘coef’: ‘object’ is a required argument.
+> try(coef("bob"))
+Error : ‘coef’ is undefined for ‘object’ of class ‘character’.
 > 
 > try(coef() <- 3)
 Error in coef() <- 3 : invalid (NULL) left side of assignment

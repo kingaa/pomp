@@ -5,6 +5,8 @@
     \item In the course of ordinary work, one should never need to interact with the low-level \code{pomp} constructor function now.
     \item One can now modify basic model components at (almost) any stage in a pipeline of \pkg{pomp} computations.
     All the top-level inference functions, plus \code{probe}, \code{pfilter}, and \code{simulate} now allow modification of basic model components.
+    \item The \code{rprocess} plugins \code{onestep.sim}, \code{discrete.time.sim}, \code{euler.sim}, \code{gillespie.sim}, and \code{gillespie.hl.sim} have been renamed \code{onestep}, \code{discrete_time}, \code{euler}, \code{gillespie}, and \code{gillespie_hl}, respectively.
+    The old usage is available but deprecated.
     \item One can now call \code{simulate} on a model without reference to any data.
     \item The covariate table facility (\code{covariate_table}) now supports piecewise constant interpolation.
     \item The syntax with which one includes covariates via \code{covariate_table} has become more flexible.

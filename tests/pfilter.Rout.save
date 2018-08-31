@@ -212,6 +212,12 @@ $time
  [85] "85"  "86"  "87"  "88"  "89"  "90"  "91"  "92"  "93"  "94"  "95"  "96" 
  [97] "97"  "98"  "99"  "100"
 
+> try(filter.traj(c(pf1,pf3)))
+Error : in ‘filter.traj’: incommensurate dimensions.
+> dim(filter.traj(c(pf1,pf4)))
+[1]   2   1 101   2
+> names(dimnames(filter.traj(c(pf1,pf4))))
+[1] "variable" "rep"      "time"     "chain"   
 > 
 > library(magrittr)
 > 

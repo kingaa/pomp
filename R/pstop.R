@@ -9,10 +9,7 @@
 ##'
 pStop <- function (fn, ...) {
   fn <- as.character(fn)
-  if (length(fn) > 0 && nzchar(fn[1L]))
-    stop("in ",sQuote(fn[1L]),": ",...,call.=FALSE)
-  else
-    stop(...,call.=FALSE)
+  stop("in ",sQuote(fn[1L]),": ",...,call.=FALSE)
 }
 
 ##' @rdname pStop
@@ -23,10 +20,7 @@ pStop_ <- function (...) {
 ##' @rdname pStop
 pWarn <- function (fn, ...) {
   fn <- as.character(fn)
-  if (length(fn) > 0 && nzchar(fn[1L]))
-    warning("in ",sQuote(fn[1L]),": ",...,call.=FALSE)
-  else
-    warning(...,call.=FALSE)
+  warning("in ",sQuote(fn[1L]),": ",...,call.=FALSE)
 }
 
 ##' @rdname pStop

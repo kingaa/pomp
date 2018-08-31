@@ -218,7 +218,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail, ...,
   estind <- which(apply(params,1,function(x) diff(range(x)) > 0))
   est <- paramnames[estind]
   nest <- length(est)
-  if (nest < 1) pStop("","no parameters to estimate")
+  if (nest < 1) pStop_("no parameters to estimate")
 
   evidence <- as.numeric(rep(NA,ntimes))
   eff.sample.size <- as.numeric(rep(NA,ntimes))

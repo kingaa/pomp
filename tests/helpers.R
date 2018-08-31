@@ -20,11 +20,17 @@ try(pred.var("bob"))
 try(filter.traj())
 try(filter.traj("bob"))
 
+try(traces())
+try(traces("bob"))
+
 try(continue())
 try(continue("bob"))
 
 try(cond.logLik())
 try(cond.logLik("bob"))
+
+try(coef())
+try(coef("bob"))
 
 try(coef() <- 3)
 try(coef("bob") <- 3)

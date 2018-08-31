@@ -81,6 +81,9 @@ pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 names(as(pf2,"data.frame"))
 dim(filter.traj(pf3))
 dimnames(filter.traj(pf3))
+try(filter.traj(c(pf1,pf3)))
+dim(filter.traj(c(pf1,pf4)))
+names(dimnames(filter.traj(c(pf1,pf4))))
 
 library(magrittr)
 

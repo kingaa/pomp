@@ -10,6 +10,12 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
           top-level inference functions, plus ‘probe’, ‘pfilter’, and
           ‘simulate’ now allow modification of basic model components.
 
+        • The ‘rprocess’ plugins ‘onestep.sim’, ‘discrete.time.sim’,
+          ‘euler.sim’, ‘gillespie.sim’, and ‘gillespie.hl.sim’ have
+          been renamed ‘onestep’, ‘discrete_time’, ‘euler’,
+          ‘gillespie’, and ‘gillespie_hl’, respectively.  The old usage
+          is available but deprecated.
+
         • One can now call ‘simulate’ on a model without reference to
           any data.
 

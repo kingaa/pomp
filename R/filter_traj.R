@@ -66,8 +66,11 @@ setMethod(
   signature=signature(object="pfilterList"),
   definition=function (object, vars, ...) {
     fts <- lapply(object,filter.traj,vars=vars,...)
-    d <- dim(fts[[1]])
-    nm <- dimnames(fts[[1]])
+    d <- sapply(fts,dim)
+    if (!all(apply(d,1L,function(x)x==x[1L])))
+      pStop("filter.traj","incommensurate dimensions.")
+    d <- d[,1L]
+    nm <- dimnames(fts[[1L]])
     x <- do.call(c,fts)
     dim(x) <- c(d,length(fts))
     dimnames(x) <- c(nm,list(chain=names(fts)))
