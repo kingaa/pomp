@@ -3,29 +3,29 @@
 \docType{methods}
 \name{rprocess_spec}
 \alias{rprocess_spec}
-\alias{onestep.sim}
-\alias{discrete.time.sim}
-\alias{euler.sim}
-\alias{gillespie.sim}
-\alias{gillespie.hl.sim}
+\alias{onestep}
+\alias{discrete_time}
+\alias{euler}
+\alias{gillespie}
+\alias{gillespie_hl}
 \title{The latent state process simulator}
 \usage{
-onestep.sim(step.fun)
+onestep(step.fun)
 
-discrete.time.sim(step.fun, delta.t = 1)
+discrete_time(step.fun, delta.t = 1)
 
-euler.sim(step.fun, delta.t)
+euler(step.fun, delta.t)
 
-gillespie.sim(rate.fun, v, hmax = Inf)
+gillespie(rate.fun, v, hmax = Inf)
 
-gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)
+gillespie_hl(..., .pre = "", .post = "", hmax = Inf)
 }
 \arguments{
 \item{step.fun}{a C snippet, an R function, or
 the name of a native routine in a shared-object library.
 This gives a procedure by which one simulates a single step of the latent state process.}
 
-\item{delta.t}{positive numerical value; for \code{euler.sim} and \code{discrete.time.sim}, the size of the step to take}
+\item{delta.t}{positive numerical value; for \code{euler} and \code{discrete_time}, the size of the step to take}
 
 \item{rate.fun}{a C snippet, an R function, or
 the name of a native routine in a shared-object library.
@@ -53,10 +53,10 @@ Specification of rprocess using \dQuote{plugins}.
 }
 \section{Discrete-time processes}{
 
-If the state process evolves in discrete time, specify \code{rprocess} using the \code{discrete.time.sim} plug-in.
+If the state process evolves in discrete time, specify \code{rprocess} using the \code{discrete_time} plug-in.
 Specifically, provide
 \preformatted{
-    rprocess = discrete.time.sim(step.fun = f, delta.t),
+    rprocess = discrete_time(step.fun = f, delta.t),
 }
 where \code{f} is a C snippet or \R function that simulates one step of the state process.
 The former is the preferred option, due to its much greater computational efficiency.
@@ -78,20 +78,20 @@ It should return a named vector of the same length, and with the same set of nam
 
 \section{Continuous-time processes}{
 
-If the state process evolves in continuous time, but you can use an Euler approximation, implement \code{rprocess} using the \code{euler.sim} plug-in.
+If the state process evolves in continuous time, but you can use an Euler approximation, implement \code{rprocess} using the \code{euler} plug-in.
 Specify
 \preformatted{
-    rprocess = euler.sim(step.fun = f, delta.t)
+    rprocess = euler(step.fun = f, delta.t)
 }
 in this case.
 As before, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
 The form of \code{f} will be the same as above (in the discrete-time case).
 
 If you have a procedure that allows you, given the value of the state process at any time,
-to simulate it at an arbitrary time in the future, use the \code{onestep.sim} plug-in.
+to simulate it at an arbitrary time in the future, use the \code{onestep} plug-in.
 To do so, specify
 \preformatted{
-    rprocess = onestep.sim(step.fun = f).
+    rprocess = onestep(step.fun = f).
 }
 Again, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
 The form of \code{f} should be as above (in the discrete-time or Euler cases).
@@ -99,18 +99,18 @@ The form of \code{f} should be as above (in the discrete-time or Euler cases).
 
 \section{Size of time step}{
 
-The simulator plug-ins \code{discrete.time.sim}, \code{euler.sim}, and \code{onestep.sim} all work by taking discrete time steps.
+The simulator plug-ins \code{discrete_time}, \code{euler}, and \code{onestep} all work by taking discrete time steps.
 They differ as to how this is done.
 Specifically,
 \enumerate{
-\item \code{onestep.sim} takes a single step to go from any given time \code{t1} to any later time \code{t2} (\code{t1 < t2}).
+\item \code{onestep} takes a single step to go from any given time \code{t1} to any later time \code{t2} (\code{t1 < t2}).
 Thus, this plug-in is designed for use in situations where a closed-form solution to the process exists.
-\item To go from \code{t1} to \code{t2}, \code{euler.sim} takes \code{n} steps of equal size, where
+\item To go from \code{t1} to \code{t2}, \code{euler} takes \code{n} steps of equal size, where
 \preformatted{
     n = ceiling((t2-t1)/delta.t).
 }
-\item \code{discrete.time.sim} assumes that the process evolves in discrete time, where the interval between successive times is \code{delta.t}.
-Thus, to go from \code{t1} to \code{t2}, \code{discrete.time.sim} takes \code{n} steps of size exactly \code{delta.t}, where
+\item \code{discrete_time} assumes that the process evolves in discrete time, where the interval between successive times is \code{delta.t}.
+Thus, to go from \code{t1} to \code{t2}, \code{discrete_time} takes \code{n} steps of size exactly \code{delta.t}, where
 \preformatted{
     n = floor((t2-t1)/delta.t).
 }
@@ -120,14 +120,14 @@ Thus, to go from \code{t1} to \code{t2}, \code{discrete.time.sim} takes \code{n}
 \section{Exact (event-driven) simulations}{
 
 If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available,
-via the \code{gillespie.sim} and \code{gillespie.hl.sim} plug-ins.
+via the \code{gillespie} and \code{gillespie_hl} plug-ins.
 The former allows for the rate function to be provided as an \R function or a single C snippet,
 while the latter provides a means of specifying the elementary events via a list of C snippets.
 
-A high-level interface to the simulator is provided by \code{gillespie.hl.sim}.
+A high-level interface to the simulator is provided by \code{gillespie_hl}.
 To use it, supply
 \preformatted{
-    rprocess = gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)
+    rprocess = gillespie_hl(..., .pre = "", .post = "", hmax = Inf)
 }
 to \code{pomp}.
 Each argument in \code{...} corresponds to a single elementary event and should be a list containing two elements.
@@ -143,16 +143,16 @@ These hooks can be useful for avoiding duplication of code that performs calcula
 
 Here's how a simple birth-death model might be specified:
 \preformatted{
-    gillespie.hl.sim(
+    gillespie_hl(
         birth=list("rate = b*N;",c(N=1)),
         death=list("rate = m*N;",c(N=-1))
     )
 }
 In the above, the state variable \code{N} represents the population size and parameters \code{b}, \code{m} are the birth and death rates, respectively.
 
-To use the lower-level \code{gillespie.sim} interface, furnish
+To use the lower-level \code{gillespie} interface, furnish
 \preformatted{
-    rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)
+    rprocess = gillespie(rate.fun = f, v, hmax = Inf)
 }
 to \code{pomp}, where \code{f} gives the rates of the elementary events.
 Here, \code{f} may be an \R function with prototype
@@ -172,9 +172,9 @@ it will usually comprise the values 1, -1, and 0 according to whether a state va
 The rows of \code{v} should have names corresponding to the state variables.
 If any of the row names of \code{v} cannot be found among the state variables or if any row names of \code{v} are duplicated, an error will occur.
 
-It is also possible to provide a C snippet via the \code{rate.fun} argument to \code{gillespie.sim}.
+It is also possible to provide a C snippet via the \code{rate.fun} argument to \code{gillespie}.
 Such a snippet should assign the correct value to a \code{rate} variable depending on the value of \code{j}.
-The same variables will be available as for the C code provided to \code{gillespie.hl.sim}.
+The same variables will be available as for the C code provided to \code{gillespie_hl}.
 This lower-level interface may be preferable if it is easier to write code that calculates the correct rate based on \code{j} rather than to write a snippet for each possible value of \code{j}.
 For example, if the number of possible values of \code{j} is large and the rates vary according to a few simple rules, the lower-level interface may provide the easier way of specifying the model.
 

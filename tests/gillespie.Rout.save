@@ -68,7 +68,7 @@ Type 'q()' to quit R.
 +   seed=806867104L,
 +   times=seq(from=0,to=2,by=1/52),
 +   t0=0,
-+   rprocess=gillespie.sim(
++   rprocess=gillespie(
 +     rate.fun=rate.fun,
 +     v=Vmatrix,
 +     hmax=1/52/10
@@ -96,7 +96,7 @@ Type 'q()' to quit R.
 > 
 > gsir %>%
 +   simulate(
-+     rprocess=gillespie.sim(
++     rprocess=gillespie(
 +       rate.fun=Csnippet("
 +         double beta;
 +         int nbasis = *get_pomp_userdata_int(\"nbasis\");
@@ -154,37 +154,37 @@ newly created object(s):
 +   geom_line()+
 +   theme_bw()+theme(legend.position=c(0.2,0.8))
 > 
-> try(gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix)))
-Error : in ‘gillespie.sim’: ‘v’ must be a matrix.
+> try(gillespie(rate.fun=rate.fun,v=as.numeric(Vmatrix)))
+Error : in ‘gillespie’: ‘v’ must be a matrix.
 > w <- Vmatrix
 > colnames(w) <- c(letters[1:5],"a")
-> try(gillespie.sim(rate.fun=rate.fun,v=w))
-Error : in ‘gillespie.sim’: duplicates in column names of ‘v’.
+> try(gillespie(rate.fun=rate.fun,v=w))
+Error : in ‘gillespie’: duplicates in column names of ‘v’.
 > w <- Vmatrix
 > rownames(w) <- c(letters[1:4],"a")
-> try(gillespie.sim(rate.fun=rate.fun,v=w))
-Error : in ‘gillespie.sim’: duplicates in row names of ‘v’.
-> try(gillespie.hl.sim(a="bob"))
-Error : in ‘gillespie.hl.sim’: each event should be specified using a length-2 list.
-> try(gillespie.hl.sim(a=list(c("bob","mary"),2)))
-Error : in ‘gillespie.hl.sim’: for each event, the first list-element should be a C snippet or string.
-> try(gillespie.hl.sim(a=list(1,2)))
-Error : in ‘gillespie.hl.sim’: for each event, the first list-element should be a C snippet or string.
-> try(gillespie.hl.sim(.pre=3,a=list("bob",c(a=2,b=1))))
-Error : in ‘gillespie.hl.sim’: ‘.pre’ and ‘.post’ must be C snippets or strings.
-> try(gillespie.hl.sim(a=list("bob",c(a="h",b="k"))))
-Error : in ‘gillespie.hl.sim’: for each event, the second list-element should be a named numeric vector (without duplicate names).
-> try(gillespie.hl.sim(a=list("bob",c(2,1))))
-Error : in ‘gillespie.hl.sim’: for each event, the second list-element should be a named numeric vector (without duplicate names).
-> try(gillespie.hl.sim(a=list("bob",list(a=2,b=1))))
-Error : in ‘gillespie.hl.sim’: for each event, the second list-element should be a named numeric vector (without duplicate names).
-> try(gillespie.hl.sim(a=list("bob",c(a=2,1))))
-Error : in ‘gillespie.hl.sim’: for each event, the second list-element should be a named numeric vector (without duplicate names).
-> try(gillespie.hl.sim(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,a=2))))
-Error : in ‘gillespie.hl.sim’: for each event, the second list-element should be a named numeric vector (without duplicate names).
-> try(gillespie.hl.sim(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,c=2))))
-Error : in ‘gillespie.hl.sim’: duplicated elementary event names.
-> gillespie.hl.sim(A=list("bob",c(a=2,b=1)),B=list("mary",c(a=1,c=2))) -> f
+> try(gillespie(rate.fun=rate.fun,v=w))
+Error : in ‘gillespie’: duplicates in row names of ‘v’.
+> try(gillespie_hl(a="bob"))
+Error : in ‘gillespie_hl’: each event should be specified using a length-2 list.
+> try(gillespie_hl(a=list(c("bob","mary"),2)))
+Error : in ‘gillespie_hl’: for each event, the first list-element should be a C snippet or string.
+> try(gillespie_hl(a=list(1,2)))
+Error : in ‘gillespie_hl’: for each event, the first list-element should be a C snippet or string.
+> try(gillespie_hl(.pre=3,a=list("bob",c(a=2,b=1))))
+Error : in ‘gillespie_hl’: ‘.pre’ and ‘.post’ must be C snippets or strings.
+> try(gillespie_hl(a=list("bob",c(a="h",b="k"))))
+Error : in ‘gillespie_hl’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+> try(gillespie_hl(a=list("bob",c(2,1))))
+Error : in ‘gillespie_hl’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+> try(gillespie_hl(a=list("bob",list(a=2,b=1))))
+Error : in ‘gillespie_hl’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+> try(gillespie_hl(a=list("bob",c(a=2,1))))
+Error : in ‘gillespie_hl’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+> try(gillespie_hl(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,a=2))))
+Error : in ‘gillespie_hl’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+> try(gillespie_hl(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,c=2))))
+Error : in ‘gillespie_hl’: duplicated elementary event names.
+> gillespie_hl(A=list("bob",c(a=2,b=1)),B=list("mary",c(a=1,c=2))) -> f
 > f@v
         event
 variable A B
@@ -206,7 +206,7 @@ variable A B
 +   }
 + }
 > 
-> simulate(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>%
+> simulate(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>%
 +   plot(main="freeze at time 1")
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) {
@@ -217,27 +217,27 @@ variable A B
 +   }
 + }
 > 
-> try(simulate(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)))
+> try(simulate(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)))
 Error : in ‘simulate’: 'rate.fun' returns a negative rate
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) -1
 > 
-> try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
+> try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 Error : in ‘simulate’: 'rate.fun' returns a negative rate
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
 > 
-> try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
+> try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 Error : in ‘simulate’: 'rate.fun' must return a single numeric rate.
 > 
-> try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix)))
+> try(pomp(gsir,rprocess=gillespie(rate.fun=3,v=Vmatrix)))
 Error : bad option for ‘rate.fun’ argument.
 > 
 > create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
 +   rate.fun <- function(j, mu, N, ...) {
 +     switch(j, mu*N, stop("unrecognized event ",j))
 +   }
-+   rprocess <- gillespie.sim(rate.fun = rate.fun, v=rbind(N=-1, ct=1))
++   rprocess <- gillespie(rate.fun = rate.fun, v=rbind(N=-1, ct=1))
 +   initializer <- function(t0, ...) {
 +     c(N=N_0,ct=12)
 +   }

@@ -2,14 +2,14 @@ library(pomp)
 library(magrittr)
 
 ## a simple two-dimensional random walk
-## this makes use of the 'onestep.sim' plugin
+## this makes use of the 'onestep' plugin
 ## which we can use since we can simulate the
 ## increment of a random walk over any time
 
 simulate(
   times=seq(1,100), t0=0,
   params=c(s1=3,s2=1,x1.0=0,x2.0=1,tau=10),
-  rprocess = onestep.sim(
+  rprocess = onestep(
     step.fun = Csnippet("
       x1 = rnorm(x1,s1*sqrt(dt));
       x2 = rnorm(x2,s2*sqrt(dt));

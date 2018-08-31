@@ -108,7 +108,7 @@ pomp(
   times="time",
   t0=0,
   params=c(x1.0=0,x2.0=0,s1=1,s2=3,tau=1), # parameters at which data were generated
-  rprocess = onestep.sim(
+  rprocess = onestep(
     Csnippet("
         x1 = rnorm(x1,s1*sqrt(dt));
         x2 = rnorm(x2,s2*sqrt(dt));"

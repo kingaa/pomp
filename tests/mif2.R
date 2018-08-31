@@ -84,7 +84,7 @@ mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,cooling.type="geometric",tol=1e-10,
   params=as.list(coef(po)))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
-  cooling.fraction.50=0.1,rprocess=onestep.sim(function(x,t,params,covars,delta.t,...)stop("boink"))))
+  cooling.fraction.50=0.1,rprocess=onestep(function(x,t,params,covars,delta.t,...)stop("boink"))))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,dmeasure=function(log,...)stop("blop")))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
@@ -125,7 +125,7 @@ po %>%
     params=c(sigma=5),
     rw.sd=rw.sd(sigma=0.01),
     cooling.fraction.50=1,cooling.type="hyperbolic",
-    rprocess=onestep.sim(function(X,...)c(X=X)),
+    rprocess=onestep(function(X,...)c(X=X)),
     dmeasure=function(Y,X,sigma,log,...)dnorm(x=Y,mean=X,sd=sigma,log=log),
     rinit=function(...)c(X=0)
   )

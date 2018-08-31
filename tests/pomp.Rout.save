@@ -111,7 +111,7 @@ Error : bad option for ‘rinit’ argument.
 +   po %>% pomp(times=1:5) %>% class() %>% equals("pomp"))
 > 
 > stopifnot(po %>%
-+     pomp(rprocess=onestep.sim(function(x,t,params,delta.t,...)x),
++     pomp(rprocess=onestep(function(x,t,params,delta.t,...)x),
 +       skeleton=map(function(x,t,params,...)x),
 +       rmeasure=function(...)3,
 +       dmeasure=function(log,...)1,
@@ -131,7 +131,7 @@ Error : when ‘rinit’ is provided as a C snippet, you must also provide ‘st
 > 
 > try(po %>% pomp(rprocess="bob"))
 Error : ‘rprocess’ must be specified using one of the plugins:
-‘onestep.sim’, ‘discrete.time.sim’, ‘euler.sim’, ‘gillespie.sim’, or ‘gillespie.hl.sim’.
+‘onestep’, ‘discrete_time’, ‘euler’, ‘gillespie’, or ‘gillespie_hl’.
 > try(po %>% pomp(skeleton="bob"))
 Error : ‘skeleton’ must be specified using either ‘map’ or ‘vectorfield’.
 > try(po %>% pomp(partrans="bob"))

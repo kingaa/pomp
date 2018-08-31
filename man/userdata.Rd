@@ -96,7 +96,7 @@ See the example below.
 simulate(times=1:100,t0=0,
   phi=as.double(100),
   params=c(r=3.8,sigma=0.3,N.0=7),
-  rprocess=discrete.time.sim(
+  rprocess=discrete_time(
     step.fun=Csnippet("
       double e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
       N = r*N*exp(-N+e);"
@@ -116,7 +116,7 @@ simulate(times=1:100,t0=0,
 simulate(times=1:100,t0=0,
   globals=Csnippet("static double phi = 100;"),
   params=c(r=3.8,sigma=0.3,N.0=7),
-  rprocess=discrete.time.sim(
+  rprocess=discrete_time(
     step.fun=Csnippet("
       double e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
       N = r*N*exp(-N+e);"
@@ -136,7 +136,7 @@ simulate(times=1:100,t0=0,
 simulate(times=1:100,t0=0,
   phi=100,
   params=c(r=3.8,sigma=0.3,N_0=7),
-  rprocess=discrete.time.sim(
+  rprocess=discrete_time(
     step.fun=function (r, N, sigma, ...) {
       e <- rnorm(n=1,mean=0,sd=sigma)
        c(N=r*N*exp(-N+e))

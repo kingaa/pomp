@@ -29,7 +29,7 @@ pomp(
     rho=0.9,sigma=3.6,
     S_0=0.999,I_0=0.001,R_0=0
   ),
-  rprocess=euler.sim(
+  rprocess=euler(
     step.fun=Csnippet("
       double rate[2];	  	// transition rates
       double trans[2];		// transition numbers

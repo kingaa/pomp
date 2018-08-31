@@ -49,7 +49,7 @@ try(spect(sp3))
 try(spect(sp2,rmeasure=function(...) stop("yikes!")))
 
 simulate(times=1:100,t0=0,
-  rprocess=euler.sim(Csnippet("
+  rprocess=euler(Csnippet("
        x = rnorm(0,1);
        y = rnorm(0,1);
        z = rnorm(0,1);"),

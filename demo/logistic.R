@@ -6,13 +6,13 @@ library(ggplot2)
 ## a stochastic version of the Verhulst-Pearl logistic model
 ## this evolves in continuous time, but we approximate the
 ## stochastic dynamics using an Euler approximation
-## (plugin 'euler.sim') with fixed step-size
+## (plugin 'euler') with fixed step-size
 
 simulate(
   times=seq(0.1,by=0.1,length=1000),
   t0=0,
   params=c(n_0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1),
-  rprocess=euler.sim(
+  rprocess=euler(
     step.fun=Csnippet("
         n = rnorm(n+r*n*(1-n/K)*dt,sigma*n*sqrt(dt));
       "

@@ -221,7 +221,7 @@ pomp(
   t0=t0,
   params=mle,
   globals = sprintf("int nrstage = %d, nbasis = %d;",nrstage,nbasis),
-  rprocess = euler.sim(
+  rprocess = euler(
     step.fun = cholmodel_one,
     delta.t=1/240
   ),

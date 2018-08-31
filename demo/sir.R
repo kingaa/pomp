@@ -111,7 +111,7 @@ LondonYorke %>%
     ),
     globals=globals,
     rmeasure=Csnippet(rmeas),
-    rprocess=euler.sim(
+    rprocess=euler(
       step.fun=Csnippet(step.fun),
       delta.t=1/52/20
     ),

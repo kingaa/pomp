@@ -75,7 +75,7 @@ simulate(
   times=seq(0,10), t0=0,
   params=c(s=3,x_0=0,tau=1),
   covar=covariate_table(z=c(1,1),times=c(0,10)),
-  rprocess = onestep.sim(
+  rprocess = onestep(
     function (t, x, s, delta.t, ...) {
       c(x=rnorm(n=1,mean=x,sd=s*sqrt(delta.t)))
     }

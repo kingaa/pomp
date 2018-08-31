@@ -77,7 +77,7 @@ Type 'q()' to quit R.
 > 
 > ## ----logistic-pomp1------------------------------------------------------
 > parus <- pomp(data=parus.dat,time="year",t0=1959,
-+   rprocess=euler.sim(step.fun=step.fun,delta.t=1/365),
++   rprocess=euler(step.fun=step.fun,delta.t=1/365),
 +   statenames="N",paramnames=c("r","K","sigma"))
 > 
 > ## ----logistic-simul1-----------------------------------------------------
@@ -166,7 +166,7 @@ Type 'q()' to quit R.
 + ")
 > 
 > ## ----bh-pomp1------------------------------------------------------------
-> parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=map(bh.skel,delta.t=1),statenames="N",paramnames=c("a","b","sigma"))
+> parus.bh <- pomp(parus,rprocess=discrete_time(bh.step,delta.t=1),skeleton=map(bh.skel,delta.t=1),statenames="N",paramnames=c("a","b","sigma"))
 > 
 > ## ----bh-test-------------------------------------------------------------
 > coef(parus.bh) <- c(a=1.1,b=5e-4,sigma=0.5,N.0=30)

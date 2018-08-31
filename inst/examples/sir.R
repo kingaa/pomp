@@ -243,7 +243,7 @@ pomp(
     cases = 0;
     W = 0;"
   ),
-  rprocess=euler.sim(
+  rprocess=euler(
     step.fun=Csnippet("
     int nrate = 6;
     double rate[nrate];		  // transition rates

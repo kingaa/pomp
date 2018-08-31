@@ -438,9 +438,9 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (!is(rprocess,"rprocPlugin")) {
     pStop_(sQuote("rprocess"),
       " must be specified using one of the plugins:\n",
-      sQuote("onestep.sim"),", ",sQuote("discrete.time.sim"),
-      ", ",sQuote("euler.sim"),", ",sQuote("gillespie.sim"),
-      ", or ",sQuote("gillespie.hl.sim"),".")
+      sQuote("onestep"),", ",sQuote("discrete_time"),
+      ", ",sQuote("euler"),", ",sQuote("gillespie"),
+      ", or ",sQuote("gillespie_hl"),".")
   }
 
   if (!is(skeleton,"skelPlugin")) {

@@ -62,7 +62,7 @@ try(data.frame(t=1:10,a=1:10) %>% probe())
 data.frame(t=1:10,a=1:10) %>%
   probe(
     times="t",t0=0,
-    rprocess=euler.sim(
+    rprocess=euler(
       function(t,x,delta.t,...){
         c(x=rlnorm(n=1,meanlog=log(x),sd=sqrt(delta.t)))
       },delta.t=0.1),

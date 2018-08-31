@@ -53,7 +53,7 @@
 ##' }
 ##'
 ##' plot(simulate(times=1:5,t0=0,params=c(X0=3,Y0=-7),
-##'   rinit=f,rprocess=onestep.sim(trivial)))
+##'   rinit=f,rprocess=onestep(trivial)))
 ##'
 ##' ## A function that depends on covariate P and
 ##' ## time t0, as well as parameter X0:
@@ -64,6 +64,6 @@
 ##'
 ##' plot(simulate(times=1:5,t0=0,params=c(X0=3,Y0=-7),
 ##'   covar=covariate_table(t=0:10,P=3:13,times="t"),
-##'   rinit=g,rprocess=onestep.sim(trivial)))
+##'   rinit=g,rprocess=onestep(trivial)))
 ##'
 NULL

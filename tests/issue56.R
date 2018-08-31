@@ -10,7 +10,7 @@ create_example <- function(times, t0 = 0, mu = 0.001, N_0 = 1) {
     switch(j, mu*N, stop("unrecognized event ",j))
   }
 
-  rprocess <- gillespie.sim(rate.fun = rate.fun, v=rbind(N=-1, ct=1))
+  rprocess <- gillespie(rate.fun = rate.fun, v=rbind(N=-1, ct=1))
 
   rinit <- function(params, t0, ...) c(N=N_0,ct=12)
 

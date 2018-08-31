@@ -17,12 +17,12 @@ create_example <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1,
   simulator <- match.arg(simulator)
   switch(
     simulator,
-    gillespie=gillespie.sim(Csnippet("rate = mu * N;"), v = v),
-    euler=euler.sim(
+    gillespie=gillespie(Csnippet("rate = mu * N;"), v = v),
+    euler=euler(
       Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;"),
       delta.t=0.1
     ),
-    onestep=onestep.sim(
+    onestep=onestep(
       Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;")
     )
   ) -> rprocess

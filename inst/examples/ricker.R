@@ -59,7 +59,7 @@ pomp(
   times="time",
   t0=0,
   params=c(r=exp(3.8),sigma=0.3,phi=10,c=1,N_0=7,e.0=0), # originally used to generate the data
-  rprocess=discrete.time.sim(
+  rprocess=discrete_time(
     step.fun=Csnippet("
         e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
         N = exp(log(r)+log(N)-c*N+e);"),

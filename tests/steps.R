@@ -17,7 +17,7 @@ stopifnot(identical(x,y))
 
 po <- simulate(ricker,
   times=sort(runif(n=20,max=50)),
-  rprocess=discrete.time.sim(
+  rprocess=discrete_time(
     Csnippet("
       double dW = rnorm(0,sqrt(dt));
       N += r*N*(1-N)*dt+sigma*dW;
@@ -37,7 +37,7 @@ pompExample(sir)
 tm <- sort(runif(n=100,max=2))
 sir %>%
   simulate(times=tm,
-    rprocess=euler.sim(Csnippet("
+    rprocess=euler(Csnippet("
       double rate[6];		  // transition rates
       double trans[6];		// transition numbers
       double beta;

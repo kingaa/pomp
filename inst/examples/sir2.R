@@ -549,7 +549,7 @@ pomp(
   globals=Csnippet("
       static int nbasis = 3;"
   ),
-  rprocess=gillespie.hl.sim(
+  rprocess=gillespie_hl(
     .pre="
       double beta;
     ",

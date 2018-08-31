@@ -879,7 +879,7 @@ pomp(
   data=subset(raw.data,day>14&day<400),
   times="day",
   t0=14,
-  rprocess=discrete.time.sim(
+  rprocess=discrete_time(
     step.fun=Csnippet("
       double *N = &N1;
       int tau = 14, k;
@@ -920,7 +920,7 @@ pomp(
 
 pomp(
   blowflies1,
-  rprocess=discrete.time.sim(
+  rprocess=discrete_time(
     step.fun=Csnippet("
       double *N = &N1;
       int tau = 7, k;

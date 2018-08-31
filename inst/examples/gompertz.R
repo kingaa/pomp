@@ -113,7 +113,7 @@ pomp(
     toEst="_gompertz_to_trans",
     fromEst="_gompertz_from_trans"
   ),
-  rprocess=discrete.time.sim(
+  rprocess=discrete_time(
     step.fun="_gompertz_simulator"
   ),
   rmeasure="_gompertz_normal_rmeasure",

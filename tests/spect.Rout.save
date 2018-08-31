@@ -95,7 +95,7 @@ Error : in ‘spect’: ‘spect’ assumes evenly spaced times.
 Error : in ‘spect’: in simulation: yikes!
 > 
 > simulate(times=1:100,t0=0,
-+   rprocess=euler.sim(Csnippet("
++   rprocess=euler(Csnippet("
 +        x = rnorm(0,1);
 +        y = rnorm(0,1);
 +        z = rnorm(0,1);"),

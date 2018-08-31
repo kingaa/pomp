@@ -59,7 +59,7 @@ stopifnot({
   po %>% pomp(times=1:5) %>% class() %>% equals("pomp"))
 
 stopifnot(po %>%
-    pomp(rprocess=onestep.sim(function(x,t,params,delta.t,...)x),
+    pomp(rprocess=onestep(function(x,t,params,delta.t,...)x),
       skeleton=map(function(x,t,params,...)x),
       rmeasure=function(...)3,
       dmeasure=function(log,...)1,

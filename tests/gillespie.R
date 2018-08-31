@@ -49,7 +49,7 @@ simulate(
   seed=806867104L,
   times=seq(from=0,to=2,by=1/52),
   t0=0,
-  rprocess=gillespie.sim(
+  rprocess=gillespie(
     rate.fun=rate.fun,
     v=Vmatrix,
     hmax=1/52/10
@@ -77,7 +77,7 @@ gsir %>%
 
 gsir %>%
   simulate(
-    rprocess=gillespie.sim(
+    rprocess=gillespie(
       rate.fun=Csnippet("
         double beta;
         int nbasis = *get_pomp_userdata_int(\"nbasis\");
@@ -132,24 +132,24 @@ list(R=as.data.frame(gsir),
   geom_line()+
   theme_bw()+theme(legend.position=c(0.2,0.8))
 
-try(gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix)))
+try(gillespie(rate.fun=rate.fun,v=as.numeric(Vmatrix)))
 w <- Vmatrix
 colnames(w) <- c(letters[1:5],"a")
-try(gillespie.sim(rate.fun=rate.fun,v=w))
+try(gillespie(rate.fun=rate.fun,v=w))
 w <- Vmatrix
 rownames(w) <- c(letters[1:4],"a")
-try(gillespie.sim(rate.fun=rate.fun,v=w))
-try(gillespie.hl.sim(a="bob"))
-try(gillespie.hl.sim(a=list(c("bob","mary"),2)))
-try(gillespie.hl.sim(a=list(1,2)))
-try(gillespie.hl.sim(.pre=3,a=list("bob",c(a=2,b=1))))
-try(gillespie.hl.sim(a=list("bob",c(a="h",b="k"))))
-try(gillespie.hl.sim(a=list("bob",c(2,1))))
-try(gillespie.hl.sim(a=list("bob",list(a=2,b=1))))
-try(gillespie.hl.sim(a=list("bob",c(a=2,1))))
-try(gillespie.hl.sim(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,a=2))))
-try(gillespie.hl.sim(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,c=2))))
-gillespie.hl.sim(A=list("bob",c(a=2,b=1)),B=list("mary",c(a=1,c=2))) -> f
+try(gillespie(rate.fun=rate.fun,v=w))
+try(gillespie_hl(a="bob"))
+try(gillespie_hl(a=list(c("bob","mary"),2)))
+try(gillespie_hl(a=list(1,2)))
+try(gillespie_hl(.pre=3,a=list("bob",c(a=2,b=1))))
+try(gillespie_hl(a=list("bob",c(a="h",b="k"))))
+try(gillespie_hl(a=list("bob",c(2,1))))
+try(gillespie_hl(a=list("bob",list(a=2,b=1))))
+try(gillespie_hl(a=list("bob",c(a=2,1))))
+try(gillespie_hl(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,a=2))))
+try(gillespie_hl(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,c=2))))
+gillespie_hl(A=list("bob",c(a=2,b=1)),B=list("mary",c(a=1,c=2))) -> f
 f@v
 
 stopifnot(
@@ -166,7 +166,7 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
   }
 }
 
-simulate(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>%
+simulate(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>%
   plot(main="freeze at time 1")
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) {
@@ -177,23 +177,23 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
   }
 }
 
-try(simulate(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)))
+try(simulate(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)))
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) -1
 
-try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
 
-try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 
-try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix)))
+try(pomp(gsir,rprocess=gillespie(rate.fun=3,v=Vmatrix)))
 
 create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
   rate.fun <- function(j, mu, N, ...) {
     switch(j, mu*N, stop("unrecognized event ",j))
   }
-  rprocess <- gillespie.sim(rate.fun = rate.fun, v=rbind(N=-1, ct=1))
+  rprocess <- gillespie(rate.fun = rate.fun, v=rbind(N=-1, ct=1))
   initializer <- function(t0, ...) {
     c(N=N_0,ct=12)
   }

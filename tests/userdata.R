@@ -9,7 +9,7 @@ simulate(times=seq(1,100),t0=0,
   period=50.0,
   msg="hello!",
   params=setNames(runif(n=9,min=-5,max=5),sprintf("beta%d",1:9)),
-  rprocess=euler.sim(
+  rprocess=euler(
     Csnippet("
       static int first = 1;
       if (first) {
@@ -32,28 +32,28 @@ simulate(times=seq(1,100),t0=0,
 ) -> po
 
 try(po %>%
-    simulate(rprocess=onestep.sim(
+    simulate(rprocess=onestep(
       Csnippet("
       SEXP Msg = get_pomp_userdata(\"bob\");
       char *msg = CHAR(STRING_ELT(Msg,0));
       Rprintf(\"%s\\n\",msg);"))))
 try(po %>%
-    simulate(rprocess=onestep.sim(
+    simulate(rprocess=onestep(
       Csnippet("double nbasis = *(get_pomp_userdata_double(\"nbasis\"));"))))
 try(po %>%
-    simulate(rprocess=onestep.sim(
+    simulate(rprocess=onestep(
       Csnippet("double nbasis = *(get_pomp_userdata_double(\"bob\"));"))))
 try(po %>%
-    simulate(rprocess=onestep.sim(
+    simulate(rprocess=onestep(
       Csnippet("int nbasis = *(get_pomp_userdata_int(\"period\"));"))))
 try(po %>%
-    simulate(rprocess=onestep.sim(
+    simulate(rprocess=onestep(
       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));"))))
 try(po %>%
-    simulate(rprocess=onestep.sim(
+    simulate(rprocess=onestep(
       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));")),
       bob=3))
 stopifnot(po %>%
-    simulate(rprocess=onestep.sim(
+    simulate(rprocess=onestep(
       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));")),
       bob=3L) %>% class() %>% equals("pomp"))

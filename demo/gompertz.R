@@ -6,7 +6,7 @@ library(magrittr)
 
 simulate(times=1:100,t0=0,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
-  rprocess=discrete.time.sim( # a discrete-time process (see ?plugins)
+  rprocess=discrete_time( # a discrete-time process (see ?plugins)
     step.fun=function (X,r,K,sigma,...,delta.t) {
       ## This function takes one step t -> t+delta.t.
       ## Generate a log-normal random variable:
@@ -43,7 +43,7 @@ simulate(times=0:100,t0=0,
   rmeasure=Csnippet("
     Y = rlnorm(log(X),tau);"
   ),
-  rprocess=discrete.time.sim(
+  rprocess=discrete_time(
     step.fun=Csnippet("
     double S = exp(-r*dt);
     double logeps = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;

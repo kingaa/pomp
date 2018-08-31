@@ -62,7 +62,7 @@ theta <- coef(ou2)
 theta["alpha.1"] <- 1e60
 try(pfilter(pf,params=theta,pred.var=TRUE))
 
-try(pfilter(pf,rprocess=onestep.sim(
+try(pfilter(pf,rprocess=onestep(
   function(x, t, params, delta.t, ...)stop("yikes!"))))
 try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 try(pfilter(pf,dmeasure=function(log,...) -Inf))
@@ -91,7 +91,7 @@ ou2 %>%
   pfilter(
     times="time",t0=0,Np=500,
     params=list(x1_0=-3,x2_0=4),
-    rprocess=onestep.sim(
+    rprocess=onestep(
     step.fun=function(x1,x2,delta.t,...) {
       setNames(rnorm(n=2,mean=c(x1,x2),sd=5*delta.t),c("x1","x2"))
     }

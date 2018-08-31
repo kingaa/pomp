@@ -28,7 +28,7 @@ Type 'q()' to quit R.
 +   period=50.0,
 +   msg="hello!",
 +   params=setNames(runif(n=9,min=-5,max=5),sprintf("beta%d",1:9)),
-+   rprocess=euler.sim(
++   rprocess=euler(
 +     Csnippet("
 +       static int first = 1;
 +       if (first) {
@@ -53,36 +53,36 @@ in ‘pomp’: the unrecognized arguments ‘nbasis’,‘period’,‘msg’ ar
 hello!
 > 
 > try(po %>%
-+     simulate(rprocess=onestep.sim(
++     simulate(rprocess=onestep(
 +       Csnippet("
 +       SEXP Msg = get_pomp_userdata(\"bob\");
 +       char *msg = CHAR(STRING_ELT(Msg,0));
 +       Rprintf(\"%s\\n\",msg);"))))
 Error : in ‘simulate’: no user-data element 'bob' is found.
 > try(po %>%
-+     simulate(rprocess=onestep.sim(
++     simulate(rprocess=onestep(
 +       Csnippet("double nbasis = *(get_pomp_userdata_double(\"nbasis\"));"))))
 Error : in ‘simulate’: user-data element 'nbasis' is not a numeric vector.
 > try(po %>%
-+     simulate(rprocess=onestep.sim(
++     simulate(rprocess=onestep(
 +       Csnippet("double nbasis = *(get_pomp_userdata_double(\"bob\"));"))))
 Error : in ‘simulate’: no user-data element 'bob' is found.
 > try(po %>%
-+     simulate(rprocess=onestep.sim(
++     simulate(rprocess=onestep(
 +       Csnippet("int nbasis = *(get_pomp_userdata_int(\"period\"));"))))
 Error : in ‘simulate’: user-data element 'period' is not an integer.
 > try(po %>%
-+     simulate(rprocess=onestep.sim(
++     simulate(rprocess=onestep(
 +       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));"))))
 Error : in ‘simulate’: no user-data element 'bob' is found.
 > try(po %>%
-+     simulate(rprocess=onestep.sim(
++     simulate(rprocess=onestep(
 +       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));")),
 +       bob=3))
 in ‘pomp’: the unrecognized argument ‘bob’ is available for use by the POMP basic components.
 Error : in ‘simulate’: user-data element 'bob' is not an integer.
 > stopifnot(po %>%
-+     simulate(rprocess=onestep.sim(
++     simulate(rprocess=onestep(
 +       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));")),
 +       bob=3L) %>% class() %>% equals("pomp"))
 in ‘pomp’: the unrecognized argument ‘bob’ is available for use by the POMP basic components.

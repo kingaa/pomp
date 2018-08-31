@@ -5,6 +5,11 @@
 \alias{conv.rec}
 \alias{values}
 \alias{onestep.dens}
+\alias{onestep.sim}
+\alias{discrete.time.sim}
+\alias{euler.sim}
+\alias{gillespie.sim}
+\alias{gillespie.hl.sim}
 \title{Deprecated functions}
 \usage{
 conv.rec(object, ...)
@@ -12,6 +17,16 @@ conv.rec(object, ...)
 values(object, ...)
 
 onestep.dens(dens.fun, PACKAGE)
+
+onestep.sim(step.fun)
+
+discrete.time.sim(step.fun, delta.t = 1)
+
+euler.sim(step.fun, delta.t)
+
+gillespie.sim(rate.fun, v, hmax = Inf)
+
+gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)
 }
 \description{
 Deprecated functions

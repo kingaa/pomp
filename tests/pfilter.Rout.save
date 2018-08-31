@@ -136,7 +136,7 @@ sigma.3:            2
 > try(pfilter(pf,params=theta,pred.var=TRUE))
 Error : in ‘pfilter’: non-finite state variable: x1
 > 
-> try(pfilter(pf,rprocess=onestep.sim(
+> try(pfilter(pf,rprocess=onestep(
 +   function(x, t, params, delta.t, ...)stop("yikes!"))))
 Error : in ‘pfilter’: in ‘rprocess’: yikes!
 > try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
@@ -223,7 +223,7 @@ Error : in ‘pfilter’: ‘rprocess’, ‘dmeasure’ are needed basic compon
 +   pfilter(
 +     times="time",t0=0,Np=500,
 +     params=list(x1_0=-3,x2_0=4),
-+     rprocess=onestep.sim(
++     rprocess=onestep(
 +     step.fun=function(x1,x2,delta.t,...) {
 +       setNames(rnorm(n=2,mean=c(x1,x2),sd=5*delta.t),c("x1","x2"))
 +     }

@@ -8,7 +8,7 @@ set.seed(1041414791L)
 
 data.frame(t=0:10,y=runif(11)) %>%
   simulate(times="t",t0=0,
-    rprocess=discrete.time.sim(
+    rprocess=discrete_time(
       step.fun=function(r,x,...) {
         c(x=r*x*exp(-x))
       }),
