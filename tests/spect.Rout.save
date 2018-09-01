@@ -111,8 +111,6 @@ Error : in ‘spect’: in simulation: yikes!
 > 
 > plot(spect(bob,kernel.width=3,nsim=500),
 +   data.style=list(lwd=c(2,3),lty=2,col='red'))
-Warning message:
-in ‘plot’: ‘data.styles’ contains an element with more than 1 entry but fewer entries than observed variables. 
 > 
 > dev.off()
 null device 

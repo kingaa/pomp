@@ -2,6 +2,7 @@ options(digits=3)
 png(filename="pmcmc-%02d.png",res=100)
 
 library(pomp)
+library(magrittr)
 
 set.seed(857075216L)
 
@@ -95,5 +96,33 @@ try({
 capture.output(invisible(pmcmc(mcmc1,Nmcmc=10,verbose=TRUE))) -> out
 stopifnot(sum(grepl("acceptance ratio",out))==10)
 stopifnot(sum(grepl("PMCMC iteration",out))==11)
+
+pompExample(gompertz)
+
+set.seed(857075216L)
+
+try(gompertz %>% as.data.frame() %>% pmcmc())
+
+gompertz %>%
+  as.data.frame() %>%
+  pmcmc(
+    Nmcmc=10,Np=100,
+    times="time",t0=0,
+    rprocess=discrete_time(
+      function (x, r, K, ...) {
+        c(x=x*exp(r*(1-x/K)))
+      }
+    ),
+    dmeasure=function (Y, x, ..., log) {
+      dlnorm(Y,meanlog=log(0.01*x),sdlog=2,log=log)
+    },
+    dprior=function(r,K,...,log) {
+      ll <- sum(dlnorm(x=c(r,K),meanlog=log(0.1,150),sdlog=3,log=TRUE))
+      if (log) ll else exp(ll)
+    },
+    proposal=mvn.diag.rw(c(r=0.01,K=10)),
+    params=c(r=0.1,K=150,x_0=150)
+  ) -> mcmc5
+plot(mcmc5,pars=c("r","K"))
 
 dev.off()

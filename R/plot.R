@@ -67,7 +67,7 @@ setMethod(
 setMethod(
   "plot",
   signature=signature(x="Pmcmc"),
-  definition=function (x, pars, ...) {
+  definition=function (x, ..., pars) {
     plot(traces(x,pars),...)
   }
 )
@@ -128,7 +128,7 @@ setMethod(
 setMethod(
   "plot",
   signature=signature(x="spectd_pomp"),
-  definition=function (x, max.plots.per.page = 4, plot.data = TRUE,
+  definition=function (x, ..., max.plots.per.page = 4, plot.data = TRUE,
     quantiles = c(.025, .25, .5, .75, .975),
     quantile.styles = list(lwd=1, lty=1, col="gray70"),
     data.styles = list(lwd=2, lty=2, col="black")) {

@@ -6,6 +6,8 @@ library(magrittr)
 
 pompExample(ou2)
 
+try(ou2 %>% as.data.frame() %>% spect.match.objfun())
+
 ou2 %>%
   as.data.frame() %>%
   spect.match.objfun(
@@ -43,5 +45,12 @@ f1 %>% spect() %>% plot()
 f1 %>% as.pomp() %>% as.data.frame() %>% names()
 
 f1 %>% spect.match.objfun(fail.value=1e10) -> f2
+
+try(spect.match.objfun(f2,weights=c(3,4,5)))
+spect.match.objfun(f2,weights=exp(-seq(0,1,length=50))) -> f2
+subplex(fn=f2,par=out$par,control=list(reltol=1e-3)) -> out
+f2(out$par)
+summary(f2) %>% names()
+plot(spect(f2))
 
 dev.off()

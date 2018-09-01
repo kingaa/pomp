@@ -15,6 +15,8 @@ plist <- list(
   probe.quantile("Y",prob=c(0.25,0.75),na.rm=TRUE)
 )
 
+try(gompertz %>% as.data.frame() %>% probe.match.objfun())
+
 gompertz %>%
   as.data.frame() %>%
   probe.match.objfun(

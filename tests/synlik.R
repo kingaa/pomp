@@ -1,5 +1,5 @@
-# options(digits=3)
-# png(filename="synlik-%02d.png",res=100)
+options(digits=3)
+png(filename="synlik-%02d.png",res=100)
 
 library(pomp)
 
@@ -40,4 +40,4 @@ abline(v=loglik.truth)
 plot(density(loglik.pfilter))
 abline(v=loglik.truth)
 
-# dev.off()
+dev.off()

@@ -36,6 +36,9 @@ newly created object(s):
 +   probe.quantile("Y",prob=c(0.25,0.75),na.rm=TRUE)
 + )
 > 
+> try(gompertz %>% as.data.frame() %>% probe.match.objfun())
+Error : in ‘probe.match.objfun’: ‘params’, ‘rprocess’, ‘rmeasure’ are needed basic components.
+> 
 > gompertz %>%
 +   as.data.frame() %>%
 +   probe.match.objfun(

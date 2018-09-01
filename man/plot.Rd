@@ -36,7 +36,7 @@
   yax.flip = FALSE, mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
   oma = c(6, 0, 5, 0), axes = TRUE, ...)
 
-\S4method{plot}{Pmcmc}(x, pars, ...)
+\S4method{plot}{Pmcmc}(x, ..., pars)
 
 \S4method{plot}{Abc}(x, ..., pars, scatter = FALSE)
 
@@ -44,7 +44,7 @@
 
 \S4method{plot}{probed_pomp}(x, y, ...)
 
-\S4method{plot}{spectd_pomp}(x, max.plots.per.page = 4,
+\S4method{plot}{spectd_pomp}(x, ..., max.plots.per.page = 4,
   plot.data = TRUE, quantiles = c(0.025, 0.25, 0.5, 0.75, 0.975),
   quantile.styles = list(lwd = 1, lty = 1, col = "gray70"),
   data.styles = list(lwd = 2, lty = 2, col = "black"))
