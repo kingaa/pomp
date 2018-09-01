@@ -1,0 +1,73 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> 
+> library(pomp)
+> library(magrittr)
+> 
+> set.seed(1968726372)
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> 
+> gompertz %>%
++   window(start=1,end=10) %>%
++   as.data.frame() -> dat
+> 
+> try(dat %>% enkf())
+Error : in ‘enkf’: ‘params’, ‘rprocess’ are needed basic components.
+> 
+> dat %>%
++   enkf(
++     times="time",t0=0,Np=100,
++     params=c(r=0.1,K=150),
++     rinit=function(K, ...) {
++       c(x=rlnorm(n=1,meanlog=log(K),sdlog=1))
++     },
++     rprocess=discrete_time(
++       function (x, r, K, ...) {
++         c(x=x*exp(r*(1-x/K)))
++       }
++     ),
++     R=2,
++     h=function(x) 0.01*x
++   ) %>% plot()
+> 
+> try(dat %>% eakf())
+Error : in ‘eakf’: ‘params’, ‘rprocess’ are needed basic components.
+> 
+> dat %>%
++   subset(time<10) %>%
++   eakf(
++     times="time",t0=0,Np=100,
++     params=c(r=0.1,K=100),
++     rinit=function(K, ...) {
++       c(x=rlnorm(n=1,meanlog=log(K),sdlog=0.01))
++     },
++     rprocess=discrete_time(
++       function (x, r, K, ...) {
++         c(x=x*exp(r*(1-x/K)))
++       }
++     ),
++     R=0.01,
++     C=0.01
++   ) %>% plot()
+> 

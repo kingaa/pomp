@@ -9,9 +9,10 @@ library(ggplot2)
 library(mvtnorm)
 set.seed(1638125322)
 
-t <- seq(1,100)
+t <- seq(1,20)
 
-C <- matrix(c(1, 0,  0, 0,
+C <- matrix(c(
+  1, 0,  0, 0,
   0, 1, -1, 0),
   2,4,byrow=TRUE)
 
@@ -22,13 +23,11 @@ dimnames(C) <- list(
   paste0("y",seq_len(dimY)),
   paste0("x",seq_len(dimX)))
 
-R <- matrix(c(1, 0.3,
-  0.3, 1),
-  nrow=dimY,
-  dimnames=list(rownames(C),rownames(C)))
+R <- matrix(c(1,0.3,0.3,1),nrow=dimY,dimnames=list(rownames(C),rownames(C)))
 
-A <- matrix(c(-0.677822, -0.169411,  0.420662,  0.523571,
-  2.87451,  -0.323604, -0.489533, -0.806087,
+A <- matrix(c(
+  -0.677822, -0.169411,  0.420662,  0.523571,
+   2.87451,  -0.323604, -0.489533, -0.806087,
   -1.36617,  -0.592326,  0.567114,  0.345142,
   -0.807978, -0.163305,  0.668037,  0.468286),
   nrow=dimX,ncol=dimX,byrow=TRUE,
@@ -84,7 +83,7 @@ eakf <- eakf(pf,C=C,R=R,Np=1000)
 invisible(enkf(pf,h=function(x)C%*%x,R=R,Np=1000,params=as.list(coef(pf))))
 invisible(eakf(pf,C=C,R=R,Np=1000,params=as.list(coef(pf))))
 
-stopifnot(max(abs(c(kf$loglik,logLik(pf),logLik(enkf),logLik(eakf))-c(-391.0,-391.6,-390.5,-390.8)))<1)
+stopifnot(max(abs(c(kf$loglik,logLik(pf),logLik(enkf),logLik(eakf))-c(-67.0,-67.1,-66.9,-66.9)))<1)
 
 enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
   ddply(~variable,summarize,n=length(value))
