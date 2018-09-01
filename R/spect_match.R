@@ -243,7 +243,6 @@ smof.internal <- function (object,
 
   params <- coef(object,transform=TRUE)
 
-  if (missing(est)) est <- character(0)
   est <- as.character(est)
   est <- est[nzchar(est)]
 
