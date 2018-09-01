@@ -3,25 +3,46 @@
 \docType{methods}
 \name{pomp_fun}
 \alias{pomp_fun}
+\alias{pomp_fun,missing-method}
+\alias{pomp_fun,function-method}
+\alias{pomp_fun,character-method}
+\alias{pomp_fun,Csnippet-method}
+\alias{pomp_fun,pomp_fun-method}
 \title{The "pomp_fun" class}
+\usage{
+\S4method{pomp_fun}{missing}(slotname = NULL, obsnames = character(0),
+  statenames = character(0), paramnames = character(0),
+  covarnames = character(0), ...)
+
+\S4method{pomp_fun}{`function`}(f, proto = NULL, slotname = NULL, ...)
+
+\S4method{pomp_fun}{character}(f, PACKAGE = NULL,
+  obsnames = character(0), statenames = character(0),
+  paramnames = character(0), covarnames = character(0),
+  slotname = NULL, ...)
+
+\S4method{pomp_fun}{Csnippet}(f, slotname = NULL, libname = NULL,
+  obsnames = character(0), statenames = character(0),
+  paramnames = character(0), covarnames = character(0), Cname, ...)
+
+\S4method{pomp_fun}{pomp_fun}(f, ...)
+}
 \arguments{
 \item{f}{A function or the name of a native routine.}
-
-\item{PACKAGE}{optional; the name of the dynamically-loadable library in
-which the native function \code{f} can be found.}
 
 \item{proto}{optional string; a prototype against which \code{f} will be
 checked.}
 
+\item{PACKAGE}{optional; the name of the dynamically-loadable library in
+which the native function \code{f} can be found.}
+
 \item{object, x}{the \sQuote{pomp_fun} object.}
 }
 \description{
-Definition and methods of the \sQuote{pomp_fun} class
+Definition and methods of the \sQuote{pomp_fun} class.
 }
 \details{
-The \sQuote{pomp_fun} class helps to settle common issues associated with
-user-defined functions which can be defined either via R code or by a
-native, compiled routine.  It is not exported to userland.
+The \sQuote{pomp_fun} class implements a common interface for user-defined procedures that can be defined in terms of R code or by compiled native routines.
 }
 \seealso{
 \code{\link{pomp}}
@@ -29,5 +50,6 @@ native, compiled routine.  It is not exported to userland.
 \author{
 Aaron A. King
 }
+\concept{extending the \pkg{pomp} package}
 \keyword{internal}
 \keyword{programming}

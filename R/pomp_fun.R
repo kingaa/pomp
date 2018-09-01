@@ -1,16 +1,15 @@
 ##' The "pomp_fun" class
 ##'
-##' Definition and methods of the \sQuote{pomp_fun} class
+##' Definition and methods of the \sQuote{pomp_fun} class.
 ##'
-##' The \sQuote{pomp_fun} class helps to settle common issues associated with
-##' user-defined functions which can be defined either via R code or by a
-##' native, compiled routine.  It is not exported to userland.
+##' The \sQuote{pomp_fun} class implements a common interface for user-defined procedures that can be defined in terms of R code or by compiled native routines.
 ##'
 ##' @name pomp_fun
 ##' @rdname pomp_fun
 ##' @include pomp-package.R csnippet.R pstop.R
 ##' @docType methods
 ##' @keywords programming internal
+##' @concept extending the \pkg{pomp} package
 ##'
 ##' @param f A function or the name of a native routine.
 ##' @param PACKAGE optional; the name of the dynamically-loadable library in
@@ -60,10 +59,11 @@ setGeneric(
     standardGeneric("pomp_fun")
 )
 
+##' @rdname pomp_fun
 setMethod(
   "pomp_fun",
   signature=signature(f="missing"),
-  definition=function (f, slotname = NULL,
+  definition=function (slotname = NULL,
     obsnames = character(0), statenames = character(0),
     paramnames = character(0), covarnames = character(0), ...) {
     new("pomp_fun",
@@ -98,6 +98,7 @@ setMethod(
   }
 )
 
+##' @rdname pomp_fun
 setMethod(
   "pomp_fun",
   signature=signature(f="function"),
@@ -115,6 +116,7 @@ setMethod(
   }
 )
 
+##' @rdname pomp_fun
 setMethod(
   "pomp_fun",
   signature=signature(f="character"),
@@ -136,6 +138,7 @@ setMethod(
   }
 )
 
+##' @rdname pomp_fun
 setMethod(
   "pomp_fun",
   signature=signature(f="Csnippet"),
@@ -159,14 +162,13 @@ setMethod(
   }
 )
 
+##' @rdname pomp_fun
 setMethod(
   "pomp_fun",
   signature=signature(f="pomp_fun"),
   definition=function (f, ...) f
 )
 
-##' @export
-##' @rdname show
 setMethod(
   "show",
   signature=signature("pomp_fun"),

@@ -181,8 +181,6 @@ setMethod(
   }
 )
 
-##' @rdname show
-##' @export
 setMethod(
   "show",
   signature=signature(object="partransPlugin"),

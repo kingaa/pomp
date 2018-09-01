@@ -4,6 +4,17 @@
 
 - we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes
 - streamline the R snippets so that ... is unnecessary
+- manual pages on the organization of the package
+    - estimation algorithms
+    - diagnostic tools
+    - elementary operations: pfilter, probe, simulate, trajectory
+    - workhorses
+    - auxiliary functions
+    - optimization routines
+    - plotting methods
+    - parallelization tools
+    - reproducibility tools
+    - extending the package
 - make R-level functions for various distributions and transformations
 	- `dmultinom`
 	- BetaBinom
