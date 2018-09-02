@@ -127,8 +127,8 @@ setMethod(
   }
 )
 
-##' @name traj.match.objfun-traj.match.objfun
-##' @aliases traj.match.objfun,traj.match.objfun-method
+##' @name traj.match.objfun-traj_match_objfun
+##' @aliases traj.match.objfun,traj_match_objfun-method
 ##' @rdname traj_match
 ##' @export
 setMethod(
@@ -199,8 +199,8 @@ traj.match.loglik <- function (object, seed, ode_control) {
     log=TRUE))
 }
 
-##' @name trajectory-traj.match.objfun
-##' @aliases trajectory,traj.match.objfun-method
+##' @name trajectory-traj_match_objfun
+##' @aliases trajectory,traj_match_objfun-method
 ##' @rdname trajectory
 ##' @export
 setMethod(

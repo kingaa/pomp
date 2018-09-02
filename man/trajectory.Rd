@@ -7,8 +7,8 @@
 \alias{trajectory,ANY-method}
 \alias{trajectory-pomp}
 \alias{trajectory,pomp-method}
-\alias{trajectory-traj.match.objfun}
-\alias{trajectory,traj.match.objfun-method}
+\alias{trajectory-traj_match_objfun}
+\alias{trajectory,traj_match_objfun-method}
 \title{Trajectory of a deterministic model}
 \usage{
 \S4method{trajectory}{pomp}(object, params, times, t0,

@@ -10,8 +10,8 @@
 \alias{traj.match.objfun-pomp}
 \alias{traj.match.objfun}
 \alias{traj.match.objfun,pomp-method}
-\alias{traj.match.objfun-traj.match.objfun}
-\alias{traj.match.objfun,traj.match.objfun-method}
+\alias{traj.match.objfun-traj_match_objfun}
+\alias{traj.match.objfun,traj_match_objfun-method}
 \title{Trajectory matching}
 \usage{
 \S4method{traj.match.objfun}{data.frame}(data, est = character(0),
