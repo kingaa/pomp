@@ -80,16 +80,14 @@ probe.mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
 ##'@rdname basic_probes
 ##' @export
 probe.median <- function (var, na.rm = TRUE) {
-  if (length(var)>1)
-    pStop_(sQuote("probe.median")," is a univariate probe.")
+  if (length(var)>1) pStop_(sQuote("probe.median")," is a univariate probe.")
   function(y) median(x=as.numeric(y[var,]),na.rm=na.rm)
 }
 
 ##'@rdname basic_probes
 ##' @export
 probe.var <- function (var, transform = identity, na.rm = TRUE) {
-  if (length(var)>1)
-    pStop_(sQuote("probe.var")," is a univariate probe.")
+  if (length(var)>1) pStop_(sQuote("probe.var")," is a univariate probe.")
   transform <- match.fun(transform)
   function(y) var(x=transform(y[var,]),na.rm=na.rm)
 }
@@ -97,8 +95,7 @@ probe.var <- function (var, transform = identity, na.rm = TRUE) {
 ##'@rdname basic_probes
 ##' @export
 probe.sd <- function (var, transform = identity, na.rm = TRUE) {
-  if (length(var)>1)
-    pStop_(sQuote("probe.sd")," is a univariate probe.")
+  if (length(var)>1) pStop_(sQuote("probe.sd")," is a univariate probe.")
   transform <- match.fun(transform)
   function(y) sd(x=transform(y[var,]),na.rm=na.rm)
 }
@@ -106,13 +103,12 @@ probe.sd <- function (var, transform = identity, na.rm = TRUE) {
 ##'@rdname basic_probes
 ##' @export
 probe.period <- function (var, kernel.width, transform = identity) {
-  if (length(var)>1)
-    pStop_(sQuote("probe.period")," is a univariate probe.")
+  if (length(var)>1) pStop_(sQuote("probe.period")," is a univariate probe.")
   transform <- match.fun(transform)
   function (y) {
     zz <- spec.pgram(
       x=transform(y[var,]),
-      kernel=kernel("modified.daniell",m=kernel.width),
+      kernel=kernel("modified.daniell",m=kernel.width,r=NA),
       taper=0,
       fast=FALSE,
       pad=0,
@@ -144,12 +140,7 @@ probe.acf <- function (var, lags, type = c("covariance", "correlation"),
   }
   lags <- as.integer(lags)
   function (y) tryCatch(
-    .Call(
-      P_probe_acf,
-      x=transform(y[var,,drop=FALSE]),
-      lags=lags,
-      corr=corr
-    ),
+    .Call(P_probe_acf,x=transform(y[var,,drop=FALSE]),lags=lags,corr=corr),
     error = function (e) pStop(ep,conditionMessage(e))
   )
 }
@@ -166,13 +157,7 @@ probe.ccf <- function (vars, lags, type = c("covariance", "correlation"),
     pStop(ep,sQuote("vars")," must name two variables.")
   lags <- as.integer(lags)
   function (y) tryCatch(
-    .Call(
-      P_probe_ccf,
-      x=transform(y[vars[1L],,drop=TRUE]),
-      y=transform(y[vars[2L],,drop=TRUE]),
-      lags=lags,
-      corr=corr
-    ),
+    .Call(P_probe_ccf,x=transform(y[vars[1L],,drop=TRUE]),y=transform(y[vars[2L],,drop=TRUE]),lags=lags,corr=corr),
     error = function (e) pStop(ep,conditionMessage(e))
   )
 }
@@ -185,12 +170,7 @@ probe.marginal <- function (var, ref, order = 3, diff = 1,
   transform <- match.fun(transform)
   setup <- .Call(P_probe_marginal_setup,transform(ref),order,diff)
   function (y) tryCatch(
-    .Call(
-      P_probe_marginal_solve,
-      x=transform(y[var,,drop=TRUE]),
-      setup=setup,
-      diff=diff
-    ),
+    .Call(P_probe_marginal_solve,x=transform(y[var,,drop=TRUE]),setup=setup,diff=diff),
     error = function (e) pStop("probe.marginal",conditionMessage(e))
   )
 }
@@ -209,24 +189,17 @@ probe.nlar <- function (var, lags, powers, transform = identity) {
     pStop(ep,sQuote("lags")," and ",sQuote("powers")," must be positive integers.")
   if (length(lags)<length(powers)) {
     if (length(lags)>1)
-      pStop(ep,sQuote("lags")," must match ",sQuote("powers"),
-        " in length, or have length 1.")
+      pStop(ep,sQuote("lags")," must match ",sQuote("powers")," in length, or have length 1.")
     lags <- rep(lags,length(powers))
   } else if (length(lags)>length(powers)) {
     if (length(powers)>1)
-      pStop(ep,sQuote("powers")," must match ",sQuote("lags"),
-        " in length, or have length 1.")
+      pStop(ep,sQuote("powers")," must match ",sQuote("lags")," in length, or have length 1.")
     powers <- rep(powers,length(lags))
   }
   lags <- as.integer(lags)
   powers <- as.integer(powers)
   function (y) tryCatch(
-    .Call(
-      P_probe_nlar,
-      x=transform(y[var,,drop=TRUE]),
-      lags=lags,
-      powers=powers
-    ),
+    .Call(P_probe_nlar,x=transform(y[var,,drop=TRUE]),lags=lags,powers=powers),
     error = function (e) pStop(ep,conditionMessage(e))
   )
 }

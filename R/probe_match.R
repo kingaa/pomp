@@ -230,15 +230,8 @@ probe.eval <- function (object) {
   ## apply probes to model simulations
   simvals <- tryCatch(
     freeze(
-      .Call(
-        P_apply_probe_sim,
-        object=object,
-        nsim=object@nsim,
-        params=object@params,
-        probes=object@probes,
-        datval=object@datvals,
-        .getnativesymbolinfo=TRUE
-      ),
+      .Call(P_apply_probe_sim,object=object,nsim=object@nsim,params=object@params,
+        probes=object@probes,datval=object@datvals,.getnativesymbolinfo=TRUE),
       seed=object@seed
     ),
     error = function (e) {
