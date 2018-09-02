@@ -232,6 +232,7 @@ pomp(
       degree=3
     )
   ),
+  cfile="sir_source",
   globals=Csnippet("
     static int nbasis = 3;"
   ),

@@ -879,6 +879,8 @@ pomp(
   data=subset(raw.data,day>14&day<400),
   times="day",
   t0=14,
+  cfile="blowfly1_source",
+  compile=FALSE,
   rprocess=discrete_time(
     step.fun=Csnippet("
       double *N = &N1;
@@ -920,6 +922,8 @@ pomp(
 
 pomp(
   blowflies1,
+  cfile="blowfly2_source",
+  compile=FALSE,
   rprocess=discrete_time(
     step.fun=Csnippet("
       double *N = &N1;

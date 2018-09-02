@@ -220,6 +220,7 @@ pomp(
   times='time',
   t0=t0,
   params=mle,
+  cfile="dacca_source",
   globals = sprintf("int nrstage = %d, nbasis = %d;",nrstage,nbasis),
   rprocess = euler(
     step.fun = cholmodel_one,

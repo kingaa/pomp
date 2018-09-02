@@ -107,7 +107,8 @@ pomp(
   data=read.csv2(text=dat),
   times="time",
   t0=0,
-  params=c(x1.0=0,x2.0=0,s1=1,s2=3,tau=1), # parameters at which data were generated
+  params=c(x1.0=0,x2.0=0,s1=1,s2=3,tau=1),
+  cfile="rw2_source",
   rprocess = onestep(
     Csnippet("
         x1 = rnorm(x1,s1*sqrt(dt));

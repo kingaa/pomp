@@ -536,6 +536,7 @@ pomp(
     pop=1000000,
     beta.sd=0
   ),
+  cfile="sir2_source",
   covar=covariate_table(
     t=seq(0,10.2,by=0.01),
     seas=periodic.bspline.basis(

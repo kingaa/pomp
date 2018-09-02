@@ -12,7 +12,7 @@ spy(po1)
 po1 %>%
   pomp(partrans=parameter_trans(log="r"),params=NULL,
     rinit=function(params,t0,...)params,
-    paramnames="r") -> po2
+    paramnames="r",compile=FALSE,cfile="nancy") -> po2
 spy(po2)
 
 pompExample(sir)
