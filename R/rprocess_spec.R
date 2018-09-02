@@ -177,6 +177,15 @@ setClass(
   )
 )
 
+##' @rdname undefined
+setMethod(
+  "undefined",
+  signature=signature(object="rprocPlugin"),
+  definition=function (object, ...) {
+    undefined(object@step.fn) && undefined(object@rate.fn)
+  }
+)
+
 setClass(
   "onestepRprocPlugin",
   contains="rprocPlugin",

@@ -6,7 +6,7 @@
 ##'
 ##' @name pomp_fun
 ##' @rdname pomp_fun
-##' @include pomp-package.R csnippet.R pstop.R
+##' @include pomp-package.R csnippet.R pstop.R undefined.R
 ##' @docType methods
 ##' @keywords programming internal
 ##' @concept extending the \pkg{pomp} package
@@ -208,6 +208,11 @@ setMethod(
   }
 )
 
-is.undef.pomp_fun <- function (object) {
-  is(object,"pomp_fun") && object@mode == pompfunmode$undef
-}
+##' @rdname undefined
+setMethod(
+  "undefined",
+  signature=signature(object="pomp_fun"),
+  definition=function (object, ...) {
+    object@mode == pompfunmode$undef
+  }
+)

@@ -2,8 +2,7 @@
 
 ## For pomp 2:
 
-- we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes
-- streamline the R snippets so that ... is unnecessary
+- do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
 - manual pages on the organization of the package
     - estimation algorithms
     - diagnostic tools
@@ -34,7 +33,7 @@
 - better scheme for indicating derivatives and maps in C snippets
 - should the default process model be persistence?
 	- what would the corresponding `dprocess` be?
-- provide full suite of methods for `traj.match.objfun`
+- Kalman filter?
 
 - "guide to upgrading to **pomp** version 2"
 - `as.data.frame` and ?? for `listies`
@@ -70,6 +69,8 @@
 
 ## For pomp:
 
+- streamline the R snippets so that ... is unnecessary?
+	- probably not worth the trouble, since C snippets are so much faster
 - add `include` argument to `pomp`?
 - deprecate `obs` and `states` arguments in `simulate`
 - graceful stopping for optimizers (at least for `nloptr`)

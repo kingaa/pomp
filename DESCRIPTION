@@ -34,6 +34,7 @@ Collate:
     'pomp-package.R'
     'aaa.R'
     'pstop.R'
+    'undefined.R'
     'csnippet.R'
     'pomp_fun.R'
     'parameter_trans.R'

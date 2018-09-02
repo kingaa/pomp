@@ -68,6 +68,15 @@ setClass(
   )
 )
 
+##' @rdname undefined
+setMethod(
+  "undefined",
+  signature=signature(object="skelPlugin"),
+  definition=function (object, ...) {
+    object@type==skeletontype$undef || undefined(object@skel.fn)
+  }
+)
+
 setClass(
   "vectorfieldPlugin",
   contains="skelPlugin",
