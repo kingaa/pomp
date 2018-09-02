@@ -81,10 +81,6 @@ setMethod(
     params, rinit, skeleton, dmeasure, partrans,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(skeleton) || missing(dmeasure))
-      pStop("spect.match.objfun",paste(sQuote(c("params","skeleton","dmeasure")),
-        collapse=", ")," are needed basic components.")
-
     tryCatch(
       tmof.internal(
         data,
@@ -131,12 +127,34 @@ setMethod(
   }
 )
 
+##' @name traj.match.objfun-traj.match.objfun
+##' @aliases traj.match.objfun,traj.match.objfun-method
+##' @rdname traj_match
+##' @export
+setMethod(
+  "traj.match.objfun",
+  signature=signature(data="traj_match_objfun"),
+  definition=function (data,
+    ..., verbose = getOption("verbose", FALSE)) {
+
+    traj.match.objfun(
+      data@env$object,
+      ...,
+      verbose=verbose
+    )
+
+  }
+)
+
 tmof.internal <- function (object,
   est, fail.value, ode_control,
   ..., verbose) {
 
   verbose <- as.logical(verbose)
   object <- pomp(object,...,verbose=verbose)
+
+  if (undefined(object@skeleton) || undefined(object@dmeasure))
+    pStop_(paste(sQuote(c("skeleton","dmeasure")),collapse=", ")," are needed basic components.")
 
   fail.value <- as.numeric(fail.value)
 
@@ -180,3 +198,22 @@ traj.match.loglik <- function (object, seed, ode_control) {
     times=time(object),params=coef(object),
     log=TRUE))
 }
+
+##' @name trajectory-traj.match.objfun
+##' @aliases trajectory,traj.match.objfun-method
+##' @rdname trajectory
+##' @export
+setMethod(
+  "trajectory",
+  signature=signature(object="traj_match_objfun"),
+  definition=function (object,
+    ..., verbose = getOption("verbose", FALSE)) {
+
+    trajectory(
+      object@env$object,
+      ...,
+      verbose=verbose
+    )
+
+  }
+)

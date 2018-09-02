@@ -64,6 +64,11 @@ Error : in ‘plot’: ‘quantile.styles’ must be a list.
 > try(plot(sp4,plot.data=TRUE,data.styles=c(col="red",lty=1)))
 Error : in ‘plot’: ‘data.styles’ must be a list
 > 
+> try(spect())
+Error : in ‘spect’: ‘data’ is a required argument.
+> try(spect("bob"))
+Error : ‘spect’ is undefined for ‘data’ of class ‘character’.
+> 
 > try(spect(sp,kernel.width=-3))
 Error : in ‘spect’: ‘kernel.width’ must be a positive integer.
 > try(spect(sp,kernel.width=NA))

@@ -72,7 +72,9 @@ Error : in ‘spect.match.objfun’: parameter ‘harry’ not found in ‘param
 > 
 > f1 %>% spect() %>% plot()
 > 
-> f1 %>% as.pomp() %>% as.data.frame() %>% names()
+> f1 %>% as("pomp")
+<object of class ‘pomp’>
+> f1 %>% as("data.frame") %>% names()
 [1] "time" "y1"   "y2"  
 > 
 > f1 %>% spect.match.objfun(fail.value=1e10) -> f2
@@ -85,6 +87,8 @@ Error : in ‘spect.match.objfun’: if ‘weights’ is provided as a vector, i
 <object of class ‘spect_match_objfun’>
 > try(spect.match.objfun(f2,weights=function(f)1-4*f))
 Error : in ‘spect.match.objfun’: ‘weights’ should be nonnegative and finite
+> try(spect.match.objfun(f2,weights=function(f)stop("oh no!")))
+Error : in ‘spect.match.objfun’: ‘weights’ function: oh no!
 > spect.match.objfun(f2,seed=5069977,weights=function(f)exp(-f/0.1)) -> f2
 > subplex(fn=f2,par=out$par,control=list(reltol=1e-3)) -> out
 > f2(out$par)

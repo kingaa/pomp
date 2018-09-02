@@ -25,6 +25,7 @@ try(plot(smc,pars="bob"))
 plot(smc,pars="K")
 try(plot(smc,pars=NULL))
 stopifnot(sum(cond.logLik(smc))==logLik(smc))
+stopifnot(length(eff.sample.size(smc)) == 10)
 
 try(bsmc2())
 try(bsmc2(3L))
@@ -54,6 +55,10 @@ try(bsmc2(smc,Np=100,smooth=Inf))
 try(bsmc2(smc,Np=100,smooth="yes"))
 try(bsmc2(smc,Np=100,smooth=c(1,2)))
 try(bsmc2(smc,Np=100,smooth=list(1,2)))
+try(bsmc2(smc,Np=100,rprocess=NULL,max.fail=Inf,tol=10))
+try(bsmc2(smc,Np=100,params=NULL,max.fail=Inf,tol=10))
+try(bsmc2(smc,Np=100,dmeasure=NULL,max.fail=Inf,tol=10))
+try(bsmc2(smc,Np=100,rprior=NULL,max.fail=Inf,tol=10))
 
 theta <- coef(gompertz)
 theta["K"] <- 1
@@ -80,15 +85,15 @@ gompertz %>%
 smc4 %>% plot()
 
 try(gompertz %>%
-  as.data.frame() %>%
-  bsmc2(
-    times="time",t0=-5,
-    params=coef(gompertz),
-    Np=1000,smooth=0.1,
-    rprior=3,
-    rprocess=gompertz@rprocess,
-    dmeasure=gompertz@dmeasure,
-    statenames=c("X"),
-    paramnames=c("r","K","sigma")))
+    as.data.frame() %>%
+    bsmc2(
+      times="time",t0=-5,
+      params=coef(gompertz),
+      Np=1000,smooth=0.1,
+      rprior=3,
+      rprocess=gompertz@rprocess,
+      dmeasure=gompertz@dmeasure,
+      statenames=c("X"),
+      paramnames=c("r","K","sigma")))
 
 dev.off()

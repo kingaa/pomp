@@ -223,10 +223,8 @@ smof.internal <- function (object,
   } else if (is.function(weights)) {
     weights <- tryCatch(
       vapply(object@freq,weights,numeric(1)),
-      error = function (e) {
-        pStop_("problem with ",sQuote("weights")," function: ",
-          conditionMessage(e))
-      }
+      error = function (e)
+        pStop_(sQuote("weights")," function: ",conditionMessage(e))
     )
   } else {
     pStop_(sQuote("weights"),

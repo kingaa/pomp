@@ -230,16 +230,12 @@ probe.eval <- function (object) {
         probes=object@probes,datval=object@datvals,.getnativesymbolinfo=TRUE),
       seed=object@seed
     ),
-    error = function (e) {
-      pStop_("applying probes to simulated data: ",conditionMessage(e))
-    }
+    error = function (e) pStop_("applying probes to simulated data: ",conditionMessage(e))
   )
 
   tryCatch(
     .Call(P_synth_loglik,simvals,object@datvals),
-    error = function (e) {
-      pStop_("in synthetic likelihood computation: ",conditionMessage(e))
-    }
+    error = function (e) pStop_("in synthetic likelihood computation: ",conditionMessage(e))
   )
 
 }

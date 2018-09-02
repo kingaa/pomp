@@ -1,0 +1,75 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> png(filename="traj_match-%02d.png",res=100)
+> 
+> library(pomp)
+> library(magrittr)
+> 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> 
+> try(traj.match.objfun())
+Error : in ‘traj.match.objfun’: ‘data’ is a required argument.
+> try(traj.match.objfun("bob"))
+Error : ‘traj.match.objfun’ is undefined for ‘data’ of class ‘character’.
+> try(ou2 %>% as.data.frame() %>% traj.match.objfun())
+Error : in ‘traj.match.objfun’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+> try(ou2 %>% as.data.frame() %>% traj.match.objfun(times="time",t0=0))
+Error : in ‘traj.match.objfun’: ‘skeleton’, ‘dmeasure’ are needed basic components.
+> 
+> ou2 %>%
++   as.data.frame() %>%
++   traj.match.objfun(
++     times="time",t0=0,
++     rinit=ou2@rinit,
++     skeleton=ou2@skeleton,
++     dmeasure=ou2@dmeasure,
++     params=coef(ou2)
++   ) -> f
+> 
+> stopifnot(f(0)==f(1))
+> 
+> f %>% traj.match.objfun(est=c("alpha.1")) -> f1
+> plot(sapply(seq(0.1,0.9,by=0.1),f1),xlab="",ylab="")
+> 
+> f1(1.1)
+[1] 4.1e+07
+> matplot(t(trajectory(f1)[,1,]),type="l",ylab="y")
+> library(subplex)
+> subplex(fn=f1,par=0.4,control=list(reltol=1e-3)) -> out
+> f1(out$par)
+[1] 3057
+> 
+> try(traj.match.objfun(f1,est="harry"))
+Error : in ‘traj.match.objfun’: parameter ‘harry’ not found in ‘params’
+> 
+> f1 %>% as("pomp")
+<object of class ‘pomp’>
+> f1 %>% as("data.frame") %>% names()
+[1] "time" "y1"   "y2"  
+> 
+> f1 %>% traj.match.objfun(fail.value=1e10) -> f2
+> 
+> dev.off()
+null device 
+          1 
+> 

@@ -93,6 +93,9 @@ mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,
   drpocess="oops",
   dmeasure=function(log,...)0) -> mf3
 try(mif2(mf3,max.fail=1))
+try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,dmeasure=NULL))
+try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,rprocess=NULL))
+try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,params=NULL))
 
 theta <- coef(po)
 theta["sigma"] <- 0.2

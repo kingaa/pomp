@@ -43,7 +43,8 @@ f1 %>% summary() %>% names()
 
 f1 %>% spect() %>% plot()
 
-f1 %>% as.pomp() %>% as.data.frame() %>% names()
+f1 %>% as("pomp")
+f1 %>% as("data.frame") %>% names()
 
 f1 %>% spect.match.objfun(fail.value=1e10) -> f2
 
@@ -51,6 +52,7 @@ try(spect.match.objfun(f2,weights="heavy"))
 try(spect.match.objfun(f2,weights=c(3,4,5)))
 spect.match.objfun(f2,weights=exp(-seq(0,1,length=50)))
 try(spect.match.objfun(f2,weights=function(f)1-4*f))
+try(spect.match.objfun(f2,weights=function(f)stop("oh no!")))
 spect.match.objfun(f2,seed=5069977,weights=function(f)exp(-f/0.1)) -> f2
 subplex(fn=f2,par=out$par,control=list(reltol=1e-3)) -> out
 f2(out$par)

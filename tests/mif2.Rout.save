@@ -197,6 +197,12 @@ Warning messages:
 4: in ‘mif2’: 11 filtering failures occurred. 
 > try(mif2(mf3,max.fail=1))
 Error : in ‘mif2’: too many filtering failures.
+> try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,dmeasure=NULL))
+Error : in ‘mif2’: ‘rprocess’, ‘dmeasure’ are needed basic components.
+> try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,rprocess=NULL))
+Error : in ‘mif2’: ‘rprocess’, ‘dmeasure’ are needed basic components.
+> try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,params=NULL))
+Error : in ‘mif2’: the following parameter(s), given random walks in ‘rw.sd’, are not present in ‘start’: ‘sigma’.
 > 
 > theta <- coef(po)
 > theta["sigma"] <- 0.2

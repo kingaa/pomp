@@ -10,6 +10,8 @@
 \alias{traj.match.objfun-pomp}
 \alias{traj.match.objfun}
 \alias{traj.match.objfun,pomp-method}
+\alias{traj.match.objfun-traj.match.objfun}
+\alias{traj.match.objfun,traj.match.objfun-method}
 \title{Trajectory matching}
 \usage{
 \S4method{traj.match.objfun}{data.frame}(data, est = character(0),
@@ -18,6 +20,9 @@
 
 \S4method{traj.match.objfun}{pomp}(data, est, fail.value = NA,
   ode_control = list(), ..., verbose = getOption("verbose", FALSE))
+
+\S4method{traj.match.objfun}{traj_match_objfun}(data, ...,
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,

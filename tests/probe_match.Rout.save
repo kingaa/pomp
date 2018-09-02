@@ -86,6 +86,11 @@ Error : in ‘probe.match.objfun’: parameter ‘harry’ not found in ‘param
 > 
 > f1 %>% probe.match.objfun(fail.value=1e10) -> f2
 > 
+> f1 %>% as("pomp")
+<object of class ‘pomp’>
+> f1 %>% as("data.frame") %>% names()
+[1] "time" "Y"   
+> 
 > dev.off()
 null device 
           1 

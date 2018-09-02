@@ -205,11 +205,9 @@ setMethod(
   }
 )
 
-parameter_trans.internal <- function (toEst, fromEst, ...,
-  log, logit, barycentric) {
+parameter_trans.internal <- function (toEst = NULL, fromEst = NULL,
+  ..., log, logit, barycentric) {
 
-  if (missing(toEst)) toEst <- NULL
-  if (missing(fromEst)) fromEst <- NULL
   if (missing(log)) log <- NULL
   if (missing(logit)) logit <- NULL
   if (missing(barycentric)) barycentric <- list()

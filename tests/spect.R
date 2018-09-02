@@ -28,6 +28,9 @@ try(plot(sp4,plot.data=FALSE,quantile.styles=c(col="grey10",lty=1:3)))
 plot(sp4,plot.data=TRUE,data.styles=list(col="red",lty=1))
 try(plot(sp4,plot.data=TRUE,data.styles=c(col="red",lty=1)))
 
+try(spect())
+try(spect("bob"))
+
 try(spect(sp,kernel.width=-3))
 try(spect(sp,kernel.width=NA))
 try(spect(sp,kernel.width=NULL))
