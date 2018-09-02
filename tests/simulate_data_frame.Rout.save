@@ -57,11 +57,11 @@ Error : in ‘simulate’: ‘t0’ is a required argument.
 Error : in ‘simulate’: ‘t0’ is a required argument.
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +     simulate(times="t",t0=0))
-Error : in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘simulate’: ‘rprocess’ is undefined.
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +     simulate(times="t",t0=0))
-Error : in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘simulate’: ‘rprocess’ is undefined.
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +     simulate(times="t",t0=0,params=c(x.0=1)))
-<object of class ‘pomp’>
+Error : in ‘simulate’: ‘rprocess’ is undefined.
 > 

@@ -135,7 +135,7 @@ In setNames(as.double(params), names(params)) : NAs introduced by coercion
 Error : in ‘probe’: applying probes to simulated data: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
 > 
 > try(data.frame(t=1:10,a=1:10) %>% probe())
-Error : in ‘probe’: ‘params’, ‘rprocess’, ‘rmeasure’ are needed basic components.
+Error : in ‘probe’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
 > data.frame(t=1:10,a=1:10) %>%
 +   probe(

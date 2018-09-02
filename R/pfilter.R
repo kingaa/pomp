@@ -156,10 +156,6 @@ setMethod(
     ...,
     verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprocess) || missing(dmeasure))
-      pStop("pfilter",paste(sQuote(c("params","rprocess","dmeasure")),
-        collapse=", ")," are needed basic components.")
-
     tryCatch(
       pfilter.internal(
         data,
@@ -249,6 +245,9 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
+
+  if (undefined(object@rprocess) || undefined(object@dmeasure))
+    pStop_(paste(sQuote(c("rprocess","dmeasure")),collapse=", ")," are needed basic components.")
 
   tol <- as.numeric(tol)
   gnsi <- as.logical(.getnativesymbolinfo)

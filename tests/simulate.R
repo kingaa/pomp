@@ -46,15 +46,10 @@ simulate(times=1:100,t0=0,seed=450738202,
   rinit=Csnippet("z = 0;"),
   statenames="z",obsnames="w") %>% plot()
 
-stopifnot(
-  {
-    simulate(times=1:100,t0=0,
-      rmeasure=Csnippet("w = rnorm(z,1);"),
-      rinit=Csnippet("z = 0;"),
-      statenames="z",obsnames="w") %>% states() -> x
-    sum(is.na(x))==100
-  }
-)
+try(simulate(times=1:100,t0=0,
+  rmeasure=Csnippet("w = rnorm(z,1);"),
+  rinit=Csnippet("z = 0;"),
+  statenames="z",obsnames="w"))
 
 simulate(times=1:100,t0=0,
   rprocess=onestep(function(z,...) {

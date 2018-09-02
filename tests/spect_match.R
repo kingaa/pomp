@@ -50,7 +50,7 @@ try(spect.match.objfun(f2,weights="heavy"))
 try(spect.match.objfun(f2,weights=c(3,4,5)))
 spect.match.objfun(f2,weights=exp(-seq(0,1,length=50)))
 try(spect.match.objfun(f2,weights=function(f)1-4*f))
-spect.match.objfun(f2,weights=function(f)exp(-f/0.1)) -> f2
+spect.match.objfun(f2,seed=5069977,weights=function(f)exp(-f/0.1)) -> f2
 subplex(fn=f2,par=out$par,control=list(reltol=1e-3)) -> out
 f2(out$par)
 summary(f2) %>% names()

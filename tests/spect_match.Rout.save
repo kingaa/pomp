@@ -83,10 +83,10 @@ Error : in ‘spect.match.objfun’: if ‘weights’ is provided as a vector, i
 <object of class ‘spect_match_objfun’>
 > try(spect.match.objfun(f2,weights=function(f)1-4*f))
 Error : in ‘spect.match.objfun’: ‘weights’ should be nonnegative and finite
-> spect.match.objfun(f2,weights=function(f)exp(-f/0.1)) -> f2
+> spect.match.objfun(f2,seed=5069977,weights=function(f)exp(-f/0.1)) -> f2
 > subplex(fn=f2,par=out$par,control=list(reltol=1e-3)) -> out
 > f2(out$par)
-[1] 74.2
+[1] 82.2
 > summary(f2) %>% names()
 [1] "coef"  "nsim"  "pvals"
 > plot(spect(f2))

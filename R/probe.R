@@ -115,10 +115,6 @@ setMethod(
     params, rinit, rprocess, rmeasure,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprocess) || missing(rmeasure))
-      pStop("probe",paste(sQuote(c("params","rprocess","rmeasure")),
-        collapse=", ")," are needed basic components.")
-
     tryCatch(
       probe.internal(data,probes=probes,nsim=nsim,seed=seed,
         rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,params=params,
@@ -177,6 +173,9 @@ probe.internal <- function (object, probes, nsim, seed, ...,
   verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
+
+  if (undefined(object@rprocess) || undefined(object@rmeasure))
+    pStop_(paste(sQuote(c("rprocess","rmeasure")),collapse=", ")," are needed basic components.")
 
   if (missing(probes)) probes <- NULL
   if (missing(nsim)) nsim <- NULL

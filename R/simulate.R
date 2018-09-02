@@ -184,6 +184,8 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
 
   object <- pomp(object,...,verbose=verbose)
 
+  if (undefined(object@rprocess)) pStop_(sQuote("rprocess")," is undefined.")
+
   include.data <- as.logical(include.data)
 
   if (length(nsim)!=1 || !is.numeric(nsim) || !is.finite(nsim) || nsim < 1)
