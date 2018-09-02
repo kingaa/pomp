@@ -130,10 +130,6 @@ setMethod(
     params, rinit, rprocess, dmeasure, partrans,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprocess) || missing(dmeasure))
-      pStop("mif2",paste(sQuote(c("params","rprocess","dmeasure")),
-        collapse=", ")," are needed basic components.")
-
     tryCatch(
       mif2.internal(
         data,
@@ -286,6 +282,9 @@ mif2.internal <- function (object, Nmif, rw.sd,
 
   object <- pomp(object,...,verbose=verbose)
 
+  if (undefined(object@rprocess) || undefined(object@dmeasure))
+    pStop_(paste(sQuote(c("rprocess","dmeasure")),collapse=", ")," are needed basic components.")
+
   gnsi <- as.logical(.getnativesymbolinfo)
 
   if (length(Nmif) != 1 || !is.numeric(Nmif) || !is.finite(Nmif) || Nmif < 1)
@@ -335,7 +334,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
 
   if (missing(rw.sd))
     pStop_(sQuote("rw.sd")," must be specified!")
-  rw.sd <- pkern.sd(rw.sd,time=time(object),paramnames=names(start))
+  rw.sd <- perturbn.kernel.sd(rw.sd,time=time(object),paramnames=names(start))
 
   if (missing(cooling.fraction.50))
     pStop_(sQuote("cooling.fraction.50")," is a required argument.")
@@ -565,7 +564,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
   )
 }
 
-pkern.sd <- function (rw.sd, time, paramnames) {
+perturbn.kernel.sd <- function (rw.sd, time, paramnames) {
 
   if (is.matrix(rw.sd)) return(rw.sd)
   if (is(rw.sd,"safecall")) {

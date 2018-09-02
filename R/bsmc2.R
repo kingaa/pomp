@@ -104,11 +104,6 @@ setMethod(
     params, rprior, rinit, rprocess, dmeasure, partrans,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprior) ||
-        missing(rprocess) || missing(dmeasure))
-      pStop("bsmc2",paste(sQuote(c("params","rprior","rprocess","dmeasure")),
-        collapse=", ")," are needed basic components.")
-
     tryCatch(
       bsmc2.internal(
         data,
@@ -190,6 +185,9 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
   verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
+
+  if (undefined(object@rprior) || undefined(object@rprocess) || undefined(object@dmeasure))
+    pStop_(paste(sQuote(c("rprior","rprocess","dmeasure")),collapse=", ")," are needed basic components.")
 
   gnsi <- as.logical(.getnativesymbolinfo)
 

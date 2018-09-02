@@ -7,6 +7,7 @@ library(magrittr)
 pompExample(ou2)
 
 try(ou2 %>% as.data.frame() %>% spect.match.objfun())
+try(ou2 %>% as.data.frame() %>% spect.match.objfun(times="time",t0=0))
 
 ou2 %>%
   as.data.frame() %>%

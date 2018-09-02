@@ -16,6 +16,7 @@ plist <- list(
 )
 
 try(gompertz %>% as.data.frame() %>% probe.match.objfun())
+try(gompertz %>% as.data.frame() %>% probe.match.objfun(times="time",t0=0))
 
 gompertz %>%
   as.data.frame() %>%

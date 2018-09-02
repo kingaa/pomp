@@ -112,10 +112,6 @@ setMethod(
     params, rinit, rprocess, rmeasure,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprocess) || missing(rmeasure))
-      pStop("spect",sQuote(c("params","rprocess","rmeasure")),
-        " are required arguments.")
-
     tryCatch(
       spect.internal(
         data,
@@ -206,6 +202,9 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
+
+  if (undefined(object@rprocess) || undefined(object@rmeasure))
+    pStop_(paste(sQuote(c("rprocess","rmeasure")),collapse=", ")," are needed basic components.")
 
   if (missing(vars)) vars <- rownames(object@data)
 

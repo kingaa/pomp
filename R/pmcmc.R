@@ -101,10 +101,6 @@ setMethod(
     params, rinit, rprocess, dmeasure, dprior,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprocess) || missing(dmeasure))
-      pStop("pfilter",paste(sQuote(c("params","dmeasure")),
-        collapse=", ")," are needed basic components.")
-
     tryCatch(
       pmcmc.internal(
         data,
@@ -302,29 +298,22 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
       variable=c("loglik","log.prior","nfail",names(theta))))
 
   if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
-    pfp <- tryCatch(
-      pfilter(
-        object,
-        params=theta,
-        Np=Np,
-        tol=tol,
-        max.fail=max.fail,
-        filter.traj=TRUE,
-        verbose=verbose,
-        .getnativesymbolinfo=gnsi
-      ),
-      error = function (e) {
-        pStop_(conditionMessage(e))
-      }
-    )
-    log.prior <- dprior(object,params=theta,log=TRUE,
-      .getnativesymbolinfo=gnsi)
+
+    pfp <- pfilter(object,params=theta,Np=Np,tol=tol,max.fail=max.fail,
+      filter.traj=TRUE,.getnativesymbolinfo=gnsi,verbose=verbose)
+
+    log.prior <- dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
+
     gnsi <- FALSE
+
   } else { ## has been computed previously
+
     pfp <- .prev.pfp
     log.prior <- .prev.log.prior
     pfp@filter.traj <- pfp@filter.traj[,.ndone,,drop=FALSE]
+
   }
+
   traces[1,names(theta)] <- theta
   traces[1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
 

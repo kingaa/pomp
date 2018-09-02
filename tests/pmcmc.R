@@ -102,6 +102,9 @@ pompExample(gompertz)
 set.seed(857075216L)
 
 try(gompertz %>% as.data.frame() %>% pmcmc())
+try(gompertz %>% as.data.frame() %>% pmcmc(times="time",t0=0))
+try(gompertz %>% as.data.frame() %>% pmcmc(times="time",t0=0,
+  proposal=mvn.diag.rw(c(a=1,b=2))))
 
 gompertz %>%
   as.data.frame() %>%

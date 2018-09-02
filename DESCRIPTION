@@ -109,6 +109,7 @@ Collate:
     'show.R'
     'print.R'
     'profile_design.R'
+    'resample.R'
     'ricker.R'
     'rw2.R'
     'sannbox.R'

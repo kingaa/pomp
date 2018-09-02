@@ -126,10 +126,6 @@ setMethod(
     params, rinit, rprocess,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprocess))
-      pStop("enkf",paste(sQuote(c("params","rprocess")),
-        collapse=", ")," are needed basic components.")
-
     tryCatch(
       enkf.internal(
         data,
@@ -198,10 +194,6 @@ setMethod(
     params, rinit, rprocess,
     ...,verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprocess))
-      pStop("eakf",paste(sQuote(c("params","rprocess")),
-        collapse=", ")," are needed basic components.")
-
     tryCatch(
       eakf.internal(
         data,
@@ -253,6 +245,9 @@ enkf.internal <- function (object,
   verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
+
+  if (undefined(object@rprocess))
+    pStop_(paste(sQuote(c("rprocess")),collapse=", ")," is a needed basic component.")
 
   Np <- as.integer(Np)
   R <- as.matrix(R)
@@ -327,6 +322,9 @@ eakf.internal <- function (object,
   verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
+
+  if (undefined(object@rprocess))
+    pStop_(paste(sQuote(c("rprocess")),collapse=", ")," is a needed basic component.")
 
   Np <- as.integer(Np)
   R <- as.matrix(R)

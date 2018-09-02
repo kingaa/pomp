@@ -79,10 +79,6 @@ setMethod(
     params, rinit, rprocess, rmeasure, partrans,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprocess) || missing(rmeasure))
-      pStop("probe.match.objfun",paste(sQuote(c("params","rprocess","rmeasure")),
-        collapse=", ")," are needed basic components.")
-
     tryCatch(
       pmof.internal(
         data,

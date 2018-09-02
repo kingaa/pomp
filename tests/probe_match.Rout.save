@@ -37,7 +37,9 @@ newly created object(s):
 + )
 > 
 > try(gompertz %>% as.data.frame() %>% probe.match.objfun())
-Error : in ‘probe.match.objfun’: ‘params’, ‘rprocess’, ‘rmeasure’ are needed basic components.
+Error : in ‘probe.match.objfun’: in ‘probe’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+> try(gompertz %>% as.data.frame() %>% probe.match.objfun(times="time",t0=0))
+Error : in ‘probe.match.objfun’: in ‘probe’: ‘rprocess’, ‘rmeasure’ are needed basic components.
 > 
 > gompertz %>%
 +   as.data.frame() %>%

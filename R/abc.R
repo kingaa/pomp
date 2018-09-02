@@ -120,10 +120,6 @@ setMethod(
     params, rinit, rprocess, rmeasure, dprior,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprocess) || missing(rmeasure))
-      pStop("abc",paste(sQuote(c("params","rprocess","rmeasure")),collapse=", "),
-        " are needed basic components.")
-
     tryCatch(
       abc.internal(
         data,
@@ -263,6 +259,9 @@ abc.internal <- function (object,
   verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
+
+  if (undefined(object@rprocess) || undefined(object@rmeasure))
+    pStop_(paste(sQuote(c("rprocess","rmeasure")),collapse=", ")," are needed basic components.")
 
   if (missing(proposal)) proposal <- NULL
   if (missing(probes)) probes <- NULL

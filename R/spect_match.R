@@ -84,10 +84,6 @@ setMethod(
     params, rinit, rprocess, rmeasure, partrans,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params) || missing(rprocess) || missing(rmeasure))
-      pStop("spect.match.objfun",paste(sQuote(c("params","rprocess","rmeasure")),
-        collapse=", ")," are needed basic components.")
-
     tryCatch(
       smof.internal(
         data,

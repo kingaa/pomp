@@ -207,12 +207,9 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
 
   return.type <- switch(format,arrays=0L,data.frame=0L,pomps=1L)
 
-  sims <- tryCatch(
-    freeze(
-      .Call(P_do_simulate,object,params,nsim,return.type,.getnativesymbolinfo),
-      seed=seed
-    ),
-    error = function (e) pStop_(conditionMessage(e))
+  sims <- freeze(
+    .Call(P_do_simulate,object,params,nsim,return.type,.getnativesymbolinfo),
+    seed=seed
   )
 
   if (format == "data.frame") {

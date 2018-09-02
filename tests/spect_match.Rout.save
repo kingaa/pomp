@@ -28,7 +28,9 @@ newly created object(s):
  ou2 
 > 
 > try(ou2 %>% as.data.frame() %>% spect.match.objfun())
-Error : in ‘spect.match.objfun’: ‘params’, ‘rprocess’, ‘rmeasure’ are needed basic components.
+Error : in ‘spect.match.objfun’: in ‘spect’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+> try(ou2 %>% as.data.frame() %>% spect.match.objfun(times="time",t0=0))
+Error : in ‘spect.match.objfun’: in ‘spect’: ‘rprocess’, ‘rmeasure’ are needed basic components.
 > 
 > ou2 %>%
 +   as.data.frame() %>%
