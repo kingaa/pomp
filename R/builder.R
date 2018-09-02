@@ -306,20 +306,23 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL,
       pStop_("cannot write file ",sQuote(modelfile))   #nocov
     }
   )
+
   if (verbose) cat("model codes written to",sQuote(modelfile),"\n")
+
+  cflags <- Sys.getenv("PKG_CPPFLAGS")
+  cflags <- paste0("PKG_CPPFLAGS=\"",
+    if (nchar(cflags)>0) paste0(cflags," ") else "",
+    "-I",system.file("include",package="pomp"),
+    " -I",getwd(),"\"")
+
+  shlib.args <- as.character(shlib.args)
+
+  solib <- paste0(stem,.Platform$dynlib.ext)
 
   if (compile) {
 
-    cflags <- Sys.getenv("PKG_CPPFLAGS")
-    cflags <- paste0("PKG_CPPFLAGS=\"",
-      if (nchar(cflags)>0) paste0(cflags," ") else "",
-      "-I",system.file("include",package="pomp"),
-      " -I",getwd(),"\"")
-
-    shlib.args <- as.character(shlib.args)
-
-    solib <- paste0(stem,.Platform$dynlib.ext)
     if (verbose) cat("compiling",sQuote(solib),"\n")
+
     tryCatch(
       {
         rv <- system2(
@@ -331,11 +334,11 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL,
           stderr=TRUE
         )
       },
-      error = function (e) {
-        pStop_("error compiling C snippets: ",conditionMessage(e)) #nocov
-      }
+      error = function (e) pStop_("error compiling C snippets: ",conditionMessage(e)) #nocov
     )
+
     stat <- as.integer(attr(rv,"status"))
+
     if (length(stat) > 0 && stat != 0L) {
       pStop_("cannot compile shared-object library ",sQuote(solib),": status = ",
         stat,"\ncompiler messages:\n",paste(rv,collapse="\n"))
