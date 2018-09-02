@@ -28,3 +28,4 @@ and \code{NA} if the question is inapplicable.
 \description{
 Check for undefined methods.
 }
+\keyword{internal}

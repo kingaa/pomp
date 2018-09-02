@@ -10,6 +10,7 @@
 ##' @name undefined
 ##' @rdname undefined
 ##' @include pstop.R
+##' @keywords internal
 ##'
 ##' @param object  object to test.
 ##'
