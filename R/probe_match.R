@@ -5,7 +5,6 @@
 ##' In probe-matching, one attempts to minimize the discrepancy between simulated and actual data, as measured by a set of summary statistics called \emph{probes}.
 ##' In \pkg{pomp}, this discrepancy is measured using the \dQuote{synthetic likelihood} as defined by Wood (2010).
 ##'
-##'
 ##' @name probe.match
 ##' @rdname probe_match
 ##' @keywords optimize
@@ -17,18 +16,25 @@
 ##' @family \pkg{pomp} parameter estimation methods
 ##' @seealso \code{\link{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##'
-##' @inheritParams probe
-##' @inheritParams pomp
 ##' @param est character vector; the names of parameters to be estimated.
+##'
 ##' @param fail.value optional numeric scalar;
 ##' if non-\code{NA}, this value is substituted for non-finite values of the objective function.
 ##' It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).
 ##'
+##' @param seed  integer.
+##' When fitting, it is often best to fix the seed of the random-number generator (RNG).
+##' This is accomplished by setting \code{seed} to an integer.
+##' By default, \code{seed = NULL}, which does not alter the RNG state.
+##'
+##' @inheritParams probe
+##' @inheritParams pomp
+##'
 ##' @return
-##' \code{probe.match.objfun} construct a stateful objective function for probe matching.
+##' \code{probe.match.objfun} constructs a stateful objective function for probe matching.
 ##' Specfically, \code{probe.match.objfun} returns an object of class \sQuote{probe_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 ##' In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
-##' When called, it wil return the negative synthetic log likelihood for the probes specified.
+##' When called, it will return the negative synthetic log likelihood for the probes specified.
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
 ##'

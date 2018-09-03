@@ -9,7 +9,7 @@ Methods common to \pkg{pomp} stateful objective functions
 \section{Important Note}{
 
 Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-The best practice is to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
+Therefore, it is a good idea to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
 }
 
 \keyword{internal}

@@ -20,6 +20,8 @@
 	- BetaNegBinom
 	- ~~logit, expit~~
 	- ~~log-barycentric and inverse~~
+- remove need to specify paramnames when log,logit,barycentric partrans is given
+- `spy` methods for derived objects
 - refurbish entire test suite
 	- order of testing development:
 		- ~~workhorses~~

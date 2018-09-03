@@ -81,22 +81,6 @@ setMethod(
     object@loglik
 )
 
-##' @name logLik-nlfd_pomp
-##' @aliases logLik,nlfd_pomp-method
-##' @rdname loglik
-##'
-##' @return
-##' When \code{object} is of \sQuote{nlfd_pomp} class (i.e., the result of a \code{nlf} computation), \code{logLik} retrieves the \dQuote{simulate maximum quasi log likelihood} (see \code{\link{nlf}}).
-##'
-##' @export
-setMethod(
-  "logLik",
-  signature=signature(object="nlfd_pomp"),
-  definition = function(object, ...) {
-    object@logql
-  }
-)
-
 ##' @name logLik-bsmcd_pomp
 ##' @aliases logLik,bsmcd_pomp-method
 ##' @rdname loglik

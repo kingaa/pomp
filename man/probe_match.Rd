@@ -50,9 +50,10 @@ see \link[=basic_probes]{basic probes}.}
 
 \item{nsim}{the number of model simulations to be computed.}
 
-\item{seed}{optional integer;
-if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
-See \code{\link[=simulate-pomp]{simulate}}.}
+\item{seed}{integer.
+When fitting, it is often best to fix the seed of the random-number generator (RNG).
+This is accomplished by setting \code{seed} to an integer.
+By default, \code{seed = NULL}, which does not alter the RNG state.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -88,10 +89,10 @@ See the \link[=userdata]{userdata documentation here} for information on how to 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
-\code{probe.match.objfun} construct a stateful objective function for probe matching.
+\code{probe.match.objfun} constructs a stateful objective function for probe matching.
 Specfically, \code{probe.match.objfun} returns an object of class \sQuote{probe_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
-When called, it wil return the negative synthetic log likelihood for the probes specified.
+When called, it will return the negative synthetic log likelihood for the probes specified.
 It is a stateful function:
 Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
 }
@@ -105,7 +106,7 @@ In \pkg{pomp}, this discrepancy is measured using the \dQuote{synthetic likeliho
 \section{Important Note}{
 
 Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-The best practice is to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
+Therefore, it is a good idea to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
 }
 
 \seealso{

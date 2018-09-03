@@ -3,128 +3,157 @@
 \docType{methods}
 \name{nlf}
 \alias{nlf}
-\alias{nlf,missing-method}
-\alias{nlf,ANY-method}
-\alias{nlf-pomp}
-\alias{nlf,pomp-method}
-\alias{nlf-nlfd_pomp}
-\alias{nlf,nlfd_pomp-method}
-\title{Parameter estimation my maximum simulated quasi-likelihood (nonlinear
-forecasting)}
+\alias{nlf.objfun}
+\alias{nlf.objfun,missing-method}
+\alias{nlf.objfun,ANY-method}
+\alias{nlf.objfun-data.frame}
+\alias{nlf.objfun,data.frame-method}
+\alias{nlf.objfun-pomp}
+\alias{nlf.objfun,pomp-method}
+\alias{nlf.objfun-nlf_objfun}
+\alias{nlf.objfun,nlf_objfun-method}
+\title{Nonlinear forecasting}
 \usage{
-\S4method{nlf}{pomp}(object, start, est, lags, period = NA,
-  tensor = FALSE, nconverge = 1000L, nasymp = 1000L, seed = 1066L,
-  transform.data, nrbf = 4L, method = c("subplex", "Nelder-Mead",
-  "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"), skip.se = FALSE,
-  verbose = getOption("verbose"), bootsamp = NULL, lql.frac = 0.1,
-  se.par.frac = 0.1, eval.only = FALSE, transform = FALSE, ...)
+\S4method{nlf.objfun}{data.frame}(data, est = character(0), lags,
+  nrbf = 4, ntransient, nasymp, seed = NULL,
+  transform.data = identity, period = NA, tensor = FALSE,
+  fail.value = NA_real_, params, rinit, rprocess, rmeasure, ...,
+  verbose = getOption("verbose"))
 
-\S4method{nlf}{nlfd_pomp}(object, start, est, lags, period, tensor,
-  nconverge, nasymp, seed, transform.data, nrbf, method, lql.frac,
-  se.par.frac, transform, ...)
+\S4method{nlf.objfun}{pomp}(data, est = character(0), lags, nrbf = 4,
+  ntransient, nasymp, seed = NULL, transform.data = identity,
+  period = NA, tensor = FALSE, fail.value = NA, ...,
+  verbose = getOption("verbose"))
+
+\S4method{nlf.objfun}{nlf_objfun}(data, est, lags, nrbf, ntransient,
+  nasymp, seed = NULL, period, tensor, transform.data, fail.value, ...,
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
-\item{object}{A \sQuote{pomp} object, with the data and model to fit to it.}
+\item{data}{either a data frame holding the time series data,
+or an object of class \sQuote{pomp},
+i.e., the output of another \pkg{pomp} calculation.}
 
-\item{start}{Named numeric vector with guessed parameters.}
+\item{est}{character vector; the names of parameters to be estimated.}
 
-\item{est}{Vector containing the names or indices of parameters to be
-estimated.}
+\item{lags}{A vector specifying the lags to use when constructing the nonlinear autoregressive prediction model.
+The first lag is the prediction interval.}
 
-\item{lags}{A vector specifying the lags to use when constructing the
-nonlinear autoregressive prediction model.  The first lag is the prediction
-interval.}
+\item{nrbf}{integer scalar;
+the number of radial basis functions to be used at each lag.}
+
+\item{ntransient}{number of timesteps to be discarded from the model simulation.}
+
+\item{nasymp}{number of asymptotic timesteps to be recorded from the model simulation.}
+
+\item{seed}{integer.
+When fitting, it is often best to fix the seed of the random-number generator (RNG).
+This is accomplished by setting \code{seed} to an integer.
+By default, \code{seed = NULL}, which does not alter the RNG state.}
+
+\item{transform.data}{optional function.
+If specified, forecasting is performed using data and model simulations transformed by this function.
+By default, \code{transform.data} is the identity function,
+i.e., no transformation is performed.
+The main purpose of \code{transform.data} is to achieve approximately multivariate normal forecasting errors.
+If the data are univariate, \code{transform.data} should take a scalar and return a
+scalar.
+If the data are multivariate, \code{transform.data} should assume a vector input and return a vector of the same length.}
 
 \item{period}{numeric; \code{period=NA} means the model is nonseasonal.
-period>0 is the period of seasonal forcing in 'real time'.}
+\code{period > 0} is the period of seasonal forcing.
+\code{period <= 0} is equivalent to \code{period = NA}.}
 
-\item{tensor}{logical; if FALSE, the fitted model is a generalized additive
-model with time mod period as one of the predictors, i.e., a gam with
-time-varying intercept.  If TRUE, the fitted model is a gam with lagged
-state variables as predictors and time-periodic coefficients, constructed
-using tensor products of basis functions of state variables with basis
+\item{tensor}{logical;
+if FALSE, the fitted model is a generalized additive model with time mod period as one of the predictors,
+i.e., a gam with time-varying intercept.
+If TRUE, the fitted model is a gam with lagged state variables as predictors and time-periodic coefficients, constructed using tensor products of basis functions of state variables with basis
 functions of time.}
 
-\item{nconverge}{number of convergence timesteps to be discarded from the
-model simulation.}
+\item{fail.value}{optional numeric scalar;
+if non-\code{NA}, this value is substituted for non-finite values of the objective function.
+It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
 
-\item{nasymp}{number of asymptotic timesteps to be recorded from the model
-simulation.}
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
-\item{seed}{integer specifying the random number seed to use.  When
-fitting, it is usually best to always run the simulations with the same
-sequence of random numbers, which is accomplished by setting \code{seed} to
-an integer.  If you want a truly random simulation, set \code{seed=NULL}.}
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{rinit=NULL} sets the initial-state simulator to its default.
+For more information, see \link[=rinit_spec]{here}.}
 
-\item{transform.data}{optional function.  If specified, forecasting is
-performed using data and model simulations transformed by this function.
-By default, \code{transform.data} is the identity function, i.e., no
-transformation is performed.  The main purpose of \code{transform.data} is
-to achieve approximately multivariate normal forecasting errors.  If data
-are univariate, \code{transform.data} should take a scalar and return a
-scalar.  If data are multivariate, \code{transform.data} should assume a
-vector input and return a vector of the same length.}
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
+Setting \code{rprocess=NULL} removes the latent-state simulator.
+For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
 
-\item{nrbf}{integer scalar; the number of radial basis functions to be used
-at each lag.}
+\item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{rmeasure=NULL} removes the measurement model simulator.
+For more information, see \link[=rmeasure_spec]{here}.}
 
-\item{method}{Optimization method.  Choices are
-\code{\link[subplex]{subplex}} and any of the methods used by
-\code{\link{optim}}.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
+See \code{\link{pomp}} for a full list of recognized arguments.
 
-\item{skip.se}{logical; if \code{TRUE}, skip the computation of standard
-errors.}
+When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
+This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
+See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
 
-\item{verbose}{logical; if \code{TRUE}, the negative log quasilikelihood
-and parameter values are printed at each iteration of the optimizer.}
-
-\item{bootsamp}{vector of integers; used to have the quasi-loglikelihood
-evaluated using a bootstrap re-sampling of the data set.}
-
-\item{lql.frac}{target fractional change in log quasi-likelihood for
-quadratic standard error estimate}
-
-\item{se.par.frac}{initial parameter-change fraction for quadratic standard
-error estimate}
-
-\item{eval.only}{logical; if \code{TRUE}, no optimization is attempted and
-the quasi-loglikelihood value is evaluated at the \code{start} parameters.}
-
-\item{transform}{logical; if \code{TRUE}, parameters are optimized on the
-transformed scale.}
-
-\item{\dots}{Arguments that will be passed to \code{optim} or
-\code{subplex} in the \code{control} list.}
+\item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
-An object of class \sQuote{nlfd_pomp}.  \code{logLik} applied to
-such an object returns the log quasi likelihood.
+\code{nlf.objfun} constructs a stateful objective function for NLF estimation.
+Specfically, \code{nlf.objfun} returns an object of class \sQuote{nlf_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
+When called, it will return the negative log quasilikelihood.
+It is a stateful function:
+Each time it is called, it will remember the values of the parameters and its estimate of the log quasilikelihood.
 }
 \description{
-\code{nlf} calls an optimizer to maximize the nonlinear forecasting (NLF)
-goodness of fit.  The latter is computed by simulating data from a model,
-fitting a nonlinear autoregressive model to the simulated time series, and
-quantifying the ability of the resulting fitted model to predict the data
-time series.  NLF is an \sQuote{indirect inference} method using a
-quasi-likelihood as the objective function.
+Parameter estimation my maximum simulated quasi-likelihood.
 }
 \details{
-This runs an optimizer to maximize \code{nlf.objfun}.
+NLF is an \sQuote{indirect inference} method.
+The NLF approximation to the log likelihood of the data series is computed by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series, and quantifying the ability of the resulting fitted model to predict the data time series.
+The nonlinear autoregressive model is implemented as a generalized additive model (GAM), conditional on lagged values, for each observation variable.
+The errors are assumed multivariate normal.
+
+The NLF objective function constructed by \code{nlf.objfun} simulates long time series (\code{nasymp} is the number of observations in the simulated times series), perhaps after allowing for a transient period (\code{ntransient} steps).
+It then fits the GAM for the chosen lags to the simulated time series.
+Finally, it computes the quasi-likelihood of the data under the fitted GAM.
+
+NLF assumes that the observation frequency (equivalently the time between successive observations) is uniform.
 }
+\section{Periodically-forced systems (seasonality)}{
+
+Unlike other \pkg{pomp} estimation methods, NLF cannot accommodate general time-dependence in the model via explicit time-dependence or dependence on time-varying covariates.
+However, NLF can accommodate periodic forcing.
+It does this by including forcing phase as a predictor in the nonlinear autoregressive model.
+To accomplish this, one sets \code{period} to the period of the forcing (a positive numerical value).
+In this case, if \code{tensor = FALSE}, the effect is to add a periodic intercept in the autoregressive model.
+If \code{tensor = TRUE}, by contrast, the fitted model includes time-periodic coefficients,
+constructed using tensor products of basis functions of observables with
+basis functions of time.
+}
+
+\section{Important Note}{
+
+Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
+Therefore, it is a good idea to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
+}
+
 \references{
-Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B.
-T. and Nychka D. W. (1998) Noise and nonlinearity in measles epidemics:
+Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B. T. and Nychka D. W. (1998)
+Noise and nonlinearity in measles epidemics:
 combining mechanistic and statistical approaches to population modeling.
 \emph{American Naturalist} \bold{151}, 425--440.
 
-Kendall, B. E., Briggs, C. J., Murdoch, W. W., Turchin, P., Ellner, S. P.,
-McCauley, E., Nisbet, R. M. and Wood S. N. (1999) Why do populations cycle?
+Kendall, B. E., Briggs, C. J., Murdoch, W. W., Turchin, P., Ellner, S. P., McCauley, E., Nisbet, R. M. and Wood S. N. (1999)
+Why do populations cycle?
 A synthesis of statistical and mechanistic modeling approaches.
 \emph{Ecology} \bold{80}, 1789--1805.
 
-Kendall, B. E., Ellner, S. P., McCauley, E., Wood, S. N., Briggs, C. J.,
-Murdoch, W. W. and Turchin, P. (2005) Population cycles in the pine looper
-moth (\emph{Bupalus piniarius}): dynamical tests of mechanistic hypotheses.
+Kendall, B. E., Ellner, S. P., McCauley, E., Wood, S. N., Briggs, C. J., Murdoch, W. W. and Turchin, P. (2005)
+Population cycles in the pine looper moth (\emph{Bupalus piniarius}):
+dynamical tests of mechanistic hypotheses.
 \emph{Ecological Monographs} \bold{75}, 259--276.
 }
 \seealso{

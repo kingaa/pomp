@@ -14,16 +14,16 @@
 ##' @aliases spect.match.objfun spect.match.objfun,missing-method spect.match.objfun,ANY-method
 ##'
 ##' @include spect.R probe_match.R loglik.R
-#'
-##' @inheritParams pomp
-##' @inheritParams probe.match
-##' @inheritParams spect
 ##'
 ##' @param weights optional numeric or function.
 ##' The mismatch between model and data is measured by a weighted average of mismatch at each frequency.
 ##' By default, all frequencies are weighted equally.
 ##' \code{weights} can be specified either as a vector (which must have length equal to the number of frequencies) or as a function of frequency.
 ##' If the latter, \code{weights(freq)} must return a nonnegative weight for each frequency.
+##'
+##' @inheritParams probe.match
+##' @inheritParams spect
+##' @inheritParams pomp
 ##'
 ##' @return
 ##' \code{spect.match.objfun} constructs a stateful objective function for spectrum matching.

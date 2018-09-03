@@ -5,12 +5,12 @@
 ##' @name objfun
 ##' @rdname objfun
 ##' @keywords internal
-##' @include traj_match.R spect_match.R probe_match.R
+##' @include traj_match.R spect_match.R probe_match.R nlf.R
 ##' @include loglik.R summary.R coef.R as_data_frame.R as_pomp.R
 ##'
 ##' @section Important Note:
 ##' Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-##' The best practice is to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
+##' Therefore, it is a good idea to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
 ##'
 NULL
 
@@ -19,7 +19,8 @@ setClassUnion(
   members=c(
     "traj_match_objfun",
     "spect_match_objfun",
-    "probe_match_objfun"
+    "probe_match_objfun",
+    "nlf_objfun"
   )
 )
 
@@ -83,3 +84,38 @@ setAs(
   }
 )
 
+##' @name simulate-objfun
+##' @aliases simulate,objfun-method
+##' @rdname simulate
+##' @export
+setMethod(
+  "simulate",
+  signature=signature(object="objfun"),
+  definition=function (object, ...) {
+    simulate(as(object,"pomp"),...)
+  }
+)
+
+##' @name probe-objfun
+##' @aliases probe,objfun-method
+##' @rdname probe
+##' @export
+setMethod(
+  "probe",
+  signature=signature(data="objfun"),
+  definition=function (data, ...) {
+    probe(as(data,"pomp"),...)
+  }
+)
+
+##' @name pfilter-objfun
+##' @aliases pfilter,objfun-method
+##' @rdname pfilter
+##' @export
+setMethod(
+  "pfilter",
+  signature=signature(data="objfun"),
+  definition=function (data, ...) {
+    pfilter(as(data,"pomp"),...)
+  }
+)

@@ -60,9 +60,10 @@ calculating the estimate of the spectrum.}
 
 \item{nsim}{the number of model simulations to be computed.}
 
-\item{seed}{optional integer;
-if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
-See \code{\link[=simulate-pomp]{simulate}}.}
+\item{seed}{integer.
+When fitting, it is often best to fix the seed of the random-number generator (RNG).
+This is accomplished by setting \code{seed} to an integer.
+By default, \code{seed = NULL}, which does not alter the RNG state.}
 
 \item{transform.data}{function; this transformation will be applied to the
 observables prior to estimation of the spectrum, and prior to any
@@ -126,7 +127,7 @@ It can be passed to any one of a variety of numerical optimization routines, whi
 \section{Important Note}{
 
 Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-The best practice is to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
+Therefore, it is a good idea to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
 }
 
 \seealso{

@@ -21,7 +21,7 @@
 ##'
 ##' @include simulate.R pomp.R
 ##' @importFrom stats spec.pgram kernel .lm.fit
-##' @inheritParams pomp
+##'
 ##' @param vars optional; names of observed variables for which the power spectrum will be computed.
 ##' By default, the spectrum will be computed for all observables.
 ##' @param kernel.width width parameter for the smoothing kernel used for
@@ -37,6 +37,7 @@
 ##' detrending, and subtraction of constant, linear, and quadratic trends from
 ##' the data.  Detrending is applied to each data series and to each model
 ##' simulation independently.
+##' @inheritParams pomp
 ##'
 ##' @return
 ##' An object of class \sQuote{spectd_pomp}, which contains the model, the data, and the results of the \code{spect} computation.

@@ -26,9 +26,9 @@
 NULL
 
 setClassUnion("unshowable",members=c("pomp","abcd_pomp","bsmcd_pomp",
-  "kalmand_pomp","mif2d_pomp","nlfd_pomp","pfilterd_pomp","pmcmcd_pomp",
+  "kalmand_pomp","mif2d_pomp","pfilterd_pomp","pmcmcd_pomp",
   "probed_pomp","spectd_pomp","probe_match_objfun","spect_match_objfun",
-  "traj_match_objfun"))
+  "nlf_objfun","traj_match_objfun"))
 
 ##' @export
 setMethod(
