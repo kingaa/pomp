@@ -189,3 +189,11 @@ covar_time_warning <- function (object, times, t0, wp) {
     pWarn(wp,"the supplied covariate times do not embrace the ",
       "data times: covariates may be extrapolated.")
 }
+
+setMethod(
+  "undefined",
+  signature=signature(object="covartable"),
+  definition=function (object) {
+    nrow(object@table) == 0L
+  }
+)

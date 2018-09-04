@@ -274,6 +274,9 @@ nlfof.internal <- function (object,
 
   object <- pomp(object, ..., verbose=verbose)
 
+  if (!undefined(object@covar))
+    pStop_("NLF is incompatible with time-varying covariates.")
+
   est <- as.character(est)
   est <- est[nzchar(est)]
 
