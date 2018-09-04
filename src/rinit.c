@@ -140,8 +140,8 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
     memcpy(xt,xs,nvar*sizeof(double));
 
-    for (j = 1, xt += nvar, ps += npar; j < ns; j++, xt += nvar, ps += npar) {
-      PROTECT(ans = eval_call(fn,args,time,ps,npar,cov,ncovars));
+    for (j = 1, xt += nvar; j < ns; j++, xt += nvar) {
+      PROTECT(ans = eval_call(fn,args,time,ps+npar*(j%nrep),npar,cov,ncovars));
       xs = REAL(ans);
       if (LENGTH(ans) != nvar)
         errorcall(R_NilValue,"user 'rinit' returns vectors of non-uniform length");
