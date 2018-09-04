@@ -24,19 +24,22 @@ stopifnot(m0(0)==m0(1))
 m2 <- nlf.objfun(m0,est=estnames,seed=426094906L)
 
 library(subplex)
-subplex(par=guess,fn=m2) -> out
+m2(guess) -> ll
+stopifnot(logLik(m2)==-ll)
+subplex(par=guess,fn=m2,control=list(reltol=1e-3)) -> out
 stopifnot(out$convergence == 0)
 m2(out$par)
 plot(simulate(m2))
+stopifnot(logLik(m2)==-out$value)
 
 m2s <- nlf.objfun(m2,tensor=TRUE,period=10,seed=426094906L)
-subplex(par=guess,fn=m2s) -> out
+subplex(par=guess,fn=m2s,control=list(reltol=1e-3)) -> out
 stopifnot(out$convergence == 0)
 m2s(out$par)
 plot(simulate(m2s))
 
 m2t <- nlf.objfun(m2s,tensor=FALSE,seed=426094906L)
-subplex(par=guess,fn=m2t) -> out
+subplex(par=guess,fn=m2t,control=list(reltol=1e-3)) -> out
 stopifnot(out$convergence == 0)
 m2t(out$par)
 plot(simulate(m2t))
@@ -44,6 +47,7 @@ plot(simulate(m2t))
 nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500)
 nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=500)
 nlf.objfun(ou2,lags=c(1,2,3),est=NULL,ti=100,tf=500)
+try(nlf.objfun(ou2,lags=c(1,2,3),est="bob",ti=100,tf=500))
 try(nlf.objfun(ou2,lags=list(1,2,3),est=NULL,ti=100,tf=500))
 try(nlf.objfun(ou2,lags=c(-1,2,3),est=estnames,ti=100,tf=500))
 try(nlf.objfun(ou2,lags=c(),est=estnames,ti=100,tf=500))
@@ -77,10 +81,15 @@ try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,transform.data=function(x,y)x+y))
 try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,fail.value=c(10,20)))
 try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,fail.value=NULL))
 try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,fail.value="no"))
-nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,fail.value=10)
+capture.output(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,fail.value=10,verbose=TRUE)) -> out
+stopifnot(sum(grepl("logql = ",out))==1)
 
 po <- ou2
 time(po) <- c(1:5,8:10)
-try(nlf.objfun(po,lags=c(1,2,3),period=5,,ti=100,tf=500))
+try(po %>% nlf.objfun(lags=c(1,2,3),period=5,,ti=100,tf=500))
+
+po <- ou2
+po@data[2,15] <- NA
+stopifnot(po %>% nlf.objfun(lags=c(1,2,3),ti=100,tf=500) %>% logLik() %>% is.na())
 
 dev.off()

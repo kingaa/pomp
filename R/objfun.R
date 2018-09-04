@@ -48,18 +48,6 @@ setMethod(
   }
 )
 
-##' @name logLik-objfun
-##' @rdname loglik
-##' @aliases logLik,objfun-method
-##' @export
-setMethod(
-  "logLik",
-  signature=signature(object="objfun"),
-  definition=function (object) {
-    object@env$loglik
-  }
-)
-
 ##' @name coerce-objfun-pomp
 ##' @aliases coerce,objfun,pomp-method
 ##' @rdname as_pomp

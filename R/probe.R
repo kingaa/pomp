@@ -273,16 +273,3 @@ setMethod(
     )
   }
 )
-
-##' @name logLik-probed_pomp
-##' @aliases logLik,probed_pomp-method
-##' @rdname loglik
-##'
-##' @return
-##' When \code{object} is of \sQuote{probed_pomp} class (i.e., the result of a \code{probe} computation), \code{logLik} retrieves the \dQuote{synthetic likelihood} (see \code{\link{probe}}).
-##'
-setMethod(
-  "logLik",
-  signature=signature(object="probed_pomp"),
-  definition=function(object)object@synth.loglik
-)

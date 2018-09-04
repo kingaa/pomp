@@ -150,23 +150,6 @@ setMethod(
   }
 )
 
-##' @name logLik-nlf_objfun
-##' @aliases logLik,nlf_objfun-method
-##' @rdname loglik
-##'
-##' @return
-##' When \code{object} is an NLF objective function, i.e., the result of a call to \code{nlf.objfun},
-##' \code{logLik} retrieves the \dQuote{quasi log likelihood} (see \code{\link{nlf}}).
-##'
-##' @export
-setMethod(
-  "logLik",
-  signature=signature(object="nlf_objfun"),
-  definition = function(object, ...) {
-    object@env$logql
-  }
-)
-
 ##' @name nlf.objfun-data.frame
 ##' @aliases nlf.objfun,data.frame-method
 ##' @rdname nlf
@@ -269,6 +252,7 @@ setMethod(
       nrbf=nrbf,
       ti=ti,
       tf=tf,
+      seed=seed,
       period=period,
       tensor=tensor,
       transform.data=transform.data,
@@ -579,24 +563,24 @@ rbf.basis <- function (X, knots) {
 ## GAUSS trimr function:
 ## trims n1 rows from the start,
 ## n2 rows from the end of a matrix or vector
-trimr <- function (a, n1, n2) {
-  a[seq.int(from=n1+1,to=NROW(a)-n2,by=1)]
-}
+# trimr <- function (a, n1, n2) {
+#   a[seq.int(from=n1+1,to=NROW(a)-n2,by=1)]
+# }
 
-Newey.West <- function(x, y, maxlag) {
-  w <- 1-seq_len(maxlag)/(maxlag+1)
-  out <- mean(x*y,na.rm=TRUE)
-  for (i in seq_len(maxlag)) {
-    out <- out+
-      w[i]*mean(trimr(x,i,0)*trimr(y,0,i),na.rm=TRUE)+
-      w[i]*mean(trimr(y,i,0)*trimr(x,0,i),na.rm=TRUE)
-  }
-  out
-}
+# Newey.West <- function(x, y, maxlag) {
+#   w <- 1-seq_len(maxlag)/(maxlag+1)
+#   out <- mean(x*y,na.rm=TRUE)
+#   for (i in seq_len(maxlag)) {
+#     out <- out+
+#       w[i]*mean(trimr(x,i,0)*trimr(y,0,i),na.rm=TRUE)+
+#       w[i]*mean(trimr(y,i,0)*trimr(x,0,i),na.rm=TRUE)
+#   }
+#   out
+# }
 
 make.tensorbasis <- function(A,B) {
   if (nrow(A) != nrow(B))
-    pStop("make.tensorbasis","incompatible matrices.")
+    pStop("make.tensorbasis","incompatible matrices.") # nocov
   nA <- ncol(A)
   nB <- ncol(B)
   Tmat <- matrix(0,nrow(A),nA*nB)

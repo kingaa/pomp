@@ -318,20 +318,6 @@ setMethod(
   }
 )
 
-##' @name logLik-spect_match_objfun
-##' @rdname loglik
-##' @aliases logLik,spect_match_objfun-method
-##' @export
-setMethod(
-  "logLik",
-  signature=signature(object="spect_match_objfun"),
-  definition=function (object) {
-    discrep <- spect.discrep(object$env$object,ker=object@env$ker,
-      weights=object@env$weights)
-    -discrep
-  }
-)
-
 ##' @name coerce-spect_match_objfun-spectd_pomp
 ##' @aliases coerce,spect_match_objfun,spectd_pomp-method
 ##' @rdname spect

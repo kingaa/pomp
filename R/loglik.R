@@ -1,6 +1,6 @@
 ##' Log likelihood
 ##'
-##' Extract the estimated log likelihood from a fitted model.
+##' Extract the estimated log likelihood (or related quantity) from a fitted model.
 ##'
 ##' @name logLik
 ##' @rdname loglik
@@ -17,8 +17,8 @@
 ##'
 NULL
 
-##' @name logLik-generic
 ##' @rdname loglik
+##' @export
 setGeneric(
   "logLik",
   function (object, ...)
@@ -41,6 +41,7 @@ setMethod(
   }
 )
 
+##' @rdname loglik
 ##' @export
 setMethod(
   "logLik",
@@ -58,6 +59,19 @@ setMethod(
   "logLik",
   signature=signature(object="pfilterd_pomp"),
   definition=function(object)object@loglik
+)
+
+##' @name logLik-probed_pomp
+##' @aliases logLik,probed_pomp-method
+##' @rdname loglik
+##'
+##' @return
+##' When \code{object} is of \sQuote{probed_pomp} class (i.e., the result of a \code{probe} computation), \code{logLik} retrieves the \dQuote{synthetic likelihood} (see \code{\link{probe}}).
+##'
+setMethod(
+  "logLik",
+  signature=signature(object="probed_pomp"),
+  definition=function(object)object@synth.loglik
 )
 
 ##' @name logLik-kalmand_pomp
@@ -95,4 +109,45 @@ setMethod(
   "logLik",
   signature=signature(object="bsmcd_pomp"),
   definition=function(object)object@log.evidence
+)
+
+##' @name logLik-objfun
+##' @rdname loglik
+##' @aliases logLik,objfun-method
+##' @export
+setMethod(
+  "logLik",
+  signature=signature(object="objfun"),
+  definition=function (object) {
+    object@env$loglik
+  }
+)
+
+##' @name logLik-spect_match_objfun
+##' @rdname loglik
+##' @aliases logLik,spect_match_objfun-method
+##' @export
+setMethod(
+  "logLik",
+  signature=signature(object="spect_match_objfun"),
+  definition=function (object) {
+    -object@env$discrep
+  }
+)
+
+##' @name logLik-nlf_objfun
+##' @aliases logLik,nlf_objfun-method
+##' @rdname loglik
+##'
+##' @return
+##' When \code{object} is an NLF objective function, i.e., the result of a call to \code{nlf.objfun},
+##' \code{logLik} retrieves the \dQuote{quasi log likelihood} (see \code{\link{nlf}}).
+##'
+##' @export
+setMethod(
+  "logLik",
+  signature=signature(object="nlf_objfun"),
+  definition = function(object, ...) {
+    object@env$logql
+  }
 )
