@@ -1,8 +1,8 @@
 ##' Nonlinear forecasting
 ##'
-##' Parameter estimation my maximum simulated quasi-likelihood.
+##' Parameter estimation by maximum simulated quasi-likelihood.
 ##'
-##' NLF is an \sQuote{indirect inference} method.
+##' Nonlinear forecasting (NLF) is an \sQuote{indirect inference} method.
 ##' The NLF approximation to the log likelihood of the data series is computed by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series, and quantifying the ability of the resulting fitted model to predict the data time series.
 ##' The nonlinear autoregressive model is implemented as a generalized additive model (GAM), conditional on lagged values, for each observation variable.
 ##' The errors are assumed multivariate normal.
@@ -65,6 +65,17 @@
 ##' @param lags A vector specifying the lags to use when constructing the nonlinear autoregressive prediction model.
 ##' The first lag is the prediction interval.
 ##'
+##' @param nrbf integer scalar;
+##' the number of radial basis functions to be used at each lag.
+##'
+##' @param ti,tf required numeric values.
+##' NLF works by generating simulating long time series from the model.
+##' The simulated time series will be from \code{ti} to \code{tf}, with the same sampling frequency as the data.
+##' \code{ti} should be chosen large enough so that transient dynamics have died away.
+##' \code{tf} should be chosen large enough so that sufficiently many data points are available to estimate the nonlinear forecasting model well.
+##' An error will be generated unless the data-to-parameter ratio exceeds 10 and
+##' a warning will be given if the ratio is smaller than 30.
+##'
 ##' @param period numeric; \code{period=NA} means the model is nonseasonal.
 ##' \code{period > 0} is the period of seasonal forcing.
 ##' \code{period <= 0} is equivalent to \code{period = NA}.
@@ -74,13 +85,6 @@
 ##' i.e., a gam with time-varying intercept.
 ##' If TRUE, the fitted model is a gam with lagged state variables as predictors and time-periodic coefficients, constructed using tensor products of basis functions of state variables with basis
 ##' functions of time.
-##'
-##' @param ntransient number of timesteps to be discarded from the model simulation.
-##'
-##' @param nasymp number of asymptotic timesteps to be recorded from the model simulation.
-##'
-##' @param nrbf integer scalar;
-##' the number of radial basis functions to be used at each lag.
 ##'
 ##' @param transform.data optional function.
 ##' If specified, forecasting is performed using data and model simulations transformed by this function.
@@ -119,8 +123,8 @@ setClass(
   contains="function",
   slots=c(
     env="environment",
-    ntransient="integer",
-    nasymp="integer"
+    ti="numeric",
+    tf="numeric"
   )
 )
 
@@ -159,7 +163,7 @@ setMethod(
   "logLik",
   signature=signature(object="nlf_objfun"),
   definition = function(object, ...) {
-    object@env$loglik
+    object@env$logql
   }
 )
 
@@ -170,9 +174,9 @@ setMethod(
   "nlf.objfun",
   signature=signature(data="data.frame"),
   definition=function (data,
-    est = character(0), lags, nrbf = 4, ntransient, nasymp,
+    est = character(0), lags, nrbf = 4, ti, tf,
     seed = NULL, transform.data = identity,
-    period = NA, tensor = FALSE, fail.value = NA_real_,
+    period = NA, tensor = TRUE, fail.value = NA_real_,
     params, rinit, rprocess, rmeasure,
     ..., verbose = getOption("verbose")) {
 
@@ -182,8 +186,8 @@ setMethod(
         est=est,
         lags=lags,
         nrbf=nrbf,
-        ntransient=ntransient,
-        nasymp=nasymp,
+        ti=ti,
+        tf=tf,
         seed=seed,
         period=period,
         tensor=tensor,
@@ -209,9 +213,9 @@ setMethod(
   "nlf.objfun",
   signature=signature(data="pomp"),
   definition=function (data,
-    est = character(0), lags, nrbf = 4, ntransient, nasymp,
+    est = character(0), lags, nrbf = 4, ti, tf,
     seed = NULL, transform.data = identity,
-    period = NA, tensor = FALSE, fail.value = NA,
+    period = NA, tensor = TRUE, fail.value = NA,
     ..., verbose = getOption("verbose")) {
 
     tryCatch(
@@ -220,8 +224,8 @@ setMethod(
         est=est,
         lags=lags,
         nrbf=nrbf,
-        ntransient=ntransient,
-        nasymp=nasymp,
+        ti=ti,
+        tf=tf,
         seed=seed,
         period=period,
         tensor=tensor,
@@ -244,15 +248,15 @@ setMethod(
   "nlf.objfun",
   signature=signature(data="nlf_objfun"),
   definition=function (data,
-    est, lags, nrbf, ntransient, nasymp, seed = NULL,
+    est, lags, nrbf, ti, tf, seed = NULL,
     period, tensor, transform.data, fail.value,
     ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(est)) est <- data@env$est
     if (missing(lags)) lags <- data@env$lags
     if (missing(nrbf)) nrbf <- data@env$nrbf
-    if (missing(ntransient)) ntransient <- data@ntransient
-    if (missing(nasymp)) nasymp <- data@nasymp
+    if (missing(ti)) ti <- data@ti
+    if (missing(tf)) tf <- data@tf
     if (missing(period)) period <- data@env$period
     if (missing(tensor)) tensor <- data@env$tensor
     if (missing(transform.data)) transform.data <- data@env$transform.data
@@ -263,8 +267,8 @@ setMethod(
       est=est,
       lags=lags,
       nrbf=nrbf,
-      ntransient=ntransient,
-      nasymp=nasymp,
+      ti=ti,
+      tf=tf,
       period=period,
       tensor=tensor,
       transform.data=transform.data,
@@ -277,7 +281,7 @@ setMethod(
 )
 
 nlfof.internal <- function (object,
-  est, lags, nrbf, ntransient, nasymp, seed, period, tensor,
+  est, lags, nrbf, ti, tf, seed, period, tensor,
   transform.data, fail.value,
   ..., verbose)
 {
@@ -297,20 +301,46 @@ nlfof.internal <- function (object,
     pStop_(sQuote("nrbf")," must be at least 4.")
   nrbf <- as.integer(nrbf)
 
-  if (!(is.logical(period) || is.numeric(period)) || length(period) != 1 || is.infinite(period))
+  if (!(is.logical(period) || is.numeric(period)) ||
+      length(period) != 1 || is.infinite(period))
     pStop_(sQuote("period")," must be single finite number or NA.")
   period <- as.numeric(period)
   if (!is.na(period) && period <= 0) period <- NA_real_
 
   tensor <- as.logical(tensor)
 
-  if (!is.numeric(nasymp) || length(nasymp) != 1 || !is.finite(nasymp) || nasymp < 0)
-    pStop_(sQuote("nasymp")," must be a nonnegative integer (and should be large).")
-  nasymp <- as.integer(nasymp)
+  ## check that times are equally spaced
+  dt.tol <- 1e-3
+  dts <- diff(time(object,t0=FALSE))
+  dt <- mean(dts)
+  if (diff(range(dts)) > dt.tol*dt)
+    pStop_("NLF requires uniform sampling frequency.")
 
-  if (!is.numeric(ntransient) || length(ntransient) != 1 || !is.finite(ntransient) || ntransient < max(lags)+1)
-    pStop_(sQuote("ntransient")," must be larger than the maximum lag ","(and should be much larger).")
-  ntransient <- as.integer(ntransient)
+  t0 <- timezero(object)
+
+  if (!is.numeric(ti) || length(ti) != 1 || !is.finite(ti) || ti < t0)
+    pStop_(sQuote("ti")," must be a single numeric value larger than ",sQuote("t0"),".")
+
+  if (!is.numeric(tf) || length(tf) != 1 || !is.finite(tf) || tf <= ti)
+    pStop_(sQuote("tf")," must be a single numeric value larger than ",sQuote("ti"),".")
+
+  times <- seq(from=ti,to=tf,by=dt)
+
+  dof <- length(lags)*nrbf
+  if (isTRUE(period > 0)) {
+    if (tensor) {
+      dof <- dof*nrbf
+    } else {
+      dof <- dof+nrbf
+    }
+  }
+
+  if (length(times) < 10*dof)
+    pStop_("insufficiently long simulated time series: increase ",sQuote("tf"),
+      " to at least ",ti+10*dof*dt,".")
+  if (length(times) < 30*dof)
+    pWarn("nlf.objfun","insufficiently long simulated time series: ",
+      "consider increasing ",sQuote("tf")," to ",ti+30*dof*dt," or larger.")
 
   transform.data <- match.fun(transform.data)
 
@@ -331,37 +361,27 @@ nlfof.internal <- function (object,
       paste(sQuote(missing),collapse=",")," not found in ",sQuote("params"),".")
   }
 
-  ## check that times are equally spaced
-  dt.tol <- 1e-3
-  times <- time(object,t0=FALSE)
-  dt <- diff(times)
-  if (diff(range(dt))>dt.tol*mean(dt))
-    pStop_("NLF requires uniform sampling frequency.")
-
-  dt <- times[2]-times[1]
-
-  t0 <- timezero(object)
-  times <- seq(from=t0+ntransient*dt,length.out=nasymp,by=dt)
-
-  loglik <- nlf.lql(object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
-    period=period,tensor=tensor,seed=seed,transform.data=transform.data)
+  logql <- nlf.lql(object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
+    period=period,tensor=tensor,seed=seed,transform.data=transform.data,
+    verbose=verbose)
 
   ofun <- function (par) {
     params[idx] <- par
     coef(object,transform=TRUE) <<- params
-    loglik <<- nlf.lql(object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
-      period=period,tensor=tensor,seed=seed,transform.data=transform.data)
-    if (is.finite(loglik) || is.na(fail.value)) -loglik else fail.value
+    logql <<- nlf.lql(object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
+      period=period,tensor=tensor,seed=seed,transform.data=transform.data,
+      verbose=verbose)
+    if (is.finite(logql) || is.na(fail.value)) -logql else fail.value
   }
 
   environment(ofun) <- list2env(
     list(object=object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
       period=period,tensor=tensor,seed=seed,transform.data=transform.data,
-      params=params,idx=idx,loglik=loglik),
+      params=params,idx=idx,logql=logql,verbose=verbose),
     parent=parent.frame(2)
   )
 
-  new("nlf_objfun",ofun,env=environment(ofun),ntransient=ntransient,nasymp=nasymp)
+  new("nlf_objfun",ofun,env=environment(ofun),ti=ti,tf=tf)
 
 }
 
@@ -371,242 +391,189 @@ nlfof.internal <- function (object,
 ## Note that the log QL itself is returned, not the negative log QL,
 ## so a large NEGATIVE value is used to flag bad parameters
 
-nlf.lql <- function (object,
-  times, lags, nrbf, period, tensor, seed, transform.data, fail.value)
+nlf.lql <- function (object, times, lags, nrbf, period, tensor,
+  seed, transform.data, fail.value, verbose)
 {
 
-  y <- simulate(object,times=times,seed=seed,format="arrays")$obs
+  y <- simulate(object,times=times,seed=seed,format="arrays",verbose=verbose)$obs
 
   ## Test whether the model time series is valid
   if (!all(is.finite(y))) return(-fail.value)
 
-  data.mat <- obs(object)
-  data.mat[,] <- apply(data.mat,2L,transform.data)
-
-  model.mat <- array(
-    dim=dim(y)[c(1L,3L)],
-    dimnames=list(rownames(data.mat),NULL)
+  dat.mat <- obs(object)
+  mod.mat <- array(dim=dim(y)[c(1L,3L)],dimnames=list(rownames(dat.mat),NULL))
+  tryCatch(
+    {
+      dat.mat[,] <- apply(dat.mat,2L,transform.data)
+      mod.mat[,] <- apply(y[,1,,drop=FALSE],c(2,3),transform.data)
+    },
+    error = function (e) pStop("transform.data",conditionMessage(e))
   )
-  model.mat[,] <- apply(y[,1,,drop=FALSE],c(2,3),transform.data)
 
   tryCatch(
     nlf.internal(
-      data.mat=data.mat,
-      data.times=time(object),
-      model.mat=model.mat,
-      model.times=times,
+      dat.mat=dat.mat,
+      dat.times=time(object),
+      mod.mat=mod.mat,
+      mod.times=times,
       lags=lags,
       nrbf=nrbf,
       period=period,
       tensor=tensor,
-      fail.value=fail.value
+      fail.value=fail.value,
+      verbose=verbose
     ),
     error = function (e) pStop("nlf.lql",conditionMessage(e))
   )
 
 }
 
-## Key 'nlf' function
-nlf.internal <- function (data.mat, data.times, model.mat, model.times,
-  lags, nrbf, period, tensor, fail.value) {
+## CENTRAL NLF FUNCTION
+##
+## Version 1.0, 4 December 2007, S.P. Ellner and Bruce E. Kendall
+## Version 1.1, 19 June 2008, S.P. Ellner and A.A. King.
+## Version 1.2, 3 September 2018, A.A. King
 
-  ## Version 1.0, 4 December 2007, S.P. Ellner and Bruce E. Kendall
-  ## Version 1.1, 19 June 2008, S.P. Ellner and A.A. King.
-  ## Version 1.2, 3 September 2018, A.A. King
+## Peculiarity of the code: No basis functions involving cross terms of observables.
 
-  ## Peculiarity of the code: No basis functions involving cross terms of observables.
+#####################################################################################
+## ARGUMENTS:
+## dat.mat = matrix of data time series, nobs x ntimes.data
+## mod.mat = matrix of model time series, nobs x ntimes.sim
+## lags = vector of lag times for forecasting y(t) = f(y(t-lag1),y(t-lag2),....)+error
+## nrbf = number of radial basis functions
+## period: period=NA means the model is nonseasonal. period=integer>0 is the period of
+##         seasonal forcing in 'real time' (the units of mod.times).
+## tensor: logical. if FALSE, the fitted model is a gam with time(mod period) as
+##         one of the predictors, i.e. a gam with time-varying intercept.
+##         if TRUE, the fitted model is a gam with lagged state variables as
+##         predictors and time-periodic coefficients, constructed using tensor
+##         products of basis functions of state variables with basis functions of time.
+##
+##       NOTE: periodic models are constructed so that the time variable on the
+##       right hand side corresponds to the observation time of the predictee,
+##       not of the predictors
+##
+## VALUE: the NLF approximation to the log likelihood of the data series
+##        under the forecasting model based on mod.mat. The approximation used
+##        here is a generalized additive model for each observation variable, conditional
+##        on lagged values of all observation variables, with multivariate normal errors.
+##        The return from this function is the vector of log quasi-likelihood values at
+##        the data points; this must be summed to get the log quasiliklihood function.
+##
+## IMPORTANT NOTE TO FUTURE PROGRAMMERS: It may appear at first glance that basis
+## functions for the data series, and other things related to the data series, could be
+## constructed once and for all rather than rebuilt on each call to this function.
+## THIS IS NOT TRUE. The basis functions are constructed anew on each call using
+## information from the model-simulated time series, and this feature is important
+## for reliable NLF parameter estimation because it rules out spurious good fits
+## that really are due to extrapolation far from the model-simulated time series.
+#######################################################################################
 
-  #####################################################################################
-  ## ARGUMENTS:
-  ## data.mat = matrix of data time series, nobs x ntimes.data
-  ## model.mat = matrix of model time series, nobs x ntimes.sim
-  ## lags = vector of lag times for forecasting y(t) = f(y(t-lag1),y(t-lag2),....)+error
-  ## nrbf = number of radial basis functions
-  ## period: period=NA means the model is nonseasonal. period=integer>0 is the period of
-  ##         seasonal forcing in 'real time' (the units of model.times).
-  ## tensor: logical. if FALSE, the fitted model is a gam with time(mod period) as
-  ##         one of the predictors, i.e. a gam with time-varying intercept.
-  ##         if TRUE, the fitted model is a gam with lagged state variables as
-  ##         predictors and time-periodic coefficients, constructed using tensor
-  ##         products of basis functions of state variables with basis functions of time.
-  ##
-  ##       NOTE: periodic models are constructed so that the time variable on the
-  ##       right hand side corresponds to the observation time of the predictee,
-  ##       not of the predictors
-  ##
-  ## VALUE: the NLF approximation to the log likelihood of the data series
-  ##        under the forecasting model based on model.mat. The approximation used
-  ##        here is a generalized additive model for each observation variable, conditional
-  ##        on lagged values of all observation variables, with multivariate normal errors.
-  ##        The return from this function is the vector of log quasi-likelihood values at
-  ##        the data points; this must be summed to get the log quasiliklihood function.
-  ##
-  ## IMPORTANT NOTE TO FUTURE PROGRAMMERS: It may appear at first glance that basis
-  ## functions for the data series, and other things related to the data series, could be
-  ## constructed once and for all rather than rebuilt on each call to this function.
-  ## THIS IS NOT TRUE. The basis functions are constructed anew on each call using
-  ## information from the model-simulated time series, and this feature is important
-  ## for reliable NLF parameter estimation because it rules out spurious good fits
-  ## that really are due to extrapolation far from the model-simulated time series.
-  #######################################################################################
+nlf.internal <- function (dat.mat, dat.times, mod.mat, mod.times,
+  lags, nrbf, period, tensor, fail.value, verbose) {
 
-  FAILED = -fail.value
+  seas <- !is.na(period)
+  nvar <- nrow(dat.mat)
 
-  nvar <- nrow(data.mat)
-  multivar <- (nvar > 1)
-  seas <- (!is.na(period) && period > 0)
+  knots <- apply(mod.mat,1L,rbf.knots,n=nrbf)
 
-  if (seas) {
-    seas.sim <- model.times %% period
-    seas.data <- data.times %% period
-  } else {
-    seas.sim <- NULL
-    seas.data <- NULL
+  dat.lags <- make.lags.nlf(x=dat.mat,times=dat.times,lags=lags)
+  sim.lags <- make.lags.nlf(x=mod.mat,times=mod.times,lags=lags)
+
+  dat.pred <- array(dim=c(dim(dat.lags$x),nrbf))
+  sim.pred <- array(dim=c(dim(sim.lags$x),nrbf))
+
+  for (i in seq_len(nvar)) {
+    dat.pred[,i,,] <- rbf.basis(dat.lags$x[,i,],knots=knots[,i])
+    sim.pred[,i,,] <- rbf.basis(sim.lags$x[,i,],knots=knots[,i])
   }
 
-  ## do a lagged embedding for observation variable 1
-  data.ts <- data.mat[1L,]
-  model.ts <- model.mat[1L,]
+  dd <- dim(dat.pred)
+  dim(dat.pred) <- c(dd[1],prod(dd[-1]))
+  dd <- dim(sim.pred)
+  dim(sim.pred) <- c(dd[1],prod(dd[-1]))
 
-  ## Set up the RBF knots
-  xm <- diff(range(model.ts))
-  rbf.knots <- min(model.ts)+seq(-0.1,1.1,length=nrbf)*xm
-  s <- 0.3*xm
-  fac <- -1/(2*s^2)
-  if (!is.finite(fac) || fac == 0) return(FAILED)
-
-  ## Lag the data and set up the predicted values & seasonal indices
-  Lags.model <- make.lags.nlf(model.ts,lags=lags,cov=seas.sim)
-  Lags.data <- make.lags.nlf(data.ts,lags=lags,cov=seas.data)
-
-  data.pred <- matrix(Lags.data$y,ncol=1)
-  model.pred <- matrix(Lags.model$y,ncol=1)
-
-  rbfbasis.model <- make.rbfbasis(Lags.model$x,knots=rbf.knots,fac=fac)
-  rbfbasis.data <- make.rbfbasis(Lags.data$x,knots=rbf.knots,fac=fac)
+  dat.resp <- dat.lags$y
+  sim.resp <- sim.lags$y
 
   if (seas) {
-    ## Set up the RBF knots
-    rbf.cov.knots <- seq(-0.1,1.1,length=nrbf)*period
-    s <- 0.3*period
-    fac.cov <- -1/(2*s^2)
-    if (!is.finite(fac.cov) || fac == 0) return(FAILED)
 
-    rbfbasis.cov.model <- make.rbfbasis(Lags.model$cov,knots=rbf.cov.knots,fac=fac.cov)
-    rbfbasis.cov.data <- make.rbfbasis(Lags.data$cov,knots=rbf.cov.knots,fac=fac.cov)
-  }
+    knots <- seq(from=-0.1,to=1.1*period,length.out=nrbf)
+    dat.seas <- rbf.basis(as.matrix(dat.lags$t %% period),knots=knots)
+    sim.seas <- rbf.basis(as.matrix(sim.lags$t %% period),knots=knots)
+    dd <- dim(dat.seas)
+    dim(dat.seas) <- c(dd[1],prod(dd[-1]))
+    dd <- dim(sim.seas)
+    dim(sim.seas) <- c(dd[1],prod(dd[-1]))
 
-  if (multivar) {
-    for (jvar in seq(from=2,to=nvar,by=1)) {
-      data.ts <- data.mat[jvar,]
-      model.ts <- model.mat[jvar,]
-
-      ## Set up the RBF knots
-      xm <- diff(range(model.ts))
-      rbf.knots <- min(model.ts)+seq(-0.1,1.1,length=nrbf)*xm
-      s <- 0.3*xm
-      fac <- -1/(2*s^2)
-      if (fac==0) return(FAILED)
-
-      ## Lag the data and set up the predicted values & seasonal indices
-      Lags.model <- make.lags.nlf(model.ts,lags=lags,cov=seas.sim)
-      Lags.data <- make.lags.nlf(data.ts,lags=lags,cov=seas.data)
-
-      data.pred <- cbind(data.pred,Lags.data$y)
-      model.pred <- cbind(model.pred,Lags.model$y)
-      rbfbasis.model <- cbind(rbfbasis.model,make.rbfbasis(Lags.model$x,knots=rbf.knots,fac=fac))
-      rbfbasis.data <- cbind(rbfbasis.data,make.rbfbasis(Lags.data$x,knots=rbf.knots,fac=fac))
-
-    }
-  }
-
-  if (seas) {
     if (tensor) {
+
       ## make gam coefficients time-dependent
-      rbfbasis.model <- make.tensorbasis.nlf(rbfbasis.model,rbfbasis.cov.model)
-      rbfbasis.data <- make.tensorbasis.nlf(rbfbasis.data,rbfbasis.cov.data)
+      dat.pred <- make.tensorbasis(dat.pred,dat.seas)
+      sim.pred <- make.tensorbasis(sim.pred,sim.seas)
+
     } else {
+
       ## add time-varying intercept
-      rbfbasis.model <- cbind(rbfbasis.model,rbfbasis.cov.model)
-      rbfbasis.data <- cbind(rbfbasis.data,rbfbasis.cov.data)
+      dat.pred <- cbind(dat.pred,dat.seas)
+      sim.pred <- cbind(sim.pred,sim.seas)
+
+
     }
   }
 
-  prediction.errors <- matrix(0,nrow(data.pred),nvar)
-  model.residuals <- matrix(0,nrow(model.pred),nvar)
+  model.lm <- .lm.fit(sim.pred,sim.resp)
 
-  for (jvar in seq_len(nvar)) {
-    model.lm <- .lm.fit(rbfbasis.model,model.pred[,jvar])
-    model.residuals[,jvar] <- model.lm$residuals
-    ck <- model.lm$coefficients
-    fitted.data <- rbfbasis.data%*%matrix(ck,ncol=1)
-    prediction.errors[,jvar] <- data.pred[,jvar]-fitted.data
-  }
+  prediction.err <- dat.resp - dat.pred %*% model.lm$coefficients
 
-  if (multivar) {
-    sigma.model <- cov(model.residuals)
-    LQL <- dmvnorm(prediction.errors,sigma=sigma.model,log=TRUE)
-    ## NOTE: This could be improved using GLS.
-  } else {
-    sigma.model <- sd(model.residuals[,1])
-    LQL <- dnorm(prediction.errors[,1],mean=0,sd=sigma.model,log=TRUE)
-  }
+  LQL <- dmvnorm(prediction.err,sigma=cov(model.lm$residuals),log=TRUE)
+  ## NOTE: This could be improved using GLS.
 
-  sum(LQL)
+  LQL <- sum(LQL)
+
+  if (verbose) cat(sprintf("logql = %g\n",LQL))
+
+  if (is.finite(LQL)) LQL else -fail.value
+
 }
 
-make.lags.nlf <- function(x, lags, cov = NULL, nobs = 10000) {
-  x <- as.matrix(x)
-  xd <- ncol(x)
-  m <- length(lags)
-  N <- min(nobs,nrow(x)-max(lags))
-  n <- min(nobs,N)
-  if (N > nobs) pWarn("make.lags.nlf","series length truncated to default.")
-  start <- max(lags)+1
-  temp <- matrix(0,ncol=xd*length(lags),nrow=n)
-  for (k in seq_len(length(lags))) {
-    a <- start-lags[k]
-    b <- a + n - 1
-    temp[,(1:xd)+(k-1)*xd] <- x[(a:b),]
-  }
-  a <- start
-  b <- a + n - 1
-  if (xd == 1)
-    lab <- format(paste0("lag",rep(lags,rep(xd,length(lags)))))
-  else
-    lab <- format(paste0(rep(seq_len(xd),length(lags)),"lag",rep(lags,rep(xd,length(lags)))))
-  dimnames(temp) <- list(NULL,lab)
-  skip <- NA
-  if (!is.null(cov)) {
-    cov <- as.matrix(cov)
-    cov <- cov[a:b,,drop=FALSE]
-    skip <- seq_len(ncol(cov))+m*xd
-  }
-  if (xd == 1)
-    y <- c(x[a:b])
-  else
-    y <- x[a:b,]
-  list(
-    x=temp,
-    y=y,
-    nvar=m,
-    cov=cov,
-    lags=lags,
-    skip=skip,
-    start=a,
-    end=b
+## Create design array and response matrix out of lagged variables.
+## Data series are in the rows of 'x'.
+make.lags.nlf <- function (x, times, lags) {
+
+  nvar <- nrow(x)
+  m <- length(lags)     ## number of lag variables per observable
+  maxlag <- max(lags)
+  n <- ncol(x)-maxlag   ## length of lagged time series
+  start <- maxlag+1     ## first predicted observation
+
+  X <- array(dim=c(n,nvar,m))
+  for (k in seq_len(length(lags)))
+    X[,,k] <- t(x[,seq.int(from=start-lags[k],by=1,length.out=n)])
+
+  y <- t(x[,seq.int(from=start,by=1,length.out=n),drop=FALSE])
+  t <- times[seq.int(from=start,by=1,length.out=n)]
+
+  list(x=X,y=y,t=t)
+
+}
+
+rbf.knots <- function (X, n, margin = 0.1) {
+  r <- range(X)
+  seq(
+    from=(1+margin)*r[1]-margin*r[2],
+    to=(1+margin)*r[2]-margin*r[1],
+    length.out=n
   )
 }
 
-make.rbfbasis <- function (X, knots, fac) {
-  X1 <- X-knots[1]
-  nknots <- length(knots)
-  if (nknots>1) {
-    for (j in seq(from=2,to=nknots,by=1)) {
-      X1 <- cbind(X1,X-knots[j])
-    }
-  }
-  exp(fac*(X1^2))
+rbf.basis <- function (X, knots) {
+  X1 <- array(dim=c(dim(X),length(knots)))
+  X1[] <- as.numeric(X)-rep(knots,each=length(X))
+  s <- diff(range(knots))/length(knots)
+  fac <- -1/2/s/s
+  exp(fac*X1*X1)
 }
 
 ## GAUSS trimr function:
@@ -627,16 +594,14 @@ Newey.West <- function(x, y, maxlag) {
   out
 }
 
-make.tensorbasis.nlf <- function(A,B) {
-  if(nrow(A)!=nrow(B)) pStop("make.tensorbasis.nlf","incompatible matrices.")
-  ncol.A <- ncol(A)
-  ncol.B <- ncol(B)
-  Tmat <- matrix(0,nrow(A),ncol.A*ncol.B)
-  for (i in seq_len(ncol.A)) {
-    start <- (i-1)*ncol.B
-    for (j in seq_len(ncol.B)) {
-      Tmat[,start+j] <- A[,i]*B[,j]
-    }
+make.tensorbasis <- function(A,B) {
+  if (nrow(A) != nrow(B))
+    pStop("make.tensorbasis","incompatible matrices.")
+  nA <- ncol(A)
+  nB <- ncol(B)
+  Tmat <- matrix(0,nrow(A),nA*nB)
+  for (j in seq_len(nB)) {
+    Tmat[,seq.int(from=(j-1)*nA+1,to=j*nA,by=1)] <- A*B[,j]
   }
   Tmat
 }

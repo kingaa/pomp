@@ -39,7 +39,7 @@ Error : ‘nlf.objfun’ is undefined for ‘data’ of class ‘character’.
 > 
 > dat %>%
 +   nlf.objfun(times="time",t0=0,params=coef(ou2),
-+     lags=c(4,6),ntransient=100,nasymp=2000,seed=426094906L,
++     lags=c(4,6),ti=100,tf=2000,seed=426094906L,
 +     rprocess=ou2@rprocess,rmeasure=ou2@rmeasure,rinit=ou2@rinit) -> m0
 > 
 > stopifnot(m0(0)==m0(1))
@@ -50,14 +50,14 @@ Error : ‘nlf.objfun’ is undefined for ‘data’ of class ‘character’.
 > subplex(par=guess,fn=m2) -> out
 > stopifnot(out$convergence == 0)
 > m2(out$par)
-[1] 202
+[1] 206
 > plot(simulate(m2))
 > 
 > m2s <- nlf.objfun(m2,tensor=TRUE,period=10,seed=426094906L)
 > subplex(par=guess,fn=m2s) -> out
 > stopifnot(out$convergence == 0)
 > m2s(out$par)
-[1] 204
+[1] 207
 > plot(simulate(m2s))
 > 
 > m2t <- nlf.objfun(m2s,tensor=FALSE,seed=426094906L)
@@ -67,80 +67,88 @@ Error : ‘nlf.objfun’ is undefined for ‘data’ of class ‘character’.
 [1] 203
 > plot(simulate(m2t))
 > 
-> nlf.objfun(ou2,lags=c(1,2,3),nasymp=100,ntransient=100)
+> nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500)
 <object of class ‘nlf_objfun’>
-> nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=100,ntransient=100)
+> nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=500)
 <object of class ‘nlf_objfun’>
-> nlf.objfun(ou2,lags=c(1,2,3),est=NULL,nasymp=100,ntransient=100)
+> nlf.objfun(ou2,lags=c(1,2,3),est=NULL,ti=100,tf=500)
 <object of class ‘nlf_objfun’>
-> try(nlf.objfun(ou2,lags=list(1,2,3),est=NULL,nasymp=100,ntransient=100))
+> try(nlf.objfun(ou2,lags=list(1,2,3),est=NULL,ti=100,tf=500))
 Error : in ‘nlf.objfun’: ‘lags’ must be positive integers.
-> try(nlf.objfun(ou2,lags=c(-1,2,3),est=estnames,nasymp=100,ntransient=100))
+> try(nlf.objfun(ou2,lags=c(-1,2,3),est=estnames,ti=100,tf=500))
 Error : in ‘nlf.objfun’: ‘lags’ must be positive integers.
-> try(nlf.objfun(ou2,lags=c(),est=estnames,nasymp=100,ntransient=100))
+> try(nlf.objfun(ou2,lags=c(),est=estnames,ti=100,tf=500))
 Error : in ‘nlf.objfun’: ‘lags’ must be positive integers.
-> try(nlf.objfun(ou2,lags="of course",est=estnames,nasymp=100,ntransient=100))
+> try(nlf.objfun(ou2,lags="of course",est=estnames,ti=100,tf=500))
 Error : in ‘nlf.objfun’: ‘lags’ must be positive integers.
-> try(nlf.objfun(ou2,lags=NULL,est=estnames,nasymp=100,ntransient=100))
+> try(nlf.objfun(ou2,lags=NULL,est=estnames,ti=100,tf=500))
 Error : in ‘nlf.objfun’: ‘lags’ must be positive integers.
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=-100,ntransient=100))
-Error : in ‘nlf.objfun’: ‘nasymp’ must be a nonnegative integer (and should be large).
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=NULL,ntransient=100))
-Error : in ‘nlf.objfun’: ‘nasymp’ must be a nonnegative integer (and should be large).
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=NA,ntransient=100))
-Error : in ‘nlf.objfun’: ‘nasymp’ must be a nonnegative integer (and should be large).
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=c(12,16),ntransient=100))
-Error : in ‘nlf.objfun’: ‘nasymp’ must be a nonnegative integer (and should be large).
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=100,ntransient=NULL))
-Error : in ‘nlf.objfun’: ‘ntransient’ must be larger than the maximum lag (and should be much larger).
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=100,ntransient=NA))
-Error : in ‘nlf.objfun’: ‘ntransient’ must be larger than the maximum lag (and should be much larger).
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=100,ntransient=c(1,2,3)))
-Error : in ‘nlf.objfun’: ‘ntransient’ must be larger than the maximum lag (and should be much larger).
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=100,ntransient=list(5)))
-Error : in ‘nlf.objfun’: ‘ntransient’ must be larger than the maximum lag (and should be much larger).
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=100,ntransient=Inf))
-Error : in ‘nlf.objfun’: ‘ntransient’ must be larger than the maximum lag (and should be much larger).
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=100,ntransient="yes"))
-Error : in ‘nlf.objfun’: ‘ntransient’ must be larger than the maximum lag (and should be much larger).
-> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,nasymp=100,ntransient=3))
-Error : in ‘nlf.objfun’: ‘ntransient’ must be larger than the maximum lag (and should be much larger).
-> try(nlf.objfun(ou2,lags=c(1,2,3),nrbf=2,nasymp=100,ntransient=300))
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=-10,tf=500))
+Error : in ‘nlf.objfun’: ‘ti’ must be a single numeric value larger than ‘t0’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=NULL,tf=500))
+Error : in ‘nlf.objfun’: ‘ti’ must be a single numeric value larger than ‘t0’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=NA,tf=500))
+Error : in ‘nlf.objfun’: ‘ti’ must be a single numeric value larger than ‘t0’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=c(12,16),tf=500))
+Error : in ‘nlf.objfun’: ‘ti’ must be a single numeric value larger than ‘t0’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=NULL))
+Error : in ‘nlf.objfun’: ‘tf’ must be a single numeric value larger than ‘ti’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=NA))
+Error : in ‘nlf.objfun’: ‘tf’ must be a single numeric value larger than ‘ti’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=c(1,2,3)))
+Error : in ‘nlf.objfun’: ‘tf’ must be a single numeric value larger than ‘ti’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=list(5)))
+Error : in ‘nlf.objfun’: ‘tf’ must be a single numeric value larger than ‘ti’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=Inf))
+Error : in ‘nlf.objfun’: ‘tf’ must be a single numeric value larger than ‘ti’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf="yes"))
+Error : in ‘nlf.objfun’: ‘tf’ must be a single numeric value larger than ‘ti’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=50))
+Error : in ‘nlf.objfun’: ‘tf’ must be a single numeric value larger than ‘ti’.
+> try(nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=150))
+Error : in ‘nlf.objfun’: insufficiently long simulated time series: increase ‘tf’ to at least 220.
+> nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=300)
+<object of class ‘nlf_objfun’>
+Warning message:
+in ‘nlf.objfun’: insufficiently long simulated time series: consider increasing ‘tf’ to 460 or larger. 
+> try(nlf.objfun(ou2,lags=c(1,2,3),nrbf=2,ti=100,tf=500))
 Error : in ‘nlf.objfun’: ‘nrbf’ must be at least 4.
-> try(nlf.objfun(ou2,lags=c(1,2,3),nrbf=NA,nasymp=100,ntransient=300))
+> try(nlf.objfun(ou2,lags=c(1,2,3),nrbf=NA,ti=100,tf=500))
 Error : in ‘nlf.objfun’: ‘nrbf’ must be at least 4.
-> try(nlf.objfun(ou2,lags=c(1,2,3),nrbf=NULL,nasymp=100,ntransient=300))
+> try(nlf.objfun(ou2,lags=c(1,2,3),nrbf=NULL,ti=100,tf=500))
 Error : in ‘nlf.objfun’: ‘nrbf’ must be at least 4.
-> try(nlf.objfun(ou2,lags=c(1,2,3),nrbf="4",nasymp=100,ntransient=300))
+> try(nlf.objfun(ou2,lags=c(1,2,3),nrbf="4",ti=100,tf=500))
 Error : in ‘nlf.objfun’: ‘nrbf’ must be at least 4.
-> try(nlf.objfun(ou2,lags=c(1,2,3),period=Inf,nasymp=100,ntransient=300))
+> try(nlf.objfun(ou2,lags=c(1,2,3),period=Inf,ti=100,tf=500))
 Error : in ‘nlf.objfun’: ‘period’ must be single finite number or NA.
-> nlf.objfun(ou2,lags=c(1,2,3),period=-5,nasymp=100,ntransient=300)
+> nlf.objfun(ou2,lags=c(1,2,3),period=-5,ti=100,tf=500)
 <object of class ‘nlf_objfun’>
-> try(nlf.objfun(ou2,lags=c(1,2,3),nasymp=100,ntransient=300,transform.data=3))
+> try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,transform.data=3))
 Error : in ‘nlf.objfun’: object 'transform.data' of mode 'function' was not found
-> try(nlf.objfun(ou2,lags=c(1,2,3),nasymp=100,ntransient=300,transform.data=list()))
+> try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,transform.data=list()))
 Error : in ‘nlf.objfun’: object 'transform.data' of mode 'function' was not found
-> try(nlf.objfun(ou2,lags=c(1,2,3),nasymp=100,ntransient=300,transform.data="bob"))
+> try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,transform.data="bob"))
 Error : in ‘nlf.objfun’: object 'bob' of mode 'function' was not found
-> try(nlf.objfun(ou2,lags=c(1,2,3),nasymp=100,ntransient=300,transform.data=NULL))
+> try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,transform.data=NULL))
 Error : in ‘nlf.objfun’: object 'transform.data' of mode 'function' was not found
-> try(nlf.objfun(ou2,lags=c(1,2,3),nasymp=100,ntransient=300,transform.data=NA))
+> try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,transform.data=NA))
 Error : in ‘nlf.objfun’: object 'transform.data' of mode 'function' was not found
-> try(nlf.objfun(ou2,lags=c(1,2,3),nasymp=100,ntransient=300,fail.value=c(10,20)))
+> try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,transform.data=function(x,y)x+y))
+Error : in ‘nlf.objfun’: in ‘transform.data’: argument "y" is missing, with no default
+> try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,fail.value=c(10,20)))
 Error : in ‘nlf.objfun’: ‘fail.value’ should be a single (large) number or ‘NA’.
-> try(nlf.objfun(ou2,lags=c(1,2,3),nasymp=100,ntransient=300,fail.value=NULL))
+> try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,fail.value=NULL))
 Error : in ‘nlf.objfun’: ‘fail.value’ should be a single (large) number or ‘NA’.
-> try(nlf.objfun(ou2,lags=c(1,2,3),nasymp=100,ntransient=300,fail.value="no"))
+> try(nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,fail.value="no"))
 Error : in ‘nlf.objfun’: ‘fail.value’ should be a single (large) number or ‘NA’.
-> nlf.objfun(ou2,lags=c(1,2,3),nasymp=100,ntransient=300,fail.value=10)
+> nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500,fail.value=10)
 <object of class ‘nlf_objfun’>
 Warning message:
 in ‘nlf’: ‘fail.value’ should be a large number or ‘NA’. 
 > 
 > po <- ou2
 > time(po) <- c(1:5,8:10)
-> try(nlf.objfun(po,lags=c(1,2,3),period=-5,nasymp=100,ntransient=300))
+> try(nlf.objfun(po,lags=c(1,2,3),period=5,,ti=100,tf=500))
 Error : in ‘nlf.objfun’: NLF requires uniform sampling frequency.
 > 
 > dev.off()

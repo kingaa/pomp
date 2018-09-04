@@ -15,18 +15,17 @@
 \title{Nonlinear forecasting}
 \usage{
 \S4method{nlf.objfun}{data.frame}(data, est = character(0), lags,
-  nrbf = 4, ntransient, nasymp, seed = NULL,
-  transform.data = identity, period = NA, tensor = FALSE,
-  fail.value = NA_real_, params, rinit, rprocess, rmeasure, ...,
-  verbose = getOption("verbose"))
+  nrbf = 4, ti, tf, seed = NULL, transform.data = identity,
+  period = NA, tensor = TRUE, fail.value = NA_real_, params, rinit,
+  rprocess, rmeasure, ..., verbose = getOption("verbose"))
 
 \S4method{nlf.objfun}{pomp}(data, est = character(0), lags, nrbf = 4,
-  ntransient, nasymp, seed = NULL, transform.data = identity,
-  period = NA, tensor = FALSE, fail.value = NA, ...,
+  ti, tf, seed = NULL, transform.data = identity, period = NA,
+  tensor = TRUE, fail.value = NA, ...,
   verbose = getOption("verbose"))
 
-\S4method{nlf.objfun}{nlf_objfun}(data, est, lags, nrbf, ntransient,
-  nasymp, seed = NULL, period, tensor, transform.data, fail.value, ...,
+\S4method{nlf.objfun}{nlf_objfun}(data, est, lags, nrbf, ti, tf,
+  seed = NULL, period, tensor, transform.data, fail.value, ...,
   verbose = getOption("verbose", FALSE))
 }
 \arguments{
@@ -42,9 +41,13 @@ The first lag is the prediction interval.}
 \item{nrbf}{integer scalar;
 the number of radial basis functions to be used at each lag.}
 
-\item{ntransient}{number of timesteps to be discarded from the model simulation.}
-
-\item{nasymp}{number of asymptotic timesteps to be recorded from the model simulation.}
+\item{ti, tf}{required numeric values.
+NLF works by generating simulating long time series from the model.
+The simulated time series will be from \code{ti} to \code{tf}, with the same sampling frequency as the data.
+\code{ti} should be chosen large enough so that transient dynamics have died away.
+\code{tf} should be chosen large enough so that sufficiently many data points are available to estimate the nonlinear forecasting model well.
+An error will be generated unless the data-to-parameter ratio exceeds 10 and
+a warning will be given if the ratio is smaller than 30.}
 
 \item{seed}{integer.
 When fitting, it is often best to fix the seed of the random-number generator (RNG).
@@ -108,10 +111,10 @@ It is a stateful function:
 Each time it is called, it will remember the values of the parameters and its estimate of the log quasilikelihood.
 }
 \description{
-Parameter estimation my maximum simulated quasi-likelihood.
+Parameter estimation by maximum simulated quasi-likelihood.
 }
 \details{
-NLF is an \sQuote{indirect inference} method.
+Nonlinear forecasting (NLF) is an \sQuote{indirect inference} method.
 The NLF approximation to the log likelihood of the data series is computed by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series, and quantifying the ability of the resulting fitted model to predict the data time series.
 The nonlinear autoregressive model is implemented as a generalized additive model (GAM), conditional on lagged values, for each observation variable.
 The errors are assumed multivariate normal.
