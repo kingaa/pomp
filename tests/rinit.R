@@ -48,3 +48,7 @@ sir %>%
   pomp(rinit=function(seas_1,...)
     c(S=seas_1)) %>%
   rinit()
+
+gompertz %>% rinit(nsim=3) -> x
+gompertz %>% pomp(rinit=function(K,...)c(X=K)) %>% rinit(nsim=3) -> y
+stopifnot(identical(x,y))

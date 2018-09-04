@@ -101,3 +101,7 @@ Error : in ‘simulate’: variable 'cases' not found among the state variables.
 variable      [,1]
        S 0.6666667
 > 
+> gompertz %>% rinit(nsim=3) -> x
+> gompertz %>% pomp(rinit=function(K,...)c(X=K)) %>% rinit(nsim=3) -> y
+> stopifnot(identical(x,y))
+> 
