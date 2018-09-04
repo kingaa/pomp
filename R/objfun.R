@@ -119,3 +119,15 @@ setMethod(
     pfilter(as(data,"pomp"),...)
   }
 )
+
+##' @name spect-objfun
+##' @aliases spect,objfun-method
+##' @rdname spect
+##' @export
+setMethod(
+  "spect",
+  signature=signature(data="objfun"),
+  definition=function (data, ...) {
+    pfilter(as(data,"pomp"),...)
+  }
+)
