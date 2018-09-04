@@ -18,6 +18,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > options(digits=3)
+> png(filename="kalman2-%02d.png",res=100)
 > 
 > library(pomp)
 > library(magrittr)
@@ -29,22 +30,23 @@ newly created object(s):
  gompertz 
 > 
 > gompertz %>%
-+   window(start=1,end=10) %>%
++   window(start=1,end=30) %>%
 +   as.data.frame() -> dat
 > 
 > try(dat %>% enkf())
-Error : in ‘enkf’: ‘params’, ‘rprocess’ are needed basic components.
+Error : in ‘enkf’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
 > dat %>%
 +   enkf(
 +     times="time",t0=0,Np=100,
 +     params=c(r=0.1,K=150),
 +     rinit=function(K, ...) {
-+       c(x=rlnorm(n=1,meanlog=log(K),sdlog=1))
++       c(x=K)
 +     },
 +     rprocess=discrete_time(
 +       function (x, r, K, ...) {
-+         c(x=x*exp(r*(1-x/K)))
++         e <- rnorm(n=1,mean=0,sd=0.1)
++         c(x=x*exp(r*(1-x/K))+e)
 +       }
 +     ),
 +     R=2,
@@ -52,10 +54,9 @@ Error : in ‘enkf’: ‘params’, ‘rprocess’ are needed basic components.
 +   ) %>% plot()
 > 
 > try(dat %>% eakf())
-Error : in ‘eakf’: ‘params’, ‘rprocess’ are needed basic components.
+Error : in ‘eakf’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
 > dat %>%
-+   subset(time<10) %>%
 +   eakf(
 +     times="time",t0=0,Np=100,
 +     params=c(r=0.1,K=100),
@@ -70,4 +71,8 @@ Error : in ‘eakf’: ‘params’, ‘rprocess’ are needed basic components.
 +     R=0.01,
 +     C=0.01
 +   ) %>% plot()
+> 
+> dev.off()
+null device 
+          1 
 > 
