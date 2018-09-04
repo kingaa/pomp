@@ -43,6 +43,7 @@ subplex(par=guess,fn=m2t,control=list(reltol=1e-3)) -> out
 stopifnot(out$convergence == 0)
 m2t(out$par)
 plot(simulate(m2t))
+plot(pfilter(m2t,dmeasure=ou2@dmeasure,Np=100))
 
 nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500)
 nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=500)
@@ -91,5 +92,8 @@ try(po %>% nlf.objfun(lags=c(1,2,3),period=5,,ti=100,tf=500))
 po <- ou2
 po@data[2,15] <- NA
 stopifnot(po %>% nlf.objfun(lags=c(1,2,3),ti=100,tf=500) %>% logLik() %>% is.na())
+
+po <- ou2
+stopifnot(po %>% nlf.objfun(rmeasure=NULL,lags=c(1,2,3),ti=100,tf=500) %>% logLik() %>% is.na())
 
 dev.off()

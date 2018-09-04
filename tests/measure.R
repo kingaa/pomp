@@ -14,9 +14,20 @@ p <- coef(po)
 
 dmeasure(po,x=x,y=y,times=t,params=p) -> L
 dmeasure(po,x=x,y=y,times=t,params=p,log=T) -> ll
+dmeasure(po,x=x,y=y,times=t,log=T,
+  params=array(data=p,dim=length(p),dimnames=list(names(p)))) -> ll2
+dmeasure(po,x=array(data=x,dim=c(dim(x),1,1),
+  dimnames=list(rownames(x),NULL,NULL,NULL,NULL)),
+  y=y,times=t,log=T,
+  params=array(data=p,dim=length(p),dimnames=list(names(p)))) -> ll3
+dmeasure(po,x=array(data=x[,1,1],dim=nrow(x),dimnames=list(rownames(x))),
+  y=y[,1],times=t[1],params=p,log=TRUE) -> ll4
 stopifnot(
   all.equal(ll[,1:3],log(L[,1:3])),
-  identical(dim(ll),c(5L,10L))
+  identical(dim(ll),c(5L,10L)),
+  all.equal(ll,ll2),
+  all.equal(ll,ll3),
+  all.equal(ll[1,1],ll4[1,1])
 )
 
 try(dmeasure("ou2",x=x,y=y,times=t,params=p))
@@ -97,4 +108,3 @@ po %>% dmeasure(x=x,y=y,params=p,times=t,log=TRUE) -> d
 po %>% rmeasure(x=x,params=p,times=t) -> yy
 
 po %>% pomp(dmeasure=function(...,log)1) %>% dmeasure(x=x,y=y,params=p,times=t) -> d
-

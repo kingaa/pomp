@@ -69,6 +69,7 @@ Error : ‘nlf.objfun’ is undefined for ‘data’ of class ‘character’.
 > m2t(out$par)
 [1] 203
 > plot(simulate(m2t))
+> plot(pfilter(m2t,dmeasure=ou2@dmeasure,Np=100))
 > 
 > nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500)
 <object of class ‘nlf_objfun’>
@@ -159,6 +160,9 @@ Error : in ‘nlf.objfun’: NLF requires uniform sampling frequency.
 > po <- ou2
 > po@data[2,15] <- NA
 > stopifnot(po %>% nlf.objfun(lags=c(1,2,3),ti=100,tf=500) %>% logLik() %>% is.na())
+> 
+> po <- ou2
+> stopifnot(po %>% nlf.objfun(rmeasure=NULL,lags=c(1,2,3),ti=100,tf=500) %>% logLik() %>% is.na())
 > 
 > dev.off()
 null device 

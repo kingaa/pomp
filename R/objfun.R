@@ -116,6 +116,6 @@ setMethod(
   "spect",
   signature=signature(data="objfun"),
   definition=function (data, ...) {
-    pfilter(as(data,"pomp"),...)
+    spect(as(data,"pomp"),...)
   }
 )
