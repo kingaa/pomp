@@ -22,7 +22,6 @@ Type 'q()' to quit R.
 > 
 > library(pomp)
 > 
-> 
 > ct <- covariate_table(x=20:30,y=10:0,times=seq(0,10))
 > lookup(ct,t=c(1,2.3,4,7))
     t    x   y
@@ -37,6 +36,9 @@ Type 'q()' to quit R.
 2 2.3 22 8
 3 4.0 24 6
 4 7.0 27 3
+> lookup(ct,t=6.1)
+    t  x y
+1 6.1 26 4
 > 
 > try(covariate_table(x=20:30,y=10:0,times=seq(10,0)))
 Error : in ‘covariate_table’: ‘times’ must be an increasing numeric sequence (without missing values).

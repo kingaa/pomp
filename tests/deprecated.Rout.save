@@ -59,4 +59,8 @@ Slot "text":
 
 Warning message:
 ‘gillespie.hl.sim’ is deprecated and will be removed in a forthcoming release.  Use ‘gillespie_hl’ instead. 
+> try(onestep.dens())
+Error in onestep.dens() : argument "dens.fun" is missing, with no default
+In addition: Warning message:
+‘onestep.dens’ is deprecated and will be removed in a forthcoming release.  Specify ‘dprocess’ directly using a C snippet or R function. 
 > 
