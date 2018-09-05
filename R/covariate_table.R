@@ -95,9 +95,10 @@ setMethod(
   definition=function (..., order = c("linear", "constant"), times) {
 
     order <- match.arg(order)
+    env <- parent.frame(2)
 
     tryCatch(
-      covariate.table.internal(...,times=times,order=order),
+      covariate.table.internal(...,times=times,order=order,env=env),
       error = function (e) pStop("covariate_table",conditionMessage(e))
     )
 
@@ -114,9 +115,10 @@ setMethod(
   definition=function (..., order = c("linear", "constant"), times) {
 
     order <- match.arg(order)
+    env <- parent.frame(2)
 
     tryCatch(
-      covariate.table.internal(...,.timevar=times,order=order),
+      covariate.table.internal(...,.timevar=times,order=order,env=env),
       error = function (e) pStop("covariate_table",conditionMessage(e))
     )
 
@@ -124,7 +126,7 @@ setMethod(
 )
 
 covariate.table.internal <- function (..., times = NULL, .timevar = NULL,
-  order) {
+  order, env) {
 
   d <- as.list(substitute(list(...)))[-1]
   if (length(d)==0) pStop_("no covariates specified.")
@@ -134,7 +136,7 @@ covariate.table.internal <- function (..., times = NULL, .timevar = NULL,
   nm[noname] <- paste0(".cov.int.",seq_len(sum(noname)))
   names(d) <- nm
 
-  e <- new.env(parent=parent.frame(3))
+  e <- new.env(parent=env)
 
   e$times <- as.numeric(times)
 
