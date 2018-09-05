@@ -364,7 +364,7 @@ nlfof.internal <- function (object,
   environment(ofun) <- list2env(
     list(object=object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
       period=period,tensor=tensor,seed=seed,transform.data=transform.data,
-      params=params,idx=idx,logql=logql,verbose=verbose),
+      params=params,idx=idx,logql=logql,est=est,verbose=verbose),
     parent=parent.frame(2)
   )
 
