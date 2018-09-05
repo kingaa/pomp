@@ -99,6 +99,10 @@ po3 %>%
   trajectory(times=seq(1,1000),format="data.frame") -> dat
 plot(X~time,data=dat,subset=(time<100),type='l')
 plot(X~Y,data=dat)
+gompertz %>%
+  pomp(zeronames=c("X")) %>%
+  trajectory(times=seq(1,1000,by=10)) -> x
+stopifnot(all(x==0))
 
 try(
   po3 %>%

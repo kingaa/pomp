@@ -238,7 +238,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   dim = INTEGER(GET_DIM(vmatrix)); nvarv = dim[0]; nevent = dim[1];
 
   if (nvarv != nvar)
-    errorcall(R_NilValue,"number of state variables must equal the number of rows in v.");
+    errorcall(R_NilValue,"number of state variables must equal the number of rows in 'v'.");
 
   ntimes = LENGTH(times);
 

@@ -88,7 +88,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 
     break;
 
-  case native: {
+  case native: case regNative: {
     int *sidx, *pidx, *cidx;
     pomp_skeleton *ff;
 
@@ -107,15 +107,9 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 
     break;
 
-  default: {
+  default:
 
-    double *Xs = REAL(X);
-    int i, n = nvars*nreps*ntimes;
-    for (i = 0; i < n; i++, Xs++) *Xs = R_NaReal;
-
-  }
-
-  break;
+    break; // #nocov
 
   }
 

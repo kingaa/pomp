@@ -73,7 +73,6 @@
 - `pfilterList` object?
 - parameter transformations: put `transform` option into each estimation routine (`spect.match`)
 - trap errors for LAPACK
-- better unit tests for `sannbox`
 - support for asymmetric MCMC proposals
 - one-point SCQL function for possible use in fitting initial conditions
 - partial rejection control for `pfilter`?

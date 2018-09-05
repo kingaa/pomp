@@ -122,8 +122,7 @@ sannbox <- function (par, fn, control = list(), ...) {
   else if (is.numeric(control$sched)) {
     temps <- control$sched
     if (length(temps)<control$maxit)
-      pStop(ep,"insufficiently many temperatures supplied in ",
-        sQuote("control$sched"))
+      pStop(ep,"insufficiently many temperatures supplied in ",sQuote("control$sched"))
   }
 
   if (is.null(control$candidate.dist))

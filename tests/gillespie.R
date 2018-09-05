@@ -158,6 +158,8 @@ stopifnot(
       rho=0.1,S_0=0.07,I_0=1e-4,R_0=0.93,pop=1e6)) %>%
     states() %>% apply(1,diff) %>% equals(0) %>% all())
 
+try(gsir %>% simulate(rprocess=gillespie(rate.fun=function(j,...)1,v=Vmatrix[1:4,])))
+
 rate.fun.bad <- function(j, x, t, params, covars, ...) {
   if (t>1) {
     as.numeric(0)

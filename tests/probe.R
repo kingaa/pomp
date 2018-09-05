@@ -50,6 +50,23 @@ try({
   }
   probe(pb,probes=delayed.error)
 })
+try({
+  count <- 0
+  delayed.badval <- function (y) {
+    count <<- count+1
+    if (count>10) "bob" else 10
+  }
+  probe(pb,probes=delayed.badval)
+})
+try({
+  count <- 0
+  delayed.badval <- function (y) {
+    count <<- count+1
+    if (count>10) rep(3.5,count) else 3.5
+  }
+  probe(pb,probes=delayed.badval)
+})
+
 try(probe(pb,nsim=10))
 
 probe(pb,params=as.list(coef(pb)))

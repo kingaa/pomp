@@ -121,6 +121,25 @@ Error : in ‘probe’: applying probes to actual data: probe 1 returns a non-nu
 +   probe(pb,probes=delayed.error)
 + })
 Error : in ‘probe’: applying probes to simulated data: whoa nelly!
+> try({
++   count <- 0
++   delayed.badval <- function (y) {
++     count <<- count+1
++     if (count>10) "bob" else 10
++   }
++   probe(pb,probes=delayed.badval)
++ })
+Error : in ‘probe’: applying probes to simulated data: probe 1 returns a non-numeric result.
+> try({
++   count <- 0
++   delayed.badval <- function (y) {
++     count <<- count+1
++     if (count>10) rep(3.5,count) else 3.5
++   }
++   probe(pb,probes=delayed.badval)
++ })
+Error : in ‘probe’: applying probes to simulated data: variable-sized results returned by probe 1.
+> 
 > try(probe(pb,nsim=10))
 Error : in ‘probe’: ‘nsim’ (=10), should be (much) larger than the number of probes (=10).
 > 

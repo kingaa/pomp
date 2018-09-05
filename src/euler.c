@@ -102,8 +102,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   double *cov;
   SEXP cvec, X, fn;
 
-  if (deltat <= 0)
-    errorcall(R_NilValue,"'delta.t' should be a positive number.");
+  if (deltat <= 0) errorcall(R_NilValue,"'delta.t' should be a positive number."); // #nocov
 
   int *dim;
   dim = INTEGER(GET_DIM(xstart)); nvars = dim[0]; nreps = dim[1];
@@ -185,8 +184,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 
     R_CheckUserInterrupt();
 
-    if (t > time[step])
-      errorcall(R_NilValue,"'times' must be an increasing sequence.");
+    if (t > time[step]) errorcall(R_NilValue,"'times' must be an increasing sequence.");  // #nocov
 
     memcpy(xt,xs,nreps*nvars*sizeof(double));
 

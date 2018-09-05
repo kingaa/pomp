@@ -334,8 +334,11 @@ compute.spect.sim <- function (object, params, vars, nsim, seed,
   nobs <- length(vars)
   for (j in seq_len(nobs)) {
     for (k in seq_len(nsim)) {
-      sp <- spec.pgram(pomp.detrend(transform.data(sims[j,k,]),type=detrend),
-        spans=ker,taper=0,pad=0,fast=FALSE,detrend=FALSE,plot=FALSE)
+      sp <- tryCatch(
+        spec.pgram(pomp.detrend(transform.data(sims[j,k,]),type=detrend),
+          spans=ker,taper=0,pad=0,fast=FALSE,detrend=FALSE,plot=FALSE),
+        error = function (e) pStop("spec.pgram",conditionMessage(e))
+      )
       if ((j==1)&&(k==1)) {
         simspec <- array(
           dim=c(nsim,length(sp$freq),nobs),

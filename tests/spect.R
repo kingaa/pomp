@@ -2,6 +2,7 @@ options(digits=3)
 png(filename="spect-%02d.png",res=100)
 
 library(pomp)
+library(magrittr)
 
 pompExample(gompertz)
 set.seed(362083261L)
@@ -68,5 +69,12 @@ simulate(times=1:100,t0=0,
 
 plot(spect(bob,kernel.width=3,nsim=500),
   data.styles=list(lwd=c(2,3),lty=2,col='red'))
+
+count <- 0
+bad.transform <- function (y) {
+  count <<- count+1
+  if (count>3) rep(NA_real_,length(y)) else y
+}
+try(bob %>% spect(transform.data=bad.transform,kernel.width=3,nsim=100))
 
 dev.off()

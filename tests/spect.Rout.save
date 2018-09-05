@@ -21,6 +21,7 @@ Type 'q()' to quit R.
 > png(filename="spect-%02d.png",res=100)
 > 
 > library(pomp)
+> library(magrittr)
 > 
 > pompExample(gompertz)
 newly created object(s):
@@ -118,6 +119,14 @@ Error : in ‘spect’: in simulation: yikes!
 +   data.styles=list(lwd=c(2,3),lty=2,col='red'))
 Warning message:
 in ‘plot’: ‘data.styles’ contains an element with more than 1 entry but fewer entries than observed variables. 
+> 
+> count <- 0
+> bad.transform <- function (y) {
++   count <<- count+1
++   if (count>3) rep(NA_real_,length(y)) else y
++ }
+> try(bob %>% spect(transform.data=bad.transform,kernel.width=3,nsim=100))
+Error : in ‘spect’: in ‘spec.pgram’: missing values in object
 > 
 > dev.off()
 null device 

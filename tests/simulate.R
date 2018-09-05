@@ -81,6 +81,10 @@ stopifnot(
 )
 
 try(simulate(times=1:100,t0=0,
+  rprocess=euler(function(w,z,...,delta.t) c("w"=w,z),delta.t=0.1),
+  params=c(w_0=1,z_0=3)))
+
+try(simulate(times=1:100,t0=0,
   rprocess=onestep(Csnippet("z = runif(z-0.5,z+0.5);")),
   rmeasure=function(t,z,...) c(w=rnorm(n=t,z,1)),
   rinit=Csnippet("z = 2;"),

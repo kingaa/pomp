@@ -17,8 +17,7 @@ SEXP do_simulate (SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi)
   PROTECT(offset = NEW_INTEGER(1)); nprotect++;
   *(INTEGER(offset)) = 1;
 
-  if (LENGTH(nsim) != 1)
-    errorcall(R_NilValue,"'nsim' must be a single integer");
+  if (LENGTH(nsim) != 1) errorcall(R_NilValue,"'nsim' must be a single integer"); // #nocov
 
   PROTECT(params = as_matrix(params)); nprotect++;
 

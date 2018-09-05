@@ -157,8 +157,7 @@ SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr) {
   correlation = *(INTEGER(AS_INTEGER(corr))); // correlation, or covariance?
 
   n = LENGTH(x);		// n = # of observations
-  if (n != LENGTH(y))
-    errorcall(R_NilValue,"'x' and 'y' must have equal lengths");
+  if (n != LENGTH(y)) errorcall(R_NilValue,"'x' and 'y' must have equal lengths"); // #nocov
 
   PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++;
   PROTECT(Y = duplicate(AS_NUMERIC(y))); nprotect++;
