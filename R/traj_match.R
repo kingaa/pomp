@@ -42,7 +42,8 @@ setClass(
   "traj_match_objfun",
   contains="function",
   slots=c(
-    env="environment"
+    env="environment",
+    est="character"
   )
 )
 
@@ -135,10 +136,18 @@ setMethod(
   "traj.match.objfun",
   signature=signature(data="traj_match_objfun"),
   definition=function (data,
+    est, fail.value, ode_control,
     ..., verbose = getOption("verbose", FALSE)) {
+
+    if (missing(est)) est <- data@est
+    if (missing(fail.value)) fail.value <- data@env$fail.value
+    if (missing(ode_control)) ode_control <- data@env$ode_control
 
     traj.match.objfun(
       data@env$object,
+      est=est,
+      fail.value=fail.value,
+      ode_control=ode_control,
       ...,
       verbose=verbose
     )
@@ -188,7 +197,7 @@ tmof.internal <- function (object,
     parent=parent.frame(2)
   )
 
-  new("traj_match_objfun",ofun,env=environment(ofun))
+  new("traj_match_objfun",ofun,env=environment(ofun),est=est)
 
 }
 

@@ -93,12 +93,12 @@ Error : in ‘spect.match.objfun’: ‘weights’ function: oh no!
 > spect.match.objfun(f2,seed=5069977,weights=function(f)exp(-f/0.1)) -> f2
 > subplex(fn=f2,par=out$par,control=list(reltol=1e-3)) -> out
 > f2(out$par)
-[1] 82.2
+[1] 79.9
 > summary(f2) %>% names()
 [1] "coef"  "nsim"  "pvals"
 > plot(spect(f2))
 > 
-> f2 %>% probe(nsim=100,
+> f2 %>% probe(nsim=100,seed=639095851,
 +   probes=list(probe.mean("y1"),probe.mean("y2"))) %>%
 +   plot()
 > 

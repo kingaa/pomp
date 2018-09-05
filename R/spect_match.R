@@ -44,7 +44,8 @@ setClass(
   "spect_match_objfun",
   contains="function",
   slots=c(
-    env="environment"
+    env="environment",
+    est="character"
   )
 )
 
@@ -189,10 +190,19 @@ setMethod(
   "spect.match.objfun",
   signature=signature(data="spect_match_objfun"),
   definition=function(data,
+    est, weights, fail.value, seed = NULL,
     ..., verbose = getOption("verbose", FALSE)) {
+
+    if (missing(est)) est <- data@est
+    if (missing(weights)) weights <-data@env$weights
+    if (missing(fail.value)) fail.value <- data@env$fail.value
 
     spect.match.objfun(
       data@env$object,
+      est=est,
+      weights=weights,
+      fail.value=fail.value,
+      seed=seed,
       ...,
       verbose=verbose
     )
@@ -277,7 +287,7 @@ smof.internal <- function (object,
     parent=parent.frame(2)
   )
 
-  new("spect_match_objfun",ofun,env=environment(ofun))
+  new("spect_match_objfun",ofun,env=environment(ofun),est=est)
 
 }
 
@@ -301,16 +311,24 @@ spect.discrep <- function (object, ker, weights) {
 ##' @name spect-spect_match_objfun
 ##' @rdname spect
 ##' @aliases spect,spect_match_objfun-method
+##'
+##' @details
+##' When \code{spect} operates on a spectrum-matching objective function (a \sQuote{spect_match_objfun} object), by default, the
+##' random-number generator seed is fixed at the value given when the objective function was constructed.
+##' Specifying \code{NULL} or an integer for \code{seed} overrides this behavior.
+##'
 ##' @export
 setMethod(
   "spect",
   signature=signature(data="spect_match_objfun"),
-  definition=function (data,
+  definition=function (data, seed,
     ..., verbose=getOption("verbose", FALSE)) {
+
+    if (missing(seed)) seed <- data@env$seed
 
     spect(
       data@env$object,
-      seed=data@env$seed,
+      seed=seed,
       ...,
       verbose=verbose
     )

@@ -79,8 +79,8 @@ setAs(
 setMethod(
   "simulate",
   signature=signature(object="objfun"),
-  definition=function (object, ...) {
-    simulate(as(object,"pomp"),...)
+  definition=function (object, seed = NULL, ...) {
+    simulate(as(object,"pomp"),seed=seed,...)
   }
 )
 
@@ -91,8 +91,8 @@ setMethod(
 setMethod(
   "probe",
   signature=signature(data="objfun"),
-  definition=function (data, ...) {
-    probe(as(data,"pomp"),...)
+  definition=function (data, seed = NULL, ...) {
+    probe(as(data,"pomp"),seed=seed,...)
   }
 )
 
@@ -115,7 +115,7 @@ setMethod(
 setMethod(
   "spect",
   signature=signature(data="objfun"),
-  definition=function (data, ...) {
-    spect(as(data,"pomp"),...)
+  definition=function (data, seed = NULL, ...) {
+    spect(as(data,"pomp"),seed=seed,...)
   }
 )

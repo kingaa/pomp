@@ -266,7 +266,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
         pStop("rmvnorm",conditionMessage(e))
     )
 
-    if (!all(is.finite(pert))) pStop_("extreme particle depletion")
+    if (!all(is.finite(pert))) pStop_("extreme particle depletion") #nocov
 
     params[estind,] <- m[estind,]+t(pert)
 

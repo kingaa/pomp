@@ -142,6 +142,10 @@ Error : in ‘abc’: ‘scale’ must be specified.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified.
+> try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
++   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
++   epsilon=1,rprocess=NULL))
+Error : in ‘abc’: ‘rprocess’, ‘rmeasure’ are needed basic components.
 > 
 > try(abc(abc1,Nabc=100,epsilon=NULL,scale=scale.dat))
 Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified.

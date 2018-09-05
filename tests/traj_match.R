@@ -38,5 +38,6 @@ f1 %>% as("pomp")
 f1 %>% as("data.frame") %>% names()
 
 f1 %>% traj.match.objfun(fail.value=1e10) -> f2
+f2(NA)
 
 dev.off()

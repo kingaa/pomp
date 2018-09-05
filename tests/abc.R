@@ -97,6 +97,9 @@ try(abc(ou2,Nabc=100,probes=plist,epsilon=1.7,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
+  epsilon=1,rprocess=NULL))
 
 try(abc(abc1,Nabc=100,epsilon=NULL,scale=scale.dat))
 try(abc(ou2,params=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,

@@ -46,7 +46,8 @@ setClass(
   "probe_match_objfun",
   contains="function",
   slots=c(
-    env="environment"
+    env="environment",
+    est="character"
   )
 )
 
@@ -173,10 +174,17 @@ setMethod(
   "probe.match.objfun",
   signature=signature(data="probe_match_objfun"),
   definition=function (data,
+    est, fail.value, seed = NULL,
     ..., verbose = getOption("verbose", FALSE)) {
+
+    if (missing(est)) est <- data@est
+    if (missing(fail.value)) fail.value <- data@env$fail.value
 
     probe.match.objfun(
       data@env$object,
+      est=est,
+      fail.value=fail.value,
+      seed=seed,
       ...,
       verbose=verbose
     )
@@ -223,7 +231,7 @@ pmof.internal <- function (object,
     parent=parent.frame(2)
   )
 
-  new("probe_match_objfun",ofun,env=environment(ofun))
+  new("probe_match_objfun",ofun,env=environment(ofun),est=est)
 
 }
 
@@ -249,16 +257,24 @@ probe.eval <- function (object) {
 ##' @name probe-probe_match_obfjun
 ##' @rdname probe
 ##' @aliases probe,probe_match_objfun-method
+##'
+##' @details
+##' When \code{probe} operates on a probe-matching objective function (a \sQuote{probe_match_objfun} object), by default, the
+##' random-number generator seed is fixed at the value given when the objective function was constructed.
+##' Specifying \code{NULL} or an integer for \code{seed} overrides this behavior.
+##'
 ##' @export
 setMethod(
   "probe",
   signature=signature(data="probe_match_objfun"),
-  definition=function (data,
+  definition=function (data, seed,
     ..., verbose = getOption("verbose", FALSE)) {
+
+    if (missing(seed)) seed <- data@env$seed
 
     probe(
       data@env$object,
-      seed=data@env$seed,
+      seed=seed,
       ...,
       verbose=verbose
     )

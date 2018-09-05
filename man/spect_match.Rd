@@ -32,8 +32,8 @@
   seed = NULL, transform.data = identity, detrend, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{spect.match.objfun}{spect_match_objfun}(data, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{spect.match.objfun}{spect_match_objfun}(data, est, weights,
+  fail.value, seed = NULL, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,

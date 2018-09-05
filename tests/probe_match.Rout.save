@@ -86,7 +86,7 @@ Error : in ‘probe.match.objfun’: parameter ‘harry’ not found in ‘param
 > 
 > f1 %>% probe.match.objfun(fail.value=1e10) -> f2
 > 
-> f1 %>% spect(kernel.width=3,nsim=100) %>% plot()
+> f1 %>% spect(kernel.width=3,nsim=100,seed=748682047) %>% plot()
 > 
 > f1 %>% as("pomp")
 <object of class ‘pomp’>

@@ -68,6 +68,8 @@ Error : in ‘traj.match.objfun’: parameter ‘harry’ not found in ‘params
 [1] "time" "y1"   "y2"  
 > 
 > f1 %>% traj.match.objfun(fail.value=1e10) -> f2
+> f2(NA)
+[1] 1e+10
 > 
 > dev.off()
 null device 

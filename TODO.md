@@ -2,7 +2,7 @@
 
 ## For pomp 2:
 
-- do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?
+- do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - manual pages on the organization of the package
     - estimation algorithms
     - diagnostic tools
@@ -39,27 +39,21 @@
 
 - "guide to upgrading to **pomp** version 2"
 - `as.data.frame` and ?? for `listies`
-- matching functions will go away, in favor of objective function constructors:
-    - 'probe.match.objfun' looks good: needs testing
-    - 'traj.match.objfun' looks good: needs testing
-    - 'spect.match.objfun' looks good: needs testing
-	- 'nlf' needs to be reworked
+- `coef` returns data frame in some circumstances?
 - import and re-export `reshape2::melt`?
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 
-- on-the-fly modification of basic components
-	- needed for nlf
 - perhaps `dinit`?
 - change specification of horsemen?
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification
-	- allow "R snippets": expressions evaluated in proper context?
+	- ~~allow "R snippets": expressions evaluated in proper context?~~
 - easier interface for lists of probes in `probe`
 - documentation on `mifList`, `pmcmcList`, etc.?
 - methods to change data (`obs<-`)?
-	- perhaps recognized data variables, states, covariates in calls to `pomp` are replaceed?
+	- perhaps recognized data variables, states, covariates in calls to `pomp` are replaced?
 - put Kalman check in 'gompertz' test: **is it correct?**
 - put Kalman check in 'ou2' test
 - MCMC proposals as pomp slots?

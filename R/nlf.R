@@ -124,7 +124,8 @@ setClass(
   slots=c(
     env="environment",
     ti="numeric",
-    tf="numeric"
+    tf="numeric",
+    est="character"
   )
 )
 
@@ -235,7 +236,7 @@ setMethod(
     period, tensor, transform.data, fail.value,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(est)) est <- data@env$est
+    if (missing(est)) est <- data@est
     if (missing(lags)) lags <- data@env$lags
     if (missing(nrbf)) nrbf <- data@env$nrbf
     if (missing(ti)) ti <- data@ti
@@ -364,11 +365,11 @@ nlfof.internal <- function (object,
   environment(ofun) <- list2env(
     list(object=object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
       period=period,tensor=tensor,seed=seed,transform.data=transform.data,
-      params=params,idx=idx,logql=logql,est=est,verbose=verbose),
+      params=params,idx=idx,logql=logql,verbose=verbose),
     parent=parent.frame(2)
   )
 
-  new("nlf_objfun",ofun,env=environment(ofun),ti=ti,tf=tf)
+  new("nlf_objfun",ofun,env=environment(ofun),ti=ti,tf=tf,est=est)
 
 }
 

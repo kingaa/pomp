@@ -32,10 +32,10 @@
   seed = NULL, transform.data, detrend, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{spect}{spect_match_objfun}(data, ...,
+\S4method{spect}{spect_match_objfun}(data, seed, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{spect}{objfun}(data, ...)
+\S4method{spect}{objfun}(data, seed = NULL, ...)
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -111,6 +111,10 @@ A call to \code{spect} results in the estimation of the power spectrum for
 the (transformed, detrended) data and \code{nsim} model simulations.  The
 results of these computations are stored in an object of class
 \sQuote{spectd_pomp}.
+
+When \code{spect} operates on a spectrum-matching objective function (a \sQuote{spect_match_objfun} object), by default, the
+random-number generator seed is fixed at the value given when the objective function was constructed.
+Specifying \code{NULL} or an integer for \code{seed} overrides this behavior.
 }
 \references{
 D.C. Reuman, R.A. Desharnais, R.F. Costantino, O. Ahmad, J.E.

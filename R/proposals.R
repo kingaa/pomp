@@ -159,8 +159,7 @@ mvn.rw.adaptive <- function (rw.sd, rw.var, scale.start = NA,
       covmat.emp <<- ((.n-1)*covmat.emp+tcrossprod(theta[parnm]-theta.mean))/.n
     }
     ch <- chol(covmat,pivot=TRUE)
-    if (attr(ch,"rank")<length(parnm))
-      pWarn(ep,"degenerate proposal.")
+    if (attr(ch,"rank")<length(parnm)) pWarn(ep,"degenerate proposal.")
     oo <- order(attr(ch,"pivot"))
     Q <- ch[,oo]
     theta[parnm] <- theta[parnm]+rnorm(n=length(parnm),mean=0,sd=1)%*%Q

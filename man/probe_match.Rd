@@ -28,8 +28,8 @@
   fail.value = NA, probes, nsim, seed = NULL, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{probe.match.objfun}{probe_match_objfun}(data, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{probe.match.objfun}{probe_match_objfun}(data, est, fail.value,
+  seed = NULL, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,

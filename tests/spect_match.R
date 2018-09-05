@@ -60,7 +60,7 @@ f2(out$par)
 summary(f2) %>% names()
 plot(spect(f2))
 
-f2 %>% probe(nsim=100,
+f2 %>% probe(nsim=100,seed=639095851,
   probes=list(probe.mean("y1"),probe.mean("y2"))) %>%
   plot()
 

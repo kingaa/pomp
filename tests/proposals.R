@@ -51,6 +51,10 @@ try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
   shape.start=10,target=Inf))
 try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
   shape.start=10,target="bob"))
+mvn.rw.adaptive(rw.sd=c(alpha.1=0.1,alpha.3=0.0),
+  scale.start=5,scale.cooling=0.1,shape.start=10) -> f1
+f1(c(alpha.1=1,alpha.3=1),.n=100,.accepts=1000,verbose=FALSE)
+
 mvn.rw.adaptive(rw.sd=c(alpha.1=0.1,alpha.3=0.1),
   scale.start=5,scale.cooling=0.1,shape.start=10) -> f
 options(verbose=TRUE) -> op

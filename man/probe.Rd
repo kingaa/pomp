@@ -28,10 +28,10 @@
 \S4method{probe}{probed_pomp}(data, probes, nsim, seed = NULL, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{probe}{probe_match_objfun}(data, ...,
+\S4method{probe}{probe_match_objfun}(data, seed, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{probe}{objfun}(data, ...)
+\S4method{probe}{objfun}(data, seed = NULL, ...)
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -94,6 +94,10 @@ are generated (via a call to \code{\link[=simulate-pomp]{simulate}}) and
 the probe(s) are applied to each of these.  The results of the probe
 computations on real and simulated data are stored in an object of class
 \sQuote{probed_pomp}.
+
+When \code{probe} operates on a probe-matching objective function (a \sQuote{probe_match_objfun} object), by default, the
+random-number generator seed is fixed at the value given when the objective function was constructed.
+Specifying \code{NULL} or an integer for \code{seed} overrides this behavior.
 }
 \section{Methods}{
 
