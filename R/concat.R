@@ -19,7 +19,7 @@ setMethod(
   "concat",
   signature=signature(...="missing"),
   definition=function(...) {
-    NULL
+    NULL   #nocov
   }
 )
 

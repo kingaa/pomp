@@ -93,6 +93,12 @@ Error : in ‘probe.match.objfun’: parameter ‘harry’ not found in ‘param
 > f1 %>% as("data.frame") %>% names()
 [1] "time" "Y"   
 > 
+> gompertz %>% probe.match.objfun(nsim=100,probes=function(x)1,fail.value=1e9) -> f2
+> logLik(f2)
+[1] NaN
+> f2(1)
+[1] 1e+09
+> 
 > dev.off()
 null device 
           1 

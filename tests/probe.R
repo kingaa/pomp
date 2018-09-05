@@ -1,6 +1,6 @@
+options(digits=3)
 png(filename="probe-%02d.png",res=100)
 
-options(digits=3)
 library(pomp)
 library(magrittr)
 
@@ -14,7 +14,7 @@ plist <- list(
   mean=probe.mean("Y",trim=0.1,transform=sqrt),
   sd=probe.sd("Y",transform=sqrt),
   probe.marginal("Y",ref=obs(po)),
-  probe.acf("Y",lags=c(1,3,5),type="correlation",transform=sqrt),
+  probe.acf("Y",lags=c(-5,1,5),type="correlation",transform=sqrt),
   probe.quantile("Y",prob=c(0.25,0.75))
 )
 
@@ -35,7 +35,7 @@ try(probe(po,probes=plist[1:3],nsim=NA))
 try(probe(po,nsim=100,probes=function(x)rep(1,times=ceiling(runif(1,max=10)))))
 
 try(probe(33L))
-invisible(probe(pb))
+probe(pb)
 plot(probe(pb,probes=plist[[1]]))
 try(probe(pb,probes="okay"))
 try(probe(pb,probes=function(x,y)x+y))
@@ -56,6 +56,8 @@ probe(pb,params=as.list(coef(pb)))
 try(probe(pb,params=NULL))
 try(probe(pb,params="I think so"))
 try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
+
+po %>% probe(nsim=100,probes=function(x)1) %>% logLik()
 
 try(data.frame(t=1:10,a=1:10) %>% probe())
 

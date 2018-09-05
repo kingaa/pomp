@@ -61,4 +61,8 @@ f1 %>% spect(kernel.width=3,nsim=100,seed=748682047) %>% plot()
 f1 %>% as("pomp")
 f1 %>% as("data.frame") %>% names()
 
+gompertz %>% probe.match.objfun(nsim=100,probes=function(x)1,fail.value=1e9) -> f2
+logLik(f2)
+f2(1)
+
 dev.off()
