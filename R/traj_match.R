@@ -110,7 +110,7 @@ setMethod(
   "traj.match.objfun",
   signature=signature(data="pomp"),
   function (data,
-    est, fail.value = NA, ode_control = list(),
+    est = character(0), fail.value = NA, ode_control = list(),
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -167,7 +167,6 @@ tmof.internal <- function (object,
 
   fail.value <- as.numeric(fail.value)
 
-  if (missing(est)) est <- character(0)
   est <- as.character(est)
   est <- est[nzchar(est)]
 

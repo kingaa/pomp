@@ -18,8 +18,9 @@
   fail.value = NA, ode_control = list(), params, rinit, skeleton,
   dmeasure, partrans, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{traj.match.objfun}{pomp}(data, est, fail.value = NA,
-  ode_control = list(), ..., verbose = getOption("verbose", FALSE))
+\S4method{traj.match.objfun}{pomp}(data, est = character(0),
+  fail.value = NA, ode_control = list(), ...,
+  verbose = getOption("verbose", FALSE))
 
 \S4method{traj.match.objfun}{traj_match_objfun}(data, est, fail.value,
   ode_control, ..., verbose = getOption("verbose", FALSE))
