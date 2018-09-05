@@ -67,6 +67,6 @@ simulate(times=1:100,t0=0,
   params=c()) -> bob
 
 plot(spect(bob,kernel.width=3,nsim=500),
-  data.style=list(lwd=c(2,3),lty=2,col='red'))
+  data.styles=list(lwd=c(2,3),lty=2,col='red'))
 
 dev.off()

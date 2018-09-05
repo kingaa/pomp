@@ -1,0 +1,62 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> try(conv.rec())
+Error in traces(object, ...) : 
+  argument "object" is missing, with no default
+In addition: Warning message:
+‘conv.rec’ is deprecated and will be removed in a forthcoming release.  Please use ‘traces’ instead. 
+> try(values())
+Error in as(object, "data.frame") : 
+  argument "object" is missing, with no default
+In addition: Warning message:
+‘values’ is deprecated and will be removed in a forthcoming release.  Please use ‘as.data.frame’ instead. 
+> try(onestep.sim())
+Error in onestep(step.fun) : 
+  argument "step.fun" is missing, with no default
+In addition: Warning message:
+‘onestep.sim’ is deprecated and will be removed in a forthcoming release.  Use ‘onestep’ instead. 
+> try(discrete.time.sim())
+Error in discrete_time(step.fun = step.fun, delta.t = delta.t) : 
+  argument "step.fun" is missing, with no default
+In addition: Warning message:
+‘discrete.time.sim’ is deprecated and will be removed in a forthcoming release.  Use ‘discrete_time’ instead. 
+> try(euler.sim())
+Error in euler(step.fun = step.fun, delta.t = delta.t) : 
+  argument "step.fun" is missing, with no default
+In addition: Warning message:
+‘euler.sim’ is deprecated and will be removed in a forthcoming release.  Use ‘euler’ instead. 
+> try(gillespie.sim())
+Error in gillespie(rate.fun = rate.fun, v = v, hmax = hmax) : 
+  argument "v" is missing, with no default
+In addition: Warning message:
+‘gillespie.sim’ is deprecated and will be removed in a forthcoming release.  Use ‘gillespie’ instead. 
+> try(gillespie.hl.sim())
+Gillespie-method process-model simulator
+  - stoichiometry matrix:
+<0 x 0 matrix>
+  - rate.fun: An object of class "Csnippet"
+Slot "text":
+[1] "\nswitch (j) {\n\ndefault:\nerror(\"unrecognized event %d\",j);\nbreak;\n}\n"
+
+Warning message:
+‘gillespie.hl.sim’ is deprecated and will be removed in a forthcoming release.  Use ‘gillespie_hl’ instead. 
+> 

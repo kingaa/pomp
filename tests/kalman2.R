@@ -49,4 +49,7 @@ dat %>%
     C=0.01
   ) %>% plot()
 
+try(gompertz %>% enkf(rprocess=NULL))
+try(gompertz %>% eakf(rprocess=NULL))
+
 dev.off()

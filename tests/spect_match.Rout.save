@@ -98,6 +98,10 @@ Error : in ‘spect.match.objfun’: ‘weights’ function: oh no!
 [1] "coef"  "nsim"  "pvals"
 > plot(spect(f2))
 > 
+> f2 %>% probe(nsim=100,
++   probes=list(probe.mean("y1"),probe.mean("y2"))) %>%
++   plot()
+> 
 > dev.off()
 null device 
           1 

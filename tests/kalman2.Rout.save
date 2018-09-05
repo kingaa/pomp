@@ -72,6 +72,11 @@ Error : in ‘eakf’: ‘times’ should either be a numeric vector of observat
 +     C=0.01
 +   ) %>% plot()
 > 
+> try(gompertz %>% enkf(rprocess=NULL))
+Error : in ‘enkf’: ‘rprocess’ is a needed basic component.
+> try(gompertz %>% eakf(rprocess=NULL))
+Error : in ‘eakf’: ‘rprocess’ is a needed basic component.
+> 
 > dev.off()
 null device 
           1 

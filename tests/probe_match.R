@@ -56,6 +56,8 @@ f1 %>% as.pomp() %>% as.data.frame() %>% names()
 
 f1 %>% probe.match.objfun(fail.value=1e10) -> f2
 
+f1 %>% spect(kernel.width=3,nsim=100) %>% plot()
+
 f1 %>% as("pomp")
 f1 %>% as("data.frame") %>% names()
 

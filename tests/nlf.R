@@ -22,6 +22,7 @@ dat %>%
 stopifnot(m0(0)==m0(1))
 
 m2 <- nlf.objfun(m0,est=estnames,seed=426094906L)
+plot(sapply(seq(-1,1,by=0.1),function(x)m2(c(x,0))))
 
 library(subplex)
 m2(guess) -> ll
@@ -33,17 +34,20 @@ plot(simulate(m2))
 stopifnot(logLik(m2)==-out$value)
 
 m2s <- nlf.objfun(m2,tensor=TRUE,period=10,seed=426094906L)
+plot(sapply(seq(-1,1,by=0.1),function(x)m2s(c(x,0))))
 subplex(par=guess,fn=m2s,control=list(reltol=1e-3)) -> out
 stopifnot(out$convergence == 0)
 m2s(out$par)
 plot(simulate(m2s))
 
-m2t <- nlf.objfun(m2s,tensor=FALSE,seed=426094906L)
+m2t <- nlf.objfun(m2s,tensor=FALSE,seed=426094906L,fail.value=1e9)
+plot(sapply(seq(-1,1,by=0.1),function(x)m2t(c(x,0))))
 subplex(par=guess,fn=m2t,control=list(reltol=1e-3)) -> out
 stopifnot(out$convergence == 0)
 m2t(out$par)
 plot(simulate(m2t))
 plot(pfilter(m2t,dmeasure=ou2@dmeasure,Np=100))
+m2t(NA)
 
 nlf.objfun(ou2,lags=c(1,2,3),ti=100,tf=500)
 nlf.objfun(ou2,lags=c(1,2,3),est=estnames,ti=100,tf=500)
@@ -95,5 +99,7 @@ stopifnot(po %>% nlf.objfun(lags=c(1,2,3),ti=100,tf=500) %>% logLik() %>% is.na(
 
 po <- ou2
 stopifnot(po %>% nlf.objfun(rmeasure=NULL,lags=c(1,2,3),ti=100,tf=500) %>% logLik() %>% is.na())
+
+try(po %>% nlf.objfun(covar=covariate_table(t=0:100,Z=100,times="t"),ti=100,tf=500))
 
 dev.off()
