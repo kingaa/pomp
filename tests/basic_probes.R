@@ -18,7 +18,7 @@ plist <- list(
   sd=probe.sd("y2"),
   pd=probe.period("y1",kernel.width=5),
   probe.quantile("y2",prob=c(0.1,0.5,0.9)),
-  probe.acf("y1",lags=c(0,1,3,6)),
+  probe.acf("y1",lags=c(1,3,6)),
   probe.acf("y2",lags=c(1,2,3),type="cor"),
   probe.ccf(c("y1","y2"),lags=c(0,1,2)),
   probe.marginal("y1",ref=obs(ou2,"y1")),
@@ -29,7 +29,7 @@ ou2 %>% probe(probes=plist,nsim=1000) -> pb
 summary(pb) -> sm
 stopifnot(names(sm)==c("coef","nsim","quantiles","pvals","synth.loglik"),
   logLik(pb)==sm$synth.loglik,
-  length(sm$pvals)==26,length(sm$quantiles)==26)
+  length(sm$pvals)==25,length(sm$quantiles)==25)
 
 try(probe.mean(c("y1","y2")))
 try(probe.median(c("y1","y2")))
@@ -41,7 +41,7 @@ try(probe.marginal(c("y1","y2")))
 try(probe.ccf("y1"))
 try(probe.nlar(c("y1","y2")))
 
-probe.acf(c("y1","y2"),lags=c(0,1),type="cor") -> f
+try(probe.acf(c("y1","y2"),lags=c(0,1),type="cor"))
 probe.acf(c("y1","y2"),lags=c(1,5),type="cor") -> f
 ou2 %>% simulate() %>% obs() %>% f() -> v
 stopifnot(names(v)==c("acf.1.y1", "acf.5.y1", "acf.1.y2", "acf.5.y2"))

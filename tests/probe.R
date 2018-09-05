@@ -14,7 +14,7 @@ plist <- list(
   mean=probe.mean("Y",trim=0.1,transform=sqrt),
   sd=probe.sd("Y",transform=sqrt),
   probe.marginal("Y",ref=obs(po)),
-  probe.acf("Y",lags=c(-5,1,5),type="correlation",transform=sqrt),
+  probe.acf("Y",lags=c(1,3,5),type="correlation",transform=sqrt),
   probe.quantile("Y",prob=c(0.25,0.75))
 )
 
@@ -79,5 +79,8 @@ data.frame(t=1:10,a=1:10) %>%
       h=function(y)range(y)
     )
   )
+
+pompExample(ou2)
+ou2 %>% probe(nsim=100,probes=probe.ccf(c("y1","y2"),lags=c(-10,0,1))) %>% plot()
 
 dev.off()

@@ -134,10 +134,7 @@ probe.acf <- function (var, lags, type = c("covariance", "correlation"),
   type <- match.arg(type)
   corr <- type=="correlation"
   transform <- match.fun(transform)
-  if (corr && any(lags==0)) {
-    pWarn(ep,"useless zero lag discarded.")
-    lags <- lags[lags!=0]
-  }
+  if (corr && any(lags<=0)) pStop(ep,"lags must be positive integers.")
   lags <- as.integer(lags)
   function (y) tryCatch(
     .Call(P_probe_acf,x=transform(y[var,,drop=FALSE]),lags=lags,corr=corr),
