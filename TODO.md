@@ -40,7 +40,7 @@
 - "guide to upgrading to **pomp** version 2"
 - `as.data.frame` and ?? for `listies`
 - `coef` returns data frame in some circumstances?
-- import and re-export `reshape2::melt`?
+- ~~import and re-export `reshape2::melt`?~~
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
