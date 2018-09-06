@@ -7,12 +7,28 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
+<h3>Changes in <span class="pkg">pomp</span> version 1.18.8</h3>
+
+
+<ul>
+<li><p> The <code>obs</code> and <code>states</code> arguments of <code>simulate</code> are deprecated and will be removed in a forthcoming release.
+</p>
+</li>
+<li><p> The C-level interface for <code>apply_probe_sims</code> has changed: the new argument <code>rho</code> must be the &ldquo;package:pomp&rdquo; environment.
+</p>
+</li></ul>
+
+
+
 <h3>Changes in <span class="pkg">pomp</span> version 1.18.7</h3>
 
 
 <ul>
 <li><p> A bug in <code>pfilter</code> (and hence <code>pmcmc</code>) when <code>filter.traj=TRUE</code> was discovered and fixed.
 In the buggy version, the filter trajectory was sampled with incorrect weights.
+</p>
+</li>
+<li><p> Timo Voipio contributed a pull request that traps the error resulting from <code>sannbox</code> being passed a <code>candidate.dist</code> that is not a function.
 </p>
 </li></ul>
 
