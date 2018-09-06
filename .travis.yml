@@ -22,6 +22,10 @@ matrix:
       after_success:
         - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
     - os: osx
+      env: RVERSION=3.1.2
+      after_success:
+        - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
+    - os: osx
       env: RVERSION=release
       after_success:
         - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
