@@ -128,7 +128,8 @@ systems, Nature, 466: 1102--1104, 2010.
 }
 \seealso{
 Other elementary POMP methods: \code{\link{pfilter}},
-  \code{\link{pomp-package}}, \code{\link{simulate}}
+  \code{\link{pomp-package}}, \code{\link{simulate}},
+  \code{\link{spect}}
 
 Other summary statistics methods: \code{\link{abc}},
   \code{\link{basic_probes}}, \code{\link{probe.match}},

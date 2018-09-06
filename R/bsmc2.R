@@ -12,7 +12,7 @@
 ##' @name bsmc2
 ##' @docType methods
 ##' @rdname bsmc2
-##' @include pomp_class.R workhorses.R pomp.R
+##' @include pomp_class.R workhorses.R pomp.R plot.R
 ##' @aliases bsmc2 bsmc2,missing-method bsmc2,ANY-method
 ##' @family particle filter methods
 ##' @family \pkg{pomp} parameter estimation methods

@@ -130,8 +130,13 @@ stage-structured populations.  \emph{Ecology Letters}, \bold{11}, 820-830.
 Other summary statistics methods: \code{\link{abc}},
   \code{\link{basic_probes}}, \code{\link{probe.match}},
   \code{\link{probe}}
+
+Other elementary POMP methods: \code{\link{pfilter}},
+  \code{\link{pomp-package}}, \code{\link{probe}},
+  \code{\link{simulate}}
 }
 \author{
 Daniel C. Reuman, Cai GoGwilt, Aaron A. King
 }
+\concept{elementary POMP methods}
 \concept{summary statistics methods}

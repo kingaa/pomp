@@ -18,6 +18,7 @@
 ##' @rdname spect
 ##' @aliases spect spect,missing-method spect,ANY-method
 ##' @family summary statistics methods
+##' @family elementary POMP methods
 ##'
 ##' @include simulate.R pomp.R
 ##' @importFrom stats spec.pgram kernel .lm.fit

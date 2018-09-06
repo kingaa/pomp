@@ -36,3 +36,6 @@ This allows one to modify parameters used in the original computations.}
 \description{
 Continue an iterative computation where it left off.
 }
+\seealso{
+\code{\link{mif2}} \code{\link{pmcmc}} \code{\link{abc}}
+}

@@ -79,7 +79,8 @@ Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{spect.match}}
 
 Other elementary POMP methods: \code{\link{pfilter}},
-  \code{\link{probe}}, \code{\link{simulate}}
+  \code{\link{probe}}, \code{\link{simulate}},
+  \code{\link{spect}}
 }
 \author{
 Aaron A. King

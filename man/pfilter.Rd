@@ -134,7 +134,8 @@ IEEE Trans. Sig. Proc. 50:174--188, 2002.
 }
 \seealso{
 Other elementary POMP methods: \code{\link{pomp-package}},
-  \code{\link{probe}}, \code{\link{simulate}}
+  \code{\link{probe}}, \code{\link{simulate}},
+  \code{\link{spect}}
 
 Other particle filter methods: \code{\link{bsmc2}},
   \code{\link{cond.logLik}}, \code{\link{eff.sample.size}},

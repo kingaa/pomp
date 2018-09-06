@@ -50,6 +50,7 @@
 ##' @section Methods:
 ##' The following methods are available for such an object:
 ##' \describe{
+##' \item{\code{\link{continue}}}{ picks up where \code{mif2} leaves off and performs more filtering iterations. }
 ##' \item{\code{\link{logLik}}}{ returns the so-called \dfn{mif log likelihood} which is the log likelihood of the perturbed model, not of the focal model itself.
 ##' To obtain the latter, it is advisable to run several \code{\link{pfilter}} operations on the result of a \code{mif2} computatation.}
 ##' \item{\code{\link{coef}}}{ extracts the point estimate }

@@ -6,7 +6,6 @@
 ##' @rdname skeleton_spec
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R
-##' @keywords internal
 ##' @family information on model implementation
 ##'
 ##' @details

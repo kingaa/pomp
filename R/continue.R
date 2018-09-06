@@ -5,6 +5,7 @@
 ##' @name continue
 ##' @aliases continue continue,missing-method continue,ANY-method
 ##' @rdname continue
+##' @seealso \code{\link{mif2}} \code{\link{pmcmc}} \code{\link{abc}}
 ##'
 ##' @param object the result of an iterative \pkg{pomp} computation
 ##' @param \dots additional arguments will be passed to the underlying method.
