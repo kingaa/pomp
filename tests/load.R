@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 
 pompExample(gompertz)
 

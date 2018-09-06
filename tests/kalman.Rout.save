@@ -20,7 +20,7 @@ Type 'q()' to quit R.
 > options(digits=3)
 > png(filename="kalman-%02d.png",res=100)
 > 
-> library(pomp)
+> library(pomp2)
 > library(reshape2)
 > library(plyr)
 > library(magrittr)
@@ -69,7 +69,7 @@ Type 'q()' to quit R.
 +   y[,k] <- C %*% xx + sqrtR %*% rnorm(n=dimY)
 + }
 > 
-> kf <- pomp:::kalmanFilter(t,y,X0,A,Q,C,R)
+> kf <- pomp2:::kalmanFilter(t,y,X0,A,Q,C,R)
 > 
 > y %>% melt() %>%
 +   dcast(time~variable) %>%

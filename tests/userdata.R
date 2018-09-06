@@ -1,7 +1,7 @@
 options(digits=3)
 set.seed(58668844L)
 
-library(pomp)
+library(pomp2)
 library(magrittr)
 
 simulate(times=seq(1,100),t0=0,

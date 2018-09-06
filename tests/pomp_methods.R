@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 library(magrittr)
 
 pompExample(gompertz,envir=NULL) %>% extract2(1) -> po

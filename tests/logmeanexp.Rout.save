@@ -18,7 +18,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > options(digits=7)
-> library(pomp)
+> library(pomp2)
 > 
 > logmeanexp(rep(10,10),se=TRUE)
    se 

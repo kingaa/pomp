@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="blowflies-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 
 capture.output(
   pompExample(blowflies,envir=NULL) -> flies,

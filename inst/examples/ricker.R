@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 
 dat <- '"time";"y"
 0;68

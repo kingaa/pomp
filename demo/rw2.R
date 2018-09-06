@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 library(magrittr)
 
 ## a simple two-dimensional random walk

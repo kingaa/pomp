@@ -1,14 +1,14 @@
 options(digits=3)
 
-library(pomp)
+library(pomp2)
 library(magrittr)
 
-try(pomp:::concat())
-try(pomp:::concat("a","b"))
+try(pomp2:::concat())
+try(pomp2:::concat("a","b"))
 
 pompExample(gompertz)
 pompExample(ou2)
-pomp:::concat(a=ou2,c(b=gompertz,c=ou2))
+pomp2:::concat(a=ou2,c(b=gompertz,c=ou2))
 c(a=ou2,c(b=gompertz,c=ou2)) %>% class()
 
 replicate(2,pfilter(gompertz,Np=10)) %>% class()

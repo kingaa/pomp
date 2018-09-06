@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="synlik-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 
 pompExample(ou2)
 
@@ -20,7 +20,7 @@ ou2.kalman <- function (x, object, params) {
   Q[1,2] <- 0
   Q <- tcrossprod(Q)
   R <- diag(p['tau']^2,2,2)
-  pomp:::kalmanFilter(t=time(object),y=y,X0=x0,A=A,C=C,Q=Q,R=R)$loglik
+  pomp2:::kalmanFilter(t=time(object),y=y,X0=x0,A=A,C=C,Q=Q,R=R)$loglik
 }
 
 # exact likelihood

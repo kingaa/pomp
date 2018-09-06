@@ -1,6 +1,6 @@
 options(digits=3)
 
-library(pomp)
+library(pomp2)
 
 try(eff.sample.size())
 try(eff.sample.size("bob"))

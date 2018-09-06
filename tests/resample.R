@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 library(magrittr)
 set.seed(807969746L)
 

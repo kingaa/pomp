@@ -21,7 +21,7 @@ Type 'q()' to quit R.
 > 
 > png(filename="abc-%02d.png",res=100)
 > 
-> library(pomp)
+> library(pomp2)
 > library(magrittr)
 > 
 > pompExample(ou2)
@@ -198,7 +198,7 @@ Error : ‘c’ is not defined for objects of mixed class.
 > class(alist[2])
 [1] "abcList"
 attr(,"package")
-[1] "pomp"
+[1] "pomp2"
 > try(alist[3])
 [[1]]
 NULL

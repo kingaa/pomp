@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="kalman-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 library(reshape2)
 library(plyr)
 library(magrittr)
@@ -50,7 +50,7 @@ for (k in seq_along(t)) {
   y[,k] <- C %*% xx + sqrtR %*% rnorm(n=dimY)
 }
 
-kf <- pomp:::kalmanFilter(t,y,X0,A,Q,C,R)
+kf <- pomp2:::kalmanFilter(t,y,X0,A,Q,C,R)
 
 y %>% melt() %>%
   dcast(time~variable) %>%

@@ -22,7 +22,7 @@ Type 'q()' to quit R.
 > 
 > set.seed(857075216L)
 > 
-> library(pomp)
+> library(pomp2)
 > library(dplyr)
 
 Attaching package: ‘dplyr’

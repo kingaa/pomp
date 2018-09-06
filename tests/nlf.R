@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="nlf-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 library(magrittr)
 
 set.seed(583615606L)

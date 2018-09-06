@@ -1,6 +1,6 @@
 options(digits=3)
 png(filename="bsplines-%02d.png",res=100)
-library(pomp)
+library(pomp2)
 
 x <- seq(0,2,by=0.01)
 try(y <- bspline.basis(x,degree=3,nbasis=9,names=c("basis1","basis2")))

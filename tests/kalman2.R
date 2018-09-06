@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="kalman2-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 library(magrittr)
 
 set.seed(1968726372)

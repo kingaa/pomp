@@ -19,7 +19,7 @@ Type 'q()' to quit R.
 
 > options(digits=3)
 > 
-> library(pomp)
+> library(pomp2)
 > library(magrittr)
 > 
 > pompExample(gompertz,envir=NULL) %>% extract2(1) -> po
@@ -62,16 +62,16 @@ pomp object ‘po1’:
   - time-step = 1 
   - step.fun: native function
   - name: ‘_gompertz_simulator’
-  - dynamically loaded from: ‘pomp’
+  - dynamically loaded from: ‘pomp2’
 
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
   - name: ‘_gompertz_normal_rmeasure’
-  - dynamically loaded from: ‘pomp’
+  - dynamically loaded from: ‘pomp2’
 
 - measurement model density, dmeasure: native function
   - name: ‘_gompertz_normal_dmeasure’
-  - dynamically loaded from: ‘pomp’
+  - dynamically loaded from: ‘pomp2’
 
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
@@ -79,7 +79,7 @@ pomp object ‘po1’:
   - time-step = 1 
   - native function
   - name: ‘_gompertz_skeleton’
-  - dynamically loaded from: ‘pomp’
+  - dynamically loaded from: ‘pomp2’
 
 - parameter vector:
     K     r sigma   tau   X.0 
@@ -130,16 +130,16 @@ params
   - time-step = 1 
   - step.fun: native function
   - name: ‘_gompertz_simulator’
-  - dynamically loaded from: ‘pomp’
+  - dynamically loaded from: ‘pomp2’
 
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
   - name: ‘_gompertz_normal_rmeasure’
-  - dynamically loaded from: ‘pomp’
+  - dynamically loaded from: ‘pomp2’
 
 - measurement model density, dmeasure: native function
   - name: ‘_gompertz_normal_dmeasure’
-  - dynamically loaded from: ‘pomp’
+  - dynamically loaded from: ‘pomp2’
 
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
@@ -147,7 +147,7 @@ params
   - time-step = 1 
   - native function
   - name: ‘_gompertz_skeleton’
-  - dynamically loaded from: ‘pomp’
+  - dynamically loaded from: ‘pomp2’
 
 - parameter transformations:
   - to estimation scale: native function
@@ -164,8 +164,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2018-09-02 13:48:14.611 -0400 */
-/* Salt: A68D61E11E44FD447C61C125 */
+/* Time: 2018-09-06 08:17:35.293 -0400 */
+/* Salt: 52C3ACE810F7BC205C37423E */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -291,8 +291,8 @@ pomp object ‘sir’:
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2018-09-02 13:48:14.707 -0400 */
-/* Salt: 3F0210E4E172DEF2AB1319F8 */
+/* Time: 2018-09-06 08:17:35.393 -0400 */
+/* Salt: 1129387D0455D99370CCCE43 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -819,8 +819,8 @@ x1.0 x2.0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2018-09-02 13:48:15.022 -0400 */
-/* Salt: 98D2BF14D0E51157CACBF152 */
+/* Time: 2018-09-06 08:17:35.690 -0400 */
+/* Salt: 12F5E7EF54D296EF42D63DD3 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1024,8 +1024,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2018-09-02 13:48:15.254 -0400 */
-/* Salt: 496D1F57315E44C49E591D38 */
+/* Time: 2018-09-06 08:17:35.913 -0400 */
+/* Salt: C7A49D31EA1355ED701E39DD */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

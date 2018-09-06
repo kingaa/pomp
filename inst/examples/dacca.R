@@ -8,7 +8,7 @@
 ##
 ## Native codes are in the package source.
 
-library(pomp)
+library(pomp2)
 
 nrstage <- 3L
 nbasis <- 6L

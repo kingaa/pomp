@@ -147,7 +147,7 @@ trajectory.internal <- function (object, params, times, t0,
         y=x0,
         times=c(t0,times),
         func="pomp_vf_eval",
-        dllname="pomp",
+        dllname="pomp2",
         initfunc=NULL,
         parms=NULL,
         ...

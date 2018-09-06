@@ -18,7 +18,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > png(filename="profile_design-%02d.png",res=100)
-> library(pomp)
+> library(pomp2)
 > library(dplyr)
 
 Attaching package: ‘dplyr’

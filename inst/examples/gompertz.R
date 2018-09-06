@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 
 dat <- '"time";"X";"Y"
 0;1;1,07952841598157
@@ -119,7 +119,7 @@ pomp(
   rmeasure="_gompertz_normal_rmeasure",
   dmeasure="_gompertz_normal_dmeasure",
   skeleton=map("_gompertz_skeleton",delta.t=1),
-  PACKAGE="pomp",
+  PACKAGE="pomp2",
   paramnames=c("r","K","sigma","tau","X.0"),
   statenames=c("X")
 ) -> gompertz

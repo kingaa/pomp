@@ -1,7 +1,7 @@
-library(pomp)
+library(pomp2)
 
 stopifnot(identical(getOption("pomp.examples"),
-                    system.file("examples",package="pomp")))
+                    system.file("examples",package="pomp2")))
 
 pompExample()
 pompExample("ricker",show=TRUE)

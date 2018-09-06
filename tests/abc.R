@@ -2,7 +2,7 @@
 
 png(filename="abc-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 library(magrittr)
 
 pompExample(ou2)

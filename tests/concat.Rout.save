@@ -19,12 +19,12 @@ Type 'q()' to quit R.
 
 > options(digits=3)
 > 
-> library(pomp)
+> library(pomp2)
 > library(magrittr)
 > 
-> try(pomp:::concat())
+> try(pomp2:::concat())
 Error : ‘c’ is not defined for objects of mixed class.
-> try(pomp:::concat("a","b"))
+> try(pomp2:::concat("a","b"))
 Error : ‘c’ is not defined for objects of mixed class.
 > 
 > pompExample(gompertz)
@@ -33,7 +33,7 @@ newly created object(s):
 > pompExample(ou2)
 newly created object(s):
  ou2 
-> pomp:::concat(a=ou2,c(b=gompertz,c=ou2))
+> pomp2:::concat(a=ou2,c(b=gompertz,c=ou2))
 $a
 <object of class ‘pomp’>
 
@@ -46,7 +46,7 @@ $c
 > c(a=ou2,c(b=gompertz,c=ou2)) %>% class()
 [1] "pompList"
 attr(,"package")
-[1] "pomp"
+[1] "pomp2"
 > 
 > replicate(2,pfilter(gompertz,Np=10)) %>% class()
 [1] "list"
@@ -54,7 +54,7 @@ attr(,"package")
 > pfs %>% class()
 [1] "pfilterList"
 attr(,"package")
-[1] "pomp"
+[1] "pomp2"
 > c(a=pfs[[1]],b=pfs)
 $a
 <object of class ‘pfilterd_pomp’>

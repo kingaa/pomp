@@ -28,7 +28,7 @@ If found, this file will be \code{source}d in a temporary environment.
 Additional arguments to \code{pompExample} define variables within this environment and will therefore be available when the code in \file{<example>.R} is \code{source}d.
 
 The codes that construct these \sQuote{pomp} objects can be found in the \file{examples} directory in the installed package.
-Do \code{system.file("examples",package="pomp"))} to find this directory.
+Do \code{system.file("examples",package="pomp2"))} to find this directory.
 }
 \examples{
 

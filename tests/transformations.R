@@ -1,6 +1,6 @@
 options(digits=3)
 
-library(pomp)
+library(pomp2)
 
 set.seed(770238753)
 

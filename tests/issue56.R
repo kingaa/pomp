@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 
 create_example <- function(times, t0 = 0, mu = 0.001, N_0 = 1) {
 

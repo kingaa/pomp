@@ -25,7 +25,7 @@
 ##'
 ##' @param templates named list of templates.
 ##' Each workhorse must have a corresponding template.
-##' See \code{pomp:::workhorse_templates} for a list.
+##' See \code{pomp2:::workhorse_templates} for a list.
 ##'
 ##' @param obsnames,statenames,paramnames,covarnames character vectors
 ##' specifying the names of observable variables, latent state variables, parameters, and covariates, respectively.
@@ -202,7 +202,7 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
   if (.Platform$OS.type=="unix") {
     pompheader <- "pomp.h"
   } else {
-    pompheader <- system.file("include/pomp.h",package="pomp") # nocov
+    pompheader <- system.file("include/pomp.h",package="pomp2") # nocov
   }
 
   ## some information to help make file (and filename) unique
@@ -309,7 +309,7 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL,
   cflags <- Sys.getenv("PKG_CPPFLAGS")
   cflags <- paste0("PKG_CPPFLAGS=\"",
     if (nchar(cflags)>0) paste0(cflags," ") else "",
-    "-I",system.file("include",package="pomp"),
+    "-I",system.file("include",package="pomp2"),
     " -I",getwd(),"\"")
 
   shlib.args <- as.character(shlib.args)
@@ -409,22 +409,22 @@ pomp_templates <- list(
       trigger="periodic_bspline_basis_eval",
       header="static periodic_bspline_basis_eval_t *__pomp_periodic_bspline_basis_eval;\n#define periodic_bspline_basis_eval(X,Y,M,N,Z)\t(__pomp_periodic_bspline_basis_eval((X),(Y),(M),(N),(Z)))
 \n",
-      reg="__pomp_periodic_bspline_basis_eval = (periodic_bspline_basis_eval_t *) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n"
+      reg="__pomp_periodic_bspline_basis_eval = (periodic_bspline_basis_eval_t *) R_GetCCallable(\"pomp2\",\"periodic_bspline_basis_eval\");\n"
     ),
     get_pomp_userdata_int=list(
       trigger="get_pomp_userdata_int",
       header="static get_pomp_userdata_int_t *__pomp_get_pomp_userdata_int;\n#define get_pomp_userdata_int(X)\t(__pomp_get_pomp_userdata_int(X))\n",
-      reg="__pomp_get_pomp_userdata_int = (get_pomp_userdata_t *) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n"
+      reg="__pomp_get_pomp_userdata_int = (get_pomp_userdata_t *) R_GetCCallable(\"pomp2\",\"get_pomp_userdata_int\");\n"
     ),
     get_pomp_userdata_double=list(
       trigger="get_pomp_userdata_double",
       header="static get_pomp_userdata_double_t *__pomp_get_pomp_userdata_double;\n#define get_pomp_userdata_double(X)\t(__pomp_get_pomp_userdata_double(X))\n",
-      reg="__pomp_get_pomp_userdata_double = (get_pomp_userdata_double_t *) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n"
+      reg="__pomp_get_pomp_userdata_double = (get_pomp_userdata_double_t *) R_GetCCallable(\"pomp2\",\"get_pomp_userdata_double\");\n"
     ),
     get_pomp_userdata=list(
       trigger="get_pomp_userdata(\\b|[^_])",
       header="static get_pomp_userdata_t *__pomp_get_pomp_userdata;\n#define get_pomp_userdata(X)\t(__pomp_get_pomp_userdata(X))\n",
-      reg="__pomp_get_pomp_userdata = (get_pomp_userdata_t *) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n"
+      reg="__pomp_get_pomp_userdata = (get_pomp_userdata_t *) R_GetCCallable(\"pomp2\",\"get_pomp_userdata\");\n"
     )
   ),
   stackhandling="\nstatic int __pomp_load_stack = 0;\n\nvoid __pomp_load_stack_incr (void) {++__pomp_load_stack;}\n\nvoid __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}\n",

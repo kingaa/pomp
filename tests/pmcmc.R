@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="pmcmc-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 library(magrittr)
 
 set.seed(857075216L)

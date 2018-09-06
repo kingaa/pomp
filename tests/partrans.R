@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 
 pompExample(gompertz)
 set.seed(995868671L)
@@ -37,7 +37,7 @@ try(parameter_trans(toEst=NULL))
 try(parameter_trans(fromEst=NULL))
 
 parameter_trans(logit=c("a","b","c"))
-pomp:::has_partrans(gompertz)
+pomp2:::has_partrans(gompertz)
 
 stopifnot(
   {

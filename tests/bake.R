@@ -1,6 +1,6 @@
 ### test of reproducibility utilities
 
-library(pomp)
+library(pomp2)
 options(digits=2)
 
 set.seed(5499)
@@ -54,4 +54,4 @@ rm(.Random.seed)
 invisible(freeze({runif(4)},seed=32765883))
 invisible(freeze({runif(4)}))
 
-detach("package:pomp", unload=TRUE)
+detach("package:pomp2", unload=TRUE)

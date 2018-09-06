@@ -19,22 +19,22 @@ Type 'q()' to quit R.
 
 > options(digits=3)
 > 
-> library(pomp)
+> library(pomp2)
 > 
-> pomp:::undefined()
+> pomp2:::undefined()
 [1] NA
-> pomp:::undefined("harry")
+> pomp2:::undefined("harry")
 [1] NA
-> pomp:::undefined(function(x)x)
+> pomp2:::undefined(function(x)x)
 [1] NA
-> pomp:::undefined(pomp:::pomp_fun(function(x)x))
+> pomp2:::undefined(pomp2:::pomp_fun(function(x)x))
 [1] FALSE
-> pomp:::undefined(pomp:::pomp_fun())
+> pomp2:::undefined(pomp2:::pomp_fun())
 [1] TRUE
-> pomp:::undefined(parameter_trans())
+> pomp2:::undefined(parameter_trans())
 [1] TRUE
-> pomp:::undefined(pomp:::rproc_plugin())
+> pomp2:::undefined(pomp2:::rproc_plugin())
 [1] TRUE
-> pomp:::undefined(pomp:::skel_plugin())
+> pomp2:::undefined(pomp2:::skel_plugin())
 [1] TRUE
 > 

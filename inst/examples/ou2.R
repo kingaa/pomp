@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 
 dat <- '"time";"y1";"y2"
 1;-1,70081613181228;4,24746468495763
@@ -112,7 +112,7 @@ pomp(
   dmeasure = "_ou2_dmeasure",
   rmeasure = "_ou2_rmeasure",
   skeleton = map("_ou2_skel",delta.t=1),
-  PACKAGE="pomp",
+  PACKAGE="pomp2",
   paramnames = c(
     "alpha.1","alpha.2","alpha.3","alpha.4",
     "sigma.1","sigma.2","sigma.3",

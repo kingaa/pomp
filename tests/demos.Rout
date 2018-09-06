@@ -17,13 +17,13 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> library(pomp)
+> library(pomp2)
 > 
 > png(filename="demos-%02d.png",res=100)
 > 
 > set.seed(47575684L)
 > 
-> demos <- list.files(path=system.file("demo",package="pomp"),
+> demos <- list.files(path=system.file("demo",package="pomp2"),
 +                     pattern=".\\.R$",
 +                     full.names=TRUE)
 > 
@@ -31,7 +31,7 @@ Type 'q()' to quit R.
 +   print(system.time(source(d,local=TRUE,echo=TRUE)))
 + }
 
-> library(pomp)
+> library(pomp2)
 
 > library(ggplot2)
 
@@ -63,9 +63,9 @@ Type 'q()' to quit R.
                      se 
 75.25036908  0.08779528 
    user  system elapsed 
-  1.084   0.072   1.210 
+  1.032   0.060   1.149 
 
-> library(pomp)
+> library(pomp2)
 
 > library(magrittr)
 
@@ -103,9 +103,9 @@ The following objects are masked from ‘package:base’:
 +     theme_bw() + labs( .... [TRUNCATED] 
 Joining, by = c("n", "time", "rep", "type")
    user  system elapsed 
-  0.336   0.064   0.452 
+  0.340   0.052   0.447 
 
-> library(pomp)
+> library(pomp2)
 
 > library(magrittr)
 
@@ -121,9 +121,9 @@ Joining, by = c("n", "time", "rep", "type")
 
 > plot(pf)
    user  system elapsed 
-  0.180   0.052   0.289 
+  0.192   0.032   0.286 
 
-> library(pomp)
+> library(pomp2)
 
 > rmeas <- "\n  cases = rnbinom_mu(theta,rho*incid);\n"
 
@@ -156,7 +156,7 @@ Joining, by = c("n", "time", "rep", "type")
 +     statenames = c("S", "I", "R", "in ..." ... [TRUNCATED] 
 [1] -671.6956
    user  system elapsed 
-  6.692   0.088   6.895 
+  6.672   0.036   6.826 
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03. 
 2: in 'table_lookup': extrapolating at 1.934011e+03. 

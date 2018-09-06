@@ -17,7 +17,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> library(pomp)
+> library(pomp2)
 > 
 > cat("double simplefun (double x) { return(x+3); }",file="simplefun.c")
 > system2(R.home("bin/R"),args=c("CMD","COMPILE","simplefun.c"),

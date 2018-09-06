@@ -1,6 +1,6 @@
 png(filename="slice_design-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 library(dplyr)
 
 ## A single 11-point slice through the point c(A=3,B=8,C=0) along the B direction.

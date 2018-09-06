@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="dp-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 library(ggplot2)
 library(plyr)
 library(reshape2)

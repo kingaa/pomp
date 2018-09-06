@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="dacca-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 
 pompExample(dacca)
 

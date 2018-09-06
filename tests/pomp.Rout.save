@@ -21,7 +21,7 @@ Type 'q()' to quit R.
 > 
 > set.seed(758723694)
 > 
-> library(pomp)
+> library(pomp2)
 > library(magrittr)
 > 
 > try(pomp())

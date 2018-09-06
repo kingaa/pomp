@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="spect_match-%02d.png",res=100)
 
-library(pomp)
+library(pomp2)
 library(magrittr)
 
 pompExample(ou2)

@@ -18,7 +18,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
-> library(pomp)
+> library(pomp2)
 > options(
 +   keep.source=TRUE,
 +   stringsAsFactors=FALSE,
@@ -69,7 +69,7 @@ Type 'q()' to quit R.
 +   theme_bw()
 > 
 > ## ----logistic-step-fun---------------------------------------------------
-> library(pomp)
+> library(pomp2)
 > step.fun <- Csnippet("
 +   double dW = rnorm(0,sqrt(dt));
 +   N += r*N*(1-N/K)*dt+sigma*N*dW;

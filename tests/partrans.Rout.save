@@ -17,7 +17,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> library(pomp)
+> library(pomp2)
 > 
 > pompExample(gompertz)
 newly created object(s):
@@ -79,7 +79,7 @@ Slot "text":
 Slot "text":
 [1] "\ta = expit(T_a);\n\tb = expit(T_b);\n\tc = expit(T_c);"
 
-> pomp:::has_partrans(gompertz)
+> pomp2:::has_partrans(gompertz)
 [1] TRUE
 > 
 > stopifnot(

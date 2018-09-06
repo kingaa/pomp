@@ -1,6 +1,6 @@
 options(digits=3)
 
-library(pomp)
+library(pomp2)
 library(magrittr)
 library(tidyr)
 library(dplyr)

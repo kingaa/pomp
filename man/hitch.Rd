@@ -18,7 +18,7 @@ If any of these procedures are already \sQuote{pomp_fun} objects, they are retur
 
 \item{templates}{named list of templates.
 Each workhorse must have a corresponding template.
-See \code{pomp:::workhorse_templates} for a list.}
+See \code{pomp2:::workhorse_templates} for a list.}
 
 \item{obsnames, statenames, paramnames, covarnames}{character vectors
 specifying the names of observable variables, latent state variables, parameters, and covariates, respectively.

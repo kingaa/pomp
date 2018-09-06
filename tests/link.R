@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 
 cat("double simplefun (double x) { return(x+3); }",file="simplefun.c")
 system2(R.home("bin/R"),args=c("CMD","COMPILE","simplefun.c"),

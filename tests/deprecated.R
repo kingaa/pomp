@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp2)
 
 try(conv.rec())
 try(values())

@@ -3,7 +3,7 @@ png(filename="mif2-%02d.png",res=100)
 
 set.seed(857075216L)
 
-library(pomp)
+library(pomp2)
 library(dplyr)
 library(reshape2)
 library(magrittr)

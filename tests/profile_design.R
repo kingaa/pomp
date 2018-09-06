@@ -1,5 +1,5 @@
 png(filename="profile_design-%02d.png",res=100)
-library(pomp)
+library(pomp2)
 library(dplyr)
 library(magrittr)
 

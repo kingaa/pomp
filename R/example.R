@@ -7,7 +7,7 @@
 ##' Additional arguments to \code{pompExample} define variables within this environment and will therefore be available when the code in \file{<example>.R} is \code{source}d.
 ##'
 ##' The codes that construct these \sQuote{pomp} objects can be found in the \file{examples} directory in the installed package.
-##' Do \code{system.file("examples",package="pomp"))} to find this directory.
+##' Do \code{system.file("examples",package="pomp2"))} to find this directory.
 ##'
 ##' @name pompExample
 ##' @rdname pompExample
@@ -48,7 +48,7 @@ NULL
 pompExample <- function (example, ..., show = FALSE, envir = .GlobalEnv) {
   example <- as.character(substitute(example))
   ep <- "pompExample"
-  pomp.dir <- system.file("examples",package="pomp")
+  pomp.dir <- system.file("examples",package="pomp2")
   exampleDirs <- getOption("pomp.examples",default=pomp.dir)
   names(exampleDirs) <- exampleDirs
   show <- as.logical(show)
