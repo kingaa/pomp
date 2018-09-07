@@ -42,6 +42,8 @@ NB: \code{skeleton} just evaluates the deterministic skeleton;
 it does not iterate or integrate (see \code{\link{trajectory}} for this).
 }
 \seealso{
+Specification of the deterministic skeleton: \code{\link{skeleton_spec}}
+
 Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{dprior}}, \code{\link{dprocess}},
   \code{\link{partrans}}, \code{\link{rinit}},

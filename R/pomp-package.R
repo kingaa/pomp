@@ -14,6 +14,7 @@
 ##' @family information on model implementation
 ##' @family \pkg{pomp} parameter estimation methods
 ##' @family elementary POMP methods
+##' @keywords ts models multivariate
 ##'
 ##' @section Data analysis using \pkg{pomp}:
 ##' \pkg{pomp} provides algorithms for

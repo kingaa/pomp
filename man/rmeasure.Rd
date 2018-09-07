@@ -39,6 +39,8 @@ where \code{nobs} is the number of observed variables.
 Sample from the measurement model distribution, given values of the latent states and the parameters.
 }
 \seealso{
+Specification of the measurement-model simulator: \code{\link{rmeasure_spec}}
+
 Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{dprior}}, \code{\link{dprocess}},
   \code{\link{partrans}}, \code{\link{rinit}},

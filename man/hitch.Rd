@@ -82,4 +82,5 @@ which conceptually \dQuote{hitches} the workhorses to the user-defined procedure
 \author{
 Aaron A. King
 }
-\keyword{programming}
+\concept{extending the \pkg{pomp} package}
+\concept{low-level interface}

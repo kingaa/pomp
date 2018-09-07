@@ -22,15 +22,8 @@
 	- ~~log-barycentric and inverse~~
 - remove need to specify paramnames when log,logit,barycentric partrans is given
 - `spy` methods for derived objects
-- refurbish entire test suite
-	- order of testing development:
-		- ~~workhorses~~
-		- ~~simulate, trajectory, probe, pfilter~~
-		- abc, pmcmc, mif2, bsmc2, kalman, objfun methods
-		- ~~test extractor methods, etc. as appropriate~~
-		- auxiliary functions get their own test scripts
 - index by concept using `\concept{}` in the help files
-	- extending \pkg{pomp}
+	- extending **pomp**
 	- low-level interface (incl. `hitch` and workhorses)
 - better scheme for indicating derivatives and maps in C snippets
 - should the default process model be persistence?

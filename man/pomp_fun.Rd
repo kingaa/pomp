@@ -51,5 +51,5 @@ The \sQuote{pomp_fun} class implements a common interface for user-defined proce
 Aaron A. King
 }
 \concept{extending the \pkg{pomp} package}
+\concept{low-level interface}
 \keyword{internal}
-\keyword{programming}

@@ -27,6 +27,8 @@ A numeric matrix containing the required samples.
 Sample from the prior probability distribution.
 }
 \seealso{
+Specification of the prior distribution simulator: \code{\link{prior_spec}}
+
 Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{dprior}}, \code{\link{dprocess}},
   \code{\link{partrans}}, \code{\link{rinit}},

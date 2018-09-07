@@ -32,6 +32,8 @@ In both cases, the parameters are returned as a named numeric vector or an array
 Performs parameter transformations.
 }
 \seealso{
+Specification of parameter transformations: \code{\link{parameter_trans}}
+
 Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{dprior}}, \code{\link{dprocess}},
   \code{\link{rinit}}, \code{\link{rmeasure}},

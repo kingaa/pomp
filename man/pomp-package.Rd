@@ -88,3 +88,6 @@ Aaron A. King
 \concept{\pkg{pomp} parameter estimation methods}
 \concept{elementary POMP methods}
 \concept{information on model implementation}
+\keyword{models}
+\keyword{multivariate}
+\keyword{ts}

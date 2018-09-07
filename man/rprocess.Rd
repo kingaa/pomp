@@ -50,6 +50,8 @@ When \code{rprocess} is called, the first entry of \code{times} is taken to be t
 Subsequent times are the additional times at which the state of the simulated processes are required.
 }
 \seealso{
+Specification of the process-model simulator: \code{\link{rprocess_spec}}
+
 Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{dprior}}, \code{\link{dprocess}},
   \code{\link{partrans}}, \code{\link{rinit}},

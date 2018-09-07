@@ -8,8 +8,9 @@
 ##' @rdname pomp_fun
 ##' @include pomp-package.R csnippet.R pstop.R undefined.R
 ##' @docType methods
-##' @keywords programming internal
+##' @keywords internal
 ##' @concept extending the \pkg{pomp} package
+##' @concept low-level interface
 ##'
 ##' @param f A function or the name of a native routine.
 ##' @param PACKAGE optional; the name of the dynamically-loadable library in

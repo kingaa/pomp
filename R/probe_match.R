@@ -7,7 +7,6 @@
 ##'
 ##' @name probe.match
 ##' @rdname probe_match
-##' @keywords optimize
 ##' @aliases probe.match probe.match.objfun probe.match.objfun,missing-method
 ##' probe.match.objfun,ANY-method
 ##' @include probe.R

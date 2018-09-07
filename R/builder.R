@@ -75,8 +75,9 @@
 ##' @author Aaron A. King
 ##'
 ##' @seealso \code{\link{pomp}}, \code{\link{spy}}
+##' @concept extending the \pkg{pomp} package
+##' @concept low-level interface
 ##'
-##' @keywords programming
 NULL
 
 ## 'hitch' takes (as '...') the workhorse specifications (as R functions or

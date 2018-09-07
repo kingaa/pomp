@@ -127,4 +127,3 @@ Aaron A. King
 }
 \concept{\pkg{pomp} parameter estimation methods}
 \concept{summary statistics methods}
-\keyword{optimize}

@@ -29,6 +29,8 @@ The required density (or log density), as a numeric vector.
 Evaluates the prior probability density.
 }
 \seealso{
+Specification of the prior density evaluator: \code{\link{prior_spec}}
+
 Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{dprocess}}, \code{\link{partrans}},
   \code{\link{rinit}}, \code{\link{rmeasure}},
