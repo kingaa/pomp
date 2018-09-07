@@ -450,17 +450,12 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (missing(obsnames)) obsnames <- NULL
   if (missing(covarnames)) covarnames <- NULL
 
-  statenames <- as.character(statenames)
-  paramnames <- as.character(paramnames)
-  obsnames <- as.character(obsnames)
-  covarnames <- as.character(covarnames)
-
   if (missing(zeronames)) zeronames <- NULL
   zeronames <- unique(as.character(zeronames))
 
   ## store the data as double-precision matrix
   storage.mode(data) <- "double"
-  if (length(obsnames) == 0) obsnames <- rownames(data)
+  if (is.null(obsnames)) obsnames <- rownames(data)
 
   ## check the parameters and force them to be double-precision
   params <- setNames(as.double(params),names(params))
@@ -470,9 +465,14 @@ pomp.internal <- function (data, times, t0, timename, ...,
       pStop_(sQuote("params")," must be a named numeric vector.")
   }
 
-  if (is(rinit,"Csnippet") && length(statenames)==0) {
+  if (is(rinit,"Csnippet") && is.null(statenames)) {
     pStop_("when ",sQuote("rinit")," is provided as a C snippet, ",
       "you must also provide ",sQuote("statenames"),".")
+  }
+
+  if (is(rmeasure,"Csnippet") && is.null(obsnames)) {
+    pStop_("when ",sQuote("rmeasure")," is provided as a C snippet, ",
+           "you must also provide ",sQuote("obsnames"),".")
   }
 
   ## check and arrange covariates
@@ -482,8 +482,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
     pStop_("bad option for ",sQuote("covar"),".")
   }
 
-  if (length(covarnames) == 0)
-    covarnames <- get_covariate_names(covar)
+  if (is.null(covarnames)) covarnames <- get_covariate_names(covar)
 
   hitches <- hitch(
     rinit=rinit,
