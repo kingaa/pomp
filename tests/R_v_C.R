@@ -1,21 +1,18 @@
+## ----packages------------------------------------------------------------
 library(pomp2)
 library(ggplot2)
 library(magrittr)
 
-## First, code up the Gompertz example in R:
-
+## ----R1------------------------------------------------------------------
 simulate(times=1:100,t0=0,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
-  rprocess=discrete_time( # a discrete-time process (see ?plugins)
+  rprocess=discrete_time(
     step.fun=function (X,r,K,sigma,...,delta.t) {
-      ## This function takes one step t -> t+delta.t.
-      ## Generate a log-normal random variable:
       eps <- exp(rnorm(n=1,mean=0,sd=sigma))
-      ## Compute the state at time t+delta.t:
       S <- exp(-r*delta.t)
       c(X=K^(1-S)*X^S*eps)
     },
-    delta.t=1                  # the size of the discrete time-step
+    delta.t=1 
   ),
   rmeasure=function (X, tau, ...) {
     c(Y=rlnorm(n=1,meanlog=log(X),sdlog=tau))
@@ -33,8 +30,16 @@ simulate(times=1:100,t0=0,
   )
 ) -> gompertz
 
-## Now code up the Gompertz example using C snippets: results in much faster computations.
+## ----R2------------------------------------------------------------------
+gompertz %>%
+  as.data.frame() %>%
+  melt(id="time") %>%
+  ggplot(aes(x=time,y=value,color=variable))+
+  geom_line()+
+  labs(y="X, Y")+
+  theme_bw()
 
+## ----C1------------------------------------------------------------------
 simulate(times=0:100,t0=0,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
   dmeasure=Csnippet("
@@ -47,46 +52,34 @@ simulate(times=0:100,t0=0,
     step.fun=Csnippet("
     double S = exp(-r*dt);
     double logeps = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
-    /* note that X is over-written by the next line */
     X = pow(K,(1-S))*pow(X,S)*exp(logeps);"
     ),
     delta.t=1
   ),
-  skeleton=map(Csnippet("
-    double dt = 1.0;
-    double S = exp(-r*dt);
-    /* note that X is not over-written in the skeleton function */
-    DX = pow(K,1-S)*pow(X,S);"
-  ),delta.t=1),
   partrans=parameter_trans(log=c("r","K","sigma","tau","X.0")),
   paramnames=c("r","K","sigma","X.0","tau"),
   obsnames="Y",
   statenames="X"
 ) -> Gompertz
 
-p <- parmat(coef(Gompertz),nrep=4)
+## ----params--------------------------------------------------------------
+p <- parmat(coef(Gompertz),4)
 p["X.0",] <- c(0.5,0.9,1.1,1.5)
 
-## compute a trajectory of the deterministic skeleton
-X <- trajectory(Gompertz,params=p,format="data.frame")
-X %>%
-  ggplot(aes(x=time,y=X,group=.id,color=.id))+
-  guides(color=FALSE)+
-  geom_line()+
-  theme_bw()+
-  labs(title="Gompertz model",subtitle="deterministic trajectories")
-
-## simulate from the model
-x <- simulate(Gompertz,params=p,format="data.frame")
-
-x %>%
+## ----sim1----------------------------------------------------------------
+simulate(Gompertz,params=p,format="data.frame") %>%
   ggplot(aes(x=time,y=X,group=.id,color=.id))+
   geom_line()+
   guides(color=FALSE)+
   theme_bw()+
   labs(title="Gompertz model",subtitle="stochastic simulations")
 
-## run a particle filter
+## ----pf1-----------------------------------------------------------------
 pf <- replicate(n=10,pfilter(Gompertz,Np=500))
 
-print(logmeanexp(sapply(pf,logLik),se=TRUE))
+logmeanexp(sapply(pf,logLik),se=TRUE)
+
+## ----comparison----------------------------------------------------------
+system.time(simulate(gompertz,nsim=10000,format="arrays"))
+system.time(simulate(Gompertz,nsim=10000,format="arrays"))
+

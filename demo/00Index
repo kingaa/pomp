@@ -1,4 +1,0 @@
-logistic	The stochastic logistic (Verhulst-Pearl) model.
-gompertz	The Gompertz model using both R code and native C code.
-sir		A Seasonally-forced SIR model using both R and native C.
-rw2		Trivial 2-d random walk model.

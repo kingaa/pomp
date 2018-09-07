@@ -29,6 +29,7 @@
 - should the default process model be persistence?
 	- what would the corresponding `dprocess` be?
 - Kalman filter?
+- document 'logistic' example
 
 - "guide to upgrading to **pomp** version 2"
 - `as.data.frame` and ?? for `listies`
