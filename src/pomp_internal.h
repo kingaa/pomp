@@ -144,9 +144,9 @@ extern SEXP InverseLogBarycentricTransform(SEXP Y);
 
 // userdata.c 
 extern void set_pomp_userdata(SEXP userdata);
-extern const SEXP get_pomp_userdata(const char *name);
-extern const int *get_pomp_userdata_int(const char *name);
-extern const double *get_pomp_userdata_double(const char *name);
+extern const SEXP get_userdata(const char *name);
+extern const int *get_userdata_int(const char *name);
+extern const double *get_userdata_double(const char *name);
 extern void unset_pomp_userdata(void);
 
 #endif

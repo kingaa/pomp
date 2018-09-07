@@ -42,13 +42,13 @@
 ##' A C snippet implementation of the aforementioned measurement model is:
 ##' \preformatted{
 ##'     f <- Csnippet("
-##'      double theta = *(get_pomp_userdata_double(\"theta\"));
+##'      double theta = *(get_userdata_double(\"theta\"));
 ##'      y1 = rpois(x1+theta); y2 = rpois(x2+theta);
 ##'     ")}
-##' Here, the call to \code{get_pomp_userdata_double} retrieves a \emph{pointer} to the stored value of \code{theta}.
+##' Here, the call to \code{get_userdata_double} retrieves a \emph{pointer} to the stored value of \code{theta}.
 ##' Note the need to escape the quotes in the C snippet text.
 ##'
-##' It is possible to store and retrieve integer objects also, using \code{get_pomp_userdata_int}.
+##' It is possible to store and retrieve integer objects also, using \code{get_userdata_int}.
 ##'
 ##' One must take care that one stores the user data with the appropriate storage type.
 ##' For example, it is wise to wrap floating point scalars and vectors with \code{as.double} and integers with \code{as.integer}.
@@ -57,14 +57,14 @@
 ##'     simulate(..., rmeasure = f, theta = as.double(42), ...)
 ##' }
 ##'
-##' Since the two functions \code{get_pomp_userdata_double} and \code{get_pomp_userdata_int} return pointers, it is trivial to pass vectors of double-precision and integers.
+##' Since the two functions \code{get_userdata_double} and \code{get_userdata_int} return pointers, it is trivial to pass vectors of double-precision and integers.
 ##'
 ##' A simpler and more elegant approach is afforded by the \code{globals} argument (see below).
 ##'
 ##' @section When the basic component is specified via an external library:
 ##'
 ##' The rules are essentially the same as for C snippets.
-##' \code{typedef} declarations for the \code{get_pomp_userdata_double} and \code{get_pomp_userdata_int} are given in the \file{pomp.h} header file and these two routines are registered so that they can be retrieved via a call to \code{R_GetCCallable}.
+##' \code{typedef} declarations for the \code{get_userdata_double} and \code{get_userdata_int} are given in the \file{pomp.h} header file and these two routines are registered so that they can be retrieved via a call to \code{R_GetCCallable}.
 ##' See the \href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing \R extensions manual} for more information.
 ##'
 ##' @section Setting \code{globals}:
@@ -91,7 +91,7 @@
 ##'     delta.t=1
 ##'   ),
 ##'   rmeasure=Csnippet("
-##'        double phi = *(get_pomp_userdata_double(\"phi\"));
+##'        double phi = *(get_userdata_double(\"phi\"));
 ##'        y = rpois(phi*N);"
 ##'   ),
 ##'   paramnames=c("r","sigma"),

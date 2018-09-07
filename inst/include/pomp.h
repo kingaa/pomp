@@ -10,9 +10,9 @@
 
 typedef void periodic_bspline_basis_eval_t (double x, double period, int degree, int nbasis, double *y);
 typedef void periodic_bspline_basis_eval_deriv_t (double x, double period, int degree, int nbasis, int deriv, double *y);
-typedef const SEXP get_pomp_userdata_t (const char *name);
-typedef const int *get_pomp_userdata_int_t (const char *name);
-typedef const double *get_pomp_userdata_double_t (const char *name);
+typedef const SEXP get_userdata_t (const char *name);
+typedef const int *get_userdata_int_t (const char *name);
+typedef const double *get_userdata_double_t (const char *name);
 
 // UTILITY FOR GAMMA WHITENOISE
 // This function draws a random increment of a gamma whitenoise process.

@@ -80,7 +80,7 @@ gsir %>%
     rprocess=gillespie(
       rate.fun=Csnippet("
         double beta;
-        int nbasis = *get_pomp_userdata_int(\"nbasis\");
+        int nbasis = *get_userdata_int(\"nbasis\");
         int k;
 
         switch (j) {

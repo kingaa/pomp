@@ -411,20 +411,20 @@ pomp_templates <- list(
 \n",
       reg="__pomp_periodic_bspline_basis_eval = (periodic_bspline_basis_eval_t *) R_GetCCallable(\"pomp2\",\"periodic_bspline_basis_eval\");\n"
     ),
-    get_pomp_userdata_int=list(
-      trigger="get_pomp_userdata_int",
-      header="static get_pomp_userdata_int_t *__pomp_get_pomp_userdata_int;\n#define get_pomp_userdata_int(X)\t(__pomp_get_pomp_userdata_int(X))\n",
-      reg="__pomp_get_pomp_userdata_int = (get_pomp_userdata_t *) R_GetCCallable(\"pomp2\",\"get_pomp_userdata_int\");\n"
+    get_userdata_int=list(
+      trigger="get_userdata_int",
+      header="static get_userdata_int_t *__pomp_get_userdata_int;\n#define get_userdata_int(X)\t(__pomp_get_userdata_int(X))\n",
+      reg="__pomp_get_userdata_int = (get_userdata_t *) R_GetCCallable(\"pomp2\",\"get_userdata_int\");\n"
     ),
-    get_pomp_userdata_double=list(
-      trigger="get_pomp_userdata_double",
-      header="static get_pomp_userdata_double_t *__pomp_get_pomp_userdata_double;\n#define get_pomp_userdata_double(X)\t(__pomp_get_pomp_userdata_double(X))\n",
-      reg="__pomp_get_pomp_userdata_double = (get_pomp_userdata_double_t *) R_GetCCallable(\"pomp2\",\"get_pomp_userdata_double\");\n"
+    get_userdata_double=list(
+      trigger="get_userdata_double",
+      header="static get_userdata_double_t *__pomp_get_userdata_double;\n#define get_userdata_double(X)\t(__pomp_get_userdata_double(X))\n",
+      reg="__pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable(\"pomp2\",\"get_userdata_double\");\n"
     ),
-    get_pomp_userdata=list(
-      trigger="get_pomp_userdata(\\b|[^_])",
-      header="static get_pomp_userdata_t *__pomp_get_pomp_userdata;\n#define get_pomp_userdata(X)\t(__pomp_get_pomp_userdata(X))\n",
-      reg="__pomp_get_pomp_userdata = (get_pomp_userdata_t *) R_GetCCallable(\"pomp2\",\"get_pomp_userdata\");\n"
+    get_userdata=list(
+      trigger="get_userdata(\\b|[^_])",
+      header="static get_userdata_t *__pomp_get_userdata;\n#define get_userdata(X)\t(__pomp_get_userdata(X))\n",
+      reg="__pomp_get_userdata = (get_userdata_t *) R_GetCCallable(\"pomp2\",\"get_userdata\");\n"
     )
   ),
   stackhandling="\nstatic int __pomp_load_stack = 0;\n\nvoid __pomp_load_stack_incr (void) {++__pomp_load_stack;}\n\nvoid __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}\n",
