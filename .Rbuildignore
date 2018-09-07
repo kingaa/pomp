@@ -11,3 +11,4 @@ TODO\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 lib
+hub_cov.R
