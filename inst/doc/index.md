@@ -1,5 +1,6 @@
 ---
-title: "*pomp2* user guides and tutorials"
+title: "pomp2"
+subtitle: "user guides, vignettes, and tutorials"
 ---
 
 <style>
@@ -96,6 +97,8 @@ dt {
 - [**pomp** FAQ](https://kingaa.github.io/pomp/FAQ.html)
 
 - [Package NEWS](https://kingaa.github.io/pomp/NEWS.html)
+
+- [Package manual](https://kingaa.github.io/manuals/pomp2.pdf)
 
 - Vignette: [Model implementation using **R** functions vs C snippets](./R_v_C.html)
 

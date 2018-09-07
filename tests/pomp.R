@@ -86,3 +86,4 @@ po2 %>% simulate(seed=4358686) %>% as.data.frame()
 pomp(po2,covar=NULL)@covar
 try(po2 %>% pomp(covar="bob"))
 try(po2 %>% pomp(rmeasure=function(x)x))
+try(pomp(data=NULL,times=1:10,t0=0,rmeasure=Csnippet("")))

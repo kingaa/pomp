@@ -53,6 +53,10 @@ library(ggplot2)
 library(magrittr)
 ```
 
+```{r seed,echo=FALSE}
+set.seed(56300069)
+```
+
 The Gompertz model is a very simple partially observed Markov process (POMP) model that we'll use to demonstrate.
 
 The latent state variable, $X$ represents the density of a population of biological organisms.

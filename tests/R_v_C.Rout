@@ -22,6 +22,9 @@ Type 'q()' to quit R.
 > library(ggplot2)
 > library(magrittr)
 > 
+> ## ----seed,echo=FALSE-----------------------------------------------------
+> set.seed(56300069)
+> 
 > ## ----R1------------------------------------------------------------------
 > simulate(times=1:100,t0=0,
 +   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
@@ -98,14 +101,14 @@ Type 'q()' to quit R.
 > 
 > logmeanexp(sapply(pf,logLik),se=TRUE)
                    se 
-27.8791275  0.2283044 
+62.8137837  0.1679958 
 > 
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  7.920   0.024   7.947 
+  7.352   0.016   7.371 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.340   0.008   0.349 
+  0.336   0.000   0.335 
 > 
 > 

@@ -4,7 +4,7 @@ png(filename="lookup-%02d.png",res=100)
 library(pomp2)
 
 ct <- covariate_table(x=20:30,y=10:0,times=seq(0,10))
-lookup(ct,t=c(1,2.3,4,7))
+lookup(ct,t=c(1,2.3,4,7,20))
 ct <- covariate_table(x=20:30,y=10:0,times=seq(0,10),order="constant")
 lookup(ct,t=c(1,2.3,4,7))
 lookup(ct,t=6.1)

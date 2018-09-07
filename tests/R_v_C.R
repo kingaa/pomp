@@ -3,6 +3,9 @@ library(pomp2)
 library(ggplot2)
 library(magrittr)
 
+## ----seed,echo=FALSE-----------------------------------------------------
+set.seed(56300069)
+
 ## ----R1------------------------------------------------------------------
 simulate(times=1:100,t0=0,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
