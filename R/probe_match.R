@@ -240,7 +240,7 @@ probe.eval <- function (object) {
   simvals <- tryCatch(
     freeze(
       .Call(P_apply_probe_sim,object=object,nsim=object@nsim,params=object@params,
-        probes=object@probes,datval=object@datvals,.getnativesymbolinfo=TRUE),
+        probes=object@probes,datval=object@datvals,.gnsi=TRUE),
       seed=object@seed
     ),
     error = function (e) pStop_("applying probes to simulated data: ",conditionMessage(e))

@@ -168,7 +168,7 @@ setMethod(
 )
 
 probe.internal <- function (object, probes, nsim, seed, ...,
-  .getnativesymbolinfo = TRUE, verbose) {
+  .gnsi = TRUE, verbose) {
 
   verbose <- as.logical(verbose)
 
@@ -193,7 +193,7 @@ probe.internal <- function (object, probes, nsim, seed, ...,
     pStop_("number of simulations, ",sQuote("nsim"),", must be a single positive integer.")
 
   seed <- as.integer(seed)
-  gnsi <- as.logical(.getnativesymbolinfo)
+  gnsi <- as.logical(.gnsi)
 
   params <- coef(object)
 

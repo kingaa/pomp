@@ -240,7 +240,7 @@ setMethod(
 pfilter.internal <- function (object, Np, tol, max.fail,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
   filter.traj = FALSE, cooling, cooling.m, save.states = FALSE, ...,
-  .getnativesymbolinfo = TRUE, verbose = FALSE) {
+  .gnsi = TRUE, verbose = FALSE) {
 
   verbose <- as.logical(verbose)
 
@@ -250,7 +250,7 @@ pfilter.internal <- function (object, Np, tol, max.fail,
     pStop_(paste(sQuote(c("rprocess","dmeasure")),collapse=", ")," are needed basic components.")
 
   tol <- as.numeric(tol)
-  gnsi <- as.logical(.getnativesymbolinfo)
+  gnsi <- as.logical(.gnsi)
   pred.mean <- as.logical(pred.mean)
   pred.var <- as.logical(pred.var)
   filter.mean <- as.logical(filter.mean)
@@ -291,7 +291,7 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
-  init.x <- rinit(object,params=params,nsim=Np[1L],.getnativesymbolinfo=gnsi)
+  init.x <- rinit(object,params=params,nsim=Np[1L],.gnsi=gnsi)
   statenames <- rownames(init.x)
   nvars <- nrow(init.x)
   x <- init.x
@@ -341,7 +341,7 @@ pfilter.internal <- function (object, Np, tol, max.fail,
 
     ## advance the state variables according to the process model
     X <- rprocess(object,xstart=x,times=times[c(nt,nt+1)],params=params,
-      offset=1L,.getnativesymbolinfo=gnsi)
+      offset=1L,.gnsi=gnsi)
 
     if (pred.var) { ## check for nonfinite state variables and parameters
       problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1L])
@@ -353,7 +353,7 @@ pfilter.internal <- function (object, Np, tol, max.fail,
 
     ## determine the weights
     weights <- dmeasure(object,y=object@data[,nt,drop=FALSE],x=X,
-      times=times[nt+1],params=params,log=FALSE,.getnativesymbolinfo=gnsi)
+      times=times[nt+1],params=params,log=FALSE,.gnsi=gnsi)
 
     if (!all(is.finite(weights))) {
       first <- which(!is.finite(weights))[1L]

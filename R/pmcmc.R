@@ -251,13 +251,13 @@ setMethod(
 
 pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   verbose, .ndone = 0L, .accepts = 0L, .prev.pfp = NULL, .prev.log.prior = NULL,
-  .getnativesymbolinfo = TRUE) {
+  .gnsi = TRUE) {
 
   verbose <- as.logical(verbose)
 
   object <- pomp(object,...,verbose=verbose)
 
-  gnsi <- as.logical(.getnativesymbolinfo)
+  gnsi <- as.logical(.gnsi)
   .ndone <- as.integer(.ndone)
   .accepts <- as.integer(.accepts)
 
@@ -300,9 +300,9 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
 
     pfp <- pfilter(object,params=theta,Np=Np,tol=tol,max.fail=max.fail,
-      filter.traj=TRUE,.getnativesymbolinfo=gnsi,verbose=verbose)
+      filter.traj=TRUE,.gnsi=gnsi,verbose=verbose)
 
-    log.prior <- dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
+    log.prior <- dprior(object,params=theta,log=TRUE,.gnsi=gnsi)
 
     gnsi <- FALSE
 
@@ -332,7 +332,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
 
     ## compute log prior
     log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,
-      .getnativesymbolinfo=gnsi)
+      .gnsi=gnsi)
 
     if (is.finite(log.prior.prop)) {
 
@@ -345,7 +345,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
         max.fail=max.fail,
         filter.traj=TRUE,
         verbose=verbose,
-        .getnativesymbolinfo=gnsi
+        .gnsi=gnsi
       )
 
       gnsi <- FALSE

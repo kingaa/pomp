@@ -86,7 +86,7 @@ setMethod(
 )
 
 trajectory.internal <- function (object, params, times, t0,
-  format = c("array", "data.frame"), .getnativesymbolinfo = TRUE, ...,
+  format = c("array", "data.frame"), .gnsi = TRUE, ...,
   verbose) {
 
   format <- match.arg(format)
@@ -131,16 +131,16 @@ trajectory.internal <- function (object, params, times, t0,
 
   if (type == skeletontype$map) {                  ## MAP
 
-    x <- .Call(P_iterate_map,object,times,t0,x0,params,.getnativesymbolinfo)
-    .getnativesymbolinfo <- FALSE
+    x <- .Call(P_iterate_map,object,times,t0,x0,params,.gnsi)
+    .gnsi <- FALSE
 
   } else if (type == skeletontype$vectorfield) {   ## VECTORFIELD
 
     znames <- object@zeronames
     if (length(znames)>0) x0[znames,,] <- 0
 
-    .Call(P_pomp_desolve_setup,object,x0,params,.getnativesymbolinfo)
-    .getnativesymbolinfo <- FALSE
+    .Call(P_pomp_desolve_setup,object,x0,params,.gnsi)
+    .gnsi <- FALSE
 
     X <- tryCatch(
       ode(

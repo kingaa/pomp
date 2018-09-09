@@ -180,7 +180,7 @@ setMethod(
 )
 
 bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
-  ..., verbose, .getnativesymbolinfo = TRUE) {
+  ..., verbose, .gnsi = TRUE) {
 
   verbose <- as.logical(verbose)
 
@@ -189,7 +189,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
   if (undefined(object@rprior) || undefined(object@rprocess) || undefined(object@dmeasure))
     pStop_(paste(sQuote(c("rprior","rprocess","dmeasure")),collapse=", ")," are needed basic components.")
 
-  gnsi <- as.logical(.getnativesymbolinfo)
+  gnsi <- as.logical(.gnsi)
 
   if (missing(Np)) pStop_(sQuote("Np")," must be specified.")
   if (!missing(Np) && (length(Np) > 1 || !is.finite(Np) || Np < 1))
@@ -213,7 +213,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
-  params <- rprior(object,params=params,.getnativesymbolinfo=gnsi)
+  params <- rprior(object,params=params,.gnsi=gnsi)
 
   ntimes <- length(time(object))
   npars <- nrow(params)
@@ -221,10 +221,10 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
   prior <- params
 
   times <- time(object,t0=TRUE)
-  x <- rinit(object,params=params,.getnativesymbolinfo=gnsi)
+  x <- rinit(object,params=params,.gnsi=gnsi)
   nvars <- nrow(x)
 
-  params <- partrans(object,params,dir="toEst",.getnativesymbolinfo=gnsi)
+  params <- partrans(object,params,dir="toEst",.gnsi=gnsi)
 
   estind <- which(apply(params,1,function(x) diff(range(x)) > 0))
   est <- paramnames[estind]
@@ -270,14 +270,14 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
 
     params[estind,] <- m[estind,]+t(pert)
 
-    tparams <- partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi)
+    tparams <- partrans(object,params,dir="fromEst",.gnsi=gnsi)
 
     xpred <- rprocess(object,xstart=x,times=times[c(nt,nt+1)],params=tparams,
-      offset=1L,.getnativesymbolinfo=gnsi)
+      offset=1L,.gnsi=gnsi)
 
     ## evaluate likelihood of observation given xpred (from L&W AGM (4))
     weights <- dmeasure(object,y=object@data[,nt,drop=FALSE],x=xpred,
-      times=times[nt+1],params=tparams,.getnativesymbolinfo=gnsi)
+      times=times[nt+1],params=tparams,.gnsi=gnsi)
 
     gnsi <- FALSE  ## all native symbols have been looked up
 
@@ -330,7 +330,7 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
   new(
     "bsmcd_pomp",
     object,
-    post=partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi),
+    post=partrans(object,params,dir="fromEst",.gnsi=gnsi),
     prior=prior,
     est=as.character(est),
     eff.sample.size=eff.sample.size,

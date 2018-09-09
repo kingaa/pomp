@@ -2,6 +2,7 @@
 
 ## For pomp 2:
 
+- Put indexing codes into pomp_fun (at C level), and trigger with 'gnsi = TRUE'.
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - manual pages on the organization of the package
     - estimation algorithms
@@ -18,23 +19,17 @@
 	- `dmultinom`
 	- BetaBinom
 	- BetaNegBinom
-	- ~~logit, expit~~
-	- ~~log-barycentric and inverse~~
 - remove need to specify paramnames when log,logit,barycentric partrans is given
 - `spy` methods for derived objects
-- index by concept using `\concept{}` in the help files
-	- extending **pomp**
-	- low-level interface (incl. `hitch` and workhorses)
 - better scheme for indicating derivatives and maps in C snippets
 - should the default process model be persistence?
 	- what would the corresponding `dprocess` be?
 - Kalman filter?
-- document 'logistic' example
+- document and test 'logistic' example
 
 - "guide to upgrading to **pomp** version 2"
 - `as.data.frame` and ?? for `listies`
 - `coef` returns data frame in some circumstances?
-- ~~import and re-export `reshape2::melt`?~~
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?

@@ -180,7 +180,7 @@ setMethod(
 
 simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   format, include.data = FALSE, ...,
-  .getnativesymbolinfo = TRUE, verbose) {
+  .gnsi = TRUE, verbose) {
 
   object <- pomp(object,...,verbose=verbose)
 
@@ -208,7 +208,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   return.type <- switch(format,arrays=0L,data.frame=0L,pomps=1L)
 
   sims <- freeze(
-    .Call(P_do_simulate,object,params,nsim,return.type,.getnativesymbolinfo),
+    .Call(P_do_simulate,object,params,nsim,return.type,.gnsi),
     seed=seed
   )
 

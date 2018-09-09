@@ -254,7 +254,7 @@ abc.internal <- function (object,
   Nabc, proposal, scale, epsilon, probes,
   ...,
   verbose,
-  .ndone = 0L, .accepts = 0L, .getnativesymbolinfo = TRUE) {
+  .ndone = 0L, .accepts = 0L, .gnsi = TRUE) {
 
   verbose <- as.logical(verbose)
 
@@ -268,7 +268,7 @@ abc.internal <- function (object,
   if (missing(scale)) scale <- NULL
   if (missing(epsilon)) epsilon <- NULL
 
-  gnsi <- as.logical(.getnativesymbolinfo)
+  gnsi <- as.logical(.gnsi)
   scale <- as.numeric(scale)
   epsilon <- as.numeric(epsilon)
   epssq <- epsilon*epsilon
@@ -317,7 +317,7 @@ abc.internal <- function (object,
     pStop_(sQuote("proposal")," must return a named numeric vector.")
 
   theta <- params
-  log.prior <-dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
+  log.prior <-dprior(object,params=theta,log=TRUE,.gnsi=gnsi)
 
   if (!is.finite(log.prior))
     pStop_("inadmissible value of ",sQuote("dprior")," at starting parameters.")
@@ -357,7 +357,7 @@ abc.internal <- function (object,
         pStop_("in proposal function: ",conditionMessage(e))
     )
     log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,
-      .getnativesymbolinfo=gnsi)
+      .gnsi=gnsi)
 
     if (is.finite(log.prior.prop) && runif(1) < exp(log.prior.prop-log.prior)) {
 

@@ -277,7 +277,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
   Np, tol = 1e-17, max.fail = Inf,
   ..., verbose,
   .ndone = 0L, .indices = integer(0), .paramMatrix = NULL,
-  .getnativesymbolinfo = TRUE) {
+  .gnsi = TRUE) {
 
   verbose <- as.logical(verbose)
 
@@ -286,7 +286,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
   if (undefined(object@rprocess) || undefined(object@dmeasure))
     pStop_(paste(sQuote(c("rprocess","dmeasure")),collapse=", ")," are needed basic components.")
 
-  gnsi <- as.logical(.getnativesymbolinfo)
+  gnsi <- as.logical(.gnsi)
 
   if (length(Nmif) != 1 || !is.numeric(Nmif) || !is.finite(Nmif) || Nmif < 1)
     pStop_(sQuote("Nmif")," must be a positive integer.")
@@ -368,7 +368,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
   on.exit(pompUnload(object,verbose=verbose))
 
   paramMatrix <- partrans(object,paramMatrix,dir="toEst",
-    .getnativesymbolinfo=gnsi)
+    .gnsi=gnsi)
 
   ## iterate the filtering
   for (n in seq_len(Nmif)) {
@@ -384,7 +384,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
       max.fail=max.fail,
       verbose=verbose,
       .indices=.indices,
-      .getnativesymbolinfo=gnsi
+      .gnsi=gnsi
     )
 
     gnsi <- FALSE
@@ -399,7 +399,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
   }
 
   pfp@paramMatrix <- partrans(object,paramMatrix,dir="fromEst",
-    .getnativesymbolinfo=gnsi)
+    .gnsi=gnsi)
 
   new(
     "mif2d_pomp",
@@ -441,10 +441,10 @@ mif2.cooling <- function (type, fraction, ntimes) {
 
 mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
   tol = 1e-17, max.fail = Inf, verbose, .indices = integer(0),
-  .getnativesymbolinfo = TRUE) {
+  .gnsi = TRUE) {
 
   tol <- as.numeric(tol)
-  gnsi <- as.logical(.getnativesymbolinfo)
+  gnsi <- as.logical(.gnsi)
   verbose <- as.logical(verbose)
   mifiter <- as.integer(mifiter)
   Np <- as.integer(Np)
@@ -469,7 +469,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
     pmag <- cooling.fn(nt,mifiter)$alpha*rw.sd[,nt]
     params <- .Call(P_randwalk_perturbation,params,pmag)
 
-    tparams <- partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi)
+    tparams <- partrans(object,params,dir="fromEst",.gnsi=gnsi)
 
     ## get initial states
     if (nt == 1L) {
@@ -483,7 +483,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
       times=times[c(nt,nt+1)],
       params=tparams,
       offset=1,
-      .getnativesymbolinfo=gnsi
+      .gnsi=gnsi
     )
 
     ## determine the weights
@@ -494,7 +494,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
       times=times[nt+1],
       params=tparams,
       log=FALSE,
-      .getnativesymbolinfo=gnsi
+      .gnsi=gnsi
     )
 
     if (!all(is.finite(weights))) {
