@@ -108,3 +108,21 @@ po %>% dmeasure(x=x,y=y,params=p,times=t,log=TRUE) -> d
 po %>% rmeasure(x=x,params=p,times=t) -> yy
 
 po %>% pomp(dmeasure=function(...,log)1) %>% dmeasure(x=x,y=y,params=p,times=t) -> d
+
+try({
+  pp <- p
+  names(pp)[3] <- NA
+  po %>% rmeasure(x=x,params=pp,times=t)
+})
+
+try({
+  pp <- p
+  names(pp)[3] <- ""
+  po %>% rmeasure(x=x,params=pp,times=t)
+})
+
+try({
+  pp <- p
+  names(pp) <- NULL
+  po %>% rmeasure(x=x,params=pp,times=t)
+})

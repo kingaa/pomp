@@ -160,3 +160,24 @@ newly created object(s):
 > 
 > po %>% pomp(dmeasure=function(...,log)1) %>% dmeasure(x=x,y=y,params=p,times=t) -> d
 > 
+> try({
++   pp <- p
++   names(pp)[3] <- NA
++   po %>% rmeasure(x=x,params=pp,times=t)
++ })
+Error : in ‘rmeasure’: invalid variable names among the parameters.
+> 
+> try({
++   pp <- p
++   names(pp)[3] <- ""
++   po %>% rmeasure(x=x,params=pp,times=t)
++ })
+Error : in ‘rmeasure’: invalid variable names among the parameters.
+> 
+> try({
++   pp <- p
++   names(pp) <- NULL
++   po %>% rmeasure(x=x,params=pp,times=t)
++ })
+Error : in ‘rmeasure’: variable 'gamma' not found among the parameters.
+> 

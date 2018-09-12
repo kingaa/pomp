@@ -224,10 +224,10 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   int *dim, xdim[3];
   int nvar, nvarv, nevent, npar, nrep, ntimes;
   SEXP statenames, paramnames, covarnames;
-  int nstates, nparams, ncovars, covdim;
+  int ncovars, covdim;
   int nzeros = LENGTH(zeronames);
   pompfunmode mode = undef;
-  SEXP X, pindex, sindex, cindex, zindex, vindex;
+  SEXP X, zindex, vindex;
   int *sidx, *pidx, *cidx, *zidx, *vidx;
   SEXP fn, Snames, Pnames, Cnames, Vnames;
   lookup_table_t covariate_table;
@@ -253,14 +253,12 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   PROTECT(paramnames = GET_SLOT(func,install("paramnames"))); nprotect++;
   PROTECT(covarnames = GET_SLOT(func,install("covarnames"))); nprotect++;
 
-  nstates = LENGTH(statenames);
-  nparams = LENGTH(paramnames);
   ncovars = LENGTH(covarnames);
   hasvnames = !isNull(Vnames);
 
   PROTECT(hmax = AS_NUMERIC(hmax)); nprotect++;
 
-  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
 
   switch (mode) {
 
@@ -294,30 +292,17 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   PROTECT(X = makearray(3,xdim)); nprotect++;
   setrownames(X,Snames,3);
 
-  if (nstates>0) {
-    PROTECT(sindex = MATCHROWNAMES(xstart,statenames,"state variables")); nprotect++;
-    sidx = INTEGER(sindex);
-  } else {
-    sidx = 0;
-  }
-  if (nparams>0) {
-    PROTECT(pindex = MATCHROWNAMES(params,paramnames,"parameters")); nprotect++;
-    pidx = INTEGER(pindex);
-  } else {
-    pidx = 0;
-  }
-  if (ncovars>0) {
-    PROTECT(cindex = matchnames(Cnames,covarnames,"covariates")); nprotect++;
-    cidx = INTEGER(cindex);
-  } else {
-    cidx = 0;
-  }
+  sidx = INTEGER(GET_SLOT(func,install("stateindex")));
+  pidx = INTEGER(GET_SLOT(func,install("paramindex")));
+  cidx = INTEGER(GET_SLOT(func,install("covarindex")));
+
   if (nzeros>0) {
     PROTECT(zindex = MATCHROWNAMES(xstart,zeronames,"state variables")); nprotect++;
     zidx = INTEGER(zindex);
   } else {
     zidx = 0;
   }
+
   if (hasvnames) {
     PROTECT(vindex = MATCHROWNAMES(xstart,Vnames,"state variables")); nprotect++;
     vidx = INTEGER(vindex);

@@ -123,9 +123,12 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
     errorcall(R_NilValue,"larger number of replicates is not a multiple of smaller.");
 
+  PROTECT(pompfun = GET_SLOT(object,install("rmeasure"))); nprotect++;
+
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
+  PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
 
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
@@ -133,8 +136,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   cov = REAL(cvec);
 
   // extract the user-defined function
-  PROTECT(pompfun = GET_SLOT(object,install("rmeasure"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,Onames,Cnames)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -222,13 +224,12 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     pomp_measure_model_simulator *ff = NULL;
     int j, k;
 
-    // construct observable, state, parameter covariate indices
-    PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
-    oidx = INTEGER(PROTECT(name_index(Onames,pompfun,"obsnames","observables"))); nprotect++;
-    sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
-    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
-    cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
     nobs = LENGTH(Onames);
+    // extract observable, state, parameter covariate indices
+    sidx = INTEGER(GET_SLOT(pompfun,install("stateindex")));
+    pidx = INTEGER(GET_SLOT(pompfun,install("paramindex")));
+    oidx = INTEGER(GET_SLOT(pompfun,install("obsindex")));
+    cidx = INTEGER(GET_SLOT(pompfun,install("covarindex")));
 
     // address of native routine
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
@@ -264,7 +265,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     break;
 
   default: {
-    PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
     nobs = LENGTH(Onames);
     int dim[3] = {nobs, nreps, ntimes};
     const char *dimnm[3] = {"variable","rep","time"};
@@ -278,7 +278,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     for (i = 0, yt = REAL(Y); i < n; i++, yt++) *yt = R_NaReal;
   }
 
-    break;
+  break;
 
   }
 

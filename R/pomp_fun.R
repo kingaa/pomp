@@ -33,10 +33,14 @@ setClass(
     PACKAGE = "character",
     mode = "integer",
     address = "externalptr",
-    obsnames = "character",
     statenames = "character",
     paramnames = "character",
+    obsnames = "character",
     covarnames = "character",
+    stateindex = "integer",
+    paramindex = "integer",
+    obsindex = "integer",
+    covarindex = "integer",
     purpose = "character"
   ),
   prototype=prototype(
@@ -46,10 +50,14 @@ setClass(
     native.fun=character(0),
     PACKAGE=character(0),
     mode=pompfunmode$undef,
-    obsnames = character(0),
     statenames = character(0),
     paramnames = character(0),
+    obsnames = character(0),
     covarnames = character(0),
+    stateindex = integer(0),
+    paramindex = integer(0),
+    obsindex = integer(0),
+    covarindex = integer(0),
     purpose = "a needed function"
   )
 )

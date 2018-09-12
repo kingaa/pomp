@@ -74,7 +74,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     break;
   }
 
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,NA_STRING,Pnames,NA_STRING,NA_STRING)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -114,7 +114,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
     break;
 
-  case native: {
+  case native: case regNative: {
 
     pomp_transform_fn *ff;
     double *ps, *pt;
@@ -125,7 +125,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
     R_CheckUserInterrupt();
 
-    idx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
+    idx = INTEGER(GET_SLOT(pompfun,install("paramindex")));
 
     set_pomp_userdata(args);
 

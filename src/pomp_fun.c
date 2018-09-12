@@ -9,12 +9,49 @@
 
 #include "pomp_internal.h"
 
-// returns either the R function or the address of the native routine
-// on return, use_native tells whether to use the native or the R function
-SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
+// static R_INLINE void makeindex (SEXP provided, SEXP needed, const char *where, int *idx) {
+//   int i, j;
+//   int m = LENGTH(provided);
+//   int n = LENGTH(needed);
+
+//   for (i = 0; i < n; i++) {
+//     for (j = 0; j < m; j++) {
+//       if (!strcmp(CHAR(STRING_ELT(provided,j)),CHAR(STRING_ELT(needed,i)))) {
+//         idx[i] = j;
+//         break;
+//       }
+//     }
+//     if (j==m) errorcall(R_NilValue,"variable '%s' not found among the %s.",CHAR(STRING_ELT(needed,i)),where);
+//   }
+
+// }
+
+static R_INLINE SEXP name_index (SEXP provided, SEXP object, const char *slot, const char *humanreadable) {
+  SEXP slotnames, index;
+  PROTECT(slotnames = GET_SLOT(object,install(slot)));
+  if (LENGTH(slotnames) > 0) {
+    PROTECT(index = matchnames(provided,slotnames,humanreadable));
+  } else {
+    PROTECT(index = NEW_INTEGER(0));
+  }
+  UNPROTECT(2);
+  return index;
+}
+
+// Returns either the R function or the address of the native routine.
+// On return, mode indicates the mode of the 'pomp_fun'
+// (i.e., R function, external function, or C snippet).
+// If 'gnsi' is set to TRUE, we look up the native symbol information in the DLL,
+// storing it in the 'address' slot.
+// If 'gsni' is TRUE, and there are names in one or more of the S,P,O,C arguments, we look up the
+// names in the corresponding 'pomp_fun' slots and storing the corresponding index
+// inside the 'pomp_fun'.
+SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
+  SEXP S, SEXP P, SEXP O, SEXP C)
 {
   int nprotect = 0;
   SEXP f = R_NilValue;
+  SEXP sidx, pidx, oidx, cidx;
 
   *mode = *(INTEGER(GET_SLOT(pfun,install("mode"))));
 
@@ -28,7 +65,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 
   case native: case regNative:	// native code
 
-    if (*(INTEGER(gnsi))) {	// get native symbol information?
+    if (*(LOGICAL(gnsi))) {	// get native symbol information?
 
       SEXP nf, pack;
       PROTECT(nf = GET_SLOT(pfun,install("native.fun"))); nprotect++;
@@ -38,16 +75,14 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
       }
 
       switch (*mode) {
-      case native:
-      {
+      case native: {
         SEXP nsi;
         PROTECT(nsi = eval(PROTECT(lang3(install("getNativeSymbolInfo"),nf,pack)),R_BaseEnv)); nprotect += 2;
         PROTECT(f = getListElement(nsi,"address")); nprotect++;
       }
         break;
 
-      case regNative:
-      {
+      case regNative: {
         // Before version 3.4.0, R_MakeExternalPtrFn is not part of the R API.
         // Therefore, we must use some trickery to avoid the ISO C proscription of
         //     (void *) <-> (function *) conversion.
@@ -67,11 +102,31 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
       }
         break;
 
-      case Rfun: case undef: default:
-        break;			// # nocov
+      default:
+        break; // #nocov
       }
 
       SET_SLOT(pfun,install("address"),f);
+
+      if (S != NA_STRING) {
+        PROTECT(sidx = name_index(S,pfun,"statenames","state variables")); nprotect++;
+        SET_SLOT(pfun,install("stateindex"),sidx);
+      }
+
+      if (P != NA_STRING) {
+        PROTECT(pidx = name_index(P,pfun,"paramnames","parameters")); nprotect++;
+        SET_SLOT(pfun,install("paramindex"),pidx);
+      }
+
+      if (O != NA_STRING) {
+        PROTECT(oidx = name_index(O,pfun,"obsnames","observables")); nprotect++;
+        SET_SLOT(pfun,install("obsindex"),oidx);
+      }
+
+      if (C != NA_STRING) {
+        PROTECT(cidx = name_index(C,pfun,"covarnames","covariates")); nprotect++;
+        SET_SLOT(pfun,install("covarindex"),cidx);
+      }
 
     } else {			// native symbol info is stored
 
@@ -79,12 +134,9 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 
     }
 
-    *mode = native;
-
     break;
 
-  case undef: default:
-  {
+  case undef: default: {
 
     PROTECT(f = R_NilValue); nprotect++;
     *mode = undef;

@@ -85,4 +85,5 @@ logmeanexp(sapply(pf,logLik),se=TRUE)
 ## ----comparison----------------------------------------------------------
 system.time(simulate(gompertz,nsim=10000,format="arrays"))
 system.time(simulate(Gompertz,nsim=10000,format="arrays"))
-
+system.time(pfilter(gompertz,Np=1000))
+system.time(pfilter(Gompertz,Np=1000))

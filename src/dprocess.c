@@ -123,7 +123,7 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
   PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
   cov = REAL(cvec);
 
-  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
 
   give_log = *(INTEGER(log));
 
@@ -177,9 +177,9 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
     pomp_onestep_pdf *ff = NULL;
     int j, k;
 
-    sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames")),"state variables"))); nprotect++;
-    pidx = INTEGER(PROTECT(matchnames(Pnames,GET_SLOT(func,install("paramnames")),"parameters"))); nprotect++;
-    cidx = INTEGER(PROTECT(matchnames(Cnames,GET_SLOT(func,install("covarnames")),"covariates"))); nprotect++;
+    sidx = INTEGER(GET_SLOT(func,install("stateindex")));
+    pidx = INTEGER(GET_SLOT(func,install("paramindex")));
+    cidx = INTEGER(GET_SLOT(func,install("covarindex")));
 
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
@@ -217,7 +217,7 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
     }
   }
 
-  break;
+    break;
 
   }
 

@@ -168,7 +168,6 @@ void iterate_skeleton_R (
 
     // compute number of steps needed
     nsteps = num_map_steps(t,*time,deltat);
-    //  Rprintf("k = %d, time = %lg,%lg, steps = %d\n",k,t,*time,nsteps);
 
     // set accumulator variables to zero
     for (i = 0; i < nzeros; i++)
@@ -359,7 +358,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
 
   // extract the user-defined function
   PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("skeleton")),install("skel.fn"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -385,9 +384,9 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     int *sidx, *pidx, *cidx;
     pomp_skeleton *ff = NULL;
 
-    sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
-    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
-    cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
+    sidx = INTEGER(GET_SLOT(pompfun,install("stateindex")));
+    pidx = INTEGER(GET_SLOT(pompfun,install("paramindex")));
+    cidx = INTEGER(GET_SLOT(pompfun,install("covarindex")));
 
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 

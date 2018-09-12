@@ -42,5 +42,5 @@ reqd_arg <- function (method, object) {
 }
 
 invalid_names <- function (names) {
-  is.null(names) || !all(nzchar(names)) || anyDuplicated(names)
+  is.null(names) || !all(nzchar(names)) || any(is.na(names)) || anyDuplicated(names)
 }

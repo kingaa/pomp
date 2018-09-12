@@ -111,15 +111,13 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
-  if (ntimes < 1)
-    errorcall(R_NilValue,"length('times') = 0, no work to do.");
+  if (ntimes < 1) errorcall(R_NilValue,"length('times') = 0, no work to do.");
 
   PROTECT(y = as_matrix(y)); nprotect++;
   dim = INTEGER(GET_DIM(y));
   nobs = dim[0];
 
-  if (ntimes != dim[1])
-    errorcall(R_NilValue,"length of 'times' and 2nd dimension of 'y' do not agree.");
+  if (ntimes != dim[1]) errorcall(R_NilValue,"length of 'times' and 2nd dimension of 'y' do not agree.");
 
   PROTECT(x = as_state_array(x)); nprotect++;
   dim = INTEGER(GET_DIM(x));
@@ -149,7 +147,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   // extract the user-defined function
   PROTECT(pompfun = GET_SLOT(object,install("dmeasure"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,Onames,Cnames)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -159,9 +157,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   switch (mode) {
 
-  case Rfun:			// R function
-
-  {
+  case Rfun: {
     double *ys = REAL(y), *xs = REAL(x), *ps = REAL(params), *time = REAL(times);
     double *ft = REAL(F);
     int j, k;
@@ -202,9 +198,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
     break;
 
-  case native: case regNative:		// native code
-
-  {
+  case native: case regNative: {
     int *oidx, *sidx, *pidx, *cidx;
     int give_log;
     pomp_measure_model_density *ff = NULL;
@@ -213,11 +207,11 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     double *xp, *pp;
     int j, k;
 
-    // construct state, parameter, covariate, observable indices
-    oidx = INTEGER(PROTECT(name_index(Onames,pompfun,"obsnames","observables"))); nprotect++;
-    sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
-    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
-    cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
+    // extract state, parameter, covariate, observable indices
+    sidx = INTEGER(GET_SLOT(pompfun,install("stateindex")));
+    pidx = INTEGER(GET_SLOT(pompfun,install("paramindex")));
+    oidx = INTEGER(GET_SLOT(pompfun,install("obsindex")));
+    cidx = INTEGER(GET_SLOT(pompfun,install("covarindex")));
 
     give_log = *(INTEGER(AS_INTEGER(log)));
 
@@ -249,9 +243,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
     break;
 
-  default:
-
-  {
+  default: {
     double *ft = REAL(F);
     int j, k;
 

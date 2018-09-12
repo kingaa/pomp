@@ -69,7 +69,7 @@ static R_INLINE double expit (double x) {
 // there is no need to call {Get,Put}RNGState() as this is handled by pomp
 
 static R_INLINE void reulermultinom (int m, double size, const double *rate,
-				     double dt, double *trans) {
+  double dt, double *trans) {
   double p = 0.0;
   int j, k;
   if ((size < 0.0) || (dt < 0.0) || (floor(size+0.5) != size)) {
@@ -92,7 +92,7 @@ static R_INLINE void reulermultinom (int m, double size, const double *rate,
       if (rate[k] > p) p = rate[k];
       trans[k] = ((size > 0) && (p > 0)) ? rbinom(size,rate[k]/p) : 0;
       if (!(R_FINITE(size)&&R_FINITE(p)&&R_FINITE(rate[k])&&R_FINITE(trans[k])))
-	warningcall(R_NilValue,"in 'reulermultinom': result of binomial draw is not finite");
+        warningcall(R_NilValue,"in 'reulermultinom': result of binomial draw is not finite");
       size -= trans[k];
       p -= rate[k];
     }
@@ -118,7 +118,7 @@ static R_INLINE void reulermultinom (int m, double size, const double *rate,
 // distributions.
 
 static R_INLINE double deulermultinom (int m, double size, const double *rate,
-				       double dt, double *trans, int give_log) {
+  double dt, double *trans, int give_log) {
   double p = 0.0;
   double n = 0.0;
   double ff = 0.0;
@@ -250,7 +250,7 @@ static R_INLINE double rbetabinom (double size, double prob, double theta) {
 }
 
 static R_INLINE double dbetabinom (double x, double size, double prob,
-				   double theta, int give_log) {
+  double theta, int give_log) {
   double a = theta*prob;
   double b = theta*(1.0-prob);
   double f = lchoose(size,x)-lbeta(a,b)+lbeta(a+x,b+size-x);
@@ -263,7 +263,7 @@ static R_INLINE double rbetanbinom (double mu, double size, double theta) {
 }
 
 static R_INLINE double dbetanbinom (double x, double mu, double size,
-				    double theta, int give_log) {
+  double theta, int give_log) {
   double prob = size/(size+mu);
   double a = theta*prob;
   double b = theta*(1.0-prob);
@@ -302,7 +302,7 @@ typedef void pomp_rinit(double *x, const double *p, double t,
 
 // PROTOTYPE FOR STOCHASTIC SIMULATION ALGORITHM REACTION-RATE FUNCTION, AS USED BY "GILLESPIE.SIM":
 typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const double *p,
-				const int *stateindex, const int *parindex, const int *covindex, const double *covars);
+  const int *stateindex, const int *parindex, const int *covindex, const double *covars);
 // Description:
 //  on input:
 // event      = integer specifying the number of the reaction whose rate is desired
@@ -322,8 +322,8 @@ typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const doub
 
 // PROTOTYPE FOR ONE-STEP SIMULATOR, AS USED BY "EULER.SIM" AND "ONESTEP.SIM":
 typedef void pomp_onestep_sim(double *x, const double *p,
-			      const int *stateindex, const int *parindex, const int *covindex,
-			      const double *covars, double t, double dt);
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t, double dt);
 // Description:
 //  on input:
 // x          = pointer to state vector
@@ -347,9 +347,9 @@ typedef void pomp_onestep_sim(double *x, const double *p,
 
 // PROTOTYPE FOR ONE-STEP LOG PROBABILITY DENSITY FUNCTION, AS USED BY "ONESTEP.DENS":
 typedef void pomp_onestep_pdf(double *loglik,
-			      const double *x1, const double *x2, double t1, double t2, const double *p,
-			      const int *stateindex, const int *parindex, const int *covindex,
-			      const double *covars);
+  const double *x1, const double *x2, double t1, double t2, const double *p,
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars);
 // Description:
 //  on input:
 // x1         = pointer to state vector at time t1
@@ -370,8 +370,8 @@ typedef void pomp_onestep_pdf(double *loglik,
 
 // PROTOTYPE FOR DETERMINISTIC SKELETON EVALUATION
 typedef void pomp_skeleton (double *f, const double *x, const double *p,
-			    const int *stateindex, const int *parindex, const int *covindex,
-			    const double *covars, double t);
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t);
 
 // Description:
 //  on input:
@@ -391,8 +391,8 @@ typedef void pomp_skeleton (double *f, const double *x, const double *p,
 
 // PROTOTYPE FOR MEASUREMENT MODEL SIMULATION
 typedef void pomp_measure_model_simulator (double *y, const double *x, const double *p,
-					   const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
-					   const double *covars, double t);
+  const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t);
 // Description:
 //  on input:
 // x          = pointer to state vector at time t

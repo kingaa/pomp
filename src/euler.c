@@ -124,7 +124,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   int *zidx = INTEGER(PROTECT(matchnames(Snames,zeronames,"state variables"))); nprotect++;
 
   // extract user function
-  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
 
   // array to hold results
   PROTECT(X = ret_array(nvars,nreps,ntimes,Snames)); nprotect++;
@@ -151,9 +151,9 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   case native: case regNative: {
 
     // construct state, parameter, covariate indices
-    sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames")),"state variables"))); nprotect++;
-    pidx = INTEGER(PROTECT(matchnames(Pnames,GET_SLOT(func,install("paramnames")),"parameters"))); nprotect++;
-    cidx = INTEGER(PROTECT(matchnames(Cnames,GET_SLOT(func,install("covarnames")),"covariates"))); nprotect++;
+    sidx = INTEGER(GET_SLOT(func,install("stateindex")));
+    pidx = INTEGER(GET_SLOT(func,install("paramindex")));
+    cidx = INTEGER(GET_SLOT(func,install("covarindex")));
 
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 

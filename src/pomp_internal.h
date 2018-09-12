@@ -50,7 +50,7 @@ extern void _gompertz_to_trans(double *__pt, const double *__p, const int *__par
 extern void _gompertz_from_trans(double *__p, const double *__pt, const int *__parindex);
 
 // init.c 
-extern void R_init_pomp(DllInfo *info);
+extern void R_init_pomp2(DllInfo *info);
 
 // lookup_table.c 
 extern SEXP get_covariate_names(SEXP object);
@@ -75,7 +75,7 @@ extern SEXP do_partrans(SEXP object, SEXP params, SEXP dir, SEXP gnsi);
 extern SEXP pfilter_computations(SEXP x, SEXP params, SEXP Np, SEXP predmean, SEXP predvar, SEXP filtmean, SEXP trackancestry, SEXP doparRS, SEXP weights, SEXP tol);
 
 // pomp_fun.c 
-extern SEXP pomp_fun_handler(SEXP pfun, SEXP gnsi, pompfunmode *mode);
+extern SEXP pomp_fun_handler(SEXP pfun, SEXP gnsi, pompfunmode *mode, SEXP S, SEXP P, SEXP O, SEXP C);
 extern SEXP load_stack_incr(SEXP pack);
 extern SEXP load_stack_decr(SEXP pack);
 

@@ -93,10 +93,6 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
   npar = dim[0]; nrep = dim[1];
   ns = nsims*nrep;
 
-  // extract the rinit function and its environment
-  PROTECT(pompfun = GET_SLOT(object,install("rinit"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
-
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
   PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
@@ -107,6 +103,11 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
   // extract userdata
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+
+  PROTECT(pompfun = GET_SLOT(object,install("rinit"))); nprotect++;
+  PROTECT(Snames = GET_SLOT(pompfun,install("statenames"))); nprotect++;
+
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
 
   switch (mode) {
   case Rfun: {
@@ -160,13 +161,12 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     pomp_rinit *ff = NULL;
     int j;
 
-    PROTECT(Snames = GET_SLOT(pompfun,install("statenames"))); nprotect++;
     nvar = LENGTH(Snames);
     PROTECT(x = ret_array(nvar,ns,Snames)); nprotect++;
 
-    sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
-    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
-    cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
+    sidx = INTEGER(GET_SLOT(pompfun,install("stateindex")));
+    pidx = INTEGER(GET_SLOT(pompfun,install("paramindex")));
+    cidx = INTEGER(GET_SLOT(pompfun,install("covarindex")));
 
     // address of native routine
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);

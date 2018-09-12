@@ -24,7 +24,7 @@ typedef struct {
   double *y;
 } lookup_table_t;
 
-typedef SEXP pomp_fun_handler_t (SEXP pfun, SEXP gnsi, pompfunmode *mode);
+typedef SEXP pomp_fun_handler_t (SEXP pfun, SEXP gnsi, pompfunmode *mode, SEXP S, SEXP P, SEXP O, SEXP C);
 typedef SEXP load_stack_incr_t (SEXP pack);
 typedef SEXP load_stack_decr_t (SEXP pack);
 typedef lookup_table_t make_covariate_table_t (SEXP object, int *ncovar);
@@ -49,33 +49,32 @@ static R_INLINE SEXP makearray (int rank, int *dim) {
   return x;
 }
 
-static R_INLINE SEXP matchnames (SEXP x, SEXP names, const char *where) {
-  int n = length(names);
-  int *idx, k;
-  SEXP index;
-  PROTECT(names = AS_CHARACTER(names));
-  PROTECT(index = match(x,names,0));
-  idx = INTEGER(index);
-  for (k = 0; k < n; k++) {
-    if (idx[k]==0)
-      errorcall(R_NilValue,"variable '%s' not found among the %s.",
-		CHAR(STRING_ELT(names,k)),
-		where);
-    idx[k] -= 1;
-  }
-  UNPROTECT(2);
-  return index;
+// check if names exist and are nonempty
+static R_INLINE int invalid_names (SEXP names) {
+  int i, ok;
+  ok = !isNull(names);
+  for (i = 0; ok && i < LENGTH(names); i++)
+    ok = ok && LENGTH(STRING_ELT(names,i)) > 0 &&
+      STRING_ELT(names,i) != NA_STRING;
+  return !ok;
 }
 
-static R_INLINE SEXP name_index (SEXP names, SEXP object, const char *slot, const char *humanreadable) {
-  SEXP slotnames, index;
-  PROTECT(slotnames = GET_SLOT(object,install(slot)));
-  if (LENGTH(slotnames) > 0) {
-    PROTECT(index = matchnames(names,slotnames,humanreadable));
-  } else {
-    PROTECT(index = NEW_INTEGER(0));
+static R_INLINE SEXP matchnames (SEXP provided, SEXP needed, const char *where) {
+  int n = length(needed);
+  int *idx, k;
+  SEXP index;
+  PROTECT(provided = AS_CHARACTER(provided));
+  if (invalid_names(provided))
+    errorcall(R_NilValue,"invalid variable names among the %s.",where);
+  PROTECT(needed = AS_CHARACTER(needed));
+  PROTECT(index = match(provided,needed,0));
+  idx = INTEGER(index);
+  for (k = 0; k < n; k++) {
+    if (idx[k] == 0)
+      errorcall(R_NilValue,"variable '%s' not found among the %s.",CHAR(STRING_ELT(needed,k)),where);
+    idx[k] -= 1;
   }
-  UNPROTECT(2);
+  UNPROTECT(3);
   return index;
 }
 
@@ -238,15 +237,6 @@ static R_INLINE SEXP paste (SEXP a, SEXP b, SEXP sep) {
   PROTECT(x = eval(x,R_BaseEnv));
   UNPROTECT(3);
   return x;
-}
-
-// check if names exist and are nonempty
-static R_INLINE int invalid_names (SEXP names) {
-  int i, ok;
-  ok = !isNull(names);
-  for (i = 0; ok && i < LENGTH(names); i++)
-    ok = ok && LENGTH(STRING_ELT(names,i)) > 0;
-  return !ok;
 }
 
 #ifdef __cplusplus

@@ -71,7 +71,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
   // extract the user-defined function
   PROTECT(pompfun = GET_SLOT(object,install("rprior"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,NA_STRING,Pnames,NA_STRING,NA_STRING)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -118,15 +118,15 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
     break;
 
-  case native: {
+  case native: case regNative: {
 
     double *ps;
     int *pidx = 0;
     pomp_rprior *ff = NULL;
     int j;
 
-    // construct parameter indices
-    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
+    // extract parameter index
+    pidx = INTEGER(GET_SLOT(pompfun,install("paramindex")));
 
     // address of native routine
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);

@@ -58,7 +58,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 
   // extract user-defined function
   PROTECT(pompfun = GET_SLOT(skel,install("skel.fn"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -95,9 +95,9 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
     // construct state, parameter, covariate indices
-    sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
-    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
-    cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
+    sidx = INTEGER(GET_SLOT(pompfun,install("stateindex")));
+    pidx = INTEGER(GET_SLOT(pompfun,install("paramindex")));
+    cidx = INTEGER(GET_SLOT(pompfun,install("covarindex")));
 
     iterate_skeleton_native(REAL(X),t,deltat,REAL(times),REAL(x0),REAL(params),
       nvars,npars,ncovars,ntimes,nrepp,nreps,nzeros,sidx,pidx,cidx,
@@ -159,11 +159,8 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
 
   // extract user-defined skeleton function
   PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("skeleton")),install("skel.fn"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
-
-  COMMON(mode) = mode;
 
   COMMON(object) = object;
   COMMON(params) = params;
@@ -189,6 +186,10 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
 
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
+
+  COMMON(mode) = mode;
+
   switch (COMMON(mode)) {
 
   case Rfun: {
@@ -213,9 +214,9 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
 
     NAT(args) = args;
 
-    PROTECT(NAT(sindex) = name_index(Snames,pompfun,"statenames","state variables")); nprotect++;
-    PROTECT(NAT(pindex) = name_index(Pnames,pompfun,"paramnames","parameters")); nprotect++;
-    PROTECT(NAT(cindex) = name_index(Cnames,pompfun,"covarnames","covariates")); nprotect++;
+    PROTECT(NAT(sindex) = GET_SLOT(pompfun,install("stateindex"))); nprotect++;
+    PROTECT(NAT(pindex) = GET_SLOT(pompfun,install("paramindex"))); nprotect++;
+    PROTECT(NAT(cindex) = GET_SLOT(pompfun,install("covarindex"))); nprotect++;
 
     *((void **) (&(NAT(fun)))) = R_ExternalPtrAddr(fn);
 
@@ -236,8 +237,6 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   default:
 
     errorcall(R_NilValue,"in 'pomp_desolve_setup': unrecognized 'mode'"); // # nocov
-
-  break;
 
   }
 
@@ -260,7 +259,7 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
 
     break;
 
-  case native:			// native code
+  case native: case regNative:		// native code
     eval_skeleton_native(ydot,t,y,REAL(COMMON(params)),
       COMMON(nvars),COMMON(npars),COMMON(ncovars),1,
       COMMON(nreps),COMMON(nreps),COMMON(nreps),
@@ -323,7 +322,7 @@ void pomp_desolve_takedown (void) {
 
     errorcall(R_NilValue,"in 'pomp_desolve_takedown': unrecognized 'mode'"); // # nocov
 
-  break;
+    break;
 
   }
 
