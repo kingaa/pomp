@@ -2,11 +2,8 @@ REXE = R --vanilla
 RCMD = $(REXE) CMD
 
 SAVED = $(shell ls *.Rout.save *.Rout)
-DEMOS = $(shell ls ../demo/*R)
 
 default: $(SAVED) clean
-
-demos.Rout: $(DEMOS)
 
 %.Rout.save: %.R
 	$(REXE) < $*.R > $*.Rout.save 2>&1
