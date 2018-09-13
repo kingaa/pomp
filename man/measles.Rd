@@ -57,11 +57,15 @@ Chickenpox and Mumps: I. Seasonal Variation in Contact Rates, American
 Journal of Epidemiology, 98:453--468, 1973.
 }
 \seealso{
+Other datasets: \code{\link{blowflies}},
+  \code{\link{dacca}}, \code{\link{parus}}
+
 Other pomp examples: \code{\link{blowflies}},
   \code{\link{dacca}}, \code{\link{gompertz}},
   \code{\link{ou2}}, \code{\link{pompExample}},
   \code{\link{ricker}}, \code{\link{rw2}},
   \code{\link{sir_models}}
 }
+\concept{datasets}
 \concept{pomp examples}
 \keyword{datasets}

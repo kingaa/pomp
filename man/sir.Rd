@@ -6,6 +6,7 @@
 \alias{sir}
 \alias{sir2}
 \alias{bbs}
+\alias{bsflu}
 \title{Compartmental epidemiological models}
 \description{
 \code{sir} is a \sQuote{pomp} object encoding a simple seasonal SIR model.

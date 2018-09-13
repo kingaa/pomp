@@ -105,6 +105,7 @@ Collate:
     'obs.R'
     'ou2.R'
     'parmat.R'
+    'parus.R'
     'pred_mean.R'
     'pred_var.R'
     'show.R'

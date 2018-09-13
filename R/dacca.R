@@ -18,6 +18,7 @@
 ##' @name dacca
 ##' @docType data
 ##' @family pomp examples
+##' @family datasets
 ##' @references A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,
 ##' Inapparent infections and cholera dynamics, Nature, 454:877-880, 2008
 ##' @keywords models datasets

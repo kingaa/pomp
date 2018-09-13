@@ -40,7 +40,11 @@ Other pomp examples: \code{\link{blowflies}},
   \code{\link{ou2}}, \code{\link{pompExample}},
   \code{\link{ricker}}, \code{\link{rw2}},
   \code{\link{sir_models}}
+
+Other datasets: \code{\link{blowflies}},
+  \code{\link{measles}}, \code{\link{parus}}
 }
+\concept{datasets}
 \concept{pomp examples}
 \keyword{datasets}
 \keyword{models}

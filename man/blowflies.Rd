@@ -5,10 +5,11 @@
 \alias{blowflies}
 \alias{blowflies1}
 \alias{blowflies2}
-\title{Model for Nicholson's blowflies.}
+\title{Nicholson's blowflies.}
 \description{
 \code{blowflies1} and \code{blowflies2} are \sQuote{pomp} objects encoding
 stochastic delay-difference models.
+\code{blowflies} is a data frame containing the raw data.
 }
 \details{
 The data are from "population I", a control culture in one of A. J.
@@ -76,7 +77,11 @@ Other pomp examples: \code{\link{dacca}},
   \code{\link{ou2}}, \code{\link{pompExample}},
   \code{\link{ricker}}, \code{\link{rw2}},
   \code{\link{sir_models}}
+
+Other datasets: \code{\link{dacca}}, \code{\link{measles}},
+  \code{\link{parus}}
 }
+\concept{datasets}
 \concept{pomp examples}
 \keyword{datasets}
 \keyword{models}

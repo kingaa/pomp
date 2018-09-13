@@ -24,7 +24,7 @@
 ##'
 ##' @name sir_models
 ##' @rdname sir
-##' @aliases sir sir2 bbs
+##' @aliases sir sir2 bbs bsflu
 ##' @docType data
 ##' @references Anonymous (1978).  Influenza in a boarding school.  British
 ##' Medical Journal 1:587

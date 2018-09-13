@@ -1,25 +1,7 @@
 library(pomp2)
 
-flu <- read.csv2(text="
-day;reports
-1;3
-2;8
-3;28
-4;76
-5;222
-6;293
-7;257
-8;237
-9;192
-10;126
-11;70
-12;28
-13;12
-14;5
-")
-
 pomp(
-  data=flu,
+  data=bsflu,
   times="day",
   t0=0,
   params=c(

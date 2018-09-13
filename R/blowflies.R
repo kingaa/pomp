@@ -1,7 +1,8 @@
-##' Model for Nicholson's blowflies.
+##' Nicholson's blowflies.
 ##'
 ##' \code{blowflies1} and \code{blowflies2} are \sQuote{pomp} objects encoding
 ##' stochastic delay-difference models.
+##' \code{blowflies} is a data frame containing the raw data.
 ##'
 ##' The data are from "population I", a control culture in one of A. J.
 ##' Nicholson's experiments with the Australian sheep-blowfly \emph{Lucilia
@@ -35,6 +36,7 @@
 ##' @aliases blowflies blowflies1 blowflies2
 ##' @docType data
 ##' @family pomp examples
+##' @family datasets
 ##' @references
 ##' A. J. Nicholson (1957)
 ##' The self-adjustment of populations to change.
