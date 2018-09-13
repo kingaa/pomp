@@ -86,13 +86,13 @@ static R_INLINE void reulermultinom (int m, double size, const double *rate,
   if (p > 0.0) {
     size = rbinom(size,1-exp(-p*dt)); // total number of events
     if (!(R_FINITE(size)))
-      warningcall(R_NilValue,"in 'reulermultinom': result of binomial draw is not finite");
+      warningcall(R_NilValue,"in 'reulermultinom': result of binomial draw is not finite.");
     m -= 1;
     for (k = 0; k < m; k++) {
       if (rate[k] > p) p = rate[k];
       trans[k] = ((size > 0) && (p > 0)) ? rbinom(size,rate[k]/p) : 0;
       if (!(R_FINITE(size)&&R_FINITE(p)&&R_FINITE(rate[k])&&R_FINITE(trans[k])))
-        warningcall(R_NilValue,"in 'reulermultinom': result of binomial draw is not finite");
+        warningcall(R_NilValue,"in 'reulermultinom': result of binomial draw is not finite.");
       size -= trans[k];
       p -= rate[k];
     }
@@ -124,12 +124,12 @@ static R_INLINE double deulermultinom (int m, double size, const double *rate,
   double ff = 0.0;
   int k;
   if ((dt < 0.0) || (size < 0.0) || (floor(size+0.5) != size)) {
-    warningcall(R_NilValue,"in 'deulermultinom': NaNs produced");
+    warningcall(R_NilValue,"in 'deulermultinom': NaNs produced.");
     return R_NaN;
   }
   for (k = 0; k < m; k++) {
     if (rate[k] < 0.0) {
-      warningcall(R_NilValue,"in 'deulermultinom': NaNs produced");
+      warningcall(R_NilValue,"in 'deulermultinom': NaNs produced.");
       return R_NaN;
     }
     if (trans[k] < 0.0) {
@@ -174,7 +174,7 @@ static R_INLINE double dmultinom (int m, const double *prob, double *x, int give
 
   for (k = 0; k < m; k++) {
     if (prob[k] < 0.0) {
-      warningcall(R_NilValue,"in 'dmultinom': NaNs produced");
+      warningcall(R_NilValue,"in 'dmultinom': NaNs produced.");
       return R_NaN;
     }
 

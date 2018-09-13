@@ -2,7 +2,7 @@
 
 ## For pomp 2:
 
-- Put indexing codes into pomp_fun (at C level), and trigger with 'gnsi = TRUE'.
+- ~~Put indexing codes into pomp_fun (at C level), and trigger with 'gnsi = TRUE'.~~
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - manual pages on the organization of the package
     - estimation algorithms
@@ -19,7 +19,7 @@
 	- `dmultinom`
 	- BetaBinom
 	- BetaNegBinom
-- remove need to specify paramnames when log,logit,barycentric partrans is given
+- remove need to specify paramnames when log,logit,barycentric partrans is given?
 - `spy` methods for derived objects
 - better scheme for indicating derivatives and maps in C snippets
 - should the default process model be persistence?

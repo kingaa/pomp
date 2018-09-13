@@ -60,19 +60,25 @@ static R_INLINE int invalid_names (SEXP names) {
 }
 
 static R_INLINE SEXP matchnames (SEXP provided, SEXP needed, const char *where) {
+  int m = LENGTH(provided);
   int n = length(needed);
-  int *idx, k;
   SEXP index;
+  int *idx, i, j;
+
   PROTECT(provided = AS_CHARACTER(provided));
-  if (invalid_names(provided))
-    errorcall(R_NilValue,"invalid variable names among the %s.",where);
   PROTECT(needed = AS_CHARACTER(needed));
-  PROTECT(index = match(provided,needed,0));
+  if (invalid_names(provided)) errorcall(R_NilValue,"invalid variable names among the %s.",where);
+  PROTECT(index = NEW_INTEGER(n));
   idx = INTEGER(index);
-  for (k = 0; k < n; k++) {
-    if (idx[k] == 0)
-      errorcall(R_NilValue,"variable '%s' not found among the %s.",CHAR(STRING_ELT(needed,k)),where);
-    idx[k] -= 1;
+
+  for (i = 0; i < n; i++) {
+    for (j = 0; j < m; j++) {
+      if (!strcmp(CHAR(STRING_ELT(provided,j)),CHAR(STRING_ELT(needed,i)))) {
+        idx[i] = j;
+        break;
+      }
+    }
+    if (j==m) errorcall(R_NilValue,"variable '%s' not found among the %s.",CHAR(STRING_ELT(needed,i)),where);
   }
   UNPROTECT(3);
   return index;

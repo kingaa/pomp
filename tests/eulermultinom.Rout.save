@@ -59,8 +59,8 @@ Error : in ‘reulermultinom’: negative length vectors are not allowed
 [2,]  NaN
 [3,]  NaN
 Warning messages:
-1: in 'reulermultinom': result of binomial draw is not finite 
-2: in 'reulermultinom': result of binomial draw is not finite 
+1: in 'reulermultinom': result of binomial draw is not finite. 
+2: in 'reulermultinom': result of binomial draw is not finite. 
 > reulermultinom(n=1,size=100,rate=c(1,2,3),dt=c(0.1,0.2,0.3,Inf))
      [,1]
 [1,]   11
@@ -86,17 +86,17 @@ in 'reulermultinom': only the first element of 'size' is meaningful
 [2,]  NaN
 [3,]  NaN
 Warning messages:
-1: in 'reulermultinom': result of binomial draw is not finite 
-2: in 'reulermultinom': result of binomial draw is not finite 
+1: in 'reulermultinom': result of binomial draw is not finite. 
+2: in 'reulermultinom': result of binomial draw is not finite. 
 > reulermultinom(n=1,size=Inf,rate=c(1,100,1),0.1)
      [,1]
 [1,]    0
 [2,]    0
 [3,]  NaN
 Warning messages:
-1: in 'reulermultinom': result of binomial draw is not finite 
-2: in 'reulermultinom': result of binomial draw is not finite 
-3: in 'reulermultinom': result of binomial draw is not finite 
+1: in 'reulermultinom': result of binomial draw is not finite. 
+2: in 'reulermultinom': result of binomial draw is not finite. 
+3: in 'reulermultinom': result of binomial draw is not finite. 
 > x <- reulermultinom(n=3,size=100,rate=c(3,2,1),dt=0.1)
 > try(deulermultinom(rbind(x,c(0,1,0)),size=100,rate=c(3,2,1),dt=0.1))
 Error : in ‘deulermultinom’: NROW('x') should match length of 'rate'
@@ -113,11 +113,11 @@ in 'deulermultinom': only the first element of 'dt' is meaningful
 > deulermultinom(x=c(3,4,0),size=10,rate=c(1,1,1),dt=0-.1)
 [1] NaN
 Warning message:
-in 'deulermultinom': NaNs produced 
+in 'deulermultinom': NaNs produced. 
 > deulermultinom(x=c(3,4,0),size=10,rate=c(1,1,-1),dt=0.1)
 [1] NaN
 Warning message:
-in 'deulermultinom': NaNs produced 
+in 'deulermultinom': NaNs produced. 
 > deulermultinom(x=c(3,-4,0),size=10,rate=c(1,1,1),dt=0.1)
 [1] 0
 > deulermultinom(x=c(3,6,3),size=10,rate=c(1,1,0),dt=0.1,log=TRUE)

@@ -9,23 +9,6 @@
 
 #include "pomp_internal.h"
 
-// static R_INLINE void makeindex (SEXP provided, SEXP needed, const char *where, int *idx) {
-//   int i, j;
-//   int m = LENGTH(provided);
-//   int n = LENGTH(needed);
-
-//   for (i = 0; i < n; i++) {
-//     for (j = 0; j < m; j++) {
-//       if (!strcmp(CHAR(STRING_ELT(provided,j)),CHAR(STRING_ELT(needed,i)))) {
-//         idx[i] = j;
-//         break;
-//       }
-//     }
-//     if (j==m) errorcall(R_NilValue,"variable '%s' not found among the %s.",CHAR(STRING_ELT(needed,i)),where);
-//   }
-
-// }
-
 static R_INLINE SEXP name_index (SEXP provided, SEXP object, const char *slot, const char *humanreadable) {
   SEXP slotnames, index;
   PROTECT(slotnames = GET_SLOT(object,install(slot)));
