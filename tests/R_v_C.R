@@ -1,3 +1,6 @@
+options(digits=3)
+png(filename="R_v_C-%02d.png",res=100)
+
 ## ----packages------------------------------------------------------------
 library(pomp2)
 library(ggplot2)
@@ -15,7 +18,7 @@ simulate(times=1:100,t0=0,
       S <- exp(-r*delta.t)
       c(X=K^(1-S)*X^S*eps)
     },
-    delta.t=1 
+    delta.t=1
   ),
   rmeasure=function (X, tau, ...) {
     c(Y=rlnorm(n=1,meanlog=log(X),sdlog=tau))
@@ -87,3 +90,5 @@ system.time(simulate(gompertz,nsim=10000,format="arrays"))
 system.time(simulate(Gompertz,nsim=10000,format="arrays"))
 system.time(pfilter(gompertz,Np=1000))
 system.time(pfilter(Gompertz,Np=1000))
+
+dev.off()

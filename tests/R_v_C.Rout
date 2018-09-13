@@ -17,6 +17,9 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> options(digits=3)
+> png(filename="R_v_C-%02d.png",res=100)
+> 
 > ## ----packages------------------------------------------------------------
 > library(pomp2)
 > library(ggplot2)
@@ -34,7 +37,7 @@ Type 'q()' to quit R.
 +       S <- exp(-r*delta.t)
 +       c(X=K^(1-S)*X^S*eps)
 +     },
-+     delta.t=1 
++     delta.t=1
 +   ),
 +   rmeasure=function (X, tau, ...) {
 +     c(Y=rlnorm(n=1,meanlog=log(X),sdlog=tau))
@@ -100,20 +103,24 @@ Type 'q()' to quit R.
 > pf <- replicate(n=10,pfilter(Gompertz,Np=500))
 > 
 > logmeanexp(sapply(pf,logLik),se=TRUE)
-                   se 
-62.8137837  0.1679958 
+           se 
+62.814  0.168 
 > 
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  6.764   0.000   6.765 
+  8.320   0.056   8.376 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.328   0.004   0.332 
+  0.388   0.012   0.399 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.600   0.000   0.602 
+  0.728   0.012   0.740 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.044   0.004   0.047 
+  0.060   0.000   0.061 
+> 
+> dev.off()
+null device 
+          1 
 > 

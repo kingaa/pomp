@@ -176,4 +176,10 @@ Using each implementation, we'll now run a number of simulations and compare the
 ```{r comparison}
 system.time(simulate(gompertz,nsim=10000,format="arrays"))
 system.time(simulate(Gompertz,nsim=10000,format="arrays"))
+system.time(pfilter(gompertz,Np=1000))
+system.time(pfilter(Gompertz,Np=1000))
 ```
+
+-----------------------------------
+
+[**pomp** vignette index](./index.html)
