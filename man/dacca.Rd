@@ -42,7 +42,8 @@ Other pomp examples: \code{\link{blowflies}},
   \code{\link{sir_models}}
 
 Other datasets: \code{\link{blowflies}},
-  \code{\link{measles}}, \code{\link{parus}}
+  \code{\link{bsflu}}, \code{\link{measles}},
+  \code{\link{parus}}
 }
 \concept{datasets}
 \concept{pomp examples}

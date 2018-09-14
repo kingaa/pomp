@@ -5,7 +5,6 @@
 \alias{sir_models}
 \alias{sir}
 \alias{sir2}
-\alias{bsflu}
 \title{Compartmental epidemiological models}
 \description{
 \code{sir} is a \sQuote{pomp} object encoding a simple seasonal SIR model.
@@ -35,10 +34,6 @@ plot(sir2)
 plot(simulate(window(sir2,end=3)))
 coef(sir2)
 
-}
-\references{
-Anonymous (1978).  Influenza in a boarding school.  British
-Medical Journal 1:587
 }
 \seealso{
 Other pomp examples: \code{\link{blowflies}},

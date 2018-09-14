@@ -53,6 +53,7 @@ Oxford. Univ. Press. pp. 129--147.
 }
 \seealso{
 Other datasets: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{measles}}
+  \code{\link{bsflu}}, \code{\link{dacca}},
+  \code{\link{measles}}
 }
 \concept{datasets}

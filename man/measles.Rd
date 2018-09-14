@@ -58,7 +58,8 @@ Journal of Epidemiology, 98:453--468, 1973.
 }
 \seealso{
 Other datasets: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{parus}}
+  \code{\link{bsflu}}, \code{\link{dacca}},
+  \code{\link{parus}}
 
 Other pomp examples: \code{\link{blowflies}},
   \code{\link{dacca}}, \code{\link{gompertz}},

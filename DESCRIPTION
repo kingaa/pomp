@@ -2,7 +2,7 @@ Package: pomp2
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
 Version: 2.0.0.0
-Date: 2018-09-15
+Date: 2018-09-14
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -73,6 +73,7 @@ Collate:
     'bake.R'
     'basic_probes.R'
     'blowflies.R'
+    'bsflu.R'
     'bsplines.R'
     'coef.R'
     'concat.R'

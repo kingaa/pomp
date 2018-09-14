@@ -18,10 +18,8 @@
 ##'
 ##' @name sir_models
 ##' @rdname sir
-##' @aliases sir sir2 bsflu
+##' @aliases sir sir2
 ##' @docType data
-##' @references Anonymous (1978).  Influenza in a boarding school.  British
-##' Medical Journal 1:587
 ##' @keywords datasets models
 ##' @family pomp examples
 ##' @examples

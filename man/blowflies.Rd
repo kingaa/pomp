@@ -78,8 +78,8 @@ Other pomp examples: \code{\link{dacca}},
   \code{\link{ricker}}, \code{\link{rw2}},
   \code{\link{sir_models}}
 
-Other datasets: \code{\link{dacca}}, \code{\link{measles}},
-  \code{\link{parus}}
+Other datasets: \code{\link{bsflu}}, \code{\link{dacca}},
+  \code{\link{measles}}, \code{\link{parus}}
 }
 \concept{datasets}
 \concept{pomp examples}
