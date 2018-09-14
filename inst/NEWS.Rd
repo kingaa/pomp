@@ -2,6 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item The \code{bbs} example has been dropped.
     \item In the course of ordinary work, one should never need to interact with the low-level \code{pomp} constructor function now.
     \item One can now modify basic model components at (almost) any stage in a pipeline of \pkg{pomp} computations.
     All the top-level inference functions, plus \code{probe}, \code{pfilter}, and \code{simulate} now allow modification of basic model components.

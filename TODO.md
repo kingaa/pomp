@@ -32,7 +32,6 @@
 - `coef` returns data frame in some circumstances?
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
-- update 'bbs' example (rename to 'bsflu')?
 
 - perhaps `dinit`?
 - change specification of horsemen?

@@ -2,6 +2,8 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
 
+        • The ‘bbs’ example has been dropped.
+
         • In the course of ordinary work, one should never need to
           interact with the low-level ‘pomp’ constructor function now.
 
