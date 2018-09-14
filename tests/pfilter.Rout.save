@@ -67,17 +67,27 @@ Error : in ‘pfilter’: ‘tol’ should be a small positive number.
 > po <- ou2
 > coef(po) <- NULL
 > try(pfilter(po,Np=100))
-Error : in ‘pfilter’: in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘pfilter’: in ‘rprocess’: variable 'x1' not found among the state variables.
+In addition: Warning message:
+in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=c()))
-Error : in ‘pfilter’: in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘pfilter’: in ‘rprocess’: variable 'x1' not found among the state variables.
+In addition: Warning message:
+in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=NULL))
-Error : in ‘pfilter’: in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘pfilter’: in ‘rprocess’: variable 'x1' not found among the state variables.
+In addition: Warning message:
+in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=c(1,2,3)))
 Error : in ‘pfilter’: ‘params’ must be a named numeric vector.
 > try(pfilter(po,Np=100,params=c(a=1,b=2,c=3)))
-Error : in ‘pfilter’: in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘pfilter’: in ‘rprocess’: variable 'x1' not found among the state variables.
+In addition: Warning message:
+in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=list()))
-Error : in ‘pfilter’: in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘pfilter’: in ‘rprocess’: variable 'x1' not found among the state variables.
+In addition: Warning message:
+in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > pf <- pfilter(po,Np=100,params=as.list(coef(ou2)))
 > 
 > pf <- pfilter(pf)

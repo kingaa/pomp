@@ -109,16 +109,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  8.320   0.056   8.376 
+  7.032   0.012   7.042 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.388   0.012   0.399 
+  0.336   0.008   0.346 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.728   0.012   0.740 
+  0.608   0.000   0.607 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.060   0.000   0.061 
+  0.048   0.000   0.050 
 > 
 > dev.off()
 null device 

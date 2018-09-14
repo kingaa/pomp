@@ -35,7 +35,10 @@ variable [,1]
 > 
 > p <- coef(gompertz)[-5]
 > try(rinit(gompertz,params=p))
-Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+        rep
+variable [,1]
+Warning message:
+in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > 
 > gompertz %>% simulate(rinit=NULL)
 <object of class ‘pomp’>
@@ -43,7 +46,7 @@ Error : in ‘rinit’: in default 'rinit': there are no parameters with suffix 
 > gompertz %>%
 +   pomp(rinit=function (...) 5) -> po
 > try(rinit(po))
-Error : in ‘rinit’: user 'rinit' must return a named numeric vector
+Error : in ‘rinit’: user 'rinit' must return a named numeric vector.
 > try(rinit("gompertz"))
 Error : ‘rinit’ is undefined for ‘object’ of class ‘character’.
 > try(rinit())
@@ -77,7 +80,7 @@ $rep
 +   pomp(rinit=function(...)
 +     c(r=32)) %>%
 +   rinit())
-Error : in ‘rinit’: a state variable and a parameter share the name: 'r'
+Error : in ‘rinit’: a state variable and a parameter share the name: 'r'.
 > try({
 +   pp <- matrix(c(1:5),1,5)
 +   rownames(pp) <- "a"
@@ -86,7 +89,7 @@ Error : in ‘rinit’: a state variable and a parameter share the name: 'r'
 +       c(X=rep(1,a))) %>%
 +     rinit(params=pp)
 + })
-Error : in ‘rinit’: user 'rinit' returns vectors of non-uniform length
+Error : in ‘rinit’: user 'rinit' returns vectors of non-uniform length.
 > 
 > pompExample(sir)
 newly created object(s):

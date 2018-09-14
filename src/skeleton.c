@@ -404,10 +404,9 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     double *ft = REAL(F);
     int i, n = nvars*nreps*ntimes;
     for (i = 0; i < n; i++, ft++) *ft = R_NaReal;
+    warningcall(R_NilValue,"'skeleton' unspecified: NAs generated.");
 
-    }
-
-    break;
+  }
 
   }
 

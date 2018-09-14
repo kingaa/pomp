@@ -26,6 +26,8 @@ Type 'q()' to quit R.
 > ou2[[1]] -> po
 > 
 > stopifnot(po %>% rprior(params=coef(po)) %>% extract(,1)==coef(po))
+Warning message:
+'rprior' unspecified: duplicating parameters. 
 > 
 > coef(po,"alpha.sd") <- 5
 Warning message:

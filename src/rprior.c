@@ -142,13 +142,14 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
     PutRNGstate();
     unset_pomp_userdata();
+
   }
 
     break;
 
   default: // just duplicate
 
-    break;
+    warningcall(R_NilValue,"'rprior' unspecified: duplicating parameters.");
 
   }
 

@@ -90,6 +90,8 @@ Error : in ‘skeleton’: length of 't' and 3rd dimension of 'x' do not agree.
 +     skeleton(x=x,times=time(ricker),params=coef(ricker)) %>%
 +     is.na()
 + )
+Warning message:
+'skeleton' unspecified: NAs generated. 
 > 
 > try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=-5)))
 Error : in ‘map’: ‘delta.t’ must be a positive number.

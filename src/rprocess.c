@@ -19,6 +19,7 @@ static SEXP pomp_default_rprocess (SEXP xstart, int nvars, int nreps, int ntimes
   PROTECT(X = makearray(3,dim));
   setrownames(X,Snames,3);
   for (i= 0, xp = REAL(X); i < n; i++, xp++) *xp = R_NaReal;
+  warningcall(R_NilValue,"'rprocess' unspecified: NAs generated.");
   UNPROTECT(2);
   return X;
 }
@@ -118,7 +119,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     PROTECT(fn = GET_SLOT(rproc,install("step.fn"))); nprotect++;
     deltat = *(REAL(AS_NUMERIC(GET_SLOT(rproc,install("delta.t")))));
     PROTECT(X = euler_model_simulator(fn,xstart,times,params,deltat,type,
-        zeronames,covar,args,gnsi)); nprotect++;
+      zeronames,covar,args,gnsi)); nprotect++;
   }
     break;
   case gill: // Gillespie's method
@@ -128,7 +129,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     PROTECT(vmatrix = GET_SLOT(rproc,install("v"))); nprotect++;
     PROTECT(hmax = GET_SLOT(rproc,install("hmax"))); nprotect++;
     PROTECT(X = SSA_simulator(fn,xstart,times,params,vmatrix,covar,
-        zeronames,hmax,args,gnsi)); nprotect++;
+      zeronames,hmax,args,gnsi)); nprotect++;
   }
     break;
   case dflt: default:

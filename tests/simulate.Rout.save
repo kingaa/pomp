@@ -108,6 +108,8 @@ Error : in ‘simulate’: ‘rprocess’ is undefined.
 +     dim(y)==c(0,100)
 +   }
 + )
+Warning message:
+'rmeasure' unspecified: NAs generated. 
 > 
 > stopifnot(
 +   {
@@ -119,6 +121,8 @@ Error : in ‘simulate’: ‘rprocess’ is undefined.
 +     dim(s$obs)==c(0,1,100)
 +   }
 + )
+Warning message:
+'rmeasure' unspecified: NAs generated. 
 > 
 > try(simulate(times=1:100,t0=0,
 +   rprocess=euler(function(w,z,...,delta.t) c("w"=w,z),delta.t=0.1),

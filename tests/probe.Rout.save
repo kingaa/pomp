@@ -146,13 +146,17 @@ Error : in ‘probe’: ‘nsim’ (=10), should be (much) larger than the numbe
 > probe(pb,params=as.list(coef(pb)))
 <object of class ‘probed_pomp’>
 > try(probe(pb,params=NULL))
-Error : in ‘probe’: applying probes to simulated data: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘probe’: applying probes to simulated data: variable 'X' not found among the state variables.
+In addition: Warning message:
+in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(probe(pb,params="I think so"))
 Error : in ‘probe’: ‘params’ must be a named numeric vector.
 In addition: Warning message:
 In setNames(as.double(params), names(params)) : NAs introduced by coercion
 > try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
-Error : in ‘probe’: applying probes to simulated data: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.
+Error : in ‘probe’: applying probes to simulated data: variable 'X' not found among the state variables.
+In addition: Warning message:
+in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > 
 > po %>% probe(nsim=100,probes=function(x)1) %>% logLik()
 [1] NaN

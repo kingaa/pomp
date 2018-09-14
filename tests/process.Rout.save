@@ -63,6 +63,8 @@ Error : in ‘dprocess’: the larger number of replicates is not a multiple of 
 > po %>% pomp(dprocess=NULL) %>%
 +   dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>% is.na() %>%
 +   stopifnot()
+Warning message:
+'dprocess' unspecified: likelihood undefined. 
 > 
 > po %>% rinit(params=coef(po)) -> x0
 > freeze(po %>%
@@ -130,6 +132,8 @@ Error : in ‘rprocess’: the larger number of replicates is not a multiple of 
 +   },
 +   seed=3434388L
 + ) -> rw
+Warning message:
+'rmeasure' unspecified: NAs generated. 
 > 
 > dprocess(rw,x=states(rw),params=coef(rw),times=time(rw),log=TRUE) -> d
 > stopifnot(

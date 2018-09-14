@@ -24,8 +24,8 @@ Type 'q()' to quit R.
 > 
 > pompExample()
 examples in /home/kingaa/projects/Rpkg/library/pomp2/examples:
- [1] "bbs"       "blowflies" "dacca"     "gompertz"  "logistic"  "ou2"      
- [7] "ricker"    "rw2"       "sir"       "sir2"     
+[1] "blowflies" "dacca"     "gompertz"  "logistic"  "ou2"       "ricker"   
+[7] "rw2"       "sir"       "sir2"     
 > pompExample("ricker",show=TRUE)
 library(pomp2)
 
@@ -118,11 +118,11 @@ c("ricker")
 +                            getOption("pomp.examples")))
 > pompExample()
 examples in /home/kingaa/projects/Rpkg/library/pomp2/examples:
- [1] "bbs"       "blowflies" "dacca"     "gompertz"  "logistic"  "ou2"      
- [7] "ricker"    "rw2"       "sir"       "sir2"     
+[1] "blowflies" "dacca"     "gompertz"  "logistic"  "ou2"       "ricker"   
+[7] "rw2"       "sir"       "sir2"     
 examples in /home/kingaa/projects/Rpkg/library/pomp2/examples:
- [1] "bbs"       "blowflies" "dacca"     "gompertz"  "logistic"  "ou2"      
- [7] "ricker"    "rw2"       "sir"       "sir2"     
+[1] "blowflies" "dacca"     "gompertz"  "logistic"  "ou2"       "ricker"   
+[7] "rw2"       "sir"       "sir2"     
 > names(pompExample(ricker,envir=NULL))
 [1] "ricker"
 Warning message:

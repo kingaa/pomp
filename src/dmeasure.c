@@ -86,7 +86,7 @@ static R_INLINE SEXP eval_call (
 
 }
 
-static R_INLINE SEXP dmeas_array (int nreps, int ntimes) {
+static R_INLINE SEXP ret_array (int nreps, int ntimes) {
   int dim[2] = {nreps, ntimes};
   const char *dimnm[2] = {"rep","time"};
   SEXP F;
@@ -153,7 +153,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
   // create array to store results
-  PROTECT(F = dmeas_array(nreps,ntimes)); nprotect++;
+  PROTECT(F = ret_array(nreps,ntimes)); nprotect++;
 
   switch (mode) {
 
@@ -248,13 +248,13 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     int j, k;
 
     for (k = 0; k < ntimes; k++) { // loop over times
-
       for (j = 0; j < nreps; j++, ft++) { // loop over replicates
-
         *ft = R_NaReal;
-
       }
     }
+
+    warningcall(R_NilValue,"'dmeasure' unspecified: likelihood undefined.");
+
   }
 
   }

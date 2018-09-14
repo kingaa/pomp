@@ -127,8 +127,6 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 
   }
 
-    break;
-
   }
 
   UNPROTECT(nprotect);

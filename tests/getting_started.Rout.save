@@ -82,6 +82,8 @@ Type 'q()' to quit R.
 > 
 > ## ----logistic-simul1-----------------------------------------------------
 > simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),format="arrays")$states
+Warning message:
+'rmeasure' unspecified: NAs generated. 
 > 
 > ## ----logistic-plot1,echo=FALSE-------------------------------------------
 > library(magrittr)

@@ -168,6 +168,8 @@ Error : in ‘nlf.objfun’: NLF requires uniform sampling frequency.
 > 
 > po <- ou2
 > stopifnot(po %>% nlf.objfun(rmeasure=NULL,lags=c(1,2,3),ti=100,tf=500) %>% logLik() %>% is.na())
+Warning message:
+'rmeasure' unspecified: NAs generated. 
 > 
 > try(po %>% nlf.objfun(covar=covariate_table(t=0:100,Z=100,times="t"),ti=100,tf=500))
 Error : in ‘nlf.objfun’: NLF is incompatible with time-varying covariates.

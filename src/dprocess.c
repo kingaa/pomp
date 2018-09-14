@@ -215,9 +215,10 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
         *ft = R_NaReal;
       }
     }
-  }
 
-    break;
+    warningcall(R_NilValue,"'dprocess' unspecified: likelihood undefined.");
+
+  }
 
   }
 

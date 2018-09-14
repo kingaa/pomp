@@ -252,10 +252,14 @@ Error : bad option for ‘rate.fun’ argument.
 > create_example(times = 1)
   time .id N ct
 1    1   1 1  0
+Warning message:
+'rmeasure' unspecified: NAs generated. 
 > create_example(times = c(1,2))
   time .id N ct
 1    1   1 1  0
 2    2   1 1  0
+Warning message:
+'rmeasure' unspecified: NAs generated. 
 > 
 > dev.off()
 null device 

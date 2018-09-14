@@ -141,7 +141,11 @@ Error : in ‘dmeasure’: user 'dmeasure' returns a vector of length 2 when it 
 +   dmeasure=NULL
 + ) -> po1
 > po1 %>% rmeasure(x=x,times=t,params=p) %>% is.na() %>% stopifnot()
+Warning message:
+'rmeasure' unspecified: NAs generated. 
 > po1 %>% dmeasure(x=x,y=y[,1,],times=t,params=p) %>% is.na() %>% stopifnot()
+Warning message:
+'dmeasure' unspecified: likelihood undefined. 
 > 
 > pompExample(sir)
 newly created object(s):

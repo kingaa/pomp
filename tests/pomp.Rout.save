@@ -94,6 +94,8 @@ Error : bad option for ‘rinit’ argument.
 +   rprocess(po1,xstart=rinit(po1),times=time(po1),params=coef(po1)) -> x
 +   sum(is.na(x))==101
 + })
+Warning message:
+'rprocess' unspecified: NAs generated. 
 > 
 > po %>% pomp(rprocess=NULL) %>% slot("rprocess")
 <undefined>

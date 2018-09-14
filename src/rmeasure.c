@@ -276,6 +276,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     fixdimnames(Y,dimnm,3);
 
     for (i = 0, yt = REAL(Y); i < n; i++, yt++) *yt = R_NaReal;
+
+    warningcall(R_NilValue,"'rmeasure' unspecified: NAs generated.");
   }
 
   break;
