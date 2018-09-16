@@ -25,12 +25,12 @@ Welcome to pomp version 2
 For information on upgrading your pomp version < 2 code,
 see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > 
-> dacca() -> dacca
+> dacca() -> po
 > 
 > set.seed(1420306530L)
 > 
-> plot(dacca)
-> rinit(dacca)
+> plot(po)
+> rinit(po)
         rep
 variable    [,1]
   S      1502003
@@ -42,7 +42,7 @@ variable    [,1]
   deaths       0
   W            0
   count        0
-> coef(dacca)
+> coef(po)
      gamma        eps        rho      delta     deltaI       clin      alpha 
   2.08e+01   1.91e+01   0.00e+00   2.00e-02   6.00e-02   1.00e+00   1.00e+00 
 beta_trend   logbeta1   logbeta2   logbeta3   logbeta4   logbeta5   logbeta6 
@@ -52,12 +52,15 @@ beta_trend   logbeta1   logbeta2   logbeta3   logbeta4   logbeta5   logbeta6
        tau        S_0        I_0        Y_0       R1_0       R2_0       R3_0 
   2.30e-01   6.21e-01   3.78e-01   0.00e+00   8.43e-04   9.72e-04   1.16e-07 
 > 
-> stopifnot(all.equal(coef(dacca)[1:22],
-+   partrans(dacca,coef(dacca,transform=TRUE),dir="from")[1:22]))
+> stopifnot(all.equal(coef(po)[1:22],
++   partrans(po,coef(po,transform=TRUE),dir="from")[1:22]))
 > 
-> plot(simulate(window(dacca,end=1893,seed=1420306530L)),yax.flip=TRUE)
-> pf <- freeze(pfilter(window(dacca,end=1893),Np=1000),seed=1420306530L)
+> plot(simulate(window(po,end=1893,seed=1420306530L)),yax.flip=TRUE)
+> pf <- freeze(pfilter(window(po,end=1893),Np=1000),seed=1420306530L)
 > plot(pf)
+> 
+> try(dacca(logbeta=c(1,2,3),logomega=c(10,20)))
+Error : in ‘dacca’: ‘logbeta’ and ‘logomega’ should be of equal length.
 > 
 > dev.off()
 null device 

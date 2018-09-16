@@ -1,0 +1,51 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> png(filename="verhulst-%02d.png",res=100)
+> 
+> library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
+> 
+> verhulst(n_0=100) -> po
+> 
+> set.seed(1438408329L)
+> 
+> rinit(po)
+        rep
+variable [,1]
+       n  100
+> coef(po)
+  n_0     K     r sigma   tau 
+1e+02 1e+04 9e-01 4e-01 1e-01 
+> plot(po)
+> 
+> stopifnot(all.equal(coef(po),partrans(po,coef(po,transform=TRUE),dir="from")))
+> plot(simulate(po,seed=1438408329L))
+> pf <- freeze(pfilter(po,Np=1000),seed=1438408329L)
+> plot(pf)
+> tj <- trajectory(po)
+> plot(time(po),tj["n",1,],type="l",ylab="n")
+> 
+> dev.off()
+null device 
+          1 
+> 

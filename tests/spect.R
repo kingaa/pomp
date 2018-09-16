@@ -70,6 +70,9 @@ simulate(times=1:100,t0=0,
 plot(spect(bob,kernel.width=3,nsim=500),
   data.styles=list(lwd=c(2,3),lty=2,col='red'))
 
+try({bob %>% simulate(times=c(1:5,8:10)) %>%
+    spect(kernel.width=3,nsim=10)})
+
 count <- 0
 bad.transform <- function (y) {
   count <<- count+1

@@ -44,6 +44,7 @@ states(po)
 states(po1,"x1")[,1:3]
 try(states(po1,"z"))
 states(po1)[,1:3]
+states(ricker())[,1:3]
 
 time(po)[1:3]
 time(po,t0=TRUE)[1:3]

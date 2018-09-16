@@ -173,6 +173,9 @@ Error : in ‘states’: some elements of ‘vars’ correspond to no state vari
 variable     [,1]      [,2]      [,3]
       x1 3.048305 0.4419551 -2.527692
       x2 3.974364 4.1715284  1.783185
+> states(ricker())[,1:3]
+        time
+variable [,1] [,2] [,3]
 > 
 > time(po)[1:3]
 [1] 1 2 3
