@@ -3,7 +3,7 @@ options(digits=3)
 library(pomp2)
 library(magrittr)
 
-pompExample(gompertz,envir=NULL) %>% extract2(1) -> po
+gompertz() -> po
 
 pomp(po,partrans=NULL,bob=3,
   covar=covariate_table(a=0:20,b=0:20,times="a")) -> po1
@@ -15,13 +15,13 @@ po1 %>%
     paramnames="r",compile=FALSE,cfile="nancy") -> po2
 spy(po2)
 
-pompExample(sir)
+sir() -> sir
 spy(sir)
 
-pompExample(rw2)
+rw2() -> rw2
 spy(rw2)
 
-pompExample(sir2)
+sir2() -> sir2
 spy(sir2)
 
 try(spy())

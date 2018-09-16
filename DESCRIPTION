@@ -2,7 +2,7 @@ Package: pomp2
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
 Version: 2.0.0.0
-Date: 2018-09-14
+Date: 2018-09-16
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -85,7 +85,6 @@ Collate:
     'design.R'
     'distributions.R'
     'eff_sample_size.R'
-    'example.R'
     'extract.R'
     'filter_mean.R'
     'filter_traj.R'
@@ -125,5 +124,6 @@ Collate:
     'timezero.R'
     'transformations.R'
     'userdata.R'
+    'verhulst.R'
     'window.R'
 RoxygenNote: 6.1.0

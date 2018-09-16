@@ -4,7 +4,7 @@ png(filename="steps-%02d.png",res=100)
 library(pomp2)
 library(magrittr)
 
-pompExample(ricker)
+ricker() -> ricker
 
 set.seed(54588699L)
 
@@ -33,7 +33,7 @@ po <- simulate(ricker,
 plot(po)
 states(po,"step") %>% table()
 
-pompExample(sir)
+sir() -> sir
 tm <- sort(runif(n=100,max=2))
 sir %>%
   simulate(times=tm,
@@ -75,7 +75,7 @@ sir %>%
       "),
     statenames=c("S","I","R","cases","steps","W"),
     zeronames=c("cases","steps"),
-    paramnames=c("mu","gamma","iota","beta1","beta.sd","pop",
+    paramnames=c("mu","gamma","iota","beta1","beta_sd","pop",
       "S_0","I_0","R_0"),
     seed=1232934371,
     format="arrays"

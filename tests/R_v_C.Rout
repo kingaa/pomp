@@ -22,6 +22,9 @@ Type 'q()' to quit R.
 > 
 > ## ----packages------------------------------------------------------------
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(ggplot2)
 > library(magrittr)
 > 
@@ -109,16 +112,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  7.032   0.012   7.042 
+  6.844   0.032   6.879 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.336   0.008   0.346 
+  0.332   0.004   0.337 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.608   0.000   0.607 
+  0.604   0.000   0.604 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.048   0.000   0.050 
+  0.052   0.000   0.053 
 > 
 > dev.off()
 null device 

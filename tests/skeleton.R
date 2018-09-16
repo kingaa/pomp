@@ -7,7 +7,7 @@ library(ggplot2)
 library(reshape2)
 library(plyr)
 
-pompExample(ricker)
+ricker() -> ricker
 
 ricker <- simulate(ricker,times=1:500,seed=366829807L)
 x <- states(ricker)
@@ -29,7 +29,7 @@ f %>% melt() %>%
 try(skeleton(x=x,times=time(ricker),params=p))
 try(skeleton("ricker",x=x,times=time(ricker),params=p))
 
-pompExample(sir)
+sir() -> sir
 p <- parmat(coef(sir),nrep=3)
 p["beta2",2:3] <- exp(c(3,5))
 trajectory(sir,params=p,times=seq(0,1,length=1000)) -> tj

@@ -18,10 +18,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
+> gompertz() -> gompertz
 > 
 > pomp(gompertz,rmeasure=Csnippet("
 +   Y = rlnorm(log(X),tau);"),
@@ -35,9 +36,7 @@ newly created object(s):
 > capture.output(x <- simulate(po,verbose=TRUE)) -> out
 > stopifnot(sum(grepl("loading",out))==2)
 > 
-> pompExample(sir)
-newly created object(s):
- sir 
+> sir() -> sir
 > 
 > solibs(sir) <- NULL
 > solibs(sir) <- sir@solibs[[1]]

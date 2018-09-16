@@ -21,12 +21,13 @@ Type 'q()' to quit R.
 > png(filename="probe_match-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
-> gompertz -> po
+> gompertz() -> po
+> po %>% as.data.frame() %>% subset(select=-X) -> dat
 > 
 > plist <- list(
 +   mean=probe.mean("Y",trim=0.1,transform=sqrt),
@@ -36,13 +37,12 @@ newly created object(s):
 +   probe.quantile("Y",prob=c(0.25,0.75),na.rm=TRUE)
 + )
 > 
-> try(gompertz %>% as.data.frame() %>% probe.match.objfun())
+> try(dat %>% probe.match.objfun())
 Error : in ‘probe.match.objfun’: in ‘probe’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(gompertz %>% as.data.frame() %>% probe.match.objfun(times="time",t0=0))
+> try(dat %>% probe.match.objfun(times="time",t0=0))
 Error : in ‘probe.match.objfun’: in ‘probe’: ‘rprocess’, ‘rmeasure’ are needed basic components.
 > 
-> gompertz %>%
-+   as.data.frame() %>%
+> dat %>%
 +   probe.match.objfun(
 +     times="time",t0=0,
 +     rinit=po@rinit,
@@ -60,11 +60,11 @@ Error : in ‘probe.match.objfun’: in ‘probe’: ‘rprocess’, ‘rmeasure
 > plot(sapply(seq(0.8,1.6,by=0.1),f1))
 > 
 > f1(1.1)
-[1] -16.5
+[1] -16.4
 > library(subplex)
 > subplex(fn=f1,par=0.4,control=list(reltol=1e-3)) -> out
 > f1(out$par)
-[1] -16.6
+[1] -16.5
 > 
 > try(probe.match.objfun())
 Error : in ‘probe.match.objfun’: ‘data’ is a required argument.
@@ -93,7 +93,7 @@ Error : in ‘probe.match.objfun’: parameter ‘harry’ not found in ‘param
 > f1 %>% as("data.frame") %>% names()
 [1] "time" "Y"   
 > 
-> gompertz %>% probe.match.objfun(nsim=100,probes=function(x)1,fail.value=1e9) -> f2
+> po %>% probe.match.objfun(nsim=100,probes=function(x)1,fail.value=1e9) -> f2
 > logLik(f2)
 [1] NaN
 > f2(1)

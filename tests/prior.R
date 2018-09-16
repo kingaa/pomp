@@ -3,34 +3,33 @@ options(digits=3)
 library(pomp2)
 library(magrittr)
 
-pompExample(ou2,envir=NULL) -> ou2
-ou2[[1]] -> po
+ou2() -> po
 
 stopifnot(po %>% rprior(params=coef(po)) %>% extract(,1)==coef(po))
 
-coef(po,"alpha.sd") <- 5
+coef(po,"alpha_sd") <- 5
 
 set.seed(1835425749L)
 
 po %>%
   pomp(
-    dprior=function(alpha.1,alpha.2,alpha.3,alpha.4,alpha.sd,...,log) {
+    dprior=function(alpha_1,alpha_2,alpha_3,alpha_4,alpha_sd,...,log) {
       ll <- sum(
         dnorm(
-          x=c(alpha.1,alpha.2,alpha.3,alpha.4),
+          x=c(alpha_1,alpha_2,alpha_3,alpha_4),
           mean=c(0.8,-0.5,0.3,0.9),
-          sd=alpha.sd,
+          sd=alpha_sd,
           log=TRUE
         )
       )
       if (log) ll else exp(ll)
     },
-    rprior=function(alpha.1,alpha.2,alpha.3,alpha.4,alpha.sd,...) {
+    rprior=function(alpha_1,alpha_2,alpha_3,alpha_4,alpha_sd,...) {
       c(
-        alpha.1=rnorm(n=1,mean=0.8,sd=alpha.sd),
-        alpha.2=rnorm(n=1,mean=-0.5,sd=alpha.sd),
-        alpha.3=rnorm(n=1,mean=0.3,sd=alpha.sd),
-        alpha.4=rnorm(n=1,mean=0.9,sd=alpha.sd)
+        alpha_1=rnorm(n=1,mean=0.8,sd=alpha_sd),
+        alpha_2=rnorm(n=1,mean=-0.5,sd=alpha_sd),
+        alpha_3=rnorm(n=1,mean=0.3,sd=alpha_sd),
+        alpha_4=rnorm(n=1,mean=0.9,sd=alpha_sd)
       )
     }
   ) -> po

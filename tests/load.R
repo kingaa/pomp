@@ -1,6 +1,6 @@
 library(pomp2)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 
 pomp(gompertz,rmeasure=Csnippet("
   Y = rlnorm(log(X),tau);"),
@@ -13,7 +13,7 @@ file.remove(paste0("sf",.Platform$dynlib.ext))
 capture.output(x <- simulate(po,verbose=TRUE)) -> out
 stopifnot(sum(grepl("loading",out))==2)
 
-pompExample(sir)
+sir() -> sir
 
 solibs(sir) <- NULL
 solibs(sir) <- sir@solibs[[1]]

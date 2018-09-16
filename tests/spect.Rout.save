@@ -21,17 +21,18 @@ Type 'q()' to quit R.
 > png(filename="spect-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
+> gompertz() -> gompertz
 > set.seed(362083261L)
 > 
 > sp <- spect(gompertz,kernel.width=3,nsim=100,seed=838775L)
 > summary(sp)
 $coef
-    K     r sigma   tau   X.0 
+    K     r sigma   tau   X_0 
   1.0   0.1   0.1   0.1   1.0 
 
 $nsim
@@ -39,7 +40,7 @@ $nsim
 
 $pvals
     Y   all 
-0.287 0.287 
+0.554 0.554 
 
 > plot(sp)
 > 
@@ -95,7 +96,7 @@ Error : in ‘spect’: missing or infinite values in simulated data.
 > 
 > time(sp3) <- c(0:7,10:40)
 > try(spect(sp3))
-Error : in ‘spect’: ‘spect’ assumes evenly spaced times.
+Error : in ‘spect’: missing or infinite values in the data.
 > 
 > try(spect(sp2,rmeasure=function(...) stop("yikes!")))
 Error : in ‘spect’: in simulation: yikes!

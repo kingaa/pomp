@@ -22,11 +22,12 @@ Type 'q()' to quit R.
 > png(filename="abc-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
-> pompExample(ou2)
-newly created object(s):
- ou2 
+> ou2() -> ou2
 > 
 > set.seed(2079015564L)
 > 
@@ -44,9 +45,9 @@ newly created object(s):
 > 
 > ou2 %>%
 +   abc(Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-+     proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
-+     dprior=function(alpha.1,alpha.2,...,log) {
-+       ll <- sum(dnorm(x=c(alpha.1,alpha.2),mean=c(0.6,0),sd=4,log=TRUE))
++     proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
++     dprior=function(alpha_1,alpha_2,...,log) {
++       ll <- sum(dnorm(x=c(alpha_1,alpha_2),mean=c(0.6,0),sd=4,log=TRUE))
 +       if (log) ll else exp(ll)
 +     }) -> abc1
 > plot(abc1)
@@ -54,7 +55,7 @@ newly created object(s):
 > 
 > crossprod(
 +   array(data=c(0.1,0.02,0,0.1),dim=c(2,2),
-+     dimnames=list(c("alpha.1","alpha.2"),c("alpha.1","alpha.2")))
++     dimnames=list(c("alpha_1","alpha_2"),c("alpha_1","alpha_2")))
 + ) -> sig
 > 
 > pb %>% abc(Nabc=100,scale=scale.dat,epsilon=2,proposal=mvn.rw(sig)) -> abc2
@@ -67,7 +68,7 @@ newly created object(s):
 > c(a=c(abc1,abc2),b=abc3) -> abclist
 > stopifnot(identical(abclist,c(a1=abc1,c(a2=abc2,b=abc3))))
 > stopifnot(all(dim(traces(abc1))==c(101,10)))
-> stopifnot(all(dim(traces(abc1,"alpha.1"))==c(101,1)))
+> stopifnot(all(dim(traces(abc1,"alpha_1"))==c(101,1)))
 > invisible(conv.rec(abc2))
 Warning message:
 ‘conv.rec’ is deprecated and will be removed in a forthcoming release.  Please use ‘traces’ instead. 
@@ -81,14 +82,14 @@ Warning message:
      [,1] [,2]
 [1,]  101  101
 [2,]   10   10
-> try(abclist %>% plot(pars="alpha.3",scatter=TRUE))
+> try(abclist %>% plot(pars="alpha_3",scatter=TRUE))
 Error : in ‘plot’: can't make a scatterplot with only one variable.
 > 
 > abc1 %>%
 +   abc(Nabc=500,dprior=Csnippet("
 +     lik = dnorm(alpha_1,0.8,1,1)+dnorm(alpha_2,0.2,1,1);
 +     lik = (give_log) ? lik : exp(lik);"
-+   ),paramnames=c("alpha.1","alpha.2")) -> abc5
++   ),paramnames=c("alpha_1","alpha_2")) -> abc5
 > 
 > abc1 %>% abc(Nabc=50,params=as.list(coef(ou2))) %>% plot()
 > 
@@ -104,24 +105,24 @@ Error : in ‘abc’: ‘Nabc’ must be a positive integer.
 > stopifnot(all(dim(traces(abc(abc1,Nabc=0))==c(1,10))))
 > 
 > try(abc(ou2,Nabc=50,scale=scale.dat[1:2],epsilon=1.7,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 Error : in ‘abc’: ‘probes’ must be specified.
 > try(abc(ou2,Nabc=50,probes=plist,scale=scale.dat[1:2],epsilon=1.7,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 Error : in ‘abc’: ‘scale’ must have either length 1 or length equal to the number of probes (here, 7).
 > po <- ou2
 > coef(po) <- NULL
 > try(abc(po,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 Error : in ‘abc’: ‘params’ must be a named numeric vector.
 > try(abc(ou2,params=numeric(0),Nabc=100,probes=plist,scale=scale.dat,
-+   epsilon=1.7,proposal="mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))"))
++   epsilon=1.7,proposal="mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))"))
 Error : in ‘abc’: ‘params’ must be a named numeric vector.
 > try(abc(ou2,params=NULL,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 Error : in ‘abc’: ‘params’ must be a named numeric vector.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-+   proposal="mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))"))
++   proposal="mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))"))
 Error : in ‘abc’: ‘proposal’ must be a function.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=function(...)stop("yikes!")))
@@ -137,26 +138,26 @@ Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
 > try(abc(ou2,Nabc=100,proposal="bob",probes="mary",epsilon=1.7))
 Error : in ‘abc’: ‘proposal’ must be a function.
 > try(abc(ou2,Nabc=100,probes=plist,epsilon=1.7,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 Error : in ‘abc’: ‘scale’ must be specified.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
 +   epsilon=1,rprocess=NULL))
 Error : in ‘abc’: ‘rprocess’, ‘rmeasure’ are needed basic components.
 > 
 > try(abc(abc1,Nabc=100,epsilon=NULL,scale=scale.dat))
 Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified.
 > try(abc(ou2,params=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 Error : in ‘abc’: ‘params’ must be a named numeric vector.
 > try(abc(ou2,Nabc=100,probes="plist[[1]]",scale=scale.dat[1],epsilon=1.7,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
 > try(abc(ou2,Nabc=100,probes=function(x,y)x+y,scale=scale.dat[1],epsilon=1.7,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 Error : in ‘abc’: each probe must be a function of a single argument.
 > try(abc(abc1,dprior=function(log,...)stop("ouch!")))
 Error : in ‘abc’: in ‘dprior’: ouch!
@@ -181,11 +182,11 @@ Error : in ‘abc’: in proposal function: 'fraid not!
 > 
 > coef(c(abc1,ou2)) -> theta
 > stopifnot(dim(theta)==c(10,2),
-+   rownames(theta)==c("alpha.1","alpha.2","alpha.3","alpha.4",
-+     "sigma.1","sigma.2","sigma.3","tau","x1.0","x2.0"),
-+   apply(theta[c("alpha.3","alpha.4",
-+     "sigma.1","sigma.2","sigma.3","tau","x1.0","x2.0"),],1,diff)==0,
-+   apply(theta[c("alpha.1","alpha.2"),],1,diff) != 0)
++   rownames(theta)==c("alpha_1","alpha_2","alpha_3","alpha_4",
++     "sigma_1","sigma_2","sigma_3","tau","x1_0","x2_0"),
++   apply(theta[c("alpha_3","alpha_4",
++     "sigma_1","sigma_2","sigma_3","tau","x1_0","x2_0"),],1,diff)==0,
++   apply(theta[c("alpha_1","alpha_2"),],1,diff) != 0)
 > try(c(abc1,NULL))
 Error : ‘c’ is not defined for objects of mixed class.
 > try(c(c(abc1,abc2),ou2))
@@ -238,7 +239,7 @@ $three
 
 > 
 > capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-+   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
++   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
 +   verbose=TRUE) -> abc1) -> out
 > stopifnot(
 +   length(out)==40,
@@ -246,9 +247,7 @@ $three
 +   sum(grepl("ABC iteration",out))==20
 + )
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
+> gompertz() -> gompertz
 > set.seed(2079015564L)
 > 
 > gompertz %>%

@@ -1,7 +1,7 @@
 library(pomp2)
 library(magrittr)
 
-pompExample(ou2)
+ou2() -> ou2
 
 po <- window(ou2,end=10)
 
@@ -94,7 +94,7 @@ po %>% pomp(
 po1 %>% rmeasure(x=x,times=t,params=p) %>% is.na() %>% stopifnot()
 po1 %>% dmeasure(x=x,y=y[,1,],times=t,params=p) %>% is.na() %>% stopifnot()
 
-pompExample(sir)
+sir() -> sir
 po <- window(sir,end=0.5)
 
 set.seed(3434388L)

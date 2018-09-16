@@ -18,10 +18,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
+> gompertz() -> gompertz
 > set.seed(995868671L)
 > 
 > theta1 <- coef(gompertz)
@@ -111,9 +112,7 @@ Slot "text":
 +   }
 + )
 > 
-> pompExample(ou2)
-newly created object(s):
- ou2 
+> ou2() -> ou2
 > pp <- parmat(coef(ou2),10)
 > stopifnot(all.equal(partrans(ou2,partrans(ou2,pp,dir="to"),dir="from"),pp))
 > 

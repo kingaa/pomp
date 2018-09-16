@@ -21,6 +21,9 @@ Type 'q()' to quit R.
 > options(digits=2)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(tidyr)
 > library(dplyr)
 
@@ -36,9 +39,7 @@ The following objects are masked from ‘package:base’:
 
 > library(ggplot2)
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
+> gompertz() -> gompertz
 > set.seed(398585L)
 > 
 > time(gompertz) <- 1:10
@@ -138,6 +139,7 @@ Error : in ‘bsmc2’: too many filtering failures
 > 
 > gompertz %>%
 +   as.data.frame() %>%
++   subset(select=-X) %>%
 +   bsmc2(
 +     times="time",t0=-5,
 +     params=coef(gompertz),
@@ -154,6 +156,7 @@ Error : in ‘bsmc2’: too many filtering failures
 > 
 > try(gompertz %>%
 +     as.data.frame() %>%
++     subset(select=-X) %>%
 +     bsmc2(
 +       times="time",t0=-5,
 +       params=coef(gompertz),

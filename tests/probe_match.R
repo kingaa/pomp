@@ -4,8 +4,8 @@ png(filename="probe_match-%02d.png",res=100)
 library(pomp2)
 library(magrittr)
 
-pompExample(gompertz)
-gompertz -> po
+gompertz() -> po
+po %>% as.data.frame() %>% subset(select=-X) -> dat
 
 plist <- list(
   mean=probe.mean("Y",trim=0.1,transform=sqrt),
@@ -15,11 +15,10 @@ plist <- list(
   probe.quantile("Y",prob=c(0.25,0.75),na.rm=TRUE)
 )
 
-try(gompertz %>% as.data.frame() %>% probe.match.objfun())
-try(gompertz %>% as.data.frame() %>% probe.match.objfun(times="time",t0=0))
+try(dat %>% probe.match.objfun())
+try(dat %>% probe.match.objfun(times="time",t0=0))
 
-gompertz %>%
-  as.data.frame() %>%
+dat %>%
   probe.match.objfun(
     times="time",t0=0,
     rinit=po@rinit,
@@ -61,7 +60,7 @@ f1 %>% spect(kernel.width=3,nsim=100,seed=748682047) %>% plot()
 f1 %>% as("pomp")
 f1 %>% as("data.frame") %>% names()
 
-gompertz %>% probe.match.objfun(nsim=100,probes=function(x)1,fail.value=1e9) -> f2
+po %>% probe.match.objfun(nsim=100,probes=function(x)1,fail.value=1e9) -> f2
 logLik(f2)
 f2(1)
 

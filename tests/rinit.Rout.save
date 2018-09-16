@@ -18,12 +18,13 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > set.seed(807969746L)
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
+> gompertz() -> gompertz
 > rinit(gompertz)
         rep
 variable [,1]
@@ -91,9 +92,7 @@ Error : in ‘rinit’: a state variable and a parameter share the name: 'r'.
 + })
 Error : in ‘rinit’: user 'rinit' returns vectors of non-uniform length.
 > 
-> pompExample(sir)
-newly created object(s):
- sir 
+> sir() -> sir
 > try(sir %>% simulate(rinit=NULL))
 Error : in ‘simulate’: variable 'cases' not found among the state variables.
 > sir %>%

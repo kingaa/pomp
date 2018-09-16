@@ -21,13 +21,14 @@ Type 'q()' to quit R.
 > png(filename="pmcmc-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
 > set.seed(857075216L)
 > 
-> pompExample(gompertz,envir=NULL) -> po
-> 
-> po <- window(po[[1]],end=10)
+> gompertz() %>% window(end=10) -> po
 > 
 > prop1 <- mvn.diag.rw(c(r=0.01,sigma=0.01))
 > 
@@ -60,12 +61,12 @@ Error : in ‘pmcmc’: in ‘pfilter’: ‘Np’ must be specified.
 > try(pmcmc(po,proposal=prop1,Np=NA))
 Error : in ‘pmcmc’: in ‘pfilter’: ‘Np’ must be a number, a vector of numbers, or a function.
 > try(pmcmc(po,proposal=prop1,Np=c(1,2,3)))
-Error : in ‘pmcmc’: in ‘pfilter’: ‘Np’ must have length 1 or length 12.
+Error : in ‘pmcmc’: in ‘pfilter’: ‘Np’ must have length 1 or length 11.
 > try(pmcmc(po,proposal=prop1,Np=-5))
 Error : in ‘pmcmc’: in ‘pfilter’: number of particles, ‘Np’, must be a positive integer.
 > pmcmc(po,proposal=prop1,Np=1)
 <object of class ‘pmcmcd_pomp’>
-> pmcmc(po,proposal=prop1,Np=rep(1,12))
+> pmcmc(po,proposal=prop1,Np=rep(1,11))
 <object of class ‘pmcmcd_pomp’>
 > try(pmcmc(po,proposal=prop1,Np=function(k)10*k))
 Error : in ‘pmcmc’: in ‘pfilter’: number of particles, ‘Np’, must be a positive integer.
@@ -105,9 +106,9 @@ NULL
 > stopifnot(dim(filter.traj(mcmc1))==c(1,100,11),
 +   dim(filter.traj(c(mcmc1,mcmc2,mcmc3)))==c(1,100,11,3))
 > logLik(mcmc1)
-[1] 4.9
+[1] 4.41
 > logLik(c(mcmc1,mcmc2,mcmc3))
-[1] 4.90 5.55 5.93
+[1] 4.41 3.48 3.92
 > 
 > pmcmc(mcmc1,params=as.list(coef(mcmc3)))
 <object of class ‘pmcmcd_pomp’>
@@ -169,9 +170,7 @@ Error : in ‘pmcmc’: in ‘dprior’: uh huh
 > stopifnot(sum(grepl("acceptance ratio",out))==10)
 > stopifnot(sum(grepl("PMCMC iteration",out))==11)
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
+> gompertz() -> gompertz
 > 
 > set.seed(857075216L)
 > 

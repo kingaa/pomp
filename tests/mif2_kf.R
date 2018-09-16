@@ -3,15 +3,13 @@ options(digits=3)
 library(pomp2)
 library(magrittr)
 
-pompExample(gompertz)
-
 set.seed(376098756)
 
-gompertz %>% window(end=10) %>% simulate(seed=1176423047) -> po
+gompertz() %>% window(end=10) %>% simulate(seed=1176423047) -> po
 
 po %>%
   mif2(Nmif=100,Np=1000,cooling.fraction.50=0.4,cooling.type="geometric",
-    rw.sd=rw.sd(sigma=0.02,r=0.02,X.0=ivp(0.05),tau=0.02)) %>%
+    rw.sd=rw.sd(sigma=0.02,r=0.02,X_0=ivp(0.05),tau=0.02)) %>%
   continue(Nmif=100) -> mf
 replicate(n=10,mf %>% pfilter(Np=3000)) -> pfs
 pfs %>% sapply(logLik) %>% logmeanexp(se=TRUE) -> pf.ll.mle

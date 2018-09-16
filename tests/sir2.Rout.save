@@ -21,19 +21,20 @@ Type 'q()' to quit R.
 > png(filename="sir2-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > 
-> pompExample(sir2)
-newly created object(s):
- sir2 
+> sir2() -> sir2
 > 
 > set.seed(48832734L)
 > 
 > plot(sir2)
 > coef(sir2)
-   gamma       mu     iota    beta1    beta2    beta3      rho      S_0 
-2.40e+01 1.43e-02 1.00e-01 3.30e+02 4.10e+02 4.90e+02 1.00e-01 5.00e-02 
-     I_0      R_0      pop  beta.sd 
-1.00e-04 9.50e-01 1.00e+06 0.00e+00 
+   gamma       mu     iota      rho    beta1    beta2    beta3      S_0 
+2.40e+01 1.43e-02 1.00e-01 1.00e-01 3.30e+02 4.10e+02 4.90e+02 5.00e-02 
+     I_0      R_0      pop 
+1.00e-04 9.50e-01 1.00e+06 
 > rinit(sir2)
         rep
 variable    [,1]

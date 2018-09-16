@@ -4,9 +4,30 @@
 \name{gompertz}
 \alias{gompertz}
 \title{Gompertz model with log-normal observations.}
+\usage{
+gompertz(K = 1, r = 0.1, sigma = 0.1, tau = 0.1, X_0 = 1,
+  times = 1:100, t0 = 0)
+}
+\arguments{
+\item{K}{carrying capacity}
+
+\item{r}{growth rate}
+
+\item{sigma}{process noise intensity}
+
+\item{tau}{measurement error s.d.}
+
+\item{X_0}{value of the latent state variable \code{X} at the zero time}
+
+\item{times}{observation times}
+
+\item{t0}{zero time}
+}
+\value{
+A \sQuote{pomp} object with simulated data.
+}
 \description{
-\code{gompertz} is a \sQuote{pomp} object encoding a stochastic Gompertz
-population model with log-normal measurement error.
+\code{gompertz()} constructs a \sQuote{pomp} object encoding a stochastic Gompertz population model with log-normal measurement error.
 }
 \details{
 The state process is \eqn{X_{t+1} = K^{1-S} X_{t}^S
@@ -23,17 +44,16 @@ transformations that log-transform the parameters for estimation purposes.
 }
 \examples{
 
-pompExample(gompertz)
-plot(gompertz)
-coef(gompertz)
+plot(gompertz())
+plot(gompertz(K=2,r=0.01))
 
 }
 \seealso{
 Other pomp examples: \code{\link{blowflies}},
   \code{\link{dacca}}, \code{\link{measles}},
-  \code{\link{ou2}}, \code{\link{pompExample}},
-  \code{\link{ricker}}, \code{\link{rw2}},
-  \code{\link{sir_models}}
+  \code{\link{ou2}}, \code{\link{ricker}},
+  \code{\link{rw2}}, \code{\link{sir_models}},
+  \code{\link{verhulst}}
 }
 \concept{pomp examples}
 \keyword{datasets}

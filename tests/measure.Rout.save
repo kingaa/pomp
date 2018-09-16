@@ -18,11 +18,12 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
-> pompExample(ou2)
-newly created object(s):
- ou2 
+> ou2() -> ou2
 > 
 > po <- window(ou2,end=10)
 > 
@@ -147,9 +148,7 @@ Warning message:
 Warning message:
 'dmeasure' unspecified: likelihood undefined. 
 > 
-> pompExample(sir)
-newly created object(s):
- sir 
+> sir() -> sir
 > po <- window(sir,end=0.5)
 > 
 > set.seed(3434388L)

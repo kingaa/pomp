@@ -21,15 +21,17 @@ Type 'q()' to quit R.
 > png(filename="nlf-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
 > set.seed(583615606L)
 > 
-> pompExample(ou2)
-newly created object(s):
- ou2 
-> estnames=c("alpha.2","alpha.3")
-> ou2 %>% window(end=40) %>% as.data.frame() -> dat
+> ou2() -> ou2
+> estnames=c("alpha_2","alpha_3")
+> ou2 %>% window(end=40) %>% as.data.frame() %>%
++   subset(select=c(time,y1,y2)) -> dat
 > guess <- coef(ou2,estnames,transform=TRUE)
 > 
 > try(nlf.objfun())
@@ -53,7 +55,7 @@ Error : ‘nlf.objfun’ is undefined for ‘data’ of class ‘character’.
 > subplex(par=guess,fn=m2,control=list(reltol=1e-3)) -> out
 > stopifnot(out$convergence == 0)
 > m2(out$par)
-[1] 203
+[1] 198
 > plot(simulate(m2))
 > stopifnot(logLik(m2)==-out$value)
 > 
@@ -62,7 +64,7 @@ Error : ‘nlf.objfun’ is undefined for ‘data’ of class ‘character’.
 > subplex(par=guess,fn=m2s,control=list(reltol=1e-3)) -> out
 > stopifnot(out$convergence == 0)
 > m2s(out$par)
-[1] 201
+[1] 197
 > plot(simulate(m2s))
 > 
 > m2t <- nlf.objfun(m2s,tensor=FALSE,seed=426094906L,fail.value=1e9)
@@ -70,7 +72,7 @@ Error : ‘nlf.objfun’ is undefined for ‘data’ of class ‘character’.
 > subplex(par=guess,fn=m2t,control=list(reltol=1e-3)) -> out
 > stopifnot(out$convergence == 0)
 > m2t(out$par)
-[1] 203
+[1] 199
 > plot(simulate(m2t))
 > plot(pfilter(m2t,dmeasure=ou2@dmeasure,Np=100))
 > m2t(NA)

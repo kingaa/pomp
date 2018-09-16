@@ -4,7 +4,7 @@ png(filename="probe-%02d.png",res=100)
 library(pomp2)
 library(magrittr)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 
 set.seed(234501470L)
 
@@ -97,7 +97,7 @@ data.frame(t=1:10,a=1:10) %>%
     )
   )
 
-pompExample(ou2)
+ou2() -> ou2
 ou2 %>% probe(nsim=100,probes=probe.ccf(c("y1","y2"),lags=c(-10,0,1))) %>% plot()
 
 dev.off()

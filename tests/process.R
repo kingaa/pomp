@@ -3,8 +3,7 @@ options(digits=3)
 library(pomp2)
 library(magrittr)
 
-pompExample(ou2,envir=NULL) -> ou2
-ou2[[1]] %>% window(end=10) -> po
+ou2() %>% window(end=10) -> po
 
 set.seed(293982095)
 
@@ -13,7 +12,7 @@ po %>%
   extract2("states") -> x
 po %>% time() -> t
 coef(po) %>% parmat(7) -> p
-p["sigma.1",] <- seq(from=1,to=7,by=1)
+p["sigma_1",] <- seq(from=1,to=7,by=1)
 
 try(dprocess("ou2",x=x,times=t,params=p))
 try(dprocess(x=x,times=t,params=p))

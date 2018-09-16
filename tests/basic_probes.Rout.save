@@ -20,6 +20,9 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > library(reshape2)
 > library(dplyr)
@@ -50,9 +53,7 @@ The following object is masked from ‘package:magrittr’:
 > 
 > set.seed(255066335)
 > 
-> pompExample(ou2)
-newly created object(s):
- ou2 
+> ou2() -> ou2
 > 
 > plist <- list(
 +   mean=probe.mean("y1"),
@@ -121,7 +122,7 @@ Error : in ‘probe.ccf’: series 1 has no data
 > probe.marginal("y1",ref=obs(ou2,"y1"),order=6,diff=2) -> f
 > ou2 %>% simulate() %>% obs() %>% f()
    marg.1    marg.2    marg.3    marg.4    marg.5    marg.6 
- 1.08e+00  1.30e-02 -1.59e-03 -4.50e-04  2.47e-05  3.46e-06 
+ 9.42e-01 -1.62e-02  2.14e-03  2.51e-05 -1.29e-05  3.64e-07 
 > try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
 Error : in ‘probe.marginal’: subscript out of bounds
 > ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x

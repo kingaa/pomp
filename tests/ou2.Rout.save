@@ -21,10 +21,11 @@ Type 'q()' to quit R.
 > png(filename="ou2-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > 
-> pompExample(ou2)
-newly created object(s):
- ou2 
+> ou2() -> ou2
 > 
 > set.seed(1438408329L)
 > 
@@ -35,7 +36,7 @@ variable [,1]
       x1   -3
       x2    4
 > coef(ou2)
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+alpha_1 alpha_2 alpha_3 alpha_4 sigma_1 sigma_2 sigma_3     tau    x1_0    x2_0 
     0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
 > 
 > stopifnot(all.equal(coef(ou2),partrans(ou2,coef(ou2,transform=TRUE),dir="from")))

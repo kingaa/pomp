@@ -10,7 +10,6 @@ set.seed(754646834L)
 
 c(gamma=24,mu=1/70,iota=0.1,
   beta1=330,beta2=410,beta3=490,
-  beta.sd=0,
   rho=0.1,
   S_0=0.07,I_0=1e-4,R_0=0.93,
   pop=1000000
@@ -110,15 +109,14 @@ gsir %>%
     ),
     nbasis=3L,
     seed=806867104L,
-    paramnames=c("gamma","mu","iota","beta1","beta2","beta3","beta.sd",
-      "pop","rho"),
+    paramnames=c("gamma","mu","iota","beta1","beta2","beta3","pop","rho"),
     statenames=c("S","I","R","N","cases")
   ) -> gsir1
 
 gsir1 %>%
   plot(main="Gillespie SIR, with zeroing")
 
-pompExample(sir2)
+sir2() -> sir2
 gsir2 <- simulate(sir2,params=coef(gsir),
   times=time(gsir),t0=timezero(gsir),seed=806867104L)
 
@@ -154,7 +152,7 @@ f@v
 
 stopifnot(
   gsir %>%
-    simulate(params=c(gamma=0,mu=0,iota=0,beta1=0,beta2=0,beta3=0,beta.sd=0,
+    simulate(params=c(gamma=0,mu=0,iota=0,beta1=0,beta2=0,beta3=0,
       rho=0.1,S_0=0.07,I_0=1e-4,R_0=0.93,pop=1e6)) %>%
     states() %>% apply(1,diff) %>% equals(0) %>% all())
 

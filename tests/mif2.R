@@ -8,8 +8,7 @@ library(dplyr)
 library(reshape2)
 library(magrittr)
 
-pompExample(gompertz,envir=NULL) -> po
-po[[1]] %>% window(end=10) -> po
+gompertz() %>% window(end=10) -> po
 
 mif2(po,Nmif=50,Np=100,cooling.fraction.50=0.5,
   rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf1
@@ -27,7 +26,7 @@ stopifnot(
   names(tr)==c("a","b"),
   dim(tr$a)==dim(tr$b),
   identical(dimnames(tr$a),dimnames(tr$b)),
-  colnames(tr$a)==c("loglik","nfail","K","r","sigma","tau","X.0")
+  colnames(tr$a)==c("loglik","nfail","K","r","sigma","tau","X_0")
 )
 coef(mfl) -> m
 stopifnot(
@@ -80,14 +79,14 @@ try(mif2(po,params=list(),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
 try(mif2(po,params=list(NULL),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
 try(mif2(po,params=c(3,2,1),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
 try(mif2(po,Nmif=1,Np=100:1000,rw.sd=rw.sd(sigma=0.1)))
-mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
   cooling.fraction.50=0.1,cooling.type="geometric",tol=1e-10,
   params=as.list(coef(po)))
-try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
   cooling.fraction.50=0.1,rprocess=onestep(function(x,t,params,covars,delta.t,...)stop("boink"))))
-try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
   cooling.fraction.50=0.1,dmeasure=function(log,...)stop("blop")))
-try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
   cooling.fraction.50=0.1,dmeasure=function(log,...)NA))
 mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,
   drpocess="oops",
@@ -101,12 +100,12 @@ theta <- coef(po)
 theta["sigma"] <- 0.2
 po %>%
   pfilter(Np=100,params=theta) %>%
-  mif2(Nmif=3,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+  mif2(Nmif=3,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
     cooling.fraction.50=0.5) %>%
   mif2() %>% continue(Nmif=3,cooling.fraction.50=0.1) %>% plot()
 
 capture.output(
-  mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+  mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
     cooling.fraction.50=1,cooling.type="hyperbolic",tol=1e-10,
     params=as.list(coef(po)),verbose=TRUE),
   type="output"
@@ -114,15 +113,16 @@ capture.output(
 stopifnot(sum(grepl("mif2 pfilter timestep",out))==4,
   sum(grepl("mif2 iteration",out))==2)
 capture.output(
-  mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+  mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
     cooling.fraction.50=1,cooling.type="hyperbolic",tol=10,
     params=as.list(coef(po)),verbose=TRUE),
   type="message"
 ) -> out
-stopifnot(sum(grepl("filtering failure at time",out))==22)
+stopifnot(sum(grepl("filtering failure at time",out))==20)
 
 po %>%
   as.data.frame() %>%
+  subset(select=-X) %>%
   mif2(Nmif=3,Np=100,
     times="time",t0=0,
     params=c(sigma=5),

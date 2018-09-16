@@ -4,7 +4,7 @@ cat("double simplefun (double x) { return(x+3); }",file="simplefun.c")
 system2(R.home("bin/R"),args=c("CMD","COMPILE","simplefun.c"),
   stdout=NULL,stderr=NULL)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 
 pomp(gompertz,rmeasure=Csnippet("
   double simplefun (double);

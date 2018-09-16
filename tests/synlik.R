@@ -3,7 +3,7 @@ png(filename="synlik-%02d.png",res=100)
 
 library(pomp2)
 
-pompExample(ou2)
+ou2() -> ou2
 
 set.seed(6457673L)
 
@@ -14,9 +14,9 @@ ou2.kalman <- function (x, object, params) {
   p <- params
   p[names(x)] <- x
   x0 <- rinit(object,params=p)
-  A <- matrix(p[c('alpha.1','alpha.2','alpha.3','alpha.4')],2,2)
+  A <- matrix(p[c('alpha_1','alpha_2','alpha_3','alpha_4')],2,2)
   C <- diag(1,2)
-  Q <- matrix(p[c('sigma.1','sigma.2',NA,'sigma.3')],2,2)
+  Q <- matrix(p[c('sigma_1','sigma_2',NA,'sigma_3')],2,2)
   Q[1,2] <- 0
   Q <- tcrossprod(Q)
   R <- diag(p['tau']^2,2,2)

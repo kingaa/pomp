@@ -4,6 +4,23 @@
 \name{ricker}
 \alias{ricker}
 \title{Ricker model with Poisson observations.}
+\usage{
+ricker(r = exp(3.8), sigma = 0.3, phi = 10, c = 1, N_0 = 7)
+}
+\arguments{
+\item{r}{intrinsic growth rate}
+
+\item{sigma}{environmental process noise s.d.}
+
+\item{phi}{sampling rate}
+
+\item{c}{density dependence parameter}
+
+\item{N_0}{initial condition}
+}
+\value{
+A \sQuote{pomp} object containing the Ricker model and simulated data.
+}
 \description{
 \code{ricker} is a \sQuote{pomp} object encoding a stochastic Ricker model
 with Poisson measurement error.
@@ -17,17 +34,17 @@ observed variables \eqn{y_t}{y[t]} are distributed as
 }
 \examples{
 
-pompExample(ricker)
-plot(ricker)
-coef(ricker)
+plot(ricker())
+coef(ricker())
+simulate(ricker())
 
 }
 \seealso{
 Other pomp examples: \code{\link{blowflies}},
   \code{\link{dacca}}, \code{\link{gompertz}},
   \code{\link{measles}}, \code{\link{ou2}},
-  \code{\link{pompExample}}, \code{\link{rw2}},
-  \code{\link{sir_models}}
+  \code{\link{rw2}}, \code{\link{sir_models}},
+  \code{\link{verhulst}}
 }
 \concept{pomp examples}
 \keyword{datasets}

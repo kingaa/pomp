@@ -1,7 +1,7 @@
 library(pomp2)
 library(magrittr)
 
-pompExample(gompertz,envir=NULL) %>% extract2(1) -> po
+gompertz() -> po
 
 set.seed(530370883)
 
@@ -27,11 +27,10 @@ coef(po) <- NULL
 coef(po) <- c(r=1,sigma=1)
 stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
 coef(po) <- NULL
-coef(po,transform=TRUE) <- c(r=0,sigma=0,K=0,tau=0,X.0=0)
-stopifnot(all.equal(coef(po),c(r=1,sigma=1,K=1,tau=1,X.0=1)))
+coef(po,transform=TRUE) <- c(r=0,sigma=0,K=0,tau=0,X_0=0)
+stopifnot(all.equal(coef(po),c(r=1,sigma=1,K=1,tau=1,X_0=1)))
 
-pompExample(ou2,envir=NULL) -> ou2
-ou2[[1]] -> po
+ou2() -> po
 po1 <- simulate(po)
 
 as(po,"data.frame") %>% head()
@@ -69,24 +68,24 @@ try(timezero(po) <- c(1,2,3))
 try(timezero(po) <- 20)
 
 coef(po)
-coef(po,c("alpha.3","tau"))
-try(coef(po,c("alpha.3","z")))
+coef(po,c("alpha_3","tau"))
+try(coef(po,c("alpha_3","z")))
 
-coef(po,"alpha.3") <- 4
+coef(po,"alpha_3") <- 4
 coef(po,"z") <- 9
 coef(po)
 coef(po) <- NULL
 coef(po)
 coef(po) <- list(a=3,b=12)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 gompertz -> po
 
 coef(po)
 coef(po,transform=TRUE,pars=c("r","K"))
 coef(po,"sigma",transform=TRUE) <- 0
 coef(po)
-coef(po,c("r","K","sigma","tau","X.0")) <- c(a=1,b=2,c=3,d=4,e=5)
+coef(po,c("r","K","sigma","tau","X_0")) <- c(a=1,b=2,c=3,d=4,e=5)
 coef(po) <- c(r=1,K=1)
 coef(po) <- NULL
 try(coef(po,transform=FALSE) <- c(5,3))

@@ -9,7 +9,7 @@ library(ggplot2)
 
 set.seed(255066335)
 
-pompExample(ou2)
+ou2() -> ou2
 
 plist <- list(
   mean=probe.mean("y1"),

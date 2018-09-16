@@ -3,7 +3,7 @@ png(filename="dacca-%02d.png",res=100)
 
 library(pomp2)
 
-pompExample(dacca)
+dacca() -> dacca
 
 set.seed(1420306530L)
 

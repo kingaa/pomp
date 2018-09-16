@@ -7,7 +7,7 @@ library(dplyr)
 
 set.seed(1041414791L)
 
-pompExample(ou2)
+ou2() -> ou2
 ou2 %>% simulate(times=0:20,t0=-4,seed=298831503) %>% plot()
 
 try(simulate(rprocess=onestep(Csnippet("z = runif(0,1);")),
@@ -157,7 +157,7 @@ data.frame(u=1:10,v=runif(10)) %>%
 dat %>% names()
 dat %>% dim()
 
-pompExample(rw2)
+rw2() -> rw2
 simulate(rw2,zeronames="x2") %>% plot()
 try(simulate(rw2,params=c(a="bob",b="nancy")))
 

@@ -6,8 +6,8 @@ library(magrittr)
 try(pomp2:::concat())
 try(pomp2:::concat("a","b"))
 
-pompExample(gompertz)
-pompExample(ou2)
+gompertz() -> gompertz
+ou2() -> ou2
 pomp2:::concat(a=ou2,c(b=gompertz,c=ou2))
 c(a=ou2,c(b=gompertz,c=ou2)) %>% class()
 

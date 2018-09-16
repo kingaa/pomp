@@ -23,6 +23,9 @@ Type 'q()' to quit R.
 > set.seed(857075216L)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(dplyr)
 
 Attaching package: ‘dplyr’
@@ -38,8 +41,7 @@ The following objects are masked from ‘package:base’:
 > library(reshape2)
 > library(magrittr)
 > 
-> pompExample(gompertz,envir=NULL) -> po
-> po[[1]] %>% window(end=10) -> po
+> gompertz() %>% window(end=10) -> po
 > 
 > mif2(po,Nmif=50,Np=100,cooling.fraction.50=0.5,
 +   rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf1
@@ -75,7 +77,7 @@ NULL
 +   names(tr)==c("a","b"),
 +   dim(tr$a)==dim(tr$b),
 +   identical(dimnames(tr$a),dimnames(tr$b)),
-+   colnames(tr$a)==c("loglik","nfail","K","r","sigma","tau","X.0")
++   colnames(tr$a)==c("loglik","nfail","K","r","sigma","tau","X_0")
 + )
 > coef(mfl) -> m
 > stopifnot(
@@ -135,7 +137,7 @@ Error : in ‘mif2’: in ‘rw.sd’: parameters must be referenced by name.
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(a=9)))
 Error : in ‘mif2’: the following parameter(s), given random walks in ‘rw.sd’, are not present in ‘start’: ‘a’.
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=1:1000)))
-Error : in ‘mif2’: ‘rw.sd’ spec for parameter ‘sigma’ does not evaluate to a vector of the correct length (‘length(time(object))’=11).
+Error : in ‘mif2’: ‘rw.sd’ spec for parameter ‘sigma’ does not evaluate to a vector of the correct length (‘length(time(object))’=10).
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
 Error : in ‘mif2’: ‘cooling.fraction.50’ is a required argument.
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(NULL)))
@@ -163,38 +165,38 @@ Error : in ‘mif2’: ‘params’ must be a named numeric vector.
 Error : in ‘mif2’: ‘cooling.fraction.50’ is a required argument.
 In addition: Warning message:
 in ‘mif2’: Np[k] ignored for k > ‘length(time(object))’. 
-> mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+> mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
 +   cooling.fraction.50=0.1,cooling.type="geometric",tol=1e-10,
 +   params=as.list(coef(po)))
 <object of class ‘mif2d_pomp’>
-> try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+> try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
 +   cooling.fraction.50=0.1,rprocess=onestep(function(x,t,params,covars,delta.t,...)stop("boink"))))
 Error : in ‘mif2’: in ‘rprocess’: boink
-> try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+> try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
 +   cooling.fraction.50=0.1,dmeasure=function(log,...)stop("blop")))
 Error : in ‘mif2’: in ‘dmeasure’: blop
-> try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+> try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
 +   cooling.fraction.50=0.1,dmeasure=function(log,...)NA))
 Error : in ‘mif2’: ‘dmeasure’ returns non-finite value.
 likelihood, data, states, and parameters are:
- time:            0
+ time:            1
   lik:           NA
-    Y:      1.07953
-    X:     0.996592
+    Y:      1.02624
+    X:     0.937709
     K:            1
     r:          0.1
-sigma:     0.100133
+sigma:    0.0990971
   tau:          0.1
-  X.0:     0.996592
+  X_0:      1.00092
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,
 +   drpocess="oops",
 +   dmeasure=function(log,...)0) -> mf3
 in ‘pomp’: the unrecognized argument ‘drpocess’ is available for use by the POMP basic components.
 Warning messages:
 1: in ‘mif2’: filtering failure at last filter iteration; using unweighted mean for point estimate. 
-2: in ‘mif2’: 11 filtering failures occurred. 
+2: in ‘mif2’: 10 filtering failures occurred. 
 3: in ‘mif2’: filtering failure at last filter iteration; using unweighted mean for point estimate. 
-4: in ‘mif2’: 11 filtering failures occurred. 
+4: in ‘mif2’: 10 filtering failures occurred. 
 > try(mif2(mf3,max.fail=1))
 Error : in ‘mif2’: too many filtering failures.
 > try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,dmeasure=NULL))
@@ -208,12 +210,12 @@ Error : in ‘mif2’: the following parameter(s), given random walks in ‘rw.s
 > theta["sigma"] <- 0.2
 > po %>%
 +   pfilter(Np=100,params=theta) %>%
-+   mif2(Nmif=3,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
++   mif2(Nmif=3,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
 +     cooling.fraction.50=0.5) %>%
 +   mif2() %>% continue(Nmif=3,cooling.fraction.50=0.1) %>% plot()
 > 
 > capture.output(
-+   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
++   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
 +     cooling.fraction.50=1,cooling.type="hyperbolic",tol=1e-10,
 +     params=as.list(coef(po)),verbose=TRUE),
 +   type="output"
@@ -221,25 +223,26 @@ Error : in ‘mif2’: the following parameter(s), given random walks in ‘rw.s
 > stopifnot(sum(grepl("mif2 pfilter timestep",out))==4,
 +   sum(grepl("mif2 iteration",out))==2)
 > capture.output(
-+   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
++   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
 +     cooling.fraction.50=1,cooling.type="hyperbolic",tol=10,
 +     params=as.list(coef(po)),verbose=TRUE),
 +   type="message"
 + ) -> out
-mif2 pfilter timestep 5 of 11 finished.
-mif2 pfilter timestep 10 of 11 finished.
+mif2 pfilter timestep 5 of 10 finished.
+mif2 pfilter timestep 10 of 10 finished.
 mif2 iteration 1 of 2 completed
-mif2 pfilter timestep 5 of 11 finished.
-mif2 pfilter timestep 10 of 11 finished.
+mif2 pfilter timestep 5 of 10 finished.
+mif2 pfilter timestep 10 of 10 finished.
 mif2 iteration 2 of 2 completed
 <object of class ‘mif2d_pomp’>
 Warning messages:
-1: in ‘mif2’: 11 filtering failures occurred. 
-2: in ‘mif2’: 11 filtering failures occurred. 
-> stopifnot(sum(grepl("filtering failure at time",out))==22)
+1: in ‘mif2’: 10 filtering failures occurred. 
+2: in ‘mif2’: 10 filtering failures occurred. 
+> stopifnot(sum(grepl("filtering failure at time",out))==20)
 > 
 > po %>%
 +   as.data.frame() %>%
++   subset(select=-X) %>%
 +   mif2(Nmif=3,Np=100,
 +     times="time",t0=0,
 +     params=c(sigma=5),

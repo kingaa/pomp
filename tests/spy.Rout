@@ -20,9 +20,12 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
-> pompExample(gompertz,envir=NULL) %>% extract2(1) -> po
+> gompertz() -> po
 > 
 > pomp(po,partrans=NULL,bob=3,
 +   covar=covariate_table(a=0:20,b=0:20,times="a")) -> po1
@@ -34,15 +37,15 @@ in ‘pomp’: the supplied covariate times do not embrace the data times: covar
 pomp object ‘po1’:
 
 - data:
-  - 101 records of 1 observable, recorded from t = 0 to 100 
+  - 100 records of 1 observable, recorded from t = 1 to 100 
   - summary of data:
        Y        
- Min.   :0.609  
- 1st Qu.:0.918  
- Median :1.136  
- Mean   :1.133  
- 3rd Qu.:1.297  
- Max.   :1.880  
+ Min.   :0.620  
+ 1st Qu.:0.943  
+ Median :1.106  
+ Mean   :1.134  
+ 3rd Qu.:1.325  
+ Max.   :2.012  
 
 - zero time, t0 = 0
 
@@ -82,7 +85,7 @@ pomp object ‘po1’:
   - dynamically loaded from: ‘pomp2’
 
 - parameter vector:
-    K     r sigma   tau   X.0 
+    K     r sigma   tau   X_0 
   1.0   0.1   0.1   0.1   1.0 
 - extra user-defined variables:  ‘bob’ 
 
@@ -99,15 +102,15 @@ in ‘pomp’: the supplied covariate times do not embrace the data times: covar
 pomp object ‘po2’:
 
 - data:
-  - 101 records of 1 observable, recorded from t = 0 to 100 
+  - 100 records of 1 observable, recorded from t = 1 to 100 
   - summary of data:
        Y        
- Min.   :0.609  
- 1st Qu.:0.918  
- Median :1.136  
- Mean   :1.133  
- 3rd Qu.:1.297  
- Max.   :1.880  
+ Min.   :0.620  
+ 1st Qu.:0.943  
+ Median :1.106  
+ Mean   :1.134  
+ 3rd Qu.:1.325  
+ Max.   :2.012  
 
 - zero time, t0 = 0
 
@@ -164,8 +167,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2018-09-06 08:17:35.293 -0400 */
-/* Salt: 52C3ACE810F7BC205C37423E */
+/* Time: 2018-09-16 08:13:29.348 -0400 */
+/* Salt: 524A8D0ACE615DFC58A00D22 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -216,9 +219,7 @@ R_RegisterCCallable("nancy", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
 }
 
 > 
-> pompExample(sir)
-newly created object(s):
- sir 
+> sir() -> sir
 > spy(sir)
 ==================
 pomp object ‘sir’:
@@ -227,12 +228,12 @@ pomp object ‘sir’:
   - 208 records of 1 observable, recorded from t = 0.0192 to 4 
   - summary of data:
     reports    
- Min.   :  98  
- 1st Qu.: 197  
- Median : 256  
- Mean   : 434  
- 3rd Qu.: 629  
- Max.   :1507  
+ Min.   :  87  
+ 1st Qu.: 167  
+ Median : 219  
+ Mean   : 426  
+ 3rd Qu.: 636  
+ Max.   :1678  
 
 - zero time, t0 = 0
 
@@ -283,22 +284,22 @@ pomp object ‘sir’:
   - defined by a C snippet in library ‘sir_source’
 
 - parameter vector:
-   gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
-2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
-     rho      S_0      I_0      R_0 
-6.00e-01 6.50e-02 1.00e-03 9.34e-01 
+   gamma       mu     iota    beta1    beta2    beta3  beta_sd      rho 
+2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 6.00e-01 
+     pop      S_0      I_0      R_0 
+2.10e+06 6.50e-02 1.00e-03 9.34e-01 
 
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2018-09-06 08:17:35.393 -0400 */
-/* Salt: 1129387D0455D99370CCCE43 */
+/* Time: 2018-09-16 08:13:29.418 -0400 */
+/* Salt: 292C0399818EB83A5AC63DBD */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
 
 
-    static int nbasis = 3; 
+      static int nbasis = 3; 
 
 
 /* C snippet: 'rinit' */
@@ -324,12 +325,12 @@ pomp object ‘sir’:
 void __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
 {
  
-    double m = pop/(S_0+I_0+R_0);
-    S = nearbyint(m*S_0);
-    I = nearbyint(m*I_0);
-    R = nearbyint(m*R_0);
-    cases = 0;
-    W = 0; 
+      double m = pop/(S_0+I_0+R_0);
+      S = nearbyint(m*S_0);
+      I = nearbyint(m*I_0);
+      R = nearbyint(m*R_0);
+      cases = 0;
+      W = 0; 
 }
 
 #undef gamma
@@ -374,37 +375,37 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t, double dt)
 {
  
-    int nrate = 6;
-    double rate[nrate];		  // transition rates
-    double trans[nrate];		// transition numbers
-    double beta;
-    double dW;
+        int nrate = 6;
+        double rate[nrate];		  // transition rates
+        double trans[nrate];		// transition numbers
+        double beta;
+        double dW;
 
-    beta = dot_product(nbasis,&beta1,&seas_1);
+        beta = dot_product(nbasis,&beta1,&seas_1);
 
-    // gamma noise, mean=dt, variance=(beta_sd^2 dt)
-    dW = rgammawn(beta_sd,dt);
+        // gamma noise, mean=dt, variance=(beta_sd^2 dt)
+        dW = rgammawn(beta_sd,dt);
 
-    // compute the transition rates
-    rate[0] = mu*pop;		// birth into susceptible class
-    rate[1] = (iota+beta*I*dW/dt)/pop; // force of infection
-    rate[2] = mu;			// death from susceptible class
-    rate[3] = gamma;	// recovery
-    rate[4] = mu;			// death from infectious class
-    rate[5] = mu; 		// death from recovered class
+        // compute the transition rates
+        rate[0] = mu*pop;		// birth into susceptible class
+        rate[1] = (iota+beta*I*dW/dt)/pop; // force of infection
+        rate[2] = mu;			// death from susceptible class
+        rate[3] = gamma;	// recovery
+        rate[4] = mu;			// death from infectious class
+        rate[5] = mu; 		// death from recovered class
 
-    // compute the transition numbers
-    trans[0] = rpois(rate[0]*dt);	// births are Poisson
-    reulermultinom(2,S,&rate[1],dt,&trans[1]);
-    reulermultinom(2,I,&rate[3],dt,&trans[3]);
-    reulermultinom(1,R,&rate[5],dt,&trans[5]);
+        // compute the transition numbers
+        trans[0] = rpois(rate[0]*dt);	// births are Poisson
+        reulermultinom(2,S,&rate[1],dt,&trans[1]);
+        reulermultinom(2,I,&rate[3],dt,&trans[3]);
+        reulermultinom(1,R,&rate[5],dt,&trans[5]);
 
-    // balance the equations
-    S += trans[0]-trans[1]-trans[2];
-    I += trans[1]-trans[3]-trans[4];
-    R += trans[3]-trans[5];
-    cases += trans[3];		// cases are cumulative recoveries
-    if (beta_sd > 0.0)  W += (dW-dt)/beta_sd; 
+        // balance the equations
+        S += trans[0]-trans[1]-trans[2];
+        I += trans[1]-trans[3]-trans[4];
+        R += trans[3]-trans[5];
+        cases += trans[3];		// cases are cumulative recoveries
+        if (beta_sd > 0.0)  W += (dW-dt)/beta_sd; 
 }
 
 #undef gamma
@@ -450,12 +451,12 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, con
 void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
-    double mean, sd;
-    double rep;
-    mean = cases*rho;
-    sd = sqrt(cases*rho*(1-rho));
-    rep = nearbyint(rnorm(mean,sd));
-    reports = (rep > 0) ? rep : 0; 
+      double mean, sd;
+      double rep;
+      mean = cases*rho;
+      sd = sqrt(cases*rho*(1-rho));
+      rep = nearbyint(rnorm(mean,sd));
+      reports = (rep > 0) ? rep : 0; 
 }
 
 #undef gamma
@@ -503,16 +504,16 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
-    double mean, sd;
-    double f;
-    mean = cases*rho;
-    sd = sqrt(cases*rho*(1-rho));
-    if (reports > 0) {
+      double mean, sd;
+      double f;
+      mean = cases*rho;
+      sd = sqrt(cases*rho*(1-rho));
+      if (reports > 0) {
       f = pnorm(reports+0.5,mean,sd,1,0)-pnorm(reports-0.5,mean,sd,1,0);
-    } else {
+      } else {
       f = pnorm(reports+0.5,mean,sd,1,0);
-    }
-    lik = (give_log) ? log(f) : f; 
+      }
+      lik = (give_log) ? log(f) : f; 
 }
 
 #undef gamma
@@ -564,10 +565,10 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 {
  
-      int k;
-      const double *BETA = &beta1;
-      double *TBETA = &T_beta1;
-      for (k = 0; k < nbasis; k++) TBETA[k] = log(BETA[k]);
+        int k;
+        const double *BETA = &beta1;
+        double *TBETA = &T_beta1;
+        for (k = 0; k < nbasis; k++) TBETA[k] = log(BETA[k]);
 	T_gamma = log(gamma);
 	T_mu = log(mu);
 	T_iota = log(iota);
@@ -628,10 +629,10 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 {
  
-      int k;
-      const double *TBETA = &T_beta1;
-      double *BETA = &beta1;
-      for (k = 0; k < nbasis; k++) BETA[k] = exp(TBETA[k]);
+        int k;
+        const double *TBETA = &T_beta1;
+        double *BETA = &beta1;
+        for (k = 0; k < nbasis; k++) BETA[k] = exp(TBETA[k]);
 	gamma = exp(T_gamma);
 	mu = exp(T_mu);
 	iota = exp(T_iota);
@@ -692,36 +693,36 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
-    int nrate = 6;
-    double rate[nrate];		  // transition rates
-    double term[nrate];		// terms in the equations
-    double beta;
-    double dW;
+      int nrate = 6;
+      double rate[nrate];		  // transition rates
+      double term[nrate];		// terms in the equations
+      double beta;
+      double dW;
 
-    beta = dot_product(nbasis,&beta1,&seas_1);
+      beta = dot_product(nbasis,&beta1,&seas_1);
 
-    // compute the transition rates
-    rate[0] = mu*pop;		// birth into susceptible class
-    rate[1] = (iota+beta*I)/pop; // force of infection
-    rate[2] = mu;			// death from susceptible class
-    rate[3] = gamma;	// recovery
-    rate[4] = mu;			// death from infectious class
-    rate[5] = mu; 		// death from recovered class
+      // compute the transition rates
+      rate[0] = mu*pop;		// birth into susceptible class
+      rate[1] = (iota+beta*I)/pop; // force of infection
+      rate[2] = mu;			// death from susceptible class
+      rate[3] = gamma;	// recovery
+      rate[4] = mu;			// death from infectious class
+      rate[5] = mu; 		// death from recovered class
 
-    // compute the several terms
-    term[0] = rate[0];
-    term[1] = rate[1]*S;
-    term[2] = rate[2]*S;
-    term[3] = rate[3]*I;
-    term[4] = rate[4]*I;
-    term[5] = rate[5]*R;
+      // compute the several terms
+      term[0] = rate[0];
+      term[1] = rate[1]*S;
+      term[2] = rate[2]*S;
+      term[3] = rate[3]*I;
+      term[4] = rate[4]*I;
+      term[5] = rate[5]*R;
 
-    // balance the equations
-    DS = term[0]-term[1]-term[2];
-    DI = term[1]-term[3]-term[4];
-    DR = term[3]-term[5];
-    Dcases = term[3];		// accumulate the new I->R transitions
-    DW = 0;			// no noise, so no noise accumulation 
+      // balance the equations
+      DS = term[0]-term[1]-term[2];
+      DI = term[1]-term[3]-term[4];
+      DR = term[3]-term[5];
+      Dcases = term[3];		// accumulate the new I->R transitions
+      DW = 0;			// no noise, so no noise accumulation 
 }
 
 #undef gamma
@@ -768,9 +769,7 @@ R_RegisterCCallable("sir_source", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
 }
 
 > 
-> pompExample(rw2)
-newly created object(s):
- rw2 
+> rw2() -> rw2
 > spy(rw2)
 ==================
 pomp object ‘rw2’:
@@ -779,12 +778,12 @@ pomp object ‘rw2’:
   - 100 records of 2 observables, recorded from t = 1 to 100 
   - summary of data:
        y1               y2        
- Min.   :-12.73   Min.   :-19.67  
- 1st Qu.:-10.11   1st Qu.: -4.73  
- Median : -8.10   Median :  8.28  
- Mean   : -6.84   Mean   :  4.09  
- 3rd Qu.: -4.01   3rd Qu.: 12.67  
- Max.   :  2.83   Max.   : 23.63  
+ Min.   :-16.93   Min.   :-13.86  
+ 1st Qu.:-11.45   1st Qu.: -4.57  
+ Median : -4.15   Median : -1.74  
+ Mean   : -5.81   Mean   : -0.92  
+ 3rd Qu.: -1.30   3rd Qu.:  3.07  
+ Max.   :  3.50   Max.   : 10.26  
 
 - zero time, t0 = 0
 
@@ -813,14 +812,14 @@ pomp object ‘rw2’:
 - deterministic skeleton: <default>
 
 - parameter vector:
-x1.0 x2.0   s1   s2  tau 
+x1_0 x2_0   s1   s2  tau 
    0    0    1    3    1 
 
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2018-09-06 08:17:35.690 -0400 */
-/* Salt: 12F5E7EF54D296EF42D63DD3 */
+/* Time: 2018-09-16 08:13:29.719 -0400 */
+/* Salt: 0396E4BBDEBB4A481FCDAFDC */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -863,7 +862,7 @@ void __pomp_dproc (double *__loglik, const double *__x1, const double *__x2, dou
  
         double sdt = sqrt(t_2 - t_1);
         loglik = dnorm(x1_2,x1_1,s1*sdt,1)+
-          dnorm(x2_2,x2_1,s2*sdt,1); 
+        dnorm(x2_2,x2_1,s2*sdt,1); 
 }
 
 #undef s1
@@ -888,7 +887,7 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 {
  
         y1 = rnorm(x1,tau);
-        y2 = rnorm(x1,tau); 
+        y2 = rnorm(x2,tau); 
 }
 
 #undef s1
@@ -942,23 +941,21 @@ R_RegisterCCallable("rw2_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
 }
 
 > 
-> pompExample(sir2)
-newly created object(s):
- sir2 
+> sir2() -> sir2
 > spy(sir2)
 ==================
 pomp object ‘sir2’:
 
 - data:
-  - 521 records of 1 observable, recorded from t = 0 to 10 
+  - 120 records of 1 observable, recorded from t = 0.0833 to 10 
   - summary of data:
-    reports     
- Min.   :  0.0  
- 1st Qu.:  4.0  
- Median : 10.0  
- Mean   : 23.7  
- 3rd Qu.: 40.0  
- Max.   :120.0  
+    reports   
+ Min.   :  0  
+ 1st Qu.:  5  
+ Median : 17  
+ Mean   :108  
+ 3rd Qu.:150  
+ Max.   :985  
 
 - zero time, t0 = 0
 
@@ -1016,22 +1013,21 @@ variable birth susc.death infection inf.death recovery recov.death
   - defined by a C snippet in library ‘sir2_source’
 
 - parameter vector:
-   gamma       mu     iota    beta1    beta2    beta3      rho      S_0 
-2.40e+01 1.43e-02 1.00e-01 3.30e+02 4.10e+02 4.90e+02 1.00e-01 5.00e-02 
-     I_0      R_0      pop  beta.sd 
-1.00e-04 9.50e-01 1.00e+06 0.00e+00 
+   gamma       mu     iota      rho    beta1    beta2    beta3      S_0 
+2.40e+01 1.43e-02 1.00e-01 1.00e-01 3.30e+02 4.10e+02 4.90e+02 5.00e-02 
+     I_0      R_0      pop 
+1.00e-04 9.50e-01 1.00e+06 
 
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2018-09-06 08:17:35.913 -0400 */
-/* Salt: C7A49D31EA1355ED701E39DD */
+/* Time: 2018-09-16 08:13:29.942 -0400 */
+/* Salt: 29534C38A15FBA4A5806F590 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
 
-
-      static int nbasis = 3; 
+static int nbasis = 3; 
 
 
 /* C snippet: 'rinit' */
@@ -1043,10 +1039,9 @@ variable birth susc.death infection inf.death recovery recov.death
 #define beta1		(__p[__parindex[5]])
 #define beta2		(__p[__parindex[6]])
 #define beta3		(__p[__parindex[7]])
-#define beta_sd		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[8]])
+#define I_0		(__p[__parindex[9]])
+#define R_0		(__p[__parindex[10]])
 #define seas_1		(__covars[__covindex[0]])
 #define seas_2		(__covars[__covindex[1]])
 #define seas_3		(__covars[__covindex[2]])
@@ -1059,13 +1054,13 @@ variable birth susc.death infection inf.death recovery recov.death
 void __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
 {
  
-    double m;
-    m = pop/(S_0+I_0+R_0);
-    S = nearbyint(m*S_0);
-    I = nearbyint(m*I_0);
-    N = nearbyint(pop);
-    R = nearbyint(m*R_0);
-    cases = 0; 
+      double m;
+      m = pop/(S_0+I_0+R_0);
+      S = nearbyint(m*S_0);
+      I = nearbyint(m*I_0);
+      N = nearbyint(pop);
+      R = nearbyint(m*R_0);
+      cases = 0; 
 }
 
 #undef gamma
@@ -1076,7 +1071,6 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 #undef beta1
 #undef beta2
 #undef beta3
-#undef beta_sd
 #undef S_0
 #undef I_0
 #undef R_0
@@ -1098,10 +1092,9 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 #define beta1		(__p[__parindex[5]])
 #define beta2		(__p[__parindex[6]])
 #define beta3		(__p[__parindex[7]])
-#define beta_sd		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[8]])
+#define I_0		(__p[__parindex[9]])
+#define R_0		(__p[__parindex[10]])
 #define seas_1		(__covars[__covindex[0]])
 #define seas_2		(__covars[__covindex[1]])
 #define seas_3		(__covars[__covindex[2]])
@@ -1114,9 +1107,7 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 double __pomp_ratefn (int j, double t, double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
 {
   double rate = 0.0;  
- 
-      double beta;
-    
+ double beta;
 switch (j) {
 case 1:
 {
@@ -1171,7 +1162,6 @@ break;
 #undef beta1
 #undef beta2
 #undef beta3
-#undef beta_sd
 #undef S_0
 #undef I_0
 #undef R_0
@@ -1193,10 +1183,9 @@ break;
 #define beta1		(__p[__parindex[5]])
 #define beta2		(__p[__parindex[6]])
 #define beta3		(__p[__parindex[7]])
-#define beta_sd		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[8]])
+#define I_0		(__p[__parindex[9]])
+#define R_0		(__p[__parindex[10]])
 #define seas_1		(__covars[__covindex[0]])
 #define seas_2		(__covars[__covindex[1]])
 #define seas_3		(__covars[__covindex[2]])
@@ -1210,7 +1199,7 @@ break;
 void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
-    reports = rbinom(cases,rho); 
+      reports = rbinom(cases,rho); 
 }
 
 #undef gamma
@@ -1221,7 +1210,6 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #undef beta1
 #undef beta2
 #undef beta3
-#undef beta_sd
 #undef S_0
 #undef I_0
 #undef R_0
@@ -1244,10 +1232,9 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #define beta1		(__p[__parindex[5]])
 #define beta2		(__p[__parindex[6]])
 #define beta3		(__p[__parindex[7]])
-#define beta_sd		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[8]])
+#define I_0		(__p[__parindex[9]])
+#define R_0		(__p[__parindex[10]])
 #define seas_1		(__covars[__covindex[0]])
 #define seas_2		(__covars[__covindex[1]])
 #define seas_3		(__covars[__covindex[2]])
@@ -1262,7 +1249,7 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
-    lik = dbinom(reports,cases,rho,give_log); 
+      lik = dbinom(reports,cases,rho,give_log); 
 }
 
 #undef gamma
@@ -1273,7 +1260,6 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #undef beta1
 #undef beta2
 #undef beta3
-#undef beta_sd
 #undef S_0
 #undef I_0
 #undef R_0
@@ -1300,10 +1286,9 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #define beta1		(__p[__parindex[5]])
 #define beta2		(__p[__parindex[6]])
 #define beta3		(__p[__parindex[7]])
-#define beta_sd		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[8]])
+#define I_0		(__p[__parindex[9]])
+#define R_0		(__p[__parindex[10]])
 #define T_gamma		(__pt[__parindex[0]])
 #define T_mu		(__pt[__parindex[1]])
 #define T_iota		(__pt[__parindex[2]])
@@ -1312,17 +1297,15 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #define T_beta1		(__pt[__parindex[5]])
 #define T_beta2		(__pt[__parindex[6]])
 #define T_beta3		(__pt[__parindex[7]])
-#define T_beta_sd		(__pt[__parindex[8]])
-#define T_S_0		(__pt[__parindex[9]])
-#define T_I_0		(__pt[__parindex[10]])
-#define T_R_0		(__pt[__parindex[11]])
+#define T_S_0		(__pt[__parindex[8]])
+#define T_I_0		(__pt[__parindex[9]])
+#define T_R_0		(__pt[__parindex[10]])
 
 void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 {
  	T_gamma = log(gamma);
 	T_mu = log(mu);
 	T_iota = log(iota);
-	T_beta_sd = log(beta_sd);
 	T_beta1 = log(beta1);
 	T_beta2 = log(beta2);
 	T_beta3 = log(beta3);
@@ -1341,7 +1324,6 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 #undef beta1
 #undef beta2
 #undef beta3
-#undef beta_sd
 #undef S_0
 #undef I_0
 #undef R_0
@@ -1353,7 +1335,6 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 #undef T_beta1
 #undef T_beta2
 #undef T_beta3
-#undef T_beta_sd
 #undef T_S_0
 #undef T_I_0
 #undef T_R_0
@@ -1370,10 +1351,9 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 #define beta1		(__p[__parindex[5]])
 #define beta2		(__p[__parindex[6]])
 #define beta3		(__p[__parindex[7]])
-#define beta_sd		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[8]])
+#define I_0		(__p[__parindex[9]])
+#define R_0		(__p[__parindex[10]])
 #define T_gamma		(__pt[__parindex[0]])
 #define T_mu		(__pt[__parindex[1]])
 #define T_iota		(__pt[__parindex[2]])
@@ -1382,17 +1362,15 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 #define T_beta1		(__pt[__parindex[5]])
 #define T_beta2		(__pt[__parindex[6]])
 #define T_beta3		(__pt[__parindex[7]])
-#define T_beta_sd		(__pt[__parindex[8]])
-#define T_S_0		(__pt[__parindex[9]])
-#define T_I_0		(__pt[__parindex[10]])
-#define T_R_0		(__pt[__parindex[11]])
+#define T_S_0		(__pt[__parindex[8]])
+#define T_I_0		(__pt[__parindex[9]])
+#define T_R_0		(__pt[__parindex[10]])
 
 void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 {
  	gamma = exp(T_gamma);
 	mu = exp(T_mu);
 	iota = exp(T_iota);
-	beta_sd = exp(T_beta_sd);
 	beta1 = exp(T_beta1);
 	beta2 = exp(T_beta2);
 	beta3 = exp(T_beta3);
@@ -1411,7 +1389,6 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 #undef beta1
 #undef beta2
 #undef beta3
-#undef beta_sd
 #undef S_0
 #undef I_0
 #undef R_0
@@ -1423,7 +1400,6 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 #undef T_beta1
 #undef T_beta2
 #undef T_beta3
-#undef T_beta_sd
 #undef T_S_0
 #undef T_I_0
 #undef T_R_0
@@ -1437,10 +1413,9 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 #define beta1		(__p[__parindex[5]])
 #define beta2		(__p[__parindex[6]])
 #define beta3		(__p[__parindex[7]])
-#define beta_sd		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[8]])
+#define I_0		(__p[__parindex[9]])
+#define R_0		(__p[__parindex[10]])
 #define seas_1		(__covars[__covindex[0]])
 #define seas_2		(__covars[__covindex[1]])
 #define seas_3		(__covars[__covindex[2]])
@@ -1458,32 +1433,32 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
-      int nrate = 6;
-      double rate[nrate];
-      double term[nrate];
-      double beta;
+        int nrate = 6;
+        double rate[nrate];
+        double term[nrate];
+        double beta;
 
-      beta = dot_product(nbasis,&beta1,&seas_1);
+        beta = dot_product(nbasis,&beta1,&seas_1);
 
-      rate[0] = mu*pop;
-      rate[1] = (iota+beta*I)/pop;
-      rate[2] = mu;
-      rate[3] = gamma;
-      rate[4] = mu;
-      rate[5] = mu;
+        rate[0] = mu*pop;
+        rate[1] = (iota+beta*I)/pop;
+        rate[2] = mu;
+        rate[3] = gamma;
+        rate[4] = mu;
+        rate[5] = mu;
 
-      term[0] = rate[0];
-      term[1] = rate[1]*S;
-      term[2] = rate[2]*S;
-      term[3] = rate[3]*I;
-      term[4] = rate[4]*I;
-      term[5] = rate[5]*R;
+        term[0] = rate[0];
+        term[1] = rate[1]*S;
+        term[2] = rate[2]*S;
+        term[3] = rate[3]*I;
+        term[4] = rate[4]*I;
+        term[5] = rate[5]*R;
 
-      DS = term[0]-term[1]-term[2];
-      DI = term[1]-term[3]-term[4];
-      DR = term[3]-term[5];
-      DN = term[0]-term[2]-term[4]-term[5];
-      Dcases = term[3]; 
+        DS = term[0]-term[1]-term[2];
+        DI = term[1]-term[3]-term[4];
+        DR = term[3]-term[5];
+        DN = term[0]-term[2]-term[4]-term[5];
+        Dcases = term[3]; 
 }
 
 #undef gamma
@@ -1494,7 +1469,6 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int
 #undef beta1
 #undef beta2
 #undef beta3
-#undef beta_sd
 #undef S_0
 #undef I_0
 #undef R_0

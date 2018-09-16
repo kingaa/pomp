@@ -98,7 +98,9 @@ dt {
 
 - [Package NEWS](https://kingaa.github.io/pomp/NEWS.html)
 
-- [Package manual](https://kingaa.github.io/manuals/pomp2.pdf)
+- [Package manual](https://kingaa.github.io/manuals/pomp.pdf)
+
+- Vignette: [Upgrading to **pomp** version 2](./upgrading.html)
 
 - Vignette: [Model implementation using **R** functions vs C snippets](./R_v_C.html)
 

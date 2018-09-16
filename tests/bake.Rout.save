@@ -20,6 +20,9 @@ Type 'q()' to quit R.
 > ### test of reproducibility utilities
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > options(digits=2)
 > 
 > set.seed(5499)
@@ -51,10 +54,7 @@ Type 'q()' to quit R.
 > rm(.Random.seed)
 > stew({y4 <- runif(4)},file=file.path(tempdir(),"stew3.rds"),seed=59566)
 > 
-> pompExample(sir2)
-newly created object(s):
- sir2 
-> window(sir2,end=0.5) -> po
+> window(sir2(),end=0.5) -> po
 > simulate(po,seed=1347484107L) -> x
 > freeze(simulate(po),seed=1347484107L) -> y
 > attr(y,"seed") <- NULL

@@ -1,6 +1,6 @@
 library(pomp2)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 set.seed(995868671L)
 
 theta1 <- coef(gompertz)
@@ -68,6 +68,6 @@ stopifnot(
   }
 )
 
-pompExample(ou2)
+ou2() -> ou2
 pp <- parmat(coef(ou2),10)
 stopifnot(all.equal(partrans(ou2,partrans(ou2,pp,dir="to"),dir="from"),pp))

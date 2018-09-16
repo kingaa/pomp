@@ -2,7 +2,7 @@ library(pomp2)
 library(magrittr)
 set.seed(807969746L)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 rinit(gompertz)
 rinit(gompertz,params=coef(gompertz))
 
@@ -42,7 +42,7 @@ try({
     rinit(params=pp)
 })
 
-pompExample(sir)
+sir() -> sir
 try(sir %>% simulate(rinit=NULL))
 sir %>%
   pomp(rinit=function(seas_1,...)

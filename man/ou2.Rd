@@ -4,37 +4,57 @@
 \name{ou2}
 \alias{ou2}
 \title{Two-dimensional discrete-time Ornstein-Uhlenbeck process}
+\usage{
+ou2(alpha_1 = 0.8, alpha_2 = -0.5, alpha_3 = 0.3, alpha_4 = 0.9,
+  sigma_1 = 3, sigma_2 = -0.5, sigma_3 = 2, tau = 1, x1_0 = -3,
+  x2_0 = 4, times = 1:100, t0 = 0)
+}
+\arguments{
+\item{alpha_1, alpha_2, alpha_3, alpha_4}{entries of the \eqn{alpha} matrix, in column-major order.
+That is, \code{alpha_2} is in the lower-left position.}
+
+\item{sigma_1, sigma_2, sigma_3}{entries of the lower-triangular \eqn{sigma} matrix.
+\code{sigma_2} is the entry in the lower-left position.}
+
+\item{tau}{measurement error s.d.}
+
+\item{x1_0, x2_0}{latent variable values at time \code{t0}}
+
+\item{times}{vector of observation times}
+
+\item{t0}{the zero time}
+}
+\value{
+A \sQuote{pomp} object with simulated data.
+}
 \description{
-\code{ou2} is a \sQuote{pomp} object encoding a bivariate discrete-time
-Ornstein-Uhlenbeck process.
+\code{ou2()} constructs a \sQuote{pomp} object encoding a bivariate discrete-time Ornstein-Uhlenbeck process with noisy observations.
 }
 \details{
-If the state process is \eqn{X(t) = (x_{1}(t),x_{2}(t))}, then \deqn{X(t+1)
-= \alpha X(t) + \sigma \epsilon(t),} where \eqn{\alpha} and \eqn{\sigma}
-are 2x2 matrices, \eqn{\sigma} is lower-triangular, and \eqn{\epsilon(t)}
-is standard bivariate normal.  The observation process is \eqn{Y(t) =
-(y_1(t),y_2(t))}, where \eqn{y_i(t) \sim \mathrm{normal}(x_i(t),\tau)}.
-The functions \code{rprocess}, \code{dprocess}, \code{rmeasure},
-\code{dmeasure}, and \code{skeleton} are implemented using compiled C code
-for computational speed: see the source code for details.
+If the state process is \eqn{X(t) = (x_{1}(t),x_{2}(t))}, then
+\deqn{X(t+1) = \alpha X(t) + \sigma \epsilon(t),}
+where \eqn{\alpha} and \eqn{\sigma} are 2x2 matrices,
+\eqn{\sigma} is lower-triangular, and
+\eqn{\epsilon(t)} is standard bivariate normal.
+The observation process is \eqn{Y(t) = (y_1(t),y_2(t))}, where
+\eqn{y_i(t) \sim \mathrm{normal}(x_i(t),\tau)}.
 }
 \examples{
 
-pompExample(ou2)
-plot(ou2)
-coef(ou2)
-x <- simulate(ou2)
+plot(ou2())
+coef(ou2())
+x <- simulate(ou2())
 plot(x)
-pf <- pfilter(ou2,Np=1000)
+pf <- pfilter(ou2(),Np=1000)
 logLik(pf)
 
 }
 \seealso{
 Other pomp examples: \code{\link{blowflies}},
   \code{\link{dacca}}, \code{\link{gompertz}},
-  \code{\link{measles}}, \code{\link{pompExample}},
-  \code{\link{ricker}}, \code{\link{rw2}},
-  \code{\link{sir_models}}
+  \code{\link{measles}}, \code{\link{ricker}},
+  \code{\link{rw2}}, \code{\link{sir_models}},
+  \code{\link{verhulst}}
 }
 \concept{pomp examples}
 \keyword{datasets}

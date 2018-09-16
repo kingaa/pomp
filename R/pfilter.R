@@ -66,8 +66,7 @@
 ##'
 ##' @examples
 ##'
-##' pompExample(gompertz)
-##' pf <- pfilter(gompertz,Np=1000)	## use 1000 particles
+##' pf <- pfilter(gompertz(),Np=1000)	## use 1000 particles
 ##' plot(pf)
 ##' logLik(pf)
 ##' cond.logLik(pf)			## conditional log-likelihoods

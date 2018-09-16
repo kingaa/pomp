@@ -6,9 +6,7 @@ library(magrittr)
 
 set.seed(857075216L)
 
-pompExample(gompertz,envir=NULL) -> po
-
-po <- window(po[[1]],end=10)
+gompertz() %>% window(end=10) -> po
 
 prop1 <- mvn.diag.rw(c(r=0.01,sigma=0.01))
 
@@ -32,7 +30,7 @@ try(pmcmc(po,proposal=prop1,Np=NA))
 try(pmcmc(po,proposal=prop1,Np=c(1,2,3)))
 try(pmcmc(po,proposal=prop1,Np=-5))
 pmcmc(po,proposal=prop1,Np=1)
-pmcmc(po,proposal=prop1,Np=rep(1,12))
+pmcmc(po,proposal=prop1,Np=rep(1,11))
 try(pmcmc(po,proposal=prop1,Np=function(k)10*k))
 pmcmc(po,proposal=prop1,Np=function(k)10*k+10)
 
@@ -97,7 +95,7 @@ capture.output(invisible(pmcmc(mcmc1,Nmcmc=10,verbose=TRUE))) -> out
 stopifnot(sum(grepl("acceptance ratio",out))==10)
 stopifnot(sum(grepl("PMCMC iteration",out))==11)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 
 set.seed(857075216L)
 

@@ -2,21 +2,18 @@
 
 ## For pomp 2:
 
-- ~~Put indexing codes into pomp_fun (at C level), and trigger with 'gnsi = TRUE'.~~
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - manual pages on the organization of the package
     - estimation algorithms
     - diagnostic tools
-    - elementary operations: pfilter, probe, simulate, trajectory
+    - elementary operations: pfilter, probe, simulate, spect
     - workhorses
     - auxiliary functions
-    - optimization routines
     - plotting methods
     - parallelization tools
     - reproducibility tools
     - extending the package
 - make R-level functions for various distributions and transformations
-	- `dmultinom`
 	- BetaBinom
 	- BetaNegBinom
 - remove need to specify paramnames when log,logit,barycentric partrans is given?
@@ -42,12 +39,11 @@
 - documentation on `mifList`, `pmcmcList`, etc.?
 - methods to change data (`obs<-`)?
 	- perhaps recognized data variables, states, covariates in calls to `pomp` are replaced?
-- put Kalman check in 'gompertz' test: **is it correct?**
 - put Kalman check in 'ou2' test
 - MCMC proposals as pomp slots?
 - probes as pomp slots?
+- more/better examples
 - what does a generic `pomp.fun` interface look like?
-- more/better demos and examples
 - should parameter transformations allow renaming of variables?
 	- would require attention to `rw.sd`, e.g.
 

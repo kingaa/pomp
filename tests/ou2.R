@@ -3,7 +3,7 @@ png(filename="ou2-%02d.png",res=100)
 
 library(pomp2)
 
-pompExample(ou2)
+ou2() -> ou2
 
 set.seed(1438408329L)
 

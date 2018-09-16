@@ -41,11 +41,11 @@ try(NULL %>% pomp(times=1:10,t0=3))
 try(NULL %>% pomp(times=1:10,t0=1,rinit=3))
 stopifnot(NULL %>% pomp(times=1:10,t0=1) %>% class() %>% equals("pomp"))
 
-pompExample(gompertz,envir=NULL)[[1]] -> po
+gompertz() -> po
 stopifnot({
   po %>% pomp(rprocess=NULL) -> po1
   rprocess(po1,xstart=rinit(po1),times=time(po1),params=coef(po1)) -> x
-  sum(is.na(x))==101
+  sum(is.na(x))==100
 })
 
 po %>% pomp(rprocess=NULL) %>% slot("rprocess")
@@ -80,8 +80,7 @@ try(po %>% pomp(partrans="bob"))
 try(po %>% pomp(params=c(1,2,3)))
 try(po %>% pomp(params=c(a=1,b=2,3)))
 
-pompExample(sir,envir=NULL)[[1]] %>%
-  window(end=0.12) -> po2
+sir() %>% window(end=0.12) -> po2
 po2 %>% simulate(seed=4358686) %>% as.data.frame()
 pomp(po2,covar=NULL)@covar
 try(po2 %>% pomp(covar="bob"))

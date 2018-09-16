@@ -280,8 +280,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     warningcall(R_NilValue,"'rmeasure' unspecified: NAs generated.");
   }
 
-  break;
-
   }
 
   UNPROTECT(nprotect);

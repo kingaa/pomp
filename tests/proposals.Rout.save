@@ -20,12 +20,12 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
-> pompExample("ou2")
-newly created object(s):
- ou2 
-> ou2 -> po
+> ou2() -> po
 > 
 > set.seed(1178744046L)
 > 
@@ -109,24 +109,24 @@ Error : in ‘mvn.rw.adaptive’: ‘target’ must be a number in (0,1).
 In addition: Warning message:
 In mvn.rw.adaptive(rw.var = cmat, scale.start = 1000, scale.cooling = 0.2,  :
   NAs introduced by coercion
-> mvn.rw.adaptive(rw.sd=c(alpha.1=0.1,alpha.3=0.0),
+> mvn.rw.adaptive(rw.sd=c(alpha_1=0.1,alpha_3=0.0),
 +   scale.start=5,scale.cooling=0.1,shape.start=10) -> f1
-> f1(c(alpha.1=1,alpha.3=1),.n=100,.accepts=1000,verbose=FALSE)
-alpha.1 alpha.3 
+> f1(c(alpha_1=1,alpha_3=1),.n=100,.accepts=1000,verbose=FALSE)
+alpha_1 alpha_3 
       1       1 
 Warning messages:
 1: In chol.default(covmat, pivot = TRUE) :
   the matrix is either rank-deficient or indefinite
 2: in ‘mvn.rw.adaptive’: degenerate proposal. 
 > 
-> mvn.rw.adaptive(rw.sd=c(alpha.1=0.1,alpha.3=0.1),
+> mvn.rw.adaptive(rw.sd=c(alpha_1=0.1,alpha_3=0.1),
 +   scale.start=5,scale.cooling=0.1,shape.start=10) -> f
 > options(verbose=TRUE) -> op
 > capture.output(po %>% pmcmc(Nmcmc=200,Np=100,proposal=f) -> mcmc1) -> out
 > stopifnot(sum(grepl("proposal covariance matrix:",out))==200)
 > evalq(covmat.emp,envir=environment(f))
-          alpha.1   alpha.3
-alpha.1  0.004410 -0.000788
-alpha.3 -0.000788  0.004179
+         alpha_1  alpha_3
+alpha_1  0.00140 -0.00125
+alpha_3 -0.00125  0.00194
 > options(op)
 > 

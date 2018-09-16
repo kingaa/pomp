@@ -21,9 +21,12 @@ Type 'q()' to quit R.
 > png(filename="blowflies-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > 
 > capture.output(
-+   pompExample(blowflies,envir=NULL) -> flies,
++   list(blowflies1(),blowflies2()) -> flies,
 +   type="message") -> out
 > stopifnot(
 +   sum(grepl("unrecognized argument",out))==2,
@@ -57,16 +60,18 @@ variable [,1]
      eps    0
 > coef(flies[[1]])
        P    delta       N0  sigma.P  sigma.d  sigma.y 
-  3.2838   0.1607 679.9369   1.3512   0.7468   0.0266 
+  3.2838   0.1607 679.9400   1.3512   0.7468   0.0266 
 > plot(simulate(flies[[1]],seed=599688L),var=c("y","R","S","N15"))
-> pf<- freeze(pfilter(flies[[1]],Np=1000),seed=599688L)
+> pf <- freeze(pfilter(flies[[1]],Np=1000),seed=599688L)
 > plot(pf)
 > stopifnot(
-+   partrans(
-+     flies[[1]],
-+     partrans(flies[[1]],dir="to",coef(flies[[1]])),
-+     dir="from"
-+   )==coef(flies[[1]]
++   all.equal(
++     partrans(
++       flies[[1]],
++       partrans(flies[[1]],dir="to",coef(flies[[1]])),
++       dir="from"
++     ),
++     coef(flies[[1]])
 +   )
 + )
 > 
@@ -89,16 +94,19 @@ variable [,1]
      eps    0
 > coef(flies[[2]])
        P    delta       N0  sigma.P  sigma.d  sigma.y 
-  2.7319   0.1738 800.3107   1.4420   0.7603   0.0108 
+  2.7319   0.1738 800.3100   1.4420   0.7603   0.0108 
 > plot(simulate(flies[[2]],seed=599688L),var=c("y","R","S","N8"))
 > pf <- freeze(pfilter(flies[[2]],Np=1000),seed=599688L)
 > plot(pf)
 > stopifnot(
-+   partrans(
-+     flies[[2]],
-+     partrans(flies[[2]],dir="to",coef(flies[[2]])),
-+     dir="from"
-+   )==coef(flies[[2]]
++   all.equal(
++     partrans(
++       flies[[2]],
++       partrans(flies[[2]],dir="to",coef(flies[[2]])),
++       dir="from"
++     ),
++     coef(flies[[2]]
++     )
 +   )
 + )
 > 

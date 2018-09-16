@@ -3,7 +3,7 @@ png(filename="sir2-%02d.png",res=100)
 
 library(pomp2)
 
-pompExample(sir2)
+sir2() -> sir2
 
 set.seed(48832734L)
 

@@ -21,17 +21,19 @@ Type 'q()' to quit R.
 > png(filename="kalman2-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
 > set.seed(1968726372)
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
+> gompertz() -> po
 > 
-> gompertz %>%
+> po %>%
 +   window(start=1,end=30) %>%
-+   as.data.frame() -> dat
++   as.data.frame() %>%
++   subset(select=-X) -> dat
 > 
 > try(dat %>% enkf())
 Error : in ‘enkf’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
@@ -72,9 +74,9 @@ Error : in ‘eakf’: ‘times’ should either be a numeric vector of observat
 +     C=0.01
 +   ) %>% plot()
 > 
-> try(gompertz %>% enkf(rprocess=NULL))
+> try(po %>% enkf(rprocess=NULL))
 Error : in ‘enkf’: ‘rprocess’ is a needed basic component.
-> try(gompertz %>% eakf(rprocess=NULL))
+> try(po %>% eakf(rprocess=NULL))
 Error : in ‘eakf’: ‘rprocess’ is a needed basic component.
 > 
 > dev.off()

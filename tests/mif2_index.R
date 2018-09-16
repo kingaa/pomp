@@ -3,7 +3,7 @@ options(digits=3)
 library(pomp2)
 library(magrittr)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 
 set.seed(1481104436)
 

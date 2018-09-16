@@ -4,7 +4,7 @@ png(filename="spect-%02d.png",res=100)
 library(pomp2)
 library(magrittr)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 set.seed(362083261L)
 
 sp <- spect(gompertz,kernel.width=3,nsim=100,seed=838775L)

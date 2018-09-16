@@ -21,11 +21,12 @@ Type 'q()' to quit R.
 > png(filename="probe-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
+> gompertz() -> gompertz
 > 
 > set.seed(234501470L)
 > 
@@ -46,9 +47,9 @@ newly created object(s):
 
 |   |  mean|    sd| marg.1| marg.2| marg.3| acf.1.Y| acf.3.Y| acf.5.Y|   25%|  75%|.id  |
 |:--|-----:|-----:|------:|------:|------:|-------:|-------:|-------:|-----:|----:|:----|
-|0  | 1.054| 0.127|  1.000|  0.000|  0.000|   0.728|   0.547|   0.486| 0.918| 1.30|data |
-|1  | 0.978| 0.127|  0.904|  0.172| -0.296|   0.774|   0.671|   0.483| 0.803| 1.14|sim  |
-|2  | 1.017| 0.109|  1.084|  0.338| -0.166|   0.550|   0.399|   0.278| 0.865| 1.23|sim  |
+|0  | 1.056| 0.126|  1.000|  0.000|  0.000|   0.742|   0.586|   0.515| 0.943| 1.32|data |
+|1  | 0.978| 0.127|  0.757|  0.126|  0.537|   0.814|   0.633|   0.496| 0.800| 1.12|sim  |
+|2  | 1.014| 0.105|  0.668|  0.074|  3.124|   0.640|   0.455|   0.279| 0.885| 1.21|sim  |
 Warning message:
 ‘values’ is deprecated and will be removed in a forthcoming release.  Please use ‘as.data.frame’ instead. 
 > pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
@@ -56,12 +57,12 @@ Warning message:
 
 |   |  mean|    sd| marg.1| marg.2| marg.3| acf.1.Y| acf.3.Y| acf.5.Y|   25%|  75%|.id  |
 |:--|-----:|-----:|------:|------:|------:|-------:|-------:|-------:|-----:|----:|:----|
-|0  | 1.054| 0.127|  1.000|  0.000|  0.000|   0.728|   0.547|   0.486| 0.918| 1.30|data |
-|1  | 0.978| 0.127|  0.904|  0.172| -0.296|   0.774|   0.671|   0.483| 0.803| 1.14|sim  |
-|2  | 1.017| 0.109|  1.084|  0.338| -0.166|   0.550|   0.399|   0.278| 0.865| 1.23|sim  |
+|0  | 1.056| 0.126|  1.000|  0.000|  0.000|   0.742|   0.586|   0.515| 0.943| 1.32|data |
+|1  | 0.978| 0.127|  0.757|  0.126|  0.537|   0.814|   0.633|   0.496| 0.800| 1.12|sim  |
+|2  | 1.014| 0.105|  0.668|  0.074|  3.124|   0.640|   0.455|   0.279| 0.885| 1.21|sim  |
 > summary(pb)
 $coef
-    K     r sigma   tau   X.0 
+    K     r sigma   tau   X_0 
   1.0   0.1   0.1   0.1   1.0 
 
 $nsim
@@ -69,14 +70,14 @@ $nsim
 
 $quantiles
    mean      sd  marg.1  marg.2  marg.3 acf.1.Y acf.3.Y acf.5.Y     25%     75% 
-  0.844   0.728   0.764   0.166   0.428   0.626   0.582   0.762   0.740   0.822 
+  0.840   0.718   0.946   0.446   0.038   0.664   0.670   0.814   0.826   0.874 
 
 $pvals
    mean      sd  marg.1  marg.2  marg.3 acf.1.Y acf.3.Y acf.5.Y     25%     75% 
-  0.315   0.547   0.475   0.335   0.858   0.750   0.838   0.479   0.523   0.359 
+ 0.3234  0.5669  0.1118  0.8942  0.0798  0.6747  0.6627  0.3752  0.3513  0.2555 
 
 $synth.loglik
-[1] 17.2
+[1] 15.4
 
 > 
 > try(probe())
@@ -184,9 +185,7 @@ Error : in ‘probe’: ‘times’ should either be a numeric vector of observa
 +   )
 <object of class ‘probed_pomp’>
 > 
-> pompExample(ou2)
-newly created object(s):
- ou2 
+> ou2() -> ou2
 > ou2 %>% probe(nsim=100,probes=probe.ccf(c("y1","y2"),lags=c(-10,0,1))) %>% plot()
 > 
 > dev.off()

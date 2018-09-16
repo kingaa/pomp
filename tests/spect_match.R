@@ -4,13 +4,13 @@ png(filename="spect_match-%02d.png",res=100)
 library(pomp2)
 library(magrittr)
 
-pompExample(ou2)
+ou2() -> ou2
+ou2 %>% as.data.frame() %>% subset(select=c(time,y1,y2)) -> dat
 
-try(ou2 %>% as.data.frame() %>% spect.match.objfun())
-try(ou2 %>% as.data.frame() %>% spect.match.objfun(times="time",t0=0))
+try(dat %>% spect.match.objfun())
+try(dat %>% spect.match.objfun(times="time",t0=0))
 
-ou2 %>%
-  as.data.frame() %>%
+dat %>%
   spect.match.objfun(
     times="time",t0=0,
     rinit=ou2@rinit,
@@ -25,7 +25,7 @@ ou2 %>%
 stopifnot(f(0)==f(1))
 stopifnot(logLik(f)==-f(0))
 
-f %>% spect.match.objfun(est=c("alpha.1"),seed=580656309) -> f1
+f %>% spect.match.objfun(est=c("alpha_1"),seed=580656309) -> f1
 plot(sapply(seq(0.3,1.2,by=0.1),f1),log='y')
 
 f1(1.1)

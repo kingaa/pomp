@@ -21,10 +21,11 @@ Type 'q()' to quit R.
 > png(filename="dacca-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > 
-> pompExample(dacca)
-newly created object(s):
- dacca 
+> dacca() -> dacca
 > 
 > set.seed(1420306530L)
 > 

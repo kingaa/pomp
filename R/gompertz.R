@@ -1,7 +1,6 @@
 ##' Gompertz model with log-normal observations.
 ##'
-##' \code{gompertz} is a \sQuote{pomp} object encoding a stochastic Gompertz
-##' population model with log-normal measurement error.
+##' \code{gompertz()} constructs a \sQuote{pomp} object encoding a stochastic Gompertz population model with log-normal measurement error.
 ##'
 ##' The state process is \eqn{X_{t+1} = K^{1-S} X_{t}^S
 ##' \epsilon_{t}}{X[t+1]=K^(1-S) X[t]^S eps[t]}, where \eqn{S=e^{-r}}{S=e^{-r}}
@@ -18,11 +17,52 @@
 ##' @name gompertz
 ##' @docType data
 ##' @keywords models datasets
+##' @include simulate.R
 ##' @family pomp examples
+##'
+##' @return
+##' A \sQuote{pomp} object with simulated data.
+##'
 ##' @examples
 ##'
-##' pompExample(gompertz)
-##' plot(gompertz)
-##' coef(gompertz)
+##' plot(gompertz())
+##' plot(gompertz(K=2,r=0.01))
 ##'
 NULL
+
+##' @rdname gompertz
+##'
+##' @param r growth rate
+##' @param K carrying capacity
+##' @param sigma process noise intensity
+##' @param tau measurement error s.d.
+##' @param X_0 value of the latent state variable \code{X} at the zero time
+##' @param t0 zero time
+##' @param times observation times
+##'
+##' @export
+gompertz <- function (K = 1, r = 0.1, sigma = 0.1, tau = 0.1, X_0 = 1,
+  times = 1:100, t0 = 0)
+{
+
+  simulate(
+    times=times, t0=t0,
+    params=c(K=K,r=r,sigma=sigma,tau=tau,X_0=X_0),
+    partrans=parameter_trans(
+      toEst="_gompertz_to_trans",
+      fromEst="_gompertz_from_trans"
+    ),
+    rprocess=discrete_time(
+      step.fun="_gompertz_simulator"
+    ),
+    rmeasure="_gompertz_normal_rmeasure",
+    dmeasure="_gompertz_normal_dmeasure",
+    skeleton=map("_gompertz_skeleton",delta.t=1),
+    PACKAGE="pomp2",
+    paramnames=c("r","K","sigma","tau","X_0"),
+    obsnames=c("Y"),
+    statenames=c("X"),
+    seed=299438676L
+  )
+
+}

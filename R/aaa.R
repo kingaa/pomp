@@ -1,14 +1,8 @@
 ##' @include pomp-package.R
 
 .onAttach <- function (...) {
-  exampleDir <- getOption("pomp.examples")
-  pompExampleDir <- system.file("examples",package="pomp2")
-  options(pomp.examples=c(exampleDir,pompExampleDir,recursive=TRUE))
-}
-
-.onDetach <- function (...) {
-  exampleDir <- getOption("pomp.examples")
-  pompExampleDir <- system.file("examples",package="pomp2")
-  exampleDir <- exampleDir[exampleDir!=pompExampleDir]
-  options(pomp.examples=exampleDir)
+  packageStartupMessage("Welcome to pomp version 2\n",
+    "For information on upgrading your pomp version < 2 code,\n",
+    "see the 'pomp version 2 upgrade guide' at ",
+    "https://kingaa.github.io/pomp/")
 }

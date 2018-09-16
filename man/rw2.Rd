@@ -4,26 +4,53 @@
 \name{rw2}
 \alias{rw2}
 \title{Two-dimensional random-walk process}
+\usage{
+rw2(x1_0 = 0, x2_0 = 0, s1 = 1, s2 = 3, tau = 1, times = 1:100,
+  t0 = 0)
+}
+\arguments{
+\item{x1_0, x2_0}{initial conditions (i.e., latent state variable values at the zero time \code{t0})}
+
+\item{s1, s2}{random walk intensities}
+
+\item{tau}{observation error s.d.}
+
+\item{times}{observation times}
+
+\item{t0}{zero time}
+}
+\value{
+A \sQuote{pomp} object containing simulated data.
+}
 \description{
-\code{rw2} is a \sQuote{pomp} object encoding a 2-D normal random walk.
+\code{rw2} constructs a \sQuote{pomp} object encoding a 2-D Gaussian random walk.
 }
 \details{
 The random-walk process is fully but noisily observed.
 }
 \examples{
 
-pompExample(rw2)
-plot(rw2)
-x <- simulate(rw2,nsim=10,seed=20348585L,params=c(x1.0=0,x2.0=0,s1=1,s2=3,tau=1))
-plot(x[[1]])
+library(magrittr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+rw2() \%>\% plot()
+
+rw2(s1=1,s2=1,tau=0.1) \%>\%
+  simulate(nsim=10,format="d") \%>\%
+  ggplot(aes(x=y1,y=y2,group=.id,color=.id))+
+  geom_path()+
+  guides(color=FALSE)+
+  theme_bw()
 
 }
 \seealso{
 Other pomp examples: \code{\link{blowflies}},
   \code{\link{dacca}}, \code{\link{gompertz}},
   \code{\link{measles}}, \code{\link{ou2}},
-  \code{\link{pompExample}}, \code{\link{ricker}},
-  \code{\link{sir_models}}
+  \code{\link{ricker}}, \code{\link{sir_models}},
+  \code{\link{verhulst}}
 }
 \concept{pomp examples}
 \keyword{datasets}

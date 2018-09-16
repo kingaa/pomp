@@ -3,7 +3,7 @@ png(filename="rw2-%02d.png",res=100)
 
 library(pomp2)
 
-pompExample(rw2)
+rw2() -> rw2
 
 set.seed(1438408329L)
 

@@ -20,6 +20,9 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
 > try(pomp2:::concat())
@@ -27,12 +30,8 @@ Error : ‘c’ is not defined for objects of mixed class.
 > try(pomp2:::concat("a","b"))
 Error : ‘c’ is not defined for objects of mixed class.
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
-> pompExample(ou2)
-newly created object(s):
- ou2 
+> gompertz() -> gompertz
+> ou2() -> ou2
 > pomp2:::concat(a=ou2,c(b=gompertz,c=ou2))
 $a
 <object of class ‘pomp’>

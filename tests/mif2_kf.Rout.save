@@ -20,19 +20,18 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
-> 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
 > 
 > set.seed(376098756)
 > 
-> gompertz %>% window(end=10) %>% simulate(seed=1176423047) -> po
+> gompertz() %>% window(end=10) %>% simulate(seed=1176423047) -> po
 > 
 > po %>%
 +   mif2(Nmif=100,Np=1000,cooling.fraction.50=0.4,cooling.type="geometric",
-+     rw.sd=rw.sd(sigma=0.02,r=0.02,X.0=ivp(0.05),tau=0.02)) %>%
++     rw.sd=rw.sd(sigma=0.02,r=0.02,X_0=ivp(0.05),tau=0.02)) %>%
 +   continue(Nmif=100) -> mf
 > replicate(n=10,mf %>% pfilter(Np=3000)) -> pfs
 > pfs %>% sapply(logLik) %>% logmeanexp(se=TRUE) -> pf.ll.mle
@@ -62,11 +61,11 @@ newly created object(s):
 > pomp2:::kalmanFilter(t,y,X0,A,Q,C,R) -> kf.mle
 > 
 > cat("likelihood at truth:",kf.truth$loglik-sum(y),"\n")
-likelihood at truth: 8.64 
+likelihood at truth: 6.74 
 > cat("pfilter likelihood at truth:",pf.ll.truth,"\n")
-pfilter likelihood at truth: 8.63 0.00955 
+pfilter likelihood at truth: 6.74 0.0158 
 > cat("likelihood at IF2 mle:",kf.mle$loglik-sum(y),"\n")
-likelihood at IF2 mle: 11.7 
+likelihood at IF2 mle: 8.03 
 > cat("pfilter likelihood at IF2 mle:",pf.ll.mle,"\n")
-pfilter likelihood at IF2 mle: 12.9 0.0137 
+pfilter likelihood at IF2 mle: 8.02 0.0172 
 > 

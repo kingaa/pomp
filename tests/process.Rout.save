@@ -20,10 +20,12 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
-> pompExample(ou2,envir=NULL) -> ou2
-> ou2[[1]] %>% window(end=10) -> po
+> ou2() %>% window(end=10) -> po
 > 
 > set.seed(293982095)
 > 
@@ -32,7 +34,7 @@ Type 'q()' to quit R.
 +   extract2("states") -> x
 > po %>% time() -> t
 > coef(po) %>% parmat(7) -> p
-> p["sigma.1",] <- seq(from=1,to=7,by=1)
+> p["sigma_1",] <- seq(from=1,to=7,by=1)
 > 
 > try(dprocess("ou2",x=x,times=t,params=p))
 Error : ‘dprocess’ is undefined for ‘object’ of class ‘character’.

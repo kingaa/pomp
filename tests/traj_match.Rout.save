@@ -21,11 +21,12 @@ Type 'q()' to quit R.
 > png(filename="traj_match-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
-> pompExample(ou2)
-newly created object(s):
- ou2 
+> ou2() -> ou2
 > 
 > try(traj.match.objfun())
 Error : in ‘traj.match.objfun’: ‘data’ is a required argument.
@@ -48,16 +49,16 @@ Error : in ‘traj.match.objfun’: ‘skeleton’, ‘dmeasure’ are needed ba
 > 
 > stopifnot(f(0)==f(1))
 > 
-> f %>% traj.match.objfun(est=c("alpha.1")) -> f1
+> f %>% traj.match.objfun(est=c("alpha_1")) -> f1
 > plot(sapply(seq(0.1,0.9,by=0.1),f1),xlab="",ylab="")
 > 
 > f1(1.1)
-[1] 4.1e+07
+[1] 40889714
 > matplot(t(trajectory(f1)[,1,]),type="l",ylab="y")
 > library(subplex)
 > subplex(fn=f1,par=0.4,control=list(reltol=1e-3)) -> out
 > f1(out$par)
-[1] 3057
+[1] 4826
 > 
 > try(traj.match.objfun(f1,est="harry"))
 Error : in ‘traj.match.objfun’: parameter ‘harry’ not found in ‘params’
@@ -65,7 +66,7 @@ Error : in ‘traj.match.objfun’: parameter ‘harry’ not found in ‘params
 > f1 %>% as("pomp")
 <object of class ‘pomp’>
 > f1 %>% as("data.frame") %>% names()
-[1] "time" "y1"   "y2"  
+[1] "time" "y1"   "y2"   "x1"   "x2"  
 > 
 > f1 %>% traj.match.objfun(fail.value=1e10) -> f2
 > f2(NA)

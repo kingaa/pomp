@@ -4,7 +4,7 @@ png(filename="traj_match-%02d.png",res=100)
 library(pomp2)
 library(magrittr)
 
-pompExample(ou2)
+ou2() -> ou2
 
 try(traj.match.objfun())
 try(traj.match.objfun("bob"))
@@ -23,7 +23,7 @@ ou2 %>%
 
 stopifnot(f(0)==f(1))
 
-f %>% traj.match.objfun(est=c("alpha.1")) -> f1
+f %>% traj.match.objfun(est=c("alpha_1")) -> f1
 plot(sapply(seq(0.1,0.9,by=0.1),f1),xlab="",ylab="")
 
 f1(1.1)

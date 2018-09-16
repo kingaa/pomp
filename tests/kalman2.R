@@ -6,11 +6,12 @@ library(magrittr)
 
 set.seed(1968726372)
 
-pompExample(gompertz)
+gompertz() -> po
 
-gompertz %>%
+po %>%
   window(start=1,end=30) %>%
-  as.data.frame() -> dat
+  as.data.frame() %>%
+  subset(select=-X) -> dat
 
 try(dat %>% enkf())
 
@@ -49,7 +50,7 @@ dat %>%
     C=0.01
   ) %>% plot()
 
-try(gompertz %>% enkf(rprocess=NULL))
-try(gompertz %>% eakf(rprocess=NULL))
+try(po %>% enkf(rprocess=NULL))
+try(po %>% eakf(rprocess=NULL))
 
 dev.off()

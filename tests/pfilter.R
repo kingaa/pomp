@@ -2,7 +2,7 @@ options(digits=3)
 
 library(pomp2)
 
-pompExample(ou2)
+ou2() -> ou2
 
 set.seed(9994847L)
 
@@ -42,7 +42,7 @@ try(pfilter(pf,Np=-1000))
 try(pfilter(pf,tol=-1))
 stopifnot(all.equal(coef(pf),coef(ou2)))
 theta <- coef(ou2)
-theta["alpha.2"] <- 0.1
+theta["alpha_2"] <- 0.1
 pf1 <- pfilter(pf,params=theta,Np=100)
 stopifnot(identical(coef(pf1),theta))
 
@@ -56,10 +56,10 @@ try(pfilter(pf2,Np=function(k)c(100,-150)))
 try(pfilter(pf2,Np="many"))
 
 theta <- coef(ou2)
-theta["sigma.2"] <- Inf
+theta["sigma_2"] <- Inf
 try(pfilter(pf,params=theta))
 theta <- coef(ou2)
-theta["alpha.1"] <- 1e60
+theta["alpha_1"] <- 1e60
 try(pfilter(pf,params=theta,pred.var=TRUE))
 
 try(pfilter(pf,rprocess=onestep(
@@ -68,9 +68,9 @@ try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 try(pfilter(pf,dmeasure=function(log,...) -Inf))
 
 set.seed(388966382L)
-capture.output(try(pfilter(pf,Np=2,max.fail=20,verbose=TRUE,filter.mean=TRUE)),
+capture.output(try(pfilter(pf,Np=2,max.fail=15,verbose=TRUE,filter.mean=TRUE)),
   type="message") -> out
-stopifnot(sum(grepl("filtering failure at",out))==21)
+stopifnot(sum(grepl("filtering failure at",out))==16)
 stopifnot(grepl("too many filtering failures",tail(out,1)))
 
 pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
@@ -91,6 +91,7 @@ try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
 
 ou2 %>%
   as.data.frame() %>%
+  subset(select=c(time,y1,y2)) %>%
   pfilter(
     times="time",t0=0,Np=500,
     params=list(x1_0=-3,x2_0=4),

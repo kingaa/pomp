@@ -3,18 +3,18 @@ png(filename="gompertz-%02d.png",res=100)
 
 library(pomp2)
 
-pompExample(gompertz)
+gompertz() -> po
 
 set.seed(1438408329L)
 
-rinit(gompertz)
-coef(gompertz)
+rinit(po)
+coef(po)
 
-stopifnot(all.equal(coef(gompertz),partrans(gompertz,coef(gompertz,transform=TRUE),dir="from")))
-plot(simulate(gompertz,seed=1438408329L))
-pf <- freeze(pfilter(gompertz,Np=1000),seed=1438408329L)
+stopifnot(all.equal(coef(po),partrans(po,coef(po,transform=TRUE),dir="from")))
+plot(simulate(po,seed=1438408329L))
+pf <- freeze(pfilter(po,Np=1000),seed=1438408329L)
 plot(pf)
-tj <- trajectory(gompertz,params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=3))
-plot(time(gompertz),tj[,,],type="l")
+tj <- trajectory(po,params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X_0=3))
+plot(time(po),tj[,,],type="l")
 
 dev.off()

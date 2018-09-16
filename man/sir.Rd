@@ -6,41 +6,63 @@
 \alias{sir}
 \alias{sir2}
 \title{Compartmental epidemiological models}
+\usage{
+sir(gamma = 26, mu = 0.02, iota = 0.01, beta1 = 400, beta2 = 480,
+  beta3 = 320, beta_sd = 0.001, rho = 0.6, pop = 2100000,
+  S_0 = 26/400, I_0 = 0.001, R_0 = 1 - S_0 - I_0)
+
+sir2(gamma = 24, mu = 1/70, iota = 0.1, beta1 = 330, beta2 = 410,
+  beta3 = 490, rho = 0.1, pop = 1e+06, S_0 = 0.05, I_0 = 1e-04,
+  R_0 = 1 - S_0 - I_0)
+}
+\arguments{
+\item{gamma}{recovery rate}
+
+\item{mu}{death rate (assumed equal to the birth rate)}
+
+\item{iota}{infection import rate}
+
+\item{beta1, beta2, beta3}{seasonal contact rates}
+
+\item{beta_sd}{environmental noise intensity}
+
+\item{rho}{reporting efficiency}
+
+\item{pop}{overall host population size}
+
+\item{S_0, I_0, R_0}{the fractions of the host population that are susceptible, infectious, and recovered, respectively, at time zero.}
+}
+\value{
+These functions return \sQuote{pomp} objects containing simulated data.
+}
 \description{
-\code{sir} is a \sQuote{pomp} object encoding a simple seasonal SIR model.
+Simple SIR-type models implemented in various ways.
+}
+\details{
+\code{sir()} producees a \sQuote{pomp} object encoding a simple seasonal SIR model.
 Simulation is performed using an Euler multinomial approximation.
 
-\code{sir2} has the same model implemented using Gillespie's algorithm.
+\code{sir2()} has the same model implemented using Gillespie's algorithm.
 
 This and similar examples are discussed and constructed in tutorials
 available on the \href{https://kingaa.github.io/pomp/}{package website}.
 }
-\details{
-Do \preformatted{
-    pompExample(sir,show=TRUE)
-    pompExample(sir2,show=TRUE)
-}
-to see the codes that generate these examples.
-}
 \examples{
 
-pompExample(sir)
-plot(sir)
-plot(simulate(sir))
-coef(sir)
+plot(sir())
+coef(sir())
 
-pompExample(sir2)
-plot(sir2)
-plot(simulate(window(sir2,end=3)))
-coef(sir2)
+plot(sir2())
+plot(simulate(window(sir2(),end=3)))
+coef(sir2())
 
 }
 \seealso{
 Other pomp examples: \code{\link{blowflies}},
   \code{\link{dacca}}, \code{\link{gompertz}},
   \code{\link{measles}}, \code{\link{ou2}},
-  \code{\link{pompExample}}, \code{\link{ricker}},
-  \code{\link{rw2}}
+  \code{\link{ricker}}, \code{\link{rw2}},
+  \code{\link{verhulst}}
 }
 \concept{pomp examples}
 \keyword{datasets}

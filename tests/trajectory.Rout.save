@@ -21,6 +21,9 @@ Type 'q()' to quit R.
 > png(filename="trajectory-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > 
 > pomp(
@@ -196,15 +199,11 @@ Error : ‘trajectory’ is undefined for ‘object’ of class ‘character’.
 > try(trajectory())
 Error : in ‘trajectory’: ‘object’ is a required argument.
 > 
-> pompExample(sir)
-newly created object(s):
- sir 
+> sir() -> sir
 > trajectory(sir,format="data.frame") -> x
 > plot(cases~time,data=x,type='l')
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
+> gompertz() -> gompertz
 > gompertz %>% trajectory() -> x
 > gompertz %>%
 +   pomp(

@@ -6,7 +6,7 @@ library(tidyr)
 library(dplyr)
 library(ggplot2)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 set.seed(398585L)
 
 time(gompertz) <- 1:10
@@ -70,6 +70,7 @@ smc %>% as.data.frame() %>%
 
 gompertz %>%
   as.data.frame() %>%
+  subset(select=-X) %>%
   bsmc2(
     times="time",t0=-5,
     params=coef(gompertz),
@@ -86,6 +87,7 @@ smc4 %>% plot()
 
 try(gompertz %>%
     as.data.frame() %>%
+    subset(select=-X) %>%
     bsmc2(
       times="time",t0=-5,
       params=coef(gompertz),

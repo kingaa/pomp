@@ -4,7 +4,7 @@ png(filename="blowflies-%02d.png",res=100)
 library(pomp2)
 
 capture.output(
-  pompExample(blowflies,envir=NULL) -> flies,
+  list(blowflies1(),blowflies2()) -> flies,
   type="message") -> out
 stopifnot(
   sum(grepl("unrecognized argument",out))==2,
@@ -17,14 +17,16 @@ plot(flies[[1]])
 rinit(flies[[1]])
 coef(flies[[1]])
 plot(simulate(flies[[1]],seed=599688L),var=c("y","R","S","N15"))
-pf<- freeze(pfilter(flies[[1]],Np=1000),seed=599688L)
+pf <- freeze(pfilter(flies[[1]],Np=1000),seed=599688L)
 plot(pf)
 stopifnot(
-  partrans(
-    flies[[1]],
-    partrans(flies[[1]],dir="to",coef(flies[[1]])),
-    dir="from"
-  )==coef(flies[[1]]
+  all.equal(
+    partrans(
+      flies[[1]],
+      partrans(flies[[1]],dir="to",coef(flies[[1]])),
+      dir="from"
+    ),
+    coef(flies[[1]])
   )
 )
 
@@ -36,11 +38,14 @@ plot(simulate(flies[[2]],seed=599688L),var=c("y","R","S","N8"))
 pf <- freeze(pfilter(flies[[2]],Np=1000),seed=599688L)
 plot(pf)
 stopifnot(
-  partrans(
-    flies[[2]],
-    partrans(flies[[2]],dir="to",coef(flies[[2]])),
-    dir="from"
-  )==coef(flies[[2]]
+  all.equal(
+    partrans(
+      flies[[2]],
+      partrans(flies[[2]],dir="to",coef(flies[[2]])),
+      dir="from"
+    ),
+    coef(flies[[2]]
+    )
   )
 )
 

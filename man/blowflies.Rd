@@ -6,45 +6,59 @@
 \alias{blowflies1}
 \alias{blowflies2}
 \title{Nicholson's blowflies.}
+\usage{
+blowflies1(P = 3.2838, delta = 0.16073, N0 = 679.94,
+  sigma.P = 1.3512, sigma.d = 0.74677, sigma.y = 0.026649)
+
+blowflies2(P = 2.7319, delta = 0.17377, N0 = 800.31,
+  sigma.P = 1.442, sigma.d = 0.76033, sigma.y = 0.010846)
+}
+\arguments{
+\item{P}{reproduction parameter}
+
+\item{delta}{death rate}
+
+\item{N0}{population scale factor}
+
+\item{sigma.P}{intensity of \eqn{e} noise}
+
+\item{sigma.d}{intensity of \eqn{eps} noise}
+
+\item{sigma.y}{measurement error s.d.}
+}
+\value{
+\code{blowflies1} and \code{blowflies2} return \sQuote{pomp} objects containing the actual data and two variants of the model.
+}
 \description{
-\code{blowflies1} and \code{blowflies2} are \sQuote{pomp} objects encoding
-stochastic delay-difference models.
-\code{blowflies} is a data frame containing the raw data.
+\code{blowflies} is a data frame containing the data from several of Nicholson's classic experiments with the Australian sheep blowfly, \emph{Lucilia cuprina}.
 }
 \details{
-The data are from "population I", a control culture in one of A. J.
-Nicholson's experiments with the Australian sheep-blowfly \emph{Lucilia
-cuprina}.  The experiment is described on pp. 163--4 of Nicholson (1957).
-Unlimited quantities of larval food were provided; the adult food supply
-(ground liver) was constant at 0.4g per day.  The data were taken from the
-table provided by Brillinger et al. (1980).
+\code{blowflies1()} and \code{blowflies2()} construct \sQuote{pomp} objects encoding stochastic delay-difference equation models.
+The data for these come from "population I", a control culture.
+The experiment is described on pp. 163--4 of Nicholson (1957).
+Unlimited quantities of larval food were provided;
+the adult food supply (ground liver) was constant at 0.4g per day.
+The data were taken from the table provided by Brillinger et al. (1980).
 
-The models are discrete delay equations: \deqn{R(t+1) \sim
-\mathrm{Poisson}(P N(t-\tau) \exp{(-N(t-\tau)/N_{0})} e(t+1) {\Delta}t)}{%
-R[t+1] ~ Poisson(P N[t-tau] exp(-N[t-tau]/N0) e[t+1] dt)} \deqn{S(t+1) \sim
-\mathrm{binomial}(N(t),\exp{(-\delta \epsilon(t+1) {\Delta}t)})}{% S[t+1] ~
-binomial(N[t],exp(-delta eps[t+1] dt))} \deqn{N(t) =
-R(t)+S(t)}{N[t]=R[t]+S[t]} where \eqn{e(t)}{e[t]} and
-\eqn{\epsilon(t)}{eps[t]} are Gamma-distributed i.i.d. random variables
-with mean 1 and variances \eqn{{\sigma_p^2}/{{\Delta}t}}{sigma.p^2/dt},
-\eqn{{\sigma_d^2}/{{\Delta}t}}{sigma.d^2/dt}, respectively.
-\code{blowflies1} has a timestep (\eqn{{\Delta}t}{dt}) of 1 day, and
-\code{blowflies2} has a timestep of 2 days.  The process model in
-\code{blowflies1} thus corresponds exactly to that studied by Wood (2010).
-The measurement model in both cases is taken to be \deqn{y(t) \sim
-\mathrm{negbin}(N(t),1/\sigma_y^2)}{y[t] ~ negbin(N[t],1/sigma.y^2)}, i.e.,
-the observations are assumed to be negative-binomially distributed with
-mean \eqn{N(t)}{N[t]} and variance \eqn{N(t)+(\sigma_y
-N(t))^2}{N[t]+(sigma.y N[t])^2}.
+The models are discrete delay equations:
+\deqn{R(t+1) \sim \mathrm{Poisson}(P N(t-\tau) \exp{(-N(t-\tau)/N_{0})} e(t+1) {\Delta}t)}{R[t+1] ~ Poisson(P N[t-tau] exp(-N[t-tau]/N0) e[t+1] dt)}
+\deqn{S(t+1) \sim \mathrm{binomial}(N(t),\exp{(-\delta \epsilon(t+1) {\Delta}t)})}{S[t+1] ~ binomial(N[t],exp(-delta eps[t+1] dt))}
+\deqn{N(t) = R(t)+S(t)}{N[t]=R[t]+S[t]}
+where \eqn{e(t)}{e[t]} and \eqn{\epsilon(t)}{eps[t]} are Gamma-distributed i.i.d. random variables
+with mean 1 and variances \eqn{{\sigma_P^2}/{{\Delta}t}}{sigma.P^2/dt}, \eqn{{\sigma_d^2}/{{\Delta}t}}{sigma.d^2/dt}, respectively.
+\code{blowflies1} has a timestep (\eqn{{\Delta}t}{dt}) of 1 day; \code{blowflies2} has a timestep of 2 days.
+The process model in \code{blowflies1} thus corresponds exactly to that studied by Wood (2010).
+The measurement model in both cases is taken to be
+\deqn{y(t) \sim  \mathrm{negbin}(N(t),1/\sigma_y^2)}{y[t] ~ negbin(N[t],1/sigma.y^2)},
+i.e., the observations are assumed to be negative-binomially distributed with
+mean \eqn{N(t)}{N[t]} and variance \eqn{N(t)+(\sigma_y N(t))^2}{N[t]+(sigma.y N[t])^2}.
 
-Do \preformatted{pompExample(blowflies,show=TRUE)} to view the code that
-constructs these pomp objects.
+Default parameter values are the MLEs as estimated by Ionides (2011).
 }
 \examples{
 
-pompExample(blowflies)
-plot(blowflies1)
-plot(blowflies2)
+plot(blowflies1())
+plot(blowflies2())
 
 }
 \references{
@@ -53,30 +67,33 @@ The self-adjustment of populations to change.
 Cold Spring Harbor Symposia on Quantitative Biology,
 \bold{22}, 153--173.
 
-Y. Xia and H. Tong (2011) Feature Matching in Time Series Modeling.
+Y. Xia and H. Tong (2011)
+Feature Matching in Time Series Modeling.
 \emph{Statistical Science} \bold{26}, 21--46.
 
-E. L. Ionides (2011) Discussion of ``Feature Matching in Time Series
-Modeling'' by Y. Xia and H. Tong.  \emph{Statistical Science} \bold{26},
-49--52.
+E. L. Ionides (2011)
+Discussion of "Feature Matching in Time Series Modeling" by Y. Xia and H. Tong.
+\emph{Statistical Science} \bold{26}, 49--52.
 
-S. N. Wood (2010) Statistical inference for noisy nonlinear ecological
-dynamic systems.  \emph{Nature} \bold{466}, 1102--1104.
+S. N. Wood (2010)
+Statistical inference for noisy nonlinear ecological dynamic systems.
+\emph{Nature} \bold{466}, 1102--1104.
 
-W. S. C. Gurney, S. P. Blythe, and R. M. Nisbet (1980) Nicholson's
-blowflies revisited.  \emph{Nature} \bold{287}, 17--21.
+W. S. C. Gurney, S. P. Blythe, and R. M. Nisbet (1980)
+Nicholson's blowflies revisited.
+\emph{Nature} \bold{287}, 17--21.
 
-D. R. Brillinger, J. Guckenheimer, P. Guttorp and G. Oster (1980) Empirical
-modelling of population time series: The case of age and density dependent
-rates.  in G. Oster (ed.), Some Questions in Mathematical Biology, vol. 13,
-pp. 65--90.  American Mathematical Society, Providence.
+D. R. Brillinger, J. Guckenheimer, P. Guttorp and G. Oster (1980)
+Empirical modelling of population time series: The case of age and density dependent rates.
+In: G. Oster (ed.), Some Questions in Mathematical Biology, vol. 13, pp. 65--90.
+American Mathematical Society, Providence.
 }
 \seealso{
 Other pomp examples: \code{\link{dacca}},
   \code{\link{gompertz}}, \code{\link{measles}},
-  \code{\link{ou2}}, \code{\link{pompExample}},
-  \code{\link{ricker}}, \code{\link{rw2}},
-  \code{\link{sir_models}}
+  \code{\link{ou2}}, \code{\link{ricker}},
+  \code{\link{rw2}}, \code{\link{sir_models}},
+  \code{\link{verhulst}}
 
 Other datasets: \code{\link{bsflu}}, \code{\link{dacca}},
   \code{\link{measles}}, \code{\link{parus}}

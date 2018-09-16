@@ -21,14 +21,15 @@ Type 'q()' to quit R.
 > png(filename="skeleton-%02d.png",res=100)
 > 
 > library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 > library(magrittr)
 > library(ggplot2)
 > library(reshape2)
 > library(plyr)
 > 
-> pompExample(ricker)
-newly created object(s):
- ricker 
+> ricker() -> ricker
 > 
 > ricker <- simulate(ricker,times=1:500,seed=366829807L)
 > x <- states(ricker)
@@ -52,9 +53,7 @@ Error : in ‘skeleton’: ‘object’ is a required argument.
 > try(skeleton("ricker",x=x,times=time(ricker),params=p))
 Error : ‘skeleton’ is undefined for ‘object’ of class ‘character’.
 > 
-> pompExample(sir)
-newly created object(s):
- sir 
+> sir() -> sir
 > p <- parmat(coef(sir),nrep=3)
 > p["beta2",2:3] <- exp(c(3,5))
 > trajectory(sir,params=p,times=seq(0,1,length=1000)) -> tj

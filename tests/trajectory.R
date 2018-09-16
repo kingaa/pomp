@@ -81,11 +81,11 @@ stopifnot(
 try(trajectory("fhn"))
 try(trajectory())
 
-pompExample(sir)
+sir() -> sir
 trajectory(sir,format="data.frame") -> x
 plot(cases~time,data=x,type='l')
 
-pompExample(gompertz)
+gompertz() -> gompertz
 gompertz %>% trajectory() -> x
 gompertz %>%
   pomp(

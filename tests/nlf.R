@@ -6,9 +6,10 @@ library(magrittr)
 
 set.seed(583615606L)
 
-pompExample(ou2)
-estnames=c("alpha.2","alpha.3")
-ou2 %>% window(end=40) %>% as.data.frame() -> dat
+ou2() -> ou2
+estnames=c("alpha_2","alpha_3")
+ou2 %>% window(end=40) %>% as.data.frame() %>%
+  subset(select=c(time,y1,y2)) -> dat
 guess <- coef(ou2,estnames,transform=TRUE)
 
 try(nlf.objfun())

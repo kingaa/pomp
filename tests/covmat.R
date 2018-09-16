@@ -5,7 +5,7 @@ library(magrittr)
 library(tidyr)
 library(dplyr)
 
-pompExample(gompertz)
+gompertz() -> gompertz
 
 set.seed(1546383977L)
 

@@ -3,7 +3,7 @@ png(filename="ricker-%02d.png",res=100)
 
 library(pomp2)
 
-pompExample(ricker)
+ricker() -> ricker
 
 set.seed(1438408329L)
 
