@@ -1,0 +1,56 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp2)
+Welcome to pomp version 2
+For information on upgrading your pomp version < 2 code,
+see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
+> library(magrittr)
+> 
+> simulate(times=1:10,t0=0,
++          statenames="x",
++          obsnames="y",
++          params=c(x_0=0),
++          rprocess=onestep(function(...)c(x=1)),
++          rmeasure=Csnippet("")
++ ) -> s1
+> states(s1)
+        time
+variable [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+       x    1    1    1    1    1    1    1    1    1     1
+> obs(s1)
+        time
+variable [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+       y   NA   NA   NA   NA   NA   NA   NA   NA   NA    NA
+> 
+> simulate(times=1:10,t0=0,
++          statenames="x",
++          params=c(x_0=0),
++          rprocess=onestep(function(...)c(x=1))
++ ) -> s2
+Warning message:
+'rmeasure' unspecified: NAs generated. 
+> states(s2)
+        time
+variable [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+       x    1    1    1    1    1    1    1    1    1     1
+> obs(s2)
+        time
+variable [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+> 

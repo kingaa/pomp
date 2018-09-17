@@ -11,7 +11,7 @@
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2018-09-16" />
+<meta name="date" content="2018-09-17" />
 
 <title>Coding POMP models: R vs C snippets</title>
 
@@ -124,12 +124,12 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Coding POMP models: R vs C snippets</h1>
 <h4 class="author"><em>Aaron A. King</em></h4>
-<h4 class="date"><em>16 September 2018</em></h4>
+<h4 class="date"><em>17 September 2018</em></h4>
 
 </div>
 
 
-<p>This document was produced using <strong>pomp</strong> version 2.0.0.0 and <strong>R</strong> version 3.5.1.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.0.0.1 and <strong>R</strong> version 3.5.1.</p>
 <hr />
 <p>To implement models in <strong>pomp</strong>, we have various options. While it is very easy to code basic model components using <strong>R</strong> functions, it can be much faster to do it using C snippets. Here, we’ll demonstrate both approaches.</p>
 <p>First, we’ll load some packages.</p>
@@ -226,16 +226,16 @@ logmeanexp(sapply(pf,logLik),se=TRUE)</code></pre>
 <p>Using each implementation, we’ll now run a number of simulations and compare the amount of time required.</p>
 <pre class="r"><code>system.time(simulate(gompertz,nsim=10000,format=&quot;arrays&quot;))</code></pre>
 <pre><code>##    user  system elapsed 
-##   6.964   0.028   6.995</code></pre>
+##   7.136   0.008   7.146</code></pre>
 <pre class="r"><code>system.time(simulate(Gompertz,nsim=10000,format=&quot;arrays&quot;))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.344   0.004   0.350</code></pre>
+##   0.344   0.012   0.355</code></pre>
 <pre class="r"><code>system.time(pfilter(gompertz,Np=1000))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.632   0.000   0.631</code></pre>
+##   0.636   0.000   0.636</code></pre>
 <pre class="r"><code>system.time(pfilter(Gompertz,Np=1000))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.052   0.000   0.051</code></pre>
+##   0.048   0.000   0.048</code></pre>
 <hr />
 <p><a href="./index.html"><strong>pomp</strong> vignette index</a></p>
 </div>

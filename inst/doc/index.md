@@ -98,7 +98,7 @@ dt {
 
 - [Package NEWS](https://kingaa.github.io/pomp/NEWS.html)
 
-- [Package manual](https://kingaa.github.io/manuals/pomp.pdf)
+- [Package manual](https://kingaa.github.io/manuals/pomp2.pdf)
 
 - Vignette: [Upgrading to **pomp** version 2](./upgrading.html)
 
