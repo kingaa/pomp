@@ -42,8 +42,9 @@ setMethod(
 
     nm <- deparse(substitute(object,env=parent.frame()))
     f <- tempfile()
-    sink(file=f)
-    on.exit(sink(file=NULL))
+    con <- file(description=f,open="w+")
+    sink(file=con)
+    on.exit(if (sink.number()) sink())
 
     cat("==================\npomp object ",sQuote(nm),":\n\n",sep="")
 
@@ -113,6 +114,8 @@ setMethod(
       }
     }
 
+    sink()
+    close(con)
     file.show(f,delete.file=TRUE)
     invisible(NULL)
   }
