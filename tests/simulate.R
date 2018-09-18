@@ -158,7 +158,7 @@ dat %>% names()
 dat %>% dim()
 
 rw2() -> rw2
-simulate(rw2,zeronames="x2") %>% plot()
+simulate(rw2,accumvars="x2") %>% plot()
 try(simulate(rw2,params=c(a="bob",b="nancy")))
 
 dev.off()

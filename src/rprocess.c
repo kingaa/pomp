@@ -28,7 +28,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
 {
   int nprotect = 0;
   int *xdim, type, nvars, npars, nreps, nrepsx, ntimes, off;
-  SEXP X, Xoff, copy, rproc, args, zeronames, covar;
+  SEXP X, Xoff, copy, rproc, args, accumvars, covar;
   SEXP dimXstart, dimP, dimX;
   const char *dimnm[3] = {"variable","rep","time"};
 
@@ -97,7 +97,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
 
   PROTECT(rproc = GET_SLOT(object,install("rprocess"))); nprotect++;
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
-  PROTECT(zeronames = GET_SLOT(object,install("zeronames"))); nprotect++;
+  PROTECT(accumvars = GET_SLOT(object,install("accumvars"))); nprotect++;
   PROTECT(covar = GET_SLOT(object,install("covar"))); nprotect++;
 
   // extract the process function
@@ -109,7 +109,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     double deltat = 1.0;
     PROTECT(fn = GET_SLOT(rproc,install("step.fn"))); nprotect++;
     PROTECT(X = euler_model_simulator(fn,xstart,times,params,deltat,type,
-      zeronames,covar,args,gnsi)); nprotect++;
+      accumvars,covar,args,gnsi)); nprotect++;
   }
     break;
   case discrete: case euler: // discrete-time and Euler
@@ -119,7 +119,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     PROTECT(fn = GET_SLOT(rproc,install("step.fn"))); nprotect++;
     deltat = *(REAL(AS_NUMERIC(GET_SLOT(rproc,install("delta.t")))));
     PROTECT(X = euler_model_simulator(fn,xstart,times,params,deltat,type,
-      zeronames,covar,args,gnsi)); nprotect++;
+      accumvars,covar,args,gnsi)); nprotect++;
   }
     break;
   case gill: // Gillespie's method
@@ -129,7 +129,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     PROTECT(vmatrix = GET_SLOT(rproc,install("v"))); nprotect++;
     PROTECT(hmax = GET_SLOT(rproc,install("hmax"))); nprotect++;
     PROTECT(X = SSA_simulator(fn,xstart,times,params,vmatrix,covar,
-      zeronames,hmax,args,gnsi)); nprotect++;
+      accumvars,hmax,args,gnsi)); nprotect++;
   }
     break;
   case dflt: default:

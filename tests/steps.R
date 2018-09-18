@@ -27,7 +27,7 @@ po <- simulate(ricker,
     delta.t=1),
   skeleton=NULL,
   rinit=Csnippet("e=0; N = N_0; step = 0;"),
-  zeronames="step",
+  accumvars="step",
   params=c(r=0.5,N_0=0.5,sigma=0.1,phi=10,c=1),
   paramnames=c("sigma","r","N_0"),statenames=c("N","e","step"))
 plot(po)
@@ -74,7 +74,7 @@ sir %>%
       steps = 0;
       "),
     statenames=c("S","I","R","cases","steps","W"),
-    zeronames=c("cases","steps"),
+    accumvars=c("cases","steps"),
     paramnames=c("mu","gamma","iota","beta1","beta_sd","pop",
       "S_0","I_0","R_0"),
     seed=1232934371,

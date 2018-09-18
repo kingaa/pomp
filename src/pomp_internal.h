@@ -37,7 +37,7 @@ extern SEXP do_dprior(SEXP object, SEXP params, SEXP log, SEXP gnsi);
 extern SEXP do_dprocess(SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi);
 
 // euler.c 
-extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, double deltat, rprocmode method, SEXP zeronames, SEXP covar, SEXP args, SEXP gnsi);
+extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi);
 extern int num_euler_steps(double t1, double t2, double *Rf_dt);
 extern int num_map_steps(double t1, double t2, double Rf_dt);
 
@@ -125,7 +125,7 @@ extern SEXP do_skeleton(SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi);
 extern SEXP sobol_sequence(SEXP dim, SEXP length);
 
 // ssa.c 
-extern SEXP SSA_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, SEXP vmatrix, SEXP covar, SEXP zeronames, SEXP hmax, SEXP args, SEXP gnsi);
+extern SEXP SSA_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, SEXP vmatrix, SEXP covar, SEXP accumvars, SEXP hmax, SEXP args, SEXP gnsi);
 
 // synth_lik.c 
 extern SEXP synth_loglik(SEXP ysim, SEXP ydat);

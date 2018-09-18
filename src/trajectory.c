@@ -26,7 +26,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   SEXP X;
   SEXP Snames, Pnames, Cnames;
   SEXP skel, pompfun;
-  SEXP zeronames;
+  SEXP accumvars;
   int *zidx = 0;
   int nvars, npars, nreps, nrepp, ntimes, ncovars, nzeros;
   int *dim;
@@ -64,10 +64,10 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
   // get names and indices of accumulator variables
-  PROTECT(zeronames = GET_SLOT(object,install("zeronames"))); nprotect++;
-  nzeros = LENGTH(zeronames);
+  PROTECT(accumvars = GET_SLOT(object,install("accumvars"))); nprotect++;
+  nzeros = LENGTH(accumvars);
   if (nzeros > 0) {
-    zidx = INTEGER(PROTECT(matchnames(Snames,zeronames,"state variables"))); nprotect++;
+    zidx = INTEGER(PROTECT(matchnames(Snames,accumvars,"state variables"))); nprotect++;
   }
 
   // create array to store results

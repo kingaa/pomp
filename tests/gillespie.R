@@ -53,7 +53,7 @@ simulate(
     v=Vmatrix,
     hmax=1/52/10
   ),
-  zeronames=c("cases"),
+  accumvars=c("cases"),
   covar=covariate_table(
     t=seq(0,2,by=1/52/10),
     seas=periodic.bspline.basis(
@@ -71,7 +71,7 @@ simulate(
 ) -> gsir
 
 gsir %>%
-  simulate(zeronames=NULL) %>%
+  simulate(accumvars=NULL) %>%
   plot(main="Gillespie SIR, no zeroing")
 
 gsir %>%
@@ -199,7 +199,7 @@ create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
   }
   simulate(times = times, t0 = t0, params = c(mu=mu),
     rprocess = rprocess, rinit = initializer,
-    zeronames="ct", format="data.frame")
+    accumvars="ct", format="data.frame")
 }
 
 create_example(times = 1)

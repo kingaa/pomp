@@ -116,7 +116,7 @@
 ##' It is not usually necessary to specify \code{covarnames} since, by default,
 ##' these are read from the names of the covariates.
 ##'
-##' @param zeronames optional character vector;
+##' @param accumvars optional character vector;
 ##' contains the names of accumulator variables.
 ##' See \link[=accumulators]{here} for a definition and discussion of accumulator variables.
 ##'
@@ -155,7 +155,7 @@ NULL
 pomp <- function (data, times, t0, ...,
   rinit, rprocess, dprocess, rmeasure, dmeasure,
   skeleton, rprior, dprior, partrans, covar,
-  params, zeronames,
+  params, accumvars,
   obsnames, statenames, paramnames, covarnames,
   PACKAGE, globals, cdir, cfile, shlib.args, compile = TRUE,
   verbose = getOption("verbose", FALSE)) {
@@ -172,7 +172,7 @@ pomp <- function (data, times, t0, ...,
       missing(rinit) && missing(rprocess) && missing(dprocess) &&
       missing(rmeasure) && missing(dmeasure) && missing(skeleton) &&
       missing(rprior) && missing(dprior) && missing(partrans) &&
-      missing(covar) && missing(params) && missing(zeronames) &&
+      missing(covar) && missing(params) && missing(accumvars) &&
       length(list(...)) == 0)
     return(data)
 
@@ -184,7 +184,7 @@ pomp <- function (data, times, t0, ...,
       rinit=rinit,rprocess=rprocess,dprocess=dprocess,
       rmeasure=rmeasure,dmeasure=dmeasure,
       skeleton=skeleton,rprior=rprior,dprior=dprior,partrans=partrans,
-      params=params, covar=covar,zeronames=zeronames,
+      params=params,covar=covar,accumvars=accumvars,
       obsnames=obsnames,statenames=statenames,paramnames=paramnames,
       covarnames=covarnames,PACKAGE=PACKAGE,
       globals=globals,cdir=cdir,cfile=cfile,shlib.args=shlib.args,
@@ -337,7 +337,7 @@ setMethod(
   signature=signature(data="pomp", times="NULL"),
   definition = function (data, times, t0, timename, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-    partrans, params, covar, zeronames) {
+    partrans, params, covar, accumvars) {
 
     times <- data@times
     if (missing(t0)) t0 <- data@t0
@@ -363,7 +363,7 @@ setMethod(
 
     if (missing(params)) params <- data@params
     if (missing(covar)) covar <- data@covar
-    if (missing(zeronames)) zeronames <- data@zeronames
+    if (missing(accumvars)) accumvars <- data@accumvars
 
     pomp.internal(
       data=data@data,
@@ -380,7 +380,7 @@ setMethod(
       dprior=dprior,
       partrans=partrans,
       covar=covar,
-      zeronames=zeronames,
+      accumvars=accumvars,
       params=params,
       .solibs=data@solibs,
       .userdata=data@userdata,
@@ -392,7 +392,7 @@ setMethod(
 
 pomp.internal <- function (data, times, t0, timename, ...,
   rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-  partrans, params, covar, zeronames, obsnames, statenames,
+  partrans, params, covar, accumvars, obsnames, statenames,
   paramnames, covarnames, PACKAGE, globals, cdir, cfile, shlib.args,
   compile, .userdata, .solibs = list(), verbose = getOption("verbose", FALSE)) {
 
@@ -449,8 +449,8 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (missing(obsnames)) obsnames <- NULL
   if (missing(covarnames)) covarnames <- NULL
 
-  if (missing(zeronames)) zeronames <- NULL
-  zeronames <- unique(as.character(zeronames))
+  if (missing(accumvars)) accumvars <- NULL
+  accumvars <- unique(as.character(accumvars))
 
   ## store the data as double-precision matrix
   storage.mode(data) <- "double"
@@ -539,7 +539,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
     ),
     params = params,
     covar = covar,
-    zeronames = zeronames,
+    accumvars = accumvars,
     solibs = if (is.null(hitches$lib)) {
       .solibs
     } else {

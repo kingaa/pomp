@@ -136,7 +136,7 @@ trajectory.internal <- function (object, params, times, t0,
 
   } else if (type == skeletontype$vectorfield) {   ## VECTORFIELD
 
-    znames <- object@zeronames
+    znames <- object@accumvars
     if (length(znames)>0) x0[znames,,] <- 0
 
     .Call(P_pomp_desolve_setup,object,x0,params,.gnsi)

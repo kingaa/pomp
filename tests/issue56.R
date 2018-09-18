@@ -15,7 +15,7 @@ create_example <- function(times, t0 = 0, mu = 0.001, N_0 = 1) {
   rinit <- function(params, t0, ...) c(N=N_0,ct=12)
 
   simulate(times = times, t0 = t0, params = c(mu=mu),
-    rprocess = rprocess, rinit = rinit, rmeasure = rmeasure, zeronames = "ct",
+    rprocess = rprocess, rinit = rinit, rmeasure = rmeasure, accumvars = "ct",
     paramnames = "mu", statenames = c("N","ct"), obsnames = "y",
     covar = covariate_table(x=c(0,1),times=c(0,52)), format = "data.frame")
 }

@@ -92,7 +92,7 @@ gompertz %>%
     skeleton=map(function(r,X,Y,K,...){
       c(X=r*X*exp(-X/K),Y=Y+X)
     }),
-    zeronames=c("Y"),
+    accumvars=c("Y"),
     params=c(r=17,X_0=1,Y.0=0,K=100)
   ) -> po3
 po3 %>%
@@ -100,7 +100,7 @@ po3 %>%
 plot(X~time,data=dat,subset=(time<100),type='l')
 plot(X~Y,data=dat)
 gompertz %>%
-  pomp(zeronames=c("X")) %>%
+  pomp(accumvars=c("X")) %>%
   trajectory(times=seq(1,1000,by=10)) -> x
 stopifnot(all(x==0))
 

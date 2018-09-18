@@ -196,7 +196,7 @@ sir <- function (
       "beta1","beta_sd","pop","rho",
       "S_0","I_0","R_0"
     ),
-    zeronames=c("cases"),
+    accumvars=c("cases"),
     seed=329343545L
   )
 }
@@ -296,7 +296,7 @@ sir2 <- function (
       "beta1","beta2","beta3",
       "S_0","I_0","R_0"
     ),
-    zeronames=c("cases"),
+    accumvars=c("cases"),
     partrans=parameter_trans(
       log=c("gamma","mu","iota",sprintf("beta%d",1:3)),
       logit="rho",

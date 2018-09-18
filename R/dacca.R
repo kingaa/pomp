@@ -308,7 +308,7 @@ dacca <- function (
       trend=t-mean(t),
       times="t"
     ),
-    zeronames = c("deaths","count"),
+    accumvars = c("deaths","count"),
     statenames = c("S","I","Y",sprintf("R%d",seq_len(nrstage)),"deaths","W","count"),
     paramnames = c("tau","gamma","eps","delta","deltaI",
       "logomega1","sd_beta","beta_trend","logbeta1",

@@ -94,7 +94,7 @@ static R_INLINE SEXP ret_array (int n, int nreps, int ntimes, SEXP names)
 }
 
 SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
-  double deltat, rprocmode method, SEXP zeronames, SEXP covar, SEXP args, SEXP gnsi)
+  double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   pompfunmode mode = undef;
@@ -120,8 +120,8 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   cov = REAL(cvec);
 
   // indices of accumulator variables
-  nzeros = LENGTH(zeronames);
-  int *zidx = INTEGER(PROTECT(matchnames(Snames,zeronames,"state variables"))); nprotect++;
+  nzeros = LENGTH(accumvars);
+  int *zidx = INTEGER(PROTECT(matchnames(Snames,accumvars,"state variables"))); nprotect++;
 
   // extract user function
   PROTECT(fn = pomp_fun_handler(func,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;

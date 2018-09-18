@@ -30,7 +30,7 @@ create_example <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1,
 
   pomp(data=NULL, times=times, t0=t0,
     params=c(mu=mu,N_0=N_0),
-    rprocess=rprocess, rinit=rinit, zeronames="ct",
+    rprocess=rprocess, rinit=rinit, accumvars="ct",
     paramnames=c("mu","N_0"), statenames=c("N","ct"))
 }
 

@@ -29,7 +29,7 @@ setClass(
     params = "numeric",
     states = "array",
     covar = "covartable",
-    zeronames = "character",
+    accumvars = "character",
     solibs = "list",
     userdata = "list"
   ),
@@ -50,7 +50,7 @@ setClass(
     params=numeric(),
     states=array(data=numeric(),dim=c(0,0)),
     covar=covariate_table(),
-    zeronames=character(),
+    accumvars=character(),
     solibs=list(),
     userdata=list()
   ),

@@ -217,7 +217,7 @@ static double __pomp_Rfun_ssa_ratefn (int j, double t, const double *x, const do
 }
 
 SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
-  SEXP vmatrix, SEXP covar, SEXP zeronames, SEXP hmax, SEXP args,
+  SEXP vmatrix, SEXP covar, SEXP accumvars, SEXP hmax, SEXP args,
   SEXP gnsi)
 {
   int nprotect = 0;
@@ -225,7 +225,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   int nvar, nvarv, nevent, npar, nrep, ntimes;
   SEXP statenames, paramnames, covarnames;
   int ncovars, covdim;
-  int nzeros = LENGTH(zeronames);
+  int nzeros = LENGTH(accumvars);
   pompfunmode mode = undef;
   SEXP X, zindex, vindex;
   int *sidx, *pidx, *cidx, *zidx, *vidx;
@@ -297,7 +297,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   cidx = INTEGER(GET_SLOT(func,install("covarindex")));
 
   if (nzeros>0) {
-    PROTECT(zindex = MATCHROWNAMES(xstart,zeronames,"state variables")); nprotect++;
+    PROTECT(zindex = MATCHROWNAMES(xstart,accumvars,"state variables")); nprotect++;
     zidx = INTEGER(zindex);
   } else {
     zidx = 0;

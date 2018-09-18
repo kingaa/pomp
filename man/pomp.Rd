@@ -5,7 +5,7 @@
 \title{Constructor of the basic pomp object}
 \usage{
 pomp(data, times, t0, ..., rinit, rprocess, dprocess, rmeasure, dmeasure,
-  skeleton, rprior, dprior, partrans, covar, params, zeronames, obsnames,
+  skeleton, rprior, dprior, partrans, covar, params, accumvars, obsnames,
   statenames, paramnames, covarnames, PACKAGE, globals, cdir, cfile,
   shlib.args, compile = TRUE, verbose = getOption("verbose", FALSE))
 }
@@ -82,7 +82,7 @@ See the documentation for \code{\link{covariate_table}} for details.}
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
 
-\item{zeronames}{optional character vector;
+\item{accumvars}{optional character vector;
 contains the names of accumulator variables.
 See \link[=accumulators]{here} for a definition and discussion of accumulator variables.}
 
