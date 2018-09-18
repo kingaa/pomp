@@ -182,4 +182,3 @@ Journal of Statistical Software 69(12): 1--43.
 \author{
 Aaron A. King
 }
-\keyword{internal}

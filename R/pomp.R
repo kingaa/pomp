@@ -30,7 +30,6 @@
 ##' @include dprocess_spec.R dmeasure_spec.R prior_spec.R
 ##' @include skeleton_spec.R parameter_trans.R covariate_table.R
 ##' @importFrom stats setNames
-##' @keywords internal
 ##'
 ##' @inheritParams hitch
 ##'

@@ -59,4 +59,3 @@ Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{skeleton}}, \code{\link{workhorses}}
 }
 \concept{pomp workhorses}
-\keyword{internal}

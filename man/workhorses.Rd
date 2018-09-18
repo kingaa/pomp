@@ -36,4 +36,3 @@ Aaron A. King
 \concept{extending the \pkg{pomp} package}
 \concept{low-level interface}
 \concept{pomp workhorses}
-\keyword{internal}

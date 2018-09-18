@@ -53,4 +53,3 @@ Other pomp workhorses: \code{\link{dprior}},
   \code{\link{skeleton}}, \code{\link{workhorses}}
 }
 \concept{pomp workhorses}
-\keyword{internal}
