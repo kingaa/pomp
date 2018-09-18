@@ -84,6 +84,7 @@ dimnames(filter.traj(pf3))
 try(filter.traj(c(pf1,pf3)))
 dim(filter.traj(c(pf1,pf4)))
 names(dimnames(filter.traj(c(pf1,pf4))))
+names(melt(as(c(pf1,pf4),"data.frame")))
 
 library(magrittr)
 
@@ -105,4 +106,3 @@ ou2 %>%
       if (log) ll else exp(ll)
     }
   )
-

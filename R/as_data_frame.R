@@ -161,4 +161,3 @@ setAs(
 as.data.frame.bsmcd_pomp <- function (x, ...) {
   as(x,"data.frame")
 }
-

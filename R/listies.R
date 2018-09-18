@@ -7,6 +7,7 @@
 ##' @keywords internal
 ##' @include pomp_class.R
 ##' @include abc.R pmcmc.R mif2.R pfilter.R
+##' @include as_data_frame.R
 NULL
 
 ##' @rdname listies

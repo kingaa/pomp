@@ -222,6 +222,10 @@ Error : in ‘filter.traj’: incommensurate dimensions.
 [1]   2   1 101   2
 > names(dimnames(filter.traj(c(pf1,pf4))))
 [1] "variable" "rep"      "time"     "chain"   
+> names(melt(as(c(pf1,pf4),"data.frame")))
+No id variables; using all as measure variables
+No id variables; using all as measure variables
+[1] "variable" "value"    "L1"      
 > 
 > library(magrittr)
 > 
@@ -245,5 +249,4 @@ Error : in ‘pfilter’: ‘times’ should either be a numeric vector of obser
 +     }
 +   )
 <object of class ‘pfilterd_pomp’>
-> 
 > 
