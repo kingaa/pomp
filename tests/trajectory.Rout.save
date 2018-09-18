@@ -21,9 +21,9 @@ Type 'q()' to quit R.
 > png(filename="trajectory-%02d.png",res=100)
 > 
 > library(pomp2)
-Welcome to pomp version 2
-For information on upgrading your pomp version < 2 code,
-see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
+Welcome to pomp version 2!
+For information on upgrading your pomp version < 2 code, see the
+‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > pomp(
@@ -210,7 +210,7 @@ Error : in ‘trajectory’: ‘object’ is a required argument.
 +     skeleton=map(function(r,X,Y,K,...){
 +       c(X=r*X*exp(-X/K),Y=Y+X)
 +     }),
-+     zeronames=c("Y"),
++     accumvars=c("Y"),
 +     params=c(r=17,X_0=1,Y.0=0,K=100)
 +   ) -> po3
 > po3 %>%
@@ -218,7 +218,7 @@ Error : in ‘trajectory’: ‘object’ is a required argument.
 > plot(X~time,data=dat,subset=(time<100),type='l')
 > plot(X~Y,data=dat)
 > gompertz %>%
-+   pomp(zeronames=c("X")) %>%
++   pomp(accumvars=c("X")) %>%
 +   trajectory(times=seq(1,1000,by=10)) -> x
 > stopifnot(all(x==0))
 > 

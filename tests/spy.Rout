@@ -20,9 +20,9 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp2)
-Welcome to pomp version 2
-For information on upgrading your pomp version < 2 code,
-see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
+Welcome to pomp version 2!
+For information on upgrading your pomp version < 2 code, see the
+‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > gompertz() -> po
@@ -167,8 +167,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2018-09-16 08:13:29.348 -0400 */
-/* Salt: 524A8D0ACE615DFC58A00D22 */
+/* Time: 2018-09-18 06:43:35.802 -0400 */
+/* Salt: 96AA7CF173FFDA5F038CDAA0 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -292,8 +292,8 @@ pomp object ‘sir’:
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2018-09-16 08:13:29.418 -0400 */
-/* Salt: 292C0399818EB83A5AC63DBD */
+/* Time: 2018-09-18 06:43:35.874 -0400 */
+/* Salt: 087DF6DF067D4ABBE0FDAB53 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -818,8 +818,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2018-09-16 08:13:29.719 -0400 */
-/* Salt: 0396E4BBDEBB4A481FCDAFDC */
+/* Time: 2018-09-18 06:43:36.175 -0400 */
+/* Salt: CA0733FDC44C8AA5E66218B1 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1021,8 +1021,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2018-09-16 08:13:29.942 -0400 */
-/* Salt: 29534C38A15FBA4A5806F590 */
+/* Time: 2018-09-18 06:43:36.396 -0400 */
+/* Salt: FBC85AC2CBA7E02D717FEC41 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

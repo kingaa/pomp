@@ -2,7 +2,6 @@ options(digits=3)
 
 library(pomp2)
 library(magrittr)
-library(reshape2)
 library(dplyr)
 library(tidyr)
 library(ggplot2)

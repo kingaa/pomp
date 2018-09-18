@@ -21,9 +21,9 @@ Type 'q()' to quit R.
 > png(filename="kalman-%02d.png",res=100)
 > 
 > library(pomp2)
-Welcome to pomp version 2
-For information on upgrading your pomp version < 2 code,
-see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
+Welcome to pomp version 2!
+For information on upgrading your pomp version < 2 code, see the
+‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
 > library(reshape2)
 > library(plyr)
 > library(magrittr)

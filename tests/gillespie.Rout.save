@@ -21,11 +21,10 @@ Type 'q()' to quit R.
 > png(filename="gillespie-%02d.png",res=100)
 > 
 > library(pomp2)
-Welcome to pomp version 2
-For information on upgrading your pomp version < 2 code,
-see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
+Welcome to pomp version 2!
+For information on upgrading your pomp version < 2 code, see the
+‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
 > library(magrittr)
-> library(reshape2)
 > library(ggplot2)
 > 
 > set.seed(754646834L)
@@ -75,7 +74,7 @@ see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 +     v=Vmatrix,
 +     hmax=1/52/10
 +   ),
-+   zeronames=c("cases"),
++   accumvars=c("cases"),
 +   covar=covariate_table(
 +     t=seq(0,2,by=1/52/10),
 +     seas=periodic.bspline.basis(
@@ -93,7 +92,7 @@ see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
 + ) -> gsir
 > 
 > gsir %>%
-+   simulate(zeronames=NULL) %>%
++   simulate(accumvars=NULL) %>%
 +   plot(main="Gillespie SIR, no zeroing")
 > 
 > gsir %>%
@@ -245,7 +244,7 @@ Error : bad option for ‘rate.fun’ argument.
 +   }
 +   simulate(times = times, t0 = t0, params = c(mu=mu),
 +     rprocess = rprocess, rinit = initializer,
-+     zeronames="ct", format="data.frame")
++     accumvars="ct", format="data.frame")
 + }
 > 
 > create_example(times = 1)

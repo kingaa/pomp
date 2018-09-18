@@ -16,7 +16,7 @@
 - make R-level functions for various distributions and transformations
 	- BetaBinom
 	- BetaNegBinom
-- remove need to specify paramnames when log,logit,barycentric partrans is given?
+- remove need to specify paramnames when log,logit,barycentric partrans is given? HOW?
 - `spy` methods for derived objects
 - better scheme for indicating derivatives and maps in C snippets
 - should the default process model be persistence?
@@ -26,15 +26,12 @@
 
 - "guide to upgrading to **pomp** version 2"
 - `as.data.frame` and ?? for `listies`
+- `melt` for listies
 - `coef` returns data frame in some circumstances?
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
 
 - perhaps `dinit`?
-- change specification of horsemen?
-	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
-	- deprecate character specification
-	- ~~allow "R snippets": expressions evaluated in proper context?~~
 - easier interface for lists of probes in `probe`
 - documentation on `mifList`, `pmcmcList`, etc.?
 - methods to change data (`obs<-`)?

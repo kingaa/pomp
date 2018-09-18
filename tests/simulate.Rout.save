@@ -21,9 +21,9 @@ Type 'q()' to quit R.
 > png(filename="simulate-%02d.png",res=100)
 > 
 > library(pomp2)
-Welcome to pomp version 2
-For information on upgrading your pomp version < 2 code,
-see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
+Welcome to pomp version 2!
+For information on upgrading your pomp version < 2 code, see the
+‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > library(dplyr)
 
@@ -244,7 +244,7 @@ Error : in ‘simulate’: ‘nsim’ must be a positive integer.
 [1] 20  5
 > 
 > rw2() -> rw2
-> simulate(rw2,zeronames="x2") %>% plot()
+> simulate(rw2,accumvars="x2") %>% plot()
 > try(simulate(rw2,params=c(a="bob",b="nancy")))
 Error : in ‘simulate’: ‘params’ must be named and numeric.
 > 

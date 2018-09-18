@@ -66,11 +66,11 @@ simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),form
 
 ## ----logistic-plot1,echo=FALSE-------------------------------------------
 library(magrittr)
-library(reshape2)
+library(tidyr)
 
 simStates %>%
   melt() %>%
-  dcast(rep+time~variable) %>%
+  spread(variable,value) %>%
   ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
   geom_line()+guides(color=FALSE)+
   theme_bw()
@@ -88,14 +88,20 @@ sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),nsim=10,
   format="arrays")
 
 ## ----logistic-plot2,echo=FALSE-------------------------------------------
-sim %>% melt() %>%
+sim %>%
+  melt() %>%
   ggplot(mapping=aes(x=time,y=value,group=rep,color=factor(rep)))+
   geom_line()+
   guides(color=FALSE)+scale_y_sqrt()+
   facet_grid(variable~.,scales="free_y")+
   theme_bw()
 
-sim %>% melt() %>% dcast(rep+time~variable,value.var='value') %>%
+library(dplyr)
+
+sim %>%
+  melt() %>%
+  select(-L1) %>%
+  spread(variable,value) %>%
   ggplot(mapping=aes(x=N,y=P,color=factor(rep)))+
   geom_point()+scale_x_sqrt()+scale_y_sqrt()+
   coord_equal()+

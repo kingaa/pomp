@@ -20,11 +20,10 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp2)
-Welcome to pomp version 2
-For information on upgrading your pomp version < 2 code,
-see the 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/
+Welcome to pomp version 2!
+For information on upgrading your pomp version < 2 code, see the
+‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
 > library(magrittr)
-> library(reshape2)
 > library(dplyr)
 
 Attaching package: ‘dplyr’
@@ -40,10 +39,6 @@ The following objects are masked from ‘package:base’:
 > library(tidyr)
 
 Attaching package: ‘tidyr’
-
-The following object is masked from ‘package:reshape2’:
-
-    smiths
 
 The following object is masked from ‘package:magrittr’:
 

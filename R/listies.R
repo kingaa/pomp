@@ -144,3 +144,14 @@ setClassUnion("Pmcmc",c("pmcmcd_pomp","pmcmcList"))
 ##' @rdname listies
 setClassUnion("listies",
   members=c("pompList","abcList","mif2List","pmcmcList","pfilterList"))
+
+##' @name as,listies-method
+##' @aliases coerce,listies,data.frame-method
+##' @rdname as_data_frame
+setAs(
+  from="listies",
+  to="data.frame",
+  def = function (from) {
+    lapply(from,as,"data.frame")
+  }
+)

@@ -3,7 +3,6 @@ png(filename="gillespie-%02d.png",res=100)
 
 library(pomp2)
 library(magrittr)
-library(reshape2)
 library(ggplot2)
 
 set.seed(754646834L)
