@@ -21,7 +21,7 @@
 ##' @return
 ##' The numerical value of the conditional log likelihood.
 ##' Note that some methods compute not the log likelihood itself but instead a related quantity.
-##' To keep the code simple, the \code{logLik} function is nevertheless used to extract this quantity.
+##' To keep the code simple, the \code{cond.logLik} function is nevertheless used to extract this quantity.
 NULL
 
 setGeneric("cond.logLik",

@@ -210,7 +210,7 @@ setMethod(
 ##' @aliases continue,pmcmcd_pomp-method
 ##' @rdname continue
 ##'
-##' @param Nmcmc positive integer; number of additional iterations to perform
+##' @param Nmcmc positive integer; number of additional PMCMC iterations to perform
 ##'
 ##' @export
 setMethod(

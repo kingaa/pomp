@@ -24,7 +24,7 @@ probe.sd(var, transform = identity, na.rm = TRUE)
 
 probe.period(var, kernel.width, transform = identity)
 
-probe.quantile(var, prob, ...)
+probe.quantile(var, probs, ...)
 
 probe.acf(var, lags, type = c("covariance", "correlation"),
   transform = identity)
@@ -48,7 +48,7 @@ probe.nlar(var, lags, powers, transform = identity)
 \item{kernel.width}{width of modified Daniell smoothing kernel to be used
 in power-spectrum computation: see \code{\link{kernel}}.}
 
-\item{prob}{a single probability; the quantile to compute: see \code{\link{quantile}}.}
+\item{probs}{the quantile or quantiles to compute: see \code{\link{quantile}}.}
 
 \item{...}{additional arguments passed to the underlying algorithms.}
 

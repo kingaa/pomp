@@ -42,8 +42,8 @@ By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 This will be coerced internally to storage mode \code{double}.}
 
 \item{rprior}{optional; prior distribution sampler, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{rprior=NULL} removes the prior distribution sampler.
-For more information, see \link[=prior_spec]{here}.}
+For more information, see \link[=prior_spec]{here}.
+Setting \code{rprior=NULL} removes the prior distribution sampler.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
@@ -64,7 +64,7 @@ Many algorithms for parameter estimation search an unconstrained space of parame
 When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{here}.
-Setting \code{partrans=NULL} removes the parameter transformations.}
+Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
@@ -80,18 +80,18 @@ An object of class \sQuote{bsmcd_pomp}.
 The following methods are avaiable:
 \describe{
 \item{\code{\link[=plot,bsmcd_pomp-method]{plot}}}{produces diagnostic plots}
-\item{as.data.frame}{puts the prior and posterior samples into a data frame}
+\item{\code{\link{as.data.frame}}}{puts the prior and posterior samples into a data frame}
 }
 }
 \description{
 Modified version of the Liu and West (2001) algorithm.
 }
 \details{
-\code{bsmc2} uses a version of the original algorithm, but discards the auxiliary particle filter.
+\code{bsmc2} uses a version of the original algorithm (Liu \& West 2001), but discards the auxiliary particle filter.
 The modification appears to give superior performance for the same amount of effort.
 
 Samples from the prior distribution are drawn using the \code{rprior} component.
-This can depend on elements of \code{params}, i.e., some of the elements of \code{params} can be \dQuote{hyperparameters}.
+This is allowed to depend on elements of \code{params}, i.e., some of the elements of \code{params} can be treated as \dQuote{hyperparameters}.
 \code{Np} draws are made from the prior distribution.
 }
 \references{

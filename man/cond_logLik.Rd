@@ -27,7 +27,7 @@
 \value{
 The numerical value of the conditional log likelihood.
 Note that some methods compute not the log likelihood itself but instead a related quantity.
-To keep the code simple, the \code{logLik} function is nevertheless used to extract this quantity.
+To keep the code simple, the \code{cond.logLik} function is nevertheless used to extract this quantity.
 
 When \code{object} is of class \sQuote{bsmcd_pomp} (i.e., the result of a \code{bsmc2} computation), \code{cond.logLik} returns the conditional log \dQuote{evidence} (see \code{\link{bsmc2}}).
 }

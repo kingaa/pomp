@@ -28,7 +28,7 @@
 ##' @section Re-running ABC iterations:
 ##'
 ##' To re-run a sequence of ABC iterations, one can use the \code{abc} method on a \sQuote{abcd_pomp} object.
-##' By default, the same parameters used for the original ABC run are re-used (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
+##' By default, the same parameters used for the original ABC run are re-used (except for \code{verbose}, the default of which is shown above).
 ##' If one does specify additional arguments, these will override the defaults.
 ##'
 ##' @section Continuing ABC iterations:
@@ -225,7 +225,7 @@ setMethod(
 ##' @aliases continue,abcd_pomp-method
 ##' @rdname continue
 ##'
-##' @param Nabc positive integer; number of additional iterations to perform
+##' @param Nabc positive integer; number of additional ABC iterations to perform
 ##'
 ##' @export
 setMethod(

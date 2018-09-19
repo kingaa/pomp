@@ -66,8 +66,8 @@ Setting \code{rmeasure=NULL} removes the measurement model simulator.
 For more information, see \link[=rmeasure_spec]{here}.}
 
 \item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{dprior=NULL} removes the prior distribution density evaluator.
-For more information, see \link[=prior_spec]{here}.}
+For more information, see \link[=prior_spec]{here}.
+Setting \code{dprior=NULL} resets the prior distribution to its default, which is a flat improper prior.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
@@ -92,7 +92,7 @@ One or more \sQuote{abcd_pomp} objects can be joined to form an \sQuote{abcList}
 
 
 To re-run a sequence of ABC iterations, one can use the \code{abc} method on a \sQuote{abcd_pomp} object.
-By default, the same parameters used for the original ABC run are re-used (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
+By default, the same parameters used for the original ABC run are re-used (except for \code{verbose}, the default of which is shown above).
 If one does specify additional arguments, these will override the defaults.
 }
 

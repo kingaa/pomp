@@ -18,8 +18,6 @@
 ##' @param kernel.width width of modified Daniell smoothing kernel to be used
 ##' in power-spectrum computation: see \code{\link{kernel}}.
 ##'
-##' @param prob a single probability; the quantile to compute: see \code{\link{quantile}}.
-##'
 ##' @param lags In \code{probe.ccf}, a vector of lags between time series.
 ##' Positive lags correspond to \code{x} advanced relative to \code{y};
 ##' negative lags, to the reverse.
@@ -33,16 +31,6 @@
 ##' simulated data.  See Details, below, for a precise description.
 ##'
 ##' @param type Compute autocorrelation or autocovariance?
-##'
-##' @param ref empirical reference distribution.  Simulated data will be
-##' regressed against the values of \code{ref}, sorted and, optionally,
-##' differenced.  The resulting regression coefficients capture information
-##' about the shape of the marginal distribution.  A good choice for \code{ref}
-##' is the data itself.
-##'
-##' @param order order of polynomial regression.
-##'
-##' @param diff order of differencing to perform.
 ##'
 ##' @param ... additional arguments passed to the underlying algorithms.
 ##'
@@ -120,13 +108,15 @@ probe.period <- function (var, kernel.width, transform = identity) {
 }
 
 ##' @rdname basic_probes
+##' @param probs the quantile or quantiles to compute: see \code{\link{quantile}}.
 ##' @export
-probe.quantile <- function (var, prob, ...) {
+##'
+probe.quantile <- function (var, probs, ...) {
   if (length(var)>1) pStop_(sQuote("probe.quantile")," is a univariate probe.")
-  function (y) quantile(y[var,],probs=prob, ...)
+  function (y) quantile(y[var,],probs=probs, ...)
 }
 
-##'@rdname basic_probes
+##' @rdname basic_probes
 ##' @export
 probe.acf <- function (var, lags, type = c("covariance", "correlation"),
   transform = identity) {
@@ -142,7 +132,7 @@ probe.acf <- function (var, lags, type = c("covariance", "correlation"),
   )
 }
 
-##'@rdname basic_probes
+##' @rdname basic_probes
 ##' @export
 probe.ccf <- function (vars, lags, type = c("covariance", "correlation"),
   transform = identity) {
@@ -159,7 +149,17 @@ probe.ccf <- function (vars, lags, type = c("covariance", "correlation"),
   )
 }
 
-##'@rdname basic_probes
+##' @rdname basic_probes
+##' @param ref empirical reference distribution.  Simulated data will be
+##' regressed against the values of \code{ref}, sorted and, optionally,
+##' differenced.  The resulting regression coefficients capture information
+##' about the shape of the marginal distribution.  A good choice for \code{ref}
+##' is the data itself.
+##'
+##' @param order order of polynomial regression.
+##'
+##' @param diff order of differencing to perform.
+##'
 ##' @export
 probe.marginal <- function (var, ref, order = 3, diff = 1,
   transform = identity) {
@@ -172,8 +172,9 @@ probe.marginal <- function (var, ref, order = 3, diff = 1,
   )
 }
 
-##'@rdname basic_probes
+##' @rdname basic_probes
 ##' @export
+##'
 probe.nlar <- function (var, lags, powers, transform = identity) {
   ep <- "probe.nlar"
   if (length(var)>1) pStop_(sQuote(ep)," is a univariate probe.")

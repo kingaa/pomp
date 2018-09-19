@@ -247,7 +247,7 @@ setMethod(
 ##' @aliases continue,mif2d_pomp-method
 ##' @rdname continue
 ##'
-##' @param Nmif positive integer; number of additional iterations to perform
+##' @param Nmif positive integer; number of additional filtering iterations to perform
 ##'
 ##' @export
 setMethod(

@@ -96,7 +96,7 @@ Many algorithms for parameter estimation search an unconstrained space of parame
 When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{here}.
-Setting \code{partrans=NULL} removes the parameter transformations.}
+Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

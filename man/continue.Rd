@@ -27,11 +27,11 @@ continue(object, ...)
 \item{\dots}{additional arguments will be passed to the underlying method.
 This allows one to modify parameters used in the original computations.}
 
-\item{Nabc}{positive integer; number of additional iterations to perform}
+\item{Nabc}{positive integer; number of additional ABC iterations to perform}
 
-\item{Nmcmc}{positive integer; number of additional iterations to perform}
+\item{Nmcmc}{positive integer; number of additional PMCMC iterations to perform}
 
-\item{Nmif}{positive integer; number of additional iterations to perform}
+\item{Nmif}{positive integer; number of additional filtering iterations to perform}
 }
 \description{
 Continue an iterative computation where it left off.

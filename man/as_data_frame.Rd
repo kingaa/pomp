@@ -48,10 +48,17 @@ When \code{object} is a simple \sQuote{pomp} object,
 data frame with the times, observables, states (if known), and
 interpolated covariates (if any).
 
-When \code{object} is a simple \sQuote{pfilterd_pomp} object,
+When \code{object} is a \sQuote{pfilterd_pomp} object,
 coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
 but with conditional log likelihood and effective sample size estimates included.
 
 When \code{object} is a \sQuote{probed_pomp} object,
 coercion to a data frame results in a data frame with the values of the probes computed on the data and on simulations.
+
+When \code{object} is a \sQuote{kalmand_pomp} object,
+coercion to a data frame results in a data frame with prediction means, filter means and forecasts, in addition to the data.
+
+When \code{object} is a \sQuote{bsmcd_pomp} object,
+coercion to a data frame results in a data frame with samples from the prior and posterior distribution.
+The \code{.id} variable distinguishes them.
 }

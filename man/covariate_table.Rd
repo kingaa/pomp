@@ -31,7 +31,7 @@ This may be given as a vector of (increasing, finite) numerical values.
 Alternatively, one can specify by name which of the given variables is the time variable.}
 }
 \description{
-Including time-varying covariates in a model.
+Constructing lookup tables for time-varying covariates.
 }
 \details{
 If the \sQuote{pomp} object contains covariates (specified via the \code{covar} argument), then interpolated values of the covariates will be available to each of the model components whenever it is called.
@@ -43,6 +43,8 @@ covariate-dependent priors are not allowed.
 Nor are parameter transformations permitted to depend upon covariates.
 }
 \seealso{
+lookup
+
 Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{accumulators}}, \code{\link{distributions}},
   \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},

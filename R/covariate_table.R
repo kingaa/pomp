@@ -1,6 +1,6 @@
 ##' Covariates
 ##'
-##' Including time-varying covariates in a model.
+##' Constructing lookup tables for time-varying covariates.
 ##'
 ##' If the \sQuote{pomp} object contains covariates (specified via the \code{covar} argument), then interpolated values of the covariates will be available to each of the model components whenever it is called.
 ##' In particular, variables with names as they appear in the \code{covar} covariate table will be available to any C snippet.
@@ -16,6 +16,7 @@
 ##' covariate_table,ANY-method
 ##' @include pomp_class.R pstop.R
 ##' @family information on model implementation
+##' @seealso lookup
 ##'
 ##' @param times the times corresponding to the covariates.
 ##' This may be given as a vector of (increasing, finite) numerical values.

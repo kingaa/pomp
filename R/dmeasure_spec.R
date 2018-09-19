@@ -34,12 +34,12 @@
 ##' The arguments of \code{f} should be chosen from among the observables, state variables, parameters, covariates, and time.
 ##' It must also have the arguments \code{\dots}, and \code{log}.
 ##' It can take additional arguments via the \link[=userdata]{facility}.
-##' \code{f} must return a single numeric value, the probability density (or log probability density) of \code{y} given \code{x} at time \code{t}.
+##' \code{f} must return a single numeric value, the probability density (or log probability density if \code{log = TRUE}) of \code{y} given \code{x} at time \code{t}.
 ##'
 ##' @section Important note:
 ##' \strong{It is a common error to fail to account for both \code{log = TRUE} and \code{log = FALSE} when writing the \code{dmeasure} C snippet or function.}
 ##'
 ##' @section Default behavior:
-##' By default, \code{dmeasure} returns missing values (\code{NA}).
+##' If \code{dmeasure} is left unspecified, calls to \code{\link{dmeasure}} will return missing values (\code{NA}).
 ##'
 NULL

@@ -1,11 +1,9 @@
 ##' Design matrices for pomp calculations
 ##'
-##' These functions are useful for generating designs for the exploration of
-##' parameter space.  \code{sobolDesign} generate a Latin hypercube design
-##' using the Sobol' low-discrepancy sequence.  \code{profileDesign} generates
-##' a data-frame where each row can be used as the starting point for a profile
-##' likelihood calculation.  \code{sliceDesign} generates points along slices
-##' through a specified point.
+##' These functions are useful for generating designs for the exploration of parameter space.
+##' \code{sobolDesign} generate a Latin hypercube design based on the Sobol' low-discrepancy sequence.
+##' \code{profileDesign} generates a data-frame where each row can be used as the starting point for a profile likelihood calculation.
+##' \code{sliceDesign} generates points along slices through a specified point.
 ##'
 ##' The Sobol' sequence generation is performed using codes from the
 ##' \href{http://ab-initio.mit.edu/nlopt/}{\pkg{NLopt} library} by S. Johnson.

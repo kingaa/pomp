@@ -75,8 +75,8 @@ Setting \code{dmeasure=NULL} removes the measurement density evaluator.
 For more information, see \link[=dmeasure_spec]{here}.}
 
 \item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{dprior=NULL} removes the prior distribution density evaluator.
-For more information, see \link[=prior_spec]{here}.}
+For more information, see \link[=prior_spec]{here}.
+Setting \code{dprior=NULL} resets the prior distribution to its default, which is a flat improper prior.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

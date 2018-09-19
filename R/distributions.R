@@ -1,17 +1,18 @@
-##' The Euler-multinomial distributions and Gamma white-noise processes
+##' Probability distributions
 ##'
-##' This page documents both the Euler-multinomial family of distributions and
-##' the package's simulator of Gamma white-noise processes.
+##' \pkg{pomp} provides a number of probability distributions that have proved useful in modeling partially observed Markov processes.
+##' These include the Euler-multinomial family of distributions and
+##' the the Gamma white-noise processes.
 ##'
 ##' If \eqn{N} individuals face constant hazards of death in \eqn{k} ways
 ##' at rates \eqn{r_1, r_2, \dots, r_k}{r1,r2,\dots,rk},
 ##' then in an interval of duration \eqn{\Delta t}{dt},
 ##' the number of individuals remaining alive and dying in each way is multinomially distributed:
-##' \deqn{(N-\sum_{i=1}^k \Delta n_i, \Delta n_1, \dots, \Delta n_k) \sim \mathrm{multinomial}(N;p_0,p_1,\dots,p_k),}{(N-\sum(dni), dn1, \dots, dnk) ~ multinomial(N;p0,p1,\dots,pk),}
+##' \deqn{(N-\sum_{i=1}^k \Delta n_i, \Delta n_1, \dots, \Delta n_k) \sim \mathrm{Multinomial}(N;p_0,p_1,\dots,p_k),}{(N-\sum(dni), dn1, \dots, dnk) ~ multinomial(N;p0,p1,\dots,pk),}
 ##' where \eqn{\Delta n_i}{dni} is the number of individuals dying in way \eqn{i} over the interval,
 ##' the probability of remaining alive is \eqn{p_0=\exp(-\sum_i r_i \Delta t)}{p0=exp(-\sum(ri dt))},
 ##' and the probability of dying in way \eqn{j} is \deqn{p_j=\frac{r_j}{\sum_i r_i} (1-\exp(-\sum_i r_i \Delta t)).}{pj=(1-exp(-sum(ri dt))) rj/(\sum(ri)).}
-##' In this case, we say that \deqn{(\Delta n_1, \dots, \Delta n_k) \sim \mathrm{eulermultinom}(N,r,\Delta t),}{(dn1,\dots,dnk)~eulermultinom(N,r,dt),} where \eqn{r=(r_1,\dots,r_k)}{r=(r1,\dots,rk)}.
+##' In this case, we say that \deqn{(\Delta n_1, \dots, \Delta n_k) \sim \mathrm{Eulermultinom}(N,r,\Delta t),}{(dn1,\dots,dnk)~eulermultinom(N,r,dt),} where \eqn{r=(r_1,\dots,r_k)}{r=(r1,\dots,rk)}.
 ##' Draw \eqn{m} random samples from this distribution by doing \preformatted{
 ##'     dn <- reulermultinom(n=m,size=N,rate=r,dt=dt),
 ##' } where \code{r} is the vector of rates.
@@ -20,16 +21,16 @@
 ##'     deulermultinom(x=x,size=N,rate=r,dt=dt).
 ##' }
 ##'
-##' Breto & Ionides (2011) discuss how an infinitesimally overdispersed death process can be constructed by compounding a binomial process with a Gamma white noise process.
+##' Breto & Ionides (2011) discuss how an infinitesimally overdispersed death process can be constructed by compounding a multinomial process with a Gamma white noise process.
 ##' The Euler approximation of the resulting process can be obtained as follows.
 ##' Let the increments of the equidispersed process be given by
 ##' \preformatted{
 ##'     reulermultinom(size=N,rate=r,dt=dt).
 ##' }
 ##' In this expression, replace the rate \eqn{r} with \eqn{r {\Delta W}/{\Delta t}},
-##' where \eqn{\Delta\!W \sim \mathrm{Gamma}(\Delta\!t/\sigma^2,\sigma^2)}
+##' where \eqn{\Delta W \sim \mathrm{Gamma}(\Delta t/\sigma^2,\sigma^2)}
 ##' is the increment of an integrated Gamma white noise process with intensity \eqn{\sigma}.
-##' That is, \eqn{\Delta\!W} has mean \eqn{\Delta\!t} and variance \eqn{\sigma^2 \Delta\!t}.
+##' That is, \eqn{\Delta W} has mean \eqn{\Delta t} and variance \eqn{\sigma^2 \Delta t}.
 ##' The resulting process is overdispersed and converges (as \eqn{\Delta t} goes to zero) to a well-defined process.
 ##' The following lines of code accomplish this:
 ##' \preformatted{
@@ -40,7 +41,7 @@
 ##' \preformatted{
 ##'     dn <- reulermultinom(size=N,rate=r*dW/dt,dt=dt).
 ##' }
-##' He et al. use such overdispersed death processes in modeling measles.
+##' He et al. (2010) use such overdispersed death processes in modeling measles.
 ##'
 ##' For all of the functions described here, access to the underlying C routines is available:
 ##' see below.
@@ -63,7 +64,7 @@
 ##' \item{reulermultinom}{
 ##'    Returns a \code{length(rate)} by \code{n} matrix.
 ##'    Each column is a different random draw.
-##'    Each row contains the numbers of individuals succumbed to the corresponding process.
+##'    Each row contains the numbers of individuals that have succumbed to the corresponding process.
 ##' }
 ##' \item{deulermultinom}{
 ##'    Returns a vector (of length equal to the number of columns of \code{x}) containing

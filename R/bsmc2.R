@@ -2,11 +2,11 @@
 ##'
 ##' Modified version of the Liu and West (2001) algorithm.
 ##'
-##' \code{bsmc2} uses a version of the original algorithm, but discards the auxiliary particle filter.
+##' \code{bsmc2} uses a version of the original algorithm (Liu \& West 2001), but discards the auxiliary particle filter.
 ##' The modification appears to give superior performance for the same amount of effort.
 ##'
 ##' Samples from the prior distribution are drawn using the \code{rprior} component.
-##' This can depend on elements of \code{params}, i.e., some of the elements of \code{params} can be \dQuote{hyperparameters}.
+##' This is allowed to depend on elements of \code{params}, i.e., some of the elements of \code{params} can be treated as \dQuote{hyperparameters}.
 ##' \code{Np} draws are made from the prior distribution.
 ##'
 ##' @name bsmc2
@@ -35,7 +35,7 @@
 ##' The following methods are avaiable:
 ##' \describe{
 ##' \item{\code{\link[=plot,bsmcd_pomp-method]{plot}}}{produces diagnostic plots}
-##' \item{as.data.frame}{puts the prior and posterior samples into a data frame}
+##' \item{\code{\link{as.data.frame}}}{puts the prior and posterior samples into a data frame}
 ##' }
 ##'
 ##' @author Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides

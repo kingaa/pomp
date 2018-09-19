@@ -34,12 +34,11 @@ vector.  By default, no column-names are given.}
 \value{
 \item{bspline.basis}{ Returns a matrix with \code{length(x)} rows
 and \code{nbasis} columns.  Each column contains the values one of the
-spline basis functions.  If \code{deriv>0}, the derivatives of the
-corresponding spline basis functions are returned.  }
+spline basis functions.}
 \item{periodic.bspline.basis}{ Returns a matrix with \code{length(x)} rows
 and \code{nbasis} columns.  The basis functions returned are periodic with
-period \code{period}.  If \code{deriv>0}, the derivatives of the
-corresponding spline basis functions are returned.  }
+period \code{period}.}
+If \code{deriv>0}, the derivative of that order of each of the corresponding spline basis functions are returned.
 }
 \description{
 These functions generate B-spline basis functions.  \code{bspline.basis}

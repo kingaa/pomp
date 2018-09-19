@@ -44,7 +44,8 @@ Tools for reproducible computations.
 \details{
 On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.  The \code{bake} and \code{stew} functions perform analogously:
 an computation is performed and stored in a named file.
-If the function is called again and the file is present, the computation is not executed; rather, the results are loaded from the file in which they were previously stored.
+If the function is called again and the file is present, the computation is not executed.
+Instead, the results are loaded from the file in which they were previously stored.
 Moreover, via their optional \code{seed} argument, \code{bake} and \code{stew} can control the pseudorandom-number generator (RNG) for greater reproducibility.
 After the computation is finished, these functions restore the pre-existing RNG state to avoid side effects.
 
@@ -57,7 +58,7 @@ By contrast, \code{stew} loads the file using \code{\link{load}} and copies the 
 If \code{file} does not exist, then both \code{bake} and \code{stew} evaluate the expression \code{expr}; they differ in the results that they save.
 \code{bake} saves the value of the evaluated expression to \code{file} as a single object.
 The name of that object is not saved.
-By contrast, \code{stew} creates a local environment within which \code{expr}is evaluated; all objects in that environment are saved (by name) in \code{file}.
+By contrast, \code{stew} creates a local environment within which \code{expr} is evaluated; all objects in that environment are saved (by name) in \code{file}.
 }
 \examples{
 

@@ -20,5 +20,8 @@ Interpolate values from a lookup table
 \details{
 A warning will be generated if extrapolation is performed.
 }
+\seealso{
+covariate_table
+}
 \concept{interpolation}
 \keyword{internal}

@@ -54,16 +54,16 @@ For more information, see \link[=dmeasure_spec]{here}.}
 \item{skeleton}{optional; the deterministic skeleton of the unobserved state process.
 Depending on whether the model operates in continuous or discrete time, this is either a vectorfield or a map.
 Accordingly, this is supplied using either the \code{\link[=skeleton_spec]{vectorfield}} or \code{\link[=skeleton_spec]{map}} fnctions.
-Setting \code{skeleton=NULL} removes the deterministic skeleton.
-For more information, see \link[=skeleton_spec]{here}.}
+For more information, see \link[=skeleton_spec]{here}.
+Setting \code{skeleton=NULL} removes the deterministic skeleton.}
 
 \item{rprior}{optional; prior distribution sampler, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{rprior=NULL} removes the prior distribution sampler.
-For more information, see \link[=prior_spec]{here}.}
+For more information, see \link[=prior_spec]{here}.
+Setting \code{rprior=NULL} removes the prior distribution sampler.}
 
 \item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-Setting \code{dprior=NULL} removes the prior distribution density evaluator.
-For more information, see \link[=prior_spec]{here}.}
+For more information, see \link[=prior_spec]{here}.
+Setting \code{dprior=NULL} resets the prior distribution to its default, which is a flat improper prior.}
 
 \item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
 
@@ -71,7 +71,7 @@ Many algorithms for parameter estimation search an unconstrained space of parame
 When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{here}.
-Setting \code{partrans=NULL} removes the parameter transformations.}
+Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.}
 
 \item{covar}{optional covariate table, constructed using \code{\link{covariate_table}}.
 
@@ -168,7 +168,7 @@ Each basic component can be furnished using C snippets, \R functions, or pre-com
 \section{Note}{
 
 
-\strong{ It is not typically necessary (or even feasible) to define all of the basic components for any given purpose.
+\strong{It is not typically necessary (or indeed often feasible) to define all of the basic components for any given purpose.
 Each \pkg{pomp} algorithm makes use of only a subset of these components.
 Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.
 FIXME }

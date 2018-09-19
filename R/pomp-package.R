@@ -37,18 +37,12 @@
 ##' \item approximate Bayesian computation (Toni et al. 2009); see \code{\link{abc}}
 ##' \item the approximate Bayesian sequential
 ##' Monte Carlo scheme of Liu & West (2001); see \code{\link{bsmc2}}
-##' \item ensemble and ensemble adjusted Kalman filters; see \code{\link{enkf}}
+##' \item ensemble and ensemble adjusted Kalman filters; see \code{\link{kalman}}
 ##' \item simple trajectory matching; see \code{\link{traj.match}}.
 ##' }
 ##' The package
 ##' also provides various tools for plotting and extracting information on
 ##' models and data.
-##'
-##' @section Important note:
-##' \strong{
-##' It is not typically necessary (or even feasible) to define all of the basic components for any given purpose.
-##' Each \pkg{pomp} algorithm makes use of only a subset of these components.
-##' }
 ##'
 ##' @references
 ##' A. A. King, D. Nguyen, and E. L. Ionides (2016) Statistical

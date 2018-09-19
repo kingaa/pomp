@@ -54,7 +54,7 @@ as.data.frame.pomp <- function (x, ...) as(x,"data.frame")
 ##' @aliases coerce,pfilterd_pomp,data.frame-method
 ##' @rdname as_data_frame
 ##'
-##' @details When \code{object} is a simple \sQuote{pfilterd_pomp} object,
+##' @details When \code{object} is a \sQuote{pfilterd_pomp} object,
 ##' coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
 ##' but with conditional log likelihood and effective sample size estimates included.
 ##'
@@ -112,6 +112,10 @@ as.data.frame.probed_pomp <- function (x, ...)
 ##' @name as,kalmand_pomp-method
 ##' @aliases coerce,kalmand_pomp,data.frame-method
 ##' @rdname as_data_frame
+##'
+##' @details When \code{object} is a \sQuote{kalmand_pomp} object,
+##' coercion to a data frame results in a data frame with prediction means, filter means and forecasts, in addition to the data.
+##'
 setAs(
   from="kalmand_pomp",
   to="data.frame",
@@ -143,6 +147,11 @@ as.data.frame.kalmand_pomp <- function (x, ...) {
 ##' @name as,bsmcd_pomp-method
 ##' @aliases coerce,bsmcd_pomp,data.frame-method
 ##' @rdname as_data_frame
+##'
+##' @details When \code{object} is a \sQuote{bsmcd_pomp} object,
+##' coercion to a data frame results in a data frame with samples from the prior and posterior distribution.
+##' The \code{.id} variable distinguishes them.
+##'
 setAs(
   from="bsmcd_pomp",
   to="data.frame",

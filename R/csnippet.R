@@ -32,12 +32,13 @@
 ##' State variables and parameters are declared via the \code{statenames} or \code{paramnames} arguments to \code{pomp}, respectively.
 ##' Compiler errors that complain about undeclared state variables or parameters are usually due to failure to declare these in \code{statenames} or \code{paramnames}, as appropriate.
 ##' \item A C snippet can declare local variables.
-##' Be careful not to use names that match those of state variables, observables, or parameters.  The latter must never be declared within a C snippet.
-##' \item Names of observables are determined by their names in the data.
+##' Be careful not to use names that match those of state variables, observables, or parameters.
+##' One must never declare state variables, observables, covariates, or parameters within a C snippet.
+##' \item Names of observables must match the names given given in the data.
 ##' They must be referred to in measurement model C snippets (\code{rmeasure} and \code{dmeasure}) by those names.
 ##' \item If the \sQuote{pomp} object contains a table of covariates (see above), then the variables in the covariate table will be available, by their names, in the context within which the C snippet is executed.
 ##' \item Because the dot \sQuote{.} has syntactic meaning in C, \R variables with names containing dots (\sQuote{.}) are replaced in the C codes by variable names in which all dots have been replaced by underscores (\sQuote{_}).
-##' \item The header \file{R.h}, provided with \R, will be included in the generated C file, making all of the \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API}{\R C API} available for use in the C snippet.
+##' \item The headers \file{R.h} and \file{Rmath.h}, provided with \R, will be included in the generated C file, making all of the \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API}{\R C API} available for use in the C snippet.
 ##' This makes a great many useful functions available, including all of \R's \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions}{statistical distribution functions}.
 ##' \item The header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}, provided with \pkg{pomp}, will also be included, making all of the \pkg{pomp} C API available for use in every C snippet.
 ##' Do \preformatted{file.show(system.file("include/pomp.h",package="pomp2"))} to view this header file in your installation.

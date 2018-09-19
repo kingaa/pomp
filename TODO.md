@@ -13,6 +13,8 @@
     - parallelization tools
     - reproducibility tools
     - extending the package
+- example for `accumvars`
+- check `order="constant"` for right-continuity in `covariate_table`
 - make R-level functions for various distributions and transformations
 	- BetaBinom
 	- BetaNegBinom

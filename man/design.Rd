@@ -42,12 +42,10 @@ profile point.  The other parameters in \code{vars} are sampled using
 \code{sobol}.
 }
 \description{
-These functions are useful for generating designs for the exploration of
-parameter space.  \code{sobolDesign} generate a Latin hypercube design
-using the Sobol' low-discrepancy sequence.  \code{profileDesign} generates
-a data-frame where each row can be used as the starting point for a profile
-likelihood calculation.  \code{sliceDesign} generates points along slices
-through a specified point.
+These functions are useful for generating designs for the exploration of parameter space.
+\code{sobolDesign} generate a Latin hypercube design based on the Sobol' low-discrepancy sequence.
+\code{profileDesign} generates a data-frame where each row can be used as the starting point for a profile likelihood calculation.
+\code{sliceDesign} generates points along slices through a specified point.
 }
 \details{
 The Sobol' sequence generation is performed using codes from the
