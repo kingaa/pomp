@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 1.18.8.2
-Date: 2018-09-17
+Version: 1.18.9.1
+Date: 2018-09-20
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -21,7 +21,7 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",
 	  )
 URL: https://kingaa.github.io/pomp/
 Description: Tools for working with partially observed Markov process (POMP) models (also known as stochastic dynamical systems, hidden Markov models, and nonlinear, non-Gaussian, state-space models).  The package provides facilities for implementing POMP models, simulating them, and fitting them to time series data by a variety of frequentist and Bayesian methods.  It is also a versatile platform for implementation of inference methods for general POMP models.
-Depends: R(>= 3.1.2), methods
+Depends: R(>= 3.2.4), methods
 Imports: stats, graphics, digest, mvtnorm, deSolve, coda, subplex, nloptr
 Suggests: magrittr, plyr, reshape2, ggplot2, knitr
 SystemRequirements: For Windows users, Rtools (see https://cran.r-project.org/bin/windows/Rtools/).
