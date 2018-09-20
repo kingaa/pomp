@@ -4,6 +4,7 @@ cache: packages
 file_glob: true
 latex: false
 pandoc: false
+
 addons:
   apt:
     packages:
@@ -11,11 +12,13 @@ addons:
   homebrew:
     packages:
     - libgit2
+
 stages:
 - test
 - coverage
 - name: deploy
   if: tag IS present
+
 jobs:
   include:
   - r: release
@@ -25,8 +28,6 @@ jobs:
   - r: 3.4
     os: linux
   - r: release
-    os: osx
-  - r: devel
     os: osx
   - stage: coverage
     r: release
