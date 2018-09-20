@@ -22,9 +22,11 @@ jobs:
     os: linux
   - r: devel
     os: linux
-  - r: 3.3
+  - r: 3.4
     os: linux
   - r: release
+    os: osx
+  - r: devel
     os: osx
   - stage: coverage
     r: release
