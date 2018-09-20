@@ -24,7 +24,7 @@ jobs:
     os: linux
   - r: devel
     os: linux
-  - r: 3.2.4
+  - r: 3.4.4
     os: linux
   - r: release
     os: osx
