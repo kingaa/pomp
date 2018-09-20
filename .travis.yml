@@ -25,7 +25,7 @@ jobs:
     os: linux
   - r: devel
     os: linux
-  - r: oldrel
+  - r: 3.5.0
     os: linux
   - r: release
     os: osx
