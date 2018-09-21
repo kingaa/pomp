@@ -10,14 +10,14 @@ TODO\.md$
 ^codecov\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-.Rprofile
+\.Rprofile
 Makefile
 lib
 library
 check
 www
-pomp2.pdf
+^(.+?)\.pdf
 ^(.+?)\.tar\.gz
 ^(.+?)\.tgz
 ^(.+?)\.zip
-hub_cov.R
+hub_cov\.R
