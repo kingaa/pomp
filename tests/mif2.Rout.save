@@ -182,12 +182,12 @@ likelihood, data, states, and parameters are:
  time:            1
   lik:           NA
     Y:      1.02624
-    X:     0.937709
+    X:     0.937703
     K:            1
     r:          0.1
-sigma:    0.0990971
+sigma:    0.0991013
   tau:          0.1
-  X_0:      1.00092
+  X_0:      1.00091
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,
 +   drpocess="oops",
 +   dmeasure=function(log,...)0) -> mf3

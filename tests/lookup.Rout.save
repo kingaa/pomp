@@ -45,6 +45,12 @@ in 'table_lookup': extrapolating at 2.000000e+01.
 > lookup(ct,t=6.1)
     t  x y
 1 6.1 26 4
+> plot(y~t,data=lookup(ct,t=seq(0,10.5,by=0.01)),type='l')
+There were 50 or more warnings (use warnings() to see the first 50)
+> lines(seq(0,10),10:0,col="blue",type="s")
+> plot(x~t,data=lookup(ct,t=seq(0,10.5,by=0.01)),type='l')
+There were 50 or more warnings (use warnings() to see the first 50)
+> lines(seq(0,10),20:30,col="blue",type="s")
 > 
 > try(covariate_table(x=20:30,y=10:0,times=seq(10,0)))
 Error : in ‘covariate_table’: ‘times’ must be an increasing numeric sequence (without missing values).

@@ -160,8 +160,6 @@ setMethod(
     include.data = FALSE,
     ..., verbose = getOption("verbose", FALSE)) {
 
-    format <- match.arg(format)
-
     tryCatch(
       simulate.internal(
         object,
@@ -179,8 +177,7 @@ setMethod(
 )
 
 simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
-  format, include.data = FALSE, ...,
-  .gnsi = TRUE, verbose) {
+  format, include.data = FALSE, ..., .gnsi = TRUE, verbose) {
 
   object <- pomp(object,...,verbose=verbose)
 

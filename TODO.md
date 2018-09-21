@@ -14,9 +14,9 @@
     - reproducibility tools
     - extending the package
 - can we allow *nondecreasing* times?
-- default cooling.schedule for mif2 should be "geometric"?
+- ~~default cooling.schedule for mif2 should be "geometric"?~~
 - example for `accumvars`
-- check `order="constant"` for right-continuity in `covariate_table`
+- ~~check `order="constant"` for right-continuity in `covariate_table`~~
 - make R-level functions for various distributions and transformations
 	- BetaBinom
 	- BetaNegBinom

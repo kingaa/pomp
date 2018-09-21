@@ -129,7 +129,7 @@ setMethod(
   signature=signature(data="data.frame"),
   definition = function (data,
     Nmif = 1, rw.sd,
-    cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
+    cooling.type = c("geometric", "hyperbolic"), cooling.fraction.50,
     Np, tol = 1e-17, max.fail = Inf,
     params, rinit, rprocess, dmeasure, partrans,
     ..., verbose = getOption("verbose", FALSE)) {
@@ -139,7 +139,7 @@ setMethod(
         data,
         Nmif=Nmif,
         rw.sd=rw.sd,
-        cooling.type=cooling.type,
+        cooling.type=match.arg(cooling.type),
         cooling.fraction.50=cooling.fraction.50,
         Np=Np,
         tol=tol,
@@ -167,7 +167,7 @@ setMethod(
   signature=signature(data="pomp"),
   definition = function (data,
     Nmif = 1, rw.sd,
-    cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
+    cooling.type = c("geometric", "hyperbolic"), cooling.fraction.50,
     Np, tol = 1e-17, max.fail = Inf,
     ..., verbose = getOption("verbose", FALSE)) {
 
@@ -176,7 +176,7 @@ setMethod(
         data,
         Nmif=Nmif,
         rw.sd=rw.sd,
-        cooling.type=cooling.type,
+        cooling.type=match.arg(cooling.type),
         cooling.fraction.50=cooling.fraction.50,
         Np=Np,
         tol=tol,
@@ -276,7 +276,7 @@ setMethod(
 )
 
 mif2.internal <- function (object, Nmif, rw.sd,
-  cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
+  cooling.type, cooling.fraction.50,
   Np, tol = 1e-17, max.fail = Inf,
   ..., verbose,
   .ndone = 0L, .indices = integer(0), .paramMatrix = NULL,
@@ -347,7 +347,6 @@ mif2.internal <- function (object, Nmif, rw.sd,
       cooling.fraction.50 > 1)
     pStop_(sQuote("cooling.fraction.50")," must be in (0,1].")
   cooling.fraction.50 <- as.numeric(cooling.fraction.50)
-  cooling.type <- match.arg(cooling.type)
 
   cooling.fn <- mif2.cooling(
     type=cooling.type,

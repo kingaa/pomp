@@ -2,6 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item The default cooling schedule (\code{cooling.type}) in \code{mif2} is now \dQuote{geometric}, in contrast to \dQuote{hyperbolic}, as before.
     \item Rename the \code{zeronames} argument to \code{accumvars}.
     \item The \code{pompExample} function has been dropped.
     The various examples are now included as regular functions that construct \sQuote{pomp} objects.

@@ -16,12 +16,12 @@
 \title{Iterated filtering: maximum likelihood by iterated, perturbed Bayes maps}
 \usage{
 \S4method{mif2}{data.frame}(data, Nmif = 1, rw.sd,
-  cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50, Np,
+  cooling.type = c("geometric", "hyperbolic"), cooling.fraction.50, Np,
   tol = 1e-17, max.fail = Inf, params, rinit, rprocess, dmeasure,
   partrans, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{mif2}{pomp}(data, Nmif = 1, rw.sd,
-  cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50, Np,
+  cooling.type = c("geometric", "hyperbolic"), cooling.fraction.50, Np,
   tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose",
   FALSE))
 
@@ -45,6 +45,7 @@ The latter are evaluated in a context where the model time variable is defined (
 The expression \code{ivp(s)} can be used in this context as shorthand for \preformatted{ifelse(time==time[1],s,0).}
 Likewise, \code{ivp(s,lag)} is equivalent to \preformatted{ifelse(time==time[lag],s,0).}
 See below for some examples.
+
 The perturbations that are applied are normally distributed with the specified s.d.
 If \code{transform = TRUE}, then they are applied on the estimation scale.}
 
@@ -64,7 +65,7 @@ and so on.}
 
 \item{tol}{positive numeric scalar;
 particles with likelihood less than \code{tol} are considered to be incompatible with the data.
-See the section on \emph{Filtering Failures} below for more information.}
+See the section on \emph{Filtering Failures} for more information.}
 
 \item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
 If the number of filtering failures exceeds this number, execution will terminate with an error.
@@ -147,6 +148,15 @@ Let \eqn{N} be the length of the time series and \eqn{\alpha=}{alpha=}\code{cool
 Then, when \code{cooling.type="geometric"}, we have \deqn{c_{m,n}=\alpha^{\frac{n-1+(m-1)N}{50N}}.}{c[m,n]=alpha^((n-1+(m-1)N)/(50N)).}
 When \code{cooling.type="hyperbolic"}, we have \deqn{c_{m,n}=\frac{s+1}{s+n+(m-1)N},}{c[m,n]=(s+1)/(s+n+(m-1)N),} where \eqn{s} satisfies \deqn{\frac{s+1}{s+50N}=\alpha.}{(s+1)/(s+50N)=alpha.}
 Thus, in either case, the perturbations at the end of 50 IF2 iterations are a fraction \eqn{\alpha}{alpha} smaller than they are at first.
+}
+
+\section{Filtering failures}{
+
+If the degree of disagreement between model and data becomes sufficiently large, a \dQuote{filtering failure} results.
+A filtering failure occurs when, at some time point, none of the \code{Np} particles is compatible with the data.
+In particular, if the conditional likelihood of a particle at any time is below the tolerance value \code{tol}, then that particle is considered to be uninformative and its likelihood is taken to be zero.
+A filtering failure occurs when this is the case for all particles.
+A warning is generated when this occurs unless the cumulative number of failures exceeds \code{max.fail}, in which case an error is generated.
 }
 
 \references{
