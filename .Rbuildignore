@@ -10,5 +10,14 @@ TODO\.md$
 ^codecov\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+.Rprofile
+Makefile
 lib
+library
+check
+www
+pomp2.pdf
+^(.+?)\.tar\.gz
+^(.+?)\.tgz
+^(.+?)\.zip
 hub_cov.R
