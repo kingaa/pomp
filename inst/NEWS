@@ -1,6 +1,6 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._3:
 
         • It is now permissible that the sequence of observation times
           (and sequences of covariate times) be merely non-decreasing
@@ -10,16 +10,24 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
         • The default cooling schedule (‘cooling.type’) in ‘mif2’ is
           now “geometric”, in contrast to “hyperbolic”, as before.
 
-        • Rename the ‘zeronames’ argument to ‘accumvars’.
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._2:
+
+        • ‘pomp’ now requires at least R version 3.5.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._1:
+
+        • The ‘zeronames’ argument has been renamed ‘accumvars’.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
+
+        • In the course of ordinary work, one should never need to
+          interact with the low-level ‘pomp’ constructor function now.
 
         • The ‘pompExample’ function has been dropped.  The various
           examples are now included as regular functions that construct
           ‘pomp’ objects.
 
         • The ‘bbs’ example has been dropped.
-
-        • In the course of ordinary work, one should never need to
-          interact with the low-level ‘pomp’ constructor function now.
 
         • One can now modify basic model components at (almost) any
           stage in a pipeline of ‘pomp’ computations.  All the

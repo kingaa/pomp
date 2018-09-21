@@ -11,7 +11,7 @@
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2018-09-17" />
+<meta name="date" content="2018-09-21" />
 
 <title>pomp version 2 upgrade guide</title>
 
@@ -124,12 +124,12 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">pomp version 2 upgrade guide</h1>
 <h4 class="author"><em>Aaron A. King</em></h4>
-<h4 class="date"><em>17 September 2018</em></h4>
+<h4 class="date"><em>21 September 2018</em></h4>
 
 </div>
 
 
-<p>This document was produced using <strong>pomp</strong> version 2.0.0.1 and <strong>R</strong> version 3.5.1.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.0.3.0 and <strong>R</strong> version 3.5.1.</p>
 <hr />
 <p>In version 2, a number of backward incompatible changes have been made. These changes greatly increase the usability of the package, increase its stability, make the interface more uniform, and remove many of the idiosyncrasies that were present in earlier versions. These benefits should greatly outweigh the costs associated with making the changes needed to bring existing <strong>pomp</strong> codes up to date with the new version. In any event, this guide will show how to do so.</p>
 <p>The main novelty of <strong>pomp</strong> version 2 is that one will rarely, if ever, need to interact directly with the low-level <code>pomp</code> constructor. Instead, one can supply new or modify existing model components at (almost) any stage in a chain of <strong>pomp</strong> computations. In particular, there are now data-frame methods for all of the <strong>pomp</strong> inference algorithms, as well as for <code>simulate</code>, <code>pfilter</code>, <code>probe</code>, and <code>spect</code>. One can pass a data frame to these methods, along with the requisite model components, and achieve the same effect as one would be first constructing a  object and then performing the operation.</p>
@@ -282,37 +282,37 @@ $(document).ready(function () {
 <tr class="odd">
 <td align="left">man</td>
 <td align="right">4069</td>
-<td align="right">3667</td>
-<td align="right">-402</td>
-<td align="right">-0.099</td>
+<td align="right">3735</td>
+<td align="right">-334</td>
+<td align="right">-0.082</td>
 </tr>
 <tr class="even">
 <td align="left">R</td>
-<td align="right">9358</td>
-<td align="right">8257</td>
-<td align="right">-1101</td>
-<td align="right">-0.118</td>
+<td align="right">12142</td>
+<td align="right">9204</td>
+<td align="right">-2938</td>
+<td align="right">-0.242</td>
 </tr>
 <tr class="odd">
 <td align="left">src</td>
-<td align="right">19678</td>
-<td align="right">19796</td>
-<td align="right">118</td>
+<td align="right">19615</td>
+<td align="right">19732</td>
+<td align="right">117</td>
 <td align="right">0.006</td>
 </tr>
 <tr class="even">
 <td align="left">tests</td>
 <td align="right">4846</td>
-<td align="right">3581</td>
-<td align="right">-1265</td>
-<td align="right">-0.261</td>
+<td align="right">3585</td>
+<td align="right">-1261</td>
+<td align="right">-0.260</td>
 </tr>
 <tr class="odd">
 <td align="left">total</td>
-<td align="right">37951</td>
-<td align="right">35301</td>
-<td align="right">-2650</td>
-<td align="right">-0.070</td>
+<td align="right">40672</td>
+<td align="right">36256</td>
+<td align="right">-4416</td>
+<td align="right">-0.109</td>
 </tr>
 </tbody>
 </table>

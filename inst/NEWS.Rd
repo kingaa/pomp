@@ -1,15 +1,28 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 2.0.0}{
+\section{Changes in \pkg{pomp} version 2.0.3}{
   \itemize{
     \item It is now permissible that the sequence of observation times (and sequences of covariate times) be merely non-decreasing sequences.
     Previously, \pkg{pomp} insisted on strictly increasing time sequences.
     \item The default cooling schedule (\code{cooling.type}) in \code{mif2} is now \dQuote{geometric}, in contrast to \dQuote{hyperbolic}, as before.
-    \item Rename the \code{zeronames} argument to \code{accumvars}.
+  }
+}
+\section{Changes in \pkg{pomp} version 2.0.2}{
+  \itemize{
+    \item \pkg{pomp} now requires at least \R version 3.5.
+  }
+}
+\section{Changes in \pkg{pomp} version 2.0.1}{
+  \itemize{
+    \item The \code{zeronames} argument has been renamed \code{accumvars}.
+  }
+}
+\section{Changes in \pkg{pomp} version 2.0.0}{
+  \itemize{
+    \item In the course of ordinary work, one should never need to interact with the low-level \code{pomp} constructor function now.
     \item The \code{pompExample} function has been dropped.
     The various examples are now included as regular functions that construct \sQuote{pomp} objects.
     \item The \code{bbs} example has been dropped.
-    \item In the course of ordinary work, one should never need to interact with the low-level \code{pomp} constructor function now.
     \item One can now modify basic model components at (almost) any stage in a pipeline of \pkg{pomp} computations.
     All the top-level inference functions, plus \code{probe}, \code{pfilter}, and \code{simulate} now allow modification of basic model components.
     \item The \code{rprocess} plugins \code{onestep.sim}, \code{discrete.time.sim}, \code{euler.sim}, \code{gillespie.sim}, and \code{gillespie.hl.sim} have been renamed \code{onestep}, \code{discrete_time}, \code{euler}, \code{gillespie}, and \code{gillespie_hl}, respectively.
