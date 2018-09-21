@@ -122,7 +122,7 @@ variable   [,1]   [,2]
 > try(trajectory(fhn,times=NULL))
 Error : in ‘trajectory’: ‘times’ is empty, there is no work to do.
 > try(trajectory(fhn,times=c(1,1,1)))
-Error : in ‘trajectory’: ‘times’ must be an increasing numeric sequence.
+Error : in ‘trajectory’: ‘times’ must be a strictly increasing numeric sequence.
 > try(trajectory(fhn,t0=10))
 Error : in ‘trajectory’: the zero-time ‘t0’ must occur no later than the first observation.
 > try(trajectory(fhn,params=c(3,2,1)))

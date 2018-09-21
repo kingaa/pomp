@@ -27,7 +27,7 @@ Setting \code{order="linear"} treats the covariates as piecewise linear function
 \code{order="constant"} treats them as right-continuous piecewise constant functions.}
 
 \item{times}{the times corresponding to the covariates.
-This may be given as a vector of (increasing, finite) numerical values.
+This may be given as a vector of (non-decreasing, finite) numerical values.
 Alternatively, one can specify by name which of the given variables is the time variable.}
 }
 \description{

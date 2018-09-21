@@ -19,7 +19,7 @@
 ##' @seealso lookup
 ##'
 ##' @param times the times corresponding to the covariates.
-##' This may be given as a vector of (increasing, finite) numerical values.
+##' This may be given as a vector of (non-decreasing, finite) numerical values.
 ##' Alternatively, one can specify by name which of the given variables is the time variable.
 ##'
 ##' @param order the order of interpolation to be used.
@@ -170,9 +170,9 @@ covariate.table.internal <- function (..., times = NULL, .timevar = NULL,
 
   if (length(df) == 0) pStop_("no covariates specified.")
 
-  if (any(!is.finite(times)) || !all(diff(times)>0))
+  if (any(!is.finite(times)) || !all(diff(times)>=0))
     pStop_(sQuote("times"),
-      " must be an increasing numeric sequence (without missing values).")
+      " must be a non-decreasing numeric sequence (without missing values).")
 
   names(df) <- cleanForC(names(df))
 

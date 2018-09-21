@@ -77,8 +77,8 @@ time.repl.internal <- function (object, t0 = FALSE, ..., value) {
   } else {
     object@times <- value
   }
-  if (!all(diff(object@times)>0))
-    pStop_("times must be an increasing numeric sequence.")
+  if (!all(diff(object@times)>=0))
+    pStop_("times must be a non-decreasing numeric sequence.")
   if (object@t0>object@times[1])
     pStop_("the zero-time ",sQuote("t0"),
       " must occur no later than the first observation.")
@@ -87,18 +87,16 @@ time.repl.internal <- function (object, t0 = FALSE, ..., value) {
     dim=c(nrow(dd),length(object@times)),
     dimnames=list(rownames(dd),NULL)
   )
-  object@data[,object@times%in%tt] <- dd[,tt%in%object@times]
+  idx2 <- match(object@times,tt,nomatch=0)
+  idx1 <- idx2 > 0
+  object@data[,idx1] <- dd[,idx2]
   if (length(ss)>0) {
     object@states <- array(
       data=NA,
       dim=c(nrow(ss),length(object@times)),
       dimnames=list(rownames(ss),NULL)
     )
-    for (kt in seq_along(object@times)) {
-      wr <- which(object@times[kt]==tt)
-      if (length(wr)>0)
-        object@states[,kt] <- ss[,wr[1]]
-    }
+    object@states[,idx1] <- ss[,idx2]
   }
   object
 }

@@ -52,8 +52,17 @@ There were 50 or more warnings (use warnings() to see the first 50)
 There were 50 or more warnings (use warnings() to see the first 50)
 > lines(seq(0,10),20:30,col="blue",type="s")
 > 
+> ct <- covariate_table(x=20:31,y=12:1,times=c(0:5,5:10),order="constant")
+> lookup(ct,t=seq(4.9,5.1,by=0.05))
+     t  x y
+1 4.90 24 8
+2 4.95 24 8
+3 5.00 26 6
+4 5.05 26 6
+5 5.10 26 6
+> 
 > try(covariate_table(x=20:30,y=10:0,times=seq(10,0)))
-Error : in ‘covariate_table’: ‘times’ must be an increasing numeric sequence (without missing values).
+Error : in ‘covariate_table’: ‘times’ must be a non-decreasing numeric sequence (without missing values).
 > try(covariate_table(x=20:23,y=10:0,times=seq(0,10)))
 Error : in ‘covariate_table’: binding columns: arguments imply differing number of rows: 4, 11
 > try(covariate_table(x=20:30,y=10:0,times=seq(0,3)))
@@ -95,7 +104,7 @@ Error : in ‘covariate_table’: names of covariates must be unique.
  3rd Qu.: 7.75   3rd Qu.: 7.75  
  Max.   :10.00   Max.   :10.00  
 > try(covariate_table(a=1:10,b=10:1,times="b"))
-Error : in ‘covariate_table’: ‘times’ must be an increasing numeric sequence (without missing values).
+Error : in ‘covariate_table’: ‘times’ must be a non-decreasing numeric sequence (without missing values).
 > try(covariate_table(a=1:10,b=10:1,times="c"))
 Error : in ‘covariate_table’: ‘times’ does not identify a unique time variable.
 > try(covariate_table(a=1:10,b=10:1,times=NA))

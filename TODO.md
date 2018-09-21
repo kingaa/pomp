@@ -2,7 +2,9 @@
 
 ## For pomp 2:
 
+- "guide to upgrading to **pomp** version 2"
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
+- get the metaphors straight! "horses" vs "hitches" vs "workhorses" ("wagons"?)
 - manual pages on the organization of the package
     - estimation algorithms
     - diagnostic tools
@@ -13,7 +15,7 @@
     - parallelization tools
     - reproducibility tools
     - extending the package
-- can we allow *nondecreasing* times?
+- ~~can we allow *nondecreasing* times? yes.~~
 - ~~default cooling.schedule for mif2 should be "geometric"?~~
 - example for `accumvars`
 - ~~check `order="constant"` for right-continuity in `covariate_table`~~
@@ -26,9 +28,7 @@
 - should the default process model be persistence?
 	- what would the corresponding `dprocess` be?
 - Kalman filter?
-- document and test 'logistic' example
 
-- "guide to upgrading to **pomp** version 2"
 - `as.data.frame` and ?? for `listies`
 - `melt` for listies
 - `coef` returns data frame in some circumstances?

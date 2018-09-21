@@ -2,6 +2,8 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item It is now permissible that the sequence of observation times (and sequences of covariate times) be merely non-decreasing sequences.
+    Previously, \pkg{pomp} insisted on strictly increasing time sequences.
     \item The default cooling schedule (\code{cooling.type}) in \code{mif2} is now \dQuote{geometric}, in contrast to \dQuote{hyperbolic}, as before.
     \item Rename the \code{zeronames} argument to \code{accumvars}.
     \item The \code{pompExample} function has been dropped.

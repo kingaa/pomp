@@ -46,7 +46,7 @@ Error : ‘t0’ must be a single number not greater than ‘times[1]’.
 > try(data.frame(a=1:10,b=1:10) %>% pomp(times="b"))
 Error : ‘t0’ is a required argument.
 > try(data.frame(a=10:1,b=1:10) %>% pomp(times="a",t0=0))
-Error : ‘times’ must be an increasing sequence of numbers.
+Error : ‘times’ must be a non-decreasing sequence of numbers.
 > data.frame(a=1:10,b=1:10) %>% pomp(times=1:10,t0=0)
 <object of class ‘pomp’>
 > try(data.frame(a=1:10,b=1:10) %>% pomp(times=1))
@@ -127,7 +127,7 @@ Warning message:
 in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > 
 > try(po %>% pomp(times=3:1))
-Error : in ‘time<-’: times must be an increasing numeric sequence.
+Error : in ‘time<-’: times must be a non-decreasing numeric sequence.
 > 
 > try(po %>% pomp(rinit=Csnippet("X=3;")))
 Error : when ‘rinit’ is provided as a C snippet, you must also provide ‘statenames’.

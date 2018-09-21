@@ -13,6 +13,9 @@ lines(seq(0,10),10:0,col="blue",type="s")
 plot(x~t,data=lookup(ct,t=seq(0,10.5,by=0.01)),type='l')
 lines(seq(0,10),20:30,col="blue",type="s")
 
+ct <- covariate_table(x=20:31,y=12:1,times=c(0:5,5:10),order="constant")
+lookup(ct,t=seq(4.9,5.1,by=0.05))
+
 try(covariate_table(x=20:30,y=10:0,times=seq(10,0)))
 try(covariate_table(x=20:23,y=10:0,times=seq(0,10)))
 try(covariate_table(x=20:30,y=10:0,times=seq(0,3)))

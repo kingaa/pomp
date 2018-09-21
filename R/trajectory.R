@@ -28,6 +28,9 @@
 ##' the time and states.
 ##' An ordered factor variable, \sQuote{.id}, distinguishes the trajectories from one another.
 ##'
+##' @param times a numeric vector (length \code{ntimes}) containing times.
+##' These must be in strictly increasing order.
+##'
 ##' @param verbose logical; if \code{TRUE}, more information will be displayed.
 ##'
 ##' @param \dots Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
@@ -99,7 +102,7 @@ trajectory.internal <- function (object, params, times, t0,
     pStop_(sQuote("times")," is empty, there is no work to do.")
 
   if (any(diff(times)<=0))
-    pStop_(sQuote("times")," must be an increasing numeric sequence.")
+    pStop_(sQuote("times")," must be a strictly increasing numeric sequence.")
 
   if (missing(t0)) t0 <- timezero(object)
   else t0 <- as.numeric(t0)

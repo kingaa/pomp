@@ -54,6 +54,9 @@ try(time(po) <- c("bob","nancy"))
 time(po1,t0=TRUE) <- 0:10
 try(time(po) <- 10:0)
 try(time(po,t0=TRUE) <- c(4,1:10))
+time(po1) <- c(1:5,5,5:10)
+stopifnot(obs(po1)[,6:7]==obs(po1)[,5],
+  states(po1)[,6:7]==states(po1)[,5])
 
 window(po,end=5)
 window(po,start=5)

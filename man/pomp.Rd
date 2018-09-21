@@ -16,7 +16,7 @@ i.e., the output of another \pkg{pomp} calculation.}
 
 \item{times}{the times at which observations are made.
 \code{times} must indicate the column of observation times by name or index.
-The time vector must be numeric and strictly increasing.
+The time vector must be numeric and non-decreasing.
 Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.}
 
 \item{t0}{The zero-time, i.e., the time of the initial state.

@@ -39,7 +39,7 @@
 ##'
 ##' @param times the times at which observations are made.
 ##' \code{times} must indicate the column of observation times by name or index.
-##' The time vector must be numeric and strictly increasing.
+##' The time vector must be numeric and non-decreasing.
 ##' Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.
 ##'
 ##' @param t0 The zero-time, i.e., the time of the initial state.
@@ -398,8 +398,8 @@ pomp.internal <- function (data, times, t0, timename, ...,
 
   ## check times
   if (missing(times) || !is.numeric(times) || !all(is.finite(times)) ||
-      (length(times)>1 && !all(diff(times)>0)))
-    pStop_(sQuote("times")," must be an increasing sequence of numbers.")
+      (length(times)>1 && !all(diff(times)>=0)))
+    pStop_(sQuote("times")," must be a non-decreasing sequence of numbers.")
   storage.mode(times) <- "double"
 
   ## check t0

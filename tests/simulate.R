@@ -161,4 +161,8 @@ rw2() -> rw2
 simulate(rw2,accumvars="x2") %>% plot()
 try(simulate(rw2,params=c(a="bob",b="nancy")))
 
+simulate(rw2,times=c(1:5,5,5),format="d",seed=49569969) -> x
+stopifnot(with(x,c(x1[6:7]==x1[5],x2[6:7]==x2[5],time[6:7]==time[5],
+  y1[6:7]!=y1[5],y2[6:7]!=y2[5])))
+
 dev.off()

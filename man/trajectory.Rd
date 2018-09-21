@@ -26,7 +26,7 @@ This will typically be the output of \code{pomp}, \code{simulate}, or one of the
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
 
 \item{times}{a numeric vector (length \code{ntimes}) containing times.
-These must be in non-decreasing order.}
+These must be in strictly increasing order.}
 
 \item{t0}{the initial time, i.e., the time corresponding to the initial-state distribution.}
 
