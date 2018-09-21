@@ -34,6 +34,8 @@
 ##' of which are shown above).  If one does specify additional arguments, these
 ##' will override the defaults.
 ##'
+##' @inheritSection pfilter Filtering failures
+##'
 ##' @references
 ##' C. Andrieu, A. Doucet, and R. Holenstein (2010)
 ##' Particle Markov chain Monte Carlo methods.

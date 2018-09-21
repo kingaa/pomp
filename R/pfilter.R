@@ -27,7 +27,7 @@
 ##'
 ##' @param tol positive numeric scalar;
 ##' particles with likelihood less than \code{tol} are considered to be incompatible with the data.
-##' See the section on \emph{Filtering Failures} below for more information.
+##' See the section on \emph{Filtering Failures} for more information.
 ##'
 ##' @param max.fail integer; the maximum number of filtering failures allowed (see below).
 ##' If the number of filtering failures exceeds this number, execution will terminate with an error.
@@ -58,6 +58,13 @@
 ##' \item{as.data.frame}{ coerce to a data frame }
 ##' \item{plot}{diagnostic plots}
 ##' }
+##'
+##' @section Filtering failures:
+##' If the degree of disagreement between model and data becomes sufficiently large, a \dQuote{filtering failure} results.
+##' A filtering failure occurs when, at some time point, none of the \code{Np} particles is compatible with the data.
+##' In particular, if the conditional likelihood of a particle at any time is below the tolerance value \code{tol}, then that particle is considered to be uninformative and its likelihood is taken to be zero.
+##' A filtering failure occurs when this is the case for all particles.
+##' A warning is generated when this occurs unless the cumulative number of failures exceeds \code{max.fail}, in which case an error is generated.
 ##'
 ##' @references
 ##' M. S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp.

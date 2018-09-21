@@ -36,6 +36,7 @@
 ##' The expression \code{ivp(s)} can be used in this context as shorthand for \preformatted{ifelse(time==time[1],s,0).}
 ##' Likewise, \code{ivp(s,lag)} is equivalent to \preformatted{ifelse(time==time[lag],s,0).}
 ##' See below for some examples.
+##'
 ##' The perturbations that are applied are normally distributed with the specified s.d.
 ##' If \code{transform = TRUE}, then they are applied on the estimation scale.
 ##' @param cooling.type,cooling.fraction.50 specifications for the cooling schedule,
@@ -76,6 +77,8 @@
 ##' Then, when \code{cooling.type="geometric"}, we have \deqn{c_{m,n}=\alpha^{\frac{n-1+(m-1)N}{50N}}.}{c[m,n]=alpha^((n-1+(m-1)N)/(50N)).}
 ##' When \code{cooling.type="hyperbolic"}, we have \deqn{c_{m,n}=\frac{s+1}{s+n+(m-1)N},}{c[m,n]=(s+1)/(s+n+(m-1)N),} where \eqn{s} satisfies \deqn{\frac{s+1}{s+50N}=\alpha.}{(s+1)/(s+50N)=alpha.}
 ##' Thus, in either case, the perturbations at the end of 50 IF2 iterations are a fraction \eqn{\alpha}{alpha} smaller than they are at first.
+##'
+##' @inheritSection pfilter Filtering failures
 ##'
 ##' @references
 ##' E. L. Ionides, D. Nguyen, Y. Atchad\'e, S. Stoev, and A. A. King.
