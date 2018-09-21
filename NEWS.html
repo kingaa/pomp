@@ -7,14 +7,200 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.18.8</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 2.0.3</h3>
 
 
 <ul>
-<li><p> The <code>obs</code> and <code>states</code> arguments of <code>simulate</code> are deprecated and will be removed in a forthcoming release.
+<li><p> It is now permissible that the sequence of observation times (and sequences of covariate times) be merely non-decreasing sequences.
+Previously, <span class="pkg">pomp</span> insisted on strictly increasing time sequences.
 </p>
 </li>
-<li><p> The C-level interface for <code>apply_probe_sims</code> has changed: the new argument <code>rho</code> must be the &ldquo;package:pomp&rdquo; environment.
+<li><p> The default cooling schedule (<code>cooling.type</code>) in <code>mif2</code> is now &ldquo;geometric&rdquo;, in contrast to &ldquo;hyperbolic&rdquo;, as before.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 2.0.2</h3>
+
+
+<ul>
+<li> <p><span class="pkg">pomp</span> now requires at least <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> version 3.5.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 2.0.1</h3>
+
+
+<ul>
+<li><p> The <code>zeronames</code> argument has been renamed <code>accumvars</code>.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 2.0.0</h3>
+
+
+<ul>
+<li><p> In the course of ordinary work, one should never need to interact with the low-level <code>pomp</code> constructor function now.
+</p>
+</li>
+<li><p> The <code>pompExample</code> function has been dropped.
+The various examples are now included as regular functions that construct &lsquo;pomp&rsquo; objects.
+</p>
+</li>
+<li><p> The <code>bbs</code> example has been dropped.
+</p>
+</li>
+<li><p> One can now modify basic model components at (almost) any stage in a pipeline of <span class="pkg">pomp</span> computations.
+All the top-level inference functions, plus <code>probe</code>, <code>pfilter</code>, and <code>simulate</code> now allow modification of basic model components.
+</p>
+</li>
+<li><p> The <code>rprocess</code> plugins <code>onestep.sim</code>, <code>discrete.time.sim</code>, <code>euler.sim</code>, <code>gillespie.sim</code>, and <code>gillespie.hl.sim</code> have been renamed <code>onestep</code>, <code>discrete_time</code>, <code>euler</code>, <code>gillespie</code>, and <code>gillespie_hl</code>, respectively.
+The old usage is available but deprecated.
+</p>
+</li>
+<li><p> One can now call <code>simulate</code> on a model without reference to any data.
+</p>
+</li>
+<li><p> The covariate table facility (<code>covariate_table</code>) now supports piecewise constant interpolation.
+</p>
+</li>
+<li><p> The syntax with which one includes covariates via <code>covariate_table</code> has become more flexible.
+Specifically, the arguments to <code>covariate_table</code> are now evaluated sequentially, so that later ones can depend on earlier ones.
+Once evaluated, the covariates are bound column-wise into a single data frame.
+</p>
+</li>
+<li><p> The manner in which one writes <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> functions to specify basic model components has been totally changed.
+Before, one wrote functions that took specific arguments such as 'x', 'params', and 'covars'.
+Now, one writes such functions with any or all state variables, observables, covariates, and/or time as arguments.
+</p>
+</li>
+<li> <p><code>simulate</code> now returns more informative results when simulations from multiple parameter sets are simultaneously computed.
+Specifically, if <code>params</code> has column names, these are used to identify the resulting simulations.
+Thus when <code>format = "pomps"</code> (the default), the names of the resulting list will be constructed from the column names of <code>params</code>.
+Likewise, when <code>format = "arrays"</code>, the resulting arrays will have informative column names;
+When <code>format = "data.frame"</code>, the identifier variable will make use of the column names.
+</p>
+</li>
+<li><p> The basic particle filter, <code>pfilter</code>, has a simpler mode of operation:
+<code>params</code> should be a single parameter set only.
+That is, it is no longer possible to pass a matrix of parameters to <code>pfilter</code>.
+</p>
+</li>
+<li><p> The Liu-West algorithm, <code>bsmc2</code>, has a simpler mode of operation:
+<code>params</code> should be a single parameter set only:
+the SMC particles are drawn from <code>rprior</code>.
+</p>
+</li>
+<li><p> The <code>as.data.frame</code>, <code>states</code>, and <code>obs</code> options for <code>simulate</code> have been done away with.
+One now chooses the format of the returned simulations via the <code>format</code> argument.
+When one simulates at multiple parameter sets, list names, array <code>dimnames</code>, or identifying variables in the output data frame help to correlate simulations with parameter sets.
+</p>
+</li>
+<li><p> The <code>as.data.frame</code> argument to <code>trajectory</code> has been removed in favor of a new <code>format</code> argument that allows one to choose between receiving the results in the form of an <code>"array"</code> or a <code>"data.frame"</code>.
+</p>
+</li>
+<li><p> All the basic model components now have defaults.
+</p>
+
+<ul>
+<li><p> The default <code>rinit</code> behavior remains as it was:
+it assumes the initial state distribution is concentrated at a point mass determined by parameters with &ldquo;<code>.0</code>&rdquo; or &ldquo;<code>_0</code>&rdquo; suffices.
+</p>
+</li>
+<li><p> The default process model is &ldquo;missing&rdquo;: calls to <code>dprocess</code> and <code>rprocess</code> will result in missing values (<code>NA</code>).
+</p>
+</li>
+<li><p> The default measurement model is &ldquo;missing&rdquo; as well.
+</p>
+</li>
+<li><p> The default prior is flat and improper:
+all calls to the default <code>dprior</code> result in <code>1</code> (<code>0</code> if <code>log = TRUE</code>, and all calls to <code>rprior</code> result in <code>NA</code>.
+</p>
+</li>
+<li><p> The default skeleton is missing.
+</p>
+</li>
+<li><p> The default parameter transformations remain the identity.
+</p>
+</li></ul>
+
+</li>
+<li><p> The <code>transform</code> argument present in many <span class="pkg">pomp</span> algorithms has been removed.
+Parameter transformations are now automatically performed when appropriate.
+The default parameter transformation remains the identity.
+</p>
+</li>
+<li><p> The old <code>probe.match</code> and <code>traj.match</code> functions have been removed.
+The new approach to parameter estimation based on numerical optimization involves constructing stateful objective functions.
+There are now three of these: <code>traj.match.objfun</code>, <code>probe.match.objfun</code>, and <code>spect.match.objfun</code>.
+</p>
+</li>
+<li><p> The documentation system has been thoroughly overhauled.
+</p>
+</li>
+<li><p> In <code>skeleton</code>, the <code>t</code> argument has been replaced by <code>times</code>, to make this uniform with the other workhorse functions.
+</p>
+</li>
+<li><p> Covariates are now included using the <code>covariate_table</code> construction, passed via the <code>covar</code> argument to <code>pomp</code>.
+The <code>tcovar</code> argument is no longer used.
+</p>
+</li>
+<li><p> Instead of providing separate <code>fromEstimationScale</code> and <code>toEstimationScale</code> arguments to <code>pomp</code>, one now provides a single <code>partrans</code> argument constructed by means of the new function <code>parameter_trans</code>.
+In addition, references to &ldquo;fromEstimationScale&rdquo; and &ldquo;toEstimationScale&rdquo; have been abbreviated to &ldquo;fromEst&rdquo; and &ldquo;toEst&rdquo;, respectively, throughout the package.
+</p>
+</li>
+<li><p> When writing C snippets for parameter transformations, the notation <code>T_p</code> refers to the value of <code>p</code> on the estimation scale.
+Thus, if parameter <i>alpha</i> is to be log-transformed for estimation, the <code>toEst</code> snippet would contain the line <code>T_alpha = log(alpha);</code> and the <code>fromEst</code> snippet would include <code>alpha = exp(T_alpha);</code>.
+</p>
+</li>
+<li><p> The <code>parameter_trans</code> function now takes optional arguments <code>log</code>, <code>logit</code>, and <code>barycentric</code>, with names of parameters to be log-, logit-, and log-barycentric transformed, respectively.
+</p>
+</li>
+<li><p> The <code>measurement.model</code> argument to <code>pomp</code> has been removed.
+It is now necessary to specify the measurement model directly using <code>rmeasure</code> and/or <code>dmeasure</code>.
+</p>
+</li>
+<li><p> The <code>initializer</code> is no longer referred to by that name.
+It is now <code>rinit</code>, since it draws from the distribution of the latent state at the initial time.
+The low-level function <code>init.state</code> has been replaced by <code>rinit</code>.
+</p>
+</li>
+<li><p> The <code>conv.rec</code> method has been deprecated, replaced by the new <code>traces</code> method.
+</p>
+</li>
+<li><p> The <code>euler.sir</code> example has been renamed <code>sir</code>.
+</p>
+</li>
+<li><p> The <code>gillespie.sir</code> example has been renamed <code>sir2</code>.
+</p>
+</li>
+<li><p> The <code>covmat</code> method can now be applied to a <code>probed.pomp</code> object.
+It returns the estimated covariance matrix of the probes.
+</p>
+</li>
+<li><p> When <code>trajectory</code> calls on <span class="pkg">deSolve</span> routines to numerically integrate a model vectorfield, more informative error messages are generated, and diagnostics are printed when <code>verbose = TRUE</code>.
+</p>
+</li>
+<li><p> The <code>show</code> method applied to pomp objects is now quite terse.
+To obtain detailed information, the <code>spy</code> method is available.
+</p>
+</li>
+<li><p> The <code>spy</code> method now returns the information formerly displayed in a call to <code>show</code>, in addition to the C files associated with any C snippets.
+</p>
+</li>
+<li><p> The use of <code>$</code> methods to access the slots of <span class="pkg">pomp</span> S4 objects has now been removed.
+These classes are no longer exported (for the most part).
+</p>
+</li>
+<li><p> The <code>transform</code> argument to the <code>probe.quantile</code> function has been removed (as it is entirely redundant!).
+</p>
+</li>
+<li><p> The old and deprecated <code>mif</code> and <code>bsmc</code> methods have been removed.
 </p>
 </li></ul>
 
