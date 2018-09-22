@@ -6,8 +6,8 @@
 \usage{
 pomp(data, times, t0, ..., rinit, rprocess, dprocess, rmeasure, dmeasure,
   skeleton, rprior, dprior, partrans, covar, params, accumvars, obsnames,
-  statenames, paramnames, covarnames, PACKAGE, globals, cdir, cfile,
-  shlib.args, compile = TRUE, verbose = getOption("verbose", FALSE))
+  statenames, paramnames, PACKAGE, globals, cdir, cfile, shlib.args,
+  compile = TRUE, verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -88,8 +88,7 @@ See \link[=accumulators]{here} for a definition and discussion of accumulator va
 
 \item{obsnames}{optional character vector;
 names of the observables.
-It is not usually necessary to specify \code{obsnames} since, by default,
-these are read from the names of the data variables.}
+It is usually necessary to specify \code{obsnames} only if no data are supplied since, by default, the names of the observables are read from the data.}
 
 \item{statenames}{optional character vector;
 names of the latent state variables.
@@ -98,11 +97,6 @@ It is typically only necessary to supply \code{statenames} when C snippets are i
 \item{paramnames}{optional character vector;
 names of model parameters.
 It is typically only necessary to supply \code{paramnames} when C snippets are in use.}
-
-\item{covarnames}{optional character vector;
-names of the covariates.
-It is not usually necessary to specify \code{covarnames} since, by default,
-these are read from the names of the covariates.}
 
 \item{PACKAGE}{optional character;
 the name (without extension) of the external, dynamically loaded library in which any native routines are to be found.
