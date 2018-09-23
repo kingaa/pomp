@@ -170,3 +170,14 @@ setAs(
 as.data.frame.bsmcd_pomp <- function (x, ...) {
   as(x,"data.frame")
 }
+
+##' @name as,listies-method
+##' @aliases coerce,listies,data.frame-method
+##' @rdname as_data_frame
+setAs(
+  from="listies",
+  to="data.frame",
+  def = function (from) {
+    lapply(from,as,"data.frame")
+  }
+)
