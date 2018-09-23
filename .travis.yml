@@ -40,11 +40,7 @@ jobs:
     r: release
     os: osx
     script:
-    - R CMD build .
-    - mkdir -p plib
-    - TARBALL=$(ls -1t *.tar.gz)
-    - R CMD INSTALL --build -l plib ${TARBALL}
-    - rm -rf plib
+    - make binary
     deploy:
       provider: releases
       api-key:
