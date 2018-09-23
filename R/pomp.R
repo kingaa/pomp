@@ -100,7 +100,8 @@
 ##'
 ##' @param obsnames optional character vector;
 ##' names of the observables.
-##' It is usually necessary to specify \code{obsnames} only if no data are supplied since, by default, the names of the observables are read from the data.
+##' It is not usually necessary to specify \code{obsnames} since, by default,
+##' these are read from the names of the data variables.
 ##'
 ##' @param statenames optional character vector;
 ##' names of the latent state variables.
@@ -109,6 +110,11 @@
 ##' @param paramnames optional character vector;
 ##' names of model parameters.
 ##' It is typically only necessary to supply \code{paramnames} when C snippets are in use.
+##'
+##' @param covarnames optional character vector;
+##' names of the covariates.
+##' It is not usually necessary to specify \code{covarnames} since, by default,
+##' these are read from the names of the covariates.
 ##'
 ##' @param accumvars optional character vector;
 ##' contains the names of accumulator variables.
@@ -150,7 +156,7 @@ pomp <- function (data, times, t0, ...,
   rinit, rprocess, dprocess, rmeasure, dmeasure,
   skeleton, rprior, dprior, partrans, covar,
   params, accumvars,
-  obsnames, statenames, paramnames,
+  obsnames, statenames, paramnames, covarnames,
   PACKAGE, globals, cdir, cfile, shlib.args, compile = TRUE,
   verbose = getOption("verbose", FALSE)) {
 
@@ -180,7 +186,7 @@ pomp <- function (data, times, t0, ...,
       skeleton=skeleton,rprior=rprior,dprior=dprior,partrans=partrans,
       params=params,covar=covar,accumvars=accumvars,
       obsnames=obsnames,statenames=statenames,paramnames=paramnames,
-      PACKAGE=PACKAGE,
+      covarnames=covarnames,PACKAGE=PACKAGE,
       globals=globals,cdir=cdir,cfile=cfile,shlib.args=shlib.args,
       compile=compile,verbose=verbose
     ),
@@ -387,7 +393,7 @@ setMethod(
 pomp.internal <- function (data, times, t0, timename, ...,
   rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
   partrans, params, covar, accumvars, obsnames, statenames,
-  paramnames, PACKAGE, globals, cdir, cfile, shlib.args,
+  paramnames, covarnames, PACKAGE, globals, cdir, cfile, shlib.args,
   compile, .userdata, .solibs = list(), verbose = getOption("verbose", FALSE)) {
 
   ## check times
@@ -441,6 +447,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (missing(statenames)) statenames <- NULL
   if (missing(paramnames)) paramnames <- NULL
   if (missing(obsnames)) obsnames <- NULL
+  if (missing(covarnames)) covarnames <- NULL
 
   if (missing(accumvars)) accumvars <- NULL
   accumvars <- unique(as.character(accumvars))
@@ -474,7 +481,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
     pStop_("bad option for ",sQuote("covar"),".")
   }
 
-  covarnames <- get_covariate_names(covar)
+  if (is.null(covarnames)) covarnames <- get_covariate_names(covar)
 
   hitches <- hitch(
     rinit=rinit,

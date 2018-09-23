@@ -1,10 +1,5 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 2.0.4}{
-  \itemize{
-    \item The \code{covarnames} argument is unneeded and has been eliminated.
-  }
-}
 \section{Changes in \pkg{pomp} version 2.0.3}{
   \itemize{
     \item It is now permissible that the sequence of observation times (and sequences of covariate times) be merely non-decreasing sequences.
