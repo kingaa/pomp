@@ -3,17 +3,23 @@ title: 'Coding POMP models: R vs C snippets'
 author: "Aaron A. King"
 date: "`r format(Sys.Date(),'%e %B %Y')`"
 output: rmarkdown::html_vignette
+params:
+  prefix: "R_v_C"
+  min.pomp.version: "2.0.3"
 vignette: >
   %\VignetteIndexEntry{Coding POMP models: R vs C snippets}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r precheck,include=FALSE}
+stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
+```
+
 This document was produced using **pomp** version `r packageVersion("pomp2")` and **R** version `r getRversion()`.
 
 ```{r knitr-opts,include=FALSE,purl=FALSE}
 library(knitr)
-prefix <- "R_v_C"
 opts_chunk$set(
   progress=TRUE,
   prompt=FALSE,tidy=FALSE,highlight=TRUE,
@@ -28,8 +34,8 @@ opts_chunk$set(
   fig.show='asis',
   size='small',
   fig.lp="fig:",
-  fig.path=paste0("figure/",prefix,"-"),
-  cache.path=paste0("cache/",prefix,"-"),
+  fig.path=paste0("figure/",params$prefix,"-"),
+  cache.path=paste0("cache/",params$prefix,"-"),
   fig.pos="h!",
   fig.align='center',
   fig.height=3,fig.width=4.85,
@@ -173,11 +179,11 @@ logmeanexp(sapply(pf,logLik),se=TRUE)
 
 Using each implementation, we'll now run a number of simulations and compare the amount of time required.
 
-```{r comparison}
+```{r comparison,cache=TRUE}
 system.time(simulate(gompertz,nsim=10000,format="arrays"))
 system.time(simulate(Gompertz,nsim=10000,format="arrays"))
-system.time(pfilter(gompertz,Np=1000))
-system.time(pfilter(Gompertz,Np=1000))
+system.time(pfilter(gompertz,Np=10000))
+system.time(pfilter(Gompertz,Np=10000))
 ```
 
 -----------------------------------

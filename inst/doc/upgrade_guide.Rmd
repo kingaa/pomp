@@ -1,19 +1,25 @@
 ---
-title: 'pomp version 2 upgrade guide'
+title: '**pomp** version 2 upgrade guide'
 author: "Aaron A. King"
 date: "`r format(Sys.Date(),'%e %B %Y')`"
 output: rmarkdown::html_vignette
+params:
+  prefix: "upgrade_guide"
+  min.pomp.version: "2.0.3"
 vignette: >
   %\VignetteIndexEntry{pomp version 2 upgrade guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r precheck,include=FALSE}
+stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
+```
+
 This document was produced using **pomp** version `r packageVersion("pomp2")` and **R** version `r getRversion()`.
 
 ```{r knitr-opts,include=FALSE,purl=FALSE}
 library(knitr)
-prefix <- "upgrading"
 opts_chunk$set(
   progress=TRUE,
   prompt=FALSE,tidy=FALSE,highlight=TRUE,
@@ -28,8 +34,8 @@ opts_chunk$set(
   fig.show='asis',
   size='small',
   fig.lp="fig:",
-  fig.path=paste0("figure/",prefix,"-"),
-  cache.path=paste0("cache/",prefix,"-"),
+  fig.path=paste0("figure/",params$prefix,"-"),
+  cache.path=paste0("cache/",params$prefix,"-"),
   fig.pos="h!",
   fig.align='center',
   fig.height=3,fig.width=4.85,
@@ -41,23 +47,33 @@ opts_chunk$set(
 
 --------------------------------------------------------
 
-In version 2, a number of backward incompatible changes have been made.
-These changes greatly increase the usability of the package, increase its stability, make the interface more uniform, and remove many of the idiosyncrasies that were present in earlier versions.
-These benefits should greatly outweigh the costs associated with making the changes needed to bring existing **pomp** codes up to date with the new version.
-In any event, this guide will show how to do so.
+In **pomp** version 2, a number of backward incompatible changes have been made.
+These changes are intended to increase the usability of the package, by making the interfaces more uniform, by increasing code stability, reducing the number of special cases, and removing many of the idiosyncrasies that were present in earlier versions.
+The goal was to keep backward incompatible changes to a minimum.
+This guide is intended to explain the new structure and point out the changes that are needed to make existing codes that use **pomp** work with the new version.
 
 The main novelty of **pomp** version 2 is that one will rarely, if ever, need to interact directly with the low-level `pomp` constructor.
 Instead, one can supply new or modify existing model components at (almost) any stage in a chain of **pomp** computations.
 In particular, there are now data-frame methods for all of the **pomp** inference algorithms, as well as for `simulate`, `pfilter`, `probe`, and `spect`.
-One can pass a data frame to these methods, along with the requisite model components, and achieve the same effect as one would be first constructing a \sQuote{pomp} object and then performing the operation.
+One can pass a data frame to these methods, along with the requisite model components, and achieve the same effect as one would by first constructing a \sQuote{pomp} object and then performing the operation.
 
-In addition, `simulate` can now be called without needing to first create a dummy data set.
+**pomp** version 2 represents a thorough reworking of almost all the package codes.
+A consequence is that these codes have been streamlined, with no cost in performance or flexibility.
+The following table shows the number of lines in the latest pre-2 **pomp** compared to the current **pomp** version 2.
+
+|      |  pomp1| pomp2|  diff|   frac|
+|:-----|------:|-----:|-----:|------:|
+|man   |   4069|  3735|  -334| -0.082|
+|R     |  12142|  9204| -2938| -0.242|
+|src   |  19615| 19732|   117|  0.006|
+|tests |   4846|  3585| -1261| -0.260|
+|total |  40672| 36256| -4416| -0.109|
 
 ## Terminology
 
 It is useful to divide the **pomp** package functionality into different levels.
 
-- *Basic model components*: procedures that perform the elementary computations that specify a POMP model.
+- *Basic model components*: user-specified procedures that perform the elementary computations that specify a POMP model.
 There are nine of these:
     - `rinit`: simulator for the initial-state distribution, i.e., the distribution of the latent state at time `t0`.
     - `rprocess` and `dprocess`: simulator and density evaluation procedure, respectively, for the process model.
@@ -68,7 +84,7 @@ There are nine of these:
 - *Workhorses*: **R** functions that cause the basic model component procedures to be executed.
   These are **R** functions provided by the package.
   Each has a name that matches that of the corresponding basic model component.
-  In addition, there is the `trajectory` workhorse, which iterates or integrates the deterministic skeleton to obtain state trajectories. 
+  In addition, there is the `trajectory` workhorse, which iterates or integrates the deterministic skeleton (according to whether it is a map or a vectorfield, respectively) to obtain state trajectories. 
 - *Elementary POMP algorithms*: basic algorithms that interrogate the model/data confrontation.
   There are currently four of these:
     - `simulate` performs simulations of the POMP model, i.e., it samples from the joint distribution of latent states and observables.
@@ -94,7 +110,7 @@ There are nine of these:
     - `probe.match.objfun`
     - `nlf.objfun`
 
-## Changes to model implementation
+## Changes in the way models are specified
 
 ### Basic component specification
 
@@ -121,40 +137,103 @@ In **pomp** version 2, the corresponding 'dmeasure' specification would be
   },
   ...
 ```
-There is no longer any need to extract the relevant variables from vectors.
+
+Note that there is no longer a need to extract the relevant variables from vectors.
 Moreover, the only required argument is `...`.
-The available arguments are taken from the set of observables, state variables, parameters, covariates, and time, which is always named `t`, as before.
+The available arguments are taken from the set of observables, state variables, parameters, covariates, and time, as before.
+
+These remarks apply whenever one specifies a basic model component using an **R** function.
+For the most part, C snippets that worked with **pomp** version <2 will continue to work.
+The exception is that parameter transformation C snippets may need to be rewritten (see below).
 
 ### Process model specification
 
 Prior to version 2, one specified the `rprocess` component using one of the plugins 
 `onestep.sim`, `discrete.time.sim`, `euler.sim`, `gillespie.sim`, or `gillespie.hl.sim`.
 These have been renamed `onestep`, `discrete_time`, `euler`, `gillespie`, and `gillespie_hl`, respectively, but are otherwise unchanged.
+
+Note that, if one uses an **R** function to specify the process model simulator, the remarks above under "Basic component specification" apply.
     
 ### Covariates
 
 Prior to version 2, time-varying covariates upon which basic model components depended were supplied via the two arguments `covar` and `tcovar` to `pomp`.
-Now, one includes such time-varying covariates via the single argument `covar`, which can be furnished to any POMP elementary or estimation algorithm.
-Specifically, one constructs a covariate table using the `covariate_table` command.
-The syntax for specifying a covariate table is considerably more flexible.
-Specifically, the arguments to `covariate_table` are now evaluated sequentially, so that later ones can depend on earlier ones.
+For example, in one of the examples, we see
+
+```
+cbind(
+  time=seq(from=1928,to=1934,by=0.01),
+  as.data.frame(
+    periodic.bspline.basis(
+      x=seq(from=1928,to=1934,by=0.01),
+      nbasis=3,
+      degree=3,
+      period=1,
+      names="seas%d"
+    )
+  ),
+  pop=dat$population
+) -> covar
+
+pomp(
+  ...,
+  covar=covar,
+  tcovar="time",
+  ...
+  )
+```
+
+Note that, as this example illustrates, it was often necessary to first construct the covariate table as a data frame before passing it as argument to `pomp`.
+
+As of version 2, one includes such time-varying covariates as an object of the new `covartable` class via the single argument `covar`, which can be furnished to any POMP elementary or estimation algorithm.
+One constructs a covariate table using the `covariate_table` command.
+The syntax for specifying a covariate table is quite flexible.
+In particular, the arguments to `covariate_table` are now evaluated sequentially, so that later ones can depend on earlier ones.
 Once evaluated, the covariates are bound column-wise into a single data frame.
 One can also provide a data frame to `covariate_table`, along with the name of the time variable, which matches the old usage very closely.
+Thus, one might use the following in place of the above:
 
-Prior to version 2, covariates were always linearly interpolated when accessed by any of the basic model componets.
-As of version 2, although linear interpolation remains the default, one can also direct that the covariates be treated as piecewise-constant, right-continuous functions.
+```
+pomp(
+  ...,
+  covar=covariate_table(
+    t=seq(from=1928,to=1934,by=0.01),
+    seas=periodic.bspline.basis(t,nbasis=3,degree=3,period=1),
+    pop=dat$population,
+    times="t"
+    )
+  ),
+  ...
+)
+```
+
+Prior to version 2, covariates were always linearly interpolated when accessed by any of the basic model components.
+As of version 2, although linear interpolation remains the default, one can also direct, via the `order` argument, that the covariates be treated as piecewise-constant, right-continuous functions.
 
 ### Parameter transformations
 
-- Instead of providing separate ‘fromEstimationScale’ and ‘toEstimationScale’ arguments to ‘pomp’, one now provides a single ‘partrans’ argument constructed by means of the new function ‘parameter_trans’.
-  In addition, references to “fromEstimationScale” and “toEstimationScale” have been abbreviated to “fromEst” and “toEst”, respectively, throughout the package.
+In **pomp** version <2, one specified parameter transformations by means to two arguments to `pomp`: `fromEstimationScale` and `toEstimationScale`.
+As of version 2, both forward and inverse transformations are encapsulated in a single object passed via the `partrans` argument to any of the **pomp** elementary or inference algorithms.
+The parameter transformation object is constructed by means of a call to `parameter_trans`.
+One can specify general forward and inverse transformations via the `fromEst` and `toEst` arguments to this function.
+If these are specified using **R** functions, the remarks above ("Basic component specification") apply.
+If one specifies these using C snippets, the syntax has changed from that of versions <2.
+In particular, when writing C snippets for parameter transformations, for a parameter "p", the notation `p` always refers to `p` on the natural scale and `T_p` refers to its value of `p` on the estimation scale.
+Thus, if parameter "alpha" is to be log-transformed for estimation, the `toEst` snippet would contain the line 
+```
+T_alpha = log(alpha);
+```
+and the `fromEst` snippet would include 
+```
+alpha = exp(T_alpha);
+```
 
-- When writing C snippets for parameter transformations, the notation ‘T_p’ refers to the value of ‘p’ on the estimation scale.
-  Thus, if parameter alpha is to be log-transformed for estimation, the ‘toEst’ snippet would contain the line ‘T_alpha = log(alpha);’ and the ‘fromEst’ snippet would include ‘alpha = exp(T_alpha);’.
+Because many use cases involve simply log, logit, or log-barycentric transformations, one can handle these cases by naming the parameters to be so transformed in the `log`, `logit`, and `barycentric` arguments of `parameter_trans`.
+When these arguments are supplied, `parameter_trans` internally writes a pair of C snippets to implement the transformations.
+Thus, one must include all the named parameters in the `paramnames` argument.
 
-- The ‘parameter_trans’ function now takes optional arguments ‘log’, ‘logit’, and ‘barycentric’, with names of parameters to be log-, logit-, and log-barycentric transformed, respectively.
+At any point, if one sets `partrans = NULL` in an elementary or inference algorithm, the parameter transformations are reset to the identity transformation.
 
-### Changes in algorithm inputs
+## Changes in algorithm inputs
 
 - no `transform` arguments
 
@@ -165,8 +244,11 @@ As of version 2, although linear interpolation remains the default, one can also
 - The Liu-West algorithm, ‘bsmc2’, has a simpler mode of operation:
   ‘params’ should be a single parameter set only:
   the SMC particles are drawn from ‘rprior’.
+  
+### `simulate`
 
-### Changes in **pomp** function outputs
+
+## Changes in **pomp** function outputs
 
 - ‘simulate’ now returns more informative results when simulations from multiple parameter sets are simultaneously computed.
   Specifically, if ‘params’ has column names, these are used to identify the resulting simulations.
@@ -180,12 +262,11 @@ As of version 2, although linear interpolation remains the default, one can also
 
 - The ‘as.data.frame’ argument to ‘trajectory’ has been removed in favor of a new ‘format’ argument that allows one to choose between receiving the results in the form of an ‘"array"’ or a ‘"data.frame"’.
 
+## **pomp** examples
 
-### **pomp** examples
+## **pomp** datasets
 
-### **pomp** datasets
-
-### Default basic components
+## Default basic components
 
 - All the basic model components now have defaults.
     - The default ‘rinit’ behavior remains as it was:
@@ -242,15 +323,6 @@ Model implementation details:
 
 - `hitch`
 - `compile = FALSE` option
-
-
-|cat   | master| pomp2|  diff|   frac|
-|:-----|------:|-----:|-----:|------:|
-|man   |   4069|  3735|  -334| -0.082|
-|R     |  12142|  9204| -2938| -0.242|
-|src   |  19615| 19732|   117|  0.006|
-|tests |   4846|  3585| -1261| -0.260|
-|total |  40672| 36256| -4416| -0.109|
 
 --------------------------------------------------------
 

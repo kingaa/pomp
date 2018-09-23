@@ -11,7 +11,7 @@
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2018-09-21" />
+<meta name="date" content="2018-09-23" />
 
 <title>Coding POMP models: R vs C snippets</title>
 
@@ -124,7 +124,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Coding POMP models: R vs C snippets</h1>
 <h4 class="author"><em>Aaron A. King</em></h4>
-<h4 class="date"><em>21 September 2018</em></h4>
+<h4 class="date"><em>23 September 2018</em></h4>
 
 </div>
 
@@ -226,16 +226,16 @@ logmeanexp(sapply(pf,logLik),se=TRUE)</code></pre>
 <p>Using each implementation, we’ll now run a number of simulations and compare the amount of time required.</p>
 <pre class="r"><code>system.time(simulate(gompertz,nsim=10000,format=&quot;arrays&quot;))</code></pre>
 <pre><code>##    user  system elapsed 
-##   8.224   0.052   8.273</code></pre>
+##   6.972   0.012   6.984</code></pre>
 <pre class="r"><code>system.time(simulate(Gompertz,nsim=10000,format=&quot;arrays&quot;))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.380   0.012   0.393</code></pre>
-<pre class="r"><code>system.time(pfilter(gompertz,Np=1000))</code></pre>
+##   0.340   0.004   0.344</code></pre>
+<pre class="r"><code>system.time(pfilter(gompertz,Np=10000))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.716   0.004   0.718</code></pre>
-<pre class="r"><code>system.time(pfilter(Gompertz,Np=1000))</code></pre>
+##   5.864   0.000   5.863</code></pre>
+<pre class="r"><code>system.time(pfilter(Gompertz,Np=10000))</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.06    0.00    0.06</code></pre>
+##   0.368   0.000   0.370</code></pre>
 <hr />
 <p><a href="./index.html"><strong>pomp</strong> vignette index</a></p>
 </div>

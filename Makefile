@@ -33,6 +33,9 @@ xxcheck: export R_LIBS=$(CURDIR)/check
 
 includes: inst/include/pomp.h inst/include/pomp_defines.h
 
+inst/include/%.h: src/%.h
+	$(CP) $^ $@
+
 htmldocs: inst/doc/*.html
 
 vignettes: manual install
@@ -53,7 +56,7 @@ help: $(SOURCE)
 
 dist: NEWS $(PKGVERS).tar.gz
 
-$(PKGVERS).tar.gz: $(SOURCE)
+$(PKGVERS).tar.gz: $(SOURCE) includes
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both --md5 .
 
 binary: dist
@@ -116,9 +119,6 @@ library/$(PKG): dist
 remove:
 	-$(RCMD) REMOVE --library=library $(PKG)
 	rmdir library
-
-inst/include/%.h: src/%.h
-	$(CP) $^ $@
 
 inst/doc/*.html: install 
 
