@@ -141,7 +141,7 @@ A Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian Bayesian Track
 IEEE Trans. Sig. Proc. 50:174--188, 2002.
 }
 \seealso{
-Other elementary POMP methods: \code{\link{pomp-package}},
+Other elementary POMP methods: \code{\link{pomp2-package}},
   \code{\link{probe}}, \code{\link{simulate}},
   \code{\link{spect}}
 

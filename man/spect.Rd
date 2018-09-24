@@ -132,7 +132,7 @@ Other summary statistics methods: \code{\link{abc}},
   \code{\link{probe}}
 
 Other elementary POMP methods: \code{\link{pfilter}},
-  \code{\link{pomp-package}}, \code{\link{probe}},
+  \code{\link{pomp2-package}}, \code{\link{probe}},
   \code{\link{simulate}}
 }
 \author{

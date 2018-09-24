@@ -100,9 +100,11 @@ dt {
 
 - [Package manual](https://kingaa.github.io/manuals/pomp2.pdf)
 
-- Vignette: [**pomp** version 2 upgrade guide](./upgrade_guide.html)
+- Vignette: [**pomp** version 2 upgrade guide](https://kingaa.github.io/pomp/vignettes/upgrade_guide.html)
 
-- Vignette: [Model implementation using **R** functions vs C snippets](./R_v_C.html)
+- Vignette: [Getting started with **pomp**](https://kingaa.github.io/pomp/vignettes/getting_started.html)
+
+- [More vignettes](https://kingaa.github.io/pomp/docs.html)
 
 - [Report issues with the package](https://github.com/kingaa/pomp/issues)
 

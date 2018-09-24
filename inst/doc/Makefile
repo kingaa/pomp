@@ -3,7 +3,7 @@ CP = cp
 TOUCH = touch
 INSTALL = install
 
-default: index.html R_v_C.html upgrade_guide.html
+default: index.html
 
 %.tex: %.Rnw
 	$(RSCRIPT) -e "library(knitr); knit(\"$*.Rnw\")"

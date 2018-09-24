@@ -22,17 +22,17 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > library(dplyr)
 
-Attaching package: ‘dplyr’
+Attaching package: 'dplyr'
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from 'package:stats':
 
     filter, lag
 
-The following objects are masked from ‘package:base’:
+The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
@@ -50,7 +50,7 @@ The following objects are masked from ‘package:base’:
 +     },
 +     params=list(r=15,x.0=0.1)
 +   )
-<object of class ‘pomp’>
+<object of class 'pomp'>
 > 
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +     simulate(times="t",t0=0,
@@ -65,21 +65,21 @@ The following objects are masked from ‘package:base’:
 +       format="bob"
 +     )
 + )
-Error : in ‘simulate’: 'arg' should be one of “pomps”, “arrays”, “data.frame”
+Error : in 'simulate': 'arg' should be one of "pomps", "arrays", "data.frame"
 > 
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +   simulate(times=1:50))
-Error : in ‘simulate’: ‘t0’ is a required argument.
+Error : in 'simulate': 't0' is a required argument.
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +     simulate(times="t"))
-Error : in ‘simulate’: ‘t0’ is a required argument.
+Error : in 'simulate': 't0' is a required argument.
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +     simulate(times="t",t0=0))
-Error : in ‘simulate’: ‘rprocess’ is undefined.
+Error : in 'simulate': 'rprocess' is undefined.
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +     simulate(times="t",t0=0))
-Error : in ‘simulate’: ‘rprocess’ is undefined.
+Error : in 'simulate': 'rprocess' is undefined.
 > try(data.frame(t=0:10,y=runif(11)) %>%
 +     simulate(times="t",t0=0,params=c(x.0=1)))
-Error : in ‘simulate’: ‘rprocess’ is undefined.
+Error : in 'simulate': 'rprocess' is undefined.
 > 

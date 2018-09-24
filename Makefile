@@ -54,7 +54,7 @@ www/NEWS.html: inst/NEWS.Rd
 help: $(SOURCE)
 	$(REXE) -e "devtools::document(roclets=c('rd','collate','namespace'))"
 
-dist: NEWS $(PKGVERS).tar.gz
+dist: NEWS htmldocs $(PKGVERS).tar.gz
 
 $(PKGVERS).tar.gz: $(SOURCE) includes
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both --md5 .
@@ -118,7 +118,6 @@ library/$(PKG): dist
 
 remove:
 	-$(RCMD) REMOVE --library=library $(PKG)
-	rmdir library
 
 inst/doc/*.html: install 
 
@@ -156,7 +155,7 @@ inst/doc/*.html: install
 	Rscript --vanilla -e "knitr::purl(\"$*.Rmd\",output=\"$*.R\",documentation=2)"
 
 clean:
-	$(RM) -r check library
+	$(RM) -r check
 	$(RM) src/*.o src/*.so src/symbols.rds vignettes/Rplots.*
 	$(RM) -r inst/doc/figure inst/doc/cache
 	$(RM) *.tar.gz $(PKGVERS).zip $(PKGVERS).tgz $(PKG).pdf

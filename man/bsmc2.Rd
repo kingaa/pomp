@@ -120,7 +120,7 @@ Other particle filter methods: \code{\link{cond.logLik}},
 Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{kalman}}, \code{\link{mif2}},
   \code{\link{nlf}}, \code{\link{pmcmc}},
-  \code{\link{pomp-package}}, \code{\link{probe.match}},
+  \code{\link{pomp2-package}}, \code{\link{probe.match}},
   \code{\link{spect.match}}
 }
 \author{
