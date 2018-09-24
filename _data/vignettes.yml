@@ -6,6 +6,10 @@
   html: vignettes/getting_started.html
   R: vignettes/getting_started.R
 
+- title: Coding POMP models: R vs C snippets
+  html: vignettes/R_v_C.html
+  R: vignettes/R_v_C.R
+
 - title: IF2 Pseudocode and Example
   html: vignettes/mif2.html
   R: vignettes/mif2.R

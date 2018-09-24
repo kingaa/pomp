@@ -1,0 +1,191 @@
+---
+title: 'Coding POMP models: R vs C snippets'
+author: "Aaron A. King"
+date: "`r format(Sys.Date(),'%e %B %Y')`"
+output: rmarkdown::html_vignette
+params:
+  prefix: "R_v_C"
+  min.pomp.version: "2.0.3"
+vignette: >
+  %\VignetteIndexEntry{Coding POMP models: R vs C snippets}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r precheck,include=FALSE}
+stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
+```
+
+This document was produced using **pomp** version `r packageVersion("pomp2")` and **R** version `r getRversion()`.
+
+```{r knitr-opts,include=FALSE,purl=FALSE}
+library(knitr)
+opts_chunk$set(
+  progress=TRUE,
+  prompt=FALSE,tidy=FALSE,highlight=TRUE,
+  strip.white=TRUE,
+  warning=FALSE,
+  message=FALSE,
+  error=FALSE,
+  echo=TRUE,
+  cache=FALSE,
+  cache.extra=rand_seed,
+  results='markup',
+  fig.show='asis',
+  size='small',
+  fig.lp="fig:",
+  fig.path=paste0("figure/",params$prefix,"-"),
+  cache.path=paste0("cache/",params$prefix,"-"),
+  fig.pos="h!",
+  fig.align='center',
+  fig.height=3,fig.width=4.85,
+  dpi=100,
+  dev='png',
+  dev.args=list(bg='transparent')
+  )
+```
+
+--------------------------------------------------------
+
+To implement models in **pomp**, we have various options.
+While it is very easy to code basic model components using **R** functions, it can be much faster to do it using C snippets.
+Here, we'll demonstrate both approaches.
+
+First, we'll load some packages.
+
+```{r packages}
+library(pomp2)
+library(ggplot2)
+library(magrittr)
+```
+
+```{r seed,echo=FALSE}
+set.seed(56300069)
+```
+
+The Gompertz model is a very simple partially observed Markov process (POMP) model that we'll use to demonstrate.
+
+The latent state variable, $X$ represents the density of a population of biological organisms.
+The state equation is
+$$X_{t+\delta} = K^{1-S}\,X_{t}^S\,\epsilon_{t},$$
+where $S=e^{-r\,\delta}$ is a parameter and the $\epsilon_t$ are i.i.d. lognormal random deviates with variance $\sigma^2$:
+$$\epsilon_t \sim \mathrm{Lognormal}(0,\sigma).$$
+The observed variables $Y_t$ are lognormally distributed:
+$$Y_t \sim\mathrm{Lognormal}(\log{X_t},\tau).$$
+
+## Implementation using **R** functions
+
+To begin with, we'll code the latent state process model and both components of the measurement model using **R** functions.
+
+```{r R1}
+simulate(times=1:100,t0=0,
+  params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
+  rprocess=discrete_time(
+    step.fun=function (X,r,K,sigma,...,delta.t) {
+      eps <- exp(rnorm(n=1,mean=0,sd=sigma))
+      S <- exp(-r*delta.t)
+      c(X=K^(1-S)*X^S*eps)
+    },
+    delta.t=1 
+  ),
+  rmeasure=function (X, tau, ...) {
+    c(Y=rlnorm(n=1,meanlog=log(X),sdlog=tau))
+  },
+  dmeasure=function (tau, X, Y, ..., log) {
+    dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
+  },
+  partrans=parameter_trans(
+    toEst=function(r,K,sigma,tau,X.0,...){
+      log(c(r=r,K=K,sigma=sigma,tau=tau,X.0=X.0))
+    },
+    fromEst=function(r,K,sigma,tau,X.0,...){
+      exp(c(r=r,K=K,sigma=sigma,tau=tau,X.0=X.0))
+    }
+  )
+) -> gompertz
+```
+
+We plot the results.
+
+```{r R2}
+gompertz %>%
+  as.data.frame() %>%
+  melt(id="time") %>%
+  ggplot(aes(x=time,y=value,color=variable))+
+  geom_line()+
+  labs(y="X, Y")+
+  theme_bw()
+```
+
+
+## Implementation using C snippets
+
+Now we'll code up the same example using C snippets.
+
+```{r C1}
+simulate(times=0:100,t0=0,
+  params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
+  dmeasure=Csnippet("
+    lik = dlnorm(Y,log(X),tau,give_log);"
+  ),
+  rmeasure=Csnippet("
+    Y = rlnorm(log(X),tau);"
+  ),
+  rprocess=discrete_time(
+    step.fun=Csnippet("
+    double S = exp(-r*dt);
+    double logeps = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
+    X = pow(K,(1-S))*pow(X,S)*exp(logeps);"
+    ),
+    delta.t=1
+  ),
+  partrans=parameter_trans(log=c("r","K","sigma","tau","X.0")),
+  paramnames=c("r","K","sigma","X.0","tau"),
+  obsnames="Y",
+  statenames="X"
+) -> Gompertz
+```
+
+## Testing the implementations
+
+Having coded the model, it's a good idea to run some simple tests to check the implementation.
+We can run simulations and a particle filter operation to check that the *rprocess*, *rmeasure*, and *dmeasure* components function without error.
+
+First, some simulations, from several initial conditions:
+```{r params}
+p <- parmat(coef(Gompertz),4)
+p["X.0",] <- c(0.5,0.9,1.1,1.5)
+```
+
+```{r sim1}
+simulate(Gompertz,params=p,format="data.frame") %>%
+  ggplot(aes(x=time,y=X,group=.id,color=.id))+
+  geom_line()+
+  guides(color=FALSE)+
+  theme_bw()+
+  labs(title="Gompertz model",subtitle="stochastic simulations")
+```
+
+We run 10 replicate particle filter operations at the true parameter values as follows.
+This allows us to assess the Monte Carlo error in the likelihood estimate.
+
+```{r pf1}
+pf <- replicate(n=10,pfilter(Gompertz,Np=500))
+
+logmeanexp(sapply(pf,logLik),se=TRUE)
+```
+
+## Comparing the implementations
+
+Using each implementation, we'll now run a number of simulations and compare the amount of time required.
+
+```{r comparison,cache=TRUE}
+system.time(simulate(gompertz,nsim=10000,format="arrays"))
+system.time(simulate(Gompertz,nsim=10000,format="arrays"))
+system.time(pfilter(gompertz,Np=10000))
+system.time(pfilter(Gompertz,Np=10000))
+```
+
+-----------------------------------
+
+[**pomp** vignette index](./index.html)
