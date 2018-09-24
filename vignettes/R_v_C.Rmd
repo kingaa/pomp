@@ -93,15 +93,7 @@ simulate(times=1:100,t0=0,
   },
   dmeasure=function (tau, X, Y, ..., log) {
     dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
-  },
-  partrans=parameter_trans(
-    toEst=function(r,K,sigma,tau,X.0,...){
-      log(c(r=r,K=K,sigma=sigma,tau=tau,X.0=X.0))
-    },
-    fromEst=function(r,K,sigma,tau,X.0,...){
-      exp(c(r=r,K=K,sigma=sigma,tau=tau,X.0=X.0))
-    }
-  )
+  }
 ) -> gompertz
 ```
 
@@ -139,8 +131,7 @@ simulate(times=0:100,t0=0,
     ),
     delta.t=1
   ),
-  partrans=parameter_trans(log=c("r","K","sigma","tau","X.0")),
-  paramnames=c("r","K","sigma","X.0","tau"),
+  paramnames=c("r","K","sigma","tau"),
   obsnames="Y",
   statenames="X"
 ) -> Gompertz

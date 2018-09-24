@@ -129,7 +129,7 @@ $(document).ready(function () {
 </div>
 
 
-<p>This document was produced using <strong>pomp</strong> version 2.0.3.2 and <strong>R</strong> version 3.5.1.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.0.3.0 and <strong>R</strong> version 3.5.1.</p>
 <hr />
 <p>To implement models in <strong>pomp</strong>, we have various options. While it is very easy to code basic model components using <strong>R</strong> functions, it can be much faster to do it using C snippets. Here, we’ll demonstrate both approaches.</p>
 <p>First, we’ll load some packages.</p>
@@ -156,15 +156,7 @@ library(magrittr)</code></pre>
   },
   dmeasure=function (tau, X, Y, ..., log) {
     dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
-  },
-  partrans=parameter_trans(
-    toEst=function(r,K,sigma,tau,X.0,...){
-      log(c(r=r,K=K,sigma=sigma,tau=tau,X.0=X.0))
-    },
-    fromEst=function(r,K,sigma,tau,X.0,...){
-      exp(c(r=r,K=K,sigma=sigma,tau=tau,X.0=X.0))
-    }
-  )
+  }
 ) -&gt; gompertz</code></pre>
 <p>We plot the results.</p>
 <pre class="r"><code>gompertz %&gt;%
@@ -195,8 +187,7 @@ library(magrittr)</code></pre>
     ),
     delta.t=1
   ),
-  partrans=parameter_trans(log=c(&quot;r&quot;,&quot;K&quot;,&quot;sigma&quot;,&quot;tau&quot;,&quot;X.0&quot;)),
-  paramnames=c(&quot;r&quot;,&quot;K&quot;,&quot;sigma&quot;,&quot;X.0&quot;,&quot;tau&quot;),
+  paramnames=c(&quot;r&quot;,&quot;K&quot;,&quot;sigma&quot;,&quot;tau&quot;),
   obsnames=&quot;Y&quot;,
   statenames=&quot;X&quot;
 ) -&gt; Gompertz</code></pre>
@@ -226,16 +217,16 @@ logmeanexp(sapply(pf,logLik),se=TRUE)</code></pre>
 <p>Using each implementation, we’ll now run a number of simulations and compare the amount of time required.</p>
 <pre class="r"><code>system.time(simulate(gompertz,nsim=10000,format=&quot;arrays&quot;))</code></pre>
 <pre><code>##    user  system elapsed 
-##   7.240   0.012   7.252</code></pre>
+##   6.676   0.004   6.680</code></pre>
 <pre class="r"><code>system.time(simulate(Gompertz,nsim=10000,format=&quot;arrays&quot;))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.340   0.008   0.348</code></pre>
+##   0.332   0.004   0.335</code></pre>
 <pre class="r"><code>system.time(pfilter(gompertz,Np=10000))</code></pre>
 <pre><code>##    user  system elapsed 
-##   6.044   0.000   6.042</code></pre>
+##   5.824   0.000   5.823</code></pre>
 <pre class="r"><code>system.time(pfilter(Gompertz,Np=10000))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.388   0.000   0.390</code></pre>
+##   0.364   0.012   0.375</code></pre>
 <hr />
 <p><a href="./index.html"><strong>pomp</strong> vignette index</a></p>
 </div>
