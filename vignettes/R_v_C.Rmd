@@ -179,4 +179,5 @@ system.time(pfilter(Gompertz,Np=10000))
 
 -----------------------------------
 
-[**pomp** vignette index](./index.html)
+[**R** codes for this document](./R_v_C.R)  
+[**pomp** documentation](https://kingaa.github.io/pomp/docs.html)

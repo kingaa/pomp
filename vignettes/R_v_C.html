@@ -217,18 +217,19 @@ logmeanexp(sapply(pf,logLik),se=TRUE)</code></pre>
 <p>Using each implementation, we’ll now run a number of simulations and compare the amount of time required.</p>
 <pre class="r"><code>system.time(simulate(gompertz,nsim=10000,format=&quot;arrays&quot;))</code></pre>
 <pre><code>##    user  system elapsed 
-##   6.676   0.004   6.680</code></pre>
+##   6.964   0.012   6.978</code></pre>
 <pre class="r"><code>system.time(simulate(Gompertz,nsim=10000,format=&quot;arrays&quot;))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.332   0.004   0.335</code></pre>
+##   0.332   0.004   0.337</code></pre>
 <pre class="r"><code>system.time(pfilter(gompertz,Np=10000))</code></pre>
 <pre><code>##    user  system elapsed 
-##   5.824   0.000   5.823</code></pre>
+##   6.204   0.000   6.204</code></pre>
 <pre class="r"><code>system.time(pfilter(Gompertz,Np=10000))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.364   0.012   0.375</code></pre>
+##   0.368   0.008   0.378</code></pre>
 <hr />
-<p><a href="./index.html"><strong>pomp</strong> vignette index</a></p>
+<p><a href="./R_v_C.R"><strong>R</strong> codes for this document</a><br />
+<a href="https://kingaa.github.io/pomp/docs.html"><strong>pomp</strong> documentation</a></p>
 </div>
 
 
