@@ -16,7 +16,7 @@ vignettes: getting_started.html getting_started.R pompjss.pdf pompjss.R mif2.htm
 
 %.html: %.Rmd
 	PATH=/usr/lib/rstudio/bin/pandoc:$$PATH \
-	$(RSCRIPT) -e "rmarkdown::render(\"$*.Rmd\",output_format=\"html_document\")"
+	$(RSCRIPT) -e "rmarkdown::render(\"$*.Rmd\")"
 
 %.R: %.Rnw
 	$(RSCRIPT) -e 'library(knitr); purl("$*.Rnw")'

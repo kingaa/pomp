@@ -79,7 +79,7 @@ The following table shows the number of lines in the latest pre-2 **pomp** compa
 
 To minimize inconvenience in the face of backward-incompatible changes, version 2 will be made available initially in source and binary formats as **pomp2** via the [https://kingaa.github.io/] package repository.
 Do
-```
+```{r eval=FALSE}
 install.packages("pomp2",repos="https://kingaa.github.io")
 ```
 to install it.

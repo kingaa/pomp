@@ -1,3 +1,6 @@
+params <-
+list(prefix = "getting-started")
+
 ## ----parallel,include=FALSE,cache=FALSE----------------------------------
 library(foreach)
 library(doMPI)

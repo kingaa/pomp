@@ -6,6 +6,8 @@ output:
     theme: default
     toc: yes
 bibliography: pomp.bib
+params:
+  prefix: "getting-started"
 csl: ecology.csl
 ---
 
@@ -17,7 +19,6 @@ This document was produced using **pomp** version `r packageVersion("pomp")` and
 
 ```{r knitr-opts,include=FALSE,purl=FALSE}
 library(knitr)
-prefix <- "getting-started"
 opts_chunk$set(
   progress=TRUE,
   prompt=FALSE,tidy=FALSE,highlight=TRUE,
@@ -32,8 +33,8 @@ opts_chunk$set(
   fig.show='asis',
   size='small',
   fig.lp="fig:",
-  fig.path=paste0("figure/",prefix,"-"),
-  cache.path=paste0("cache/",prefix,"-"),
+  fig.path=paste0("figure/",params$prefix,"-"),
+  cache.path=paste0("cache/",params$prefix,"-"),
   fig.pos="h!",
   fig.align='center',
   fig.height=4,fig.width=6.83,
