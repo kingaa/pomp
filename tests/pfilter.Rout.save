@@ -22,7 +22,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > 
 > ou2() -> ou2
 > 
@@ -43,72 +43,72 @@ For information on upgrading your pomp version < 2 code, see the
 [1] TRUE
 > 
 > try(pfilter())
-Error : in ‘pfilter’: ‘data’ is a required argument.
+Error : in 'pfilter': 'data' is a required argument.
 > try(pfilter("bob"))
-Error : ‘pfilter’ is undefined for ‘data’ of class ‘character’.
+Error : 'pfilter' is undefined for 'data' of class 'character'.
 > 
 > try(pfilter(ou2))
-Error : in ‘pfilter’: ‘Np’ must be specified.
+Error : in 'pfilter': 'Np' must be specified.
 > try(pfilter(ou2,Np=NULL))
-Error : in ‘pfilter’: ‘Np’ must be specified.
+Error : in 'pfilter': 'Np' must be specified.
 > try(pfilter(ou2,Np=-10))
-Error : in ‘pfilter’: number of particles, ‘Np’, must be a positive integer.
+Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(ou2,Np=c(10,20,30)))
-Error : in ‘pfilter’: ‘Np’ must have length 1 or length 101.
+Error : in 'pfilter': 'Np' must have length 1 or length 101.
 > pfilter(ou2,Np=ceiling(runif(101,min=10,max=100)))
-<object of class ‘pfilterd_pomp’>
+<object of class 'pfilterd_pomp'>
 > try(pfilter(ou2,Np=100,tol=NA))
-Error : in ‘pfilter’: ‘tol’ should be a small positive number.
+Error : in 'pfilter': 'tol' should be a small positive number.
 > try(pfilter(ou2,Np=100,tol=-1))
-Error : in ‘pfilter’: ‘tol’ should be a small positive number.
+Error : in 'pfilter': 'tol' should be a small positive number.
 > try(pfilter(ou2,Np=100,tol=NULL))
-Error : in ‘pfilter’: ‘tol’ should be a small positive number.
+Error : in 'pfilter': 'tol' should be a small positive number.
 > try(pfilter(ou2,Np=100,tol=c(1,10,20)))
-Error : in ‘pfilter’: ‘tol’ should be a small positive number.
+Error : in 'pfilter': 'tol' should be a small positive number.
 > 
 > po <- ou2
 > coef(po) <- NULL
 > try(pfilter(po,Np=100))
-Error : in ‘pfilter’: in ‘rprocess’: variable 'x1' not found among the state variables.
+Error : in 'pfilter': in 'rprocess': variable 'x1' not found among the state variables.
 In addition: Warning message:
 in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=c()))
-Error : in ‘pfilter’: in ‘rprocess’: variable 'x1' not found among the state variables.
+Error : in 'pfilter': in 'rprocess': variable 'x1' not found among the state variables.
 In addition: Warning message:
 in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=NULL))
-Error : in ‘pfilter’: in ‘rprocess’: variable 'x1' not found among the state variables.
+Error : in 'pfilter': in 'rprocess': variable 'x1' not found among the state variables.
 In addition: Warning message:
 in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=c(1,2,3)))
-Error : in ‘pfilter’: ‘params’ must be a named numeric vector.
+Error : in 'pfilter': 'params' must be a named numeric vector.
 > try(pfilter(po,Np=100,params=c(a=1,b=2,c=3)))
-Error : in ‘pfilter’: in ‘rprocess’: variable 'x1' not found among the state variables.
+Error : in 'pfilter': in 'rprocess': variable 'x1' not found among the state variables.
 In addition: Warning message:
 in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=list()))
-Error : in ‘pfilter’: in ‘rprocess’: variable 'x1' not found among the state variables.
+Error : in 'pfilter': in 'rprocess': variable 'x1' not found among the state variables.
 In addition: Warning message:
 in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > pf <- pfilter(po,Np=100,params=as.list(coef(ou2)))
 > 
 > pf <- pfilter(pf)
 > try(pfilter(pf,Np=-1000))
-Error : in ‘pfilter’: number of particles, ‘Np’, must be a positive integer.
+Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(pf,tol=-1))
-Error : in ‘pfilter’: ‘tol’ should be a small positive number.
+Error : in 'pfilter': 'tol' should be a small positive number.
 > stopifnot(all.equal(coef(pf),coef(ou2)))
 > theta <- coef(ou2)
 > theta["alpha_2"] <- 0.1
 > pf1 <- pfilter(pf,params=theta,Np=100)
 Warning message:
-in ‘pfilter’: 12 filtering failures occurred. 
+in 'pfilter': 12 filtering failures occurred. 
 > stopifnot(identical(coef(pf1),theta))
 > 
 > try(pfilter(ou2,params=parmat(coef(ou2),100)))
-Error : in ‘pfilter’: ‘params’ must be a named numeric vector.
+Error : in 'pfilter': 'params' must be a named numeric vector.
 > try(pfilter(ou2,Np=100,params=parmat(coef(ou2),100)))
-Error : in ‘pfilter’: ‘params’ must be a named numeric vector.
+Error : in 'pfilter': 'params' must be a named numeric vector.
 > 
 > pf2 <- pfilter(ou2,Np=function(k)c(100,150)[(k-1)%%2+1])
 > table(pf2@Np)
@@ -116,16 +116,16 @@ Error : in ‘pfilter’: ‘params’ must be a named numeric vector.
 100 150 
  50  51 
 > try(pfilter(pf2,Np=function(k)c(100,-150)[(k-1)%%2+1]))
-Error : in ‘pfilter’: number of particles, ‘Np’, must be a positive integer.
+Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(pf2,Np=function(k)c(100,-150)))
-Error : in ‘pfilter’: if ‘Np’ is a function, it must return a single positive integer.
+Error : in 'pfilter': if 'Np' is a function, it must return a single positive integer.
 > try(pfilter(pf2,Np="many"))
-Error : in ‘pfilter’: ‘Np’ must be a number, a vector of numbers, or a function.
+Error : in 'pfilter': 'Np' must be a number, a vector of numbers, or a function.
 > 
 > theta <- coef(ou2)
 > theta["sigma_2"] <- Inf
 > try(pfilter(pf,params=theta))
-Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value.
+Error : in 'pfilter': 'dmeasure' returns non-finite value.
 likelihood, data, states, and parameters are:
    time:            2
     lik:          NaN
@@ -146,15 +146,15 @@ sigma_3:            2
 > theta <- coef(ou2)
 > theta["alpha_1"] <- 1e60
 > try(pfilter(pf,params=theta,pred.var=TRUE))
-Error : in ‘pfilter’: non-finite state variable: x1
+Error : in 'pfilter': non-finite state variable: x1
 > 
 > try(pfilter(pf,rprocess=onestep(
 +   function(x, t, params, delta.t, ...)stop("yikes!"))))
-Error : in ‘pfilter’: in ‘rprocess’: yikes!
+Error : in 'pfilter': in 'rprocess': yikes!
 > try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
-Error : in ‘pfilter’: in ‘dmeasure’: ouch!
+Error : in 'pfilter': in 'dmeasure': ouch!
 > try(pfilter(pf,dmeasure=function(log,...) -Inf))
-Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value.
+Error : in 'pfilter': 'dmeasure' returns non-finite value.
 likelihood, data, states, and parameters are:
    time:            1
     lik:         -Inf
@@ -191,7 +191,7 @@ pfilter timestep 30 of 100 finished
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 +   filter.traj=TRUE)
 Warning message:
-in ‘pfilter’: 100 filtering failures occurred. 
+in 'pfilter': 100 filtering failures occurred. 
 > names(as(pf2,"data.frame"))
  [1] "time"           "y1"             "y2"             "ess"           
  [5] "cond.loglik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   
@@ -217,7 +217,7 @@ $time
  [97] "97"  "98"  "99"  "100"
 
 > try(filter.traj(c(pf1,pf3)))
-Error : in ‘filter.traj’: incommensurate dimensions.
+Error : in 'filter.traj': incommensurate dimensions.
 > dim(filter.traj(c(pf1,pf4)))
 [1]   2   1 101   2
 > names(dimnames(filter.traj(c(pf1,pf4))))
@@ -230,7 +230,7 @@ No id variables; using all as measure variables
 > library(magrittr)
 > 
 > try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
-Error : in ‘pfilter’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+Error : in 'pfilter': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
 > ou2 %>%
 +   as.data.frame() %>%
@@ -248,5 +248,5 @@ Error : in ‘pfilter’: ‘times’ should either be a numeric vector of obser
 +       if (log) ll else exp(ll)
 +     }
 +   )
-<object of class ‘pfilterd_pomp’>
+<object of class 'pfilterd_pomp'>
 > 

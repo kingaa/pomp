@@ -20,7 +20,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > gompertz() -> po
@@ -37,20 +37,20 @@ For information on upgrading your pomp version < 2 code, see the
   r tau 
 0.1 0.1 
 > try(coef(po,c("bob","tau")))
-Error : in ‘coef’: name ‘bob’ corresponds to no parameter.
+Error : in 'coef': name 'bob' corresponds to no parameter.
 > try(coef(po) <- c(1,2,3))
-Error : in ‘coef<-’: ‘value’ must be a named vector.
+Error : in 'coef<-': 'value' must be a named vector.
 > try(coef(po,transform=TRUE) <- c(1,2,3))
-Error : in ‘partrans’: variable 'r' not found among the parameters.
+Error : in 'partrans': variable 'r' not found among the parameters.
 > coef(po) <- list(as.list(coef(po)))
 > coef(po,"r") <- 0.2
 > coef(po,"r") <- list(r=0.2)
 Warning message:
-in ‘coef<-’: names of ‘value’ are being discarded. 
+in 'coef<-': names of 'value' are being discarded. 
 > coef(po,c("r","theta")) <- list(r=0.2)
 Warning messages:
-1: in ‘coef<-’: names of ‘value’ are being discarded. 
-2: in ‘coef<-’: name ‘theta’ refers to no existing parameter; it is being concatenated. 
+1: in 'coef<-': names of 'value' are being discarded. 
+2: in 'coef<-': name 'theta' refers to no existing parameter; it is being concatenated. 
 > coef(po,"sigma",transform=TRUE) <- 0
 > coef(po)
     K     r sigma   tau   X_0 theta 
@@ -61,7 +61,7 @@ Warning messages:
 > stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
 > coef(po) <- NULL
 > try(coef(po,c("r","sigma"),transform=TRUE) <- 0)
-Error : in ‘partrans’: variable 'K' not found among the parameters.
+Error : in 'partrans': variable 'K' not found among the parameters.
 > coef(po) <- NULL
 > coef(po) <- c(r=1,sigma=1)
 > stopifnot(all.equal(coef(po),c(r=1,sigma=1)))
@@ -97,7 +97,7 @@ variable      [,1]     [,2]      [,3]
 > obs(po,"y2")[,1:3]
 [1] 4.780644 6.273302 7.555869
 > try(obs(po,c("y2","z")))
-Error : in ‘obs’: some elements of ‘vars’ correspond to no observed variable.
+Error : in 'obs': some elements of 'vars' correspond to no observed variable.
 > 
 > states(po)
         time
@@ -167,7 +167,7 @@ variable     [,99]     [,100]
 > states(po1,"x1")[,1:3]
 [1]  3.0483049  0.4419551 -2.5276922
 > try(states(po1,"z"))
-Error : in ‘states’: some elements of ‘vars’ correspond to no state variable
+Error : in 'states': some elements of 'vars' correspond to no state variable
 > states(po1)[,1:3]
         time
 variable     [,1]      [,2]      [,3]
@@ -184,38 +184,38 @@ variable [,1] [,2] [,3]
 > 
 > time(po) <- 1:10
 > try(time(po) <- c("bob","nancy"))
-Error : in ‘time<-’: ‘value’ must be a numeric vector.
+Error : in 'time<-': 'value' must be a numeric vector.
 > time(po1,t0=TRUE) <- 0:10
 > try(time(po) <- 10:0)
-Error : in ‘time<-’: times must be a non-decreasing numeric sequence.
+Error : in 'time<-': times must be a non-decreasing numeric sequence.
 > try(time(po,t0=TRUE) <- c(4,1:10))
-Error : in ‘time<-’: the zero-time ‘t0’ must occur no later than the first observation.
+Error : in 'time<-': the zero-time 't0' must occur no later than the first observation.
 > time(po1) <- c(1:5,5,5:10)
 > stopifnot(obs(po1)[,6:7]==obs(po1)[,5],
 +   states(po1)[,6:7]==states(po1)[,5])
 > 
 > window(po,end=5)
-<object of class ‘pomp’>
+<object of class 'pomp'>
 > window(po,start=5)
-<object of class ‘pomp’>
+<object of class 'pomp'>
 > window(po,start=5,end=10)
-<object of class ‘pomp’>
+<object of class 'pomp'>
 > try(window(po,start=5,end=3))
-Error : in ‘window’: ‘start’ must not be later than ‘end’.
+Error : in 'window': 'start' must not be later than 'end'.
 > try(window(po,start=NA,end=3))
-Error : in ‘window’: ‘start’ and ‘end’ must be finite times.
+Error : in 'window': 'start' and 'end' must be finite times.
 > try(window(po,start=1,end=NULL))
-Error : in ‘window’: ‘start’ and ‘end’ must be finite times.
+Error : in 'window': 'start' and 'end' must be finite times.
 > 
 > timezero(po)
 [1] 0
 > timezero(po) <- -3
 > try(timezero(po) <- NA)
-Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single finite number.
+Error : in 'timezero<-': the zero-time 't0' must be a single finite number.
 > try(timezero(po) <- c(1,2,3))
-Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single finite number.
+Error : in 'timezero<-': the zero-time 't0' must be a single finite number.
 > try(timezero(po) <- 20)
-Error : in ‘timezero<-’: the zero-time ‘t0’ must occur no later than the first observation.
+Error : in 'timezero<-': the zero-time 't0' must occur no later than the first observation.
 > 
 > coef(po)
 alpha_1 alpha_2 alpha_3 alpha_4 sigma_1 sigma_2 sigma_3     tau    x1_0    x2_0 
@@ -224,12 +224,12 @@ alpha_1 alpha_2 alpha_3 alpha_4 sigma_1 sigma_2 sigma_3     tau    x1_0    x2_0
 alpha_3     tau 
     0.3     1.0 
 > try(coef(po,c("alpha_3","z")))
-Error : in ‘coef’: name ‘z’ corresponds to no parameter.
+Error : in 'coef': name 'z' corresponds to no parameter.
 > 
 > coef(po,"alpha_3") <- 4
 > coef(po,"z") <- 9
 Warning message:
-in ‘coef<-’: name ‘z’ refers to no existing parameter; it is being concatenated. 
+in 'coef<-': name 'z' refers to no existing parameter; it is being concatenated. 
 > coef(po)
 alpha_1 alpha_2 alpha_3 alpha_4 sigma_1 sigma_2 sigma_3     tau    x1_0    x2_0 
     0.8    -0.5     4.0     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
@@ -255,20 +255,20 @@ numeric(0)
   1.0   0.1   1.0   0.1   1.0 
 > coef(po,c("r","K","sigma","tau","X_0")) <- c(a=1,b=2,c=3,d=4,e=5)
 Warning message:
-in ‘coef<-’: names of ‘value’ are being discarded. 
+in 'coef<-': names of 'value' are being discarded. 
 > coef(po) <- c(r=1,K=1)
 > coef(po) <- NULL
 > try(coef(po,transform=FALSE) <- c(5,3))
-Error : in ‘coef<-’: ‘value’ must be a named vector.
+Error : in 'coef<-': 'value' must be a named vector.
 > try(coef(po,transform=TRUE) <- c(5,3))
-Error : in ‘partrans’: variable 'r' not found among the parameters.
+Error : in 'partrans': variable 'r' not found among the parameters.
 > coef(po)
 numeric(0)
 > po %>%
 +   window(start=5,end=20) %>%
 +   pomp(covar=covariate_table(times=0:20,q=0:20),
 +     larry=3L) -> po1
-in ‘pomp’: the unrecognized argument ‘larry’ is available for use by the POMP basic components.
+in 'pomp': the unrecognized argument 'larry' is available for use by the POMP basic components.
 > as(po1,"data.frame") %>% head()
   time         Y  q
 1    5 0.7408867  5

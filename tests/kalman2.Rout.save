@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > set.seed(1968726372)
@@ -36,7 +36,7 @@ For information on upgrading your pomp version < 2 code, see the
 +   subset(select=-X) -> dat
 > 
 > try(dat %>% enkf())
-Error : in ‘enkf’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+Error : in 'enkf': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
 > dat %>%
 +   enkf(
@@ -56,7 +56,7 @@ Error : in ‘enkf’: ‘times’ should either be a numeric vector of observat
 +   ) %>% plot()
 > 
 > try(dat %>% eakf())
-Error : in ‘eakf’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+Error : in 'eakf': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
 > dat %>%
 +   eakf(
@@ -75,9 +75,9 @@ Error : in ‘eakf’: ‘times’ should either be a numeric vector of observat
 +   ) %>% plot()
 > 
 > try(po %>% enkf(rprocess=NULL))
-Error : in ‘enkf’: ‘rprocess’ is a needed basic component.
+Error : in 'enkf': 'rprocess' is a needed basic component.
 > try(po %>% eakf(rprocess=NULL))
-Error : in ‘eakf’: ‘rprocess’ is a needed basic component.
+Error : in 'eakf': 'rprocess' is a needed basic component.
 > 
 > dev.off()
 null device 

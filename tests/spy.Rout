@@ -22,19 +22,19 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > gompertz() -> po
 > 
 > pomp(po,partrans=NULL,bob=3,
 +   covar=covariate_table(a=0:20,b=0:20,times="a")) -> po1
-in ‘pomp’: the unrecognized argument ‘bob’ is available for use by the POMP basic components.
+in 'pomp': the unrecognized argument 'bob' is available for use by the POMP basic components.
 Warning message:
-in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
+in 'pomp': the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > spy(po1)
 ==================
-pomp object ‘po1’:
+pomp object 'po1':
 
 - data:
   - 100 records of 1 observable, recorded from t = 1 to 100 
@@ -64,30 +64,30 @@ pomp object ‘po1’:
 - process-model simulator, rprocess: discrete-time process-model simulator
   - time-step = 1 
   - step.fun: native function
-  - name: ‘_gompertz_simulator’
-  - dynamically loaded from: ‘pomp2’
+  - name: '_gompertz_simulator'
+  - dynamically loaded from: 'pomp2'
 
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
-  - name: ‘_gompertz_normal_rmeasure’
-  - dynamically loaded from: ‘pomp2’
+  - name: '_gompertz_normal_rmeasure'
+  - dynamically loaded from: 'pomp2'
 
 - measurement model density, dmeasure: native function
-  - name: ‘_gompertz_normal_dmeasure’
-  - dynamically loaded from: ‘pomp2’
+  - name: '_gompertz_normal_dmeasure'
+  - dynamically loaded from: 'pomp2'
 
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: map:
   - time-step = 1 
   - native function
-  - name: ‘_gompertz_skeleton’
-  - dynamically loaded from: ‘pomp2’
+  - name: '_gompertz_skeleton'
+  - dynamically loaded from: 'pomp2'
 
 - parameter vector:
     K     r sigma   tau   X_0 
   1.0   0.1   0.1   0.1   1.0 
-- extra user-defined variables:  ‘bob’ 
+- extra user-defined variables:  'bob' 
 
 
 > 
@@ -96,10 +96,10 @@ pomp object ‘po1’:
 +     rinit=function(params,t0,...)params,
 +     paramnames="r",compile=FALSE,cfile="nancy") -> po2
 Warning message:
-in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
+in 'pomp': the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > spy(po2)
 ==================
-pomp object ‘po2’:
+pomp object 'po2':
 
 - data:
   - 100 records of 1 observable, recorded from t = 1 to 100 
@@ -132,43 +132,43 @@ params
 - process-model simulator, rprocess: discrete-time process-model simulator
   - time-step = 1 
   - step.fun: native function
-  - name: ‘_gompertz_simulator’
-  - dynamically loaded from: ‘pomp2’
+  - name: '_gompertz_simulator'
+  - dynamically loaded from: 'pomp2'
 
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
-  - name: ‘_gompertz_normal_rmeasure’
-  - dynamically loaded from: ‘pomp2’
+  - name: '_gompertz_normal_rmeasure'
+  - dynamically loaded from: 'pomp2'
 
 - measurement model density, dmeasure: native function
-  - name: ‘_gompertz_normal_dmeasure’
-  - dynamically loaded from: ‘pomp2’
+  - name: '_gompertz_normal_dmeasure'
+  - dynamically loaded from: 'pomp2'
 
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: map:
   - time-step = 1 
   - native function
-  - name: ‘_gompertz_skeleton’
-  - dynamically loaded from: ‘pomp2’
+  - name: '_gompertz_skeleton'
+  - dynamically loaded from: 'pomp2'
 
 - parameter transformations:
   - to estimation scale: native function
-  - name: ‘__pomp_to_trans’
-  - defined by a C snippet in library ‘nancy’
+  - name: '__pomp_to_trans'
+  - defined by a C snippet in library 'nancy'
 
   - from estimation scale: native function
-  - name: ‘__pomp_from_trans’
-  - defined by a C snippet in library ‘nancy’
+  - name: '__pomp_from_trans'
+  - defined by a C snippet in library 'nancy'
 
 - parameter vector unspecified
-- extra user-defined variables:  ‘bob’ 
+- extra user-defined variables:  'bob' 
 
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2018-09-18 06:43:35.802 -0400 */
-/* Salt: 96AA7CF173FFDA5F038CDAA0 */
+/* Time: 2018-09-25 08:31:54.935 -0400 */
+/* Salt: F647BB68A6426DE9FA44EFBC */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -222,7 +222,7 @@ R_RegisterCCallable("nancy", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
 > sir() -> sir
 > spy(sir)
 ==================
-pomp object ‘sir’:
+pomp object 'sir':
 
 - data:
   - 208 records of 1 observable, recorded from t = 0.0192 to 4 
@@ -249,39 +249,39 @@ pomp object ‘sir’:
  Max.   :0.667   Max.   :0.667   Max.   :0.667  
 
 - initial state simulator, rinit: native function
-  - name: ‘__pomp_rinit’
-  - defined by a C snippet in library ‘sir_source’
+  - name: '__pomp_rinit'
+  - defined by a C snippet in library 'sir_source'
 
 - process-model simulator, rprocess: Euler-method process-model simulator
   - time-step = 0.000962 
   - step.fun: native function
-  - name: ‘__pomp_stepfn’
-  - defined by a C snippet in library ‘sir_source’
+  - name: '__pomp_stepfn'
+  - defined by a C snippet in library 'sir_source'
 
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
-  - name: ‘__pomp_rmeasure’
-  - defined by a C snippet in library ‘sir_source’
+  - name: '__pomp_rmeasure'
+  - defined by a C snippet in library 'sir_source'
 
 - measurement model density, dmeasure: native function
-  - name: ‘__pomp_dmeasure’
-  - defined by a C snippet in library ‘sir_source’
+  - name: '__pomp_dmeasure'
+  - defined by a C snippet in library 'sir_source'
 
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: vectorfield:
   - native function
-  - name: ‘__pomp_skelfn’
-  - defined by a C snippet in library ‘sir_source’
+  - name: '__pomp_skelfn'
+  - defined by a C snippet in library 'sir_source'
 
 - parameter transformations:
   - to estimation scale: native function
-  - name: ‘__pomp_to_trans’
-  - defined by a C snippet in library ‘sir_source’
+  - name: '__pomp_to_trans'
+  - defined by a C snippet in library 'sir_source'
 
   - from estimation scale: native function
-  - name: ‘__pomp_from_trans’
-  - defined by a C snippet in library ‘sir_source’
+  - name: '__pomp_from_trans'
+  - defined by a C snippet in library 'sir_source'
 
 - parameter vector:
    gamma       mu     iota    beta1    beta2    beta3  beta_sd      rho 
@@ -292,8 +292,8 @@ pomp object ‘sir’:
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2018-09-18 06:43:35.874 -0400 */
-/* Salt: 087DF6DF067D4ABBE0FDAB53 */
+/* Time: 2018-09-25 08:31:55.008 -0400 */
+/* Salt: 4C16E0EC9C9731CD0CFD7AFA */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -772,7 +772,7 @@ R_RegisterCCallable("sir_source", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
 > rw2() -> rw2
 > spy(rw2)
 ==================
-pomp object ‘rw2’:
+pomp object 'rw2':
 
 - data:
   - 100 records of 2 observables, recorded from t = 1 to 100 
@@ -792,20 +792,20 @@ pomp object ‘rw2’:
 - initial state simulator, rinit: <default>
 - process-model simulator, rprocess: one-step process-model simulator
   - step.fun: native function
-  - name: ‘__pomp_stepfn’
-  - defined by a C snippet in library ‘rw2_source’
+  - name: '__pomp_stepfn'
+  - defined by a C snippet in library 'rw2_source'
 
 - process model density, dprocess: native function
-  - name: ‘__pomp_dproc’
-  - defined by a C snippet in library ‘rw2_source’
+  - name: '__pomp_dproc'
+  - defined by a C snippet in library 'rw2_source'
 
 - measurement model simulator, rmeasure: native function
-  - name: ‘__pomp_rmeasure’
-  - defined by a C snippet in library ‘rw2_source’
+  - name: '__pomp_rmeasure'
+  - defined by a C snippet in library 'rw2_source'
 
 - measurement model density, dmeasure: native function
-  - name: ‘__pomp_dmeasure’
-  - defined by a C snippet in library ‘rw2_source’
+  - name: '__pomp_dmeasure'
+  - defined by a C snippet in library 'rw2_source'
 
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
@@ -818,8 +818,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2018-09-18 06:43:36.175 -0400 */
-/* Salt: CA0733FDC44C8AA5E66218B1 */
+/* Time: 2018-09-25 08:31:55.344 -0400 */
+/* Salt: B44732FB6FD015DFC623D5EA */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -944,7 +944,7 @@ R_RegisterCCallable("rw2_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
 > sir2() -> sir2
 > spy(sir2)
 ==================
-pomp object ‘sir2’:
+pomp object 'sir2':
 
 - data:
   - 120 records of 1 observable, recorded from t = 0.0833 to 10 
@@ -971,8 +971,8 @@ pomp object ‘sir2’:
  Max.   :0.667   Max.   :0.667   Max.   :0.667  
 
 - initial state simulator, rinit: native function
-  - name: ‘__pomp_rinit’
-  - defined by a C snippet in library ‘sir2_source’
+  - name: '__pomp_rinit'
+  - defined by a C snippet in library 'sir2_source'
 
 - process-model simulator, rprocess: Gillespie-method process-model simulator
   - stoichiometry matrix:
@@ -984,33 +984,33 @@ variable birth susc.death infection inf.death recovery recov.death
    N         1         -1         0        -1        0          -1
    cases     0          0         0         0        1           0
   - rate.fun: native function
-  - name: ‘__pomp_ratefn’
-  - defined by a C snippet in library ‘sir2_source’
+  - name: '__pomp_ratefn'
+  - defined by a C snippet in library 'sir2_source'
 
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
-  - name: ‘__pomp_rmeasure’
-  - defined by a C snippet in library ‘sir2_source’
+  - name: '__pomp_rmeasure'
+  - defined by a C snippet in library 'sir2_source'
 
 - measurement model density, dmeasure: native function
-  - name: ‘__pomp_dmeasure’
-  - defined by a C snippet in library ‘sir2_source’
+  - name: '__pomp_dmeasure'
+  - defined by a C snippet in library 'sir2_source'
 
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: vectorfield:
   - native function
-  - name: ‘__pomp_skelfn’
-  - defined by a C snippet in library ‘sir2_source’
+  - name: '__pomp_skelfn'
+  - defined by a C snippet in library 'sir2_source'
 
 - parameter transformations:
   - to estimation scale: native function
-  - name: ‘__pomp_to_trans’
-  - defined by a C snippet in library ‘sir2_source’
+  - name: '__pomp_to_trans'
+  - defined by a C snippet in library 'sir2_source'
 
   - from estimation scale: native function
-  - name: ‘__pomp_from_trans’
-  - defined by a C snippet in library ‘sir2_source’
+  - name: '__pomp_from_trans'
+  - defined by a C snippet in library 'sir2_source'
 
 - parameter vector:
    gamma       mu     iota      rho    beta1    beta2    beta3      S_0 
@@ -1021,8 +1021,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2018-09-18 06:43:36.396 -0400 */
-/* Salt: FBC85AC2CBA7E02D717FEC41 */
+/* Time: 2018-09-25 08:31:55.603 -0400 */
+/* Salt: 54DA18E08642E17008460E90 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1507,8 +1507,8 @@ R_RegisterCCallable("sir2_source", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
 
 > 
 > try(spy())
-Error : in ‘spy’: ‘object’ is a required argument.
+Error : in 'spy': 'object' is a required argument.
 > try(spy(list()))
-Error : ‘spy’ is undefined for ‘object’ of class ‘list’.
+Error : 'spy' is undefined for 'object' of class 'list'.
 > 
 > 

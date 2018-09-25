@@ -22,7 +22,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > set.seed(240311270)
@@ -38,7 +38,7 @@ For information on upgrading your pomp version < 2 code, see the
 > try(sannbox(par=c(1),fn=ripple,control=list(
 +   lower=NULL,upper=NULL,
 +   sched=seq(10,1,length=10))))
-Error : in ‘sannbox’: insufficiently many temperatures supplied in ‘control$sched’
+Error : in 'sannbox': insufficiently many temperatures supplied in 'control$sched'
 > sannbox(par=c(1),fn=ripple,control=list(
 +   lower=1,upper=5,maxit=100,sched=seq(10,1,length=100))) -> out3
 > stopifnot(out3$convergence == 0)
@@ -59,8 +59,8 @@ Error : in ‘sannbox’: insufficiently many temperatures supplied in ‘contro
 > invisible(sannbox(par=c(2,2),fn=f))
 > 
 > try(sannbox(par=c(2,2),fn=f,control=list(candidate.dist="bob")))
-Error : in ‘sannbox’: ‘control$candidate.dist’ must be a function.
+Error : in 'sannbox': 'control$candidate.dist' must be a function.
 > try(sannbox(par=c(2,2),fn=f,control=list(
 +   candidate.dist=function(x)x)))
-Error : in ‘sannbox’: ‘candidate.dist’ must be a function of prototype ‘candidate.dist(par, temp, scale, ...)’.
+Error : in 'sannbox': 'candidate.dist' must be a function of prototype 'candidate.dist(par, temp, scale, ...)'.
 > 

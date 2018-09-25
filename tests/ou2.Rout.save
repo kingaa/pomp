@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > 
 > ou2() -> ou2
 > 
@@ -50,7 +50,7 @@ alpha_1 alpha_2 alpha_3 alpha_4 sigma_1 sigma_2 sigma_3     tau    x1_0    x2_0
 > plot(d[,],ylab="log prob")
 > 
 > try(dprocess(s,x=states(s)[,c(1:9,15)],params=coef(s),times=time(s)[c(1:9,15)]))
-Error : in ‘dprocess’: ou2_pdf error: transitions must be consecutive
+Error : in 'dprocess': ou2_pdf error: transitions must be consecutive
 > 
 > dev.off()
 null device 

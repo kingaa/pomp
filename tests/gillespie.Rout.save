@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > library(ggplot2)
 > 
@@ -133,7 +133,7 @@ For information on upgrading your pomp version < 2 code, see the
 +     paramnames=c("gamma","mu","iota","beta1","beta2","beta3","pop","rho"),
 +     statenames=c("S","I","R","N","cases")
 +   ) -> gsir1
-in ‘pomp’: the unrecognized argument ‘nbasis’ is available for use by the POMP basic components.
+in 'pomp': the unrecognized argument 'nbasis' is available for use by the POMP basic components.
 > 
 > gsir1 %>%
 +   plot(main="Gillespie SIR, with zeroing")
@@ -153,35 +153,35 @@ in ‘pomp’: the unrecognized argument ‘nbasis’ is available for use by th
 +   theme_bw()+theme(legend.position=c(0.2,0.8))
 > 
 > try(gillespie(rate.fun=rate.fun,v=as.numeric(Vmatrix)))
-Error : in ‘gillespie’: ‘v’ must be a matrix.
+Error : in 'gillespie': 'v' must be a matrix.
 > w <- Vmatrix
 > colnames(w) <- c(letters[1:5],"a")
 > try(gillespie(rate.fun=rate.fun,v=w))
-Error : in ‘gillespie’: duplicates in column names of ‘v’.
+Error : in 'gillespie': duplicates in column names of 'v'.
 > w <- Vmatrix
 > rownames(w) <- c(letters[1:4],"a")
 > try(gillespie(rate.fun=rate.fun,v=w))
-Error : in ‘gillespie’: duplicates in row names of ‘v’.
+Error : in 'gillespie': duplicates in row names of 'v'.
 > try(gillespie_hl(a="bob"))
-Error : in ‘gillespie_hl’: each event should be specified using a length-2 list.
+Error : in 'gillespie_hl': each event should be specified using a length-2 list.
 > try(gillespie_hl(a=list(c("bob","mary"),2)))
-Error : in ‘gillespie_hl’: for each event, the first list-element should be a C snippet or string.
+Error : in 'gillespie_hl': for each event, the first list-element should be a C snippet or string.
 > try(gillespie_hl(a=list(1,2)))
-Error : in ‘gillespie_hl’: for each event, the first list-element should be a C snippet or string.
+Error : in 'gillespie_hl': for each event, the first list-element should be a C snippet or string.
 > try(gillespie_hl(.pre=3,a=list("bob",c(a=2,b=1))))
-Error : in ‘gillespie_hl’: ‘.pre’ and ‘.post’ must be C snippets or strings.
+Error : in 'gillespie_hl': '.pre' and '.post' must be C snippets or strings.
 > try(gillespie_hl(a=list("bob",c(a="h",b="k"))))
-Error : in ‘gillespie_hl’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+Error : in 'gillespie_hl': for each event, the second list-element should be a named numeric vector (without duplicate names).
 > try(gillespie_hl(a=list("bob",c(2,1))))
-Error : in ‘gillespie_hl’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+Error : in 'gillespie_hl': for each event, the second list-element should be a named numeric vector (without duplicate names).
 > try(gillespie_hl(a=list("bob",list(a=2,b=1))))
-Error : in ‘gillespie_hl’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+Error : in 'gillespie_hl': for each event, the second list-element should be a named numeric vector (without duplicate names).
 > try(gillespie_hl(a=list("bob",c(a=2,1))))
-Error : in ‘gillespie_hl’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+Error : in 'gillespie_hl': for each event, the second list-element should be a named numeric vector (without duplicate names).
 > try(gillespie_hl(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,a=2))))
-Error : in ‘gillespie_hl’: for each event, the second list-element should be a named numeric vector (without duplicate names).
+Error : in 'gillespie_hl': for each event, the second list-element should be a named numeric vector (without duplicate names).
 > try(gillespie_hl(a=list("bob",c(a=2,b=1)),a=list("mary",c(a=1,c=2))))
-Error : in ‘gillespie_hl’: duplicated elementary event names.
+Error : in 'gillespie_hl': duplicated elementary event names.
 > gillespie_hl(A=list("bob",c(a=2,b=1)),B=list("mary",c(a=1,c=2))) -> f
 > f@v
         event
@@ -197,7 +197,7 @@ variable A B
 +     states() %>% apply(1,diff) %>% equals(0) %>% all())
 > 
 > try(gsir %>% simulate(rprocess=gillespie(rate.fun=function(j,...)1,v=Vmatrix[1:4,])))
-Error : in ‘simulate’: number of state variables must equal the number of rows in 'v'.
+Error : in 'simulate': number of state variables must equal the number of rows in 'v'.
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) {
 +   if (t>1) {
@@ -219,20 +219,20 @@ Error : in ‘simulate’: number of state variables must equal the number of ro
 + }
 > 
 > try(simulate(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)))
-Error : in ‘simulate’: 'rate.fun' returns a negative rate
+Error : in 'simulate': 'rate.fun' returns a negative rate
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) -1
 > 
 > try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
-Error : in ‘simulate’: 'rate.fun' returns a negative rate
+Error : in 'simulate': 'rate.fun' returns a negative rate
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
 > 
 > try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
-Error : in ‘simulate’: 'rate.fun' must return a single numeric rate.
+Error : in 'simulate': 'rate.fun' must return a single numeric rate.
 > 
 > try(pomp(gsir,rprocess=gillespie(rate.fun=3,v=Vmatrix)))
-Error : bad option for ‘rate.fun’ argument.
+Error : bad option for 'rate.fun' argument.
 > 
 > create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
 +   rate.fun <- function(j, mu, N, ...) {

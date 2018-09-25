@@ -22,7 +22,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > gompertz() -> gompertz
@@ -56,5 +56,5 @@ For information on upgrading your pomp version < 2 code, see the
 > try(mif2(gompertz,Nmif=1,Np=100,
 +   .indices=1:5,rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
 +   cooling.fraction=0.5))
-Error : in ‘mif2’: ‘.indices’ has improper length.
+Error : in 'mif2': '.indices' has improper length.
 > 

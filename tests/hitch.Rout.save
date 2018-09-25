@@ -22,11 +22,11 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > try(hitch())
-Error : in ‘hitch’: ‘templates’ must be supplied.
+Error : in 'hitch': 'templates' must be supplied.
 > 
 > hitch(templates=pomp2:::workhorse_templates)
 $funs
@@ -38,7 +38,7 @@ NULL
 > 
 > try(hitch(templates=pomp2:::workhorse_templates,
 +   statenames=c("a","b"),paramnames=c("b","c")))
-Error : in ‘hitch’: the variable names in ‘statenames’, ‘paramnames’, ‘covarnames’, , and ‘obsnames’ must be unique and disjoint.
+Error : in 'hitch': the variable names in 'statenames', 'paramnames', 'covarnames', , and 'obsnames' must be unique and disjoint.
 > 
 > hitch(step.fn=Csnippet("int bob; bob = 3"),
 +   templates=pomp2:::workhorse_templates,

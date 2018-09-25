@@ -24,7 +24,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > ou2() -> ou2
@@ -71,7 +71,7 @@ For information on upgrading your pomp version < 2 code, see the
 > stopifnot(all(dim(traces(abc1,"alpha_1"))==c(101,1)))
 > invisible(conv.rec(abc2))
 Warning message:
-‘conv.rec’ is deprecated and will be removed in a forthcoming release.  Please use ‘traces’ instead. 
+'conv.rec' is deprecated and will be removed in a forthcoming release.  Please use 'traces' instead. 
 > 
 > c(abc1,abc2) %>% traces() -> traces
 > traces %>% length()
@@ -83,7 +83,7 @@ Warning message:
 [1,]  101  101
 [2,]   10   10
 > try(abclist %>% plot(pars="alpha_3",scatter=TRUE))
-Error : in ‘plot’: can't make a scatterplot with only one variable.
+Error : in 'plot': can't make a scatterplot with only one variable.
 > 
 > abc1 %>%
 +   abc(Nabc=500,dprior=Csnippet("
@@ -96,89 +96,89 @@ Error : in ‘plot’: can't make a scatterplot with only one variable.
 > abc4 %>% abc(proposal=function(theta,...)theta) %>% plot()
 > 
 > try(abc())
-Error : in ‘abc’: ‘data’ is a required argument.
+Error : in 'abc': 'data' is a required argument.
 > try(abc(3))
-Error : ‘abc’ is undefined for ‘data’ of class ‘numeric’.
+Error : 'abc' is undefined for 'data' of class 'numeric'.
 > 
 > try(abc(abc1,Nabc=-5))
-Error : in ‘abc’: ‘Nabc’ must be a positive integer.
+Error : in 'abc': 'Nabc' must be a positive integer.
 > stopifnot(all(dim(traces(abc(abc1,Nabc=0))==c(1,10))))
 > 
 > try(abc(ou2,Nabc=50,scale=scale.dat[1:2],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
-Error : in ‘abc’: ‘probes’ must be specified.
+Error : in 'abc': 'probes' must be specified.
 > try(abc(ou2,Nabc=50,probes=plist,scale=scale.dat[1:2],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
-Error : in ‘abc’: ‘scale’ must have either length 1 or length equal to the number of probes (here, 7).
+Error : in 'abc': 'scale' must have either length 1 or length equal to the number of probes (here, 7).
 > po <- ou2
 > coef(po) <- NULL
 > try(abc(po,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
-Error : in ‘abc’: ‘params’ must be a named numeric vector.
+Error : in 'abc': 'params' must be a named numeric vector.
 > try(abc(ou2,params=numeric(0),Nabc=100,probes=plist,scale=scale.dat,
 +   epsilon=1.7,proposal="mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))"))
-Error : in ‘abc’: ‘params’ must be a named numeric vector.
+Error : in 'abc': 'params' must be a named numeric vector.
 > try(abc(ou2,params=NULL,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
-Error : in ‘abc’: ‘params’ must be a named numeric vector.
+Error : in 'abc': 'params' must be a named numeric vector.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal="mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))"))
-Error : in ‘abc’: ‘proposal’ must be a function.
+Error : in 'abc': 'proposal' must be a function.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=function(...)stop("yikes!")))
-Error : in ‘abc’: in proposal function: yikes!
+Error : in 'abc': in proposal function: yikes!
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=function(...)3))
-Error : in ‘abc’: ‘proposal’ must return a named numeric vector.
+Error : in 'abc': 'proposal' must return a named numeric vector.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7))
-Error : in ‘abc’: ‘proposal’ must be specified.
+Error : in 'abc': 'proposal' must be specified.
 > try(abc(ou2,Nabc=100,proposal=function(theta,...)theta,probes="mary",
 +   scale=scale.dat,epsilon=1.7))
-Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
+Error : in 'abc': 'probes' must be a function or a list of functions.
 > try(abc(ou2,Nabc=100,proposal="bob",probes="mary",epsilon=1.7))
-Error : in ‘abc’: ‘proposal’ must be a function.
+Error : in 'abc': 'proposal' must be a function.
 > try(abc(ou2,Nabc=100,probes=plist,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
-Error : in ‘abc’: ‘scale’ must be specified.
+Error : in 'abc': 'scale' must be specified.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
-Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified.
+Error : in 'abc': abc match criterion, 'epsilon', must be specified.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
 +   epsilon=1,rprocess=NULL))
-Error : in ‘abc’: ‘rprocess’, ‘rmeasure’ are needed basic components.
+Error : in 'abc': 'rprocess', 'rmeasure' are needed basic components.
 > 
 > try(abc(abc1,Nabc=100,epsilon=NULL,scale=scale.dat))
-Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified.
+Error : in 'abc': abc match criterion, 'epsilon', must be specified.
 > try(abc(ou2,params=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
-Error : in ‘abc’: ‘params’ must be a named numeric vector.
+Error : in 'abc': 'params' must be a named numeric vector.
 > try(abc(ou2,Nabc=100,probes="plist[[1]]",scale=scale.dat[1],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
-Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
+Error : in 'abc': 'probes' must be a function or a list of functions.
 > try(abc(ou2,Nabc=100,probes=function(x,y)x+y,scale=scale.dat[1],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
-Error : in ‘abc’: each probe must be a function of a single argument.
+Error : in 'abc': each probe must be a function of a single argument.
 > try(abc(abc1,dprior=function(log,...)stop("ouch!")))
-Error : in ‘abc’: in ‘dprior’: ouch!
+Error : in 'abc': in 'dprior': ouch!
 > try(abc(abc1,dprior=function(log,...)Inf))
-Error : in ‘abc’: inadmissible value of ‘dprior’ at starting parameters.
+Error : in 'abc': inadmissible value of 'dprior' at starting parameters.
 > try(abc(abc1,probes=function(x)stop("piff!")))
-Error : in ‘abc’: applying probes to data: piff!
+Error : in 'abc': applying probes to data: piff!
 > count <- 0
 > delayed.failure <- function (x) {count <<- count+1; if (count>2) stop("paff!") else 1}
 > try(abc(abc1,scale=1,probes=delayed.failure))
-Error : in ‘abc’: applying probes to simulations: paff!
+Error : in 'abc': applying probes to simulations: paff!
 > try(abc(abc1,proposal=function(...)stop("urp!")))
-Error : in ‘abc’: in proposal function: urp!
+Error : in 'abc': in proposal function: urp!
 > count <- 0
 > delayed.failure <- function (log,...) {count <<- count+1; if (count>5) stop("no sir!") else 1}
 > try(abc(abc1,dprior=delayed.failure))
-Error : in ‘abc’: in ‘dprior’: no sir!
+Error : in 'abc': in 'dprior': no sir!
 > count <- 0
 > delayed.failure <- function (theta,...) {count <<- count+1; if (count>5) stop("'fraid not!") else theta}
 > try(abc(abc1,proposal=delayed.failure))
-Error : in ‘abc’: in proposal function: 'fraid not!
+Error : in 'abc': in proposal function: 'fraid not!
 > 
 > coef(c(abc1,ou2)) -> theta
 > stopifnot(dim(theta)==c(10,2),
@@ -188,12 +188,12 @@ Error : in ‘abc’: in proposal function: 'fraid not!
 +     "sigma_1","sigma_2","sigma_3","tau","x1_0","x2_0"),],1,diff)==0,
 +   apply(theta[c("alpha_1","alpha_2"),],1,diff) != 0)
 > try(c(abc1,NULL))
-Error : ‘c’ is not defined for objects of mixed class.
+Error : 'c' is not defined for objects of mixed class.
 > try(c(c(abc1,abc2),ou2))
-Error : ‘c’ is not defined for objects of mixed class.
+Error : 'c' is not defined for objects of mixed class.
 > c(abc1)
 [[1]]
-<object of class ‘abcd_pomp’>
+<object of class 'abcd_pomp'>
 
 > alist <- c(c(abc1,abc2))
 > class(alist[2])
@@ -207,35 +207,35 @@ NULL
 > alist <- c(a=abc1,b=abc2)
 > alist["b"]
 $b
-<object of class ‘abcd_pomp’>
+<object of class 'abcd_pomp'>
 
 > alist["c"]
 [[1]]
 NULL
 
 > alist[["b"]]
-<object of class ‘abcd_pomp’>
+<object of class 'abcd_pomp'>
 > alist[["c"]]
 NULL
 > c(one=abc1,two=abc2,three=abc3)
 $one
-<object of class ‘abcd_pomp’>
+<object of class 'abcd_pomp'>
 
 $two
-<object of class ‘abcd_pomp’>
+<object of class 'abcd_pomp'>
 
 $three
-<object of class ‘abcd_pomp’>
+<object of class 'abcd_pomp'>
 
 > print(c(one=abc1,two=abc2,three=abc3))
 $one
-<object of class ‘abcd_pomp’>
+<object of class 'abcd_pomp'>
 
 $two
-<object of class ‘abcd_pomp’>
+<object of class 'abcd_pomp'>
 
 $three
-<object of class ‘abcd_pomp’>
+<object of class 'abcd_pomp'>
 
 > 
 > capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,

@@ -22,16 +22,16 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(dplyr)
 
-Attaching package: ‘dplyr’
+Attaching package: 'dplyr'
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from 'package:stats':
 
     filter, lag
 
-The following objects are masked from ‘package:base’:
+The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
@@ -52,15 +52,15 @@ The following objects are masked from ‘package:base’:
 > plot(x)
 > 
 > try(x <- sliceDesign(center=c(A=3,C=0),B=seq(0,10,by=1)))
-Error : in ‘sliceDesign’: variable ‘B’ does not appear in ‘center’
+Error : in 'sliceDesign': variable 'B' does not appear in 'center'
 > try(x <- sliceDesign(center=c(A=3),B=seq(0,10,by=1),C=c(1,2,3)))
-Error : in ‘sliceDesign’: variables ‘B’,‘C’ do not appear in ‘center’
+Error : in 'sliceDesign': variables 'B','C' do not appear in 'center'
 > try(x <- sliceDesign(center=c(3),B=seq(0,10,by=1),C=c(1,2,3)))
-Error : in ‘sliceDesign’: ‘center’ must be a named numeric vector
+Error : in 'sliceDesign': 'center' must be a named numeric vector
 > try(x <- sliceDesign(center=c(A="3"),B=seq(0,10,by=1),C=c(1,2,3)))
-Error : in ‘sliceDesign’: ‘center’ must be a named numeric vector
+Error : in 'sliceDesign': 'center' must be a named numeric vector
 > try(x <- sliceDesign(center=c(A=3,B=2),seq(1,3),A=seq(0,5)))
-Error : in ‘sliceDesign’: cannot slice along an unnamed parameter.
+Error : in 'sliceDesign': cannot slice along an unnamed parameter.
 > 
 > dev.off()
 null device 

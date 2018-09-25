@@ -22,25 +22,25 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > library(tidyr)
 
-Attaching package: ‘tidyr’
+Attaching package: 'tidyr'
 
-The following object is masked from ‘package:magrittr’:
+The following object is masked from 'package:magrittr':
 
     extract
 
 > library(dplyr)
 
-Attaching package: ‘dplyr’
+Attaching package: 'dplyr'
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from 'package:stats':
 
     filter, lag
 
-The following objects are masked from ‘package:base’:
+The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
@@ -91,7 +91,7 @@ The following objects are masked from ‘package:base’:
 > covmat(a1) -> v2
 > covmat(a1,thin=20) -> v3
 Warning message:
-in ‘covmat’: only 26 points are being used to estimate covariance matrix. 
+in 'covmat': only 26 points are being used to estimate covariance matrix. 
 > stopifnot(
 +   dim(v1)==dim(v2),
 +   dim(v1)==dim(v3),

@@ -22,7 +22,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > ou2() -> po
@@ -33,7 +33,7 @@ Warning message:
 > 
 > coef(po,"alpha_sd") <- 5
 Warning message:
-in ‘coef<-’: name ‘alpha_sd’ refers to no existing parameter; it is being concatenated. 
+in 'coef<-': name 'alpha_sd' refers to no existing parameter; it is being concatenated. 
 > 
 > set.seed(1835425749L)
 > 
@@ -70,17 +70,17 @@ in ‘coef<-’: name ‘alpha_sd’ refers to no existing parameter; it is bein
 +     c(-12.237, -10.848, -15.806, -10.847, -11.526))
 > 
 > try(dprior("ou2",params=theta))
-Error : ‘dprior’ is undefined for ‘object’ of class ‘character’.
+Error : 'dprior' is undefined for 'object' of class 'character'.
 > try(dprior(params=theta))
-Error : in ‘dprior’: ‘object’ is a required argument.
+Error : in 'dprior': 'object' is a required argument.
 > 
 > try(rprior("ou2",params=theta))
-Error : ‘rprior’ is undefined for ‘object’ of class ‘character’.
+Error : 'rprior' is undefined for 'object' of class 'character'.
 > try(rprior(params=theta))
-Error : in ‘rprior’: ‘object’ is a required argument.
+Error : in 'rprior': 'object' is a required argument.
 > 
 > try(po %>% pomp(rprior=function(...)c(1,3,3)) %>% rprior(params=theta))
-Error : in ‘rprior’: 'rprior' must return a named numeric vector.
+Error : in 'rprior': 'rprior' must return a named numeric vector.
 > po %>% rprior(params=parmat(theta,3)) -> p
 > stopifnot(
 +   dim(p)==c(11,15),

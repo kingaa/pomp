@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > gompertz() -> gompertz
@@ -59,47 +59,47 @@ $pvals
 > plot(sp4,plot.data=FALSE,quantile.styles=list(col="grey10",lty=1:5))
 > plot(sp4,plot.data=FALSE,quantile.styles=list(col="grey10",lty=1:3))
 Warning message:
-in ‘plot’: ‘quantile.styles’ contains an element with more than 1 entry but fewer entries than quantiles. 
+in 'plot': 'quantile.styles' contains an element with more than 1 entry but fewer entries than quantiles. 
 > try(plot(sp4,plot.data=FALSE,quantile.styles=c(col="grey10",lty=1:3)))
-Error : in ‘plot’: ‘quantile.styles’ must be a list.
+Error : in 'plot': 'quantile.styles' must be a list.
 > plot(sp4,plot.data=TRUE,data.styles=list(col="red",lty=1))
 > try(plot(sp4,plot.data=TRUE,data.styles=c(col="red",lty=1)))
-Error : in ‘plot’: ‘data.styles’ must be a list
+Error : in 'plot': 'data.styles' must be a list
 > 
 > try(spect())
-Error : in ‘spect’: ‘data’ is a required argument.
+Error : in 'spect': 'data' is a required argument.
 > try(spect("bob"))
-Error : ‘spect’ is undefined for ‘data’ of class ‘character’.
+Error : 'spect' is undefined for 'data' of class 'character'.
 > 
 > try(spect(sp,kernel.width=-3))
-Error : in ‘spect’: ‘kernel.width’ must be a positive integer.
+Error : in 'spect': 'kernel.width' must be a positive integer.
 > try(spect(sp,kernel.width=NA))
-Error : in ‘spect’: ‘kernel.width’ must be a positive integer.
+Error : in 'spect': 'kernel.width' must be a positive integer.
 > try(spect(sp,kernel.width=NULL))
-Error : in ‘spect’: ‘kernel.width’ must be a positive integer.
+Error : in 'spect': 'kernel.width' must be a positive integer.
 > 
 > try(spect(sp,nsim=-100))
-Error : in ‘spect’: ‘nsim’ must be a positive integer.
+Error : in 'spect': 'nsim' must be a positive integer.
 > try(spect(sp,nsim=Inf))
-Error : in ‘spect’: ‘nsim’ must be a positive integer.
+Error : in 'spect': 'nsim' must be a positive integer.
 > try(spect(sp,nsim=NULL))
-Error : in ‘spect’: ‘nsim’ must be a positive integer.
+Error : in 'spect': 'nsim' must be a positive integer.
 > 
 > sp4@data[17] <- NA
 > try(spect(sp4))
-Error : in ‘spect’: missing or infinite values in the data.
+Error : in 'spect': missing or infinite values in the data.
 > 
 > try(spect(sp3,rmeasure=function(t,X,...){
 +   if (t==13) c(Y=NA) else c(Y=X)
 + }))
-Error : in ‘spect’: missing or infinite values in simulated data.
+Error : in 'spect': missing or infinite values in simulated data.
 > 
 > time(sp3) <- c(0:7,10:40)
 > try(spect(sp3))
-Error : in ‘spect’: missing or infinite values in the data.
+Error : in 'spect': missing or infinite values in the data.
 > 
 > try(spect(sp2,rmeasure=function(...) stop("yikes!")))
-Error : in ‘spect’: in simulation: yikes!
+Error : in 'spect': in simulation: yikes!
 > 
 > simulate(times=1:100,t0=0,
 +   rprocess=euler(Csnippet("
@@ -119,11 +119,11 @@ Error : in ‘spect’: in simulation: yikes!
 > plot(spect(bob,kernel.width=3,nsim=500),
 +   data.styles=list(lwd=c(2,3),lty=2,col='red'))
 Warning message:
-in ‘plot’: ‘data.styles’ contains an element with more than 1 entry but fewer entries than observed variables. 
+in 'plot': 'data.styles' contains an element with more than 1 entry but fewer entries than observed variables. 
 > 
 > try({bob %>% simulate(times=c(1:5,8:10)) %>%
 +     spect(kernel.width=3,nsim=10)})
-Error : in ‘spect’: ‘spect’ assumes evenly spaced times.
+Error : in 'spect': 'spect' assumes evenly spaced times.
 > 
 > count <- 0
 > bad.transform <- function (y) {
@@ -131,7 +131,7 @@ Error : in ‘spect’: ‘spect’ assumes evenly spaced times.
 +   if (count>3) rep(NA_real_,length(y)) else y
 + }
 > try(bob %>% spect(transform.data=bad.transform,kernel.width=3,nsim=100))
-Error : in ‘spect’: in ‘spec.pgram’: missing values in object
+Error : in 'spect': in 'spec.pgram': missing values in object
 > 
 > dev.off()
 null device 

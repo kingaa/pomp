@@ -23,19 +23,19 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > ou2() -> ou2
 > 
 > try(traj.match.objfun())
-Error : in ‘traj.match.objfun’: ‘data’ is a required argument.
+Error : in 'traj.match.objfun': 'data' is a required argument.
 > try(traj.match.objfun("bob"))
-Error : ‘traj.match.objfun’ is undefined for ‘data’ of class ‘character’.
+Error : 'traj.match.objfun' is undefined for 'data' of class 'character'.
 > try(ou2 %>% as.data.frame() %>% traj.match.objfun())
-Error : in ‘traj.match.objfun’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+Error : in 'traj.match.objfun': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > try(ou2 %>% as.data.frame() %>% traj.match.objfun(times="time",t0=0))
-Error : in ‘traj.match.objfun’: ‘skeleton’, ‘dmeasure’ are needed basic components.
+Error : in 'traj.match.objfun': 'skeleton', 'dmeasure' are needed basic components.
 > 
 > ou2 %>%
 +   as.data.frame() %>%
@@ -61,10 +61,10 @@ Error : in ‘traj.match.objfun’: ‘skeleton’, ‘dmeasure’ are needed ba
 [1] 4826
 > 
 > try(traj.match.objfun(f1,est="harry"))
-Error : in ‘traj.match.objfun’: parameter ‘harry’ not found in ‘params’
+Error : in 'traj.match.objfun': parameter 'harry' not found in 'params'
 > 
 > f1 %>% as("pomp")
-<object of class ‘pomp’>
+<object of class 'pomp'>
 > f1 %>% as("data.frame") %>% names()
 [1] "time" "y1"   "y2"   "x1"   "x2"  
 > 

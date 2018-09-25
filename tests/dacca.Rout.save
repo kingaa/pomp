@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > 
 > dacca() -> po
 > 
@@ -60,7 +60,7 @@ beta_trend   logbeta1   logbeta2   logbeta3   logbeta4   logbeta5   logbeta6
 > plot(pf)
 > 
 > try(dacca(logbeta=c(1,2,3),logomega=c(10,20)))
-Error : in ‘dacca’: ‘logbeta’ and ‘logomega’ should be of equal length.
+Error : in 'dacca': 'logbeta' and 'logomega' should be of equal length.
 > 
 > dev.off()
 null device 

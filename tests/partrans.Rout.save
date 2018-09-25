@@ -20,7 +20,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > 
 > gompertz() -> gompertz
 > set.seed(995868671L)
@@ -35,41 +35,41 @@ For information on upgrading your pomp version < 2 code, see the
 > 
 > theta3 <- theta2[-1]
 > try(partrans(params=theta1))
-Error : in ‘partrans’: ‘object’ is a required argument.
+Error : in 'partrans': 'object' is a required argument.
 > try(partrans("gompertz",params=theta1))
-Error : ‘partrans’ is undefined for ‘object’ of class ‘character’.
+Error : 'partrans' is undefined for 'object' of class 'character'.
 > try(partrans(gompertz,theta3))
-Error : in ‘partrans’: variable 'K' not found among the parameters.
+Error : in 'partrans': variable 'K' not found among the parameters.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("K = exp(T_K);")),
 +   paramnames="K"),theta3))
-Error : in ‘parameter_trans’: if one of ‘toEst’, ‘fromEst’ is supplied, then so must the other be.
+Error : in 'parameter_trans': if one of 'toEst', 'fromEst' is supplied, then so must the other be.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("K = exp(T_K);"),
 +   to=Csnippet("T_K = log(K);")),paramnames="K"),theta3))
-Error : in ‘partrans’: variable 'K' not found among the parameters.
+Error : in 'partrans': variable 'K' not found among the parameters.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(log="K"),paramnames="K"),
 +   theta3))
-Error : in ‘partrans’: variable 'K' not found among the parameters.
+Error : in 'partrans': variable 'K' not found among the parameters.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=function(params,...)unname(params),
 +   to=function(params,...)unname(params))),theta3))
-Error : in ‘partrans’: argument "params" is missing, with no default
+Error : in 'partrans': argument "params" is missing, with no default
 > 
 > pp <- parmat(coef(gompertz),100)
 > pp["r",] <- runif(100,0,100)
 > stopifnot(all.equal(partrans(gompertz,partrans(gompertz,pp,dir="to")),pp))
 > try(partrans(pomp(gompertz,partrans=parameter_trans(
 +   from=function(...)unname(list(...)),to=function(...)unname(list(...)))),pp))
-Error : in ‘partrans’: user transformation functions must return named numeric vectors.
+Error : in 'partrans': user transformation functions must return named numeric vectors.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(
 +   from=function(...)unname(list(...)),to=NULL)),pp))
-Error : ‘parameter_trans’ not defined for arguments of class ‘NULL’, ‘function’.
+Error : 'parameter_trans' not defined for arguments of class 'NULL', 'function'.
 > 
 > parameter_trans(toEst=NULL,fromEst=NULL)
   - to estimation scale: <identity>
   - from estimation scale: <identity>
 > try(parameter_trans(toEst=NULL))
-Error : in ‘parameter_trans’: if one of ‘toEst’, ‘fromEst’ is supplied, then so must the other be.
+Error : in 'parameter_trans': if one of 'toEst', 'fromEst' is supplied, then so must the other be.
 > try(parameter_trans(fromEst=NULL))
-Error : in ‘parameter_trans’: if one of ‘toEst’, ‘fromEst’ is supplied, then so must the other be.
+Error : in 'parameter_trans': if one of 'toEst', 'fromEst' is supplied, then so must the other be.
 > 
 > parameter_trans(logit=c("a","b","c"))
   - to estimation scale: An object of class "Csnippet"

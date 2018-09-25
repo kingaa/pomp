@@ -21,16 +21,16 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(dplyr)
 
-Attaching package: ‘dplyr’
+Attaching package: 'dplyr'
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from 'package:stats':
 
     filter, lag
 
-The following objects are masked from ‘package:base’:
+The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
@@ -47,9 +47,9 @@ The following objects are masked from ‘package:base’:
 > plot(x)
 > 
 > try(profileDesign(1:10,q=3:5,nprof=10))
-Error : in ‘profileDesign’: you cannot profile over an unnamed variable!
+Error : in 'profileDesign': you cannot profile over an unnamed variable!
 > try(profileDesign(p=1:10,q=3:5,lower=c(a=0,c=0),upper=c(b=5,a=1),nprof=20))
-Error : in ‘profileDesign’: names of ‘lower’ and ‘upper’ must match!
+Error : in 'profileDesign': names of 'lower' and 'upper' must match!
 > 
 > dev.off()
 null device 

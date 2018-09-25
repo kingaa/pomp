@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > 
 > gompertz() -> gompertz
@@ -51,7 +51,7 @@ For information on upgrading your pomp version < 2 code, see the
 |1  | 0.978| 0.127|  0.757|  0.126|  0.537|   0.814|   0.633|   0.496| 0.800| 1.12|sim  |
 |2  | 1.014| 0.105|  0.668|  0.074|  3.124|   0.640|   0.455|   0.279| 0.885| 1.21|sim  |
 Warning message:
-‘values’ is deprecated and will be removed in a forthcoming release.  Please use ‘as.data.frame’ instead. 
+'values' is deprecated and will be removed in a forthcoming release.  Please use 'as.data.frame' instead. 
 > pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
 
 
@@ -81,37 +81,37 @@ $synth.loglik
 
 > 
 > try(probe())
-Error : in ‘probe’: ‘data’ is a required argument.
+Error : in 'probe': 'data' is a required argument.
 > try(probe("po"))
-Error : ‘probe’ is undefined for ‘data’ of class ‘character’.
+Error : 'probe' is undefined for 'data' of class 'character'.
 > try(probe(NULL))
-Error : ‘probe’ is undefined for ‘data’ of class ‘NULL’.
+Error : 'probe' is undefined for 'data' of class 'NULL'.
 > try(probe(po,nsim=10))
-Error : in ‘probe’: ‘probes’ must be furnished.
+Error : in 'probe': 'probes' must be furnished.
 > try(probe(po,probes=plist[1:3]))
-Error : in ‘probe’: ‘nsim’ must be specified.
+Error : in 'probe': 'nsim' must be specified.
 > try(probe(po,probes=plist[1:3],nsim=-100))
-Error : in ‘probe’: number of simulations, ‘nsim’, must be a single positive integer.
+Error : in 'probe': number of simulations, 'nsim', must be a single positive integer.
 > try(probe(po,probes=plist[1:3],nsim=c(10,20)))
-Error : in ‘probe’: number of simulations, ‘nsim’, must be a single positive integer.
+Error : in 'probe': number of simulations, 'nsim', must be a single positive integer.
 > try(probe(po,probes=plist[1:3],nsim=NA))
-Error : in ‘probe’: number of simulations, ‘nsim’, must be a single positive integer.
+Error : in 'probe': number of simulations, 'nsim', must be a single positive integer.
 > try(probe(po,nsim=100,probes=function(x)rep(1,times=ceiling(runif(1,max=10)))))
-Error : in ‘probe’: applying probes to simulated data: probes return different number of values on different datasets.
+Error : in 'probe': applying probes to simulated data: probes return different number of values on different datasets.
 > 
 > try(probe(33L))
-Error : ‘probe’ is undefined for ‘data’ of class ‘integer’.
+Error : 'probe' is undefined for 'data' of class 'integer'.
 > probe(pb)
-<object of class ‘probed_pomp’>
+<object of class 'probed_pomp'>
 > plot(probe(pb,probes=plist[[1]]))
 > try(probe(pb,probes="okay"))
-Error : in ‘probe’: ‘probes’ must be a function or a list of functions.
+Error : in 'probe': 'probes' must be a function or a list of functions.
 > try(probe(pb,probes=function(x,y)x+y))
-Error : in ‘probe’: each probe must be a function of a single argument.
+Error : in 'probe': each probe must be a function of a single argument.
 > try(probe(pb,probes=function(x)stop("hold on now!")))
-Error : in ‘probe’: applying probes to actual data: hold on now!
+Error : in 'probe': applying probes to actual data: hold on now!
 > try(probe(pb,probes=function(x)"bob"))
-Error : in ‘probe’: applying probes to actual data: probe 1 returns a non-numeric result
+Error : in 'probe': applying probes to actual data: probe 1 returns a non-numeric result
 > try({
 +   count <- 0
 +   delayed.error <- function (y) {
@@ -121,7 +121,7 @@ Error : in ‘probe’: applying probes to actual data: probe 1 returns a non-nu
 +   }
 +   probe(pb,probes=delayed.error)
 + })
-Error : in ‘probe’: applying probes to simulated data: whoa nelly!
+Error : in 'probe': applying probes to simulated data: whoa nelly!
 > try({
 +   count <- 0
 +   delayed.badval <- function (y) {
@@ -130,7 +130,7 @@ Error : in ‘probe’: applying probes to simulated data: whoa nelly!
 +   }
 +   probe(pb,probes=delayed.badval)
 + })
-Error : in ‘probe’: applying probes to simulated data: probe 1 returns a non-numeric result.
+Error : in 'probe': applying probes to simulated data: probe 1 returns a non-numeric result.
 > try({
 +   count <- 0
 +   delayed.badval <- function (y) {
@@ -139,23 +139,23 @@ Error : in ‘probe’: applying probes to simulated data: probe 1 returns a non
 +   }
 +   probe(pb,probes=delayed.badval)
 + })
-Error : in ‘probe’: applying probes to simulated data: variable-sized results returned by probe 1.
+Error : in 'probe': applying probes to simulated data: variable-sized results returned by probe 1.
 > 
 > try(probe(pb,nsim=10))
-Error : in ‘probe’: ‘nsim’ (=10), should be (much) larger than the number of probes (=10).
+Error : in 'probe': 'nsim' (=10), should be (much) larger than the number of probes (=10).
 > 
 > probe(pb,params=as.list(coef(pb)))
-<object of class ‘probed_pomp’>
+<object of class 'probed_pomp'>
 > try(probe(pb,params=NULL))
-Error : in ‘probe’: applying probes to simulated data: variable 'X' not found among the state variables.
+Error : in 'probe': applying probes to simulated data: variable 'X' not found among the state variables.
 In addition: Warning message:
 in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(probe(pb,params="I think so"))
-Error : in ‘probe’: ‘params’ must be a named numeric vector.
+Error : in 'probe': 'params' must be a named numeric vector.
 In addition: Warning message:
 In setNames(as.double(params), names(params)) : NAs introduced by coercion
 > try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
-Error : in ‘probe’: applying probes to simulated data: variable 'X' not found among the state variables.
+Error : in 'probe': applying probes to simulated data: variable 'X' not found among the state variables.
 In addition: Warning message:
 in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > 
@@ -163,7 +163,7 @@ in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rini
 [1] NaN
 > 
 > try(data.frame(t=1:10,a=1:10) %>% probe())
-Error : in ‘probe’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+Error : in 'probe': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
 > data.frame(t=1:10,a=1:10) %>%
 +   probe(
@@ -183,7 +183,7 @@ Error : in ‘probe’: ‘times’ should either be a numeric vector of observa
 +       h=function(y)range(y)
 +     )
 +   )
-<object of class ‘probed_pomp’>
+<object of class 'probed_pomp'>
 > 
 > ou2() -> ou2
 > ou2 %>% probe(nsim=100,probes=probe.ccf(c("y1","y2"),lags=c(-10,0,1))) %>% plot()

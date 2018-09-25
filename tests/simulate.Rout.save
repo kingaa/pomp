@@ -23,17 +23,17 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > library(dplyr)
 
-Attaching package: ‘dplyr’
+Attaching package: 'dplyr'
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from 'package:stats':
 
     filter, lag
 
-The following objects are masked from ‘package:base’:
+The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
@@ -47,37 +47,37 @@ The following objects are masked from ‘package:base’:
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+Error : in 'simulate': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > try(simulate(times=1:10,
 +   rprocess=onestep(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘t0’ is a required argument.
+Error : in 'simulate': 't0' is a required argument.
 > try(simulate(times=c(1:5,NA,7:10),t0=0,
 +   rprocess=onestep(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘times’ must be a non-decreasing sequence of numbers.
+Error : in 'simulate': 'times' must be a non-decreasing sequence of numbers.
 > try(simulate(times=NULL,t0=0,
 +   rprocess=onestep(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘times’ should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+Error : in 'simulate': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > try(simulate(times=1:10,t0=NA,
 +   rprocess=onestep(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘t0’ must be a single number not greater than ‘times[1]’.
+Error : in 'simulate': 't0' must be a single number not greater than 'times[1]'.
 > try(simulate(times=1:10,t0=NULL,
 +   rprocess=onestep(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘t0’ must be a single number not greater than ‘times[1]’.
+Error : in 'simulate': 't0' must be a single number not greater than 'times[1]'.
 > 
 > simulate(times=1:100,t0=0,seed=450738202,
 +   rprocess=onestep(Csnippet("z = runif(z-0.5,z+0.5);")),
@@ -89,7 +89,7 @@ Error : in ‘simulate’: ‘t0’ must be a single number not greater than ‘
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘simulate’: ‘rprocess’ is undefined.
+Error : in 'simulate': 'rprocess' is undefined.
 > 
 > simulate(times=1:100,t0=0,
 +   rprocess=onestep(function(z,...) {
@@ -98,7 +98,7 @@ Error : in ‘simulate’: ‘rprocess’ is undefined.
 +   rmeasure=function(z,...) {
 +     c(w = rnorm(1,z,1))
 +   },params=c(z.0=0))
-<object of class ‘pomp’>
+<object of class 'pomp'>
 > 
 > stopifnot(
 +   {
@@ -128,14 +128,14 @@ Warning message:
 > try(simulate(times=1:100,t0=0,
 +   rprocess=euler(function(w,z,...,delta.t) c("w"=w,z),delta.t=0.1),
 +   params=c(w_0=1,z_0=3)))
-Error : in ‘simulate’: 'rprocess' must return a named numeric vector.
+Error : in 'simulate': 'rprocess' must return a named numeric vector.
 > 
 > try(simulate(times=1:100,t0=0,
 +   rprocess=onestep(Csnippet("z = runif(z-0.5,z+0.5);")),
 +   rmeasure=function(t,z,...) c(w=rnorm(n=t,z,1)),
 +   rinit=Csnippet("z = 2;"),
 +   statenames="z"))
-Error : in ‘simulate’: 'rmeasure' returns variable-length results.
+Error : in 'simulate': 'rmeasure' returns variable-length results.
 > 
 > simulate(times=1:100,t0=0,seed=993523767,
 +   rprocess=onestep(Csnippet("z = runif(z-0.5,z+0.5);")),
@@ -181,13 +181,13 @@ Error : in ‘simulate’: 'rmeasure' returns variable-length results.
 [1] "y"
 > 
 > try(simulate(ou2,nsim=-3))
-Error : in ‘simulate’: ‘nsim’ must be a positive integer.
+Error : in 'simulate': 'nsim' must be a positive integer.
 > try(simulate(ou2,nsim=NA))
-Error : in ‘simulate’: ‘nsim’ must be a positive integer.
+Error : in 'simulate': 'nsim' must be a positive integer.
 > try(simulate(ou2,nsim=NULL))
-Error : in ‘simulate’: ‘nsim’ must be a positive integer.
+Error : in 'simulate': 'nsim' must be a positive integer.
 > try(simulate(ou2,nsim="bob"))
-Error : in ‘simulate’: ‘nsim’ must be a positive integer.
+Error : in 'simulate': 'nsim' must be a positive integer.
 > 
 > ou2 %>% window(end=3) -> po
 > simulate(po,format="data.frame",seed=49569969,nsim=3) %>%
@@ -223,13 +223,13 @@ Error : in ‘simulate’: ‘nsim’ must be a positive integer.
 [1] "y1" "y2"
 > simulate(po,nsim=3) %>% show()
 [[1]]
-<object of class ‘pomp’>
+<object of class 'pomp'>
 
 [[2]]
-<object of class ‘pomp’>
+<object of class 'pomp'>
 
 [[3]]
-<object of class ‘pomp’>
+<object of class 'pomp'>
 
 > 
 > data.frame(u=1:10,v=runif(10)) %>%
@@ -246,7 +246,7 @@ Error : in ‘simulate’: ‘nsim’ must be a positive integer.
 > rw2() -> rw2
 > simulate(rw2,accumvars="x2") %>% plot()
 > try(simulate(rw2,params=c(a="bob",b="nancy")))
-Error : in ‘simulate’: ‘params’ must be named and numeric.
+Error : in 'simulate': 'params' must be named and numeric.
 > 
 > simulate(rw2,times=c(1:5,5,5),format="d",seed=49569969) -> x
 > stopifnot(with(x,c(x1[6:7]==x1[5],x2[6:7]==x2[5],time[6:7]==time[5],

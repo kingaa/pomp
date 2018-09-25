@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library(pomp2)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
-‘pomp version 2 upgrade guide’ at https://kingaa.github.io/pomp/.
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(magrittr)
 > library(ggplot2)
 > library(reshape2)
@@ -49,9 +49,9 @@ For information on upgrading your pomp version < 2 code, see the
 +   theme_classic()
 > 
 > try(skeleton(x=x,times=time(ricker),params=p))
-Error : in ‘skeleton’: ‘object’ is a required argument.
+Error : in 'skeleton': 'object' is a required argument.
 > try(skeleton("ricker",x=x,times=time(ricker),params=p))
-Error : ‘skeleton’ is undefined for ‘object’ of class ‘character’.
+Error : 'skeleton' is undefined for 'object' of class 'character'.
 > 
 > sir() -> sir
 > p <- parmat(coef(sir),nrep=3)
@@ -74,15 +74,15 @@ Removed 9 rows containing missing values (geom_point).
 > 
 > try(ricker %>% pomp(skeleton=map(function(...)c(5))) %>%
 +     skeleton(x=x,times=time(ricker),params=coef(ricker)))
-Error : in ‘skeleton’: 'skeleton' returns a vector of 1 state variables but 2 are expected.
+Error : in 'skeleton': 'skeleton' returns a vector of 1 state variables but 2 are expected.
 > try(ricker %>% pomp(skeleton=map(function(...)c(5,3))) %>%
 +     skeleton(x=x,times=time(ricker),params=coef(ricker)))
-Error : in ‘skeleton’: 'skeleton' must return a named numeric vector.
+Error : in 'skeleton': 'skeleton' must return a named numeric vector.
 > ricker %>% skeleton(x=x,times=time(ricker),params=parmat(coef(ricker),2)) -> xx
 > try(ricker %>% skeleton(x=xx,times=time(ricker),params=parmat(coef(ricker),3)))
-Error : in ‘skeleton’: 2nd dimensions of 'x' and 'params' are incompatible
+Error : in 'skeleton': 2nd dimensions of 'x' and 'params' are incompatible
 > try(ricker %>% skeleton(x=xx,times=time(ricker)[1:5],params=parmat(coef(ricker),2)))
-Error : in ‘skeleton’: length of 't' and 3rd dimension of 'x' do not agree.
+Error : in 'skeleton': length of 't' and 3rd dimension of 'x' do not agree.
 > 
 > stopifnot(
 +   ricker %>% pomp(skeleton=NULL) %>%
@@ -93,15 +93,15 @@ Warning message:
 'skeleton' unspecified: NAs generated. 
 > 
 > try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=-5)))
-Error : in ‘map’: ‘delta.t’ must be a positive number.
+Error : in 'map': 'delta.t' must be a positive number.
 > try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=NA)))
-Error : in ‘map’: ‘delta.t’ must be a positive number.
+Error : in 'map': 'delta.t' must be a positive number.
 > try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=c(1,2,3))))
-Error : in ‘map’: ‘delta.t’ must be a positive number.
+Error : in 'map': 'delta.t' must be a positive number.
 > try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=NULL)))
-Error : in ‘map’: ‘delta.t’ must be a positive number.
+Error : in 'map': 'delta.t' must be a positive number.
 > try(ricker %>% pomp(skeleton=map(function(...)1,delta.t=Inf)))
-Error : in ‘map’: ‘delta.t’ must be a positive number.
+Error : in 'map': 'delta.t' must be a positive number.
 > 
 > dev.off()
 null device 
