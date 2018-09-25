@@ -1,4 +1,4 @@
-##' bsflu
+##' Influenza outbreak in a boarding school
 ##'
 ##' An outbreak of influenza in an all-boys boarding school.
 ##'

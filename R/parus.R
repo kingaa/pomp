@@ -1,4 +1,4 @@
-##' parus
+##' Parus major population dynamics
 ##'
 ##' Size of a population of great tits (\emph{Parus major}) from Wytham Wood, near Oxford.
 ##'

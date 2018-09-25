@@ -2,7 +2,7 @@
 % Please edit documentation in R/bsflu.R
 \name{bsflu}
 \alias{bsflu}
-\title{bsflu}
+\title{Influenza outbreak in a boarding school}
 \description{
 An outbreak of influenza in an all-boys boarding school.
 }

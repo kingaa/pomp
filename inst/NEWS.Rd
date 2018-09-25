@@ -97,6 +97,12 @@
     \item The old and deprecated \code{mif} and \code{bsmc} methods have been removed.
   }
 }
+\section{Changes in \pkg{pomp} version 1.18.8}{
+  \itemize{
+    \item The \code{obs} and \code{states} arguments of \code{simulate} are deprecated and will be removed in a forthcoming release.
+    \item The C-level interface for \code{apply_probe_sims} has changed: the new argument \code{rho} must be the \dQuote{package:pomp} environment.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.18.7}{
   \itemize{
     \item A bug in \code{pfilter} (and hence \code{pmcmc}) when \code{filter.traj=TRUE} was discovered and fixed.

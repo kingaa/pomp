@@ -51,7 +51,7 @@ inst/NEWS: inst/NEWS.Rd
 www/NEWS.html: inst/NEWS.Rd
 	$(RCMD) Rdconv -t html inst/NEWS.Rd -o www/NEWS.html
 
-help: $(SOURCE)
+doxy: $(SOURCE)
 	$(REXE) -e "devtools::document(roclets=c('rd','collate','namespace'))"
 
 dist: NEWS $(PKGVERS).tar.gz
@@ -145,11 +145,11 @@ inst/doc/*.html: install
 
 %.html: %.Rmd
 	PATH=/usr/lib/rstudio/bin/pandoc:$$PATH \
-	Rscript --vanilla -e "rmarkdown::render(\"$*.Rmd\",output_format=\"html_document\")"
+	Rscript --vanilla -e "rmarkdown::render(\"$*.Rmd\")"
 
 %.html: %.md
 	PATH=/usr/lib/rstudio/bin/pandoc:$$PATH \
-	Rscript --vanilla -e "rmarkdown::render(\"$*.md\",output_format=\"html_document\")"
+	Rscript --vanilla -e "rmarkdown::render(\"$*.md\")"
 
 %.R: %.Rmd
 	Rscript --vanilla -e "knitr::purl(\"$*.Rmd\",output=\"$*.R\",documentation=2)"

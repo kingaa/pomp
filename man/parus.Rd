@@ -3,7 +3,7 @@
 \docType{data}
 \name{parus}
 \alias{parus}
-\title{parus}
+\title{Parus major population dynamics}
 \description{
 Size of a population of great tits (\emph{Parus major}) from Wytham Wood, near Oxford.
 }
