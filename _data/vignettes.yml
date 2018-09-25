@@ -6,6 +6,9 @@
   html: vignettes/getting_started.html
   R: vignettes/getting_started.R
 
+- title: <strong>pomp</strong> version 2 upgrade guide
+  html: vignettes/upgrade_guide.html
+
 - title: "Coding POMP models: R vs C snippets"
   html: vignettes/R_v_C.html
   R: vignettes/R_v_C.R

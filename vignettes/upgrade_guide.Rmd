@@ -2,14 +2,13 @@
 title: '**pomp** version 2 upgrade guide'
 author: "Aaron A. King"
 date: "`r format(Sys.Date(),'%e %B %Y')`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 2
 params:
   prefix: "upgrade_guide"
   min.pomp.version: "2.0.3"
-vignette: >
-  %\VignetteIndexEntry{pomp version 2 upgrade guide}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r precheck,include=FALSE}
@@ -42,23 +41,30 @@ opts_chunk$set(
   dpi=100,
   dev='png',
   dev.args=list(bg='transparent')
-  )
+)
 ```
 
 --------------------------------------------------------
 
+## Overview
+
 In **pomp** version 2, a number of backward incompatible changes have been made.
-These changes are intended to increase the usability of the package, by making the interfaces more uniform, by increasing code stability, reducing the number of special cases, and removing many of the idiosyncrasies that were present in earlier versions.
-The goal was to keep backward incompatible changes to a minimum.
+These have been designed to increase the usability of the package 
+by making the interfaces more uniform, 
+by increasing code stability, 
+reducing the number of special cases, 
+and removing many of the idiosyncrasies that were present in earlier versions.
+The goal has been to keep backward-incompatible changes to a minimum.
 This guide is intended to explain the new structure and point out the changes that are needed to make existing codes that use **pomp** work with the new version.
 
 The main novelty of **pomp** version 2 is that one will rarely, if ever, need to interact directly with the low-level `pomp` constructor.
 Instead, one can supply new or modify existing model components at (almost) any stage in a chain of **pomp** computations.
-In particular, there are now data-frame methods for all of the **pomp** inference algorithms, as well as for `simulate`, `pfilter`, `probe`, and `spect`.
-One can pass a data frame to these methods, along with the requisite model components, and achieve the same effect as one would by first constructing a \sQuote{pomp} object and then performing the operation.
+In particular, there are now data-frame methods for all of the **pomp** inference algorithms, as well as for the so-called *elementary POMP algorithms*: 
+`simulate`, `pfilter`, `probe`, and `spect`.
+One can pass data directly to these methods, along with the requisite model components, and achieve the same effect as one would by first constructing a \sQuote{pomp} object and then performing the operation.
 
 **pomp** version 2 represents a thorough reworking of almost all the package codes.
-A consequence is that these codes have been streamlined, with no cost in performance or flexibility.
+A consequence is that these codes have been streamlined, with no cost in performance and increased flexibility.
 The following table shows the number of lines in the latest pre-2 **pomp** compared to the current **pomp** version 2.
 
 |      |  pomp1| pomp2|  diff|   frac|
@@ -68,6 +74,18 @@ The following table shows the number of lines in the latest pre-2 **pomp** compa
 |src   |  19615| 19732|   117|  0.006|
 |tests |   4846|  3585| -1261| -0.260|
 |total |  40672| 36256| -4416| -0.109|
+
+## Timetable for rollout of **pomp** version 2
+
+To minimize inconvenience in the face of backward-incompatible changes, version 2 will be made available initially in source and binary formats as **pomp2** via the [https://kingaa.github.io/] package repository.
+Do
+```
+install.packages("pomp2",repos="https://kingaa.github.io")
+```
+to install it.
+This is intended to allow users to have both **pomp** (version <2) and **pomp2** installed simultaneously during workflow migration.
+It is anticipated that in early 2019, **pomp2** will be renamed **pomp** and uploaded to CRAN as version 2.1.
+From that point forward, there will be no support for older versions of **pomp**.
 
 ## Terminology
 
@@ -81,34 +99,38 @@ There are nine of these:
     - `rprior` and `dprior`: simulator and density evaluation procedure, respectively, for the prior distribution.
     - `skeleton`: evaluation of the deterministic skeleton.
     - `partrans`: parameter transformations.
-- *Workhorses*: **R** functions that cause the basic model component procedures to be executed.
-  These are **R** functions provided by the package.
-  Each has a name that matches that of the corresponding basic model component.
+The term *basic model component* is meant to refer to the procedure itself, as distinct from the execution of the procedure.
+The user specifies the procedure (in one of several forms);
+the package decides when and where to execute the procedure.
+
+- *Workhorses*: **R** functions, built into the package, that cause the basic model component procedures to be executed.
+  Each workhorse has a name that matches that of the corresponding basic model component.
   In addition, there is the `trajectory` workhorse, which iterates or integrates the deterministic skeleton (according to whether it is a map or a vectorfield, respectively) to obtain state trajectories. 
-- *Elementary POMP algorithms*: basic algorithms that interrogate the model/data confrontation.
+
+- *Elementary POMP algorithms*: 
+  algorithms that interrogate the model/data confrontation without attempting to estimate parameters.
   There are currently four of these:
     - `simulate` performs simulations of the POMP model, i.e., it samples from the joint distribution of latent states and observables.
-    - `pfilter` runs a simple sequential Monte Carlo (particle filter) algorithm to compute the likelihood and estimate the prediction and filtering distributions.
-    - `probe` applies one or more uni- or multi-variate summary statistics to both actual and simulated data.
-    - `spect` computes the power spectral density for the actual and simulated data.
+    - `pfilter` runs a sequential Monte Carlo (particle filter) algorithm to compute the likelihood and (optionally) estimate the prediction and filtering distributions of the latent state process.
+    - `probe` computes one or more uni- or multi-variate summary statistics on both actual and simulated data.
+    - `spect` estimates the power spectral density functions for the actual and simulated data.
+
 - *POMP estimation algorithms*: procedures that build on the elementary algorithms and are used for estimation of parameters and other inferential tasks.
-  There are currently ten of these:
-    - `abc`
-    - `bsmc2`
-    - `pmcmc`
-    - `mif2`
-    - `enkf`
-    - `eakf`
-    - `traj.match.objfun`
-    - `spect.match.objfun`
-    - `probe.match.objfun`
-    - `nlf.objfun`
-- *Objective function methods*: among the estimation algorithms, four are methods that construct objective functions that can be optimized using general-purpose numerical optimization algorithms such as `optim`, `subplex`, or the optimizers in the **nloptr** package.
-  These include:
-    - `traj.match.objfun`
-    - `spect.match.objfun`
-    - `probe.match.objfun`
-    - `nlf.objfun`
+There are currently ten of these:
+    - `abc`: approximate Bayesian computation
+    - `bsmc2`: Liu-West algorithm for Bayesian SMC
+    - `pmcmc`: a particle MCMC algorithm
+    - `mif2`: iterated filtering (IF2)
+    - `enkf`: ensemble Kalman filter
+    - `eakf`: ensemble adjusted Kalman filter
+    - `traj.match.objfun`: trajectory matching
+    - `spect.match.objfun`: power spectrum matching
+    - `probe.match.objfun`: probe matching
+    - `nlf.objfun`: nonlinear forecasting
+
+- *Objective function methods*: 
+  among the estimation algorithms just listed, four are methods that construct stateful objective functions that can be optimized using general-purpose numerical optimization algorithms such as `optim`, `subplex`, or the optimizers in the **nloptr** package.
+  These have certain new features that will be described below.
 
 ## Changes in the way models are specified
 
@@ -118,24 +140,24 @@ The manner in which one writes **R** functions to specify basic model components
 Before, one wrote functions that took specific arguments such as `x`, `params`, and `covars`.
 Now, one writes such functions with any or all state variables, observables, covariates, and/or time as arguments.
 Thus for example, in versions <2, one might have specified a measurement model density evaluator ('dmeasure') so:
-```
-  ...,
-  dmeasure = function (y, x, t, params, covars, ..., log) {
-	dnbinom(x=y["count"],mu=x["s"],size=params["theta"],log=log)
-  },
-  ...
+```{r eval=FALSE}
+...,
+dmeasure = function (y, x, t, params, covars, ..., log) {
+  dnbinom(x=y["count"],mu=x["s"],size=params["theta"],log=log)
+},
+...
 ```
 Here, the state variable "s", passed via the argument `x` is the expected value of the observable "count", which is assumed to be negative-binomially distributed with size parameter "theta".
 The observables are passed via the vector `y` and the parameters via the vector `params` and so the variables of interest must be extracted by name from these vectors.
 Note that the time variable `t` is not used but must nevertheless be named as a formal argument.
 
 In **pomp** version 2, the corresponding 'dmeasure' specification would be
-```
-  ...,
-  dmeasure = function (count, s, theta, ..., log) {
-    dnbinom(x=count,mu=s,size=theta,log=log)
-  },
-  ...
+```{r eval=FALSE}
+...,
+dmeasure = function (count, s, theta, ..., log) {
+  dnbinom(x=count,mu=s,size=theta,log=log)
+},
+...
 ```
 
 Note that there is no longer a need to extract the relevant variables from vectors.
@@ -153,13 +175,13 @@ Prior to version 2, one specified the `rprocess` component using one of the plug
 These have been renamed `onestep`, `discrete_time`, `euler`, `gillespie`, and `gillespie_hl`, respectively, but are otherwise unchanged.
 
 Note that, if one uses an **R** function to specify the process model simulator, the remarks above under "Basic component specification" apply.
-    
+
 ### Covariates
 
 Prior to version 2, time-varying covariates upon which basic model components depended were supplied via the two arguments `covar` and `tcovar` to `pomp`.
 For example, in one of the examples, we see
 
-```
+```{r eval=FALSE}
 cbind(
   time=seq(from=1928,to=1934,by=0.01),
   as.data.frame(
@@ -179,20 +201,20 @@ pomp(
   covar=covar,
   tcovar="time",
   ...
-  )
+)
 ```
 
 Note that, as this example illustrates, it was often necessary to first construct the covariate table as a data frame before passing it as argument to `pomp`.
 
-As of version 2, one includes such time-varying covariates as an object of the new `covartable` class via the single argument `covar`, which can be furnished to any POMP elementary or estimation algorithm.
+As of version 2, one includes such time-varying covariates as specially constructed table via the single argument `covar`, which can be furnished to any POMP elementary or estimation algorithm.
 One constructs a covariate table using the `covariate_table` command.
 The syntax for specifying a covariate table is quite flexible.
-In particular, the arguments to `covariate_table` are now evaluated sequentially, so that later ones can depend on earlier ones.
+In particular, the arguments to `covariate_table` are evaluated sequentially, so that later ones can depend on earlier ones.
 Once evaluated, the covariates are bound column-wise into a single data frame.
 One can also provide a data frame to `covariate_table`, along with the name of the time variable, which matches the old usage very closely.
 Thus, one might use the following in place of the above:
 
-```
+```{r eval=FALSE}
 pomp(
   ...,
   covar=covariate_table(
@@ -200,14 +222,13 @@ pomp(
     seas=periodic.bspline.basis(t,nbasis=3,degree=3,period=1),
     pop=dat$population,
     times="t"
-    )
   ),
   ...
 )
 ```
 
-Prior to version 2, covariates were always linearly interpolated when accessed by any of the basic model components.
-As of version 2, although linear interpolation remains the default, one can also direct, via the `order` argument, that the covariates be treated as piecewise-constant, right-continuous functions.
+Prior to version 2, covariates were always linearly interpolated when furnished to any of the basic model components.
+As of version 2, although linear interpolation remains the default, one can also use the `order` argument to direct that the covariates be treated as piecewise-constant, right-continuous functions.
 
 ### Parameter transformations
 
@@ -219,111 +240,135 @@ If these are specified using **R** functions, the remarks above ("Basic componen
 If one specifies these using C snippets, the syntax has changed from that of versions <2.
 In particular, when writing C snippets for parameter transformations, for a parameter "p", the notation `p` always refers to `p` on the natural scale and `T_p` refers to its value of `p` on the estimation scale.
 Thus, if parameter "alpha" is to be log-transformed for estimation, the `toEst` snippet would contain the line 
-```
+```{c eval=FALSE}
 T_alpha = log(alpha);
 ```
 and the `fromEst` snippet would include 
-```
+```{c eval=FALSE}
 alpha = exp(T_alpha);
 ```
 
-Because many use cases involve simply log, logit, or log-barycentric transformations, one can handle these cases by naming the parameters to be so transformed in the `log`, `logit`, and `barycentric` arguments of `parameter_trans`.
+Because many use cases involve simply log, logit, or log-barycentric transformations, one can handle these cases without needing to write `toEst` and `fromEst` C snippets, by naming the parameters to be so transformed in the `log`, `logit`, and `barycentric` arguments of `parameter_trans`.
 When these arguments are supplied, `parameter_trans` internally writes a pair of C snippets to implement the transformations.
-Thus, one must include all the named parameters in the `paramnames` argument.
+As with other cases when one refers to parameters in C snippets, one must include all the named parameters in the `paramnames` argument.
 
 At any point, if one sets `partrans = NULL` in an elementary or inference algorithm, the parameter transformations are reset to the identity transformation.
 
-## Changes in algorithm inputs
+### Initialization of the latent state process
 
-- no `transform` arguments
+In **pomp** versions <2, one simulated from the distribution of the latent state process via the "initializer" component.
+As of version 2, this has been renamed "rinit".
+The "rinit" component is supplied to **pomp** functions using the argument of the same name.
 
-- The basic particle filter, ‘pfilter’, has a simpler mode of operation:
-  ‘params’ should be a single parameter set only.
-  That is, it is no longer possible to pass a matrix of parameters to ‘pfilter’.
+If `rinit` is not explicitly specified, the default behavior is to treat any parameters ending with suffices `_0` or `.0` as the values of correspondingly named latent state variables at time `t0`.
 
-- The Liu-West algorithm, ‘bsmc2’, has a simpler mode of operation:
-  ‘params’ should be a single parameter set only:
-  the SMC particles are drawn from ‘rprior’.
-  
+### Accumulator variables
+
+In **pomp** versions <2, one named accumulator variables in the `zeronames` argument of `pomp`.
+This argument has been renamed `accumvars`: it can be supplied to any **pomp** elementary or estimation algorithm.
+
+## Changes in elementary POMP algorithms
+
 ### `simulate`
 
+In **pomp** versions <2, if one wanted to simulate a POMP model, one had to construct a 'pomp' first, via a call to `pomp`.
+The package structure necessitated that one provide a dummy data frame to `pomp`, a fairly artificial proceeding.
+As of version 2, one can simulate a POMP model without reference to any data at all.
+One simply calls `simulate` with the necessary arguments supplied.
+The needed arguments include `times`, `t0`, and `rprocess`.
+One can optionally provide `rinit` and `rmeasure`.
 
-## Changes in **pomp** function outputs
+The format of the expressions returned by `simulate` is determined by the new `format` argument.
+The old `obs`, `states`, and `as.data.frame` arguments have been eliminated.
+See `?simulate` for more information.
 
-- ‘simulate’ now returns more informative results when simulations from multiple parameter sets are simultaneously computed.
-  Specifically, if ‘params’ has column names, these are used to identify the resulting simulations.
-  Thus when ‘format = "pomps"’ (the default), the names of the resulting list will be constructed from the column names of ‘params’.
-  Likewise, when ‘format = "arrays"’, the resulting arrays will have informative column names;
-  When ‘format = "data.frame"’, the identifier variable will make use of the column names.
+`simulate` now returns more informative results when simulations from multiple parameter sets are simultaneously computed.
+Specifically, if on the call to `simulate`, `params` has column names, these are used to identify the resulting simulations.
+Thus when `format = "pomps"` (the default), the names of the resulting list of pomps will be constructed from the column names of `params`.
+Likewise, when `format = "arrays"`, the resulting arrays will have informative column names and when `format = "data.frame"`, the identifier variable will make use of the column names.
 
-- The ‘as.data.frame’, ‘states’, and ‘obs’ options for ‘simulate’ have been done away with.
-  One now chooses the format of the returned simulations via the ‘format’ argument.
-  When one simulates at multiple parameter sets, list names, array ‘dimnames’, or identifying variables in the output data frame help to correlate simulations with parameter sets.
 
-- The ‘as.data.frame’ argument to ‘trajectory’ has been removed in favor of a new ‘format’ argument that allows one to choose between receiving the results in the form of an ‘"array"’ or a ‘"data.frame"’.
+### `pfilter` and `bsmc2`
+
+The basic particle filter, `pfilter`, has a simpler mode of operation.
+In calls to `pfilter`, `params` should be a single parameter set only.
+That is, one can no longer possible to pass a matrix of parameters to `pfilter`.
+
+Similarly, the Liu-West algorithm, `bsmc2`, has a simpler mode of operation.
+In calls to `bsmc2`, `params` should be a single parameter set only.
+The requisite `Np` particles are drawn from the distribution specified by the "rprior" basic model component.
+
+## Change in **pomp** estimation algorithms
+
+### Parameter transformations in estimation
+
+In **pomp** versions <2, several of the estimation algorithms had a logical `transform` option.
+Setting `transform = TRUE` caused estimation to be performed on the transformed scale, if parameter transformations had been supplied.
+As of version 2, transformations are automatically applied when it is appropriate to do so and when they exist.
+One can remove transformations by simply setting `partrans = NULL` in the call to any **pomp** estimation algorithm.
+
+
+### `mif2` defaults
+
+The default cooling schedule (`cooling.type`) in `mif2` is now "geometric", in contrast to "hyperbolic", as before.
+
+## Changes in **pomp** workhorses
+
+### Default model components
+
+In **pomp** version <2, attempts to use a basic model component that had not been defined by the user resulted in an error message.
+The exception to this was the initial latent state sampler `initializer` which had a default setting.
+As of version 2, all the basic model components now have defaults.
+
+- The default `rinit` behavior remains as it was:
+it assumes the initial state distribution is concentrated at a point mass determined by parameters with `.0` or `_0` suffices.
+- The default process model is "missing": 
+calls to `dprocess` and `rprocess` will result in missing values (`NA`).
+- The default measurement model is "missing" as well.
+- The default prior is flat and improper:
+all calls to the default `dprior` result in 1 (0 if `log = TRUE`, and all calls to `rprior` result in `NA`.
+- The default skeleton is missing.
+- The default parameter transformations remain the identity.
+
+From the user's point of view, this means, for example, that a call to `simulate` when `rmeasure` has not been specified will result in either empty or missing observables.
+If `rprocess` has not been specified, then a call to `simulate` will likewise return either zero latent state variables, or latent state variables with `NA` values.
+
+### `skeleton`
+
+In `skeleton`, the `t` argument has been replaced by `times`, to make this uniform with the other workhorse functions.
+
+
+### `trajectory`
+
+The `as.data.frame` argument to `trajectory` has been removed in favor of a new `format` argument that allows one to choose between receiving the results in the form of an array or a data frame.
+
+When `trajectory` calls on `deSolve` routines to numerically integrate a model vectorfield, more informative error messages are generated, and diagnostics are printed when `verbose = TRUE`.
 
 ## **pomp** examples
 
+The `pompExample` function has been eliminated.
+The suite of toy examples has been enlarged, but these are accessed via calls to ordinary package functions.
+Thus, for example, one creates the Ricker toy model via a call to `ricker()` and the SIR model simulated via Euler's method via a call to `sir()`.
+See the documentation for a full list of toy examples
+
 ## **pomp** datasets
 
-## Default basic components
+A number of new datasets are provided with the package.
+See `data(package="pomp2")` for a full list.
 
-- All the basic model components now have defaults.
-    - The default ‘rinit’ behavior remains as it was:
-	  it assumes the initial state distribution is concentrated at a point mass determined by parameters with “‘.0’” or “‘_0’” suffices.
-    - The default process model is “missing”: calls to ‘dprocess’ and ‘rprocess’ will result in missing values (‘NA’).
-    - The default measurement model is “missing” as well.
-    - The default prior is flat and improper:
-	all calls to the default ‘dprior’ result in ‘1’ (‘0’ if ‘log = TRUE’, and all calls to ‘rprior’ result in ‘NA’.
-    - The default skeleton is missing.
-    - The default parameter transformations remain the identity.
+## Facilities removed in version 2
 
-- The ‘transform’ argument present in many ‘pomp’ algorithms has been removed.
-  Parameter transformations are now automatically performed when appropriate.
-  The default parameter transformation remains the identity.
+- The old `probe.match` and `traj.match` functions have been removed entirely.
+The new approach to parameter estimation based on numerical optimization involves constructing stateful objective functions.
+See above.
+- The old and deprecated `mif` and `bsmc` methods have been removed.
+- The `measurement.model` argument to `pomp` has been removed.
+It is now necessary to specify the measurement model directly using `rmeasure` and/or `dmeasure`.
+- The `conv.rec` method has been deprecated, replaced by the new `traces` method.
+- The use of `$` methods to access the slots of `pomp` S4 objects has now been removed.
 
-- The old ‘probe.match’ and ‘traj.match’ functions have been removed.
-  The new approach to parameter estimation based on numerical optimization involves constructing stateful objective functions.
-  There are now three of these: ‘traj.match.objfun’, ‘probe.match.objfun’, and ‘spect.match.objfun’.
-
-- In ‘skeleton’, the ‘t’ argument has been replaced by ‘times’, to make this uniform with the other workhorse functions.
-
-- The ‘measurement.model’ argument to ‘pomp’ has been removed.
-  It is now necessary to specify the measurement model directly using ‘rmeasure’ and/or ‘dmeasure’.
-
-- The ‘initializer’ is no longer referred to by that name.
-  It is now ‘rinit’, since it draws from the distribution of the latent state at the initial time.
-  The low-level function ‘init.state’ has been replaced by ‘rinit’.
-
-- The ‘conv.rec’ method has been deprecated, replaced by the new ‘traces’ method.
-
-- The ‘euler.sir’ example has been renamed ‘sir’.
-
-- The ‘gillespie.sir’ example has been renamed ‘sir2’.
-
-- The ‘covmat’ method can now be applied to a ‘probed.pomp’ object.
-  It returns the estimated covariance matrix of the probes.
-
-- When ‘trajectory’ calls on ‘deSolve’ routines to numerically integrate a model vectorfield, more informative error messages are generated, and diagnostics are printed when ‘verbose = TRUE’.
-
-- The ‘show’ method applied to pomp objects is now quite terse.
-  To obtain detailed information, the ‘spy’ method is available.
-
-- The ‘spy’ method now returns the information formerly displayed in a call to ‘show’, in addition to the C files associated with any C snippets.
-
-- The use of ‘$’ methods to access the slots of ‘pomp’ S4 objects has now been removed.
-  These classes are no longer exported (for the most part).
-
-- The ‘transform’ argument to the ‘probe.quantile’ function has been removed (as it is entirely redundant!).
-
-- The old and deprecated ‘mif’ and ‘bsmc’ methods have been removed.
-
-
-Model implementation details:
-
-- `hitch`
-- `compile = FALSE` option
 
 --------------------------------------------------------
 
-[**pomp** vignette index](./index.html)
+[**pomp** documentation index](https://kingaa.github.io/pomp/docs.html)  
+[**pomp** homepage](https://kingaa.github.io/pomp/)
