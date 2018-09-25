@@ -67,13 +67,13 @@ One can pass data directly to these methods, along with the requisite model comp
 A consequence is that these codes have been streamlined, with no cost in performance and increased flexibility.
 The following table shows the number of lines in the latest pre-2 **pomp** compared to the current **pomp** version 2.
 
-|      |  pomp1| pomp2|  diff|   frac|
-|:-----|------:|-----:|-----:|------:|
-|man   |   4069|  3735|  -334| -0.082|
-|R     |  12142|  9204| -2938| -0.242|
-|src   |  19615| 19732|   117|  0.006|
-|tests |   4846|  3585| -1261| -0.260|
-|total |  40672| 36256| -4416| -0.109|
+|      | 1.18.9.1| 2.0.3.3|   frac|
+|:-----|--------:|-------:|------:|
+|man   |     4069|    5697|  0.400|
+|R     |    12142|    9206| -0.242|
+|src   |     5238|    5355|  0.022|
+|tests |     4846|    3614| -0.254|
+|total |    26295|   23872| -0.092|
 
 ## Timetable for rollout of **pomp** version 2
 
