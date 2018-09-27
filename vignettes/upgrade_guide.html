@@ -88,7 +88,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 </div>
 
-<p>This document was produced using <strong>pomp</strong> version 2.0.3.2 and <strong>R</strong> version 3.5.1.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.0.4.0 and <strong>R</strong> version 3.5.1.</p>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
@@ -173,9 +173,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>mif2</code>: iterated filtering (IF2)</li>
 <li><code>enkf</code>: ensemble Kalman filter</li>
 <li><code>eakf</code>: ensemble adjusted Kalman filter</li>
-<li><code>traj.match.objfun</code>: trajectory matching</li>
-<li><code>spect.match.objfun</code>: power spectrum matching</li>
-<li><code>probe.match.objfun</code>: probe matching</li>
+<li><code>traj.objfun</code>: trajectory matching</li>
+<li><code>spect.objfun</code>: power spectrum matching</li>
+<li><code>probe.objfun</code>: probe matching</li>
 <li><code>nlf.objfun</code>: nonlinear forecasting</li>
 </ul></li>
 <li><p><em>Objective function methods</em>: among the estimation algorithms just listed, four are methods that construct stateful objective functions that can be optimized using general-purpose numerical optimization algorithms such as <code>optim</code>, <code>subplex</code>, or the optimizers in the <strong>nloptr</strong> package. These have certain new features that will be described below.</p></li>
@@ -289,7 +289,7 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 <div id="changes-in-optimization-based-methods-probe-matching-spectrum-matching-trajectory-matching-nonlinear-forecasting" class="section level3">
 <h3>Changes in optimization-based methods: probe matching, spectrum matching, trajectory matching, nonlinear forecasting</h3>
 <p>In <strong>pomp</strong> versions &lt;2, the functions <code>probe.match</code>, <code>spect.match</code>, <code>traj.match</code>, and <code>nlf</code> called numerical optimizers (e.g., <code>optim</code> or optimizers from the <strong>subplex</strong> or <strong>nloptr</strong> packages) to estimate model parameters by minimizing their respective objective functions. As of version 2, these functions are no longer part of the package. Their functionality has been replaced by a new set of <em>objective function</em> methods.</p>
-<p>The functions <code>probe.match.objfun</code>, <code>spect.match.objfun</code>, <code>traj.match.objfun</code>, and <code>nlf.objfun</code> construct <em>stateful objective functions</em>. These functions can be passed to any <code>optim</code>-like numerical minimization routine. This is a large increase in the flexibility of the package, since one is free to choose essentially any minimization routine.</p>
+<p>The functions <code>probe.objfun</code>, <code>spect.objfun</code>, <code>traj.objfun</code>, and <code>nlf.objfun</code> construct <em>stateful objective functions</em>. These functions can be passed to any <code>optim</code>-like numerical minimization routine. This is a large increase in the flexibility of the package, since one is free to choose essentially any minimization routine.</p>
 <p>The fact that the objective functions are stateful means that each such function stores in memory the results of the last time it was called. This makes it very easy to extract information about the fitted model regardless of the optimization routine. See the help documentation for examples.</p>
 </div>
 </div>
