@@ -12,7 +12,7 @@
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2018-09-25" />
+<meta name="date" content="2018-09-27" />
 
 <title>pomp version 2 upgrade guide</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore"><strong>pomp</strong> version 2 upgrade guide</h1>
 <h4 class="author"><em>Aaron A. King</em></h4>
-<h4 class="date"><em>25 September 2018</em></h4>
+<h4 class="date"><em>27 September 2018</em></h4>
 
 
 <div id="TOC">
@@ -88,7 +88,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 </div>
 
-<p>This document was produced using <strong>pomp</strong> version 2.0.3.3 and <strong>R</strong> version 3.5.1.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.0.3.2 and <strong>R</strong> version 3.5.1.</p>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
@@ -286,6 +286,12 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 <h3><code>mif2</code> defaults</h3>
 <p>The default cooling schedule (<code>cooling.type</code>) in <code>mif2</code> is now “geometric”, in contrast to “hyperbolic”, as before.</p>
 </div>
+<div id="changes-in-optimization-based-methods-probe-matching-spectrum-matching-trajectory-matching-nonlinear-forecasting" class="section level3">
+<h3>Changes in optimization-based methods: probe matching, spectrum matching, trajectory matching, nonlinear forecasting</h3>
+<p>In <strong>pomp</strong> versions &lt;2, the functions <code>probe.match</code>, <code>spect.match</code>, <code>traj.match</code>, and <code>nlf</code> called numerical optimizers (e.g., <code>optim</code> or optimizers from the <strong>subplex</strong> or <strong>nloptr</strong> packages) to estimate model parameters by minimizing their respective objective functions. As of version 2, these functions are no longer part of the package. Their functionality has been replaced by a new set of <em>objective function</em> methods.</p>
+<p>The functions <code>probe.match.objfun</code>, <code>spect.match.objfun</code>, <code>traj.match.objfun</code>, and <code>nlf.objfun</code> construct <em>stateful objective functions</em>. These functions can be passed to any <code>optim</code>-like numerical minimization routine. This is a large increase in the flexibility of the package, since one is free to choose essentially any minimization routine.</p>
+<p>The fact that the objective functions are stateful means that each such function stores in memory the results of the last time it was called. This makes it very easy to extract information about the fitted model regardless of the optimization routine. See the help documentation for examples.</p>
+</div>
 </div>
 <div id="changes-in-pomp-workhorses" class="section level2">
 <h2>Changes in <strong>pomp</strong> workhorses</h2>
@@ -323,7 +329,7 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 <div id="facilities-removed-in-version-2" class="section level2">
 <h2>Facilities removed in version 2</h2>
 <ul>
-<li>The old <code>probe.match</code> and <code>traj.match</code> functions have been removed entirely. The new approach to parameter estimation based on numerical optimization involves constructing stateful objective functions. See above.</li>
+<li>The <code>probe.match</code>, <code>spect.match</code>, <code>traj.match</code>, and <code>nlf</code> functions have been removed entirely. The new approach to parameter estimation based on numerical optimization involves constructing stateful objective functions. See above.</li>
 <li>The old and deprecated <code>mif</code> and <code>bsmc</code> methods have been removed.</li>
 <li>The <code>measurement.model</code> argument to <code>pomp</code> has been removed. It is now necessary to specify the measurement model directly using <code>rmeasure</code> and/or <code>dmeasure</code>.</li>
 <li>The <code>conv.rec</code> method has been deprecated, replaced by the new <code>traces</code> method.</li>

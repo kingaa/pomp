@@ -312,6 +312,20 @@ One can remove transformations by simply setting `partrans = NULL` in the call t
 
 The default cooling schedule (`cooling.type`) in `mif2` is now "geometric", in contrast to "hyperbolic", as before.
 
+### Changes in optimization-based methods: probe matching, spectrum matching, trajectory matching, nonlinear forecasting
+
+In **pomp** versions <2, the functions `probe.match`, `spect.match`, `traj.match`, and `nlf` called numerical optimizers (e.g., `optim` or optimizers from the **subplex** or **nloptr** packages) to estimate model parameters by minimizing their respective objective functions.
+As of version 2, these functions are no longer part of the package.
+Their functionality has been replaced by a new set of *objective function* methods.
+
+The functions `probe.match.objfun`, `spect.match.objfun`, `traj.match.objfun`, and `nlf.objfun` construct *stateful objective functions*.
+These functions can be passed to any `optim`-like numerical minimization routine.
+This is a large increase in the flexibility of the package, since one is free to choose essentially any minimization routine.
+
+The fact that the objective functions are stateful means that each such function stores in memory the results of the last time it was called.
+This makes it very easy to extract information about the fitted model regardless of the optimization routine.
+See the help documentation for examples.
+
 ## Changes in **pomp** workhorses
 
 ### Default model components
@@ -358,7 +372,7 @@ See `data(package="pomp2")` for a full list.
 
 ## Facilities removed in version 2
 
-- The old `probe.match` and `traj.match` functions have been removed entirely.
+- The `probe.match`, `spect.match`, `traj.match`, and `nlf` functions have been removed entirely.
 The new approach to parameter estimation based on numerical optimization involves constructing stateful objective functions.
 See above.
 - The old and deprecated `mif` and `bsmc` methods have been removed.
