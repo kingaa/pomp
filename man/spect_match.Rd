@@ -3,37 +3,37 @@
 \docType{methods}
 \name{spect.match}
 \alias{spect.match}
-\alias{spect.match.objfun}
-\alias{spect.match.objfun,missing-method}
-\alias{spect.match.objfun,ANY-method}
-\alias{spect.match.objfun-data.frame}
-\alias{spect.match.objfun,data.frame-method}
-\alias{spect.match.objfun-pomp}
-\alias{spect.match.objfun,pomp-method}
-\alias{spect.match.objfun-spectd_pomp}
-\alias{spect.match.objfun,spectd_pomp-method}
-\alias{spect.match.objfun-spect_match_objfun}
-\alias{spect.match.objfun,spect_match_objfun-method}
+\alias{spect.objfun}
+\alias{spect.objfun,missing-method}
+\alias{spect.objfun,ANY-method}
+\alias{spect.objfun-data.frame}
+\alias{spect.objfun,data.frame-method}
+\alias{spect.objfun-pomp}
+\alias{spect.objfun,pomp-method}
+\alias{spect.objfun-spectd_pomp}
+\alias{spect.objfun,spectd_pomp-method}
+\alias{spect.objfun-spect_match_objfun}
+\alias{spect.objfun,spect_match_objfun-method}
 \title{Spectrum matching}
 \usage{
-\S4method{spect.match.objfun}{data.frame}(data, est = character(0),
+\S4method{spect.objfun}{data.frame}(data, est = character(0),
   weights = 1, fail.value = NA, vars, kernel.width, nsim,
   seed = NULL, transform.data = identity, detrend = c("none", "mean",
   "linear", "quadratic"), params, rinit, rprocess, rmeasure, partrans, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{spect.match.objfun}{pomp}(data, est = character(0),
-  weights = 1, fail.value = NA, vars, kernel.width, nsim,
-  seed = NULL, transform.data = identity, detrend = c("none", "mean",
-  "linear", "quadratic"), ..., verbose = getOption("verbose", FALSE))
+\S4method{spect.objfun}{pomp}(data, est = character(0), weights = 1,
+  fail.value = NA, vars, kernel.width, nsim, seed = NULL,
+  transform.data = identity, detrend = c("none", "mean", "linear",
+  "quadratic"), ..., verbose = getOption("verbose", FALSE))
 
-\S4method{spect.match.objfun}{spectd_pomp}(data, est = character(0),
+\S4method{spect.objfun}{spectd_pomp}(data, est = character(0),
   weights = 1, fail.value = NA, vars, kernel.width, nsim,
   seed = NULL, transform.data = identity, detrend, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{spect.match.objfun}{spect_match_objfun}(data, est, weights,
-  fail.value, seed = NULL, ..., verbose = getOption("verbose", FALSE))
+\S4method{spect.objfun}{spect_match_objfun}(data, est, weights, fail.value,
+  seed = NULL, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -108,8 +108,8 @@ See the \link[=userdata]{userdata documentation here} for information on how to 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
-\code{spect.match.objfun} constructs a stateful objective function for spectrum matching.
-Specifically, \code{spect.match.objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+\code{spect.objfun} constructs a stateful objective function for spectrum matching.
+Specifically, \code{spect.objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 This function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 When called, it will return the (optionally weighted) \eqn{L^2}{L2} distance between the data spectrum and simulated spectra.
 It is a stateful function:
@@ -121,7 +121,7 @@ Estimation of parameters by matching power spectra
 \details{
 In spectrum matching, one attempts to minimize the discrepancy between a \acronym{POMP} model's predictions and data, as measured in the frequency domain by the power spectrum.
 
-\code{spect.match.objfun} constructs an objective function that measures the discrepancy.
+\code{spect.objfun} constructs an objective function that measures the discrepancy.
 It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 }
 \section{Important Note}{

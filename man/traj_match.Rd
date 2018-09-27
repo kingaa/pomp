@@ -3,26 +3,25 @@
 \docType{methods}
 \name{traj.match}
 \alias{traj.match}
-\alias{traj.match.objfun,missing-method}
-\alias{traj.match.objfun,ANY-method}
-\alias{traj.match.objfun-data.frame}
-\alias{traj.match.objfun,data.frame-method}
-\alias{traj.match.objfun-pomp}
-\alias{traj.match.objfun}
-\alias{traj.match.objfun,pomp-method}
-\alias{traj.match.objfun-traj_match_objfun}
-\alias{traj.match.objfun,traj_match_objfun-method}
+\alias{traj.objfun,missing-method}
+\alias{traj.objfun,ANY-method}
+\alias{traj.objfun-data.frame}
+\alias{traj.objfun,data.frame-method}
+\alias{traj.objfun-pomp}
+\alias{traj.objfun}
+\alias{traj.objfun,pomp-method}
+\alias{traj.objfun-traj_match_objfun}
+\alias{traj.objfun,traj_match_objfun-method}
 \title{Trajectory matching}
 \usage{
-\S4method{traj.match.objfun}{data.frame}(data, est = character(0),
+\S4method{traj.objfun}{data.frame}(data, est = character(0),
   fail.value = NA, ode_control = list(), params, rinit, skeleton,
   dmeasure, partrans, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{traj.match.objfun}{pomp}(data, est = character(0),
-  fail.value = NA, ode_control = list(), ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{traj.objfun}{pomp}(data, est = character(0), fail.value = NA,
+  ode_control = list(), ..., verbose = getOption("verbose", FALSE))
 
-\S4method{traj.match.objfun}{traj_match_objfun}(data, est, fail.value,
+\S4method{traj.objfun}{traj_match_objfun}(data, est, fail.value,
   ode_control, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
@@ -70,8 +69,8 @@ Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets t
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
-\code{traj.match.objfun} constructs a stateful objective function for spectrum matching.
-Specifically, \code{traj.match.objfun} returns an object of class \sQuote{traj_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+\code{traj.objfun} constructs a stateful objective function for spectrum matching.
+Specifically, \code{traj.objfun} returns an object of class \sQuote{traj_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 When called, it will return the negative log likelihood.
 It is a stateful function:
@@ -87,7 +86,7 @@ The measurement model likelihood (\code{dmeasure}), or rather its negative, is t
 Trajectory matching is a generalization of the traditional nonlinear least squares approach.
 In particular, if, on some scale, measurement errors are normal with constant variance, then trajectory matching is equivalent to least squares on that particular scale.
 
-\code{traj.match.objfun} constructs an objective function that evaluates the likelihood function.
+\code{traj.objfun} constructs an objective function that evaluates the likelihood function.
 It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 }
 \section{Important Note}{

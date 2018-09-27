@@ -7,8 +7,8 @@
 ##'
 ##' @name probe.match
 ##' @rdname probe_match
-##' @aliases probe.match probe.match.objfun probe.match.objfun,missing-method
-##' probe.match.objfun,ANY-method
+##' @aliases probe.match probe.objfun probe.objfun,missing-method
+##' probe.objfun,ANY-method
 ##' @include probe.R
 ##' @author Aaron A. King
 ##' @family summary statistics methods
@@ -30,8 +30,8 @@
 ##' @inheritParams pomp
 ##'
 ##' @return
-##' \code{probe.match.objfun} constructs a stateful objective function for probe matching.
-##' Specfically, \code{probe.match.objfun} returns an object of class \sQuote{probe_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+##' \code{probe.objfun} constructs a stateful objective function for probe matching.
+##' Specifically, \code{probe.objfun} returns an object of class \sQuote{probe_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 ##' In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 ##' When called, it will return the negative synthetic log likelihood for the probes specified.
 ##' It is a stateful function:
@@ -51,33 +51,33 @@ setClass(
 )
 
 setGeneric(
-  "probe.match.objfun",
+  "probe.objfun",
   function (data, ...)
-    standardGeneric("probe.match.objfun")
+    standardGeneric("probe.objfun")
 )
 
 setMethod(
-  "probe.match.objfun",
+  "probe.objfun",
   signature=signature(data="missing"),
   definition=function (...) {
-    reqd_arg("probe.match.objfun","data")
+    reqd_arg("probe.objfun","data")
   }
 )
 
 setMethod(
-  "probe.match.objfun",
+  "probe.objfun",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    undef_method("probe.match.objfun",data)
+    undef_method("probe.objfun",data)
   }
 )
 
-##' @name probe.match.objfun-data.frame
-##' @aliases probe.match.objfun,data.frame-method
+##' @name probe.objfun-data.frame
+##' @aliases probe.objfun,data.frame-method
 ##' @rdname probe_match
 ##' @export
 setMethod(
-  "probe.match.objfun",
+  "probe.objfun",
   signature=signature(data="data.frame"),
   definition=function (data,
     est = character(0), fail.value = NA,
@@ -101,18 +101,18 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("probe.match.objfun",conditionMessage(e))
+      error = function (e) pStop("probe.objfun",conditionMessage(e))
     )
 
   }
 )
 
-##' @name probe.match.objfun-pomp
-##' @aliases probe.match.objfun,pomp-method
+##' @name probe.objfun-pomp
+##' @aliases probe.objfun,pomp-method
 ##' @rdname probe_match
 ##' @export
 setMethod(
-  "probe.match.objfun",
+  "probe.objfun",
   signature=signature(data="pomp"),
   definition=function (data,
     est = character(0), fail.value = NA,
@@ -130,18 +130,18 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("probe.match.objfun",conditionMessage(e))
+      error = function (e) pStop("probe.objfun",conditionMessage(e))
     )
 
   }
 )
 
-##' @name probe.match.objfun-probed_pomp
-##' @aliases probe.match.objfun,probed_pomp-method
+##' @name probe.objfun-probed_pomp
+##' @aliases probe.objfun,probed_pomp-method
 ##' @rdname probe_match
 ##' @export
 setMethod(
-  "probe.match.objfun",
+  "probe.objfun",
   signature=signature(data="probed_pomp"),
   definition=function (data,
     est = character(0), fail.value = NA,
@@ -151,7 +151,7 @@ setMethod(
     if (missing(probes)) probes <- data@probes
     if (missing(nsim)) nsim <- data@nsim
 
-    probe.match.objfun(
+    probe.objfun(
       as(data,"pomp"),
       est=est,
       fail.value=fail.value,
@@ -165,12 +165,12 @@ setMethod(
   }
 )
 
-##' @name probe.match.objfun-probe_match_objfun
-##' @aliases probe.match.objfun,probe_match_objfun-method
+##' @name probe.objfun-probe_match_objfun
+##' @aliases probe.objfun,probe_match_objfun-method
 ##' @rdname probe_match
 ##' @export
 setMethod(
-  "probe.match.objfun",
+  "probe.objfun",
   signature=signature(data="probe_match_objfun"),
   definition=function (data,
     est, fail.value, seed = NULL,
@@ -179,7 +179,7 @@ setMethod(
     if (missing(est)) est <- data@est
     if (missing(fail.value)) fail.value <- data@env$fail.value
 
-    probe.match.objfun(
+    probe.objfun(
       data@env$object,
       est=est,
       fail.value=fail.value,

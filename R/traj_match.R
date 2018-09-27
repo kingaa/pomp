@@ -8,14 +8,14 @@
 ##' Trajectory matching is a generalization of the traditional nonlinear least squares approach.
 ##' In particular, if, on some scale, measurement errors are normal with constant variance, then trajectory matching is equivalent to least squares on that particular scale.
 ##'
-##' \code{traj.match.objfun} constructs an objective function that evaluates the likelihood function.
+##' \code{traj.objfun} constructs an objective function that evaluates the likelihood function.
 ##' It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 ##'
 ##' @name traj.match
 ##' @docType methods
 ##' @rdname traj_match
 ##' @include trajectory.R pomp_class.R workhorses.R
-##' @aliases traj.match.objfun,missing-method traj.match.objfun,ANY-method
+##' @aliases traj.objfun,missing-method traj.objfun,ANY-method
 ##'
 ##' @inheritParams probe.match
 ##' @inheritParams trajectory
@@ -26,8 +26,8 @@
 ##' @param \dots additional arguments will modify the model structure
 ##'
 ##' @return
-##' \code{traj.match.objfun} constructs a stateful objective function for spectrum matching.
-##' Specifically, \code{traj.match.objfun} returns an object of class \sQuote{traj_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+##' \code{traj.objfun} constructs a stateful objective function for spectrum matching.
+##' Specifically, \code{traj.objfun} returns an object of class \sQuote{traj_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 ##' In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 ##' When called, it will return the negative log likelihood.
 ##' It is a stateful function:
@@ -48,33 +48,33 @@ setClass(
 )
 
 setGeneric(
-  "traj.match.objfun",
+  "traj.objfun",
   function (data, ...)
-    standardGeneric("traj.match.objfun")
+    standardGeneric("traj.objfun")
 )
 
 setMethod(
-  "traj.match.objfun",
+  "traj.objfun",
   signature=signature(data="missing"),
   definition=function (...) {
-    reqd_arg("traj.match.objfun","data")
+    reqd_arg("traj.objfun","data")
   }
 )
 
 setMethod(
-  "traj.match.objfun",
+  "traj.objfun",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    undef_method("traj.match.objfun",data)
+    undef_method("traj.objfun",data)
   }
 )
 
-##' @name traj.match.objfun-data.frame
-##' @aliases traj.match.objfun,data.frame-method
+##' @name traj.objfun-data.frame
+##' @aliases traj.objfun,data.frame-method
 ##' @rdname traj_match
 ##' @export
 setMethod(
-  "traj.match.objfun",
+  "traj.objfun",
   signature=signature(data="data.frame"),
   definition=function(data,
     est = character(0), fail.value = NA,
@@ -96,18 +96,18 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("traj.match.objfun",conditionMessage(e))
+      error = function (e) pStop("traj.objfun",conditionMessage(e))
     )
 
   }
 )
 
-##' @name traj.match.objfun-pomp
-##' @aliases traj.match.objfun traj.match.objfun,pomp-method
+##' @name traj.objfun-pomp
+##' @aliases traj.objfun traj.objfun,pomp-method
 ##' @rdname traj_match
 ##' @export
 setMethod(
-  "traj.match.objfun",
+  "traj.objfun",
   signature=signature(data="pomp"),
   function (data,
     est = character(0), fail.value = NA, ode_control = list(),
@@ -122,18 +122,18 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("traj.match.objfun",conditionMessage(e))
+      error = function (e) pStop("traj.objfun",conditionMessage(e))
     )
 
   }
 )
 
-##' @name traj.match.objfun-traj_match_objfun
-##' @aliases traj.match.objfun,traj_match_objfun-method
+##' @name traj.objfun-traj_match_objfun
+##' @aliases traj.objfun,traj_match_objfun-method
 ##' @rdname traj_match
 ##' @export
 setMethod(
-  "traj.match.objfun",
+  "traj.objfun",
   signature=signature(data="traj_match_objfun"),
   definition=function (data,
     est, fail.value, ode_control,
@@ -143,7 +143,7 @@ setMethod(
     if (missing(fail.value)) fail.value <- data@env$fail.value
     if (missing(ode_control)) ode_control <- data@env$ode_control
 
-    traj.match.objfun(
+    traj.objfun(
       data@env$object,
       est=est,
       fail.value=fail.value,

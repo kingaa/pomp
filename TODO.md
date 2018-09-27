@@ -3,6 +3,10 @@
 ## For pomp 2:
 
 - "guide to upgrading to **pomp** version 2"
+	- ~~discussion of stateful objective functions~~
+- more/better examples
+	- need examples of objective function methods
+- more toy models
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - get the metaphors straight! "horses" vs "hitches" vs "workhorses" ("wagons"?)
 - manual pages on the organization of the package
@@ -43,7 +47,6 @@
 - put Kalman check in 'ou2' test
 - MCMC proposals as pomp slots?
 - probes as pomp slots?
-- more/better examples
 - what does a generic `pomp.fun` interface look like?
 - should parameter transformations allow renaming of variables?
 	- would require attention to `rw.sd`, e.g.
