@@ -101,7 +101,7 @@ xxcheck: xcheck
 
 ycheck: dist
 	mkdir -p check
-	$(RCMD_ALT) check --run-dontrun --as-cran --library=library -o check $(PKGVERS).tar.gz
+	$(RCMD_ALT) check --run-dontrun --run-donttest --as-cran --library=library -o check $(PKGVERS).tar.gz
 
 manual: install $(PKG).pdf
 
