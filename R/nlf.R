@@ -7,7 +7,7 @@
 ##' The nonlinear autoregressive model is implemented as a generalized additive model (GAM), conditional on lagged values, for each observation variable.
 ##' The errors are assumed multivariate normal.
 ##'
-##' The NLF objective function constructed by \code{nlf.objfun} simulates long time series (\code{nasymp} is the number of observations in the simulated times series), perhaps after allowing for a transient period (\code{ntransient} steps).
+##' The NLF objective function constructed by \code{nlf_objfun} simulates long time series (\code{nasymp} is the number of observations in the simulated times series), perhaps after allowing for a transient period (\code{ntransient} steps).
 ##' It then fits the GAM for the chosen lags to the simulated time series.
 ##' Finally, it computes the quasi-likelihood of the data under the fitted GAM.
 ##'
@@ -20,15 +20,15 @@
 ##' @importFrom stats .lm.fit optim setNames dnorm .lm.fit sd cov
 ##' @importFrom mvtnorm dmvnorm
 ##'
-##' @aliases nlf nlf.objfun nlf.objfun,missing-method nlf.objfun,ANY-method
+##' @aliases nlf nlf_objfun nlf_objfun,missing-method nlf_objfun,ANY-method
 ##'
 ##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
 ##'
 ##' @family \pkg{pomp} parameter estimation methods
 ##'
 ##' @return
-##' \code{nlf.objfun} constructs a stateful objective function for NLF estimation.
-##' Specfically, \code{nlf.objfun} returns an object of class \sQuote{nlf_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+##' \code{nlf_objfun} constructs a stateful objective function for NLF estimation.
+##' Specfically, \code{nlf_objfun} returns an object of class \sQuote{nlf_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 ##' In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 ##' When called, it will return the negative log quasilikelihood.
 ##' It is a stateful function:
@@ -130,32 +130,32 @@ setClass(
 )
 
 setGeneric(
-  "nlf.objfun",
+  "nlf_objfun",
   function (data, ...)
-    standardGeneric("nlf.objfun")
+    standardGeneric("nlf_objfun")
 )
 
 setMethod(
-  "nlf.objfun",
+  "nlf_objfun",
   signature=signature(data="missing"),
   definition=function (...) {
-    reqd_arg("nlf.objfun","data")
+    reqd_arg("nlf_objfun","data")
   }
 )
 
 setMethod(
-  "nlf.objfun",
+  "nlf_objfun",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    undef_method("nlf.objfun",data)
+    undef_method("nlf_objfun",data)
   }
 )
 
-##' @name nlf.objfun-data.frame
-##' @aliases nlf.objfun,data.frame-method
+##' @name nlf_objfun-data.frame
+##' @aliases nlf_objfun,data.frame-method
 ##' @rdname nlf
 setMethod(
-  "nlf.objfun",
+  "nlf_objfun",
   signature=signature(data="data.frame"),
   definition=function (data,
     est = character(0), lags, nrbf = 4, ti, tf,
@@ -184,17 +184,17 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("nlf.objfun",conditionMessage(e))
+      error = function (e) pStop("nlf_objfun",conditionMessage(e))
     )
 
   }
 )
 
-##' @name nlf.objfun-pomp
-##' @aliases nlf.objfun,pomp-method
+##' @name nlf_objfun-pomp
+##' @aliases nlf_objfun,pomp-method
 ##' @rdname nlf
 setMethod(
-  "nlf.objfun",
+  "nlf_objfun",
   signature=signature(data="pomp"),
   definition=function (data,
     est = character(0), lags, nrbf = 4, ti, tf,
@@ -218,18 +218,18 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("nlf.objfun",conditionMessage(e))
+      error = function (e) pStop("nlf_objfun",conditionMessage(e))
     )
 
   }
 )
 
-##' @name nlf.objfun-nlf_objfun
-##' @aliases nlf.objfun,nlf_objfun-method
+##' @name nlf_objfun-nlf_objfun
+##' @aliases nlf_objfun,nlf_objfun-method
 ##' @rdname nlf
 ##' @export
 setMethod(
-  "nlf.objfun",
+  "nlf_objfun",
   signature=signature(data="nlf_objfun"),
   definition=function (data,
     est, lags, nrbf, ti, tf, seed = NULL,
@@ -246,7 +246,7 @@ setMethod(
     if (missing(transform.data)) transform.data <- data@env$transform.data
     if (missing(fail.value)) fail.value <- data@env$fail.value
 
-    nlf.objfun(
+    nlf_objfun(
       data@env$object,
       est=est,
       lags=lags,
@@ -327,7 +327,7 @@ nlfof.internal <- function (object,
     pStop_("insufficiently long simulated time series: increase ",sQuote("tf"),
       " to at least ",ti+10*dof*dt,".")
   if (length(times) < 30*dof)
-    pWarn("nlf.objfun","insufficiently long simulated time series: ",
+    pWarn("nlf_objfun","insufficiently long simulated time series: ",
       "consider increasing ",sQuote("tf")," to ",ti+30*dof*dt," or larger.")
 
   transform.data <- match.fun(transform.data)

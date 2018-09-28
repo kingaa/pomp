@@ -170,7 +170,7 @@ coef(parus,transform=TRUE) <- partrans(parus,p,dir="toEst")
 stopifnot(all.equal(p,coef(parus)))
 
 ## ----parus-traj-match----------------------------------------------------
-tm <- traj.objfun(parus,params=c(r=1,K=200,N.0=200,sigma=0.5),
+tm <- traj_objfun(parus,params=c(r=1,K=200,N.0=200,sigma=0.5),
   est=c("r","K"))
 logLik(tm)
 

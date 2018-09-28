@@ -141,7 +141,7 @@ setMethod(
 ##' @rdname loglik
 ##'
 ##' @return
-##' When \code{object} is an NLF objective function, i.e., the result of a call to \code{nlf.objfun},
+##' When \code{object} is an NLF objective function, i.e., the result of a call to \code{nlf_objfun},
 ##' \code{logLik} retrieves the \dQuote{quasi log likelihood} (see \code{\link{nlf}}).
 ##'
 ##' @export

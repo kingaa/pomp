@@ -28,18 +28,18 @@ For information on upgrading your pomp version < 2 code, see the
 > 
 > ou2() -> ou2
 > 
-> try(traj.objfun())
-Error : in 'traj.objfun': 'data' is a required argument.
-> try(traj.objfun("bob"))
-Error : 'traj.objfun' is undefined for 'data' of class 'character'.
-> try(ou2 %>% as.data.frame() %>% traj.objfun())
-Error : in 'traj.objfun': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(ou2 %>% as.data.frame() %>% traj.objfun(times="time",t0=0))
-Error : in 'traj.objfun': 'skeleton', 'dmeasure' are needed basic components.
+> try(traj_objfun())
+Error : in 'traj_objfun': 'data' is a required argument.
+> try(traj_objfun("bob"))
+Error : 'traj_objfun' is undefined for 'data' of class 'character'.
+> try(ou2 %>% as.data.frame() %>% traj_objfun())
+Error : in 'traj_objfun': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
+> try(ou2 %>% as.data.frame() %>% traj_objfun(times="time",t0=0))
+Error : in 'traj_objfun': 'skeleton', 'dmeasure' are needed basic components.
 > 
 > ou2 %>%
 +   as.data.frame() %>%
-+   traj.objfun(
++   traj_objfun(
 +     times="time",t0=0,
 +     rinit=ou2@rinit,
 +     skeleton=ou2@skeleton,
@@ -49,7 +49,7 @@ Error : in 'traj.objfun': 'skeleton', 'dmeasure' are needed basic components.
 > 
 > stopifnot(f(0)==f(1))
 > 
-> f %>% traj.objfun(est=c("alpha_1")) -> f1
+> f %>% traj_objfun(est=c("alpha_1")) -> f1
 > plot(sapply(seq(0.1,0.9,by=0.1),f1),xlab="",ylab="")
 > 
 > f1(1.1)
@@ -60,15 +60,15 @@ Error : in 'traj.objfun': 'skeleton', 'dmeasure' are needed basic components.
 > f1(out$par)
 [1] 4826
 > 
-> try(traj.objfun(f1,est="harry"))
-Error : in 'traj.objfun': parameter 'harry' not found in 'params'
+> try(traj_objfun(f1,est="harry"))
+Error : in 'traj_objfun': parameter 'harry' not found in 'params'
 > 
 > f1 %>% as("pomp")
 <object of class 'pomp'>
 > f1 %>% as("data.frame") %>% names()
 [1] "time" "y1"   "y2"   "x1"   "x2"  
 > 
-> f1 %>% traj.objfun(fail.value=1e10) -> f2
+> f1 %>% traj_objfun(fail.value=1e10) -> f2
 > f2(NA)
 [1] 1e+10
 > 

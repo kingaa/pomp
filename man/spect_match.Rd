@@ -3,36 +3,36 @@
 \docType{methods}
 \name{spect.match}
 \alias{spect.match}
-\alias{spect.objfun}
-\alias{spect.objfun,missing-method}
-\alias{spect.objfun,ANY-method}
-\alias{spect.objfun-data.frame}
-\alias{spect.objfun,data.frame-method}
-\alias{spect.objfun-pomp}
-\alias{spect.objfun,pomp-method}
-\alias{spect.objfun-spectd_pomp}
-\alias{spect.objfun,spectd_pomp-method}
-\alias{spect.objfun-spect_match_objfun}
-\alias{spect.objfun,spect_match_objfun-method}
+\alias{spect_objfun}
+\alias{spect_objfun,missing-method}
+\alias{spect_objfun,ANY-method}
+\alias{spect_objfun-data.frame}
+\alias{spect_objfun,data.frame-method}
+\alias{spect_objfun-pomp}
+\alias{spect_objfun,pomp-method}
+\alias{spect_objfun-spectd_pomp}
+\alias{spect_objfun,spectd_pomp-method}
+\alias{spect_objfun-spect_match_objfun}
+\alias{spect_objfun,spect_match_objfun-method}
 \title{Spectrum matching}
 \usage{
-\S4method{spect.objfun}{data.frame}(data, est = character(0),
+\S4method{spect_objfun}{data.frame}(data, est = character(0),
   weights = 1, fail.value = NA, vars, kernel.width, nsim,
   seed = NULL, transform.data = identity, detrend = c("none", "mean",
   "linear", "quadratic"), params, rinit, rprocess, rmeasure, partrans, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{spect.objfun}{pomp}(data, est = character(0), weights = 1,
+\S4method{spect_objfun}{pomp}(data, est = character(0), weights = 1,
   fail.value = NA, vars, kernel.width, nsim, seed = NULL,
   transform.data = identity, detrend = c("none", "mean", "linear",
   "quadratic"), ..., verbose = getOption("verbose", FALSE))
 
-\S4method{spect.objfun}{spectd_pomp}(data, est = character(0),
+\S4method{spect_objfun}{spectd_pomp}(data, est = character(0),
   weights = 1, fail.value = NA, vars, kernel.width, nsim,
   seed = NULL, transform.data = identity, detrend, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{spect.objfun}{spect_match_objfun}(data, est, weights, fail.value,
+\S4method{spect_objfun}{spect_match_objfun}(data, est, weights, fail.value,
   seed = NULL, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
@@ -108,8 +108,8 @@ See the \link[=userdata]{userdata documentation here} for information on how to 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
-\code{spect.objfun} constructs a stateful objective function for spectrum matching.
-Specifically, \code{spect.objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+\code{spect_objfun} constructs a stateful objective function for spectrum matching.
+Specifically, \code{spect_objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 This function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 When called, it will return the (optionally weighted) \eqn{L^2}{L2} distance between the data spectrum and simulated spectra.
 It is a stateful function:
@@ -121,7 +121,7 @@ Estimation of parameters by matching power spectra
 \details{
 In spectrum matching, one attempts to minimize the discrepancy between a \acronym{POMP} model's predictions and data, as measured in the frequency domain by the power spectrum.
 
-\code{spect.objfun} constructs an objective function that measures the discrepancy.
+\code{spect_objfun} constructs an objective function that measures the discrepancy.
 It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 }
 \section{Important Note}{

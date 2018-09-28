@@ -3,28 +3,28 @@
 \docType{methods}
 \name{nlf}
 \alias{nlf}
-\alias{nlf.objfun}
-\alias{nlf.objfun,missing-method}
-\alias{nlf.objfun,ANY-method}
-\alias{nlf.objfun-data.frame}
-\alias{nlf.objfun,data.frame-method}
-\alias{nlf.objfun-pomp}
-\alias{nlf.objfun,pomp-method}
-\alias{nlf.objfun-nlf_objfun}
-\alias{nlf.objfun,nlf_objfun-method}
+\alias{nlf_objfun}
+\alias{nlf_objfun,missing-method}
+\alias{nlf_objfun,ANY-method}
+\alias{nlf_objfun-data.frame}
+\alias{nlf_objfun,data.frame-method}
+\alias{nlf_objfun-pomp}
+\alias{nlf_objfun,pomp-method}
+\alias{nlf_objfun-nlf_objfun}
+\alias{nlf_objfun,nlf_objfun-method}
 \title{Nonlinear forecasting}
 \usage{
-\S4method{nlf.objfun}{data.frame}(data, est = character(0), lags,
+\S4method{nlf_objfun}{data.frame}(data, est = character(0), lags,
   nrbf = 4, ti, tf, seed = NULL, transform.data = identity,
   period = NA, tensor = TRUE, fail.value = NA_real_, params, rinit,
   rprocess, rmeasure, ..., verbose = getOption("verbose"))
 
-\S4method{nlf.objfun}{pomp}(data, est = character(0), lags, nrbf = 4,
+\S4method{nlf_objfun}{pomp}(data, est = character(0), lags, nrbf = 4,
   ti, tf, seed = NULL, transform.data = identity, period = NA,
   tensor = TRUE, fail.value = NA, ...,
   verbose = getOption("verbose"))
 
-\S4method{nlf.objfun}{nlf_objfun}(data, est, lags, nrbf, ti, tf,
+\S4method{nlf_objfun}{nlf_objfun}(data, est, lags, nrbf, ti, tf,
   seed = NULL, period, tensor, transform.data, fail.value, ...,
   verbose = getOption("verbose", FALSE))
 }
@@ -103,8 +103,8 @@ See the \link[=userdata]{userdata documentation here} for information on how to 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
-\code{nlf.objfun} constructs a stateful objective function for NLF estimation.
-Specfically, \code{nlf.objfun} returns an object of class \sQuote{nlf_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+\code{nlf_objfun} constructs a stateful objective function for NLF estimation.
+Specfically, \code{nlf_objfun} returns an object of class \sQuote{nlf_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 When called, it will return the negative log quasilikelihood.
 It is a stateful function:
@@ -119,7 +119,7 @@ The NLF approximation to the log likelihood of the data series is computed by si
 The nonlinear autoregressive model is implemented as a generalized additive model (GAM), conditional on lagged values, for each observation variable.
 The errors are assumed multivariate normal.
 
-The NLF objective function constructed by \code{nlf.objfun} simulates long time series (\code{nasymp} is the number of observations in the simulated times series), perhaps after allowing for a transient period (\code{ntransient} steps).
+The NLF objective function constructed by \code{nlf_objfun} simulates long time series (\code{nasymp} is the number of observations in the simulated times series), perhaps after allowing for a transient period (\code{ntransient} steps).
 It then fits the GAM for the chosen lags to the simulated time series.
 Finally, it computes the quasi-likelihood of the data under the fitted GAM.
 

@@ -58,7 +58,7 @@ When \code{object} is of \sQuote{probed_pomp} class (i.e., the result of a \code
 
 When \code{object} is of \sQuote{bsmcd_pomp} class (i.e., the result of a \code{bsmc2} computation), \code{logLik} retrieves the \dQuote{log evidence} (see \code{\link{bsmc2}}).
 
-When \code{object} is an NLF objective function, i.e., the result of a call to \code{nlf.objfun},
+When \code{object} is an NLF objective function, i.e., the result of a call to \code{nlf_objfun},
 \code{logLik} retrieves the \dQuote{quasi log likelihood} (see \code{\link{nlf}}).
 }
 \description{

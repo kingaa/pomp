@@ -4,14 +4,14 @@
 ##'
 ##' In spectrum matching, one attempts to minimize the discrepancy between a \acronym{POMP} model's predictions and data, as measured in the frequency domain by the power spectrum.
 ##'
-##' \code{spect.objfun} constructs an objective function that measures the discrepancy.
+##' \code{spect_objfun} constructs an objective function that measures the discrepancy.
 ##' It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 ##'
 ##' @name spect.match
 ##' @docType methods
 ##' @rdname spect_match
 ##' @family \pkg{pomp} parameter estimation methods
-##' @aliases spect.objfun spect.objfun,missing-method spect.objfun,ANY-method
+##' @aliases spect_objfun spect_objfun,missing-method spect_objfun,ANY-method
 ##'
 ##' @include spect.R probe_match.R loglik.R
 ##'
@@ -26,8 +26,8 @@
 ##' @inheritParams pomp
 ##'
 ##' @return
-##' \code{spect.objfun} constructs a stateful objective function for spectrum matching.
-##' Specifically, \code{spect.objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+##' \code{spect_objfun} constructs a stateful objective function for spectrum matching.
+##' Specifically, \code{spect_objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 ##' This function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 ##' When called, it will return the (optionally weighted) \eqn{L^2}{L2} distance between the data spectrum and simulated spectra.
 ##' It is a stateful function:
@@ -50,33 +50,33 @@ setClass(
 )
 
 setGeneric(
-  "spect.objfun",
+  "spect_objfun",
   function (data, ...)
-    standardGeneric("spect.objfun")
+    standardGeneric("spect_objfun")
 )
 
 setMethod(
-  "spect.objfun",
+  "spect_objfun",
   signature=signature(data="missing"),
   definition=function (...) {
-    reqd_arg("spect.objfun","data")
+    reqd_arg("spect_objfun","data")
   }
 )
 
 setMethod(
-  "spect.objfun",
+  "spect_objfun",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    undef_method("spect.objfun",data)
+    undef_method("spect_objfun",data)
   }
 )
 
-##' @name spect.objfun-data.frame
-##' @aliases spect.objfun,data.frame-method
+##' @name spect_objfun-data.frame
+##' @aliases spect_objfun,data.frame-method
 ##' @rdname spect_match
 ##' @export
 setMethod(
-  "spect.objfun",
+  "spect_objfun",
   signature=signature(data="data.frame"),
   definition=function(data,
     est = character(0), weights = 1, fail.value = NA,
@@ -105,18 +105,18 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("spect.objfun",conditionMessage(e))
+      error = function (e) pStop("spect_objfun",conditionMessage(e))
     )
 
   }
 )
 
-##' @name spect.objfun-pomp
-##' @aliases spect.objfun,pomp-method
+##' @name spect_objfun-pomp
+##' @aliases spect_objfun,pomp-method
 ##' @rdname spect_match
 ##' @export
 setMethod(
-  "spect.objfun",
+  "spect_objfun",
   signature=signature(data="pomp"),
   definition=function(data,
     est = character(0), weights = 1, fail.value = NA,
@@ -139,18 +139,18 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("spect.objfun",conditionMessage(e))
+      error = function (e) pStop("spect_objfun",conditionMessage(e))
     )
 
   }
 )
 
-##' @name spect.objfun-spectd_pomp
-##' @aliases spect.objfun,spectd_pomp-method
+##' @name spect_objfun-spectd_pomp
+##' @aliases spect_objfun,spectd_pomp-method
 ##' @rdname spect_match
 ##' @export
 setMethod(
-  "spect.objfun",
+  "spect_objfun",
   signature=signature(data="spectd_pomp"),
   definition=function(data,
     est = character(0), weights = 1, fail.value = NA,
@@ -164,7 +164,7 @@ setMethod(
     if (missing(transform.data)) transform.data <- data@transform.data
     if (missing(detrend)) detrend <- data@detrend
 
-    spect.objfun(
+    spect_objfun(
       as(data,"pomp"),
       est=est,
       weights=weights,
@@ -182,12 +182,12 @@ setMethod(
   }
 )
 
-##' @name spect.objfun-spect_match_objfun
-##' @aliases spect.objfun,spect_match_objfun-method
+##' @name spect_objfun-spect_match_objfun
+##' @aliases spect_objfun,spect_match_objfun-method
 ##' @rdname spect_match
 ##' @export
 setMethod(
-  "spect.objfun",
+  "spect_objfun",
   signature=signature(data="spect_match_objfun"),
   definition=function(data,
     est, weights, fail.value, seed = NULL,
@@ -197,7 +197,7 @@ setMethod(
     if (missing(weights)) weights <-data@env$weights
     if (missing(fail.value)) fail.value <- data@env$fail.value
 
-    spect.objfun(
+    spect_objfun(
       data@env$object,
       est=est,
       weights=weights,

@@ -3,32 +3,32 @@
 \docType{methods}
 \name{probe.match}
 \alias{probe.match}
-\alias{probe.objfun}
-\alias{probe.objfun,missing-method}
-\alias{probe.objfun,ANY-method}
-\alias{probe.objfun-data.frame}
-\alias{probe.objfun,data.frame-method}
-\alias{probe.objfun-pomp}
-\alias{probe.objfun,pomp-method}
-\alias{probe.objfun-probed_pomp}
-\alias{probe.objfun,probed_pomp-method}
-\alias{probe.objfun-probe_match_objfun}
-\alias{probe.objfun,probe_match_objfun-method}
+\alias{probe_objfun}
+\alias{probe_objfun,missing-method}
+\alias{probe_objfun,ANY-method}
+\alias{probe_objfun-data.frame}
+\alias{probe_objfun,data.frame-method}
+\alias{probe_objfun-pomp}
+\alias{probe_objfun,pomp-method}
+\alias{probe_objfun-probed_pomp}
+\alias{probe_objfun,probed_pomp-method}
+\alias{probe_objfun-probe_match_objfun}
+\alias{probe_objfun,probe_match_objfun-method}
 \title{Probe matching}
 \usage{
-\S4method{probe.objfun}{data.frame}(data, est = character(0),
+\S4method{probe_objfun}{data.frame}(data, est = character(0),
   fail.value = NA, probes, nsim, seed = NULL, params, rinit, rprocess,
   rmeasure, partrans, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{probe.objfun}{pomp}(data, est = character(0),
+\S4method{probe_objfun}{pomp}(data, est = character(0),
   fail.value = NA, probes, nsim, seed = NULL, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{probe.objfun}{probed_pomp}(data, est = character(0),
+\S4method{probe_objfun}{probed_pomp}(data, est = character(0),
   fail.value = NA, probes, nsim, seed = NULL, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{probe.objfun}{probe_match_objfun}(data, est, fail.value,
+\S4method{probe_objfun}{probe_match_objfun}(data, est, fail.value,
   seed = NULL, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
@@ -89,8 +89,8 @@ See the \link[=userdata]{userdata documentation here} for information on how to 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
-\code{probe.objfun} constructs a stateful objective function for probe matching.
-Specifically, \code{probe.objfun} returns an object of class \sQuote{probe_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+\code{probe_objfun} constructs a stateful objective function for probe matching.
+Specifically, \code{probe_objfun} returns an object of class \sQuote{probe_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 When called, it will return the negative synthetic log likelihood for the probes specified.
 It is a stateful function:
@@ -127,7 +127,7 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
   ## Construct the probe-matching objective function.
   ## Here, we just want to estimate 'K'.
   po \%>\%
-    probe.objfun(probes=plist,nsim=100,seed=5069977,
+    probe_objfun(probes=plist,nsim=100,seed=5069977,
       est="K") -> f
 
   ## Any numerical optimizer can be used to minimize 'f'.
@@ -145,9 +145,9 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
   f \%>\% probe() \%>\% plot()
 
   ## One can modify the objective function with another call
-  ## to 'probe.objfun':
+  ## to 'probe_objfun':
 
-  f \%>\% probe.objfun(est=c("r","K")) -> f1
+  f \%>\% probe_objfun(est=c("r","K")) -> f1
 }
 }
 \seealso{

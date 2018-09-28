@@ -15,7 +15,7 @@
   ## Construct the probe-matching objective function.
   ## Here, we just want to estimate 'K'.
   po %>%
-    probe.objfun(probes=plist,nsim=100,seed=5069977,
+    probe_objfun(probes=plist,nsim=100,seed=5069977,
       est="K") -> f
 
   ## Any numerical optimizer can be used to minimize 'f'.
@@ -33,7 +33,7 @@
   f %>% probe() %>% plot()
 
   ## One can modify the objective function with another call
-  ## to 'probe.objfun':
+  ## to 'probe_objfun':
 
-  f %>% probe.objfun(est=c("r","K")) -> f1
+  f %>% probe_objfun(est=c("r","K")) -> f1
 }
