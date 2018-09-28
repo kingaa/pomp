@@ -6,7 +6,8 @@
 ##' @rdname bake
 ##'
 ##' @details
-##' On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.  The \code{bake} and \code{stew} functions perform analogously:
+##' On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.
+##' The \code{bake} and \code{stew} functions perform analogously:
 ##' an computation is performed and stored in a named file.
 ##' If the function is called again and the file is present, the computation is not executed.
 ##' Instead, the results are loaded from the file in which they were previously stored.

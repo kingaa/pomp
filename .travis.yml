@@ -5,6 +5,9 @@ file_glob: true
 latex: false
 pandoc: false
 
+r-packages:
+  - roxygen2
+
 addons:
   apt:
     packages:
