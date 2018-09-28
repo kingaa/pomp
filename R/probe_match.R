@@ -39,6 +39,8 @@
 ##'
 ##' @inheritSection objfun Important Note
 ##'
+##' @example examples/probe_match.R
+##'
 NULL
 
 setClass(
