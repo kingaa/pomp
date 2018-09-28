@@ -18,13 +18,14 @@
 ##' returned as well.
 ##'
 ##' @author Aaron A. King
+##' 
 ##' @examples
 ##'
-##'   ## an estimate of the log likelihood:
-##'   ll <- replicate(n=5,logLik(pfilter(ricker(),Np=1000)))
-##'   logmeanexp(ll)
-##'   ## with standard error:
-##'   logmeanexp(ll,se=TRUE)
+##' ## an estimate of the log likelihood:
+##' ll <- replicate(n=5,logLik(pfilter(ricker(),Np=1000)))
+##' logmeanexp(ll)
+##' ## with standard error:
+##' logmeanexp(ll,se=TRUE)
 ##'
 ##' @export
 logmeanexp <- function (x, se = FALSE) {

@@ -61,8 +61,7 @@ The name of that object is not saved.
 By contrast, \code{stew} creates a local environment within which \code{expr} is evaluated; all objects in that environment are saved (by name) in \code{file}.
 }
 \examples{
-
-  \dontrun{
+\donttest{
   bake(file="example1.rds",{
     x <- runif(1000)
     mean(x)
@@ -74,11 +73,10 @@ By contrast, \code{stew} creates a local environment within which \code{expr} is
   })
 
   plot(x,y)
-  }
 
   freeze(runif(3),seed=5886730)
   freeze(runif(3),seed=5886730)
-
+}
 }
 \author{
 Aaron A. King

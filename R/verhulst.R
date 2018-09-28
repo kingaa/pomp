@@ -27,14 +27,8 @@
 ##' The following basic components are included in the \sQuote{pomp} object:
 ##' \sQuote{rinit}, \sQuote{rprocess}, \sQuote{rmeasure}, \sQuote{dmeasure}, and \sQuote{skeleton}.
 ##'
-##' @examples
+##' @example examples/verhulst.R
 ##'
-##' verhulst() -> po
-##' plot(po)
-##' plot(simulate(po))
-##' pfilter(po,Np=1000) -> pf
-##' logLik(pf)
-##' spy(po)
 NULL
 
 ##' @rdname verhulst

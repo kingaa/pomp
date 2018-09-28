@@ -39,7 +39,6 @@ Numerically, we simulate the stochastic dynamics using an Euler approximation.
 The measurements are assumed to be log-normally distributed.
 }
 \examples{
-
 verhulst() -> po
 plot(po)
 plot(simulate(po))

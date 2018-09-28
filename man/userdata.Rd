@@ -147,7 +147,6 @@ simulate(times=1:100,t0=0,
       c(y=rpois(n=1,lambda=phi*N))
   }
 ) -> rick3
-
 }
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},

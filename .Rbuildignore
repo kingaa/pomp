@@ -1,10 +1,11 @@
+examples
 tests/Makefile
 tests/(.+?)\.png$
 tests/(.+?)\.pdf$
 tests/(.+?)\.Rout$
 inst/doc/Makefile
-int/doc/(.+?).md
-int/doc/(.+?).Rmd
+inst/doc/(.+?).md
+inst/doc/(.+?).Rmd
 LICENSE\.md$
 README\.md$
 TODO\.md$
