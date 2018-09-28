@@ -123,10 +123,10 @@ There are currently ten of these:
     - `mif2`: iterated filtering (IF2)
     - `enkf`: ensemble Kalman filter
     - `eakf`: ensemble adjusted Kalman filter
-    - `traj.objfun`: trajectory matching
-    - `spect.objfun`: power spectrum matching
-    - `probe.objfun`: probe matching
-    - `nlf.objfun`: nonlinear forecasting
+    - `traj_objfun`: trajectory matching
+    - `spect_objfun`: power spectrum matching
+    - `probe_objfun`: probe matching
+    - `nlf_objfun`: nonlinear forecasting
 
 - *Objective function methods*: 
   among the estimation algorithms just listed, four are methods that construct stateful objective functions that can be optimized using general-purpose numerical optimization algorithms such as `optim`, `subplex`, or the optimizers in the **nloptr** package.
@@ -318,7 +318,7 @@ In **pomp** versions <2, the functions `probe.match`, `spect.match`, `traj.match
 As of version 2, these functions are no longer part of the package.
 Their functionality has been replaced by a new set of *objective function* methods.
 
-The functions `probe.objfun`, `spect.objfun`, `traj.objfun`, and `nlf.objfun` construct *stateful objective functions*.
+The functions `probe_objfun`, `spect_objfun`, `traj_objfun`, and `nlf_objfun` construct *stateful objective functions*.
 These functions can be passed to any `optim`-like numerical minimization routine.
 This is a large increase in the flexibility of the package, since one is free to choose essentially any minimization routine.
 
