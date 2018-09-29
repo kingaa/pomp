@@ -340,7 +340,7 @@ it assumes the initial state distribution is concentrated at a point mass determ
 calls to `dprocess` and `rprocess` will result in missing values (`NA`).
 - The default measurement model is "missing" as well.
 - The default prior is flat and improper:
-all calls to the default `dprior` result in 1 (0 if `log = TRUE`, and all calls to `rprior` result in `NA`.
+all calls to the default `dprior` result in 1 (0 if `log = TRUE`), and all calls to `rprior` result in `NA`.
 - The default skeleton is missing.
 - The default parameter transformations remain the identity.
 

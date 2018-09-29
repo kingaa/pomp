@@ -12,7 +12,7 @@
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2018-09-28" />
+<meta name="date" content="2018-09-29" />
 
 <title>pomp version 2 upgrade guide</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore"><strong>pomp</strong> version 2 upgrade guide</h1>
 <h4 class="author"><em>Aaron A. King</em></h4>
-<h4 class="date"><em>28 September 2018</em></h4>
+<h4 class="date"><em>29 September 2018</em></h4>
 
 
 <div id="TOC">
@@ -88,7 +88,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 </div>
 
-<p>This document was produced using <strong>pomp</strong> version 2.0.3.2 and <strong>R</strong> version 3.5.1.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.0.5.0 and <strong>R</strong> version 3.5.1.</p>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
@@ -302,7 +302,7 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 <li>The default <code>rinit</code> behavior remains as it was: it assumes the initial state distribution is concentrated at a point mass determined by parameters with <code>.0</code> or <code>_0</code> suffices.</li>
 <li>The default process model is “missing”: calls to <code>dprocess</code> and <code>rprocess</code> will result in missing values (<code>NA</code>).</li>
 <li>The default measurement model is “missing” as well.</li>
-<li>The default prior is flat and improper: all calls to the default <code>dprior</code> result in 1 (0 if <code>log = TRUE</code>, and all calls to <code>rprior</code> result in <code>NA</code>.</li>
+<li>The default prior is flat and improper: all calls to the default <code>dprior</code> result in 1 (0 if <code>log = TRUE</code>), and all calls to <code>rprior</code> result in <code>NA</code>.</li>
 <li>The default skeleton is missing.</li>
 <li>The default parameter transformations remain the identity.</li>
 </ul>
