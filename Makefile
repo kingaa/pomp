@@ -15,7 +15,7 @@ INSTALL = install
 PKG = $(shell perl -ne 'print $$1 if /Package:\s+((\w+[-\.]?)+)/;' DESCRIPTION)
 VERSION = $(shell perl -ne 'print $$1 if /Version:\s+((\d+[-\.]?)+)/;' DESCRIPTION)
 PKGVERS = $(PKG)_$(VERSION)
-SOURCE=$(shell ls R/*R src/* man/*Rd data/* tests/*R)
+SOURCE=$(shell ls R/*R src/*.c src/*.h data/* tests/*R)
 
 default:
 	@echo $(PKGVERS)
@@ -57,7 +57,7 @@ session: install
 roxy: $(SOURCE)
 	$(REXE) -e "devtools::document(roclets=c('rd','collate','namespace'))"
 
-dist: NEWS $(PKGVERS).tar.gz
+dist: roxy NEWS $(PKGVERS).tar.gz
 
 $(PKGVERS).tar.gz: $(SOURCE) includes
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both --md5 .
