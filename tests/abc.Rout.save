@@ -100,6 +100,13 @@ Error : in 'abc': 'data' is a required argument.
 > try(abc(3))
 Error : 'abc' is undefined for 'data' of class 'numeric'.
 > 
+> s5 <- simulate(abc5)
+> stopifnot(
++   is(abc5,"abcd_pomp"),
++   is(simulate(s5),"pomp"),
++   !is(simulate(s5),"abcd_pomp")
++ )
+> 
 > try(abc(abc1,Nabc=-5))
 Error : in 'abc': 'Nabc' must be a positive integer.
 > stopifnot(all(dim(traces(abc(abc1,Nabc=0))==c(1,10))))

@@ -174,7 +174,7 @@ pomp <- function (data, times, t0, ...,
       missing(rprior) && missing(dprior) && missing(partrans) &&
       missing(covar) && missing(params) && missing(accumvars) &&
       length(list(...)) == 0)
-    return(data)
+    return(as(data,"pomp"))
 
   if (missing(times)) times <- NULL
 

@@ -68,6 +68,13 @@ abc4 %>% abc(proposal=function(theta,...)theta) %>% plot()
 try(abc())
 try(abc(3))
 
+s5 <- simulate(abc5)
+stopifnot(
+  is(abc5,"abcd_pomp"),
+  is(simulate(s5),"pomp"),
+  !is(simulate(s5),"abcd_pomp")
+)
+
 try(abc(abc1,Nabc=-5))
 stopifnot(all(dim(traces(abc(abc1,Nabc=0))==c(1,10))))
 
