@@ -57,7 +57,7 @@ session: install
 roxy: $(SOURCE)
 	$(REXE) -e "devtools::document(roclets=c('rd','collate','namespace'))"
 
-dist: roxy NEWS $(PKGVERS).tar.gz
+dist: NEWS $(PKGVERS).tar.gz
 
 $(PKGVERS).tar.gz: $(SOURCE) includes
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both --md5 .
