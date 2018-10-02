@@ -12,6 +12,7 @@
 ##' @rdname spect_match
 ##' @family \pkg{pomp} parameter estimation methods
 ##' @aliases spect_objfun spect_objfun,missing-method spect_objfun,ANY-method
+##' @example examples/spect_match.R
 ##'
 ##' @include spect.R probe_match.R loglik.R
 ##'

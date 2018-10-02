@@ -143,6 +143,26 @@ Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes 
 Therefore, it is a good idea to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
 }
 
+\examples{
+\donttest{
+
+  library(magrittr)
+
+  ricker() \%>\%
+    nlf_objfun(est=c("r","sigma","N_0"),lags=c(4,6),
+      partrans=parameter_trans(log=c("r","sigma","N_0")),
+      paramnames=c("r","sigma","N_0"),
+      ti=100,tf=2000,seed=426094906L) -> m1
+
+  library(subplex)
+  subplex(par=log(c(20,0.5,5)),fn=m1,control=list(reltol=1e-4)) -> out
+
+  m1(out$par)
+  coef(m1)
+  plot(simulate(m1))
+
+}
+}
 \references{
 Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B. T. and Nychka D. W. (1998)
 Noise and nonlinearity in measles epidemics:

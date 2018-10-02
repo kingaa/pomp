@@ -95,6 +95,8 @@
 ##' scalar.
 ##' If the data are multivariate, \code{transform.data} should assume a vector input and return a vector of the same length.
 ##'
+##' @example examples/nlf.R
+##'
 ##' @inheritParams probe.match
 ##' @inheritParams pomp
 ##'

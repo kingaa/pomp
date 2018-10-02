@@ -28,7 +28,7 @@ dist manual vignettes: export GS_QUALITY=ebook
 dist manual vignettes: export R_HOME=$(shell $(REXE) RHOME)
 check xcheck xxcheck: export FULL_TESTS=yes
 xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
-htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
+session htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
 xxcheck: export R_LIBS=$(CURDIR)/check
 
 includes: inst/include/pomp.h inst/include/pomp_defines.h
@@ -52,7 +52,7 @@ www/NEWS.html: inst/NEWS.Rd
 	$(RCMD) Rdconv -t html inst/NEWS.Rd -o www/NEWS.html
 
 session: install
-	R_LIBS=$(CURDIR)/library exec $(REXE)
+	exec $(REXE)
 
 roxy: $(SOURCE)
 	$(REXE) -e "devtools::document(roclets=c('rd','collate','namespace'))"

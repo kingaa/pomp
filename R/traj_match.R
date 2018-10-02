@@ -36,6 +36,9 @@
 ##' @inheritSection objfun Important Note
 ##' @seealso \code{\link{trajectory}}, \code{\link{optim}},
 ##' \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
+##' 
+##' @example examples/traj_match.R
+##' 
 NULL
 
 setClass(
