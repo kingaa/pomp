@@ -159,6 +159,6 @@ inst/doc/*.html: install
 
 clean:
 	$(RM) -r check
-	$(RM) src/*.o src/*.so src/symbols.rds vignettes/Rplots.*
+	$(RM) src/*.o src/*.so src/symbols.rds www/vignettes/Rplots.*
 	$(RM) -r inst/doc/figure inst/doc/cache
 	$(RM) *.tar.gz $(PKGVERS).zip $(PKGVERS).tgz $(PKG).pdf
