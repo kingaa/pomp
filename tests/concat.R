@@ -1,7 +1,6 @@
 options(digits=3)
 
 library(pomp2)
-library(magrittr)
 
 try(pomp2:::concat())
 try(pomp2:::concat("a","b"))

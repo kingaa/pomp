@@ -2,7 +2,6 @@ options(digits=3)
 png(filename="traj_match-%02d.png",res=100)
 
 library(pomp2)
-library(magrittr)
 
 ou2() -> ou2
 

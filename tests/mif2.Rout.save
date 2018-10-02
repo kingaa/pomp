@@ -39,7 +39,6 @@ The following objects are masked from 'package:base':
     intersect, setdiff, setequal, union
 
 > library(reshape2)
-> library(magrittr)
 > 
 > gompertz() %>% window(end=10) -> po
 > 

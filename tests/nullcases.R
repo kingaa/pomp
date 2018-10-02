@@ -1,5 +1,4 @@
 library(pomp2)
-library(magrittr)
 
 simulate(times=1:10,t0=0,
          statenames="x",

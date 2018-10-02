@@ -1,7 +1,6 @@
 options(digits=3,keep.source=TRUE)
 
 library(pomp2)
-library(magrittr)
 
 pomp2:::pomp_fun()
 pomp2:::pomp_fun(NULL)

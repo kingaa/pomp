@@ -25,7 +25,6 @@ Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(ggplot2)
-> library(magrittr)
 > library(dplyr)
 
 Attaching package: 'dplyr'
@@ -39,13 +38,6 @@ The following objects are masked from 'package:base':
     intersect, setdiff, setequal, union
 
 > library(tidyr)
-
-Attaching package: 'tidyr'
-
-The following object is masked from 'package:magrittr':
-
-    extract
-
 > 
 > set.seed(49596868L)
 > 
@@ -103,12 +95,11 @@ Warning message:
 +   facet_grid(variable~.id,scales="free_y")+
 +   labs(title="death process, Gillespie",subtitle=expression(mu==0.01))
 > stopifnot(
-+   sims %>%
-+     group_by(.id) %>%
-+     mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
-+     filter(!Nn) %>%
-+     nrow() %>%
-+     equals(0)
++ (sims %>%
++    group_by(.id) %>%
++    mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
++    filter(!Nn) %>%
++    nrow()) == 0
 + )
 > 
 > create_example(simulator="onestep",times=c(0,1,10,100,1000)) %>%
@@ -139,14 +130,13 @@ Warning message:
 +   ggplot(aes(x=time,y=value,group=interaction(.id,variable)))+
 +   geom_step()+
 +   facet_grid(variable~.id,scales="free_y")+
-+    labs(title="death process, onestep",subtitle=expression(mu==0.01))
++   labs(title="death process, onestep",subtitle=expression(mu==0.01))
 > stopifnot(
-+   sims %>%
-+     group_by(.id) %>%
-+     mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
-+     filter(!Nn) %>%
-+     nrow() %>%
-+     equals(0)
++ (sims %>%
++    group_by(.id) %>%
++    mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
++    filter(!Nn) %>%
++    nrow()) == 0
 + )
 > 
 > create_example(simulator="euler",times=c(0,1,10,100,1000)) %>%
@@ -179,12 +169,11 @@ Warning message:
 +   facet_grid(variable~.id,scales="free_y")+
 +   labs(title="death process, Euler",subtitle=expression(mu==0.01))
 > stopifnot(
-+   sims %>%
-+     group_by(.id) %>%
-+     mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
-+     filter(!Nn) %>%
-+     nrow() %>%
-+     equals(0)
++ (sims %>%
++    group_by(.id) %>%
++    mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
++    filter(!Nn) %>%
++    nrow()) == 0
 + )
 > 
 > create_example(mu=1) %>%

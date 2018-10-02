@@ -89,15 +89,7 @@ Warning message:
 'rmeasure' unspecified: NAs generated. 
 > 
 > ## ----logistic-plot1,echo=FALSE-------------------------------------------
-> library(magrittr)
 > library(tidyr)
-
-Attaching package: 'tidyr'
-
-The following object is masked from 'package:magrittr':
-
-    extract
-
 > 
 > simStates %>%
 +   melt() %>%
@@ -258,11 +250,11 @@ NULL
 +     theme_bw()
 > 
 > ## ----parus-dprior--------------------------------------------------------
-> parus %<>%
+> parus %>%
 +   pomp(dprior=Csnippet("
 +     lik = dunif(r,0,5,1)+dunif(K,100,600,1)+dunif(sigma,0,2,1);
 +     lik = (give_log) ? lik : exp(lik);
-+   "),paramnames=c("r","K","sigma"))
++   "),paramnames=c("r","K","sigma")) -> parus
 > 
 > dev.off()
 null device 

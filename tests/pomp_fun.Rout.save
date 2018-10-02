@@ -23,7 +23,6 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
-> library(magrittr)
 > 
 > pomp2:::pomp_fun()
 <default>

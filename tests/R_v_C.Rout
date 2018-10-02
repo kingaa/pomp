@@ -26,7 +26,6 @@ Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(ggplot2)
-> library(magrittr)
 > 
 > ## ----seed,echo=FALSE-----------------------------------------------------
 > set.seed(56300069)
@@ -112,16 +111,16 @@ For information on upgrading your pomp version < 2 code, see the
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  7.624   0.064   7.688 
+  8.072   0.064   8.137 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.356   0.000   0.355 
+  0.396   0.004   0.400 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.636   0.000   0.637 
+  0.696   0.000   0.695 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.052   0.000   0.050 
+  0.060   0.000   0.059 
 > 
 > dev.off()
 null device 

@@ -3,7 +3,6 @@ png(filename="dp-%02d.png",res=100)
 
 library(pomp2)
 library(ggplot2)
-library(magrittr)
 library(dplyr)
 library(tidyr)
 
@@ -53,12 +52,11 @@ sims %>%
   facet_grid(variable~.id,scales="free_y")+
   labs(title="death process, Gillespie",subtitle=expression(mu==0.01))
 stopifnot(
-  sims %>%
-    group_by(.id) %>%
-    mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
-    filter(!Nn) %>%
-    nrow() %>%
-    equals(0)
+(sims %>%
+   group_by(.id) %>%
+   mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
+   filter(!Nn) %>%
+   nrow()) == 0
 )
 
 create_example(simulator="onestep",times=c(0,1,10,100,1000)) %>%
@@ -79,14 +77,13 @@ sims %>%
   ggplot(aes(x=time,y=value,group=interaction(.id,variable)))+
   geom_step()+
   facet_grid(variable~.id,scales="free_y")+
-   labs(title="death process, onestep",subtitle=expression(mu==0.01))
+  labs(title="death process, onestep",subtitle=expression(mu==0.01))
 stopifnot(
-  sims %>%
-    group_by(.id) %>%
-    mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
-    filter(!Nn) %>%
-    nrow() %>%
-    equals(0)
+(sims %>%
+   group_by(.id) %>%
+   mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
+   filter(!Nn) %>%
+   nrow()) == 0
 )
 
 create_example(simulator="euler",times=c(0,1,10,100,1000)) %>%
@@ -109,12 +106,11 @@ sims %>%
   facet_grid(variable~.id,scales="free_y")+
   labs(title="death process, Euler",subtitle=expression(mu==0.01))
 stopifnot(
-  sims %>%
-    group_by(.id) %>%
-    mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
-    filter(!Nn) %>%
-    nrow() %>%
-    equals(0)
+(sims %>%
+   group_by(.id) %>%
+   mutate(s=cumsum(ct),Nn=(N+s)==100) %>%
+   filter(!Nn) %>%
+   nrow()) == 0
 )
 
 create_example(mu=1) %>%

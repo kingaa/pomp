@@ -1,5 +1,4 @@
 library(pomp2)
-library(magrittr)
 
 gompertz() -> po
 

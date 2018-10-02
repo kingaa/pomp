@@ -1,3 +1,5 @@
+options(digits=3)
+
 library(pomp2)
 library(magrittr)
 

@@ -86,7 +86,6 @@ dim(filter.traj(c(pf1,pf4)))
 names(dimnames(filter.traj(c(pf1,pf4))))
 names(melt(as(c(pf1,pf4),"data.frame")))
 
-library(magrittr)
 
 try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
 

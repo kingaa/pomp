@@ -2,7 +2,6 @@ options(digits=3)
 set.seed(58668844L)
 
 library(pomp2)
-library(magrittr)
 
 simulate(times=seq(1,100),t0=0,
   nbasis=9L,
@@ -56,4 +55,4 @@ try(po %>%
 stopifnot(po %>%
     simulate(rprocess=onestep(
       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));")),
-      bob=3L) %>% class() %>% equals("pomp"))
+      bob=3L) %>% class() %>% magrittr::equals("pomp"))

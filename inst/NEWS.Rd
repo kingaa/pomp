@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.0.7}{
+  \itemize{
+    \item The \pkg{magrittr} pipe operator, \code{\%>\%}, is now re-exported.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.0.6}{
   \itemize{
     \item More examples have been included.

@@ -32,7 +32,6 @@ try(covariate_table(a=1:10,b=10:1,times="b"))
 try(covariate_table(a=1:10,b=10:1,times="c"))
 try(covariate_table(a=1:10,b=10:1,times=NA))
 
-library(magrittr)
 library(tidyr)
 library(ggplot2)
 

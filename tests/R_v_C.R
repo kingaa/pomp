@@ -4,7 +4,6 @@ png(filename="R_v_C-%02d.png",res=100)
 ## ----packages------------------------------------------------------------
 library(pomp2)
 library(ggplot2)
-library(magrittr)
 
 ## ----seed,echo=FALSE-----------------------------------------------------
 set.seed(56300069)

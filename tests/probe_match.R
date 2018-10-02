@@ -2,7 +2,6 @@ options(digits=3)
 png(filename="probe_match-%02d.png",res=100)
 
 library(pomp2)
-library(magrittr)
 
 gompertz() -> po
 po %>% as.data.frame() %>% subset(select=-X) -> dat

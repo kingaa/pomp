@@ -65,7 +65,6 @@ parus <- pomp(data=parus.dat,time="year",t0=1959,
 simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),format="arrays")$states
 
 ## ----logistic-plot1,echo=FALSE-------------------------------------------
-library(magrittr)
 library(tidyr)
 
 simStates %>%
@@ -193,10 +192,10 @@ simulate(tm,nsim=10,format="data.frame",include.data=TRUE) %>%
     theme_bw()
 
 ## ----parus-dprior--------------------------------------------------------
-parus %<>%
+parus %>%
   pomp(dprior=Csnippet("
     lik = dunif(r,0,5,1)+dunif(K,100,600,1)+dunif(sigma,0,2,1);
     lik = (give_log) ? lik : exp(lik);
-  "),paramnames=c("r","K","sigma"))
+  "),paramnames=c("r","K","sigma")) -> parus
 
 dev.off()
