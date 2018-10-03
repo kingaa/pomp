@@ -90,13 +90,14 @@ American Mathematical Society, Providence.
 }
 \seealso{
 Other pomp examples: \code{\link{dacca}},
-  \code{\link{gompertz}}, \code{\link{measles}},
-  \code{\link{ou2}}, \code{\link{ricker}},
-  \code{\link{rw2}}, \code{\link{sir_models}},
-  \code{\link{verhulst}}
+  \code{\link{ebola}}, \code{\link{gompertz}},
+  \code{\link{measles}}, \code{\link{ou2}},
+  \code{\link{ricker}}, \code{\link{rw2}},
+  \code{\link{sir_models}}, \code{\link{verhulst}}
 
 Other datasets: \code{\link{bsflu}}, \code{\link{dacca}},
-  \code{\link{measles}}, \code{\link{parus}}
+  \code{\link{ebola}}, \code{\link{measles}},
+  \code{\link{parus}}
 }
 \concept{datasets}
 \concept{pomp examples}

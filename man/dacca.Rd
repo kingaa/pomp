@@ -76,14 +76,14 @@ Nature, 454:877-880, 2008
 }
 \seealso{
 Other pomp examples: \code{\link{blowflies}},
-  \code{\link{gompertz}}, \code{\link{measles}},
-  \code{\link{ou2}}, \code{\link{ricker}},
-  \code{\link{rw2}}, \code{\link{sir_models}},
-  \code{\link{verhulst}}
+  \code{\link{ebola}}, \code{\link{gompertz}},
+  \code{\link{measles}}, \code{\link{ou2}},
+  \code{\link{ricker}}, \code{\link{rw2}},
+  \code{\link{sir_models}}, \code{\link{verhulst}}
 
 Other datasets: \code{\link{blowflies}},
-  \code{\link{bsflu}}, \code{\link{measles}},
-  \code{\link{parus}}
+  \code{\link{bsflu}}, \code{\link{ebola}},
+  \code{\link{measles}}, \code{\link{parus}}
 }
 \concept{datasets}
 \concept{pomp examples}

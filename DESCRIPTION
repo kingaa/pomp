@@ -84,6 +84,7 @@ Collate:
     'deprecated.R'
     'design.R'
     'distributions.R'
+    'ebola.R'
     'eff_sample_size.R'
     'extract.R'
     'filter_mean.R'

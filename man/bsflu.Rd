@@ -36,7 +36,7 @@ British Medical Journal 1:587
 \link{sir_models}
 
 Other datasets: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{measles}},
-  \code{\link{parus}}
+  \code{\link{dacca}}, \code{\link{ebola}},
+  \code{\link{measles}}, \code{\link{parus}}
 }
 \concept{datasets}
