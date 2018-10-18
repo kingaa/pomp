@@ -12,7 +12,7 @@
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2018-10-17" />
+<meta name="date" content="2018-10-18" />
 
 <title>pomp version 2 upgrade guide</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore"><strong>pomp</strong> version 2 upgrade guide</h1>
 <h4 class="author"><em>Aaron A. King</em></h4>
-<h4 class="date"><em>17 October 2018</em></h4>
+<h4 class="date"><em>18 October 2018</em></h4>
 
 
 <div id="TOC">
@@ -88,6 +88,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 </div>
 
+<style type="text/css">
+a:link, a:visited {
+    color: #0000ff;
+    text-decoration: none;
+}
+a:hover, a:active {
+    color: #cc3333;
+    text-decoration: none;
+}
+</style>
 <p>This document was produced using <strong>pomp</strong> version 2.0.6.0 and <strong>R</strong> version 3.5.1.</p>
 <hr />
 <div id="overview" class="section level2">
@@ -140,7 +150,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="timetable-for-rollout-of-pomp-version-2" class="section level2">
 <h2>Timetable for rollout of <strong>pomp</strong> version 2</h2>
-<p>To minimize inconvenience in the face of backward-incompatible changes, version 2 will be made available initially in source and binary formats as <strong>pomp2</strong> via the [<a href="https://kingaa.github.io/" class="uri">https://kingaa.github.io/</a>] package repository. Do</p>
+<p>To minimize inconvenience in the face of backward-incompatible changes, version 2 will be made available initially in source and binary formats as <strong>pomp2</strong> via the <a href="https://kingaa.github.io/" class="uri">https://kingaa.github.io/</a> package repository. Do</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;pomp2&quot;</span>,<span class="dt">repos=</span><span class="st">&quot;https://kingaa.github.io&quot;</span>)</code></pre></div>
 <p>to install it. This is intended to allow users to have both <strong>pomp</strong> (version &lt;2) and <strong>pomp2</strong> installed simultaneously during workflow migration. It is anticipated that in early 2019, <strong>pomp2</strong> will be renamed <strong>pomp</strong> and uploaded to CRAN as version 2.1. From that point forward, there will be no support for older versions of <strong>pomp</strong>.</p>
 </div>

@@ -15,6 +15,17 @@ params:
 stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
 ```
 
+```{css echo=FALSE}
+a:link, a:visited {
+    color: #0000ff;
+    text-decoration: none;
+}
+a:hover, a:active {
+    color: #cc3333;
+    text-decoration: none;
+}
+```
+
 This document was produced using **pomp** version `r packageVersion("pomp2")` and **R** version `r getRversion()`.
 
 ```{r knitr-opts,include=FALSE,purl=FALSE}
@@ -78,7 +89,7 @@ The following table shows the number of lines in the latest pre-2 **pomp** compa
 
 ## Timetable for rollout of **pomp** version 2
 
-To minimize inconvenience in the face of backward-incompatible changes, version 2 will be made available initially in source and binary formats as **pomp2** via the [https://kingaa.github.io/] package repository.
+To minimize inconvenience in the face of backward-incompatible changes, version 2 will be made available initially in source and binary formats as **pomp2** via the https://kingaa.github.io/ package repository.
 Do
 ```{r eval=FALSE}
 install.packages("pomp2",repos="https://kingaa.github.io")
