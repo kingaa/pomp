@@ -17,8 +17,8 @@
 \alias{as,bsmcd_pomp-method}
 \alias{coerce,bsmcd_pomp,data.frame-method}
 \alias{as.data.frame.bsmcd_pomp}
-\alias{as,listies-method}
-\alias{coerce,listies,data.frame-method}
+\alias{as,listie-method}
+\alias{coerce,listie,data.frame-method}
 \alias{coerce-objfun-data.frame}
 \alias{coerce,objfun,data.frame-method}
 \title{Coerce to data frame}

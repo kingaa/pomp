@@ -4,7 +4,7 @@
 \name{show}
 \alias{show}
 \alias{show,unshowable-method}
-\alias{show,listies-method}
+\alias{show,listie-method}
 \alias{show,pomp_fun-method}
 \alias{show,pomp-method}
 \alias{show,abcd_pomp-method}

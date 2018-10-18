@@ -5,7 +5,7 @@
 ##' @name print
 ##' @rdname print
 ##' @include show.R
-##' @aliases print,listies-method print,pomp_fun-method print,unshowable-method
+##' @aliases print,listie-method print,pomp_fun-method print,unshowable-method
 NULL
 
 setGeneric(
@@ -27,7 +27,7 @@ setMethod(
 ##' @export
 setMethod(
   "print",
-  signature=signature(x="listies"),
+  signature=signature(x="listie"),
   definition=function (x, ...) {
     show(x)
     invisible(x)

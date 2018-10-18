@@ -6,7 +6,7 @@
 ##' @rdname plot
 ##' @include pomp_class.R
 ##' @include abc.R mif2.R pmcmc.R pfilter.R spect.R
-##' @include listies.R
+##' @include listie.R
 ##' @aliases plot,missing-method plot,ANY-method
 ##'
 ##' @importFrom graphics plot par abline pairs matplot box axis mtext points polygon lines plot.default legend hist rect text title

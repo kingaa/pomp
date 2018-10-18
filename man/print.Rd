@@ -2,7 +2,7 @@
 % Please edit documentation in R/print.R
 \name{print}
 \alias{print}
-\alias{print,listies-method}
+\alias{print,listie-method}
 \alias{print,pomp_fun-method}
 \alias{print,unshowable-method}
 \title{Print methods}

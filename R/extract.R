@@ -1,15 +1,15 @@
-##' @include listies.R
+##' @include listie.R
 ##' @keywords internal
-##' @rdname listies
-#' @name [-listies
-#' @aliases [,listies-method
+##' @rdname listie
+#' @name [-listie
+#' @aliases [,listie-method
 NULL
 
 ##' @export
-##' @rdname listies
+##' @rdname listie
 setMethod(
   "[",
-  signature=signature(x="listies"),
+  signature=signature(x="listie"),
   definition=function(x, i, ...) {
     y <- as(x,"list")
     names(y) <- names(x)

@@ -7,7 +7,7 @@
 ##' @docType methods
 ##' @aliases coef,missing-method coef,ANY-method
 ##' coef<-,missing-method coef<-,ANY-method
-##' @include pomp_class.R listies.R
+##' @include pomp_class.R listie.R
 ##' @importFrom stats coef
 NULL
 
@@ -39,13 +39,13 @@ setMethod(
   }
 )
 
-##' @name coef-listies
-##' @aliases coef,listies-method
+##' @name coef-listie
+##' @aliases coef,listie-method
 ##' @rdname coef
 ##' @export
 setMethod(
   "coef",
-  signature=signature(object="listies"),
+  signature=signature(object="listie"),
   definition=function(object, ...) {
     do.call(cbind,lapply(object,coef))
   }

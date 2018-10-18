@@ -5,8 +5,8 @@
 ##' @name logLik
 ##' @rdname loglik
 ##' @aliases logLik logLik,ANY-method logLik,missing-method
-##' logLik,listies-method
-##' @include pfilter.R mif2.R pmcmc.R probe.R kalman.R nlf.R listies.R
+##' logLik,listie-method
+##' @include pfilter.R mif2.R pmcmc.R probe.R kalman.R nlf.R listie.R
 ##' @include objfun.R spect_match.R nlf.R
 ##'
 ##' @param object fitted model object
@@ -46,7 +46,7 @@ setMethod(
 ##' @export
 setMethod(
   "logLik",
-  signature=signature(object="listies"),
+  signature=signature(object="listie"),
   definition=function(object,...) {
     do.call(c,lapply(object,logLik,...))
   }

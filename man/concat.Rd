@@ -36,6 +36,6 @@
 \method{c}{Pmcmc}(...)
 }
 \description{
-Methods to concatenate objects into useful listies
+Methods to concatenate objects into useful listie
 }
 \keyword{internal}

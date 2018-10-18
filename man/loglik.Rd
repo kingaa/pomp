@@ -5,7 +5,7 @@
 \alias{logLik}
 \alias{logLik,ANY-method}
 \alias{logLik,missing-method}
-\alias{logLik,listies-method}
+\alias{logLik,listie-method}
 \alias{logLik-pfilterd_pomp}
 \alias{logLik,pfilterd_pomp-method}
 \alias{logLik-probed_pomp}
@@ -26,7 +26,7 @@
 \usage{
 logLik(object, ...)
 
-\S4method{logLik}{listies}(object, ...)
+\S4method{logLik}{listie}(object, ...)
 
 \S4method{logLik}{pfilterd_pomp}(object)
 

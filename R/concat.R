@@ -1,10 +1,10 @@
 ##' Concatenate
 ##'
-##' Methods to concatenate objects into useful listies
+##' Methods to concatenate objects into useful listie
 ##'
 ##' @name concat
 ##' @rdname concat
-##' @include listies.R
+##' @include listie.R
 ##' @importFrom stats setNames
 ##' @keywords internal
 NULL

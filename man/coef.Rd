@@ -7,8 +7,8 @@
 \alias{coef,ANY-method}
 \alias{coef<-,missing-method}
 \alias{coef<-,ANY-method}
-\alias{coef-listies}
-\alias{coef,listies-method}
+\alias{coef-listie}
+\alias{coef,listie-method}
 \alias{coef-pomp}
 \alias{coef,pomp-method}
 \alias{coef<--pomp}
@@ -18,7 +18,7 @@
 \alias{coef,objfun-method}
 \title{Extract, set, or alter coefficients}
 \usage{
-\S4method{coef}{listies}(object, ...)
+\S4method{coef}{listie}(object, ...)
 
 \S4method{coef}{pomp}(object, pars, transform = FALSE, ...)
 

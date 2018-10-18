@@ -7,7 +7,7 @@
 ##' @docType methods
 ##' @keywords internal
 ##'
-##' @aliases show,unshowable-method show,listies-method show,pomp_fun-method
+##' @aliases show,unshowable-method show,listie-method show,pomp_fun-method
 ##' show,pomp-method show,abcd_pomp-method
 ##' show,bsmcd_pomp-method show,kalmand_pomp-method show,mif2d_pomp-method
 ##' show,nlfd_pomp-method show,pfilterd_pomp-method show,pmcmcd_pomp-method
@@ -43,7 +43,7 @@ setMethod(
 ##' @export
 setMethod(
   "show",
-  signature=signature(object="listies"),
+  signature=signature(object="listie"),
   definition=function (object) {
     y <- as(object,"list")
     names(y) <- names(object)
