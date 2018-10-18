@@ -12,7 +12,7 @@
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2018-09-29" />
+<meta name="date" content="2018-10-17" />
 
 <title>pomp version 2 upgrade guide</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore"><strong>pomp</strong> version 2 upgrade guide</h1>
 <h4 class="author"><em>Aaron A. King</em></h4>
-<h4 class="date"><em>29 September 2018</em></h4>
+<h4 class="date"><em>17 October 2018</em></h4>
 
 
 <div id="TOC">
@@ -88,11 +88,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 </div>
 
-<p>This document was produced using <strong>pomp</strong> version 2.0.5.0 and <strong>R</strong> version 3.5.1.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.0.6.0 and <strong>R</strong> version 3.5.1.</p>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p>In <strong>pomp</strong> version 2, a number of backward incompatible changes have been made. These have been designed to increase the usability of the package by making the interfaces more uniform, by increasing code stability, reducing the number of special cases, and removing many of the idiosyncrasies that were present in earlier versions. The goal has been to keep backward-incompatible changes to a minimum. This guide is intended to explain the new structure and point out the changes that are needed to make existing codes that use <strong>pomp</strong> work with the new version.</p>
+<p>In <strong>pomp</strong> version 2, a number of backward incompatible changes have been made. These have been designed to increase the usability of the package by making the interfaces more uniform, by increasing code stability, reducing the number of special cases, and removing many of the idiosyncrasies that were present in earlier versions. The goal has been to keep backward-incompatible changes to a minimum. However, to achieve some improvements, it has been necessary to make some that will break existing code. This guide is intended to explain the new structure and point out the changes that are needed to make existing codes that use <strong>pomp</strong> work with the new version.</p>
 <p>The main novelty of <strong>pomp</strong> version 2 is that one will rarely, if ever, need to interact directly with the low-level <code>pomp</code> constructor. Instead, one can supply new or modify existing model components at (almost) any stage in a chain of <strong>pomp</strong> computations. In particular, there are now data-frame methods for all of the <strong>pomp</strong> inference algorithms, as well as for the so-called <em>elementary POMP algorithms</em>: <code>simulate</code>, <code>pfilter</code>, <code>probe</code>, and <code>spect</code>. One can pass data directly to these methods, along with the requisite model components, and achieve the same effect as one would by first constructing a  object and then performing the operation.</p>
 <p><strong>pomp</strong> version 2 represents a thorough reworking of almost all the package codes. A consequence is that these codes have been streamlined, with no cost in performance and increased flexibility. The following table shows the number of lines in the latest pre-2 <strong>pomp</strong> compared to the current <strong>pomp</strong> version 2.</p>
 <table>
@@ -155,10 +155,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><code>rmeasure</code> and <code>dmeasure</code>: simulator and density evaluation procedure, respectively, for the measurement model.</li>
 <li><code>rprior</code> and <code>dprior</code>: simulator and density evaluation procedure, respectively, for the prior distribution.</li>
 <li><code>skeleton</code>: evaluation of the deterministic skeleton.</li>
-<li><code>partrans</code>: parameter transformations. The term <em>basic model component</em> is meant to refer to the procedure itself, as distinct from the execution of the procedure. The user specifies the procedure (in one of several forms); the package decides when and where to execute the procedure.</li>
+<li><code>partrans</code>: parameter transformations.</li>
 </ul></li>
+</ul>
+<p>The term <em>basic model component</em> is meant to refer to the procedure itself, as distinct from the execution of the procedure. The user specifies the procedure (in one of several forms); the package decides when and where to execute the procedure.</p>
+<ul>
 <li><p><em>Workhorses</em>: <strong>R</strong> functions, built into the package, that cause the basic model component procedures to be executed. Each workhorse has a name that matches that of the corresponding basic model component. In addition, there is the <code>trajectory</code> workhorse, which iterates or integrates the deterministic skeleton (according to whether it is a map or a vectorfield, respectively) to obtain state trajectories.</p></li>
-<li><em>Elementary POMP algorithms</em>: algorithms that interrogate the model/data confrontation without attempting to estimate parameters. There are currently four of these:
+<li><em>Elementary POMP algorithms</em>: algorithms that interrogate the model or the model/data confrontation without attempting to estimate parameters. There are currently four of these:
 <ul>
 <li><code>simulate</code> performs simulations of the POMP model, i.e., it samples from the joint distribution of latent states and observables.</li>
 <li><code>pfilter</code> runs a sequential Monte Carlo (particle filter) algorithm to compute the likelihood and (optionally) estimate the prediction and filtering distributions of the latent state process.</li>
@@ -249,7 +252,7 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">T_alpha = log(alpha);</code></pre></div>
 <p>and the <code>fromEst</code> snippet would include</p>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">alpha = exp(T_alpha);</code></pre></div>
-<p>Because many use cases involve simply log, logit, or log-barycentric transformations, one can handle these cases without needing to write <code>toEst</code> and <code>fromEst</code> C snippets, by naming the parameters to be so transformed in the <code>log</code>, <code>logit</code>, and <code>barycentric</code> arguments of <code>parameter_trans</code>. When these arguments are supplied, <code>parameter_trans</code> internally writes a pair of C snippets to implement the transformations. As with other cases when one refers to parameters in C snippets, one must include all the named parameters in the <code>paramnames</code> argument.</p>
+<p>Because many use cases involve simply log, logit, or log-barycentric transformations, one can handle these cases without needing to write <code>toEst</code> and <code>fromEst</code> C snippets, by naming the parameters to be so transformed in the <code>log</code>, <code>logit</code>, and <code>barycentric</code> arguments of <code>parameter_trans</code>. When these arguments are supplied, <code>parameter_trans</code> internally writes a pair of C snippets to implement the transformations. As with other cases when one refers to parameters in C snippets, one must include all parameters named in the <code>paramnames</code> argument.</p>
 <p>At any point, if one sets <code>partrans = NULL</code> in an elementary or inference algorithm, the parameter transformations are reset to the identity transformation.</p>
 </div>
 <div id="initialization-of-the-latent-state-process" class="section level3">

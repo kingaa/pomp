@@ -55,6 +55,7 @@ by increasing code stability,
 reducing the number of special cases, 
 and removing many of the idiosyncrasies that were present in earlier versions.
 The goal has been to keep backward-incompatible changes to a minimum.
+However, to achieve some improvements, it has been necessary to make some that will break existing code.
 This guide is intended to explain the new structure and point out the changes that are needed to make existing codes that use **pomp** work with the new version.
 
 The main novelty of **pomp** version 2 is that one will rarely, if ever, need to interact directly with the low-level `pomp` constructor.
@@ -99,6 +100,7 @@ There are nine of these:
     - `rprior` and `dprior`: simulator and density evaluation procedure, respectively, for the prior distribution.
     - `skeleton`: evaluation of the deterministic skeleton.
     - `partrans`: parameter transformations.
+
 The term *basic model component* is meant to refer to the procedure itself, as distinct from the execution of the procedure.
 The user specifies the procedure (in one of several forms);
 the package decides when and where to execute the procedure.
@@ -108,7 +110,7 @@ the package decides when and where to execute the procedure.
   In addition, there is the `trajectory` workhorse, which iterates or integrates the deterministic skeleton (according to whether it is a map or a vectorfield, respectively) to obtain state trajectories. 
 
 - *Elementary POMP algorithms*: 
-  algorithms that interrogate the model/data confrontation without attempting to estimate parameters.
+  algorithms that interrogate the model or the model/data confrontation without attempting to estimate parameters.
   There are currently four of these:
     - `simulate` performs simulations of the POMP model, i.e., it samples from the joint distribution of latent states and observables.
     - `pfilter` runs a sequential Monte Carlo (particle filter) algorithm to compute the likelihood and (optionally) estimate the prediction and filtering distributions of the latent state process.
@@ -250,7 +252,7 @@ alpha = exp(T_alpha);
 
 Because many use cases involve simply log, logit, or log-barycentric transformations, one can handle these cases without needing to write `toEst` and `fromEst` C snippets, by naming the parameters to be so transformed in the `log`, `logit`, and `barycentric` arguments of `parameter_trans`.
 When these arguments are supplied, `parameter_trans` internally writes a pair of C snippets to implement the transformations.
-As with other cases when one refers to parameters in C snippets, one must include all the named parameters in the `paramnames` argument.
+As with other cases when one refers to parameters in C snippets, one must include all parameters named in the `paramnames` argument.
 
 At any point, if one sets `partrans = NULL` in an elementary or inference algorithm, the parameter transformations are reset to the identity transformation.
 
