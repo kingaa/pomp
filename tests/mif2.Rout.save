@@ -135,7 +135,7 @@ Error : in 'mif2': 'rw.sd' should be specified using the 'rw.sd' function. See '
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd()))
 Error : in 'mif2': in 'rw.sd': parameters must be referenced by name.
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(a=9)))
-Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', are not present in 'start': 'a'.
+Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', are not present in 'params': 'a'.
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=1:1000)))
 Error : in 'mif2': 'rw.sd' spec for parameter 'sigma' does not evaluate to a vector of the correct length ('length(time(object))'=10).
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
@@ -154,9 +154,9 @@ Error : in 'mif2': 'cooling.fraction.50' must be in (0,1].
 +   cooling.type="geometric",tol=-3))
 Error : in 'mif2': 'tol' should be a small positive number.
 > try(mif2(po,params=NULL,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
-Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', are not present in 'start': 'sigma'.
+Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', are not present in 'params': 'sigma'.
 > try(mif2(po,params=list(),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
-Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', are not present in 'start': 'sigma'.
+Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', are not present in 'params': 'sigma'.
 > try(mif2(po,params=list(NULL),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
 Error : in 'mif2': (list) object cannot be coerced to type 'double'
 > try(mif2(po,params=c(3,2,1),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
@@ -205,7 +205,7 @@ Error : in 'mif2': 'rprocess', 'dmeasure' are needed basic components.
 > try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,rprocess=NULL))
 Error : in 'mif2': 'rprocess', 'dmeasure' are needed basic components.
 > try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,params=NULL))
-Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', are not present in 'start': 'sigma'.
+Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', are not present in 'params': 'sigma'.
 > 
 > theta <- coef(po)
 > theta["sigma"] <- 0.2

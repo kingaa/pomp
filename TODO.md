@@ -50,6 +50,7 @@
 - what does a generic `pomp.fun` interface look like?
 - should parameter transformations allow renaming of variables?
 	- would require attention to `rw.sd`, e.g.
+- weighted particle filter
 
 ## For pomp:
 

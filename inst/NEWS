@@ -1,5 +1,25 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._6:
+
+        • More examples have been included.
+
+        • Minor changes to error messages.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._5:
+
+        • The names of the ‘objfun’ methods have been changed to
+          ‘probe_objfun’, ‘spect_objfun’, ‘traj_objfun’, and
+          ‘nlf_objfun’.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._4:
+
+        • The package directory structure has been modified to include
+          a new ‘examples’ directory, which holds the examples used in
+          the documentation.
+
+        • The names of the ‘objfun’ methods have been shortened.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._3:
 
         • It is now permissible that the sequence of observation times

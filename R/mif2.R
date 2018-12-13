@@ -583,7 +583,7 @@ perturbn.kernel.sd <- function (rw.sd, time, paramnames) {
     unrec <- names(rw.sd)[!names(rw.sd) %in% paramnames]
     pStop_("the following parameter(s), ",
       "given random walks in ",sQuote("rw.sd"),", are not present in ",
-      sQuote("start"),": ",paste(sapply(unrec,sQuote),collapse=","),".")
+      sQuote("params"),": ",paste(sapply(unrec,sQuote),collapse=","),".")
   }
   ivp <- function (sd, lag = 1L) {
     sd*(seq_along(time)==lag)

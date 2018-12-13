@@ -1,5 +1,22 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.0.6}{
+  \itemize{
+    \item More examples have been included.
+    \item Minor changes to error messages.
+  }
+}
+\section{Changes in \pkg{pomp} version 2.0.5}{
+  \itemize{
+    \item The names of the \sQuote{objfun} methods have been changed to \code{probe_objfun}, \code{spect_objfun}, \code{traj_objfun}, and \code{nlf_objfun}.
+  }
+}
+\section{Changes in \pkg{pomp} version 2.0.4}{
+  \itemize{
+    \item The package directory structure has been modified to include a new \file{examples} directory, which holds the examples used in the documentation.
+    \item The names of the \sQuote{objfun} methods have been shortened.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.0.3}{
   \itemize{
     \item It is now permissible that the sequence of observation times (and sequences of covariate times) be merely non-decreasing sequences.
