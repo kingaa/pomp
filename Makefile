@@ -161,4 +161,5 @@ clean:
 	$(RM) -r check
 	$(RM) src/*.o src/*.so src/symbols.rds www/vignettes/Rplots.*
 	$(RM) -r inst/doc/figure inst/doc/cache
+	$(RM) -r *-Ex.Rout *-Ex.timings *-Ex.pdf
 	$(RM) *.tar.gz $(PKGVERS).zip $(PKGVERS).tgz $(PKG).pdf
