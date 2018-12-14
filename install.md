@@ -5,23 +5,32 @@ layout: pomp
 
 ## Installation instructions
 
-### From Github:
+### **pomp** version 2 installation instructions
 
-The github version is usually several weeks ahead of the version on CRAN.
-You can install it from the Github repository by executing the following in an **R** session:
+Because it is not fully backward-compatible, **pomp** version 2 is being made available temporarily as the **pomp2** package.
+**pomp2** is not available on CRAN but it can be installed directly from the **pomp** package repository.
 
+**pomp2** will be phased out, replaced by version 2 of **pomp**, around the middle of 2019.
+At that point, **pomp** versions <2 will no longer be supported.
+
+***It is recommended that users begin making the transition to version 2 now***.
+An [upgrade guide](https://kingaa.github.io/pomp/vignettes/upgrade_guide.html) is available to help you transition your codes to the new version.
+In the interim period, you can have both **pomp** and **pomp2** installed on your system simultaneously.
+
+There are three ways to install **pomp2**.
+
+1. Run the following in an **R** session:  
 ```
-install.packages("pomp",repos="http://kingaa.github.io")
+install.packages("pomp2",repos="https://kingaa.github.io/")
+```  
+1. Use **devtools**:  
 ```
+devtools::install_github("kingaa/pomp")
+```  
+Note that this installs **pomp2**.
+1. Download [the source tarball](https://github.com/kingaa/pomp/releases/) and install locally.
 
-It is also easy to install from source using the <code>devtools</code> package:
-
-```
-require(devtools)
-install_github("kingaa/pomp")
-```
-
-### From CRAN:
+### **pomp** versions <2, from CRAN:
 
 Source and binaries for the [CRAN version are available here](http://cran.r-project.org/package=pomp).
 
