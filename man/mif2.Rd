@@ -47,7 +47,7 @@ Likewise, \code{ivp(s,lag)} is equivalent to \preformatted{ifelse(time==time[lag
 See below for some examples.
 
 The perturbations that are applied are normally distributed with the specified s.d.
-If \code{transform = TRUE}, then they are applied on the estimation scale.}
+If parameter transformations have been supplied, then the perturbations are applied on the transformed (estimation) scale.}
 
 \item{cooling.type, cooling.fraction.50}{specifications for the cooling schedule,
 i.e., the manner and rate with which the intensity of the parameter perturbations is reduced with successive filtering iterations.
