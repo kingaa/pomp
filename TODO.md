@@ -4,6 +4,7 @@
 
 - "guide to upgrading to **pomp** version 2"
 	- ~~discussion of stateful objective functions~~
+	- include before and after codes for the examples from the JSS paper
 - more/better examples
 	- need examples of objective function methods
 - more toy models
