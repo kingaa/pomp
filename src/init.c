@@ -56,6 +56,7 @@ void R_init_pomp2 (DllInfo *info) {
   R_RegisterCCallable("pomp2","set_pomp_userdata",(DL_FUNC) &set_pomp_userdata);
   R_RegisterCCallable("pomp2","unset_pomp_userdata",(DL_FUNC) &unset_pomp_userdata);
   R_RegisterCCallable("pomp2","make_covariate_table",(DL_FUNC) &make_covariate_table);
+  R_RegisterCCallable("pomp2","get_covariate_names",(DL_FUNC) &get_covariate_names);
   R_RegisterCCallable("pomp2","table_lookup",(DL_FUNC) &table_lookup);
   R_RegisterCCallable("pomp2","apply_probe_data",(DL_FUNC) &apply_probe_data);
   R_RegisterCCallable("pomp2","apply_probe_sim",(DL_FUNC) &apply_probe_sim);
