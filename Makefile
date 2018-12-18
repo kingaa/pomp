@@ -55,7 +55,8 @@ session: install
 	exec $(REXE)
 
 roxy: $(SOURCE)
-	$(REXE) -e "devtools::document(roclets=c('rd','collate','namespace'))"
+##	$(REXE) -e "pkgload::load_all(compile=FALSE); devtools::document(roclets=c('rd','collate','namespace'))"
+	$(REXE) -e "pkgbuild::compile_dll(); devtools::document(roclets=c('rd','collate','namespace'))"
 
 dist: NEWS $(PKGVERS).tar.gz
 
