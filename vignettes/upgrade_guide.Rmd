@@ -17,12 +17,12 @@ stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
 
 ```{css echo=FALSE}
 a:link, a:visited {
-    color: #0000ff;
-    text-decoration: none;
+  color: #0000ff;
+  text-decoration: none;
 }
 a:hover, a:active {
-    color: #cc3333;
-    text-decoration: none;
+  color: #cc3333;
+  text-decoration: none;
 }
 ```
 
@@ -96,7 +96,7 @@ install.packages("pomp2",repos="https://kingaa.github.io")
 ```
 to install it.
 This is intended to allow users to have both **pomp** (version <2) and **pomp2** installed simultaneously during workflow migration.
-It is anticipated that in early 2019, **pomp2** will be renamed **pomp** and uploaded to CRAN as version 2.1.
+It is anticipated that, around the middle of 2019, **pomp2** will be renamed **pomp** and uploaded to CRAN as version 2.1.
 From that point forward, there will be no support for older versions of **pomp**.
 
 ## Terminology
@@ -105,45 +105,45 @@ It is useful to divide the **pomp** package functionality into different levels.
 
 - *Basic model components*: user-specified procedures that perform the elementary computations that specify a POMP model.
 There are nine of these:
-    - `rinit`: simulator for the initial-state distribution, i.e., the distribution of the latent state at time `t0`.
-    - `rprocess` and `dprocess`: simulator and density evaluation procedure, respectively, for the process model.
-    - `rmeasure` and `dmeasure`: simulator and density evaluation procedure, respectively, for the measurement model.
-    - `rprior` and `dprior`: simulator and density evaluation procedure, respectively, for the prior distribution.
-    - `skeleton`: evaluation of the deterministic skeleton.
-    - `partrans`: parameter transformations.
+- `rinit`: simulator for the initial-state distribution, i.e., the distribution of the latent state at time `t0`.
+- `rprocess` and `dprocess`: simulator and density evaluation procedure, respectively, for the process model.
+- `rmeasure` and `dmeasure`: simulator and density evaluation procedure, respectively, for the measurement model.
+- `rprior` and `dprior`: simulator and density evaluation procedure, respectively, for the prior distribution.
+- `skeleton`: evaluation of the deterministic skeleton.
+- `partrans`: parameter transformations.
 
 The term *basic model component* is meant to refer to the procedure itself, as distinct from the execution of the procedure.
 The user specifies the procedure (in one of several forms);
 the package decides when and where to execute the procedure.
 
 - *Workhorses*: **R** functions, built into the package, that cause the basic model component procedures to be executed.
-  Each workhorse has a name that matches that of the corresponding basic model component.
-  In addition, there is the `trajectory` workhorse, which iterates or integrates the deterministic skeleton (according to whether it is a map or a vectorfield, respectively) to obtain state trajectories. 
+Each workhorse has a name that matches that of the corresponding basic model component.
+In addition, there is the `trajectory` workhorse, which iterates or integrates the deterministic skeleton (according to whether it is a map or a vectorfield, respectively) to obtain state trajectories. 
 
 - *Elementary POMP algorithms*: 
-  algorithms that interrogate the model or the model/data confrontation without attempting to estimate parameters.
-  There are currently four of these:
-    - `simulate` performs simulations of the POMP model, i.e., it samples from the joint distribution of latent states and observables.
-    - `pfilter` runs a sequential Monte Carlo (particle filter) algorithm to compute the likelihood and (optionally) estimate the prediction and filtering distributions of the latent state process.
-    - `probe` computes one or more uni- or multi-variate summary statistics on both actual and simulated data.
-    - `spect` estimates the power spectral density functions for the actual and simulated data.
+algorithms that interrogate the model or the model/data confrontation without attempting to estimate parameters.
+There are currently four of these:
+- `simulate` performs simulations of the POMP model, i.e., it samples from the joint distribution of latent states and observables.
+- `pfilter` runs a sequential Monte Carlo (particle filter) algorithm to compute the likelihood and (optionally) estimate the prediction and filtering distributions of the latent state process.
+- `probe` computes one or more uni- or multi-variate summary statistics on both actual and simulated data.
+- `spect` estimates the power spectral density functions for the actual and simulated data.
 
 - *POMP estimation algorithms*: procedures that build on the elementary algorithms and are used for estimation of parameters and other inferential tasks.
 There are currently ten of these:
-    - `abc`: approximate Bayesian computation
-    - `bsmc2`: Liu-West algorithm for Bayesian SMC
-    - `pmcmc`: a particle MCMC algorithm
-    - `mif2`: iterated filtering (IF2)
-    - `enkf`: ensemble Kalman filter
-    - `eakf`: ensemble adjusted Kalman filter
-    - `traj_objfun`: trajectory matching
-    - `spect_objfun`: power spectrum matching
-    - `probe_objfun`: probe matching
-    - `nlf_objfun`: nonlinear forecasting
+- `abc`: approximate Bayesian computation
+- `bsmc2`: Liu-West algorithm for Bayesian SMC
+- `pmcmc`: a particle MCMC algorithm
+- `mif2`: iterated filtering (IF2)
+- `enkf`: ensemble Kalman filter
+- `eakf`: ensemble adjusted Kalman filter
+- `traj_objfun`: trajectory matching
+- `spect_objfun`: power spectrum matching
+- `probe_objfun`: probe matching
+- `nlf_objfun`: nonlinear forecasting
 
 - *Objective function methods*: 
-  among the estimation algorithms just listed, four are methods that construct stateful objective functions that can be optimized using general-purpose numerical optimization algorithms such as `optim`, `subplex`, or the optimizers in the **nloptr** package.
-  These have certain new features that will be described below.
+among the estimation algorithms just listed, four are methods that construct stateful objective functions that can be optimized using general-purpose numerical optimization algorithms such as `optim`, `subplex`, or the optimizers in the **nloptr** package.
+These have certain new features that will be described below.
 
 ## Changes in the way models are specified
 
@@ -189,7 +189,15 @@ These have been renamed `onestep`, `discrete_time`, `euler`, `gillespie`, and `g
 
 Note that, if one uses an **R** function to specify the process model simulator, the remarks above under "Basic component specification" apply.
 
-### Covariates
+### Initialization of the latent state process
+
+In **pomp** versions <2, one simulated from the distribution of the latent state process via the "initializer" component.
+As of version 2, this has been renamed "rinit".
+The "rinit" component is supplied to **pomp** functions using the argument of the same name.
+
+If `rinit` is not explicitly specified, the default behavior is to treat any parameters ending with suffices `_0` or `.0` as the values of correspondingly named latent state variables at time `t0`.
+
+## Covariates
 
 Prior to version 2, time-varying covariates upon which basic model components depended were supplied via the two arguments `covar` and `tcovar` to `pomp`.
 For example, in one of the examples, we see
@@ -243,7 +251,7 @@ pomp(
 Prior to version 2, covariates were always linearly interpolated when furnished to any of the basic model components.
 As of version 2, although linear interpolation remains the default, one can also use the `order` argument to direct that the covariates be treated as piecewise-constant, right-continuous functions.
 
-### Parameter transformations
+## Parameter transformations
 
 In **pomp** version <2, one specified parameter transformations by means to two arguments to `pomp`: `fromEstimationScale` and `toEstimationScale`.
 As of version 2, both forward and inverse transformations are encapsulated in a single object passed via the `partrans` argument to any of the **pomp** elementary or inference algorithms.
@@ -267,15 +275,7 @@ As with other cases when one refers to parameters in C snippets, one must includ
 
 At any point, if one sets `partrans = NULL` in an elementary or inference algorithm, the parameter transformations are reset to the identity transformation.
 
-### Initialization of the latent state process
-
-In **pomp** versions <2, one simulated from the distribution of the latent state process via the "initializer" component.
-As of version 2, this has been renamed "rinit".
-The "rinit" component is supplied to **pomp** functions using the argument of the same name.
-
-If `rinit` is not explicitly specified, the default behavior is to treat any parameters ending with suffices `_0` or `.0` as the values of correspondingly named latent state variables at time `t0`.
-
-### Accumulator variables
+## Accumulator variables
 
 In **pomp** versions <2, one named accumulator variables in the `zeronames` argument of `pomp`.
 This argument has been renamed `accumvars`: it can be supplied to any **pomp** elementary or estimation algorithm.
@@ -371,14 +371,14 @@ The `as.data.frame` argument to `trajectory` has been removed in favor of a new 
 
 When `trajectory` calls on `deSolve` routines to numerically integrate a model vectorfield, more informative error messages are generated, and diagnostics are printed when `verbose = TRUE`.
 
-## **pomp** examples
+## Included **pomp** examples
 
 The `pompExample` function has been eliminated.
 The suite of toy examples has been enlarged, but these are accessed via calls to ordinary package functions.
 Thus, for example, one creates the Ricker toy model via a call to `ricker()` and the SIR model simulated via Euler's method via a call to `sir()`.
 See the documentation for a full list of toy examples
 
-## **pomp** datasets
+## Included datasets
 
 A number of new datasets are provided with the package.
 See `data(package="pomp2")` for a full list.
@@ -394,6 +394,336 @@ It is now necessary to specify the measurement model directly using `rmeasure` a
 - The `conv.rec` method has been deprecated, replaced by the new `traces` method.
 - The use of `$` methods to access the slots of `pomp` S4 objects has now been removed.
 
+
+## Recoding your models for **pomp** version 2: examples
+
+The following two examples are taken from the [**pomp** *Journal of Statistical Software* paper](https://doi.org/10.18637/jss.v069.i12).
+In each case, we first look at the **pomp** version <2 implementation, then at the version 2 implementation.
+
+### Gompertz model
+
+First, the Gompertz model, which has a single latent state variable, $X$, and a single observable, $Y$.
+The model is defined by the relations
+$$\begin{gathered}
+S = e^{r \delta}\\
+X(t+\delta)\;\sim\;\mathrm{Lognormal}\left(\log(K^{1-S}\,X^S),\sigma\right)\\
+Y(t)\;\sim\;\mathrm{Lognormal}\left(\log{X(t)},\tau\right)
+\end{gathered}$$
+where $r$, $K$, $\sigma$, and $\tau$ are parameters and $\delta$ is the discrete time-step.
+
+Here is how the model was implemented in **pomp** version <2.
+We write all the basic model components using **R** functions assuming $\delta=1$.
+We also do one simulation.
+
+```{r gompertz1R,eval=FALSE}
+## rprocess
+gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
+  eps <- exp(rnorm(n=1,mean=0,sd=params["sigma"]))
+  S <- exp(-params["r"]*delta.t)
+  setNames(params["K"]^(1-S)*x["X"]^S*eps,"X")
+}
+
+## rmeasure
+gompertz.meas.sim <- function (x, t, params, ...) {
+  setNames(rlnorm(n=1,meanlog=log(x["X"]),sd=params["tau"]),"Y")
+}
+
+## dmeasure
+gompertz.meas.dens <- function (y, x, t, params, log, ...) {
+  dlnorm(x=y["Y"],meanlog=log(x["X"]),sdlog=params["tau"],log=log)
+}
+
+## initializer
+gompertz.init <- function (t0, params, ...) {
+  setNames(params["X_0"],"X")
+}
+
+## Parameter transformations
+gompertz.log.tf <- function (params, ...) log(params)
+gompertz.exp.tf <- function (params, ...) exp(params)
+
+## pomp construction
+pomp(
+  data=data.frame(time=1:100, Y=NA), 
+  times="time", t0=0,
+  rprocess=discrete.time.sim(step.fun=gompertz.proc.sim,delta.t=1), 
+  rmeasure=gompertz.meas.sim,
+  dmeasure=gompertz.meas.dens,
+  initializer=gompertz.init,
+  toEstimationScale=gompertz.log.tf,
+  fromEstimationScale=gompertz.exp.tf,
+  params=c(r=0.1,K=1,sigma=0.1,tau=0.1,X_0=1)
+) -> gomp1R
+
+simulate(gomp1R) -> gomp1R
+```
+
+Now, we implement the same model using **pomp** version 2.
+Note that `initializer` becomes `rinit` and that `discrete.time.sim` becomes `discrete_time`.
+Also, the parameter transformation syntax is different.
+
+```{r gompertz2R}
+library(pomp2)
+
+## rprocess
+gompertz.proc.sim <- function (X, r, K, sigma, delta.t, ...) {
+  eps <- exp(rnorm(n=1,mean=0,sd=sigma))
+  S <- exp(-r*delta.t)
+  c(X=K^(1-S)*X^S*eps)
+}
+
+## rmeasure
+gompertz.meas.sim <- function (X, tau, ...) {
+  c(Y=rlnorm(n=1,meanlog=log(X),sd=tau))
+}
+
+## dmeasure
+gompertz.meas.dens <- function (X, tau, Y, log, ...) {
+  dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
+}
+
+## rinit
+gompertz.init <- function (X_0, ...) {
+  c(X=X_0)
+}
+
+## pomp construction via simulation
+simulate(
+  times=1:100, t0=0,
+  rprocess=discrete_time(gompertz.proc.sim,delta.t=1), 
+  rmeasure=gompertz.meas.sim,
+  dmeasure=gompertz.meas.dens,
+  rinit=gompertz.init,
+  partrans=parameter_trans(log=c("K","r","sigma","tau")),
+  paramnames=c("K","r","sigma","tau"),
+  params=c(r=0.1,K=1,sigma=0.1,tau=0.1,X_0=1)
+) -> gomp2R
+```
+
+To implement the model using C snippets, in **pomp** versions <2 we might do the following.
+
+```{r gompertz1C,eval=FALSE}
+pomp(
+  data=data.frame(time=1:100, Y=NA), 
+  times="time", t0=0,
+  rprocess=discrete.time.sim(
+    step.fun=Csnippet("
+      double e = rnorm(0,sigma);
+      double S = exp(-r*dt);
+      X = exp((1-S)*log(K)+S*log(X)+e);
+  "),
+    delta.t=1
+  ), 
+  rmeasure=Csnippet("
+      Y = exp(rnorm(log(X),tau));
+    "),
+  dmeasure=Csnippet("
+      lik = dlnorm(Y,log(X),tau,give_log);
+    "),
+  initializer=Csnippet("
+      X = X_0;
+    "),
+  toEstimationScale=Csnippet("
+      TK = log(K);
+      Tr = log(r);
+      Tsigma = log(sigma);
+      Ttau = log(tau);
+      TX_0 = log(X_0);
+    "),
+  fromEstimationScale=Csnippet("
+      TK = exp(K);
+      Tr = exp(r);
+      Tsigma = exp(sigma);
+      Ttau = exp(tau);
+      TX_0 = exp(X_0);
+    "),
+  paramnames=c("r","K","sigma","tau","X_0"),
+  statenames="X",
+  params=c(r=0.1,K=1,sigma=0.1,tau=0.1,X_0=1)
+) -> gomp1C
+
+simulate(gomp1C) -> gomp1C
+```
+
+In version 2, we would do something like the following.
+In addition to the differences noted above, notice that we must specify `obsnames` here, since the name of the observed variable is not provided in a dummy data frame as in versions <2.
+Note also that no changes to the C snippets themselves are needed.
+
+```{r gompertz2C}
+simulate(
+  times=1:100, t0=0,
+  rprocess=discrete_time(
+    step.fun=Csnippet("
+      double e = rnorm(0,sigma);
+      double S = exp(-r*dt);
+      X = exp((1-S)*log(K)+S*log(X)+e);
+  "),
+    delta.t=1
+  ), 
+  rmeasure=Csnippet("
+      Y = exp(rnorm(log(X),tau));
+    "),
+  dmeasure=Csnippet("
+      lik = dlnorm(Y,log(X),tau,give_log);
+    "),
+  rinit=Csnippet("
+      X = X_0;
+    "),
+  partrans=parameter_trans(log=c("K","r","sigma","tau")),
+  paramnames=c("r","K","sigma","tau","X_0"),
+  statenames="X",
+  obsnames="Y",
+  params=c(r=0.1,K=1,sigma=0.1,tau=0.1,X_0=1)
+) -> gomp2C
+```
+
+### SIR model
+
+This example, also drawn from the [*Journal of Statistical Software* paper](https://doi.org/10.18637/jss.v069.i12), involves covariates and accumulator variables as well as more complex parameter transformations.
+
+```{r fake_data}
+## Construct some fake birthrate data.
+library(tidyverse)
+
+data.frame(time=seq(-1,11,by=1/12)) %>%
+  mutate(
+    birthrate=5e5*bspline.basis(time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
+  ) -> birthdat
+```
+```{r sir_snips,eval=TRUE}
+## measurement model C snippets
+rmeas <- "
+  cases = rnbinom_mu(theta, rho * H);
+"
+
+dmeas <- "
+  lik = dnbinom_mu(cases, theta, rho * H, give_log);
+"
+
+## initializer
+rinit <- "
+  double m = popsize/(S_0 + I_0 + R_0);
+  S = nearbyint(m*S_0);
+  I = nearbyint(m*I_0);
+  R = nearbyint(m*R_0);
+  H = 0;
+  Phi = 0;
+  noise = 0;
+"
+
+## rprocess
+seas.sir.step <- "
+  double rate[6];
+  double dN[6];
+  double Beta;
+  double dW;
+  Beta = exp(b1 + b2 * cos(M_2PI * Phi) + b3 * sin(M_2PI * Phi));
+  rate[0] = birthrate;
+  rate[1] = Beta * (I + iota) / popsize;
+  rate[2] = mu;
+  rate[3] = gamma;
+  rate[4] = mu;
+  rate[5] = mu;
+  dN[0] = rpois(rate[0] * dt);
+  reulermultinom(2, S, &rate[1], dt, &dN[1]);
+  reulermultinom(2, I, &rate[3], dt, &dN[3]);
+  reulermultinom(1, R, &rate[5], dt, &dN[5]);
+  dW = rnorm(dt, sigma * sqrt(dt));
+  S += dN[0] - dN[1] - dN[2];
+  I += dN[1] - dN[3] - dN[4];
+  R += dN[3] - dN[5];
+  Phi += dW;
+  H += dN[1];
+  noise += (dW - dt) / sigma;
+"
+
+toest <- "
+  to_log_barycentric(&TS_0,&S_0,3);
+  Tsigma = log(sigma);
+  Tiota = log(iota);
+"
+
+fromest <- "
+  from_log_barycentric(&TS_0,&S_0,3);
+  Tsigma = exp(sigma);
+  Tiota = exp(iota);
+"
+
+```
+```{r sir1C,eval=FALSE}
+data.frame(time=seq(0,10,by=1/52),cases=NA) %>%
+  pomp(
+    times="time", t0=-1/52, 
+    covar = birthdat, tcovar = "time",
+    dmeasure = Csnippet(dmeas),
+    rmeasure = Csnippet(rmeas),
+    initializer=Csnippet(rinit),
+    rprocess = euler.sim(
+      step.fun = Csnippet(seas.sir.step), 
+      delta.t = 1/52/20
+    ),
+    toEstimationScale=Csnippet(toest),
+    fromEstimationScale=Csnippet(fromest),
+    statenames = c("S", "I", "R", "H", "Phi", "noise"),
+    paramnames = c("gamma", "mu", "theta", "b1", "b2", "b3",
+      "popsize","rho", "iota", "sigma", "S_0", "I_0", "R_0"), 
+    zeronames = c("H", "noise"),
+    params = c(popsize = 500000, iota = 5, gamma = 26, mu = 1/50,
+      b1 = 6, b2 = 0.2, b3 = -0.1, rho = 0.1, theta = 100, 
+      sigma = 0.3, S_0 = 0.055, I_0 = 0.002, R_0 = 0.94)
+  ) %>% 
+  simulate() -> sir1C
+```
+
+When implementing the same model in **pomp** version 2, we can use almost all the same C snippets without modification.
+The exception is the C snippets for the parameter transformations.
+The syntax for the inclusion of the covariates is different as is that used to specify the names of the accumulator variables.
+For example:
+
+```{r sir2C,eval=TRUE}
+simulate(
+  times=seq(0,10,by=1/52), t0=-1/52,
+  covar=covariate_table(birthdat,times="time"),
+  dmeasure = Csnippet(dmeas),
+  rmeasure = Csnippet(rmeas),
+  rinit=Csnippet(rinit),
+  rprocess = euler(
+    step.fun = Csnippet(seas.sir.step), 
+    delta.t = 1/52/20
+  ),
+  partrans=parameter_trans(
+    toEst=Csnippet("
+      to_log_barycentric(&T_S_0,&S_0,3);
+      T_sigma = log(sigma);
+      T_iota = log(iota);"),
+    fromEst=Csnippet("
+      from_log_barycentric(&S_0,&T_S_0,3);
+      sigma = exp(T_sigma);
+      iota = exp(T_iota);")
+  ),
+  statenames = c("S", "I", "R", "H", "Phi", "noise"),
+  obsnames=c("cases"),
+  paramnames = c("gamma", "mu", "theta", "b1", "b2", "b3",
+    "popsize","rho", "iota", "sigma", "S_0", "I_0", "R_0"), 
+  accumvars = c("H", "noise"),
+  params = c(popsize = 500000, iota = 5, gamma = 26, mu = 1/50,
+    b1 = 6, b2 = 0.2, b3 = -0.1, rho = 0.1, theta = 100, 
+    sigma = 0.3, S_0 = 0.055, I_0 = 0.002, R_0 = 0.94)
+) -> sir2C
+```
+
+Note also that, for specifying the above parameter transformations, **pomp** version 2 provides the alternate form
+
+```{r partrans_alt,eval=FALSE}
+simulate(
+  ...,
+  partrans=parameter_trans(
+    log=c("sigma","iota"),
+    barycentric=c("S_0","I_0","R_0")
+  ),
+  ...
+) -> sir2C
+```
 
 --------------------------------------------------------
 

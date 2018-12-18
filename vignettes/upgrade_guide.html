@@ -12,14 +12,14 @@
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2018-10-18" />
+<meta name="date" content="2018-12-18" />
 
 <title>pomp version 2 upgrade guide</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
@@ -55,7 +55,29 @@ code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -70,7 +92,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore"><strong>pomp</strong> version 2 upgrade guide</h1>
 <h4 class="author"><em>Aaron A. King</em></h4>
-<h4 class="date"><em>18 October 2018</em></h4>
+<h4 class="date"><em>18 December 2018</em></h4>
 
 
 <div id="TOC">
@@ -79,26 +101,30 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#timetable-for-rollout-of-pomp-version-2">Timetable for rollout of <strong>pomp</strong> version 2</a></li>
 <li><a href="#terminology">Terminology</a></li>
 <li><a href="#changes-in-the-way-models-are-specified">Changes in the way models are specified</a></li>
+<li><a href="#covariates">Covariates</a></li>
+<li><a href="#parameter-transformations">Parameter transformations</a></li>
+<li><a href="#accumulator-variables">Accumulator variables</a></li>
 <li><a href="#changes-in-elementary-pomp-algorithms">Changes in elementary POMP algorithms</a></li>
 <li><a href="#change-in-pomp-estimation-algorithms">Change in <strong>pomp</strong> estimation algorithms</a></li>
 <li><a href="#changes-in-pomp-workhorses">Changes in <strong>pomp</strong> workhorses</a></li>
-<li><a href="#pomp-examples"><strong>pomp</strong> examples</a></li>
-<li><a href="#pomp-datasets"><strong>pomp</strong> datasets</a></li>
+<li><a href="#included-pomp-examples">Included <strong>pomp</strong> examples</a></li>
+<li><a href="#included-datasets">Included datasets</a></li>
 <li><a href="#facilities-removed-in-version-2">Facilities removed in version 2</a></li>
+<li><a href="#recoding-your-models-for-pomp-version-2-examples">Recoding your models for <strong>pomp</strong> version 2: examples</a></li>
 </ul>
 </div>
 
 <style type="text/css">
 a:link, a:visited {
-    color: #0000ff;
-    text-decoration: none;
+  color: #0000ff;
+  text-decoration: none;
 }
 a:hover, a:active {
-    color: #cc3333;
-    text-decoration: none;
+  color: #cc3333;
+  text-decoration: none;
 }
 </style>
-<p>This document was produced using <strong>pomp</strong> version 2.0.6.0 and <strong>R</strong> version 3.5.1.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.0.7.0 and <strong>R</strong> version 3.5.1.</p>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
@@ -152,34 +178,29 @@ a:hover, a:active {
 <h2>Timetable for rollout of <strong>pomp</strong> version 2</h2>
 <p>To minimize inconvenience in the face of backward-incompatible changes, version 2 will be made available initially in source and binary formats as <strong>pomp2</strong> via the <a href="https://kingaa.github.io/" class="uri">https://kingaa.github.io/</a> package repository. Do</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;pomp2&quot;</span>,<span class="dt">repos=</span><span class="st">&quot;https://kingaa.github.io&quot;</span>)</code></pre></div>
-<p>to install it. This is intended to allow users to have both <strong>pomp</strong> (version &lt;2) and <strong>pomp2</strong> installed simultaneously during workflow migration. It is anticipated that in early 2019, <strong>pomp2</strong> will be renamed <strong>pomp</strong> and uploaded to CRAN as version 2.1. From that point forward, there will be no support for older versions of <strong>pomp</strong>.</p>
+<p>to install it. This is intended to allow users to have both <strong>pomp</strong> (version &lt;2) and <strong>pomp2</strong> installed simultaneously during workflow migration. It is anticipated that, around the middle of 2019, <strong>pomp2</strong> will be renamed <strong>pomp</strong> and uploaded to CRAN as version 2.1. From that point forward, there will be no support for older versions of <strong>pomp</strong>.</p>
 </div>
 <div id="terminology" class="section level2">
 <h2>Terminology</h2>
 <p>It is useful to divide the <strong>pomp</strong> package functionality into different levels.</p>
 <ul>
-<li><em>Basic model components</em>: user-specified procedures that perform the elementary computations that specify a POMP model. There are nine of these:
-<ul>
+<li><em>Basic model components</em>: user-specified procedures that perform the elementary computations that specify a POMP model. There are nine of these:</li>
 <li><code>rinit</code>: simulator for the initial-state distribution, i.e., the distribution of the latent state at time <code>t0</code>.</li>
 <li><code>rprocess</code> and <code>dprocess</code>: simulator and density evaluation procedure, respectively, for the process model.</li>
 <li><code>rmeasure</code> and <code>dmeasure</code>: simulator and density evaluation procedure, respectively, for the measurement model.</li>
 <li><code>rprior</code> and <code>dprior</code>: simulator and density evaluation procedure, respectively, for the prior distribution.</li>
 <li><code>skeleton</code>: evaluation of the deterministic skeleton.</li>
 <li><code>partrans</code>: parameter transformations.</li>
-</ul></li>
 </ul>
 <p>The term <em>basic model component</em> is meant to refer to the procedure itself, as distinct from the execution of the procedure. The user specifies the procedure (in one of several forms); the package decides when and where to execute the procedure.</p>
 <ul>
 <li><p><em>Workhorses</em>: <strong>R</strong> functions, built into the package, that cause the basic model component procedures to be executed. Each workhorse has a name that matches that of the corresponding basic model component. In addition, there is the <code>trajectory</code> workhorse, which iterates or integrates the deterministic skeleton (according to whether it is a map or a vectorfield, respectively) to obtain state trajectories.</p></li>
-<li><em>Elementary POMP algorithms</em>: algorithms that interrogate the model or the model/data confrontation without attempting to estimate parameters. There are currently four of these:
-<ul>
+<li><em>Elementary POMP algorithms</em>: algorithms that interrogate the model or the model/data confrontation without attempting to estimate parameters. There are currently four of these:</li>
 <li><code>simulate</code> performs simulations of the POMP model, i.e., it samples from the joint distribution of latent states and observables.</li>
 <li><code>pfilter</code> runs a sequential Monte Carlo (particle filter) algorithm to compute the likelihood and (optionally) estimate the prediction and filtering distributions of the latent state process.</li>
 <li><code>probe</code> computes one or more uni- or multi-variate summary statistics on both actual and simulated data.</li>
-<li><code>spect</code> estimates the power spectral density functions for the actual and simulated data.</li>
-</ul></li>
-<li><em>POMP estimation algorithms</em>: procedures that build on the elementary algorithms and are used for estimation of parameters and other inferential tasks. There are currently ten of these:
-<ul>
+<li><p><code>spect</code> estimates the power spectral density functions for the actual and simulated data.</p></li>
+<li><em>POMP estimation algorithms</em>: procedures that build on the elementary algorithms and are used for estimation of parameters and other inferential tasks. There are currently ten of these:</li>
 <li><code>abc</code>: approximate Bayesian computation</li>
 <li><code>bsmc2</code>: Liu-West algorithm for Bayesian SMC</li>
 <li><code>pmcmc</code>: a particle MCMC algorithm</li>
@@ -189,8 +210,7 @@ a:hover, a:active {
 <li><code>traj_objfun</code>: trajectory matching</li>
 <li><code>spect_objfun</code>: power spectrum matching</li>
 <li><code>probe_objfun</code>: probe matching</li>
-<li><code>nlf_objfun</code>: nonlinear forecasting</li>
-</ul></li>
+<li><p><code>nlf_objfun</code>: nonlinear forecasting</p></li>
 <li><p><em>Objective function methods</em>: among the estimation algorithms just listed, four are methods that construct stateful objective functions that can be optimized using general-purpose numerical optimization algorithms such as <code>optim</code>, <code>subplex</code>, or the optimizers in the <strong>nloptr</strong> package. These have certain new features that will be described below.</p></li>
 </ul>
 </div>
@@ -219,8 +239,14 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 <p>Prior to version 2, one specified the <code>rprocess</code> component using one of the plugins <code>onestep.sim</code>, <code>discrete.time.sim</code>, <code>euler.sim</code>, <code>gillespie.sim</code>, or <code>gillespie.hl.sim</code>. These have been renamed <code>onestep</code>, <code>discrete_time</code>, <code>euler</code>, <code>gillespie</code>, and <code>gillespie_hl</code>, respectively, but are otherwise unchanged.</p>
 <p>Note that, if one uses an <strong>R</strong> function to specify the process model simulator, the remarks above under “Basic component specification” apply.</p>
 </div>
-<div id="covariates" class="section level3">
-<h3>Covariates</h3>
+<div id="initialization-of-the-latent-state-process" class="section level3">
+<h3>Initialization of the latent state process</h3>
+<p>In <strong>pomp</strong> versions &lt;2, one simulated from the distribution of the latent state process via the “initializer” component. As of version 2, this has been renamed “rinit”. The “rinit” component is supplied to <strong>pomp</strong> functions using the argument of the same name.</p>
+<p>If <code>rinit</code> is not explicitly specified, the default behavior is to treat any parameters ending with suffices <code>_0</code> or <code>.0</code> as the values of correspondingly named latent state variables at time <code>t0</code>.</p>
+</div>
+</div>
+<div id="covariates" class="section level2">
+<h2>Covariates</h2>
 <p>Prior to version 2, time-varying covariates upon which basic model components depended were supplied via the two arguments <code>covar</code> and <code>tcovar</code> to <code>pomp</code>. For example, in one of the examples, we see</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(
   <span class="dt">time=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">1928</span>,<span class="dt">to=</span><span class="dv">1934</span>,<span class="dt">by=</span><span class="fl">0.01</span>),
@@ -256,8 +282,8 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 )</code></pre></div>
 <p>Prior to version 2, covariates were always linearly interpolated when furnished to any of the basic model components. As of version 2, although linear interpolation remains the default, one can also use the <code>order</code> argument to direct that the covariates be treated as piecewise-constant, right-continuous functions.</p>
 </div>
-<div id="parameter-transformations" class="section level3">
-<h3>Parameter transformations</h3>
+<div id="parameter-transformations" class="section level2">
+<h2>Parameter transformations</h2>
 <p>In <strong>pomp</strong> version &lt;2, one specified parameter transformations by means to two arguments to <code>pomp</code>: <code>fromEstimationScale</code> and <code>toEstimationScale</code>. As of version 2, both forward and inverse transformations are encapsulated in a single object passed via the <code>partrans</code> argument to any of the <strong>pomp</strong> elementary or inference algorithms. The parameter transformation object is constructed by means of a call to <code>parameter_trans</code>. One can specify general forward and inverse transformations via the <code>fromEst</code> and <code>toEst</code> arguments to this function. If these are specified using <strong>R</strong> functions, the remarks above (“Basic component specification”) apply. If one specifies these using C snippets, the syntax has changed from that of versions &lt;2. In particular, when writing C snippets for parameter transformations, for a parameter “p”, the notation <code>p</code> always refers to <code>p</code> on the natural scale and <code>T_p</code> refers to its value of <code>p</code> on the estimation scale. Thus, if parameter “alpha” is to be log-transformed for estimation, the <code>toEst</code> snippet would contain the line</p>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c">T_alpha = log(alpha);</code></pre></div>
 <p>and the <code>fromEst</code> snippet would include</p>
@@ -265,15 +291,9 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 <p>Because many use cases involve simply log, logit, or log-barycentric transformations, one can handle these cases without needing to write <code>toEst</code> and <code>fromEst</code> C snippets, by naming the parameters to be so transformed in the <code>log</code>, <code>logit</code>, and <code>barycentric</code> arguments of <code>parameter_trans</code>. When these arguments are supplied, <code>parameter_trans</code> internally writes a pair of C snippets to implement the transformations. As with other cases when one refers to parameters in C snippets, one must include all parameters named in the <code>paramnames</code> argument.</p>
 <p>At any point, if one sets <code>partrans = NULL</code> in an elementary or inference algorithm, the parameter transformations are reset to the identity transformation.</p>
 </div>
-<div id="initialization-of-the-latent-state-process" class="section level3">
-<h3>Initialization of the latent state process</h3>
-<p>In <strong>pomp</strong> versions &lt;2, one simulated from the distribution of the latent state process via the “initializer” component. As of version 2, this has been renamed “rinit”. The “rinit” component is supplied to <strong>pomp</strong> functions using the argument of the same name.</p>
-<p>If <code>rinit</code> is not explicitly specified, the default behavior is to treat any parameters ending with suffices <code>_0</code> or <code>.0</code> as the values of correspondingly named latent state variables at time <code>t0</code>.</p>
-</div>
-<div id="accumulator-variables" class="section level3">
-<h3>Accumulator variables</h3>
+<div id="accumulator-variables" class="section level2">
+<h2>Accumulator variables</h2>
 <p>In <strong>pomp</strong> versions &lt;2, one named accumulator variables in the <code>zeronames</code> argument of <code>pomp</code>. This argument has been renamed <code>accumvars</code>: it can be supplied to any <strong>pomp</strong> elementary or estimation algorithm.</p>
-</div>
 </div>
 <div id="changes-in-elementary-pomp-algorithms" class="section level2">
 <h2>Changes in elementary POMP algorithms</h2>
@@ -331,12 +351,12 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 <p>When <code>trajectory</code> calls on <code>deSolve</code> routines to numerically integrate a model vectorfield, more informative error messages are generated, and diagnostics are printed when <code>verbose = TRUE</code>.</p>
 </div>
 </div>
-<div id="pomp-examples" class="section level2">
-<h2><strong>pomp</strong> examples</h2>
+<div id="included-pomp-examples" class="section level2">
+<h2>Included <strong>pomp</strong> examples</h2>
 <p>The <code>pompExample</code> function has been eliminated. The suite of toy examples has been enlarged, but these are accessed via calls to ordinary package functions. Thus, for example, one creates the Ricker toy model via a call to <code>ricker()</code> and the SIR model simulated via Euler’s method via a call to <code>sir()</code>. See the documentation for a full list of toy examples</p>
 </div>
-<div id="pomp-datasets" class="section level2">
-<h2><strong>pomp</strong> datasets</h2>
+<div id="included-datasets" class="section level2">
+<h2>Included datasets</h2>
 <p>A number of new datasets are provided with the package. See <code>data(package=&quot;pomp2&quot;)</code> for a full list.</p>
 </div>
 <div id="facilities-removed-in-version-2" class="section level2">
@@ -348,9 +368,294 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 <li>The <code>conv.rec</code> method has been deprecated, replaced by the new <code>traces</code> method.</li>
 <li>The use of <code>$</code> methods to access the slots of <code>pomp</code> S4 objects has now been removed.</li>
 </ul>
+</div>
+<div id="recoding-your-models-for-pomp-version-2-examples" class="section level2">
+<h2>Recoding your models for <strong>pomp</strong> version 2: examples</h2>
+<p>The following two examples are taken from the <a href="https://doi.org/10.18637/jss.v069.i12"><strong>pomp</strong> <em>Journal of Statistical Software</em> paper</a>. In each case, we first look at the <strong>pomp</strong> version &lt;2 implementation, then at the version 2 implementation.</p>
+<div id="gompertz-model" class="section level3">
+<h3>Gompertz model</h3>
+<p>First, the Gompertz model, which has a single latent state variable, <span class="math inline">\(X\)</span>, and a single observable, <span class="math inline">\(Y\)</span>. The model is defined by the relations <span class="math display">\[\begin{gathered}
+S = e^{r \delta}\\
+X(t+\delta)\;\sim\;\mathrm{Lognormal}\left(\log(K^{1-S}\,X^S),\sigma\right)\\
+Y(t)\;\sim\;\mathrm{Lognormal}\left(\log{X(t)},\tau\right)
+\end{gathered}\]</span> where <span class="math inline">\(r\)</span>, <span class="math inline">\(K\)</span>, <span class="math inline">\(\sigma\)</span>, and <span class="math inline">\(\tau\)</span> are parameters and <span class="math inline">\(\delta\)</span> is the discrete time-step.</p>
+<p>Here is how the model was implemented in <strong>pomp</strong> version &lt;2. We write all the basic model components using <strong>R</strong> functions assuming <span class="math inline">\(\delta=1\)</span>. We also do one simulation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## rprocess
+gompertz.proc.sim &lt;-<span class="st"> </span><span class="cf">function</span> (x, t, params, delta.t, ...) {
+  eps &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">rnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span>params[<span class="st">&quot;sigma&quot;</span>]))
+  S &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>params[<span class="st">&quot;r&quot;</span>]<span class="op">*</span>delta.t)
+  <span class="kw">setNames</span>(params[<span class="st">&quot;K&quot;</span>]<span class="op">^</span>(<span class="dv">1</span><span class="op">-</span>S)<span class="op">*</span>x[<span class="st">&quot;X&quot;</span>]<span class="op">^</span>S<span class="op">*</span>eps,<span class="st">&quot;X&quot;</span>)
+}
+
+## rmeasure
+gompertz.meas.sim &lt;-<span class="st"> </span><span class="cf">function</span> (x, t, params, ...) {
+  <span class="kw">setNames</span>(<span class="kw">rlnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">meanlog=</span><span class="kw">log</span>(x[<span class="st">&quot;X&quot;</span>]),<span class="dt">sd=</span>params[<span class="st">&quot;tau&quot;</span>]),<span class="st">&quot;Y&quot;</span>)
+}
+
+## dmeasure
+gompertz.meas.dens &lt;-<span class="st"> </span><span class="cf">function</span> (y, x, t, params, log, ...) {
+  <span class="kw">dlnorm</span>(<span class="dt">x=</span>y[<span class="st">&quot;Y&quot;</span>],<span class="dt">meanlog=</span><span class="kw">log</span>(x[<span class="st">&quot;X&quot;</span>]),<span class="dt">sdlog=</span>params[<span class="st">&quot;tau&quot;</span>],<span class="dt">log=</span>log)
+}
+
+## initializer
+gompertz.init &lt;-<span class="st"> </span><span class="cf">function</span> (t0, params, ...) {
+  <span class="kw">setNames</span>(params[<span class="st">&quot;X_0&quot;</span>],<span class="st">&quot;X&quot;</span>)
+}
+
+## Parameter transformations
+gompertz.log.tf &lt;-<span class="st"> </span><span class="cf">function</span> (params, ...) <span class="kw">log</span>(params)
+gompertz.exp.tf &lt;-<span class="st"> </span><span class="cf">function</span> (params, ...) <span class="kw">exp</span>(params)
+
+## pomp construction
+<span class="kw">pomp</span>(
+  <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">Y=</span><span class="ot">NA</span>), 
+  <span class="dt">times=</span><span class="st">&quot;time&quot;</span>, <span class="dt">t0=</span><span class="dv">0</span>,
+  <span class="dt">rprocess=</span><span class="kw">discrete.time.sim</span>(<span class="dt">step.fun=</span>gompertz.proc.sim,<span class="dt">delta.t=</span><span class="dv">1</span>), 
+  <span class="dt">rmeasure=</span>gompertz.meas.sim,
+  <span class="dt">dmeasure=</span>gompertz.meas.dens,
+  <span class="dt">initializer=</span>gompertz.init,
+  <span class="dt">toEstimationScale=</span>gompertz.log.tf,
+  <span class="dt">fromEstimationScale=</span>gompertz.exp.tf,
+  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)
+) -&gt;<span class="st"> </span>gomp1R
+
+<span class="kw">simulate</span>(gomp1R) -&gt;<span class="st"> </span>gomp1R</code></pre></div>
+<p>Now, we implement the same model using <strong>pomp</strong> version 2. Note that <code>initializer</code> becomes <code>rinit</code> and that <code>discrete.time.sim</code> becomes <code>discrete_time</code>. Also, the parameter transformation syntax is different.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(pomp2)
+
+## rprocess
+gompertz.proc.sim &lt;-<span class="st"> </span><span class="cf">function</span> (X, r, K, sigma, delta.t, ...) {
+  eps &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">rnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span>sigma))
+  S &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>r<span class="op">*</span>delta.t)
+  <span class="kw">c</span>(<span class="dt">X=</span>K<span class="op">^</span>(<span class="dv">1</span><span class="op">-</span>S)<span class="op">*</span>X<span class="op">^</span>S<span class="op">*</span>eps)
+}
+
+## rmeasure
+gompertz.meas.sim &lt;-<span class="st"> </span><span class="cf">function</span> (X, tau, ...) {
+  <span class="kw">c</span>(<span class="dt">Y=</span><span class="kw">rlnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">meanlog=</span><span class="kw">log</span>(X),<span class="dt">sd=</span>tau))
+}
+
+## dmeasure
+gompertz.meas.dens &lt;-<span class="st"> </span><span class="cf">function</span> (X, tau, Y, log, ...) {
+  <span class="kw">dlnorm</span>(<span class="dt">x=</span>Y,<span class="dt">meanlog=</span><span class="kw">log</span>(X),<span class="dt">sdlog=</span>tau,<span class="dt">log=</span>log)
+}
+
+## rinit
+gompertz.init &lt;-<span class="st"> </span><span class="cf">function</span> (X_<span class="dv">0</span>, ...) {
+  <span class="kw">c</span>(<span class="dt">X=</span>X_<span class="dv">0</span>)
+}
+
+## pomp construction via simulation
+<span class="kw">simulate</span>(
+  <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">t0=</span><span class="dv">0</span>,
+  <span class="dt">rprocess=</span><span class="kw">discrete_time</span>(gompertz.proc.sim,<span class="dt">delta.t=</span><span class="dv">1</span>), 
+  <span class="dt">rmeasure=</span>gompertz.meas.sim,
+  <span class="dt">dmeasure=</span>gompertz.meas.dens,
+  <span class="dt">rinit=</span>gompertz.init,
+  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(<span class="dt">log=</span><span class="kw">c</span>(<span class="st">&quot;K&quot;</span>,<span class="st">&quot;r&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>)),
+  <span class="dt">paramnames=</span><span class="kw">c</span>(<span class="st">&quot;K&quot;</span>,<span class="st">&quot;r&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>),
+  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)
+) -&gt;<span class="st"> </span>gomp2R</code></pre></div>
+<p>To implement the model using C snippets, in <strong>pomp</strong> versions &lt;2 we might do the following.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pomp</span>(
+  <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">Y=</span><span class="ot">NA</span>), 
+  <span class="dt">times=</span><span class="st">&quot;time&quot;</span>, <span class="dt">t0=</span><span class="dv">0</span>,
+  <span class="dt">rprocess=</span><span class="kw">discrete.time.sim</span>(
+    <span class="dt">step.fun=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      double e = rnorm(0,sigma);</span>
+<span class="st">      double S = exp(-r*dt);</span>
+<span class="st">      X = exp((1-S)*log(K)+S*log(X)+e);</span>
+<span class="st">  &quot;</span>),
+    <span class="dt">delta.t=</span><span class="dv">1</span>
+  ), 
+  <span class="dt">rmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      Y = exp(rnorm(log(X),tau));</span>
+<span class="st">    &quot;</span>),
+  <span class="dt">dmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      lik = dlnorm(Y,log(X),tau,give_log);</span>
+<span class="st">    &quot;</span>),
+  <span class="dt">initializer=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      X = X_0;</span>
+<span class="st">    &quot;</span>),
+  <span class="dt">toEstimationScale=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      TK = log(K);</span>
+<span class="st">      Tr = log(r);</span>
+<span class="st">      Tsigma = log(sigma);</span>
+<span class="st">      Ttau = log(tau);</span>
+<span class="st">      TX_0 = log(X_0);</span>
+<span class="st">    &quot;</span>),
+  <span class="dt">fromEstimationScale=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      TK = exp(K);</span>
+<span class="st">      Tr = exp(r);</span>
+<span class="st">      Tsigma = exp(sigma);</span>
+<span class="st">      Ttau = exp(tau);</span>
+<span class="st">      TX_0 = exp(X_0);</span>
+<span class="st">    &quot;</span>),
+  <span class="dt">paramnames=</span><span class="kw">c</span>(<span class="st">&quot;r&quot;</span>,<span class="st">&quot;K&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>,<span class="st">&quot;X_0&quot;</span>),
+  <span class="dt">statenames=</span><span class="st">&quot;X&quot;</span>,
+  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)
+) -&gt;<span class="st"> </span>gomp1C
+
+<span class="kw">simulate</span>(gomp1C) -&gt;<span class="st"> </span>gomp1C</code></pre></div>
+<p>In version 2, we would do something like the following. In addition to the differences noted above, notice that we must specify <code>obsnames</code> here, since the name of the observed variable is not provided in a dummy data frame as in versions &lt;2. Note also that no changes to the C snippets themselves are needed.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">simulate</span>(
+  <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">t0=</span><span class="dv">0</span>,
+  <span class="dt">rprocess=</span><span class="kw">discrete_time</span>(
+    <span class="dt">step.fun=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      double e = rnorm(0,sigma);</span>
+<span class="st">      double S = exp(-r*dt);</span>
+<span class="st">      X = exp((1-S)*log(K)+S*log(X)+e);</span>
+<span class="st">  &quot;</span>),
+    <span class="dt">delta.t=</span><span class="dv">1</span>
+  ), 
+  <span class="dt">rmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      Y = exp(rnorm(log(X),tau));</span>
+<span class="st">    &quot;</span>),
+  <span class="dt">dmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      lik = dlnorm(Y,log(X),tau,give_log);</span>
+<span class="st">    &quot;</span>),
+  <span class="dt">rinit=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      X = X_0;</span>
+<span class="st">    &quot;</span>),
+  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(<span class="dt">log=</span><span class="kw">c</span>(<span class="st">&quot;K&quot;</span>,<span class="st">&quot;r&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>)),
+  <span class="dt">paramnames=</span><span class="kw">c</span>(<span class="st">&quot;r&quot;</span>,<span class="st">&quot;K&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>,<span class="st">&quot;X_0&quot;</span>),
+  <span class="dt">statenames=</span><span class="st">&quot;X&quot;</span>,
+  <span class="dt">obsnames=</span><span class="st">&quot;Y&quot;</span>,
+  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)
+) -&gt;<span class="st"> </span>gomp2C</code></pre></div>
+</div>
+<div id="sir-model" class="section level3">
+<h3>SIR model</h3>
+<p>This example, also drawn from the <a href="https://doi.org/10.18637/jss.v069.i12"><em>Journal of Statistical Software</em> paper</a>, involves covariates and accumulator variables as well as more complex parameter transformations.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Construct some fake birthrate data.
+<span class="kw">library</span>(tidyverse)
+
+<span class="kw">data.frame</span>(<span class="dt">time=</span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">11</span>,<span class="dt">by=</span><span class="dv">1</span><span class="op">/</span><span class="dv">12</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="dt">birthrate=</span><span class="fl">5e5</span><span class="op">*</span><span class="kw">bspline.basis</span>(time,<span class="dt">nbasis=</span><span class="dv">5</span>)<span class="op">%*%</span><span class="kw">c</span>(<span class="fl">0.018</span>,<span class="fl">0.019</span>,<span class="fl">0.021</span>,<span class="fl">0.019</span>,<span class="fl">0.015</span>)
+  ) -&gt;<span class="st"> </span>birthdat</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## measurement model C snippets
+rmeas &lt;-<span class="st"> &quot;</span>
+<span class="st">  cases = rnbinom_mu(theta, rho * H);</span>
+<span class="st">&quot;</span>
+
+dmeas &lt;-<span class="st"> &quot;</span>
+<span class="st">  lik = dnbinom_mu(cases, theta, rho * H, give_log);</span>
+<span class="st">&quot;</span>
+
+## initializer
+rinit &lt;-<span class="st"> &quot;</span>
+<span class="st">  double m = popsize/(S_0 + I_0 + R_0);</span>
+<span class="st">  S = nearbyint(m*S_0);</span>
+<span class="st">  I = nearbyint(m*I_0);</span>
+<span class="st">  R = nearbyint(m*R_0);</span>
+<span class="st">  H = 0;</span>
+<span class="st">  Phi = 0;</span>
+<span class="st">  noise = 0;</span>
+<span class="st">&quot;</span>
+
+## rprocess
+seas.sir.step &lt;-<span class="st"> &quot;</span>
+<span class="st">  double rate[6];</span>
+<span class="st">  double dN[6];</span>
+<span class="st">  double Beta;</span>
+<span class="st">  double dW;</span>
+<span class="st">  Beta = exp(b1 + b2 * cos(M_2PI * Phi) + b3 * sin(M_2PI * Phi));</span>
+<span class="st">  rate[0] = birthrate;</span>
+<span class="st">  rate[1] = Beta * (I + iota) / popsize;</span>
+<span class="st">  rate[2] = mu;</span>
+<span class="st">  rate[3] = gamma;</span>
+<span class="st">  rate[4] = mu;</span>
+<span class="st">  rate[5] = mu;</span>
+<span class="st">  dN[0] = rpois(rate[0] * dt);</span>
+<span class="st">  reulermultinom(2, S, &amp;rate[1], dt, &amp;dN[1]);</span>
+<span class="st">  reulermultinom(2, I, &amp;rate[3], dt, &amp;dN[3]);</span>
+<span class="st">  reulermultinom(1, R, &amp;rate[5], dt, &amp;dN[5]);</span>
+<span class="st">  dW = rnorm(dt, sigma * sqrt(dt));</span>
+<span class="st">  S += dN[0] - dN[1] - dN[2];</span>
+<span class="st">  I += dN[1] - dN[3] - dN[4];</span>
+<span class="st">  R += dN[3] - dN[5];</span>
+<span class="st">  Phi += dW;</span>
+<span class="st">  H += dN[1];</span>
+<span class="st">  noise += (dW - dt) / sigma;</span>
+<span class="st">&quot;</span>
+
+toest &lt;-<span class="st"> &quot;</span>
+<span class="st">  to_log_barycentric(&amp;TS_0,&amp;S_0,3);</span>
+<span class="st">  Tsigma = log(sigma);</span>
+<span class="st">  Tiota = log(iota);</span>
+<span class="st">&quot;</span>
+
+fromest &lt;-<span class="st"> &quot;</span>
+<span class="st">  from_log_barycentric(&amp;TS_0,&amp;S_0,3);</span>
+<span class="st">  Tsigma = exp(sigma);</span>
+<span class="st">  Tiota = exp(iota);</span>
+<span class="st">&quot;</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dt">by=</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>),<span class="dt">cases=</span><span class="ot">NA</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">pomp</span>(
+    <span class="dt">times=</span><span class="st">&quot;time&quot;</span>, <span class="dt">t0=</span><span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>, 
+    <span class="dt">covar =</span> birthdat, <span class="dt">tcovar =</span> <span class="st">&quot;time&quot;</span>,
+    <span class="dt">dmeasure =</span> <span class="kw">Csnippet</span>(dmeas),
+    <span class="dt">rmeasure =</span> <span class="kw">Csnippet</span>(rmeas),
+    <span class="dt">initializer=</span><span class="kw">Csnippet</span>(rinit),
+    <span class="dt">rprocess =</span> <span class="kw">euler.sim</span>(
+      <span class="dt">step.fun =</span> <span class="kw">Csnippet</span>(seas.sir.step), 
+      <span class="dt">delta.t =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">52</span><span class="op">/</span><span class="dv">20</span>
+    ),
+    <span class="dt">toEstimationScale=</span><span class="kw">Csnippet</span>(toest),
+    <span class="dt">fromEstimationScale=</span><span class="kw">Csnippet</span>(fromest),
+    <span class="dt">statenames =</span> <span class="kw">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;I&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;H&quot;</span>, <span class="st">&quot;Phi&quot;</span>, <span class="st">&quot;noise&quot;</span>),
+    <span class="dt">paramnames =</span> <span class="kw">c</span>(<span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;mu&quot;</span>, <span class="st">&quot;theta&quot;</span>, <span class="st">&quot;b1&quot;</span>, <span class="st">&quot;b2&quot;</span>, <span class="st">&quot;b3&quot;</span>,
+      <span class="st">&quot;popsize&quot;</span>,<span class="st">&quot;rho&quot;</span>, <span class="st">&quot;iota&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;S_0&quot;</span>, <span class="st">&quot;I_0&quot;</span>, <span class="st">&quot;R_0&quot;</span>), 
+    <span class="dt">zeronames =</span> <span class="kw">c</span>(<span class="st">&quot;H&quot;</span>, <span class="st">&quot;noise&quot;</span>),
+    <span class="dt">params =</span> <span class="kw">c</span>(<span class="dt">popsize =</span> <span class="dv">500000</span>, <span class="dt">iota =</span> <span class="dv">5</span>, <span class="dt">gamma =</span> <span class="dv">26</span>, <span class="dt">mu =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">50</span>,
+      <span class="dt">b1 =</span> <span class="dv">6</span>, <span class="dt">b2 =</span> <span class="fl">0.2</span>, <span class="dt">b3 =</span> <span class="op">-</span><span class="fl">0.1</span>, <span class="dt">rho =</span> <span class="fl">0.1</span>, <span class="dt">theta =</span> <span class="dv">100</span>, 
+      <span class="dt">sigma =</span> <span class="fl">0.3</span>, <span class="dt">S_0 =</span> <span class="fl">0.055</span>, <span class="dt">I_0 =</span> <span class="fl">0.002</span>, <span class="dt">R_0 =</span> <span class="fl">0.94</span>)
+  ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">simulate</span>() -&gt;<span class="st"> </span>sir1C</code></pre></div>
+<p>When implementing the same model in <strong>pomp</strong> version 2, we can use almost all the same C snippets without modification. The exception is the C snippets for the parameter transformations. The syntax for the inclusion of the covariates is different as is that used to specify the names of the accumulator variables. For example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">simulate</span>(
+  <span class="dt">times=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dt">by=</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>), <span class="dt">t0=</span><span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>,
+  <span class="dt">covar=</span><span class="kw">covariate_table</span>(birthdat,<span class="dt">times=</span><span class="st">&quot;time&quot;</span>),
+  <span class="dt">dmeasure =</span> <span class="kw">Csnippet</span>(dmeas),
+  <span class="dt">rmeasure =</span> <span class="kw">Csnippet</span>(rmeas),
+  <span class="dt">rinit=</span><span class="kw">Csnippet</span>(rinit),
+  <span class="dt">rprocess =</span> <span class="kw">euler</span>(
+    <span class="dt">step.fun =</span> <span class="kw">Csnippet</span>(seas.sir.step), 
+    <span class="dt">delta.t =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">52</span><span class="op">/</span><span class="dv">20</span>
+  ),
+  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(
+    <span class="dt">toEst=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      to_log_barycentric(&amp;T_S_0,&amp;S_0,3);</span>
+<span class="st">      T_sigma = log(sigma);</span>
+<span class="st">      T_iota = log(iota);&quot;</span>),
+    <span class="dt">fromEst=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span>
+<span class="st">      from_log_barycentric(&amp;S_0,&amp;T_S_0,3);</span>
+<span class="st">      sigma = exp(T_sigma);</span>
+<span class="st">      iota = exp(T_iota);&quot;</span>)
+  ),
+  <span class="dt">statenames =</span> <span class="kw">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;I&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;H&quot;</span>, <span class="st">&quot;Phi&quot;</span>, <span class="st">&quot;noise&quot;</span>),
+  <span class="dt">obsnames=</span><span class="kw">c</span>(<span class="st">&quot;cases&quot;</span>),
+  <span class="dt">paramnames =</span> <span class="kw">c</span>(<span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;mu&quot;</span>, <span class="st">&quot;theta&quot;</span>, <span class="st">&quot;b1&quot;</span>, <span class="st">&quot;b2&quot;</span>, <span class="st">&quot;b3&quot;</span>,
+    <span class="st">&quot;popsize&quot;</span>,<span class="st">&quot;rho&quot;</span>, <span class="st">&quot;iota&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;S_0&quot;</span>, <span class="st">&quot;I_0&quot;</span>, <span class="st">&quot;R_0&quot;</span>), 
+  <span class="dt">accumvars =</span> <span class="kw">c</span>(<span class="st">&quot;H&quot;</span>, <span class="st">&quot;noise&quot;</span>),
+  <span class="dt">params =</span> <span class="kw">c</span>(<span class="dt">popsize =</span> <span class="dv">500000</span>, <span class="dt">iota =</span> <span class="dv">5</span>, <span class="dt">gamma =</span> <span class="dv">26</span>, <span class="dt">mu =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">50</span>,
+    <span class="dt">b1 =</span> <span class="dv">6</span>, <span class="dt">b2 =</span> <span class="fl">0.2</span>, <span class="dt">b3 =</span> <span class="op">-</span><span class="fl">0.1</span>, <span class="dt">rho =</span> <span class="fl">0.1</span>, <span class="dt">theta =</span> <span class="dv">100</span>, 
+    <span class="dt">sigma =</span> <span class="fl">0.3</span>, <span class="dt">S_0 =</span> <span class="fl">0.055</span>, <span class="dt">I_0 =</span> <span class="fl">0.002</span>, <span class="dt">R_0 =</span> <span class="fl">0.94</span>)
+) -&gt;<span class="st"> </span>sir2C</code></pre></div>
+<p>Note also that, for specifying the above parameter transformations, <strong>pomp</strong> version 2 provides the alternate form</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">simulate</span>(
+  ...,
+  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(
+    <span class="dt">log=</span><span class="kw">c</span>(<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;iota&quot;</span>),
+    <span class="dt">barycentric=</span><span class="kw">c</span>(<span class="st">&quot;S_0&quot;</span>,<span class="st">&quot;I_0&quot;</span>,<span class="st">&quot;R_0&quot;</span>)
+  ),
+  ...
+) -&gt;<span class="st"> </span>sir2C</code></pre></div>
 <hr />
 <p><a href="https://kingaa.github.io/pomp/docs.html"><strong>pomp</strong> documentation index</a><br />
 <a href="https://kingaa.github.io/pomp/"><strong>pomp</strong> homepage</a></p>
+</div>
 </div>
 
 
