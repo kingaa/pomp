@@ -17,6 +17,7 @@
 ##' @param log names of parameters to be log transformed.
 ##' @param logit names of parameters to be logit transformed.
 ##' @param barycentric names of parameters to be collectively transformed according to the log barycentric transformation.
+##' \strong{Important note:} variables to be log-barycentrically transformed \emph{must be adjacent} in the parameter vector.
 ##' @param \dots ignored.
 ##'
 ##' @details

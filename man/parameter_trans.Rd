@@ -37,7 +37,8 @@ These can be furnished using C snippets, \R functions, or via procedures in an e
 
 \item{logit}{names of parameters to be logit transformed.}
 
-\item{barycentric}{names of parameters to be collectively transformed according to the log barycentric transformation.}
+\item{barycentric}{names of parameters to be collectively transformed according to the log barycentric transformation.
+\strong{Important note:} variables to be log-barycentrically transformed \emph{must be adjacent} in the parameter vector.}
 }
 \description{
 Equipping models with parameter transformations.
