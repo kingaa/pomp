@@ -20,10 +20,7 @@
     - parallelization tools
     - reproducibility tools
     - extending the package
-- ~~can we allow *nondecreasing* times? yes.~~
-- ~~default cooling.schedule for mif2 should be "geometric"?~~
 - example for `accumvars`
-- ~~check `order="constant"` for right-continuity in `covariate_table`~~
 - make R-level functions for various distributions and transformations
 	- BetaBinom
 	- BetaNegBinom
@@ -34,11 +31,11 @@
 	- what would the corresponding `dprocess` be?
 - Kalman filter?
 
-- `as.data.frame` and ?? for `listies`
 - `melt` for listies
 - `coef` returns data frame in some circumstances?
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
+- `simulate` with `format="d"` should return the same thing as `simulate` %>% `as.data.frame`
 
 - perhaps `dinit`?
 - easier interface for lists of probes in `probe`

@@ -16,6 +16,7 @@ mif2(po,Nmif=50,Np=100,cooling.fraction.50=0.5,
 plot(mf1)
 plot(c(a=mf1,b=mf2) -> mfl,y=NA)
 c(a=mf1,b=c(mf1,mf2))
+dim(as.data.frame(c(a=mf1,b=c(mf1,mf2))))
 mfl[1]
 mfl["b"]
 mfl[5]

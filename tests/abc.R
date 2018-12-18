@@ -47,7 +47,8 @@ stopifnot(identical(abclist,c(a1=abc1,c(a2=abc2,b=abc3))))
 stopifnot(all(dim(traces(abc1))==c(101,10)))
 stopifnot(all(dim(traces(abc1,"alpha_1"))==c(101,1)))
 invisible(conv.rec(abc2))
-
+dim(as.data.frame(abclist))
+  
 c(abc1,abc2) %>% traces() -> traces
 traces %>% length()
 traces %>% class()

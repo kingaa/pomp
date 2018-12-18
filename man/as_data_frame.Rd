@@ -19,6 +19,11 @@
 \alias{as.data.frame.bsmcd_pomp}
 \alias{as,listie-method}
 \alias{coerce,listie,data.frame-method}
+\alias{as.data.frame.pompList}
+\alias{as.data.frame.pfilterList}
+\alias{as.data.frame.abcList}
+\alias{as.data.frame.mif2List}
+\alias{as.data.frame.pmcmcList}
 \alias{coerce-objfun-data.frame}
 \alias{coerce,objfun,data.frame-method}
 \title{Coerce to data frame}
@@ -32,6 +37,16 @@
 \method{as.data.frame}{kalmand_pomp}(x, ...)
 
 \method{as.data.frame}{bsmcd_pomp}(x, ...)
+
+\method{as.data.frame}{pompList}(x, ...)
+
+\method{as.data.frame}{pfilterList}(x, ...)
+
+\method{as.data.frame}{abcList}(x, ...)
+
+\method{as.data.frame}{mif2List}(x, ...)
+
+\method{as.data.frame}{pmcmcList}(x, ...)
 }
 \arguments{
 \item{x}{the object to be coerced}

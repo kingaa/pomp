@@ -83,6 +83,7 @@ dim(filter.traj(pf3))
 dimnames(filter.traj(pf3))
 try(filter.traj(c(pf1,pf3)))
 dim(filter.traj(c(pf1,pf4)))
+dim(as.data.frame(c(pf1,pf4)))
 names(dimnames(filter.traj(c(pf1,pf4))))
 names(melt(as(c(pf1,pf4),"data.frame")))
 

@@ -277,3 +277,6 @@ in 'pomp': the unrecognized argument 'larry' is available for use by the POMP ba
 5    9 1.1051387  9
 6   10 1.3038009 10
 > 
+> dim(as.data.frame(c(a=po1,b=po1)))
+[1] 32  4
+> 

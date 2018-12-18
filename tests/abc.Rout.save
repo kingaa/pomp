@@ -71,7 +71,9 @@ For information on upgrading your pomp version < 2 code, see the
 > invisible(conv.rec(abc2))
 Warning message:
 'conv.rec' is deprecated and will be removed in a forthcoming release.  Please use 'traces' instead. 
-> 
+> dim(as.data.frame(abclist))
+[1] 300   6
+>   
 > c(abc1,abc2) %>% traces() -> traces
 > traces %>% length()
 [1] 2

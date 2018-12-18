@@ -174,10 +174,55 @@ as.data.frame.bsmcd_pomp <- function (x, ...) {
 ##' @name as,listie-method
 ##' @aliases coerce,listie,data.frame-method
 ##' @rdname as_data_frame
+##' @importFrom plyr rbind.fill
 setAs(
   from="listie",
   to="data.frame",
   def = function (from) {
-    lapply(from,as,"data.frame")
+    x <- lapply(from,as,"data.frame")
+    if (is.null(names(from))) {
+      id <- seq_along(from)
+    } else {
+      id <- names(from)
+    }
+    for (k in seq_along(x)) {
+      x[[k]]$.id <- id[k]
+    }
+    plyr::rbind.fill(x)
   }
 )
+
+##' @method as.data.frame pompList
+##' @rdname as_data_frame
+##' @export
+as.data.frame.pompList <- function (x, ...) {
+  as(x,"data.frame")
+}
+
+##' @method as.data.frame pfilterList
+##' @rdname as_data_frame
+##' @export
+as.data.frame.pfilterList <- function (x, ...) {
+  as(x,"data.frame")
+}
+
+##' @method as.data.frame abcList
+##' @rdname as_data_frame
+##' @export
+as.data.frame.abcList <- function (x, ...) {
+  as(x,"data.frame")
+}
+
+##' @method as.data.frame mif2List
+##' @rdname as_data_frame
+##' @export
+as.data.frame.mif2List <- function (x, ...) {
+  as(x,"data.frame")
+}
+
+##' @method as.data.frame pmcmcList
+##' @rdname as_data_frame
+##' @export
+as.data.frame.pmcmcList <- function (x, ...) {
+  as(x,"data.frame")
+}

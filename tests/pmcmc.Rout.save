@@ -83,6 +83,8 @@ Error : in 'pmcmc': in 'pfilter': number of particles, 'Np', must be a positive 
 > plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
 > try(plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","bob"))))
 Error : in 'traces': parameter 'bob' not found.
+> dim(as.data.frame(c(mcmc1,mcmc2)))
+[1] 20  5
 > 
 > filter.traj(c(mcmc1,mcmc2,mcmc3)) -> ft
 > stopifnot(

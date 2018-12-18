@@ -220,12 +220,13 @@ $time
 Error : in 'filter.traj': incommensurate dimensions.
 > dim(filter.traj(c(pf1,pf4)))
 [1]   2   1 101   2
+> dim(as.data.frame(c(pf1,pf4)))
+[1] 200   6
 > names(dimnames(filter.traj(c(pf1,pf4))))
 [1] "variable" "rep"      "time"     "chain"   
 > names(melt(as(c(pf1,pf4),"data.frame")))
 No id variables; using all as measure variables
-No id variables; using all as measure variables
-[1] "variable" "value"    "L1"      
+[1] "variable" "value"   
 > 
 > 
 > try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))

@@ -58,6 +58,8 @@ $b1
 $b2
 <object of class 'mif2d_pomp'>
 
+> dim(as.data.frame(c(a=mf1,b=c(mf1,mf2))))
+[1] 30  6
 > mfl[1]
 $a
 <object of class 'mif2d_pomp'>
