@@ -1,5 +1,16 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.0.9}{
+  \itemize{
+    \item When \code{coef} is applied to a \sQuote{listie}, the result can be more usefully \code{melt}ed.
+  }
+}
+\section{Changes in \pkg{pomp} version 2.0.8}{
+  \itemize{
+    \item There is a new \code{as.data.frame} method for \sQuote{listie}s.
+    \item Some problems with the exposure of internal objects for package developers have been corrected.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.0.7}{
   \itemize{
     \item The \pkg{magrittr} pipe operator, \code{\%>\%}, is now re-exported.

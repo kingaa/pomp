@@ -1,5 +1,17 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._9:
+
+        • When ‘coef’ is applied to a ‘listie’, the result can be more
+          usefully ‘melt’ed.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._8:
+
+        • There is a new ‘as.data.frame’ method for ‘listie’s.
+
+        • Some problems with the exposure of internal objects for
+          package developers have been corrected.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._7:
 
         • The ‘magrittr’ pipe operator, ‘%>%’, is now re-exported.

@@ -2,14 +2,14 @@
 
 ## For pomp 2:
 
+- for log-barycentric transformations, check that parameter are contiguous
+- do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - "guide to upgrading to **pomp** version 2"
 	- ~~discussion of stateful objective functions~~
 	- ~~include before and after codes for the examples from the JSS paper~~
-- for log-barycentric transformations, check that parameter are contiguous
 - more/better examples
 	- need examples of objective function methods
 - more toy models
-- do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - get the metaphors straight! "horses" vs "hitches" vs "workhorses" ("wagons"?)
 - manual pages on the organization of the package
     - estimation algorithms
@@ -36,7 +36,7 @@
 - `coef` returns data frame in some circumstances?
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
-- `simulate` with `format="d"` should return the same thing as `simulate` %>% `as.data.frame`
+- ~~`simulate` with `format="d"` should return the same thing as `simulate` %>% `as.data.frame`~~
 
 - perhaps `dinit`?
 - easier interface for lists of probes in `probe`
@@ -47,8 +47,10 @@
 - MCMC proposals as pomp slots?
 - probes as pomp slots?
 - what does a generic `pomp.fun` interface look like?
+
 - should parameter transformations allow renaming of variables?
 	- would require attention to `rw.sd`, e.g.
+
 - weighted particle filter
 
 ## For pomp:
@@ -56,10 +58,9 @@
 - streamline the R snippets so that ... is unnecessary?
 	- probably not worth the trouble, since C snippets are so much faster
 - add `include` argument to `pomp`?
-- deprecate `obs` and `states` arguments in `simulate`
+- ~~deprecate `obs` and `states` arguments in `simulate`~~
 - graceful stopping for optimizers (at least for `nloptr`)
-- `pfilterList` object?
-- parameter transformations: put `transform` option into each estimation routine (`spect.match`)
+- ~~`pfilterList` object~~
 - trap errors for LAPACK
 - support for asymmetric MCMC proposals
 - one-point SCQL function for possible use in fitting initial conditions
@@ -71,8 +72,8 @@
 
 ## Documentation
 
-- FAQ needs update with new issues
-- Complete rewrite of manual for v. 2
+- FAQ needs update with new issues from @MarieAugerMethe
+- ~~Complete rewrite of manual for v. 2~~
 
 ## Helper packages
 
