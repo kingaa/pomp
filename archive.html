@@ -1,11 +1,11 @@
 ---
 layout: pomp
-title: pomp news blog
+title: pomp blog archives
 ---
-<h2>News blog</h2>
+<h2>News blog archives</h2>
 
 <hr style="size: 1px; color: #eeeeee;"/>
-{% for post in site.posts limit:5 %}
+{% for post in site.posts %}
 <a id="{{ post.title | slugify }}"></a>
 <h3>{{ post.title }}</h3>
 <h5>{{ post.date | date_to_long_string }}</h5>
@@ -13,9 +13,8 @@ title: pomp news blog
 <hr style="size: 1px; color: #eeeeee;"/>
 {% endfor %}
 
-<p style="text-align: right; padding-right: 40px;"/>
-  <a href="./archive.html">Blog archive</a><br>
-  <a href="./pomp.atom">Subscribe to this newsfeed</a>&nbsp;
+<p style="text-align: right; padding-right: 40px;">
+  <a href="https://kingaa.github.io/pomp/pomp.atom">Subscribe to this newsfeed</a>&nbsp;
   <a style="vertical-align: top;" href="https://kingaa.github.io/pomp/pomp.atom">
     <img style="vertical-align: top;" src="http://kingaa.github.io/images/rss.png">
   </a>
