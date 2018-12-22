@@ -5,9 +5,19 @@ output:
   html_document:
     theme: default
     toc: yes
-bibliography: pomp.bib
+    toc_depth: 3
+    toc_float:
+      collapsed: TRUE
+      smooth_scroll: TRUE
+    code_folding: show
+    highlight: haddock
+    number_sections: FALSE
+    df_print: paged
 params:
-  prefix: "getting-started"
+  prefix: "getting-started2"
+  min.pomp.version: "2.0.9"
+  show_solns: TRUE
+bibliography: pomp.bib
 csl: ecology.csl
 ---
 
@@ -15,7 +25,7 @@ Licensed under the [Creative Commons attribution-noncommercial license](http://c
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](http://kingaa.github.io/images/cc-by-nc.png)
 
-This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
+This document was produced using **pomp2** version `r packageVersion("pomp2")` and **R** version `r getRversion()`.
 
 ```{r knitr-opts,include=FALSE,purl=FALSE}
 library(knitr)
@@ -41,77 +51,78 @@ opts_chunk$set(
   dpi=300,
   dev='png',
   dev.args=list(bg='transparent')
-  )
+)
 ```
 
-```{r parallel,include=FALSE,cache=FALSE}
-library(foreach)
-library(doMPI)
-library(doRNG)
-cl <- startMPIcluster()
-registerDoMPI(cl)
-registerDoRNG(348885445L)
-```
 ```{r prelims,echo=FALSE,cache=FALSE}
-stopifnot(packageVersion("pomp")>="1.18.7")
+stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
   scipen=5
-  )
+)
 set.seed(594709947L)
+library(tidyverse)
+library(ggplot2)
+theme_set(theme_bw())
 ```
 
 ## Introduction
 
-This tutorial aims to help you get started using **pomp** as a suite of tools for analysis of time series data based on dynamical systems models.
-First, we give some conceptual background regarding the class of models---partially observed Markov processes---that **pomp** handles.
-We then discuss some preliminaries: installing the package and so on.
-Next, using a basic question about ecological population regulation as an example, we load some data and implement some models as `R` objects of class `pomp`.
-Finally, we illustrate some of the package's capabilities by using its algorithms to fit and compare the models using various inference methods.
+This tutorial aims to help you get started using **pomp2** as a suite of tools for analysis of time series data based on stochastic dynamical systems models.
+First, we give some conceptual background regarding the class of models---partially observed Markov processes (POMPs)---that **pomp2** handles.
+We then discuss some preliminaries: 
+installing the package and so on.
+Next, we show how to simulate a POMP using **pomp2**.
+We then analyze some data using a few different tools.
+In so doing, we illustrate some of the package's capabilities by using its algorithms to fit, compare, and criticize the models using **pomp2**'s algorithms.
+From time to time, exercises for the reader are given.
 
 
 ## Partially observed Markov process (POMP) models
 
-As its name implies **pomp** is focused on partially observed Markov process models.
-These are also known as state-space model, hidden Markov models, and stochastic dynamical systems models.
-Such models consist of an unobserved stochastic *state process*, connected to the data via an explicit model of the observation process.
-We refer to the former as the *process model* and the latter as the *measurement model*.
-Each model is, in fact, a probability distribution.
-Suppose we have a sequence of measurements, $y^*_{n}$, made at times $t_n$, $n=1,\dots,N$.
-Let $Y_n$ denote the measurement process and $X_n$ the state process, then by definition, the process model is determined by the density $f_{X_n|X_{n-1}}$ and the initial density $f_{X_0}$.
+### Structure of a POMP
+
+As its name implies **pomp2** is focused on partially observed Markov process models.
+These are also known as state-space models, hidden Markov models, and stochastic dynamical systems models.
+Such models consist of an unobserved Markov state process, connected to the data via an explicit model of the observation process.
+We refer to the former as the *latent process model* (or process model for short) and the latter as the *measurement model*.
+
+Mathematically, each model is a probability distribution.
+Let $Y_n$ denote the measurement process and $X_n$ the latent state process, then by definition, the process model is determined by the density $f_{X_n|X_{n-1}}$ and the initial density $f_{X_0}$.
 The measurement process is determined by the density $f_{Y_n|X_n}$.
-We think of the data, $y^*_n$, as being a single realization of the $Y$ process.
-To implement a POMP model in **pomp**, we have to specify the measurement and process distributions.
-
-Note however, that, for each of the process and the measurement model there are two distinct operations that we might wish to perform:
-
-1. we might wish to *simulate*, i.e., to draw a (pseudo)random sample from the distribution, or
-2. we might wish to *evaluate the density* itself at given values of $X_n$ and/or $Y_n$.
-
-Following the **R** convention, we refer to the simulation of $f_{X_n|X_{n-1}}$ as the *rprocess* component of the POMP model and the evaluation of $f_{X_n|X_{n-1}}$ as the *dprocess* component.
-Similarly, the simulation of $f_{Y_n|X_n}$ is the *rmeasure* component while the evaluation of $f_{Y_n|X_n}$ is the *dmeasure* component.
-Methods that make no use of the *dprocess* component are called "plug-and-play" methods.
-At present, **pomp** is focused on such methods, so there is no reason to discuss the dprocess component further.
-In the following, we will illustrate and explain how one specifies the rprocess, rmeasure, and dmeasure components of a model in **pomp**.
-We will illustrate this using some simple examples.
+These two submodels determine the full POMP model, i.e., the joint distribution $f_{X_{0:N},Y_{1:N}}$.
+If we have a sequence of measurements, $y^*_{n}$, made at times $t_n$, $n=1,\dots,N$, then we think of these data, collectively, as a single realization of the $Y$ process.
 
 -----------------------------------
 
-The following is a schematic of the structure of a POMP showing causal relations between the process model, the measurement model, and the data.
-**The key perspective to keep in mind is that the model is to be viewed as the process that generated the data.**
+The following schematic shows shows causal relations among the process model, the measurement model, and the data.
+*From the statistical point of view, the key perspective is that the model is, at least hypothetically, the process that generated the data.*
 
-![schematic1](./pomp_schematic1.png)
+![**Structure of a POMP.**
+Arrows show the direction of causality.
+The closed loop from the state process to itself indicates the dynamic nature of this Markovian process.
+Information flow runs in the opposite direction.](./pomp_schematic1.png)
 
 -----------------------------------
 
-Here is another POMP model schematic, showing dependence among model variables.
+Mathematically, a POMP is characterized by two conditions.
 
-```{r ssdiag2,echo=FALSE,purl=FALSE,fig.height=3,fig.width=6}
+1. The state process, $X_n$, is Markovian, i.e.,
+$$\mathrm{Prob}[X_n|X_0,\dots,X_{n-1},Y_1,\dots,Y_{n-1}]=\mathrm{Prob}[X_n|X_{n-1}].$$
+1. The measurements, $Y_n$, depend only on the state at that time:
+$$\mathrm{Prob}[Y_n|X_0,\dots,X_{n},Y_1,\dots,Y_{n-1}]=\mathrm{Prob}[Y_n|X_{n}],$$
+for all $n=1,\dots,N$.
+
+These conditions can be represented schematically by the following diagram, which indicates the direct dependencies among model variables.
+
+-----------------------------------
+
+```{r ssdiag2,echo=FALSE,purl=FALSE,fig.height=3,fig.width=6,fig.cap="**Conditional independence graph of a POMP.**  The latent state $X_n$ at time $t_n$ is conditionally independent of its history given $X_{n-1}$.  The observation $Y_n$ is conditionally independent of all other variables given $X_n$.  The underlying time scale can be taken to be either discrete or continuous, and the observation times need not be equally spaced."}
 library(grid)
 vp <- viewport(x=unit(0.5,"npc"),y=unit(0.54,"npc"),
-               width=unit(0.96,"npc"),height=unit(0.96,"npc"))
+  width=unit(0.96,"npc"),height=unit(0.96,"npc"))
 pushViewport(vp)
 
 fs <- 12
@@ -165,536 +176,1404 @@ grid.lines(x=10/12,y=c(1,2)/3+c(1,-1)/12,arrow=arrow(length=unit(0.02,"npc")),gp
 popViewport()
 ```
 
-The state process, $X_n$, is Markovian, i.e.,
-$$\mathrm{Prob}[X_n|X_0,\dots,X_{n-1},Y_1,\dots,Y_{n-1}]=\mathrm{Prob}[X_n|X_{n-1}].$$
-Moreover, the measurements, $Y_n$, depend only on the state at that time:
-$$\mathrm{Prob}[Y_n|X_0,\dots,X_{n},Y_1,\dots,Y_{n-1}]=\mathrm{Prob}[Y_n|X_{n}],$$
-for all $n=1,\dots,N$.
 
 -----------------------------------
+
+
+### Basic model components
+
+To implement a POMP model in **pomp2**, we have to specify the measurement and process distributions.
+Note however, that, for each of the process and the measurement models there are two distinct operations that we might desire to perform:
+
+1. we might wish to *simulate*, i.e., to draw a (pseudo)random sample from the distribution, or
+2. we might wish to *evaluate the density* itself at given values of $X_n$ and/or $Y_n$.
+
+Following the **R** convention, we refer to the simulation of $f_{X_n|X_{n-1}}$ as the *rprocess* component of the POMP model and the evaluation of $f_{X_n|X_{n-1}}$ as the *dprocess* component.
+Similarly, the simulation of $f_{Y_n|X_n}$ is the *rmeasure* component while the evaluation of $f_{Y_n|X_n}$ is the *dmeasure* component.
+Finally, we'll call a simulator of $f_{X_0}$ the *rinit* component.
+Collectively, we'll refer to these, and other, similarly basic elements of the model, as the model's *basic components*.
+
+### The plug-and-play property
+
+A method that makes no use of the *dprocess* component is said to be "plug-and-play" or to have the "plug-and-play property".
+At present, **pomp2** is focused on such methods, so there is no reason to discuss the dprocess component further in this document.
+In the following, we will illustrate and explain how one specifies the rprocess, rmeasure, and dmeasure components of a model in **pomp2**.
+We will illustrate this using some simple examples.
 
 ## Preliminaries
 
 ### Installing the package
 
-To get started, we must install **pomp**, if it is not already installed.
-The package can be downloaded from CRAN, but the latest version is always available at the package homepage on Github.
+To get started, we must install **pomp2**, if it is not already installed.
+This package cannot yet be downloaded from CRAN (though that will change in the near future).
+However, the latest version is always available at the package homepage on Github.
 See the [package website for installation instructions](http://kingaa.github.io/pomp/install.html).
 
 ### Important information for Windows and Mac users.
 
-In this document, we will implement **pomp** models using the package's `Csnippet` facility.
-This allows the user to write model components using snippets of C code, which is then compiled and linked into a running `R` session.
+In this document, we will ultimately learn to implement POMP models using the package's "C snippet" facility.
+This allows the user to write model components using snippets of C code, which is then compiled and linked into a running **R** session.
 This typically affords a manyfold increase in computation time.
-It is possible to avoid `Csnippet`s entirely by writing model components as `R` functions, but the resulting implementations are typically too slow to be of practical use.
-To use `Csnippet`s, you must be able to compile C codes.
-Compilers are not by default installed on Windows or Mac systems, so users of such systems must do a bit more work to make use of **pomp**'s facilities.
+It is possible to avoid C snippets entirely by writing model components as **R** functions, and we will begin by doing so, but the speed-ups afforded by C snippets are typically too good to pass up.
+To use C snippets, you must be able to compile C codes.
+Compilers are not by default installed on Windows or Mac systems, so users of such systems must do a bit more work to make use of **pomp2**'s facilities.
 The [installation instructions on the package website](http://kingaa.github.io/pomp/install.html) give details.
 
+## Simulation of a POMP
 
-### Loading data
+Having dispensed with the preliminaries, we now explore some of the functionality provided by **pomp2**.
+To assist the reader in following this exploration, [the **R** codes for this document are available](getting_started.R).
 
-We will illustrate **pomp** by performing a limited data analysis on a set of bird abundance data.
+
+### The latent state process
+
+Let us see how to implement a very simple POMP model.
+In particular, let's begin by focusing on the famous Ricker model [@Ricker1954], which posits a nonlinear relationship between the size, $N(t)$, of a population in year $t$ and its size, $N(t+1)$, one year later:
+$$N(t+1)=r\,N(t)\,\exp\left(1-\frac{N(t)}{K}\right).\tag{1}$$
+Here, $r$ and $K$ are constant parameters, usually termed the *intrinsic growth rate* and the *carrying capacity*, respectively.
+As written, this is a deterministic model: 
+it does not allow for any variability in the population dynamics.
+Let's modify the Ricker equation by assuming that $r$ is not constant, but instead has random variation from year to year.
+If we assume that the intrinsic growth rate varies from year to year as a lognormal random variable, we obtain
+$$N(t+1)=r\,N(t)\,\exp\left(1-\frac{N(t)}{K}+\varepsilon(t)\right),\tag{2}$$
+where $\varepsilon(t)\sim\mathrm{Normal}(0,\sigma)$.
+Note that we've introduced a new parameter, $\sigma$, which quantifies the intensity of the noise in the population dynamics.
+Ecologically speaking, Eq.&nbsp;2 is a model with *environmental stochasticity*.
+
+Typically, it is relatively straightforward to simulate a POMP model.
+To accomplish this in **pomp2**, as we've already discussed, we specify the rprocess component of the model.
+We'll also need to choose values for the model parameters, $r$, $K$, and $\sigma$.
+We'll also need to make a choice regarding the initial condition, $N(0)$.
+The simplest choice is to treat $N(0)=N_0$ as a parameter.
+
+```{r sim1,warning=TRUE}
+library(pomp2)
+
+simulate(t0=0, times=1:20,
+  params=c(r=1.2,K=200,sigma=0.1,N_0=50),
+  rinit=function (N_0, ...) {
+    c(N=N_0)
+  },
+  rprocess=discrete_time(
+    function (N, r, K, sigma, ...) {
+      eps <- rnorm(n=1,mean=0,sd=sigma)
+      c(N=r*N*exp(1-N/K+eps))
+    },
+    delta.t=1
+  )
+) -> sim1
+```
+
+Notice that we've specified the rinit and rprocess components of the model as functions.
+These functions take as arguments the relevant variables (whether these are state variables or parameters).
+Importantly, they return *named numeric vectors*.
+Names of variables and parameters are very important in **pomp2**.
+Notice too that we've used the `discrete_time` function, which encodes the fact that our Ricker model is a discrete-time stochastic process (a Markov chain).
+The first argument of `discrete_time` is an **R** function encoding Eq.&nbsp;2;
+the second argument specifies the discrete time-step.
+
+Note also that the parameters are furnished in the form of a named vector, and that we've specified both `t0` and `times`.
+The former is the *initial time*, $t_0$, i.e., the time at which the initial conditions apply.
+Since our initial condition is that $N(0)=N_0$, our initial time is $t_0=0$.
+The `times` argument specifies the observation times $t_1,\dots,t_N$.
+
+What sort of an object is `sim1`?
+If we print it, we see
+
+```{r sim1_print}
+sim1
+```
+
+`sim1` is evidently an object of class 'pomp'.
+We refer to these as 'pomp' objects.
+
+To get more insight into the structure of `sim1`, we can use `spy`:
+
+```{r sim1_spy,eval=FALSE}
+spy(sim1)
+```
+
+**pomp2** provides methods for plotting 'pomp' objects.
+For example,
+
+```{r sim1_plot}
+plot(sim1)
+```
+
+We can also recast a 'pomp' object as a data frame:
+```{r sim1_print2}
+as(sim1,"data.frame")
+```
+
+Casting the 'pomp' object as a data frame allows us to use **ggplot2** graphics:
+
+```{r sim1_plot2}
+  ggplot(data=as.data.frame(sim1),aes(x=time,y=N))+
+  geom_line()
+```
+
+Now notice that we had a warning when we ran `simulate`.
+The warning was telling us that `simulate` could not simulate from the measurement process because we had supplied it with no rmeasure component.
+Let's see how we can specify rmeasure, the measurement model simulator.
+
+### The measurement model
+
+Let's suppose that non-lethal traps are used to sample the population to determine its size.
+Each year, some number of traps are set out and $Y_t$ is the number of animals captured.
+We might posit
+$$Y_t\;\sim\;\mathrm{Poisson}(b\,N(t)),$$
+where the parameter $b$ is proportional to sampling effort, e.g., the number of traps.
+This is a measurement model, and we can implement a simulator for it by specifying another function:
+
+```{r sim2}
+simulate(t0=0, times=1:20,
+  params=c(r=1.2,K=200,sigma=0.1,N_0=50,b=0.05),
+  rinit=function (N_0, ...) {
+    c(N=N_0)
+  },
+  rprocess=discrete_time(
+    function (N, r, K, sigma, ...) {
+      eps <- rnorm(n=1,mean=0,sd=sigma)
+      c(N=r*N*exp(1-N/K+eps))
+    },
+    delta.t=1
+  ),
+  rmeasure=function (N, b, ...) {
+    c(Y=rpois(n=1,lambda=b*N))
+  }
+) -> sim2
+```
+
+Note that, again, the rmeasure function need take only the necessary arguments (and `...`) and must return a named numeric vector.
+
+Now, in the preceding chunk of code where we construct `sim2`, there was some redundancy with our earlier construction of `sim1`.
+In particular, we specified the same values of `t0`, `times`, `rinit`, and `rprocess` as before.
+Since these specifications were stored in `sim1`, however, we could have simply *added* in just the new pieces.
+For example,
+
+```{r sim2_alt}
+simulate(
+  sim1,
+  params=c(r=1.2,K=200,sigma=0.1,N_0=50,b=0.05),
+  rmeasure=function (N, b, ...) {
+    c(Y=rpois(n=1,lambda=b*N))
+  }
+) -> sim2
+```
+
+As before, we can examine our handiwork:
+
+```{r sim2_spy,eval=FALSE}
+spy(sim2)
+```
+```{r sim2_print_plot}
+as(sim2,"data.frame")
+plot(sim2)
+ggplot(data=gather(
+  as(sim2,"data.frame"),
+  variable,value,-time),
+  aes(x=time,y=value,color=variable))+
+  geom_line()
+```
+
+Notice that now our `simulate` call produces samples from both the $N$ and the $Y$ distributions.
+`simulate` will try to sample from the joint distribution of latent states and observables, but will sample from just the latent state process if the rmeasure component is undefined.
+
+### Multiple simulations
+
+We can run multiple simulations using the same parameters:
+
+```{r sim2_sim1}
+simulate(sim2,nsim=20) -> sims
+
+ggplot(data=gather(
+  as.data.frame(sims),
+  variable,value,Y,N
+),
+  aes(x=time,y=value,color=variable,
+    group=interaction(.id,variable)))+
+  geom_line()+
+  facet_grid(variable~.,scales="free_y")+
+  labs(y="",color="")
+```
+
+We can also run a single simulation from multiple parameters:
+
+```{r sim2_sim2}
+p <- parmat(coef(sim2),3)
+p["sigma",] <- c(0.05,0.25,1)
+colnames(p) <- LETTERS[1:3]
+
+simulate(sim2,params=p,format="data.frame") -> sims
+sims <- gather(sims,variable,value,Y,N)
+ggplot(data=sims,aes(x=time,y=value,color=variable,
+  group=interaction(.id,variable)))+
+  geom_line()+
+  scale_y_log10()+
+  expand_limits(y=1)+
+  facet_grid(variable~.id,scales="free_y")+
+  labs(y="",color="")
+```
+
+In the above, `coef` extracts the parameter vector stored in `sim2`.
+`parmat` makes a matrix with columns that are copies this vector.
+The second line modifies this matrix so that the columns are a set of points in parameter space that lie along a line with increasing values of the $\sigma$ parameter.
+
+We can even run multiple simulations at each one of a set of parameters:
+
+```{r sim2_sim3,message=F}
+simulate(sim2,params=p,
+  times=seq(0,3),
+  nsim=500,format="data.frame") -> sims
+ggplot(data=separate(sims,.id,c("parset","rep")),
+  aes(x=N,fill=parset,group=parset,color=parset))+
+  geom_density(alpha=0.5)+
+  # geom_histogram(aes(y=..density..),position="dodge")+
+  facet_grid(time~.,labeller=label_both,scales="free_y")+
+  lims(x=c(NA,1000))
+```
+
+## Note on **pomp2** syntax
+
+**pomp2** uses certain syntactic conventions.
+For example, if `x` is an object and `f` is a **pomp2** function, then typically `f(x,...) -> y` yields an object, `y`, that contains `x` plus the results of the `f` operation, together with additional information pertinent to what `f` did.
+Here, `...` stands for additional arguments to `f`.
+Then, if we call `f(y)`, this operation will perform some kind of repeat of the original operation:
+though the details will vary with `f` and `y`, choices made in the original computation (on `x`) will typically be respected.
+To change some of these choices, one can do `f(y,...)`, where the `...` stands for options of `f` that correspond to the new choices.
+
+Morever, since `y` contains so much information, this information will typically be reused when we apply a different function, `g`, to `y`, when it makes sense to do so.
+
+The [**magrittr** package](https://cran.r-project.org/package=magrittr) (part of the [**tidyverse**](https://cran.r-project.org/package=tidyverse)), provides new syntax that is especially convenient for us.
+It allows us to construct *pipelines* of **R** commands, which leads (once one is used to it) to code that is easier to read.
+In brief, a command in ordinary **R** style, such as
+```
+h(g(f(x,...),...),...)
+```
+where `f`, `g`, `h` are **R** functions, `x` is some **R** object, and `...` represents additional arguments to each of the functions, must be read from the inside out, which is at odds with the sequential nature of the `f` &rarr; `g` &rarr; `h` computation.
+An alternative, of course, is to write something like
+```
+y <- f(x,...)
+z <- g(y,...)
+w <- h(z,...)
+```
+which multiplies the entities (`y`, `z`, `w`) one must name and keep track of.
+In contrast, the pipeline syntax of **magrittr** allows us to write
+```
+x %>% f(...) %>% g(...) %>% h(...)
+```
+The object-oriented structure of **pomp2** makes this kind of programming quite natural.
+
+Some experienced **R** programmers find the pipeline syntax uncomfortable or unnecessary at first, and debugging pipelined code requires a somewhat different approach.
+Of course, it is not necessary to adopt this style of programming to use **pomp2**, but it is quite natural and, experience shows, quite addictive!
+
+We will use pipelines freely for the remainder of the document.
+Note that it is not necessary to load **magrittr** to use this syntax:
+the `%>%` operator is imported from **magrittr** and re-exported by **pomp2**.
+
+***Important note:*** 
+If you opt to load the **tidyverse** (or individual packages therein), be sure to load **pomp2** *after* loading these packages.
+There are some name conflicts between the packages that would otherwise cause **pomp2** functions to be masked.
+
+---------------------------------------
+
+#### Exercise
+
+Modify the `sim2` object constructed above to change the measurement model.
+In particular, assume that
+$$Y_t\;\sim\;\mathrm{NegBin}(b\,N(t),\theta),$$
+where $b$ and $\theta$ are parameters.
+(By this notation, we understand that $Y_t$ is negative binomially distributed with mean $b\,N(t)$ and variance $b\,N(t)+(b\,N(t))^2/\theta$.)
+Make and plot some simulations for $t=20,\dots,50$ with different values of the $\theta$ parameter.
+[Hint: use the `rnbinom` function with the `mu`, `size` parameterization.]
+
+---------------------------------------
+
+## *Parus major* population abundance data
+
+We will illustrate some of the **pomp2** data-analysis algorithms by performing a limited analysis on a set of bird abundance data.
 The data are from annual censuses of a population of *Parus major* (Great Tit) in Wytham Wood, Oxfordshire.
 They were retrieved as dataset #10163 from the Global Population Dynamics Database version 2 (NERC Centre for Population Biology, Imperial College, 2010).
 The original source is @McCleery1991.
-
-We load the data by doing
-```{r load-parus-data}
-parus.dat <- read.csv(text="
-                      year,P
-                      1960,148
-                      1961,258
-                      1962,185
-                      1963,170
-                      1964,267
-                      1965,239
-                      1966,196
-                      1967,132
-                      1968,167
-                      1969,186
-                      1970,128
-                      1971,227
-                      1972,174
-                      1973,177
-                      1974,137
-                      1975,172
-                      1976,119
-                      1977,226
-                      1978,166
-                      1979,161
-                      1980,199
-                      1981,306
-                      1982,206
-                      1983,350
-                      1984,214
-                      1985,175
-                      1986,211"
-                      )
-```
-
-Here is a plot of these data:
+They are provided as part of the package, in the data frame `parus`.
+Here we display the data graphically and in a table:
 
 ```{r parus-plot}
-library(ggplot2)
-ggplot(data=parus.dat,mapping=aes(x=year,y=P))+
+parus %>%
+  ggplot(aes(x=year,y=pop))+
   geom_line()+geom_point()+
-  expand_limits(y=0)+
-  theme_bw()
+  expand_limits(y=0)
+parus
 ```
 
-## Specifying a continuous-time process model
+The basic data-type provided by **pomp2**---the 'pomp' object---is designed as a container for a model and data.
+Let's construct such an object with these data, together with the Ricker model we've already implemented.
+We do this with a call to the constructor function `pomp`:
 
-To keep things simple, let's attempt to explain these data using a very simple model of stable but stochastic population dynamics, the logistic, or Verhulst-Pearl, equation with environmental stochasticity.
-We'll write this model as a stochastic differential equation (SDE), specifically an Ito diffusion:
-$$dN = r\,N\,\left(1-\frac{N}{K}\right)\,dt+\sigma\,N\,dW(t),$$
+```{r rick}
+parus %>%
+  pomp(
+    times="year", t0=1960,
+    rinit=function (N_0, ...) {
+      c(N=N_0)
+    },
+    rprocess=discrete_time(
+      function (N, r, K, sigma, ...) {
+        eps <- rnorm(n=1,mean=0,sd=sigma)
+        c(N=r*N*exp(1-N/K+eps))
+      },
+      delta.t=1
+    ),
+    rmeasure=function (N, b, ...) {
+      c(pop=rpois(n=1,lambda=b*N))
+    }
+  ) -> rick
+```
+
+Notice that the measurement model simulator (rmeasure) is not the same as before, reflecting the fact that the data are named `pop`, not `Y` as before.
+Also notice that we specify the time variable by name, thus allowing the data to dictate the observation times.
+The `t0` argument specifies that the stochastic latent state process is initialized in year 1960.
+
+
+## Continuous-time process models
+
+We've already shown how to implement a discrete-time model;
+let's now see how to implement a continuous-time model.
+We'll implement a very simple model of stable but stochastic population dynamics, the logistic, or Verhulst-Pearl, equation with environmental stochasticity.
+We'll write this model as a stochastic differential equation (SDE), specifically an It&ocirc; diffusion:
+$$dN = r\,N\,\left(1-\frac{N}{K}\right)\,dt+\sigma\,N\,dW(t),\tag{3}$$
 where $N$ is the population size, $r$ is a fixed rate, the so-called "Malthusian parameter", $K$ is the population's "carrying capacity", $\sigma$ describes the intensity of extrinsic stochastic forcing on the system, and $dW$ is an increment of a standard Wiener process.
-[Those unfamiliar with Wiener processes and Ito diffusions will find it useful to visualize $dW(t)$, for each time $t$, as a normal random variable with mean zero and standard deviation $\sqrt{dt}$.]
-To implement this model in **pomp**, we must tell the package how to simulate this model.
+[Those unfamiliar with Wiener processes and It&ocirc; diffusions will not go far wrong thinking of $dW(t)$, for each time $t$, as a normal random variable with mean zero and standard deviation $\sqrt{dt}$.]
+To implement this model in **pomp2**, we must tell the package how to simulate this model.
 The easiest way to simulate such an SDE is via the *Euler-Maruyama* method.
 In this approximation, we take a large number of very small steps, each of duration $\Delta t$.
 At each step, we hold the right-hand side of the above equation constant, compute $\Delta N$ using that equation, and increment $N$ accordingly.
-**pomp** gives us the `euler.sim` function to assist us in implementing the Euler-Maruyama method.
+**pomp2** gives us the `euler` function to assist us in implementing the Euler-Maruyama method.
 To use it, we must encode the computations that take a single step.
-The best way to do this is to write a snippet of code in the C language.
-The following is such a snippet for the stochastic logistic equation above.
+As before, we can do so by writing a function.
 
 ```{r logistic-step-fun}
-library(pomp)
-step.fun <- Csnippet("
+vpstep <- function (N, r, K, sigma, delta.t, ...) {
+  dW <- rnorm(n=1,mean=0,sd=sqrt(delta.t))
+  c(N = N + r*N*(1-N/K)*delta.t + sigma*N*dW)
+}
+```
+
+This function computes the value of $N(t+\Delta t)$ given the value of $N(t)$, $\Delta t$, and the parameters.
+
+We fold this with the data into a 'pomp' object via a call to the 'pomp'-object constructor function, `pomp`.
+We'll also include the same measurement model we used before.
+Because everything but the 'rprocess' component is the same as with the Ricker model, to accomplish this, we can simply do
+
+```{r vp1,eval=FALSE,include=FALSE}
+parus %>%
+  pomp(
+    times="year", t0=1960,
+    rinit=function (N_0, ...) {
+      c(N=N_0)
+    },
+    rprocess=euler(vpstep,delta.t=1/365),
+    rmeasure=function (N, b, ...) {
+      c(pop=rpois(n=1,lambda=b*N))
+    }
+  ) -> vp
+```
+```{r vp}
+rick %>% pomp(rprocess=euler(vpstep,delta.t=1/365)) -> vp
+```
+
+Notice that we've specified an Euler-Maruyama step of about 1 day:
+it will take 365 of these steps to get us from one observation to the next.
+
+As before, we can plot this 'pomp' object, recast it as a data frame, and simulate it for any given choice of the parameters.
+
+---------------------------------------
+
+#### Exercise
+
+The following codes produce several simulations for parameters $r=0.5$, $K=2000$, $\sigma=0.1$ and $b=0.1$, and plot them on the same axes as the data.
+Notice that the `format="data.frame"` and `include.data=TRUE` options facilitate this.
+Vary the parameters to try to achieve a better fit to the data, as judged purely "by eye".
+
+```{r vp_sim1}
+vp %>%
+  simulate(
+    params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
+    format="data.frame", include.data=TRUE, nsim=5) %>%
+  mutate(ds=case_when(.id=="data"~"data",TRUE~"simulation")) %>%
+  ggplot(aes(x=year,y=pop,group=.id,color=ds))+
+  geom_line()+
+  labs(color="")
+```
+
+---------------------------------------
+
+## C snippets
+
+To this point, we've implemented two models by specifying their basic components as **R** functions.
+While this has the virtue of transparency, it puts severe constraints on computational performance due to intrinsic limits in the speed with which **R** codes can be interpreted.
+If all we want to do is run a few simulations, this is not a problem.
+As we'll see, however, in attempting to perform parameter estimation and other inferences, we will need all the speed we can readily get.
+We achieve potentially massive speed-ups by implementing our basic model components in a language that can be compiled.
+**pomp2** makes this easy.
+The key innovation is the C snippet.
+Let's see how to code up the Ricker and Verhulst-Pearl models using C snippets.
+First, we'll code up the rinit and rmeasure components, which the two models share.
+
+```{r two_snips}
+Csnippet("
+  pop = rpois(b*N);  
+  ") -> rmeas
+
+Csnippet("
+  N = N_0;
+  ") -> rinit
+```
+
+These are about as simple as one can get.
+As the name suggests, each is just a snippet of C code: 
+not all variables are declared (in fact, in these examples, none are) and the context of the snippet is not specified.
+In particular, these snippets are not actually complete C functions, so by themselves, they cannot be compiled.
+They must not actually *violate* the rules of C syntax however.
+Among other things, lines must end with a semicolon (`;`), variable names must respect C restrictions, etc.
+Although one can enclose essentially arbitrarily complex C code in a C snippet, one can do quite a lot with very simple snippets.
+If you are new (even very new) to C, don't worry: 
+once you master a few simple rules, you'll be able to code up C snippets just as easily, or even more easily, than you code up **R** functions and you'll learn to value the resulting speed-up extremely.
+
+Now we'll code the Ricker and Verhulst-Pearl simulation steps as C snippets.
+
+```{r more_snips}
+Csnippet("
+  double eps = rnorm(0,sigma);
+  N = r*N*exp(1-N/K+eps);
+") -> rickstepC
+
+Csnippet("
   double dW = rnorm(0,sqrt(dt));
   N += r*N*(1-N/K)*dt+sigma*N*dW;
-")
+") -> vpstepC
 ```
 
-This is just a snippet of C code: not all the variables are declared and the context of the snippet is not specified.
-When given this snippet, `pomp` will provide the necessary declarations and context, compile the resulting C code, dynamically link to it, and use it to simulate realizations of the process model.
-We cause all this to happen when we construct an object of class `pomp` via a call to the constructor function, which is also named `pomp`:
+A few observations are in order.
+First, note that the local variables `eps` and `dW` are declared "double", the standard C data-type for floating point numbers.
+Observe that `dt` is a variable that is defined in the context of the `vpstepC` snippet;
+when this snippet is executed, `dt` will be provided by `pomp` and will be equal to the size of the Euler step actually being taken.
+Note also that in each of these snippets, the value of `N` gets over-written by its new value at the next time-step.
+This is the goal of the C snippets we supply to specify the 'rprocess' component of a model.
+Finally, notice that neither the state variable `N` nor any of the parameters are declared.
+The declarations will be handled in a different way, as we'll see in a moment.
 
-```{r logistic-pomp1}
-parus <- pomp(data=parus.dat,time="year",t0=1959,
-              rprocess=euler.sim(step.fun=step.fun,delta.t=1/365),
-              statenames="N",paramnames=c("r","K","sigma"))
+When furnished with one or more C snippets, `pomp` will provide the necessary declarations and context, compile the resulting C code, dynamically link to it, and use it whenever the corresponding basic model component is needed.
+We cause all this to happen when we construct an object of class `pomp` via a call to the constructor function.
+Let's do this for the two models now.
+
+```{r rickC}
+parus %>%
+  pomp(
+    times="year", t0=1960,
+    rinit=rinit,
+    rmeasure=rmeas,
+    rprocess=discrete_time(rickstepC,delta.t=1),
+    statenames="N",
+    paramnames=c("r","K","sigma","b","N_0")
+  ) -> rickC
 ```
 
-In the above, we've specified an Euler-Maruyama time-step of about one day.
-The `t0` argument specifies that we are going to treat the stochastic state process as being initialized in year 1959.
-We use the `statenames` and `paramnames` arguments to indicate which of the undeclared variables in the `Csnippet` `step.fun` are state variables and which are fixed parameters.
-Since `dW` is a local variable, we must provide an ordinary C declaration for it.
-Note that `dt` is a variable that is defined in the context of this snippet; it is actually provided by `pomp` and will contain the size of the Euler step.
-The `rnorm` function is part of the [`R` API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API): see the [manual on "Writing R Extensions"](http://cran.r-project.org/doc/manuals/r-release/R-exts.html) for a description of this and the other [distribution functions provided as part of the `R` API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
-Finally, note that the state variable `N` is over-written by this snippet: it's value when the first line is executed is overwritten by the second line.
-
-A full set of rules for writing **pomp** C snippets is given in the package help `?Csnippet`.
-
-With the process model in place, we can simulate the process model using the `simulate` function and plot several realizations for a given set of parameters.
-
-```{r logistic-simul1}
-simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),states=TRUE)
-```
-```{r logistic-plot1,echo=FALSE}
-library(magrittr)
-library(reshape2)
-
-simStates %>% 
-    melt() %>% 
-    dcast(rep+time~variable) %>%
-    ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
-    geom_line()+guides(color=FALSE)+
-    theme_bw()
+```{r vpC}
+parus %>%
+  pomp(
+    times="year", t0=1960,
+    rinit=rinit,
+    rmeasure=rmeas,
+    rprocess=euler(vpstepC,delta.t=1/365),
+    statenames="N",
+    paramnames=c("r","K","sigma","b","N_0")
+  ) -> vpC
 ```
 
-Note that, in the above, we are using the pipe syntax (`%>%`) provided by **magrittr**.
+In these calls, we use the `statenames` and `paramnames` arguments to indicate which of the undeclared variables in the C snippets `rickstepC` and `vpstepC` are state variables and which are fixed parameters.
+Since `dW` and `eps` are declared as local variables within the C snippets themselves, we don't need to mention them here.
+The `rnorm` and `rpois` functions are part of the [**R** API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API):
+see the [manual on "Writing R Extensions"](http://cran.r-project.org/doc/manuals/r-release/R-exts.html) for a description of these and the other [distribution functions provided as part of the **R** API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
+A full set of rules for writing **pomp2** C snippets is given in the package help (`?Csnippet`).
 
-## Specifying the measurement model
+---------------------------------------
 
-Although it is the process model that is usually the focus of an investigator's interest, the measurement model is equally important because it connects the process model to the data.
-For this example, let's model the observations using a Poisson distribution:
-$$P_t \sim \mathrm{Poisson}(N_t),$$
-where, at time $t$, $P_t$ is our census count and $N_t$ is the true population size.
+#### Exercise
 
-### The rmeasure component
+Using the 'pomp' objects just constructed, explore model simulations at a variety of different parameters.
+As before, plot simulations and data on the same axes for comparison purposes.
 
-The following snippet encodes the rmeasure component for this model.
-```{r logistic-rmeasure}
-rmeas <- Csnippet("
-  P = rpois(N);
-")
-```
-In this snippet of code, `N` is the state variable and `P` is the name of our observable, as defined in the dataset `parus.dat`.
-The `rpois` function is part of the [`R` API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API): it takes a single argument---the Poisson distribution's parameter---and returns a pseudo-random draw from the Poisson distribution with that parameter.
-As with the `step.fun` snippet above, execution of this snippet causes `P` to be overwritten.
+---------------------------------------
 
-To fold this into our `pomp` object, we do
-```{r logistic-pomp2}
-parus <- pomp(parus,rmeasure=rmeas,statenames="N")
-```
-Note that, again, we must tell `pomp` which of the variables (if any) is a parameter and which is a state variable.
-We can now simulate from the full POMP model and plot the results.
-```{r logistic-simul2}
-sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),
-                nsim=10,obs=TRUE,states=TRUE)
-```
-```{r logistic-plot2,echo=FALSE}
-sim %>% melt() %>% 
-    ggplot(mapping=aes(x=time,y=value,group=rep,color=factor(rep)))+
-    geom_line()+
-    guides(color=FALSE)+scale_y_sqrt()+
-    facet_grid(variable~.,scales="free_y")+
-    theme_bw()
+#### Exercise
 
-sim %>% melt() %>% dcast(rep+time~variable,value.var='value') %>%
-    ggplot(mapping=aes(x=N,y=P,color=factor(rep)))+
-    geom_point()+scale_x_sqrt()+scale_y_sqrt()+
-    coord_equal()+
-    guides(color=FALSE)+
-    theme_bw()
-```
+Write a C snippet implementing the negative binomial measurement model you explored previously.
+Fold it into the 'pomp' objects just constructed.
+Remember, there is no need to re-specify components you have already specified:
+by calling `pomp` on a 'pomp' object you can modify some or all of the basic model components.
+Plot simulations and data on the same axes, as in the immediately preceding exercise.
 
-### The dmeasure component
+---------------------------------------
 
-The following snippet encodes the dmeasure component.
+## The dmeasure component
+
+As mentioned in the [introduction](#basic-model-components), the dmeasure component is the other side of the rmeasure component.
+The latter simulates the measurement model whereas the former evaluates the measurement model's probability density function.
+The following C snippet encodes the dmeasure component.
+
 ```{r logistic-dmeasure}
-dmeas <- Csnippet("
-  lik = dpois(P,N,give_log);
-")
-```
-and we fold it into the `pomp` object via
-```{r logistic-pomp3}
-parus <- pomp(parus,dmeasure=dmeas,statenames="N")
+Csnippet("
+  lik = dpois(pop,b*N,give_log);
+") -> dmeas
 ```
 
-In the `dmeas` snippet, `dpois` again comes from the [`R` API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API).
-It takes three arguments, the datum, the Poisson parameter, and `give_log`.
+Here, `dpois` again comes from the [**R** API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
+It takes three arguments, the datum (`pop`), the Poisson parameter (`b*N`), and `give_log`.
 When `give_log=0`, `dpois` returns the Poisson likelihood; 
 when `give_log=1`, `dpois` returns the log of this likelihood.
 When this snippet is executed, `pomp` will provide the value of `give_log` according to its needs.
-It is the user's responsibility to make sure that the correct value is returned.
+It is the user's responsibility to make sure that the correct value is returned for both possible values of `give_log`.
+**This is one of the most common places where newbies make mistakes!**
 
-Since we now have both the rprocess and the dmeasure components in place, we can perform a particle filtering operation to estimate the log likelihood at any given point in parameter space.
-For example, we can do
-```{r logistic-pfilter}
-pf <- pfilter(parus,Np=1000,params=c(r=0.2,K=200,sigma=0.5,N.0=200))
-logLik(pf)
+---------------------------------------
+
+#### Exercise
+
+Write the dmeasure component for your negative binomial model both as an **R** function and as a C snippet.
+
+---------------------------------------
+
+## The particle filter
+
+We are now in a position to be able to compute the likelihood of the data given any set of parameters for either of our models.
+For this purpose, we use the *particle filter*.
+This powerful algorithm is at the heart of several of **pomp2**'s inference methods.
+We won't describe the theory of the particle filter here.
+The tutorial by @Arulampalam2002 explains the theory in an accessible way.
+The [**pomp2** *Journal of Statistical Software*](https://kingaa.github.io/pomp/vignettes/pompjss.pdf) paper gives pseudocode and some examples.
+The [**pomp2** documentation page](https://kingaa.github.io/pomp/docs.html) lists several other tutorial documents that go into more detail.
+
+In **pomp2**, the simplest version of the particle filter is implemented in the function `pfilter`.
+Its only required arguments are the 'pomp' object and the number of *particles*, i.e., the Monte Carlo sample size.
+
+```{r pfilter1}
+rickC %>%
+  pfilter(Np=1000,
+    params=c(r=1.2,K=2000,sigma=0.3,N_0=1600,b=0.1),
+    dmeasure=dmeas,
+    paramnames="b",statenames="N") -> pfrick
 ```
 
-## A continuous-time deterministic skeleton
+Notice that, in this call, we specified the dmeasure component using the C snippet we wrote above.
+What would have happened had we not specified this?
 
-A deterministic skeleton of the logistic model is obtained by taking $\sigma\to 0$, which leads to the deterministic differential equation
+Notice that, because we here introduced a new C snippet, we again had to indicate which of the undeclared variables in `dmeas` are parameters and which are latent state variables.
+
+What kind of object is `pfrick`?
+
+```{r pfrick_print}
+pfrick
+```
+
+As a 'pfilterd_pomp' object, `pfrick` contains `rickC` plus a wealth of information regarding the particle filter operation that created it.
+For example, we can extract the estimated log likelihood at these (arbitrarily chosen) parameters:
+
+```{r pfrick_loglik}
+logLik(pfrick)
+```
+
+There is also a `plot` method for 'pfilterd_pomp' objects and one for coercing them to data frames.
+
+```{r pfrick_plot}
+plot(pfrick)
+as(pfrick,"data.frame")
+```
+
+Both of these reveal that `pfrick` contains information about the *effective sample size* of the particle filter (`ess`) and the *conditional log likelihood*, `cond.loglik`, which in the notation of the [introduction](#partially-observed-markov-process-pomp-models), is
+$$\log f_{Y_n|Y_{1:n-1}}(y_n^*|y_{1:n-1}^*).$$
+
+The particle filter is a Monte Carlo algorithm.
+Accordingly, it gives us only a noisy estimate of the likelihood.
+We can reduce this noise by increasing the number of particles, `Np`, and we can estimate the magnitude of the Monte Carlo error by running a few independent particle filters.
+For example:
+
+```{r rick_loglik}
+replicate(10, pfrick %>% pfilter() %>% logLik()) -> lls
+lls
+logmeanexp(lls,se=TRUE) -> ll_rick1
+ll_rick1
+```
+
+In the first line, notice that we did not need to specify `Np`, despite the fact that there is no default value of this parameter.
+Indeed, because `pfrick` is a 'pfilterd_pomp' object, it knows the value of `Np` that was used in its own creation.
+By default, this same value is used again when it is passed to `pfilter`.
+We could, of course, have used a different value simply by specifying `Np` in this call to `pfilter`.
+
+The last line of the preceding code chunk computes the log of the mean of the estimated likelihoods and the standard error on this mean via the delta method.
+Since the particle filter gives an unbiased estimate of the likelihood (not the log likelihood), this operation is sensible, provided the Monte Carlo error is not too large.
+
+Let's repeat the operation for the Verhulst-Pearl model, again at arbitrary parameters.
+
+```{r vp_loglik}
+replicate(10,
+  vpC %>%
+    pfilter(Np=1000,dmeasure=dmeas,
+      params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
+      paramnames="b",statenames="N") %>%
+    logLik()) %>%
+  logmeanexp(se=TRUE) -> ll_vp1
+ll_vp1
+```
+
+---------------------------------------
+
+#### Exercise
+
+Compute the likelihood for the parameters you found in your attempt to estimate parameters "by eye".
+
+---------------------------------------
+
+## Trajectory matching
+
+Trajectory matching is the method of estimating the parameters of a deterministic model by fitting the model to data assuming independent measurement errors.
+Although **pomp2**'s main focus is on stochastic models, it does provide facilities for trajectory matching.
+**pomp2** makes a conceptual distinction between the stochastic process and a *deterministic skeleton*, which we can view as a deterministic model related to the stochastic process' central tendency.
+We'll not go into mathematical details here:
+instead, we'll illustrate with two examples.
+
+### A discrete-time deterministic skeleton
+
+A deterministic skeleton of the stochastic Ricker model is the Ricker map, Eq.&nbsp;1.
+We implement this for **pomp2**, again either as an **R** function or a C snippet and pass it to **pomp2** functions via the `skeleton` argument.
+For example:
+```{r rick_skel}
+rickC %>%
+  pomp(
+    skeleton=map(
+      Csnippet("DN = r*N*exp(1-N/K);"),
+      delta.t=1
+    ),
+    paramnames=c("r","K"), statenames="N"
+  ) -> rickC
+```
+Here, the left-hand side of Eq.&nbsp;1 is indicated by the `D` prefix:
+in skeleton snippets, we don't over-write the state variable `N`.
+We indicate that the skeleton is a discrete-time map using the `map` function.
+
+### A continuous-time deterministic skeleton
+
+A deterministic skeleton of the Verhulst-Pearl model is the vectorfield (or ordinary differential equation),
 $$\frac{dN}{dt} = r\,N\,\left(1-\frac{N}{K}\right).$$
-The following snippet encodes this deterministic skeleton and folds it into the `pomp` object.
-```{r logistic-skeleton}
-skel <- Csnippet("
-  DN = r*N*(1-N/K);
-")
+We fold this into the `vpC` 'pomp' object so:
 
-parus <- pomp(parus,skeleton=vectorfield(skel),statenames="N",paramnames=c("r","K"))
+```{r vp_skel}
+vpC %>%
+  pomp(
+    skeleton=vectorfield(Csnippet("DN = r*N*(1-N/K);")),
+    paramnames=c("r","K"), statenames="N"
+  ) -> vpC
 ```
-Note that in this snippet, `DN` is filled with the value of the time-derivative of `N`. 
+
+Since the skeleton here is a vectorfield, in this C snippet, `DN` is filled with the value of the time-derivative of `N`. 
 See the package help (`?Csnippet`) for a complete set of rules for writing C snippets.
 
-With the deterministic skeleton in place we can generate several trajectories of the skeleton using `trajectory`, as follows, and plot the result.
-```{r logistic-traj1}
-pars <- parmat(c(r=1,K=200,sigma=0.5,N.0=20),5)
-pars["N.0",] <- seq(20,300,length=5)
-traj <- trajectory(parus,params=pars,times=seq(1959,1970,by=0.01))
-```
-```{r logistic-plot3,echo=FALSE}
-trajectory(parus,params=pars,times=seq(1959,1970,by=0.01),as.data.frame=TRUE) %>%
-    ggplot(mapping=aes(x=time,y=N,group=traj,color=traj))+
-    guides(color=FALSE)+
-    geom_line()+
-    theme_bw()
+### Trajectories of the deterministic skeleton
+
+With the deterministic skeleton in place we can generate trajectories of the skeleton using `trajectory`.
+For example:
+
+```{r vp_traj1}
+p <- parmat(c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),10)
+p["N_0",] <- seq(10,3000,length=10)
+vpC %>%
+  trajectory(params=p,format="data.frame") %>%
+  ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
+  guides(color=FALSE)+
+  geom_line()+
+  theme_bw()
 ```
 
-## Specifying a discrete-time process model and skeleton
+As with `simulate`, one can use `trajectory` to compute multiple trajectories at once, for varying values of the parameters.
 
-Let us demonstrate the implementation of discrete-time process models by replacing the continuous-time logistic equation used above with the stochastic Beverton-Holt model
-$$N_{t+1}=\frac{a\,N_t}{1+b\,N_t}\,\varepsilon_t,$$
-where $a$ and $b$ are parameters and $\varepsilon_t\sim\mathrm{Lognormal}(-\tfrac{1}{2}\sigma^2,\sigma)$.
 
-Since we are now dealing with a discrete-time model, `euler.sim` will no longer construct an appropriate rprocess component.
-Instead, we can use `discrete.time.sim`, which also takes a C snippet encoding the one-step simulation.
-The following snippet simulates a single iteration of the stochastic Beverton-Holt map
-```{r bh-stepfun}
-bh.step <- Csnippet("
-  double eps = rlnorm(-sigma*sigma/2,sigma);
-  N = a*N/(1+b*N)*eps;
-")
-```
-A corresponding skeleton is the deterministic Beverton-Holt map obtained by setting $e_t=1$ in the above equation.
-A snippet that implements this map is
-```{r bh-skeleton}
-bh.skel <- Csnippet("
-  DN = a*N/(1+b*N);
-")
-```
-Note that, as in the continuous case, we indicate the new value of the state variable by prepending `D` to the variable name.
+### Parameter estimation using trajectory matching
 
-We create a new `pomp` object based on this process model but with the same rmeasure and dmeasure components as in `parus` by executing
-```{r bh-pomp1}
-parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=map(bh.skel,delta.t=1),statenames="N",paramnames=c("a","b","sigma"))
+In **pomp2**, the function `traj_objfun` constructs an objective function quantifying the mismatch between model predictions and data.
+For this purpose, it uses the dmeasure component of the model.
+This function can be given to any of the large variety of numerical optimizers available in **R** and **R** packages.
+These optimizers search parameter space to find parameters under which the likelihood of the data, given a trajectory of the deterministic skeleton, is maximized.
+
+We'll demonstrate using the Verhulst-Pearl model.
+
+```{r vp_traj_objfun}
+vpC %>%
+  traj_objfun(
+    est=c("K","N_0"),
+    params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
+    dmeasure=dmeas, statenames="N", paramnames="b"
+  ) -> ofun
 ```
-The following codes test the above by computing some simulations, a trajectory of the skeleton, and running a particle filtering operation.
-```{r bh-test}
-coef(parus.bh) <- c(a=1.1,b=5e-4,sigma=0.5,N.0=30)
-sim <- simulate(parus.bh)
-traj <- trajectory(parus.bh)
-pf <- pfilter(parus.bh,Np=1000)
+
+This invocation of `traj_objfun` creates an objective function, `ofun`, that can be used to estimate the three parameters $K$ and $N_0$.
+It will hold the other three parameters, $r$, $\sigma$, and $b$, fixed at the values they are given in `params`.
+
+Notice that, in this code chunk, we had to specify `dmeasure` once again.
+Why?
+What would have happened had we not done so?
+
+What kind of object is `ofun`?
+
+```{r ofun_print}
+ofun
+```
+
+'traj_match_objfun' objects, like the objective functions created by the **pomp2** functions `spect_objfun`, `probe_objfun`, and `nlf_objfun`, is an **R** function, but it is also more than an **R** function.
+It contains not only the `vpC` 'pomp' object, but it additionally saves information each time it is evaluated.
+Let's see how such *stateful* objective functions make it easy to use a wide range of numerical optimization routines.
+
+We can evaluate `ofun` at any point in the 2-dimensional $K$-$N_0$ space.
+For example:
+
+```{r ofun_eval}
+ofun(c(1000,3000))
+```
+
+The value returned by `ofun` is the *negative* log likelihood, as returned by the model's dmeasure component.
+We can estimate the parameters using, for example, the *subplex* algorithm implemented in the **subplex** package:
+
+```{r traj_match1}
+library(subplex)
+
+subplex(c(2000,1500),fn=ofun) -> fit
+fit 
+```
+
+Note that `fit` contains, among other things, the estimated parameters (element `par`) and the minimized value of the negative log likelihood (`value`).
+
+To make absolutely certain that `ofun` remembers these estimates, we evaluate it once at `fit$par`:
+
+```{r traj_match_print}
+ofun(fit$par)
+coef(ofun)
+logLik(ofun)
+```
+
+Then we can, for example, extract the fitted trajectory thus:
+
+```{r traj_match_traj}
+ofun %>%
+  trajectory(format="data.frame") %>%
+  ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
+  guides(color=FALSE)+
+  geom_line()+
+  theme_bw()
+```
+
+We can superimpose the model predictions on the data as follows.
+
+```{r traj_match_plot}
+ofun %>%
+  trajectory(format="data.frame") %>%
+  mutate(
+    pop=coef(ofun,"b")*N,
+    .id="prediction"
+  ) %>%
+  select(-N) %>%
+  rbind(
+    parus %>%
+      mutate(
+        .id="data",
+        pop=as.double(pop)
+      )
+  ) %>%
+  spread(.id,pop) %>%
+  ggplot(aes(x=year))+
+  geom_line(aes(y=prediction))+
+  geom_point(aes(y=data))+
+  expand_limits(y=0)+
+  labs(y="pop")
 ```
 
 ## Parameter transformations
 
-We can specify model-specific parameter transformations using C snippets.
-The following implements log transformation of the $r$ and $K$ parameters of the logistic model and folds them into the `pomp` object `parus`.
-```{r logistic-partrans}
-logtrans <- Csnippet("
-  Tr = log(r);
-  TK = log(K);
-  Tsigma = log(sigma);
-")
+Very commonly, model parameters must obey certain constraints.
+For example, the parameters in the two models we've looked at so far are all constrained to be positive.
+In estimating parameters, however, one frequently wants to employ a numerical optimization method that does not respect constraints.
+One way of accomodating such *unconstrained optimizers* is to transform the parameter space so that the constraints disappear.
+For example, by log-transforming the $r$ parameter in the Verhulst-Pearl model (Eq.&nbsp;3), one obtains the superficially different equation
+$$dN = e^\rho\,N\,\left(1-\frac{N}{K}\right)\,dt+\sigma\,N\,dW(t),$$
+where $\rho=\log{r}$.
+In this model, $\rho$ can take any (positive or negative) values while $r$ remains positive.
 
-exptrans <- Csnippet("
-  Tr = exp(r);
-  TK = exp(K);
-  Tsigma = exp(sigma);
-")
+We incorporate parameter transformations using the `partrans` argument to many **pomp2** functions, specifying them using the `parameter_trans` function.
+In general, the parameter transformations, like other basic model components, can be supplied using **R** functions or C snippets.
+If we are merely log-transforming, logit-transforming, or log-barycentric-transforming parameters, however, it is even easier.
+The following code chunk implements log transformation of the all the parameters of the Verhulst-Pearl and Ricker models.
 
-parus <- pomp(parus,toEstimationScale=logtrans,
-              fromEstimationScale=exptrans,
-              paramnames=c("r","K","sigma"))
-```
-```{r logistic-partrans-test,include=FALSE}
-p <- c(r=1,K=200,N.0=200,sigma=0.5)
-coef(parus,transform=TRUE) <- partrans(parus,p,dir="toEst")
-stopifnot(all.equal(p,coef(parus)))
+```{r vp_partrans}
+vpr_partrans <- parameter_trans(log=c("r","K","sigma","b","N_0"))
 ```
 
-## Trajectory matching
+We could then provide `vpr_partrans` as needed to any of the various **pomp2** inference methods, via the `partrans` argument.
+For example, to estimate parameters for the Verhulst-Pearl model on the transformed scale, we do
 
-Trajectory matching is the method of fitting a deterministic model to data assuming independent errors.
-In **pomp**, the function `traj.match` searches parameter space to find parameters under which the likelihood of the data, given a trajectory of the deterministic skeleton, is maximized.
+```{r ofun2}
+vpC %>%
+  traj_objfun(
+    est=c("b","K","N_0"),
+    params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
+    partrans=parameter_trans(log=c("K","N_0","b")),
+    dmeasure=dmeas, statenames="N", paramnames=c("b","K","N_0")
+  ) -> ofun2
 
-```{r parus-traj-match}
-tm <- traj.match(parus,start=c(r=1,K=200,N.0=200,sigma=0.5),
-                 est=c("r","K"),transform=TRUE)
-signif(coef(tm),3)
-logLik(tm)
+subplex(log(c(0.1,2000,1500)),fn=ofun2) -> fit
+ofun2(fit$par)
+coef(ofun2)
 ```
 
-We can simulate the fitted model and compare it against the data.
-```{r parus-tm-sim1}
-coef(tm,"sigma") <- 0
-simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
-  ggplot(aes(x=time,y=P,group=sim,alpha=(sim=="data")))+
-    scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
-                       labels=c(`FALSE`="simulation",`TRUE`="data"))+
-    geom_line()+
-    theme_bw()
-```
+---------------------------------------
+
+#### Exercise
+
+Estimate the parameters for the Verhulst-Pearl model assuming negative binomial errors.
+Do not attempt, at first, to estimate all parameters simultaneously.
+Focus on estimating $K$, $N_0$ and the parameters of the measurement model.
+It will probably be helpful to make use of parameter transformations to enforce the model constraints.
+
+---------------------------------------
+
+#### Exercise
+
+Estimate some or all of the parameters of the Ricker model using trajectory matching.
+It is probably a good idea to use parameter transformations.
+
+---------------------------------------
 
 ## Maximizing the likelihood by iterated filtering
 
-Iterated filtering [@Ionides2015; @Ionides2006] is a method for maximizing the likelihood by repeatedly applying a particle filter.  
-The following codes apply the IF2 algorithm [@Ionides2015].
-```{r parus-mif,purl=FALSE,eval=FALSE}
-guesses <- sobolDesign(lower=c(r=0,K=100,sigma=0,N.0=200),
-                       upper=c(r=5,K=600,sigma=2,N.0=200),
-                       nseq=100)
+Let us now turn to the main focus of the **pomp2** package:
+parameter estimation for fully stochastic models.
+Iterated filtering is a method for maximizing the likelihood.
+The method was introduced in its original form by @Ionides2006, and was subsequently much improved by @Ionides2015.
+The latter paper rigorously expounds the theory.
+An [addendum to the **pomp** *Journal of Statistical Software paper](http://kingaa.github.io/pomp/vignettes/mif2.html) provides pseudocode and a simple example.
+Finally, a [tutorial on the theory and practice](https://kingaa.github.io/sbied/mif/mif.html) is linked from the [**pomp2** documentation index](http://kingaa.github.io/pomp/docs.html).
+Here, we confine ourselves to demonstrating how the IF2 algorithm [@Ionides2015] is applied to the toy examples we have been discussing.
 
+### Local vs global search
+
+The search for the maximum likelihood parameter estimates (MLE) is inherently a global one:
+the likelihood surface can (and often enough does) possess multiple local maxima, any of which might represent a plausible explanation of the data in hand.
+IF2, however, is a local search algorithm:
+essentially, it starts at a user-provided "guess" and attempts to move "uphill" toward the nearest local maximum it can find.
+To solve the global problem, therefore, it is advisable to run IF2 multiple times, starting from different "guesses".
+By studying the results of such a calculation, one hopes to obtain not only the global MLE but, more importantly, an understanding of the shape of the likelihood surface itself.
+
+To illustrate this, let us attempt to determine at which values of the four parameters $r$, $K$, $\sigma$, and $N_0$ our Verhulst-Pearl model best explains the *Parus major* data.
+Because this is only a toy problem, we will restrict ourselves to the assumption that $b=1$, despite the fact that it might plausibly be otherwise.
+In a real scientific study, of course, we would be much less cavalier about fixing parameters arbitrarily in this way.
+
+We begin by constructing a large number of "guesses".
+Our design is to distribute these around some multidimensional "box" that, we hope, contains the MLE.
+Importantly, although our hope is that the box we construct here embraces the MLE, our eventual success does not necessarily depend on it doing so:
+the IF2 algorithm will be free to search parameter space outside the box.
+We use the `sobolDesign` function to construct an overdispersed sequence of points within the selected box.
+
+```{r mif_guesses,fig.width=4,fig.height=4}
+sobolDesign(
+  lower=c(r=0,K=100,sigma=0,N_0=150,b=1),
+  upper=c(r=5,K=600,sigma=2,N_0=150,b=1),
+  nseq=100
+) -> guesses
+guesses
+plot(guesses,pch=16)
+```
+
+In the above call, `lower` and `upper` give the bounds of the box and `nseq` specifies the number of guesses we desire.
+Now, from each of these starting guesses, we will run the IF2 algorithm (implemented as `mif2` in **pomp2**).
+As its name suggests, this algorithm works by iteratively applying the particle filter:
+Crucially, IF2 adds an extra ingredient to the particle filter.
+As the filter is applied, IF2 adds random perturbations to the parameters.
+This serves several purposes, including smoothing the likelihood surface, combating particle depletion, and allowing IF2 to obtain information about the local structure of the surface.
+However, this augmented stochastic variability represents an alteration of the model.
+IF2 therefore gradually reduces the intensity of the random perturbations.
+
+### Local search
+
+Let us examine a single call to `mif2`.
+
+```{r vp_mif1}
+vpC %>%
+  mif2(
+    params=guesses[1,],
+    Np=1000,
+    Nmif=20,
+    dmeasure=dmeas,
+    partrans=parameter_trans(log=c("r","K","sigma","N_0")),
+    rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02,N_0=ivp(0.02)),
+    cooling.fraction.50=0.5,
+    paramnames=c("r","K","sigma","N_0","b"),
+    statenames=c("N")
+  ) -> mf1
+```
+
+In this call, we specify the starting point with `params`:
+here, we've just taken this to be the first of the `guesses`.
+As in `pfilter`, `Np` sets the number of particles to be used.
+`Nmif` fixes the number of IF2 iterations that will be performed.
+We furnish the necessary dmeasure component via the `dmeasure` argument, and provide parameter transformations via `partrans` to enforce positivity of the model parameters.
+The `rw.sd` argument specifies the intensity of the perturbations that will be applied at each observation time.
+The perturbations are normally distributed on the transformed (here, the log) scale, so these represent roughly 2\% perturbations per observation.
+The `ivp` syntax indicates that `N_0` is an *initial value parameter* and accordingly should be treated slightly differently than the regular parameters.
+The `cooling.fraction.50` argument controls the speed at which the magnitude of the perturbations is drawn down.
+Finally, the `paramnames` and `statenames` arguments are needed since `dmeas` and the parameter transformations are built using C snippets.
+
+What kind of object is `mf1`?
+```{r mf1_display}
+mf1
+```
+
+**pomp2** provides various methods for 'mif2d_pomp' objects.
+The `plot` method, for example, produces a diagnostic plot.
+
+```{r mif_plot1}
+plot(mf1)
+```
+
+The first plot ("filter diagnostics") shows the results of the last iteration of the particle filter, comparable to the plot produced by calling `plot` on a 'pfilterd_pomp' object.
+The second plot ("convergence diagnostics") summarizes the results of the sequence of IF2 iterations.
+We observe that the log likelihood has increased, concomitant with movement in the $r$, $K$, and $\sigma$ paramters and, to a lesser extent, the $N_0$ parameter.
+We observe that, as intended, the $b$ parameter has remained fixed.
+
+### Estimating the log likelihood
+
+Now, although we have observed the intended improvement in the log likelihood, we should be careful to note that the log likelihood displayed in this plot is the log likelihood of the *perturbed model*.
+This model differs from the one we are interested in.
+To compute the likelihood of our focal model at the parameter returned by `mif2`, we need to perform a few particle filter operations:
+
+```{r mf_pfilter1}
+replicate(5, mf1 %>% pfilter() %>% logLik()) %>% logmeanexp(se=TRUE)
+```
+
+### Global search
+
+Now we repeat this calculation from each of our `r nrow(guesses)` guesses.
+Because these computations are each independent of the others, it is both easy and worthwhile to parallelize them.
+The **foreach** package provides some useful tools in this regard.
+
+```{r parus_mif1,purl=FALSE,eval=FALSE}
 library(foreach)
-foreach (guess=iter(guesses,"row"),.combine=rbind,
-         .packages=c("pomp","magrittr"),.errorhandling="remove",
-         .export="parus",.inorder=FALSE) %dopar% {
-             parus %>% 
-                 mif2(start=unlist(guess),Nmif=50,Np=1000,transform=TRUE,
-                      cooling.fraction.50=0.8,cooling.type="geometric",
-                      rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02)) %>%
-                 mif2() -> mf
-             ll <- logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
-             data.frame(loglik=ll[1],loglik.se=ll[2],as.list(coef(mf)))
-         } -> mles
+
+foreach (guess=iter(guesses,"row"),
+  .combine=c, .packages=c("pomp2"),
+  .errorhandling="remove", .inorder=FALSE) %dopar% {
+    
+    mf1 %>% mif2(params=guess)
+    
+  } -> mifs
 ```
-```{r parus-mif-eval,include=FALSE,eval=TRUE,purl=TRUE}
-bake(file="parus-mif.rds",{
-    <<parus-mif>>
-}) -> mles
-```
-In the above, we first use `sobolDesign` to construct a Latin hypercube design for the "starting points", i.e., the points in parameter space where we will begin our searches for the MLE.
-At each of these (`foreach`), we first run 50 iterations of the IF2 algorithm (`mif2`).
-We then re-run the algorithm, starting from where the first run ended up (the second `mif2`).
-To obtain an estimate of the log likelihood at that (putative) MLE, we run 5 independent particle filtering operations (`pfilter`), averaging the likelihoods with proper attention paid to Jensen's inequality (`logmeanexp`).
-This gives us both an unbiased estimate of the log likelihood at that point and an estimate of the Monte Carlo error in that estimate.
-A useful way of displaying the results of such multi-start search is the pairwise scatterplot matrix:
-```{r plot-mles}
-pairs(~loglik+r+K+sigma,data=subset(mles,loglik>max(loglik)-50))
+```{r parus_mif1_eval,include=FALSE,eval=TRUE,purl=TRUE}
+bake(file="parus_mif1.rds",{
+  <<parus_mif1>>
+}) -> mifs
 ```
 
-We can improve the quality of our estimates and obtain likelihood-ratio-test based confidence intervals by constructing *profile likelihoods*.
-In a likelihood profile, one varies the focal parameter (or subset of parameters) across some range, maximizing the likelihood at each value of the focal parameter over the remaining parameters.
+Let us now walk through the above code.
+At each of the guesses (`foreach (guess=`), which are stored in the rows of the `guesses` data frame (`iter(guesses,"row")`), we run `r mf1@Nmif` iterations of the IF2 algorithm (`mif2`).
+Notice that the settings of `mif2` are not explicitly given here.
+They are inherited from `mf1`, which we computed previously.
+If we had wanted to modify any of them (e.g., `Nmif`, `Np`, `rw.sd`, etc.), we would have simply done so in the call to `mif2`.
+Next, we run a few independent particle filters to estimate the log likelihood.
+Finally, we return the result as a one-row data frame containing estimates of the parameters (`coef(mf)`), the log likelihood, and its standard error.
+
+We can examine the results of this computation.
+The following code chunk extracts the *traces* of the IF2 calculations.
+These are the movements of the parameters and the likelihood plotted against filter iteration.
+
+```{r mif_plot2}
+mifs %>%
+  traces() %>%
+  melt() %>%
+  filter(variable!="b") %>%
+  ggplot(aes(x=iteration,y=value,group=L1,color=L1))+
+  geom_line()+
+  facet_wrap(~variable,scales="free_y")+
+  guides(color=FALSE)
+
+```
+
+Next, we examine the diagnostics produced in the last iteration of the filter.
+
+```{r mif_plot3}
+mifs %>% 
+  as("data.frame") %>% 
+  gather(variable,value,-year,-.id) %>%
+  ggplot(aes(x=year,y=value,group=.id,color=.id))+
+  geom_line()+
+  facet_wrap(~variable,scales="free_y",ncol=1)+
+  guides(color=FALSE)
+```
+
+As we've discussed, to properly evaluate the likelihood at these estimates, we must perform several independent particle filter operations at each one:
+
+```{r parus_pf1,purl=FALSE,eval=FALSE}
+foreach (mf=mifs,
+  .combine=rbind, .packages=c("pomp2"), 
+  .errorhandling="remove", .inorder=FALSE) %dopar% {
+    
+    replicate(5, 
+      mf %>% pfilter() %>% logLik()
+    ) %>%
+      logmeanexp(se=TRUE) -> ll
+    
+    data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
+    
+  } -> estimates
+```
+```{r parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE}
+bake(file="parus_pf1.rds",{
+  <<parus_pf1>>
+}) -> estimates
+```
+
+A useful way of displaying the results of such multi-start search is the pairwise scatterplot matrix:
+
+```{r mif_plot4,warning=FALSE,fig.width=4,fig.height=4}
+estimates %>%
+  full_join(guesses) %>%
+  filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) %>%
+  do({
+    pairs(~loglik+r+K+sigma+N_0,data=.,
+      pch=16,
+      col=if_else(is.na(.$loglik),"#99999955","#ff0000ff"))
+    .
+  }) %>% 
+  invisible()
+```
+
+
+### Note regarding parallelization
+
+The above `foreach` call, as written, will result in *serial*, not parallel, execution of the `r nrow(guesses)` computations.
+To actually parallelize, one must *register* a *parallel backend*.
+A good first choice is **doParallel**, which is a separate package that you must explicitly load.
+The following chunk of code shows how to do this, and prints the number of "workers" that result.
+
+```{r eval=FALSE}
+library(doParallel)
+registerDoParallel()
+getDoParWorkers()
+```
+
+**doParallel** allows one to exploit multiple cores on a single machine, or to expand a parallel computation across a cluster.
+
+---------------------------------------
+
+#### Exercise
+
+Use **doParallel** to parallelize the estimation of likelihood for your negative-binomial model.
+
+---------------------------------------
+
+### More search effort
+
+At this point, there's no particular reason to suspect that our IF2 searches have arrived at their destination.
+In general, it is hard to know *a priori* how much effort will be required to find the MLE.
+Let's continue the search, starting with the best points we've uncovered so far.
+
+```{r parus_mif2,purl=FALSE,eval=FALSE}
+estimates %>%
+  filter(!is.na(loglik)) %>%
+  filter(loglik > max(loglik)-30) %>%
+  select(-loglik,-loglik.se) -> starts
+
+foreach (start=iter(starts,"row"),
+  .combine=rbind, .packages=c("pomp2"), 
+  .errorhandling="remove", .inorder=FALSE) %dopar% {
+    
+    mf1 %>% 
+      mif2(params=start) %>%
+      mif2() -> mf
+    
+    replicate(5, 
+      mf %>% pfilter() %>% logLik()
+    ) %>%
+      logmeanexp(se=TRUE) -> ll
+    
+    data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
+    
+  } -> ests1
+```
+```{r parus_mif2_eval,include=FALSE,eval=TRUE,purl=TRUE}
+bake(file="parus_mif2.rds",{
+  <<parus_mif2>>
+}) -> ests1
+```
+
+Note that, in the above, we've performed a total of 100 `mif2` iterations per starting point.
+The code above also does the post-`mif2` likelihood estimation.
+It returns just the parameter and likelihood estimates.
+
+We can combine the new estimates with the old ones into a general database:
+
+```{r db1}
+estimates %>%
+  rbind(ests1) -> estimates
+
+estimates%>%
+  arrange(-loglik)
+```
+
+```{r mif2_plot1,fig.width=4,fig.height=4}
+estimates %>%
+  filter(loglik>max(loglik,na.rm=TRUE)-4) %>%
+  do({
+    pairs(~loglik+r+K+sigma+N_0,data=.,
+      pch=16,
+      col=if_else(is.na(.$loglik),"#99999955","#ff0000ff"))
+    .
+  }) %>% 
+  invisible()
+```
+
+In this plot, we begin to see the emergence of structure in the likelihood surface.
+In particular, what looks like a ridge of high likelihood is visible in the $r$-$\sigma$ projection.
+Such structures are very interesting in that they contain clues as to the *manner* in which the model is fitting the data.
+They can also pose challenges to efficient estimation, since climbing up to a ridge is harder than traversing it.
+
+### Likelihood profile
+
+We can improve the quality of our estimates and obtain likelihood-ratio-test-based confidence intervals by constructing *profile likelihoods*.
+In a likelihood profile, one varies the focal parameter (or parameters) across some range, maximizing the likelihood over the remaining parameters at each value of the focal parameter.
 The following codes construct a likelihood profile over $r$.
-```{r parus-profile1}
+
+```{r parus_pd,fig.width=4,fig.height=4}
+estimates %>%
+  filter(loglik>max(loglik)-10) %>%
+  select(r,K,sigma,N_0,b) %>%
+  apply(2,range) -> ranges
+ranges
+
 profileDesign(
-  r=seq(from=0.1,to=5,length=21),
-  lower=c(K=100,sigma=0.01,N.0=200),upper=c(K=600,sigma=0.2,N.0=200),
+  r=10^seq(
+    from=log10(ranges[1,1]),
+    to=log10(ranges[2,1]),
+    length=20
+  ),
+  lower=ranges[1,-1],
+  upper=ranges[2,-1],
   nprof=50
-) -> pd
-dim(pd)
-pairs(~r+K+sigma+N.0,data=pd)
+) -> starts
+
+dim(starts)
+
+pairs(~r+K+sigma+N_0+b,data=starts)
 ```
-```{r parus-profile2,eval=FALSE,purl=FALSE}
-library(plyr)
-foreach (p=iter(pd,"row"),
-         .combine=rbind,
-         .errorhandling="remove",
-         .packages=c("pomp","magrittr","reshape2","plyr"),
-         .export="parus",.inorder=FALSE
-         ) %dopar%
-    {
-        parus %>% 
-            mif2(start=unlist(p),Nmif=50,Np=1000,transform=TRUE,
-                 cooling.fraction.50=0.8,cooling.type="geometric",
-                 rw.sd=rw.sd(K=0.02,sigma=0.02)) %>%
-            mif2() -> mf
-        
-        pf <- replicate(5,pfilter(mf,Np=1000))  ## independent particle filters
-        ll <- sapply(pf,logLik)
-        ll <- logmeanexp(ll,se=TRUE)
-        nfail <- sapply(pf,getElement,"nfail")  ## number of filtering failures
-        
-        data.frame(as.list(coef(mf)),
-                   loglik = ll[1],
-                   loglik.se = ll[2],
-                   nfail.min = min(nfail),
-                   nfail.max = max(nfail))
-    } %>% arrange(r,-loglik) -> r_prof
+```{r parus_profile,eval=FALSE,purl=FALSE}
+foreach (start=iter(starts,"row"),
+  .combine=rbind, .packages=c("pomp2"),
+  .errorhandling="remove", .inorder=FALSE) %dopar% {
+  
+  mf1 %>%
+    mif2(
+      params=start,
+      partrans=parameter_trans(log=c("K","sigma","N_0")),
+      rw.sd=rw.sd(K=0.02,sigma=0.02,N_0=ivp(0.02)),
+      paramnames=c("K","sigma","N_0","b")
+    ) %>%
+    mif2() -> mf
+  
+  replicate(5, 
+    mf %>% pfilter() %>% logLik()
+  ) %>%
+    logmeanexp(se=TRUE) -> ll
+  
+  data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
+} -> r_prof
 ```
-```{r parus-profile-eval,include=FALSE,purl=TRUE,eval=TRUE}
-bake("parus-profile.rds",{
-    <<parus-profile2>>
+```{r parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE}
+bake("parus_profile.rds",{
+  <<parus_profile>>
 }) -> r_prof
 ```
 
-```{r parus-profile-plot}
-pairs(~loglik+r+K+sigma,data=r_prof,subset=loglik>max(loglik)-10)
+Notice that we've changed the `mif2` perturbations (`rw.sd`):
+we've removed the perturbation on the $r$ parameter, since we want to hold this parameter fixed.
 
-library(plyr)
+We add these points to our database:
+
+```{r db2}
+estimates %>%
+  rbind(r_prof) -> estimates
+```
+
+Next, we plot the likelihood profile.
+The following plot shows the top two estimates for each value of $r$ with error bars showing &plusmn;2 s.e. and a loess smooth.
+
+```{r prof_plot1}
+r_prof %>%
+  group_by(r) %>%
+  filter(rank(-loglik)<=2) %>%
+  ungroup() %>%
+  ggplot(aes(x=r,y=loglik,
+    ymin=loglik-2*loglik.se,ymax=loglik+2*loglik.se))+
+  geom_point()+
+  geom_errorbar()+
+  geom_smooth(method="loess",span=0.2)+
+  scale_x_log10()
+```
+
+```{r r_prof_lrt,echo=FALSE}
+r_prof %>%
+  group_by(r) %>%
+  filter(rank(-loglik)<=2) %>%
+  ungroup() %>%
+  do({
+    loess(loglik~log(r),data=.,span=0.25) -> fit
+    rr <- range(.$r)
+    r <- exp(seq(log(rr[1]),log(rr[2]),length=200))
+    data.frame(r=r,loglik=predict(fit,newdata=log(r)))
+  }) -> prof
+
+crit <- 0.5*qchisq(df=1,p=0.95)
+cutoff <- max(prof$loglik)-crit
+ci <- range(prof$r[prof$loglik>cutoff])
+```
+
+We see that the 95% likelihood ratio test confidence interval (CI) appears to be one-sided:
+the CI is roughly $r>`r signif(ci[1],2)`$.
+
+If we plot the *profile trace* of $\sigma$, we see that, as we increase $r$, we have to increase the intensity of the environmental stochasticity to maintain a good fit.
+Why is this?
+
+```{r prof_plot2}
+r_prof %>%
+  group_by(r) %>%
+  filter(rank(-loglik)<=2) %>%
+  ungroup() %>%
+  ggplot(aes(x=r,y=sigma))+
+  geom_point()+
+  geom_smooth(method="loess",span=0.2)+
+  scale_x_log10()+
+  labs(y=expression(sigma))
+```
+
+---------------------------------------
+
+#### Exercise 
+
+Construct a likelihood profile for the $K$ parameter.
+Plot the profile and profile traces.
+Comment on your findings.
+
+---------------------------------------
+
+## Model criticism
+
+Estimating model parameters by fitting the model to data is typically only a step in the process of trying to understand the processes that generated the data.
+The next step involves trying to understand how and why the model fits the data the way it does, whether it fits it well, and what scope for improvement there might be.
+**pomp2** provides a number of tools to facilitate answering these questions through interaction with a fitted model.
+
+### Simulation of the fitted model
+
+Ultimately, since the model is viewed, at least hypothetically, as the process that generated the data, simulation of the fitted model is a central tool we have for model criticism. 
+Let's plot the data and several simulated realizations of the model process on the same axes.
+
+```{r mle_sim_plot1}
 r_prof %>% 
-    mutate(r=signif(r,8)) %>%
-    ddply(~r,subset,loglik==max(loglik)) %>%
-    ggplot(aes(x=r,y=loglik))+
-    geom_point()+geom_smooth()+
-    theme_bw()
+  filter(loglik==max(loglik)) -> mle
+
+mlepomp <- as(mifs[[1]],"pomp")
+coef(mlepomp) <- mle
+
+mlepomp %>%
+  simulate(nsim=8,format="data.frame",include.data=TRUE) %>%
+  ggplot(mapping=aes(x=year,y=pop,group=.id,alpha=(.id=="data")))+
+  scale_alpha_manual(values=c(`TRUE`=1,`FALSE`=0.2),
+    labels=c(`FALSE`="simulation",`TRUE`="data"))+
+  labs(alpha="")+
+  geom_line()+
+  theme_bw()
 ```
 
-Now let us plot the data and 10 simulated realizations of the model process are plotted on the same axes.
-```{r plot-mle-sims}
-r_prof %>% 
-  subset(loglik==max(loglik)) %>% unlist() -> mle
+The first lines above simply extract the maximum likelihood estimates (`mle`) from our profle computation.
+The next pair of lines plug these MLE parameters into a 'pomp' object (`mlepomp`) containing the model and the data.
+The last set of lines do the simulation and the plotting.
 
-parus %>%
-    simulate(params=mle,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
-    ggplot(mapping=aes(x=time,y=P,group=sim,alpha=(sim=="data")))+
-    scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
-                       labels=c(`FALSE`="simulation",`TRUE`="data"))+
-    geom_line()+
-    theme_bw()
+Although it is clear from these plots that the estimated model has more variability and is thus able to explain the data better, it can be hard to read much from spaghetti plots such as this.
+It's almost always a good idea to plot the data together with several simulated realizations in order to help assess how similar the two are.
+
+```{r mle_sim_plot2}
+mlepomp %>%
+  simulate(nsim=11,format="data.frame",include.data=TRUE) %>%
+  ggplot(mapping=aes(x=year,y=pop,group=.id,color=(.id=="data")))+
+  scale_color_manual(values=c(`TRUE`="black",`FALSE`="grey50"),
+    labels=c(`FALSE`="simulation",`TRUE`="data"))+
+  labs(color="")+
+  geom_line()+
+  facet_wrap(~.id)+
+  theme_bw()
 ```
 
-## Sampling the posterior using particle Markov chain Monte Carlo
+### Model checking with probes
 
-If we seek to do full-information Bayesian inference, we can use particle Markov chain Monte Carlo, implemented in **pomp** in the `pmcmc` function.
-First, we add a prior to the `pomp` object by furnishing a prior probability density evaluation function (`dprior`).
-```{r parus-dprior}
-parus %<>%
-  pomp(dprior=Csnippet("
-    lik = dunif(r,0,5,1)+dunif(K,100,600,1)+dunif(sigma,0,2,1);
-    lik = (give_log) ? lik : exp(lik);
-  "),paramnames=c("r","K","sigma"))
-```
-The following codes cause parallel pMCMC chains to be run, each beginning at one of the estimates obtained using `mif2`.
-```{r parus-pmcmc,eval=FALSE,purl=FALSE}
-r_prof %>% ddply(~r,subset,loglik==max(loglik)) %>%
-    subset(K > 100 & K < 600 & r < 5 & sigma < 2,
-           select=-c(loglik,loglik.se)) -> starts
-foreach (start=iter(starts,"row"),.combine=c,
-         .packages=c("pomp","magrittr"),.errorhandling="remove",
-         .export="parus",.inorder=FALSE) %dopar% 
-    {
-        parus %>%
-            pmcmc(Nmcmc=2000,Np=200,start=unlist(start),
-                  proposal=mvn.rw.adaptive(rw.sd=c(r=0.1,K=100,sigma=0.1),
-                                           scale.start=100,shape.start=100)) -> chain
-        chain %>% pmcmc(Nmcmc=10000,proposal=mvn.rw(covmat(chain)))
-    } -> chains
-```
-```{r parus-pmcmc-eval,eval=TRUE,purl=TRUE,include=FALSE}
-bake(file="parus-pmcmc.rds",{
-    <<parus-pmcmc>>
-}) -> chains
+Visual comparison of simulations and data is always a good idea.
+An indication that the data are not a plausible realization of the model is evidence for lack of fit.
+In particular, if we have any set of summary statistics, or *probes*, we can apply them to both simulated and actual data.
+The `probe` function facilitates this comparison.
+Let's perform this operation using several of the summary statistics provided with **pomp2**:
+we'll use the mean, several quantiles, and the autocorrelation at lags 1 and 3.
+
+```{r probe1}
+mlepomp %>%
+  probe(nsim=200,probes=list(
+    mean=probe.mean("pop"),
+    q=probe.quantile("pop",probs=c(0.05,0.25,0.5,0.75,0.95)),
+    probe.acf("pop",lags=c(1,3),type="corr",transform=log)
+  )) -> vp_probe
+
+vp_probe
 ```
 
-In the above, we first subset out those `mif2` estimates that are consistent with our prior.
-At each of these, we then perform a number of MCMC moves, using an adaptive multivariate-normal random-walk proposal distribution `mvn.rw.adaptive`.
-To complete the inference, we do `r nrow(chains[[1]])` more MCMC iterations using a multivariate random-walk proposal (`mvn.rw`) with covariance matrix derived from the preceding computation (`covmat`).
+For 'probed_pomp' object, there are `summary` and `plot` methods.
+There is also an `as.data.frame` method.
 
-Now we investigate the chains, to try and determine whether they have converged.
 
-```{r pmcmc-diagnostics}
-library(coda)
-chains %>% conv.rec() -> traces
-rejectionRate(traces[,c("r","K","sigma")])
-autocorr.diag(traces[,c("r","K","sigma")])
-traces <- window(traces,thin=50,start=1000)
-plot(traces[,"r"])
-plot(traces[,"K"])
-plot(traces[,"sigma"])
-gelman.diag(traces[,c("r","K","sigma")])
+```{r probe1_summary}
+summary(vp_probe)
 ```
 
-Insofar as we can tell, the MCMC iterations appear to have converged to their stationary distribution.
-Let us now examine the posterior distribution.
-We will also simulate from the posterior median parameters.
-```{r pmcmc-sim}
-summary(traces[,c("r","K","sigma")])
-theta <- summary(traces)$quantiles[c("r","K","sigma","N.0"),'50%']
-simulate(parus,params=theta,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
-  ggplot(mapping=aes(x=time,y=P,group=sim,alpha=(sim=="data")))+
-    scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
-                       labels=c(`FALSE`="simulation",`TRUE`="data"))+
-    geom_line()+
-    theme_bw()
+Evidently, `summary` returns a list with several elements.
+The `quantiles` element contains, for each probe, what fraction of the `nsim` simulations had probe values below the value of the probe applied to the data.
+The `pvals` element contains $P$-values associated with the two-sided test of the hypothesis that the data were generated by the model.
+
+```{r probe1_plot,fig.width=6.8,fig.height=6.8}
+plot(vp_probe)
 ```
 
-If we desire an estimate of the smoothed state variables, i.e., the distribution of $N_t\,\vert\,P_{1960},\,\dots,\,P_{1986}$, for $t=1960,\,\dots\,1986$, we can use the `filter.traj` command to extract samples from this distribution.
-For example, the following codes extract a single trajectory from each MCMC sample.
-After thinning and discarding the burn-in, and assuming that the PMCMC chains above have converged, these are, as @Andrieu2010 showed, samples from the smoothing distribution.
-The following codes extract samples of the trajectories of $N$ from the posterior distribution (`filter.traj`), discard the burn-in and thin (`rep > 1000 & rep %% 50 == 0`), and plot the median and equal-tailed 95\% credible interval at each time point.
+The plot depicts the multivariate distribution of the probes under the model, with the data-values superimposed.
+On the diagonal, we see the marginal distributions of the individual probes, represented as histograms, with the vertical line signifying the value of the corresponding probe on the data.
+Above the diagonal, the scatterplots show the pairwise distributions of probes and the crosshairs, the corresponding data-values.
+Below the diagonal, the panels contains the pairwise correlations among the simulated probes.
 
-```{r parus-filter-traj}
-chains %>% filter.traj() %>% melt() %>% 
-  subset(rep > 1000 & rep %% 50 == 0) %>%
-  dcast(L1+rep+time~variable) %>%
-  ddply(~time,summarize,
-        prob=c(0.025,0.5,0.975),
-        q=quantile(N,prob)) %>% 
-  mutate(qq=mapvalues(prob,from=c(0.025,0.5,0.975),to=c("lo","med","hi"))) %>%
-  dcast(time~qq,value.var='q') %>% 
-  ggplot()+
-    geom_ribbon(aes(x=time,ymin=lo,ymax=hi),alpha=0.5,fill='blue')+
-    geom_line(aes(x=time,y=med),color='blue')+
-    geom_point(data=parus.dat,aes(x=year,y=P),color='black',size=2)+
-    labs(y="N")+
-    theme_bw()
-```
+## Next steps
+
+To this point, we've seen how to implement POMP models, simulate them, to compute and maximize likelihoods, and perform certain kinds of diagnostic checks.
+The [**pomp** website](https://kingaa.github.io) contains more documentation, including the full package manual, and a variety of tutorials and short courses.
+The package itself contains a number of built-in examples and datasets that can be explored.
+
+**pomp2** provides a large toolbox of different inference methods, only a few of which have been explored here.
+In particular, the package provides other methods for parameter estimation, both in the frequentist and Bayesian modes.
+See for example (`abc`, `pmcmc`, `probe.match`, `spect.match`, `nlf`, `enkf`, `bsmc2`).
+It also provides a variety of tools for model checking (`spect`, `nlf`).
+It is frequently the case that an approach that makes use of more than one approach has advantages over more "purist" approaches:
+the main goal of the package is to facilitate effective inference by bringing a variety of tools, with complementary strengths and weaknesses, to the user in a common format.
+
+Although the goal of this document has been to introduce the beginner to the package through a display of the **pomp2** toolbox in the context of a rudimentary and incomplete data analysis of a short time series with toy models, it is important to realize that these tools have proven their utility on some extremely challenging problems, including some for which other existing methods are either less efficient or entirely infeasible.
+The [bibliography](http://kingaa.github.io/pomp/biblio.html) has links to peer-reviewed publications that have used these methods.
 
 ## [**R** codes for this document](getting_started.R)
+## [**pomp** homepage](https://kingaa.github.io/pomp/)
 
 ## References
-
-```{r,stop-mpi,include=FALSE}
-closeCluster(cl)
-try(detach("package:doMPI",unload=TRUE),silent=TRUE)
-if (exists("mpi.exit")) mpi.exit()
-try(detach("package:Rmpi",unload=TRUE),silent=TRUE)
-```
