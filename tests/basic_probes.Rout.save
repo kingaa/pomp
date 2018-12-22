@@ -85,25 +85,26 @@ Error : 'probe.nlar' is a univariate probe.
 Error : in 'probe.acf': lags must be positive integers.
 > probe.acf(c("y1","y2"),lags=c(1,5),type="cor") -> f
 > ou2 %>% simulate() %>% obs() %>% f() -> v
-> stopifnot(names(v)==c("acf.1.y1", "acf.5.y1", "acf.1.y2", "acf.5.y2"))
+> names(v)
+[1] "acf[1]" "acf[5]" "acf[1]" "acf[5]"
 > 
 > try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
 Error : in 'probe.acf': subscript out of bounds
 > try(ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f())
 Error : in 'probe.acf': series 1 has no data
 > ou2 %>% simulate(rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f()
-acf.1.y1 acf.5.y1 acf.1.y2 acf.5.y2 
-   0.980    0.895    0.980    0.895 
+acf[1] acf[5] acf[1] acf[5] 
+ 0.980  0.895  0.980  0.895 
 > probe.ccf(c("y2","y1"),lags=c(0,1,2),type="cor") -> f
 > ou2 %>% simulate() %>% obs() %>% f()
-ccf.0 ccf.1 ccf.2 
-0.159 0.515 0.700 
+ccf[0] ccf[1] ccf[2] 
+ 0.159  0.515  0.700 
 > try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
 Error : in 'probe.ccf': subscript out of bounds
 > try(ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f())
 Error : in 'probe.ccf': series 1 has no data
 > ou2 %>% simulate(times=1:10,rmeasure=function(t,...) c(y1=-t,y2=t)) %>% obs() %>% f()
- ccf.0  ccf.1  ccf.2 
+ccf[0] ccf[1] ccf[2] 
 -1.000 -0.778 -0.515 
 > 
 > probe.marginal("y1",ref=obs(ou2,"y1"),order=6,diff=2) -> f

@@ -36,7 +36,7 @@
 ##'
 ##' @return
 ##' A call to any one of these functions returns a probe function,
-##' suitable for use in \code{\link{probe}} or \code{\link{probe.match}}.  That
+##' suitable for use in \code{\link{probe}} or \code{\link{probe_objfun}}.  That
 ##' is, the function returned by each of these takes a data array (such as
 ##' comes from a call to \code{\link{obs}}) as input and returns a single
 ##' numerical value.

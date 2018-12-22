@@ -3,6 +3,7 @@
 \section{Changes in \pkg{pomp} version 2.0.9}{
   \itemize{
     \item When \code{coef} is applied to a \sQuote{listie}, the result can be more usefully \code{melt}ed.
+    \item The probe-names returned by \code{probe.acf} and \code{probe.ccf} have changed.
   }
 }
 \section{Changes in \pkg{pomp} version 2.0.8}{

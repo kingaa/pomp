@@ -42,7 +42,7 @@ try(probe.nlar(c("y1","y2")))
 try(probe.acf(c("y1","y2"),lags=c(0,1),type="cor"))
 probe.acf(c("y1","y2"),lags=c(1,5),type="cor") -> f
 ou2 %>% simulate() %>% obs() %>% f() -> v
-stopifnot(names(v)==c("acf.1.y1", "acf.5.y1", "acf.1.y2", "acf.5.y2"))
+names(v)
 
 try(ou2 %>% simulate(rmeasure=function(...) c(y=1)) %>% obs() %>% f())
 try(ou2 %>% simulate(rmeasure=function(...) c(y1=NA,y2=NA)) %>% obs() %>% f())

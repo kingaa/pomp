@@ -98,12 +98,12 @@ static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lag
 SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   int nprotect = 0;
   SEXP ans, ans_names;
-  SEXP X, X_names;
+  SEXP X;
   int nlag, correlation, nvars, n;
   int j, k, l;
   double *p, *p1, *cov;
   int *lag;
-  char tmp[BUFSIZ], *nm;
+  char tmp[BUFSIZ];
 
   nlag = LENGTH(lags);			      // number of lags
   PROTECT(lags = AS_INTEGER(lags)); nprotect++;
@@ -114,7 +114,6 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   n = INTEGER(GET_DIM(x))[1];		    // number of observations
 
   PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++;
-  PROTECT(X_names = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
 
   PROTECT(ans = NEW_NUMERIC(nlag*nvars)); nprotect++;
 
@@ -132,8 +131,7 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   PROTECT(ans_names = NEW_STRING(nlag*nvars)); nprotect++;
   for (j = 0, l = 0; j < nvars; j++) {
     for (k = 0; k < nlag; k++, l++) {
-      nm = (char *) CHAR(STRING_ELT(X_names,j));
-      snprintf(tmp,BUFSIZ,"acf.%d.%s",lag[k],nm);
+      snprintf(tmp,BUFSIZ,"acf[%d]",lag[k]);
       SET_STRING_ELT(ans_names,l,mkChar(tmp));
     }
   }
@@ -176,7 +174,7 @@ SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr) {
 
   PROTECT(ans_names = NEW_STRING(nlag)); nprotect++;
   for (k = 0; k < nlag; k++) {
-    snprintf(tmp,BUFSIZ,"ccf.%d",INTEGER(lags)[k]);
+    snprintf(tmp,BUFSIZ,"ccf[%d]",INTEGER(lags)[k]);
     SET_STRING_ELT(ans_names,k,mkChar(tmp));
   }
   SET_NAMES(ans,ans_names);
