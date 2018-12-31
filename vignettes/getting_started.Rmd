@@ -1560,7 +1560,7 @@ Below the diagonal, the panels contains the pairwise correlations among the simu
 ## Next steps
 
 To this point, we've seen how to implement POMP models, simulate them, to compute and maximize likelihoods, and perform certain kinds of diagnostic checks.
-The [**pomp** website](https://kingaa.github.io) contains more documentation, including the full package manual, and a variety of tutorials and short courses.
+The [**pomp** website](https://kingaa.github.io/pomp/) contains more documentation, including the full package manual, and a variety of tutorials and short courses.
 The package itself contains a number of built-in examples and datasets that can be explored.
 
 **pomp2** provides a large toolbox of different inference methods, only a few of which have been explored here.
