@@ -1,7 +1,7 @@
 ---
 title: "Measles in large and small populations"
 author: "Aaron A. King"
-date: "2015-07-11"
+date: "2019-01-02"
 output:
   html_document:
     theme: default
@@ -15,7 +15,7 @@ Licensed under the Creative Commons attribution-noncommercial license, http://cr
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](http://kingaa.github.io/images/cc-by-nc.png)
 
-Produced using *R* version `r getRversion()` and **pomp** version `r packageVersion("pomp")`.
+Produced using *R* version `r getRversion()` and **pomp2** version `r packageVersion("pomp2")`.
 
 
 ```{r select-town,echo=FALSE}
@@ -60,7 +60,7 @@ opts_chunk$set(
   dpi=300,
   dev='png',
   dev.args=list(bg='transparent')
-  )
+)
 options(cores=4)
 ```
 ```{r opts,include=FALSE,cache=FALSE}
@@ -68,7 +68,7 @@ options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8"
-  )
+)
 
 set.seed(998468235L,kind="L'Ecuyer")
 mcopts <- list(preschedule=FALSE,set.seed=TRUE)
@@ -92,10 +92,9 @@ Now we'll load the packages we'll need, and set the random seed, to allow reprod
 set.seed(594709947L)
 library(ggplot2)
 library(plyr)
-library(reshape2)
-library(magrittr)
-library(pomp)
-stopifnot(packageVersion("pomp")>="1.11.3")
+library(tidyverse)
+library(pomp2)
+stopifnot(packageVersion("pomp2")>="2.0.9.1")
 ```
 
 ## Data and covariates
@@ -109,17 +108,20 @@ we'll treat these variables as covariates.
 load("twentycities.rda")
 measles %>% 
   mutate(year=as.integer(format(date,"%Y"))) %>%
-  subset(town==TOWN & year>=1950 & year<1964) %>%
+  filter(town==TOWN & year>=1950 & year<1964) %>%
   mutate(time=(julian(date,origin=as.Date("1950-01-01")))/365.25+1950) %>%
-  subset(time>1950 & time<1964, select=c(time,cases)) -> dat
-demog %>% subset(town==TOWN,select=-town) -> demog
+  filter(time>1950 & time<1964) %>%
+  select(time,cases) -> dat
+demog %>% filter(town==TOWN) %>%
+  select(-town) -> demog
 ```
 
 Let's plot the data and covariates.
 
 ```{r data-plot}
 dat %>% ggplot(aes(x=time,y=cases))+geom_line()
-demog %>% melt(id="year") %>%
+demog %>% 
+  gather(variable,value,-year) %>%
   ggplot(aes(x=year,y=value))+geom_point()+
   facet_wrap(~variable,ncol=1,scales="free_y")
 ```
@@ -129,11 +131,11 @@ Note that, for reasons discussed in @He2010, we lag the birthrate by 4&nbsp;yr.
 
 ```{r prep-covariates}
 demog %>% 
-  summarize(
+  plyr::summarize(
     time=seq(from=min(year),to=max(year),by=1/12),
     pop=predict(smooth.spline(x=year,y=pop),x=time)$y,
     birthrate=predict(smooth.spline(x=year+0.5,y=births),x=time-4)$y
-    ) -> covar
+  ) -> covar
 ```
 
 View the covariates:
@@ -209,7 +211,7 @@ The following simulates from the initial condition distribution given the parame
 Notice that these are not assumed to be normalized.
 
 ```{r initializer}
-initlz <- Csnippet("
+rinit <- Csnippet("
   double m = pop/(S_0+E_0+I_0+R_0);
   S = nearbyint(m*S_0);
   E = nearbyint(m*E_0);
@@ -258,39 +260,7 @@ rmeas <- Csnippet("
 The model parameters are assumed to be positive, and some (`rho`, `cohort`, `amplitude`) are assumed to lie between 0 and 1.
 Maximization of the likelihood is therefore a constrained optimization problem.
 It is possible to convert the problem into an unconstrained maximization problem by transforming the parameters.
-The following two `Csnippet`s implement such a transformation and its inverse.
-
-```{r transforms}
-toEst <- Csnippet("
-  Tmu = log(mu);
-  Tsigma = log(sigma);
-  Tgamma = log(gamma);
-  Talpha = log(alpha);
-  Tiota = log(iota);
-  Trho = logit(rho);
-  Tcohort = logit(cohort);
-  Tamplitude = logit(amplitude);
-  TsigmaSE = log(sigmaSE);
-  Tpsi = log(psi);
-  TR0 = log(R0);
-  to_log_barycentric (&TS_0, &S_0, 4);
-")
-
-fromEst <- Csnippet("
-  Tmu = exp(mu);
-  Tsigma = exp(sigma);
-  Tgamma = exp(gamma);
-  Talpha = exp(alpha);
-  Tiota = exp(iota);
-  Trho = expit(rho);
-  Tcohort = expit(cohort);
-  Tamplitude = expit(amplitude);
-  TsigmaSE = exp(sigmaSE);
-  Tpsi = exp(psi);
-  TR0 = exp(R0);
-  from_log_barycentric (&TS_0, &S_0, 4);
-")
-```
+In particular, we can log transform the positive parameters, logit transform the parameters constrained to take values in the unit interval, and use a log-barycentric transformation on the initial-value parameters.
 
 ## Constructing the `pomp` object
 
@@ -299,28 +269,31 @@ The following constructs a `pomp` object encoding the model and data.
 ```{r pomp-construction}
 dat %>% 
   pomp(t0=with(dat,2*time[1]-time[2]),
-       time="time",
-       rprocess=euler.sim(rproc,delta.t=1/365.25),
-       dmeasure=dmeas,
-       rmeasure=rmeas,
-       toEstimationScale=toEst,
-       fromEstimationScale=fromEst,
-       initializer=initlz,
-       covar=covar,
-       tcovar="time",
-       zeronames=c("C","W"),
-       statenames=c("S","E","I","C","W"),
-       paramnames=c("R0","mu","sigma","gamma","alpha","iota",
-                    "rho","sigmaSE","psi","cohort","amplitude",
-                    "S_0","E_0","I_0","R_0")
-       ) -> m1
+    time="time",
+    rprocess=euler(rproc,delta.t=1/365.25),
+    dmeasure=dmeas,
+    rmeasure=rmeas,
+    rinit=rinit,
+    partrans=parameter_trans(
+      log=c("mu","sigma","gamma","alpha","iota","psi","sigmaSE","R0"),
+      logit=c("rho","cohort","amplitude"),
+      barycentric=c("S_0","E_0","I_0","R_0")
+    ),
+    covar=covariate_table(covar,times="time"),
+    accumvars=c("C","W"),
+    statenames=c("S","E","I","C","W"),
+    paramnames=c("R0","mu","sigma","gamma","alpha","iota",
+      "rho","sigmaSE","psi","cohort","amplitude",
+      "S_0","E_0","I_0","R_0")
+  ) -> m1
 ```
 
 We plot the various components.
 
 ```{r plot-pomp}
-m1 %>% as.data.frame() %>% 
-  melt(id="time") %>%
+m1 %>% 
+  as.data.frame() %>% 
+  gather(variable,value,-time) %>%
   ggplot(aes(x=time,y=value))+
   geom_line()+
   facet_grid(variable~.,scales="free_y")
@@ -358,10 +331,10 @@ Sheffield,-2810.7,0.21,0.02,4,54.3,62.2,0.649,33.1,0.313,1.02,0.853,0.225,0.175,
 ",stringsAsFactors=FALSE) -> mles
 ```
 ```{r mle}
-mles %>% subset(town==TOWN) -> mle
+mles %>% filter(town==TOWN) -> mle
 paramnames <- c("R0","mu","sigma","gamma","alpha","iota",
-                "rho","sigmaSE","psi","cohort","amplitude",
-                "S_0","E_0","I_0","R_0")
+  "rho","sigmaSE","psi","cohort","amplitude",
+  "S_0","E_0","I_0","R_0")
 theta <- unlist(mle[paramnames])
 ```
 ```{r mle-table,echo=FALSE}
@@ -375,17 +348,16 @@ Note the use of the L'Ecuyer parallel random number generator.
 
 ```{r pfilter1}
 library(foreach)
-library(doMC)
-registerDoMC()
+library(doParallel)
+library(doRNG)
+registerDoParallel()
+registerDoRNG(998468235L)
 
-set.seed(998468235L,kind="L'Ecuyer")
-mcopts <- list(preschedule=FALSE,set.seed=TRUE)
-
-foreach(i=1:4,.packages="pomp",
-        .options.multicore=mcopts) %dopar% {
-  pfilter(m1,params=theta,Np=10000)
+foreach(i=1:4) %dopar% {
+  m1 %>% pfilter(params=theta,Np=10000)
 } -> pfs
-logmeanexp(sapply(pfs,logLik),se=TRUE)
+
+pfs %>% sapply(logLik) %>% logmeanexp(se=TRUE)
 ```
 
 This compares well with that estimated by @He2010.
@@ -397,24 +369,26 @@ First, we plot 9 simulations and compare them with the data.
 
 ```{r sims1,fig.height=8}
 m1 %>% 
-  simulate(params=theta,nsim=9,as.data.frame=TRUE,include.data=TRUE) %>%
-  ggplot(aes(x=time,y=cases,group=sim,color=(sim=="data")))+
+  simulate(params=theta,nsim=9,format="d",include.data=TRUE) %>%
+  ggplot(aes(x=time,y=cases,group=.id,color=(.id=="data")))+
   guides(color=FALSE)+
-  geom_line()+facet_wrap(~sim,ncol=2)
+  geom_line()+facet_wrap(~.id,ncol=2)
 ```
 
 The following computes a larger number of simulations and plots the data together with the 5th and 95th percentiles.
 
 ```{r sims2}
 m1 %>% 
-  simulate(params=theta,nsim=200,as.data.frame=TRUE,include.data=TRUE) %>%
-  subset(select=c(time,sim,cases)) %>%
-  mutate(data=sim=="data") %>%
-  ddply(~time+data,summarize,
-        p=c(0.05,0.5,0.95),q=quantile(cases,prob=p,names=FALSE)) %>%
-  mutate(p=mapvalues(p,from=c(0.05,0.5,0.95),to=c("lo","med","hi")),
-         data=mapvalues(data,from=c(TRUE,FALSE),to=c("data","simulation"))) %>%
-  dcast(time+data~p,value.var='q') %>%
+  simulate(params=theta,nsim=200,format="d",include.data=TRUE) %>%
+  select(time,.id,cases) %>%
+  mutate(data=.id=="data") %>%
+  ddply(~time+data,plyr::summarize,
+    p=c(0.05,0.5,0.95),q=quantile(cases,prob=p,names=FALSE)) %>%
+  mutate(
+    p=mapvalues(p,from=c(0.05,0.5,0.95),to=c("lo","med","hi")),
+    data=mapvalues(data,from=c(TRUE,FALSE),to=c("data","simulation"))
+  ) %>%
+  spread(p,q) %>%
   ggplot(aes(x=time,y=med,color=data,fill=data,ymin=lo,ymax=hi))+
   geom_ribbon(alpha=0.2)
 ```

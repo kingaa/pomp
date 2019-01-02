@@ -6,7 +6,7 @@ options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8"
-  )
+)
 
 set.seed(998468235L,kind="L'Ecuyer")
 mcopts <- list(preschedule=FALSE,set.seed=TRUE)
@@ -22,33 +22,35 @@ theme_set(theme_bw())
 set.seed(594709947L)
 library(ggplot2)
 library(plyr)
-library(reshape2)
-library(magrittr)
-library(pomp)
-stopifnot(packageVersion("pomp")>="1.11.3")
+library(tidyverse)
+library(pomp2)
+stopifnot(packageVersion("pomp2")>="2.0.9.1")
 
 ## ----load-data-----------------------------------------------------------
 load("twentycities.rda")
 measles %>% 
   mutate(year=as.integer(format(date,"%Y"))) %>%
-  subset(town==TOWN & year>=1950 & year<1964) %>%
+  filter(town==TOWN & year>=1950 & year<1964) %>%
   mutate(time=(julian(date,origin=as.Date("1950-01-01")))/365.25+1950) %>%
-  subset(time>1950 & time<1964, select=c(time,cases)) -> dat
-demog %>% subset(town==TOWN,select=-town) -> demog
+  filter(time>1950 & time<1964) %>%
+  select(time,cases) -> dat
+demog %>% filter(town==TOWN) %>%
+  select(-town) -> demog
 
 ## ----data-plot-----------------------------------------------------------
 dat %>% ggplot(aes(x=time,y=cases))+geom_line()
-demog %>% melt(id="year") %>%
+demog %>% 
+  gather(variable,value,-year) %>%
   ggplot(aes(x=year,y=value))+geom_point()+
   facet_wrap(~variable,ncol=1,scales="free_y")
 
 ## ----prep-covariates-----------------------------------------------------
 demog %>% 
-  summarize(
+  plyr::summarize(
     time=seq(from=min(year),to=max(year),by=1/12),
     pop=predict(smooth.spline(x=year,y=pop),x=time)$y,
     birthrate=predict(smooth.spline(x=year+0.5,y=births),x=time-4)$y
-    ) -> covar
+  ) -> covar
 
 ## ----covarplot-----------------------------------------------------------
 plot(pop~time,data=covar,type='l')
@@ -106,7 +108,7 @@ rproc <- Csnippet("
 ")
 
 ## ----initializer---------------------------------------------------------
-initlz <- Csnippet("
+rinit <- Csnippet("
   double m = pop/(S_0+E_0+I_0+R_0);
   S = nearbyint(m*S_0);
   E = nearbyint(m*E_0);
@@ -140,59 +142,31 @@ rmeas <- Csnippet("
   }
 ")
 
-## ----transforms----------------------------------------------------------
-toEst <- Csnippet("
-  Tmu = log(mu);
-  Tsigma = log(sigma);
-  Tgamma = log(gamma);
-  Talpha = log(alpha);
-  Tiota = log(iota);
-  Trho = logit(rho);
-  Tcohort = logit(cohort);
-  Tamplitude = logit(amplitude);
-  TsigmaSE = log(sigmaSE);
-  Tpsi = log(psi);
-  TR0 = log(R0);
-  to_log_barycentric (&TS_0, &S_0, 4);
-")
-
-fromEst <- Csnippet("
-  Tmu = exp(mu);
-  Tsigma = exp(sigma);
-  Tgamma = exp(gamma);
-  Talpha = exp(alpha);
-  Tiota = exp(iota);
-  Trho = expit(rho);
-  Tcohort = expit(cohort);
-  Tamplitude = expit(amplitude);
-  TsigmaSE = exp(sigmaSE);
-  Tpsi = exp(psi);
-  TR0 = exp(R0);
-  from_log_barycentric (&TS_0, &S_0, 4);
-")
-
 ## ----pomp-construction---------------------------------------------------
 dat %>% 
   pomp(t0=with(dat,2*time[1]-time[2]),
-       time="time",
-       rprocess=euler.sim(rproc,delta.t=1/365.25),
-       dmeasure=dmeas,
-       rmeasure=rmeas,
-       toEstimationScale=toEst,
-       fromEstimationScale=fromEst,
-       initializer=initlz,
-       covar=covar,
-       tcovar="time",
-       zeronames=c("C","W"),
-       statenames=c("S","E","I","C","W"),
-       paramnames=c("R0","mu","sigma","gamma","alpha","iota",
-                    "rho","sigmaSE","psi","cohort","amplitude",
-                    "S_0","E_0","I_0","R_0")
-       ) -> m1
+    time="time",
+    rprocess=euler(rproc,delta.t=1/365.25),
+    dmeasure=dmeas,
+    rmeasure=rmeas,
+    rinit=rinit,
+    partrans=parameter_trans(
+      log=c("mu","sigma","gamma","alpha","iota","psi","sigmaSE","R0"),
+      logit=c("rho","cohort","amplitude"),
+      barycentric=c("S_0","E_0","I_0","R_0")
+    ),
+    covar=covariate_table(covar,times="time"),
+    accumvars=c("C","W"),
+    statenames=c("S","E","I","C","W"),
+    paramnames=c("R0","mu","sigma","gamma","alpha","iota",
+      "rho","sigmaSE","psi","cohort","amplitude",
+      "S_0","E_0","I_0","R_0")
+  ) -> m1
 
 ## ----plot-pomp-----------------------------------------------------------
-m1 %>% as.data.frame() %>% 
-  melt(id="time") %>%
+m1 %>% 
+  as.data.frame() %>% 
+  gather(variable,value,-time) %>%
   ggplot(aes(x=time,y=value))+
   geom_line()+
   facet_grid(variable~.,scales="free_y")
@@ -223,10 +197,10 @@ Sheffield,-2810.7,0.21,0.02,4,54.3,62.2,0.649,33.1,0.313,1.02,0.853,0.225,0.175,
 ",stringsAsFactors=FALSE) -> mles
 
 ## ----mle-----------------------------------------------------------------
-mles %>% subset(town==TOWN) -> mle
+mles %>% filter(town==TOWN) -> mle
 paramnames <- c("R0","mu","sigma","gamma","alpha","iota",
-                "rho","sigmaSE","psi","cohort","amplitude",
-                "S_0","E_0","I_0","R_0")
+  "rho","sigmaSE","psi","cohort","amplitude",
+  "S_0","E_0","I_0","R_0")
 theta <- unlist(mle[paramnames])
 
 ## ----mle-table,echo=FALSE------------------------------------------------
@@ -235,35 +209,36 @@ kable(subset(mle,select=-c(town,mu,loglik.sd,delay,S_0,E_0,I_0,R_0)),row.names=F
 
 ## ----pfilter1------------------------------------------------------------
 library(foreach)
-library(doMC)
-registerDoMC()
+library(doParallel)
+library(doRNG)
+registerDoParallel()
+registerDoRNG(998468235L)
 
-set.seed(998468235L,kind="L'Ecuyer")
-mcopts <- list(preschedule=FALSE,set.seed=TRUE)
-
-foreach(i=1:4,.packages="pomp",
-        .options.multicore=mcopts) %dopar% {
-  pfilter(m1,params=theta,Np=10000)
+foreach(i=1:4) %dopar% {
+  m1 %>% pfilter(params=theta,Np=10000)
 } -> pfs
-logmeanexp(sapply(pfs,logLik),se=TRUE)
+
+pfs %>% sapply(logLik) %>% logmeanexp(se=TRUE)
 
 ## ----sims1,fig.height=8--------------------------------------------------
 m1 %>% 
-  simulate(params=theta,nsim=9,as.data.frame=TRUE,include.data=TRUE) %>%
-  ggplot(aes(x=time,y=cases,group=sim,color=(sim=="data")))+
+  simulate(params=theta,nsim=9,format="d",include.data=TRUE) %>%
+  ggplot(aes(x=time,y=cases,group=.id,color=(.id=="data")))+
   guides(color=FALSE)+
-  geom_line()+facet_wrap(~sim,ncol=2)
+  geom_line()+facet_wrap(~.id,ncol=2)
 
 ## ----sims2---------------------------------------------------------------
 m1 %>% 
-  simulate(params=theta,nsim=200,as.data.frame=TRUE,include.data=TRUE) %>%
-  subset(select=c(time,sim,cases)) %>%
-  mutate(data=sim=="data") %>%
-  ddply(~time+data,summarize,
-        p=c(0.05,0.5,0.95),q=quantile(cases,prob=p,names=FALSE)) %>%
-  mutate(p=mapvalues(p,from=c(0.05,0.5,0.95),to=c("lo","med","hi")),
-         data=mapvalues(data,from=c(TRUE,FALSE),to=c("data","simulation"))) %>%
-  dcast(time+data~p,value.var='q') %>%
+  simulate(params=theta,nsim=200,format="d",include.data=TRUE) %>%
+  select(time,.id,cases) %>%
+  mutate(data=.id=="data") %>%
+  ddply(~time+data,plyr::summarize,
+    p=c(0.05,0.5,0.95),q=quantile(cases,prob=p,names=FALSE)) %>%
+  mutate(
+    p=mapvalues(p,from=c(0.05,0.5,0.95),to=c("lo","med","hi")),
+    data=mapvalues(data,from=c(TRUE,FALSE),to=c("data","simulation"))
+  ) %>%
+  spread(p,q) %>%
   ggplot(aes(x=time,y=med,color=data,fill=data,ymin=lo,ymax=hi))+
   geom_ribbon(alpha=0.2)
 
