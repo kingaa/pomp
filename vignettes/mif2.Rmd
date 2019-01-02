@@ -40,7 +40,7 @@ opts_chunk$set(
   dpi=300,
   dev='png',
   dev.args=list(bg='transparent')
-  )
+)
 ```
 ```{r prelims,echo=FALSE,cache=FALSE}
 library(ggplot2)
@@ -48,14 +48,14 @@ library(plyr)
 library(reshape2)
 library(magrittr)
 theme_set(theme_bw())
-library(pomp)
-stopifnot(packageVersion("pomp")>="1.11.2.2")
+library(pomp2)
+stopifnot(packageVersion("pomp2")>="2.0.9.1")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
   scipen=5
-  )
+)
 set.seed(1332379783L)
 ```
 
@@ -102,22 +102,21 @@ The following constructs the Gompertz example that is provided with **pomp** (se
 It is meant to be directly comparable with the example displayed in the @King2016 [*J. Stat. Softw.* paper](http://kingaa.github.io/pomp/vignettes/pompjss.pdf).
 
 ```{r gompertz-init,results="hide"}
-library(pomp)
-pompExample(gompertz)
-theta <- coef(gompertz)
+library(pomp2)
+gompertz() -> gomp
+theta <- coef(gomp)
 theta.true <- theta
 ```
 ```{r gompertz-sim,include=FALSE}
-gompertz %<>%
-    window(start=1) %>%
-    simulate(seed=340398091L)
+gomp %<>%
+  window(start=1) %>%
+  simulate(seed=340398091L)
 ```
 
 Let's use IF2 to obtain an approximate MLE for these data.
 We'll initialize the algorithm at several starting points around `theta.true` and just estimate the parameters $r$, $\tau$, and $\sigma$:
 
 ```{r gompertz-mif2-1,results='hide'}
-library(magrittr)
 library(foreach)
 library(doParallel)
 registerDoParallel()
@@ -125,45 +124,42 @@ registerDoParallel()
 estpars <- c("r","sigma","tau")
 ```
 ```{r gompertz-mif2-2,results='hide',eval=FALSE,purl=FALSE}
-foreach(i=1:10,
-        .inorder=FALSE,
-        .options.multicore=list(set.seed=TRUE)
-        ) %dopar%
-    {
-        theta.guess <- theta.true
-        theta.guess[estpars] <- rlnorm(
-            n=length(estpars),
-            meanlog=log(theta.guess[estpars]),
-            sdlog=1
-        )
-        mif2(
-            gompertz,
-            Nmif=50,
-            start=theta.guess,
-            transform=TRUE,
-            rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),
-            cooling.fraction.50=0.95,
-            Np=2000
-        ) %>%
-            continue(Nmif=50,cooling.fraction=0.8) %>%
-            continue(Nmif=50,cooling.fraction=0.6) %>%
-            continue(Nmif=50,cooling.fraction=0.2) -> m1
-        ll <- replicate(n=10,logLik(pfilter(m1,Np=10000)))
-        list(mif=m1,ll=logmeanexp(ll,se=TRUE))
-    } -> mf
+library(doRNG)
+registerDoRNG(525386942)
+
+foreach(i=1:10,.inorder=FALSE) %dopar% {
+  theta.guess <- theta.true
+  theta.guess[estpars] <- rlnorm(
+    n=length(estpars),
+    meanlog=log(theta.guess[estpars]),
+    sdlog=1
+  )
+  gomp %>%
+    mif2(
+      Nmif=50,
+      params=theta.guess,
+      rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),
+      cooling.fraction.50=0.95,
+      Np=2000
+    ) %>%
+    continue(Nmif=50,cooling.fraction=0.8) %>%
+    continue(Nmif=50,cooling.fraction=0.6) %>%
+    continue(Nmif=50,cooling.fraction=0.2) -> m1
+  ll <- replicate(n=10,logLik(pfilter(m1,Np=10000)))
+  list(mif=m1,ll=logmeanexp(ll,se=TRUE))
+} -> mf
 ```
 ```{r gompertz-mif2-2-eval,eval=TRUE,purl=TRUE,include=FALSE}
-bake(file="gompertz-mif2.rds",
-     seed=334388458L,kind="L'Ecuyer",{
-         <<gompertz-mif2-2>>
-     }) -> mf
+bake(file="gompertz-mif2.rds",{
+  <<gompertz-mif2-2>>
+}) -> mf
 ```
 ```{r gompertz-mif-3}
 lls <- sapply(mf,getElement,"ll")
 best <- which.max(sapply(mf,getElement,"ll")[1,])
 theta.mif <- coef(mf[[best]]$mif)
 
-replicate(10,logLik(pfilter(gompertz,params=theta.mif,Np=10000))) %>%
+replicate(10,logLik(pfilter(gomp,params=theta.mif,Np=10000))) %>%
   logmeanexp(se=TRUE) -> pf.loglik.mif
 ```
 
@@ -221,35 +217,35 @@ kalman <- function (x, object, params) {
 }
 
 ##' Exact log likelihood at the true parameters
-loglik.truth <- -kalman(coef(gompertz),gompertz,coef(gompertz))
-loglik.mif <- -kalman(theta.mif,gompertz,coef(gompertz))
+loglik.truth <- -kalman(coef(gomp),gomp,coef(gomp))
+loglik.mif <- -kalman(theta.mif,gomp,coef(gomp))
 
 kalm.fit1 <- optim(
-    par=theta.true[estpars],
-    fn=kalman,
-    object=gompertz,
-    params=coef(gompertz),
-    hessian=TRUE,
-    control=list(trace=0)
-  )
+  par=theta.true[estpars],
+  fn=kalman,
+  object=gomp,
+  params=coef(gomp),
+  hessian=TRUE,
+  control=list(trace=0)
+)
 
-theta.mle <- coef(gompertz)
+theta.mle <- coef(gomp)
 theta.mle[estpars] <- kalm.fit1$par
 loglik.mle <- -kalm.fit1$value
 ```
 
-```{r gompertz-post-mif2,include=FALSE}
-replicate(n=10,logLik(pfilter(gompertz,Np=10000))) %>%
+```{r gomp-post-mif2,include=FALSE}
+replicate(n=10,logLik(pfilter(gomp,Np=10000))) %>%
   logmeanexp(se=TRUE) -> pf.loglik.truth
-replicate(n=10,logLik(pfilter(gompertz,params=theta.mle,Np=10000))) %>%
+replicate(n=10,logLik(pfilter(gomp,params=theta.mle,Np=10000))) %>%
   logmeanexp(se=TRUE) -> pf.loglik.mle
 
 rbind(`Truth`=theta.true[estpars],
-      `Exact MLE`=theta.mle[estpars],
-      `IF2 MLE`=theta.mif[estpars]) %>% round(digits=4) %>%
+  `Exact MLE`=theta.mle[estpars],
+  `IF2 MLE`=theta.mif[estpars]) %>% round(digits=4) %>%
   cbind(`$\\hat{\\ell}$`=round(c(pf.loglik.truth[1],pf.loglik.mle[1],pf.loglik.mif[1]),2),
-        `s.e. $\\hat{\\ell}$`=round(c(pf.loglik.truth[2],pf.loglik.mle[2],pf.loglik.mif[2]),2),
-        `$\\ell$`=round(c(loglik.truth,loglik.mle,loglik.mif),2)
+    `s.e. $\\hat{\\ell}$`=round(c(pf.loglik.truth[2],pf.loglik.mle[2],pf.loglik.mif[2]),2),
+    `$\\ell$`=round(c(loglik.truth,loglik.mle,loglik.mif),2)
   ) -> results.table
 ```
 
