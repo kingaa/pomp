@@ -13,7 +13,7 @@ csl: ecology.csl
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](http://kingaa.github.io/images/cc-by-nc.png)
 
-This document was produced using **pomp** version `r packageVersion("pomp")`.
+This document was produced using **pomp2** version `r packageVersion("pomp2")`.
 
 ```{r options,include=FALSE,cache=FALSE,purl=FALSE}
 library(knitr)
@@ -60,7 +60,7 @@ set.seed(1332379783L)
 ```
 
 Iterated filtering is a technique for maximizing the likelihood obtained by filtering.
-In **pomp**, it is the particle filter that is iterated.
+In **pomp2**, it is the particle filter that is iterated.
 The iterated filtering of @Ionides2006 is implemented in the `mif` function.
 @Ionides2015 describe an improvement on the original [@Ionides2006] algorithm.
 This "IF2" algorithm is implemented in the `mif2` function.
@@ -98,7 +98,7 @@ Final parameter swarm, $\{\Theta^M_j, j=1,\dots,J\}$
 
 ## An example
 
-The following constructs the Gompertz example that is provided with **pomp** (see `?gompertz`) and extracts the parameters at which the data were generated.
+The following constructs the Gompertz example that is provided with **pomp2** (see `?gompertz`) and extracts the parameters at which the data were generated.
 It is meant to be directly comparable with the example displayed in the @King2016 [*J. Stat. Softw.* paper](http://kingaa.github.io/pomp/vignettes/pompjss.pdf).
 
 ```{r gompertz-init,results="hide"}
@@ -164,7 +164,7 @@ replicate(10,logLik(pfilter(gomp,params=theta.mif,Np=10000))) %>%
 ```
 
 Note that we've set `transform=TRUE` in the above to search for the MLE with the parameters transformed to enforce their positivity.
-See the **pomp** documentation (`?pomp`) and the section on Parameter Transformations in the [Getting Started vignette](http://kingaa.github.io/pomp/vignettes/getting_started.html)).
+See the **pomp2** documentation (`?pomp`) and the section on Parameter Transformations in the [Getting Started vignette](http://kingaa.github.io/pomp/vignettes/getting_started.html)).
 
 Each of the `r length(mf)` `mif2` runs ends up at a different point estimate.
 We focus on that with the highest estimated likelihood, having evaluated the likelihood several times to reduce the Monte Carlo error in the likelihood evaluation.
@@ -274,7 +274,7 @@ Compare this with the [performance of IF1 (`mif`) on the same task](http://kinga
 
 The fact that the likelihood, $\ell$, at the IF2 MLE is higher than it is at the truth is evidence that this parameter is actually close to the true MLE.
 
-## [**pomp** homepage](http://kingaa.github.io/pomp)
+## [**pomp** homepage](http://kingaa.github.io/pomp/)
 
 ## [**R** codes for this document](http://raw.githubusercontent.com/kingaa/pomp/gh-pages/vignettes/mif2.R)
 
