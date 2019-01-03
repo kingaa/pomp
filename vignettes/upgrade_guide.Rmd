@@ -8,7 +8,7 @@ output:
     toc_depth: 2
 params:
   prefix: "upgrade_guide"
-  min.pomp.version: "2.0.3"
+  min.pomp.version: "2.0.9"
 ---
 
 ```{r precheck,include=FALSE}
@@ -324,6 +324,11 @@ One can remove transformations by simply setting `partrans = NULL` in the call t
 ### `mif2` defaults
 
 The default cooling schedule (`cooling.type`) in `mif2` is now "geometric", in contrast to "hyperbolic", as before.
+
+### `params` not `start`
+
+To specify the parameters used to start an iterative estimation algorithm, such as `mif2`, `pmcmc`, or `abc`, use the `params` argument.
+In **pomp** versions < 2, these functions had an argument named `start` for this purpose.
 
 ### Changes in optimization-based methods: probe matching, spectrum matching, trajectory matching, nonlinear forecasting
 
