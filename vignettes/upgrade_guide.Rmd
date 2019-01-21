@@ -97,7 +97,7 @@ install.packages("pomp2",repos="https://kingaa.github.io")
 to install it.
 This is intended to allow users to have both **pomp** (version <2) and **pomp2** installed simultaneously during workflow migration.
 It is anticipated that, around the middle of 2019, **pomp2** will be renamed **pomp** and uploaded to CRAN as version 2.1.
-From that point forward, there will be no support for older versions of **pomp**.
+From that point forward, there will be no support for older versions of **pomp** and **pomp2** as a separate package will be discontinued.
 
 ## Terminology
 
