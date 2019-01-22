@@ -8,6 +8,9 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._9:
         • The probe-names returned by ‘probe.acf’ and ‘probe.ccf’ have
           changed.
 
+        • A bug, whereby the ‘coef’ method from other packages was
+          masked, has been fixed.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._8:
 
         • There is a new ‘as.data.frame’ method for ‘listie’s.

@@ -4,7 +4,6 @@
 \name{coef}
 \alias{coef}
 \alias{coef,missing-method}
-\alias{coef,ANY-method}
 \alias{coef<-,missing-method}
 \alias{coef<-,ANY-method}
 \alias{coef-listie}

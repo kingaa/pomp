@@ -5,7 +5,7 @@
 ##' @name coef
 ##' @rdname coef
 ##' @docType methods
-##' @aliases coef,missing-method coef,ANY-method
+##' @aliases coef,missing-method
 ##' coef<-,missing-method coef<-,ANY-method
 ##' @include pomp_class.R listie.R
 ##' @importFrom stats coef
@@ -24,17 +24,17 @@ setGeneric(
 )
 
 setMethod(
-  "coef",
+  "coef<-",
   signature=signature(object="missing"),
   definition=function (...) {
-    reqd_arg("coef","object")
+    reqd_arg("coef<-","object")
   }
 )
 
 setMethod(
-  "coef",
+  "coef<-",
   signature=signature(object="ANY"),
-  definition=function (object, ...) {
+  definition=function (object, ..., value) {
     undef_method("coef",object)
   }
 )
