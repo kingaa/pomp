@@ -1,5 +1,5 @@
 
-R version 3.5.1 (2018-07-02) -- "Feather Spray"
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
 Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -166,8 +166,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2018-10-02 18:32:54.712 -0400 */
-/* Salt: 9948ABA0AF9FBAC89102CAC6 */
+/* Time: 2019-01-22 09:31:34.547 -0500 */
+/* Salt: 807FD8FC7E4ACB43EB256EE5 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -291,8 +291,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2018-10-02 18:32:54.896 -0400 */
-/* Salt: E7824DBCE9355F43D07EA95F */
+/* Time: 2019-01-22 09:31:34.728 -0500 */
+/* Salt: CDF2E1E377FF9CCCEB57E5F5 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -817,8 +817,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2018-10-02 18:32:55.766 -0400 */
-/* Salt: 39206376C5CAC190BE5B252C */
+/* Time: 2019-01-22 09:31:35.577 -0500 */
+/* Salt: D9D38A614CFD01032586AD88 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1020,8 +1020,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2018-10-02 18:32:56.489 -0400 */
-/* Salt: 93A1AB8D8A45B3EA5241F33D */
+/* Time: 2019-01-22 09:31:36.304 -0500 */
+/* Salt: 39A7EEF59C9DAB5AC3076D06 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

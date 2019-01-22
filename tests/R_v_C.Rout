@@ -1,5 +1,5 @@
 
-R version 3.5.1 (2018-07-02) -- "Feather Spray"
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
 Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -111,16 +111,16 @@ For information on upgrading your pomp version < 2 code, see the
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  8.072   0.064   8.137 
+  8.032   0.088   8.120 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.396   0.004   0.400 
+  0.380   0.008   0.387 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.696   0.000   0.695 
+  0.696   0.004   0.703 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.060   0.000   0.059 
+  0.056   0.000   0.058 
 > 
 > dev.off()
 null device 

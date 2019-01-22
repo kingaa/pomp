@@ -1,5 +1,5 @@
 
-R version 3.5.1 (2018-07-02) -- "Feather Spray"
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
 Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -70,9 +70,9 @@ Error : in 'cond.logLik': 'object' is a required argument.
 Error : 'cond.logLik' is undefined for 'object' of class 'character'.
 > 
 > try(coef())
-Error : in 'coef': 'object' is a required argument.
+Error in coef.default() : argument "object" is missing, with no default
 > try(coef("bob"))
-Error : 'coef' is undefined for 'object' of class 'character'.
+Error : $ operator is invalid for atomic vectors
 > 
 > try(coef() <- 3)
 Error in coef() <- 3 : invalid (NULL) left side of assignment

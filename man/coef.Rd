@@ -5,7 +5,6 @@
 \alias{coef}
 \alias{coef,missing-method}
 \alias{coef<-,missing-method}
-\alias{coef<-,ANY-method}
 \alias{coef-listie}
 \alias{coef,listie-method}
 \alias{coef-pomp}
