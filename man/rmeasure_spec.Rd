@@ -31,16 +31,10 @@ The demos and the tutorials on the \href{https://kingaa.github.io/pomp/}{package
 It is also possible, though far less efficient, to specify \code{rmeasure} using an \R function.
 In this case, specify the measurement model simulator by furnishing \preformatted{
   rmeasure = f}
-to \code{pomp}, where \code{f} is an \R function with prototype \preformatted{
-  f(x, t, params, \dots)}
-It can also take any additional arguments if these are passed along with it in the call to \code{pomp}.
-When \code{f} is called,
-\itemize{
-  \item \code{x} will be a named numeric vector of length \code{nvar}, the number of state variables.
-  \item \code{t} will be a scalar quantity, the time at which the measurement is made.
-  \item \code{params} will be a named numeric vector of length \code{npar}, the number of parameters.
-}
-\code{f} must return a named numeric vector of length \code{nobs}, the number of observable variables.
+to \code{pomp}, where \code{f} is an \R function.
+The arguments of \code{f} should be chosen from among the state variables, parameters, covariates, and time.
+It must also have the argument \code{...}.
+\code{f} must return a named numeric vector of length equal to the number of observable variables.
 }
 \section{Default behavior}{
 

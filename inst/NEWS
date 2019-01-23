@@ -11,6 +11,8 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._9:
         • A bug, whereby the ‘coef’ method from other packages was
           masked, has been fixed.
 
+        • Errors in the documentation have been corrected.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._8:
 
         • There is a new ‘as.data.frame’ method for ‘listie’s.

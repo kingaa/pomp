@@ -5,6 +5,7 @@
     \item When \code{coef} is applied to a \sQuote{listie}, the result can be more usefully \code{melt}ed.
     \item The probe-names returned by \code{probe.acf} and \code{probe.ccf} have changed.
     \item A bug, whereby the \sQuote{coef} method from other packages was masked, has been fixed.
+    \item Errors in the documentation have been corrected.
   }
 }
 \section{Changes in \pkg{pomp} version 2.0.8}{

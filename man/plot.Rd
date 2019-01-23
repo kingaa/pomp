@@ -4,7 +4,6 @@
 \name{plot}
 \alias{plot}
 \alias{plot,missing-method}
-\alias{plot,ANY-method}
 \alias{plot-pomp}
 \alias{plot,pomp_plottable-method}
 \alias{plot,pomp-method}

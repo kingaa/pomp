@@ -16,14 +16,11 @@
 ##' See \code{\link{Csnippet}} for general rules on writing C snippets.
 ##' Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
-##' If \code{f} is given as an \R function, it should have prototype
-##' \preformatted{
-##'     f(x, t, params, delta.t, ...)
-##' }
-##' When \code{f} is called, \code{x} will be a named numeric vector containing the value of the state process at time \code{t},
-##' \code{params} will be a named numeric vector containing parameters,
-##' and \code{delta.t} will be the time-step.
-##' It should return a named vector of the same length, and with the same set of names, as \code{x}, representing a draw from the distribution of the state process at time \code{t+delta.t}, conditional on its having value \code{x} at time \code{t}.
+##' If \code{f} is given as an \R function, its arguments should come from the state variables, parameters, covariates, and time.
+##' It may also take the argument \sQuote{\code{delta.t}};
+##' when called, the latter will be the time-step.
+##' It must also have the argument \sQuote{\code{...}}.
+##' It should return a named vector of length equal to the number of state variables, representing a draw from the distribution of the state process at time \code{t+delta.t} conditional on its value at time \code{t}.
 ##'
 ##' @section Continuous-time processes:
 ##' If the state process evolves in continuous time, but you can use an Euler approximation, implement \code{rprocess} using the \code{euler} plug-in.

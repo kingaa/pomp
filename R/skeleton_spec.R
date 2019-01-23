@@ -34,16 +34,10 @@
 ##' }
 ##' The tutorials on the \href{https://kingaa.github.io/pomp/}{package website} give some examples.
 
-##' If \code{f} is an \R function, it must be of prototype \preformatted{
-##'   f(x, t, params, \dots)}
-##' where, as usual,
-##' \itemize{
-##'   \item \code{x} is a numeric vector (length \code{nvar}) containing the coordinates of a point in state space at which evaluation of the skeleton is desired.
-##'   \item \code{t} is a scalar value giving the time at which evaluation of the skeleton is desired.
-##'   \item \code{params} is a numeric vector (length \code{npar}) holding the parameters.
-##' }
+##' If \code{f} is an \R function, its arguments should be taken from among the state variables, parameters, covariates, and time.
+##' It must also take the argument \sQuote{\code{...}}.
 ##' As with the other basic components, \code{f} may take additional arguments, provided these are passed along with it in the call to \code{pomp}.
-##' The function \code{f} must return a numeric vector of the same length as \code{x}, which contains the value of the map or vectorfield at the required point and time.
+##' The function \code{f} must return a numeric vector of the same length as the number of state variables, which contains the value of the map or vectorfield at the required point and time.
 ##'
 ##' @section Default behavior:
 ##' The default \code{skeleton} is undefined.

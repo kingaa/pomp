@@ -7,7 +7,7 @@
 ##' @include pomp_class.R
 ##' @include abc.R mif2.R pmcmc.R pfilter.R spect.R
 ##' @include listie.R
-##' @aliases plot,missing-method plot,ANY-method
+##' @aliases plot,missing-method
 ##'
 ##' @importFrom graphics plot par abline pairs matplot box axis mtext points polygon lines plot.default legend hist rect text title
 ##' @importFrom grDevices rgb dev.interactive

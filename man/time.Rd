@@ -4,7 +4,6 @@
 \name{time}
 \alias{time}
 \alias{time<-}
-\alias{time,ANY-method}
 \alias{time,missing-method}
 \alias{time-pomp}
 \alias{time,pomp-method}

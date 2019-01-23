@@ -4,7 +4,7 @@
 ##'
 ##' @name time
 ##' @rdname time
-##' @aliases time time<- time,ANY-method time,missing-method
+##' @aliases time time<- time,missing-method
 ##'
 ##' @importFrom stats time
 NULL

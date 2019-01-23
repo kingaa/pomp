@@ -33,7 +33,8 @@
 ##'   Therefore, neither the time, nor any state variables, nor any of the covariates will be available in the context within which a parameter transformation snippet is executed.
 ##' }
 ##'
-##' These transformations can also be specified using \R functions with arguments \code{params} and \code{\dots}.
+##' These transformations can also be specified using \R functions with arguments chosen from among the parameters.
+##' Such an \R function must also have the argument \sQuote{\code{...}}.
 ##' In this case, \code{toEst} should transform parameters from the scale that the basic components use internally to the scale used in estimation.
 ##' \code{fromEst} should be the inverse of \code{toEst}.
 ##'
