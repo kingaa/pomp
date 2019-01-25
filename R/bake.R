@@ -33,6 +33,8 @@
 ##' To set the state and of the RNG.
 ##' See \code{\link{set.seed}}.
 ##' The default, \code{seed = NULL}, will not change the RNG state.
+##' \code{seed} should be a single integer.
+##' See \code{\link{set.seed}}.
 ##'
 ##' @return \code{bake} returns the value of the evaluated expression \code{expr}.
 ##' Other objects created in the evaluation of \code{expr} are discarded along with the temporary, local environment created for the evaluation.

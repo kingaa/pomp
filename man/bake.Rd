@@ -22,7 +22,9 @@ for \code{stew}, this will contain one or more named objects and hence be an RDA
 \item{seed, kind, normal.kind}{optional.
 To set the state and of the RNG.
 See \code{\link{set.seed}}.
-The default, \code{seed = NULL}, will not change the RNG state.}
+The default, \code{seed = NULL}, will not change the RNG state.
+\code{seed} should be a single integer.
+See \code{\link{set.seed}}.}
 }
 \value{
 \code{bake} returns the value of the evaluated expression \code{expr}.

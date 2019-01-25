@@ -5,7 +5,7 @@ options(digits=2)
 
 set.seed(5499)
 w1 <- runif(2)
-w4 <- freeze({runif(5)},seed=499586)
+w4 <- freeze({runif(5)},seed=c(499586,588686,39995866))
 w2 <- runif(2)
 w5 <- freeze(runif(5),seed=499586)
 set.seed(5499)
