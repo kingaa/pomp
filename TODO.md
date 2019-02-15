@@ -52,6 +52,7 @@
 	- would require attention to `rw.sd`, e.g.
 
 - weighted particle filter
+- in EnKF and EAKF, allow matrices to depend on parameters
 
 ## For pomp:
 
