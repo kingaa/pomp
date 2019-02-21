@@ -88,6 +88,7 @@ Collate:
     'extract.R'
     'filter_mean.R'
     'filter_traj.R'
+    'flow.R'
     'forecast.R'
     'gompertz.R'
     'probe_match.R'
