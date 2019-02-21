@@ -92,97 +92,17 @@ trajectory.internal <- function (object, params, times, t0,
   format = c("array", "data.frame"), .gnsi = TRUE, ...,
   verbose) {
 
-  format <- match.arg(format)
-  verbose <- as.logical(verbose)
+  if (missing(t0)) t0 <- timezero(object)
+  else t0 <- as.numeric(t0)
 
   if (missing(times)) times <- time(object,t0=FALSE)
   else times <- as.numeric(times)
 
-  if (length(times)==0)
-    pStop_(sQuote("times")," is empty, there is no work to do.")
-
-  if (any(diff(times)<=0))
-    pStop_(sQuote("times")," must be a strictly increasing numeric sequence.")
-
-  if (missing(t0)) t0 <- timezero(object)
-  else t0 <- as.numeric(t0)
-
-  if (t0>times[1L])
-    pStop_("the zero-time ",sQuote("t0"),
-      " must occur no later than the first observation.")
-  ntimes <- length(times)
-
-  if (missing(params)) params <- coef(object)
-  if (is.list(params)) params <- unlist(params)
-  if (is.null(params)) params <- numeric(0)
-
-  storage.mode(params) <- "double"
-
-  params <- as.matrix(params)
-  nrep <- ncol(params)
-
   x0 <- rinit(object,params=params,t0=t0)
-  nvar <- nrow(x0)
-  statenames <- rownames(x0)
-  dim(x0) <- c(nvar,nrep,1)
-  dimnames(x0) <- list(statenames,NULL,NULL)
 
-  type <- object@skeleton@type          # map or vectorfield?
-
-  pompLoad(object)
-  on.exit(pompUnload(object))
-
-  if (type == skeletontype$map) {                  ## MAP
-
-    x <- .Call(P_iterate_map,object,times,t0,x0,params,.gnsi)
-    .gnsi <- FALSE
-
-  } else if (type == skeletontype$vectorfield) {   ## VECTORFIELD
-
-    znames <- object@accumvars
-    if (length(znames)>0) x0[znames,,] <- 0
-
-    .Call(P_pomp_desolve_setup,object,x0,params,.gnsi)
-    .gnsi <- FALSE
-
-    X <- tryCatch(
-      ode(
-        y=x0,
-        times=c(t0,times),
-        func="pomp_vf_eval",
-        dllname="pomp2",
-        initfunc=NULL,
-        parms=NULL,
-        ...
-      ),
-      error = function (e) {
-        pStop_("error in ODE integrator: ",conditionMessage(e))
-      }
-    )
-
-    .Call(P_pomp_desolve_takedown)
-
-    if (attr(X,"istate")[1L] != 2)
-      pWarn("trajectory",
-        "abnormal exit from ODE integrator, istate = ",attr(X,'istate')[1L])
-
-    if (verbose) diagnostics(X)
-
-    x <- array(data=t(X[-1L,-1L]),dim=c(nvar,nrep,ntimes),
-      dimnames=list(statenames,NULL,NULL))
-
-    for (z in znames)
-      for (r in seq_len(ncol(x)))
-        x[z,r,-1] <- diff(x[z,r,])
-
-  } else {                  ## DEFAULT SKELETON
-
-    x <- array(data=NA_real_,dim=c(nrow(x0),ncol(x0),length(times)),
-      dimnames=list(rownames(x0),NULL,NULL))
-
-  }
-
-  dimnames(x) <- setNames(dimnames(x),c("variable","rep",object@timename))
+  x <- flow(object, x0, t0, params, times,
+          format = c("array", "data.frame"), ...,
+          verbose = getOption("verbose", FALSE))
 
   if (format == "data.frame") {
     x <- lapply(
