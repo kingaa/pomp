@@ -121,7 +121,7 @@ flow.internal <- function (object, xstart, tstart, params, times,
   nvar <- nrow(xstart)
   statenames <- rownames(xstart)
   dim(xstart) <- c(nvar,nrep,1)
-  dimnames(x0) <- list(statenames,NULL,NULL)
+  dimnames(xstart) <- list(statenames,NULL,NULL)
 
   type <- object@skeleton@type          # map or vectorfield?
 
@@ -179,24 +179,5 @@ flow.internal <- function (object, xstart, tstart, params, times,
   }
 
   dimnames(x) <- setNames(dimnames(x),c("variable","rep",object@timename))
-
-  if (format == "data.frame") {
-    x <- lapply(
-      seq_len(ncol(x)),
-      function (k) {
-        nm <- rownames(x)
-        y <- x[,k,,drop=FALSE]
-        dim(y) <- dim(y)[c(1L,3L)]
-        y <- as.data.frame(t(y))
-        names(y) <- nm
-        y[[object@timename]] <- times
-        y$.id <- as.integer(k)
-        y
-      }
-    )
-    x <- do.call(rbind,x)
-    x$.id <- ordered(x$.id)
-  }
-
   x
 }
