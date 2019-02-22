@@ -5,7 +5,8 @@
 ##' In the case of a discrete-time system, the deterministic skeleton is a map and a trajectory is obtained by iterating the map.
 ##' In the case of a continuous-time system, the deterministic skeleton is a vector-field;
 ##' \code{flow} uses the numerical solvers in \pkg{\link[deSolve]{deSolve}} to integrate the vectorfield starting with an initial
-##' state and for a pre-specified time range.
+##' state and for a pre-specified time range. The evolutes to be returned in a rank-3 array with dimensions
+##' \code{nvar} x \code{ncol(xstart)} x \code{ntimes}.
 ##'
 ##' @name flow
 ##' @rdname flow
@@ -14,13 +15,6 @@
 
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames
-##'
-##' @param format the format in which to return the results.
-##'
-##' \code{format = "array"} causes the evolutes to be returned
-##' in a rank-3 array with dimensions
-##' \code{nvar} x \code{ncol(xstart)} x \code{ntimes}.
-##' Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
 ##'
 ##' @param times a numeric vector (length \code{ntimes}) containing times.
 ##' These must be in strictly increasing order.
@@ -69,24 +63,21 @@ setMethod(
 setMethod(
   "flow",
   signature=signature(object="pomp"),
-  definition=function (object, xstart, tstart, params, times,
-    format = c("array", "data.frame"), ...,
+  definition=function (object, xstart, tstart, params, times, ...,
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
       flow.internal(object=object, xstart = xstart, tstart = tstart, params=params,times=times,
-        format=format,...,verbose=verbose),
+      ...,verbose=verbose),
       error = function (e) pStop("flow",conditionMessage(e))
     )
 
   }
 )
 
-flow.internal <- function (object, xstart, tstart, params, times,
-  format = c("array", "data.frame"), .gnsi = TRUE, ...,
+flow.internal <- function (object, xstart, tstart, params, times, .gnsi = TRUE, ...,
   verbose) {
 
-  format <- match.arg(format)
   verbose <- as.logical(verbose)
 
   if(missing(tstart)) reqd_arg("flow","tstart")
@@ -117,7 +108,6 @@ flow.internal <- function (object, xstart, tstart, params, times,
   params <- as.matrix(params)
   nrep <- ncol(xstart) # this was initially ncol(params)
 
-  # x0 <- rinit(object,params=params,t0=t0) DELETE LATER
   nvar <- nrow(xstart)
   statenames <- rownames(xstart)
   dim(xstart) <- c(nvar,nrep,1)

@@ -92,6 +92,8 @@ trajectory.internal <- function (object, params, times, t0,
   format = c("array", "data.frame"), .gnsi = TRUE, ...,
   verbose) {
 
+  format <- match.arg(format)
+
   if (missing(t0)) t0 <- timezero(object)
   else t0 <- as.numeric(t0)
 
@@ -100,8 +102,7 @@ trajectory.internal <- function (object, params, times, t0,
 
   x0 <- rinit(object,params=params,t0=t0)
 
-  x <- flow(object, x0, t0, params, times,
-          format = c("array", "data.frame"), ...,
+  x <- flow(object, x0, t0, params, times, ...,
           verbose = getOption("verbose", FALSE))
 
   if (format == "data.frame") {
