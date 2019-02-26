@@ -63,24 +63,22 @@ setMethod(
 setMethod(
   "flow",
   signature=signature(object="pomp"),
-  definition=function (object, xstart, tstart, params, times, ...,
+  definition=function (object, xstart, params, times, offset=0, ...,
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      flow.internal(object=object, xstart = xstart, tstart = tstart, params=params,times=times,
-      ...,verbose=verbose),
+      flow.internal(object=object, xstart = xstart, params=params, times=times,
+      offset=offset, ..., verbose=verbose),
       error = function (e) pStop("flow",conditionMessage(e))
     )
 
   }
 )
 
-flow.internal <- function (object, xstart, tstart, params, times, .gnsi = TRUE, ...,
+flow.internal <- function (object, xstart, params, times, offset, .gnsi = TRUE, ...,
   verbose) {
 
   verbose <- as.logical(verbose)
-
-  if(missing(tstart)) reqd_arg("flow","tstart")
 
   if (missing(times)) times <- reqd_arg("flow","times")
   else times <- as.numeric(times)
@@ -88,15 +86,14 @@ flow.internal <- function (object, xstart, tstart, params, times, .gnsi = TRUE, 
   if (length(times)==0)
     pStop_(sQuote("times")," is empty, there is no work to do.")
 
+  if (length(times) < 2)
+    pStop_(sQuote("times")," needs at length two since the first is the time of ", sQuote("xstart"))
+
   if (any(diff(times)<=0))
     pStop_(sQuote("times")," must be a strictly increasing numeric sequence.")
 
-  if (missing(tstart)) tstart <- reqd_arg("flow","tstart")
-  else tstart <- as.numeric(tstart)
-
-  if (tstart>times[1L])
-    pStop_("the start time ",sQuote("tstart"),
-      " must occur no later than the first observation.")
+  tstart <- times[1L]
+  times <- times[2:length(times)] # first times element is time of xstart
   ntimes <- length(times)
 
   if (missing(params)) params <- coef(object)
@@ -104,9 +101,9 @@ flow.internal <- function (object, xstart, tstart, params, times, .gnsi = TRUE, 
   if (is.null(params)) params <- numeric(0)
 
   storage.mode(params) <- "double"
-
-  params <- as.matrix(params)
-  nrep <- ncol(xstart) # this was initially ncol(params)
+  
+  params <- matrix(params, nrow = length(params), ncol = ncol(xstart), dimnames = list(param=names(params), rep=NULL))
+  nrep <- ncol(params)
 
   nvar <- nrow(xstart)
   statenames <- rownames(xstart)
@@ -169,5 +166,13 @@ flow.internal <- function (object, xstart, tstart, params, times, .gnsi = TRUE, 
   }
 
   dimnames(x) <- setNames(dimnames(x),c("variable","rep",object@timename))
-  x
+  if (offset == 0){
+    out <- array(0, dim = c(nvar,nrep,(ntimes+1)), dimnames = list(rownames(xstart), NULL, NULL))
+    dimnames(out) <- setNames(dimnames(out), c("variable", "rep", object@timename))
+    out[,,1] <- xstart
+    out[,,2:(dim(out)[3])] <- x
+    out
+  }
+  else
+    x[,,offset:(dim(x)[3]),drop=FALSE]
 }

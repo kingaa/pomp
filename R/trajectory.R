@@ -102,7 +102,7 @@ trajectory.internal <- function (object, params, times, t0,
 
   x0 <- rinit(object,params=params,t0=t0)
 
-  x <- flow(object, x0, t0, params, times, ...,
+  x <- flow(object, x0, params, times, offset = 0, ...,
           verbose = getOption("verbose", FALSE))
 
   if (format == "data.frame") {
