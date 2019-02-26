@@ -5,8 +5,9 @@
 ##' In the case of a discrete-time system, the deterministic skeleton is a map and a trajectory is obtained by iterating the map.
 ##' In the case of a continuous-time system, the deterministic skeleton is a vector-field;
 ##' \code{flow} uses the numerical solvers in \pkg{\link[deSolve]{deSolve}} to integrate the vectorfield starting with an initial
-##' state and for a pre-specified time range. The evolutes to be returned in a rank-3 array with dimensions
-##' \code{nvar} x \code{ncol(xstart)} x \code{ntimes}.
+##' state and for a pre-specified time range. If \code{offset = 0} as is the default behaviour, the evolutes are returned
+##' in a rank-3 array with dimensions \code{nvar} x \code{ncol(xstart)} x \code{ntimes} where \code{ntimes} is the length of the 
+##  \code{times} argument.
 ##'
 ##' @name flow
 ##' @rdname flow
@@ -16,8 +17,14 @@
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames
 ##'
+##' @param xstart an array with dimensions \code{nvar} x \code{nrep}
+##' 
 ##' @param times a numeric vector (length \code{ntimes}) containing times.
-##' These must be in strictly increasing order.
+##' These must be in strictly increasing order. The first entry is assumed to be the time of \code{xstart.}
+##' 
+##' @param offset a numeric of length one with default value 0. This default behavior causes the returned output to contain
+##' \code{xstart} as the first evolute. If offset is set to 1, then the first evolute will be the first realization after
+##' \code{xstart}.
 ##'
 ##' @param verbose logical; if \code{TRUE}, more information will be displayed.
 ##'
