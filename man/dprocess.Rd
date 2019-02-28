@@ -43,9 +43,10 @@ Evaluates the probability density of a sequence of consecutive state transitions
 Specification of the process-model density evaluator: \code{\link{dprocess_spec}}
 
 Other pomp workhorses: \code{\link{dmeasure}},
-  \code{\link{dprior}}, \code{\link{partrans}},
-  \code{\link{rinit}}, \code{\link{rmeasure}},
-  \code{\link{rprior}}, \code{\link{rprocess}},
-  \code{\link{skeleton}}, \code{\link{workhorses}}
+  \code{\link{dprior}}, \code{\link{flow}},
+  \code{\link{partrans}}, \code{\link{rinit}},
+  \code{\link{rmeasure}}, \code{\link{rprior}},
+  \code{\link{rprocess}}, \code{\link{skeleton}},
+  \code{\link{workhorses}}
 }
 \concept{pomp workhorses}

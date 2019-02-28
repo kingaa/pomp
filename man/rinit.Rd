@@ -36,8 +36,9 @@ Specification of the initial-state distribution: \code{\link{rinit_spec}}
 
 Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{dprior}}, \code{\link{dprocess}},
-  \code{\link{partrans}}, \code{\link{rmeasure}},
-  \code{\link{rprior}}, \code{\link{rprocess}},
-  \code{\link{skeleton}}, \code{\link{workhorses}}
+  \code{\link{flow}}, \code{\link{partrans}},
+  \code{\link{rmeasure}}, \code{\link{rprior}},
+  \code{\link{rprocess}}, \code{\link{skeleton}},
+  \code{\link{workhorses}}
 }
 \concept{pomp workhorses}

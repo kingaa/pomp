@@ -11,6 +11,7 @@
 ##' \item{\code{\link{dprior}}}{which evaluates the prior probability density,}
 ##' \item{\code{\link{rprior}}}{which samples from the prior distribution,}
 ##' \item{\code{\link{skeleton}}}{which evaluates the model's deterministic skeleton,}
+##' \item{\code{\link{flow}}}{which iterates or integrates the deterministic skeleton to yield trajectories,}
 ##' \item{\code{\link{partrans}}}{which performs parameter transformations associated with the model.}
 ##' }
 ##'

@@ -17,6 +17,7 @@ They include \describe{
 \item{\code{\link{dprior}}}{which evaluates the prior probability density,}
 \item{\code{\link{rprior}}}{which samples from the prior distribution,}
 \item{\code{\link{skeleton}}}{which evaluates the model's deterministic skeleton,}
+\item{\code{\link{flow}}}{which iterates or integrates the deterministic skeleton to yield trajectories,}
 \item{\code{\link{partrans}}}{which performs parameter transformations associated with the model.}
 }
 }
@@ -26,9 +27,10 @@ They include \describe{
 
 Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{dprior}}, \code{\link{dprocess}},
-  \code{\link{partrans}}, \code{\link{rinit}},
-  \code{\link{rmeasure}}, \code{\link{rprior}},
-  \code{\link{rprocess}}, \code{\link{skeleton}}
+  \code{\link{flow}}, \code{\link{partrans}},
+  \code{\link{rinit}}, \code{\link{rmeasure}},
+  \code{\link{rprior}}, \code{\link{rprocess}},
+  \code{\link{skeleton}}
 }
 \author{
 Aaron A. King

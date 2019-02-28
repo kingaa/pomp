@@ -6,16 +6,20 @@
 ##' In the case of a continuous-time system, the deterministic skeleton is a vector-field;
 ##' \code{trajectory} uses the numerical solvers in \pkg{\link[deSolve]{deSolve}} to integrate the vectorfield.
 ##'
+##' Note that the handling of \code{\dots} in \code{trajectory} differs from that of most other functions in \pkg{pomp}.
+##' In particular, it is not possible to modify the model structure in a call to \code{trajectory}.
+##' 
 ##' @name trajectory
 ##' @rdname trajectory
-##' @include workhorses.R pomp_class.R skeleton_spec.R
+##' @include workhorses.R pomp_class.R flow.R
 ##' @aliases trajectory trajectory,missing-method trajectory,ANY-method
 
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames
 ##'
-##' @inheritParams dmeasure
+##' @inheritParams flow
 ##' @inheritParams rinit
+##' @inheritParams pomp
 ##'
 ##' @param format the format in which to return the results.
 ##'
@@ -28,22 +32,11 @@
 ##' the time and states.
 ##' An ordered factor variable, \sQuote{.id}, distinguishes the trajectories from one another.
 ##'
-##' @param times a numeric vector (length \code{ntimes}) containing times.
-##' These must be in strictly increasing order.
-##'
-##' @param verbose logical; if \code{TRUE}, more information will be displayed.
-##'
-##' @param \dots Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
-##' See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.
-##'
-##' Note that this behavior differs from most other functions in \pkg{pomp}.
-##' It is not possible to modify the model structure in a call to \code{trajectory}.
-##'
 ##' @return
 ##' \code{trajectory} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
 ##' If \code{x} is the returned matrix, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k]} given parameters \code{params[,j]}.
 ##'
-##' @seealso \code{\link{skeleton}}
+##' @seealso \code{\link{skeleton}}, \code{\link{flow}}
 NULL
 
 setGeneric(
@@ -89,8 +82,7 @@ setMethod(
 )
 
 trajectory.internal <- function (object, params, times, t0,
-  format = c("array", "data.frame"), .gnsi = TRUE, ...,
-  verbose) {
+  format = c("array", "data.frame"), ..., .gnsi = TRUE, verbose) {
 
   format <- match.arg(format)
 
@@ -101,9 +93,9 @@ trajectory.internal <- function (object, params, times, t0,
   else times <- as.numeric(times)
 
   x0 <- rinit(object,params=params,t0=t0)
-
-  x <- flow(object, x0, params, times, offset = 0, ...,
-          verbose = getOption("verbose", FALSE))
+  
+  x <- flow(object,xstart=x0,params=params,times=c(t0,times),...,
+    .gnsi=.gnsi,verbose=verbose,offset=1L)
 
   if (format == "data.frame") {
     x <- lapply(

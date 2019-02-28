@@ -47,9 +47,10 @@ If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or log like
 Specification of the measurement density evaluator: \code{\link{dmeasure_spec}}
 
 Other pomp workhorses: \code{\link{dprior}},
-  \code{\link{dprocess}}, \code{\link{partrans}},
-  \code{\link{rinit}}, \code{\link{rmeasure}},
-  \code{\link{rprior}}, \code{\link{rprocess}},
-  \code{\link{skeleton}}, \code{\link{workhorses}}
+  \code{\link{dprocess}}, \code{\link{flow}},
+  \code{\link{partrans}}, \code{\link{rinit}},
+  \code{\link{rmeasure}}, \code{\link{rprior}},
+  \code{\link{rprocess}}, \code{\link{skeleton}},
+  \code{\link{workhorses}}
 }
 \concept{pomp workhorses}

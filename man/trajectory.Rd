@@ -26,7 +26,8 @@ This will typically be the output of \code{pomp}, \code{simulate}, or one of the
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
 
 \item{times}{a numeric vector (length \code{ntimes}) containing times.
-These must be in strictly increasing order.}
+These must be in strictly increasing order.
+The first entry is assumed to be the time of \code{xstart.}}
 
 \item{t0}{the initial time, i.e., the time corresponding to the initial-state distribution.}
 
@@ -41,13 +42,10 @@ Here, \code{nvar} is the number of state variables and \code{ntimes} the length 
 the time and states.
 An ordered factor variable, \sQuote{.id}, distinguishes the trajectories from one another.}
 
-\item{\dots}{Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
-See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.
+\item{...}{Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
+See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.}
 
-Note that this behavior differs from most other functions in \pkg{pomp}.
-It is not possible to modify the model structure in a call to \code{trajectory}.}
-
-\item{verbose}{logical; if \code{TRUE}, more information will be displayed.}
+\item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
 \code{trajectory} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
@@ -60,7 +58,10 @@ Compute trajectories of the deterministic skeleton of a Markov process.
 In the case of a discrete-time system, the deterministic skeleton is a map and a trajectory is obtained by iterating the map.
 In the case of a continuous-time system, the deterministic skeleton is a vector-field;
 \code{trajectory} uses the numerical solvers in \pkg{\link[deSolve]{deSolve}} to integrate the vectorfield.
+
+Note that the handling of \code{\dots} in \code{trajectory} differs from that of most other functions in \pkg{pomp}.
+In particular, it is not possible to modify the model structure in a call to \code{trajectory}.
 }
 \seealso{
-\code{\link{skeleton}}
+\code{\link{skeleton}}, \code{\link{flow}}
 }

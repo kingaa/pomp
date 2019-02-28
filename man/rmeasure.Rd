@@ -43,8 +43,9 @@ Specification of the measurement-model simulator: \code{\link{rmeasure_spec}}
 
 Other pomp workhorses: \code{\link{dmeasure}},
   \code{\link{dprior}}, \code{\link{dprocess}},
-  \code{\link{partrans}}, \code{\link{rinit}},
-  \code{\link{rprior}}, \code{\link{rprocess}},
-  \code{\link{skeleton}}, \code{\link{workhorses}}
+  \code{\link{flow}}, \code{\link{partrans}},
+  \code{\link{rinit}}, \code{\link{rprior}},
+  \code{\link{rprocess}}, \code{\link{skeleton}},
+  \code{\link{workhorses}}
 }
 \concept{pomp workhorses}
