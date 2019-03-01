@@ -136,7 +136,7 @@ Error : in 'trajectory': in 'rinit': variable 'c' not found among the parameters
 DLSODA-  MXSTEP (=I1) .lt. 0  
 In above message, I1 = -1
  
-Error : in 'trajectory': error in ODE integrator: illegal input detected before taking any integration steps - see written message
+Error : in 'trajectory': in 'flow': error in ODE integrator: illegal input detected before taking any integration steps - see written message
 > try(trajectory(fhn,maxsteps=1,verbose=TRUE) -> x)
 DLSODA-  At current T (=R1), MXSTEP (=I1) steps   
       taken on this call before reaching TOUT     
@@ -226,7 +226,7 @@ Error : in 'trajectory': 'object' is a required argument.
 +     pomp(skeleton=map(function(...)c(X=1,Y=2,Z=3))) %>%
 +     trajectory(params=c(X_0=1,Y_0=0))
 + )
-Error : in 'trajectory': 'skeleton' returns a vector of 3 state variables but 2 are expected.
+Error : in 'trajectory': in 'flow': 'skeleton' returns a vector of 3 state variables but 2 are expected.
 > 
 > stopifnot(po3 %>% trajectory(times=seq(0,100,by=5)) %>% dim()==c(2,1,21))
 > 

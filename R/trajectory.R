@@ -85,17 +85,34 @@ trajectory.internal <- function (object, params, times, t0,
   format = c("array", "data.frame"), ..., .gnsi = TRUE, verbose) {
 
   format <- match.arg(format)
-
-  if (missing(t0)) t0 <- timezero(object)
-  else t0 <- as.numeric(t0)
+  verbose <- as.logical(verbose)
 
   if (missing(times)) times <- time(object,t0=FALSE)
   else times <- as.numeric(times)
 
+  if (length(times)==0)
+    pStop_(sQuote("times")," is empty, there is no work to do.")
+
+  if (any(diff(times)<=0))
+    pStop_(sQuote("times")," must be a strictly increasing numeric sequence.")
+
+  if (missing(t0)) t0 <- timezero(object)
+  else t0 <- as.numeric(t0)
+
+  if (t0>times[1L])
+    pStop_("the zero-time ",sQuote("t0"),
+      " must occur no later than the first observation.")
+
+  if (missing(params)) params <- coef(object)
+  if (is.list(params)) params <- unlist(params)
+  if (is.null(params)) params <- numeric(0)
+
+  storage.mode(params) <- "double"
+
   x0 <- rinit(object,params=params,t0=t0)
-  
-  x <- flow(object,xstart=x0,params=params,times=c(t0,times),...,
-    .gnsi=.gnsi,verbose=verbose,offset=1L)
+
+  x <- flow(object,xstart=x0,params=params,times=c(t0,times),offset=1L,
+    ...,.gnsi=.gnsi,verbose=verbose)
 
   if (format == "data.frame") {
     x <- lapply(

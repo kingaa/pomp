@@ -9,7 +9,7 @@
 \alias{flow,pomp-method}
 \title{Flow of a deterministic model}
 \usage{
-\S4method{flow}{pomp}(object, xstart, params, times, offset = 0L, ...,
+\S4method{flow}{pomp}(object, xstart, params, times, offset = 0, ...,
   verbose = getOption("verbose", FALSE))
 }
 \arguments{

@@ -66,11 +66,11 @@ setMethod(
 setMethod(
   "flow",
   signature=signature(object="pomp"),
-  definition=function (object, xstart, params, times, offset = 0L, ...,
+  definition=function (object, xstart, params, times, offset = 0, ...,
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      flow.internal(object=object,xstart=xstart,params=params,times=times,
+      flow.internal(object=object,x0=xstart,params=params,times=times,
         offset=offset,...,verbose=verbose),
       error = function (e) pStop("flow",conditionMessage(e))
     )
@@ -78,45 +78,46 @@ setMethod(
   }
 )
 
-flow.internal <- function (object, xstart, params, times, offset, ...,
+flow.internal <- function (object, x0, params, times, offset, ...,
   .gnsi = TRUE, verbose) {
 
   verbose <- as.logical(verbose)
 
-  if (missing(times)) reqd_arg("flow","times")
-  times <- as.numeric(times)
-  
-  if (length(times) == 0L)
+  if (missing(times))
+    reqd_arg("flow","times")
+  else
+    times <- as.numeric(times)
+
+  if (length(times)==0)
     pStop_(sQuote("times")," is empty, there is no work to do.")
 
-  if (length(times) < 2L)
-    pStop_(sQuote("times")," needs at length two since the first is the time of ", sQuote("xstart"),".")
+  if (any(diff(times)<0))
+    pStop_(sQuote("times")," must be a non-decreasing numeric sequence.")
 
-  if (any(diff(times) <= 0))
-    pStop_(sQuote("times")," must be a strictly increasing numeric sequence.")
+  offset <- as.integer(offset)
+  if (offset < 0L)
+    pStop_(sQuote("offset")," must be a non-negative integer.")
 
-  tstart <- times[1L]
-  ntimes <- length(times)
+  params <- as.matrix(params)
+  nrep <- ncol(params)
 
-  if ((offset < 0L) || (offset >= ntimes))
-    pStop_("illegal ",sQuote("offset")," value.");
-
-  if (missing(params)) params <- coef(object)
-  if (is.list(params)) params <- unlist(params)
-  if (is.null(params)) params <- numeric(0)
+  x0 <- as.matrix(x0)
+  nvar <- nrow(x0)
 
   storage.mode(params) <- "double"
-  params <- as.matrix(params)
+  storage.mode(x0) <- "double"
 
-  storage.mode(xstart) <- "double"
-  xstart <- as.matrix(xstart)
+  statenames <- rownames(x0)
+  dim(x0) <- c(nvar,nrep,1)
+  dimnames(x0) <- list(statenames,NULL,NULL)
 
-  nrep <- ncol(params)
-  nvar <- nrow(xstart)
+  t0 <- times[1L]
+  if (offset == 1L)
+    times <- times[-1L]
+  else if (offset > 1L) 
+    times <- times[seq.int(offset+1L,length(times),by=1L)]
 
-  statenames <- rownames(xstart)
-  dim(xstart) <- c(nvar,nrep,1)
-  dimnames(xstart) <- list(statenames,NULL,NULL)
+  ntimes <- length(times)
 
   type <- object@skeleton@type          # map or vectorfield?
 
@@ -125,21 +126,21 @@ flow.internal <- function (object, xstart, params, times, offset, ...,
 
   if (type == skeletontype$map) {                  ## MAP
 
-    x <- .Call(P_iterate_map,object,times[-1L],tstart,xstart,params,.gnsi)
+    x <- .Call(P_iterate_map,object,times,t0,x0,params,.gnsi)
     .gnsi <- FALSE
 
   } else if (type == skeletontype$vectorfield) {   ## VECTORFIELD
 
     znames <- object@accumvars
-    if (length(znames)>0) xstart[znames,,] <- 0
+    if (length(znames)>0) x0[znames,,] <- 0
 
-    .Call(P_pomp_desolve_setup,object,xstart,params,.gnsi)
+    .Call(P_pomp_desolve_setup,object,x0,params,.gnsi)
     .gnsi <- FALSE
 
     X <- tryCatch(
       ode(
-        y=xstart,
-        times=times,
+        y=x0,
+        times=c(t0,times),
         func="pomp_vf_eval",
         dllname="pomp2",
         initfunc=NULL,
@@ -154,7 +155,7 @@ flow.internal <- function (object, xstart, params, times, offset, ...,
     .Call(P_pomp_desolve_takedown)
 
     if (attr(X,"istate")[1L] != 2)
-      pWarn("flow",
+      pWarn("trajectory",
         "abnormal exit from ODE integrator, istate = ",attr(X,'istate')[1L])
 
     if (verbose) diagnostics(X)
@@ -168,19 +169,12 @@ flow.internal <- function (object, xstart, params, times, offset, ...,
 
   } else {                  ## DEFAULT SKELETON
 
-    x <- array(data=NA_real_,dim=c(nrow(xstart),ncol(xstart),length(times)),
-      dimnames=list(rownames(xstart),NULL,NULL))
+    x <- array(data=NA_real_,dim=c(nrow(x0),ncol(x0),length(times)),
+      dimnames=list(rownames(x0),NULL,NULL))
 
   }
 
   dimnames(x) <- setNames(dimnames(x),c("variable","rep",object@timename))
-  if (offset == 0) {
-    out <- array(0, dim = c(nvar,nrep,(ntimes+1)), dimnames = list(rownames(xstart), NULL, NULL))
-    dimnames(out) <- setNames(dimnames(out), c("variable", "rep", object@timename))
-    out[,,1] <- xstart
-    out[,,2:(dim(out)[3])] <- x
-    out
-  }
-  else
-    x[,,offset:(dim(x)[3]),drop=FALSE]
+
+  x
 }
