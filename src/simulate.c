@@ -8,14 +8,10 @@
 SEXP do_simulate (SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi)
 {
   int nprotect = 0;
-  SEXP t0, times, alltimes, xstart, x, y;
+  SEXP t0, times, x0, x, y;
   SEXP ans = R_NilValue, ans_names = R_NilValue;
-  SEXP simnames, offset;
-  int ntimes;
+  SEXP simnames;
   int return_type = *(INTEGER(rettype)); // 0 = array, 1 = pomps
-
-  PROTECT(offset = NEW_INTEGER(1)); nprotect++;
-  *(INTEGER(offset)) = 1;
 
   if (LENGTH(nsim) != 1) errorcall(R_NilValue,"'nsim' must be a single integer"); // #nocov
 
@@ -23,17 +19,13 @@ SEXP do_simulate (SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi)
 
   PROTECT(t0 = GET_SLOT(object,install("t0"))); nprotect++;
   PROTECT(times = GET_SLOT(object,install("times"))); nprotect++;
-  ntimes = LENGTH(times);
-  PROTECT(alltimes = NEW_NUMERIC(ntimes+1)); nprotect++;
-  *(REAL(alltimes)) = *(REAL(t0));			// copy t0 into alltimes[1]
-  memcpy(REAL(alltimes)+1,REAL(times),ntimes*sizeof(double)); // copy times into alltimes[-1]
 
   // initialize the simulations
-  PROTECT(xstart = do_rinit(object,params,t0,nsim,gnsi)); nprotect++;
-  PROTECT(simnames = GET_COLNAMES(GET_DIMNAMES(xstart))); nprotect++;
+  PROTECT(x0 = do_rinit(object,params,t0,nsim,gnsi)); nprotect++;
+  PROTECT(simnames = GET_COLNAMES(GET_DIMNAMES(x0))); nprotect++;
 
   // call 'rprocess' to simulate state process
-  PROTECT(x = do_rprocess(object,xstart,alltimes,params,offset,gnsi)); nprotect++;
+  PROTECT(x = do_rprocess(object,x0,t0,times,params,gnsi)); nprotect++;
 
   // call 'rmeasure' to simulate the measurement process
   PROTECT(y = do_rmeasure(object,x,times,params,gnsi)); nprotect++;

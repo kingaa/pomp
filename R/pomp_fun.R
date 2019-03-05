@@ -196,17 +196,13 @@ setMethod(
 
       cat("native function\n  - name: ",sQuote(object@native.fun),"\n",sep="")
       if (length(object@PACKAGE)>0)
-        cat("  - dynamically loaded from: ",
-          sQuote(object@PACKAGE),sep="")
-      cat("\n")
+        cat("  - dynamically loaded from: ",sQuote(object@PACKAGE),sep="")
 
     } else if (mode==pompfunmode$regNative) { # built from C snippets
 
       cat("native function\n  - name: ",sQuote(object@native.fun),"\n",sep="")
       if (length(object@PACKAGE)>0)
-        cat("  - defined by a C snippet in library ",
-          sQuote(object@PACKAGE),sep="")
-      cat("\n")
+        cat("  - defined by a C snippet in library ",sQuote(object@PACKAGE),sep="")
 
     } else {
 

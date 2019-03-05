@@ -9,45 +9,44 @@
 \alias{rprocess,missing-method}
 \title{rprocess}
 \usage{
-\S4method{rprocess}{pomp}(object, xstart, times, params, offset = 0L,
-  ...)
+\S4method{rprocess}{pomp}(object, x0, t0, times, params, ...)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
-\item{xstart}{an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
-Columns of \code{xstart} correspond to states;
+\item{x0}{an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
+Columns of \code{x0} correspond to states;
 rows to components of the state vector.
 One independent simulation will be performed for each column.
 Note that in this case, \code{params} must also have \code{nrep} columns.}
+
+\item{t0}{the initial time, i.e., the time corresponding to the state in \code{x0}.}
 
 \item{times}{a numeric vector (length \code{ntimes}) containing times.
 These must be in non-decreasing order.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
-Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{xstart}.}
-
-\item{offset}{integer; the first \code{offset} times in \code{times} will be discarded.}
+Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x0}.}
 
 \item{...}{additional arguments are ignored.}
 }
 \value{
 \code{rprocess} returns a rank-3 array with rownames.
 Suppose \code{x} is the array returned.
-Then \preformatted{dim(x)=c(nvars,nrep,ntimes-offset),}
-where \code{nvars} is the number of state variables (=\code{nrow(xstart)}),
-\code{nrep} is the number of independent realizations simulated (=\code{ncol(xstart)}), and
+Then \preformatted{dim(x)=c(nvars,nrep,ntimes),}
+where \code{nvars} is the number of state variables (=\code{nrow(x0)}),
+\code{nrep} is the number of independent realizations simulated (=\code{ncol(x0)}), and
 \code{ntimes} is the length of the vector \code{times}.
-\code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k+offset]}.
-The rownames of \code{x} must correspond to those of \code{xstart}.
+\code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k]}.
+The rownames of \code{x} will correspond to those of \code{x0}.
 }
 \description{
 \code{rprocess} simulates the process-model portion of partially-observed Markov process.
 }
 \details{
-When \code{rprocess} is called, the first entry of \code{times} is taken to be the initial time (i.e., that corresponding to \code{xstart}).
-Subsequent times are the additional times at which the state of the simulated processes are required.
+When \code{rprocess} is called, \code{t0} is taken to be the initial time (i.e., that corresponding to \code{x0}).
+The values in \code{times} are the times at which the state of the simulated processes are required.
 }
 \seealso{
 Specification of the process-model simulator: \code{\link{rprocess_spec}}

@@ -499,8 +499,8 @@ rprior.internal <- function (object, params, .gnsi = TRUE, ...) {
 ##'
 ##' \code{rprocess} simulates the process-model portion of partially-observed Markov process.
 ##'
-##' When \code{rprocess} is called, the first entry of \code{times} is taken to be the initial time (i.e., that corresponding to \code{xstart}).
-##' Subsequent times are the additional times at which the state of the simulated processes are required.
+##' When \code{rprocess} is called, \code{t0} is taken to be the initial time (i.e., that corresponding to \code{x0}).
+##' The values in \code{times} are the times at which the state of the simulated processes are required.
 ##'
 ##' @name rprocess
 ##' @docType methods
@@ -511,26 +511,26 @@ rprior.internal <- function (object, params, .gnsi = TRUE, ...) {
 ##'
 ##' @inheritParams dmeasure
 ##'
-##' @param xstart an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
-##' Columns of \code{xstart} correspond to states;
+##' @param x0 an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
+##' Columns of \code{x0} correspond to states;
 ##' rows to components of the state vector.
 ##' One independent simulation will be performed for each column.
 ##' Note that in this case, \code{params} must also have \code{nrep} columns.
 ##'
-##' @param params a \code{npar} x \code{nrep} matrix of parameters.
-##' Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{xstart}.
+##' @param t0 the initial time, i.e., the time corresponding to the state in \code{x0}.
 ##'
-##' @param offset integer; the first \code{offset} times in \code{times} will be discarded.
+##' @param params a \code{npar} x \code{nrep} matrix of parameters.
+##' Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x0}.
 ##'
 ##' @return
 ##' \code{rprocess} returns a rank-3 array with rownames.
 ##' Suppose \code{x} is the array returned.
-##' Then \preformatted{dim(x)=c(nvars,nrep,ntimes-offset),}
-##' where \code{nvars} is the number of state variables (=\code{nrow(xstart)}),
-##' \code{nrep} is the number of independent realizations simulated (=\code{ncol(xstart)}), and
+##' Then \preformatted{dim(x)=c(nvars,nrep,ntimes),}
+##' where \code{nvars} is the number of state variables (=\code{nrow(x0)}),
+##' \code{nrep} is the number of independent realizations simulated (=\code{ncol(x0)}), and
 ##' \code{ntimes} is the length of the vector \code{times}.
-##' \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k+offset]}.
-##' The rownames of \code{x} must correspond to those of \code{xstart}.
+##' \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k]}.
+##' The rownames of \code{x} will correspond to those of \code{x0}.
 ##'
 NULL
 
@@ -561,23 +561,21 @@ setMethod(
 setMethod(
   "rprocess",
   signature=signature(object="pomp"),
-  definition=function (object, xstart, times, params, offset = 0L, ...) {
+  definition=function (object, x0, t0, times, params, ...) {
     tryCatch(
-      rprocess.internal(object=object,xstart=xstart,times=times,params=params,
-        offset=offset,...),
+      rprocess.internal(object=object,x0=x0,t0=t0,times=times,params=params,...),
       error = function (e) pStop("rprocess",conditionMessage(e))
     )
   }
 )
 
-rprocess.internal <- function (object, xstart, times, params, offset = 0L,
-  .gnsi = TRUE, ...) {
-  storage.mode(xstart) <- "double"
+rprocess.internal <- function (object, x0, t0, times, params, ...,
+  .gnsi = TRUE) {
+  storage.mode(x0) <- "double"
   storage.mode(params) <- "double"
-  if (!is.finite(offset)) pStop_("invalid ",sQuote("offset"),".")
   pompLoad(object)
   on.exit(pompUnload(object))
-  .Call(P_do_rprocess,object,xstart,times,params,offset,.gnsi)
+  .Call(P_do_rprocess,object,x0,t0,times,params,.gnsi)
 }
 
 ##' skeleton

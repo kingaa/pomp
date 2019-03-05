@@ -481,10 +481,10 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
     ## advance the state variables according to the process model
     X <- rprocess(
       object,
-      xstart=x,
-      times=times[c(nt,nt+1)],
+      x0=x,
+      t0=times[nt],
+      times=times[nt+1],
       params=tparams,
-      offset=1,
       .gnsi=gnsi
     )
 

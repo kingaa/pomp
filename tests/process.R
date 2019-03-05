@@ -36,38 +36,36 @@ po %>% pomp(dprocess=NULL) %>%
 
 po %>% rinit(params=coef(po)) -> x0
 freeze(po %>%
-    rprocess(params=coef(po),xstart=parmat(x0,3),times=time(po,t0=TRUE),
+    rprocess(params=coef(po),x0=parmat(x0,3),t0=timezero(po),times=time(po),
       offset=1),
   seed=3434388L) -> x1
 
 stopifnot(max(abs(x-x1))==0)
 
 po %>% rinit(nsim=6) -> x0
-try(rprocess("ou2",xstart=x0,times=t,params=p))
-try(rprocess(xstart=x0,times=t,params=p))
+try(rprocess("ou2",x0=x0,t0=t[1],times=t,params=p))
+try(rprocess(x0=x0,t0=t[1],times=t,params=p))
 try(po %>% rprocess(times=t,params=p))
-try(po %>% rprocess(xstart=x0,params=p))
-try(po %>% rprocess(xstart=x0,times=t))
-try(po %>% rprocess(xstart=x0,times=t,params=p))
-try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=-3))
-try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=500))
-try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=NA))
-try(po %>% rprocess(xstart=x0,times=t,params=p[,-1],offset=Inf))
-po %>% rprocess(xstart=x0,times=t,params=p[,1:3]) -> x
+try(po %>% rprocess(x0=x0,params=p))
+try(po %>% rprocess(x0=x0,t0=t[1],params=p))
+try(po %>% rprocess(x0=x0,times=t))
+try(po %>% rprocess(x0=x0,times=t,params=p))
+try(po %>% rprocess(x0=x0,t0=t[1],times=t,params=p))
+po %>% rprocess(x0=x0,t0=t[1],times=t,params=p[,1:3]) -> x
 stopifnot(
   dim(x)==c(2,6,10),
   names(dimnames(x))==c("variable","rep","time")
 )
-po %>% rprocess(xstart=x0[,2],times=t,params=p[,1:3]) -> x
+po %>% rprocess(x0=x0[,2],t0=t[1],times=t,params=p[,1:3]) -> x
 stopifnot(
   dim(x)==c(2,3,10),
   names(dimnames(x))==c("variable","rep","time")
 )
 
-try(po %>% rprocess(xstart=x0,times=t[2],params=p))
-try(po %>% rprocess(xstart=x0[,2],times=t[2],params=p[,1:3]))
-try(po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:2]))
-po %>% rprocess(xstart=x0[,2:4],times=t[2:5],params=p[,1:3]) %>%
+try(po %>% rprocess(x0=x0,t0=t[1],times=numeric(0),params=p))
+try(po %>% rprocess(x0=x0[,2],t0=t[2],times=t[1],params=p[,1:3]))
+try(po %>% rprocess(x0=x0[,2:4],t0=t[2],times=t[2:5],params=p[,1:2]))
+po %>% rprocess(x0=x0[,2:4],t0=t[2],times=t[2:5],params=p[,1:3]) %>%
   apply(1,sum)
 
 simulate(

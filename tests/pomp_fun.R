@@ -15,4 +15,3 @@ pomp2:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp"
 pomp2:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp",
   libname="splarm")
 pomp2:::pomp_fun(f)
-

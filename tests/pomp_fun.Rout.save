@@ -45,26 +45,21 @@ R function
 native function
   - name: 'jehosaphat'
   - dynamically loaded from: 'harglebarge'
-
 > pomp2:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork")
 native function
   - name: 
 
-
 > pomp2:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp")
 native function
   - name: 
-
 
 > pomp2:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp",
 +   libname="splarm")
 native function
   - name: 'yurp'
   - defined by a C snippet in library 'splarm'
-
 > pomp2:::pomp_fun(f)
 R function
   - definition: function(x)x+y
 
-> 
 > 

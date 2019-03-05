@@ -93,13 +93,13 @@ static R_INLINE SEXP ret_array (int n, int nreps, int ntimes, SEXP names)
 
 }
 
-SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
+SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params,
   double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   pompfunmode mode = undef;
   int nvars, npars, nreps, ntimes, nzeros, ncovars;
-  double *cov;
+  double *cov, t0;
   SEXP cvec, X, fn;
 
   if (deltat <= 0) errorcall(R_NilValue,"'delta.t' should be a positive number."); // #nocov
@@ -108,6 +108,11 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   dim = INTEGER(GET_DIM(xstart)); nvars = dim[0]; nreps = dim[1];
   dim = INTEGER(GET_DIM(params)); npars = dim[0];
   ntimes = LENGTH(times);
+
+  PROTECT(tstart = AS_NUMERIC(tstart)); nprotect++;
+  PROTECT(times = AS_NUMERIC(times)); nprotect++;
+  t0 = *(REAL(tstart));
+  if (t0 > *(REAL(times))) errorcall(R_NilValue,"'t0' must be no later than 'times[1]'.");
 
   SEXP Snames, Pnames, Cnames;
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
@@ -172,10 +177,10 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 
   // main computation loop
   int step;
-  double *xs, *xt, *time, t;
-  for (step = 1, xs = REAL(X), xt = xs+nvars*nreps, time = REAL(times), t = time[0];
+  double *xt, *time, t;
+  for (step = 0, xt = REAL(X), time = REAL(times), t = t0;
     step < ntimes;
-    step++, xs = xt, xt += nvars*nreps) {
+    step++, xt += nvars*nreps) {
 
     double dt;
     int *posn = NULL;
@@ -185,8 +190,6 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     R_CheckUserInterrupt();
 
     if (t > time[step]) errorcall(R_NilValue,"'times' must be an increasing sequence.");  // #nocov
-
-    memcpy(xt,xs,nreps*nvars*sizeof(double));
 
     // set accumulator variables to zero
     for (j = 0; j < nreps; j++)
@@ -276,6 +279,9 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
       }
 
     }
+
+    if (step < ntimes-1)
+      memcpy(xt+nvars*nreps,xt,nreps*nvars*sizeof(double));
 
   }
 

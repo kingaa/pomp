@@ -335,8 +335,8 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   for (nt in seq_len(ntimes)) { ## main loop
 
     ## advance the state variables according to the process model
-    X <- rprocess(object,xstart=x,times=times[c(nt,nt+1)],params=params,
-      offset=1L,.gnsi=gnsi)
+    X <- rprocess(object,x0=x,t0=times[nt],times=times[nt+1],params=params,
+      .gnsi=gnsi)
 
     if (pred.var) { ## check for nonfinite state variables and parameters
       problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1L])

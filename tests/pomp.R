@@ -44,7 +44,8 @@ stopifnot(NULL %>% pomp(times=1:10,t0=1) %>% class() %>% equals("pomp"))
 gompertz() -> po
 stopifnot({
   po %>% pomp(rprocess=NULL) -> po1
-  rprocess(po1,xstart=rinit(po1),times=time(po1),params=coef(po1)) -> x
+  rprocess(po1,x0=rinit(po1),t0=timezero(po1),
+    times=time(po1),params=coef(po1)) -> x
   sum(is.na(x))==100
 })
 

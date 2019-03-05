@@ -281,7 +281,7 @@ enkf.internal <- function (object,
 
   for (k in seq_len(ntimes)) {
     ## advance ensemble according to state process
-    X[,] <- rprocess(object,params=params,xstart=X,times=tt[c(k,k+1)],offset=1)
+    X[,] <- rprocess(object,x0=X,t0=tt[k],times=tt[k+1],params=params)
 
     predMeans[,k] <- pm <- rowMeans(X) # prediction mean
     Y[,] <- apply(X,2,h)               # ensemble of forecasts
@@ -362,7 +362,7 @@ eakf.internal <- function (object,
   for (k in seq_len(ntimes)) {
 
     ## advance ensemble according to state process
-    X[,] <- rprocess(object,xstart=X,params=params,times=tt[c(k,k+1)],offset=1)
+    X[,] <- rprocess(object,x0=X,t0=tt[k],times=tt[k+1],params=params)
 
     predMeans[,k] <- pm <- rowMeans(X) # prediction mean
     X <- X-pm

@@ -65,16 +65,13 @@ pomp object 'po1':
   - step.fun: native function
   - name: '_gompertz_simulator'
   - dynamically loaded from: 'pomp2'
-
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
   - name: '_gompertz_normal_rmeasure'
   - dynamically loaded from: 'pomp2'
-
 - measurement model density, dmeasure: native function
   - name: '_gompertz_normal_dmeasure'
   - dynamically loaded from: 'pomp2'
-
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: map:
@@ -82,7 +79,6 @@ pomp object 'po1':
   - native function
   - name: '_gompertz_skeleton'
   - dynamically loaded from: 'pomp2'
-
 - parameter vector:
     K     r sigma   tau   X_0 
   1.0   0.1   0.1   0.1   1.0 
@@ -133,16 +129,13 @@ params
   - step.fun: native function
   - name: '_gompertz_simulator'
   - dynamically loaded from: 'pomp2'
-
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
   - name: '_gompertz_normal_rmeasure'
   - dynamically loaded from: 'pomp2'
-
 - measurement model density, dmeasure: native function
   - name: '_gompertz_normal_dmeasure'
   - dynamically loaded from: 'pomp2'
-
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: map:
@@ -150,24 +143,21 @@ params
   - native function
   - name: '_gompertz_skeleton'
   - dynamically loaded from: 'pomp2'
-
 - parameter transformations:
   - to estimation scale: native function
   - name: '__pomp_to_trans'
   - defined by a C snippet in library 'nancy'
-
   - from estimation scale: native function
   - name: '__pomp_from_trans'
   - defined by a C snippet in library 'nancy'
-
 - parameter vector unspecified
 - extra user-defined variables:  'bob' 
 
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2019-01-22 09:31:34.547 -0500 */
-/* Salt: 807FD8FC7E4ACB43EB256EE5 */
+/* Time: 2019-03-05 12:56:34.122 -0500 */
+/* Salt: FF091B33A9ED770444100576 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -250,38 +240,31 @@ pomp object 'sir':
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
   - defined by a C snippet in library 'sir_source'
-
 - process-model simulator, rprocess: Euler-method process-model simulator
   - time-step = 0.000962 
   - step.fun: native function
   - name: '__pomp_stepfn'
   - defined by a C snippet in library 'sir_source'
-
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
   - name: '__pomp_rmeasure'
   - defined by a C snippet in library 'sir_source'
-
 - measurement model density, dmeasure: native function
   - name: '__pomp_dmeasure'
   - defined by a C snippet in library 'sir_source'
-
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: vectorfield:
   - native function
   - name: '__pomp_skelfn'
   - defined by a C snippet in library 'sir_source'
-
 - parameter transformations:
   - to estimation scale: native function
   - name: '__pomp_to_trans'
   - defined by a C snippet in library 'sir_source'
-
   - from estimation scale: native function
   - name: '__pomp_from_trans'
   - defined by a C snippet in library 'sir_source'
-
 - parameter vector:
    gamma       mu     iota    beta1    beta2    beta3  beta_sd      rho 
 2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 6.00e-01 
@@ -291,8 +274,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2019-01-22 09:31:34.728 -0500 */
-/* Salt: CDF2E1E377FF9CCCEB57E5F5 */
+/* Time: 2019-03-05 12:56:34.346 -0500 */
+/* Salt: B48BAFF05DA93B0E9433B970 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -793,19 +776,15 @@ pomp object 'rw2':
   - step.fun: native function
   - name: '__pomp_stepfn'
   - defined by a C snippet in library 'rw2_source'
-
 - process model density, dprocess: native function
   - name: '__pomp_dproc'
   - defined by a C snippet in library 'rw2_source'
-
 - measurement model simulator, rmeasure: native function
   - name: '__pomp_rmeasure'
   - defined by a C snippet in library 'rw2_source'
-
 - measurement model density, dmeasure: native function
   - name: '__pomp_dmeasure'
   - defined by a C snippet in library 'rw2_source'
-
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: <default>
@@ -817,8 +796,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2019-01-22 09:31:35.577 -0500 */
-/* Salt: D9D38A614CFD01032586AD88 */
+/* Time: 2019-03-05 12:56:35.098 -0500 */
+/* Salt: 619481509B0DF2077262C644 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -972,7 +951,6 @@ pomp object 'sir2':
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
   - defined by a C snippet in library 'sir2_source'
-
 - process-model simulator, rprocess: Gillespie-method process-model simulator
   - stoichiometry matrix:
         event
@@ -985,32 +963,26 @@ variable birth susc.death infection inf.death recovery recov.death
   - rate.fun: native function
   - name: '__pomp_ratefn'
   - defined by a C snippet in library 'sir2_source'
-
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
   - name: '__pomp_rmeasure'
   - defined by a C snippet in library 'sir2_source'
-
 - measurement model density, dmeasure: native function
   - name: '__pomp_dmeasure'
   - defined by a C snippet in library 'sir2_source'
-
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: vectorfield:
   - native function
   - name: '__pomp_skelfn'
   - defined by a C snippet in library 'sir2_source'
-
 - parameter transformations:
   - to estimation scale: native function
   - name: '__pomp_to_trans'
   - defined by a C snippet in library 'sir2_source'
-
   - from estimation scale: native function
   - name: '__pomp_from_trans'
   - defined by a C snippet in library 'sir2_source'
-
 - parameter vector:
    gamma       mu     iota      rho    beta1    beta2    beta3      S_0 
 2.40e+01 1.43e-02 1.00e-01 1.00e-01 3.30e+02 4.10e+02 4.90e+02 5.00e-02 
@@ -1020,8 +992,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2019-01-22 09:31:36.304 -0500 */
-/* Salt: 39A7EEF59C9DAB5AC3076D06 */
+/* Time: 2019-03-05 12:56:35.726 -0500 */
+/* Salt: F1D76BC52F70F198047780D0 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

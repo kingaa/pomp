@@ -56,8 +56,8 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 }
 
 static void gillespie (double *t, double tmax, double *f, double *y,
-  const double *v, int nvar, int nevent, Rboolean hasvname,
-  const int *ivmat)
+		       const double *v, int nvar, int nevent, Rboolean hasvname,
+		       const int *ivmat)
 {
   double tstep, p;
   double vv;
@@ -108,14 +108,13 @@ static void gillespie (double *t, double tmax, double *f, double *y,
 }
 
 static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
-  int nvar, int nevent, int npar, int nrep, int ntimes,
-  double *xstart, const double *times, const double *params, double *xout,
-  const double *v, int nzero, const int *izero,
-  const int *istate, const int *ipar, int ncovar, const int *icovar,
-  Rboolean hasvname, const int *ivmat,
-  int mcov, lookup_table_t *tab, const double *hmax)
+		 int nvar, int nevent, int npar, int nrep, int ntimes,
+		 double *xstart, double t, const double *times, const double *params, double *xout,
+		 const double *v, int nzero, const int *izero,
+		 const int *istate, const int *ipar, int ncovar, const int *icovar,
+		 Rboolean hasvname, const int *ivmat,
+		 int mcov, lookup_table_t *tab, const double *hmax)
 {
-  double t = times[0];
   double tmax;
   double *f = NULL;
   double *covars = NULL;
@@ -129,7 +128,6 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
   par = params+npar*irep;
   // Copy state variables
   memcpy(y,xstart+nvar*irep,nvar*sizeof(double));
-  memcpy(xout+nvar*irep,y,nvar*sizeof(double));
   // Set appropriate states to zero
   for (i = 0; i < nzero; i++) y[izero[i]] = 0.0;
   // Initialize the covariate vector
@@ -141,7 +139,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
       errorcall(R_NilValue,"'rate.fun' returns a negative rate");
   }
 
-  int icount = 1;
+  int icount = 0;
   while (icount < ntimes) {
 
     R_CheckUserInterrupt();
@@ -191,7 +189,7 @@ static pomp_ssa_rate_fn *__ssa_rxrate; // function computing reaction rates
 #define RXR     (__ssa_rxrate)
 
 static double __pomp_Rfun_ssa_ratefn (int j, double t, const double *x, const double *p,
-  int *stateindex, int *parindex, int *covindex, double *c)
+				      int *stateindex, int *parindex, int *covindex, double *c)
 {
   SEXP var = ARGS, ans;
   int v;
@@ -216,9 +214,8 @@ static double __pomp_Rfun_ssa_ratefn (int j, double t, const double *x, const do
   return rate;
 }
 
-SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
-  SEXP vmatrix, SEXP covar, SEXP accumvars, SEXP hmax, SEXP args,
-  SEXP gnsi)
+SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params,
+		    SEXP vmatrix, SEXP covar, SEXP accumvars, SEXP hmax, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   int *dim, xdim[3];
@@ -232,6 +229,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   SEXP fn, Snames, Pnames, Cnames, Vnames;
   lookup_table_t covariate_table;
   Rboolean hasvnames;
+  double t0;
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
@@ -241,6 +239,11 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     errorcall(R_NilValue,"number of state variables must equal the number of rows in 'v'.");
 
   ntimes = LENGTH(times);
+
+  PROTECT(tstart = AS_NUMERIC(tstart)); nprotect++;
+  PROTECT(times = AS_NUMERIC(times)); nprotect++;
+  t0 = *(REAL(tstart));
+  if (t0 > *(REAL(times))) errorcall(R_NilValue,"'t0' must be no later than 'times[1]'.");
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
@@ -315,10 +318,10 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     int i;
     for (i = 0; i < nrep; i++) {
       SSA(RXR,i,nvar,nevent,npar,nrep,ntimes,
-        REAL(xstart),REAL(times),REAL(params),
-        REAL(X),REAL(vmatrix),
-        nzeros,zidx,sidx,pidx,ncovars,cidx,hasvnames,vidx,
-        covdim,&covariate_table,REAL(hmax));
+	  REAL(xstart),t0,REAL(times),REAL(params),
+	  REAL(X),REAL(vmatrix),
+	  nzeros,zidx,sidx,pidx,ncovars,cidx,hasvnames,vidx,
+	  covdim,&covariate_table,REAL(hmax));
     }
   }
   PutRNGstate();

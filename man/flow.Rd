@@ -9,7 +9,7 @@
 \alias{flow,pomp-method}
 \title{Flow of a deterministic model}
 \usage{
-\S4method{flow}{pomp}(object, x0, t0, params, times, ...,
+\S4method{flow}{pomp}(object, x0, t0, times, params, ...,
   verbose = getOption("verbose", FALSE))
 }
 \arguments{
@@ -20,11 +20,11 @@ This will typically be the output of \code{pomp}, \code{simulate}, or one of the
 
 \item{t0}{the time at which the initial conditions are assumed to hold.}
 
-\item{params}{a \code{npar} x \code{nrep} matrix of parameters.
-Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
-
 \item{times}{a numeric vector (length \code{ntimes}) containing times at which the itineraries are desired.
 These must be in non-decreasing order with \code{times[1]>t0}.}
+
+\item{params}{a \code{npar} x \code{nrep} matrix of parameters.
+Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
 
 \item{...}{Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
 See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.}

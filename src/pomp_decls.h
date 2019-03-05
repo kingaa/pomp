@@ -14,7 +14,7 @@ extern SEXP do_dprior(SEXP object, SEXP params, SEXP log, SEXP gnsi);
 /* src/dprocess.c */
 extern SEXP do_dprocess(SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi);
 /* src/euler.c */
-extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi);
+extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params, double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi);
 extern int num_euler_steps(double t1, double t2, double *Rf_dt);
 extern int num_map_steps(double t1, double t2, double Rf_dt);
 /* src/gompertz.c */
@@ -68,7 +68,7 @@ extern SEXP do_rmeasure(SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 /* src/rprior.c */
 extern SEXP do_rprior(SEXP object, SEXP params, SEXP gnsi);
 /* src/rprocess.c */
-extern SEXP do_rprocess(SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset, SEXP gnsi);
+extern SEXP do_rprocess(SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params, SEXP gnsi);
 /* src/simulate.c */
 extern SEXP do_simulate(SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi);
 /* src/skeleton.c */
@@ -81,7 +81,7 @@ extern SEXP do_skeleton(SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi);
 /* src/sobolseq.c */
 extern SEXP sobol_sequence(SEXP dim, SEXP length);
 /* src/ssa.c */
-extern SEXP SSA_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, SEXP vmatrix, SEXP covar, SEXP accumvars, SEXP hmax, SEXP args, SEXP gnsi);
+extern SEXP SSA_simulator(SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params, SEXP vmatrix, SEXP covar, SEXP accumvars, SEXP hmax, SEXP args, SEXP gnsi);
 /* src/synth_lik.c */
 extern SEXP synth_loglik(SEXP ysim, SEXP ydat);
 /* src/trajectory.c */

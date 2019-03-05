@@ -274,8 +274,8 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
 
     tparams <- partrans(object,params,dir="fromEst",.gnsi=gnsi)
 
-    xpred <- rprocess(object,xstart=x,times=times[c(nt,nt+1)],params=tparams,
-      offset=1L,.gnsi=gnsi)
+    xpred <- rprocess(object,x0=x,t0=times[nt],times=times[nt+1],
+      params=tparams,.gnsi=gnsi)
 
     ## evaluate likelihood of observation given xpred (from L&W AGM (4))
     weights <- dmeasure(object,y=object@data[,nt,drop=FALSE],x=xpred,

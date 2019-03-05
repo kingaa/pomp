@@ -15,8 +15,9 @@ INSTALL = install
 PKG = $(shell perl -ne 'print $$1 if /Package:\s+((\w+[-\.]?)+)/;' DESCRIPTION)
 VERSION = $(shell perl -ne 'print $$1 if /Version:\s+((\d+[-\.]?)+)/;' DESCRIPTION)
 PKGVERS = $(PKG)_$(VERSION)
-SOURCE=$(shell ls R/*R src/*.c src/*.h data/* tests/*R)
+SOURCE=$(shell ls R/*R src/*.c src/*.h data/*)
 CSOURCE=$(shell ls src/*.c)
+TESTS=$(shell ls tests/*R)
 
 default:
 	@echo $(PKGVERS)
@@ -63,7 +64,7 @@ roxy: $(SOURCE)
 
 dist: NEWS $(PKGVERS).tar.gz
 
-$(PKGVERS).tar.gz: $(SOURCE) includes headers
+$(PKGVERS).tar.gz: $(SOURCE) $(TESTS) includes headers
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both --md5 .
 
 src/pomp_decls.h: $(CSOURCE)
@@ -116,7 +117,7 @@ $(PKG).pdf: $(SOURCE)
 	$(RCMD) Rd2pdf --no-preview --pdf --force -o $(PKG).pdf .
 	$(RSCRIPT) -e "tools::compactPDF(\"$(PKG).pdf\")";
 
-tests: install tests/*.R
+tests: install $(TESTS)
 	export R_LIBS
 	$(MAKE) -C tests
 
