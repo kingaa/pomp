@@ -16,6 +16,7 @@ PKG = $(shell perl -ne 'print $$1 if /Package:\s+((\w+[-\.]?)+)/;' DESCRIPTION)
 VERSION = $(shell perl -ne 'print $$1 if /Version:\s+((\d+[-\.]?)+)/;' DESCRIPTION)
 PKGVERS = $(PKG)_$(VERSION)
 SOURCE=$(shell ls R/*R src/*.c src/*.h data/* tests/*R)
+CSOURCE=$(shell ls src/*.c)
 
 default:
 	@echo $(PKGVERS)
@@ -32,6 +33,8 @@ session htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
 xxcheck: export R_LIBS=$(CURDIR)/check
 
 includes: inst/include/pomp.h inst/include/pomp_defines.h
+
+headers: src/pomp_decls.h
 
 inst/include/%.h: src/%.h
 	$(CP) $^ $@
@@ -60,8 +63,11 @@ roxy: $(SOURCE)
 
 dist: NEWS $(PKGVERS).tar.gz
 
-$(PKGVERS).tar.gz: $(SOURCE) includes
+$(PKGVERS).tar.gz: $(SOURCE) includes headers
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both --md5 .
+
+src/pomp_decls.h: $(CSOURCE)
+	cproto -I $(shell R RHOME)/include -e $(CSOURCE) > $@
 
 binary: dist
 	mkdir -p plib
