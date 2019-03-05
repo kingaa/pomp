@@ -2,7 +2,7 @@
 ##'
 ##' Simple SIR-type models implemented in various ways.
 ##'
-##' \code{sir()} producees a \sQuote{pomp} object encoding a simple seasonal SIR model.
+##' \code{sir()} producees a \sQuote{pomp} object encoding a simple seasonal SIR model with simulated data.
 ##' Simulation is performed using an Euler multinomial approximation.
 ##'
 ##' \code{sir2()} has the same model implemented using Gillespie's algorithm.
@@ -42,6 +42,9 @@ NULL
 ##' @param S_0,I_0,R_0 the fractions of the host population that are susceptible, infectious, and recovered, respectively, at time zero.
 ##' @param beta1,beta2,beta3 seasonal contact rates
 ##' @param beta_sd environmental noise intensity
+##' @param t0 zero time
+##' @param times observation times
+##' @param seed seed of the random number generator
 ##'
 ##' @export
 sir <- function (
@@ -49,11 +52,18 @@ sir <- function (
   beta1 = 400, beta2 = 480, beta3 = 320,
   beta_sd = 1e-3, rho = 0.6,
   pop = 2.1e6,
-  S_0 = 26/400, I_0 = 0.001, R_0 = 1-S_0-I_0
+  S_0 = 26/400, I_0 = 0.001, R_0 = 1-S_0-I_0,
+  t0 = 0,
+  times = seq(from = t0 + 1/52, to = t0 + 4, by = 1/52),
+  seed=329343545
 ) {
+  
+  tt0 <- t0
+  tt <- times
 
   simulate(
-    times=seq(from=1/52,to=4,by=1/52), t0=0,
+    times=tt,t0=tt0,
+    seed=seed,
     params=c(
       gamma=gamma,mu=mu,iota=iota,
       beta1=beta1,beta2=beta2,beta3=beta3,
@@ -62,7 +72,7 @@ sir <- function (
       S_0=S_0,I_0=I_0,R_0=R_0
     ),
     covar=covariate_table(
-      t=seq(0,4.2,by=0.01),
+      t=seq(from=tt0,to=max(tt)+0.2,by=0.01),
       seas=periodic.bspline.basis(
         x=t,
         period=1,
@@ -196,8 +206,7 @@ sir <- function (
       "beta1","beta_sd","pop","rho",
       "S_0","I_0","R_0"
     ),
-    accumvars=c("cases"),
-    seed=329343545L
+    accumvars=c("cases")
   )
 }
 
@@ -209,10 +218,18 @@ sir2 <- function (
   gamma = 24, mu = 1/70, iota = 0.1,
   beta1 = 330, beta2 = 410, beta3 = 490,
   rho = 0.1, pop = 1e6,
-  S_0 = 0.05, I_0 = 0.0001, R_0 = 1 - S_0 - I_0) {
+  S_0 = 0.05, I_0 = 0.0001, R_0 = 1 - S_0 - I_0,
+  t0 = 0,
+  times = seq(from = t0 + 1/12, to = t0 + 10, by=1/12),
+  seed=1772464524
+) {
+
+  tt0 <- t0
+  tt <- times
 
   simulate(
-    times=seq(from=1/12,to=10,by=1/12), t0=0,
+    times=tt,t0=tt0,
+    seed=seed,
     params=c(
       gamma=gamma,mu=mu,iota=iota,rho=rho,
       beta1=beta1,beta2=beta2,beta3=beta3,
@@ -221,7 +238,7 @@ sir2 <- function (
     ),
     cfile="sir2_source",
     covar=covariate_table(
-      t=seq(0,10.2,by=0.01),
+      t=seq(tt0,max(tt)+0.2,by=0.01),
       seas=periodic.bspline.basis(
         x=t,
         period=1,
@@ -310,8 +327,7 @@ sir2 <- function (
       N = nearbyint(pop);
       R = nearbyint(m*R_0);
       cases = 0;"
-    ),
-    seed=1772464524
+    )
   )
 
 }

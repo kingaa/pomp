@@ -9,11 +9,14 @@
 \usage{
 sir(gamma = 26, mu = 0.02, iota = 0.01, beta1 = 400, beta2 = 480,
   beta3 = 320, beta_sd = 0.001, rho = 0.6, pop = 2100000,
-  S_0 = 26/400, I_0 = 0.001, R_0 = 1 - S_0 - I_0)
+  S_0 = 26/400, I_0 = 0.001, R_0 = 1 - S_0 - I_0, t0 = 0,
+  times = seq(from = t0 + 1/52, to = t0 + 4, by = 1/52),
+  seed = 329343545)
 
 sir2(gamma = 24, mu = 1/70, iota = 0.1, beta1 = 330, beta2 = 410,
   beta3 = 490, rho = 0.1, pop = 1e+06, S_0 = 0.05, I_0 = 1e-04,
-  R_0 = 1 - S_0 - I_0)
+  R_0 = 1 - S_0 - I_0, t0 = 0, times = seq(from = t0 + 1/12, to = t0
+  + 10, by = 1/12), seed = 1772464524)
 }
 \arguments{
 \item{gamma}{recovery rate}
@@ -31,6 +34,12 @@ sir2(gamma = 24, mu = 1/70, iota = 0.1, beta1 = 330, beta2 = 410,
 \item{pop}{overall host population size}
 
 \item{S_0, I_0, R_0}{the fractions of the host population that are susceptible, infectious, and recovered, respectively, at time zero.}
+
+\item{t0}{zero time}
+
+\item{times}{observation times}
+
+\item{seed}{seed of the random number generator}
 }
 \value{
 These functions return \sQuote{pomp} objects containing simulated data.
@@ -39,7 +48,7 @@ These functions return \sQuote{pomp} objects containing simulated data.
 Simple SIR-type models implemented in various ways.
 }
 \details{
-\code{sir()} producees a \sQuote{pomp} object encoding a simple seasonal SIR model.
+\code{sir()} producees a \sQuote{pomp} object encoding a simple seasonal SIR model with simulated data.
 Simulation is performed using an Euler multinomial approximation.
 
 \code{sir2()} has the same model implemented using Gillespie's algorithm.

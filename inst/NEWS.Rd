@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.0.10}{
+  \itemize{
+    \item It is now possible to adjust the observation times, zero-time in the \code{sir} and \code{sir2} examples.
+    One can also change the default RNG seed used in generating the simulated data.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.0.9}{
   \itemize{
     \item When \code{coef} is applied to a \sQuote{listie}, the result can be more usefully \code{melt}ed.
