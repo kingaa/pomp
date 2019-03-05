@@ -25,11 +25,10 @@ This will typically be the output of \code{pomp}, \code{simulate}, or one of the
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
 
-\item{times}{a numeric vector (length \code{ntimes}) containing times.
-These must be in strictly increasing order.
-The first entry is assumed to be the time of \code{xstart.}}
+\item{times}{a numeric vector (length \code{ntimes}) containing times at which the itineraries are desired.
+These must be in non-decreasing order with \code{times[1]>t0}.}
 
-\item{t0}{the initial time, i.e., the time corresponding to the initial-state distribution.}
+\item{t0}{the time at which the initial conditions are assumed to hold.}
 
 \item{format}{the format in which to return the results.
 

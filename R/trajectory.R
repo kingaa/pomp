@@ -109,9 +109,12 @@ trajectory.internal <- function (object, params, times, t0,
 
   storage.mode(params) <- "double"
 
+  pompLoad(object)
+  on.exit(pompUnload(object))
+
   x0 <- rinit(object,params=params,t0=t0)
 
-  x <- flow(object,xstart=x0,params=params,times=c(t0,times),offset=1L,
+  x <- flow(object,x0=x0,t0=t0,params=params,times=times,
     ...,.gnsi=.gnsi,verbose=verbose)
 
   if (format == "data.frame") {

@@ -9,25 +9,22 @@
 \alias{flow,pomp-method}
 \title{Flow of a deterministic model}
 \usage{
-\S4method{flow}{pomp}(object, xstart, params, times, offset = 0, ...,
+\S4method{flow}{pomp}(object, x0, t0, params, times, ...,
   verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
-\item{xstart}{an array with dimensions \code{nvar} x \code{nrep} giving the initial conditions of the trajectories to be computed.}
+\item{x0}{an array with dimensions \code{nvar} x \code{nrep} giving the initial conditions of the trajectories to be computed.}
+
+\item{t0}{the time at which the initial conditions are assumed to hold.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
 
-\item{times}{a numeric vector (length \code{ntimes}) containing times.
-These must be in strictly increasing order.
-The first entry is assumed to be the time of \code{xstart.}}
-
-\item{offset}{a non-negative integer scalar.
-By default, \code{offset = 0}.
-See below (Value) for the effect of \code{offset}.}
+\item{times}{a numeric vector (length \code{ntimes}) containing times at which the itineraries are desired.
+These must be in non-decreasing order with \code{times[1]>t0}.}
 
 \item{...}{Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
 See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.}
@@ -35,11 +32,11 @@ See \code{\link[deSolve]{ode}} for a description of the additional arguments acc
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
-\code{flow} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes-offset}.
-If \code{x} is the returned matrix, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k+offset]} given parameters \code{params[,j]}.
+\code{flow} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
+If \code{x} is the returned matrix, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k]} given parameters \code{params[,j]}.
 }
 \description{
-Compute the flow induced by a deterministic dynamical system, whether vectorfield or map.
+Compute the flow induced by a deterministic vectorfield or map.
 }
 \details{
 In the case of a discrete-time system (map), \code{flow} iterates the map to yield trajectories of the system.

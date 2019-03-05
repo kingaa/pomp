@@ -1,6 +1,6 @@
 ##' Flow of a deterministic model
 ##'
-##' Compute the flow induced by a deterministic dynamical system, whether vectorfield or map.
+##' Compute the flow induced by a deterministic vectorfield or map.
 ##'
 ##' In the case of a discrete-time system (map), \code{flow} iterates the map to yield trajectories of the system.
 ##' In the case of a continuous-time system (vectorfield), \code{flow} uses the numerical solvers in \pkg{\link[deSolve]{deSolve}} to integrate the vectorfield starting from given initial conditions.
@@ -17,22 +17,19 @@
 ##' @inheritParams dmeasure
 ##' @inheritParams pomp
 ##'
-##' @param xstart an array with dimensions \code{nvar} x \code{nrep} giving the initial conditions of the trajectories to be computed.
-##' 
-##' @param times a numeric vector (length \code{ntimes}) containing times.
-##' These must be in strictly increasing order.
-##' The first entry is assumed to be the time of \code{xstart.}
-##' 
-##' @param offset a non-negative integer scalar.
-##' By default, \code{offset = 0}.
-##' See below (Value) for the effect of \code{offset}.
+##' @param x0 an array with dimensions \code{nvar} x \code{nrep} giving the initial conditions of the trajectories to be computed.
 ##'
+##' @param t0 the time at which the initial conditions are assumed to hold.
+##' 
+##' @param times a numeric vector (length \code{ntimes}) containing times at which the itineraries are desired.
+##' These must be in non-decreasing order with \code{times[1]>t0}.
+##' 
 ##' @param ... Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
 ##' See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.
 ##'
 ##' @return
-##' \code{flow} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes-offset}.
-##' If \code{x} is the returned matrix, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k+offset]} given parameters \code{params[,j]}.
+##' \code{flow} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
+##' If \code{x} is the returned matrix, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k]} given parameters \code{params[,j]}.
 ##'
 ##' @seealso \code{\link{skeleton}}, \code{\link{trajectory}}, \code{\link{rprocess}}
 NULL
@@ -66,22 +63,27 @@ setMethod(
 setMethod(
   "flow",
   signature=signature(object="pomp"),
-  definition=function (object, xstart, params, times, offset = 0, ...,
+  definition=function (object, x0, t0, params, times, ...,
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      flow.internal(object=object,x0=xstart,params=params,times=times,
-        offset=offset,...,verbose=verbose),
+      flow.internal(object=object,x0=x0,t0=t0,params=params,times=times,
+        ...,verbose=verbose),
       error = function (e) pStop("flow",conditionMessage(e))
     )
     
   }
 )
 
-flow.internal <- function (object, x0, params, times, offset, ...,
+flow.internal <- function (object, x0, t0, params, times, ...,
   .gnsi = TRUE, verbose) {
 
   verbose <- as.logical(verbose)
+
+  if (missing(t0))
+    reqd_arg("flow","t0")
+  else
+    t0 <- as.numeric(t0)
 
   if (missing(times))
     reqd_arg("flow","times")
@@ -94,9 +96,8 @@ flow.internal <- function (object, x0, params, times, offset, ...,
   if (any(diff(times)<0))
     pStop_(sQuote("times")," must be a non-decreasing numeric sequence.")
 
-  offset <- as.integer(offset)
-  if (offset < 0L)
-    pStop_(sQuote("offset")," must be a non-negative integer.")
+  if (times[1]<t0)
+    pStop_(sQuote("times[1]")," must be no later than ",sQuote("t0"),".")
 
   params <- as.matrix(params)
   nrep <- ncol(params)
@@ -110,12 +111,6 @@ flow.internal <- function (object, x0, params, times, offset, ...,
   statenames <- rownames(x0)
   dim(x0) <- c(nvar,nrep,1)
   dimnames(x0) <- list(statenames,NULL,NULL)
-
-  t0 <- times[1L]
-  if (offset == 1L)
-    times <- times[-1L]
-  else if (offset > 1L) 
-    times <- times[seq.int(offset+1L,length(times),by=1L)]
 
   ntimes <- length(times)
 
