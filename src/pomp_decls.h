@@ -73,10 +73,10 @@ extern SEXP do_rprocess(SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP 
 extern SEXP do_simulate(SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi);
 /* src/skeleton.c */
 extern SEXP add_skel_args(SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames);
-extern void eval_skeleton_R(double *f, double *time, double *x, double *p, SEXP fn, SEXP args, SEXP Snames, int nvars, int npars, int ncovars, int ntimes, int nrepx, int nrepp, int nreps, lookup_table_t *covar_table);
-extern void iterate_skeleton_R(double *X, double t, double deltat, double *time, double *x, double *p, SEXP fn, SEXP args, SEXP Snames, int nvars, int npars, int ncovars, int ntimes, int nrepp, int nreps, int nzeros, lookup_table_t *covar_table, int *zeroindex);
-extern void eval_skeleton_native(double *f, double *time, double *x, double *p, int nvars, int npars, int ncovars, int ntimes, int nrepx, int nrepp, int nreps, int *sidx, int *pidx, int *cidx, lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args);
-extern void iterate_skeleton_native(double *X, double t, double deltat, double *time, double *x, double *p, int nvars, int npars, int ncovars, int ntimes, int nrepp, int nreps, int nzeros, int *sidx, int *pidx, int *cidx, lookup_table_t *covar_table, int *zeroindex, pomp_skeleton *fun, SEXP args);
+extern void eval_skeleton_R(double *f, double *time, double *x, double *p, SEXP fn, SEXP args, SEXP Snames, int nvars, int npars, int ncovars, int ntimes, int nrepx, int nrepp, int nreps, lookup_table_t *covar_table, double *cov);
+extern void iterate_skeleton_R(double *X, double t, double deltat, double *time, double *x, double *p, SEXP fn, SEXP args, SEXP Snames, int nvars, int npars, int ncovars, int ntimes, int nrepp, int nreps, int nzeros, lookup_table_t *covar_table, int *zeroindex, double *cov);
+extern void eval_skeleton_native(double *f, double *time, double *x, double *p, int nvars, int npars, int ncovars, int ntimes, int nrepx, int nrepp, int nreps, int *sidx, int *pidx, int *cidx, lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args, double *cov);
+extern void iterate_skeleton_native(double *X, double t, double deltat, double *time, double *x, double *p, int nvars, int npars, int ncovars, int ntimes, int nrepp, int nreps, int nzeros, int *sidx, int *pidx, int *cidx, lookup_table_t *covar_table, int *zeroindex, pomp_skeleton *fun, SEXP args, double *cov);
 extern SEXP do_skeleton(SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi);
 /* src/sobolseq.c */
 extern SEXP sobol_sequence(SEXP dim, SEXP length);

@@ -86,31 +86,29 @@ void eval_skeleton_R (
     SEXP fn, SEXP args, SEXP Snames,
     int nvars, int npars, int ncovars, int ntimes,
     int nrepx, int nrepp, int nreps,
-    lookup_table_t *covar_table)
+    lookup_table_t *covar_table, double *cov)
 {
   int nprotect = 0;
-  SEXP ans, nm, cov;
+  SEXP ans, nm;
   double *fs;
   int *posn = 0;
   int i, j, k;
-
-  PROTECT(cov = NEW_NUMERIC(ncovars)); nprotect++;
 
   for (k = 0; k < ntimes; k++, time++) {
 
     R_CheckUserInterrupt();
 
     // interpolate the covar functions for the covariates
-    table_lookup(covar_table,*time,REAL(cov));
+    table_lookup(covar_table,*time,cov);
 
     for (j = 0; j < nreps; j++, f += nvars) {
 
       if (k == 0 && j == 0) {
 
         PROTECT(ans = eval_call(fn,args,time,
-				x+nvars*((j%nrepx)+nrepx*k),nvars,
-				p+npars*(j%nrepp),npars,
-				REAL(cov),ncovars)); nprotect++;
+          x+nvars*((j%nrepx)+nrepx*k),nvars,
+          p+npars*(j%nrepp),npars,
+          cov,ncovars)); nprotect++;
 
           if (LENGTH(ans)!=nvars)
             errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
@@ -127,9 +125,9 @@ void eval_skeleton_R (
       } else {
 
         PROTECT(ans = eval_call(fn,args,time,
-				x+nvars*((j%nrepx)+nrepx*k),nvars,
-				p+npars*(j%nrepp),npars,
-				REAL(cov),ncovars));
+          x+nvars*((j%nrepx)+nrepx*k),nvars,
+          p+npars*(j%nrepp),npars,
+          cov,ncovars));
 
         fs = REAL(AS_NUMERIC(ans));
 
@@ -152,17 +150,16 @@ void iterate_skeleton_R (
     SEXP fn, SEXP args, SEXP Snames,
     int nvars, int npars, int ncovars, int ntimes,
     int nrepp, int nreps, int nzeros,
-    lookup_table_t *covar_table, int *zeroindex)
+    lookup_table_t *covar_table, int *zeroindex,
+    double *cov)
 {
   int nprotect = 0;
   int first = 1;
-  SEXP ans, nm, cov;
+  SEXP ans, nm;
   double *ap, *xs;
   int nsteps;
   int *posn = 0;
   int h, i, j, k;
-
-  PROTECT(cov = NEW_NUMERIC(ncovars)); nprotect++;
 
   for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
 
@@ -179,7 +176,7 @@ void iterate_skeleton_R (
     for (h = 0; h < nsteps; h++) {
 
       // interpolate the covariates
-      table_lookup(covar_table,t,REAL(cov));
+      table_lookup(covar_table,t,cov);
 
       for (j = 0, xs = x; j < nreps; j++, xs += nvars) {
 
@@ -187,7 +184,7 @@ void iterate_skeleton_R (
 
           first = 0;
 
-          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,REAL(cov),ncovars)); nprotect++;
+          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,cov,ncovars)); nprotect++;
 
           if (LENGTH(ans) != nvars)
             errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
@@ -202,7 +199,7 @@ void iterate_skeleton_R (
 
         } else {
 
-          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,REAL(cov),ncovars));
+          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,cov,ncovars));
 
           ap = REAL(AS_NUMERIC(ans));
 
@@ -236,34 +233,31 @@ void eval_skeleton_native (
     int nvars, int npars, int ncovars, int ntimes,
     int nrepx, int nrepp, int nreps,
     int *sidx, int *pidx, int *cidx,
-    lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args)
+    lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args,
+    double *cov)
 {
   double *xp, *pp;
-  SEXP cov;
   int j, k;
 
   set_pomp_userdata(args);
-
-  PROTECT(cov = NEW_NUMERIC(ncovars));
 
   for (k = 0; k < ntimes; k++, time++) {
 
     R_CheckUserInterrupt();
 
-    table_lookup(covar_table,*time,REAL(cov));
+    table_lookup(covar_table,*time,cov);
 
     for (j = 0; j < nreps; j++, f += nvars) {
 
       xp = &x[nvars*((j%nrepx)+nrepx*k)];
       pp = &p[npars*(j%nrepp)];
 
-      (*fun)(f,xp,pp,sidx,pidx,cidx,REAL(cov),*time);
+      (*fun)(f,xp,pp,sidx,pidx,cidx,cov,*time);
 
     }
   }
 
   unset_pomp_userdata();
-  UNPROTECT(1);
 
 }
 
@@ -274,16 +268,13 @@ void iterate_skeleton_native (
     int nrepp, int nreps, int nzeros,
     int *sidx, int *pidx, int *cidx,
     lookup_table_t *covar_table, int *zeroindex,
-    pomp_skeleton *fun, SEXP args)
+    pomp_skeleton *fun, SEXP args, double *cov)
 {
-  SEXP cov;
   int nsteps;
   double *xs, *Xs;
   int h, i, j, k;
 
   set_pomp_userdata(args);
-
-  PROTECT(cov = NEW_NUMERIC(ncovars));
 
   for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
 
@@ -300,11 +291,11 @@ void iterate_skeleton_native (
     for (h = 0; h < nsteps; h++) {
 
       // interpolate the covariates
-      table_lookup(covar_table,t,REAL(cov));
+      table_lookup(covar_table,t,cov);
 
       for (j = 0, Xs = X, xs = x; j < nreps; j++, Xs += nvars, xs += nvars) {
 
-        (*fun)(Xs,xs,p+npars*(j%nrepp),sidx,pidx,cidx,REAL(cov),t);
+        (*fun)(Xs,xs,p+npars*(j%nrepp),sidx,pidx,cidx,cov,t);
 
       }
 
@@ -324,7 +315,6 @@ void iterate_skeleton_native (
   }
 
   unset_pomp_userdata();
-  UNPROTECT(1);
 
 }
 
@@ -335,7 +325,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   pompfunmode mode = undef;
   int *dim;
   SEXP Snames, Cnames, Pnames;
-  SEXP pompfun;
+  SEXP pompfun, cov;
   SEXP fn, args, F;
   lookup_table_t covariate_table;
 
@@ -363,6 +353,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
 
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
+  PROTECT(cov = NEW_NUMERIC(ncovars)); nprotect++;
 
   // extract the user-defined function
   PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("skeleton")),install("skel.fn"))); nprotect++;
@@ -382,7 +373,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     eval_skeleton_R(REAL(F),REAL(t),REAL(x),REAL(params),
       fn,args,Snames,
       nvars,npars,ncovars,ntimes,nrepx,nrepp,nreps,
-      &covariate_table);
+      &covariate_table,REAL(cov));
 
   }
 
@@ -401,7 +392,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     eval_skeleton_native(
       REAL(F),REAL(t),REAL(x),REAL(params),
       nvars,npars,ncovars,ntimes,nrepx,nrepp,nreps,
-      sidx,pidx,cidx,&covariate_table,ff,args);
+      sidx,pidx,cidx,&covariate_table,ff,args,REAL(cov));
 
   }
 

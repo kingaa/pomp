@@ -23,7 +23,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   int nprotect = 0;
   pompfunmode mode = undef;
   SEXP fn, args;
-  SEXP X;
+  SEXP X, cov;
   SEXP Snames, Pnames, Cnames;
   SEXP skel, pompfun;
   SEXP accumvars;
@@ -55,6 +55,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
+  PROTECT(cov = NEW_NUMERIC(ncovars)); nprotect++;
 
   // extract user-defined function
   PROTECT(pompfun = GET_SLOT(skel,install("skel.fn"))); nprotect++;
@@ -82,7 +83,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 
     iterate_skeleton_R(REAL(X),t,deltat,REAL(times),REAL(x0),REAL(params),
       fn,args,Snames,nvars,npars,ncovars,ntimes,nrepp,nreps,nzeros,
-      &covariate_table,zidx);
+      &covariate_table,zidx,REAL(cov));
 
   }
 
@@ -101,7 +102,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 
     iterate_skeleton_native(REAL(X),t,deltat,REAL(times),REAL(x0),REAL(params),
       nvars,npars,ncovars,ntimes,nrepp,nreps,nzeros,sidx,pidx,cidx,
-      &covariate_table,zidx,ff,args);
+      &covariate_table,zidx,ff,args,REAL(cov));
 
   }
 
@@ -122,6 +123,7 @@ static struct {
     pompfunmode mode;
     SEXP object;
     SEXP params;
+    SEXP cov;
     lookup_table_t covar_table;
     int nvars;
     int npars;
@@ -181,6 +183,8 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   // set up the covariate table
   COMMON(covar_table) = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
   COMMON(ncovars) = ncovars;
+  PROTECT(COMMON(cov) = NEW_NUMERIC(ncovars)); nprotect++;
+  R_PreserveObject(COMMON(cov));
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x0))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
@@ -255,7 +259,7 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
       RFUN(fn),RFUN(args),RFUN(Snames),
       COMMON(nvars),COMMON(npars),COMMON(ncovars),1,
       COMMON(nreps),COMMON(nreps),COMMON(nreps),
-      &COMMON(covar_table));
+      &COMMON(covar_table),REAL(COMMON(cov)));
 
     break;
 
@@ -264,7 +268,7 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
       COMMON(nvars),COMMON(npars),COMMON(ncovars),1,
       COMMON(nreps),COMMON(nreps),COMMON(nreps),
       INTEGER(NAT(sindex)),INTEGER(NAT(pindex)),INTEGER(NAT(cindex)),
-      &COMMON(covar_table),NAT(fun),NAT(args));
+      &COMMON(covar_table),NAT(fun),NAT(args),REAL(COMMON(cov)));
 
     break;
 
@@ -280,8 +284,10 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
 void pomp_desolve_takedown (void) {
   R_ReleaseObject(COMMON(object));
   R_ReleaseObject(COMMON(params));
+  R_ReleaseObject(COMMON(cov));
   COMMON(object) = R_NilValue;
   COMMON(params) = R_NilValue;
+  COMMON(cov) = R_NilValue;
   COMMON(nvars) = 0;
   COMMON(npars) = 0;
   COMMON(ncovars) = 0;
@@ -322,7 +328,7 @@ void pomp_desolve_takedown (void) {
 
     errorcall(R_NilValue,"in 'pomp_desolve_takedown': unrecognized 'mode'"); // # nocov
 
-    break;
+  break;
 
   }
 
