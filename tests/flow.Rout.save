@@ -1,0 +1,49 @@
+
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp2)
+Welcome to pomp version 2!
+For information on upgrading your pomp version < 2 code, see the
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
+> 
+> try(flow())
+Error : in 'flow': 'object' is a required argument.
+> try(flow("bob"))
+Error : 'flow' is undefined for 'object' of class 'character'.
+> sir() -> po
+> try(flow(po))
+Error : in 'flow': in 'flow': 't0' is a required argument.
+> try(flow(po,t0=0))
+Error : in 'flow': in 'flow': 'times' is a required argument.
+> try(flow(po,t0=10))
+Error : in 'flow': in 'flow': 'times' is a required argument.
+> try(flow(po,t0=10,times=1:10))
+Error : in 'flow': 'times[1]' must be no later than 't0'.
+> try(flow(po,t0=10,times=numeric(0)))
+Error : in 'flow': 'times' is empty, there is no work to do.
+> try(flow(po,t0=10,times=NULL))
+Error : in 'flow': 'times' is empty, there is no work to do.
+> try(flow(po,t0=10,times=30:11))
+Error : in 'flow': 'times' must be a non-decreasing numeric sequence.
+> try(flow(po,t0=10,times=21:30))
+Error : in 'flow': argument "params" is missing, with no default
+> try(flow(po,t0=10,times=21:30,params=coef(po)))
+Error : in 'flow': argument "x0" is missing, with no default
+> flow(po,t0=0,times=1,params=coef(po),x0=rinit(po)) -> x
+> 
