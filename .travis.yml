@@ -4,6 +4,7 @@ cache: packages
 file_glob: true
 latex: false
 pandoc: false
+warnings_are_errors: false
 
 r-packages:
   - roxygen2
