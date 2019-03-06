@@ -89,27 +89,28 @@ void eval_skeleton_R (
     lookup_table_t *covar_table)
 {
   int nprotect = 0;
-  SEXP ans, nm;
+  SEXP ans, nm, cov;
   double *fs;
   int *posn = 0;
-  double cov[ncovars];
   int i, j, k;
+
+  PROTECT(cov = NEW_NUMERIC(ncovars)); nprotect++;
 
   for (k = 0; k < ntimes; k++, time++) {
 
     R_CheckUserInterrupt();
 
     // interpolate the covar functions for the covariates
-    table_lookup(covar_table,*time,cov);
+    table_lookup(covar_table,*time,REAL(cov));
 
     for (j = 0; j < nreps; j++, f += nvars) {
 
       if (k == 0 && j == 0) {
 
         PROTECT(ans = eval_call(fn,args,time,
-          x+nvars*((j%nrepx)+nrepx*k),nvars,
-          p+npars*(j%nrepp),npars,
-          cov,ncovars)); nprotect++;
+				x+nvars*((j%nrepx)+nrepx*k),nvars,
+				p+npars*(j%nrepp),npars,
+				REAL(cov),ncovars)); nprotect++;
 
           if (LENGTH(ans)!=nvars)
             errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
@@ -126,9 +127,9 @@ void eval_skeleton_R (
       } else {
 
         PROTECT(ans = eval_call(fn,args,time,
-          x+nvars*((j%nrepx)+nrepx*k),nvars,
-          p+npars*(j%nrepp),npars,
-          cov,ncovars));
+				x+nvars*((j%nrepx)+nrepx*k),nvars,
+				p+npars*(j%nrepp),npars,
+				REAL(cov),ncovars));
 
         fs = REAL(AS_NUMERIC(ans));
 
@@ -155,12 +156,13 @@ void iterate_skeleton_R (
 {
   int nprotect = 0;
   int first = 1;
-  SEXP ans, nm;
-  double cov[ncovars];
+  SEXP ans, nm, cov;
   double *ap, *xs;
   int nsteps;
   int *posn = 0;
   int h, i, j, k;
+
+  PROTECT(cov = NEW_NUMERIC(ncovars)); nprotect++;
 
   for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
 
@@ -177,7 +179,7 @@ void iterate_skeleton_R (
     for (h = 0; h < nsteps; h++) {
 
       // interpolate the covariates
-      table_lookup(covar_table,t,cov);
+      table_lookup(covar_table,t,REAL(cov));
 
       for (j = 0, xs = x; j < nreps; j++, xs += nvars) {
 
@@ -185,7 +187,7 @@ void iterate_skeleton_R (
 
           first = 0;
 
-          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,cov,ncovars)); nprotect++;
+          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,REAL(cov),ncovars)); nprotect++;
 
           if (LENGTH(ans) != nvars)
             errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
@@ -200,7 +202,7 @@ void iterate_skeleton_R (
 
         } else {
 
-          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,cov,ncovars));
+          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,REAL(cov),ncovars));
 
           ap = REAL(AS_NUMERIC(ans));
 
@@ -237,28 +239,31 @@ void eval_skeleton_native (
     lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args)
 {
   double *xp, *pp;
-  double cov[ncovars];
+  SEXP cov;
   int j, k;
 
   set_pomp_userdata(args);
+
+  PROTECT(cov = NEW_NUMERIC(ncovars));
 
   for (k = 0; k < ntimes; k++, time++) {
 
     R_CheckUserInterrupt();
 
-    table_lookup(covar_table,*time,cov);
+    table_lookup(covar_table,*time,REAL(cov));
 
     for (j = 0; j < nreps; j++, f += nvars) {
 
       xp = &x[nvars*((j%nrepx)+nrepx*k)];
       pp = &p[npars*(j%nrepp)];
 
-      (*fun)(f,xp,pp,sidx,pidx,cidx,cov,*time);
+      (*fun)(f,xp,pp,sidx,pidx,cidx,REAL(cov),*time);
 
     }
   }
 
   unset_pomp_userdata();
+  UNPROTECT(1);
 
 }
 
@@ -271,12 +276,14 @@ void iterate_skeleton_native (
     lookup_table_t *covar_table, int *zeroindex,
     pomp_skeleton *fun, SEXP args)
 {
-  double cov[ncovars];
+  SEXP cov;
   int nsteps;
   double *xs, *Xs;
   int h, i, j, k;
 
   set_pomp_userdata(args);
+
+  PROTECT(cov = NEW_NUMERIC(ncovars));
 
   for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
 
@@ -293,11 +300,11 @@ void iterate_skeleton_native (
     for (h = 0; h < nsteps; h++) {
 
       // interpolate the covariates
-      table_lookup(covar_table,t,cov);
+      table_lookup(covar_table,t,REAL(cov));
 
       for (j = 0, Xs = X, xs = x; j < nreps; j++, Xs += nvars, xs += nvars) {
 
-        (*fun)(Xs,xs,p+npars*(j%nrepp),sidx,pidx,cidx,cov,t);
+        (*fun)(Xs,xs,p+npars*(j%nrepp),sidx,pidx,cidx,REAL(cov),t);
 
       }
 
@@ -317,6 +324,7 @@ void iterate_skeleton_native (
   }
 
   unset_pomp_userdata();
+  UNPROTECT(1);
 
 }
 
