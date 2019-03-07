@@ -12,7 +12,6 @@
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2019-01-22" />
 
 <title>pomp version 2 upgrade guide</title>
 
@@ -92,7 +91,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore"><strong>pomp</strong> version 2 upgrade guide</h1>
 <h4 class="author"><em>Aaron A. King</em></h4>
-<h4 class="date"><em>22 January 2019</em></h4>
+<h4 class="date"><em>7 March 2019</em></h4>
 
 
 <div id="TOC">
@@ -124,7 +123,7 @@ a:hover, a:active {
   text-decoration: none;
 }
 </style>
-<p>This document was produced using <strong>pomp</strong> version 2.0.9.1 and <strong>R</strong> version 3.5.2.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.0.11.0 and <strong>R</strong> version 3.5.2.</p>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
@@ -134,9 +133,9 @@ a:hover, a:active {
 <table>
 <thead>
 <tr class="header">
-<th align="left">cat</th>
+<th align="left"></th>
 <th align="right">1.19.0.0</th>
-<th align="right">2.0.9.2</th>
+<th align="right">2.0.11.2</th>
 <th align="right">frac</th>
 </tr>
 </thead>
@@ -144,32 +143,32 @@ a:hover, a:active {
 <tr class="odd">
 <td align="left">man</td>
 <td align="right">4069</td>
-<td align="right">5794</td>
-<td align="right">0.424</td>
+<td align="right">5844</td>
+<td align="right">0.436</td>
 </tr>
 <tr class="even">
 <td align="left">R</td>
 <td align="right">12150</td>
-<td align="right">9226</td>
-<td align="right">-0.241</td>
+<td align="right">9288</td>
+<td align="right">-0.236</td>
 </tr>
 <tr class="odd">
 <td align="left">src</td>
 <td align="right">5238</td>
-<td align="right">5355</td>
-<td align="right">0.022</td>
+<td align="right">5378</td>
+<td align="right">0.027</td>
 </tr>
 <tr class="even">
 <td align="left">tests</td>
 <td align="right">4846</td>
-<td align="right">3590</td>
-<td align="right">-0.259</td>
+<td align="right">3603</td>
+<td align="right">-0.257</td>
 </tr>
 <tr class="odd">
 <td align="left">total</td>
 <td align="right">26303</td>
-<td align="right">23965</td>
-<td align="right">-0.089</td>
+<td align="right">24113</td>
+<td align="right">-0.083</td>
 </tr>
 </tbody>
 </table>
@@ -353,6 +352,16 @@ dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, t
 <h3><code>trajectory</code></h3>
 <p>The <code>as.data.frame</code> argument to <code>trajectory</code> has been removed in favor of a new <code>format</code> argument that allows one to choose between receiving the results in the form of an array or a data frame.</p>
 <p>When <code>trajectory</code> calls on <code>deSolve</code> routines to numerically integrate a model vectorfield, more informative error messages are generated, and diagnostics are printed when <code>verbose = TRUE</code>.</p>
+</div>
+<div id="flow" class="section level3">
+<h3><code>flow</code></h3>
+<p>A new workhorse has been introduced, similar to <code>trajectory</code> but at a lower level. The <code>flow</code> function iterates or integrates the deterministic skeleton to return trajectories. See <code>?flow</code> for details.</p>
+</div>
+<div id="rprocess" class="section level3">
+<h3><code>rprocess</code></h3>
+<p>The call to <code>rprocess</code> has changed. One now retrieves simulations of the latent state process by doing</p>
+<pre><code>rprocess(object, x0, t0, times, params)</code></pre>
+<p>where <code>object</code>, as usual, is the pomp, <code>x0</code> is the named vector or matrix with rownames giving the state of the process at time <code>t0</code>, <code>times</code> are the times at which one desires simulated states, and <code>params</code> are the parameters.</p>
 </div>
 </div>
 <div id="included-pomp-examples" class="section level2">

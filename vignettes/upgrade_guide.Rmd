@@ -79,13 +79,14 @@ One can pass data directly to these methods, along with the requisite model comp
 A consequence is that these codes have been streamlined, with no cost in performance and increased flexibility.
 The following table shows the number of lines in the latest pre-2 **pomp** compared to the current **pomp** version 2.
 
-|cat   | 1.19.0.0| 2.0.9.2|   frac|
-|:-----|--------:|-------:|------:|
-|man   |     4069|    5794|  0.424|
-|R     |    12150|    9226| -0.241|
-|src   |     5238|    5355|  0.022|
-|tests |     4846|    3590| -0.259|
-|total |    26303|   23965| -0.089|
+|      | 1.19.0.0| 2.0.11.2|   frac|
+|:-----|--------:|--------:|------:|
+|man   |     4069|     5844|  0.436|
+|R     |    12150|     9288| -0.236|
+|src   |     5238|     5378|  0.027|
+|tests |     4846|     3603| -0.257|
+|total |    26303|    24113| -0.083|
+
 
 ## Timetable for rollout of **pomp** version 2
 
@@ -375,6 +376,25 @@ In `skeleton`, the `t` argument has been replaced by `times`, to make this unifo
 The `as.data.frame` argument to `trajectory` has been removed in favor of a new `format` argument that allows one to choose between receiving the results in the form of an array or a data frame.
 
 When `trajectory` calls on `deSolve` routines to numerically integrate a model vectorfield, more informative error messages are generated, and diagnostics are printed when `verbose = TRUE`.
+
+### `flow`
+
+A new workhorse has been introduced, similar to `trajectory` but at a lower level.
+The `flow` function iterates or integrates the deterministic skeleton to return trajectories.
+See `?flow` for details.
+
+### `rprocess`
+
+The call to `rprocess` has changed.
+One now retrieves simulations of the latent state process by doing
+```
+rprocess(object, x0, t0, times, params)
+```
+where `object`, as usual, is the pomp,
+`x0` is the named vector or matrix with rownames giving the state of the process at time `t0`,
+`times` are the times at which one desires simulated states, and
+`params` are the parameters.
+
 
 ## Included **pomp** examples
 
