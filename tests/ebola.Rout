@@ -1,0 +1,66 @@
+
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> png(filename="ebola-%02d.png",res=100)
+> 
+> library(pomp2)
+Welcome to pomp version 2!
+For information on upgrading your pomp version < 2 code, see the
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
+> 
+> ebolaModel() -> eb
+> 
+> set.seed(48832734L)
+> 
+> plot(eb)
+> coef(eb)
+       N       R0      rho      cfr        k    alpha    gamma      S_0 
+1.06e+07 1.40e+00 2.00e-01 7.00e-01 0.00e+00 8.92e-02 1.44e-01 1.00e+00 
+     E_0      I_0      R_0 
+4.65e-07 4.65e-07 1.00e-08 
+> rinit(eb)
+        rep
+variable     [,1]
+    S    10628962
+    E1          2
+    E2          2
+    E3          2
+    I           5
+    R           0
+    N_EI        0
+    N_IR        0
+> 
+> ebolaModel(country="SLE") -> eb
+> 
+> stopifnot(all.equal(coef(eb),
++   partrans(eb,coef(eb,transform=TRUE),dir="from")))
+> 
+> plot(simulate(eb,seed=48832734L))
+> pf <- freeze(pfilter(window(eb,end=200),Np=1000),seed=48832734L)
+Warning message:
+in 'pfilter': 4 filtering failures occurred. 
+> plot(pf)
+> tj <- trajectory(eb,maxsteps=10000)
+> matplot(time(eb),t(tj[c("I","N_EI","N_IR"),1,]),type="l",ylab="")
+> 
+> dev.off()
+null device 
+          1 
+> 

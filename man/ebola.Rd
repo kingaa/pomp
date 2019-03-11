@@ -22,6 +22,14 @@ Providing a dataset here will override this behavior.}
 
 \item{nstageE}{integer; number of incubation stages.}
 
+\item{R0}{basic reproduction ratio}
+
+\item{rho}{case reporting efficiency}
+
+\item{cfr}{case fatality rate}
+
+\item{k}{dispersion parameter (negative binomial \code{size} parameter)}
+
 \item{index_case}{number of cases on day 0 (2014-04-01)}
 
 \item{incubation_period, infectious_period}{mean duration (in days) of the incubation and infectious periods.}

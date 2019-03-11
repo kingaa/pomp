@@ -40,10 +40,14 @@ NULL
 ##' @param country ISO symbol for the country (GIN=Guinea, LBR=Liberia, SLE=Sierra Leone).
 ##' @param data if NULL, the situation report data (see \code{ebolaWHO}) for the appropriate country or region will be used.
 ##' Providing a dataset here will override this behavior.
-##' @param timestep duration (in days) of Euler time-step for the simulations.
 ##' @param nstageE integer; number of incubation stages.
 ##' @param incubation_period,infectious_period mean duration (in days) of the incubation and infectious periods.
+##' @param R0 basic reproduction ratio
+##' @param cfr case fatality rate
+##' @param rho case reporting efficiency
+##' @param k dispersion parameter (negative binomial \code{size} parameter)
 ##' @param index_case number of cases on day 0 (2014-04-01)
+##' @param timestep duration (in days) of Euler time-step for the simulations.
 ##'
 ##' @section Model structure:
 ##' The default incubation period is supposed to be Gamma distributed with shape parameter \code{nstageE} and mean 11.4 days and the case-fatality ratio (`cfr`) is taken to be 0.7 (cf. WHO Ebola Response Team 2014).
@@ -66,7 +70,7 @@ ebolaModel <- function (
   ## Population sizes in Guinea, Liberia, and Sierra Leone (census 2014)
   populations <- c(GIN=10628972,LBR=4092310,SLE=6190280)
 
-  pomp2::ebolaWHO -> dat
+  pomp2::ebolaWA2014 -> dat
   dat$date <- as.Date(as.character(dat$date))
   dat$country <- as.character(dat$country)
   dat$day <- julian(dat$date,origin=as.Date("2014-04-01"))
