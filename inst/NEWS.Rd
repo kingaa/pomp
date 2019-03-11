@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.0.12}{
+  \itemize{
+    \item A new example, comprising models and data for the 2014--2016 west African Ebola virus disease outbreak, is included.
+    See \code{?ebola} for details.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.0.11}{
   \itemize{
     \item It is now possible to adjust the observation times, zero-time in the \code{sir} and \code{sir2} examples.
