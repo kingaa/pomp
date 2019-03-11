@@ -3,53 +3,75 @@
 \docType{data}
 \name{ebola}
 \alias{ebola}
+\alias{ebolaWA2014}
 \alias{ebolaModel}
-\alias{ebolaWHO}
-\title{Ebola outbreak, West Africa}
+\title{Ebola outbreak, West Africa, 2014-2016}
 \usage{
-ebolaModel(country = c("Guinea", "SierraLeone", "Liberia", "WestAfrica"),
-  data = NULL, timestep = 0.01, nstageE = 3L, R0 = 1.4,
-  rho = 0.2, cfr = 0.7, k = 0, incubation_period = 11.4/7,
-  infectious_period = 7/7, type = c("raw", "cum"), na.rm = FALSE,
-  least.sq = FALSE)
+ebolaModel(country = c("GIN", "LBR", "SLE"), data = NULL,
+  timestep = 1/8, nstageE = 3L, R0 = 1.4, rho = 0.2, cfr = 0.7,
+  k = 0, index_case = 10, incubation_period = 11.4,
+  infectious_period = 7)
 }
 \arguments{
-\item{country}{name of country or \dQuote{WestAfrica} for the regional outbreak.}
+\item{country}{ISO symbol for the country (GIN=Guinea, LBR=Liberia, SLE=Sierra Leone).}
 
 \item{data}{if NULL, the situation report data (see \code{ebolaWHO}) for the appropriate country or region will be used.
 Providing a dataset here will override this behavior.}
 
-\item{timestep}{duration (in weeks) of Euler time-step for the simulations.}
+\item{timestep}{duration (in days) of Euler time-step for the simulations.}
 
 \item{nstageE}{integer; number of incubation stages.}
 
-\item{incubation_period, infectious_period}{mean duration (in weeks) of the incubation and infectious periods.}
+\item{index_case}{number of cases on day 0 (2014-04-01)}
 
-\item{type}{should raw or cumulative case counts be used as the data?}
-
-\item{na.rm}{should missing data be removed?}
-
-\item{least.sq}{logical; if \code{TRUE}, ordinary least squares will be used.}
+\item{incubation_period, infectious_period}{mean duration (in days) of the incubation and infectious periods.}
 }
 \description{
-Data and models for the 2013--2015 outbreak of Ebola virus disease in West Africa.
+Data and models for the 2014--2016 outbreak of Ebola virus disease in West Africa.
 }
 \details{
-The data include case counts according to the WHO situation report dated 1 October 2014.
+The data include monthly case counts and death reports derived from WHO situation reports, as reported by the U.S. CDC.
 The models are described in King et al. (2015).
+
+The data-cleaning script is included in the R source code file \file{ebola.R}.
 }
 \section{Model structure}{
 
+The default incubation period is supposed to be Gamma distributed with shape parameter \code{nstageE} and mean 11.4 days and the case-fatality ratio (`cfr`) is taken to be 0.7 (cf. WHO Ebola Response Team 2014).
+The discrete-time formula is used to calculate the corresponding \code{alpha} (cf. He et al. 2010).
+
 The observation model is a hierarchical model for cases and deaths:
-  \deqn{p(R_t, D_t| C_t) = p(R_t | C_t) * p(D_t | C_t, R_t).}
+  \deqn{p(R_t, D_t| C_t) = p(R_t | C_t) p(D_t | C_t, R_t).}
 Here, \eqn{p(R_t | C_t)} is negative binomial with mean \eqn{\rho C_t} and dispersion parameter \eqn{1/k};
 \eqn{p(D_t | C_t, R_t)} is binomial with size \eqn{R_t} and probability equal to the case fatality rate \code{cfr}.
-
-The default incubation period is supposed to be Gamma distributed with shape parameter `nstageE` and mean 11.4 days.
-The discrete-time formula is used to calculate the corresponding `alpha`` (cf. He et al. 2010).
-The case-fatality ratio (`cfr`) is fixed at 0.7 (cf. WHO Ebola Response Team 2014).
 }
 
+\examples{
+data(ebolaWA2014)
+
+library(ggplot2)
+library(tidyr)
+
+ebolaWA2014 \%>\%
+  gather(variable,count,cases,deaths) \%>\%
+  ggplot(aes(x=date,y=count,group=country,color=country))+
+  geom_line()+
+  facet_grid(variable~.,scales="free_y")+
+  theme_bw()+
+  theme(axis.text=element_text(angle=-90))
+
+ebolaWA2014 \%>\%
+  gather(variable,count,cases,deaths) \%>\%
+  ggplot(aes(x=date,y=count,group=variable,color=variable))+
+  geom_line()+
+  facet_grid(country~.,scales="free_y")+
+  theme_bw()+
+  theme(axis.text=element_text(angle=-90))
+
+plot(ebolaModel(country="SLE"))
+plot(ebolaModel(country="LBR"))
+plot(ebolaModel(country="GIN"))
+}
 \references{
 A. A. King, M. Domenech de Cellès, F. M. G. Magpantay, and P. Rohani.
 Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola.

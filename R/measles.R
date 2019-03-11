@@ -1,19 +1,15 @@
 ##' Historical childhood disease incidence data
 ##'
-##' \code{LondonYorke} is a data frame containing the monthly number of
-##' reported cases of chickenpox, measles, and mumps from two American cities
-##' (Baltimore and New York) in the mid-20th century (1928--1972).
+##' @description
+##' \code{LondonYorke} is a data frame containing the monthly number of reported cases of chickenpox, measles, and mumps from two American cities (Baltimore and New York) in the mid-20th century (1928--1972).
 ##'
-##' \code{ewmeas} and \code{ewcitmeas} are data frames containing weekly
-##' reported cases of measles in England and Wales.  \code{ewmeas} records the
-##' total measles reports for the whole country, 1948--1966.  One questionable
-##' data point has been replaced with an NA.  \code{ewcitmeas} records the
-##' incidence in seven English cities 1948--1987.  These data were kindly
-##' provided by Ben Bolker, who writes: \dQuote{Most of these data have been
-##' manually entered from published records by various people, and are prone to
-##' errors at several levels. All data are provided as is; use at your own
-##' risk.}
-##'
+##' \code{ewmeas} and \code{ewcitmeas} are data frames containing weekly reported cases of measles in England and Wales.
+##' \code{ewmeas} records the total measles reports for the whole country, 1948--1966.
+##' One questionable data point has been replaced with an NA.
+##' \code{ewcitmeas} records the incidence in seven English cities 1948--1987.
+##' These data were kindly provided by Ben Bolker, who writes:
+##' \dQuote{Most of these data have been manually entered from published records by various people, and are prone to errors at several levels.
+##' All data are provided as is; use at your own risk.}
 ##'
 ##' @name measles
 ##' @rdname measles

@@ -84,14 +84,13 @@
 ##' @author Aaron A. King
 ##'
 ##' @references
-##' C. Breto & E. L. Ionides.
-##' Compound Markov counting processes and their applications to modeling infinitesimally over-dispersed systems.
+##' C. Breto & E. L. Ionides, Compound Markov counting processes
+##' and their applications to modeling infinitesimally over-dispersed systems.
 ##' Stoch. Proc. Appl., 121:2571--2591, 2011.
 ##'
-##' D. He, E. L. Ionides, & A. A. King.
-##' Plug-and-play inference for disease dynamics:
-##' measles in large and small populations as a case study.
-##' J. R. Soc. Interface, 7: 271--283, 2010.
+##' D. He, E. L. Ionides, & A. A. King, Plug-and-play inference for disease
+##' dynamics: measles in large and small populations as a case study.  J. R.
+##' Soc. Interface, 7:271--283, 2010.
 ##'
 ##' @keywords distribution
 ##' @examples
