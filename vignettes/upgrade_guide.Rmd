@@ -109,12 +109,12 @@ It is useful to divide the **pomp** package functionality into different levels.
 
 - *Basic model components*: user-specified procedures that perform the elementary computations that specify a POMP model.
 There are nine of these:
-- `rinit`: simulator for the initial-state distribution, i.e., the distribution of the latent state at time `t0`.
-- `rprocess` and `dprocess`: simulator and density evaluation procedure, respectively, for the process model.
-- `rmeasure` and `dmeasure`: simulator and density evaluation procedure, respectively, for the measurement model.
-- `rprior` and `dprior`: simulator and density evaluation procedure, respectively, for the prior distribution.
-- `skeleton`: evaluation of the deterministic skeleton.
-- `partrans`: parameter transformations.
+	- `rinit`: simulator for the initial-state distribution, i.e., the distribution of the latent state at time `t0`.
+	- `rprocess` and `dprocess`: simulator and density evaluation procedure, respectively, for the process model.
+	- `rmeasure` and `dmeasure`: simulator and density evaluation procedure, respectively, for the measurement model.
+	- `rprior` and `dprior`: simulator and density evaluation procedure, respectively, for the prior distribution.
+	- `skeleton`: evaluation of the deterministic skeleton.
+	- `partrans`: parameter transformations.
 
 The term *basic model component* is meant to refer to the procedure itself, as distinct from the execution of the procedure.
 The user specifies the procedure (in one of several forms);
@@ -127,23 +127,23 @@ In addition, there is the `trajectory` workhorse, which iterates or integrates t
 - *Elementary POMP algorithms*: 
 algorithms that interrogate the model or the model/data confrontation without attempting to estimate parameters.
 There are currently four of these:
-- `simulate` performs simulations of the POMP model, i.e., it samples from the joint distribution of latent states and observables.
-- `pfilter` runs a sequential Monte Carlo (particle filter) algorithm to compute the likelihood and (optionally) estimate the prediction and filtering distributions of the latent state process.
-- `probe` computes one or more uni- or multi-variate summary statistics on both actual and simulated data.
-- `spect` estimates the power spectral density functions for the actual and simulated data.
+	- `simulate` performs simulations of the POMP model, i.e., it samples from the joint distribution of latent states and observables.
+	- `pfilter` runs a sequential Monte Carlo (particle filter) algorithm to compute the likelihood and (optionally) estimate the prediction and filtering distributions of the latent state process.
+	- `probe` computes one or more uni- or multi-variate summary statistics on both actual and simulated data.
+	- `spect` estimates the power spectral density functions for the actual and simulated data.
 
 - *POMP estimation algorithms*: procedures that build on the elementary algorithms and are used for estimation of parameters and other inferential tasks.
 There are currently ten of these:
-- `abc`: approximate Bayesian computation
-- `bsmc2`: Liu-West algorithm for Bayesian SMC
-- `pmcmc`: a particle MCMC algorithm
-- `mif2`: iterated filtering (IF2)
-- `enkf`: ensemble Kalman filter
-- `eakf`: ensemble adjusted Kalman filter
-- `traj_objfun`: trajectory matching
-- `spect_objfun`: power spectrum matching
-- `probe_objfun`: probe matching
-- `nlf_objfun`: nonlinear forecasting
+	- `abc`: approximate Bayesian computation
+	- `bsmc2`: Liu-West algorithm for Bayesian SMC
+	- `pmcmc`: a particle MCMC algorithm
+	- `mif2`: iterated filtering (IF2)
+	- `enkf`: ensemble Kalman filter
+	- `eakf`: ensemble adjusted Kalman filter
+	- `traj_objfun`: trajectory matching
+	- `spect_objfun`: power spectrum matching
+	- `probe_objfun`: probe matching
+	- `nlf_objfun`: nonlinear forecasting
 
 - *Objective function methods*: 
 among the estimation algorithms just listed, four are methods that construct stateful objective functions that can be optimized using general-purpose numerical optimization algorithms such as `optim`, `subplex`, or the optimizers in the **nloptr** package.

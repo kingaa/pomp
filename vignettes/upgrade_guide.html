@@ -187,23 +187,28 @@ code {
 <h2>Terminology</h2>
 <p>It is useful to divide the <strong>pomp</strong> package functionality into different levels.</p>
 <ul>
-<li><em>Basic model components</em>: user-specified procedures that perform the elementary computations that specify a POMP model. There are nine of these:</li>
+<li><em>Basic model components</em>: user-specified procedures that perform the elementary computations that specify a POMP model. There are nine of these:
+<ul>
 <li><code>rinit</code>: simulator for the initial-state distribution, i.e., the distribution of the latent state at time <code>t0</code>.</li>
 <li><code>rprocess</code> and <code>dprocess</code>: simulator and density evaluation procedure, respectively, for the process model.</li>
 <li><code>rmeasure</code> and <code>dmeasure</code>: simulator and density evaluation procedure, respectively, for the measurement model.</li>
 <li><code>rprior</code> and <code>dprior</code>: simulator and density evaluation procedure, respectively, for the prior distribution.</li>
 <li><code>skeleton</code>: evaluation of the deterministic skeleton.</li>
 <li><code>partrans</code>: parameter transformations.</li>
+</ul></li>
 </ul>
 <p>The term <em>basic model component</em> is meant to refer to the procedure itself, as distinct from the execution of the procedure. The user specifies the procedure (in one of several forms); the package decides when and where to execute the procedure.</p>
 <ul>
 <li><p><em>Workhorses</em>: <strong>R</strong> functions, built into the package, that cause the basic model component procedures to be executed. Each workhorse has a name that matches that of the corresponding basic model component. In addition, there is the <code>trajectory</code> workhorse, which iterates or integrates the deterministic skeleton (according to whether it is a map or a vectorfield, respectively) to obtain state trajectories.</p></li>
-<li><em>Elementary POMP algorithms</em>: algorithms that interrogate the model or the model/data confrontation without attempting to estimate parameters. There are currently four of these:</li>
+<li><em>Elementary POMP algorithms</em>: algorithms that interrogate the model or the model/data confrontation without attempting to estimate parameters. There are currently four of these:
+<ul>
 <li><code>simulate</code> performs simulations of the POMP model, i.e., it samples from the joint distribution of latent states and observables.</li>
 <li><code>pfilter</code> runs a sequential Monte Carlo (particle filter) algorithm to compute the likelihood and (optionally) estimate the prediction and filtering distributions of the latent state process.</li>
 <li><code>probe</code> computes one or more uni- or multi-variate summary statistics on both actual and simulated data.</li>
-<li><p><code>spect</code> estimates the power spectral density functions for the actual and simulated data.</p></li>
-<li><em>POMP estimation algorithms</em>: procedures that build on the elementary algorithms and are used for estimation of parameters and other inferential tasks. There are currently ten of these:</li>
+<li><code>spect</code> estimates the power spectral density functions for the actual and simulated data.</li>
+</ul></li>
+<li><em>POMP estimation algorithms</em>: procedures that build on the elementary algorithms and are used for estimation of parameters and other inferential tasks. There are currently ten of these:
+<ul>
 <li><code>abc</code>: approximate Bayesian computation</li>
 <li><code>bsmc2</code>: Liu-West algorithm for Bayesian SMC</li>
 <li><code>pmcmc</code>: a particle MCMC algorithm</li>
@@ -213,7 +218,8 @@ code {
 <li><code>traj_objfun</code>: trajectory matching</li>
 <li><code>spect_objfun</code>: power spectrum matching</li>
 <li><code>probe_objfun</code>: probe matching</li>
-<li><p><code>nlf_objfun</code>: nonlinear forecasting</p></li>
+<li><code>nlf_objfun</code>: nonlinear forecasting</li>
+</ul></li>
 <li><p><em>Objective function methods</em>: among the estimation algorithms just listed, four are methods that construct stateful objective functions that can be optimized using general-purpose numerical optimization algorithms such as <code>optim</code>, <code>subplex</code>, or the optimizers in the <strong>nloptr</strong> package. These have certain new features that will be described below.</p></li>
 </ul>
 </div>
