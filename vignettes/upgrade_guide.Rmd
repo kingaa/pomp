@@ -24,6 +24,9 @@ a:hover, a:active {
   color: #cc3333;
   text-decoration: none;
 }
+code {
+  font-size: 110%;
+}
 ```
 
 This document was produced using **pomp** version `r packageVersion("pomp2")` and **R** version `r getRversion()`.
