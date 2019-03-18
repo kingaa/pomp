@@ -1,8 +1,8 @@
 Package: pomp2
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 2.0.12.0
-Date: 2019-03-11
+Version: 2.0.13.0
+Date: 2019-03-18
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -116,6 +116,7 @@ Collate:
     'profile_design.R'
     'resample.R'
     'ricker.R'
+    'runif_design.R'
     'rw2.R'
     'sannbox.R'
     'sir.R'

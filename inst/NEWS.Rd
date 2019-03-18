@@ -1,5 +1,13 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.0.13}{
+  \itemize{
+    \item A new function, \code{runifDesign} allows construction of design matrices using samples from multivariate uniform distributions.
+    \item The \code{profileDesign} function takes a new argument, \code{type}, with two options:
+    \code{"sobol"}, the default, constructs the design using \code{sobolDesign}, as before.
+    \code{"runif"} uses the new \code{runifDesign} function.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.0.12}{
   \itemize{
     \item A new example, comprising models and data for the 2014--2016 west African Ebola virus disease outbreak, is included.

@@ -1,5 +1,16 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._1_3:
+
+        • A new function, ‘runifDesign’ allows construction of design
+          matrices using samples from multivariate uniform
+          distributions.
+
+        • The ‘profileDesign’ function takes a new argument, ‘type’,
+          with two options: ‘"sobol"’, the default, constructs the
+          design using ‘sobolDesign’, as before.  ‘"runif"’ uses the
+          new ‘runifDesign’ function.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._1_2:
 
         • A new example, comprising models and data for the 2014--2016

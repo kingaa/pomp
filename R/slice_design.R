@@ -1,4 +1,12 @@
+##' @description
+##' \code{sliceDesign} generates points along slices through a specified point.
 ##' @rdname design
+##' @return
+##' \code{sliceDesign} returns a data frame with one row per point.
+##' The \sQuote{slice} variable indicates which slice the point belongs to.
+##' @param center \code{center} is a named numeric vector specifying the point
+##' through which the slice(s) is (are) to be taken.
+##' 
 ##' @export
 sliceDesign <- function (center, ...) {
   slices <- list(...)
