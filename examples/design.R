@@ -10,13 +10,12 @@ dim(x)
 plot(x)
 
 ## A two-parameter profile design:
-x <- profileDesign(p=1:10,q=3:5,lower=c(a=0,b=0),upper=c(b=5,a=1),nprof=20)
+x <- profileDesign(p=1:10,q=3:5,lower=c(a=0,b=0),upper=c(b=5,a=1),nprof=200)
 dim(x)
 plot(x)
 
 ## A two-parameter profile design with random points:
-x <- profileDesign(p=1:10,q=3:5,lower=c(a=0,b=0),upper=c(b=5,a=1),nprof=20,
-  type="runif")
+x <- profileDesign(p=1:10,q=3:5,lower=c(a=0,b=0),upper=c(b=5,a=1),nprof=200,type="runif")
 dim(x)
 plot(x)
 

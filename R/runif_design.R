@@ -16,6 +16,11 @@ runifDesign <- function (lower = numeric(0), upper = numeric(0), nseq) {
   if (!all(sort(lnames)==sort(names(upper))))
     pStop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match.")
   upper <- upper[lnames]
+  if (!all(upper>=lower))
+    pStop(ep,"upper values should be at least as large as lower ones.")
+  nseq <- as.integer(nseq)
+  if (nseq < 0)
+    pStop(ep,sQuote("nseq"),"< 0.")
   y <- matrix(
     data=runif(n=nseq,min=lower,max=upper),
     nrow=nseq,ncol=length(lower),

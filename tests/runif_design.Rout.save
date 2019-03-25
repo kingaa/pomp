@@ -1,0 +1,66 @@
+
+R version 3.5.3 (2019-03-11) -- "Great Truth"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> png(filename="runif_design-%02d.png",res=100)
+> library(pomp2)
+Welcome to pomp version 2!
+For information on upgrading your pomp version < 2 code, see the
+'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
+> library(dplyr)
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+> library(magrittr)
+> 
+> set.seed(818859525)
+> 
+> ## A 3D random design:
+> x <- runifDesign(lower=c(q=3,a=0,b=0),upper=c(q=5,a=1,b=5),nseq=20)
+> stopifnot(x %>% count(q) %>% pull(n) %>% unique() %>% equals(1))
+> plot(x)
+> 
+> ## A 1D random design:
+> x <- runifDesign(lower=c(a=1,b=0),upper=c(b=5,a=1),nseq=30)
+> stopifnot(x %>% count(a) %>% pull(n) %>% unique() %>% equals(30))
+> plot(x)
+> 
+> try(runifDesign(lower=c(),upper=c(),nseq=10))
+Error : in 'runifDesign': 'lower' and 'upper' must be named vectors.
+> try(runifDesign(lower=c(a=3),upper=c(),nseq=10))
+Error : in 'runifDesign': 'lower' and 'upper' must have same length.
+> try(runifDesign(lower=c(a=3),upper=c(a=1),nseq=10))
+Error : in 'runifDesign': upper values should be at least as large as lower ones.
+> try(runifDesign(lower=c(a=3),upper=c(b=10),nseq=10))
+Error : in 'runifDesign': names of 'lower' and 'upper' must match.
+> try(runifDesign(lower=c(a=3),upper=c(a=10),nseq=-1))
+Error : in 'runifDesign': 'nseq'< 0.
+> 
+> 
+> dev.off()
+null device 
+          1 
+> 
