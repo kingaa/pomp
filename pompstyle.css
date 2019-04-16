@@ -6,12 +6,11 @@ body {
     color: #000000;
     background: #ffffff;
     font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
-    max-width: 800px;
-    width: 800px;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    margin-left: 30px;
-    margin-right: 30px;
+    width: calc(80% - 50px);
+    padding-top: 20px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .emph {
@@ -19,10 +18,15 @@ body {
     font-weight: bold;
 }
 
+.emph1 {
+    color: #3333ff; 
+    font-weight: bold;
+}
+
 .firstcharacter { 
     float: left; 
     color: #3333ff; 
-    font-size: 40px; 
+    font-size: 40px;
     line-height: 30px;
     vertical-align: top;
     padding-right: 5px;
@@ -85,48 +89,65 @@ dt {
 #TOC ul li {
     list-style: none;
 }
-#header {
-    text-align: right;
-    position: absolute;
-    width: 500px;
-    left: 0px; 
-    top: 0px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
+#menu-icon {
+    position: fixed;
+    top: 10px;
+    left: 10px;
 }
 #menu {
     text-align: left;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 20px;
+    background-color: #ffffff;
+    z-index: 20;
+    display: none;
+}
+#main {
     position: absolute;
-    width: 200px;
-    left: 500px;
-    top: 0px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
+    top: 10px;
+    left: 52px;
+}
+#header {
+    text-align: left;
+    position: relative;
+    width: 70%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+#header h1 {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 #content {
     text-align: left;
-    position: absolute;
-    width: 700px;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
-    padding: 20px;
-    left: 0px;
-    top: 200px;
+    position: relative;
+    width: 80%;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+    padding-right: 40px;
 }
 #toplink {
     text-align: right;
     padding-right: 40px;
 }
-
 #menu ul {
+    font-weight: bold;
     list-style: none;
+    margin: 0px;
+    padding: 20px;
 }
 .header-section-number:after, .toc-section-number:after {
-  content: ".";
+    content: ".";
+}
+
+#nav:hover #menu {
+    display: block;
 }

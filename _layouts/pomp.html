@@ -2,34 +2,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="stochastic dynamics, inference, hidden Markov model, state space model, pomp, R" />
     <title>{{ page.title }}</title>
     <link href="pompstyle.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <div id="header">
 
-      <h2><span class="emph">pomp</span>:<br/>
-	statistical inference for <br/>
-	<span class="emph">p</span>artially-<span class="emph">o</span>bserved&nbsp;<span class="emph">M</span>arkov&nbsp;<span class="emph">p</span>rocesses
-      </h2>
-    </div>
-    <div id="menu">
-      {% include menu.html %}
+    <div id="nav">
+      <div id="menu-icon">
+	<img src="https://kingaa.github.io/images/hamburger_icon.png" />
+      </div>
+      <div id="menu">
+	{% include menu.html %}
+      </div>    
     </div>    
-
-    <div id="content">
-
-      {{ content }}
-
-      <div id="thanks">
-	{% include thanks.html %}
+    
+    <div id="main">
+      <div id="header">
+	<h1><span class="emph1">pomp</span>: statistical inference for <br/>
+	  <span class="emph1">p</span>artially-<span class="emph1">o</span>bserved <span class="emph1">M</span>arkov <span class="emph1">p</span>rocesses
+	</h1>
       </div>
-
-      <div id="toplink">
-	<a href="#top">Top</a>
+      
+      <div id="content">
+	
+	{{ content }}
+	
+	<div id="thanks">
+	  {% include thanks.html %}
+	</div>
+	
+	<div id="toplink">
+	  <a href="#top">Top</a>
+	</div>
+	
       </div>
 
     </div>
+
   </body>
 </html>
