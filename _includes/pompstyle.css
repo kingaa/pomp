@@ -155,7 +155,7 @@ dt {
     #menu-icon {
 	position: fixed;
 	top: 20px;
-	right: 82px;
+	right: 132px;
 	z-index: 10;
 	display: none;
     }
@@ -183,11 +183,11 @@ dt {
     }
 
     #header {
-	width: calc(80% - 200px)
+	width: calc(80% - 200px);
     }
 
     #content {
-	width: calc(90% - 200px)
+	width: calc(90% - 200px);
     }
 
 }
@@ -195,7 +195,7 @@ dt {
 @media screen and (max-width: 1000px) {
 
     #menu-icon {
-	right: 5%;
+	right: calc(5% + 100px);
 	display: block;
     }
 
@@ -207,10 +207,6 @@ dt {
 
     #nav:hover #menu {
 	display: block;
-    }
-
-    #header, #content {
-	margin-left: 0;
     }
 
 }
