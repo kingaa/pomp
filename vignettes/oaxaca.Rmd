@@ -331,7 +331,7 @@ Here, we'll illustrate this process a dataset of *Parus major* abundance in Wyth
 
 Download and plot the data:
 ```{r parus-data}
-loc <- url("http://kingaa.github.io/pomp/vignettes/parus.csv")
+loc <- url("https://kingaa.github.io/pomp/vignettes/parus.csv")
 dat <- read.csv(loc)
 head(dat)
 plot(pop~year,data=dat,type='o')

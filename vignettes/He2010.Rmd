@@ -13,7 +13,7 @@ csl: ecology.csl
 
 Licensed under the Creative Commons attribution-noncommercial license, http://creativecommons.org/licenses/by-nc/3.0/.
 Please share and remix noncommercially, mentioning its origin.  
-![CC-BY_NC](http://kingaa.github.io/images/cc-by-nc.png)
+![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
 
 Produced using *R* version `r getRversion()` and **pomp2** version `r packageVersion("pomp2")`.
 
@@ -33,7 +33,7 @@ The intentions are to:
 - illustrate the construction of a complex model in **pomp**
 
 Whilst @He2010 examined measles in 20 towns, we will focus on `r TOWN` alone.
-The full 20 city dataset is available on [the **pomp** website](http://kingaa.github.io/pomp/vignettes/) and the MLEs obtained by @He2010 for the full 20 towns are included in the R code accompanying this document.
+The full 20 city dataset is available on [the **pomp** website](https://kingaa.github.io/pomp/docs.html) and the MLEs obtained by @He2010 for the full 20 towns are included in the R code accompanying this document.
 
 ```{r knitr-opts,include=FALSE,cache=FALSE,purl=FALSE}
 library(knitr)
@@ -85,7 +85,7 @@ The following commands install **pomp** from source (on github).
 library(devtools)
 install_github("kingaa/pomp")
 ```
-If we were to run into trouble in the above, we would consult the [package website](http://kingaa.github.io/pomp/install.html).
+If we were to run into trouble in the above, we would consult the [package website](https://kingaa.github.io/pomp/install.html).
 
 Now we'll load the packages we'll need, and set the random seed, to allow reproducibility.
 ```{r prelims,cache=FALSE}
