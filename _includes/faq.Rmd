@@ -11,7 +11,7 @@ output:
 require(knitr)
 require(pomp)
 knitr::opts_chunk$set(cache=FALSE,results="hide",echo=TRUE,fig.show="asis",
-                      message=FALSE,warning=TRUE,error=TRUE)
+  message=FALSE,warning=TRUE,error=TRUE,out.width="70%")
 require(ggplot2)
 theme_set(theme_bw())
 set.seed(1810027260)
