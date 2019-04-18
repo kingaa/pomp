@@ -45,10 +45,9 @@
 
     <script>
       var d = document.querySelectorAll("#menu a");
-      var u = document.head.id;
+      const h = document.head.id;
       for (var i = 0; i < d.length; i++) {
-        var a = d[i].id;
-        if (a == u) {
+        if (d[i].id == h) {
           d[i].classList.add("activated");
         }
       }
