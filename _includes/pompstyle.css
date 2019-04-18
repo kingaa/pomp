@@ -155,14 +155,14 @@ dt {
     #menu-icon {
 	position: fixed;
 	top: 20px;
-	right: 132px;
+	right: 40px;
 	z-index: 10;
 	display: none;
     }
 
     #menu {
 	position: fixed;
-	width: 200px;
+	width: 180px;
 	top: 0px;
 	right: 0px;
 	z-index: 20;
@@ -195,13 +195,10 @@ dt {
 @media screen and (max-width: 1000px) {
 
     #menu-icon {
-	right: calc(5% + 100px);
 	display: block;
     }
 
     #menu {
-	top: 10px;
-	right: 10px;
 	display: none;
     }
 
