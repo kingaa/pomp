@@ -13,25 +13,6 @@ body {
     padding-right: 30px;
 }
 
-.emph {
-    color: #cc3333; 
-    font-weight: bold;
-}
-
-.emph1 {
-    color: #3333ff; 
-    font-weight: bold;
-}
-
-.firstcharacter { 
-    float: left; 
-    color: #3333ff; 
-    font-size: 40px;
-    line-height: 30px;
-    vertical-align: top;
-    padding-right: 5px;
-}
-
 code {
     font-family: monospace;
     font-size: 1.125em;
@@ -72,8 +53,11 @@ a:link, a:visited {
     text-decoration: none;
 }
 a:hover, a:active {
-    color: #cc3333;
+    color: #cc3333; 
     text-decoration: none;
+}
+a.activated {
+    text-decoration: underline;
 }
 
 thead {
@@ -109,6 +93,7 @@ dt {
     top: 10px;
     left: 52px;
 }
+
 #content {
     text-align: left;
     position: relative;
@@ -127,6 +112,7 @@ dt {
     padding-bottom: 10px;
     padding-left: 50px;
     padding-right: 50px;
+    white-space: nowrap;
 }
 
 #header h1 {
@@ -206,4 +192,23 @@ dt {
 	display: block;
     }
 
+}
+
+.emph {
+    color: #cc3333; 
+    font-weight: bold;
+}
+
+.emph1 {
+    color: #3333ff; 
+    font-weight: bold;
+}
+
+.firstcharacter { 
+    float: left; 
+    color: #3333ff; 
+    font-size: 40px;
+    line-height: 30px;
+    vertical-align: top;
+    padding-right: 5px;
 }

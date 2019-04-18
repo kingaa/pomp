@@ -1,5 +1,6 @@
 ---
 title: install pomp
+id: install
 layout: pomp
 ---
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
+  <head id="{{ page.id }}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="stochastic dynamics, inference, hidden Markov model, state space model, pomp, R" />
@@ -42,6 +42,17 @@
       </div>
 
     </div>
+
+    <script>
+      var d = document.querySelectorAll("#menu a");
+      var u = document.head.id;
+      for (var i = 0; i < d.length; i++) {
+        var a = d[i].id;
+        if (a == u) {
+          d[i].classList.add("activated");
+        }
+      }
+    </script>
 
   </body>
 </html>

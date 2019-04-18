@@ -1,7 +1,9 @@
 ---
 title: pomp, an R package for statistical inference using partially observed Markov processes
+id: about
 layout: pomp
 ---
+
 <span class="firstcharacter">**pomp**</span> provides a very general realization of nonlinear partially-observed Markov processes (AKA nonlinear stochastic dynamical systems).
 These are a generalization of linear state-space and hidden Markov models to nonlinear, non-Gaussian processes in either discrete or continuous time.
 In **pomp**, one can implement a model by specifying its unobserved process and measurement components;
