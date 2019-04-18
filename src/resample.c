@@ -1,7 +1,25 @@
 // -*- C++ -*-
 
-#include "pomp_internal.h"
 #include <Rdefines.h>
+#include "pomp_internal.h"
+
+SEXP systematic_resampling(SEXP weights);
+void nosort_resamp(int nw, double *w, int np, int *p, int offset);
+
+SEXP systematic_resampling (SEXP weights)
+{
+  int n;
+  SEXP perm;
+
+  n = LENGTH(weights);
+  PROTECT(perm = NEW_INTEGER(n));
+  PROTECT(weights = AS_NUMERIC(weights));
+  GetRNGstate();
+  nosort_resamp(n,REAL(weights),n,INTEGER(perm),1);
+  PutRNGstate();
+  UNPROTECT(2);
+  return(perm);
+}
 
 void nosort_resamp (int nw, double *w, int np, int *p, int offset)
 {
@@ -26,19 +44,4 @@ void nosort_resamp (int nw, double *w, int np, int *p, int offset)
   if (offset)			// add offset if needed
     for (j = 0; j < np; j++) p[j] += offset;
 
-}
-
-SEXP systematic_resampling (SEXP weights)
-{
-  int n;
-  SEXP perm;
-
-  n = LENGTH(weights);
-  PROTECT(perm = NEW_INTEGER(n));
-  PROTECT(weights = AS_NUMERIC(weights));
-  GetRNGstate();
-  nosort_resamp(n,REAL(weights),n,INTEGER(perm),1);
-  PutRNGstate();
-  UNPROTECT(2);
-  return(perm);
 }

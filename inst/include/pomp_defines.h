@@ -14,6 +14,7 @@
 # define MATCHCOLNAMES(X,N,W) (matchnames(GET_COLNAMES(GET_DIMNAMES(X)),(N),(W)))
 
 typedef enum {undef=0,Rfun=1,native=2,regNative=3} pompfunmode;
+typedef enum {dflt=0,onestep=1,discrete=2,euler=3,gill=4} rprocmode;
 
 // lookup-table structure, as used internally
 typedef struct {

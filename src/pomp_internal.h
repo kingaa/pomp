@@ -9,9 +9,6 @@
 #include <Rinternals.h>
 
 #include "pomp_defines.h"
-
-typedef enum {dflt=0,onestep=1,discrete=2,euler=3,gill=4} rprocmode;
-
 #include "pomp_decls.h"
 
 #endif

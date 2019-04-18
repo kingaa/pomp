@@ -35,10 +35,10 @@ static void pomp_acf_compute (double *acf, double *x, int n, int nvars, int *lag
           xx += (*p1)*(*p2);
           ct++;
         }
-        *p = (ct > 0) ? xx/ct : R_NaReal;
+      *p = (ct > 0) ? xx/ct : R_NaReal;
     }
   }
-
+  
 }
 
 // vectorized routine for CCF calculation
@@ -82,14 +82,14 @@ static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lag
           xx += (*p1)*(*p2);
           ct++;
         }
-        *p = (ct > 0) ? xx/ct : R_NaReal;
+      *p = (ct > 0) ? xx/ct : R_NaReal;
     } else {
       for (k = 0, xx = 0, ct = 0, p1 = x, p2 = y+lag; k < n-lag; k++, p1++, p2++)
         if (R_FINITE(*p1) && R_FINITE(*p1)) {
           xx += (*p1)*(*p2);
           ct++;
         }
-        *p = (ct > 0) ? xx/ct : R_NaReal;
+      *p = (ct > 0) ? xx/ct : R_NaReal;
     }
   }
 

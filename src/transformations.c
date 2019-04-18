@@ -6,6 +6,11 @@
 
 #include "pomp_internal.h"
 
+SEXP LogitTransform(SEXP P);
+SEXP ExpitTransform(SEXP X);
+SEXP LogBarycentricTransform(SEXP X);
+SEXP InverseLogBarycentricTransform(SEXP Y);
+
 SEXP LogitTransform (SEXP P) {
   double *p;
   int k, n;
