@@ -1,6 +1,9 @@
 params <-
 list(prefix = "R_v_C", min.pomp.version = "2.0.3")
 
+## a:link, a:visited {
+
+
 ## ----precheck,include=FALSE----------------------------------------------
 stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
 

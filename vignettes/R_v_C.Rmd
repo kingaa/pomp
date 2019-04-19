@@ -12,6 +12,20 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{css echo=FALSE}
+a:link, a:visited {
+  color: #0000ff;
+  text-decoration: none;
+}
+a:hover, a:active {
+  color: #cc3333;
+  text-decoration: none;
+}
+code {
+  font-size: 110%;
+}
+```
+
 ```{r precheck,include=FALSE}
 stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
 ```
