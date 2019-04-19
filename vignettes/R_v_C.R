@@ -4,13 +4,18 @@ list(prefix = "R_v_C", min.pomp.version = "2.0.3")
 ## ----precheck,include=FALSE----------------------------------------------
 stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
 
+
+
+
 ## ----packages------------------------------------------------------------
 library(pomp2)
 library(ggplot2)
 library(magrittr)
 
+
 ## ----seed,echo=FALSE-----------------------------------------------------
 set.seed(56300069)
+
 
 ## ----R1------------------------------------------------------------------
 simulate(times=1:100,t0=0,
@@ -31,6 +36,7 @@ simulate(times=1:100,t0=0,
   }
 ) -> gompertz
 
+
 ## ----R2------------------------------------------------------------------
 gompertz %>%
   as.data.frame() %>%
@@ -39,6 +45,7 @@ gompertz %>%
   geom_line()+
   labs(y="X, Y")+
   theme_bw()
+
 
 ## ----C1------------------------------------------------------------------
 simulate(times=0:100,t0=0,
@@ -62,9 +69,11 @@ simulate(times=0:100,t0=0,
   statenames="X"
 ) -> Gompertz
 
+
 ## ----params--------------------------------------------------------------
 p <- parmat(coef(Gompertz),4)
 p["X.0",] <- c(0.5,0.9,1.1,1.5)
+
 
 ## ----sim1----------------------------------------------------------------
 simulate(Gompertz,params=p,format="data.frame") %>%
@@ -74,10 +83,12 @@ simulate(Gompertz,params=p,format="data.frame") %>%
   theme_bw()+
   labs(title="Gompertz model",subtitle="stochastic simulations")
 
+
 ## ----pf1-----------------------------------------------------------------
 pf <- replicate(n=10,pfilter(Gompertz,Np=500))
 
 logmeanexp(sapply(pf,logLik),se=TRUE)
+
 
 ## ----comparison,cache=TRUE-----------------------------------------------
 system.time(simulate(gompertz,nsim=10000,format="arrays"))
