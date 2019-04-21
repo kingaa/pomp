@@ -14,6 +14,7 @@ options(
 )
 set.seed(1332379783L)
 
+
 ## ----gompertz-init,results="hide"----------------------------------------
 library(pomp2)
 gompertz() -> gomp
@@ -25,12 +26,14 @@ gomp %<>%
   window(start=1) %>%
   simulate(seed=340398091L)
 
+
 ## ----gompertz-mif2-1,results='hide'--------------------------------------
 library(foreach)
 library(doParallel)
 registerDoParallel()
 
 estpars <- c("r","sigma","tau")
+
 
 ## ----gompertz-mif2-2-eval,eval=TRUE,purl=TRUE,include=FALSE--------------
 bake(file="gompertz-mif2.rds",{
@@ -67,6 +70,7 @@ theta.mif <- coef(mf[[best]]$mif)
 
 replicate(10,logLik(pfilter(gomp,params=theta.mif,Np=10000))) %>%
   logmeanexp(se=TRUE) -> pf.loglik.mif
+
 
 ## ----kf,include=FALSE----------------------------------------------------
 kalman.filter <- function (Y, X0, r, K, sigma, tau) {
@@ -130,6 +134,7 @@ theta.mle <- coef(gomp)
 theta.mle[estpars] <- kalm.fit1$par
 loglik.mle <- -kalm.fit1$value
 
+
 ## ----gomp-post-mif2,include=FALSE----------------------------------------
 replicate(n=10,logLik(pfilter(gomp,Np=10000))) %>%
   logmeanexp(se=TRUE) -> pf.loglik.truth
@@ -144,6 +149,7 @@ rbind(`Truth`=theta.true[estpars],
     `$\\ell$`=round(c(loglik.truth,loglik.mle,loglik.mif),2)
   ) -> results.table
 
+
 ## ----mif2-plot,echo=FALSE,cache=FALSE,fig.height=6-----------------------
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 loglik <- sapply(mf,function(x)conv.rec(x$mif,"loglik"))
@@ -155,6 +161,7 @@ matplot(r,type='l',lty=1,xlab="",ylab=expression(r),xaxt='n')
 matplot(sigma,type='l',lty=1,xlab="",ylab=expression(sigma),xaxt='n')
 matplot(tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(tau))
 par(op)
+
 
 ## ----first-mif-results-table,echo=FALSE,cache=FALSE----------------------
 kable(results.table)

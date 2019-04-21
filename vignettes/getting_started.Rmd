@@ -23,7 +23,7 @@ csl: ecology.csl
 
 Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
 Please share and remix noncommercially, mentioning its origin.  
-![CC-BY_NC](http://kingaa.github.io/images/cc-by-nc.png)
+![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
 
 This document was produced using **pomp2** version `r packageVersion("pomp2")` and **R** version `r getRversion()`.
 
@@ -207,7 +207,7 @@ We will illustrate this using some simple examples.
 To get started, we must install **pomp2**, if it is not already installed.
 This package cannot yet be downloaded from CRAN (though that will change in the near future).
 However, the latest version is always available at the package homepage on Github.
-See the [package website for installation instructions](http://kingaa.github.io/pomp/install.html).
+See the [package website for installation instructions](https://kingaa.github.io/pomp/install.html).
 
 ### Important information for Windows and Mac users.
 
@@ -217,7 +217,7 @@ This typically affords a manyfold increase in computation time.
 It is possible to avoid C snippets entirely by writing model components as **R** functions, and we will begin by doing so, but the speed-ups afforded by C snippets are typically too good to pass up.
 To use C snippets, you must be able to compile C codes.
 Compilers are not by default installed on Windows or Mac systems, so users of such systems must do a bit more work to make use of **pomp2**'s facilities.
-The [installation instructions on the package website](http://kingaa.github.io/pomp/install.html) give details.
+The [installation instructions on the package website](https://kingaa.github.io/pomp/install.html) give details.
 
 ## Simulation of a POMP
 
@@ -693,8 +693,8 @@ parus %>%
 
 In these calls, we use the `statenames` and `paramnames` arguments to indicate which of the undeclared variables in the C snippets `rickstepC` and `vpstepC` are state variables and which are fixed parameters.
 Since `dW` and `eps` are declared as local variables within the C snippets themselves, we don't need to mention them here.
-The `rnorm` and `rpois` functions are part of the [**R** API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API):
-see the [manual on "Writing R Extensions"](http://cran.r-project.org/doc/manuals/r-release/R-exts.html) for a description of these and the other [distribution functions provided as part of the **R** API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
+The `rnorm` and `rpois` functions are part of the [**R** API](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API):
+see the [manual on "Writing R Extensions"](https://cran.r-project.org/doc/manuals/r-release/R-exts.html) for a description of these and the other [distribution functions provided as part of the **R** API](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
 A full set of rules for writing **pomp2** C snippets is given in the package help (`?Csnippet`).
 
 ---------------------------------------
@@ -728,7 +728,7 @@ Csnippet("
 ") -> dmeas
 ```
 
-Here, `dpois` again comes from the [**R** API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
+Here, `dpois` again comes from the [**R** API](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
 It takes three arguments, the datum (`pop`), the Poisson parameter (`b*N`), and `give_log`.
 When `give_log=0`, `dpois` returns the Poisson likelihood; 
 when `give_log=1`, `dpois` returns the log of this likelihood.
@@ -1057,8 +1057,8 @@ parameter estimation for fully stochastic models.
 Iterated filtering is a method for maximizing the likelihood.
 The method was introduced in its original form by @Ionides2006, and was subsequently much improved by @Ionides2015.
 The latter paper rigorously expounds the theory.
-An [addendum to the **pomp** *Journal of Statistical Software paper](http://kingaa.github.io/pomp/vignettes/mif2.html) provides pseudocode and a simple example.
-Finally, a [tutorial on the theory and practice](https://kingaa.github.io/sbied/mif/mif.html) is linked from the [**pomp2** documentation index](http://kingaa.github.io/pomp/docs.html).
+An [addendum to the **pomp** *Journal of Statistical Software paper](https://kingaa.github.io/pomp/vignettes/mif2.html) provides pseudocode and a simple example.
+Finally, a [tutorial on the theory and practice](https://kingaa.github.io/sbied/mif/mif.html) is linked from the [**pomp2** documentation index](https://kingaa.github.io/pomp/docs.html).
 Here, we confine ourselves to demonstrating how the IF2 algorithm [@Ionides2015] is applied to the toy examples we have been discussing.
 
 ### Local vs global search
@@ -1571,7 +1571,7 @@ It is frequently the case that an approach that makes use of more than one appro
 the main goal of the package is to facilitate effective inference by bringing a variety of tools, with complementary strengths and weaknesses, to the user in a common format.
 
 Although the goal of this document has been to introduce the beginner to the package through a display of the **pomp2** toolbox in the context of a rudimentary and incomplete data analysis of a short time series with toy models, it is important to realize that these tools have proven their utility on some extremely challenging problems, including some for which other existing methods are either less efficient or entirely infeasible.
-The [bibliography](http://kingaa.github.io/pomp/biblio.html) has links to peer-reviewed publications that have used these methods.
+The [bibliography](https://kingaa.github.io/pomp/biblio.html) has links to peer-reviewed publications that have used these methods.
 
 ## [**R** codes for this document](getting_started.R)
 ## [**pomp** homepage](https://kingaa.github.io/pomp/)

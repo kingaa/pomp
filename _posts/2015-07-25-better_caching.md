@@ -6,7 +6,7 @@ layout: pomp
 
 When a `pomp` object is constructed using `Csnippet`s, the C source is compiled and dynamically loaded into the running **R** session.
 Heretofore, this meant that one had to rebuild the `pomp` in each new **R** session.
-Changes in [version 0.75-1](http://github.com/kingaa/pomp/releases/tag/0.75-1) now make it so that one can store and re-use `pomp` objects across **R** sessions.
+Changes in [version 0.75-1](https://github.com/kingaa/pomp/releases/tag/0.75-1) now make it so that one can store and re-use `pomp` objects across **R** sessions.
 <!--more-->
 This is achieved by storing the source code internally to the `pomp` object.
 When a `pomp` object is used, a test is first performed to see if the needed shared-object file exists.

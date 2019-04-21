@@ -15,6 +15,9 @@ library(tidyverse)
 library(ggplot2)
 theme_set(theme_bw())
 
+
+
+
 ## ----sim1,warning=TRUE---------------------------------------------------
 library(pomp2)
 
@@ -32,21 +35,27 @@ simulate(t0=0, times=1:20,
   )
 ) -> sim1
 
+
 ## ----sim1_print----------------------------------------------------------
 sim1
+
 
 ## ----sim1_spy,eval=FALSE-------------------------------------------------
 ## spy(sim1)
 
+
 ## ----sim1_plot-----------------------------------------------------------
 plot(sim1)
+
 
 ## ----sim1_print2---------------------------------------------------------
 as(sim1,"data.frame")
 
+
 ## ----sim1_plot2----------------------------------------------------------
   ggplot(data=as.data.frame(sim1),aes(x=time,y=N))+
   geom_line()
+
 
 ## ----sim2----------------------------------------------------------------
 simulate(t0=0, times=1:20,
@@ -66,6 +75,7 @@ simulate(t0=0, times=1:20,
   }
 ) -> sim2
 
+
 ## ----sim2_alt------------------------------------------------------------
 simulate(
   sim1,
@@ -74,6 +84,7 @@ simulate(
     c(Y=rpois(n=1,lambda=b*N))
   }
 ) -> sim2
+
 
 ## ----sim2_spy,eval=FALSE-------------------------------------------------
 ## spy(sim2)
@@ -87,6 +98,7 @@ ggplot(data=gather(
   aes(x=time,y=value,color=variable))+
   geom_line()
 
+
 ## ----sim2_sim1-----------------------------------------------------------
 simulate(sim2,nsim=20) -> sims
 
@@ -99,6 +111,7 @@ ggplot(data=gather(
   geom_line()+
   facet_grid(variable~.,scales="free_y")+
   labs(y="",color="")
+
 
 ## ----sim2_sim2-----------------------------------------------------------
 p <- parmat(coef(sim2),3)
@@ -115,6 +128,7 @@ ggplot(data=sims,aes(x=time,y=value,color=variable,
   facet_grid(variable~.id,scales="free_y")+
   labs(y="",color="")
 
+
 ## ----sim2_sim3,message=F-------------------------------------------------
 simulate(sim2,params=p,
   times=seq(0,3),
@@ -126,12 +140,14 @@ ggplot(data=separate(sims,.id,c("parset","rep")),
   facet_grid(time~.,labeller=label_both,scales="free_y")+
   lims(x=c(NA,1000))
 
+
 ## ----parus-plot----------------------------------------------------------
 parus %>%
   ggplot(aes(x=year,y=pop))+
   geom_line()+geom_point()+
   expand_limits(y=0)
 parus
+
 
 ## ----rick----------------------------------------------------------------
 parus %>%
@@ -152,11 +168,13 @@ parus %>%
     }
   ) -> rick
 
+
 ## ----logistic-step-fun---------------------------------------------------
 vpstep <- function (N, r, K, sigma, delta.t, ...) {
   dW <- rnorm(n=1,mean=0,sd=sqrt(delta.t))
   c(N = N + r*N*(1-N/K)*delta.t + sigma*N*dW)
 }
+
 
 ## ----vp1,eval=FALSE,include=FALSE----------------------------------------
 ## parus %>%
@@ -174,6 +192,7 @@ vpstep <- function (N, r, K, sigma, delta.t, ...) {
 ## ----vp------------------------------------------------------------------
 rick %>% pomp(rprocess=euler(vpstep,delta.t=1/365)) -> vp
 
+
 ## ----vp_sim1-------------------------------------------------------------
 vp %>%
   simulate(
@@ -184,6 +203,7 @@ vp %>%
   geom_line()+
   labs(color="")
 
+
 ## ----two_snips-----------------------------------------------------------
 Csnippet("
   pop = rpois(b*N);  
@@ -192,6 +212,7 @@ Csnippet("
 Csnippet("
   N = N_0;
   ") -> rinit
+
 
 ## ----more_snips----------------------------------------------------------
 Csnippet("
@@ -204,6 +225,7 @@ Csnippet("
   N += r*N*(1-N/K)*dt+sigma*N*dW;
 ") -> vpstepC
 
+
 ## ----rickC---------------------------------------------------------------
 parus %>%
   pomp(
@@ -214,6 +236,7 @@ parus %>%
     statenames="N",
     paramnames=c("r","K","sigma","b","N_0")
   ) -> rickC
+
 
 ## ----vpC-----------------------------------------------------------------
 parus %>%
@@ -226,10 +249,12 @@ parus %>%
     paramnames=c("r","K","sigma","b","N_0")
   ) -> vpC
 
+
 ## ----logistic-dmeasure---------------------------------------------------
 Csnippet("
   lik = dpois(pop,b*N,give_log);
 ") -> dmeas
+
 
 ## ----pfilter1------------------------------------------------------------
 rickC %>%
@@ -238,21 +263,26 @@ rickC %>%
     dmeasure=dmeas,
     paramnames="b",statenames="N") -> pfrick
 
+
 ## ----pfrick_print--------------------------------------------------------
 pfrick
+
 
 ## ----pfrick_loglik-------------------------------------------------------
 logLik(pfrick)
 
+
 ## ----pfrick_plot---------------------------------------------------------
 plot(pfrick)
 as(pfrick,"data.frame")
+
 
 ## ----rick_loglik---------------------------------------------------------
 replicate(10, pfrick %>% pfilter() %>% logLik()) -> lls
 lls
 logmeanexp(lls,se=TRUE) -> ll_rick1
 ll_rick1
+
 
 ## ----vp_loglik-----------------------------------------------------------
 replicate(10,
@@ -264,6 +294,7 @@ replicate(10,
   logmeanexp(se=TRUE) -> ll_vp1
 ll_vp1
 
+
 ## ----rick_skel-----------------------------------------------------------
 rickC %>%
   pomp(
@@ -274,12 +305,14 @@ rickC %>%
     paramnames=c("r","K"), statenames="N"
   ) -> rickC
 
+
 ## ----vp_skel-------------------------------------------------------------
 vpC %>%
   pomp(
     skeleton=vectorfield(Csnippet("DN = r*N*(1-N/K);")),
     paramnames=c("r","K"), statenames="N"
   ) -> vpC
+
 
 ## ----vp_traj1------------------------------------------------------------
 p <- parmat(c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),10)
@@ -291,6 +324,7 @@ vpC %>%
   geom_line()+
   theme_bw()
 
+
 ## ----vp_traj_objfun------------------------------------------------------
 vpC %>%
   traj_objfun(
@@ -299,11 +333,14 @@ vpC %>%
     dmeasure=dmeas, statenames="N", paramnames="b"
   ) -> ofun
 
+
 ## ----ofun_print----------------------------------------------------------
 ofun
 
+
 ## ----ofun_eval-----------------------------------------------------------
 ofun(c(1000,3000))
+
 
 ## ----traj_match1---------------------------------------------------------
 library(subplex)
@@ -311,10 +348,12 @@ library(subplex)
 subplex(c(2000,1500),fn=ofun) -> fit
 fit 
 
+
 ## ----traj_match_print----------------------------------------------------
 ofun(fit$par)
 coef(ofun)
 logLik(ofun)
+
 
 ## ----traj_match_traj-----------------------------------------------------
 ofun %>%
@@ -323,6 +362,7 @@ ofun %>%
   guides(color=FALSE)+
   geom_line()+
   theme_bw()
+
 
 ## ----traj_match_plot-----------------------------------------------------
 ofun %>%
@@ -346,8 +386,10 @@ ofun %>%
   expand_limits(y=0)+
   labs(y="pop")
 
+
 ## ----vp_partrans---------------------------------------------------------
 vpr_partrans <- parameter_trans(log=c("r","K","sigma","b","N_0"))
+
 
 ## ----ofun2---------------------------------------------------------------
 vpC %>%
@@ -362,6 +404,7 @@ subplex(log(c(0.1,2000,1500)),fn=ofun2) -> fit
 ofun2(fit$par)
 coef(ofun2)
 
+
 ## ----mif_guesses,fig.width=4,fig.height=4--------------------------------
 sobolDesign(
   lower=c(r=0,K=100,sigma=0,N_0=150,b=1),
@@ -370,6 +413,7 @@ sobolDesign(
 ) -> guesses
 guesses
 plot(guesses,pch=16)
+
 
 ## ----vp_mif1-------------------------------------------------------------
 vpC %>%
@@ -385,14 +429,19 @@ vpC %>%
     statenames=c("N")
   ) -> mf1
 
+
 ## ----mf1_display---------------------------------------------------------
 mf1
+
 
 ## ----mif_plot1-----------------------------------------------------------
 plot(mf1)
 
+
 ## ----mf_pfilter1---------------------------------------------------------
 replicate(5, mf1 %>% pfilter() %>% logLik()) %>% logmeanexp(se=TRUE)
+
+
 
 ## ----parus_mif1_eval,include=FALSE,eval=TRUE,purl=TRUE-------------------
 bake(file="parus_mif1.rds",{
@@ -407,6 +456,7 @@ bake(file="parus_mif1.rds",{
     } -> mifs
 }) -> mifs
 
+
 ## ----mif_plot2-----------------------------------------------------------
 mifs %>%
   traces() %>%
@@ -418,6 +468,7 @@ mifs %>%
   guides(color=FALSE)
 
 
+
 ## ----mif_plot3-----------------------------------------------------------
 mifs %>% 
   as("data.frame") %>% 
@@ -426,6 +477,8 @@ mifs %>%
   geom_line()+
   facet_wrap(~variable,scales="free_y",ncol=1)+
   guides(color=FALSE)
+
+
 
 ## ----parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE--------------------
 bake(file="parus_pf1.rds",{
@@ -443,6 +496,7 @@ bake(file="parus_pf1.rds",{
     } -> estimates
 }) -> estimates
 
+
 ## ----mif_plot4,warning=FALSE,fig.width=4,fig.height=4--------------------
 estimates %>%
   full_join(guesses) %>%
@@ -455,10 +509,13 @@ estimates %>%
   }) %>% 
   invisible()
 
+
 ## ----eval=FALSE----------------------------------------------------------
 ## library(doParallel)
 ## registerDoParallel()
 ## getDoParWorkers()
+
+
 
 ## ----parus_mif2_eval,include=FALSE,eval=TRUE,purl=TRUE-------------------
 bake(file="parus_mif2.rds",{
@@ -485,12 +542,14 @@ bake(file="parus_mif2.rds",{
     } -> ests1
 }) -> ests1
 
+
 ## ----db1-----------------------------------------------------------------
 estimates %>%
   rbind(ests1) -> estimates
 
 estimates%>%
   arrange(-loglik)
+
 
 ## ----mif2_plot1,fig.width=4,fig.height=4---------------------------------
 estimates %>%
@@ -502,6 +561,7 @@ estimates %>%
     .
   }) %>% 
   invisible()
+
 
 ## ----parus_pd,fig.width=4,fig.height=4-----------------------------------
 estimates %>%
@@ -524,6 +584,7 @@ profileDesign(
 dim(starts)
 
 pairs(~r+K+sigma+N_0+b,data=starts)
+
 
 ## ----parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE----------------
 bake("parus_profile.rds",{
@@ -549,9 +610,11 @@ bake("parus_profile.rds",{
   } -> r_prof
 }) -> r_prof
 
+
 ## ----db2-----------------------------------------------------------------
 estimates %>%
   rbind(r_prof) -> estimates
+
 
 ## ----prof_plot1----------------------------------------------------------
 r_prof %>%
@@ -564,6 +627,7 @@ r_prof %>%
   geom_errorbar()+
   geom_smooth(method="loess",span=0.2)+
   scale_x_log10()
+
 
 ## ----r_prof_lrt,echo=FALSE-----------------------------------------------
 r_prof %>%
@@ -581,6 +645,7 @@ crit <- 0.5*qchisq(df=1,p=0.95)
 cutoff <- max(prof$loglik)-crit
 ci <- range(prof$r[prof$loglik>cutoff])
 
+
 ## ----prof_plot2----------------------------------------------------------
 r_prof %>%
   group_by(r) %>%
@@ -591,6 +656,7 @@ r_prof %>%
   geom_smooth(method="loess",span=0.2)+
   scale_x_log10()+
   labs(y=expression(sigma))
+
 
 ## ----mle_sim_plot1-------------------------------------------------------
 r_prof %>% 
@@ -608,6 +674,7 @@ mlepomp %>%
   geom_line()+
   theme_bw()
 
+
 ## ----mle_sim_plot2-------------------------------------------------------
 mlepomp %>%
   simulate(nsim=11,format="data.frame",include.data=TRUE) %>%
@@ -619,6 +686,7 @@ mlepomp %>%
   facet_wrap(~.id)+
   theme_bw()
 
+
 ## ----probe1--------------------------------------------------------------
 mlepomp %>%
   probe(nsim=200,probes=list(
@@ -629,8 +697,10 @@ mlepomp %>%
 
 vp_probe
 
+
 ## ----probe1_summary------------------------------------------------------
 summary(vp_probe)
+
 
 ## ----probe1_plot,fig.width=6.8,fig.height=6.8----------------------------
 plot(vp_probe)
