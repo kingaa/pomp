@@ -104,24 +104,6 @@
   pages: "10604&#x2013;10609"
   doi: "https://doi.org/10.1073/pnas.1323688111"
 
-- key: Breto2018
-  author: "C. Breto"
-  year: "2018"
-  title: "Modeling and Inference for Infectious Disease Dynamics: A Likelihood-Based Approach"
-  journal: "Statistical Science"
-  volume: "33"
-  pages: "57&#x2013;69"
-  doi: "https://doi.org/10.1214/17-STS636"
-
-- key: Breto2014
-  author: "C. Bret&oacute;"
-  year: "2014"
-  title: "On idiosyncratic stochasticity of financial leverage effects"
-  journal: "Statistics and Probability Letters"
-  volume: "91"
-  pages: "20&#x2013;26"
-  doi: "https://doi.org/10.1016/j.spl.2014.04.003"
-
 - key: Breto2009
   author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
   year: "2009"
@@ -139,6 +121,24 @@
   volume: "121"
   pages: "2571&#x2013;2591"
   doi: "https://doi.org/10.1016/j.spa.2011.07.005"
+
+- key: Breto2014
+  author: "C. Bret&oacute;"
+  year: "2014"
+  title: "On idiosyncratic stochasticity of financial leverage effects"
+  journal: "Statistics and Probability Letters"
+  volume: "91"
+  pages: "20&#x2013;26"
+  doi: "https://doi.org/10.1016/j.spl.2014.04.003"
+
+- key: Breto2018
+  author: "C. Bret&oacute;"
+  year: "2018"
+  title: "Modeling and Inference for Infectious Disease Dynamics: A Likelihood-Based Approach"
+  journal: "Statistical Science"
+  volume: "33"
+  pages: "57&#x2013;69"
+  doi: "https://doi.org/10.1214/17-STS636"
 
 - key: Breto2019
   author: "C. Bret&oacute;, E. L. Ionides, and A. A. King"
@@ -175,15 +175,6 @@
   pages: "3635&#x2013;3643"
   doi: "https://doi.org/10.1098/rspb.2011.0300"
 
-- key: DomenechdeCelles2019b
-  author: "M. Domenech de Cell&egrave;s, H. Arduin, D. L&eacute;vy-Bruhl, S. Georges, C. Souty, D. Guillemot, L. Watier, and L. Opatowski"
-  year: "2019"
-  title: "Unraveling the seasonal epidemiology of pneumococcus"
-  journal: "Proceedings of the National Academy of Sciences of the U S A"
-  volume: "116"
-  pages: "1802"
-  doi: "https://doi.org/10.1073/pnas.1812388116"
-
 - key: DomenechdeCelles2018
   author: "M. Domenech de Cell&egrave;s, F. M. G. Magpantay, A. A. King, and P. Rohani"
   year: "2018"
@@ -192,6 +183,15 @@
   volume: "10"
   pages: "eaaj1748"
   doi: "https://doi.org/10.1126/scitranslmed.aaj1748"
+
+- key: DomenechdeCelles2019b
+  author: "M. Domenech de Cell&egrave;s, H. Arduin, D. L&eacute;vy-Bruhl, S. Georges, C. Souty, D. Guillemot, L. Watier, and L. Opatowski"
+  year: "2019"
+  title: "Unraveling the seasonal epidemiology of pneumococcus"
+  journal: "Proceedings of the National Academy of Sciences of the U S A"
+  volume: "116"
+  pages: "1802"
+  doi: "https://doi.org/10.1073/pnas.1812388116"
 
 - key: Du2017
   author: "X. Du, A. A. King, R. J. Woods, and M. Pascual"
@@ -259,6 +259,15 @@
   pages: "20142591"
   doi: "https://doi.org/10.1098/rspb.2014.2591"
 
+- key: He2010
+  author: "D. He, E. L. Ionides, and A. A. King"
+  year: "2010"
+  title: "Plug-and-play inference for disease dynamics: measles in large and small populations as a case study"
+  journal: "Journal of the Royal Society, Interface"
+  volume: "7"
+  pages: "271&#x2013;283"
+  doi: "https://doi.org/10.1098/rsif.2009.0151"
+
 - key: He2011
   author: "D. He, J. Dushoff, T. Day, J. Ma, and D. Earn"
   year: "2011"
@@ -267,15 +276,6 @@
   volume: "4"
   pages: "1&#x2013;6"
   doi: "https://doi.org/10.1007/s12080-011-0123-3"
-
-- key: He2013a
-  author: "D. He, J. Dushoff, T. Day, J. Ma, and D. J. D. Earn"
-  year: "2013"
-  title: "Inferring the causes of the three waves of the 1918 influenza pandemic in England and Wales"
-  journal: "Proceedings of the Royal Society of London, Series B"
-  volume: "280"
-  pages: "20131345"
-  doi: "https://doi.org/10.1098/rspb.2013.1345"
 
 - key: He2013
   author: "D. He, J. Dushoff, R. Eftimie, and D. J. D. Earn"
@@ -286,32 +286,14 @@
   pages: "20131174"
   doi: "https://doi.org/10.1098/rspb.2013.1174"
 
-- key: He2010
-  author: "D. He, E. L. Ionides, and A. A. King"
-  year: "2010"
-  title: "Plug-and-play inference for disease dynamics: measles in large and small populations as a case study"
-  journal: "Journal of the Royal Society, Interface"
-  volume: "7"
-  pages: "271&#x2013;283"
-  doi: "https://doi.org/10.1098/rsif.2009.0151"
-
-- key: Ionides2011a
-  author: "E. L. Ionides"
-  year: "2011"
-  title: "Discussion of &ldquo;Feature Matching in Time Series Modeling&rdquo; by Y. Xia and H. Tong"
-  journal: "Statistical Science"
-  volume: "26"
-  pages: "49&#x2013;52"
-  doi: "https://doi.org/10.1214/11-sts345c"
-
-- key: Ionides2011
-  author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
-  year: "2011"
-  title: "Iterated filtering"
-  journal: "Annals of Statistics"
-  volume: "39"
-  pages: "1776&#x2013;1802"
-  doi: "https://doi.org/10.1214/11-AOS886"
+- key: He2013a
+  author: "D. He, J. Dushoff, T. Day, J. Ma, and D. J. D. Earn"
+  year: "2013"
+  title: "Inferring the causes of the three waves of the 1918 influenza pandemic in England and Wales"
+  journal: "Proceedings of the Royal Society of London, Series B"
+  volume: "280"
+  pages: "20131345"
+  doi: "https://doi.org/10.1098/rspb.2013.1345"
 
 - key: Ionides2006
   author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
@@ -322,14 +304,23 @@
   pages: "18438&#x2013;18443"
   doi: "https://doi.org/10.1073/pnas.0603181103"
 
-- key: Ionides2017
-  author: "E. L. Ionides, C. Breto, J. Park, R. A. Smith, and A. A. King"
-  year: "2017"
-  title: "Monte Carlo profile confidence intervals for dynamic systems"
-  journal: "Journal of the Royal Society, Interface"
-  volume: "14"
-  pages: "20170126"
-  doi: "https://doi.org/10.1098/rsif.2017.0126"
+- key: Ionides2011
+  author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
+  year: "2011"
+  title: "Iterated filtering"
+  journal: "Annals of Statistics"
+  volume: "39"
+  pages: "1776&#x2013;1802"
+  doi: "https://doi.org/10.1214/11-AOS886"
+
+- key: Ionides2011a
+  author: "E. L. Ionides"
+  year: "2011"
+  title: "Discussion of &ldquo;Feature Matching in Time Series Modeling&rdquo; by Y. Xia and H. Tong"
+  journal: "Statistical Science"
+  volume: "26"
+  pages: "49&#x2013;52"
+  doi: "https://doi.org/10.1214/11-sts345c"
 
 - key: Ionides2015
   author: "E. L. Ionides, D. Nguyen, Y. Atchad&eacute;, S. Stoev, and A. A. King"
@@ -339,6 +330,15 @@
   volume: "112"
   pages: "719&#x2013;724"
   doi: "https://doi.org/10.1073/pnas.1410597112"
+
+- key: Ionides2017
+  author: "E. L. Ionides, C. Breto, J. Park, R. A. Smith, and A. A. King"
+  year: "2017"
+  title: "Monte Carlo profile confidence intervals for dynamic systems"
+  journal: "Journal of the Royal Society, Interface"
+  volume: "14"
+  pages: "20170126"
+  doi: "https://doi.org/10.1098/rsif.2017.0126"
 
 - key: Kendall1999
   author: "B. E. Kendall, C. J. Briggs, W. W. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, and S. N. Wood"
@@ -358,15 +358,6 @@
   pages: "259&#x2013;276"
   doi: "https://doi.org/10.1890/03-4056"
 
-- key: King2015
-  author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
-  year: "2015"
-  title: "Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola"
-  journal: "Proceedings of the Royal Society of London, Series B"
-  volume: "282"
-  pages: "20150347"
-  doi: "https://doi.org/10.1098/rspb.2015.0347"
-
 - key: King2008
   author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
   year: "2008"
@@ -375,6 +366,15 @@
   volume: "454"
   pages: "877&#x2013;880"
   doi: "https://doi.org/10.1038/nature07084"
+
+- key: King2015
+  author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
+  year: "2015"
+  title: "Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola"
+  journal: "Proceedings of the Royal Society of London, Series B"
+  volume: "282"
+  pages: "20150347"
+  doi: "https://doi.org/10.1098/rspb.2015.0347"
 
 - key: King2016
   author: "A. A. King, D. Nguyen, and E. L. Ionides"
@@ -517,15 +517,6 @@
   pages: "18860&#x2013;18865"
   doi: "https://doi.org/10.1073/pnas.0608571103"
 
-- key: Romero-Severson2018
-  author: "E. O. Romero-Severson, R. M. Ribeiro, and M. Castro"
-  year: "2018"
-  title: "Noise is not error: detecting parametric heterogeneity between epidemiologic time series"
-  journal: "Frontiers in Microbiology"
-  volume: "9"
-  pages: "1529"
-  doi: "https://doi.org/10.3389/fmicb.2018.01529"
-
 - key: Romero-Severson2015
   author: "E. O. Romero-Severson, E. Volz, J. S. Koopman, T. Leitner, and E. L. Ionides"
   year: "2015"
@@ -534,6 +525,15 @@
   volume: "182"
   pages: "255&#x2013;262"
   doi: "https://doi.org/10.1093/aje/kwv044"
+
+- key: Romero-Severson2018
+  author: "E. O. Romero-Severson, R. M. Ribeiro, and M. Castro"
+  year: "2018"
+  title: "Noise is not error: detecting parametric heterogeneity between epidemiologic time series"
+  journal: "Frontiers in Microbiology"
+  volume: "9"
+  pages: "1529"
+  doi: "https://doi.org/10.3389/fmicb.2018.01529"
 
 - key: Roy2012
   author: "M. Roy, M. J. Bouma, E. L. Ionides, R. C. Dhiman, and M. Pascual"
@@ -544,14 +544,14 @@
   pages: "e1979"
   doi: "https://doi.org/10.1371/journal.pntd.0001979"
 
-- key: Shrestha2015
-  author: "S. Shrestha, B. Foxman, J. Berus, W. G. van Panhuis, C. Steiner, C. Viboud, and P. Rohani"
-  year: "2015"
-  title: "The role of influenza in the epidemiology of pneumonia"
-  journal: "Scientific Reports"
-  volume: "5"
-  pages: "15314&#x2013;"
-  doi: "https://doi.org/10.1038/srep15314"
+- key: Shrestha2011
+  author: "S. Shrestha, A. A. King, and P. Rohani"
+  year: "2011"
+  title: "Statistical inference for multi-pathogen systems"
+  journal: "PLoS Computational Biology"
+  volume: "7"
+  pages: "e1002135"
+  doi: "https://doi.org/10.1371/journal.pcbi.1002135"
 
 - key: Shrestha2013
   author: "S. Shrestha, B. Foxman, D. M. Weinberger, C. Steiner, C. Viboud, and P. Rohani"
@@ -562,14 +562,14 @@
   pages: "191ra84"
   doi: "https://doi.org/10.1126/scitranslmed.3005982"
 
-- key: Shrestha2011
-  author: "S. Shrestha, A. A. King, and P. Rohani"
-  year: "2011"
-  title: "Statistical inference for multi-pathogen systems"
-  journal: "PLoS Computational Biology"
-  volume: "7"
-  pages: "e1002135"
-  doi: "https://doi.org/10.1371/journal.pcbi.1002135"
+- key: Shrestha2015
+  author: "S. Shrestha, B. Foxman, J. Berus, W. G. van Panhuis, C. Steiner, C. Viboud, and P. Rohani"
+  year: "2015"
+  title: "The role of influenza in the epidemiology of pneumonia"
+  journal: "Scientific Reports"
+  volume: "5"
+  pages: "15314&#x2013;"
+  doi: "https://doi.org/10.1038/srep15314"
 
 - key: Stocks2017
   author: "T. Stocks"
@@ -594,15 +594,6 @@
   pages: "1020&#x2013;1035"
   doi: "https://doi.org/10.1080/01621459.2016.1147355"
 
-- key: Toni2010
-  author: "T. Toni and M. P. H. Stumpf"
-  year: "2010"
-  title: "Simulation-based model selection for dynamical systems in systems and population biology"
-  journal: "Bioinformatics"
-  volume: "26"
-  pages: "104&#x2013;110"
-  doi: "https://doi.org/10.1093/bioinformatics/btp619"
-
 - key: Toni2009a
   author: "T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf"
   year: "2009"
@@ -611,6 +602,15 @@
   volume: "6"
   pages: "187&#x2013;202"
   doi: "https://doi.org/10.1098/rsif.2008.0172"
+
+- key: Toni2010
+  author: "T. Toni and M. P. H. Stumpf"
+  year: "2010"
+  title: "Simulation-based model selection for dynamical systems in systems and population biology"
+  journal: "Bioinformatics"
+  volume: "26"
+  pages: "104&#x2013;110"
+  doi: "https://doi.org/10.1093/bioinformatics/btp619"
 
 - key: Whittles2017
   author: "L. K. Whittles, P. J. White, and X. Didelot"
