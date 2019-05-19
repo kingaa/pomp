@@ -79,10 +79,10 @@ In particular, there are now data-frame methods for all of the **pomp** inferenc
 One can pass data directly to these methods, along with the requisite model components, and achieve the same effect as one would by first constructing a \sQuote{pomp} object and then performing the operation.
 
 **pomp** version 2 represents a thorough reworking of almost all the package codes.
-A consequence is that these codes have been streamlined, with no cost in performance and increased flexibility.
+A consequence is that these codes have been streamlined, with increases in flexibility and ease of use, at no cost to performance.
 The following table shows the number of lines in the latest pre-2 **pomp** compared to the current **pomp** version 2.
 
-|category | 1.19.0.0| 2.0.13.1| fraction|
+|category |     1.19| 2.0.13.1| fraction|
 |:--------|--------:|--------:|--------:|
 |man      |     4069|     5937|    0.459|
 |R        |    12150|     9774|   -0.196|

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2019-04-19" />
+<meta name="date" content="2019-05-19" />
 
 <title>pomp version 2 upgrade guide</title>
 
@@ -95,7 +95,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore"><strong>pomp</strong> version 2 upgrade guide</h1>
 <h4 class="author">Aaron A. King</h4>
-<h4 class="date">19 April 2019</h4>
+<h4 class="date">19 May 2019</h4>
 
 
 <div id="TOC">
@@ -130,18 +130,18 @@ code {
   font-size: 110%;
 }
 </style>
-<p>This document was produced using <strong>pomp</strong> version 2.0.13.1 and <strong>R</strong> version 3.5.3.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.0.13.1 and <strong>R</strong> version 3.6.0.</p>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
 <p>In <strong>pomp</strong> version 2, a number of backward incompatible changes have been made. These have been designed to increase the usability of the package by making the interfaces more uniform, by increasing code stability, reducing the number of special cases, and removing many of the idiosyncrasies that were present in earlier versions. The goal has been to keep backward-incompatible changes to a minimum. However, to achieve some improvements, it has been necessary to make some that will break existing code. This guide is intended to explain the new structure and point out the changes that are needed to make existing codes that use <strong>pomp</strong> work with the new version.</p>
 <p>The main novelty of <strong>pomp</strong> version 2 is that one will rarely, if ever, need to interact directly with the low-level <code>pomp</code> constructor. Instead, one can supply new or modify existing model components at (almost) any stage in a chain of <strong>pomp</strong> computations. In particular, there are now data-frame methods for all of the <strong>pomp</strong> inference algorithms, as well as for the so-called <em>elementary POMP algorithms</em>: <code>simulate</code>, <code>pfilter</code>, <code>probe</code>, and <code>spect</code>. One can pass data directly to these methods, along with the requisite model components, and achieve the same effect as one would by first constructing a  object and then performing the operation.</p>
-<p><strong>pomp</strong> version 2 represents a thorough reworking of almost all the package codes. A consequence is that these codes have been streamlined, with no cost in performance and increased flexibility. The following table shows the number of lines in the latest pre-2 <strong>pomp</strong> compared to the current <strong>pomp</strong> version 2.</p>
+<p><strong>pomp</strong> version 2 represents a thorough reworking of almost all the package codes. A consequence is that these codes have been streamlined, with increases in flexibility and ease of use, at no cost to performance. The following table shows the number of lines in the latest pre-2 <strong>pomp</strong> compared to the current <strong>pomp</strong> version 2.</p>
 <table>
 <thead>
 <tr class="header">
 <th align="left">category</th>
-<th align="right">1.19.0.0</th>
+<th align="right">1.19</th>
 <th align="right">2.0.13.1</th>
 <th align="right">fraction</th>
 </tr>
