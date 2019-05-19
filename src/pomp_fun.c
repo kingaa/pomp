@@ -85,7 +85,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
       }
         break;
 
-      default:
+      default: // #nocov
         break; // #nocov
       }
 

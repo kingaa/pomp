@@ -47,7 +47,12 @@ dat %>%
     ),
     R=0.01,
     C=0.01
-  ) %>% plot()
+  ) -> kf
+
+kf %>% plot()
+
+kf %>% as.data.frame() %>% names()
+kf %>% melt(id="time") %>% names()
 
 try(po %>% enkf(rprocess=NULL))
 try(po %>% eakf(rprocess=NULL))

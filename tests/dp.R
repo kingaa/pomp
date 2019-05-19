@@ -2,9 +2,11 @@ options(digits=3)
 png(filename="dp-%02d.png",res=100)
 
 library(pomp2)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+})
 
 set.seed(49596868L)
 

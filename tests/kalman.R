@@ -2,10 +2,12 @@ options(digits=3)
 png(filename="kalman-%02d.png",res=100)
 
 library(pomp2)
-library(reshape2)
-library(plyr)
-library(ggplot2)
-library(mvtnorm)
+suppressPackageStartupMessages({
+  library(reshape2)
+  library(plyr)
+  library(ggplot2)
+  library(mvtnorm)
+})
 set.seed(1638125322)
 
 t <- seq(1,20)

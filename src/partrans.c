@@ -138,7 +138,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
     break;
 
-  default:
+  default:  // #nocov
 
     break;  // #nocov
 

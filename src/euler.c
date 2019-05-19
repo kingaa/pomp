@@ -169,7 +169,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
 
     break;
 
-  default:
+  default: // # nocov
 
     errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // # nocov
 
@@ -263,7 +263,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
 
           break;
 
-        default:
+        default: // # nocov
 
           errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // # nocov
 

@@ -108,7 +108,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 
     break;
 
-  default:
+  default: // #nocov
 
     break; // #nocov
 
@@ -238,7 +238,7 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
 
     break;
 
-  default:
+  default: // #nocov
 
     errorcall(R_NilValue,"in 'pomp_desolve_setup': unrecognized 'mode'"); // # nocov
 
@@ -272,7 +272,7 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
 
     break;
 
-  default:
+  default: // #nocov
 
     errorcall(R_NilValue,"in 'pomp_vf_eval': unrecognized 'mode'"); // # nocov
 
@@ -324,7 +324,7 @@ void pomp_desolve_takedown (void) {
 
     break;
 
-  default:
+  default: // #nocov
 
     errorcall(R_NilValue,"in 'pomp_desolve_takedown': unrecognized 'mode'"); // # nocov
 

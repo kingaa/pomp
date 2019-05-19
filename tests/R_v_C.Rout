@@ -1,6 +1,6 @@
 
-R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
-Copyright (C) 2018 The R Foundation for Statistical Computing
+R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -26,6 +26,11 @@ Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(ggplot2)
+Registered S3 methods overwritten by 'ggplot2':
+  method         from 
+  [.quosures     rlang
+  c.quosures     rlang
+  print.quosures rlang
 > 
 > ## ----seed,echo=FALSE-----------------------------------------------------
 > set.seed(56300069)
@@ -111,16 +116,16 @@ For information on upgrading your pomp version < 2 code, see the
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  8.032   0.088   8.120 
+  6.936   0.008   6.944 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.380   0.008   0.387 
+  0.279   0.008   0.287 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.696   0.004   0.703 
+  0.615   0.000   0.616 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.056   0.000   0.058 
+  0.045   0.000   0.045 
 > 
 > dev.off()
 null device 

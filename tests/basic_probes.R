@@ -1,9 +1,11 @@
 options(digits=3)
 
 library(pomp2)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+})
 
 set.seed(255066335)
 

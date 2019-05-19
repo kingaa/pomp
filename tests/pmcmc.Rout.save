@@ -1,6 +1,6 @@
 
-R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
-Copyright (C) 2018 The R Foundation for Statistical Computing
+R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -107,9 +107,9 @@ NULL
 > stopifnot(dim(filter.traj(mcmc1))==c(1,100,11),
 +   dim(filter.traj(c(mcmc1,mcmc2,mcmc3)))==c(1,100,11,3))
 > logLik(mcmc1)
-[1] 4.41
+[1] 4.68
 > logLik(c(mcmc1,mcmc2,mcmc3))
-[1] 4.41 3.48 3.92
+[1] 4.68 4.75 3.43
 > 
 > pmcmc(mcmc1,params=as.list(coef(mcmc3)))
 <object of class 'pmcmcd_pomp'>

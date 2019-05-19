@@ -1,6 +1,6 @@
 
-R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
-Copyright (C) 2018 The R Foundation for Statistical Computing
+R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -39,6 +39,13 @@ The following objects are masked from 'package:base':
     intersect, setdiff, setequal, union
 
 > library(reshape2)
+
+Attaching package: 'reshape2'
+
+The following object is masked from 'package:pomp2':
+
+    melt
+
 > 
 > gompertz() %>% window(end=10) -> po
 > 

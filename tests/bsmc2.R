@@ -2,9 +2,11 @@ png(filename="bsmc2-%02d.png",res=100)
 options(digits=2)
 
 library(pomp2)
-library(tidyr)
-library(dplyr)
-library(ggplot2)
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+})
 
 gompertz() -> gompertz
 set.seed(398585L)

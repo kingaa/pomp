@@ -1,5 +1,11 @@
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
 library(pomp2)
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+  library(subplex)
+})
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,

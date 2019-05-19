@@ -1,6 +1,6 @@
 
-R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
-Copyright (C) 2018 The R Foundation for Statistical Computing
+R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -156,8 +156,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2019-03-05 12:56:34.122 -0500 */
-/* Salt: FF091B33A9ED770444100576 */
+/* Time: 2019-05-19 12:17:21.628 -0400 */
+/* Salt: 63A2304252DB289190B06E75 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -274,8 +274,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2019-03-05 12:56:34.346 -0500 */
-/* Salt: B48BAFF05DA93B0E9433B970 */
+/* Time: 2019-05-19 12:17:21.711 -0400 */
+/* Salt: 09D0B00BE3E16CA39AB7DBC6 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -796,8 +796,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2019-03-05 12:56:35.098 -0500 */
-/* Salt: 619481509B0DF2077262C644 */
+/* Time: 2019-05-19 12:17:22.063 -0400 */
+/* Salt: 9D4AAD73FB22DA8F166B3376 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -992,8 +992,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2019-03-05 12:56:35.726 -0500 */
-/* Salt: F1D76BC52F70F198047780D0 */
+/* Time: 2019-05-19 12:17:22.342 -0400 */
+/* Salt: C85240783CF89799988BCA34 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

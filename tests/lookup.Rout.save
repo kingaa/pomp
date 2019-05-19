@@ -1,6 +1,6 @@
 
-R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
-Copyright (C) 2018 The R Foundation for Statistical Computing
+R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -18,6 +18,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > options(digits=3)
+> suppressPackageStartupMessages({
++   library(tidyr)
++   library(ggplot2)
++ })
+> 
 > png(filename="lookup-%02d.png",res=100)
 > 
 > library(pomp2)
@@ -109,9 +114,6 @@ Error : in 'covariate_table': 'times' must be a non-decreasing numeric sequence 
 Error : in 'covariate_table': 'times' does not identify a unique time variable.
 > try(covariate_table(a=1:10,b=10:1,times=NA))
 Error : 'covariate_table' is undefined for 'times' of class 'logical'.
-> 
-> library(tidyr)
-> library(ggplot2)
 > 
 > covariate_table(
 +   bspline.basis(times,nbasis=8,degree=3,deriv=0,names="f0"),

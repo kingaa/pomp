@@ -265,9 +265,9 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params
 
   switch (mode) {
 
-  case undef: default:
+  case undef: default:  // #nocov
 
-    errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // # nocov
+    errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // #nocov
 
   case native: case regNative:
 

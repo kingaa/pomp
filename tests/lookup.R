@@ -1,4 +1,9 @@
 options(digits=3)
+suppressPackageStartupMessages({
+  library(tidyr)
+  library(ggplot2)
+})
+
 png(filename="lookup-%02d.png",res=100)
 
 library(pomp2)
@@ -31,9 +36,6 @@ try(covariate_table(data.frame(a=1:10,a=10:1),b=1:10,times="b"))
 try(covariate_table(a=1:10,b=10:1,times="b"))
 try(covariate_table(a=1:10,b=10:1,times="c"))
 try(covariate_table(a=1:10,b=10:1,times=NA))
-
-library(tidyr)
-library(ggplot2)
 
 covariate_table(
   bspline.basis(times,nbasis=8,degree=3,deriv=0,names="f0"),

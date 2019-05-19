@@ -44,8 +44,7 @@ setAs(
 ##' @method as.data.frame pomp
 ##' @rdname as_data_frame
 ##'
-##' @param x the object to be coerced
-##' @param \dots ignored
+##' @inheritParams base::as.data.frame
 ##' @export
 ##'
 as.data.frame.pomp <- function (x, ...) as(x,"data.frame")
@@ -70,12 +69,21 @@ setAs(
       ess=eff.sample.size(from),
       cond.loglik=cond.logLik(from)
     )
-    if (length(pm)>0)
-      out <- cbind(out,pred.mean=t(pm))
-    if (length(pv)>0)
-      out <- cbind(out,pred.var=t(pv))
-    if (length(fm)>0)
-      out <- cbind(out,filter.mean=t(fm))
+    if (length(pm)>0) {
+      pm <- as.data.frame(t(pm))
+      names(pm) <- paste0("pred.mean.",names(pm))
+      out <- cbind(out,pm)
+    }
+    if (length(pv)>0) {
+      pv <- as.data.frame(t(pv))
+      names(pv) <- paste0("pred.var.",names(pv))
+      out <- cbind(out,pv)
+    }
+    if (length(fm)>0) {
+      fm <- as.data.frame(t(fm))
+      names(fm) <- paste0("filter.mean.",names(fm))
+      out <- cbind(out,fm)
+    }
     out
   }
 )
@@ -127,12 +135,21 @@ setAs(
       as(as(from,"pomp"),"data.frame"),
       cond.loglik=cond.logLik(from)
     )
-    if (length(pm)>0)
-      out <- cbind(out,pred.mean=t(pm))
-    if (length(fm)>0)
-      out <- cbind(out,filter.mean=t(fm))
-    if (length(fc)>0)
-      out <- cbind(out,forecast=t(fc))
+    if (length(pm)>0) {
+      pm <- as.data.frame(t(pm))
+      names(pm) <- paste0("pred.mean.",names(pm))
+      out <- cbind(out,pm)
+    }
+    if (length(fm)>0) {
+      fm <- as.data.frame(t(fm))
+      names(fm) <- paste0("filter.mean.",names(fm))
+      out <- cbind(out,fm)
+    }
+    if (length(fc)>0) {
+      fc <- as.data.frame(t(fc))
+      names(fc) <- paste0("forecast.",names(fc))
+      out <- cbind(out,fc)
+    }
     out
   }
 )

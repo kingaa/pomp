@@ -2,9 +2,11 @@ options(digits=3)
 png(filename="skeleton-%02d.png",res=100)
 
 library(pomp2)
-library(ggplot2)
-library(reshape2)
-library(plyr)
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(reshape2)
+  library(plyr)
+})
 
 ricker() -> ricker
 

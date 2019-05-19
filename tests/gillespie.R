@@ -2,8 +2,10 @@ options(digits=3)
 png(filename="gillespie-%02d.png",res=100)
 
 library(pomp2)
-library(ggplot2)
-library(magrittr)
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(magrittr)
+})
 
 set.seed(754646834L)
 
