@@ -193,6 +193,15 @@
   pages: "1802"
   doi: "https://doi.org/10.1073/pnas.1812388116"
 
+- key: Doucet2015
+  author: "A. Doucet, M. K. Pitt, G. Deligiannidis, and R. Kohn"
+  year: "2015"
+  title: "Efficient implementation of Markov chain Monte Carlo when using an unbiased likelihood estimator"
+  journal: "Biometrika"
+  volume: "102"
+  pages: "295&#x2013;313"
+  doi: "https://doi.org/10.1093/biomet/asu075"
+
 - key: Du2017
   author: "X. Du, A. A. King, R. J. Woods, and M. Pascual"
   year: "2017"
@@ -420,6 +429,24 @@
   volume: "8"
   pages: "e72086"
   doi: "https://doi.org/10.1371/journal.pone.0072086"
+
+- key: Lin2016
+  author: "Q. Lin, Z. Lin, A. P. Y. Chiu, and D. He"
+  year: "2016"
+  title: "Seasonality of Influenza A(H7N9) Virus in China-Fitting Simple Epidemic Models to Human Cases"
+  journal: "PLoS ONE"
+  volume: "11"
+  pages: "e0151333"
+  doi: "https://doi.org/10.1371/journal.pone.0151333"
+
+- key: Lin2018
+  author: "Q. Lin, A. P. Chiu, S. Zhao, and D. He"
+  year: "2018"
+  title: "Modeling the spread of Middle East respiratory syndrome coronavirus in Saudi Arabia"
+  journal: "Statistical Methods in Medical Research"
+  volume: "27"
+  pages: "1968&#x2013;1978"
+  doi: "https://doi.org/10.1177/0962280217746442"
 
 - key: Liu2001b
   author: "J. Liu and M. West"
