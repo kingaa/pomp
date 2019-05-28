@@ -25,7 +25,7 @@ Licensed under the [Creative Commons attribution-noncommercial license](http://c
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
 
-This document was produced using **pomp2** version `r packageVersion("pomp2")` and **R** version `r getRversion()`.
+This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
 
 ```{r knitr-opts,include=FALSE,purl=FALSE}
 library(knitr)
@@ -55,7 +55,7 @@ opts_chunk$set(
 ```
 
 ```{r prelims,echo=FALSE,cache=FALSE}
-stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
+stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -70,13 +70,13 @@ theme_set(theme_bw())
 
 ## Introduction
 
-This tutorial aims to help you get started using **pomp2** as a suite of tools for analysis of time series data based on stochastic dynamical systems models.
-First, we give some conceptual background regarding the class of models---partially observed Markov processes (POMPs)---that **pomp2** handles.
+This tutorial aims to help you get started using **pomp** as a suite of tools for analysis of time series data based on stochastic dynamical systems models.
+First, we give some conceptual background regarding the class of models---partially observed Markov processes (POMPs)---that **pomp** handles.
 We then discuss some preliminaries: 
 installing the package and so on.
-Next, we show how to simulate a POMP using **pomp2**.
+Next, we show how to simulate a POMP using **pomp**.
 We then analyze some data using a few different tools.
-In so doing, we illustrate some of the package's capabilities by using its algorithms to fit, compare, and criticize the models using **pomp2**'s algorithms.
+In so doing, we illustrate some of the package's capabilities by using its algorithms to fit, compare, and criticize the models using **pomp**'s algorithms.
 From time to time, exercises for the reader are given.
 
 
@@ -84,7 +84,7 @@ From time to time, exercises for the reader are given.
 
 ### Structure of a POMP
 
-As its name implies **pomp2** is focused on partially observed Markov process models.
+As its name implies **pomp** is focused on partially observed Markov process models.
 These are also known as state-space models, hidden Markov models, and stochastic dynamical systems models.
 Such models consist of an unobserved Markov state process, connected to the data via an explicit model of the observation process.
 We refer to the former as the *latent process model* (or process model for short) and the latter as the *measurement model*.
@@ -182,7 +182,7 @@ popViewport()
 
 ### Basic model components
 
-To implement a POMP model in **pomp2**, we have to specify the measurement and process distributions.
+To implement a POMP model in **pomp**, we have to specify the measurement and process distributions.
 Note however, that, for each of the process and the measurement models there are two distinct operations that we might desire to perform:
 
 1. we might wish to *simulate*, i.e., to draw a (pseudo)random sample from the distribution, or
@@ -196,15 +196,15 @@ Collectively, we'll refer to these, and other, similarly basic elements of the m
 ### The plug-and-play property
 
 A method that makes no use of the *dprocess* component is said to be "plug-and-play" or to have the "plug-and-play property".
-At present, **pomp2** is focused on such methods, so there is no reason to discuss the dprocess component further in this document.
-In the following, we will illustrate and explain how one specifies the rprocess, rmeasure, and dmeasure components of a model in **pomp2**.
+At present, **pomp** is focused on such methods, so there is no reason to discuss the dprocess component further in this document.
+In the following, we will illustrate and explain how one specifies the rprocess, rmeasure, and dmeasure components of a model in **pomp**.
 We will illustrate this using some simple examples.
 
 ## Preliminaries
 
 ### Installing the package
 
-To get started, we must install **pomp2**, if it is not already installed.
+To get started, we must install **pomp**, if it is not already installed.
 This package cannot yet be downloaded from CRAN (though that will change in the near future).
 However, the latest version is always available at the package homepage on Github.
 See the [package website for installation instructions](https://kingaa.github.io/pomp/install.html).
@@ -216,12 +216,12 @@ This allows the user to write model components using snippets of C code, which i
 This typically affords a manyfold increase in computation time.
 It is possible to avoid C snippets entirely by writing model components as **R** functions, and we will begin by doing so, but the speed-ups afforded by C snippets are typically too good to pass up.
 To use C snippets, you must be able to compile C codes.
-Compilers are not by default installed on Windows or Mac systems, so users of such systems must do a bit more work to make use of **pomp2**'s facilities.
+Compilers are not by default installed on Windows or Mac systems, so users of such systems must do a bit more work to make use of **pomp**'s facilities.
 The [installation instructions on the package website](https://kingaa.github.io/pomp/install.html) give details.
 
 ## Simulation of a POMP
 
-Having dispensed with the preliminaries, we now explore some of the functionality provided by **pomp2**.
+Having dispensed with the preliminaries, we now explore some of the functionality provided by **pomp**.
 To assist the reader in following this exploration, [the **R** codes for this document are available](getting_started.R).
 
 
@@ -241,13 +241,13 @@ Note that we've introduced a new parameter, $\sigma$, which quantifies the inten
 Ecologically speaking, Eq.&nbsp;2 is a model with *environmental stochasticity*.
 
 Typically, it is relatively straightforward to simulate a POMP model.
-To accomplish this in **pomp2**, as we've already discussed, we specify the rprocess component of the model.
+To accomplish this in **pomp**, as we've already discussed, we specify the rprocess component of the model.
 We'll also need to choose values for the model parameters, $r$, $K$, and $\sigma$.
 We'll also need to make a choice regarding the initial condition, $N(0)$.
 The simplest choice is to treat $N(0)=N_0$ as a parameter.
 
 ```{r sim1,warning=TRUE}
-library(pomp2)
+library(pomp)
 
 simulate(t0=0, times=1:20,
   params=c(r=1.2,K=200,sigma=0.1,N_0=50),
@@ -267,7 +267,7 @@ simulate(t0=0, times=1:20,
 Notice that we've specified the rinit and rprocess components of the model as functions.
 These functions take as arguments the relevant variables (whether these are state variables or parameters).
 Importantly, they return *named numeric vectors*.
-Names of variables and parameters are very important in **pomp2**.
+Names of variables and parameters are very important in **pomp**.
 Notice too that we've used the `discrete_time` function, which encodes the fact that our Ricker model is a discrete-time stochastic process (a Markov chain).
 The first argument of `discrete_time` is an **R** function encoding Eq.&nbsp;2;
 the second argument specifies the discrete time-step.
@@ -293,7 +293,7 @@ To get more insight into the structure of `sim1`, we can use `spy`:
 spy(sim1)
 ```
 
-**pomp2** provides methods for plotting 'pomp' objects.
+**pomp** provides methods for plotting 'pomp' objects.
 For example,
 
 ```{r sim1_plot}
@@ -433,10 +433,10 @@ ggplot(data=separate(sims,.id,c("parset","rep")),
   lims(x=c(NA,1000))
 ```
 
-## Note on **pomp2** syntax
+## Note on **pomp** syntax
 
-**pomp2** uses certain syntactic conventions.
-For example, if `x` is an object and `f` is a **pomp2** function, then typically `f(x,...) -> y` yields an object, `y`, that contains `x` plus the results of the `f` operation, together with additional information pertinent to what `f` did.
+**pomp** uses certain syntactic conventions.
+For example, if `x` is an object and `f` is a **pomp** function, then typically `f(x,...) -> y` yields an object, `y`, that contains `x` plus the results of the `f` operation, together with additional information pertinent to what `f` did.
 Here, `...` stands for additional arguments to `f`.
 Then, if we call `f(y)`, this operation will perform some kind of repeat of the original operation:
 though the details will vary with `f` and `y`, choices made in the original computation (on `x`) will typically be respected.
@@ -462,18 +462,18 @@ In contrast, the pipeline syntax of **magrittr** allows us to write
 ```
 x %>% f(...) %>% g(...) %>% h(...)
 ```
-The object-oriented structure of **pomp2** makes this kind of programming quite natural.
+The object-oriented structure of **pomp** makes this kind of programming quite natural.
 
 Some experienced **R** programmers find the pipeline syntax uncomfortable or unnecessary at first, and debugging pipelined code requires a somewhat different approach.
-Of course, it is not necessary to adopt this style of programming to use **pomp2**, but it is quite natural and, experience shows, quite addictive!
+Of course, it is not necessary to adopt this style of programming to use **pomp**, but it is quite natural and, experience shows, quite addictive!
 
 We will use pipelines freely for the remainder of the document.
 Note that it is not necessary to load **magrittr** to use this syntax:
-the `%>%` operator is imported from **magrittr** and re-exported by **pomp2**.
+the `%>%` operator is imported from **magrittr** and re-exported by **pomp**.
 
 ***Important note:*** 
-If you opt to load the **tidyverse** (or individual packages therein), be sure to load **pomp2** *after* loading these packages.
-There are some name conflicts between the packages that would otherwise cause **pomp2** functions to be masked.
+If you opt to load the **tidyverse** (or individual packages therein), be sure to load **pomp** *after* loading these packages.
+There are some name conflicts between the packages that would otherwise cause **pomp** functions to be masked.
 
 ---------------------------------------
 
@@ -491,7 +491,7 @@ Make and plot some simulations for $t=20,\dots,50$ with different values of the 
 
 ## *Parus major* population abundance data
 
-We will illustrate some of the **pomp2** data-analysis algorithms by performing a limited analysis on a set of bird abundance data.
+We will illustrate some of the **pomp** data-analysis algorithms by performing a limited analysis on a set of bird abundance data.
 The data are from annual censuses of a population of *Parus major* (Great Tit) in Wytham Wood, Oxfordshire.
 They were retrieved as dataset #10163 from the Global Population Dynamics Database version 2 (NERC Centre for Population Biology, Imperial College, 2010).
 The original source is @McCleery1991.
@@ -506,7 +506,7 @@ parus %>%
 parus
 ```
 
-The basic data-type provided by **pomp2**---the 'pomp' object---is designed as a container for a model and data.
+The basic data-type provided by **pomp**---the 'pomp' object---is designed as a container for a model and data.
 Let's construct such an object with these data, together with the Ricker model we've already implemented.
 We do this with a call to the constructor function `pomp`:
 
@@ -544,11 +544,11 @@ We'll write this model as a stochastic differential equation (SDE), specifically
 $$dN = r\,N\,\left(1-\frac{N}{K}\right)\,dt+\sigma\,N\,dW(t),\tag{3}$$
 where $N$ is the population size, $r$ is a fixed rate, the so-called "Malthusian parameter", $K$ is the population's "carrying capacity", $\sigma$ describes the intensity of extrinsic stochastic forcing on the system, and $dW$ is an increment of a standard Wiener process.
 [Those unfamiliar with Wiener processes and It&ocirc; diffusions will not go far wrong thinking of $dW(t)$, for each time $t$, as a normal random variable with mean zero and standard deviation $\sqrt{dt}$.]
-To implement this model in **pomp2**, we must tell the package how to simulate this model.
+To implement this model in **pomp**, we must tell the package how to simulate this model.
 The easiest way to simulate such an SDE is via the *Euler-Maruyama* method.
 In this approximation, we take a large number of very small steps, each of duration $\Delta t$.
 At each step, we hold the right-hand side of the above equation constant, compute $\Delta N$ using that equation, and increment $N$ accordingly.
-**pomp2** gives us the `euler` function to assist us in implementing the Euler-Maruyama method.
+**pomp** gives us the `euler` function to assist us in implementing the Euler-Maruyama method.
 To use it, we must encode the computations that take a single step.
 As before, we can do so by writing a function.
 
@@ -615,7 +615,7 @@ While this has the virtue of transparency, it puts severe constraints on computa
 If all we want to do is run a few simulations, this is not a problem.
 As we'll see, however, in attempting to perform parameter estimation and other inferences, we will need all the speed we can readily get.
 We achieve potentially massive speed-ups by implementing our basic model components in a language that can be compiled.
-**pomp2** makes this easy.
+**pomp** makes this easy.
 The key innovation is the C snippet.
 Let's see how to code up the Ricker and Verhulst-Pearl models using C snippets.
 First, we'll code up the rinit and rmeasure components, which the two models share.
@@ -695,7 +695,7 @@ In these calls, we use the `statenames` and `paramnames` arguments to indicate w
 Since `dW` and `eps` are declared as local variables within the C snippets themselves, we don't need to mention them here.
 The `rnorm` and `rpois` functions are part of the [**R** API](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API):
 see the [manual on "Writing R Extensions"](https://cran.r-project.org/doc/manuals/r-release/R-exts.html) for a description of these and the other [distribution functions provided as part of the **R** API](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
-A full set of rules for writing **pomp2** C snippets is given in the package help (`?Csnippet`).
+A full set of rules for writing **pomp** C snippets is given in the package help (`?Csnippet`).
 
 ---------------------------------------
 
@@ -748,13 +748,13 @@ Write the dmeasure component for your negative binomial model both as an **R** f
 
 We are now in a position to be able to compute the likelihood of the data given any set of parameters for either of our models.
 For this purpose, we use the *particle filter*.
-This powerful algorithm is at the heart of several of **pomp2**'s inference methods.
+This powerful algorithm is at the heart of several of **pomp**'s inference methods.
 We won't describe the theory of the particle filter here.
 The tutorial by @Arulampalam2002 explains the theory in an accessible way.
-The [**pomp2** *Journal of Statistical Software*](https://kingaa.github.io/pomp/vignettes/pompjss.pdf) paper gives pseudocode and some examples.
-The [**pomp2** documentation page](https://kingaa.github.io/pomp/docs.html) lists several other tutorial documents that go into more detail.
+The [**pomp** *Journal of Statistical Software*](https://kingaa.github.io/pomp/vignettes/pompjss.pdf) paper gives pseudocode and some examples.
+The [**pomp** documentation page](https://kingaa.github.io/pomp/docs.html) lists several other tutorial documents that go into more detail.
 
-In **pomp2**, the simplest version of the particle filter is implemented in the function `pfilter`.
+In **pomp**, the simplest version of the particle filter is implemented in the function `pfilter`.
 Its only required arguments are the 'pomp' object and the number of *particles*, i.e., the Monte Carlo sample size.
 
 ```{r pfilter1}
@@ -837,15 +837,15 @@ Compute the likelihood for the parameters you found in your attempt to estimate 
 ## Trajectory matching
 
 Trajectory matching is the method of estimating the parameters of a deterministic model by fitting the model to data assuming independent measurement errors.
-Although **pomp2**'s main focus is on stochastic models, it does provide facilities for trajectory matching.
-**pomp2** makes a conceptual distinction between the stochastic process and a *deterministic skeleton*, which we can view as a deterministic model related to the stochastic process' central tendency.
+Although **pomp**'s main focus is on stochastic models, it does provide facilities for trajectory matching.
+**pomp** makes a conceptual distinction between the stochastic process and a *deterministic skeleton*, which we can view as a deterministic model related to the stochastic process' central tendency.
 We'll not go into mathematical details here:
 instead, we'll illustrate with two examples.
 
 ### A discrete-time deterministic skeleton
 
 A deterministic skeleton of the stochastic Ricker model is the Ricker map, Eq.&nbsp;1.
-We implement this for **pomp2**, again either as an **R** function or a C snippet and pass it to **pomp2** functions via the `skeleton` argument.
+We implement this for **pomp**, again either as an **R** function or a C snippet and pass it to **pomp** functions via the `skeleton` argument.
 For example:
 ```{r rick_skel}
 rickC %>%
@@ -899,7 +899,7 @@ As with `simulate`, one can use `trajectory` to compute multiple trajectories at
 
 ### Parameter estimation using trajectory matching
 
-In **pomp2**, the function `traj_objfun` constructs an objective function quantifying the mismatch between model predictions and data.
+In **pomp**, the function `traj_objfun` constructs an objective function quantifying the mismatch between model predictions and data.
 For this purpose, it uses the dmeasure component of the model.
 This function can be given to any of the large variety of numerical optimizers available in **R** and **R** packages.
 These optimizers search parameter space to find parameters under which the likelihood of the data, given a trajectory of the deterministic skeleton, is maximized.
@@ -928,7 +928,7 @@ What kind of object is `ofun`?
 ofun
 ```
 
-'traj_match_objfun' objects, like the objective functions created by the **pomp2** functions `spect_objfun`, `probe_objfun`, and `nlf_objfun`, is an **R** function, but it is also more than an **R** function.
+'traj_match_objfun' objects, like the objective functions created by the **pomp** functions `spect_objfun`, `probe_objfun`, and `nlf_objfun`, is an **R** function, but it is also more than an **R** function.
 It contains not only the `vpC` 'pomp' object, but it additionally saves information each time it is evaluated.
 Let's see how such *stateful* objective functions make it easy to use a wide range of numerical optimization routines.
 
@@ -1006,7 +1006,7 @@ $$dN = e^\rho\,N\,\left(1-\frac{N}{K}\right)\,dt+\sigma\,N\,dW(t),$$
 where $\rho=\log{r}$.
 In this model, $\rho$ can take any (positive or negative) values while $r$ remains positive.
 
-We incorporate parameter transformations using the `partrans` argument to many **pomp2** functions, specifying them using the `parameter_trans` function.
+We incorporate parameter transformations using the `partrans` argument to many **pomp** functions, specifying them using the `parameter_trans` function.
 In general, the parameter transformations, like other basic model components, can be supplied using **R** functions or C snippets.
 If we are merely log-transforming, logit-transforming, or log-barycentric-transforming parameters, however, it is even easier.
 The following code chunk implements log transformation of the all the parameters of the Verhulst-Pearl and Ricker models.
@@ -1015,7 +1015,7 @@ The following code chunk implements log transformation of the all the parameters
 vpr_partrans <- parameter_trans(log=c("r","K","sigma","b","N_0"))
 ```
 
-We could then provide `vpr_partrans` as needed to any of the various **pomp2** inference methods, via the `partrans` argument.
+We could then provide `vpr_partrans` as needed to any of the various **pomp** inference methods, via the `partrans` argument.
 For example, to estimate parameters for the Verhulst-Pearl model on the transformed scale, we do
 
 ```{r ofun2}
@@ -1052,13 +1052,13 @@ It is probably a good idea to use parameter transformations.
 
 ## Maximizing the likelihood by iterated filtering
 
-Let us now turn to the main focus of the **pomp2** package:
+Let us now turn to the main focus of the **pomp** package:
 parameter estimation for fully stochastic models.
 Iterated filtering is a method for maximizing the likelihood.
 The method was introduced in its original form by @Ionides2006, and was subsequently much improved by @Ionides2015.
 The latter paper rigorously expounds the theory.
 An [addendum to the **pomp** *Journal of Statistical Software paper](https://kingaa.github.io/pomp/vignettes/mif2.html) provides pseudocode and a simple example.
-Finally, a [tutorial on the theory and practice](https://kingaa.github.io/sbied/mif/mif.html) is linked from the [**pomp2** documentation index](https://kingaa.github.io/pomp/docs.html).
+Finally, a [tutorial on the theory and practice](https://kingaa.github.io/sbied/mif/mif.html) is linked from the [**pomp** documentation index](https://kingaa.github.io/pomp/docs.html).
 Here, we confine ourselves to demonstrating how the IF2 algorithm [@Ionides2015] is applied to the toy examples we have been discussing.
 
 ### Local vs global search
@@ -1091,7 +1091,7 @@ plot(guesses,pch=16)
 ```
 
 In the above call, `lower` and `upper` give the bounds of the box and `nseq` specifies the number of guesses we desire.
-Now, from each of these starting guesses, we will run the IF2 algorithm (implemented as `mif2` in **pomp2**).
+Now, from each of these starting guesses, we will run the IF2 algorithm (implemented as `mif2` in **pomp**).
 As its name suggests, this algorithm works by iteratively applying the particle filter:
 Crucially, IF2 adds an extra ingredient to the particle filter.
 As the filter is applied, IF2 adds random perturbations to the parameters.
@@ -1134,7 +1134,7 @@ What kind of object is `mf1`?
 mf1
 ```
 
-**pomp2** provides various methods for 'mif2d_pomp' objects.
+**pomp** provides various methods for 'mif2d_pomp' objects.
 The `plot` method, for example, produces a diagnostic plot.
 
 ```{r mif_plot1}
@@ -1166,7 +1166,7 @@ The **foreach** package provides some useful tools in this regard.
 library(foreach)
 
 foreach (guess=iter(guesses,"row"),
-  .combine=c, .packages=c("pomp2"),
+  .combine=c, .packages=c("pomp"),
   .errorhandling="remove", .inorder=FALSE) %dopar% {
     
     mf1 %>% mif2(params=guess)
@@ -1219,7 +1219,7 @@ As we've discussed, to properly evaluate the likelihood at these estimates, we m
 
 ```{r parus_pf1,purl=FALSE,eval=FALSE}
 foreach (mf=mifs,
-  .combine=rbind, .packages=c("pomp2"), 
+  .combine=rbind, .packages=c("pomp"), 
   .errorhandling="remove", .inorder=FALSE) %dopar% {
     
     replicate(5, 
@@ -1289,7 +1289,7 @@ estimates %>%
   select(-loglik,-loglik.se) -> starts
 
 foreach (start=iter(starts,"row"),
-  .combine=rbind, .packages=c("pomp2"), 
+  .combine=rbind, .packages=c("pomp"), 
   .errorhandling="remove", .inorder=FALSE) %dopar% {
     
     mf1 %>% 
@@ -1372,7 +1372,7 @@ pairs(~r+K+sigma+N_0+b,data=starts)
 ```
 ```{r parus_profile,eval=FALSE,purl=FALSE}
 foreach (start=iter(starts,"row"),
-  .combine=rbind, .packages=c("pomp2"),
+  .combine=rbind, .packages=c("pomp"),
   .errorhandling="remove", .inorder=FALSE) %dopar% {
   
   mf1 %>%
@@ -1473,7 +1473,7 @@ Comment on your findings.
 
 Estimating model parameters by fitting the model to data is typically only a step in the process of trying to understand the processes that generated the data.
 The next step involves trying to understand how and why the model fits the data the way it does, whether it fits it well, and what scope for improvement there might be.
-**pomp2** provides a number of tools to facilitate answering these questions through interaction with a fitted model.
+**pomp** provides a number of tools to facilitate answering these questions through interaction with a fitted model.
 
 ### Simulation of the fitted model
 
@@ -1522,7 +1522,7 @@ Visual comparison of simulations and data is always a good idea.
 An indication that the data are not a plausible realization of the model is evidence for lack of fit.
 In particular, if we have any set of summary statistics, or *probes*, we can apply them to both simulated and actual data.
 The `probe` function facilitates this comparison.
-Let's perform this operation using several of the summary statistics provided with **pomp2**:
+Let's perform this operation using several of the summary statistics provided with **pomp**:
 we'll use the mean, several quantiles, and the autocorrelation at lags 1 and 3.
 
 ```{r probe1}
@@ -1563,14 +1563,14 @@ To this point, we've seen how to implement POMP models, simulate them, to comput
 The [**pomp** website](https://kingaa.github.io/pomp/) contains more documentation, including the full package manual, and a variety of tutorials and short courses.
 The package itself contains a number of built-in examples and datasets that can be explored.
 
-**pomp2** provides a large toolbox of different inference methods, only a few of which have been explored here.
+**pomp** provides a large toolbox of different inference methods, only a few of which have been explored here.
 In particular, the package provides other methods for parameter estimation, both in the frequentist and Bayesian modes.
 See for example (`abc`, `pmcmc`, `probe.match`, `spect.match`, `nlf`, `enkf`, `bsmc2`).
 It also provides a variety of tools for model checking (`spect`, `nlf`).
 It is frequently the case that an approach that makes use of more than one approach has advantages over more "purist" approaches:
 the main goal of the package is to facilitate effective inference by bringing a variety of tools, with complementary strengths and weaknesses, to the user in a common format.
 
-Although the goal of this document has been to introduce the beginner to the package through a display of the **pomp2** toolbox in the context of a rudimentary and incomplete data analysis of a short time series with toy models, it is important to realize that these tools have proven their utility on some extremely challenging problems, including some for which other existing methods are either less efficient or entirely infeasible.
+Although the goal of this document has been to introduce the beginner to the package through a display of the **pomp** toolbox in the context of a rudimentary and incomplete data analysis of a short time series with toy models, it is important to realize that these tools have proven their utility on some extremely challenging problems, including some for which other existing methods are either less efficient or entirely infeasible.
 The [bibliography](https://kingaa.github.io/pomp/biblio.html) has links to peer-reviewed publications that have used these methods.
 
 ## [**R** codes for this document](getting_started.R)

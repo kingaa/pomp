@@ -13,7 +13,7 @@ csl: ecology.csl
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
 
-This document was produced using **pomp2** version `r packageVersion("pomp2")`.
+This document was produced using **pomp** version `r packageVersion("pomp")`.
 
 ```{r options,include=FALSE,cache=FALSE,purl=FALSE}
 library(knitr)
@@ -48,8 +48,8 @@ library(plyr)
 library(reshape2)
 library(magrittr)
 theme_set(theme_bw())
-library(pomp2)
-stopifnot(packageVersion("pomp2")>="2.0.9.1")
+library(pomp)
+stopifnot(packageVersion("pomp")>="2.0.9.1")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -60,7 +60,7 @@ set.seed(1332379783L)
 ```
 
 Iterated filtering is a technique for maximizing the likelihood obtained by filtering.
-In **pomp2**, it is the particle filter that is iterated.
+In **pomp**, it is the particle filter that is iterated.
 The iterated filtering of @Ionides2006 is implemented in the `mif` function.
 @Ionides2015 describe an improvement on the original [@Ionides2006] algorithm.
 This "IF2" algorithm is implemented in the `mif2` function.
@@ -98,11 +98,11 @@ Final parameter swarm, $\{\Theta^M_j, j=1,\dots,J\}$
 
 ## An example
 
-The following constructs the Gompertz example that is provided with **pomp2** (see `?gompertz`) and extracts the parameters at which the data were generated.
+The following constructs the Gompertz example that is provided with **pomp** (see `?gompertz`) and extracts the parameters at which the data were generated.
 It is meant to be directly comparable with the example displayed in the @King2016 [*J. Stat. Softw.* paper](https://kingaa.github.io/pomp/vignettes/pompjss.pdf).
 
 ```{r gompertz-init,results="hide"}
-library(pomp2)
+library(pomp)
 gompertz() -> gomp
 theta <- coef(gomp)
 theta.true <- theta
@@ -164,7 +164,7 @@ replicate(10,logLik(pfilter(gomp,params=theta.mif,Np=10000))) %>%
 ```
 
 Note that we've set `transform=TRUE` in the above to search for the MLE with the parameters transformed to enforce their positivity.
-See the **pomp2** documentation (`?pomp`) and the section on Parameter Transformations in the [Getting Started vignette](https://kingaa.github.io/pomp/vignettes/getting_started.html)).
+See the **pomp** documentation (`?pomp`) and the section on Parameter Transformations in the [Getting Started vignette](https://kingaa.github.io/pomp/vignettes/getting_started.html)).
 
 Each of the `r length(mf)` `mif2` runs ends up at a different point estimate.
 We focus on that with the highest estimated likelihood, having evaluated the likelihood several times to reduce the Monte Carlo error in the likelihood evaluation.

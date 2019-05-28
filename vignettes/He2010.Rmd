@@ -15,7 +15,7 @@ Licensed under the Creative Commons attribution-noncommercial license, http://cr
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
 
-Produced using *R* version `r getRversion()` and **pomp2** version `r packageVersion("pomp2")`.
+Produced using *R* version `r getRversion()` and **pomp** version `r packageVersion("pomp")`.
 
 
 ```{r select-town,echo=FALSE}
@@ -93,8 +93,8 @@ set.seed(594709947L)
 library(ggplot2)
 library(plyr)
 library(tidyverse)
-library(pomp2)
-stopifnot(packageVersion("pomp2")>="2.0.9.1")
+library(pomp)
+stopifnot(packageVersion("pomp")>="2.0.9.1")
 ```
 
 ## Data and covariates

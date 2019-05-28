@@ -27,10 +27,10 @@ code {
 ```
 
 ```{r precheck,include=FALSE}
-stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
+stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 ```
 
-This document was produced using **pomp** version `r packageVersion("pomp2")` and **R** version `r getRversion()`.
+This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
 
 ```{r knitr-opts,include=FALSE,purl=FALSE}
 library(knitr)
@@ -68,7 +68,7 @@ Here, we'll demonstrate both approaches.
 First, we'll load some packages.
 
 ```{r packages}
-library(pomp2)
+library(pomp)
 library(ggplot2)
 library(magrittr)
 ```
