@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="simulate-%02d.png",res=100)
 
-library(pomp2)
+library(pomp)
 library(dplyr)
 
 set.seed(1041414791L)

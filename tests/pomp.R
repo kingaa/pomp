@@ -2,7 +2,7 @@ options(digits=3)
 
 set.seed(758723694)
 
-library(pomp2)
+library(pomp)
 library(magrittr)
 
 try(pomp())

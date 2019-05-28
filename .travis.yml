@@ -51,8 +51,8 @@ jobs:
         secure: YL3RZDogJaNmBi+jA9cxLLka5i4NQrNT3gM44ssgWAYh01NrmoIU0m0Lm/Q+7PLOebOSq2KHKU8mZDQ3CGXcLWTJfBgUr4deGeVGLsYT7Y0kQMFDzbYJkRe3UbTMGJSmwwJAqRigDP8HZmuw5/TJnKy0mLUYt97nmSzi7+vdnUUrkMRdmh+12mEM9FUEPP3DrRngzOOHBT3ZfD4MWUsLvaLltUSjweFOT1mwdeAUCDZGcfXb7Ian16ihb/FZ823cLq/elIynF7EenjzkP58k1r9vO3O8iBJ530GT/XDI9Fcev6NVD1rzznSR9+gPsVu1tFFabUXO2uHVFRzOCg8k7Pbn7/K7QbW9ctPKPO5TXKAQ96r6di0WaJBhrcINt9ZxXILxM8zOwQyxnaeJxobrnmMGrge0ASNh4KTRLWTEqcU12Ulh4wmZbaGPYSp41Q15mKCxPrFUEwWSqYdYS6kySl8CEv8vMAhjpW0Es68E8CYlxVnCILryn4Kl/b7YxOybFLNqg8hoFr3aaXz4uYR7Bb5P2FRdOAoZy09uNImDQbVpdUgt7vVwN4QjmERVsVjRiJzHYe9UrzM1rMtXDyB+joEEW2FYMleRSC8au8cp0KJj2emzcb+XoukNNsfW5qmlT+L/N6Ye1dgnqmPohmQSiYXo4s+Z5TkDcEMGuh6ZXAg=
       file_glob: true
       file:
-      - pomp2_*.tgz
-      - pomp2_*.tar.gz
+      - pomp_*.tgz
+      - pomp_*.tar.gz
       skip_cleanup: true
       on:
         tags: true

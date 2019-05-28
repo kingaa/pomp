@@ -19,25 +19,25 @@ Type 'q()' to quit R.
 
 > options(digits=3)
 > 
-> library(pomp2)
+> library(pomp)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > 
-> pomp2:::undefined()
+> pomp:::undefined()
 [1] NA
-> pomp2:::undefined("harry")
+> pomp:::undefined("harry")
 [1] NA
-> pomp2:::undefined(function(x)x)
+> pomp:::undefined(function(x)x)
 [1] NA
-> pomp2:::undefined(pomp2:::pomp_fun(function(x)x))
+> pomp:::undefined(pomp:::pomp_fun(function(x)x))
 [1] FALSE
-> pomp2:::undefined(pomp2:::pomp_fun())
+> pomp:::undefined(pomp:::pomp_fun())
 [1] TRUE
-> pomp2:::undefined(parameter_trans())
+> pomp:::undefined(parameter_trans())
 [1] TRUE
-> pomp2:::undefined(pomp2:::rproc_plugin())
+> pomp:::undefined(pomp:::rproc_plugin())
 [1] TRUE
-> pomp2:::undefined(pomp2:::skel_plugin())
+> pomp:::undefined(pomp:::skel_plugin())
 [1] TRUE
 > 

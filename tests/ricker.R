@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="ricker-%02d.png",res=100)
 
-library(pomp2)
+library(pomp)
 
 ricker() -> ricker
 

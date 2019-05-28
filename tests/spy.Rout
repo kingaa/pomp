@@ -19,7 +19,7 @@ Type 'q()' to quit R.
 
 > options(digits=3)
 > 
-> library(pomp2)
+> library(pomp)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
@@ -64,21 +64,21 @@ pomp object 'po1':
   - time-step = 1 
   - step.fun: native function
   - name: '_gompertz_simulator'
-  - dynamically loaded from: 'pomp2'
+  - dynamically loaded from: 'pomp'
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
   - name: '_gompertz_normal_rmeasure'
-  - dynamically loaded from: 'pomp2'
+  - dynamically loaded from: 'pomp'
 - measurement model density, dmeasure: native function
   - name: '_gompertz_normal_dmeasure'
-  - dynamically loaded from: 'pomp2'
+  - dynamically loaded from: 'pomp'
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: map:
   - time-step = 1 
   - native function
   - name: '_gompertz_skeleton'
-  - dynamically loaded from: 'pomp2'
+  - dynamically loaded from: 'pomp'
 - parameter vector:
     K     r sigma   tau   X_0 
   1.0   0.1   0.1   0.1   1.0 
@@ -128,21 +128,21 @@ params
   - time-step = 1 
   - step.fun: native function
   - name: '_gompertz_simulator'
-  - dynamically loaded from: 'pomp2'
+  - dynamically loaded from: 'pomp'
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
   - name: '_gompertz_normal_rmeasure'
-  - dynamically loaded from: 'pomp2'
+  - dynamically loaded from: 'pomp'
 - measurement model density, dmeasure: native function
   - name: '_gompertz_normal_dmeasure'
-  - dynamically loaded from: 'pomp2'
+  - dynamically loaded from: 'pomp'
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: map:
   - time-step = 1 
   - native function
   - name: '_gompertz_skeleton'
-  - dynamically loaded from: 'pomp2'
+  - dynamically loaded from: 'pomp'
 - parameter transformations:
   - to estimation scale: native function
   - name: '__pomp_to_trans'

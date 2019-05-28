@@ -19,7 +19,7 @@ Type 'q()' to quit R.
 
 > ### test of reproducibility utilities
 > 
-> library(pomp2)
+> library(pomp)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
@@ -78,5 +78,5 @@ in 'bake': expression evaluates to NULL
 > invisible(freeze({runif(4)},seed=32765883))
 > invisible(freeze({runif(4)}))
 > 
-> detach("package:pomp2", unload=TRUE)
+> detach("package:pomp", unload=TRUE)
 > 

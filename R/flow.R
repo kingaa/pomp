@@ -137,7 +137,7 @@ flow.internal <- function (object, x0, t0, times, params, ...,
         y=x0,
         times=c(t0,times),
         func="pomp_vf_eval",
-        dllname="pomp2",
+        dllname="pomp",
         initfunc=NULL,
         parms=NULL,
         ...

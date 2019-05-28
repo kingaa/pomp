@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="ebola-%02d.png",res=100)
 
-library(pomp2)
+library(pomp)
 
 ebolaModel() -> eb
 

@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="pmcmc-%02d.png",res=100)
 
-library(pomp2)
+library(pomp)
 
 set.seed(857075216L)
 

@@ -2,7 +2,7 @@
 
 png(filename="abc-%02d.png",res=100)
 
-library(pomp2)
+library(pomp)
 
 ou2() -> ou2
 

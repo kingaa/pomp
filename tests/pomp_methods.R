@@ -1,4 +1,4 @@
-library(pomp2)
+library(pomp)
 
 gompertz() -> po
 

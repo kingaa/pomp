@@ -1,5 +1,5 @@
 png(filename="runif_design-%02d.png",res=100)
-library(pomp2)
+library(pomp)
 library(dplyr)
 library(magrittr)
 

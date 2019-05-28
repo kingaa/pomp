@@ -20,7 +20,7 @@ Type 'q()' to quit R.
 > options(digits=3)
 > png(filename="kalman-%02d.png",res=100)
 > 
-> library(pomp2)
+> library(pomp)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
@@ -73,7 +73,7 @@ For information on upgrading your pomp version < 2 code, see the
 +   y[,k] <- C %*% xx + sqrtR %*% rnorm(n=dimY)
 + }
 > 
-> kf <- pomp2:::kalmanFilter(t,y,X0,A,Q,C,R)
+> kf <- pomp:::kalmanFilter(t,y,X0,A,Q,C,R)
 > 
 > y %>% melt() %>%
 +   dcast(time~variable) %>%

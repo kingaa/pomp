@@ -44,23 +44,23 @@ static const R_CallMethodDef callMethods[] = {
   {NULL, NULL, 0}
 };
 
-void R_init_pomp2 (DllInfo *info) {
+void R_init_pomp (DllInfo *info) {
   // C functions provided for users
-  R_RegisterCCallable("pomp2","periodic_bspline_basis_eval",(DL_FUNC) &periodic_bspline_basis_eval);
-  R_RegisterCCallable("pomp2","get_userdata",(DL_FUNC) &get_userdata);
-  R_RegisterCCallable("pomp2","get_userdata_int",(DL_FUNC) &get_userdata_int);
-  R_RegisterCCallable("pomp2","get_userdata_double",(DL_FUNC) &get_userdata_double);
-  R_RegisterCCallable("pomp2","pomp_fun_handler",(DL_FUNC) &pomp_fun_handler);
-  R_RegisterCCallable("pomp2","load_stack_incr",(DL_FUNC) &load_stack_incr);
-  R_RegisterCCallable("pomp2","load_stack_decr",(DL_FUNC) &load_stack_decr);
-  R_RegisterCCallable("pomp2","set_pomp_userdata",(DL_FUNC) &set_pomp_userdata);
-  R_RegisterCCallable("pomp2","unset_pomp_userdata",(DL_FUNC) &unset_pomp_userdata);
-  R_RegisterCCallable("pomp2","make_covariate_table",(DL_FUNC) &make_covariate_table);
-  R_RegisterCCallable("pomp2","get_covariate_names",(DL_FUNC) &get_covariate_names);
-  R_RegisterCCallable("pomp2","table_lookup",(DL_FUNC) &table_lookup);
-  R_RegisterCCallable("pomp2","apply_probe_data",(DL_FUNC) &apply_probe_data);
-  R_RegisterCCallable("pomp2","apply_probe_sim",(DL_FUNC) &apply_probe_sim);
-  R_RegisterCCallable("pomp2","systematic_resampling",(DL_FUNC) &systematic_resampling);
+  R_RegisterCCallable("pomp","periodic_bspline_basis_eval",(DL_FUNC) &periodic_bspline_basis_eval);
+  R_RegisterCCallable("pomp","get_userdata",(DL_FUNC) &get_userdata);
+  R_RegisterCCallable("pomp","get_userdata_int",(DL_FUNC) &get_userdata_int);
+  R_RegisterCCallable("pomp","get_userdata_double",(DL_FUNC) &get_userdata_double);
+  R_RegisterCCallable("pomp","pomp_fun_handler",(DL_FUNC) &pomp_fun_handler);
+  R_RegisterCCallable("pomp","load_stack_incr",(DL_FUNC) &load_stack_incr);
+  R_RegisterCCallable("pomp","load_stack_decr",(DL_FUNC) &load_stack_decr);
+  R_RegisterCCallable("pomp","set_pomp_userdata",(DL_FUNC) &set_pomp_userdata);
+  R_RegisterCCallable("pomp","unset_pomp_userdata",(DL_FUNC) &unset_pomp_userdata);
+  R_RegisterCCallable("pomp","make_covariate_table",(DL_FUNC) &make_covariate_table);
+  R_RegisterCCallable("pomp","get_covariate_names",(DL_FUNC) &get_covariate_names);
+  R_RegisterCCallable("pomp","table_lookup",(DL_FUNC) &table_lookup);
+  R_RegisterCCallable("pomp","apply_probe_data",(DL_FUNC) &apply_probe_data);
+  R_RegisterCCallable("pomp","apply_probe_sim",(DL_FUNC) &apply_probe_sim);
+  R_RegisterCCallable("pomp","systematic_resampling",(DL_FUNC) &systematic_resampling);
 
   // Register routines
   R_registerRoutines(info,NULL,callMethods,NULL,NULL);

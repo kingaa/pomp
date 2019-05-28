@@ -1,7 +1,7 @@
 png(filename="bsmc2-%02d.png",res=100)
 options(digits=2)
 
-library(pomp2)
+library(pomp)
 suppressPackageStartupMessages({
   library(dplyr)
   library(tidyr)

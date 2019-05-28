@@ -56,7 +56,7 @@ ou2 <- function (
     dmeasure = "_ou2_dmeasure",
     rmeasure = "_ou2_rmeasure",
     skeleton = map("_ou2_skel",delta.t=1),
-    PACKAGE="pomp2",
+    PACKAGE="pomp",
     paramnames = c(
       "alpha_1","alpha_2","alpha_3","alpha_4",
       "sigma_1","sigma_2","sigma_3",

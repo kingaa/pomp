@@ -44,24 +44,24 @@ This will be coerced internally to storage mode \code{double}.}
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit_spec]{here}.}
+For more information, see \link[=rinit_spec]{?rinit_spec}.}
 
 \item{skeleton}{optional; the deterministic skeleton of the unobserved state process.
 Depending on whether the model operates in continuous or discrete time, this is either a vectorfield or a map.
 Accordingly, this is supplied using either the \code{\link[=skeleton_spec]{vectorfield}} or \code{\link[=skeleton_spec]{map}} fnctions.
-For more information, see \link[=skeleton_spec]{here}.
+For more information, see \link[=skeleton_spec]{?skeleton_spec}.
 Setting \code{skeleton=NULL} removes the deterministic skeleton.}
 
 \item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{dmeasure=NULL} removes the measurement density evaluator.
-For more information, see \link[=dmeasure_spec]{here}.}
+For more information, see \link[=dmeasure_spec]{?dmeasure_spec}.}
 
 \item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
 
 Many algorithms for parameter estimation search an unconstrained space of parameters.
 When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
-For more information, see \link[=parameter_trans]{here}.
+For more information, see \link[=parameter_trans]{?parameter_trans}.
 Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.}
 
 \item{\dots}{additional arguments will modify the model structure}

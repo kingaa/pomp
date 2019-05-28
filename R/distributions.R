@@ -77,7 +77,7 @@
 ##' @section C API:
 ##' An interface for C codes using these functions is provided by the package.
 ##' At a prompt, execute \preformatted{
-##'     file.show(system.file("include/pomp.h",package="pomp2"))
+##'     file.show(system.file("include/pomp.h",package="pomp"))
 ##' } to view the \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h} header file}
 ##' that defines and explains the API.
 ##'

@@ -83,22 +83,22 @@ This will be coerced internally to storage mode \code{double}.}
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit_spec]{here}.}
+For more information, see \link[=rinit_spec]{?rinit_spec}.}
 
 \item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
 Setting \code{rprocess=NULL} removes the latent-state simulator.
-For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
+For more information, \link[=rprocess_spec]{see ?rprocess_spec for the documentation on these plugins}.}
 
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
-For more information, see \link[=rmeasure_spec]{here}.}
+For more information, see \link[=rmeasure_spec]{?rmeasure_spec}.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
 
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
 This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
-See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
+See \link[=userdata]{?userdata} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
@@ -183,7 +183,7 @@ dynamical tests of mechanistic hypotheses.
 Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{mif2}}, \code{\link{pmcmc}},
-  \code{\link{pomp2-package}}, \code{\link{probe.match}},
+  \code{\link{pomp-package}}, \code{\link{probe.match}},
   \code{\link{spect.match}}
 }
 \author{

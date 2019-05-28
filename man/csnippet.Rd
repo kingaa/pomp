@@ -53,7 +53,7 @@ They must be referred to in measurement model C snippets (\code{rmeasure} and \c
 \item The headers \file{R.h} and \file{Rmath.h}, provided with \R, will be included in the generated C file, making all of the \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API}{\R C API} available for use in the C snippet.
 This makes a great many useful functions available, including all of \R's \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions}{statistical distribution functions}.
 \item The header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}, provided with \pkg{pomp}, will also be included, making all of the \pkg{pomp} C API available for use in every C snippet.
-Do \preformatted{file.show(system.file("include/pomp.h",package="pomp2"))} to view this header file in your installation.
+Do \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view this header file in your installation.
 \item Snippets of C code passed to the \code{globals} argument of \code{pomp} will be included at the head of the generated C file.
 This can be used to declare global variables, define useful functions, and include arbitrary header files.
 \item INCLUDE INFORMATION ABOUT LINKING TO PRECOMPILED LIBRARIES!
@@ -66,7 +66,7 @@ Other information on model implementation: \code{\link{accumulators}},
   \code{\link{distributions}}, \code{\link{dmeasure_spec}},
   \code{\link{dprocess_spec}},
   \code{\link{parameter_trans}},
-  \code{\link{pomp2-package}}, \code{\link{prior_spec}},
+  \code{\link{pomp-package}}, \code{\link{prior_spec}},
   \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
   \code{\link{rprocess_spec}}, \code{\link{skeleton_spec}},
   \code{\link{transformations}}, \code{\link{userdata}}

@@ -61,22 +61,22 @@ This will be coerced internally to storage mode \code{double}.}
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit_spec]{here}.}
+For more information, see \link[=rinit_spec]{?rinit_spec}.}
 
 \item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
 Setting \code{rprocess=NULL} removes the latent-state simulator.
-For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
+For more information, \link[=rprocess_spec]{see ?rprocess_spec for the documentation on these plugins}.}
 
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
-For more information, see \link[=rmeasure_spec]{here}.}
+For more information, see \link[=rmeasure_spec]{?rmeasure_spec}.}
 
 \item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
 
 Many algorithms for parameter estimation search an unconstrained space of parameters.
 When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
-For more information, see \link[=parameter_trans]{here}.
+For more information, see \link[=parameter_trans]{?parameter_trans}.
 Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
@@ -84,7 +84,7 @@ See \code{\link{pomp}} for a full list of recognized arguments.
 
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
 This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
-See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
+See \link[=userdata]{?userdata} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
@@ -160,7 +160,7 @@ Other summary statistics methods: \code{\link{abc}},
 Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{mif2}}, \code{\link{nlf}},
-  \code{\link{pmcmc}}, \code{\link{pomp2-package}},
+  \code{\link{pmcmc}}, \code{\link{pomp-package}},
   \code{\link{spect.match}}
 }
 \author{

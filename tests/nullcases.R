@@ -1,4 +1,4 @@
-library(pomp2)
+library(pomp)
 
 simulate(times=1:10,t0=0,
          statenames="x",

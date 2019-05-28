@@ -25,7 +25,7 @@ extern void _gompertz_skeleton(double *f, double *x, const double *p, const int 
 extern void _gompertz_to_trans(double *__pt, const double *__p, const int *__parindex);
 extern void _gompertz_from_trans(double *__p, const double *__pt, const int *__parindex);
 /* src/init.c */
-extern void R_init_pomp2(DllInfo *info);
+extern void R_init_pomp(DllInfo *info);
 /* src/lookup_table.c */
 extern SEXP get_covariate_names(SEXP object);
 extern lookup_table_t make_covariate_table(SEXP object, int *ncovar);
@@ -47,12 +47,12 @@ extern SEXP pfilter_computations(SEXP x, SEXP params, SEXP Np, SEXP predmean, SE
 extern SEXP pomp_fun_handler(SEXP pfun, SEXP gnsi, pompfunmode *mode, SEXP S, SEXP P, SEXP O, SEXP C);
 extern SEXP load_stack_incr(SEXP pack);
 extern SEXP load_stack_decr(SEXP pack);
-/* src/probe_acf.c */
-extern SEXP probe_acf(SEXP x, SEXP lags, SEXP corr);
-extern SEXP probe_ccf(SEXP x, SEXP y, SEXP lags, SEXP corr);
 /* src/probe.c */
 extern SEXP apply_probe_data(SEXP object, SEXP probes);
 extern SEXP apply_probe_sim(SEXP object, SEXP nsim, SEXP params, SEXP probes, SEXP datval, SEXP gnsi);
+/* src/probe_acf.c */
+extern SEXP probe_acf(SEXP x, SEXP lags, SEXP corr);
+extern SEXP probe_ccf(SEXP x, SEXP y, SEXP lags, SEXP corr);
 /* src/probe_marginal.c */
 extern SEXP probe_marginal_setup(SEXP ref, SEXP order, SEXP diff);
 extern SEXP probe_marginal_solve(SEXP x, SEXP setup, SEXP diff);

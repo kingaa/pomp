@@ -1,15 +1,15 @@
 ##' Inference for partially observed Markov processes
 ##'
-##' The \pkg{pomp2} package provides facilities for inference on time series
+##' The \pkg{pomp} package provides facilities for inference on time series
 ##' data using partially-observed Markov process (\acronym{POMP}) models.
 ##' These models are also known as state-space models, hidden Markov models, or
-##' nonlinear stochastic dynamical systems.  One can use \pkg{pomp2} to fit
+##' nonlinear stochastic dynamical systems.  One can use \pkg{pomp} to fit
 ##' nonlinear, non-Gaussian dynamic models to time-series data.  The package is
 ##' both a set of tools for data analysis and a platform upon which statistical
 ##' inference methods for \acronym{POMP} models can be implemented.
 ##'
-##' @name pomp2-package
-##' @aliases pomp2,package pomp2-package
+##' @name pomp-package
+##' @aliases pomp,package pomp-package
 ##' @docType package
 ##' @author Aaron A. King
 ##' @family information on model implementation
@@ -55,6 +55,6 @@
 ##' See the package website, \url{https://kingaa.github.io/pomp/}, for more
 ##' references.
 ##'
-##' @useDynLib pomp2, .registration = TRUE, .fixes="P_"
+##' @useDynLib pomp, .registration = TRUE, .fixes="P_"
 ##' @import methods
 NULL

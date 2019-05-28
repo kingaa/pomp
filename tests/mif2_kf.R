@@ -1,6 +1,6 @@
 options(digits=3)
 
-library(pomp2)
+library(pomp)
 library(magrittr)
 
 set.seed(376098756)
@@ -26,7 +26,7 @@ po %>% coef() %>% as.list() %$% {matrix(c(sigma*sigma),1,1)} -> Q
 po %>% coef() %>% as.list() %$% {matrix(1,1,1)} -> C
 po %>% coef() %>% as.list() %$% {tau*tau} -> R
 po %>% time() -> t
-pomp2:::kalmanFilter(t,y,X0,A,Q,C,R) -> kf.truth
+pomp:::kalmanFilter(t,y,X0,A,Q,C,R) -> kf.truth
 
 mf %>% rinit(params=coef(mf)) %>% as.numeric() -> x0
 mf %>% coef() %>% as.list() %$% {c(x=log(x0/K))} -> X0
@@ -36,7 +36,7 @@ mf %>% coef() %>% as.list() %$% {matrix(c(sigma*sigma),1,1)} -> Q
 mf %>% coef() %>% as.list() %$% {matrix(1,1,1)} -> C
 mf %>% coef() %>% as.list() %$% {tau*tau} -> R
 mf %>% time() -> t
-pomp2:::kalmanFilter(t,y,X0,A,Q,C,R) -> kf.mle
+pomp:::kalmanFilter(t,y,X0,A,Q,C,R) -> kf.mle
 
 cat("likelihood at truth:",kf.truth$loglik-sum(y),"\n")
 cat("pfilter likelihood at truth:",pf.ll.truth,"\n")

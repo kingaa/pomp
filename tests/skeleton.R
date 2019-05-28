@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="skeleton-%02d.png",res=100)
 
-library(pomp2)
+library(pomp)
 suppressPackageStartupMessages({
   library(ggplot2)
   library(reshape2)

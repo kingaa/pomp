@@ -1,4 +1,4 @@
-library(pomp2)
+library(pomp)
 
 set.seed(2130639172L)
 

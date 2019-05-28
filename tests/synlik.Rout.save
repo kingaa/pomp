@@ -20,7 +20,7 @@ Type 'q()' to quit R.
 > options(digits=3)
 > png(filename="synlik-%02d.png",res=100)
 > 
-> library(pomp2)
+> library(pomp)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
@@ -42,7 +42,7 @@ For information on upgrading your pomp version < 2 code, see the
 +   Q[1,2] <- 0
 +   Q <- tcrossprod(Q)
 +   R <- diag(p['tau']^2,2,2)
-+   pomp2:::kalmanFilter(t=time(object),y=y,X0=x0,A=A,C=C,Q=Q,R=R)$loglik
++   pomp:::kalmanFilter(t=time(object),y=y,X0=x0,A=A,C=C,Q=Q,R=R)$loglik
 + }
 > 
 > # exact likelihood

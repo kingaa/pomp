@@ -21,7 +21,7 @@ Type 'q()' to quit R.
 > 
 > png(filename="abc-%02d.png",res=100)
 > 
-> library(pomp2)
+> library(pomp)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
@@ -207,7 +207,7 @@ Error : 'c' is not defined for objects of mixed class.
 > class(alist[2])
 [1] "abcList"
 attr(,"package")
-[1] "pomp2"
+[1] "pomp"
 > try(alist[3])
 [[1]]
 NULL

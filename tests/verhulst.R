@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="verhulst-%02d.png",res=100)
 
-library(pomp2)
+library(pomp)
 
 verhulst(n_0=100) -> po
 

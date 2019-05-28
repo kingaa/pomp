@@ -18,7 +18,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
-> library(pomp2)
+> library(pomp)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
@@ -78,7 +78,7 @@ For information on upgrading your pomp version < 2 code, see the
 +   theme_bw()
 > 
 > ## ----logistic-step-fun---------------------------------------------------
-> library(pomp2)
+> library(pomp)
 > step.fun <- Csnippet("
 +   double dW = rnorm(0,sqrt(dt));
 +   N += r*N*(1-N/K)*dt+sigma*N*dW;
@@ -109,7 +109,7 @@ Warning message:
 +   P = rpois(N);
 + ")
 > 
-> ## ----logistic-pomp2------------------------------------------------------
+> ## ----logistic-pomp------------------------------------------------------
 > parus <- pomp(parus,rmeasure=rmeas,statenames="N")
 > 
 > ## ----logistic-simul2-----------------------------------------------------

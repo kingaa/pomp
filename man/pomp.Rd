@@ -27,42 +27,42 @@ See \code{\link{pomp}} for a full list of recognized arguments.
 
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
 This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
-See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
+See \link[=userdata]{?userdata} for information on how to use this facility.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit_spec]{here}.}
+For more information, see \link[=rinit_spec]{?rinit_spec}.}
 
 \item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
 Setting \code{rprocess=NULL} removes the latent-state simulator.
-For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
+For more information, \link[=rprocess_spec]{see ?rprocess_spec for the documentation on these plugins}.}
 
 \item{dprocess}{optional;
 specification of the probability density evaluation function of the unobserved state process.
 Setting \code{dprocess=NULL} removes the latent-state density evaluator.
-For more information, see \link[=dprocess_spec]{here}.}
+For more information, see \link[=dprocess_spec]{?dprocess_spec}.}
 
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
-For more information, see \link[=rmeasure_spec]{here}.}
+For more information, see \link[=rmeasure_spec]{?rmeasure_spec}.}
 
 \item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{dmeasure=NULL} removes the measurement density evaluator.
-For more information, see \link[=dmeasure_spec]{here}.}
+For more information, see \link[=dmeasure_spec]{?dmeasure_spec}.}
 
 \item{skeleton}{optional; the deterministic skeleton of the unobserved state process.
 Depending on whether the model operates in continuous or discrete time, this is either a vectorfield or a map.
 Accordingly, this is supplied using either the \code{\link[=skeleton_spec]{vectorfield}} or \code{\link[=skeleton_spec]{map}} fnctions.
-For more information, see \link[=skeleton_spec]{here}.
+For more information, see \link[=skeleton_spec]{?skeleton_spec}.
 Setting \code{skeleton=NULL} removes the deterministic skeleton.}
 
 \item{rprior}{optional; prior distribution sampler, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information, see \link[=prior_spec]{here}.
+For more information, see \link[=prior_spec]{?prior_spec}.
 Setting \code{rprior=NULL} removes the prior distribution sampler.}
 
 \item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information, see \link[=prior_spec]{here}.
+For more information, see \link[=prior_spec]{?prior_spec}.
 Setting \code{dprior=NULL} resets the prior distribution to its default, which is a flat improper prior.}
 
 \item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
@@ -70,7 +70,7 @@ Setting \code{dprior=NULL} resets the prior distribution to its default, which i
 Many algorithms for parameter estimation search an unconstrained space of parameters.
 When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
-For more information, see \link[=parameter_trans]{here}.
+For more information, see \link[=parameter_trans]{?parameter_trans}.
 Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.}
 
 \item{covar}{optional covariate table, constructed using \code{\link{covariate_table}}.
@@ -84,7 +84,7 @@ This will be coerced internally to storage mode \code{double}.}
 
 \item{accumvars}{optional character vector;
 contains the names of accumulator variables.
-See \link[=accumulators]{here} for a definition and discussion of accumulator variables.}
+See \link[=accumulators]{?accumulators} for a definition and discussion of accumulator variables.}
 
 \item{obsnames}{optional character vector;
 names of the observables.

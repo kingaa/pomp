@@ -22,7 +22,7 @@ Type 'q()' to quit R.
 > 
 > set.seed(857075216L)
 > 
-> library(pomp2)
+> library(pomp)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
@@ -42,7 +42,7 @@ The following objects are masked from 'package:base':
 
 Attaching package: 'reshape2'
 
-The following object is masked from 'package:pomp2':
+The following object is masked from 'package:pomp':
 
     melt
 

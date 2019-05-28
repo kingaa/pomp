@@ -1,5 +1,5 @@
 options(digits=7)
-library(pomp2)
+library(pomp)
 
 theta <- c(a=1,b=3,c=4,d=5)
 p <- parmat(theta,3)

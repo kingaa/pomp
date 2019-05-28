@@ -1,5 +1,5 @@
 options(digits=7)
-library(pomp2)
+library(pomp)
 
 logmeanexp(rep(10,10),se=TRUE)
 logmeanexp(10^seq(8,10),se=TRUE)

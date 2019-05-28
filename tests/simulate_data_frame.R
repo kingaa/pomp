@@ -1,6 +1,6 @@
 options(digits=3)
 
-library(pomp2)
+library(pomp)
 library(dplyr)
 
 set.seed(1041414791L)

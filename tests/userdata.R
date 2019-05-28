@@ -1,7 +1,7 @@
 options(digits=3)
 set.seed(58668844L)
 
-library(pomp2)
+library(pomp)
 
 simulate(times=seq(1,100),t0=0,
   nbasis=9L,

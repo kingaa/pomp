@@ -19,46 +19,46 @@ Type 'q()' to quit R.
 
 > options(digits=3,keep.source=TRUE)
 > 
-> library(pomp2)
+> library(pomp)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > 
-> pomp2:::pomp_fun()
+> pomp:::pomp_fun()
 <default>
-> pomp2:::pomp_fun(NULL)
+> pomp:::pomp_fun(NULL)
 <default>
-> try(pomp2:::pomp_fun(36,slotname="silly"))
+> try(pomp:::pomp_fun(36,slotname="silly"))
 Error : bad option for 'silly' argument.
-> pomp2:::pomp_fun(function(x,y)x+y,proto=quote(bob(x,y)),slotname="blarp")
+> pomp:::pomp_fun(function(x,y)x+y,proto=quote(bob(x,y)),slotname="blarp")
 R function
   - definition: function(x,y)x+y
 
-> try(pomp2:::pomp_fun(function(x)x+y,proto=quote(bob(x,y)),slotname="blarp"))
+> try(pomp:::pomp_fun(function(x)x+y,proto=quote(bob(x,y)),slotname="blarp"))
 Error : in 'blarp': 'bob' must be a function of prototype 'bob(x, y)'
-> pomp2:::pomp_fun(function(x)x+y,slotname="blarp") -> f
+> pomp:::pomp_fun(function(x)x+y,slotname="blarp") -> f
 > print(f)
 R function
   - definition: function(x)x+y
 
-> pomp2:::pomp_fun("jehosaphat",PACKAGE="harglebarge",slotname="blurp")
+> pomp:::pomp_fun("jehosaphat",PACKAGE="harglebarge",slotname="blurp")
 native function
   - name: 'jehosaphat'
   - dynamically loaded from: 'harglebarge'
-> pomp2:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork")
+> pomp:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork")
 native function
   - name: 
 
-> pomp2:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp")
+> pomp:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp")
 native function
   - name: 
 
-> pomp2:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp",
+> pomp:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp",
 +   libname="splarm")
 native function
   - name: 'yurp'
   - defined by a C snippet in library 'splarm'
-> pomp2:::pomp_fun(f)
+> pomp:::pomp_fun(f)
 R function
   - definition: function(x)x+y
 

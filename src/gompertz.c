@@ -2,7 +2,7 @@
 
 #include <Rmath.h>
 
-#include "pomp.h" // in R, do 'system.file("include/pomp.h",package="pomp2")' to find this header file
+#include "pomp.h" // in R, do 'system.file("include/pomp.h",package="pomp")' to find this header file
 
 // define some macros to make the code easier to read
 #define R       (p[parindex[0]]) // growth rate

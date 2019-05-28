@@ -2,7 +2,7 @@ options(digits=3)
 png(filename="R_v_C-%02d.png",res=100)
 
 ## ----packages------------------------------------------------------------
-library(pomp2)
+library(pomp)
 library(ggplot2)
 
 ## ----seed,echo=FALSE-----------------------------------------------------

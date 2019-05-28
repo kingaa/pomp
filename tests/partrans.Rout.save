@@ -17,7 +17,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> library(pomp2)
+> library(pomp)
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
@@ -80,7 +80,7 @@ Slot "text":
 Slot "text":
 [1] "\ta = expit(T_a);\n\tb = expit(T_b);\n\tc = expit(T_c);"
 
-> pomp2:::has_partrans(gompertz)
+> pomp:::has_partrans(gompertz)
 [1] TRUE
 > 
 > stopifnot(

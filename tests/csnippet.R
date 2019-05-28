@@ -1,4 +1,4 @@
-library(pomp2)
+library(pomp)
 
 Csnippet("x = x;") -> cs
 as(cs,"character")

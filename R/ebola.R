@@ -70,7 +70,7 @@ ebolaModel <- function (
   ## Population sizes in Guinea, Liberia, and Sierra Leone (census 2014)
   populations <- c(GIN=10628972,LBR=4092310,SLE=6190280)
 
-  pomp2::ebolaWA2014 -> dat
+  pomp::ebolaWA2014 -> dat
   dat$date <- as.Date(as.character(dat$date))
   dat$country <- as.character(dat$country)
   dat$day <- julian(dat$date,origin=as.Date("2014-04-01"))

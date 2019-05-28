@@ -1,5 +1,5 @@
 ---
-title: "pomp2"
+title: "pomp"
 subtitle: "user guides, vignettes, and tutorials"
 ---
 
@@ -98,7 +98,7 @@ dt {
 
 - [Package NEWS](https://kingaa.github.io/pomp/NEWS.html)
 
-- [Package manual](https://kingaa.github.io/manuals/pomp2.pdf)
+- [Package manual](https://kingaa.github.io/manuals/pomp.pdf)
 
 - Vignette: [**pomp** version 2 upgrade guide](https://kingaa.github.io/pomp/vignettes/upgrade_guide.html)
 

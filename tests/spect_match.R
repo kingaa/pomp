@@ -1,7 +1,7 @@
 options(digits=3)
 png(filename="spect_match-%02d.png",res=100)
 
-library(pomp2)
+library(pomp)
 
 ou2() -> ou2
 ou2 %>% as.data.frame() %>% subset(select=c(time,y1,y2)) -> dat
