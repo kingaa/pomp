@@ -21,7 +21,7 @@
 }
 \section{Changes in \pkg{pomp} version 2.0.11}{
   \itemize{
-    \item It is now possible to adjust the observation times, zero-time in the \code{sir} and \code{sir2} examples.
+    \item It is now possible to adjust the observation times and zero-time in the \code{sir} and \code{sir2} examples.
     One can also change the default RNG seed used in generating the simulated data.
     \item The codes underlying the \code{rprocess} workhorse have been streamlined to obviate an unnecessary copy operation.
     As a result, the interface to the \code{rprocess} workhorse has been changed.

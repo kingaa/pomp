@@ -24,9 +24,10 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._1_2
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._1_1:
 
-        • It is now possible to adjust the observation times, zero-time
-          in the ‘sir’ and ‘sir2’ examples.  One can also change the
-          default RNG seed used in generating the simulated data.
+        • It is now possible to adjust the observation times and
+          zero-time in the ‘sir’ and ‘sir2’ examples.  One can also
+          change the default RNG seed used in generating the simulated
+          data.
 
         • The codes underlying the ‘rprocess’ workhorse have been
           streamlined to obviate an unnecessary copy operation.  As a
