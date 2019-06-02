@@ -30,9 +30,8 @@ dist manual vignettes: export GS_QUALITY=ebook
 dist manual vignettes: export R_HOME=$(shell $(REXE) RHOME)
 check xcheck xxcheck: export FULL_TESTS=yes
 xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
-session htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
+session xxcheck htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
 session: export R_DEFAULT_PACKAGES=datasets,utils,grDevices,graphics,stats,methods,pomp,tidyverse
-xxcheck: export R_LIBS=$(CURDIR)/check
 
 includes: inst/include/pomp.h inst/include/pomp_defines.h
 
@@ -104,7 +103,7 @@ xcheck: dist
 	mkdir -p check
 	$(RCMD_ALT) check --no-stop-on-test-error --as-cran --library=library -o check $(PKGVERS).tar.gz
 
-xxcheck: xcheck
+xxcheck: install xcheck
 	mkdir -p check
 	$(REXE) -d "valgrind --tool=memcheck --track-origins=yes --leak-check=full" < check/$(PKG).Rcheck/$(PKG)-Ex.R 2>&1 | tee $(PKG)-Ex.Rout
 
