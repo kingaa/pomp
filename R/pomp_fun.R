@@ -9,7 +9,7 @@
 ##' @include pomp-package.R csnippet.R pstop.R undefined.R
 ##' @docType methods
 ##' @keywords internal
-##' @concept extending the \pkg{pomp} package
+##' @concept extending the pomp package
 ##' @concept low-level interface
 ##'
 ##' @param f A function or the name of a native routine.

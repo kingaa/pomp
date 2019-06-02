@@ -50,6 +50,6 @@ The \sQuote{pomp_fun} class implements a common interface for user-defined proce
 \author{
 Aaron A. King
 }
-\concept{extending the \pkg{pomp} package}
+\concept{extending the pomp package}
 \concept{low-level interface}
 \keyword{internal}

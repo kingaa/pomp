@@ -162,10 +162,10 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 \code{\link{spect}} \code{\link{optim}}
 \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 
-Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
+Other pomp parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{mif2}}, \code{\link{nlf}},
   \code{\link{pmcmc}}, \code{\link{pomp-package}},
   \code{\link{probe.match}}
 }
-\concept{\pkg{pomp} parameter estimation methods}
+\concept{pomp parameter estimation methods}

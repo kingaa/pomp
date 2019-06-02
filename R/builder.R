@@ -75,7 +75,7 @@
 ##' @author Aaron A. King
 ##'
 ##' @seealso \code{\link{pomp}}, \code{\link{spy}}
-##' @concept extending the \pkg{pomp} package
+##' @concept extending the pomp package
 ##' @concept low-level interface
 ##'
 NULL

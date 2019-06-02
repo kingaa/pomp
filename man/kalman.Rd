@@ -85,7 +85,7 @@ Anderson, J. L. (2001) An Ensemble Adjustment Kalman Filter for Data
 Assimilation Monthly Weather Review 129:2884--2903
 }
 \seealso{
-Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
+Other pomp parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{mif2}},
   \code{\link{nlf}}, \code{\link{pmcmc}},
   \code{\link{pomp-package}}, \code{\link{probe.match}},
@@ -94,5 +94,5 @@ Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
 \author{
 Aaron A. King
 }
-\concept{\pkg{pomp} parameter estimation methods}
 \concept{particle filtering methods}
+\concept{pomp parameter estimation methods}

@@ -134,7 +134,7 @@ Other summary statistics methods: \code{\link{basic_probes}},
   \code{\link{probe.match}}, \code{\link{probe}},
   \code{\link{spect}}
 
-Other \pkg{pomp} parameter estimation methods: \code{\link{bsmc2}},
+Other pomp parameter estimation methods: \code{\link{bsmc2}},
   \code{\link{kalman}}, \code{\link{mif2}},
   \code{\link{nlf}}, \code{\link{pmcmc}},
   \code{\link{pomp-package}}, \code{\link{probe.match}},
@@ -143,5 +143,5 @@ Other \pkg{pomp} parameter estimation methods: \code{\link{bsmc2}},
 \author{
 Edward L. Ionides, Aaron A. King
 }
-\concept{\pkg{pomp} parameter estimation methods}
+\concept{pomp parameter estimation methods}
 \concept{summary statistics methods}

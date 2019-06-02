@@ -65,7 +65,7 @@ Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{rprocess_spec}}, \code{\link{skeleton_spec}},
   \code{\link{transformations}}, \code{\link{userdata}}
 
-Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
+Other pomp parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{mif2}}, \code{\link{nlf}},
   \code{\link{pmcmc}}, \code{\link{probe.match}},
@@ -78,9 +78,9 @@ Other elementary POMP methods: \code{\link{pfilter}},
 \author{
 Aaron A. King
 }
-\concept{\pkg{pomp} parameter estimation methods}
 \concept{elementary POMP methods}
 \concept{information on model implementation}
+\concept{pomp parameter estimation methods}
 \keyword{models}
 \keyword{multivariate}
 \keyword{ts}

@@ -13,7 +13,7 @@
 ##' @aliases mif2 mif2,missing-method mif2,ANY-method
 ##' @author Aaron A. King, Edward L. Ionides, Dao Nguyen
 ##' @family particle filter methods
-##' @family \pkg{pomp} parameter estimation methods
+##' @family pomp parameter estimation methods
 ##'
 ##' @importFrom utils head
 ##' @importFrom stats  weighted.mean

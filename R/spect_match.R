@@ -10,7 +10,7 @@
 ##' @name spect.match
 ##' @docType methods
 ##' @rdname spect_match
-##' @family \pkg{pomp} parameter estimation methods
+##' @family pomp parameter estimation methods
 ##' @aliases spect_objfun spect_objfun,missing-method spect_objfun,ANY-method
 ##' @example examples/spect_match.R
 ##'

@@ -10,7 +10,7 @@
 ##' @importFrom stats runif
 ##' @author Edward L. Ionides, Aaron A. King
 ##' @family summary statistics methods
-##' @family \pkg{pomp} parameter estimation methods
+##' @family pomp parameter estimation methods
 ##' @seealso \link[=proposals]{MCMC proposals}
 ##'
 ##' @inheritParams pomp

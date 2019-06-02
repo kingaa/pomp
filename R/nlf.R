@@ -24,7 +24,7 @@
 ##'
 ##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
 ##'
-##' @family \pkg{pomp} parameter estimation methods
+##' @family pomp parameter estimation methods
 ##'
 ##' @return
 ##' \code{nlf_objfun} constructs a stateful objective function for NLF estimation.

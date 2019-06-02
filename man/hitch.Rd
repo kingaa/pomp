@@ -82,5 +82,5 @@ which conceptually \dQuote{hitches} the workhorses to the user-defined procedure
 \author{
 Aaron A. King
 }
-\concept{extending the \pkg{pomp} package}
+\concept{extending the pomp package}
 \concept{low-level interface}

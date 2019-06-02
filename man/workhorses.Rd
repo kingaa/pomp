@@ -35,6 +35,6 @@ Other pomp workhorses: \code{\link{dmeasure}},
 \author{
 Aaron A. King
 }
-\concept{extending the \pkg{pomp} package}
+\concept{extending the pomp package}
 \concept{low-level interface}
 \concept{pomp workhorses}

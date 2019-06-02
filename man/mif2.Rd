@@ -171,7 +171,7 @@ Other particle filter methods: \code{\link{bsmc2}},
   \code{\link{pfilter}}, \code{\link{pmcmc}},
   \code{\link{pred.mean}}, \code{\link{pred.var}}
 
-Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
+Other pomp parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{nlf}}, \code{\link{pmcmc}},
   \code{\link{pomp-package}}, \code{\link{probe.match}},
@@ -180,5 +180,5 @@ Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
 \author{
 Aaron A. King, Edward L. Ionides, Dao Nguyen
 }
-\concept{\pkg{pomp} parameter estimation methods}
 \concept{particle filter methods}
+\concept{pomp parameter estimation methods}

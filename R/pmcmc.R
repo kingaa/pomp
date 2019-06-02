@@ -12,7 +12,7 @@
 ##' @author Edward L. Ionides, Aaron A. King, Sebastian Funk
 ##' @seealso \link[=proposals]{MCMC proposals}
 ##' @family particle filter methods
-##' @family \pkg{pomp} parameter estimation methods
+##' @family pomp parameter estimation methods
 ##'
 ##' @importFrom stats runif
 ##' @inheritParams pomp

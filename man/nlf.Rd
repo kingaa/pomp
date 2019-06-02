@@ -180,7 +180,7 @@ dynamical tests of mechanistic hypotheses.
 \emph{Ecological Monographs} \bold{75}, 259--276.
 }
 \seealso{
-Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
+Other pomp parameter estimation methods: \code{\link{abc}},
   \code{\link{bsmc2}}, \code{\link{kalman}},
   \code{\link{mif2}}, \code{\link{pmcmc}},
   \code{\link{pomp-package}}, \code{\link{probe.match}},
@@ -189,4 +189,4 @@ Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
 \author{
 Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
 }
-\concept{\pkg{pomp} parameter estimation methods}
+\concept{pomp parameter estimation methods}

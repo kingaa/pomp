@@ -117,7 +117,7 @@ Other particle filter methods: \code{\link{cond.logLik}},
   \code{\link{pfilter}}, \code{\link{pmcmc}},
   \code{\link{pred.mean}}, \code{\link{pred.var}}
 
-Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
+Other pomp parameter estimation methods: \code{\link{abc}},
   \code{\link{kalman}}, \code{\link{mif2}},
   \code{\link{nlf}}, \code{\link{pmcmc}},
   \code{\link{pomp-package}}, \code{\link{probe.match}},
@@ -126,5 +126,5 @@ Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
 \author{
 Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
 }
-\concept{\pkg{pomp} parameter estimation methods}
 \concept{particle filter methods}
+\concept{pomp parameter estimation methods}

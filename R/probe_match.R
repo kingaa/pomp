@@ -12,7 +12,7 @@
 ##' @include probe.R
 ##' @author Aaron A. King
 ##' @family summary statistics methods
-##' @family \pkg{pomp} parameter estimation methods
+##' @family pomp parameter estimation methods
 ##' @seealso \code{\link{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##'
 ##' @param est character vector; the names of parameters to be estimated.

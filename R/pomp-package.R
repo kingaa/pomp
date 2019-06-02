@@ -13,7 +13,7 @@
 ##' @docType package
 ##' @author Aaron A. King
 ##' @family information on model implementation
-##' @family \pkg{pomp} parameter estimation methods
+##' @family pomp parameter estimation methods
 ##' @family elementary POMP methods
 ##' @keywords ts models multivariate
 ##'
