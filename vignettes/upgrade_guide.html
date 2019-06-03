@@ -309,7 +309,6 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="TOC">
 <ul>
 <li><a href="#overview">Overview</a></li>
-<li><a href="#timetable-for-rollout-of-pomp-version-2">Timetable for rollout of <strong>pomp</strong> version 2</a></li>
 <li><a href="#terminology">Terminology</a></li>
 <li><a href="#changes-in-the-way-models-are-specified">Changes in the way models are specified</a></li>
 <li><a href="#covariates">Covariates</a></li>
@@ -338,7 +337,7 @@ code {
   font-size: 110%;
 }
 </style>
-<p>This document was produced using <strong>pomp</strong> version 2.0.14.1 and <strong>R</strong> version 3.6.0.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.1.0.0 and <strong>R</strong> version 3.6.0.</p>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
@@ -388,12 +387,6 @@ code {
 </tbody>
 </table>
 </div>
-<div id="timetable-for-rollout-of-pomp-version-2" class="section level2">
-<h2>Timetable for rollout of <strong>pomp</strong> version 2</h2>
-<p>To minimize inconvenience in the face of backward-incompatible changes, version 2 will be made available initially in source and binary formats as <strong>pomp2</strong> via the <a href="https://kingaa.github.io/" class="uri">https://kingaa.github.io/</a> package repository. Do</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;pomp2&quot;</span>,<span class="dt">repos=</span><span class="st">&quot;https://kingaa.github.io&quot;</span>)</a></code></pre></div>
-<p>to install it. This is intended to allow users to have both <strong>pomp</strong> (version &lt;2) and <strong>pomp2</strong> installed simultaneously during workflow migration. It is anticipated that, around the middle of 2019, <strong>pomp2</strong> will be renamed <strong>pomp</strong> and uploaded to CRAN as version 2.1. From that point forward, there will be no support for older versions of <strong>pomp</strong> and <strong>pomp2</strong> as a separate package will be discontinued.</p>
-</div>
 <div id="terminology" class="section level2">
 <h2>Terminology</h2>
 <p>It is useful to divide the <strong>pomp</strong> package functionality into different levels.</p>
@@ -439,18 +432,18 @@ code {
 <div id="basic-component-specification" class="section level3">
 <h3>Basic component specification</h3>
 <p>The manner in which one writes <strong>R</strong> functions to specify basic model components has been totally changed. Before, one wrote functions that took specific arguments such as <code>x</code>, <code>params</code>, and <code>covars</code>. Now, one writes such functions with any or all state variables, observables, covariates, and/or time as arguments. Thus for example, in versions &lt;2, one might have specified a measurement model density evaluator (‘dmeasure’) so:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">...,</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">dmeasure =<span class="st"> </span><span class="cf">function</span> (y, x, t, params, covars, ..., log) {</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="kw">dnbinom</span>(<span class="dt">x=</span>y[<span class="st">&quot;count&quot;</span>],<span class="dt">mu=</span>x[<span class="st">&quot;s&quot;</span>],<span class="dt">size=</span>params[<span class="st">&quot;theta&quot;</span>],<span class="dt">log=</span>log)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">},</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">...</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">...,</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">dmeasure =<span class="st"> </span><span class="cf">function</span> (y, x, t, params, covars, ..., log) {</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="kw">dnbinom</span>(<span class="dt">x=</span>y[<span class="st">&quot;count&quot;</span>],<span class="dt">mu=</span>x[<span class="st">&quot;s&quot;</span>],<span class="dt">size=</span>params[<span class="st">&quot;theta&quot;</span>],<span class="dt">log=</span>log)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">},</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">...</a></code></pre></div>
 <p>Here, the state variable “s”, passed via the argument <code>x</code> is the expected value of the observable “count”, which is assumed to be negative-binomially distributed with size parameter “theta”. The observables are passed via the vector <code>y</code> and the parameters via the vector <code>params</code> and so the variables of interest must be extracted by name from these vectors. Note that the time variable <code>t</code> is not used but must nevertheless be named as a formal argument.</p>
 <p>In <strong>pomp</strong> version 2, the corresponding ‘dmeasure’ specification would be</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">...,</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, theta, ..., log) {</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw">dnbinom</span>(<span class="dt">x=</span>count,<span class="dt">mu=</span>s,<span class="dt">size=</span>theta,<span class="dt">log=</span>log)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">},</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">...</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">...,</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">dmeasure =<span class="st"> </span><span class="cf">function</span> (count, s, theta, ..., log) {</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="kw">dnbinom</span>(<span class="dt">x=</span>count,<span class="dt">mu=</span>s,<span class="dt">size=</span>theta,<span class="dt">log=</span>log)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">},</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">...</a></code></pre></div>
 <p>Note that there is no longer a need to extract the relevant variables from vectors. Moreover, the only required argument is <code>...</code>. The available arguments are taken from the set of observables, state variables, parameters, covariates, and time, as before.</p>
 <p>These remarks apply whenever one specifies a basic model component using an <strong>R</strong> function. For the most part, C snippets that worked with <strong>pomp</strong> version &lt;2 will continue to work. The exception is that parameter transformation C snippets may need to be rewritten (see below).</p>
 </div>
@@ -468,46 +461,46 @@ code {
 <div id="covariates" class="section level2">
 <h2>Covariates</h2>
 <p>Prior to version 2, time-varying covariates upon which basic model components depended were supplied via the two arguments <code>covar</code> and <code>tcovar</code> to <code>pomp</code>. For example, in one of the examples, we see</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">cbind</span>(</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">time=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">1928</span>,<span class="dt">to=</span><span class="dv">1934</span>,<span class="dt">by=</span><span class="fl">0.01</span>),</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="kw">as.data.frame</span>(</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="kw">periodic.bspline.basis</span>(</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">      <span class="dt">x=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">1928</span>,<span class="dt">to=</span><span class="dv">1934</span>,<span class="dt">by=</span><span class="fl">0.01</span>),</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">      <span class="dt">nbasis=</span><span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">      <span class="dt">degree=</span><span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">      <span class="dt">period=</span><span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">      <span class="dt">names=</span><span class="st">&quot;seas%d&quot;</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">    )</a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">  ),</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">  <span class="dt">pop=</span>dat<span class="op">$</span>population</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">) -&gt;<span class="st"> </span>covar</a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="kw">pomp</span>(</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16">  ...,</a>
-<a class="sourceLine" id="cb4-17" data-line-number="17">  <span class="dt">covar=</span>covar,</a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">  <span class="dt">tcovar=</span><span class="st">&quot;time&quot;</span>,</a>
-<a class="sourceLine" id="cb4-19" data-line-number="19">  ...</a>
-<a class="sourceLine" id="cb4-20" data-line-number="20">)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">cbind</span>(</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">time=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">1928</span>,<span class="dt">to=</span><span class="dv">1934</span>,<span class="dt">by=</span><span class="fl">0.01</span>),</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw">as.data.frame</span>(</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">    <span class="kw">periodic.bspline.basis</span>(</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">      <span class="dt">x=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">1928</span>,<span class="dt">to=</span><span class="dv">1934</span>,<span class="dt">by=</span><span class="fl">0.01</span>),</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">      <span class="dt">nbasis=</span><span class="dv">3</span>,</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">      <span class="dt">degree=</span><span class="dv">3</span>,</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">      <span class="dt">period=</span><span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">      <span class="dt">names=</span><span class="st">&quot;seas%d&quot;</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">    )</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">  ),</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">  <span class="dt">pop=</span>dat<span class="op">$</span>population</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">) -&gt;<span class="st"> </span>covar</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="kw">pomp</span>(</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16">  ...,</a>
+<a class="sourceLine" id="cb3-17" data-line-number="17">  <span class="dt">covar=</span>covar,</a>
+<a class="sourceLine" id="cb3-18" data-line-number="18">  <span class="dt">tcovar=</span><span class="st">&quot;time&quot;</span>,</a>
+<a class="sourceLine" id="cb3-19" data-line-number="19">  ...</a>
+<a class="sourceLine" id="cb3-20" data-line-number="20">)</a></code></pre></div>
 <p>Note that, as this example illustrates, it was often necessary to first construct the covariate table as a data frame before passing it as argument to <code>pomp</code>.</p>
 <p>As of version 2, one includes such time-varying covariates as specially constructed table via the single argument <code>covar</code>, which can be furnished to any POMP elementary or estimation algorithm. One constructs a covariate table using the <code>covariate_table</code> command. The syntax for specifying a covariate table is quite flexible. In particular, the arguments to <code>covariate_table</code> are evaluated sequentially, so that later ones can depend on earlier ones. Once evaluated, the covariates are bound column-wise into a single data frame. One can also provide a data frame to <code>covariate_table</code>, along with the name of the time variable, which matches the old usage very closely. Thus, one might use the following in place of the above:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">pomp</span>(</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  ...,</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="dt">covar=</span><span class="kw">covariate_table</span>(</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">    <span class="dt">t=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">1928</span>,<span class="dt">to=</span><span class="dv">1934</span>,<span class="dt">by=</span><span class="fl">0.01</span>),</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">    <span class="dt">seas=</span><span class="kw">periodic.bspline.basis</span>(t,<span class="dt">nbasis=</span><span class="dv">3</span>,<span class="dt">degree=</span><span class="dv">3</span>,<span class="dt">period=</span><span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">    <span class="dt">pop=</span>dat<span class="op">$</span>population,</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">    <span class="dt">times=</span><span class="st">&quot;t&quot;</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">  ),</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">  ...</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">pomp</span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  ...,</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">covar=</span><span class="kw">covariate_table</span>(</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="dt">t=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">1928</span>,<span class="dt">to=</span><span class="dv">1934</span>,<span class="dt">by=</span><span class="fl">0.01</span>),</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">    <span class="dt">seas=</span><span class="kw">periodic.bspline.basis</span>(t,<span class="dt">nbasis=</span><span class="dv">3</span>,<span class="dt">degree=</span><span class="dv">3</span>,<span class="dt">period=</span><span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">    <span class="dt">pop=</span>dat<span class="op">$</span>population,</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">    <span class="dt">times=</span><span class="st">&quot;t&quot;</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">  ),</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">  ...</a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">)</a></code></pre></div>
 <p>Prior to version 2, covariates were always linearly interpolated when furnished to any of the basic model components. As of version 2, although linear interpolation remains the default, one can also use the <code>order</code> argument to direct that the covariates be treated as piecewise-constant, right-continuous functions.</p>
 </div>
 <div id="parameter-transformations" class="section level2">
 <h2>Parameter transformations</h2>
 <p>In <strong>pomp</strong> version &lt;2, one specified parameter transformations by means to two arguments to <code>pomp</code>: <code>fromEstimationScale</code> and <code>toEstimationScale</code>. As of version 2, both forward and inverse transformations are encapsulated in a single object passed via the <code>partrans</code> argument to any of the <strong>pomp</strong> elementary or inference algorithms. The parameter transformation object is constructed by means of a call to <code>parameter_trans</code>. One can specify general forward and inverse transformations via the <code>fromEst</code> and <code>toEst</code> arguments to this function. If these are specified using <strong>R</strong> functions, the remarks above (“Basic component specification”) apply. If one specifies these using C snippets, the syntax has changed from that of versions &lt;2. In particular, when writing C snippets for parameter transformations, for a parameter “p”, the notation <code>p</code> always refers to <code>p</code> on the natural scale and <code>T_p</code> refers to its value of <code>p</code> on the estimation scale. Thus, if parameter “alpha” is to be log-transformed for estimation, the <code>toEst</code> snippet would contain the line</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb6-1" data-line-number="1">T_alpha = log(alpha);</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb5-1" data-line-number="1">T_alpha = log(alpha);</a></code></pre></div>
 <p>and the <code>fromEst</code> snippet would include</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb7-1" data-line-number="1">alpha = exp(T_alpha);</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb6-1" data-line-number="1">alpha = exp(T_alpha);</a></code></pre></div>
 <p>Because many use cases involve simply log, logit, or log-barycentric transformations, one can handle these cases without needing to write <code>toEst</code> and <code>fromEst</code> C snippets, by naming the parameters to be so transformed in the <code>log</code>, <code>logit</code>, and <code>barycentric</code> arguments of <code>parameter_trans</code>. When these arguments are supplied, <code>parameter_trans</code> internally writes a pair of C snippets to implement the transformations. As with other cases when one refers to parameters in C snippets, one must include all parameters named in the <code>paramnames</code> argument.</p>
 <p>At any point, if one sets <code>partrans = NULL</code> in an elementary or inference algorithm, the parameter transformations are reset to the identity transformation.</p>
 </div>
@@ -591,7 +584,7 @@ code {
 </div>
 <div id="included-datasets" class="section level2">
 <h2>Included datasets</h2>
-<p>A number of new datasets are provided with the package. See <code>data(package=&quot;pomp2&quot;)</code> for a full list.</p>
+<p>A number of new datasets are provided with the package. See <code>data(package=&quot;pomp&quot;)</code> for a full list.</p>
 </div>
 <div id="facilities-removed-in-version-2" class="section level2">
 <h2>Facilities removed in version 2</h2>
@@ -614,278 +607,278 @@ X(t+\delta)\;\sim\;\mathrm{Lognormal}\left(\log(K^{1-S}\,X^S),\sigma\right)\\
 Y(t)\;\sim\;\mathrm{Lognormal}\left(\log{X(t)},\tau\right)
 \end{gathered}\]</span> where <span class="math inline">\(r\)</span>, <span class="math inline">\(K\)</span>, <span class="math inline">\(\sigma\)</span>, and <span class="math inline">\(\tau\)</span> are parameters and <span class="math inline">\(\delta\)</span> is the discrete time-step.</p>
 <p>Here is how the model was implemented in <strong>pomp</strong> version &lt;2. We write all the basic model components using <strong>R</strong> functions assuming <span class="math inline">\(\delta=1\)</span>. We also do one simulation.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co">## rprocess</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">gompertz.proc.sim &lt;-<span class="st"> </span><span class="cf">function</span> (x, t, params, delta.t, ...) {</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">  eps &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">rnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span>params[<span class="st">&quot;sigma&quot;</span>]))</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">  S &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>params[<span class="st">&quot;r&quot;</span>]<span class="op">*</span>delta.t)</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">  <span class="kw">setNames</span>(params[<span class="st">&quot;K&quot;</span>]<span class="op">^</span>(<span class="dv">1</span><span class="op">-</span>S)<span class="op">*</span>x[<span class="st">&quot;X&quot;</span>]<span class="op">^</span>S<span class="op">*</span>eps,<span class="st">&quot;X&quot;</span>)</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">## rmeasure</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">gompertz.meas.sim &lt;-<span class="st"> </span><span class="cf">function</span> (x, t, params, ...) {</a>
-<a class="sourceLine" id="cb9-10" data-line-number="10">  <span class="kw">setNames</span>(<span class="kw">rlnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">meanlog=</span><span class="kw">log</span>(x[<span class="st">&quot;X&quot;</span>]),<span class="dt">sd=</span>params[<span class="st">&quot;tau&quot;</span>]),<span class="st">&quot;Y&quot;</span>)</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">}</a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">## dmeasure</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14">gompertz.meas.dens &lt;-<span class="st"> </span><span class="cf">function</span> (y, x, t, params, log, ...) {</a>
-<a class="sourceLine" id="cb9-15" data-line-number="15">  <span class="kw">dlnorm</span>(<span class="dt">x=</span>y[<span class="st">&quot;Y&quot;</span>],<span class="dt">meanlog=</span><span class="kw">log</span>(x[<span class="st">&quot;X&quot;</span>]),<span class="dt">sdlog=</span>params[<span class="st">&quot;tau&quot;</span>],<span class="dt">log=</span>log)</a>
-<a class="sourceLine" id="cb9-16" data-line-number="16">}</a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">## initializer</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19">gompertz.init &lt;-<span class="st"> </span><span class="cf">function</span> (t0, params, ...) {</a>
-<a class="sourceLine" id="cb9-20" data-line-number="20">  <span class="kw">setNames</span>(params[<span class="st">&quot;X_0&quot;</span>],<span class="st">&quot;X&quot;</span>)</a>
-<a class="sourceLine" id="cb9-21" data-line-number="21">}</a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">## Parameter transformations</span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24">gompertz.log.tf &lt;-<span class="st"> </span><span class="cf">function</span> (params, ...) <span class="kw">log</span>(params)</a>
-<a class="sourceLine" id="cb9-25" data-line-number="25">gompertz.exp.tf &lt;-<span class="st"> </span><span class="cf">function</span> (params, ...) <span class="kw">exp</span>(params)</a>
-<a class="sourceLine" id="cb9-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">## pomp construction</span></a>
-<a class="sourceLine" id="cb9-28" data-line-number="28"><span class="kw">pomp</span>(</a>
-<a class="sourceLine" id="cb9-29" data-line-number="29">  <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">Y=</span><span class="ot">NA</span>), </a>
-<a class="sourceLine" id="cb9-30" data-line-number="30">  <span class="dt">times=</span><span class="st">&quot;time&quot;</span>, <span class="dt">t0=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb9-31" data-line-number="31">  <span class="dt">rprocess=</span><span class="kw">discrete.time.sim</span>(<span class="dt">step.fun=</span>gompertz.proc.sim,<span class="dt">delta.t=</span><span class="dv">1</span>), </a>
-<a class="sourceLine" id="cb9-32" data-line-number="32">  <span class="dt">rmeasure=</span>gompertz.meas.sim,</a>
-<a class="sourceLine" id="cb9-33" data-line-number="33">  <span class="dt">dmeasure=</span>gompertz.meas.dens,</a>
-<a class="sourceLine" id="cb9-34" data-line-number="34">  <span class="dt">initializer=</span>gompertz.init,</a>
-<a class="sourceLine" id="cb9-35" data-line-number="35">  <span class="dt">toEstimationScale=</span>gompertz.log.tf,</a>
-<a class="sourceLine" id="cb9-36" data-line-number="36">  <span class="dt">fromEstimationScale=</span>gompertz.exp.tf,</a>
-<a class="sourceLine" id="cb9-37" data-line-number="37">  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb9-38" data-line-number="38">) -&gt;<span class="st"> </span>gomp1R</a>
-<a class="sourceLine" id="cb9-39" data-line-number="39"></a>
-<a class="sourceLine" id="cb9-40" data-line-number="40"><span class="kw">simulate</span>(gomp1R) -&gt;<span class="st"> </span>gomp1R</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">## rprocess</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">gompertz.proc.sim &lt;-<span class="st"> </span><span class="cf">function</span> (x, t, params, delta.t, ...) {</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">  eps &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">rnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span>params[<span class="st">&quot;sigma&quot;</span>]))</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">  S &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>params[<span class="st">&quot;r&quot;</span>]<span class="op">*</span>delta.t)</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">  <span class="kw">setNames</span>(params[<span class="st">&quot;K&quot;</span>]<span class="op">^</span>(<span class="dv">1</span><span class="op">-</span>S)<span class="op">*</span>x[<span class="st">&quot;X&quot;</span>]<span class="op">^</span>S<span class="op">*</span>eps,<span class="st">&quot;X&quot;</span>)</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">}</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">## rmeasure</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">gompertz.meas.sim &lt;-<span class="st"> </span><span class="cf">function</span> (x, t, params, ...) {</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">  <span class="kw">setNames</span>(<span class="kw">rlnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">meanlog=</span><span class="kw">log</span>(x[<span class="st">&quot;X&quot;</span>]),<span class="dt">sd=</span>params[<span class="st">&quot;tau&quot;</span>]),<span class="st">&quot;Y&quot;</span>)</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">}</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">## dmeasure</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14">gompertz.meas.dens &lt;-<span class="st"> </span><span class="cf">function</span> (y, x, t, params, log, ...) {</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15">  <span class="kw">dlnorm</span>(<span class="dt">x=</span>y[<span class="st">&quot;Y&quot;</span>],<span class="dt">meanlog=</span><span class="kw">log</span>(x[<span class="st">&quot;X&quot;</span>]),<span class="dt">sdlog=</span>params[<span class="st">&quot;tau&quot;</span>],<span class="dt">log=</span>log)</a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">}</a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">## initializer</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19">gompertz.init &lt;-<span class="st"> </span><span class="cf">function</span> (t0, params, ...) {</a>
+<a class="sourceLine" id="cb8-20" data-line-number="20">  <span class="kw">setNames</span>(params[<span class="st">&quot;X_0&quot;</span>],<span class="st">&quot;X&quot;</span>)</a>
+<a class="sourceLine" id="cb8-21" data-line-number="21">}</a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">## Parameter transformations</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24">gompertz.log.tf &lt;-<span class="st"> </span><span class="cf">function</span> (params, ...) <span class="kw">log</span>(params)</a>
+<a class="sourceLine" id="cb8-25" data-line-number="25">gompertz.exp.tf &lt;-<span class="st"> </span><span class="cf">function</span> (params, ...) <span class="kw">exp</span>(params)</a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">## pomp construction</span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="kw">pomp</span>(</a>
+<a class="sourceLine" id="cb8-29" data-line-number="29">  <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">Y=</span><span class="ot">NA</span>), </a>
+<a class="sourceLine" id="cb8-30" data-line-number="30">  <span class="dt">times=</span><span class="st">&quot;time&quot;</span>, <span class="dt">t0=</span><span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb8-31" data-line-number="31">  <span class="dt">rprocess=</span><span class="kw">discrete.time.sim</span>(<span class="dt">step.fun=</span>gompertz.proc.sim,<span class="dt">delta.t=</span><span class="dv">1</span>), </a>
+<a class="sourceLine" id="cb8-32" data-line-number="32">  <span class="dt">rmeasure=</span>gompertz.meas.sim,</a>
+<a class="sourceLine" id="cb8-33" data-line-number="33">  <span class="dt">dmeasure=</span>gompertz.meas.dens,</a>
+<a class="sourceLine" id="cb8-34" data-line-number="34">  <span class="dt">initializer=</span>gompertz.init,</a>
+<a class="sourceLine" id="cb8-35" data-line-number="35">  <span class="dt">toEstimationScale=</span>gompertz.log.tf,</a>
+<a class="sourceLine" id="cb8-36" data-line-number="36">  <span class="dt">fromEstimationScale=</span>gompertz.exp.tf,</a>
+<a class="sourceLine" id="cb8-37" data-line-number="37">  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb8-38" data-line-number="38">) -&gt;<span class="st"> </span>gomp1R</a>
+<a class="sourceLine" id="cb8-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb8-40" data-line-number="40"><span class="kw">simulate</span>(gomp1R) -&gt;<span class="st"> </span>gomp1R</a></code></pre></div>
 <p>Now, we implement the same model using <strong>pomp</strong> version 2. Note that <code>initializer</code> becomes <code>rinit</code> and that <code>discrete.time.sim</code> becomes <code>discrete_time</code>. Also, the parameter transformation syntax is different.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">library</span>(pomp2)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">## rprocess</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">gompertz.proc.sim &lt;-<span class="st"> </span><span class="cf">function</span> (X, r, K, sigma, delta.t, ...) {</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">  eps &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">rnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span>sigma))</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">  S &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>r<span class="op">*</span>delta.t)</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">  <span class="kw">c</span>(<span class="dt">X=</span>K<span class="op">^</span>(<span class="dv">1</span><span class="op">-</span>S)<span class="op">*</span>X<span class="op">^</span>S<span class="op">*</span>eps)</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">}</a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">## rmeasure</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11">gompertz.meas.sim &lt;-<span class="st"> </span><span class="cf">function</span> (X, tau, ...) {</a>
-<a class="sourceLine" id="cb10-12" data-line-number="12">  <span class="kw">c</span>(<span class="dt">Y=</span><span class="kw">rlnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">meanlog=</span><span class="kw">log</span>(X),<span class="dt">sd=</span>tau))</a>
-<a class="sourceLine" id="cb10-13" data-line-number="13">}</a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">## dmeasure</span></a>
-<a class="sourceLine" id="cb10-16" data-line-number="16">gompertz.meas.dens &lt;-<span class="st"> </span><span class="cf">function</span> (X, tau, Y, log, ...) {</a>
-<a class="sourceLine" id="cb10-17" data-line-number="17">  <span class="kw">dlnorm</span>(<span class="dt">x=</span>Y,<span class="dt">meanlog=</span><span class="kw">log</span>(X),<span class="dt">sdlog=</span>tau,<span class="dt">log=</span>log)</a>
-<a class="sourceLine" id="cb10-18" data-line-number="18">}</a>
-<a class="sourceLine" id="cb10-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">## rinit</span></a>
-<a class="sourceLine" id="cb10-21" data-line-number="21">gompertz.init &lt;-<span class="st"> </span><span class="cf">function</span> (X_<span class="dv">0</span>, ...) {</a>
-<a class="sourceLine" id="cb10-22" data-line-number="22">  <span class="kw">c</span>(<span class="dt">X=</span>X_<span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb10-23" data-line-number="23">}</a>
-<a class="sourceLine" id="cb10-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co">## pomp construction via simulation</span></a>
-<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="kw">simulate</span>(</a>
-<a class="sourceLine" id="cb10-27" data-line-number="27">  <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">t0=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb10-28" data-line-number="28">  <span class="dt">rprocess=</span><span class="kw">discrete_time</span>(gompertz.proc.sim,<span class="dt">delta.t=</span><span class="dv">1</span>), </a>
-<a class="sourceLine" id="cb10-29" data-line-number="29">  <span class="dt">rmeasure=</span>gompertz.meas.sim,</a>
-<a class="sourceLine" id="cb10-30" data-line-number="30">  <span class="dt">dmeasure=</span>gompertz.meas.dens,</a>
-<a class="sourceLine" id="cb10-31" data-line-number="31">  <span class="dt">rinit=</span>gompertz.init,</a>
-<a class="sourceLine" id="cb10-32" data-line-number="32">  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(<span class="dt">log=</span><span class="kw">c</span>(<span class="st">&quot;K&quot;</span>,<span class="st">&quot;r&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>)),</a>
-<a class="sourceLine" id="cb10-33" data-line-number="33">  <span class="dt">paramnames=</span><span class="kw">c</span>(<span class="st">&quot;K&quot;</span>,<span class="st">&quot;r&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>),</a>
-<a class="sourceLine" id="cb10-34" data-line-number="34">  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb10-35" data-line-number="35">) -&gt;<span class="st"> </span>gomp2R</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">library</span>(pomp)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">## rprocess</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">gompertz.proc.sim &lt;-<span class="st"> </span><span class="cf">function</span> (X, r, K, sigma, delta.t, ...) {</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">  eps &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="kw">rnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">mean=</span><span class="dv">0</span>,<span class="dt">sd=</span>sigma))</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">  S &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>r<span class="op">*</span>delta.t)</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">  <span class="kw">c</span>(<span class="dt">X=</span>K<span class="op">^</span>(<span class="dv">1</span><span class="op">-</span>S)<span class="op">*</span>X<span class="op">^</span>S<span class="op">*</span>eps)</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">}</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">## rmeasure</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">gompertz.meas.sim &lt;-<span class="st"> </span><span class="cf">function</span> (X, tau, ...) {</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">  <span class="kw">c</span>(<span class="dt">Y=</span><span class="kw">rlnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">meanlog=</span><span class="kw">log</span>(X),<span class="dt">sd=</span>tau))</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">}</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">## dmeasure</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">gompertz.meas.dens &lt;-<span class="st"> </span><span class="cf">function</span> (X, tau, Y, log, ...) {</a>
+<a class="sourceLine" id="cb9-17" data-line-number="17">  <span class="kw">dlnorm</span>(<span class="dt">x=</span>Y,<span class="dt">meanlog=</span><span class="kw">log</span>(X),<span class="dt">sdlog=</span>tau,<span class="dt">log=</span>log)</a>
+<a class="sourceLine" id="cb9-18" data-line-number="18">}</a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">## rinit</span></a>
+<a class="sourceLine" id="cb9-21" data-line-number="21">gompertz.init &lt;-<span class="st"> </span><span class="cf">function</span> (X_<span class="dv">0</span>, ...) {</a>
+<a class="sourceLine" id="cb9-22" data-line-number="22">  <span class="kw">c</span>(<span class="dt">X=</span>X_<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb9-23" data-line-number="23">}</a>
+<a class="sourceLine" id="cb9-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">## pomp construction via simulation</span></a>
+<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="kw">simulate</span>(</a>
+<a class="sourceLine" id="cb9-27" data-line-number="27">  <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">t0=</span><span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb9-28" data-line-number="28">  <span class="dt">rprocess=</span><span class="kw">discrete_time</span>(gompertz.proc.sim,<span class="dt">delta.t=</span><span class="dv">1</span>), </a>
+<a class="sourceLine" id="cb9-29" data-line-number="29">  <span class="dt">rmeasure=</span>gompertz.meas.sim,</a>
+<a class="sourceLine" id="cb9-30" data-line-number="30">  <span class="dt">dmeasure=</span>gompertz.meas.dens,</a>
+<a class="sourceLine" id="cb9-31" data-line-number="31">  <span class="dt">rinit=</span>gompertz.init,</a>
+<a class="sourceLine" id="cb9-32" data-line-number="32">  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(<span class="dt">log=</span><span class="kw">c</span>(<span class="st">&quot;K&quot;</span>,<span class="st">&quot;r&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>)),</a>
+<a class="sourceLine" id="cb9-33" data-line-number="33">  <span class="dt">paramnames=</span><span class="kw">c</span>(<span class="st">&quot;K&quot;</span>,<span class="st">&quot;r&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>),</a>
+<a class="sourceLine" id="cb9-34" data-line-number="34">  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb9-35" data-line-number="35">) -&gt;<span class="st"> </span>gomp2R</a></code></pre></div>
 <p>To implement the model using C snippets, in <strong>pomp</strong> versions &lt;2 we might do the following.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">pomp</span>(</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">Y=</span><span class="ot">NA</span>), </a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="dt">times=</span><span class="st">&quot;time&quot;</span>, <span class="dt">t0=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="dt">rprocess=</span><span class="kw">discrete.time.sim</span>(</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">    <span class="dt">step.fun=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="st">      double e = rnorm(0,sigma);</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="st">      double S = exp(-r*dt);</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="st">      X = exp((1-S)*log(K)+S*log(X)+e);</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="st">  &quot;</span>),</a>
-<a class="sourceLine" id="cb11-10" data-line-number="10">    <span class="dt">delta.t=</span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11">  ), </a>
-<a class="sourceLine" id="cb11-12" data-line-number="12">  <span class="dt">rmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="st">      Y = exp(rnorm(log(X),tau));</span></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="st">    &quot;</span>),</a>
-<a class="sourceLine" id="cb11-15" data-line-number="15">  <span class="dt">dmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="st">      lik = dlnorm(Y,log(X),tau,give_log);</span></a>
-<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="st">    &quot;</span>),</a>
-<a class="sourceLine" id="cb11-18" data-line-number="18">  <span class="dt">initializer=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="st">      X = X_0;</span></a>
-<a class="sourceLine" id="cb11-20" data-line-number="20"><span class="st">    &quot;</span>),</a>
-<a class="sourceLine" id="cb11-21" data-line-number="21">  <span class="dt">toEstimationScale=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="st">      TK = log(K);</span></a>
-<a class="sourceLine" id="cb11-23" data-line-number="23"><span class="st">      Tr = log(r);</span></a>
-<a class="sourceLine" id="cb11-24" data-line-number="24"><span class="st">      Tsigma = log(sigma);</span></a>
-<a class="sourceLine" id="cb11-25" data-line-number="25"><span class="st">      Ttau = log(tau);</span></a>
-<a class="sourceLine" id="cb11-26" data-line-number="26"><span class="st">      TX_0 = log(X_0);</span></a>
-<a class="sourceLine" id="cb11-27" data-line-number="27"><span class="st">    &quot;</span>),</a>
-<a class="sourceLine" id="cb11-28" data-line-number="28">  <span class="dt">fromEstimationScale=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb11-29" data-line-number="29"><span class="st">      TK = exp(K);</span></a>
-<a class="sourceLine" id="cb11-30" data-line-number="30"><span class="st">      Tr = exp(r);</span></a>
-<a class="sourceLine" id="cb11-31" data-line-number="31"><span class="st">      Tsigma = exp(sigma);</span></a>
-<a class="sourceLine" id="cb11-32" data-line-number="32"><span class="st">      Ttau = exp(tau);</span></a>
-<a class="sourceLine" id="cb11-33" data-line-number="33"><span class="st">      TX_0 = exp(X_0);</span></a>
-<a class="sourceLine" id="cb11-34" data-line-number="34"><span class="st">    &quot;</span>),</a>
-<a class="sourceLine" id="cb11-35" data-line-number="35">  <span class="dt">paramnames=</span><span class="kw">c</span>(<span class="st">&quot;r&quot;</span>,<span class="st">&quot;K&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>,<span class="st">&quot;X_0&quot;</span>),</a>
-<a class="sourceLine" id="cb11-36" data-line-number="36">  <span class="dt">statenames=</span><span class="st">&quot;X&quot;</span>,</a>
-<a class="sourceLine" id="cb11-37" data-line-number="37">  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb11-38" data-line-number="38">) -&gt;<span class="st"> </span>gomp1C</a>
-<a class="sourceLine" id="cb11-39" data-line-number="39"></a>
-<a class="sourceLine" id="cb11-40" data-line-number="40"><span class="kw">simulate</span>(gomp1C) -&gt;<span class="st"> </span>gomp1C</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">pomp</span>(</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="dt">data=</span><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">Y=</span><span class="ot">NA</span>), </a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">  <span class="dt">times=</span><span class="st">&quot;time&quot;</span>, <span class="dt">t0=</span><span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">  <span class="dt">rprocess=</span><span class="kw">discrete.time.sim</span>(</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">    <span class="dt">step.fun=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="st">      double e = rnorm(0,sigma);</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="st">      double S = exp(-r*dt);</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="st">      X = exp((1-S)*log(K)+S*log(X)+e);</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="st">  &quot;</span>),</a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">    <span class="dt">delta.t=</span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11">  ), </a>
+<a class="sourceLine" id="cb10-12" data-line-number="12">  <span class="dt">rmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="st">      Y = exp(rnorm(log(X),tau));</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="st">    &quot;</span>),</a>
+<a class="sourceLine" id="cb10-15" data-line-number="15">  <span class="dt">dmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="st">      lik = dlnorm(Y,log(X),tau,give_log);</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="st">    &quot;</span>),</a>
+<a class="sourceLine" id="cb10-18" data-line-number="18">  <span class="dt">initializer=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="st">      X = X_0;</span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="st">    &quot;</span>),</a>
+<a class="sourceLine" id="cb10-21" data-line-number="21">  <span class="dt">toEstimationScale=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="st">      TK = log(K);</span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23"><span class="st">      Tr = log(r);</span></a>
+<a class="sourceLine" id="cb10-24" data-line-number="24"><span class="st">      Tsigma = log(sigma);</span></a>
+<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="st">      Ttau = log(tau);</span></a>
+<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="st">      TX_0 = log(X_0);</span></a>
+<a class="sourceLine" id="cb10-27" data-line-number="27"><span class="st">    &quot;</span>),</a>
+<a class="sourceLine" id="cb10-28" data-line-number="28">  <span class="dt">fromEstimationScale=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb10-29" data-line-number="29"><span class="st">      TK = exp(K);</span></a>
+<a class="sourceLine" id="cb10-30" data-line-number="30"><span class="st">      Tr = exp(r);</span></a>
+<a class="sourceLine" id="cb10-31" data-line-number="31"><span class="st">      Tsigma = exp(sigma);</span></a>
+<a class="sourceLine" id="cb10-32" data-line-number="32"><span class="st">      Ttau = exp(tau);</span></a>
+<a class="sourceLine" id="cb10-33" data-line-number="33"><span class="st">      TX_0 = exp(X_0);</span></a>
+<a class="sourceLine" id="cb10-34" data-line-number="34"><span class="st">    &quot;</span>),</a>
+<a class="sourceLine" id="cb10-35" data-line-number="35">  <span class="dt">paramnames=</span><span class="kw">c</span>(<span class="st">&quot;r&quot;</span>,<span class="st">&quot;K&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>,<span class="st">&quot;X_0&quot;</span>),</a>
+<a class="sourceLine" id="cb10-36" data-line-number="36">  <span class="dt">statenames=</span><span class="st">&quot;X&quot;</span>,</a>
+<a class="sourceLine" id="cb10-37" data-line-number="37">  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb10-38" data-line-number="38">) -&gt;<span class="st"> </span>gomp1C</a>
+<a class="sourceLine" id="cb10-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb10-40" data-line-number="40"><span class="kw">simulate</span>(gomp1C) -&gt;<span class="st"> </span>gomp1C</a></code></pre></div>
 <p>In version 2, we would do something like the following. In addition to the differences noted above, notice that we must specify <code>obsnames</code> here, since the name of the observed variable is not provided in a dummy data frame as in versions &lt;2. Note also that no changes to the C snippets themselves are needed.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">simulate</span>(</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">  <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">t0=</span><span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">  <span class="dt">rprocess=</span><span class="kw">discrete_time</span>(</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">    <span class="dt">step.fun=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">      double e = rnorm(0,sigma);</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">      double S = exp(-r*dt);</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="st">      X = exp((1-S)*log(K)+S*log(X)+e);</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="st">  &quot;</span>),</a>
-<a class="sourceLine" id="cb12-9" data-line-number="9">    <span class="dt">delta.t=</span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">  ), </a>
-<a class="sourceLine" id="cb12-11" data-line-number="11">  <span class="dt">rmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="st">      Y = exp(rnorm(log(X),tau));</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="st">    &quot;</span>),</a>
-<a class="sourceLine" id="cb12-14" data-line-number="14">  <span class="dt">dmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="st">      lik = dlnorm(Y,log(X),tau,give_log);</span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="st">    &quot;</span>),</a>
-<a class="sourceLine" id="cb12-17" data-line-number="17">  <span class="dt">rinit=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="st">      X = X_0;</span></a>
-<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="st">    &quot;</span>),</a>
-<a class="sourceLine" id="cb12-20" data-line-number="20">  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(<span class="dt">log=</span><span class="kw">c</span>(<span class="st">&quot;K&quot;</span>,<span class="st">&quot;r&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>)),</a>
-<a class="sourceLine" id="cb12-21" data-line-number="21">  <span class="dt">paramnames=</span><span class="kw">c</span>(<span class="st">&quot;r&quot;</span>,<span class="st">&quot;K&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>,<span class="st">&quot;X_0&quot;</span>),</a>
-<a class="sourceLine" id="cb12-22" data-line-number="22">  <span class="dt">statenames=</span><span class="st">&quot;X&quot;</span>,</a>
-<a class="sourceLine" id="cb12-23" data-line-number="23">  <span class="dt">obsnames=</span><span class="st">&quot;Y&quot;</span>,</a>
-<a class="sourceLine" id="cb12-24" data-line-number="24">  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb12-25" data-line-number="25">) -&gt;<span class="st"> </span>gomp2C</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">simulate</span>(</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="dt">times=</span><span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">t0=</span><span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="dt">rprocess=</span><span class="kw">discrete_time</span>(</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">    <span class="dt">step.fun=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">      double e = rnorm(0,sigma);</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="st">      double S = exp(-r*dt);</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="st">      X = exp((1-S)*log(K)+S*log(X)+e);</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="st">  &quot;</span>),</a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">    <span class="dt">delta.t=</span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">  ), </a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">  <span class="dt">rmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="st">      Y = exp(rnorm(log(X),tau));</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="st">    &quot;</span>),</a>
+<a class="sourceLine" id="cb11-14" data-line-number="14">  <span class="dt">dmeasure=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="st">      lik = dlnorm(Y,log(X),tau,give_log);</span></a>
+<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="st">    &quot;</span>),</a>
+<a class="sourceLine" id="cb11-17" data-line-number="17">  <span class="dt">rinit=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="st">      X = X_0;</span></a>
+<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="st">    &quot;</span>),</a>
+<a class="sourceLine" id="cb11-20" data-line-number="20">  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(<span class="dt">log=</span><span class="kw">c</span>(<span class="st">&quot;K&quot;</span>,<span class="st">&quot;r&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>)),</a>
+<a class="sourceLine" id="cb11-21" data-line-number="21">  <span class="dt">paramnames=</span><span class="kw">c</span>(<span class="st">&quot;r&quot;</span>,<span class="st">&quot;K&quot;</span>,<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;tau&quot;</span>,<span class="st">&quot;X_0&quot;</span>),</a>
+<a class="sourceLine" id="cb11-22" data-line-number="22">  <span class="dt">statenames=</span><span class="st">&quot;X&quot;</span>,</a>
+<a class="sourceLine" id="cb11-23" data-line-number="23">  <span class="dt">obsnames=</span><span class="st">&quot;Y&quot;</span>,</a>
+<a class="sourceLine" id="cb11-24" data-line-number="24">  <span class="dt">params=</span><span class="kw">c</span>(<span class="dt">r=</span><span class="fl">0.1</span>,<span class="dt">K=</span><span class="dv">1</span>,<span class="dt">sigma=</span><span class="fl">0.1</span>,<span class="dt">tau=</span><span class="fl">0.1</span>,<span class="dt">X_0=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb11-25" data-line-number="25">) -&gt;<span class="st"> </span>gomp2C</a></code></pre></div>
 </div>
 <div id="sir-model" class="section level3">
 <h3>SIR model</h3>
 <p>This example, also drawn from the <a href="https://doi.org/10.18637/jss.v069.i12"><em>Journal of Statistical Software</em> paper</a>, involves covariates and accumulator variables as well as more complex parameter transformations.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">## Construct some fake birthrate data.</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">11</span>,<span class="dt">by=</span><span class="dv">1</span><span class="op">/</span><span class="dv">12</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(</a>
-<a class="sourceLine" id="cb13-6" data-line-number="6">    <span class="dt">birthrate=</span><span class="fl">5e5</span><span class="op">*</span><span class="kw">bspline.basis</span>(time,<span class="dt">nbasis=</span><span class="dv">5</span>)<span class="op">%*%</span><span class="kw">c</span>(<span class="fl">0.018</span>,<span class="fl">0.019</span>,<span class="fl">0.021</span>,<span class="fl">0.019</span>,<span class="fl">0.015</span>)</a>
-<a class="sourceLine" id="cb13-7" data-line-number="7">  ) -&gt;<span class="st"> </span>birthdat</a></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co">## measurement model C snippets</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">rmeas &lt;-<span class="st"> &quot;</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  cases = rnbinom_mu(theta, rho * H);</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">dmeas &lt;-<span class="st"> &quot;</span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  lik = dnbinom_mu(cases, theta, rho * H, give_log);</span></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb14-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">## initializer</span></a>
-<a class="sourceLine" id="cb14-11" data-line-number="11">rinit &lt;-<span class="st"> &quot;</span></a>
-<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="st">  double m = popsize/(S_0 + I_0 + R_0);</span></a>
-<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="st">  S = nearbyint(m*S_0);</span></a>
-<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="st">  I = nearbyint(m*I_0);</span></a>
-<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="st">  R = nearbyint(m*R_0);</span></a>
-<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="st">  H = 0;</span></a>
-<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="st">  Phi = 0;</span></a>
-<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="st">  noise = 0;</span></a>
-<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb14-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">## rprocess</span></a>
-<a class="sourceLine" id="cb14-22" data-line-number="22">seas.sir.step &lt;-<span class="st"> &quot;</span></a>
-<a class="sourceLine" id="cb14-23" data-line-number="23"><span class="st">  double rate[6];</span></a>
-<a class="sourceLine" id="cb14-24" data-line-number="24"><span class="st">  double dN[6];</span></a>
-<a class="sourceLine" id="cb14-25" data-line-number="25"><span class="st">  double Beta;</span></a>
-<a class="sourceLine" id="cb14-26" data-line-number="26"><span class="st">  double dW;</span></a>
-<a class="sourceLine" id="cb14-27" data-line-number="27"><span class="st">  Beta = exp(b1 + b2 * cos(M_2PI * Phi) + b3 * sin(M_2PI * Phi));</span></a>
-<a class="sourceLine" id="cb14-28" data-line-number="28"><span class="st">  rate[0] = birthrate;</span></a>
-<a class="sourceLine" id="cb14-29" data-line-number="29"><span class="st">  rate[1] = Beta * (I + iota) / popsize;</span></a>
-<a class="sourceLine" id="cb14-30" data-line-number="30"><span class="st">  rate[2] = mu;</span></a>
-<a class="sourceLine" id="cb14-31" data-line-number="31"><span class="st">  rate[3] = gamma;</span></a>
-<a class="sourceLine" id="cb14-32" data-line-number="32"><span class="st">  rate[4] = mu;</span></a>
-<a class="sourceLine" id="cb14-33" data-line-number="33"><span class="st">  rate[5] = mu;</span></a>
-<a class="sourceLine" id="cb14-34" data-line-number="34"><span class="st">  dN[0] = rpois(rate[0] * dt);</span></a>
-<a class="sourceLine" id="cb14-35" data-line-number="35"><span class="st">  reulermultinom(2, S, &amp;rate[1], dt, &amp;dN[1]);</span></a>
-<a class="sourceLine" id="cb14-36" data-line-number="36"><span class="st">  reulermultinom(2, I, &amp;rate[3], dt, &amp;dN[3]);</span></a>
-<a class="sourceLine" id="cb14-37" data-line-number="37"><span class="st">  reulermultinom(1, R, &amp;rate[5], dt, &amp;dN[5]);</span></a>
-<a class="sourceLine" id="cb14-38" data-line-number="38"><span class="st">  dW = rnorm(dt, sigma * sqrt(dt));</span></a>
-<a class="sourceLine" id="cb14-39" data-line-number="39"><span class="st">  S += dN[0] - dN[1] - dN[2];</span></a>
-<a class="sourceLine" id="cb14-40" data-line-number="40"><span class="st">  I += dN[1] - dN[3] - dN[4];</span></a>
-<a class="sourceLine" id="cb14-41" data-line-number="41"><span class="st">  R += dN[3] - dN[5];</span></a>
-<a class="sourceLine" id="cb14-42" data-line-number="42"><span class="st">  Phi += dW;</span></a>
-<a class="sourceLine" id="cb14-43" data-line-number="43"><span class="st">  H += dN[1];</span></a>
-<a class="sourceLine" id="cb14-44" data-line-number="44"><span class="st">  noise += (dW - dt) / sigma;</span></a>
-<a class="sourceLine" id="cb14-45" data-line-number="45"><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb14-46" data-line-number="46"></a>
-<a class="sourceLine" id="cb14-47" data-line-number="47">toest &lt;-<span class="st"> &quot;</span></a>
-<a class="sourceLine" id="cb14-48" data-line-number="48"><span class="st">  to_log_barycentric(&amp;TS_0,&amp;S_0,3);</span></a>
-<a class="sourceLine" id="cb14-49" data-line-number="49"><span class="st">  Tsigma = log(sigma);</span></a>
-<a class="sourceLine" id="cb14-50" data-line-number="50"><span class="st">  Tiota = log(iota);</span></a>
-<a class="sourceLine" id="cb14-51" data-line-number="51"><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb14-52" data-line-number="52"></a>
-<a class="sourceLine" id="cb14-53" data-line-number="53">fromest &lt;-<span class="st"> &quot;</span></a>
-<a class="sourceLine" id="cb14-54" data-line-number="54"><span class="st">  from_log_barycentric(&amp;TS_0,&amp;S_0,3);</span></a>
-<a class="sourceLine" id="cb14-55" data-line-number="55"><span class="st">  Tsigma = exp(sigma);</span></a>
-<a class="sourceLine" id="cb14-56" data-line-number="56"><span class="st">  Tiota = exp(iota);</span></a>
-<a class="sourceLine" id="cb14-57" data-line-number="57"><span class="st">&quot;</span></a></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dt">by=</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>),<span class="dt">cases=</span><span class="ot">NA</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw">pomp</span>(</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">    <span class="dt">times=</span><span class="st">&quot;time&quot;</span>, <span class="dt">t0=</span><span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>, </a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">    <span class="dt">covar =</span> birthdat, <span class="dt">tcovar =</span> <span class="st">&quot;time&quot;</span>,</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">    <span class="dt">dmeasure =</span> <span class="kw">Csnippet</span>(dmeas),</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">    <span class="dt">rmeasure =</span> <span class="kw">Csnippet</span>(rmeas),</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">    <span class="dt">initializer=</span><span class="kw">Csnippet</span>(rinit),</a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">    <span class="dt">rprocess =</span> <span class="kw">euler.sim</span>(</a>
-<a class="sourceLine" id="cb15-9" data-line-number="9">      <span class="dt">step.fun =</span> <span class="kw">Csnippet</span>(seas.sir.step), </a>
-<a class="sourceLine" id="cb15-10" data-line-number="10">      <span class="dt">delta.t =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">52</span><span class="op">/</span><span class="dv">20</span></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11">    ),</a>
-<a class="sourceLine" id="cb15-12" data-line-number="12">    <span class="dt">toEstimationScale=</span><span class="kw">Csnippet</span>(toest),</a>
-<a class="sourceLine" id="cb15-13" data-line-number="13">    <span class="dt">fromEstimationScale=</span><span class="kw">Csnippet</span>(fromest),</a>
-<a class="sourceLine" id="cb15-14" data-line-number="14">    <span class="dt">statenames =</span> <span class="kw">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;I&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;H&quot;</span>, <span class="st">&quot;Phi&quot;</span>, <span class="st">&quot;noise&quot;</span>),</a>
-<a class="sourceLine" id="cb15-15" data-line-number="15">    <span class="dt">paramnames =</span> <span class="kw">c</span>(<span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;mu&quot;</span>, <span class="st">&quot;theta&quot;</span>, <span class="st">&quot;b1&quot;</span>, <span class="st">&quot;b2&quot;</span>, <span class="st">&quot;b3&quot;</span>,</a>
-<a class="sourceLine" id="cb15-16" data-line-number="16">      <span class="st">&quot;popsize&quot;</span>,<span class="st">&quot;rho&quot;</span>, <span class="st">&quot;iota&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;S_0&quot;</span>, <span class="st">&quot;I_0&quot;</span>, <span class="st">&quot;R_0&quot;</span>), </a>
-<a class="sourceLine" id="cb15-17" data-line-number="17">    <span class="dt">zeronames =</span> <span class="kw">c</span>(<span class="st">&quot;H&quot;</span>, <span class="st">&quot;noise&quot;</span>),</a>
-<a class="sourceLine" id="cb15-18" data-line-number="18">    <span class="dt">params =</span> <span class="kw">c</span>(<span class="dt">popsize =</span> <span class="dv">500000</span>, <span class="dt">iota =</span> <span class="dv">5</span>, <span class="dt">gamma =</span> <span class="dv">26</span>, <span class="dt">mu =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">50</span>,</a>
-<a class="sourceLine" id="cb15-19" data-line-number="19">      <span class="dt">b1 =</span> <span class="dv">6</span>, <span class="dt">b2 =</span> <span class="fl">0.2</span>, <span class="dt">b3 =</span> <span class="fl">-0.1</span>, <span class="dt">rho =</span> <span class="fl">0.1</span>, <span class="dt">theta =</span> <span class="dv">100</span>, </a>
-<a class="sourceLine" id="cb15-20" data-line-number="20">      <span class="dt">sigma =</span> <span class="fl">0.3</span>, <span class="dt">S_0 =</span> <span class="fl">0.055</span>, <span class="dt">I_0 =</span> <span class="fl">0.002</span>, <span class="dt">R_0 =</span> <span class="fl">0.94</span>)</a>
-<a class="sourceLine" id="cb15-21" data-line-number="21">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-22" data-line-number="22"><span class="st">  </span><span class="kw">simulate</span>() -&gt;<span class="st"> </span>sir1C</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">## Construct some fake birthrate data.</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">11</span>,<span class="dt">by=</span><span class="dv">1</span><span class="op">/</span><span class="dv">12</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">    <span class="dt">birthrate=</span><span class="fl">5e5</span><span class="op">*</span><span class="kw">bspline.basis</span>(time,<span class="dt">nbasis=</span><span class="dv">5</span>)<span class="op">%*%</span><span class="kw">c</span>(<span class="fl">0.018</span>,<span class="fl">0.019</span>,<span class="fl">0.021</span>,<span class="fl">0.019</span>,<span class="fl">0.015</span>)</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">  ) -&gt;<span class="st"> </span>birthdat</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">## measurement model C snippets</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">rmeas &lt;-<span class="st"> &quot;</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  cases = rnbinom_mu(theta, rho * H);</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">dmeas &lt;-<span class="st"> &quot;</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="st">  lik = dnbinom_mu(cases, theta, rho * H, give_log);</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">## initializer</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11">rinit &lt;-<span class="st"> &quot;</span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="st">  double m = popsize/(S_0 + I_0 + R_0);</span></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="st">  S = nearbyint(m*S_0);</span></a>
+<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="st">  I = nearbyint(m*I_0);</span></a>
+<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="st">  R = nearbyint(m*R_0);</span></a>
+<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="st">  H = 0;</span></a>
+<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="st">  Phi = 0;</span></a>
+<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="st">  noise = 0;</span></a>
+<a class="sourceLine" id="cb13-19" data-line-number="19"><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb13-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb13-21" data-line-number="21"><span class="co">## rprocess</span></a>
+<a class="sourceLine" id="cb13-22" data-line-number="22">seas.sir.step &lt;-<span class="st"> &quot;</span></a>
+<a class="sourceLine" id="cb13-23" data-line-number="23"><span class="st">  double rate[6];</span></a>
+<a class="sourceLine" id="cb13-24" data-line-number="24"><span class="st">  double dN[6];</span></a>
+<a class="sourceLine" id="cb13-25" data-line-number="25"><span class="st">  double Beta;</span></a>
+<a class="sourceLine" id="cb13-26" data-line-number="26"><span class="st">  double dW;</span></a>
+<a class="sourceLine" id="cb13-27" data-line-number="27"><span class="st">  Beta = exp(b1 + b2 * cos(M_2PI * Phi) + b3 * sin(M_2PI * Phi));</span></a>
+<a class="sourceLine" id="cb13-28" data-line-number="28"><span class="st">  rate[0] = birthrate;</span></a>
+<a class="sourceLine" id="cb13-29" data-line-number="29"><span class="st">  rate[1] = Beta * (I + iota) / popsize;</span></a>
+<a class="sourceLine" id="cb13-30" data-line-number="30"><span class="st">  rate[2] = mu;</span></a>
+<a class="sourceLine" id="cb13-31" data-line-number="31"><span class="st">  rate[3] = gamma;</span></a>
+<a class="sourceLine" id="cb13-32" data-line-number="32"><span class="st">  rate[4] = mu;</span></a>
+<a class="sourceLine" id="cb13-33" data-line-number="33"><span class="st">  rate[5] = mu;</span></a>
+<a class="sourceLine" id="cb13-34" data-line-number="34"><span class="st">  dN[0] = rpois(rate[0] * dt);</span></a>
+<a class="sourceLine" id="cb13-35" data-line-number="35"><span class="st">  reulermultinom(2, S, &amp;rate[1], dt, &amp;dN[1]);</span></a>
+<a class="sourceLine" id="cb13-36" data-line-number="36"><span class="st">  reulermultinom(2, I, &amp;rate[3], dt, &amp;dN[3]);</span></a>
+<a class="sourceLine" id="cb13-37" data-line-number="37"><span class="st">  reulermultinom(1, R, &amp;rate[5], dt, &amp;dN[5]);</span></a>
+<a class="sourceLine" id="cb13-38" data-line-number="38"><span class="st">  dW = rnorm(dt, sigma * sqrt(dt));</span></a>
+<a class="sourceLine" id="cb13-39" data-line-number="39"><span class="st">  S += dN[0] - dN[1] - dN[2];</span></a>
+<a class="sourceLine" id="cb13-40" data-line-number="40"><span class="st">  I += dN[1] - dN[3] - dN[4];</span></a>
+<a class="sourceLine" id="cb13-41" data-line-number="41"><span class="st">  R += dN[3] - dN[5];</span></a>
+<a class="sourceLine" id="cb13-42" data-line-number="42"><span class="st">  Phi += dW;</span></a>
+<a class="sourceLine" id="cb13-43" data-line-number="43"><span class="st">  H += dN[1];</span></a>
+<a class="sourceLine" id="cb13-44" data-line-number="44"><span class="st">  noise += (dW - dt) / sigma;</span></a>
+<a class="sourceLine" id="cb13-45" data-line-number="45"><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb13-46" data-line-number="46"></a>
+<a class="sourceLine" id="cb13-47" data-line-number="47">toest &lt;-<span class="st"> &quot;</span></a>
+<a class="sourceLine" id="cb13-48" data-line-number="48"><span class="st">  to_log_barycentric(&amp;TS_0,&amp;S_0,3);</span></a>
+<a class="sourceLine" id="cb13-49" data-line-number="49"><span class="st">  Tsigma = log(sigma);</span></a>
+<a class="sourceLine" id="cb13-50" data-line-number="50"><span class="st">  Tiota = log(iota);</span></a>
+<a class="sourceLine" id="cb13-51" data-line-number="51"><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb13-52" data-line-number="52"></a>
+<a class="sourceLine" id="cb13-53" data-line-number="53">fromest &lt;-<span class="st"> &quot;</span></a>
+<a class="sourceLine" id="cb13-54" data-line-number="54"><span class="st">  from_log_barycentric(&amp;TS_0,&amp;S_0,3);</span></a>
+<a class="sourceLine" id="cb13-55" data-line-number="55"><span class="st">  Tsigma = exp(sigma);</span></a>
+<a class="sourceLine" id="cb13-56" data-line-number="56"><span class="st">  Tiota = exp(iota);</span></a>
+<a class="sourceLine" id="cb13-57" data-line-number="57"><span class="st">&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dt">by=</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>),<span class="dt">cases=</span><span class="ot">NA</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw">pomp</span>(</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">    <span class="dt">times=</span><span class="st">&quot;time&quot;</span>, <span class="dt">t0=</span><span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>, </a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">    <span class="dt">covar =</span> birthdat, <span class="dt">tcovar =</span> <span class="st">&quot;time&quot;</span>,</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">    <span class="dt">dmeasure =</span> <span class="kw">Csnippet</span>(dmeas),</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">    <span class="dt">rmeasure =</span> <span class="kw">Csnippet</span>(rmeas),</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">    <span class="dt">initializer=</span><span class="kw">Csnippet</span>(rinit),</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">    <span class="dt">rprocess =</span> <span class="kw">euler.sim</span>(</a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">      <span class="dt">step.fun =</span> <span class="kw">Csnippet</span>(seas.sir.step), </a>
+<a class="sourceLine" id="cb14-10" data-line-number="10">      <span class="dt">delta.t =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">52</span><span class="op">/</span><span class="dv">20</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11">    ),</a>
+<a class="sourceLine" id="cb14-12" data-line-number="12">    <span class="dt">toEstimationScale=</span><span class="kw">Csnippet</span>(toest),</a>
+<a class="sourceLine" id="cb14-13" data-line-number="13">    <span class="dt">fromEstimationScale=</span><span class="kw">Csnippet</span>(fromest),</a>
+<a class="sourceLine" id="cb14-14" data-line-number="14">    <span class="dt">statenames =</span> <span class="kw">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;I&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;H&quot;</span>, <span class="st">&quot;Phi&quot;</span>, <span class="st">&quot;noise&quot;</span>),</a>
+<a class="sourceLine" id="cb14-15" data-line-number="15">    <span class="dt">paramnames =</span> <span class="kw">c</span>(<span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;mu&quot;</span>, <span class="st">&quot;theta&quot;</span>, <span class="st">&quot;b1&quot;</span>, <span class="st">&quot;b2&quot;</span>, <span class="st">&quot;b3&quot;</span>,</a>
+<a class="sourceLine" id="cb14-16" data-line-number="16">      <span class="st">&quot;popsize&quot;</span>,<span class="st">&quot;rho&quot;</span>, <span class="st">&quot;iota&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;S_0&quot;</span>, <span class="st">&quot;I_0&quot;</span>, <span class="st">&quot;R_0&quot;</span>), </a>
+<a class="sourceLine" id="cb14-17" data-line-number="17">    <span class="dt">zeronames =</span> <span class="kw">c</span>(<span class="st">&quot;H&quot;</span>, <span class="st">&quot;noise&quot;</span>),</a>
+<a class="sourceLine" id="cb14-18" data-line-number="18">    <span class="dt">params =</span> <span class="kw">c</span>(<span class="dt">popsize =</span> <span class="dv">500000</span>, <span class="dt">iota =</span> <span class="dv">5</span>, <span class="dt">gamma =</span> <span class="dv">26</span>, <span class="dt">mu =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">50</span>,</a>
+<a class="sourceLine" id="cb14-19" data-line-number="19">      <span class="dt">b1 =</span> <span class="dv">6</span>, <span class="dt">b2 =</span> <span class="fl">0.2</span>, <span class="dt">b3 =</span> <span class="fl">-0.1</span>, <span class="dt">rho =</span> <span class="fl">0.1</span>, <span class="dt">theta =</span> <span class="dv">100</span>, </a>
+<a class="sourceLine" id="cb14-20" data-line-number="20">      <span class="dt">sigma =</span> <span class="fl">0.3</span>, <span class="dt">S_0 =</span> <span class="fl">0.055</span>, <span class="dt">I_0 =</span> <span class="fl">0.002</span>, <span class="dt">R_0 =</span> <span class="fl">0.94</span>)</a>
+<a class="sourceLine" id="cb14-21" data-line-number="21">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-22" data-line-number="22"><span class="st">  </span><span class="kw">simulate</span>() -&gt;<span class="st"> </span>sir1C</a></code></pre></div>
 <p>When implementing the same model in <strong>pomp</strong> version 2, we can use almost all the same C snippets without modification. The exception is the C snippets for the parameter transformations. The syntax for the inclusion of the covariates is different as is that used to specify the names of the accumulator variables. For example:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">simulate</span>(</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">  <span class="dt">times=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dt">by=</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>), <span class="dt">t0=</span><span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>,</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">  <span class="dt">covar=</span><span class="kw">covariate_table</span>(birthdat,<span class="dt">times=</span><span class="st">&quot;time&quot;</span>),</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="dt">dmeasure =</span> <span class="kw">Csnippet</span>(dmeas),</a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">  <span class="dt">rmeasure =</span> <span class="kw">Csnippet</span>(rmeas),</a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">  <span class="dt">rinit=</span><span class="kw">Csnippet</span>(rinit),</a>
-<a class="sourceLine" id="cb16-7" data-line-number="7">  <span class="dt">rprocess =</span> <span class="kw">euler</span>(</a>
-<a class="sourceLine" id="cb16-8" data-line-number="8">    <span class="dt">step.fun =</span> <span class="kw">Csnippet</span>(seas.sir.step), </a>
-<a class="sourceLine" id="cb16-9" data-line-number="9">    <span class="dt">delta.t =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">52</span><span class="op">/</span><span class="dv">20</span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10">  ),</a>
-<a class="sourceLine" id="cb16-11" data-line-number="11">  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(</a>
-<a class="sourceLine" id="cb16-12" data-line-number="12">    <span class="dt">toEst=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="st">      to_log_barycentric(&amp;T_S_0,&amp;S_0,3);</span></a>
-<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="st">      T_sigma = log(sigma);</span></a>
-<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="st">      T_iota = log(iota);&quot;</span>),</a>
-<a class="sourceLine" id="cb16-16" data-line-number="16">    <span class="dt">fromEst=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb16-17" data-line-number="17"><span class="st">      from_log_barycentric(&amp;S_0,&amp;T_S_0,3);</span></a>
-<a class="sourceLine" id="cb16-18" data-line-number="18"><span class="st">      sigma = exp(T_sigma);</span></a>
-<a class="sourceLine" id="cb16-19" data-line-number="19"><span class="st">      iota = exp(T_iota);&quot;</span>)</a>
-<a class="sourceLine" id="cb16-20" data-line-number="20">  ),</a>
-<a class="sourceLine" id="cb16-21" data-line-number="21">  <span class="dt">statenames =</span> <span class="kw">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;I&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;H&quot;</span>, <span class="st">&quot;Phi&quot;</span>, <span class="st">&quot;noise&quot;</span>),</a>
-<a class="sourceLine" id="cb16-22" data-line-number="22">  <span class="dt">obsnames=</span><span class="kw">c</span>(<span class="st">&quot;cases&quot;</span>),</a>
-<a class="sourceLine" id="cb16-23" data-line-number="23">  <span class="dt">paramnames =</span> <span class="kw">c</span>(<span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;mu&quot;</span>, <span class="st">&quot;theta&quot;</span>, <span class="st">&quot;b1&quot;</span>, <span class="st">&quot;b2&quot;</span>, <span class="st">&quot;b3&quot;</span>,</a>
-<a class="sourceLine" id="cb16-24" data-line-number="24">    <span class="st">&quot;popsize&quot;</span>,<span class="st">&quot;rho&quot;</span>, <span class="st">&quot;iota&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;S_0&quot;</span>, <span class="st">&quot;I_0&quot;</span>, <span class="st">&quot;R_0&quot;</span>), </a>
-<a class="sourceLine" id="cb16-25" data-line-number="25">  <span class="dt">accumvars =</span> <span class="kw">c</span>(<span class="st">&quot;H&quot;</span>, <span class="st">&quot;noise&quot;</span>),</a>
-<a class="sourceLine" id="cb16-26" data-line-number="26">  <span class="dt">params =</span> <span class="kw">c</span>(<span class="dt">popsize =</span> <span class="dv">500000</span>, <span class="dt">iota =</span> <span class="dv">5</span>, <span class="dt">gamma =</span> <span class="dv">26</span>, <span class="dt">mu =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">50</span>,</a>
-<a class="sourceLine" id="cb16-27" data-line-number="27">    <span class="dt">b1 =</span> <span class="dv">6</span>, <span class="dt">b2 =</span> <span class="fl">0.2</span>, <span class="dt">b3 =</span> <span class="fl">-0.1</span>, <span class="dt">rho =</span> <span class="fl">0.1</span>, <span class="dt">theta =</span> <span class="dv">100</span>, </a>
-<a class="sourceLine" id="cb16-28" data-line-number="28">    <span class="dt">sigma =</span> <span class="fl">0.3</span>, <span class="dt">S_0 =</span> <span class="fl">0.055</span>, <span class="dt">I_0 =</span> <span class="fl">0.002</span>, <span class="dt">R_0 =</span> <span class="fl">0.94</span>)</a>
-<a class="sourceLine" id="cb16-29" data-line-number="29">) -&gt;<span class="st"> </span>sir2C</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">simulate</span>(</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">  <span class="dt">times=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dt">by=</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>), <span class="dt">t0=</span><span class="op">-</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span>,</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">  <span class="dt">covar=</span><span class="kw">covariate_table</span>(birthdat,<span class="dt">times=</span><span class="st">&quot;time&quot;</span>),</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">  <span class="dt">dmeasure =</span> <span class="kw">Csnippet</span>(dmeas),</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="dt">rmeasure =</span> <span class="kw">Csnippet</span>(rmeas),</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="dt">rinit=</span><span class="kw">Csnippet</span>(rinit),</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">  <span class="dt">rprocess =</span> <span class="kw">euler</span>(</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">    <span class="dt">step.fun =</span> <span class="kw">Csnippet</span>(seas.sir.step), </a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">    <span class="dt">delta.t =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">52</span><span class="op">/</span><span class="dv">20</span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10">  ),</a>
+<a class="sourceLine" id="cb15-11" data-line-number="11">  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(</a>
+<a class="sourceLine" id="cb15-12" data-line-number="12">    <span class="dt">toEst=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="st">      to_log_barycentric(&amp;T_S_0,&amp;S_0,3);</span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="st">      T_sigma = log(sigma);</span></a>
+<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="st">      T_iota = log(iota);&quot;</span>),</a>
+<a class="sourceLine" id="cb15-16" data-line-number="16">    <span class="dt">fromEst=</span><span class="kw">Csnippet</span>(<span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="st">      from_log_barycentric(&amp;S_0,&amp;T_S_0,3);</span></a>
+<a class="sourceLine" id="cb15-18" data-line-number="18"><span class="st">      sigma = exp(T_sigma);</span></a>
+<a class="sourceLine" id="cb15-19" data-line-number="19"><span class="st">      iota = exp(T_iota);&quot;</span>)</a>
+<a class="sourceLine" id="cb15-20" data-line-number="20">  ),</a>
+<a class="sourceLine" id="cb15-21" data-line-number="21">  <span class="dt">statenames =</span> <span class="kw">c</span>(<span class="st">&quot;S&quot;</span>, <span class="st">&quot;I&quot;</span>, <span class="st">&quot;R&quot;</span>, <span class="st">&quot;H&quot;</span>, <span class="st">&quot;Phi&quot;</span>, <span class="st">&quot;noise&quot;</span>),</a>
+<a class="sourceLine" id="cb15-22" data-line-number="22">  <span class="dt">obsnames=</span><span class="kw">c</span>(<span class="st">&quot;cases&quot;</span>),</a>
+<a class="sourceLine" id="cb15-23" data-line-number="23">  <span class="dt">paramnames =</span> <span class="kw">c</span>(<span class="st">&quot;gamma&quot;</span>, <span class="st">&quot;mu&quot;</span>, <span class="st">&quot;theta&quot;</span>, <span class="st">&quot;b1&quot;</span>, <span class="st">&quot;b2&quot;</span>, <span class="st">&quot;b3&quot;</span>,</a>
+<a class="sourceLine" id="cb15-24" data-line-number="24">    <span class="st">&quot;popsize&quot;</span>,<span class="st">&quot;rho&quot;</span>, <span class="st">&quot;iota&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;S_0&quot;</span>, <span class="st">&quot;I_0&quot;</span>, <span class="st">&quot;R_0&quot;</span>), </a>
+<a class="sourceLine" id="cb15-25" data-line-number="25">  <span class="dt">accumvars =</span> <span class="kw">c</span>(<span class="st">&quot;H&quot;</span>, <span class="st">&quot;noise&quot;</span>),</a>
+<a class="sourceLine" id="cb15-26" data-line-number="26">  <span class="dt">params =</span> <span class="kw">c</span>(<span class="dt">popsize =</span> <span class="dv">500000</span>, <span class="dt">iota =</span> <span class="dv">5</span>, <span class="dt">gamma =</span> <span class="dv">26</span>, <span class="dt">mu =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">50</span>,</a>
+<a class="sourceLine" id="cb15-27" data-line-number="27">    <span class="dt">b1 =</span> <span class="dv">6</span>, <span class="dt">b2 =</span> <span class="fl">0.2</span>, <span class="dt">b3 =</span> <span class="fl">-0.1</span>, <span class="dt">rho =</span> <span class="fl">0.1</span>, <span class="dt">theta =</span> <span class="dv">100</span>, </a>
+<a class="sourceLine" id="cb15-28" data-line-number="28">    <span class="dt">sigma =</span> <span class="fl">0.3</span>, <span class="dt">S_0 =</span> <span class="fl">0.055</span>, <span class="dt">I_0 =</span> <span class="fl">0.002</span>, <span class="dt">R_0 =</span> <span class="fl">0.94</span>)</a>
+<a class="sourceLine" id="cb15-29" data-line-number="29">) -&gt;<span class="st"> </span>sir2C</a></code></pre></div>
 <p>Note also that, for specifying the above parameter transformations, <strong>pomp</strong> version 2 provides the alternate form</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">simulate</span>(</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">  ...,</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">    <span class="dt">log=</span><span class="kw">c</span>(<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;iota&quot;</span>),</a>
-<a class="sourceLine" id="cb17-5" data-line-number="5">    <span class="dt">barycentric=</span><span class="kw">c</span>(<span class="st">&quot;S_0&quot;</span>,<span class="st">&quot;I_0&quot;</span>,<span class="st">&quot;R_0&quot;</span>)</a>
-<a class="sourceLine" id="cb17-6" data-line-number="6">  ),</a>
-<a class="sourceLine" id="cb17-7" data-line-number="7">  ...</a>
-<a class="sourceLine" id="cb17-8" data-line-number="8">) -&gt;<span class="st"> </span>sir2C</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">simulate</span>(</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">  ...,</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">  <span class="dt">partrans=</span><span class="kw">parameter_trans</span>(</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">    <span class="dt">log=</span><span class="kw">c</span>(<span class="st">&quot;sigma&quot;</span>,<span class="st">&quot;iota&quot;</span>),</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">    <span class="dt">barycentric=</span><span class="kw">c</span>(<span class="st">&quot;S_0&quot;</span>,<span class="st">&quot;I_0&quot;</span>,<span class="st">&quot;R_0&quot;</span>)</a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">  ),</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">  ...</a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">) -&gt;<span class="st"> </span>sir2C</a></code></pre></div>
 <hr />
 <p><a href="https://kingaa.github.io/pomp/docs.html"><strong>pomp</strong> documentation index</a><br />
 <a href="https://kingaa.github.io/pomp/"><strong>pomp</strong> homepage</a></p>
