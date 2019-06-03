@@ -27,12 +27,7 @@
 ##' Nature, 454:877-880, 2008
 ##'
 ##' @keywords models datasets
-##' @examples
-##'
-##' plot(dacca())
-##' ## MLE:
-##' coef(dacca())
-##' plot(simulate(dacca()))
+##' @example examples/dacca.R
 ##'
 NULL
 

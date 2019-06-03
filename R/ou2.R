@@ -17,14 +17,7 @@
 ##' @keywords models datasets
 ##' @family pomp examples
 ##' @return A \sQuote{pomp} object with simulated data.
-##' @examples
-##'
-##' plot(ou2())
-##' coef(ou2())
-##' x <- simulate(ou2())
-##' plot(x)
-##' pf <- pfilter(ou2(),Np=1000)
-##' logLik(pf)
+##' @example examples/ou2.R
 ##'
 NULL
 

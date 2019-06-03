@@ -33,11 +33,10 @@ observed variables \eqn{y_t}{y[t]} are distributed as
 \eqn{\mathrm{Poisson}(\phi N_t)}{Poisson(phi N[t])}.
 }
 \examples{
-
-plot(ricker())
-coef(ricker())
-simulate(ricker())
-
+po <- ricker()
+plot(po)
+coef(po)
+simulate(po) \%>\% plot()
 }
 \seealso{
 Other pomp examples: \code{\link{blowflies}},

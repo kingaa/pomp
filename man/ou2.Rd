@@ -40,14 +40,13 @@ The observation process is \eqn{Y(t) = (y_1(t),y_2(t))}, where
 \eqn{y_i(t) \sim \mathrm{normal}(x_i(t),\tau)}.
 }
 \examples{
-
-plot(ou2())
-coef(ou2())
-x <- simulate(ou2())
+po <- ou2()
+plot(po)
+coef(po)
+x <- simulate(po)
 plot(x)
-pf <- pfilter(ou2(),Np=1000)
+pf <- pfilter(po,Np=1000)
 logLik(pf)
-
 }
 \seealso{
 Other pomp examples: \code{\link{blowflies}},

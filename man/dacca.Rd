@@ -62,12 +62,11 @@ Data are provided courtesy of Dr. Menno J. Bouma, London School of Tropical
 Medicine and Hygiene.
 }
 \examples{
-
-plot(dacca())
+po <- dacca()
+plot(po)
 ## MLE:
-coef(dacca())
-plot(simulate(dacca()))
-
+coef(po)
+plot(simulate(po))
 }
 \references{
 A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,

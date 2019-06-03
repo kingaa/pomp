@@ -1,0 +1,7 @@
+po <- ou2()
+plot(po)
+coef(po)
+x <- simulate(po)
+plot(x)
+pf <- pfilter(po,Np=1000)
+logLik(pf)

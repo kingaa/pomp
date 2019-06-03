@@ -25,11 +25,7 @@
 ##' @param phi sampling rate
 ##' @param N_0 initial condition
 ##'
-##' @examples
-##'
-##' plot(ricker())
-##' coef(ricker())
-##' simulate(ricker())
+##' @example examples/ricker.R
 ##'
 NULL
 
