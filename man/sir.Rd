@@ -57,14 +57,14 @@ This and similar examples are discussed and constructed in tutorials
 available on the \href{https://kingaa.github.io/pomp/}{package website}.
 }
 \examples{
+po <- sir()
+plot(po)
+coef(po)
 
-plot(sir())
-coef(sir())
-
-plot(sir2())
-plot(simulate(window(sir2(),end=3)))
-coef(sir2())
-
+po <- sir2()
+plot(po)
+plot(simulate(window(po,end=3)))
+coef(po)
 }
 \seealso{
 Other pomp examples: \code{\link{blowflies}},

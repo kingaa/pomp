@@ -108,4 +108,10 @@ dt {
 
 - [Report issues with the package](https://github.com/kingaa/pomp/issues)
 
-- [Back to the **pomp** package index](../html/00Index.html)
+- <a href="#" onclick="goBack()">Back to the **pomp** package index</a>
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>

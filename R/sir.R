@@ -21,14 +21,7 @@
 ##' @return
 ##' These functions return \sQuote{pomp} objects containing simulated data.
 ##'
-##' @examples
-##'
-##' plot(sir())
-##' coef(sir())
-##'
-##' plot(sir2())
-##' plot(simulate(window(sir2(),end=3)))
-##' coef(sir2())
+##' @example examples/sir.R
 ##'
 NULL
 
