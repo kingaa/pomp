@@ -27,8 +27,8 @@ set.seed(594709947L)
 library(ggplot2)
 library(plyr)
 library(tidyverse)
-library(pomp2)
-stopifnot(packageVersion("pomp2")>="2.0.9.1")
+library(pomp)
+stopifnot(packageVersion("pomp")>="2.0.9.1")
 
 
 ## ----load-data-----------------------------------------------------------

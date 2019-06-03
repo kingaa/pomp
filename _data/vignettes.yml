@@ -31,9 +31,6 @@
 - title: Two perspectives on the <strong>pomp</strong> project
   html: vignettes/oaxaca.html
 
-- title: <strong>pomp2</strong> package manual
-  pdf: https://kingaa.github.io/manuals/pomp2.pdf
-
 - title: <strong>pomp</strong> package manual
   pdf: https://kingaa.github.io/manuals/pomp.pdf
 

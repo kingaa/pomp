@@ -3,15 +3,35 @@ list(prefix = "R_v_C", min.pomp.version = "2.0.3")
 
 ## a:link, a:visited {
 
+##   color: #0000ff;
+
+##   text-decoration: none;
+
+## }
+
+## a:hover, a:active {
+
+##   color: #cc3333;
+
+##   text-decoration: none;
+
+## }
+
+## code {
+
+##   font-size: 110%;
+
+## }
+
 
 ## ----precheck,include=FALSE----------------------------------------------
-stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
+stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 
 
 
 
 ## ----packages------------------------------------------------------------
-library(pomp2)
+library(pomp)
 library(ggplot2)
 library(magrittr)
 

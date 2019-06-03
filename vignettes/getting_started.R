@@ -3,7 +3,7 @@ list(prefix = "getting-started2", min.pomp.version = "2.0.9",
     show_solns = TRUE)
 
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
-stopifnot(packageVersion("pomp2") >= params$min.pomp.version)
+stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -19,7 +19,7 @@ theme_set(theme_bw())
 
 
 ## ----sim1,warning=TRUE---------------------------------------------------
-library(pomp2)
+library(pomp)
 
 simulate(t0=0, times=1:20,
   params=c(r=1.2,K=200,sigma=0.1,N_0=50),
@@ -448,7 +448,7 @@ bake(file="parus_mif1.rds",{
   library(foreach)
   
   foreach (guess=iter(guesses,"row"),
-    .combine=c, .packages=c("pomp2"),
+    .combine=c, .packages=c("pomp"),
     .errorhandling="remove", .inorder=FALSE) %dopar% {
       
       mf1 %>% mif2(params=guess)
@@ -483,7 +483,7 @@ mifs %>%
 ## ----parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE--------------------
 bake(file="parus_pf1.rds",{
   foreach (mf=mifs,
-    .combine=rbind, .packages=c("pomp2"), 
+    .combine=rbind, .packages=c("pomp"), 
     .errorhandling="remove", .inorder=FALSE) %dopar% {
       
       replicate(5, 
@@ -525,7 +525,7 @@ bake(file="parus_mif2.rds",{
     select(-loglik,-loglik.se) -> starts
   
   foreach (start=iter(starts,"row"),
-    .combine=rbind, .packages=c("pomp2"), 
+    .combine=rbind, .packages=c("pomp"), 
     .errorhandling="remove", .inorder=FALSE) %dopar% {
       
       mf1 %>% 
@@ -589,7 +589,7 @@ pairs(~r+K+sigma+N_0+b,data=starts)
 ## ----parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE----------------
 bake("parus_profile.rds",{
   foreach (start=iter(starts,"row"),
-    .combine=rbind, .packages=c("pomp2"),
+    .combine=rbind, .packages=c("pomp"),
     .errorhandling="remove", .inorder=FALSE) %dopar% {
     
     mf1 %>%
