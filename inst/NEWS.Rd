@@ -1,6 +1,6 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 2.0.14.1}{
+\section{Changes in \pkg{pomp} version 2.0.14}{
   \itemize{
     \item The \code{melt} function can now be applied to arbitrary \sQuote{pomp} objects.
   }
