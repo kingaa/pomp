@@ -12,6 +12,6 @@ For installation instructions and user guides, see [the package website](https:/
 
 Related packages:
 
-- [**panelPomp**](https://cbreto.github.io/panelPomp/){:target="_blank"}
-- [**circumstance**](https://github.com/kingaa/circumstance/){:target="_blank"}
-- [**subplex**](https://github.com/kingaa/subplex/){:target="_blank"}
+- [**panelPomp**](https://cbreto.github.io/panelPomp/)
+- [**circumstance**](https://github.com/kingaa/circumstance/)
+- [**subplex**](https://github.com/kingaa/subplex/)
