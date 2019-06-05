@@ -1,11 +1,9 @@
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
 library(ggplot2)
-library(plyr)
-library(reshape2)
-library(magrittr)
+library(knitr)
 theme_set(theme_bw())
 library(pomp)
-stopifnot(packageVersion("pomp")>="2.0.9.1")
+stopifnot(packageVersion("pomp")>="2.1")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -22,9 +20,9 @@ theta <- coef(gomp)
 theta.true <- theta
 
 ## ----gompertz-sim,include=FALSE------------------------------------------
-gomp %<>%
+gomp %>%
   window(start=1) %>%
-  simulate(seed=340398091L)
+  simulate(seed=340398091L) -> gomp
 
 
 ## ----gompertz-mif2-1,results='hide'--------------------------------------
@@ -152,10 +150,10 @@ rbind(`Truth`=theta.true[estpars],
 
 ## ----mif2-plot,echo=FALSE,cache=FALSE,fig.height=6-----------------------
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
-loglik <- sapply(mf,function(x)conv.rec(x$mif,"loglik"))
-r <- sapply(mf,function(x)conv.rec(x$mif,"r"))
-sigma <- sapply(mf,function(x)conv.rec(x$mif,"sigma"))
-tau <- sapply(mf,function(x)conv.rec(x$mif,"tau"))
+loglik <- sapply(mf,function(x)traces(x$mif,"loglik"))
+r <- sapply(mf,function(x)traces(x$mif,"r"))
+sigma <- sapply(mf,function(x)traces(x$mif,"sigma"))
+tau <- sapply(mf,function(x)traces(x$mif,"tau"))
 matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
 matplot(r,type='l',lty=1,xlab="",ylab=expression(r),xaxt='n')
 matplot(sigma,type='l',lty=1,xlab="",ylab=expression(sigma),xaxt='n')

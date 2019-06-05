@@ -44,12 +44,10 @@ opts_chunk$set(
 ```
 ```{r prelims,echo=FALSE,cache=FALSE}
 library(ggplot2)
-library(plyr)
-library(reshape2)
-library(magrittr)
+library(knitr)
 theme_set(theme_bw())
 library(pomp)
-stopifnot(packageVersion("pomp")>="2.0.9.1")
+stopifnot(packageVersion("pomp")>="2.1")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -108,9 +106,9 @@ theta <- coef(gomp)
 theta.true <- theta
 ```
 ```{r gompertz-sim,include=FALSE}
-gomp %<>%
+gomp %>%
   window(start=1) %>%
-  simulate(seed=340398091L)
+  simulate(seed=340398091L) -> gomp
 ```
 
 Let's use IF2 to obtain an approximate MLE for these data.
@@ -163,7 +161,7 @@ replicate(10,logLik(pfilter(gomp,params=theta.mif,Np=10000))) %>%
   logmeanexp(se=TRUE) -> pf.loglik.mif
 ```
 
-Note that we've set `transform=TRUE` in the above to search for the MLE with the parameters transformed to enforce their positivity.
+Note that `gompertz()` uses parameter transformations to ensure that the search for the MLE is constrained to positive parameters.
 See the **pomp** documentation (`?pomp`) and the section on Parameter Transformations in the [Getting Started vignette](https://kingaa.github.io/pomp/vignettes/getting_started.html)).
 
 Each of the `r length(mf)` `mif2` runs ends up at a different point estimate.
@@ -254,10 +252,10 @@ Something like the following can be obtained by executing `plot(mf)`.
 
 ```{r mif2-plot,echo=FALSE,cache=FALSE,fig.height=6}
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
-loglik <- sapply(mf,function(x)conv.rec(x$mif,"loglik"))
-r <- sapply(mf,function(x)conv.rec(x$mif,"r"))
-sigma <- sapply(mf,function(x)conv.rec(x$mif,"sigma"))
-tau <- sapply(mf,function(x)conv.rec(x$mif,"tau"))
+loglik <- sapply(mf,function(x)traces(x$mif,"loglik"))
+r <- sapply(mf,function(x)traces(x$mif,"r"))
+sigma <- sapply(mf,function(x)traces(x$mif,"sigma"))
+tau <- sapply(mf,function(x)traces(x$mif,"tau"))
 matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
 matplot(r,type='l',lty=1,xlab="",ylab=expression(r),xaxt='n')
 matplot(sigma,type='l',lty=1,xlab="",ylab=expression(sigma),xaxt='n')
