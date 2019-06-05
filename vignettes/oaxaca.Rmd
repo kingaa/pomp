@@ -66,7 +66,7 @@ opts_chunk$set(
 options(
   keep.source=TRUE,
   encoding="UTF-8"
-  )
+)
 
 ## library(knitcitations)
 ## cleanbib()
@@ -528,7 +528,7 @@ plot(simulate(parus),var=c("pop","N"))
 
 We can obtain a Monte Carlo estimate of the likelihood using the particle filter:
 
-```{r ricker-pfilter,warning=FALSE}
+```{r ricker-pfilter}
 pf <- pfilter(parus,Np=1000)
 class(pf)
 logLik(pf)
@@ -863,7 +863,7 @@ The particle filter, among other things, is an efficient algorithm giving unbias
 We've seen it used above.
 To obtain an estimate of the Monte Carlo error on the likelihood, it's most convenient to simply perform a few independent `pfilter` computations.
 
-```{r parus-pfilter1,warning=T}
+```{r parus-pfilter1,warning=FALSE}
 pf <- replicate(10, pfilter(parus,Np=5000))
 plot(pf[[1]])
 ll <- sapply(pf,logLik)
@@ -950,7 +950,7 @@ library(subplex)
 subplex(par=coef(pm,c("N_0","r")),fn=pm) -> fit
 pm(fit$par)
 summary(pm)
-plot(probe(pm))
+plot(pm)
 ```
 
 ----------

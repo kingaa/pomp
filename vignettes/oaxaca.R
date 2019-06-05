@@ -131,7 +131,7 @@ coef(parus)
 plot(simulate(parus),var=c("pop","N"))
 
 
-## ----ricker-pfilter,warning=FALSE----------------------------------------
+## ----ricker-pfilter------------------------------------------------------
 pf <- pfilter(parus,Np=1000)
 class(pf)
 logLik(pf)
@@ -275,7 +275,7 @@ plot(sir2,mar=c(0,5,2,0))
 options(ops)
 
 
-## ----parus-pfilter1,warning=T--------------------------------------------
+## ----parus-pfilter1,warning=FALSE----------------------------------------
 pf <- replicate(10, pfilter(parus,Np=5000))
 plot(pf[[1]])
 ll <- sapply(pf,logLik)
@@ -328,7 +328,7 @@ library(subplex)
 subplex(par=coef(pm,c("N_0","r")),fn=pm) -> fit
 pm(fit$par)
 summary(pm)
-plot(probe(pm))
+plot(pm)
 
 
 ## ----parus-pmcmc1,fig.height=8-------------------------------------------
