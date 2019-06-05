@@ -30,8 +30,8 @@ stochStep <- Csnippet("
 
 pomp(
   parus,
-  rprocess=discrete.time.sim(step.fun=stochStep,delta.t=1),
-  initializer=Csnippet("N = N_0;"),
+  rprocess=discrete_time(step.fun=stochStep,delta.t=1),
+  rinit=Csnippet("N = N_0;"),
   paramnames=c("r","c","sigma","N_0"),
   statenames=c("N")
 ) -> parus
@@ -39,9 +39,9 @@ pomp(
 
 ## ----ricker-first-sim----------------------------------------------------
 sim <- simulate(parus, params=c(N_0=1,r=12,c=1,sigma=0.5),
-  as.data.frame=TRUE, states=TRUE)
+                format="data.frame")
 
-plot(N~time,data=sim,type='o')
+plot(N~year,data=sim,type='o')
 
 
 ## ----parus-rmeas-defn----------------------------------------------------
@@ -68,12 +68,12 @@ coef(parus) <- c(N_0=1,r=20,c=1,sigma=0.1,phi=200)
 ## ----ricker-second-sim,results='markup',fig.height=6,fig.width=5---------
 library(ggplot2)
 
-sims <- simulate(parus,nsim=3,as.data.frame=TRUE,include.data=TRUE)
+sims <- simulate(parus,nsim=3,format="data.frame",include.data=TRUE)
 
 ggplot(data=sims,
-       mapping=aes(x=time,y=pop))+
+       mapping=aes(x=year,y=pop))+
   geom_line()+
-  facet_wrap(~sim,ncol=1,scales="free_y")
+  facet_wrap(~.id,ncol=1,scales="free_y")
 
 
 ## ----plot-ricker---------------------------------------------------------
@@ -92,24 +92,24 @@ plot(x)
 ## ------------------------------------------------------------------------
 y <- as.data.frame(parus)
 head(y)
-head(simulate(parus,as.data.frame=TRUE))
+head(simulate(parus,format="data.frame"))
 
 
 ## ------------------------------------------------------------------------
 x <- simulate(parus,nsim=10)
 class(x)
 sapply(x,class)
-x <- simulate(parus,nsim=10,as.data.frame=TRUE)
+x <- simulate(parus,nsim=10,format="data.frame")
 head(x)
 str(x)
 
 
 ## ----fig.height=8--------------------------------------------------------
 library(ggplot2)
-x <- simulate(parus,nsim=9,as.data.frame=TRUE,include.data=TRUE)
-ggplot(data=x,aes(x=time,y=pop,group=sim,color=(sim=="data")))+
+x <- simulate(parus,nsim=9,format="data.frame",include.data=TRUE)
+ggplot(data=x,aes(x=year,y=pop,group=.id,color=(.id=="data")))+
   geom_line()+guides(color=FALSE)+
-  facet_wrap(~sim,ncol=2)
+  facet_wrap(~.id,ncol=2)
 
 
 ## ----coef-ricker---------------------------------------------------------
@@ -131,7 +131,7 @@ coef(parus)
 plot(simulate(parus),var=c("pop","N"))
 
 
-## ----ricker-pfilter------------------------------------------------------
+## ----ricker-pfilter,warning=FALSE----------------------------------------
 pf <- pfilter(parus,Np=1000)
 class(pf)
 logLik(pf)
@@ -173,17 +173,18 @@ sir.step <- "
 
 
 ## ----sir-pomp-def,eval=T,echo=T,results="hide"---------------------------
-sir1 <- pomp(
-  data = data.frame(cases = NA, time = seq(0, 10, by = 1/52)),
-  times = "time", t0 = -1/52, 
+sir1 <- simulate(
+  times = seq(0, 10, by = 1/52),
+  t0 = -1/52, 
   dmeasure = Csnippet(dmeas),
   rmeasure = Csnippet(rmeas), 
-  rprocess = euler.sim(step.fun = Csnippet(sir.step), delta.t = 1/52/20),
+  rprocess = euler(step.fun = Csnippet(sir.step), delta.t = 1/52/20),
+  obsnames="cases",
   statenames = c("S", "I", "R", "H"),
   paramnames = c("gamma", "mu", "theta", "Beta", "popsize",
                  "rho", "S.0", "I.0", "R.0"), 
-  zeronames = "H",
-  initializer = Csnippet("
+  accumvars = "H",
+  rinit = Csnippet("
     double sum = S_0 + I_0 + R_0;
     S = nearbyint(popsize * S_0 / sum);
     I = nearbyint(popsize * I_0 / sum);
@@ -192,9 +193,8 @@ sir1 <- pomp(
     "),
   params = c(popsize = 500000, Beta = 400, gamma = 26,
              mu = 1/50, rho = 0.1, theta = 100, S.0 = 26/400,
-             I.0 = 0.002, R.0 = 1))
-
-sir1 <- simulate(sir1, seed = 1914679908L)
+             I.0 = 0.002, R.0 = 1),
+  seed = 1914679908L) -> sir1
 
 
 ## ----fig.height=5,echo=FALSE---------------------------------------------
@@ -207,13 +207,8 @@ options(ops)
 ##' Construct some fake birthrate data.
 birthdat <- data.frame(time=seq(-1,11,by=1/12))
 birthdat$births <- 5e5*bspline.basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
-freeze(seed=5853712L,{
-  birthdat$births <- ceiling(rlnorm(
-                                    n=nrow(birthdat),
-                                    meanlog=log(birthdat$births),
-                                    sdlog=0.001
-                                    ))
-})
+birthdat$births <- freeze(seed=5853712L,{
+  ceiling(rlnorm(n=nrow(birthdat),meanlog=log(birthdat$births),sdlog=0.001))})
 
 
 ## ----complex-sir-def,echo=T,eval=T,results="hide"------------------------
@@ -243,20 +238,20 @@ seas.sir.step <- "
   noise += (dW - dt) / sigma;
 "
 
-sir2 <- pomp(
+sir2 <- simulate(
   sir1, 
-  rprocess = euler.sim(
+  rprocess = euler(
     step.fun = Csnippet(seas.sir.step), delta.t = 1/52/20
   ),
   dmeasure = Csnippet(dmeas), 
   rmeasure = Csnippet(rmeas),
-  covar = birthdat, tcovar = "time", 
-  zeronames = c("H", "noise"),
+  covar=covariate_table(birthdat, times = "time"), 
+  accumvars = c("H", "noise"),
   statenames = c("S", "I", "R", "H", "P", "Phi", "noise"),
   paramnames = c("gamma", "mu", "popsize", "rho", "theta", 
                  "sigma", "S.0", "I.0", "R.0", 
                  "b1", "b2", "b3", "iota"),
-  initializer = Csnippet("
+  rinit = Csnippet("
     double sum = S_0 + I_0 + R_0;
     S = nearbyint(popsize * S_0 / sum);
     I = nearbyint(popsize * I_0 / sum);
@@ -269,10 +264,9 @@ sir2 <- pomp(
   params = c(popsize = 500000, iota = 5,
              b1 = 6, b2 = 0.2, b3 = -0.1,
              gamma = 26, mu = 1/50, rho = 0.1, theta = 100,
-             sigma = 0.3, S.0 = 0.055, I.0 = 0.002, R.0 = 0.94)
-  )
-
-sir2 <- simulate(sir2, seed = 619552910L)
+             sigma = 0.3, S.0 = 0.055, I.0 = 0.002, R.0 = 0.94),
+  seed = 619552910L
+)
 
 
 ## ----sir2-plot,echo=F,fig.height=6.5-------------------------------------
@@ -304,36 +298,40 @@ logmeanexp(ll,se=TRUE)
 
 
 ## ----parus-sim3----------------------------------------------------------
-simulate(mf,nsim=5,as.data.frame=TRUE,include.data=TRUE) -> sims
+simulate(mf,nsim=5,format="data.frame",include.data=TRUE) -> sims
 
 library(ggplot2)
 library(plyr)
 ggplot(sims, 
-       mapping=aes(x=time,y=pop,group=sim,color=sim=="data"))+
+       mapping=aes(x=year,y=pop,group=.id,color=.id=="data"))+
   geom_line()+
   guides(color=FALSE)+
-  facet_wrap(~sim)
+  facet_wrap(~.id)
 
 
 ## ----parus-probe1,fig.height=6,fig.width=6-------------------------------
 probe(mf, nsim=200, 
-      probes=list(mean=probe.mean("pop"),
-                  sd=probe.sd("pop"),
-                  probe.acf("pop",transform=sqrt,lags=c(1,2)),
-                  probe.quantile("pop",prob=c(0.2,0.8))
+      probes=list(
+        mean=probe.mean("pop"),
+        sd=probe.sd("pop"),
+        probe.acf("pop",transform=sqrt,lags=c(1,2)),
+        probe.quantile("pop",prob=c(0.2,0.8))
       )) -> pb
       
 plot(pb)
 
 
 ## ----parus-probematch1---------------------------------------------------
-probe.match(pb, nsim=200, method="subplex",
-            seed = 669237763L,
-            est = c("N_0","r")) -> pm
+probe_objfun(pb, nsim=200, est = c("N_0","r"),
+  seed = 669237763L) -> pm
+library(subplex)
+subplex(par=coef(pm,c("N_0","r")),fn=pm) -> fit
+pm(fit$par)
 summary(pm)
+plot(probe(pm))
 
 
-## ----parus-pmcmc1--------------------------------------------------------
+## ----parus-pmcmc1,fig.height=8-------------------------------------------
 priorDens <- "
   lik = dnorm(sigma,0.2,1,1)+
     dnorm(phi,200,100,1)+
@@ -344,17 +342,17 @@ priorDens <- "
 pmcmc(pomp(mf, dprior=Csnippet(priorDens),
            paramnames=c("sigma","phi","r")),
       Nmcmc = 500, Np = 1000, 
-      proposal = mvn.rw.adaptive(
+      proposal = mvn.diag.rw(
         rw.sd=c(N_0=0.1, sigma=0.02, r=0.02, phi=0.02)
       )) -> pmh
 
-plot(pmh)
+plot(pmh,pars=c("loglik","log.prior","N_0","sigma","r","phi"))
 
 
 ## ----parus-coda1---------------------------------------------------------
 library(coda)
 
-conv.rec(pmh) -> trace
+traces(pmh) -> trace
 class(trace)
 
 autocorr.diag(trace[,c("r","sigma","phi")])
