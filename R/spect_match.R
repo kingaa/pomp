@@ -14,7 +14,7 @@
 ##' @aliases spect_objfun spect_objfun,missing-method spect_objfun,ANY-method
 ##' @example examples/spect_match.R
 ##'
-##' @include spect.R probe_match.R loglik.R
+##' @include spect.R probe_match.R loglik.R plot.R
 ##'
 ##' @param weights optional numeric or function.
 ##' The mismatch between model and data is measured by a weighted average of mismatch at each frequency.
@@ -346,5 +346,17 @@ setAs(
   to="spectd_pomp",
   def = function (from) {
     from@env$object
+  }
+)
+
+##' @name plot-spect_match_objfun
+##' @aliases plot,spect_match_objfun-method
+##' @rdname plot
+##' @export
+setMethod(
+  "plot",
+  signature=signature(x="spect_match_objfun"),
+  definition=function (x, ...) {
+    plot(as(x,"spectd_pomp"),...)
   }
 )

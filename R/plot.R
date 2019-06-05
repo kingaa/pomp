@@ -5,7 +5,7 @@
 ##' @name plot
 ##' @rdname plot
 ##' @include pomp_class.R
-##' @include abc.R mif2.R pmcmc.R pfilter.R spect.R
+##' @include abc.R mif2.R pmcmc.R pfilter.R spect.R probe.R
 ##' @include listie.R
 ##' @aliases plot,missing-method
 ##'

@@ -45,6 +45,8 @@ Error : in 'spect_objfun': in 'spect': 'rprocess', 'rmeasure' are needed basic c
 +     seed=5069977
 +     ) -> f
 > 
+> plot(f)
+> 
 > stopifnot(f(0)==f(1))
 > stopifnot(logLik(f)==-f(0))
 > 
@@ -70,6 +72,8 @@ Error : in 'spect_objfun': parameter 'harry' not found in 'params'
 > 
 > f1 %>% summary() %>% names()
 [1] "coef"  "nsim"  "pvals"
+> 
+> f1 %>% plot()
 > 
 > f1 %>% spect() %>% plot()
 > 

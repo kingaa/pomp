@@ -27,7 +27,9 @@ dat %>%
     params=coef(po),
     nsim=100,
     seed=5069977
-    ) -> f
+  ) -> f
+
+plot(f)
 
 stopifnot(f(0)==f(1))
 
@@ -47,6 +49,8 @@ try(probe_objfun(f,est="harry"))
 f1 %>% as("probed_pomp") %>% plot()
 
 f1 %>% summary() %>% names()
+
+f1 %>% plot()
 
 f1 %>% probe() %>% plot()
 

@@ -21,6 +21,8 @@ dat %>%
     seed=5069977
     ) -> f
 
+plot(f)
+
 stopifnot(f(0)==f(1))
 stopifnot(logLik(f)==-f(0))
 
@@ -40,6 +42,8 @@ try(spect_objfun(f1,est="harry"))
 f1 %>% as("spectd_pomp") %>% plot()
 
 f1 %>% summary() %>% names()
+
+f1 %>% plot()
 
 f1 %>% spect() %>% plot()
 

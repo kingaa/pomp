@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.1.0}{
+  \itemize{
+    \item There are now \code{plot} methods for objects of classes \sQuote{probe_match_objfun} and \sQuote{spect_match_objfun}.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.0.14}{
   \itemize{
     \item The \code{melt} function can now be applied to arbitrary \sQuote{pomp} objects.

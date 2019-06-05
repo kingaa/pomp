@@ -9,7 +9,7 @@
 ##' @rdname probe_match
 ##' @aliases probe.match probe_objfun probe_objfun,missing-method
 ##' probe_objfun,ANY-method
-##' @include probe.R
+##' @include probe.R plot.R
 ##' @author Aaron A. King
 ##' @family summary statistics methods
 ##' @family pomp parameter estimation methods
@@ -294,3 +294,16 @@ setAs(
     from@env$object
   }
 )
+
+##' @name plot-probe_match_objfun
+##' @aliases plot,probe_match_objfun-method
+##' @rdname plot
+##' @export
+setMethod(
+  "plot",
+  signature=signature(x="probe_match_objfun"),
+  definition=function (x, ...) {
+    plot(as(x,"probed_pomp"),...)
+  }
+)
+

@@ -88,7 +88,7 @@ mvn.rw <- function (rw.var) {
 ##' @export
 ## a stateful function implementing an adaptive proposal
 mvn.rw.adaptive <- function (rw.sd, rw.var, scale.start = NA,
-  scale.cooling = 0.999,shape.start = NA, target = 0.234, max.scaling = 50) {
+  scale.cooling = 0.999, shape.start = NA, target = 0.234, max.scaling = 50) {
 
   ep <- "mvn.rw.adaptive"
 

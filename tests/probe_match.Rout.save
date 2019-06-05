@@ -51,7 +51,9 @@ Error : in 'probe_objfun': in 'probe': 'rprocess', 'rmeasure' are needed basic c
 +     params=coef(po),
 +     nsim=100,
 +     seed=5069977
-+     ) -> f
++   ) -> f
+> 
+> plot(f)
 > 
 > stopifnot(f(0)==f(1))
 > 
@@ -77,6 +79,8 @@ Error : in 'probe_objfun': parameter 'harry' not found in 'params'.
 > 
 > f1 %>% summary() %>% names()
 [1] "coef"         "nsim"         "quantiles"    "pvals"        "synth.loglik"
+> 
+> f1 %>% plot()
 > 
 > f1 %>% probe() %>% plot()
 > 
