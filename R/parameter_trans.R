@@ -48,6 +48,9 @@
 ##'
 ##' One can use the \code{log} and \code{logit} arguments of \code{parameter_trans} to name variables that should be log-transformed or logit-transformed, respectively.
 ##' The \code{barycentric} argument can name sets of parameters that should be log-barycentric transformed.
+##' 
+##' Note that using the \code{log}, \code{logit}, or \code{barycentric} arguments causes C snippets to be generated.
+##' Therefore, you must make sure that variables named in any of these arguments are also mentioned in \code{paramnames} at the same time.
 ##'
 ##' The logit transform is defined by
 ##' \deqn{\mathrm{logit}(\theta)=\log\frac{\theta}{1-\theta}.}{logit(theta) = log(theta/(1-theta)).}
