@@ -22,7 +22,7 @@ runifDesign <- function (lower = numeric(0), upper = numeric(0), nseq) {
   if (nseq < 0)
     pStop(ep,sQuote("nseq"),"< 0.")
   y <- matrix(
-    data=runif(n=nseq,min=lower,max=upper),
+    data=runif(n=nseq*length(lower),min=lower,max=upper),
     nrow=nseq,ncol=length(lower),
     byrow=TRUE
   )
