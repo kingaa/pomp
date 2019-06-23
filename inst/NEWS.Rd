@@ -2,7 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.1.2}{
   \itemize{
-    \item A bug in \code{runifDesign} (and therefore \code{profileDesign} when \code{type="runif"} has been fixed.
+    \item A bug in \code{runifDesign} (and therefore \code{profileDesign} when \code{type="runif"}) has been fixed.
   }
 }
 \section{Changes in \pkg{pomp} version 2.1.1}{
