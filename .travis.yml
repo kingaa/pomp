@@ -19,8 +19,7 @@ addons:
 
 stages:
 - test
-  if: tag IS blank
-- coverage
+- name: coverage
   if: tag IS blank
 - name: deploy
   if: tag IS present
