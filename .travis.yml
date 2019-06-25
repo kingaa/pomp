@@ -18,7 +18,8 @@ addons:
     - libgit2
 
 stages:
-- test
+- name: test
+  if: tag IS blank
 - name: coverage
   if: tag IS blank
 - name: deploy
