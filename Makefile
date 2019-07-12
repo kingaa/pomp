@@ -129,6 +129,7 @@ library/$(PKG): dist
 
 remove:
 	-$(RCMD) REMOVE --library=library $(PKG)
+	-rmdir library
 
 inst/doc/*.html: install 
 

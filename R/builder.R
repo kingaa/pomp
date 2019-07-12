@@ -41,9 +41,11 @@
 ##' arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
 ##' If no C snippets are used, \code{globals} has no effect.
 ##'
-##' @param cdir,cfile optional character variables.
+##' @param cdir optional character variable.
 ##' \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
 ##' By default, this is in a temporary directory specific to the \R session.
+##'
+##' @param cfile optional character variable.
 ##' \code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
 ##' By default, a random filename is used.
 ##'
