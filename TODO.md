@@ -2,11 +2,11 @@
 
 ## For pomp 2:
 
+- add documentation for existing "todo" issues
+- replace type declarations in 'pomp.h' with function declarations. Include descriptions for all such.
+- remove documentation from 'pomp.h' altogether and make a C API help page!
 - for log-barycentric transformations, check that parameter are contiguous
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
-- "guide to upgrading to **pomp** version 2"
-	- ~~discussion of stateful objective functions~~
-	- ~~include before and after codes for the examples from the JSS paper~~
 - more/better examples
 	- need examples of objective function methods
 - more toy models
