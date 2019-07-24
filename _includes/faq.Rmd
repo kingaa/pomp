@@ -418,7 +418,7 @@ Which model has the greater predictive power?
 Nor is the choice of the measurement model without consequences for the choice of the latent process model.
 Despite the fact that one typically is much more interested in the latent process than in the measurement, if one does not pay careful attention to both, one risks making incorrect or suboptimal inference.
 
-## What is the Euler-multinomial approximation?
+## What is the Euler-multinomial approximation? {#eulermultinomial-approximation}
 
 The Euler multinomial approximation of a continuous-time, stochastic compartmental model is as follows.
 Suppose a compartment has occupancy $N(t)$ at time $t$ and that there are $s$ ways of exiting the compartment, with per capita rates (hazards) $\mu_1,\dots,\mu_s$, respectively.

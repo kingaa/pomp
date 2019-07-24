@@ -63,7 +63,7 @@ if (window.hljs) {
 <li><a href="#how-to-handle-missing-data"><span class="toc-section-number">3.3</span> How do I deal with missing data?</a></li>
 <li><a href="#t0-much-less-than-t1-accumulators"><span class="toc-section-number">3.4</span> I have t0 much less than t[1]. How do I deal with accumulator variables in this case?</a></li>
 <li><a href="#what-is-the-best-measurement-model"><span class="toc-section-number">3.5</span> What is the best measurement model to use?</a></li>
-<li><a href="#what-is-the-euler-multinomial-approximation"><span class="toc-section-number">3.6</span> What is the Euler-multinomial approximation?</a></li>
+<li><a href="#eulermultinomial-approximation"><span class="toc-section-number">3.6</span> What is the Euler-multinomial approximation?</a></li>
 </ul></li>
 <li><a href="#error-messages"><span class="toc-section-number">4</span> Error messages and warnings.</a><ul>
 <li><a href="#non-finite-dmeasure"><span class="toc-section-number">4.1</span> I see an error about <code>dmeasure</code> returning non-finite values. What does it mean?</a></li>
@@ -403,7 +403,7 @@ bsflu %&gt;%
 <p>The answer to this question depends on the nature of the data. The measurement model is as much a part of the model as the latent process model. Accordingly, the choice of the measurement model is governed by the same considerations: Which model fits the data best? Which model has the greater predictive power?</p>
 <p>Nor is the choice of the measurement model without consequences for the choice of the latent process model. Despite the fact that one typically is much more interested in the latent process than in the measurement, if one does not pay careful attention to both, one risks making incorrect or suboptimal inference.</p>
 </div>
-<div id="what-is-the-euler-multinomial-approximation" class="section level2">
+<div id="eulermultinomial-approximation" class="section level2">
 <h2><span class="header-section-number">3.6</span> What is the Euler-multinomial approximation?</h2>
 <p>The Euler multinomial approximation of a continuous-time, stochastic compartmental model is as follows. Suppose a compartment has occupancy <span class="math inline">\(N(t)\)</span> at time <span class="math inline">\(t\)</span> and that there are <span class="math inline">\(s\)</span> ways of exiting the compartment, with per capita rates (hazards) <span class="math inline">\(\mu_1,\dots,\mu_s\)</span>, respectively.</p>
 <hr />
