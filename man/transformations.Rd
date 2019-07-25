@@ -37,7 +37,7 @@ It maps the unit interval \eqn{[0,1]} into the extended real line \eqn{[-\infty,
 
 The inverse of the logit transformation is the expit transformation.
 
-The log-barycentric transformation takes a vector \eqn{X_i}{Xi}, \eqn{i=1,\dots,n}, to a vector \eqn{Y_i}{Yi}, where \deqn{Y_i = \log\frac{X_i}{\sum_i X_i}.}{Yi = log(Xi/sum(Xi)).}
+The log-barycentric transformation takes a vector \eqn{X_i}{Xi}, \eqn{i=1,\dots,n}, to a vector \eqn{Y_i}{Yi}, where \deqn{Y_i = \log\frac{X_i}{\sum_j X_j}.}{Yi = log(Xi/sum(Xj)).}
 If \eqn{X} is an \eqn{n}-vector, it takes every simplex defined by \eqn{\sum_i X_i = c}{sum(Xi)=c}, \eqn{c} constant, to n-dimensional Euclidean space \eqn{R^n}{R^n}.
 
 The inverse of the log-barycentric transformation is implemented as \code{inv_log_barycentric}.
