@@ -157,7 +157,9 @@ pomp <- function (data, times, t0, ...,
   skeleton, rprior, dprior, partrans, covar,
   params, accumvars,
   obsnames, statenames, paramnames, covarnames,
-  PACKAGE, globals, cdir, cfile, shlib.args, compile = TRUE,
+  PACKAGE, globals,
+  cdir = getOption("pomp_cdir", NULL), cfile,
+  shlib.args, compile = TRUE,
   verbose = getOption("verbose", FALSE)) {
 
   if (missing(data))
@@ -337,7 +339,7 @@ setMethod(
   signature=signature(data="pomp", times="NULL"),
   definition = function (data, times, t0, timename, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-    partrans, params, covar, accumvars) {
+    partrans, params, covar, accumvars, cfile) {
 
     times <- data@times
     if (missing(t0)) t0 <- data@t0
@@ -365,6 +367,15 @@ setMethod(
     if (missing(covar)) covar <- data@covar
     if (missing(accumvars)) accumvars <- data@accumvars
 
+    if (missing(cfile)) cfile <- NULL
+    if (!is.null(cfile)) {
+      cfile <- as.character(cfile)
+      fnames <- unlist(sapply(data@solibs,getElement,"name"))
+      if (any(cfile==fnames)) {
+        pStop_("C file name ",dQuote(cfile)," cannot be re-used.")
+      }
+    }
+
     pomp.internal(
       data=data@data,
       times=times,
@@ -384,6 +395,7 @@ setMethod(
       params=params,
       .solibs=data@solibs,
       .userdata=data@userdata,
+      cfile=cfile,
       ...
     )
 

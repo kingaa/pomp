@@ -44,10 +44,12 @@
 ##' @param cdir optional character variable.
 ##' \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
 ##' By default, this is in a temporary directory specific to the \R session.
+##' One can also set this directory using the \code{pomp_cdir} option.
 ##'
 ##' @param cfile optional character variable.
 ##' \code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
 ##' By default, a random filename is used.
+##' If the chosen filename would result in over-writing an existing file, an error is generated.
 ##'
 ##' @param shlib.args optional character variables.
 ##' Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.
@@ -90,7 +92,8 @@ NULL
 ##' @export
 hitch <- function (..., templates,
   obsnames, statenames, paramnames, covarnames,
-  PACKAGE, globals, cfile, cdir, shlib.args, compile = TRUE,
+  PACKAGE, globals, cfile, cdir = getOption("pomp_cdir", NULL),
+  shlib.args, compile = TRUE,
   verbose = getOption("verbose", FALSE)) {
 
   ep <- "hitch"

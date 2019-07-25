@@ -6,8 +6,9 @@
 \usage{
 pomp(data, times, t0, ..., rinit, rprocess, dprocess, rmeasure, dmeasure,
   skeleton, rprior, dprior, partrans, covar, params, accumvars, obsnames,
-  statenames, paramnames, covarnames, PACKAGE, globals, cdir, cfile,
-  shlib.args, compile = TRUE, verbose = getOption("verbose", FALSE))
+  statenames, paramnames, covarnames, PACKAGE, globals,
+  cdir = getOption("pomp_cdir", NULL), cfile, shlib.args,
+  compile = TRUE, verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -114,17 +115,15 @@ it is not used for any component specified using C snippets.
 arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
 If no C snippets are used, \code{globals} has no effect.}
 
-\item{cdir}{optional character variables.
+\item{cdir}{optional character variable.
 \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
 By default, this is in a temporary directory specific to the \R session.
-\code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
-By default, a random filename is used.}
+One can also set this directory using the \code{pomp_cdir} option.}
 
-\item{cfile}{optional character variables.
-\code{cdir} specifies the name of the directory within which C snippet code will be compiled.
-By default, this is in a temporary directory specific to the \R session.
+\item{cfile}{optional character variable.
 \code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
-By default, a random filename is used.}
+By default, a random filename is used.
+If the chosen filename would result in over-writing an existing file, an error is generated.}
 
 \item{shlib.args}{optional character variables.
 Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.}

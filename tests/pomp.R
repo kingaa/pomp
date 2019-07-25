@@ -87,3 +87,5 @@ pomp(po2,covar=NULL)@covar
 try(po2 %>% pomp(covar="bob"))
 try(po2 %>% pomp(rmeasure=function(x)x))
 try(pomp(data=NULL,times=1:10,t0=0,rmeasure=Csnippet("")))
+
+try(po2 %>% pomp(rmeasure=Csnippet("reports=3;"),cfile="sir_source"))

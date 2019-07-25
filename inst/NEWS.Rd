@@ -1,5 +1,17 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.2.1}{
+  \itemize{
+    \item The new \code{pomp_cdir} global option allows one to set the directory holding C snippet files globally.
+    \item A bug caused by re-use of the \code{cfile} argument has been fixed.
+    Re-use now triggers an error, with an informative message.
+  }
+}
+\section{Changes in \pkg{pomp} version 2.2.0}{
+  \itemize{
+    \item Some documentation improvements.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.1.2}{
   \itemize{
     \item A bug in \code{runifDesign} (and therefore \code{profileDesign} when \code{type="runif"}) has been fixed.

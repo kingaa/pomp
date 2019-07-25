@@ -1,5 +1,5 @@
 
-R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+R version 3.6.1 (2019-07-05) -- "Action of the Toes"
 Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -165,4 +165,7 @@ Error : bad option for 'covar'.
 Error : in 'rmeasure': 'rmeasure' must be a function of prototype 'rmeasure(...)'
 > try(pomp(data=NULL,times=1:10,t0=0,rmeasure=Csnippet("")))
 Error : when 'rmeasure' is provided as a C snippet, you must also provide 'obsnames'.
+> 
+> try(po2 %>% pomp(rmeasure=Csnippet("reports=3;"),cfile="sir_source"))
+Error : C file name "sir_source" cannot be re-used.
 > 
