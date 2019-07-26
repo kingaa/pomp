@@ -32,7 +32,7 @@
 ##'
 ##' @section C API:
 ##' Access to the underlying C routines is available: see 
-##' \href{https://kingaa.github.io/pomp/vignettes/C_API.h}{the \pkg{pomp} C API document}.
+##' \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{the \pkg{pomp} C API document}.
 ##' for definition and documentation of the C API.
 ##'
 ##' @author Aaron A. King

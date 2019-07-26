@@ -100,7 +100,7 @@ qqcheck: dist
 	$(RCMD) check --library=check -o check --no-codoc --no-examples --no-vignettes --no-manual --no-tests $(PKGVERS).tar.gz
 
 xcheck: dist
-	mkdir -p check
+	mkdir -p check library
 	$(RCMD_ALT) check --no-stop-on-test-error --as-cran --library=library -o check $(PKGVERS).tar.gz
 
 xxcheck: install xcheck
