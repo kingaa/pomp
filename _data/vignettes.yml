@@ -34,6 +34,9 @@
 - title: <strong>pomp</strong> package manual
   pdf: https://kingaa.github.io/manuals/pomp.pdf
 
+- title: <strong>pomp</strong> C API
+  html: vignettes/C_API.html
+
 - title: Frequently Asked Questions
   html: FAQ.html
 
