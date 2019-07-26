@@ -100,6 +100,8 @@ dt {
 
 - [Package manual](https://kingaa.github.io/manuals/pomp.pdf)
 
+- [Guide to the **pomp** C API](https://kingaa.github.io/pomp/vignettes/C_API.html)
+
 - Vignette: [**pomp** version 2 upgrade guide](https://kingaa.github.io/pomp/vignettes/upgrade_guide.html)
 
 - Vignette: [Getting started with **pomp**](https://kingaa.github.io/pomp/vignettes/getting_started.html)

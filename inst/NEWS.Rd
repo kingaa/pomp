@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.2.2}{
+  \itemize{
+    \item The C API for \pkg{pomp} is no longer explained only in comments in the \dQuote{pomp.h} header file.
+    It is now described and explained in the new \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{C API vignette}.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.2.1}{
   \itemize{
     \item The new \code{pomp_cdir} global option allows one to set the directory holding C snippet files globally.

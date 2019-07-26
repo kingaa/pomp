@@ -31,12 +31,9 @@
 ##' If \code{deriv>0}, the derivative of that order of each of the corresponding spline basis functions are returned.  
 ##'
 ##' @section C API:
-##' Access to the underlying C routines is available: see the
-##' header file
-##' \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}
-##' for definition and documentation of the C API.  At an prompt, execute
-##' \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to
-##' view this file.
+##' Access to the underlying C routines is available: see 
+##' \href{https://kingaa.github.io/pomp/vignettes/C_API.h}{the \pkg{pomp} C API document}.
+##' for definition and documentation of the C API.
 ##'
 ##' @author Aaron A. King
 ##'
