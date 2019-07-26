@@ -1,0 +1,479 @@
+---
+title: '**pomp** C API'
+author: "Aaron A. King"
+date: "`r format(Sys.Date(),'%e %B %Y')`"
+output: 
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 3
+params:
+  prefix: "c_api"
+  min.pomp.version: "2.2"
+---
+
+```{r precheck,include=FALSE}
+stopifnot(packageVersion("pomp") >= params$min.pomp.version)
+```
+
+```{css echo=FALSE}
+a:link, a:visited {
+  color: #0000ff;
+  text-decoration: none;
+}
+a:hover, a:active {
+  color: #cc3333;
+  text-decoration: none;
+}
+code {
+  font-size: 110%;
+}
+```
+
+This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
+
+```{r knitr-opts,include=FALSE,purl=FALSE}
+library(knitr)
+opts_chunk$set(
+  progress=TRUE,
+  prompt=FALSE,tidy=FALSE,highlight=TRUE,
+  strip.white=TRUE,
+  warning=FALSE,
+  message=FALSE,
+  error=FALSE,
+  echo=TRUE,
+  cache=FALSE,
+  cache.extra=rand_seed,
+  results='markup',
+  fig.show='asis',
+  size='small',
+  fig.lp="fig:",
+  fig.path=paste0("figure/",params$prefix,"-"),
+  cache.path=paste0("cache/",params$prefix,"-"),
+  fig.pos="h!",
+  fig.align='center',
+  fig.height=3,fig.width=4.85,
+  dpi=100,
+  dev='png',
+  dev.args=list(bg='transparent')
+)
+```
+
+--------------------------------------------------------
+
+## Overview
+
+**pomp** provides C entry points to a number of facilities for model specification.
+Below, we describe these, providing the prototypical function calls and descriptions of their arguments.
+
+The [final section](#prototypes-for-basic-model-components) describes the prototypes for the basic model components.
+Users wishing to write libraries to hold basic model components must furnish functions of these prototypes that perform the basic model component computations.
+
+## Random variables
+
+### Beta-binomial distribution
+
+```
+double rbetabinom(double size, double prob, double theta);
+double dbetabinom(double x, double size, double prob, 
+	double theta, int give_log);
+```
+
+$X$ is said to be Beta-binomially distributed with size $n$, mean probability $p$, and dispersion parameter $\theta$ if
+$$P \sim \mathrm{Beta}\left(\theta\,p,\theta\,(1-p)\right)$$
+and
+$$X|P \sim \mathrm{Binomial}\left(n,P\right).$$
+If $X\sim\mathrm{BetaBinomial}\left(n,p,\theta\right)$, then
+$$\mathbb{E}\left[X\right]=n\,p\qquad\text{and}\qquad\mathrm{Var}\left[X\right]=n\,p\,(1-p)\,\frac{\theta+n}{\theta+1}.$$
+
+
+### Multinomial distribution
+
+```
+double dmultinom(int m, const double *prob, double *x, int give_log);
+```
+
+The **R** C API provides a simulator for the multinomial distribution, `rmultinom`.
+See the "Rmath.h" header file for information on this facility.
+**pomp** provides an evaluator for the probability mass function (`dmultinom`) for this distribution.
+
+Input:
+
+- `m` is a positive integer, is the dimension of the random variable.
+- `prob` is a pointer to an `m`-vector of probabilities.
+- `x` is a pointer to an `m`-vector containing the data.
+- `give_log` is an integer:
+	- `give_log=1` if the log probability is desired.
+	- `give_log=0` if probability is desired.
+
+The return value is the probability or log probability (as requested).
+
+### Euler-multinomial distribution
+
+#### Simulate Euler-multinomial transitions
+
+
+```
+void reulermultinom(int m, double size, const double *rate,
+  double dt, double *trans);
+```
+
+Input:
+
+- `m`, a positive integer, is number of potential transitions ("deaths").
+- `size`, a positive integer, is the number of individuals at risk.
+- `rate` is a pointer to the vector of transition ("death") rates.
+- `dt`, a positive real number, is the duration of time interval.
+- `trans` is a pointer to the vector that will hold the random deviate.
+
+On return, `trans[0]`, ..., `trans[m-1]` will be the numbers of individuals making each of the respective transitions.
+
+See `?reulermultinom`, [FAQ 3.6](https://kingaa.github.io/pomp/FAQ.html#eulermultinomial-approximation), and the package vignettes for more on the Euler-multinomial distributions.
+
+**NB:** `reulermultinom` does not call `GetRNGstate()` or `PutRNGstate()` internally.
+This must be done by the calling program.
+But note that when `reulermultinom` is called inside a **pomp** rprocess, there is no need to call either `GetRNGState()` or `PutRNGState()`;
+this is handled by **pomp**.
+
+#### Compute probabilities of Euler-multinomial transitions
+
+```
+double deulermultinom(int m, double size, const double *rate,
+  double dt, double *trans, int give_log);
+```
+
+Input:
+
+- `m`, a positive integer, is the number of potential transitions ("deaths").
+- `size`, a positive integer, is the number of individuals at risk.
+- `rate` is a pointer to vector of transition ("death") rates.
+- `dt`, a positive real number, is the duration of time interval.
+- `trans` is pointer to vector containing the data, which are numbers of individuals making the respective transitions.
+- `give_log` is an integer:
+	- `give_log=1` if log probability is desired;
+	- `give_log=0` if probability is desired.
+
+The value returned is the probability or log probability (as requested).
+
+See `?deulermultinom`, [FAQ 3.6](https://kingaa.github.io/pomp/FAQ.html#eulermultinomial-approximation), and the package vignettes for more on the Euler-multinomial distributions.
+
+
+### Gamma white noise
+
+```
+double rgammawn(double sigma, double dt);
+```
+
+Corresponding to the **R** function `rgammawn`, this C function draws a single random increment of a gamma white-noise process.
+This will have expectation equal to `dt` and variance `sigma^2*dt`.
+
+In particular, when `dW = rgammawn(sigma,dt);` is executed, `mu*dW/dt` is a candidate for a random rate process within an Euler-multinomial context, 
+i.e., `mu*dW` will have expectation `mu*dt` and variance `mu*sigma^2*dt`.
+
+
+## Splines
+
+```
+void periodic_bspline_basis_eval(double x, double period, int degree, 
+	int nbasis, double *y);
+void periodic_bspline_basis_eval_deriv(double x, double period, 
+	int degree, int nbasis, int deriv, double *y);
+```
+
+These functions work with periodic B-spline basis functions.
+The period and smoothness of the functions are given by `period` and `degree`, respectively.
+The first function evaluates `nbasis` periodic B-spline basis functions at `x`.
+The second evaluates the order-`deriv` derivative of each basis function.
+
+## Transformations
+
+### Logit transformation
+
+```
+double logit(double p);
+double expit(double x);
+```
+
+The logit transformation is defined by
+$$x = \log\frac{p}{1-p}.$$
+Its inverse is therefore
+$$p = \frac{1}{1+e^{-x}}.$$
+
+
+### Log-barycentric transformation
+
+```
+void to_log_barycentric(double *xt, const double *x, int n);
+void from_log_barycentric(double *xt, const double *x, int n);
+```
+
+The log-barycentric transformation takes a vector $X_i\in\mathbb{R}^n_+$, $i=1,\dots,n$, to a vector $Y_i\in\mathbb{R}^n$, where 
+$$Y_i = \log\frac{X_i}{\sum_j\!X_j}.$$
+The log-barycentric transformation takes every simplex defined by $\sum_i\!X_i = c$, $c$ constant, to $n$-dimensional Euclidean space $\mathbb{R}^n$.
+
+The pseudo-inverse transformation takes $\mathbb{R}^n$ to the unit simplex $S=\{X\in\mathbb{R}^n_+\;\vert\;\sum_i\!X_i=1\}$.
+Specifically,
+$$X_i = \frac{e^{Y_i}}{\sum_j\!e^{Y_j}}.$$
+
+Note that if $T:\mathbb{R}^n_+\to\mathbb{R}^n$ is the log-barycentric transformation so defined, $U$ is the pseudo-inverse, and $Id$ denotes the identity map, then $T\circ U=Id:\mathbb{R}^n\to\mathbb{R}^n$ but $U\circ T\ne Id$.
+However, if $T$ is restricted to the unit simplex,  then $U\circ T=Id:S\to S$.
+
+Input:
+
+- `x` is a pointer to vector of parameters to be tranformed either to or from to log barycentric coordinates.
+- `n` is the length of this vector.
+- `xt` is a pointer to the vector that will hold the results.
+
+On return, `xt[0]`, ..., `xt[n-1]` will contain the transformed coordinates.
+
+## Convenience functions
+
+### Vector dot product
+
+```
+double dot_product(int n, const double *x, const double *y);
+```
+
+The return value is the dot (inner) product of the `n`-vectors `x` and `y`.
+By definition,
+$$x{\cdot}y = \sum_i\!x_i\,y_i.$$
+
+
+### Exponential/geometric rate conversion
+
+```
+double exp2geom_rate_correction(double R, double dt);
+```
+
+This function computes $r$ such that if
+$$N \sim \mathrm{Geometric}\left(p=1-e^{-r\,{\Delta}t}\right)$$
+and 
+$$T \sim \mathrm{Exponential}\left(\mathrm{rate}=R\right),$$
+then $\mathbb{E}\left[N\,{\Delta}t\right] = \mathbb{E}\left[T\right]$.
+That is, $r$ is the rate for an Euler process that gives the same expected waiting time as the exponential process it approximates.
+In particular $r \to R$ as ${\Delta}t \to 0$.
+
+
+## Access to the userdata
+
+```
+const int *get_userdata_int(const char *name);
+const double *get_userdata_double(const char *name);
+const SEXP get_userdata(const char *name);
+```
+
+The first function returns a pointer to the integer element of the `userdata` with the given `name`.
+The second retrieves a pointer to a double-precision element of `userdata` by name.
+The third form returns a general S expression (`SEXP`).
+See `?userdata` for more information.
+
+## Prototypes for basic model components
+
+**pomp** provides a facility whereby model codes can be compiled into a dynamically linked library for use in pomp objects.
+Specifically, basic model components are coded as C functions with the following prototypes.
+
+**NB:** These functions should not be used within C snippets!
+
+**Indices:**
+Each of the following functions is supplied one or more of the `stateindex`, `parindex`, `covindex`, `obsindex` arguments.
+Each of these is an integer vector:
+the integers within are indices giving the positions of specific model variables, according to the user's specification, the latter being given by means of the `statenames`, `paramnames`, `covarnames`, and `obsnames` arguments.
+See `?pomp` for more explanation.
+Thus, for example, within the body of a function of prototype `pomp_rinit` (see below), 
+```
+ x[stateindex[0]];
+ x[stateindex[3]];
+ p[parindex[2]];
+ covars[covindex[1]];
+```
+refer to the first state variable, the fourth state variable, the third parameter, and the second covariate, respectively.
+
+
+### rinit
+
+```
+void pomp_rinit(double *x, const double *p, double t,
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars);
+```
+
+Description:
+
+-  `p` is a pointer to parameter vector.
+-  `t` is the current time.
+-  `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+-  `covars` is a pointer to a vector containing the (possibly interpolated) values of the covariates at the current time.
+-  `x` is a vector that will, on return, contain a draw from the initial-state distribution.
+
+**NB:** There is no need to call `GetRNGstate()` or `PutRNGstate()` in the body of the user-defined function.
+The RNG is initialized before any call to this function, and the RNG state is written afterward.
+Inclusion of these calls in the user-defined function may result in significant slowdown.
+
+### rprocess
+
+#### `step.fun` as used by `euler` and `onestep`
+
+```
+void pomp_onestep_sim(double *x, const double *p,
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t, double dt);
+```
+
+Description:
+
+- `p` is the parameter vector.
+- `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `covars` is the vector of covariates.
+- `t` is the time at the beginning of the step.
+- `dt` is the step size (duration of the interval).
+- `x` is the vector, that will, on return, contain a draw from the state process at time `t`+`dt`.
+
+**NB:** There is no need to call `GetRNGstate()` or `PutRNGstate()` in the body of the user-defined function.
+The RNG is initialized before any call to this function, and the RNG state is written afterward.
+Inclusion of these calls in the user-defined function may result in significant slowdown.
+
+#### `rate.fun` as used by `gillespie`
+
+```
+double pomp_ssa_rate_fn(int event, 
+	double t, const double *x, const double *p,
+	const int *stateindex, const int *parindex, const int *covindex, 
+	const double *covars);
+```
+
+Description:
+
+- `event` is an integer specifying the number of the reaction whose rate is desired (the first is event is 1, not 0).
+- `t` is the current time.
+- `x` is the vector of state variables.
+- `p` is the vector of parameters.
+- `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `covars` is the vector of (possibly interpolated) covariates at time `t`.
+
+The function returns the rate of the requested reaction.
+
+### dprocess
+
+```
+void pomp_onestep_pdf(double *loglik,
+  const double *x1, const double *x2, double t1, double t2, const double *p,
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars);
+```
+
+Description:
+
+- `t1`, `t2` are the times at the beginning and end of the interval, respectively.
+- `x1`, `x2` are the state vectors at time `t1` and `t2`, respectively.
+- `p` is the parameter vector.
+- `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `covars` is the vector of (possibly interpolated) covariates at time `t`.
+- `loglik` is a pointer to the scalar that will, on return, contain the log probability density.
+
+### skeleton
+
+```
+void pomp_skeleton(double *f, const double *x, const double *p,
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t);
+```
+
+Description:
+
+- `t` is the time.
+- `x` is the state vector at time `t`.
+- `p` is the parameter parameter vector.
+- `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `covars` is the vector of (possibly interpolated) covariates at time `t`.
+- `f` is a vector, of the same length as `x`, that will, on return, contain the value of the map or vectorfield.
+
+### rmeasure
+
+```
+void pomp_measure_model_simulator(double *y, 
+	const double *x, const double *p,
+	const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
+	const double *covars, double t);
+```
+
+Description:
+
+- `t` is the time at the beginning of the Euler step.
+- `x` is the state vector at time `t`.
+- `p` is the parameter vector.
+- `obsindex`, `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `covars` is the vector of (possibly interpolated) covariates at time `t`.
+- `y` is a vector that will, on return, contain the simulated observations.
+
+**NB:** There is no need to call `GetRNGstate()` or `PutRNGstate()` in the body of the user-defined function.
+The RNG is initialized before any call to this function, and the RNG state is written afterward.
+Inclusion of these calls in the user-defined function may result in significant slowdown.
+
+### dmeasure
+
+```
+void pomp_measure_model_density(double *lik, 
+	const double *y, const double *x, const double *p, int give_log,
+	const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
+	const double *covars, double t);
+```
+
+Description:
+
+- `y` is the vector of observables at time `t`.
+- `x` is the state vector at time `t`.
+- `p` is the parameter vector.
+- `give_log` is an integer:
+	- `give_log=1` if log probability is desired;
+	- `give_log=0` if probability is desired.
+- `obsindex`, `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `covars` is the vector of (possibly interpolated) covariates at time `t`.
+- `lik` is a pointer to a scalar that will, on return, contain the requested likelihood or log likelihood.
+
+### rprior
+
+```
+void pomp_rprior(double *p, const int *parindex);
+```
+
+Description:
+
+- `p` is the parameter vector.
+- `parindex`: see **Indices**, above.
+
+On return, `p` will contain a new random draw from the prior distribution.
+
+**NB:** There is no need to call GetRNGstate() or PutRNGstate() in the body of the user-defined function.
+The RNG is initialized before any call to this function, and the RNG state is written afterward.
+Inclusion of these calls in the user-defined function may result in significant slowdown.
+
+### dprior
+
+```
+void pomp_dprior(double *lik, const double *p, int give_log, const int *parindex);
+```
+
+Description:
+
+- `p` is the parameter vector.
+- `give_log` is an integer:
+	- `give_log=1` if log probability is desired;
+	- `give_log=0` if probability is desired.
+- `parindex`: see **Indices**, above.
+- `lik` is a pointer to a scalar that will, on return, contain the requested probability density or log probability density.
+
+### partrans
+
+```
+void pomp_transform_fn(double *pt, const double *p, const int *parindex);
+```
+
+Description:
+
+- `p` is the parameter vector.
+- `parindex`: see **Indices**, above.
+- `pt` is the vector wherein the results will be returned.
+
+--------------------------------------------------------
+
+[**pomp** documentation index](https://kingaa.github.io/pomp/docs.html)  
+[**pomp** homepage](https://kingaa.github.io/pomp/)
