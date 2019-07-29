@@ -430,6 +430,15 @@
   pages: "e72086"
   doi: "https://doi.org/10.1371/journal.pone.0072086"
 
+- key: Lemaitre2019
+  author: "J. Lemaitre, D. Pasetto, J. Perez-Saez, C. Sciarra, J. F. Wamala, and A. Rinaldo"
+  year: "2019"
+  title: "Rainfall as a driver of epidemic cholera: Comparative model assessments of the effect of intra-seasonal precipitation events"
+  journal: "Acta Tropica"
+  volume: "190"
+  pages: "235&#x2013;243"
+  doi: "https://doi.org/10.1016/j.actatropica.2018.11.013"
+
 - key: Lin2016
   author: "Q. Lin, Z. Lin, A. P. Y. Chiu, and D. He"
   year: "2016"

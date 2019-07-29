@@ -425,7 +425,7 @@ Suppose a compartment has occupancy $N(t)$ at time $t$ and that there are $s$ wa
 
 -----
 
-```{r compartment-diagram,echo=FALSE,purl=FALSE,out.width="200px",out.height="200px",dpi=100,fig.height=3,fig.width=3,fig.align="center",fig.cap="**Diagram:** *A single compartment within a compartmental model.  There are $s$ paths out of the compartment.  Here, $s=2$.*"}
+```{r compartment-diagram,echo=FALSE,purl=FALSE,out.width="200px",out.height="200px",dpi=100,fig.height=3,fig.width=3,fig.align="center",fig.cap="**Diagram:** *A single compartment within a compartmental model.  Here, there are $s=2$ paths out of the compartment.*"}
 library(grid)
 vp <- viewport(width=unit(0.95,"npc"),height=unit(0.95,"npc"))
 pushViewport(vp)
