@@ -26,7 +26,7 @@ profileDesign <- function (...,
   if (!all(sort(ovars)==sort(names(upper))))
     pStop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match!")
   x <- expand.grid(...,stringsAsFactors=stringsAsFactors)
-  z <- vector(mode='list',length=nrow(x)*nprof)
+  z <- vector(mode='list',length=nrow(x))
   y <- switch(type,
     runif=runifDesign(lower=lower,upper=upper,nseq=nprof),
     sobolDesign(lower=lower,upper=upper,nseq=nprof)
