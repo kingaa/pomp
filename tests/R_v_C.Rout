@@ -1,5 +1,5 @@
 
-R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+R version 3.6.1 (2019-07-05) -- "Action of the Toes"
 Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -26,11 +26,6 @@ Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 > library(ggplot2)
-Registered S3 methods overwritten by 'ggplot2':
-  method         from 
-  [.quosures     rlang
-  c.quosures     rlang
-  print.quosures rlang
 > 
 > ## ----seed,echo=FALSE-----------------------------------------------------
 > set.seed(56300069)
@@ -116,16 +111,16 @@ Registered S3 methods overwritten by 'ggplot2':
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  6.936   0.008   6.944 
+   8.17    0.12    8.29 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.279   0.008   0.287 
+  0.331   0.008   0.338 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.615   0.000   0.616 
+   0.74    0.00    0.74 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.045   0.000   0.045 
+  0.052   0.000   0.052 
 > 
 > dev.off()
 null device 
