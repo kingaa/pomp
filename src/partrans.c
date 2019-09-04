@@ -31,14 +31,15 @@ static R_INLINE SEXP add_args (SEXP args, SEXP names)
 static R_INLINE SEXP eval_call (SEXP fn, SEXP args, double *p, int n)
 {
 
-  SEXP var = args, ans;
+  SEXP var = args, ans, ob;
   int v;
 
   for (v = 0; v < n; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
 
-  PROTECT(ans = eval(LCONS(fn,args),CLOENV(fn)));
+  PROTECT(ob = LCONS(fn,args));
+  PROTECT(ans = eval(ob,CLOENV(fn)));
 
-  UNPROTECT(1);
+  UNPROTECT(2);
   return ans;
 
 }
@@ -46,7 +47,7 @@ static R_INLINE SEXP eval_call (SEXP fn, SEXP args, double *p, int n)
 SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 {
   int nprotect = 0;
-  SEXP Pnames, tparams, pompfun, fn, args;
+  SEXP Pnames, tparams, pompfun, fn, args, ob;
   pompfunmode mode = undef;
   direction_t direc;
   int qvec, npars, nreps;
@@ -65,12 +66,13 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
   // determine direction of transformation and extract corresponding pomp_fun
   direc = (direction_t) *(INTEGER(dir));
+  PROTECT(ob = GET_SLOT(object,install("partrans"))); nprotect++;
   switch (direc) {
   case from: default:	// from estimation scale
-    PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("partrans")),install("from"))); nprotect++;
+    PROTECT(pompfun = GET_SLOT(ob,install("from"))); nprotect++;
     break;
   case to:			// to estimation scale
-    PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("partrans")),install("to"))); nprotect++;
+    PROTECT(pompfun = GET_SLOT(ob,install("to"))); nprotect++;
     break;
   }
 

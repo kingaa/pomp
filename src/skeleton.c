@@ -61,7 +61,7 @@ static R_INLINE SEXP eval_call (
     double *c, int ncov)
 {
 
-  SEXP var = args, ans;
+  SEXP var = args, ans, ob;
   int v;
 
   *(REAL(CAR(var))) = *t; var = CDR(var);
@@ -69,9 +69,10 @@ static R_INLINE SEXP eval_call (
   for (v = 0; v < npar; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
   for (v = 0; v < ncov; v++, c++, var=CDR(var)) *(REAL(CAR(var))) = *c;
 
-  PROTECT(ans = eval(LCONS(fn,args),CLOENV(fn)));
+  PROTECT(ob = LCONS(fn,args));
+  PROTECT(ans = eval(ob,CLOENV(fn)));
 
-  UNPROTECT(1);
+  UNPROTECT(2);
   return ans;
 
 }
@@ -332,7 +333,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   pompfunmode mode = undef;
   int *dim;
   SEXP Snames, Cnames, Pnames;
-  SEXP pompfun, cov;
+  SEXP pompfun, cov, ob;
   SEXP fn, args, F;
   lookup_table_t covariate_table;
 
@@ -363,7 +364,8 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   PROTECT(cov = NEW_NUMERIC(ncovars)); nprotect++;
 
   // extract the user-defined function
-  PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("skeleton")),install("skel.fn"))); nprotect++;
+  PROTECT(ob = GET_SLOT(object,install("skeleton"))); nprotect++;
+  PROTECT(pompfun = GET_SLOT(ob,install("skel.fn"))); nprotect++;
   PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
 
   // extract 'userdata' as pairlist

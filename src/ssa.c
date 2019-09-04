@@ -191,7 +191,7 @@ static pomp_ssa_rate_fn *__ssa_rxrate; // function computing reaction rates
 static double __pomp_Rfun_ssa_ratefn (int j, double t, const double *x, const double *p,
 				      int *stateindex, int *parindex, int *covindex, double *c)
 {
-  SEXP var = ARGS, ans;
+  SEXP var = ARGS, ans, ob;
   int v;
   double rate;
 
@@ -201,7 +201,8 @@ static double __pomp_Rfun_ssa_ratefn (int j, double t, const double *x, const do
   for (v = 0; v < NPAR; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
   for (v = 0; v < NCOV; v++, c++, var=CDR(var)) *(REAL(CAR(var))) = *c;
 
-  PROTECT(ans = eval(LCONS(RATEFN,ARGS),CLOENV(RATEFN)));
+  PROTECT(ob = LCONS(RATEFN,ARGS));
+  PROTECT(ans = eval(ob,CLOENV(RATEFN)));
 
   if (FIRST) {
     if (LENGTH(ans) != 1)
@@ -210,7 +211,7 @@ static double __pomp_Rfun_ssa_ratefn (int j, double t, const double *x, const do
   }
 
   rate = *(REAL(AS_NUMERIC(ans)));
-  UNPROTECT(1);
+  UNPROTECT(2);
   return rate;
 }
 

@@ -155,12 +155,13 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   pompfunmode mode = undef;
   SEXP fn, args;
   SEXP Snames, Pnames, Cnames;
-  SEXP pompfun;
+  SEXP pompfun, ob;
   int *dim;
   int nvars, npars, nreps, ncovars;
 
   // extract user-defined skeleton function
-  PROTECT(pompfun = GET_SLOT(GET_SLOT(object,install("skeleton")),install("skel.fn"))); nprotect++;
+  PROTECT(ob = GET_SLOT(object,install("skeleton"))); nprotect++;
+  PROTECT(pompfun = GET_SLOT(ob,install("skel.fn"))); nprotect++;
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 

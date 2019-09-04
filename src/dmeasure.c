@@ -70,7 +70,7 @@ static R_INLINE SEXP eval_call (
     double *c, int ncov)
 {
 
-  SEXP var = args, ans;
+  SEXP var = args, ans, ob;
   int v;
 
   *(REAL(CAR(var))) = *t; var = CDR(var);
@@ -79,9 +79,10 @@ static R_INLINE SEXP eval_call (
   for (v = 0; v < npar; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
   for (v = 0; v < ncov; v++, c++, var=CDR(var)) *(REAL(CAR(var))) = *c;
 
-  PROTECT(ans = eval(LCONS(fn,args),CLOENV(fn)));
+  PROTECT(ob = LCONS(fn,args));
+  PROTECT(ans = eval(ob,CLOENV(fn)));
 
-  UNPROTECT(1);
+  UNPROTECT(2);
   return ans;
 
 }
