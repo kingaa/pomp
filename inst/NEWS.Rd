@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.3.0}{
+  \itemize{
+    \item The source codes underlying specification of basic model components via \R functions has been reworked to remove reliance on deep \code{PROTECT} stacks.
+    Thanks to Thomas Kalibera for showing the way!
+  }
+}
 \section{Changes in \pkg{pomp} version 2.2.2}{
   \itemize{
     \item The C API for \pkg{pomp} is no longer explained only in comments in the \dQuote{pomp.h} header file.

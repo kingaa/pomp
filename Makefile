@@ -18,6 +18,7 @@ PKGVERS = $(PKG)_$(VERSION)
 SOURCE=$(shell ls R/*R src/*.c src/*.h data/*)
 CSOURCE=$(shell ls src/*.c)
 TESTS=$(shell ls tests/*R)
+REVDEPS=spaero epimdr DTAT CollocInfer
 
 default:
 	@echo $(PKGVERS)
@@ -29,8 +30,8 @@ dist manual vignettes: export R_GSCMD=gs
 dist manual vignettes: export GS_QUALITY=ebook
 dist manual vignettes: export R_HOME=$(shell $(REXE) RHOME)
 check xcheck xxcheck: export FULL_TESTS=yes
-xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
-session xxcheck htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
+revdeps xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
+revdeps session xxcheck htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
 session: export R_DEFAULT_PACKAGES=datasets,utils,grDevices,graphics,stats,methods,pomp,tidyverse
 
 includes: inst/include/pomp.h inst/include/pomp_defines.h
@@ -58,8 +59,12 @@ www/NEWS.html: inst/NEWS.Rd
 session: install
 	exec $(REXE)
 
+revdeps: install
+	mkdir -p library check
+	$(REXE) -e "pkgs <- strsplit('$(REVDEPS)',' ')[[1]]; download.packages(pkgs,destdir='library',repos='https://mirrors.nics.utk.edu/cran/')"
+	$(RCMD) check --library=library -o check library/*.tar.gz
+
 roxy: $(SOURCE)
-##	$(REXE) -e "pkgload::load_all(compile=FALSE); devtools::document(roclets=c('rd','collate','namespace'))"
 	$(REXE) -e "pkgbuild::compile_dll(); devtools::document(roclets=c('rd','collate','namespace'))"
 
 dist: NEWS $(PKGVERS).tar.gz

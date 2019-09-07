@@ -11,17 +11,20 @@
 static R_INLINE SEXP add_args (SEXP args, SEXP names)
 {
 
-  int nprotect = 0;
   SEXP var;
   int v;
 
+  PROTECT(args);
+
   for (v = LENGTH(names)-1; v >= 0; v--) {
-    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
-    PROTECT(args = LCONS(var,args)); nprotect++;
-    SET_TAG(args,install(CHAR(STRING_ELT(names,v))));
+    var = NEW_NUMERIC(1);
+    args = LCONS(var,args);
+    UNPROTECT(1);
+    PROTECT(args);
+    SET_TAG(args,installChar(STRING_ELT(names,v)));
   }
 
-  UNPROTECT(nprotect);
+  UNPROTECT(1);
   return args;
 
 }

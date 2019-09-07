@@ -18,37 +18,47 @@ SEXP do_skeleton(SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi);
 
 SEXP add_skel_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 {
-  int nprotect = 0;
+
   SEXP var;
   int v;
 
+  PROTECT(args);
+
   // Covariates
   for (v = LENGTH(Cnames)-1; v >= 0; v--) {
-    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
-    PROTECT(args = LCONS(var,args)); nprotect++;
-    SET_TAG(args,install(CHAR(STRING_ELT(Cnames,v))));
+    var = NEW_NUMERIC(1);
+    args = LCONS(var,args);
+    UNPROTECT(1);
+    PROTECT(args);
+    SET_TAG(args,installChar(STRING_ELT(Cnames,v)));
   }
 
   // Parameters
   for (v = LENGTH(Pnames)-1; v >= 0; v--) {
-    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
-    PROTECT(args = LCONS(var,args)); nprotect++;
-    SET_TAG(args,install(CHAR(STRING_ELT(Pnames,v))));
+    var = NEW_NUMERIC(1);
+    args = LCONS(var,args);
+    UNPROTECT(1);
+    PROTECT(args);
+    SET_TAG(args,installChar(STRING_ELT(Pnames,v)));
   }
 
   // Latent state variables
   for (v = LENGTH(Snames)-1; v >= 0; v--) {
-    PROTECT(var = NEW_NUMERIC(1)); nprotect++;
-    PROTECT(args = LCONS(var,args)); nprotect++;
-    SET_TAG(args,install(CHAR(STRING_ELT(Snames,v))));
+    var = NEW_NUMERIC(1);
+    args = LCONS(var,args);
+    UNPROTECT(1);
+    PROTECT(args);
+    SET_TAG(args,installChar(STRING_ELT(Snames,v)));
   }
 
   // Time
-  PROTECT(var = NEW_NUMERIC(1)); nprotect++;
-  PROTECT(args = LCONS(var,args)); nprotect++;
+  var = NEW_NUMERIC(1);
+  args = LCONS(var,args);
+  UNPROTECT(1);
+  PROTECT(args);
   SET_TAG(args,install("t"));
 
-  UNPROTECT(nprotect);
+  UNPROTECT(1);
   return args;
 
 }
