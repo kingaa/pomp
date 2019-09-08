@@ -28,7 +28,6 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
 
 SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
   SEXP probes, SEXP datval, SEXP gnsi) {
-  int nprotect = 0;
   SEXP x, y, names, sims;
   SEXP returntype, retval, val, valnames;
   int nprobe, nsims, nobs, ntimes, nvals;
@@ -36,21 +35,21 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
   double *xp, *yp;
   int p, s, i, j, k, len0 = 0, len = 0;
 
-  PROTECT(nsim = AS_INTEGER(nsim)); nprotect++;
+  PROTECT(nsim = AS_INTEGER(nsim));
   if ((LENGTH(nsim)!=1) || (INTEGER(nsim)[0]<=0))
     errorcall(R_NilValue,"'nsim' must be a positive integer."); // #nocov
 
-  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
+  PROTECT(gnsi = duplicate(gnsi));
 
   // 'names' holds the names of the probe values
   // we get these from a previous call to 'apply_probe_data'
   nprobe = LENGTH(probes);
   nvals = LENGTH(datval);
-  PROTECT(names = GET_NAMES(datval)); nprotect++;
-  PROTECT(returntype = NEW_INTEGER(1)); nprotect++;
+  PROTECT(names = GET_NAMES(datval));
+  PROTECT(returntype = NEW_INTEGER(1));
   *(INTEGER(returntype)) = 0;
-  PROTECT(sims = do_simulate(object,params,nsim,returntype,gnsi)); nprotect++;
-  PROTECT(y = VECTOR_ELT(sims,1)); nprotect++;
+  PROTECT(sims = do_simulate(object,params,nsim,returntype,gnsi));
+  PROTECT(y = VECTOR_ELT(sims,1));
   *(INTEGER(gnsi)) = 0;
 
   nobs = INTEGER(GET_DIM(y))[0];
@@ -58,13 +57,13 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
   ntimes = INTEGER(GET_DIM(y))[2];
   // set up temporary storage
   xdim[0] = nobs; xdim[1] = ntimes;
-  PROTECT(x = makearray(2,xdim)); nprotect++;
+  PROTECT(x = makearray(2,xdim));
   setrownames(x,GET_ROWNAMES(GET_DIMNAMES(y)),2);
 
   // set up matrix to hold results
   xdim[0] = nsims; xdim[1] = nvals;
-  PROTECT(retval = makearray(2,xdim)); nprotect++;
-  PROTECT(valnames = NEW_LIST(2)); nprotect++;
+  PROTECT(retval = makearray(2,xdim));
+  PROTECT(valnames = NEW_LIST(2));
   SET_ELEMENT(valnames,1,names);	// set column names
   SET_DIMNAMES(retval,valnames);
 
@@ -107,6 +106,6 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
   if (k != nvals)
     errorcall(R_NilValue,"probes return different number of values on different datasets.");
 
-  UNPROTECT(nprotect);
+  UNPROTECT(9);
   return retval;
 }

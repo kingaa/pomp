@@ -7,7 +7,6 @@
 static void poly_nlar_fit(double *beta, double *y, int n, int nterms, int *lag, int *power, double *X);
 
 SEXP probe_nlar (SEXP x, SEXP lags, SEXP powers) {
-  int nprotect = 0;
   SEXP y, beta, beta_names;
   int n, nterms;
   int k;
@@ -17,20 +16,20 @@ SEXP probe_nlar (SEXP x, SEXP lags, SEXP powers) {
   n = LENGTH(x);		// n = # of observations
   nterms = LENGTH(lags);
 
-  PROTECT(y = duplicate(AS_NUMERIC(x))); nprotect++; 
-  PROTECT(beta = NEW_NUMERIC(nterms)); nprotect++;
+  PROTECT(y = duplicate(AS_NUMERIC(x)));
+  PROTECT(beta = NEW_NUMERIC(nterms));
   
   mm = (double *) R_alloc(n*nterms,sizeof(double)); // storage for the model matrix
   poly_nlar_fit(REAL(beta),REAL(y),n,nterms,INTEGER(lags),INTEGER(powers),mm);
   
-  PROTECT(beta_names = NEW_STRING(nterms)); nprotect++;
+  PROTECT(beta_names = NEW_STRING(nterms));
   for (k = 0; k < nterms; k++) {
     snprintf(tmp,BUFSIZ,"nlar.%d^%d",INTEGER(lags)[k],INTEGER(powers)[k]);
     SET_STRING_ELT(beta_names,k,mkChar(tmp));
   }
   SET_NAMES(beta,beta_names);
 
-  UNPROTECT(nprotect);
+  UNPROTECT(3);
   return beta;
 }
 

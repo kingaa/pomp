@@ -68,22 +68,21 @@ SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP dt, SEXP log) {
 // Euler-multinomial context, i.e., 
 // E[mu*dW] = mu*dt and Var[mu*dW] = mu*sigma^2*dt
 SEXP R_GammaWN (SEXP n, SEXP sigma, SEXP deltat) {
-  int nprotect = 0;
   int k, nval, nsig, ndt;
   double *x, *sig, *dt;
   SEXP ans;
-  PROTECT(n = AS_INTEGER(n)); nprotect++;
+  PROTECT(n = AS_INTEGER(n));
   nval = INTEGER(n)[0];
-  PROTECT(sigma = AS_NUMERIC(sigma)); nprotect++;
+  PROTECT(sigma = AS_NUMERIC(sigma));
   nsig = LENGTH(sigma);
   sig = REAL(sigma);
-  PROTECT(deltat = AS_NUMERIC(deltat)); nprotect++;
+  PROTECT(deltat = AS_NUMERIC(deltat));
   ndt = LENGTH(deltat);
   dt = REAL(deltat);
-  PROTECT(ans = NEW_NUMERIC(nval)); nprotect++;
+  PROTECT(ans = NEW_NUMERIC(nval));
   x = REAL(ans);
   for (k = 0; k < nval; k++) 
     x[k] = rgammawn(sig[k%nsig],dt[k%ndt]);
-  UNPROTECT(nprotect);
+  UNPROTECT(4);
   return ans;
 }

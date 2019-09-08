@@ -96,7 +96,6 @@ static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lag
 }
 
 SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
-  int nprotect = 0;
   SEXP ans, ans_names;
   SEXP X;
   int nlag, correlation, nvars, n;
@@ -106,16 +105,16 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   char tmp[BUFSIZ];
 
   nlag = LENGTH(lags);			      // number of lags
-  PROTECT(lags = AS_INTEGER(lags)); nprotect++;
+  PROTECT(lags = AS_INTEGER(lags));
   lag = INTEGER(lags);
   correlation = *(INTEGER(AS_INTEGER(corr))); // correlation, or covariance?
 
   nvars = INTEGER(GET_DIM(x))[0]; 	// number of variables
   n = INTEGER(GET_DIM(x))[1];		    // number of observations
 
-  PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++;
+  PROTECT(X = duplicate(AS_NUMERIC(x)));
 
-  PROTECT(ans = NEW_NUMERIC(nlag*nvars)); nprotect++;
+  PROTECT(ans = NEW_NUMERIC(nlag*nvars));
 
   pomp_acf_compute(REAL(ans),REAL(X),n,nvars,lag,nlag);
 
@@ -128,7 +127,7 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
         *p /= *p1;
   }
 
-  PROTECT(ans_names = NEW_STRING(nlag*nvars)); nprotect++;
+  PROTECT(ans_names = NEW_STRING(nlag*nvars));
   for (j = 0, l = 0; j < nvars; j++) {
     for (k = 0; k < nlag; k++, l++) {
       snprintf(tmp,BUFSIZ,"acf[%d]",lag[k]);
@@ -137,12 +136,11 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   }
   SET_NAMES(ans,ans_names);
 
-  UNPROTECT(nprotect);
+  UNPROTECT(4);
   return ans;
 }
 
 SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr) {
-  int nprotect = 0;
   SEXP ans, ans_names;
   SEXP X, Y;
   double cov[2], xx, *p;
@@ -151,16 +149,16 @@ SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr) {
   char tmp[BUFSIZ];
 
   nlag = LENGTH(lags);
-  PROTECT(lags = AS_INTEGER(lags)); nprotect++;
+  PROTECT(lags = AS_INTEGER(lags));
   correlation = *(INTEGER(AS_INTEGER(corr))); // correlation, or covariance?
 
   n = LENGTH(x);		// n = # of observations
   if (n != LENGTH(y)) errorcall(R_NilValue,"'x' and 'y' must have equal lengths"); // #nocov
 
-  PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++;
-  PROTECT(Y = duplicate(AS_NUMERIC(y))); nprotect++;
+  PROTECT(X = duplicate(AS_NUMERIC(x)));
+  PROTECT(Y = duplicate(AS_NUMERIC(y)));
 
-  PROTECT(ans = NEW_NUMERIC(nlag)); nprotect++;
+  PROTECT(ans = NEW_NUMERIC(nlag));
 
   pomp_ccf_compute(REAL(ans),REAL(X),REAL(Y),n,INTEGER(lags),nlag);
 
@@ -172,14 +170,14 @@ SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr) {
     for (k = 0, p = REAL(ans); k < nlag; k++, p++) *p /= xx; // convert to correlation
   }
 
-  PROTECT(ans_names = NEW_STRING(nlag)); nprotect++;
+  PROTECT(ans_names = NEW_STRING(nlag));
   for (k = 0; k < nlag; k++) {
     snprintf(tmp,BUFSIZ,"ccf[%d]",INTEGER(lags)[k]);
     SET_STRING_ELT(ans_names,k,mkChar(tmp));
   }
   SET_NAMES(ans,ans_names);
 
-  UNPROTECT(nprotect);
+  UNPROTECT(5);
   return ans;
 }
 

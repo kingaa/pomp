@@ -7,7 +7,6 @@ static void bspline_internal (double *y, const double *x, int nx, int i, int p, 
 // B-spline basis
 
 SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
-  int nprotect = 0;
   SEXP y, xr;
   int nx = LENGTH(x);
   int nb = INTEGER_VALUE(nbasis);
@@ -22,8 +21,8 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
   if (nb <= deg) errorcall(R_NilValue,"must have nbasis > degree");
   if (d < 0) errorcall(R_NilValue,"must have deriv >= 0");
   knots = (double *) Calloc(nk,double);
-  PROTECT(xr = AS_NUMERIC(x)); nprotect++;
-  PROTECT(y = allocMatrix(REALSXP,nx,nb)); nprotect++;
+  PROTECT(xr = AS_NUMERIC(x));
+  PROTECT(y = allocMatrix(REALSXP,nx,nb));
   xdata = REAL(xr);
   ydata = REAL(y);
   for (i = 1, minx = maxx = xdata[0]; i < nx; i++) {
@@ -38,13 +37,13 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
     ydata += nx;
   }
   Free(knots);
-  UNPROTECT(nprotect);
+  UNPROTECT(2);
   return(y);
 }
 
 SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period,
   SEXP deriv) {
-  int nprotect = 0;
+
   SEXP y, xr;
   int nx = LENGTH(x);
   int nb = INTEGER_VALUE(nbasis);
@@ -53,16 +52,16 @@ SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period,
   double pd = NUMERIC_VALUE(period);
   int j, k;
   double *xrd, *ydata, *val;
-  PROTECT(xr = AS_NUMERIC(x)); nprotect++;
+  PROTECT(xr = AS_NUMERIC(x));
   xrd = REAL(xr);
-  PROTECT(y = allocMatrix(REALSXP,nx,nb)); nprotect++;
+  PROTECT(y = allocMatrix(REALSXP,nx,nb));
   ydata = REAL(y);
   val = (double *) R_alloc(nb,sizeof(double));
   for (j = 0; j < nx; j++) {
     periodic_bspline_basis_eval_deriv(xrd[j],pd,deg,nb,d,val);
     for (k = 0; k < nb; k++) ydata[j+nx*k] = val[k];
   }
-  UNPROTECT(nprotect);
+  UNPROTECT(2);
   return y;
 }
 

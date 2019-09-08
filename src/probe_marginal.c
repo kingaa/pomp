@@ -8,7 +8,6 @@ static void order_reg_solve (double *beta, double *x, double *mm, double *tau, i
 static void order_reg_model_matrix (double *z, double *X, double *tau, int *pivot, int n, int np, int diff);
 
 SEXP probe_marginal_setup (SEXP ref, SEXP order, SEXP diff) {
-  int nprotect = 0;
   SEXP z, mm, tau, pivot, retval, retvalnames;
   int n, nx, np, df, dim[2];
 
@@ -20,13 +19,13 @@ SEXP probe_marginal_setup (SEXP ref, SEXP order, SEXP diff) {
 
   if (nx < 1) errorcall(R_NilValue,"must have diff < number of observations");
 
-  PROTECT(z = duplicate(AS_NUMERIC(ref))); nprotect++;
-  PROTECT(mm = makearray(2,dim)); nprotect++;
-  PROTECT(tau = NEW_NUMERIC(np)); nprotect++;
-  PROTECT(pivot = NEW_INTEGER(np)); nprotect++;
+  PROTECT(z = duplicate(AS_NUMERIC(ref)));
+  PROTECT(mm = makearray(2,dim));
+  PROTECT(tau = NEW_NUMERIC(np));
+  PROTECT(pivot = NEW_INTEGER(np));
 
-  PROTECT(retval = NEW_LIST(3)); nprotect++;
-  PROTECT(retvalnames = NEW_CHARACTER(3)); nprotect++;
+  PROTECT(retval = NEW_LIST(3));
+  PROTECT(retvalnames = NEW_CHARACTER(3));
   SET_STRING_ELT(retvalnames,0,mkChar("mm"));
   SET_STRING_ELT(retvalnames,1,mkChar("tau"));
   SET_STRING_ELT(retvalnames,2,mkChar("pivot"));
@@ -37,12 +36,11 @@ SEXP probe_marginal_setup (SEXP ref, SEXP order, SEXP diff) {
 
   order_reg_model_matrix(REAL(z),REAL(mm),REAL(tau),INTEGER(pivot),n,np,df);
   
-  UNPROTECT(nprotect);
+  UNPROTECT(6);
   return(retval);
 }
 
 SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff) {
-  int nprotect = 0;
   SEXP X, mm, tau, pivot, beta, beta_names;
   int n, nx, np, df;
   int i;
@@ -52,18 +50,18 @@ SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff) {
   n = LENGTH(x);		      // n = number of observations
 
   // unpack the setup information
-  PROTECT(mm = VECTOR_ELT(setup,0)); nprotect++; //  QR-decomposed model matrix
-  PROTECT(tau = VECTOR_ELT(setup,1)); nprotect++; // diagonals
-  PROTECT(pivot = VECTOR_ELT(setup,2)); nprotect++; // pivots
+  PROTECT(mm = VECTOR_ELT(setup,0));    //  QR-decomposed model matrix
+  PROTECT(tau = VECTOR_ELT(setup,1));   // diagonals
+  PROTECT(pivot = VECTOR_ELT(setup,2)); // pivots
 
   nx = INTEGER(GET_DIM(mm))[0];	// nx = number of rows in model matrix
   np = INTEGER(GET_DIM(mm))[1];	// np = order of polynomial
   
   if (n-df != nx) errorcall(R_NilValue,"length of 'ref' must equal length of data");
-  PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++; 
+  PROTECT(X = duplicate(AS_NUMERIC(x)));
    
-  PROTECT(beta = NEW_NUMERIC(np)); nprotect++;
-  PROTECT(beta_names = NEW_STRING(np)); nprotect++;
+  PROTECT(beta = NEW_NUMERIC(np));
+  PROTECT(beta_names = NEW_STRING(np));
   for (i = 0; i < np; i++) {
     snprintf(tmp,BUFSIZ,"marg.%d",i+1);
     SET_STRING_ELT(beta_names,i,mkChar(tmp));
@@ -72,7 +70,7 @@ SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff) {
 
   order_reg_solve(REAL(beta),REAL(X),REAL(mm),REAL(tau),INTEGER(pivot),n,np,df);
 
-  UNPROTECT(nprotect);
+  UNPROTECT(6);
   return(beta);
 }
 

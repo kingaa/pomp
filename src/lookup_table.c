@@ -22,31 +22,30 @@ lookup_table_t make_covariate_table (SEXP object, int *ncovar) {
 }
 
 SEXP lookup_in_table (SEXP covar, SEXP t) {
-  int nprotect = 0;
   int xdim[2], nvar;
   int j, nt;
   double *tp, *xp;
   SEXP Cnames, X;
 
-  PROTECT(t = AS_NUMERIC(t)); nprotect++;
+  PROTECT(t = AS_NUMERIC(t));
   nt = LENGTH(t);
-  PROTECT(Cnames = get_covariate_names(covar)); nprotect++;
+  PROTECT(Cnames = get_covariate_names(covar));
 
   lookup_table_t tab = make_covariate_table(covar,&nvar);
 
   if (nt > 1) {
     xdim[0] = nvar; xdim[1] = nt;
-    PROTECT(X = makearray(2,xdim)); nprotect++;
+    PROTECT(X = makearray(2,xdim));
     setrownames(X,Cnames,2);
   } else {
-    PROTECT(X = NEW_NUMERIC(nvar)); nprotect++;
+    PROTECT(X = NEW_NUMERIC(nvar));
     SET_NAMES(X,Cnames);
   }
 
   for (j = 0, tp = REAL(t), xp = REAL(X); j < nt; j++, tp++, xp += nvar)
     table_lookup(&tab,*tp,xp);
 
-  UNPROTECT(nprotect);
+  UNPROTECT(3);
   return X;
 }
 
