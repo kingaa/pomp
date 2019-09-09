@@ -73,7 +73,7 @@ $(PKGVERS).tar.gz: $(SOURCE) $(TESTS) includes headers
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both --md5 .
 
 src/pomp_decls.h: $(CSOURCE)
-	cproto -I $(shell R RHOME)/include -e $(CSOURCE) > $@
+	LC_COLLATE=C cproto -I $(shell R RHOME)/include -e $(CSOURCE) > $@
 
 binary: dist
 	mkdir -p plib
