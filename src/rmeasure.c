@@ -100,7 +100,6 @@ static R_INLINE SEXP ret_array (int n, int nreps, int ntimes, SEXP names) {
 
 SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 {
-  int nprotect = 0;
   pompfunmode mode = undef;
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp;
   int nobs = 0;
@@ -113,19 +112,19 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   SEXP cvec;
   double *cov;
 
-  PROTECT(times = AS_NUMERIC(times)); nprotect++;
+  PROTECT(times = AS_NUMERIC(times));
   ntimes = length(times);
   if (ntimes < 1)
     errorcall(R_NilValue,"length('times') = 0, no work to do.");
 
-  PROTECT(x = as_state_array(x)); nprotect++;
+  PROTECT(x = as_state_array(x));
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepsx = dim[1];
 
   if (ntimes != dim[2])
     errorcall(R_NilValue,"length of 'times' and 3rd dimension of 'x' do not agree.");
 
-  PROTECT(params = as_matrix(params)); nprotect++;
+  PROTECT(params = as_matrix(params));
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nrepsp = dim[1];
 
@@ -134,24 +133,27 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
     errorcall(R_NilValue,"larger number of replicates is not a multiple of smaller.");
 
-  PROTECT(pompfun = GET_SLOT(object,install("rmeasure"))); nprotect++;
+  PROTECT(pompfun = GET_SLOT(object,install("rmeasure")));
 
-  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
-  PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
+  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x)));
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
+  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar"))));
+  PROTECT(Onames = GET_SLOT(pompfun,install("obsnames")));
 
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
-  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
+  PROTECT(cvec = NEW_NUMERIC(ncovars));
   cov = REAL(cvec);
 
   // extract the user-defined function
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,Onames,Cnames)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,Onames,Cnames));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
 
+  int nprotect = 11;
+  int first = 1;
+  
   // first do setup
   switch (mode) {
 
@@ -171,7 +173,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
       for (j = 0; j < nreps; j++) { // loop over replicates
 
-        if (k == 0 && j == 0) {
+        if (first) {
 
           PROTECT(
             ans = eval_call(
@@ -181,21 +183,25 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
               ps+npars*(j%nrepsp),npars,
               cov,ncovars
             )
-          ); nprotect++;
+	  );
 
           nobs = LENGTH(ans);
 
-          PROTECT(Onames = GET_NAMES(ans)); nprotect++;
+          PROTECT(Onames = GET_NAMES(ans));
           if (invalid_names(Onames))
             errorcall(R_NilValue,"'rmeasure' must return a named numeric vector.");
 
-          PROTECT(Y = ret_array(nobs,nreps,ntimes,Onames)); nprotect++;
+          PROTECT(Y = ret_array(nobs,nreps,ntimes,Onames));
+
+	  nprotect += 3;
 
           yt = REAL(Y);
           ys = REAL(AS_NUMERIC(ans));
 
           memcpy(yt,ys,nobs*sizeof(double));
           yt += nobs;
+
+	  first = 0;
 
         } else {
 

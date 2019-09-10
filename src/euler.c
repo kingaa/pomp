@@ -109,7 +109,7 @@ static R_INLINE SEXP ret_array (int n, int nreps, int ntimes, SEXP names)
 SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params,
   double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi)
 {
-  int nprotect = 0;
+
   pompfunmode mode = undef;
   int nvars, npars, nreps, ntimes, nzeros, ncovars;
   double *cov, t0;
@@ -122,36 +122,37 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
   dim = INTEGER(GET_DIM(params)); npars = dim[0];
   ntimes = LENGTH(times);
 
-  PROTECT(tstart = AS_NUMERIC(tstart)); nprotect++;
-  PROTECT(times = AS_NUMERIC(times)); nprotect++;
+  PROTECT(tstart = AS_NUMERIC(tstart));
+  PROTECT(times = AS_NUMERIC(times));
   t0 = *(REAL(tstart));
   if (t0 > *(REAL(times))) errorcall(R_NilValue,"'t0' must be no later than 'times[1]'.");
 
   SEXP Snames, Pnames, Cnames;
-  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(Cnames = get_covariate_names(covar)); nprotect++;
+  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart)));
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
+  PROTECT(Cnames = get_covariate_names(covar));
 
   // set up the covariate table
   lookup_table_t covariate_table = make_covariate_table(covar,&ncovars);
-  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
+  PROTECT(cvec = NEW_NUMERIC(ncovars));
   cov = REAL(cvec);
 
   // indices of accumulator variables
   nzeros = LENGTH(accumvars);
-  int *zidx = INTEGER(PROTECT(matchnames(Snames,accumvars,"state variables"))); nprotect++;
+  int *zidx = INTEGER(PROTECT(matchnames(Snames,accumvars,"state variables")));
 
   // extract user function
-  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames));
 
   // array to hold results
-  PROTECT(X = ret_array(nvars,nreps,ntimes,Snames)); nprotect++;
+  PROTECT(X = ret_array(nvars,nreps,ntimes,Snames));
 
   // copy the start values into the result array
   memcpy(REAL(X),REAL(xstart),nvars*nreps*sizeof(double));
 
   // set up
 
+  int nprotect = 9;
   int *pidx = 0, *sidx = 0, *cidx = 0;
   pomp_onestep_sim *ff = NULL;
 
@@ -191,12 +192,13 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
   // main computation loop
   int step;
   double *xt, *time, t;
+  int first = 1;
+
   for (step = 0, xt = REAL(X), time = REAL(times), t = t0;
     step < ntimes;
     step++, xt += nvars*nreps) {
 
     double dt;
-    int *posn = NULL;
     int nstep = 0;
     int i, j, k;
 
@@ -242,24 +244,29 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
 
           SEXP ans, nm;
 
-          if (j == 0 && k == 0) {
+          if (first) {
 
-            PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars)); nprotect++;
+            PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
 
-            PROTECT(nm = GET_NAMES(ans)); nprotect++;
+            PROTECT(nm = GET_NAMES(ans));
             if (invalid_names(nm))
               errorcall(R_NilValue,"'rprocess' must return a named numeric vector.");
-            posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
+            pidx = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
+
+	    nprotect += 3;
 
             ap = REAL(AS_NUMERIC(ans));
+            for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
 
-            for (i = 0; i < nvars; i++) xm[posn[i]] = ap[i];
+	    first = 0;
 
           } else {
 
             PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
+
             ap = REAL(AS_NUMERIC(ans));
-            for (i = 0; i < nvars; i++) xm[posn[i]] = ap[i];
+            for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
+
             UNPROTECT(1);
 
           }
@@ -302,6 +309,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
   switch (mode) {
 
   case native: case regNative: {
+
     PutRNGstate();
     unset_pomp_userdata();
 

@@ -60,34 +60,37 @@ static R_INLINE SEXP ret_array (SEXP params)
 
 SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 {
-  int nprotect = 0;
+
   pompfunmode mode = undef;
   int npars, nreps;
   SEXP Pnames, pompfun, fn, args;
   SEXP P = R_NilValue;
   int *dim;
-
-  PROTECT(params = as_matrix(params)); nprotect++;
+  
+  PROTECT(params = as_matrix(params));
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nreps = dim[1];
 
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
 
   // extract the user-defined function
-  PROTECT(pompfun = GET_SLOT(object,install("rprior"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,NA_STRING,Pnames,NA_STRING,NA_STRING)); nprotect++;
+  PROTECT(pompfun = GET_SLOT(object,install("rprior")));
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,NA_STRING,Pnames,NA_STRING,NA_STRING));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
-  PROTECT(P = ret_array(params)); nprotect++;
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(P = ret_array(params));
 
+  int nprotect = 6;
+  int first = 1;
+  
   switch (mode) {
-
+    
   case Rfun: {
 
     SEXP ans, nm;
     double *pa, *ps = REAL(params), *pt = REAL(P);
-    int *posn = 0;
+    int *posn = NULL;
     int i, j;
 
     // set up the function call
@@ -95,29 +98,33 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
     for (j = 0; j < nreps; j++, ps += npars, pt += npars) {
 
-      if (j == 0) {
+      if (first) {
 
-        PROTECT(ans = eval_call(fn,args,ps,npars)); nprotect++;
+        PROTECT(ans = eval_call(fn,args,ps,npars));
 
-        PROTECT(nm = GET_NAMES(ans)); nprotect++;
+        PROTECT(nm = GET_NAMES(ans));
         if (invalid_names(nm))
           errorcall(R_NilValue,"'rprior' must return a named numeric vector.");
-        posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters"))); nprotect++;
+        posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters")));
+	
+	nprotect += 3;
 
         pa = REAL(AS_NUMERIC(ans));
-
         for (i = 0; i < LENGTH(ans); i++) pt[posn[i]] = pa[i];
+
+	first = 0;
 
       } else {
 
         PROTECT(ans = eval_call(fn,args,ps,npars));
+
         pa = REAL(AS_NUMERIC(ans));
         for (i = 0; i < LENGTH(ans); i++) pt[posn[i]] = pa[i];
+
         UNPROTECT(1);
 
       }
     }
-
   }
 
     break;

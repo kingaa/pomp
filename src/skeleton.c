@@ -106,12 +106,14 @@ void eval_skeleton_R (
     int nrepx, int nrepp, int nreps,
     lookup_table_t *covar_table, double *cov)
 {
-  int nprotect = 0;
+
   SEXP ans, nm;
   double *fs;
   int *posn = 0;
   int i, j, k;
-
+  int first = 1;
+  int nprotect = 0;
+  
   for (k = 0; k < ntimes; k++, time++) {
 
     R_CheckUserInterrupt();
@@ -121,24 +123,27 @@ void eval_skeleton_R (
 
     for (j = 0; j < nreps; j++, f += nvars) {
 
-      if (k == 0 && j == 0) {
+      if (first) {
 
         PROTECT(ans = eval_call(fn,args,time,
           x+nvars*((j%nrepx)+nrepx*k),nvars,
           p+npars*(j%nrepp),npars,
-          cov,ncovars)); nprotect++;
+          cov,ncovars));
 
           if (LENGTH(ans)!=nvars)
             errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
 
           // get name information to fix alignment problems
-          PROTECT(nm = GET_NAMES(ans)); nprotect++;
+          PROTECT(nm = GET_NAMES(ans));
           if (invalid_names(nm))
             errorcall(R_NilValue,"'skeleton' must return a named numeric vector.");
-          posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
-          fs = REAL(AS_NUMERIC(ans));
+          posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
 
+          fs = REAL(AS_NUMERIC(ans));
           for (i = 0; i < nvars; i++) f[posn[i]] = fs[i];
+
+	  nprotect += 3;
+	  first = 0;
 
       } else {
 
@@ -148,7 +153,6 @@ void eval_skeleton_R (
           cov,ncovars));
 
         fs = REAL(AS_NUMERIC(ans));
-
         for (i = 0; i < nvars; i++) f[posn[i]] = fs[i];
 
         UNPROTECT(1);
@@ -171,6 +175,7 @@ void iterate_skeleton_R (
     lookup_table_t *covar_table, int *zeroindex,
     double *cov)
 {
+
   int nprotect = 0;
   int first = 1;
   SEXP ans, nm;
@@ -200,27 +205,27 @@ void iterate_skeleton_R (
 
         if (first) {
 
-          first = 0;
-
-          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,cov,ncovars)); nprotect++;
+          PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,cov,ncovars));
 
           if (LENGTH(ans) != nvars)
             errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
 
           // get name information to fix alignment problems
-          PROTECT(nm = GET_NAMES(ans)); nprotect++;
+          PROTECT(nm = GET_NAMES(ans));
           if (invalid_names(nm)) errorcall(R_NilValue,"'skeleton' must return a named numeric vector.");
-          posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
-          ap = REAL(AS_NUMERIC(ans));
+          posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
 
+          ap = REAL(AS_NUMERIC(ans));
           for (i = 0; i < nvars; i++) xs[posn[i]] = ap[i];
+
+	  nprotect += 3;
+          first = 0;
 
         } else {
 
           PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,cov,ncovars));
 
           ap = REAL(AS_NUMERIC(ans));
-
           for (i = 0; i < nvars; i++) xs[posn[i]] = ap[i];
 
           UNPROTECT(1);
@@ -338,7 +343,7 @@ void iterate_skeleton_native (
 
 SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
 {
-  int nprotect = 0;
+
   int nvars, npars, nrepp, nrepx, nreps, ntimes, ncovars;
   pompfunmode mode = undef;
   int *dim;
@@ -347,16 +352,16 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   SEXP fn, args, F;
   lookup_table_t covariate_table;
 
-  PROTECT(t = AS_NUMERIC(t)); nprotect++;
+  PROTECT(t = AS_NUMERIC(t));
   ntimes = LENGTH(t);
 
-  PROTECT(x = as_state_array(x)); nprotect++;
+  PROTECT(x = as_state_array(x));
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepx = dim[1];
   if (ntimes != dim[2])
     errorcall(R_NilValue,"length of 't' and 3rd dimension of 'x' do not agree.");
 
-  PROTECT(params = as_matrix(params)); nprotect++;
+  PROTECT(params = as_matrix(params));
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nrepp = dim[1];
 
@@ -365,24 +370,26 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   if ((nreps % nrepp != 0) || (nreps % nrepx != 0))
     errorcall(R_NilValue,"2nd dimensions of 'x' and 'params' are incompatible");
 
-  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
+  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x)));
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
+  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar"))));
 
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
-  PROTECT(cov = NEW_NUMERIC(ncovars)); nprotect++;
+  PROTECT(cov = NEW_NUMERIC(ncovars));
 
   // extract the user-defined function
-  PROTECT(ob = GET_SLOT(object,install("skeleton"))); nprotect++;
-  PROTECT(pompfun = GET_SLOT(ob,install("skel.fn"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
+  PROTECT(ob = GET_SLOT(object,install("skeleton")));
+  PROTECT(pompfun = GET_SLOT(ob,install("skel.fn")));
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
 
-  PROTECT(F = ret_array(nvars,nreps,ntimes,Snames)); nprotect++;
+  PROTECT(F = ret_array(nvars,nreps,ntimes,Snames));
 
+  int nprotect = 12;
+  
   switch (mode) {
 
   case Rfun: {
