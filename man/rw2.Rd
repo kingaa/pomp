@@ -30,9 +30,6 @@ The random-walk process is fully but noisily observed.
 }
 \examples{
 
-library(magrittr)
-library(dplyr)
-library(tidyr)
 library(ggplot2)
 
 rw2() \%>\% plot()
