@@ -16,7 +16,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   SEXP filtmean, SEXP trackancestry, SEXP doparRS,
   SEXP weights, SEXP tol)
 {
-  int nprotect = 0;
+
   SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue, anc = R_NilValue;
   SEXP ess, fail, loglik;
   SEXP newstates = R_NilValue, newparams = R_NilValue;
@@ -31,19 +31,19 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   double sum = 0, sumsq = 0, vsq, ws, w, toler;
   int j, k;
 
-  PROTECT(dimX = GET_DIM(x)); nprotect++;
+  PROTECT(dimX = GET_DIM(x));
   dim = INTEGER(dimX);
   nvars = dim[0]; nreps = dim[1];
   xx = REAL(x);
-  PROTECT(Xnames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
+  PROTECT(Xnames = GET_ROWNAMES(GET_DIMNAMES(x)));
 
-  PROTECT(params = as_matrix(params)); nprotect++;
-  PROTECT(dimP = GET_DIM(params)); nprotect++;
+  PROTECT(params = as_matrix(params));
+  PROTECT(dimP = GET_DIM(params));
   dim = INTEGER(dimP);
   npars = dim[0];
   if (nreps % dim[1] != 0)
     errorcall(R_NilValue,"ncol('states') should be a multiple of ncol('params')"); // # nocov
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
 
   np = *(INTEGER(AS_INTEGER(Np))); // number of particles to resample
 
@@ -59,9 +59,9 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
       errorcall(R_NilValue,"ncol('states') should be equal to ncol('params')"); // # nocov
   }
 
-  PROTECT(ess = NEW_NUMERIC(1)); nprotect++; // effective sample size
-  PROTECT(loglik = NEW_NUMERIC(1)); nprotect++; // log likelihood
-  PROTECT(fail = NEW_LOGICAL(1)); nprotect++;	// particle failure?
+  PROTECT(ess = NEW_NUMERIC(1));    // effective sample size
+  PROTECT(loglik = NEW_NUMERIC(1)); // log likelihood
+  PROTECT(fail = NEW_LOGICAL(1));   // particle failure?
 
   xw = REAL(weights);
   toler = *(REAL(tol));		// failure tolerance
@@ -85,6 +85,8 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     *(REAL(ess)) = w*w/ws;	// effective sample size
   }
   *(LOGICAL(fail)) = all_fail;
+
+  int nprotect = 8;
 
   if (do_pm || do_pv) {
     PROTECT(pm = NEW_NUMERIC(nvars)); nprotect++;
@@ -189,8 +191,9 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 
   PutRNGstate();
 
-  PROTECT(retval = NEW_LIST(9)); nprotect++;
-  PROTECT(retvalnames = NEW_CHARACTER(9)); nprotect++;
+  PROTECT(retval = NEW_LIST(9));
+  PROTECT(retvalnames = NEW_CHARACTER(9));
+  nprotect += 2;
   SET_STRING_ELT(retvalnames,0,mkChar("fail"));
   SET_STRING_ELT(retvalnames,1,mkChar("loglik"));
   SET_STRING_ELT(retvalnames,2,mkChar("ess"));

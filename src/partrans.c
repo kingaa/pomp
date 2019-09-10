@@ -49,7 +49,7 @@ static R_INLINE SEXP eval_call (SEXP fn, SEXP args, double *p, int n)
 
 SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 {
-  int nprotect = 0;
+
   SEXP Pnames, tparams, pompfun, fn, args, ob;
   pompfunmode mode = undef;
   direction_t direc;
@@ -58,31 +58,33 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
   qvec = isNull(GET_DIM(params)); // is 'params' a vector?
 
-  PROTECT(tparams = duplicate(params)); nprotect++;
+  PROTECT(tparams = duplicate(params));
 
   // coerce 'params' to matrix
-  PROTECT(tparams = as_matrix(tparams)); nprotect++;
+  PROTECT(tparams = as_matrix(tparams));
   dim = INTEGER(GET_DIM(tparams));
   npars = dim[0]; nreps = dim[1];
 
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(tparams))); nprotect++;
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(tparams)));
 
   // determine direction of transformation and extract corresponding pomp_fun
   direc = (direction_t) *(INTEGER(dir));
-  PROTECT(ob = GET_SLOT(object,install("partrans"))); nprotect++;
+  PROTECT(ob = GET_SLOT(object,install("partrans")));
   switch (direc) {
   case from: default:	// from estimation scale
-    PROTECT(pompfun = GET_SLOT(ob,install("from"))); nprotect++;
+    PROTECT(pompfun = GET_SLOT(ob,install("from")));
     break;
   case to:			// to estimation scale
-    PROTECT(pompfun = GET_SLOT(ob,install("to"))); nprotect++;
+    PROTECT(pompfun = GET_SLOT(ob,install("to")));
     break;
   }
 
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,NA_STRING,Pnames,NA_STRING,NA_STRING)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,NA_STRING,Pnames,NA_STRING,NA_STRING));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+
+  int nprotect = 7;
 
   switch (mode) {
 
@@ -93,14 +95,15 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     int *posn;
     int i, j;
 
-    PROTECT(args = add_args(args,Pnames)); nprotect++;
+    PROTECT(args = add_args(args,Pnames));
+    PROTECT(ans = eval_call(fn,args,ps,npars));
 
-    PROTECT(ans = eval_call(fn,args,ps,npars)); nprotect++;
-
-    PROTECT(nm = GET_NAMES(ans)); nprotect++;
+    PROTECT(nm = GET_NAMES(ans));
     if (invalid_names(nm))
       errorcall(R_NilValue,"user transformation functions must return named numeric vectors.");
-    posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters"))); nprotect++;
+    posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters")));
+
+    nprotect += 4;
 
     pa = REAL(AS_NUMERIC(ans));
 

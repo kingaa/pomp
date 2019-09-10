@@ -20,7 +20,7 @@ static R_INLINE SEXP ret_array (int nvars, int nreps, int ntimes, SEXP Snames)
 
 SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP gnsi)
 {
-  int nprotect = 0;
+
   pompfunmode mode = undef;
   SEXP fn, args;
   SEXP X, cov;
@@ -33,46 +33,49 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   lookup_table_t covariate_table;
   double deltat, t;
 
-  PROTECT(skel = GET_SLOT(object,install("skeleton"))); nprotect++;
+  PROTECT(skel = GET_SLOT(object,install("skeleton")));
   deltat = *(REAL(GET_SLOT(skel,install("delta.t"))));
   t = *(REAL(AS_NUMERIC(t0)));
 
-  PROTECT(x0 = duplicate(x0)); nprotect++;
-  PROTECT(x0 = as_matrix(x0)); nprotect++;
+  PROTECT(x0 = duplicate(x0));
+  PROTECT(x0 = as_matrix(x0));
   dim = INTEGER(GET_DIM(x0));
   nvars = dim[0]; nreps = dim[1];
 
-  PROTECT(params = as_matrix(params)); nprotect++;
+  PROTECT(params = as_matrix(params));
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nrepp = dim[1];
 
-  PROTECT(times = AS_NUMERIC(times)); nprotect++;
+  PROTECT(times = AS_NUMERIC(times));
   ntimes = LENGTH(times);
 
-  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x0))); nprotect++;
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
+  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x0)));
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
+  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar"))));
 
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
-  PROTECT(cov = NEW_NUMERIC(ncovars)); nprotect++;
+  PROTECT(cov = NEW_NUMERIC(ncovars));
 
   // extract user-defined function
-  PROTECT(pompfun = GET_SLOT(skel,install("skel.fn"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
+  PROTECT(pompfun = GET_SLOT(skel,install("skel.fn")));
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+
+  // create array to store results
+  PROTECT(X = ret_array(nvars,nreps,ntimes,Snames));
 
   // get names and indices of accumulator variables
-  PROTECT(accumvars = GET_SLOT(object,install("accumvars"))); nprotect++;
+  PROTECT(accumvars = GET_SLOT(object,install("accumvars")));
   nzeros = LENGTH(accumvars);
+
+  int nprotect = 14;
+  
   if (nzeros > 0) {
     zidx = INTEGER(PROTECT(matchnames(Snames,accumvars,"state variables"))); nprotect++;
   }
-
-  // create array to store results
-  PROTECT(X = ret_array(nvars,nreps,ntimes,Snames)); nprotect++;
 
   // set up the computations
   switch (mode) {
@@ -151,7 +154,7 @@ static struct {
 #define NAT(X)    (_pomp_vf_eval_block.shared.native_code.X)
 
 SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
-  int nprotect = 0;
+
   pompfunmode mode = undef;
   SEXP fn, args;
   SEXP Snames, Pnames, Cnames;
@@ -160,10 +163,10 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   int nvars, npars, nreps, ncovars;
 
   // extract user-defined skeleton function
-  PROTECT(ob = GET_SLOT(object,install("skeleton"))); nprotect++;
-  PROTECT(pompfun = GET_SLOT(ob,install("skel.fn"))); nprotect++;
+  PROTECT(ob = GET_SLOT(object,install("skeleton")));
+  PROTECT(pompfun = GET_SLOT(ob,install("skel.fn")));
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
 
   COMMON(object) = object;
   COMMON(params) = params;
@@ -184,24 +187,27 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   // set up the covariate table
   COMMON(covar_table) = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
   COMMON(ncovars) = ncovars;
-  PROTECT(COMMON(cov) = NEW_NUMERIC(ncovars)); nprotect++;
+  PROTECT(COMMON(cov) = NEW_NUMERIC(ncovars));
   R_PreserveObject(COMMON(cov));
 
-  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x0))); nprotect++;
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
+  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x0)));
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
+  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar"))));
 
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames));
 
   COMMON(mode) = mode;
+
+  int nprotect = 8;
 
   switch (COMMON(mode)) {
 
   case Rfun: {
 
-    PROTECT(RFUN(fn) = fn); nprotect++;
-    PROTECT(RFUN(args) = add_skel_args(args,Snames,Pnames,Cnames)); nprotect++;
-    PROTECT(RFUN(Snames) = Snames); nprotect++;
+    PROTECT(RFUN(fn) = fn);
+    PROTECT(RFUN(args) = add_skel_args(args,Snames,Pnames,Cnames));
+    PROTECT(RFUN(Snames) = Snames);
+    nprotect += 3;
 
     if (!isNull(RFUN(fn))) R_ReleaseObject(RFUN(fn));
     if (!isNull(RFUN(args))) R_ReleaseObject(RFUN(args));
@@ -219,9 +225,10 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
 
     NAT(args) = args;
 
-    PROTECT(NAT(sindex) = GET_SLOT(pompfun,install("stateindex"))); nprotect++;
-    PROTECT(NAT(pindex) = GET_SLOT(pompfun,install("paramindex"))); nprotect++;
-    PROTECT(NAT(cindex) = GET_SLOT(pompfun,install("covarindex"))); nprotect++;
+    PROTECT(NAT(sindex) = GET_SLOT(pompfun,install("stateindex")));
+    PROTECT(NAT(pindex) = GET_SLOT(pompfun,install("paramindex")));
+    PROTECT(NAT(cindex) = GET_SLOT(pompfun,install("covarindex")));
+    nprotect += 3;
 
     *((void **) (&(NAT(fun)))) = R_ExternalPtrAddr(fn);
 

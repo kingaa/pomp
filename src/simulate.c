@@ -8,7 +8,7 @@ SEXP do_simulate(SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi);
 
 SEXP do_simulate (SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi)
 {
-  int nprotect = 0;
+
   SEXP t0, times, x0, x, y;
   SEXP ans = R_NilValue, ans_names = R_NilValue;
   SEXP simnames;
@@ -16,30 +16,33 @@ SEXP do_simulate (SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi)
 
   if (LENGTH(nsim) != 1) errorcall(R_NilValue,"'nsim' must be a single integer"); // #nocov
 
-  PROTECT(params = as_matrix(params)); nprotect++;
+  PROTECT(params = as_matrix(params));
 
-  PROTECT(t0 = GET_SLOT(object,install("t0"))); nprotect++;
-  PROTECT(times = GET_SLOT(object,install("times"))); nprotect++;
+  PROTECT(t0 = GET_SLOT(object,install("t0")));
+  PROTECT(times = GET_SLOT(object,install("times")));
 
   // initialize the simulations
-  PROTECT(x0 = do_rinit(object,params,t0,nsim,gnsi)); nprotect++;
-  PROTECT(simnames = GET_COLNAMES(GET_DIMNAMES(x0))); nprotect++;
+  PROTECT(x0 = do_rinit(object,params,t0,nsim,gnsi));
+  PROTECT(simnames = GET_COLNAMES(GET_DIMNAMES(x0)));
 
   // call 'rprocess' to simulate state process
-  PROTECT(x = do_rprocess(object,x0,t0,times,params,gnsi)); nprotect++;
+  PROTECT(x = do_rprocess(object,x0,t0,times,params,gnsi));
 
   // call 'rmeasure' to simulate the measurement process
-  PROTECT(y = do_rmeasure(object,x,times,params,gnsi)); nprotect++;
+  PROTECT(y = do_rmeasure(object,x,times,params,gnsi));
 
   setcolnames(x,simnames);
   setcolnames(y,simnames);
+
+  int nprotect = 7;
 
   switch (return_type) {
 
   case 0:  // return a list of arrays
 
-    PROTECT(ans = NEW_LIST(2)); nprotect++;
-    PROTECT(ans_names = NEW_CHARACTER(2)); nprotect++;
+    PROTECT(ans = NEW_LIST(2));
+    PROTECT(ans_names = NEW_CHARACTER(2));
+    nprotect += 2;
     SET_STRING_ELT(ans_names,0,mkChar("states"));
     SET_STRING_ELT(ans_names,1,mkChar("obs"));
     SET_NAMES(ans,ans_names);
@@ -57,7 +60,7 @@ SEXP do_simulate (SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi)
       int nvar, npar, nobs, nsim, ntim, nparsets;
       int dim[2], i, j, k;
 
-      PROTECT(po = duplicate(object)); nprotect++;
+      PROTECT(po = duplicate(object));
       SET_SLOT(po,install("t0"),t0);
       SET_SLOT(po,install("times"),times);
 
@@ -71,21 +74,23 @@ SEXP do_simulate (SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi)
       npar = xdim[0]; nparsets = xdim[1];
 
       dim[0] = nvar; dim[1] = ntim;
-      PROTECT(xx = makearray(2,dim)); nprotect++;
+      PROTECT(xx = makearray(2,dim));
       setrownames(xx,GET_ROWNAMES(GET_DIMNAMES(x)),2);
       SET_SLOT(po,install("states"),xx);
 
       dim[0] = nobs; dim[1] = ntim;
-      PROTECT(yy = makearray(2,dim)); nprotect++;
+      PROTECT(yy = makearray(2,dim));
       setrownames(yy,GET_ROWNAMES(GET_DIMNAMES(y)),2);
       SET_SLOT(po,install("data"),yy);
 
-      PROTECT(pp = NEW_NUMERIC(npar)); nprotect++;
+      PROTECT(pp = NEW_NUMERIC(npar));
       SET_NAMES(pp,GET_ROWNAMES(GET_DIMNAMES(params)));
       SET_SLOT(po,install("params"),pp);
 
-      PROTECT(ans = NEW_LIST(nsim)); nprotect++;
+      PROTECT(ans = NEW_LIST(nsim));
       SET_NAMES(ans,simnames);
+
+      nprotect += 5;
 
       for (k = 0; k < nsim; k++) {
 

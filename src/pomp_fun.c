@@ -51,8 +51,10 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
     if (*(LOGICAL(gnsi))) {	// get native symbol information?
 
       SEXP nf, pack;
-      PROTECT(nf = GET_SLOT(pfun,install("native.fun"))); nprotect++;
-      PROTECT(pack = GET_SLOT(pfun,install("PACKAGE"))); nprotect++;
+      PROTECT(nf = GET_SLOT(pfun,install("native.fun")));
+      PROTECT(pack = GET_SLOT(pfun,install("PACKAGE")));
+      nprotect += 2;
+      
       if (LENGTH(pack) < 1) {
         PROTECT(pack = mkString("")); nprotect++;
       }
@@ -60,8 +62,9 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
       switch (*mode) {
       case native: {
         SEXP nsi;
-        PROTECT(nsi = eval(PROTECT(lang3(install("getNativeSymbolInfo"),nf,pack)),R_BaseEnv)); nprotect += 2;
-        PROTECT(f = getListElement(nsi,"address")); nprotect++;
+        PROTECT(nsi = eval(PROTECT(lang3(install("getNativeSymbolInfo"),nf,pack)),R_BaseEnv));
+        PROTECT(f = getListElement(nsi,"address"));
+	nprotect += 3;
       }
         break;
 
@@ -72,16 +75,9 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
         const char *fname, *pkg;
         fname = (const char *) CHAR(STRING_ELT(nf,0));
         pkg = (const char *) CHAR(STRING_ELT(pack,0));
-#if (R_VERSION < 197632) // before 3.4.0
-        // This is cadged from 'R_MakeExternalPtrFn'.
-        union {void *p; DL_FUNC fn;} trick;
-        trick.fn = R_GetCCallable(pkg,fname);
-        PROTECT(f = R_MakeExternalPtr(trick.p,R_NilValue,R_NilValue)); nprotect++;
-#else
         DL_FUNC fn;
         fn = R_GetCCallable(pkg,fname);
         PROTECT(f = R_MakeExternalPtrFn(fn,R_NilValue,R_NilValue)); nprotect++;
-#endif
       }
         break;
 

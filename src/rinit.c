@@ -81,7 +81,7 @@ static R_INLINE SEXP ret_array (int m, int n, SEXP names)
 
 SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 {
-  int nprotect = 0;
+
   SEXP Pnames, Cnames, Snames, pcnames;
   SEXP x = R_NilValue;
   SEXP pompfun, fn, args;
@@ -93,9 +93,9 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
   int npar, nrep, nvar, ncovars, nsims, ns;
 
   nsims = *(INTEGER(AS_INTEGER(nsim)));
-  PROTECT(params = as_matrix(params)); nprotect++;
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(pcnames = GET_COLNAMES(GET_DIMNAMES(params))); nprotect++;
+  PROTECT(params = as_matrix(params));
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
+  PROTECT(pcnames = GET_COLNAMES(GET_DIMNAMES(params)));
 
   dim = INTEGER(GET_DIM(params));
   npar = dim[0]; nrep = dim[1];
@@ -103,19 +103,21 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
   // set up the covariate table
   covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
-  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
-  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
+  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar"))));
+  PROTECT(cvec = NEW_NUMERIC(ncovars));
   cov = REAL(cvec);
 
   table_lookup(&covariate_table,*(REAL(t0)),cov);
 
   // extract userdata
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
 
-  PROTECT(pompfun = GET_SLOT(object,install("rinit"))); nprotect++;
-  PROTECT(Snames = GET_SLOT(pompfun,install("statenames"))); nprotect++;
+  PROTECT(pompfun = GET_SLOT(object,install("rinit")));
+  PROTECT(Snames = GET_SLOT(pompfun,install("statenames")));
 
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames));
+
+  int nprotect = 9;
 
   switch (mode) {
   case Rfun: {
@@ -127,27 +129,28 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     int *midx;
     int j;
 
-    PROTECT(args = add_args(args,Pnames,Cnames)); nprotect++;
-
-    PROTECT(ans = eval_call(fn,args,time,ps,npar,cov,ncovars)); nprotect++;
-    PROTECT(Snames = GET_NAMES(ans)); nprotect++;
+    PROTECT(args = add_args(args,Pnames,Cnames));
+    PROTECT(ans = eval_call(fn,args,time,ps,npar,cov,ncovars));
+    PROTECT(Snames = GET_NAMES(ans));
 
     if (!IS_NUMERIC(ans) || invalid_names(Snames))
       errorcall(R_NilValue,"user 'rinit' must return a named numeric vector.");
 
     nvar = LENGTH(ans);
     xs = REAL(ans);
-    midx = INTEGER(PROTECT(match(Pnames,Snames,0))); nprotect++;
+    midx = INTEGER(PROTECT(match(Pnames,Snames,0)));
 
     for (j = 0; j < nvar; j++) {
       if (midx[j] != 0)
         errorcall(R_NilValue,"a state variable and a parameter share the name: '%s'.",CHAR(STRING_ELT(Snames,j)));
     }
 
-    PROTECT(x = ret_array(nvar,ns,Snames)); nprotect++;
+    PROTECT(x = ret_array(nvar,ns,Snames));
     xt = REAL(x);
 
     memcpy(xt,xs,nvar*sizeof(double));
+
+    nprotect += 5;
 
     for (j = 1, xt += nvar; j < ns; j++, xt += nvar) {
       PROTECT(ans = eval_call(fn,args,time,ps+npar*(j%nrep),npar,cov,ncovars));
@@ -218,10 +221,11 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     if (nsims > 1) {
       int k, *sp;
 
-      PROTECT(xn = NEW_INTEGER(ns)); nprotect++;
+      PROTECT(xn = NEW_INTEGER(ns));
       for (k = 0, sp = INTEGER(xn); k < ns; k++, sp++) *sp = (k/nrep)+1;
-      PROTECT(xn = paste(pcnames,xn,mkString("_"))); nprotect++;
-      PROTECT(dn = GET_DIMNAMES(x)); nprotect++;
+      PROTECT(xn = paste(pcnames,xn,mkString("_")));
+      PROTECT(dn = GET_DIMNAMES(x));
+      nprotect += 3;
       SET_ELEMENT(dn,1,xn);
       SET_DIMNAMES(x,dn);
 
@@ -241,54 +245,66 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 static SEXP pomp_default_rinit (SEXP params, SEXP Pnames,
   int npar, int nrep, int nsim)
 {
+
   SEXP fcall, pat, repl, val, ivpnames, statenames, x;
   int *pidx;
   int nvar, j, k;
   double *xp, *pp;
-  int nprotect = 0;
 
   // set up search pattern: ".0" or "_0"
-  PROTECT(pat = NEW_CHARACTER(1)); nprotect++;
+  PROTECT(pat = NEW_CHARACTER(1));
   SET_STRING_ELT(pat,0,mkChar("[\\_\\.]0$"));
-  PROTECT(repl = NEW_CHARACTER(1)); nprotect++;
+  PROTECT(repl = NEW_CHARACTER(1));
   SET_STRING_ELT(repl,0,mkChar(""));
-  PROTECT(val = NEW_LOGICAL(1)); nprotect++;
+  PROTECT(val = NEW_LOGICAL(1));
   *(INTEGER(val)) = 1;
 
   // extract names of IVPs using 'grep'
-  PROTECT(fcall = LCONS(val,R_NilValue)); nprotect++;
+  PROTECT(fcall = LCONS(val,R_NilValue));
   SET_TAG(fcall,install("value"));
-  PROTECT(fcall = LCONS(Pnames,fcall)); nprotect++;
+  fcall = LCONS(Pnames,fcall);
+  UNPROTECT(1);
+  PROTECT(fcall);
   SET_TAG(fcall,install("x"));
-  PROTECT(fcall = LCONS(pat,fcall)); nprotect++;
+  fcall = LCONS(pat,fcall);
+  UNPROTECT(1);
+  PROTECT(fcall);
   SET_TAG(fcall,install("pattern"));
-  PROTECT(fcall = LCONS(install("grep"),fcall)); nprotect++;
-  PROTECT(ivpnames = eval(fcall,R_BaseEnv)); nprotect++;
+  fcall = LCONS(install("grep"),fcall);
+  UNPROTECT(1);
+  PROTECT(fcall);
+  PROTECT(ivpnames = eval(fcall,R_BaseEnv));
 
   nvar = LENGTH(ivpnames);
   if (nvar < 1)
     warningcall(R_NilValue,"in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.");
 
-  pidx = INTEGER(PROTECT(match(Pnames,ivpnames,0))); nprotect++;
+  pidx = INTEGER(PROTECT(match(Pnames,ivpnames,0)));
   for (k = 0; k < nvar; k++) pidx[k]--;
 
   // construct names of state variables using 'sub'
-  PROTECT(fcall = LCONS(ivpnames,R_NilValue)); nprotect++;
+  PROTECT(fcall = LCONS(ivpnames,R_NilValue));
   SET_TAG(fcall,install("x"));
-  PROTECT(fcall = LCONS(repl,fcall)); nprotect++;
+  fcall = LCONS(repl,fcall);
+  UNPROTECT(1);
+  PROTECT(fcall);
   SET_TAG(fcall,install("replacement"));
-  PROTECT(fcall = LCONS(pat,fcall)); nprotect++;
+  fcall = LCONS(pat,fcall);
+  UNPROTECT(1);
+  PROTECT(fcall);
   SET_TAG(fcall,install("pattern"));
-  PROTECT(fcall = LCONS(install("sub"),fcall)); nprotect++;
-  PROTECT(statenames = eval(fcall,R_BaseEnv)); nprotect++;
+  fcall = LCONS(install("sub"),fcall);
+  UNPROTECT(1);
+  PROTECT(fcall);
+  PROTECT(statenames = eval(fcall,R_BaseEnv));
 
-  PROTECT(x = ret_array(nvar,nsim,statenames)); nprotect++;
+  PROTECT(x = ret_array(nvar,nsim,statenames));
 
   for (j = 0, xp = REAL(x); j < nsim; j++) {
     pp = REAL(params) + npar*(j%nrep);
     for (k = 0; k < nvar; k++, xp++) *xp = pp[pidx[k]];
   }
 
-  UNPROTECT(nprotect);
+  UNPROTECT(9);
   return x;
 }

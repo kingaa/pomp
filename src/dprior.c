@@ -49,27 +49,29 @@ static R_INLINE SEXP eval_call (SEXP fn, SEXP args, double *p, int n)
 
 SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 {
-  int nprotect = 0;
+
   pompfunmode mode = undef;
   int npars, nreps;
   SEXP Pnames, pompfun, fn, args, F;
   int *dim;
 
-  PROTECT(params = as_matrix(params)); nprotect++;
+  PROTECT(params = as_matrix(params));
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nreps = dim[1];
 
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
 
   // extract the user-defined function
-  PROTECT(pompfun = GET_SLOT(object,install("dprior"))); nprotect++;
-  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,NA_STRING,Pnames,NA_STRING,NA_STRING)); nprotect++;
+  PROTECT(pompfun = GET_SLOT(object,install("dprior")));
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,NA_STRING,Pnames,NA_STRING,NA_STRING));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
 
   // to store results
-  PROTECT(F = NEW_NUMERIC(nreps)); nprotect++;
+  PROTECT(F = NEW_NUMERIC(nreps));
+
+  int nprotect = 6;
 
   switch (mode) {
   case Rfun: {

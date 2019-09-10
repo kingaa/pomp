@@ -176,13 +176,13 @@ void iterate_skeleton_R (
     double *cov)
 {
 
-  int nprotect = 0;
-  int first = 1;
   SEXP ans, nm;
   double *ap, *xs;
   int nsteps;
   int *posn = 0;
   int h, i, j, k;
+  int first = 1;
+  int nprotect = 0;
 
   for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
 
