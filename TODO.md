@@ -2,6 +2,7 @@
 
 ## For pomp 2:
 
+- correct documentation vis-a-vis smoothing distribution via filter.traj
 - add documentation for existing "todo" issues
 - for log-barycentric transformations, check that parameters are contiguous
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
@@ -72,7 +73,6 @@
 ## Documentation
 
 - FAQ needs update with new issues from @MarieAugerMethe
-- ~~Complete rewrite of manual for v. 2~~
 
 ## Helper packages
 

@@ -40,6 +40,7 @@
 ##' @param filter.mean logical; if \code{TRUE}, the filtering means are calculated for the state variables and parameters.
 ##'
 ##' @param filter.traj logical; if \code{TRUE}, a filtered trajectory is returned for the state variables and parameters.
+##' See \code{\link{filter.traj}} for more information.
 ##'
 ##' @param save.states logical.
 ##' If \code{save.states=TRUE}, the state-vector for each particle at each time is saved.
@@ -48,15 +49,18 @@
 ##' An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
 ##' @section Methods:
 ##' \describe{
-##' \item{logLik}{ the estimated log likelihood  }
-##' \item{cond.logLik}{ the estimated conditional log likelihood }
-##' \item{eff.sample.size}{
+##' \item{\code{\link{logLik}}}{ the estimated log likelihood  }
+##' \item{\code{\link{cond.logLik}}}{ the estimated conditional log likelihood }
+##' \item{\code{\link{eff.sample.size}}}{
 ##' the (time-dependent) estimated effective sample size }
-##' \item{pred.mean, pred.var}{ the mean and variance of the approximate prediction distribution }
-##' \item{filter.mean}{ the mean of the filtering distribution }
-##' \item{filter.traj}{ retrieve one sample from the smoothing distribution}
-##' \item{as.data.frame}{ coerce to a data frame }
-##' \item{plot}{diagnostic plots}
+##' \item{\code{\link{pred.mean}}, \code{\link{pred.var}}}{ the mean and variance of the approximate prediction distribution }
+##' \item{\code{\link{filter.mean}}}{ the mean of the filtering distribution }
+##' \item{\code{\link{filter.traj}}}{
+##'   retrieve one particle trajectory.
+##'   Useful for building up the smoothing distribution.
+##' }
+##' \item{\code{\link{as.data.frame}}}{ coerce to a data frame }
+##' \item{\code{\link{plot}}}{diagnostic plots}
 ##' }
 ##'
 ##' @section Filtering failures:
