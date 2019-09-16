@@ -26,8 +26,6 @@ default:
 .PHONY: clean win wind tests check
 
 dist manual vignettes: export R_QPDF=qpdf
-dist manual vignettes: export R_GSCMD=gs
-dist manual vignettes: export GS_QUALITY=ebook
 dist manual vignettes: export R_HOME=$(shell $(REXE) RHOME)
 check xcheck xxcheck: export FULL_TESTS=yes
 revdeps xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
@@ -120,6 +118,7 @@ manual: install $(PKG).pdf
 
 $(PKG).pdf: $(SOURCE)
 	$(RCMD) Rd2pdf --no-preview --pdf --force -o $(PKG).pdf .
+	$(RSCRIPT) -e "tools::compactPDF(\"$(PKG).pdf\")";
 
 tests: install $(TESTS)
 	export R_LIBS
