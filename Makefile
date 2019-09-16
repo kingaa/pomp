@@ -120,7 +120,6 @@ manual: install $(PKG).pdf
 
 $(PKG).pdf: $(SOURCE)
 	$(RCMD) Rd2pdf --no-preview --pdf --force -o $(PKG).pdf .
-	$(RSCRIPT) -e "tools::compactPDF(\"$(PKG).pdf\")";
 
 tests: install $(TESTS)
 	export R_LIBS
