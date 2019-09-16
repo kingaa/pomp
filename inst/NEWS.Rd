@@ -4,6 +4,7 @@
   \itemize{
     \item The source codes underlying specification of basic model components via \R functions has been reworked to remove reliance on deep \code{PROTECT} stacks.
     Thanks to Thomas Kalibera for showing the way!
+    \item A bug in the documentation for \code{filter.traj}, pointed out by Pierre Jacob, has been fixed.
   }
 }
 \section{Changes in \pkg{pomp} version 2.2.2}{

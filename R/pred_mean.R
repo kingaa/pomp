@@ -3,11 +3,11 @@
 ##' The mean of the prediction distribution
 ##'
 ##' The prediction distribution is that of
-##' \deqn{X_t \vert Y_1=y^*_1,\dots,Y_{t-1}=y^*_{t-1},}{Xt | Y1=y1*,\dots,Y(t-1)=y(t-1)*,}
-##' where \eqn{X_t}{Xt}, \eqn{Y_t}{Yt} are the latent state and observable processes, respectively, and \eqn{y^*_t}{yt*} is the data, at time \eqn{t}.
+##' \deqn{X(t_k) \vert Y(t_1)=y^*_1,\dots,Y(t_{k-1})=y^*_{k-1},}{Xk | Y1=y1*,\dots,Y(k-1)=y(k-1)*,}
+##' where \eqn{X(t_k)}{Xk}, \eqn{Y(t_k)}{Yk} are the latent state and observable processes, respectively, and \eqn{y^*_k}{yk*} is the data, at time \eqn{t_k}{tk}.
 ##'
 ##' The prediction mean is therefore the expectation of this distribution
-##' \deqn{E[X_t \vert Y_1=y^*_1,\dots,Y_{t-1}=y^*_{t-1}].}{E[Xt | Y1=y1*,\dots,Y(t-1)=y(t-1)*].}
+##' \deqn{E[X(t_k) \vert Y(t_1)=y^*_1,\dots,Y(t_{k-1})=y^*_{k-1}].}{E[Xk | Y1=y1*,\dots,Y(k-1)=y(k-1)*].}
 ##'
 ##' @name pred.mean
 ##' @aliases pred.mean pred.mean,ANY-method pred.mean,missing-method

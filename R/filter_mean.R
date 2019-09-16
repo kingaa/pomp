@@ -3,11 +3,11 @@
 ##' The mean of the filtering distribution
 ##'
 ##' The filtering distribution is that of
-##' \deqn{X_t \vert Y_1=y^*_1,\dots,Y_t=y^*_t,}{Xt | Y1=y1*,\dots,Yt=yt*,}
-##' where \eqn{X_t}{Xt}, \eqn{Y_t}{Yt} are the latent state and observable processes, respectively, and \eqn{y^*_t}{yt*} is the data, at time \eqn{t}.
+##' \deqn{X(t_k) \vert Y(t_1)=y^*_1,\dots,Y(t_k)=y^*_k,}{Xk | Y1=y1*,\dots,Yk=yk*,}
+##' where \eqn{X(t_k)}{Xk}, \eqn{Y(t_k)}{Yk} are the latent state and observable processes, respectively, and \eqn{y^*_t}{yt*} is the data, at time \eqn{t_k}{tk}.
 ##'
 ##' The filtering mean is therefore the expectation of this distribution
-##' \deqn{E[X_t \vert Y_1=y^*_1,\dots,Y_t=y^*_t].}{E[Xt | Y1=y1*,\dots,Yt=yt*].}
+##' \deqn{E[X(t_k) \vert Y(t_1)=y^*_1,\dots,Y(t_k)=y^*_k].}{E[Xk | Y1=y1*,\dots,Yk=yk*].}
 ##'
 ##' @name filter.mean
 ##' @docType methods

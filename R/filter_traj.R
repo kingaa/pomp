@@ -1,19 +1,18 @@
 ##' Filtering trajectories
 ##'
-##' Trajectories drawn from the smoothing distribution
+##' Drawing from the smoothing distribution
 ##'
 ##' The smoothing distribution is the distribution of
-##' \deqn{X_t | Y_1=y^*_1, \dots, Y_T=y^*_T,}{Xt | Y1=y1*, \dots, YT=yT*,}
-##' where \eqn{X_t}{Xt} is the latent state process, \eqn{Y_t}{Yt} is the observable process, \eqn{t} is time, and \eqn{T} is the time of the final observation.
+##' \deqn{X(t_k) | Y(t_1)=y^*_1, \dots, Y(t_n)=y^*_n,}{Xk | Y1=y1*, \dots, Yn=yn*,}
+##' where \eqn{X(t_k)}{Xk} is the latent state process and \eqn{Y(t_k)}{Yk} is the observable process at time \eqn{t_k}{tk}, and \eqn{n} is the number of observations.
 ##'
-##' In a particle filter, the trajectories of the individual particles are not independent of one another, since they share ancestry.
-##' However, a randomly sampled particle trajectory \eqn{X_1,\dots,X_T} is a draw from the smoothing distribution.
-##' Seting \code{filter.traj = TRUE} in \code{\link{pfilter}} causes one such trajectory to be sampled.
-##' By running multiple independent \code{pfilter} operations, one can thus build up a picture of the smoothing distribution.
+##' To draw samples from this distribution, one can run a number of independent particle filter (\code{\link{pfilter}}) operations, sampling the full trajectory of \emph{one} randomly-drawn particle from each one.
+##' One should view these as \emph{weighted} samples from the smoothing distribution, where the weights are the \emph{likelihoods} returned by each of the \code{\link{pfilter}} computations.
 ##'
-##' In particle MCMC (\code{\link{pmcmc}}), this operation is performed at each MCMC iteration.
-##' Assuming the MCMC chain has converged, and after proper measures are taken to assure approximate independence of samples, \code{filter.traj} allows one to extract a sample from the smoothing distribution.
+##' One accomplishes this by setting \code{filter.traj = TRUE} in each \code{\link{pfilter}} computation and extracting the trajectory using the \code{filter.traj} command.
 ##'
+##' In particle MCMC (\code{\link{pmcmc}}), the tracking of an individual trajectory is performed automatically.
+##' 
 ##' @name filter.traj
 ##' @aliases filter.traj filter.traj,ANY-method filter.traj,missing-method
 ##' @include pfilter.R pmcmc.R
