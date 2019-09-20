@@ -668,6 +668,14 @@
   pages: "104&#x2013;110"
   doi: "https://doi.org/10.1093/bioinformatics/btp619"
 
+- key: Wale2019
+  author: "N. Wale, M. J. Jones, D. G. Sim, A. F. Read, and A. A. King"
+  year: "2019"
+  title: "Breaking down defenses: Quantitative analysis of malaria infection dynamics reveals distinct immune defense strategies"
+  journal: "Proceedings of the National Academy of Sciences of the U S A"
+  volume: "accepted"
+  doi: "https://doi.org/10.1101/648428"
+
 - key: Whittles2017
   author: "L. K. Whittles, P. J. White, and X. Didelot"
   year: "2017"
