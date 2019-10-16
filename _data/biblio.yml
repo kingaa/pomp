@@ -671,10 +671,10 @@
 - key: Wale2019
   author: "N. Wale, M. J. Jones, D. G. Sim, A. F. Read, and A. A. King"
   year: "2019"
-  title: "Breaking down defenses: Quantitative analysis of malaria infection dynamics reveals distinct immune defense strategies"
+  title: "The contribution of host cell-directed vs. parasite-directed immunity to the disease and dynamics of malaria infections"
   journal: "Proceedings of the National Academy of Sciences of the U S A"
-  volume: "accepted"
-  doi: "https://doi.org/10.1101/648428"
+  pages: "201908147"
+  doi: "https://doi.org/10.1073/pnas.1908147116"
 
 - key: Whittles2017
   author: "L. K. Whittles, P. J. White, and X. Didelot"
