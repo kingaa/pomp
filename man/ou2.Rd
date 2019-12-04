@@ -5,9 +5,20 @@
 \alias{ou2}
 \title{Two-dimensional discrete-time Ornstein-Uhlenbeck process}
 \usage{
-ou2(alpha_1 = 0.8, alpha_2 = -0.5, alpha_3 = 0.3, alpha_4 = 0.9,
-  sigma_1 = 3, sigma_2 = -0.5, sigma_3 = 2, tau = 1, x1_0 = -3,
-  x2_0 = 4, times = 1:100, t0 = 0)
+ou2(
+  alpha_1 = 0.8,
+  alpha_2 = -0.5,
+  alpha_3 = 0.3,
+  alpha_4 = 0.9,
+  sigma_1 = 3,
+  sigma_2 = -0.5,
+  sigma_3 = 2,
+  tau = 1,
+  x1_0 = -3,
+  x2_0 = 4,
+  times = 1:100,
+  t0 = 0
+)
 }
 \arguments{
 \item{alpha_1, alpha_2, alpha_3, alpha_4}{entries of the \eqn{alpha} matrix, in column-major order.
@@ -49,11 +60,16 @@ pf <- pfilter(po,Np=1000)
 logLik(pf)
 }
 \seealso{
-Other pomp examples: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{ebola}},
-  \code{\link{gompertz}}, \code{\link{measles}},
-  \code{\link{ricker}}, \code{\link{rw2}},
-  \code{\link{sir_models}}, \code{\link{verhulst}}
+Other pomp examples: 
+\code{\link{blowflies}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{gompertz}()},
+\code{\link{measles}},
+\code{\link{ricker}()},
+\code{\link{rw2}()},
+\code{\link{sir_models}},
+\code{\link{verhulst}()}
 }
 \concept{pomp examples}
 \keyword{datasets}

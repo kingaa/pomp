@@ -5,8 +5,7 @@
 \alias{verhulst}
 \title{Verhulst-Pearl model}
 \usage{
-verhulst(n_0 = 10000, K = 10000, r = 0.9, sigma = 0.4, tau = 0.1,
-  dt = 0.01)
+verhulst(n_0 = 10000, K = 10000, r = 0.9, sigma = 0.4, tau = 0.1, dt = 0.01)
 }
 \arguments{
 \item{n_0}{initial condition}
@@ -47,10 +46,15 @@ logLik(pf)
 spy(po)
 }
 \seealso{
-Other pomp examples: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{ebola}},
-  \code{\link{gompertz}}, \code{\link{measles}},
-  \code{\link{ou2}}, \code{\link{ricker}},
-  \code{\link{rw2}}, \code{\link{sir_models}}
+Other pomp examples: 
+\code{\link{blowflies}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{gompertz}()},
+\code{\link{measles}},
+\code{\link{ou2}()},
+\code{\link{ricker}()},
+\code{\link{rw2}()},
+\code{\link{sir_models}}
 }
 \concept{pomp examples}

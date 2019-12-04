@@ -11,12 +11,31 @@
 \alias{bsmc2,pomp-method}
 \title{The Liu and West Bayesian particle filter}
 \usage{
-\S4method{bsmc2}{data.frame}(data, Np, smooth = 0.1, tol = 1e-17,
-  max.fail = 0, params, rprior, rinit, rprocess, dmeasure, partrans, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{bsmc2}{data.frame}(
+  data,
+  Np,
+  smooth = 0.1,
+  tol = 1e-17,
+  max.fail = 0,
+  params,
+  rprior,
+  rinit,
+  rprocess,
+  dmeasure,
+  partrans,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{bsmc2}{pomp}(data, Np, smooth = 0.1, tol = 1e-17,
-  max.fail = 0, ..., verbose = getOption("verbose", FALSE))
+\S4method{bsmc2}{pomp}(
+  data,
+  Np,
+  smooth = 0.1,
+  tol = 1e-17,
+  max.fail = 0,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -111,17 +130,26 @@ Sequential Monte Carlo Methods in Practice, pages 197-224.
 Springer, New York, 2001.
 }
 \seealso{
-Other particle filter methods: \code{\link{cond.logLik}},
-  \code{\link{eff.sample.size}}, \code{\link{filter.mean}},
-  \code{\link{filter.traj}}, \code{\link{mif2}},
-  \code{\link{pfilter}}, \code{\link{pmcmc}},
-  \code{\link{pred.mean}}, \code{\link{pred.var}}
+Other particle filter methods: 
+\code{\link{cond.logLik}()},
+\code{\link{eff.sample.size}()},
+\code{\link{filter.mean}()},
+\code{\link{filter.traj}()},
+\code{\link{mif2}()},
+\code{\link{pfilter}()},
+\code{\link{pmcmc}()},
+\code{\link{pred.mean}()},
+\code{\link{pred.var}()}
 
-Other pomp parameter estimation methods: \code{\link{abc}},
-  \code{\link{kalman}}, \code{\link{mif2}},
-  \code{\link{nlf}}, \code{\link{pmcmc}},
-  \code{\link{pomp-package}}, \code{\link{probe.match}},
-  \code{\link{spect.match}}
+Other pomp parameter estimation methods: 
+\code{\link{abc}()},
+\code{\link{kalman}},
+\code{\link{mif2}()},
+\code{\link{nlf}},
+\code{\link{pmcmc}()},
+\code{\link{pomp-package}},
+\code{\link{probe.match}},
+\code{\link{spect.match}}
 }
 \author{
 Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides

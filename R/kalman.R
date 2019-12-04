@@ -24,15 +24,12 @@
 ##' An object of class \sQuote{kalmand_pomp}.
 ##'
 ##' @references
-##' Evensen, G. (1994) Sequential data assimilation with a
-##' nonlinear quasi-geostrophic model using Monte Carlo methods to forecast
-##' error statistics Journal of Geophysical Research: Oceans 99:10143--10162
 ##'
-##' Evensen, G. (2009) Data assimilation: the ensemble Kalman filter
-##' Springer-Verlag.
+##' \Evensen1994
 ##'
-##' Anderson, J. L. (2001) An Ensemble Adjustment Kalman Filter for Data
-##' Assimilation Monthly Weather Review 129:2884--2903
+##' \Anderson2001
+##'
+##' \Evensen2009
 NULL
 
 setClass(

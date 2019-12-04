@@ -31,11 +31,16 @@ Evaluates the prior probability density.
 \seealso{
 Specification of the prior density evaluator: \code{\link{prior_spec}}
 
-Other pomp workhorses: \code{\link{dmeasure}},
-  \code{\link{dprocess}}, \code{\link{flow}},
-  \code{\link{partrans}}, \code{\link{rinit}},
-  \code{\link{rmeasure}}, \code{\link{rprior}},
-  \code{\link{rprocess}}, \code{\link{skeleton}},
-  \code{\link{workhorses}}
+Other pomp workhorses: 
+\code{\link{dmeasure}()},
+\code{\link{dprocess}()},
+\code{\link{flow}()},
+\code{\link{partrans}()},
+\code{\link{rinit}()},
+\code{\link{rmeasure}()},
+\code{\link{rprior}()},
+\code{\link{rprocess}()},
+\code{\link{skeleton}()},
+\code{\link{workhorses}}
 }
 \concept{pomp workhorses}

@@ -46,11 +46,8 @@
 ##' models and data.
 ##'
 ##' @references
-##' A. A. King, D. Nguyen, and E. L. Ionides (2016) Statistical
-##' Inference for Partially Observed Markov Processes via the Package
-##' \pkg{pomp}.  \emph{Journal of Statistical Software} 69(12): 1--43.  An
-##' updated version of this paper is available on the
-##' \href{https://kingaa.github.io/pomp/docs.html}{package website}.
+##'
+##' \King2016
 ##'
 ##' See the package website, \url{https://kingaa.github.io/pomp/}, for more
 ##' references.

@@ -81,9 +81,9 @@
 ##' @inheritSection pfilter Filtering failures
 ##'
 ##' @references
-##' E. L. Ionides, D. Nguyen, Y. Atchad\'e, S. Stoev, and A. A. King.
-##' Inference for dynamic and latent variable models via iterated, perturbed Bayes maps.
-##' Proc. Natl. Acad. Sci. U.S.A., 112:719--724, 2015.
+##'
+##' \Ionides2015
+##' 
 NULL
 
 setClass(

@@ -8,8 +8,14 @@
 \usage{
 bspline.basis(x, nbasis, degree = 3, deriv = 0, names = NULL)
 
-periodic.bspline.basis(x, nbasis, degree = 3, period = 1, deriv = 0,
-  names = NULL)
+periodic.bspline.basis(
+  x,
+  nbasis,
+  degree = 3,
+  period = 1,
+  deriv = 0,
+  names = NULL
+)
 }
 \arguments{
 \item{x}{Vector at which the spline functions are to be evaluated.}

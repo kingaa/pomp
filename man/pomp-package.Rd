@@ -45,35 +45,43 @@ models and data.
 }
 
 \references{
-A. A. King, D. Nguyen, and E. L. Ionides (2016) Statistical
-Inference for Partially Observed Markov Processes via the Package
-\pkg{pomp}.  \emph{Journal of Statistical Software} 69(12): 1--43.  An
-updated version of this paper is available on the
-\href{https://kingaa.github.io/pomp/docs.html}{package website}.
+\King2016
 
 See the package website, \url{https://kingaa.github.io/pomp/}, for more
 references.
 }
 \seealso{
-Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}},
-  \code{\link{covariate_table}},
-  \code{\link{distributions}}, \code{\link{dmeasure_spec}},
-  \code{\link{dprocess_spec}},
-  \code{\link{parameter_trans}}, \code{\link{prior_spec}},
-  \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
-  \code{\link{rprocess_spec}}, \code{\link{skeleton_spec}},
-  \code{\link{transformations}}, \code{\link{userdata}}
+Other information on model implementation: 
+\code{\link{Csnippet}},
+\code{\link{accumulators}},
+\code{\link{covariate_table}()},
+\code{\link{distributions}},
+\code{\link{dmeasure_spec}},
+\code{\link{dprocess_spec}},
+\code{\link{parameter_trans}()},
+\code{\link{prior_spec}},
+\code{\link{rinit_spec}},
+\code{\link{rmeasure_spec}},
+\code{\link{rprocess_spec}},
+\code{\link{skeleton_spec}},
+\code{\link{transformations}},
+\code{\link{userdata}}
 
-Other pomp parameter estimation methods: \code{\link{abc}},
-  \code{\link{bsmc2}}, \code{\link{kalman}},
-  \code{\link{mif2}}, \code{\link{nlf}},
-  \code{\link{pmcmc}}, \code{\link{probe.match}},
-  \code{\link{spect.match}}
+Other pomp parameter estimation methods: 
+\code{\link{abc}()},
+\code{\link{bsmc2}()},
+\code{\link{kalman}},
+\code{\link{mif2}()},
+\code{\link{nlf}},
+\code{\link{pmcmc}()},
+\code{\link{probe.match}},
+\code{\link{spect.match}}
 
-Other elementary POMP methods: \code{\link{pfilter}},
-  \code{\link{probe}}, \code{\link{simulate}},
-  \code{\link{spect}}
+Other elementary POMP methods: 
+\code{\link{pfilter}()},
+\code{\link{probe}()},
+\code{\link{simulate}()},
+\code{\link{spect}()}
 }
 \author{
 Aaron A. King

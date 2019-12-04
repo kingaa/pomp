@@ -15,9 +15,10 @@
 ##' @rdname measles
 ##' @aliases LondonYorke ewmeas ewcitmeas
 ##' @docType data
-##' @references W. P. London and J. A. Yorke, Recurrent Outbreaks of Measles,
-##' Chickenpox and Mumps: I. Seasonal Variation in Contact Rates, American
-##' Journal of Epidemiology, 98:453--468, 1973.
+##' @references
+##'
+##' \London1973
+##' 
 ##' @keywords datasets
 ##' @family datasets
 ##' @family pomp examples

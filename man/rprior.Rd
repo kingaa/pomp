@@ -29,11 +29,16 @@ Sample from the prior probability distribution.
 \seealso{
 Specification of the prior distribution simulator: \code{\link{prior_spec}}
 
-Other pomp workhorses: \code{\link{dmeasure}},
-  \code{\link{dprior}}, \code{\link{dprocess}},
-  \code{\link{flow}}, \code{\link{partrans}},
-  \code{\link{rinit}}, \code{\link{rmeasure}},
-  \code{\link{rprocess}}, \code{\link{skeleton}},
-  \code{\link{workhorses}}
+Other pomp workhorses: 
+\code{\link{dmeasure}()},
+\code{\link{dprior}()},
+\code{\link{dprocess}()},
+\code{\link{flow}()},
+\code{\link{partrans}()},
+\code{\link{rinit}()},
+\code{\link{rmeasure}()},
+\code{\link{rprocess}()},
+\code{\link{skeleton}()},
+\code{\link{workhorses}}
 }
 \concept{pomp workhorses}

@@ -10,20 +10,39 @@
 \alias{pomp_fun,pomp_fun-method}
 \title{The "pomp_fun" class}
 \usage{
-\S4method{pomp_fun}{missing}(slotname = NULL, obsnames = character(0),
-  statenames = character(0), paramnames = character(0),
-  covarnames = character(0), ...)
+\S4method{pomp_fun}{missing}(
+  slotname = NULL,
+  obsnames = character(0),
+  statenames = character(0),
+  paramnames = character(0),
+  covarnames = character(0),
+  ...
+)
 
 \S4method{pomp_fun}{`function`}(f, proto = NULL, slotname = NULL, ...)
 
-\S4method{pomp_fun}{character}(f, PACKAGE = NULL,
-  obsnames = character(0), statenames = character(0),
-  paramnames = character(0), covarnames = character(0),
-  slotname = NULL, ...)
+\S4method{pomp_fun}{character}(
+  f,
+  PACKAGE = NULL,
+  obsnames = character(0),
+  statenames = character(0),
+  paramnames = character(0),
+  covarnames = character(0),
+  slotname = NULL,
+  ...
+)
 
-\S4method{pomp_fun}{Csnippet}(f, slotname = NULL, libname = NULL,
-  obsnames = character(0), statenames = character(0),
-  paramnames = character(0), covarnames = character(0), Cname, ...)
+\S4method{pomp_fun}{Csnippet}(
+  f,
+  slotname = NULL,
+  libname = NULL,
+  obsnames = character(0),
+  statenames = character(0),
+  paramnames = character(0),
+  covarnames = character(0),
+  Cname,
+  ...
+)
 
 \S4method{pomp_fun}{pomp_fun}(f, ...)
 }

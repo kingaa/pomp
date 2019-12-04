@@ -32,7 +32,7 @@ Thus for example, if \code{var} is a state variable, when \code{f} is called, \c
 \code{f} should return the \emph{log} likelihood of a transition from \code{x1} at time \code{t1} to \code{x2} at time \code{t2},
 assuming that no intervening transitions have occurred.
 
-To see examples, consult the demos and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
+  To see examples, consult the demos and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 }
 \section{\strong{Note}}{
 
@@ -47,14 +47,20 @@ By default, \code{dprocess} returns missing values (\code{NA}).
 }
 
 \seealso{
-Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}},
-  \code{\link{covariate_table}},
-  \code{\link{distributions}}, \code{\link{dmeasure_spec}},
-  \code{\link{parameter_trans}},
-  \code{\link{pomp-package}}, \code{\link{prior_spec}},
-  \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
-  \code{\link{rprocess_spec}}, \code{\link{skeleton_spec}},
-  \code{\link{transformations}}, \code{\link{userdata}}
+Other information on model implementation: 
+\code{\link{Csnippet}},
+\code{\link{accumulators}},
+\code{\link{covariate_table}()},
+\code{\link{distributions}},
+\code{\link{dmeasure_spec}},
+\code{\link{parameter_trans}()},
+\code{\link{pomp-package}},
+\code{\link{prior_spec}},
+\code{\link{rinit_spec}},
+\code{\link{rmeasure_spec}},
+\code{\link{rprocess_spec}},
+\code{\link{skeleton_spec}},
+\code{\link{transformations}},
+\code{\link{userdata}}
 }
 \concept{information on model implementation}

@@ -108,24 +108,26 @@ print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=dW))
 
 }
 \references{
-C. Breto & E. L. Ionides, Compound Markov counting processes
-and their applications to modeling infinitesimally over-dispersed systems.
-Stoch. Proc. Appl., 121:2571--2591, 2011.
+\Breto2011
 
-D. He, E. L. Ionides, & A. A. King, Plug-and-play inference for disease
-dynamics: measles in large and small populations as a case study.  J. R.
-Soc. Interface, 7:271--283, 2010.
+\He2010
 }
 \seealso{
-Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}},
-  \code{\link{covariate_table}},
-  \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
-  \code{\link{parameter_trans}},
-  \code{\link{pomp-package}}, \code{\link{prior_spec}},
-  \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
-  \code{\link{rprocess_spec}}, \code{\link{skeleton_spec}},
-  \code{\link{transformations}}, \code{\link{userdata}}
+Other information on model implementation: 
+\code{\link{Csnippet}},
+\code{\link{accumulators}},
+\code{\link{covariate_table}()},
+\code{\link{dmeasure_spec}},
+\code{\link{dprocess_spec}},
+\code{\link{parameter_trans}()},
+\code{\link{pomp-package}},
+\code{\link{prior_spec}},
+\code{\link{rinit_spec}},
+\code{\link{rmeasure_spec}},
+\code{\link{rprocess_spec}},
+\code{\link{skeleton_spec}},
+\code{\link{transformations}},
+\code{\link{userdata}}
 }
 \author{
 Aaron A. King

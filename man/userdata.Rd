@@ -104,7 +104,7 @@ simulate(times=1:100,t0=0,
     delta.t=1
   ),
   rmeasure=Csnippet("
-       double phi = *(get_userdata_double(\\"phi\\"));
+       double phi = *(get_userdata_double(\"phi\"));
        y = rpois(phi*N);"
   ),
   paramnames=c("r","sigma"),
@@ -149,15 +149,20 @@ simulate(times=1:100,t0=0,
 ) -> rick3
 }
 \seealso{
-Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}},
-  \code{\link{covariate_table}},
-  \code{\link{distributions}}, \code{\link{dmeasure_spec}},
-  \code{\link{dprocess_spec}},
-  \code{\link{parameter_trans}},
-  \code{\link{pomp-package}}, \code{\link{prior_spec}},
-  \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
-  \code{\link{rprocess_spec}}, \code{\link{skeleton_spec}},
-  \code{\link{transformations}}
+Other information on model implementation: 
+\code{\link{Csnippet}},
+\code{\link{accumulators}},
+\code{\link{covariate_table}()},
+\code{\link{distributions}},
+\code{\link{dmeasure_spec}},
+\code{\link{dprocess_spec}},
+\code{\link{parameter_trans}()},
+\code{\link{pomp-package}},
+\code{\link{prior_spec}},
+\code{\link{rinit_spec}},
+\code{\link{rmeasure_spec}},
+\code{\link{rprocess_spec}},
+\code{\link{skeleton_spec}},
+\code{\link{transformations}}
 }
 \concept{information on model implementation}

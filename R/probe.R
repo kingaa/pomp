@@ -57,13 +57,11 @@
 ##' }
 ##'
 ##' @references
-##' B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P.
-##' Ellner, E. McCauley, R. M. Nisbet, S. N. Wood Why do populations cycle? A
-##' synthesis of statistical and mechanistic modeling approaches, Ecology,
-##' 80:1789--1805, 1999.
 ##'
-##' S. N. Wood Statistical inference for noisy nonlinear ecological dynamic
-##' systems, Nature, 466: 1102--1104, 2010.
+##' \Kendall1999
+##'
+##' \Wood2010
+##' 
 NULL
 
 setClass(

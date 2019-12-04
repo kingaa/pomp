@@ -26,15 +26,16 @@ bsflu \%>\%
   theme_bw()
 }
 \references{
-Anonymous (1978).
-Influenza in a boarding school.
-British Medical Journal 1:587
+\Anonymous1978
 }
 \seealso{
 \link{sir_models}
 
-Other datasets: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{ebola}},
-  \code{\link{measles}}, \code{\link{parus}}
+Other datasets: 
+\code{\link{blowflies}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{measles}},
+\code{\link{parus}}
 }
 \concept{datasets}

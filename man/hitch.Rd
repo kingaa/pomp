@@ -5,9 +5,21 @@
 \alias{hitch}
 \title{Hitching C snippets and R functions to pomp_fun objects}
 \usage{
-hitch(..., templates, obsnames, statenames, paramnames, covarnames,
-  PACKAGE, globals, cfile, cdir = getOption("pomp_cdir", NULL),
-  shlib.args, compile = TRUE, verbose = getOption("verbose", FALSE))
+hitch(
+  ...,
+  templates,
+  obsnames,
+  statenames,
+  paramnames,
+  covarnames,
+  PACKAGE,
+  globals,
+  cfile,
+  cdir = getOption("pomp_cdir", NULL),
+  shlib.args,
+  compile = TRUE,
+  verbose = getOption("verbose", FALSE)
+)
 }
 \arguments{
 \item{\dots}{named arguments representing the user procedures to be hitched.

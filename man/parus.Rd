@@ -42,15 +42,14 @@ pf \%>\% simulate() \%>\% plot()
 
 }
 \references{
-McCleery, R. & Perrins, C. (1991)
-Effects of predation on the numbers of Great Tits, Parus major.
-In: Bird Population Studies,
-edited by Perrins, C.M., Lebreton, J.-D. & Hirons, G.J.M.
-Oxford. Univ. Press. pp. 129--147.
+\McCleery1991
 }
 \seealso{
-Other datasets: \code{\link{blowflies}},
-  \code{\link{bsflu}}, \code{\link{dacca}},
-  \code{\link{ebola}}, \code{\link{measles}}
+Other datasets: 
+\code{\link{blowflies}},
+\code{\link{bsflu}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{measles}}
 }
 \concept{datasets}

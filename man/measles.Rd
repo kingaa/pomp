@@ -47,20 +47,26 @@ plot(reports~date,data=ewcitmeas,subset=city=="Liverpool",type='l')
 
 }
 \references{
-W. P. London and J. A. Yorke, Recurrent Outbreaks of Measles,
-Chickenpox and Mumps: I. Seasonal Variation in Contact Rates, American
-Journal of Epidemiology, 98:453--468, 1973.
+\London1973
 }
 \seealso{
-Other datasets: \code{\link{blowflies}},
-  \code{\link{bsflu}}, \code{\link{dacca}},
-  \code{\link{ebola}}, \code{\link{parus}}
+Other datasets: 
+\code{\link{blowflies}},
+\code{\link{bsflu}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{parus}}
 
-Other pomp examples: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{ebola}},
-  \code{\link{gompertz}}, \code{\link{ou2}},
-  \code{\link{ricker}}, \code{\link{rw2}},
-  \code{\link{sir_models}}, \code{\link{verhulst}}
+Other pomp examples: 
+\code{\link{blowflies}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{gompertz}()},
+\code{\link{ou2}()},
+\code{\link{ricker}()},
+\code{\link{rw2}()},
+\code{\link{sir_models}},
+\code{\link{verhulst}()}
 }
 \concept{datasets}
 \concept{pomp examples}

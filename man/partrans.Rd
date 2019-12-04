@@ -9,8 +9,7 @@
 \alias{partrans,missing-method}
 \title{partrans}
 \usage{
-\S4method{partrans}{pomp}(object, params, dir = c("fromEst", "toEst"),
-  ...)
+\S4method{partrans}{pomp}(object, params, dir = c("fromEst", "toEst"), ...)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
@@ -34,11 +33,16 @@ Performs parameter transformations.
 \seealso{
 Specification of parameter transformations: \code{\link{parameter_trans}}
 
-Other pomp workhorses: \code{\link{dmeasure}},
-  \code{\link{dprior}}, \code{\link{dprocess}},
-  \code{\link{flow}}, \code{\link{rinit}},
-  \code{\link{rmeasure}}, \code{\link{rprior}},
-  \code{\link{rprocess}}, \code{\link{skeleton}},
-  \code{\link{workhorses}}
+Other pomp workhorses: 
+\code{\link{dmeasure}()},
+\code{\link{dprior}()},
+\code{\link{dprocess}()},
+\code{\link{flow}()},
+\code{\link{rinit}()},
+\code{\link{rmeasure}()},
+\code{\link{rprior}()},
+\code{\link{rprocess}()},
+\code{\link{skeleton}()},
+\code{\link{workhorses}}
 }
 \concept{pomp workhorses}

@@ -46,17 +46,12 @@
 ##' }
 ##'
 ##' @references
-##' J.-M. Marin, P. Pudlo, C. P. Robert, and R. J. Ryder,
-##' Approximate Bayesian computational methods.  Statistics and Compuing
-##' 22:1167--1180, 2012.
+##' 
+##' \Marin2012
 ##'
-##' T. Toni and M. P. H. Stumpf, Simulation-based model selection for dynamical
-##' systems in systems and population biology, Bioinformatics 26:104--110,
-##' 2010.
+##' \Toni2010
 ##'
-##' T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf, Approximate
-##' Bayesian computation scheme for parameter inference and model selection in
-##' dynamical systems Journal of the Royal Society, Interface 6:187--202, 2009.
+##' \Toni2009
 ##'
 NULL
 
@@ -125,7 +120,7 @@ setMethod(
         data,
         Nabc=Nabc,
         proposal=proposal,
-        scale=scale,
+         scale=scale,
         epsilon=epsilon,
         probes=probes,
         params=params,

@@ -47,7 +47,7 @@ trivial <- function (X, Y, ...) {
   c(X = X+1, Y = Y-1)
 }
 
-## We specify \\code{rinit} with a function that
+## We specify \code{rinit} with a function that
 ## sets state variables X and Y to the values in
 ## parameters X0, Y0:
 
@@ -70,15 +70,20 @@ plot(simulate(times=1:5,t0=0,params=c(X0=3,Y0=-7),
   rinit=g,rprocess=onestep(trivial)))
 }
 \seealso{
-Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}},
-  \code{\link{covariate_table}},
-  \code{\link{distributions}}, \code{\link{dmeasure_spec}},
-  \code{\link{dprocess_spec}},
-  \code{\link{parameter_trans}},
-  \code{\link{pomp-package}}, \code{\link{prior_spec}},
-  \code{\link{rmeasure_spec}}, \code{\link{rprocess_spec}},
-  \code{\link{skeleton_spec}},
-  \code{\link{transformations}}, \code{\link{userdata}}
+Other information on model implementation: 
+\code{\link{Csnippet}},
+\code{\link{accumulators}},
+\code{\link{covariate_table}()},
+\code{\link{distributions}},
+\code{\link{dmeasure_spec}},
+\code{\link{dprocess_spec}},
+\code{\link{parameter_trans}()},
+\code{\link{pomp-package}},
+\code{\link{prior_spec}},
+\code{\link{rmeasure_spec}},
+\code{\link{rprocess_spec}},
+\code{\link{skeleton_spec}},
+\code{\link{transformations}},
+\code{\link{userdata}}
 }
 \concept{information on model implementation}

@@ -35,20 +35,12 @@
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the log quasilikelihood.
 ##'
 ##' @references
-##' Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B. T. and Nychka D. W. (1998)
-##' Noise and nonlinearity in measles epidemics:
-##' combining mechanistic and statistical approaches to population modeling.
-##' \emph{American Naturalist} \bold{151}, 425--440.
 ##'
-##' Kendall, B. E., Briggs, C. J., Murdoch, W. W., Turchin, P., Ellner, S. P., McCauley, E., Nisbet, R. M. and Wood S. N. (1999)
-##' Why do populations cycle?
-##' A synthesis of statistical and mechanistic modeling approaches.
-##' \emph{Ecology} \bold{80}, 1789--1805.
+##' \Ellner1998
 ##'
-##' Kendall, B. E., Ellner, S. P., McCauley, E., Wood, S. N., Briggs, C. J., Murdoch, W. W. and Turchin, P. (2005)
-##' Population cycles in the pine looper moth (\emph{Bupalus piniarius}):
-##' dynamical tests of mechanistic hypotheses.
-##' \emph{Ecological Monographs} \bold{75}, 259--276.
+##' \Kendall1999
+##'
+##' \Kendall2005
 ##'
 ##' @section Periodically-forced systems (seasonality):
 ##' Unlike other \pkg{pomp} estimation methods, NLF cannot accommodate general time-dependence in the model via explicit time-dependence or dependence on time-varying covariates.

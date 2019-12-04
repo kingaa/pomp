@@ -51,11 +51,16 @@ The values in \code{times} are the times at which the state of the simulated pro
 \seealso{
 Specification of the process-model simulator: \code{\link{rprocess_spec}}
 
-Other pomp workhorses: \code{\link{dmeasure}},
-  \code{\link{dprior}}, \code{\link{dprocess}},
-  \code{\link{flow}}, \code{\link{partrans}},
-  \code{\link{rinit}}, \code{\link{rmeasure}},
-  \code{\link{rprior}}, \code{\link{skeleton}},
-  \code{\link{workhorses}}
+Other pomp workhorses: 
+\code{\link{dmeasure}()},
+\code{\link{dprior}()},
+\code{\link{dprocess}()},
+\code{\link{flow}()},
+\code{\link{partrans}()},
+\code{\link{rinit}()},
+\code{\link{rmeasure}()},
+\code{\link{rprior}()},
+\code{\link{skeleton}()},
+\code{\link{workhorses}}
 }
 \concept{pomp workhorses}

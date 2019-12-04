@@ -4,11 +4,35 @@
 \alias{pomp}
 \title{Constructor of the basic pomp object}
 \usage{
-pomp(data, times, t0, ..., rinit, rprocess, dprocess, rmeasure, dmeasure,
-  skeleton, rprior, dprior, partrans, covar, params, accumvars, obsnames,
-  statenames, paramnames, covarnames, PACKAGE, globals,
-  cdir = getOption("pomp_cdir", NULL), cfile, shlib.args,
-  compile = TRUE, verbose = getOption("verbose", FALSE))
+pomp(
+  data,
+  times,
+  t0,
+  ...,
+  rinit,
+  rprocess,
+  dprocess,
+  rmeasure,
+  dmeasure,
+  skeleton,
+  rprior,
+  dprior,
+  partrans,
+  covar,
+  params,
+  accumvars,
+  obsnames,
+  statenames,
+  paramnames,
+  covarnames,
+  PACKAGE,
+  globals,
+  cdir = getOption("pomp_cdir", NULL),
+  cfile,
+  shlib.args,
+  compile = TRUE,
+  verbose = getOption("verbose", FALSE)
+)
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -174,9 +198,7 @@ FIXME }
 }
 
 \references{
-A. A. King, D. Nguyen, and E. L. Ionides (2016)
-Statistical Inference for Partially Observed Markov Processes via the Package \pkg{pomp}.
-Journal of Statistical Software 69(12): 1--43.
+\King2016
 }
 \author{
 Aaron A. King

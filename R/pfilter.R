@@ -71,9 +71,8 @@
 ##' A warning is generated when this occurs unless the cumulative number of failures exceeds \code{max.fail}, in which case an error is generated.
 ##'
 ##' @references
-##' M. S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp.
-##' A Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian Bayesian Tracking.
-##' IEEE Trans. Sig. Proc. 50:174--188, 2002.
+##'
+##' \Arulampalam2002
 ##'
 ##' @example examples/pfilter.R
 ##'

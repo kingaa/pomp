@@ -22,9 +22,8 @@
 ##' @importFrom stats smooth.spline predict
 ##'
 ##' @references
-##' A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,
-##' Inapparent infections and cholera dynamics,
-##' Nature, 454:877-880, 2008
+##'
+##' \King2008
 ##'
 ##' @keywords models datasets
 ##' @example examples/dacca.R

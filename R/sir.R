@@ -205,7 +205,6 @@ sir <- function (
 
 ##' @name sir2
 ##' @rdname sir
-##' @inheritParams sir
 ##' @export
 sir2 <- function (
   gamma = 24, mu = 1/70, iota = 0.1,

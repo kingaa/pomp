@@ -11,8 +11,15 @@ mvn.diag.rw(rw.sd)
 
 mvn.rw(rw.var)
 
-mvn.rw.adaptive(rw.sd, rw.var, scale.start = NA, scale.cooling = 0.999,
-  shape.start = NA, target = 0.234, max.scaling = 50)
+mvn.rw.adaptive(
+  rw.sd,
+  rw.var,
+  scale.start = NA,
+  scale.cooling = 0.999,
+  shape.start = NA,
+  target = 0.234,
+  max.scaling = 50
+)
 }
 \arguments{
 \item{rw.sd}{named numeric vector; random-walk SDs for a multivariate
@@ -45,9 +52,7 @@ proposal distribution.
 Functions to construct proposal distributions for use with MCMC methods.
 }
 \references{
-Gareth O. Roberts and Jeffrey S. Rosenthal.
-Examples of Adaptive MCMC.
-J. Comput. Graph. Stat., 18:349--367, 2009.
+\Roberts2009
 }
 \seealso{
 \code{\link{pmcmc}}, \code{\link{abc}}

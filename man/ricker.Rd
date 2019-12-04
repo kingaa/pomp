@@ -39,11 +39,16 @@ coef(po)
 simulate(po) \%>\% plot()
 }
 \seealso{
-Other pomp examples: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{ebola}},
-  \code{\link{gompertz}}, \code{\link{measles}},
-  \code{\link{ou2}}, \code{\link{rw2}},
-  \code{\link{sir_models}}, \code{\link{verhulst}}
+Other pomp examples: 
+\code{\link{blowflies}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{gompertz}()},
+\code{\link{measles}},
+\code{\link{ou2}()},
+\code{\link{rw2}()},
+\code{\link{sir_models}},
+\code{\link{verhulst}()}
 }
 \concept{pomp examples}
 \keyword{datasets}

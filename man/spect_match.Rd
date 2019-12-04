@@ -16,24 +16,65 @@
 \alias{spect_objfun,spect_match_objfun-method}
 \title{Spectrum matching}
 \usage{
-\S4method{spect_objfun}{data.frame}(data, est = character(0),
-  weights = 1, fail.value = NA, vars, kernel.width, nsim,
-  seed = NULL, transform.data = identity, detrend = c("none", "mean",
-  "linear", "quadratic"), params, rinit, rprocess, rmeasure, partrans, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{spect_objfun}{data.frame}(
+  data,
+  est = character(0),
+  weights = 1,
+  fail.value = NA,
+  vars,
+  kernel.width,
+  nsim,
+  seed = NULL,
+  transform.data = identity,
+  detrend = c("none", "mean", "linear", "quadratic"),
+  params,
+  rinit,
+  rprocess,
+  rmeasure,
+  partrans,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{spect_objfun}{pomp}(data, est = character(0), weights = 1,
-  fail.value = NA, vars, kernel.width, nsim, seed = NULL,
-  transform.data = identity, detrend = c("none", "mean", "linear",
-  "quadratic"), ..., verbose = getOption("verbose", FALSE))
+\S4method{spect_objfun}{pomp}(
+  data,
+  est = character(0),
+  weights = 1,
+  fail.value = NA,
+  vars,
+  kernel.width,
+  nsim,
+  seed = NULL,
+  transform.data = identity,
+  detrend = c("none", "mean", "linear", "quadratic"),
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{spect_objfun}{spectd_pomp}(data, est = character(0),
-  weights = 1, fail.value = NA, vars, kernel.width, nsim,
-  seed = NULL, transform.data = identity, detrend, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{spect_objfun}{spectd_pomp}(
+  data,
+  est = character(0),
+  weights = 1,
+  fail.value = NA,
+  vars,
+  kernel.width,
+  nsim,
+  seed = NULL,
+  transform.data = identity,
+  detrend,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{spect_objfun}{spect_match_objfun}(data, est, weights, fail.value,
-  seed = NULL, ..., verbose = getOption("verbose", FALSE))
+\S4method{spect_objfun}{spect_match_objfun}(
+  data,
+  est,
+  weights,
+  fail.value,
+  seed = NULL,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -162,10 +203,14 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 \code{\link{spect}} \code{\link{optim}}
 \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 
-Other pomp parameter estimation methods: \code{\link{abc}},
-  \code{\link{bsmc2}}, \code{\link{kalman}},
-  \code{\link{mif2}}, \code{\link{nlf}},
-  \code{\link{pmcmc}}, \code{\link{pomp-package}},
-  \code{\link{probe.match}}
+Other pomp parameter estimation methods: 
+\code{\link{abc}()},
+\code{\link{bsmc2}()},
+\code{\link{kalman}},
+\code{\link{mif2}()},
+\code{\link{nlf}},
+\code{\link{pmcmc}()},
+\code{\link{pomp-package}},
+\code{\link{probe.match}}
 }
 \concept{pomp parameter estimation methods}

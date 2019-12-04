@@ -5,8 +5,15 @@
 \alias{gompertz}
 \title{Gompertz model with log-normal observations.}
 \usage{
-gompertz(K = 1, r = 0.1, sigma = 0.1, tau = 0.1, X_0 = 1,
-  times = 1:100, t0 = 0)
+gompertz(
+  K = 1,
+  r = 0.1,
+  sigma = 0.1,
+  tau = 0.1,
+  X_0 = 1,
+  times = 1:100,
+  t0 = 0
+)
 }
 \arguments{
 \item{K}{carrying capacity}
@@ -49,11 +56,16 @@ plot(gompertz(K=2,r=0.01))
 
 }
 \seealso{
-Other pomp examples: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{ebola}},
-  \code{\link{measles}}, \code{\link{ou2}},
-  \code{\link{ricker}}, \code{\link{rw2}},
-  \code{\link{sir_models}}, \code{\link{verhulst}}
+Other pomp examples: 
+\code{\link{blowflies}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{measles}},
+\code{\link{ou2}()},
+\code{\link{ricker}()},
+\code{\link{rw2}()},
+\code{\link{sir_models}},
+\code{\link{verhulst}()}
 }
 \concept{pomp examples}
 \keyword{datasets}

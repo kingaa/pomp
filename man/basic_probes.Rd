@@ -26,11 +26,19 @@ probe.period(var, kernel.width, transform = identity)
 
 probe.quantile(var, probs, ...)
 
-probe.acf(var, lags, type = c("covariance", "correlation"),
-  transform = identity)
+probe.acf(
+  var,
+  lags,
+  type = c("covariance", "correlation"),
+  transform = identity
+)
 
-probe.ccf(vars, lags, type = c("covariance", "correlation"),
-  transform = identity)
+probe.ccf(
+  vars,
+  lags,
+  type = c("covariance", "correlation"),
+  transform = identity
+)
 
 probe.marginal(var, ref, order = 3, diff = 1, transform = identity)
 
@@ -88,18 +96,16 @@ Several simple and configurable probes are provided with in the package.
 These can be used directly and as templates for custom probes.
 }
 \references{
-B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P.
-Ellner, E. McCauley, R. M. Nisbet, S. N. Wood Why do populations cycle? A
-synthesis of statistical and mechanistic modeling approaches, Ecology,
-80:1789--1805, 1999.
+\Kendall1999
 
-S. N. Wood Statistical inference for noisy nonlinear ecological dynamic
-systems, Nature, 466: 1102--1104, 2010.
+\Wood2010
 }
 \seealso{
-Other summary statistics methods: \code{\link{abc}},
-  \code{\link{probe.match}}, \code{\link{probe}},
-  \code{\link{spect}}
+Other summary statistics methods: 
+\code{\link{abc}()},
+\code{\link{probe.match}},
+\code{\link{probe}()},
+\code{\link{spect}()}
 }
 \author{
 Daniel C. Reuman, Aaron A. King

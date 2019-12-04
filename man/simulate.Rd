@@ -13,18 +13,46 @@
 \alias{simulate,objfun-method}
 \title{Simulations of a partially-observed Markov process}
 \usage{
-\S4method{simulate}{missing}(nsim = 1, seed = NULL, times, t0, params,
-  rinit, rprocess, rmeasure, format = c("pomps", "arrays", "data.frame"),
-  include.data = FALSE, ..., verbose = getOption("verbose", FALSE))
+\S4method{simulate}{missing}(
+  nsim = 1,
+  seed = NULL,
+  times,
+  t0,
+  params,
+  rinit,
+  rprocess,
+  rmeasure,
+  format = c("pomps", "arrays", "data.frame"),
+  include.data = FALSE,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{simulate}{data.frame}(object, nsim = 1, seed = NULL, times,
-  t0, params, rinit, rprocess, rmeasure, format = c("pomps", "arrays",
-  "data.frame"), include.data = FALSE, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{simulate}{data.frame}(
+  object,
+  nsim = 1,
+  seed = NULL,
+  times,
+  t0,
+  params,
+  rinit,
+  rprocess,
+  rmeasure,
+  format = c("pomps", "arrays", "data.frame"),
+  include.data = FALSE,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{simulate}{pomp}(object, nsim = 1, seed = NULL,
-  format = c("pomps", "arrays", "data.frame"), include.data = FALSE,
-  ..., verbose = getOption("verbose", FALSE))
+\S4method{simulate}{pomp}(
+  object,
+  nsim = 1,
+  seed = NULL,
+  format = c("pomps", "arrays", "data.frame"),
+  include.data = FALSE,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
 \S4method{simulate}{objfun}(object, nsim = 1, seed = NULL, ...)
 }
@@ -116,9 +144,11 @@ Adding column names to \code{params} can be helpful.
 processes.
 }
 \seealso{
-Other elementary POMP methods: \code{\link{pfilter}},
-  \code{\link{pomp-package}}, \code{\link{probe}},
-  \code{\link{spect}}
+Other elementary POMP methods: 
+\code{\link{pfilter}()},
+\code{\link{pomp-package}},
+\code{\link{probe}()},
+\code{\link{spect}()}
 }
 \author{
 Aaron A. King

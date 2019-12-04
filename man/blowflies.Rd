@@ -7,11 +7,23 @@
 \alias{blowflies2}
 \title{Nicholson's blowflies.}
 \usage{
-blowflies1(P = 3.2838, delta = 0.16073, N0 = 679.94,
-  sigma.P = 1.3512, sigma.d = 0.74677, sigma.y = 0.026649)
+blowflies1(
+  P = 3.2838,
+  delta = 0.16073,
+  N0 = 679.94,
+  sigma.P = 1.3512,
+  sigma.d = 0.74677,
+  sigma.y = 0.026649
+)
 
-blowflies2(P = 2.7319, delta = 0.17377, N0 = 800.31,
-  sigma.P = 1.442, sigma.d = 0.76033, sigma.y = 0.010846)
+blowflies2(
+  P = 2.7319,
+  delta = 0.17377,
+  N0 = 800.31,
+  sigma.P = 1.442,
+  sigma.d = 0.76033,
+  sigma.y = 0.010846
+)
 }
 \arguments{
 \item{P}{reproduction parameter}
@@ -62,42 +74,36 @@ plot(blowflies2())
 
 }
 \references{
-A. J. Nicholson (1957)
-The self-adjustment of populations to change.
-Cold Spring Harbor Symposia on Quantitative Biology,
-\bold{22}, 153--173.
+\Nicholson1957
 
-Y. Xia and H. Tong (2011)
-Feature Matching in Time Series Modeling.
-\emph{Statistical Science} \bold{26}, 21--46.
+\Xia2011
 
-E. L. Ionides (2011)
-Discussion of "Feature Matching in Time Series Modeling" by Y. Xia and H. Tong.
-\emph{Statistical Science} \bold{26}, 49--52.
+\Ionides2011
 
-S. N. Wood (2010)
-Statistical inference for noisy nonlinear ecological dynamic systems.
-\emph{Nature} \bold{466}, 1102--1104.
+\Wood2010
 
-W. S. C. Gurney, S. P. Blythe, and R. M. Nisbet (1980)
-Nicholson's blowflies revisited.
-\emph{Nature} \bold{287}, 17--21.
+\Gurney1980
 
-D. R. Brillinger, J. Guckenheimer, P. Guttorp and G. Oster (1980)
-Empirical modelling of population time series: The case of age and density dependent rates.
-In: G. Oster (ed.), Some Questions in Mathematical Biology, vol. 13, pp. 65--90.
-American Mathematical Society, Providence.
+\Brillinger1980
 }
 \seealso{
-Other pomp examples: \code{\link{dacca}},
-  \code{\link{ebola}}, \code{\link{gompertz}},
-  \code{\link{measles}}, \code{\link{ou2}},
-  \code{\link{ricker}}, \code{\link{rw2}},
-  \code{\link{sir_models}}, \code{\link{verhulst}}
+Other pomp examples: 
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{gompertz}()},
+\code{\link{measles}},
+\code{\link{ou2}()},
+\code{\link{ricker}()},
+\code{\link{rw2}()},
+\code{\link{sir_models}},
+\code{\link{verhulst}()}
 
-Other datasets: \code{\link{bsflu}}, \code{\link{dacca}},
-  \code{\link{ebola}}, \code{\link{measles}},
-  \code{\link{parus}}
+Other datasets: 
+\code{\link{bsflu}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{measles}},
+\code{\link{parus}}
 }
 \concept{datasets}
 \concept{pomp examples}

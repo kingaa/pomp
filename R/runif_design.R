@@ -1,7 +1,6 @@
 ##' @description
 ##' \code{runifDesign} generates a design based on random samples from a multivariate uniform distribution.
 ##' @rdname design
-##' @inheritParams sobol
 ##' @return
 ##' \code{runifDesign} returns a data frame with \code{nseq} rows and one column for each variable named in \code{lower} and \code{upper}.
 ##'

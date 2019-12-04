@@ -34,10 +34,15 @@ The filtering mean is therefore the expectation of this distribution
 \deqn{E[X(t_k) \vert Y(t_1)=y^*_1,\dots,Y(t_k)=y^*_k].}{E[Xk | Y1=y1*,\dots,Yk=yk*].}
 }
 \seealso{
-Other particle filter methods: \code{\link{bsmc2}},
-  \code{\link{cond.logLik}}, \code{\link{eff.sample.size}},
-  \code{\link{filter.traj}}, \code{\link{mif2}},
-  \code{\link{pfilter}}, \code{\link{pmcmc}},
-  \code{\link{pred.mean}}, \code{\link{pred.var}}
+Other particle filter methods: 
+\code{\link{bsmc2}()},
+\code{\link{cond.logLik}()},
+\code{\link{eff.sample.size}()},
+\code{\link{filter.traj}()},
+\code{\link{mif2}()},
+\code{\link{pfilter}()},
+\code{\link{pmcmc}()},
+\code{\link{pred.mean}()},
+\code{\link{pred.var}()}
 }
 \concept{particle filter methods}

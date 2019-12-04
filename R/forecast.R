@@ -2,7 +2,7 @@
 ##'
 ##' Mean of the one-step-ahead forecasting distribution.
 ##'
-##' @name Forecast
+##' @name forecast
 ##' @rdname forecast
 ##' @aliases forecast forecast,missing-method forecast,ANY-method
 ##' @include kalman.R

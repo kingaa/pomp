@@ -5,12 +5,26 @@
 \alias{dacca}
 \title{Model of cholera transmission for historic Bengal.}
 \usage{
-dacca(gamma = 20.8, eps = 19.1, rho = 0, delta = 0.02,
-  deltaI = 0.06, clin = 1, alpha = 1, beta_trend = -0.00498,
+dacca(
+  gamma = 20.8,
+  eps = 19.1,
+  rho = 0,
+  delta = 0.02,
+  deltaI = 0.06,
+  clin = 1,
+  alpha = 1,
+  beta_trend = -0.00498,
   logbeta = c(0.747, 6.38, -3.44, 4.23, 3.33, 4.55),
   logomega = log(c(0.184, 0.0786, 0.0584, 0.00917, 0.000208, 0.0124)),
-  sd_beta = 3.13, tau = 0.23, S_0 = 0.621, I_0 = 0.378, Y_0 = 0,
-  R1_0 = 0.000843, R2_0 = 0.000972, R3_0 = 1.16e-07)
+  sd_beta = 3.13,
+  tau = 0.23,
+  S_0 = 0.621,
+  I_0 = 0.378,
+  Y_0 = 0,
+  R1_0 = 0.000843,
+  R2_0 = 0.000972,
+  R3_0 = 1.16e-07
+)
 }
 \arguments{
 \item{gamma}{recovery rate}
@@ -69,20 +83,26 @@ coef(po)
 plot(simulate(po))
 }
 \references{
-A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,
-Inapparent infections and cholera dynamics,
-Nature, 454:877-880, 2008
+\King2008
 }
 \seealso{
-Other pomp examples: \code{\link{blowflies}},
-  \code{\link{ebola}}, \code{\link{gompertz}},
-  \code{\link{measles}}, \code{\link{ou2}},
-  \code{\link{ricker}}, \code{\link{rw2}},
-  \code{\link{sir_models}}, \code{\link{verhulst}}
+Other pomp examples: 
+\code{\link{blowflies}},
+\code{\link{ebola}},
+\code{\link{gompertz}()},
+\code{\link{measles}},
+\code{\link{ou2}()},
+\code{\link{ricker}()},
+\code{\link{rw2}()},
+\code{\link{sir_models}},
+\code{\link{verhulst}()}
 
-Other datasets: \code{\link{blowflies}},
-  \code{\link{bsflu}}, \code{\link{ebola}},
-  \code{\link{measles}}, \code{\link{parus}}
+Other datasets: 
+\code{\link{blowflies}},
+\code{\link{bsflu}},
+\code{\link{ebola}},
+\code{\link{measles}},
+\code{\link{parus}}
 }
 \concept{datasets}
 \concept{pomp examples}

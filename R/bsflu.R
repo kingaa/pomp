@@ -15,10 +15,9 @@
 ##' @seealso \link{sir_models}
 ##'
 ##' @references
-##' Anonymous (1978).
-##' Influenza in a boarding school.
-##' British Medical Journal 1:587
-##'
+##' 
+##' \Anonymous1978
+##' 
 ##' @example examples/bsflu.R
 ##' 
 NULL

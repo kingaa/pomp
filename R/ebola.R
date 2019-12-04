@@ -11,24 +11,17 @@
 ##' @name ebola
 ##' @aliases ebolaWA2014
 ##' @docType data
-##' @rdname ebola
 ##' @include pomp.R
 ##' @family datasets
 ##' @family pomp examples
 ##'
 ##' @references
-##' A. A. King, M. Domenech de Cellès, F. M. G. Magpantay, and P. Rohani.
-##' Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola.
-##' Proceedings of the Royal Society of London, Series B, 282: 20150347, 2015.
 ##'
-##' WHO Ebola Response Team.
-##' Ebola virus disease in West Africa---the first 9 months of the epidemic and forward projections.
-##' New England Journal of Medicine 371: 1481--1495, 2014.
+##' \King2015
 ##'
-##' D. He, E. L. Ionides, & A. A. King.
-##' Plug-and-play inference for disease dynamics:
-##' measles in large and small populations as a case study.
-##' J. R. Soc. Interface, 7: 271--283, 2010.
+##' \WHO2014
+##'
+##' \He2010
 ##'
 ##' @example examples/ebola.R
 ##' 

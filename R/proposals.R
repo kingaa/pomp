@@ -35,9 +35,9 @@
 ##' @seealso \code{\link{pmcmc}}, \code{\link{abc}}
 ##'
 ##' @references
-##' Gareth O. Roberts and Jeffrey S. Rosenthal.
-##' Examples of Adaptive MCMC.
-##' J. Comput. Graph. Stat., 18:349--367, 2009.
+##'
+##' \Roberts2009
+##' 
 NULL
 
 ##' @rdname proposals

@@ -7,10 +7,19 @@
 \alias{ebolaModel}
 \title{Ebola outbreak, West Africa, 2014-2016}
 \usage{
-ebolaModel(country = c("GIN", "LBR", "SLE"), data = NULL,
-  timestep = 1/8, nstageE = 3L, R0 = 1.4, rho = 0.2, cfr = 0.7,
-  k = 0, index_case = 10, incubation_period = 11.4,
-  infectious_period = 7)
+ebolaModel(
+  country = c("GIN", "LBR", "SLE"),
+  data = NULL,
+  timestep = 1/8,
+  nstageE = 3L,
+  R0 = 1.4,
+  rho = 0.2,
+  cfr = 0.7,
+  k = 0,
+  index_case = 10,
+  incubation_period = 11.4,
+  infectious_period = 7
+)
 }
 \arguments{
 \item{country}{ISO symbol for the country (GIN=Guinea, LBR=Liberia, SLE=Sierra Leone).}
@@ -81,29 +90,30 @@ plot(ebolaModel(country="LBR"))
 plot(ebolaModel(country="GIN"))
 }
 \references{
-A. A. King, M. Domenech de Cellès, F. M. G. Magpantay, and P. Rohani.
-Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola.
-Proceedings of the Royal Society of London, Series B, 282: 20150347, 2015.
+\King2015
 
-WHO Ebola Response Team.
-Ebola virus disease in West Africa---the first 9 months of the epidemic and forward projections.
-New England Journal of Medicine 371: 1481--1495, 2014.
+\WHO2014
 
-D. He, E. L. Ionides, & A. A. King.
-Plug-and-play inference for disease dynamics:
-measles in large and small populations as a case study.
-J. R. Soc. Interface, 7: 271--283, 2010.
+\He2010
 }
 \seealso{
-Other datasets: \code{\link{blowflies}},
-  \code{\link{bsflu}}, \code{\link{dacca}},
-  \code{\link{measles}}, \code{\link{parus}}
+Other datasets: 
+\code{\link{blowflies}},
+\code{\link{bsflu}},
+\code{\link{dacca}()},
+\code{\link{measles}},
+\code{\link{parus}}
 
-Other pomp examples: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{gompertz}},
-  \code{\link{measles}}, \code{\link{ou2}},
-  \code{\link{ricker}}, \code{\link{rw2}},
-  \code{\link{sir_models}}, \code{\link{verhulst}}
+Other pomp examples: 
+\code{\link{blowflies}},
+\code{\link{dacca}()},
+\code{\link{gompertz}()},
+\code{\link{measles}},
+\code{\link{ou2}()},
+\code{\link{ricker}()},
+\code{\link{rw2}()},
+\code{\link{sir_models}},
+\code{\link{verhulst}()}
 }
 \concept{datasets}
 \concept{pomp examples}

@@ -145,9 +145,9 @@
 ##' @author Aaron A. King
 ##'
 ##' @references
-##' A. A. King, D. Nguyen, and E. L. Ionides (2016)
-##' Statistical Inference for Partially Observed Markov Processes via the Package \pkg{pomp}.
-##' Journal of Statistical Software 69(12): 1--43.
+##'
+##' \King2016
+##' 
 NULL
 
 ##' @rdname pomp

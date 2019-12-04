@@ -52,14 +52,11 @@
 ##' @author Daniel C. Reuman, Cai GoGwilt, Aaron A. King
 ##'
 ##' @references
-##' D.C. Reuman, R.A. Desharnais, R.F. Costantino, O. Ahmad, J.E.
-##' Cohen (2006) Power spectra reveal the influence of stochasticity on
-##' nonlinear population dynamics.  \emph{Proceedings of the National Academy
-##' of Sciences} \bold{103}, 18860-18865.
 ##'
-##' D.C. Reuman, R.F. Costantino, R.A. Desharnais, J.E. Cohen (2008) Color of
-##' environmental noise affects the nonlinear dynamics of cycling,
-##' stage-structured populations.  \emph{Ecology Letters}, \bold{11}, 820-830.
+##' \Reuman2006
+##'
+##' \Reuman2008
+##' 
 NULL
 
 setClass(

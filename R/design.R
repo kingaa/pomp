@@ -8,14 +8,12 @@
 ##' @author Aaron A. King
 ##'
 ##' @references
-##' P. Bratley and B. L. Fox, Algorithm 659 Implementing Sobol's quasirandom
-##' sequence generator, ACM Trans. Math. Soft. 14, 88--100, 1988.
 ##'
-##' S. Joe and F. Y. Kuo, Remark on algorithm 659: Implementing Sobol's
-##' quasirandom sequence generator ACM Trans. Math. Soft 29, 49--57, 2003.
+##' \Bratley1988
 ##'
-##' Steven G. Johnson, The \pkg{NLopt} nonlinear-optimization package,
-##' \url{http://ab-initio.mit.edu/nlopt}
+##' \Joe2003
+##'
+##' \NLopt
 ##'
 ##' @keywords design
 ##' @example examples/design.R

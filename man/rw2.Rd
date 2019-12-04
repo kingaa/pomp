@@ -5,8 +5,7 @@
 \alias{rw2}
 \title{Two-dimensional random-walk process}
 \usage{
-rw2(x1_0 = 0, x2_0 = 0, s1 = 1, s2 = 3, tau = 1, times = 1:100,
-  t0 = 0)
+rw2(x1_0 = 0, x2_0 = 0, s1 = 1, s2 = 3, tau = 1, times = 1:100, t0 = 0)
 }
 \arguments{
 \item{x1_0, x2_0}{initial conditions (i.e., latent state variable values at the zero time \code{t0})}
@@ -43,11 +42,16 @@ rw2(s1=1,s2=1,tau=0.1) \%>\%
 
 }
 \seealso{
-Other pomp examples: \code{\link{blowflies}},
-  \code{\link{dacca}}, \code{\link{ebola}},
-  \code{\link{gompertz}}, \code{\link{measles}},
-  \code{\link{ou2}}, \code{\link{ricker}},
-  \code{\link{sir_models}}, \code{\link{verhulst}}
+Other pomp examples: 
+\code{\link{blowflies}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{gompertz}()},
+\code{\link{measles}},
+\code{\link{ou2}()},
+\code{\link{ricker}()},
+\code{\link{sir_models}},
+\code{\link{verhulst}()}
 }
 \concept{pomp examples}
 \keyword{datasets}

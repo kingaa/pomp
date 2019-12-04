@@ -14,15 +14,37 @@
 \alias{traj_objfun,traj_match_objfun-method}
 \title{Trajectory matching}
 \usage{
-\S4method{traj_objfun}{data.frame}(data, est = character(0),
-  fail.value = NA, ode_control = list(), params, rinit, skeleton,
-  dmeasure, partrans, ..., verbose = getOption("verbose", FALSE))
+\S4method{traj_objfun}{data.frame}(
+  data,
+  est = character(0),
+  fail.value = NA,
+  ode_control = list(),
+  params,
+  rinit,
+  skeleton,
+  dmeasure,
+  partrans,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{traj_objfun}{pomp}(data, est = character(0), fail.value = NA,
-  ode_control = list(), ..., verbose = getOption("verbose", FALSE))
+\S4method{traj_objfun}{pomp}(
+  data,
+  est = character(0),
+  fail.value = NA,
+  ode_control = list(),
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{traj_objfun}{traj_match_objfun}(data, est, fail.value,
-  ode_control, ..., verbose = getOption("verbose", FALSE))
+\S4method{traj_objfun}{traj_match_objfun}(
+  data,
+  est,
+  fail.value,
+  ode_control,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,

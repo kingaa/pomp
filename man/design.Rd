@@ -9,8 +9,14 @@
 \alias{sobolDesign}
 \title{Design matrices for pomp calculations}
 \usage{
-profileDesign(..., lower, upper, nprof, type = c("sobol", "runif"),
-  stringsAsFactors = getOption("stringsAsFactors", FALSE))
+profileDesign(
+  ...,
+  lower,
+  upper,
+  nprof,
+  type = c("sobol", "runif"),
+  stringsAsFactors = getOption("stringsAsFactors", FALSE)
+)
 
 runifDesign(lower = numeric(0), upper = numeric(0), nseq)
 
@@ -97,14 +103,11 @@ plot(x)
 
 }
 \references{
-P. Bratley and B. L. Fox, Algorithm 659 Implementing Sobol's quasirandom
-sequence generator, ACM Trans. Math. Soft. 14, 88--100, 1988.
+\Bratley1988
 
-S. Joe and F. Y. Kuo, Remark on algorithm 659: Implementing Sobol's
-quasirandom sequence generator ACM Trans. Math. Soft 29, 49--57, 2003.
+\Joe2003
 
-Steven G. Johnson, The \pkg{NLopt} nonlinear-optimization package,
-\url{http://ab-initio.mit.edu/nlopt}
+\NLopt
 }
 \author{
 Aaron A. King

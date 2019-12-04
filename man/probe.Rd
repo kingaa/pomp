@@ -19,17 +19,38 @@
 \alias{probe,objfun-method}
 \title{Probes (AKA summary statistics)}
 \usage{
-\S4method{probe}{data.frame}(data, probes, nsim, seed = NULL, params,
-  rinit, rprocess, rmeasure, ..., verbose = getOption("verbose", FALSE))
+\S4method{probe}{data.frame}(
+  data,
+  probes,
+  nsim,
+  seed = NULL,
+  params,
+  rinit,
+  rprocess,
+  rmeasure,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{probe}{pomp}(data, probes, nsim, seed = NULL, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{probe}{pomp}(
+  data,
+  probes,
+  nsim,
+  seed = NULL,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{probe}{probed_pomp}(data, probes, nsim, seed = NULL, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{probe}{probed_pomp}(
+  data,
+  probes,
+  nsim,
+  seed = NULL,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{probe}{probe_match_objfun}(data, seed, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{probe}{probe_match_objfun}(data, seed, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{probe}{objfun}(data, seed = NULL, ...)
 }
@@ -118,22 +139,22 @@ The variable \code{.id} indicates whether the probes are from the data or simula
 }
 
 \references{
-B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P.
-Ellner, E. McCauley, R. M. Nisbet, S. N. Wood Why do populations cycle? A
-synthesis of statistical and mechanistic modeling approaches, Ecology,
-80:1789--1805, 1999.
+\Kendall1999
 
-S. N. Wood Statistical inference for noisy nonlinear ecological dynamic
-systems, Nature, 466: 1102--1104, 2010.
+\Wood2010
 }
 \seealso{
-Other elementary POMP methods: \code{\link{pfilter}},
-  \code{\link{pomp-package}}, \code{\link{simulate}},
-  \code{\link{spect}}
+Other elementary POMP methods: 
+\code{\link{pfilter}()},
+\code{\link{pomp-package}},
+\code{\link{simulate}()},
+\code{\link{spect}()}
 
-Other summary statistics methods: \code{\link{abc}},
-  \code{\link{basic_probes}}, \code{\link{probe.match}},
-  \code{\link{spect}}
+Other summary statistics methods: 
+\code{\link{abc}()},
+\code{\link{basic_probes}},
+\code{\link{probe.match}},
+\code{\link{spect}()}
 }
 \author{
 Daniel C. Reuman, Aaron A. King

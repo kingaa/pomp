@@ -19,21 +19,47 @@
 \alias{spect,objfun-method}
 \title{Power spectrum}
 \usage{
-\S4method{spect}{data.frame}(data, vars, kernel.width, nsim, seed = NULL,
-  transform.data = identity, detrend = c("none", "mean", "linear",
-  "quadratic"), params, rinit, rprocess, rmeasure, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{spect}{data.frame}(
+  data,
+  vars,
+  kernel.width,
+  nsim,
+  seed = NULL,
+  transform.data = identity,
+  detrend = c("none", "mean", "linear", "quadratic"),
+  params,
+  rinit,
+  rprocess,
+  rmeasure,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{spect}{pomp}(data, vars, kernel.width, nsim, seed = NULL,
-  transform.data = identity, detrend = c("none", "mean", "linear",
-  "quadratic"), ..., verbose = getOption("verbose", FALSE))
+\S4method{spect}{pomp}(
+  data,
+  vars,
+  kernel.width,
+  nsim,
+  seed = NULL,
+  transform.data = identity,
+  detrend = c("none", "mean", "linear", "quadratic"),
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{spect}{spectd_pomp}(data, vars, kernel.width, nsim,
-  seed = NULL, transform.data, detrend, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{spect}{spectd_pomp}(
+  data,
+  vars,
+  kernel.width,
+  nsim,
+  seed = NULL,
+  transform.data,
+  detrend,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{spect}{spect_match_objfun}(data, seed, ...,
-  verbose = getOption("verbose", FALSE))
+\S4method{spect}{spect_match_objfun}(data, seed, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{spect}{objfun}(data, seed = NULL, ...)
 }
@@ -117,23 +143,22 @@ random-number generator seed is fixed at the value given when the objective func
 Specifying \code{NULL} or an integer for \code{seed} overrides this behavior.
 }
 \references{
-D.C. Reuman, R.A. Desharnais, R.F. Costantino, O. Ahmad, J.E.
-Cohen (2006) Power spectra reveal the influence of stochasticity on
-nonlinear population dynamics.  \emph{Proceedings of the National Academy
-of Sciences} \bold{103}, 18860-18865.
+\Reuman2006
 
-D.C. Reuman, R.F. Costantino, R.A. Desharnais, J.E. Cohen (2008) Color of
-environmental noise affects the nonlinear dynamics of cycling,
-stage-structured populations.  \emph{Ecology Letters}, \bold{11}, 820-830.
+\Reuman2008
 }
 \seealso{
-Other summary statistics methods: \code{\link{abc}},
-  \code{\link{basic_probes}}, \code{\link{probe.match}},
-  \code{\link{probe}}
+Other summary statistics methods: 
+\code{\link{abc}()},
+\code{\link{basic_probes}},
+\code{\link{probe.match}},
+\code{\link{probe}()}
 
-Other elementary POMP methods: \code{\link{pfilter}},
-  \code{\link{pomp-package}}, \code{\link{probe}},
-  \code{\link{simulate}}
+Other elementary POMP methods: 
+\code{\link{pfilter}()},
+\code{\link{pomp-package}},
+\code{\link{probe}()},
+\code{\link{simulate}()}
 }
 \author{
 Daniel C. Reuman, Cai GoGwilt, Aaron A. King
