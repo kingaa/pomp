@@ -1,5 +1,5 @@
 
-R version 3.6.1 (2019-07-05) -- "Action of the Toes"
+R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
 Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -25,6 +25,8 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
+
+Also, note that the default value of the 'tol' argument of 'pfilter' (and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0. The 'tol' argument is now deprecated and will be removed in a future release.
 > library(ggplot2)
 > 
 > ## ----seed,echo=FALSE-----------------------------------------------------
@@ -111,13 +113,13 @@ For information on upgrading your pomp version < 2 code, see the
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-   8.17    0.12    8.29 
+  8.142   0.178   8.320 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.331   0.008   0.338 
+  0.330   0.001   0.330 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-   0.74    0.00    0.74 
+  0.717   0.000   0.716 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
   0.052   0.000   0.052 

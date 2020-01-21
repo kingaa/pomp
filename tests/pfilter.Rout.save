@@ -1,5 +1,5 @@
 
-R version 3.6.1 (2019-07-05) -- "Action of the Toes"
+R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
 Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -23,6 +23,8 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
+
+Also, note that the default value of the 'tol' argument of 'pfilter' (and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0. The 'tol' argument is now deprecated and will be removed in a future release.
 > 
 > ou2() -> ou2
 > 
@@ -58,13 +60,13 @@ Error : in 'pfilter': 'Np' must have length 1 or length 101.
 > pfilter(ou2,Np=ceiling(runif(101,min=10,max=100)))
 <object of class 'pfilterd_pomp'>
 > try(pfilter(ou2,Np=100,tol=NA))
-Error : in 'pfilter': 'tol' should be a small positive number.
+Error : in 'pfilter': 'tol' should be a small nonnegative number.
 > try(pfilter(ou2,Np=100,tol=-1))
-Error : in 'pfilter': 'tol' should be a small positive number.
+Error : in 'pfilter': 'tol' should be a small nonnegative number.
 > try(pfilter(ou2,Np=100,tol=NULL))
-Error : in 'pfilter': 'tol' should be a small positive number.
+Error : in 'pfilter': 'tol' should be a small nonnegative number.
 > try(pfilter(ou2,Np=100,tol=c(1,10,20)))
-Error : in 'pfilter': 'tol' should be a small positive number.
+Error : in 'pfilter': 'tol' should be a small nonnegative number.
 > 
 > po <- ou2
 > coef(po) <- NULL
@@ -96,13 +98,11 @@ in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rini
 > try(pfilter(pf,Np=-1000))
 Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(pf,tol=-1))
-Error : in 'pfilter': 'tol' should be a small positive number.
+Error : in 'pfilter': 'tol' should be a small nonnegative number.
 > stopifnot(all.equal(coef(pf),coef(ou2)))
 > theta <- coef(ou2)
 > theta["alpha_2"] <- 0.1
 > pf1 <- pfilter(pf,params=theta,Np=100)
-Warning message:
-in 'pfilter': 12 filtering failures occurred. 
 > stopifnot(identical(coef(pf1),theta))
 > 
 > try(pfilter(ou2,params=parmat(coef(ou2),100)))
@@ -131,7 +131,7 @@ likelihood, data, states, and parameters are:
     lik:          NaN
      y1:      1.83463
      y2:       6.2733
-     x1:         -Inf
+     x1:          Inf
      x2:          NaN
 alpha_1:          0.8
 alpha_2:         -0.5
@@ -160,8 +160,8 @@ likelihood, data, states, and parameters are:
     lik:         -Inf
      y1:     -4.05129
      y2:      4.78064
-     x1:     -6.42374
-     x2:      5.75162
+     x1:      1.78357
+     x2:      2.46599
 alpha_1:          0.8
 alpha_2:         -0.5
 alpha_3:          0.3
@@ -174,7 +174,7 @@ sigma_3:            2
    x2_0:            4
 > 
 > set.seed(388966382L)
-> capture.output(try(pfilter(pf,Np=2,max.fail=15,verbose=TRUE,filter.mean=TRUE)),
+> capture.output(try(pfilter(pf,Np=2,max.fail=15,tol=1e-17,verbose=TRUE,filter.mean=TRUE)),
 +   type="message") -> out
 pfilter timestep 5 of 100 finished
 pfilter timestep 10 of 100 finished
@@ -182,8 +182,10 @@ pfilter timestep 15 of 100 finished
 pfilter timestep 20 of 100 finished
 pfilter timestep 25 of 100 finished
 pfilter timestep 30 of 100 finished
-> stopifnot(sum(grepl("filtering failure at",out))==16)
-> stopifnot(grepl("too many filtering failures",tail(out,1)))
+> stopifnot(
++   sum(grepl("filtering failure at",out))==16,
++   grepl("too many filtering failures",out[[17]])
++ )
 > 
 > pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
 > pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)

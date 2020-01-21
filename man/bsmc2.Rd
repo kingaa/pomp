@@ -15,7 +15,7 @@
   data,
   Np,
   smooth = 0.1,
-  tol = 1e-17,
+  tol = 0,
   max.fail = 0,
   params,
   rprior,
@@ -31,7 +31,7 @@
   data,
   Np,
   smooth = 0.1,
-  tol = 1e-17,
+  tol = 0,
   max.fail = 0,
   ...,
   verbose = getOption("verbose", FALSE)
@@ -49,13 +49,16 @@ The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
 Thus, \code{smooth=0} means that no noise will be added to parameters.
 The general recommendation is that the value of \code{smooth} should be chosen close to 0 (e.g., \code{shrink} ~ 0.1).}
 
-\item{tol}{positive numeric scalar;
+\item{tol}{non-negative numeric scalar;
 particles with likelihood less than \code{tol} are considered to be incompatible with the data.
-See the section on \emph{Filtering Failures} for more information.}
+See the section on \emph{Filtering Failures} for more information.
+The default value is 0, which means that no threshold is applied.
+In a future release, this argument will be removed.}
 
 \item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
 If the number of filtering failures exceeds this number, execution will terminate with an error.
-By default, \code{max.fail} is set to infinity, so no error can be triggered.}
+By default, \code{max.fail} is set to infinity, so no error can be triggered.
+In a future release, this argument will be removed.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}

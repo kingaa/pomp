@@ -19,7 +19,7 @@
   Nmcmc = 1,
   proposal,
   Np,
-  tol = 1e-17,
+  tol = 0,
   max.fail = Inf,
   params,
   rinit,
@@ -35,7 +35,7 @@
   Nmcmc = 1,
   proposal,
   Np,
-  tol = 1e-17,
+  tol = 0,
   max.fail = Inf,
   ...,
   verbose = getOption("verbose", FALSE)
@@ -76,13 +76,16 @@ In the latter case, \code{Np(k)} must be a single positive integer, representing
 and so on,
 while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.}
 
-\item{tol}{positive numeric scalar;
+\item{tol}{non-negative numeric scalar;
 particles with likelihood less than \code{tol} are considered to be incompatible with the data.
-See the section on \emph{Filtering Failures} for more information.}
+See the section on \emph{Filtering Failures} for more information.
+The default value is 0, which means that no threshold is applied.
+In a future release, this argument will be removed.}
 
 \item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
 If the number of filtering failures exceeds this number, execution will terminate with an error.
-By default, \code{max.fail} is set to infinity, so no error can be triggered.}
+By default, \code{max.fail} is set to infinity, so no error can be triggered.
+In a future release, this argument will be removed.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}

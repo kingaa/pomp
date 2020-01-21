@@ -68,10 +68,12 @@ try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 try(pfilter(pf,dmeasure=function(log,...) -Inf))
 
 set.seed(388966382L)
-capture.output(try(pfilter(pf,Np=2,max.fail=15,verbose=TRUE,filter.mean=TRUE)),
+capture.output(try(pfilter(pf,Np=2,max.fail=15,tol=1e-17,verbose=TRUE,filter.mean=TRUE)),
   type="message") -> out
-stopifnot(sum(grepl("filtering failure at",out))==16)
-stopifnot(grepl("too many filtering failures",tail(out,1)))
+stopifnot(
+  sum(grepl("filtering failure at",out))==16,
+  grepl("too many filtering failures",out[[17]])
+)
 
 pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
 pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)

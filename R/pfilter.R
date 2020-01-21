@@ -25,13 +25,16 @@
 ##' and so on,
 ##' while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.
 ##'
-##' @param tol positive numeric scalar;
+##' @param tol non-negative numeric scalar;
 ##' particles with likelihood less than \code{tol} are considered to be incompatible with the data.
 ##' See the section on \emph{Filtering Failures} for more information.
+##' The default value is 0, which means that no threshold is applied.
+##' In a future release, this argument will be removed.
 ##'
 ##' @param max.fail integer; the maximum number of filtering failures allowed (see below).
 ##' If the number of filtering failures exceeds this number, execution will terminate with an error.
 ##' By default, \code{max.fail} is set to infinity, so no error can be triggered.
+##' In a future release, this argument will be removed.
 ##'
 ##' @param pred.mean logical; if \code{TRUE}, the prediction means are calculated for the state variables and parameters.
 ##'
@@ -144,7 +147,7 @@ setMethod(
   signature=signature(data="data.frame"),
   definition=function (
     data,
-    Np, tol = 1e-17, max.fail = Inf,
+    Np, tol = 0, max.fail = Inf,
     params, rinit, rprocess, dmeasure,
     pred.mean = FALSE,
     pred.var = FALSE,
@@ -187,7 +190,7 @@ setMethod(
   signature=signature(data="pomp"),
   definition=function (
     data,
-    Np, tol = 1e-17, max.fail = Inf,
+    Np, tol = 0, max.fail = Inf,
     pred.mean = FALSE,
     pred.var = FALSE,
     filter.mean = FALSE,
@@ -254,6 +257,14 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   filter.mean <- as.logical(filter.mean)
   filter.traj <- as.logical(filter.traj)
   save.states <- as.logical(save.states)
+
+  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
+    pStop_(sQuote("tol")," should be a small nonnegative number.")
+
+  if (tol != 0) {
+    pWarn("pfilter","the ",sQuote("tol")," argument is deprecated and will be removed in a future release. ","In the current release, the default value of ",
+      sQuote("tol")," is 0. In future releases, the option to choose otherwise will be removed.")
+  }
 
   params <- coef(object)
   times <- time(object,t0=TRUE)

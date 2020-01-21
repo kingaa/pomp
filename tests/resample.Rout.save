@@ -1,5 +1,5 @@
 
-R version 3.6.1 (2019-07-05) -- "Action of the Toes"
+R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
 Copyright (C) 2019 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -21,6 +21,8 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
+
+Also, note that the default value of the 'tol' argument of 'pfilter' (and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0. The 'tol' argument is now deprecated and will be removed in a future release.
 > set.seed(807969746L)
 > 
 > w <- runif(100)

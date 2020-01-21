@@ -130,7 +130,7 @@ setMethod(
   definition = function (data,
     Nmif = 1, rw.sd,
     cooling.type = c("geometric", "hyperbolic"), cooling.fraction.50,
-    Np, tol = 1e-17, max.fail = Inf,
+    Np, tol = 0, max.fail = Inf,
     params, rinit, rprocess, dmeasure, partrans,
     ..., verbose = getOption("verbose", FALSE)) {
 
@@ -168,7 +168,7 @@ setMethod(
   definition = function (data,
     Nmif = 1, rw.sd,
     cooling.type = c("geometric", "hyperbolic"), cooling.fraction.50,
-    Np, tol = 1e-17, max.fail = Inf,
+    Np, tol = 0, max.fail = Inf,
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -277,7 +277,7 @@ setMethod(
 
 mif2.internal <- function (object, Nmif, rw.sd,
   cooling.type, cooling.fraction.50,
-  Np, tol = 1e-17, max.fail = Inf,
+  Np, tol = 0, max.fail = Inf,
   ..., verbose,
   .ndone = 0L, .indices = integer(0), .paramMatrix = NULL,
   .gnsi = TRUE) {
@@ -442,7 +442,7 @@ mif2.cooling <- function (type, fraction, ntimes) {
 }
 
 mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
-  tol = 1e-17, max.fail = Inf, verbose, .indices = integer(0),
+  tol = 0, max.fail = Inf, verbose, .indices = integer(0),
   .gnsi = TRUE) {
 
   tol <- as.numeric(tol)
@@ -452,7 +452,12 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
   Np <- as.integer(Np)
 
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
-    pStop_(sQuote("tol")," should be a small positive number.")
+    pStop_(sQuote("tol")," should be a small nonnegative number.")
+
+  if (tol != 0) {
+    pWarn("mif2","the ",sQuote("tol")," argument is deprecated and will be removed in a future release. ","In the current release, the default value of ",
+      sQuote("tol")," is 0. In future releases, the option to choose otherwise will be removed.")
+  }
 
   do_ta <- length(.indices)>0L
   if (do_ta && length(.indices)!=Np[1L])
