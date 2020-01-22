@@ -14,7 +14,7 @@ SEXP do_simulate (SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi)
   SEXP simnames;
   int return_type = *(INTEGER(rettype)); // 0 = array, 1 = pomps
 
-  if (LENGTH(nsim) != 1) errorcall(R_NilValue,"'nsim' must be a single integer"); // #nocov
+  if (LENGTH(nsim) != 1) err("'nsim' must be a single integer"); // #nocov
 
   PROTECT(params = as_matrix(params));
 

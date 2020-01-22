@@ -29,7 +29,7 @@ void nosort_resamp (int nw, double *w, int np, int *p, int offset)
   for (j = 1; j < nw; j++) w[j] += w[j-1];
 
   if (w[nw-1] <= 0.0)
-    errorcall(R_NilValue,"in 'systematic_resampling': non-positive sum of weights");
+    err("in 'systematic_resampling': non-positive sum of weights");
 
   du = w[nw-1] / ((double) np);
   u = -du*unif_rand();

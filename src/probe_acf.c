@@ -20,7 +20,7 @@ static void pomp_acf_compute (double *acf, double *x, int n, int nvars, int *lag
         ct++;
       }
     }
-    if (ct < 1) errorcall(R_NilValue,"series %ld has no data",j+1);
+    if (ct < 1) err("series %ld has no data",j+1);
     xx /= ct;			// mean of x[j,]
     for (k = 0, p0 = p; k < n; p0 += nvars, k++)
       if (R_FINITE(*p0)) *p0 -= xx;
@@ -54,7 +54,7 @@ static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lag
       ct++;
     }
   }
-  if (ct < 1) errorcall(R_NilValue,"series 1 has no data");
+  if (ct < 1) err("series 1 has no data");
   xx /= ct;			// mean of x[j]
   for (k = 0, p = x; k < n; k++, p++) {
     if (R_FINITE(*p)) *p -= xx;
@@ -67,7 +67,7 @@ static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lag
       ct++;
     }
   }
-  if (ct < 1) errorcall(R_NilValue,"series 2 has no data");
+  if (ct < 1) err("series 2 has no data");
   xx /= ct;			// mean of y[j]
   for (k = 0, p = y; k < n; k++, p++) {
     if (R_FINITE(*p)) *p -= xx;
@@ -153,7 +153,7 @@ SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr) {
   correlation = *(INTEGER(AS_INTEGER(corr))); // correlation, or covariance?
 
   n = LENGTH(x);		// n = # of observations
-  if (n != LENGTH(y)) errorcall(R_NilValue,"'x' and 'y' must have equal lengths"); // #nocov
+  if (n != LENGTH(y)) err("'x' and 'y' must have equal lengths"); // #nocov
 
   PROTECT(X = duplicate(AS_NUMERIC(x)));
   PROTECT(Y = duplicate(AS_NUMERIC(y)));

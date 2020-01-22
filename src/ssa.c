@@ -148,7 +148,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
   for (j = 0; j < nevent; j++) {
     f[j] = ratefun(j+1,t,y,par,istate,ipar,icovar,covars);
     if (f[j] < 0.0)
-      errorcall(R_NilValue,"'rate.fun' returns a negative rate");
+      err("'rate.fun' returns a negative rate");
   }
 
   int icount = 0;
@@ -164,7 +164,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
     for (j = 0; j < nevent; j++) {
       f[j] = ratefun(j+1,t,y,par,istate,ipar,icovar,covars);
       if (f[j] < 0.0)
-        errorcall(R_NilValue,"'rate.fun' returns a negative rate");
+        err("'rate.fun' returns a negative rate");
     }
 
     // Record output at required time points
@@ -218,7 +218,7 @@ static double __pomp_Rfun_ssa_ratefn (int j, double t, const double *x, const do
 
   if (FIRST) {
     if (LENGTH(ans) != 1)
-      errorcall(R_NilValue,"'rate.fun' must return a single numeric rate.");
+      err("'rate.fun' must return a single numeric rate.");
     FIRST = 0;
   }
 
@@ -249,14 +249,14 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params
   dim = INTEGER(GET_DIM(vmatrix)); nvarv = dim[0]; nevent = dim[1];
 
   if (nvarv != nvar)
-    errorcall(R_NilValue,"number of state variables must equal the number of rows in 'v'.");
+    err("number of state variables must equal the number of rows in 'v'.");
 
   ntimes = LENGTH(times);
 
   PROTECT(tstart = AS_NUMERIC(tstart));
   PROTECT(times = AS_NUMERIC(times));
   t0 = *(REAL(tstart));
-  if (t0 > *(REAL(times))) errorcall(R_NilValue,"'t0' must be no later than 'times[1]'.");
+  if (t0 > *(REAL(times))) err("'t0' must be no later than 'times[1]'.");
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart)));
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
@@ -282,7 +282,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params
 
   case undef: default:  // #nocov
 
-    errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // #nocov
+    err("unrecognized 'mode' %d",mode); // #nocov
 
   case native: case regNative:
 

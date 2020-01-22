@@ -59,7 +59,7 @@ void table_lookup (lookup_table_t *tab, double x, double *y)
   tab->index = findInterval(tab->x,tab->length,x,TRUE,TRUE,tab->index,&flag);
   // warn only if we are *outside* the interval
   if ((x < tab->x[0]) || (x > tab->x[(tab->length)-1]))
-    warningcall(R_NilValue,"in 'table_lookup': extrapolating at %le.", x);
+    warn("in 'table_lookup': extrapolating at %le.", x);
   switch (tab->order) {
   case 1: default: // linear interpolation
     e = (x - tab->x[tab->index-1]) / (tab->x[tab->index] - tab->x[tab->index-1]);

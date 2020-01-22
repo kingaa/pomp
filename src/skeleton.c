@@ -131,12 +131,12 @@ void eval_skeleton_R (
           cov,ncovars));
 
           if (LENGTH(ans)!=nvars)
-            errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
+            err("'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
 
           // get name information to fix alignment problems
           PROTECT(nm = GET_NAMES(ans));
           if (invalid_names(nm))
-            errorcall(R_NilValue,"'skeleton' must return a named numeric vector.");
+            err("'skeleton' must return a named numeric vector.");
           posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
 
           fs = REAL(AS_NUMERIC(ans));
@@ -208,11 +208,11 @@ void iterate_skeleton_R (
           PROTECT(ans = eval_call(fn,args,&t,xs,nvars,p+npars*(j%nrepp),npars,cov,ncovars));
 
           if (LENGTH(ans) != nvars)
-            errorcall(R_NilValue,"'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
+            err("'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
 
           // get name information to fix alignment problems
           PROTECT(nm = GET_NAMES(ans));
-          if (invalid_names(nm)) errorcall(R_NilValue,"'skeleton' must return a named numeric vector.");
+          if (invalid_names(nm)) err("'skeleton' must return a named numeric vector.");
           posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
 
           ap = REAL(AS_NUMERIC(ans));
@@ -359,7 +359,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepx = dim[1];
   if (ntimes != dim[2])
-    errorcall(R_NilValue,"length of 't' and 3rd dimension of 'x' do not agree.");
+    err("length of 't' and 3rd dimension of 'x' do not agree.");
 
   PROTECT(params = as_matrix(params));
   dim = INTEGER(GET_DIM(params));
@@ -368,7 +368,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   // 2nd dimension of 'x' and 'params' need not agree
   nreps = (nrepp > nrepx) ? nrepp : nrepx;
   if ((nreps % nrepp != 0) || (nreps % nrepx != 0))
-    errorcall(R_NilValue,"2nd dimensions of 'x' and 'params' are incompatible");
+    err("2nd dimensions of 'x' and 'params' are incompatible");
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x)));
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
@@ -429,7 +429,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     double *ft = REAL(F);
     int i, n = nvars*nreps*ntimes;
     for (i = 0; i < n; i++, ft++) *ft = R_NaReal;
-    warningcall(R_NilValue,"'skeleton' unspecified: NAs generated.");
+    warn("'skeleton' unspecified: NAs generated.");
 
   }
 

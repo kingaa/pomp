@@ -237,7 +237,7 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
       }
     }
 
-    warningcall(R_NilValue,"'dprocess' unspecified: likelihood undefined.");
+    warn("'dprocess' unspecified: likelihood undefined.");
 
   }
 
@@ -256,13 +256,13 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
   PROTECT(times=AS_NUMERIC(times));
   ntimes = length(times);
   if (ntimes < 2)
-    errorcall(R_NilValue,"length(times)<2: with no transitions, there is no work to do.");
+    err("length(times)<2: with no transitions, there is no work to do.");
 
   PROTECT(x = as_state_array(x));
   xdim = INTEGER(GET_DIM(x));
   nvars = xdim[0]; nrepsx = xdim[1];
   if (ntimes != xdim[2])
-    errorcall(R_NilValue,"the length of 'times' and 3rd dimension of 'x' do not agree.");
+    err("the length of 'times' and 3rd dimension of 'x' do not agree.");
 
   PROTECT(params = as_matrix(params));
   xdim = INTEGER(GET_DIM(params));
@@ -272,7 +272,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
 
   if (nrepsx > nreps) {         // more states than parameters
     if (nrepsx % nreps != 0) {
-      errorcall(R_NilValue,"the larger number of replicates is not a multiple of smaller.");
+      err("the larger number of replicates is not a multiple of smaller.");
     } else {
       SEXP copy;
       double *src, *tgt;
@@ -294,7 +294,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
     nreps = nrepsx;
   } else if (nrepsx < nreps) {  // more parameters than states
     if (nreps % nrepsx != 0) {
-      errorcall(R_NilValue,"the larger number of replicates is not a multiple of smaller.");
+      err("the larger number of replicates is not a multiple of smaller.");
     } else {
       SEXP copy;
       double *src, *tgt;

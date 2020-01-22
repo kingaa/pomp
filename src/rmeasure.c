@@ -115,14 +115,14 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   PROTECT(times = AS_NUMERIC(times));
   ntimes = length(times);
   if (ntimes < 1)
-    errorcall(R_NilValue,"length('times') = 0, no work to do.");
+    err("length('times') = 0, no work to do.");
 
   PROTECT(x = as_state_array(x));
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepsx = dim[1];
 
   if (ntimes != dim[2])
-    errorcall(R_NilValue,"length of 'times' and 3rd dimension of 'x' do not agree.");
+    err("length of 'times' and 3rd dimension of 'x' do not agree.");
 
   PROTECT(params = as_matrix(params));
   dim = INTEGER(GET_DIM(params));
@@ -131,7 +131,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
 
   if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
-    errorcall(R_NilValue,"larger number of replicates is not a multiple of smaller.");
+    err("larger number of replicates is not a multiple of smaller.");
 
   PROTECT(pompfun = GET_SLOT(object,install("rmeasure")));
 
@@ -189,7 +189,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
           PROTECT(Onames = GET_NAMES(ans));
           if (invalid_names(Onames))
-            errorcall(R_NilValue,"'rmeasure' must return a named numeric vector.");
+            err("'rmeasure' must return a named numeric vector.");
 
           PROTECT(Y = ret_array(nobs,nreps,ntimes,Onames));
 
@@ -216,7 +216,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
           );
 
           if (LENGTH(ans) != nobs)
-            errorcall(R_NilValue,"'rmeasure' returns variable-length results.");
+            err("'rmeasure' returns variable-length results.");
 
           ys = REAL(AS_NUMERIC(ans));
 
@@ -294,7 +294,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
     for (i = 0, yt = REAL(Y); i < n; i++, yt++) *yt = R_NaReal;
 
-    warningcall(R_NilValue,"'rmeasure' unspecified: NAs generated.");
+    warn("'rmeasure' unspecified: NAs generated.");
   }
 
   }

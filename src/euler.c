@@ -115,7 +115,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
   double *cov, t0;
   SEXP cvec, X, fn;
 
-  if (deltat <= 0) errorcall(R_NilValue,"'delta.t' should be a positive number."); // #nocov
+  if (deltat <= 0) err("'delta.t' should be a positive number."); // #nocov
 
   int *dim;
   dim = INTEGER(GET_DIM(xstart)); nvars = dim[0]; nreps = dim[1];
@@ -125,7 +125,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
   PROTECT(tstart = AS_NUMERIC(tstart));
   PROTECT(times = AS_NUMERIC(times));
   t0 = *(REAL(tstart));
-  if (t0 > *(REAL(times))) errorcall(R_NilValue,"'t0' must be no later than 'times[1]'.");
+  if (t0 > *(REAL(times))) err("'t0' must be no later than 'times[1]'.");
 
   SEXP Snames, Pnames, Cnames;
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart)));
@@ -185,7 +185,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
 
   default: // # nocov
 
-    errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // # nocov
+    err("unrecognized 'mode' %d",mode); // # nocov
 
   }
 
@@ -204,7 +204,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
 
     R_CheckUserInterrupt();
 
-    if (t > time[step]) errorcall(R_NilValue,"'times' must be an increasing sequence.");  // #nocov
+    if (t > time[step]) err("'times' must be an increasing sequence.");  // #nocov
 
     // set accumulator variables to zero
     for (j = 0; j < nreps; j++)
@@ -250,7 +250,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
 
             PROTECT(nm = GET_NAMES(ans));
             if (invalid_names(nm))
-              errorcall(R_NilValue,"'rprocess' must return a named numeric vector.");
+              err("'rprocess' must return a named numeric vector.");
             pidx = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
 
 	    nprotect += 3;
@@ -285,7 +285,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
 
         default: // # nocov
 
-          errorcall(R_NilValue,"unrecognized 'mode' %d",mode); // # nocov
+          err("unrecognized 'mode' %d",mode); // # nocov
 
         }
 

@@ -19,7 +19,7 @@ static SEXP pomp_default_rprocess (SEXP xstart, int nvars, int nreps, int ntimes
   PROTECT(X = makearray(3,dim));
   setrownames(X,Snames,3);
   for (i= 0, xp = REAL(X); i < n; i++, xp++) *xp = R_NaReal;
-  warningcall(R_NilValue,"'rprocess' unspecified: NAs generated.");
+  warn("'rprocess' unspecified: NAs generated.");
   UNPROTECT(2);
   return X;
 }
@@ -39,7 +39,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params
   PROTECT(times = AS_NUMERIC(times));
   ntimes = length(times);
   if (ntimes < 1) {
-    errorcall(R_NilValue,"length(times) < 1: no work to do.");
+    err("length(times) < 1: no work to do.");
   }
 
   PROTECT(xstart = as_matrix(xstart));
@@ -56,7 +56,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params
 
   if (nrepsx > nreps) {		// more ICs than parameters
     if (nrepsx % nreps != 0) {
-      errorcall(R_NilValue,"the larger number of replicates is not a multiple of smaller.");
+      err("the larger number of replicates is not a multiple of smaller.");
     } else {
       double *src, *tgt;
       int dims[2];
@@ -77,7 +77,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params
     nreps = nrepsx;
   } else if (nrepsx < nreps) {	// more parameters than ICs
     if (nreps % nrepsx != 0) {
-      errorcall(R_NilValue,"the larger number of replicates is not a multiple of smaller.");
+      err("the larger number of replicates is not a multiple of smaller.");
     } else {
       double *src, *tgt;
       int dims[2];

@@ -17,9 +17,9 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
   double *knots = NULL;
   double *xdata, *ydata;
   int i;
-  if (deg < 0) errorcall(R_NilValue,"must have degree > 0");
-  if (nb <= deg) errorcall(R_NilValue,"must have nbasis > degree");
-  if (d < 0) errorcall(R_NilValue,"must have deriv >= 0");
+  if (deg < 0) err("must have degree > 0");
+  if (nb <= deg) err("must have nbasis > degree");
+  if (d < 0) err("must have deriv >= 0");
   knots = (double *) Calloc(nk,double);
   PROTECT(xr = AS_NUMERIC(x));
   PROTECT(y = allocMatrix(REALSXP,nx,nb));
@@ -79,11 +79,11 @@ void periodic_bspline_basis_eval_deriv (double x, double period, int degree,
   double dx;
   int j, k;
 
-  if (period <= 0.0) errorcall(R_NilValue,"must have period > 0");
-  if (nbasis <= 0) errorcall(R_NilValue,"must have nbasis > 0");
-  if (degree < 0) errorcall(R_NilValue,"must have degree >= 0");
-  if (nbasis < degree) errorcall(R_NilValue,"must have nbasis >= degree");
-  if (deriv < 0) errorcall(R_NilValue,"must have deriv >= 0");
+  if (period <= 0.0) err("must have period > 0");
+  if (nbasis <= 0) err("must have nbasis > 0");
+  if (degree < 0) err("must have degree >= 0");
+  if (nbasis < degree) err("must have nbasis >= degree");
+  if (deriv < 0) err("must have deriv >= 0");
 
   knots = (double *) Calloc(nknots+degree+1,double);
   yy = (double *) Calloc(nknots,double);

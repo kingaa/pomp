@@ -15,7 +15,7 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
     SET_ELEMENT(vals,i,eval(PROTECT(lang2(VECTOR_ELT(probes,i),data)),
       CLOENV(VECTOR_ELT(probes,i))));
     if (!IS_NUMERIC(VECTOR_ELT(vals,i))) {
-      errorcall(R_NilValue,"probe %ld returns a non-numeric result",i+1);
+      err("probe %ld returns a non-numeric result",i+1);
     }
     UNPROTECT(1);
   }
@@ -37,7 +37,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
 
   PROTECT(nsim = AS_INTEGER(nsim));
   if ((LENGTH(nsim)!=1) || (INTEGER(nsim)[0]<=0))
-    errorcall(R_NilValue,"'nsim' must be a positive integer."); // #nocov
+    err("'nsim' must be a positive integer."); // #nocov
 
   PROTECT(gnsi = duplicate(gnsi));
 
@@ -84,17 +84,17 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
       PROTECT(val = eval(PROTECT(lang2(VECTOR_ELT(probes,p),x)),
         CLOENV(VECTOR_ELT(probes,p))));
       if (!IS_NUMERIC(val)) {
-        errorcall(R_NilValue,"probe %ld returns a non-numeric result.",p+1);
+        err("probe %ld returns a non-numeric result.",p+1);
       }
 
       len = LENGTH(val);
       if (s == 0)
         len0 = len;
       else if (len != len0) {
-        errorcall(R_NilValue,"variable-sized results returned by probe %ld.",p+1);
+        err("variable-sized results returned by probe %ld.",p+1);
       }
       if (k+len > nvals)
-        errorcall(R_NilValue,"probes return different number of values on different datasets.");
+        err("probes return different number of values on different datasets.");
 
       xp = REAL(retval); yp = REAL(val);
       for (i = 0; i < len; i++) xp[s+nsims*(i+k)] = yp[i];
@@ -104,7 +104,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
 
   }
   if (k != nvals)
-    errorcall(R_NilValue,"probes return different number of values on different datasets.");
+    err("probes return different number of values on different datasets.");
 
   UNPROTECT(9);
   return retval;

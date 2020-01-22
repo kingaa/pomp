@@ -121,21 +121,21 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   PROTECT(times = AS_NUMERIC(times));
   ntimes = length(times);
-  if (ntimes < 1) errorcall(R_NilValue,"length('times') = 0, no work to do.");
+  if (ntimes < 1) err("length('times') = 0, no work to do.");
 
   PROTECT(y = as_matrix(y));
   dim = INTEGER(GET_DIM(y));
   nobs = dim[0];
 
   if (ntimes != dim[1])
-    errorcall(R_NilValue,"length of 'times' and 2nd dimension of 'y' do not agree.");
+    err("length of 'times' and 2nd dimension of 'y' do not agree.");
 
   PROTECT(x = as_state_array(x));
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepsx = dim[1];
 
   if (ntimes != dim[2])
-    errorcall(R_NilValue,"length of 'times' and 3rd dimension of 'x' do not agree.");
+    err("length of 'times' and 3rd dimension of 'x' do not agree.");
 
   PROTECT(params = as_matrix(params));
   dim = INTEGER(GET_DIM(params));
@@ -144,7 +144,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
 
   if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
-    errorcall(R_NilValue,"larger number of replicates is not a multiple of smaller.");
+    err("larger number of replicates is not a multiple of smaller.");
 
   PROTECT(Onames = GET_ROWNAMES(GET_DIMNAMES(y)));
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x)));
@@ -200,7 +200,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
         );
 
         if (k == 0 && j == 0 && LENGTH(ans) != 1)
-          errorcall(R_NilValue,"user 'dmeasure' returns a vector of length %d when it should return a scalar.",LENGTH(ans));
+          err("user 'dmeasure' returns a vector of length %d when it should return a scalar.",LENGTH(ans));
 
         *ft = *(REAL(AS_NUMERIC(ans)));
 
@@ -267,7 +267,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
       }
     }
 
-    warningcall(R_NilValue,"'dmeasure' unspecified: likelihood undefined.");
+    warn("'dmeasure' unspecified: likelihood undefined.");
 
   }
 

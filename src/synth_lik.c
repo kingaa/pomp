@@ -29,7 +29,7 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
   y2 = (double *) R_alloc(nrow*ncol,sizeof(double));
 
   if (nrow <= ncol)
-    errorcall(R_NilValue,"'nsim' (=%ld) should be (much) larger than the number of probes (=%ld)",nrow,ncol); // #nocov
+    err("'nsim' (=%ld) should be (much) larger than the number of probes (=%ld)",nrow,ncol); // #nocov
 
   // compute column means, center each column, precondition
   memcpy(y1,y,nrow*ncol*sizeof(double));

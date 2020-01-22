@@ -205,7 +205,7 @@ static void nlopt_sobol_destroy (nlopt_sobol s)
 // void nlopt_sobol_next01 (nlopt_sobol s, double *x)
 // {
 //   if (!sobol_gen(s, x))
-//     errorcall(R_NilValue,"too many points requested");
+//     err("too many points requested");
 // }
 
 /* next vector in Sobol sequence, scaled to (lb[i], ub[i]) interval */
@@ -239,7 +239,7 @@ SEXP sobol_sequence (SEXP dim, SEXP length)
   double *dp;
   unsigned int k;
   nlopt_sobol s = nlopt_sobol_create((unsigned int) d);
-  if (s==0) errorcall(R_NilValue,"dimension is too high");
+  if (s==0) err("dimension is too high");
   PROTECT(data = allocMatrix(REALSXP,d,n)); dp = REAL(data);
   nlopt_sobol_skip(s,n,dp);
   for (k = 1; k < n; k++) sobol_gen(s,dp+k*d);

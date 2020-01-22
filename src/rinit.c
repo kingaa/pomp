@@ -134,7 +134,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     PROTECT(Snames = GET_NAMES(ans));
 
     if (!IS_NUMERIC(ans) || invalid_names(Snames))
-      errorcall(R_NilValue,"user 'rinit' must return a named numeric vector.");
+      err("user 'rinit' must return a named numeric vector.");
 
     nvar = LENGTH(ans);
     xs = REAL(ans);
@@ -142,7 +142,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
     for (j = 0; j < nvar; j++) {
       if (midx[j] != 0)
-        errorcall(R_NilValue,"a state variable and a parameter share the name: '%s'.",CHAR(STRING_ELT(Snames,j)));
+        err("a state variable and a parameter share the name: '%s'.",CHAR(STRING_ELT(Snames,j)));
     }
 
     PROTECT(x = ret_array(nvar,ns,Snames));
@@ -156,7 +156,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       PROTECT(ans = eval_call(fn,args,time,ps+npar*(j%nrep),npar,cov,ncovars));
       xs = REAL(ans);
       if (LENGTH(ans) != nvar)
-        errorcall(R_NilValue,"user 'rinit' returns vectors of non-uniform length.");
+        err("user 'rinit' returns vectors of non-uniform length.");
       memcpy(xt,xs,nvar*sizeof(double));
       UNPROTECT(1);
     }
@@ -277,7 +277,7 @@ static SEXP pomp_default_rinit (SEXP params, SEXP Pnames,
 
   nvar = LENGTH(ivpnames);
   if (nvar < 1)
-    warningcall(R_NilValue,"in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.");
+    warn("in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'.");
 
   pidx = INTEGER(PROTECT(match(Pnames,ivpnames,0)));
   for (k = 0; k < nvar; k++) pidx[k]--;

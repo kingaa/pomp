@@ -145,7 +145,7 @@ SEXP load_stack_decr (SEXP pack) {
   pkg = (const char *) CHAR(STRING_ELT(pack,0));
   ff = (void (*)(int *)) R_GetCCallable(pkg,"__pomp_load_stack_decr");
   ff(INTEGER(s));
-  if (*(INTEGER(s)) < 0) errorcall(R_NilValue,"impossible!");
+  if (*(INTEGER(s)) < 0) err("impossible!");
   UNPROTECT(1);
   return s;
 }

@@ -104,7 +104,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
         PROTECT(nm = GET_NAMES(ans));
         if (invalid_names(nm))
-          errorcall(R_NilValue,"'rprior' must return a named numeric vector.");
+          err("'rprior' must return a named numeric vector.");
         posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters")));
 	
 	nprotect += 3;
@@ -160,7 +160,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
   default: // just duplicate
 
-    warningcall(R_NilValue,"'rprior' unspecified: duplicating parameters.");
+    warn("'rprior' unspecified: duplicating parameters.");
 
   }
 
