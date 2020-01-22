@@ -22,10 +22,6 @@ try(pfilter(ou2,Np=NULL))
 try(pfilter(ou2,Np=-10))
 try(pfilter(ou2,Np=c(10,20,30)))
 pfilter(ou2,Np=ceiling(runif(101,min=10,max=100)))
-try(pfilter(ou2,Np=100,tol=NA))
-try(pfilter(ou2,Np=100,tol=-1))
-try(pfilter(ou2,Np=100,tol=NULL))
-try(pfilter(ou2,Np=100,tol=c(1,10,20)))
 
 po <- ou2
 coef(po) <- NULL
@@ -39,11 +35,10 @@ pf <- pfilter(po,Np=100,params=as.list(coef(ou2)))
 
 pf <- pfilter(pf)
 try(pfilter(pf,Np=-1000))
-try(pfilter(pf,tol=-1))
 stopifnot(all.equal(coef(pf),coef(ou2)))
 theta <- coef(ou2)
 theta["alpha_2"] <- 0.1
-pf1 <- pfilter(pf,params=theta,Np=100,tol=1e-20)
+pf1 <- pfilter(pf,params=theta,Np=100)
 stopifnot(identical(coef(pf1),theta))
 
 try(pfilter(ou2,params=parmat(coef(ou2),100)))
@@ -69,14 +64,6 @@ try(pfilter(pf,rprocess=onestep(
   function(x, t, params, delta.t, ...)stop("yikes!"))))
 try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 try(pfilter(pf,dmeasure=function(log,...) -Inf))
-
-set.seed(388966382L)
-capture.output(try(pfilter(pf,Np=2,max.fail=15,tol=1e-17,verbose=TRUE,filter.mean=TRUE)),
-  type="message") -> out
-stopifnot(
-  sum(grepl("filtering failure at",out))==16,
-  grepl("too many filtering failures",out[[17]])
-)
 
 pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
 pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)

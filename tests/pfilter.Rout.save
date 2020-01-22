@@ -64,14 +64,6 @@ Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 Error : in 'pfilter': 'Np' must have length 1 or length 101.
 > pfilter(ou2,Np=ceiling(runif(101,min=10,max=100)))
 <object of class 'pfilterd_pomp'>
-> try(pfilter(ou2,Np=100,tol=NA))
-Error : in 'pfilter': 'tol' should be a small nonnegative number.
-> try(pfilter(ou2,Np=100,tol=-1))
-Error : in 'pfilter': 'tol' should be a small nonnegative number.
-> try(pfilter(ou2,Np=100,tol=NULL))
-Error : in 'pfilter': 'tol' should be a small nonnegative number.
-> try(pfilter(ou2,Np=100,tol=c(1,10,20)))
-Error : in 'pfilter': 'tol' should be a small nonnegative number.
 > 
 > po <- ou2
 > coef(po) <- NULL
@@ -102,17 +94,10 @@ in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rini
 > pf <- pfilter(pf)
 > try(pfilter(pf,Np=-1000))
 Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
-> try(pfilter(pf,tol=-1))
-Error : in 'pfilter': 'tol' should be a small nonnegative number.
 > stopifnot(all.equal(coef(pf),coef(ou2)))
 > theta <- coef(ou2)
 > theta["alpha_2"] <- 0.1
-> pf1 <- pfilter(pf,params=theta,Np=100,tol=1e-20)
-Warning messages:
-1: in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 0;
-in future releases, the option to choose otherwise will be removed. 
-2: in 'pfilter': 11 filtering failures occurred. 
+> pf1 <- pfilter(pf,params=theta,Np=100)
 > stopifnot(identical(coef(pf1),theta))
 > 
 > try(pfilter(ou2,params=parmat(coef(ou2),100)))
@@ -136,15 +121,13 @@ Error : in 'pfilter': 'Np' must be a number, a vector of numbers, or a function.
 > theta["tau"] <- 0
 > try(pfilter(pf,params=theta))
 <object of class 'pfilterd_pomp'>
-Warning message:
-in 'pfilter': 100 filtering failures occurred. 
 > theta <- coef(ou2)
 > theta["sigma_2"] <- Inf
 > try(pfilter(pf,params=theta))
-Error : in 'pfilter': 'dmeasure' returns illegal value.
-Likelihood, data, states, and parameters are:
+Error : in 'pfilter': 'dmeasure' with log=TRUE returns illegal value.
+Log likelihood, data, states, and parameters are:
    time:            2
-    lik:          NaN
+ loglik:          NaN
      y1:      1.83463
      y2:       6.2733
      x1:          Inf
@@ -170,46 +153,13 @@ Error : in 'pfilter': in 'rprocess': yikes!
 > try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 Error : in 'pfilter': in 'dmeasure': ouch!
 > try(pfilter(pf,dmeasure=function(log,...) -Inf))
-Error : in 'pfilter': 'dmeasure' returns illegal value.
-Likelihood, data, states, and parameters are:
-   time:            1
-    lik:         -Inf
-     y1:     -4.05129
-     y2:      4.78064
-     x1:     0.682399
-     x2:      3.51642
-alpha_1:          0.8
-alpha_2:         -0.5
-alpha_3:          0.3
-alpha_4:          0.9
-sigma_1:            3
-sigma_2:         -0.5
-sigma_3:            2
-    tau:            1
-   x1_0:           -3
-   x2_0:            4
-> 
-> set.seed(388966382L)
-> capture.output(try(pfilter(pf,Np=2,max.fail=15,tol=1e-17,verbose=TRUE,filter.mean=TRUE)),
-+   type="message") -> out
-pfilter timestep 5 of 100 finished
-pfilter timestep 10 of 100 finished
-pfilter timestep 15 of 100 finished
-pfilter timestep 20 of 100 finished
-pfilter timestep 25 of 100 finished
-pfilter timestep 30 of 100 finished
-> stopifnot(
-+   sum(grepl("filtering failure at",out))==16,
-+   grepl("too many filtering failures",out[[17]])
-+ )
+<object of class 'pfilterd_pomp'>
 > 
 > pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
 > pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)
 > pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 +   filter.traj=TRUE)
-Warning message:
-in 'pfilter': 100 filtering failures occurred. 
 > names(as(pf2,"data.frame"))
  [1] "time"           "y1"             "y2"             "ess"           
  [5] "cond.loglik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   

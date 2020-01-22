@@ -15,8 +15,6 @@
   data,
   Np,
   smooth = 0.1,
-  tol = 0,
-  max.fail = 0,
   params,
   rprior,
   rinit,
@@ -27,15 +25,7 @@
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{bsmc2}{pomp}(
-  data,
-  Np,
-  smooth = 0.1,
-  tol = 0,
-  max.fail = 0,
-  ...,
-  verbose = getOption("verbose", FALSE)
-)
+\S4method{bsmc2}{pomp}(data, Np, smooth = 0.1, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -48,16 +38,6 @@ i.e., the output of another \pkg{pomp} calculation.}
 The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
 Thus, \code{smooth=0} means that no noise will be added to parameters.
 The general recommendation is that the value of \code{smooth} should be chosen close to 0 (e.g., \code{shrink} ~ 0.1).}
-
-\item{tol}{non-negative numeric scalar;
-particles with likelihood less than \code{tol} are considered to be incompatible with the data.
-See the section on \emph{Filtering Failures} for more information.
-In a future release, this argument will be removed.}
-
-\item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
-If the number of filtering failures exceeds this number, execution will terminate with an error.
-By default, \code{max.fail} is set to infinity, so no error can be triggered.
-In a future release, this argument will be removed.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -115,22 +95,6 @@ Samples from the prior distribution are drawn using the \code{rprior} component.
 This is allowed to depend on elements of \code{params}, i.e., some of the elements of \code{params} can be treated as \dQuote{hyperparameters}.
 \code{Np} draws are made from the prior distribution.
 }
-\section{Change in default tolerance}{
-
-From \pkg{pomp} version 2.4.1, warnings have been issued whenever the value of \code{tol} is set to anything other than zero.
-As of version 2.7.1, the default value of \code{tol} is zero and warnings will be generated whenever it is set by the user to anything else.
-This behavior is in anticipation of a forthcoming release, which will remove the \code{tol} and \code{max.fail} arguments altogether.
-}
-
-\section{Filtering failures}{
-
-If the degree of disagreement between model and data becomes sufficiently large, a \dQuote{filtering failure} results.
-A filtering failure occurs when, at some time point, none of the \code{Np} particles is compatible with the data.
-In particular, if the conditional likelihood of a particle at any time is below the tolerance value \code{tol}, then that particle is considered to be uninformative and its likelihood is taken to be zero.
-A filtering failure occurs when this is the case for all particles.
-A warning is generated when this occurs unless the cumulative number of failures exceeds \code{max.fail}, in which case an error is generated.
-}
-
 \references{
 Liu, J. and M. West.
 Combining Parameter and State Estimation in Simulation-Based Filtering.

@@ -1,5 +1,14 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _9._9._9:
+
+        • As promised from version 2.4.1, the ‘tol’ and ‘max.fail’
+          arguments have been removed completely from all
+          particle-filtering algorithms, including ‘pfilter’, ‘pmcmc’,
+          ‘bsmc2’, and ‘mif2’.  See the ‘pomp’ news blog (<URL:
+          https://kingaa.github.io/pomp/blog.html>) for more
+          information.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._8._0:
 
         • Trap error from non-finite likelihoods in ‘pmcmc’.

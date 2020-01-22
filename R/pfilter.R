@@ -25,16 +25,6 @@
 ##' and so on,
 ##' while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.
 ##'
-##' @param tol non-negative numeric scalar;
-##' particles with likelihood less than \code{tol} are considered to be incompatible with the data.
-##' See the section on \emph{Filtering Failures} for more information.
-##' In a future release, this argument will be removed.
-##'
-##' @param max.fail integer; the maximum number of filtering failures allowed (see below).
-##' If the number of filtering failures exceeds this number, execution will terminate with an error.
-##' By default, \code{max.fail} is set to infinity, so no error can be triggered.
-##' In a future release, this argument will be removed.
-##'
 ##' @param pred.mean logical; if \code{TRUE}, the prediction means are calculated for the state variables and parameters.
 ##'
 ##' @param pred.var logical; if \code{TRUE}, the prediction variances are calculated for the state variables and parameters.
@@ -65,18 +55,6 @@
 ##' \item{\code{\link{plot}}}{diagnostic plots}
 ##' }
 ##'
-##' @section Change in default tolerance:
-##' From \pkg{pomp} version 2.4.1, warnings have been issued whenever the value of \code{tol} is set to anything other than zero.
-##' As of version 2.7.1, the default value of \code{tol} is zero and warnings will be generated whenever it is set by the user to anything else.
-##' This behavior is in anticipation of a forthcoming release, which will remove the \code{tol} and \code{max.fail} arguments altogether.
-##' 
-##' @section Filtering failures:
-##' If the degree of disagreement between model and data becomes sufficiently large, a \dQuote{filtering failure} results.
-##' A filtering failure occurs when, at some time point, none of the \code{Np} particles is compatible with the data.
-##' In particular, if the conditional likelihood of a particle at any time is below the tolerance value \code{tol}, then that particle is considered to be uninformative and its likelihood is taken to be zero.
-##' A filtering failure occurs when this is the case for all particles.
-##' A warning is generated when this occurs unless the cumulative number of failures exceeds \code{max.fail}, in which case an error is generated.
-##'
 ##' @references
 ##'
 ##' \Arulampalam2002
@@ -99,7 +77,6 @@ setClass(
     cond.loglik="numeric",
     saved.states="list",
     Np="integer",
-    tol="numeric",
     loglik="numeric"
   ),
   prototype=prototype(
@@ -113,7 +90,6 @@ setClass(
     cond.loglik=numeric(0),
     saved.states=list(),
     Np=as.integer(NA),
-    tol=as.double(NA),
     loglik=as.double(NA)
   )
 )
@@ -149,7 +125,7 @@ setMethod(
   signature=signature(data="data.frame"),
   definition=function (
     data,
-    Np, tol = 0, max.fail = Inf,
+    Np, 
     params, rinit, rprocess, dmeasure,
     pred.mean = FALSE,
     pred.var = FALSE,
@@ -163,8 +139,6 @@ setMethod(
       pfilter.internal(
         data,
         Np=Np,
-        tol=tol,
-        max.fail=max.fail,
         pred.mean=pred.mean,
         pred.var=pred.var,
         filter.mean=filter.mean,
@@ -192,7 +166,7 @@ setMethod(
   signature=signature(data="pomp"),
   definition=function (
     data,
-    Np, tol = 0, max.fail = Inf,
+    Np,
     pred.mean = FALSE,
     pred.var = FALSE,
     filter.mean = FALSE,
@@ -205,8 +179,6 @@ setMethod(
       pfilter.internal(
         data,
         Np=Np,
-        tol=tol,
-        max.fail=max.fail,
         pred.mean=pred.mean,
         pred.var=pred.var,
         filter.mean=filter.mean,
@@ -228,19 +200,17 @@ setMethod(
 setMethod(
   "pfilter",
   signature=signature(data="pfilterd_pomp"),
-  function (data, Np, tol,
+  function (data, Np,
     ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(Np)) Np <- data@Np
-    if (missing(tol)) tol <- data@tol
 
-    pfilter(as(data,"pomp"),Np=Np,tol=tol,
-      ...,verbose=verbose)
+    pfilter(as(data,"pomp"),Np=Np,...,verbose=verbose)
 
   }
 )
 
-pfilter.internal <- function (object, Np, tol, max.fail,
+pfilter.internal <- function (object, Np,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
   filter.traj = FALSE, cooling, cooling.m, save.states = FALSE, ...,
   .gnsi = TRUE, verbose = FALSE) {
@@ -252,7 +222,6 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   if (undefined(object@rprocess) || undefined(object@dmeasure))
     pStop_(paste(sQuote(c("rprocess","dmeasure")),collapse=", ")," are needed basic components.")
 
-  tol <- as.numeric(tol)
   gnsi <- as.logical(.gnsi)
   pred.mean <- as.logical(pred.mean)
   pred.var <- as.logical(pred.var)
@@ -288,18 +257,6 @@ pfilter.internal <- function (object, Np, tol, max.fail,
 
   Np <- as.integer(Np)
 
-  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
-    pStop_(sQuote("tol")," should be a small nonnegative number.")
-
-  if (tol != 0) {
-    pWarn(
-      "pfilter",
-      "the ",sQuote("tol")," argument is deprecated and will be removed in a future release.\n",
-      "Currently, the default value of ",sQuote("tol")," is 0;\n",
-      "in future releases, the option to choose otherwise will be removed."
-    )
-  }
-
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
@@ -318,7 +275,6 @@ pfilter.internal <- function (object, Np, tol, max.fail,
 
   loglik <- rep(NA,ntimes)
   eff.sample.size <- numeric(ntimes)
-  nfail <- 0
 
   ## set up storage for prediction means, variances, etc.
   if (pred.mean) {
@@ -352,8 +308,7 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   for (nt in seq_len(ntimes)) { ## main loop
 
     ## advance the state variables according to the process model
-    X <- rprocess(object,x0=x,t0=times[nt],times=times[nt+1],params=params,
-      .gnsi=gnsi)
+    X <- rprocess(object,x0=x,t0=times[nt],times=times[nt+1],params=params,.gnsi=gnsi)
 
     if (pred.var) { ## check for nonfinite state variables and parameters
       problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1L])
@@ -365,30 +320,28 @@ pfilter.internal <- function (object, Np, tol, max.fail,
 
     ## determine the weights
     weights <- dmeasure(object,y=object@data[,nt,drop=FALSE],x=X,
-      times=times[nt+1],params=params,log=FALSE,.gnsi=gnsi)
-
+      times=times[nt+1],params=params,log=TRUE,.gnsi=gnsi)
     gnsi <- FALSE
 
     ## compute prediction mean, prediction variance, filtering mean,
-    ## effective sample size, log-likelihood
-    ## also do resampling if filtering has not failed
+    ## effective sample size, log-likelihood.
+    ## also do resampling.
     xx <- .Call(P_pfilter_computations,x=X,params=params,Np=Np[nt+1],
       predmean=pred.mean,predvar=pred.var,filtmean=filter.mean,
       trackancestry=filter.traj,doparRS=FALSE,weights=weights,
-      wave=FALSE,tol=tol)
+      wave=FALSE)
 
     ## the following is triggered by the first illegal weight value
     if (is.integer(xx)) {
       illegal_dmeasure_error(
         time=times[nt+1],
-        lik=weights[xx],
+        loglik=weights[xx],
         datvals=object@data[,nt],
         states=X[,xx,1L],
         params=params
       )
     }
 
-    all.fail <- xx$fail
     loglik[nt] <- xx$loglik
     eff.sample.size[nt] <- xx$ess
 
@@ -399,12 +352,6 @@ pfilter.internal <- function (object, Np, tol, max.fail,
     if (pred.var) pred.v[,nt] <- xx$pv
     if (filter.mean) filt.m[,nt] <- xx$fm
     if (filter.traj) pedigree[[nt]] <- xx$ancestry
-
-    if (all.fail) { ## all particles are lost
-      nfail <- nfail+1
-      if (verbose) message("filtering failure at time t = ",times[nt+1])
-      if (nfail>max.fail) pStop_("too many filtering failures")
-    }
 
     if (save.states || filter.traj) {
       xparticles[[nt]] <- x
@@ -434,9 +381,6 @@ pfilter.internal <- function (object, Np, tol, max.fail,
 
   if (!save.states) xparticles <- list()
 
-  if (nfail>0)
-    pWarn("pfilter",nfail," filtering failure",ngettext(nfail,"","s")," occurred.")
-
   new(
     "pfilterd_pomp",
     object,
@@ -449,18 +393,17 @@ pfilter.internal <- function (object, Np, tol, max.fail,
     cond.loglik=loglik,
     saved.states=xparticles,
     Np=as.integer(Np),
-    tol=tol,
     loglik=sum(loglik)
   )
 }
 
-illegal_dmeasure_error <- function (time, lik, datvals, states, params) {
-  showvals <- c(time=time,lik=lik,datvals,states,params)
+illegal_dmeasure_error <- function (time, loglik, datvals, states, params) {
+  showvals <- c(time=time,loglik=loglik,datvals,states,params)
   m1 <- formatC(names(showvals),preserve.width="common")
   m2 <- formatC(showvals,digits=6,width=12,format="g",preserve.width="common")
   pStop_(
-    sQuote("dmeasure")," returns illegal value.\n",
-    "Likelihood, data, states, and parameters are:\n",
+    sQuote("dmeasure")," with log=TRUE returns illegal value.\n",
+    "Log likelihood, data, states, and parameters are:\n",
     paste0(m1,": ",m2,collapse="\n")
   )
 }

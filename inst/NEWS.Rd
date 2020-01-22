@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 9.9.9}{
+  \itemize{
+    \item As promised from version 2.4.1, the \code{tol} and \code{max.fail} arguments have been removed completely from all particle-filtering algorithms, including \code{pfilter}, \code{pmcmc}, \code{bsmc2}, and \code{mif2}.
+    See the \href{https://kingaa.github.io/pomp/blog.html}{\pkg{pomp} news blog} (\url{https://kingaa.github.io/pomp/blog.html}) for more information.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.8.0}{
   \itemize{
     \item Trap error from non-finite likelihoods in \code{pmcmc}.

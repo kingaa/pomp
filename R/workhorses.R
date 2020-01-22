@@ -112,7 +112,7 @@ dmeasure.internal <- function (object, y, x, times, params, ..., log = FALSE,
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
-  .Call(P_do_dmeasure,object,y,x,times,params,log,.gnsi)
+  .Call(P_do_dmeasure,object,y,x,times,params,log,.gnsi)  
 }
 
 ##' dprior

@@ -30,13 +30,8 @@
 ##' To re-run a sequence of PMCMC
 ##' iterations, one can use the \code{pmcmc} method on a \sQuote{pmcmc} object.
 ##' By default, the same parameters used for the original PMCMC run are re-used
-##' (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults
-##' of which are shown above).  If one does specify additional arguments, these
-##' will override the defaults.
-##'
-##' @inheritSection pfilter Change in default tolerance
-##' 
-##' @inheritSection pfilter Filtering failures
+##' (except for \code{verbose}, the default of which is shown above).  If one
+##' does specify additional arguments, these will override the defaults.
 ##'
 ##' @references
 ##'
@@ -97,7 +92,7 @@ setMethod(
   signature=signature(data="data.frame"),
   function (data,
     Nmcmc = 1, proposal,
-    Np, tol = 0, max.fail = Inf,
+    Np,
     params, rinit, rprocess, dmeasure, dprior,
     ..., verbose = getOption("verbose", FALSE)) {
 
@@ -107,8 +102,6 @@ setMethod(
         Nmcmc=Nmcmc,
         proposal=proposal,
         Np=Np,
-        tol=tol,
-        max.fail=max.fail,
         params=params,
         rinit=rinit,
         rprocess=rprocess,
@@ -132,8 +125,8 @@ setMethod(
   signature=signature(data="pomp"),
   function (data,
     Nmcmc = 1, proposal,
-    Np, tol = 0, max.fail = Inf,
-    ..., verbose = getOption("verbose", FALSE)) {
+    Np, ...,
+    verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
       pmcmc.internal(
@@ -141,8 +134,6 @@ setMethod(
         Nmcmc=Nmcmc,
         proposal=proposal,
         Np=Np,
-        tol=tol,
-        max.fail=max.fail,
         ...,
         verbose=verbose
       ),
@@ -161,19 +152,16 @@ setMethod(
   signature=signature(data="pfilterd_pomp"),
   function (data,
     Nmcmc = 1, proposal,
-    Np, tol, max.fail = Inf,
-    ..., verbose = getOption("verbose", FALSE)) {
+    Np, ...,
+    verbose = getOption("verbose", FALSE)) {
 
     if (missing(Np)) Np <- data@Np
-    if (missing(tol)) tol <- data@tol
-
+    
     pmcmc(
       as(data,"pomp"),
       Nmcmc=Nmcmc,
       proposal=proposal,
       Np=Np,
-      tol=tol,
-      max.fail=max.fail,
       ...,
       verbose=verbose
     )
@@ -249,7 +237,7 @@ setMethod(
   }
 )
 
-pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
+pmcmc.internal <- function (object, Nmcmc, proposal, Np, ...,
   verbose, .ndone = 0L, .accepts = 0L, .prev.pfp = NULL, .prev.log.prior = NULL,
   .gnsi = TRUE) {
 
@@ -269,10 +257,6 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
       pStop_(sQuote("proposal")," must be a function: ",conditionMessage(e))
     }
   )
-
-  tol <- as.numeric(tol)
-  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
-    pStop_(sQuote("tol")," should be a small nonnegative number.")
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
@@ -303,8 +287,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
 
   if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
 
-    pfp <- pfilter(object,params=theta,Np=Np,tol=tol,max.fail=max.fail,
-      filter.traj=TRUE,.gnsi=gnsi,verbose=verbose)
+    pfp <- pfilter(object,params=theta,Np=Np,filter.traj=TRUE,.gnsi=gnsi,verbose=verbose)
 
     log.prior <- dprior(object,params=theta,log=TRUE,.gnsi=gnsi)
 
@@ -335,8 +318,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
     )
 
     ## compute log prior
-    log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,
-      .gnsi=gnsi)
+    log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,.gnsi=gnsi)
 
     if (is.finite(log.prior.prop)) {
 
@@ -345,8 +327,6 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
         pfp,
         params=theta.prop,
         Np=Np,
-        tol=tol,
-        max.fail=max.fail,
         filter.traj=TRUE,
         verbose=verbose,
         .gnsi=gnsi

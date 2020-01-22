@@ -6,7 +6,6 @@
 static void pred_mean_var (int, int, int, const double *, double *, double *);
 static void filt_mean (int, int, int, long double, const double *, const double *, double *);
 
-// examines weights for filtering failure.
 // computes conditional log likelihood and effective sample size.
 // computes (if desired) prediction mean, prediction variance, filtering mean.
 // it is assumed that ncol(x) == ncol(params).
@@ -15,24 +14,24 @@ static void filt_mean (int, int, int, long double, const double *, const double 
 // tracks ancestry of particles if desired.
 // returns all of the above in a named list.
 SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
-  SEXP predmean, SEXP predvar,
-  SEXP filtmean, SEXP trackancestry, SEXP doparRS,
-  SEXP weights, SEXP wave, SEXP tol)
+                           SEXP predmean, SEXP predvar,
+                           SEXP filtmean, SEXP trackancestry, SEXP doparRS,
+                           SEXP weights, SEXP wave)
 {
 
   SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue;
   SEXP anc = R_NilValue, wmean = R_NilValue;
-  SEXP ess, fail, loglik;
+  SEXP ess, loglik;
   SEXP newstates = R_NilValue, newparams = R_NilValue;
   SEXP retval, retvalnames;
   const char *dimnm[2] = {"variable","rep"};
   double *xw = 0;
+  long double w = 0, ws, maxw, sum;
   int *xanc = 0;
   SEXP dimX, dimP, newdim, Xnames, Pnames;
   int *dim, np;
-  int nvars, npars = 0, nreps, nlost;
+  int nvars, npars = 0, nreps;
   int do_pm, do_pv, do_fm, do_ta, do_pr, do_wave, all_fail = 0;
-  long double sum = 0, ws, w, toler;
   int j, k;
 
   PROTECT(dimX = GET_DIM(x));
@@ -47,6 +46,8 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   if (nreps % dim[1] != 0)
     err("ncol('states') should be a multiple of ncol('params')"); // # nocov
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
+
+  PROTECT(weights = duplicate(weights)); // FIXME: unnecessary copy
 
   np = *(INTEGER(AS_INTEGER(Np))); // number of particles to resample
 
@@ -66,38 +67,46 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 
   PROTECT(ess = NEW_NUMERIC(1));    // effective sample size
   PROTECT(loglik = NEW_NUMERIC(1)); // log likelihood
-  PROTECT(fail = NEW_LOGICAL(1));   // particle failure?
 
   int nprotect = 8;
 
   xw = REAL(weights);
-  toler = *(REAL(tol));		// failure tolerance
+  
+  // check and normalize the weights
+  for (k = 0, maxw = R_NegInf; k < nreps; k++) {
 
-  // check the weights and compute sum and sum of squares
-  for (k = 0, w = 0, ws = 0, nlost = 0; k < nreps; k++) {
-    if (ISNAN(xw[k]) || xw[k] < 0 || xw[k] == R_PosInf) { // check the weights
+    if (ISNAN(xw[k]) || xw[k] == R_PosInf) { // check the weights
       PROTECT(retval = NEW_INTEGER(1)); nprotect++;
       *INTEGER(retval) = k+1; // return the index of the peccant particle
       UNPROTECT(nprotect);
       return retval;
     }    
-    if (xw[k] > toler) {
-      w += xw[k];
-      ws += xw[k]*xw[k];
-    } else {			// this particle is lost
-      xw[k] = 0;
-      nlost++;
-    }
+
+    if (maxw < xw[k]) maxw = xw[k];
+
   }
-  if (nlost >= nreps) all_fail = 1; // all particles are lost
+
+  if (maxw == R_NegInf) all_fail = 1;
+
   if (all_fail) {
-    *(REAL(loglik)) = log(toler); // minimum log-likelihood
-    *(REAL(ess)) = 0;		  // zero effective sample size
+    
+    *(REAL(loglik)) = R_NegInf;
+    *(REAL(ess)) = 0;             // zero effective sample size
+
   } else {
-    *(REAL(loglik)) = log(w/((double) nreps)); // mean of weights is likelihood
-    *(REAL(ess)) = w*w/ws;	// effective sample size
+
+    // compute sum and sum of squares
+    for (k = 0, w = 0, ws = 0; k < nreps; k++) {
+      xw[k] = exp(xw[k]-maxw);
+      if (xw[k] != 0) {
+	w += xw[k];
+	ws += xw[k]*xw[k];
+      }
+    }
+
+    *(REAL(loglik)) = maxw + log(w/((double) nreps)); // mean of weights is likelihood
+    *(REAL(ess)) = w*w/ws;      // effective sample size
   }
-  *(LOGICAL(fail)) = all_fail;
 
   if (do_pm || do_pv) {
     PROTECT(pm = NEW_NUMERIC(nvars)); nprotect++;
@@ -121,7 +130,6 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     SET_NAMES(wmean,Pnames);
   }
 
-  //  compute prediction mean and possibly variance
   if (do_pm || do_pv) {
     double *tmp = (do_pv) ? REAL(pv) : 0;
     pred_mean_var(nvars,nreps,do_pv,REAL(x),REAL(pm),tmp);
@@ -157,7 +165,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   if (!all_fail) { // resample the particles unless we have filtering failure
     int xdim[2];
     int sample[np];
-    double *ss = 0, *st = 0, *ps = 0, *pt = 0, *xp = 0, *xx = 0;
+    double *ss = 0, *st = 0, *ps = 0, *pt = 0;
 
     // create storage for new states
     xdim[0] = nvars; xdim[1] = np;
@@ -180,13 +188,15 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     // resample
     nosort_resamp(nreps,REAL(weights),np,sample,0);
     for (k = 0; k < np; k++) { // copy the particles
-      for (j = 0, xx = ss+nvars*sample[k]; j < nvars; j++, st++, xx++)
+      int sp = sample[k];
+      double *xx, *xp;
+      for (j = 0, xx = ss+nvars*sp; j < nvars; j++, st++, xx++)
         *st = *xx;
       if (do_pr) {
-        for (j = 0, xp = ps+npars*sample[k]; j < npars; j++, pt++, xp++)
+        for (j = 0, xp = ps+npars*sp; j < npars; j++, pt++, xp++)
           *pt = *xp;
       }
-      if (do_ta) xanc[k] = sample[k]+1;
+      if (do_ta) xanc[k] = sp+1;
     }
 
   } else { // don't resample: just drop 3rd dimension in x prior to return
@@ -204,51 +214,49 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 
   PutRNGstate();
 
-  PROTECT(retval = NEW_LIST(10));
-  PROTECT(retvalnames = NEW_CHARACTER(10));
+  PROTECT(retval = NEW_LIST(9));
+  PROTECT(retvalnames = NEW_CHARACTER(9));
   nprotect += 2;
-  SET_STRING_ELT(retvalnames,0,mkChar("fail"));
-  SET_STRING_ELT(retvalnames,1,mkChar("loglik"));
-  SET_STRING_ELT(retvalnames,2,mkChar("ess"));
-  SET_STRING_ELT(retvalnames,3,mkChar("states"));
-  SET_STRING_ELT(retvalnames,4,mkChar("params"));
-  SET_STRING_ELT(retvalnames,5,mkChar("pm"));
-  SET_STRING_ELT(retvalnames,6,mkChar("pv"));
-  SET_STRING_ELT(retvalnames,7,mkChar("fm"));
-  SET_STRING_ELT(retvalnames,8,mkChar("ancestry"));
-  SET_STRING_ELT(retvalnames,9,mkChar("wmean"));
+  SET_STRING_ELT(retvalnames,0,mkChar("loglik"));
+  SET_STRING_ELT(retvalnames,1,mkChar("ess"));
+  SET_STRING_ELT(retvalnames,2,mkChar("states"));
+  SET_STRING_ELT(retvalnames,3,mkChar("params"));
+  SET_STRING_ELT(retvalnames,4,mkChar("pm"));
+  SET_STRING_ELT(retvalnames,5,mkChar("pv"));
+  SET_STRING_ELT(retvalnames,6,mkChar("fm"));
+  SET_STRING_ELT(retvalnames,7,mkChar("ancestry"));
+  SET_STRING_ELT(retvalnames,8,mkChar("wmean"));
   SET_NAMES(retval,retvalnames);
 
-  SET_ELEMENT(retval,0,fail);
-  SET_ELEMENT(retval,1,loglik);
-  SET_ELEMENT(retval,2,ess);
+  SET_ELEMENT(retval,0,loglik);
+  SET_ELEMENT(retval,1,ess);
 
   if (all_fail) {
-    SET_ELEMENT(retval,3,x);
+    SET_ELEMENT(retval,2,x);
   } else {
-    SET_ELEMENT(retval,3,newstates);
+    SET_ELEMENT(retval,2,newstates);
   }
 
   if (all_fail || !do_pr) {
-    SET_ELEMENT(retval,4,params);
+    SET_ELEMENT(retval,3,params);
   } else {
-    SET_ELEMENT(retval,4,newparams);
+    SET_ELEMENT(retval,3,newparams);
   }
 
   if (do_pm) {
-    SET_ELEMENT(retval,5,pm);
+    SET_ELEMENT(retval,4,pm);
   }
   if (do_pv) {
-    SET_ELEMENT(retval,6,pv);
+    SET_ELEMENT(retval,5,pv);
   }
   if (do_fm) {
-    SET_ELEMENT(retval,7,fm);
+    SET_ELEMENT(retval,6,fm);
   }
   if (do_ta) {
-    SET_ELEMENT(retval,8,anc);
+    SET_ELEMENT(retval,7,anc);
   }
   if (do_wave) {
-    SET_ELEMENT(retval,9,wmean);
+    SET_ELEMENT(retval,8,wmean);
   }
 
   UNPROTECT(nprotect);

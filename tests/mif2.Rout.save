@@ -188,27 +188,22 @@ Error : in 'mif2': in 'rprocess': boink
 Error : in 'mif2': in 'dmeasure': blop
 > try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
 +   cooling.fraction.50=0.1,dmeasure=function(log,...)NA))
-Error : in 'mif2': 'dmeasure' returns illegal value.
-Likelihood, data, states, and parameters are:
- time:            1
-  lik:           NA
-    Y:      1.02624
-    X:     0.937703
-    K:            1
-    r:          0.1
-sigma:    0.0991013
-  tau:          0.1
-  X_0:      1.00091
+Error : in 'mif2': 'dmeasure' with log=TRUE returns illegal value.
+Log likelihood, data, states, and parameters are:
+  time:            1
+loglik:           NA
+     Y:      1.02624
+     X:     0.937703
+     K:            1
+     r:          0.1
+ sigma:    0.0991013
+   tau:          0.1
+   X_0:      1.00091
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),
 +   cooling.type="hyper",cooling.fraction.50=0.1,
 +   drpocess="oops",
 +   dmeasure=function(log,...)0) -> mf3
 in 'pomp': the unrecognized argument 'drpocess' is available for use by the POMP basic components.
-Warning messages:
-1: filtering failure at last filter iteration:  
-2: in 'mif2': 10 filtering failures occurred. 
-3: filtering failure at last filter iteration:  
-4: in 'mif2': 10 filtering failures occurred. 
 > try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,dmeasure=NULL))
 Error : in 'mif2': 'rprocess', 'dmeasure' are needed basic components.
 > try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,rprocess=NULL))

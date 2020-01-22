@@ -21,8 +21,6 @@
   cooling.type = c("geometric", "hyperbolic"),
   cooling.fraction.50,
   Np,
-  tol = 0,
-  max.fail = Inf,
   params,
   rinit,
   rprocess,
@@ -39,21 +37,11 @@
   cooling.type = c("geometric", "hyperbolic"),
   cooling.fraction.50,
   Np,
-  tol = 0,
-  max.fail = Inf,
   ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{mif2}{pfilterd_pomp}(
-  data,
-  Nmif = 1,
-  Np,
-  tol,
-  max.fail = Inf,
-  ...,
-  verbose = getOption("verbose", FALSE)
-)
+\S4method{mif2}{pfilterd_pomp}(data, Nmif = 1, Np, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{mif2}{mif2d_pomp}(
   data,
@@ -96,16 +84,6 @@ representing the number of particles to be used at the \code{n}-th timestep:
 \code{Np(1)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
 \code{Np(2)}, from \code{time(object)[1]} to \code{time(object)[2]},
 and so on.}
-
-\item{tol}{non-negative numeric scalar;
-particles with likelihood less than \code{tol} are considered to be incompatible with the data.
-See the section on \emph{Filtering Failures} for more information.
-In a future release, this argument will be removed.}
-
-\item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
-If the number of filtering failures exceeds this number, execution will terminate with an error.
-By default, \code{max.fail} is set to infinity, so no error can be triggered.
-In a future release, this argument will be removed.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -186,20 +164,11 @@ When \code{cooling.type="hyperbolic"}, we have \deqn{c_{m,n}=\frac{s+1}{s+n+(m-1
 Thus, in either case, the perturbations at the end of 50 IF2 iterations are a fraction \eqn{\alpha}{alpha} smaller than they are at first.
 }
 
-\section{Change in default tolerance}{
+\section{Re-running IF2 iterations}{
 
-From \pkg{pomp} version 2.4.1, warnings have been issued whenever the value of \code{tol} is set to anything other than zero.
-As of version 2.7.1, the default value of \code{tol} is zero and warnings will be generated whenever it is set by the user to anything else.
-This behavior is in anticipation of a forthcoming release, which will remove the \code{tol} and \code{max.fail} arguments altogether.
-}
-
-\section{Filtering failures}{
-
-If the degree of disagreement between model and data becomes sufficiently large, a \dQuote{filtering failure} results.
-A filtering failure occurs when, at some time point, none of the \code{Np} particles is compatible with the data.
-In particular, if the conditional likelihood of a particle at any time is below the tolerance value \code{tol}, then that particle is considered to be uninformative and its likelihood is taken to be zero.
-A filtering failure occurs when this is the case for all particles.
-A warning is generated when this occurs unless the cumulative number of failures exceeds \code{max.fail}, in which case an error is generated.
+To re-run a sequence of IF2 iterations, one can use the \code{mif2} method on a \sQuote{mif2d_pomp} object.
+By default, the same parameters used for the original IF2 run are re-used (except for \code{verbose}, the default of which is shown above).
+If one does specify additional arguments, these will override the defaults.
 }
 
 \references{
