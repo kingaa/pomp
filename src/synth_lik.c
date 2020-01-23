@@ -15,12 +15,12 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
   // 'y' is preserved
   int nrow = dim[0];
   int ncol = dim[1];
-  double alpha = 2.0, beta = 1.25;
   double w[nrow], tau[ncol], work[ncol];
   int info = 0;
   double one = 1.0;
   double *y1, *y2, *yp;
-  double x, xx, wbar, d, d0, rss, half_log_det;
+  long double x, xx, wbar, d, d0, rss, half_log_det;
+  long double alpha = 2.0, beta = 1.25;
   int i, j;
 
   half_log_det = ncol*M_LN_SQRT_2PI;

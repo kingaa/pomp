@@ -3,6 +3,9 @@
 #include "pomp_internal.h"
 #include <Rdefines.h>
 
+static void pred_mean_var (int, int, int, const double *, double *, double *);
+static void filt_mean (int, int, int, long double, const double *, const double *, double *);
+
 // examines weights for filtering failure.
 // computes conditional log likelihood and effective sample size.
 // computes (if desired) prediction mean, prediction variance, filtering mean.
@@ -14,27 +17,27 @@
 SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   SEXP predmean, SEXP predvar,
   SEXP filtmean, SEXP trackancestry, SEXP doparRS,
-  SEXP weights, SEXP tol)
+  SEXP weights, SEXP wave, SEXP tol)
 {
 
-  SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue, anc = R_NilValue;
+  SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue;
+  SEXP anc = R_NilValue, wmean = R_NilValue;
   SEXP ess, fail, loglik;
   SEXP newstates = R_NilValue, newparams = R_NilValue;
   SEXP retval, retvalnames;
   const char *dimnm[2] = {"variable","rep"};
-  double *xpm = 0, *xpv = 0, *xfm = 0, *xw = 0, *xx = 0, *xp = 0;
+  double *xw = 0;
   int *xanc = 0;
   SEXP dimX, dimP, newdim, Xnames, Pnames;
   int *dim, np;
   int nvars, npars = 0, nreps, nlost;
-  int do_pm, do_pv, do_fm, do_ta, do_pr, all_fail = 0;
-  double sum = 0, sumsq = 0, vsq, ws, w, toler;
+  int do_pm, do_pv, do_fm, do_ta, do_pr, do_wave, all_fail = 0;
+  long double sum = 0, ws, w, toler;
   int j, k;
 
   PROTECT(dimX = GET_DIM(x));
   dim = INTEGER(dimX);
   nvars = dim[0]; nreps = dim[1];
-  xx = REAL(x);
   PROTECT(Xnames = GET_ROWNAMES(GET_DIMNAMES(x)));
 
   PROTECT(params = as_matrix(params));
@@ -53,6 +56,8 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   do_ta = *(LOGICAL(AS_LOGICAL(trackancestry))); // track ancestry?
   // Do we need to do parameter resampling?
   do_pr = *(LOGICAL(AS_LOGICAL(doparRS)));
+  // Do we need to take a weighted average over the parameters?
+  do_wave = *(LOGICAL(AS_LOGICAL(wave)));
 
   if (do_pr) {
     if (dim[1] != nreps)
@@ -63,11 +68,19 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   PROTECT(loglik = NEW_NUMERIC(1)); // log likelihood
   PROTECT(fail = NEW_LOGICAL(1));   // particle failure?
 
+  int nprotect = 8;
+
   xw = REAL(weights);
   toler = *(REAL(tol));		// failure tolerance
 
   // check the weights and compute sum and sum of squares
   for (k = 0, w = 0, ws = 0, nlost = 0; k < nreps; k++) {
+    if (ISNAN(xw[k]) || xw[k] < 0 || xw[k] == R_PosInf) { // check the weights
+      PROTECT(retval = NEW_INTEGER(1)); nprotect++;
+      *INTEGER(retval) = k+1; // return the index of the peccant particle
+      UNPROTECT(nprotect);
+      return retval;
+    }    
     if (xw[k] > toler) {
       w += xw[k];
       ws += xw[k]*xw[k];
@@ -86,21 +99,16 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   }
   *(LOGICAL(fail)) = all_fail;
 
-  int nprotect = 8;
-
   if (do_pm || do_pv) {
     PROTECT(pm = NEW_NUMERIC(nvars)); nprotect++;
-    xpm = REAL(pm);
   }
 
   if (do_pv) {
     PROTECT(pv = NEW_NUMERIC(nvars)); nprotect++;
-    xpv = REAL(pv);
   }
 
   if (do_fm) {
     PROTECT(fm = NEW_NUMERIC(nvars)); nprotect++;
-    xfm = REAL(fm);
   }
 
   if (do_ta) {
@@ -108,35 +116,40 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     xanc = INTEGER(anc);
   }
 
-  for (j = 0; j < nvars; j++) {	// state variables
+  if (do_wave) {
+    PROTECT(wmean = NEW_NUMERIC(npars)); nprotect++;
+    SET_NAMES(wmean,Pnames);
+  }
 
-    // compute prediction mean
-    if (do_pm || do_pv) {
-      for (k = 0, sum = 0; k < nreps; k++) sum += xx[j+k*nvars];
-      sum /= ((double) nreps);
-      xpm[j] = sum;
-    }
+  //  compute prediction mean and possibly variance
+  if (do_pm || do_pv) {
+    double *tmp = (do_pv) ? REAL(pv) : 0;
+    pred_mean_var(nvars,nreps,do_pv,REAL(x),REAL(pm),tmp);
+  }
+  
+  //  compute filter mean
+  if (do_fm) {
+    filt_mean(nvars,nreps,all_fail,w,xw,REAL(x),REAL(fm));
+  }
 
-    // compute prediction variance
-    if (do_pv) {
-      for (k = 0, sumsq = 0; k < nreps; k++) {
-        vsq = xx[j+k*nvars]-sum;
-        sumsq += vsq*vsq;
+  // compute weighed average of parameters
+  if (do_wave) {
+    if (all_fail)
+      warn("filtering failure at last filter iteration: ",
+	   "using unweighted mean for point estimate.");
+    double *xwm = REAL(wmean);
+    for (j = 0; j < npars; j++, xwm++) {
+      double *xp = REAL(params)+j;
+      if (all_fail) {           // unweighted average
+        for (k = 0, sum = 0; k < nreps; k++, xp += npars) sum += *xp;
+        *xwm = sum/((double) nreps);
+      } else {
+        for (k = 0, sum = 0; k < nreps; k++, xp += npars) {
+	  if (xw[k]!=0) sum += xw[k]*(*xp);
+	}
+        *xwm = sum/w;
       }
-      xpv[j] = sumsq / ((double) (nreps - 1));
     }
-
-    //  compute filter mean
-    if (do_fm) {
-      if (all_fail) {		// unweighted average
-        for (k = 0, ws = 0; k < nreps; k++) ws += xx[j+k*nvars];
-        xfm[j] = ws/((double) nreps);
-      } else { 			// weighted average
-        for (k = 0, ws = 0; k < nreps; k++) ws += xx[j+k*nvars]*xw[k];
-        xfm[j] = ws/w;
-      }
-    }
-
   }
 
   GetRNGstate();
@@ -144,7 +157,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   if (!all_fail) { // resample the particles unless we have filtering failure
     int xdim[2];
     int sample[np];
-    double *ss = 0, *st = 0, *ps = 0, *pt = 0;
+    double *ss = 0, *st = 0, *ps = 0, *pt = 0, *xp = 0, *xx = 0;
 
     // create storage for new states
     xdim[0] = nvars; xdim[1] = np;
@@ -191,8 +204,8 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 
   PutRNGstate();
 
-  PROTECT(retval = NEW_LIST(9));
-  PROTECT(retvalnames = NEW_CHARACTER(9));
+  PROTECT(retval = NEW_LIST(10));
+  PROTECT(retvalnames = NEW_CHARACTER(10));
   nprotect += 2;
   SET_STRING_ELT(retvalnames,0,mkChar("fail"));
   SET_STRING_ELT(retvalnames,1,mkChar("loglik"));
@@ -203,6 +216,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   SET_STRING_ELT(retvalnames,6,mkChar("pv"));
   SET_STRING_ELT(retvalnames,7,mkChar("fm"));
   SET_STRING_ELT(retvalnames,8,mkChar("ancestry"));
+  SET_STRING_ELT(retvalnames,9,mkChar("wmean"));
   SET_NAMES(retval,retvalnames);
 
   SET_ELEMENT(retval,0,fail);
@@ -233,7 +247,56 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   if (do_ta) {
     SET_ELEMENT(retval,8,anc);
   }
+  if (do_wave) {
+    SET_ELEMENT(retval,9,wmean);
+  }
 
   UNPROTECT(nprotect);
   return(retval);
+}
+
+static void pred_mean_var (int nvars, int nreps, int do_pv,
+			   const double *x,
+			   double *pm, double *pv)
+{
+  long double sum, sumsq, vsq;
+  const double *xx;
+  int j, k;
+
+  for (j = 0; j < nvars; j++, pm++, pv++) {
+
+    xx = x+j;
+    
+    // compute prediction mean
+    for (k = 0, sum = 0; k < nreps; k++, xx += nvars) sum += *xx;
+    *pm = sum/((double) nreps);
+    
+    // compute prediction variance
+    if (do_pv) {
+      xx = x+j;
+      for (k = 0, sumsq = 0; k < nreps; k++, xx += nvars) {
+	vsq = *xx - sum;
+	sumsq += vsq*vsq;
+      }
+      *pv = sumsq/((double) (nreps - 1));
+    }
+  }
+}
+
+static void filt_mean (int nvars, int nreps, int all_fail, long double wsum,
+		       const double *w, const double *x, double *fm)
+{
+  long double sum;
+  const double *xx;
+  int j, k;
+  for (j = 0; j < nvars; j++, fm++) {
+    xx = x+j;
+    if (all_fail) {           // unweighted average
+      for (k = 0, sum = 0; k < nreps; k++, xx += nvars) sum += *xx;
+      *fm = sum/((double) nreps);
+    } else {                  // weighted average
+      for (k = 0, sum = 0; k < nreps; k++, xx += nvars) sum += w[k]*(*xx);
+      *fm = sum/wsum;
+    }
+  }
 }

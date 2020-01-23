@@ -364,16 +364,6 @@ pfilter.internal <- function (object, Np, tol, max.fail,
     weights <- dmeasure(object,y=object@data[,nt,drop=FALSE],x=X,
       times=times[nt+1],params=params,log=FALSE,.gnsi=gnsi)
 
-    if (!all(is.finite(weights))) {
-      first <- which(!is.finite(weights))[1L]
-      datvals <- object@data[,nt]
-      weight <- weights[first]
-      states <- X[,first,1L]
-      msg <- nonfinite_dmeasure_error(time=times[nt+1],lik=weight,
-        datvals,states,params)
-      pStop_(msg)
-    }
-
     gnsi <- FALSE
 
     ## compute prediction mean, prediction variance, filtering mean,
@@ -381,7 +371,19 @@ pfilter.internal <- function (object, Np, tol, max.fail,
     ## also do resampling if filtering has not failed
     xx <- .Call(P_pfilter_computations,x=X,params=params,Np=Np[nt+1],
       predmean=pred.mean,predvar=pred.var,filtmean=filter.mean,
-      trackancestry=filter.traj,doparRS=FALSE,weights=weights,tol=tol)
+      trackancestry=filter.traj,doparRS=FALSE,weights=weights,
+      wave=FALSE,tol=tol)
+
+    ## the following is triggered by the first illegal weight value
+    if (is.integer(xx)) {
+      illegal_dmeasure_error(
+        time=times[nt+1],
+        lik=weights[xx],
+        datvals=object@data[,nt],
+        states=X[,xx,1L],
+        params=params
+      )
+    }
 
     all.fail <- xx$fail
     loglik[nt] <- xx$loglik
@@ -450,13 +452,13 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   )
 }
 
-nonfinite_dmeasure_error <- function (time, lik, datvals, states, params) {
+illegal_dmeasure_error <- function (time, lik, datvals, states, params) {
   showvals <- c(time=time,lik=lik,datvals,states,params)
   m1 <- formatC(names(showvals),preserve.width="common")
   m2 <- formatC(showvals,digits=6,width=12,format="g",preserve.width="common")
-  paste0(
-    sQuote("dmeasure")," returns non-finite value.\n",
-    "likelihood, data, states, and parameters are:\n",
+  pStop_(
+    sQuote("dmeasure")," returns illegal value.\n",
+    "Likelihood, data, states, and parameters are:\n",
     paste0(m1,": ",m2,collapse="\n")
   )
 }

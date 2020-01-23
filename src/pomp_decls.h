@@ -42,7 +42,7 @@ extern void _ou2_rmeasure(double *y, double *x, double *p, int *obsindex, int *s
 /* src/partrans.c */
 extern SEXP do_partrans(SEXP object, SEXP params, SEXP dir, SEXP gnsi);
 /* src/pfilter.c */
-extern SEXP pfilter_computations(SEXP x, SEXP params, SEXP Np, SEXP predmean, SEXP predvar, SEXP filtmean, SEXP trackancestry, SEXP doparRS, SEXP weights, SEXP tol);
+extern SEXP pfilter_computations(SEXP x, SEXP params, SEXP Np, SEXP predmean, SEXP predvar, SEXP filtmean, SEXP trackancestry, SEXP doparRS, SEXP weights, SEXP wave, SEXP tol);
 /* src/pomp_fun.c */
 extern SEXP pomp_fun_handler(SEXP pfun, SEXP gnsi, pompfunmode *mode, SEXP S, SEXP P, SEXP O, SEXP C);
 extern SEXP load_stack_incr(SEXP pack);

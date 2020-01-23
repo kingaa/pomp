@@ -13,7 +13,7 @@ static const R_CallMethodDef callMethods[] = {
   {"R_Euler_Multinom", (DL_FUNC) &R_Euler_Multinom, 4},
   {"D_Euler_Multinom", (DL_FUNC) &D_Euler_Multinom, 5},
   {"R_GammaWN", (DL_FUNC) &R_GammaWN, 3},
-  {"pfilter_computations", (DL_FUNC) &pfilter_computations, 10},
+  {"pfilter_computations", (DL_FUNC) &pfilter_computations, 11},
   {"randwalk_perturbation", (DL_FUNC) &randwalk_perturbation, 2},
   {"do_simulate", (DL_FUNC) &do_simulate, 5},
   {"iterate_map", (DL_FUNC) &iterate_map, 6},

@@ -24,7 +24,9 @@ Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 
-Also, note that the default value of the 'tol' argument of 'pfilter' (and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0. The 'tol' argument is now deprecated and will be removed in a future release.
+Also, note that the default value of the 'tol' argument of 'pfilter'
+(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
+The 'tol' argument is now deprecated and will be removed in a future release.
 > 
 > gompertz() -> po
 > 
@@ -158,8 +160,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2020-01-21 12:38:13.053 -0500 */
-/* Salt: 24DA7944374E01251D3096F8 */
+/* Time: 2020-01-23 13:30:04.320 -0500 */
+/* Salt: BE097E9C97A1C7E1CEB71FC4 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -276,8 +278,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2020-01-21 12:38:13.183 -0500 */
-/* Salt: 96241B1BEE90DA91AB0B56A1 */
+/* Time: 2020-01-23 13:30:04.448 -0500 */
+/* Salt: A994B79DE308F9AFE1946775 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -798,8 +800,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2020-01-21 12:38:13.863 -0500 */
-/* Salt: 20F28EFEF70861C421245189 */
+/* Time: 2020-01-23 13:30:05.091 -0500 */
+/* Salt: 77D4F538AB983431650ABB4B */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -994,8 +996,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2020-01-21 12:38:14.418 -0500 */
-/* Salt: 0B74208619671DACBDD7ECB2 */
+/* Time: 2020-01-23 13:30:05.624 -0500 */
+/* Salt: AAA3619D12EA59C772A85672 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

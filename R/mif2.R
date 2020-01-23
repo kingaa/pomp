@@ -504,34 +504,27 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
       .gnsi=gnsi
     )
 
-    if (!all(is.finite(weights))) {
-      first <- which(!is.finite(weights))[1L]
-      datvals <- object@data[,nt]
-      weight <- weights[first]
-      states <- X[,first,1L]
-      params <- tparams[,first]
-      msg <- nonfinite_dmeasure_error(time=times[nt+1],lik=weight,datvals,
-        states,params)
-      pStop_(msg)
-    }
     gnsi <- FALSE
-
-    ## compute weighted mean at last timestep
-    if (nt == ntimes) {
-      if (any(weights>0)) {
-        coef(object,transform=TRUE) <- apply(params,1L,weighted.mean,w=weights)
-      } else {
-        pWarn("mif2","filtering failure at last filter iteration; using ",
-          "unweighted mean for point estimate.")
-        coef(object,transform=TRUE) <- apply(params,1L,mean)
-      }
-    }
 
     ## compute effective sample size, log-likelihood
     ## also do resampling if filtering has not failed
     xx <- .Call(P_pfilter_computations,x=X,params=params,Np=Np[nt+1],
       predmean=FALSE,predvar=FALSE,filtmean=FALSE,trackancestry=do_ta,
-      doparRS=TRUE,weights=weights,tol=tol)
+      doparRS=TRUE,weights=weights,wave=(nt==ntimes),tol=tol)
+
+    ## the following is triggered by the first illegal weight value
+    if (is.integer(xx)) {
+      illegal_dmeasure_error(
+        time=times[nt+1],
+        lik=weights[xx],
+        datvals=object@data[,nt],
+        states=X[,xx,1L],
+        params=tparams[,xx]
+      )
+    }
+
+    ## compute weighted mean at last timestep
+    if (nt == ntimes) coef(object,transform=TRUE) <- xx$wmean
 
     all.fail <- xx$fail
     loglik[nt] <- xx$loglik

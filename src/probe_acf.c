@@ -9,7 +9,8 @@
 // Note that the behavior of this ACF is slightly different from that of R's 'acf' function
 // we first center the series and then compute means of products.
 static void pomp_acf_compute (double *acf, double *x, int n, int nvars, int *lags, int nlag) {
-  double xx, *p, *p0, *p1, *p2;
+  double *p, *p0, *p1, *p2;
+  long double xx;
   int i, j, k, lag, ct;
 
   // first center each row
@@ -44,7 +45,8 @@ static void pomp_acf_compute (double *acf, double *x, int n, int nvars, int *lag
 // vectorized routine for CCF calculation
 // we first center the series and then compute means of products
 static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lags, int nlag) {
-  double xx, *p, *p1, *p2;
+  double *p, *p1, *p2;
+  long double xx;
   int j, k, lag, ct;
 
   // first center x
@@ -180,4 +182,3 @@ SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr) {
   UNPROTECT(5);
   return ans;
 }
-

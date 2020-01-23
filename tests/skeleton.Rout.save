@@ -25,7 +25,9 @@ Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 
-Also, note that the default value of the 'tol' argument of 'pfilter' (and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0. The 'tol' argument is now deprecated and will be removed in a future release.
+Also, note that the default value of the 'tol' argument of 'pfilter'
+(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
+The 'tol' argument is now deprecated and will be removed in a future release.
 > suppressPackageStartupMessages({
 +   library(ggplot2)
 +   library(reshape2)

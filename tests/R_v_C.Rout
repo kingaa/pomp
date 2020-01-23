@@ -26,7 +26,9 @@ Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
 
-Also, note that the default value of the 'tol' argument of 'pfilter' (and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0. The 'tol' argument is now deprecated and will be removed in a future release.
+Also, note that the default value of the 'tol' argument of 'pfilter'
+(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
+The 'tol' argument is now deprecated and will be removed in a future release.
 > library(ggplot2)
 > 
 > ## ----seed,echo=FALSE-----------------------------------------------------
@@ -113,16 +115,16 @@ Also, note that the default value of the 'tol' argument of 'pfilter' (and other 
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  8.142   0.178   8.320 
+   8.20    0.19    8.40 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.330   0.001   0.330 
+  0.332   0.000   0.333 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.717   0.000   0.716 
+  0.724   0.000   0.724 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.052   0.000   0.052 
+  0.051   0.000   0.052 
 > 
 > dev.off()
 null device 
