@@ -25,10 +25,6 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
-
-Also, note that the default value of the 'tol' argument of 'pfilter'
-(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
-The 'tol' argument is now deprecated and will be removed in a future release.
 > library(ggplot2)
 > 
 > ## ----seed,echo=FALSE-----------------------------------------------------
@@ -106,7 +102,7 @@ The 'tol' argument is now deprecated and will be removed in a future release.
 +   labs(title="Gompertz model",subtitle="stochastic simulations")
 > 
 > ## ----pf1-----------------------------------------------------------------
-> pf <- replicate(n=10,pfilter(Gompertz,Np=500))
+> pf <- replicate(n=10,pfilter(Gompertz,Np=500,tol=0))
 > 
 > logmeanexp(sapply(pf,logLik),se=TRUE)
            se 
@@ -115,16 +111,16 @@ The 'tol' argument is now deprecated and will be removed in a future release.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-   8.20    0.19    8.40 
+  8.239   0.105   8.345 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.332   0.000   0.333 
-> system.time(pfilter(gompertz,Np=1000))
+  0.327   0.007   0.335 
+> system.time(pfilter(gompertz,Np=1000,tol=0))
    user  system elapsed 
-  0.724   0.000   0.724 
-> system.time(pfilter(Gompertz,Np=1000))
+  0.770   0.000   0.771 
+> system.time(pfilter(Gompertz,Np=1000,tol=0))
    user  system elapsed 
-  0.051   0.000   0.052 
+  0.052   0.000   0.052 
 > 
 > dev.off()
 null device 

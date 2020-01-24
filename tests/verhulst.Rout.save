@@ -24,10 +24,6 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
-
-Also, note that the default value of the 'tol' argument of 'pfilter'
-(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
-The 'tol' argument is now deprecated and will be removed in a future release.
 > 
 > verhulst(n_0=100) -> po
 > 
@@ -45,6 +41,10 @@ variable [,1]
 > stopifnot(all.equal(coef(po),partrans(po,coef(po,transform=TRUE),dir="from")))
 > plot(simulate(po,seed=1438408329L))
 > pf <- freeze(pfilter(po,Np=1000),seed=1438408329L)
+Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > plot(pf)
 > tj <- trajectory(po)
 > plot(time(po),tj["n",1,],type="l",ylab="n")

@@ -24,10 +24,6 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
-
-Also, note that the default value of the 'tol' argument of 'pfilter'
-(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
-The 'tol' argument is now deprecated and will be removed in a future release.
 > 
 > set.seed(857075216L)
 > 
@@ -39,6 +35,7 @@ The 'tol' argument is now deprecated and will be removed in a future release.
 +     lik = dunif(r,0,1,1)+dnorm(sigma,0,1,1);
 +     lik = (give_log) ? lik : exp(lik);"),
 +   paramnames=c("r","sigma"),
++   tol=0,
 +   proposal=prop1)
 > 
 > try(pmcmc())
@@ -55,28 +52,60 @@ Error : in 'pmcmc': 'proposal' must be specified
 Error : in 'pmcmc': 'proposal' must be a function: object 'proposal' of mode 'function' was not found
 > try(pmcmc(po,proposal="prop1"))
 Error : in 'pmcmc': in 'pfilter': 'Np' must be specified.
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pmcmc(po,proposal=prop1))
 Error : in 'pmcmc': in 'pfilter': 'Np' must be specified.
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pmcmc(po,proposal=prop1,Np="bob"))
 Error : in 'pmcmc': in 'pfilter': 'Np' must be a number, a vector of numbers, or a function.
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pmcmc(po,proposal=prop1,Np=NULL))
 Error : in 'pmcmc': in 'pfilter': 'Np' must be specified.
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pmcmc(po,proposal=prop1,Np=NA))
 Error : in 'pmcmc': in 'pfilter': 'Np' must be a number, a vector of numbers, or a function.
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pmcmc(po,proposal=prop1,Np=c(1,2,3)))
 Error : in 'pmcmc': in 'pfilter': 'Np' must have length 1 or length 11.
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pmcmc(po,proposal=prop1,Np=-5))
 Error : in 'pmcmc': in 'pfilter': number of particles, 'Np', must be a positive integer.
-> pmcmc(po,proposal=prop1,Np=1)
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
+> pmcmc(po,proposal=prop1,Np=1,tol=0)
 <object of class 'pmcmcd_pomp'>
-> pmcmc(po,proposal=prop1,Np=rep(1,11))
+> pmcmc(po,proposal=prop1,Np=rep(1,11),tol=0)
 <object of class 'pmcmcd_pomp'>
 > try(pmcmc(po,proposal=prop1,Np=function(k)10*k))
 Error : in 'pmcmc': in 'pfilter': number of particles, 'Np', must be a positive integer.
-> pmcmc(po,proposal=prop1,Np=function(k)10*k+10)
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
+> pmcmc(po,proposal=prop1,Np=function(k)10*k+10,tol=0)
 <object of class 'pmcmcd_pomp'>
 > 
-> pf <- pfilter(po,Np=100)
+> pf <- pfilter(po,Np=100,tol=0)
 > mcmc2 <- pmcmc(pf,Nmcmc=100,proposal=prop1)
 > mcmc3 <- pmcmc(mcmc1,Nmcmc=50)
 > mcmc3 <- continue(mcmc3,Nmcmc=50)
@@ -115,7 +144,7 @@ NULL
 > logLik(c(mcmc1,mcmc2,mcmc3))
 [1] 4.68 4.75 3.43
 > 
-> pmcmc(mcmc1,params=as.list(coef(mcmc3)))
+> pmcmc(mcmc1,params=as.list(coef(mcmc3)),tol=0)
 <object of class 'pmcmcd_pomp'>
 > try(pmcmc(mcmc1,params=NULL))
 Error : in 'pmcmc': in 'pfilter': in 'rprocess': variable 'X' not found among the state variables.
@@ -193,7 +222,7 @@ In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 +   as.data.frame() %>%
 +   pmcmc(
 +     Nmcmc=10,Np=100,
-+     times="time",t0=0,
++     times="time",t0=0,tol=0,
 +     rprocess=discrete_time(
 +       function (x, r, K, ...) {
 +         c(x=x*exp(r*(1-x/K)))

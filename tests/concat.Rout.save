@@ -23,10 +23,6 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
-
-Also, note that the default value of the 'tol' argument of 'pfilter'
-(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
-The 'tol' argument is now deprecated and will be removed in a future release.
 > 
 > try(pomp:::concat())
 Error : 'c' is not defined for objects of mixed class.
@@ -52,7 +48,21 @@ attr(,"package")
 > 
 > replicate(2,pfilter(gompertz,Np=10)) %>% class()
 [1] "list"
+Warning messages:
+1: in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
+2: in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > do.call(c,replicate(2,pfilter(gompertz,Np=10))) -> pfs
+Warning messages:
+1: in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
+2: in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > pfs %>% class()
 [1] "pfilterList"
 attr(,"package")

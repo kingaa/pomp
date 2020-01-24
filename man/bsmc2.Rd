@@ -15,7 +15,7 @@
   data,
   Np,
   smooth = 0.1,
-  tol = 0,
+  tol = 1e-17,
   max.fail = 0,
   params,
   rprior,
@@ -31,7 +31,7 @@
   data,
   Np,
   smooth = 0.1,
-  tol = 0,
+  tol = 1e-17,
   max.fail = 0,
   ...,
   verbose = getOption("verbose", FALSE)
@@ -52,7 +52,6 @@ The general recommendation is that the value of \code{smooth} should be chosen c
 \item{tol}{non-negative numeric scalar;
 particles with likelihood less than \code{tol} are considered to be incompatible with the data.
 See the section on \emph{Filtering Failures} for more information.
-The default value is 0, which means that no threshold is applied.
 In a future release, this argument will be removed.}
 
 \item{max.fail}{integer; the maximum number of filtering failures allowed (see below).

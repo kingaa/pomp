@@ -21,7 +21,7 @@
   cooling.type = c("geometric", "hyperbolic"),
   cooling.fraction.50,
   Np,
-  tol = 0,
+  tol = 1e-17,
   max.fail = Inf,
   params,
   rinit,
@@ -39,7 +39,7 @@
   cooling.type = c("geometric", "hyperbolic"),
   cooling.fraction.50,
   Np,
-  tol = 0,
+  tol = 1e-17,
   max.fail = Inf,
   ...,
   verbose = getOption("verbose", FALSE)
@@ -100,7 +100,6 @@ and so on.}
 \item{tol}{non-negative numeric scalar;
 particles with likelihood less than \code{tol} are considered to be incompatible with the data.
 See the section on \emph{Filtering Failures} for more information.
-The default value is 0, which means that no threshold is applied.
 In a future release, this argument will be removed.}
 
 \item{max.fail}{integer; the maximum number of filtering failures allowed (see below).

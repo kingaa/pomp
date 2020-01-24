@@ -28,7 +28,6 @@
 ##' @param tol non-negative numeric scalar;
 ##' particles with likelihood less than \code{tol} are considered to be incompatible with the data.
 ##' See the section on \emph{Filtering Failures} for more information.
-##' The default value is 0, which means that no threshold is applied.
 ##' In a future release, this argument will be removed.
 ##'
 ##' @param max.fail integer; the maximum number of filtering failures allowed (see below).
@@ -147,7 +146,7 @@ setMethod(
   signature=signature(data="data.frame"),
   definition=function (
     data,
-    Np, tol = 0, max.fail = Inf,
+    Np, tol = 1e-17, max.fail = Inf,
     params, rinit, rprocess, dmeasure,
     pred.mean = FALSE,
     pred.var = FALSE,
@@ -190,7 +189,7 @@ setMethod(
   signature=signature(data="pomp"),
   definition=function (
     data,
-    Np, tol = 0, max.fail = Inf,
+    Np, tol = 1e-17, max.fail = Inf,
     pred.mean = FALSE,
     pred.var = FALSE,
     filter.mean = FALSE,
@@ -262,8 +261,12 @@ pfilter.internal <- function (object, Np, tol, max.fail,
     pStop_(sQuote("tol")," should be a small nonnegative number.")
 
   if (tol != 0) {
-    pWarn("pfilter","the ",sQuote("tol")," argument is deprecated and will be removed in a future release. ","In the current release, the default value of ",
-      sQuote("tol")," is 0. In future releases, the option to choose otherwise will be removed.")
+    pWarn(
+      "pfilter",
+      "the ",sQuote("tol")," argument is deprecated and will be removed in a future release.\n",
+      "Currently, the default value of ",sQuote("tol")," is 1e-17;\n",
+      "in future releases, the value will be 0, and the option to choose otherwise will be removed."
+    )
   }
 
   params <- coef(object)
@@ -295,7 +298,7 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   Np <- as.integer(Np)
 
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
-    pStop_(sQuote("tol")," should be a small positive number.")
+    pStop_(sQuote("tol")," should be a small nonnegative number.")
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))

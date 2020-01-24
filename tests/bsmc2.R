@@ -77,6 +77,7 @@ gompertz %>%
     times="time",t0=-5,
     params=coef(gompertz),
     Np=1000,smooth=0.1,
+    tol=0,
     rprior=Csnippet("
       K = runif(0.1,1);
       r = rlnorm(log(0.2),1);

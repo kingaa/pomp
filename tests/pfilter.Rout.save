@@ -23,16 +23,12 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
-
-Also, note that the default value of the 'tol' argument of 'pfilter'
-(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
-The 'tol' argument is now deprecated and will be removed in a future release.
 > 
 > ou2() -> ou2
 > 
 > set.seed(9994847L)
 > 
-> pf <- pfilter(ou2,Np=1000)
+> pf <- pfilter(ou2,Np=1000,tol=0)
 > logLik(pf)
 [1] -478
 > stopifnot(logLik(pf)==sum(cond.logLik(pf)))
@@ -53,14 +49,34 @@ Error : 'pfilter' is undefined for 'data' of class 'character'.
 > 
 > try(pfilter(ou2))
 Error : in 'pfilter': 'Np' must be specified.
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pfilter(ou2,Np=NULL))
 Error : in 'pfilter': 'Np' must be specified.
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pfilter(ou2,Np=-10))
 Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pfilter(ou2,Np=c(10,20,30)))
 Error : in 'pfilter': 'Np' must have length 1 or length 101.
+In addition: Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > pfilter(ou2,Np=ceiling(runif(101,min=10,max=100)))
 <object of class 'pfilterd_pomp'>
+Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pfilter(ou2,Np=100,tol=NA))
 Error : in 'pfilter': 'tol' should be a small nonnegative number.
 > try(pfilter(ou2,Np=100,tol=-1))
@@ -74,29 +90,48 @@ Error : in 'pfilter': 'tol' should be a small nonnegative number.
 > coef(po) <- NULL
 > try(pfilter(po,Np=100))
 Error : in 'pfilter': in 'rprocess': variable 'x1' not found among the state variables.
-In addition: Warning message:
-in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
+In addition: Warning messages:
+1: in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
+2: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=c()))
 Error : in 'pfilter': in 'rprocess': variable 'x1' not found among the state variables.
-In addition: Warning message:
-in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
+In addition: Warning messages:
+1: in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
+2: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=NULL))
 Error : in 'pfilter': in 'rprocess': variable 'x1' not found among the state variables.
-In addition: Warning message:
-in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
+In addition: Warning messages:
+1: in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
+2: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=c(1,2,3)))
 Error : in 'pfilter': 'params' must be a named numeric vector.
 > try(pfilter(po,Np=100,params=c(a=1,b=2,c=3)))
 Error : in 'pfilter': in 'rprocess': variable 'x1' not found among the state variables.
-In addition: Warning message:
-in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
+In addition: Warning messages:
+1: in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
+2: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > try(pfilter(po,Np=100,params=list()))
 Error : in 'pfilter': in 'rprocess': variable 'x1' not found among the state variables.
-In addition: Warning message:
-in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
+In addition: Warning messages:
+1: in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
+2: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > pf <- pfilter(po,Np=100,params=as.list(coef(ou2)))
+Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > 
-> pf <- pfilter(pf)
+> pf <- pfilter(pf,tol=0)
 > try(pfilter(pf,Np=-1000))
 Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(pf,tol=-1))
@@ -104,15 +139,15 @@ Error : in 'pfilter': 'tol' should be a small nonnegative number.
 > stopifnot(all.equal(coef(pf),coef(ou2)))
 > theta <- coef(ou2)
 > theta["alpha_2"] <- 0.1
-> pf1 <- pfilter(pf,params=theta,Np=100)
+> pf1 <- pfilter(pf,params=theta,Np=100,tol=0)
 > stopifnot(identical(coef(pf1),theta))
 > 
-> try(pfilter(ou2,params=parmat(coef(ou2),100)))
+> try(pfilter(ou2,params=parmat(coef(ou2),100),tol=0))
 Error : in 'pfilter': 'params' must be a named numeric vector.
-> try(pfilter(ou2,Np=100,params=parmat(coef(ou2),100)))
+> try(pfilter(ou2,Np=100,tol=0,params=parmat(coef(ou2),100)))
 Error : in 'pfilter': 'params' must be a named numeric vector.
 > 
-> pf2 <- pfilter(ou2,Np=function(k)c(100,150)[(k-1)%%2+1])
+> pf2 <- pfilter(ou2,Np=function(k)c(100,150)[(k-1)%%2+1],tol=0)
 > table(pf2@Np)
 
 100 150 
@@ -189,11 +224,11 @@ pfilter timestep 30 of 100 finished
 +   grepl("too many filtering failures",out[[17]])
 + )
 > 
-> pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
-> pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)
-> pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
+> pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE,tol=0)
+> pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE,tol=0)
+> pf3 <- pfilter(pf,t0=1,filter.traj=TRUE,tol=0)
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
-+   filter.traj=TRUE)
++   filter.traj=TRUE,tol=0)
 Warning message:
 in 'pfilter': 100 filtering failures occurred. 
 > names(as(pf2,"data.frame"))
@@ -237,7 +272,7 @@ No id variables; using all as measure variables
 > pf2 %>% melt(id="time") %>% names()
 [1] "time"     "variable" "value"   
 > 
-> try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
+> try(ou2 %>% as.data.frame() %>% pfilter(Np=1000,tol=0))
 Error : in 'pfilter': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
 > ou2 %>%
@@ -246,6 +281,7 @@ Error : in 'pfilter': 'times' should either be a numeric vector of observation t
 +   pfilter(
 +     times="time",t0=0,Np=500,
 +     params=list(x1_0=-3,x2_0=4),
++     tol=0,
 +     rprocess=onestep(
 +     step.fun=function(x1,x2,delta.t,...) {
 +       setNames(rnorm(n=2,mean=c(x1,x2),sd=5*delta.t),c("x1","x2"))

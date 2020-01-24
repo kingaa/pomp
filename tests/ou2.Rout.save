@@ -24,10 +24,6 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
-
-Also, note that the default value of the 'tol' argument of 'pfilter'
-(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
-The 'tol' argument is now deprecated and will be removed in a future release.
 > 
 > ou2() -> ou2
 > 
@@ -46,6 +42,10 @@ alpha_1 alpha_2 alpha_3 alpha_4 sigma_1 sigma_2 sigma_3     tau    x1_0    x2_0
 > stopifnot(all.equal(coef(ou2),partrans(ou2,coef(ou2,transform=TRUE),dir="from")))
 > plot(s <- simulate(ou2,seed=1438408329L))
 > pf <- freeze(pfilter(ou2,Np=1000),seed=1438408329L)
+Warning message:
+in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
+Currently, the default value of 'tol' is 1e-17;
+in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > plot(pf)
 > tj <- trajectory(ou2)
 > matplot(time(ou2),t(tj[,1,]),type="l",ylab="")

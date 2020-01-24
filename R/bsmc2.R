@@ -102,7 +102,7 @@ setMethod(
   "bsmc2",
   signature=signature(data="data.frame"),
   definition = function (data,
-    Np, smooth = 0.1, tol = 0, max.fail = 0,
+    Np, smooth = 0.1, tol = 1e-17, max.fail = 0,
     params, rprior, rinit, rprocess, dmeasure, partrans,
     ..., verbose = getOption("verbose", FALSE)) {
 
@@ -136,7 +136,7 @@ setMethod(
   "bsmc2",
   signature=signature(data="pomp"),
   definition = function (data,
-    Np, smooth = 0.1, tol = 0, max.fail = 0,
+    Np, smooth = 0.1, tol = 1e-17, max.fail = 0,
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -210,8 +210,12 @@ bsmc2.internal <- function (object, Np, smooth, tol, max.fail,
     pStop_(sQuote("tol")," should be a small nonnegative number.")
 
   if (tol != 0) {
-    pWarn("bsmc2","the ",sQuote("tol")," argument is deprecated and will be removed in a future release. ","In the current release, the default value of ",
-      sQuote("tol")," is 0. In future releases, the option to choose otherwise will be removed.")
+    pWarn(
+      "bsmc2",
+      "the ",sQuote("tol")," argument is deprecated and will be removed in a future release.\n",
+      "Currently, the default value of ",sQuote("tol")," is 1e-17;\n",
+      "in future releases, the value will be 0, and the option to choose otherwise will be removed."
+    )
   }
 
   hsq <- smooth^2             #  see Liu & West eq(10.3.12)

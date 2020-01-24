@@ -23,10 +23,6 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
-
-Also, note that the default value of the 'tol' argument of 'pfilter'
-(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
-The 'tol' argument is now deprecated and will be removed in a future release.
 > library(magrittr)
 > 
 > set.seed(376098756)
@@ -35,12 +31,12 @@ The 'tol' argument is now deprecated and will be removed in a future release.
 > 
 > po %>%
 +   mif2(Nmif=100,Np=1000,cooling.fraction.50=0.4,cooling.type="geometric",
-+     rw.sd=rw.sd(sigma=0.02,r=0.02,X_0=ivp(0.05),tau=0.02)) %>%
++     tol=0,rw.sd=rw.sd(sigma=0.02,r=0.02,X_0=ivp(0.05),tau=0.02)) %>%
 +   continue(Nmif=100) -> mf
-> replicate(n=10,mf %>% pfilter(Np=3000)) -> pfs
+> replicate(n=10,mf %>% pfilter(Np=3000,tol=0)) -> pfs
 > pfs %>% sapply(logLik) %>% logmeanexp(se=TRUE) -> pf.ll.mle
 > 
-> replicate(n=10,po %>% pfilter(Np=3000)) %>%
+> replicate(n=10,po %>% pfilter(Np=3000,tol=0)) %>%
 +   sapply(logLik) %>%
 +   logmeanexp(se=TRUE) -> pf.ll.truth
 > 

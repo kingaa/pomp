@@ -23,10 +23,6 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
-
-Also, note that the default value of the 'tol' argument of 'pfilter'
-(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
-The 'tol' argument is now deprecated and will be removed in a future release.
 > 
 > ou2() -> po
 > 
@@ -126,6 +122,7 @@ Warning messages:
 +   scale.start=5,scale.cooling=0.1,shape.start=10) -> f
 > options(verbose=TRUE) -> op
 > capture.output(po %>% pmcmc(Nmcmc=200,Np=100,proposal=f) -> mcmc1) -> out
+There were 50 or more warnings (use warnings() to see the first 50)
 > stopifnot(sum(grepl("proposal covariance matrix:",out))==200)
 > evalq(covmat.emp,envir=environment(f))
          alpha_1  alpha_3

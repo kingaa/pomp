@@ -97,7 +97,7 @@ setMethod(
   signature=signature(data="data.frame"),
   function (data,
     Nmcmc = 1, proposal,
-    Np, tol = 0, max.fail = Inf,
+    Np, tol = 1e-17, max.fail = Inf,
     params, rinit, rprocess, dmeasure, dprior,
     ..., verbose = getOption("verbose", FALSE)) {
 
@@ -132,7 +132,7 @@ setMethod(
   signature=signature(data="pomp"),
   function (data,
     Nmcmc = 1, proposal,
-    Np, tol = 0, max.fail = Inf,
+    Np, tol = 1e-17, max.fail = Inf,
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -273,11 +273,6 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   tol <- as.numeric(tol)
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
     pStop_(sQuote("tol")," should be a small nonnegative number.")
-
-  if (tol != 0) {
-    pWarn("pmcmc","the ",sQuote("tol")," argument is deprecated and will be removed in a future release. ","In the current release, the default value of ",
-      sQuote("tol")," is 0. In future releases, the option to choose otherwise will be removed.")
-  }
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))

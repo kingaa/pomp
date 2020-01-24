@@ -80,14 +80,14 @@ simulate(Gompertz,params=p,format="data.frame") %>%
   labs(title="Gompertz model",subtitle="stochastic simulations")
 
 ## ----pf1-----------------------------------------------------------------
-pf <- replicate(n=10,pfilter(Gompertz,Np=500))
+pf <- replicate(n=10,pfilter(Gompertz,Np=500,tol=0))
 
 logmeanexp(sapply(pf,logLik),se=TRUE)
 
 ## ----comparison----------------------------------------------------------
 system.time(simulate(gompertz,nsim=10000,format="arrays"))
 system.time(simulate(Gompertz,nsim=10000,format="arrays"))
-system.time(pfilter(gompertz,Np=1000))
-system.time(pfilter(Gompertz,Np=1000))
+system.time(pfilter(gompertz,Np=1000,tol=0))
+system.time(pfilter(Gompertz,Np=1000,tol=0))
 
 dev.off()

@@ -23,10 +23,6 @@ Type 'q()' to quit R.
 Welcome to pomp version 2!
 For information on upgrading your pomp version < 2 code, see the
 'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
-
-Also, note that the default value of the 'tol' argument of 'pfilter'
-(and other particle-filter functions, i.e., 'mif2', 'pmcmc', 'bsmc2') has changed to 0.
-The 'tol' argument is now deprecated and will be removed in a future release.
 > 
 > gompertz() -> po
 > 
@@ -160,8 +156,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2020-01-23 13:30:04.320 -0500 */
-/* Salt: BE097E9C97A1C7E1CEB71FC4 */
+/* Time: 2020-01-24 14:44:53.974 -0500 */
+/* Salt: 7CA5FFEA04DF04C813790E9B */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -278,8 +274,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2020-01-23 13:30:04.448 -0500 */
-/* Salt: A994B79DE308F9AFE1946775 */
+/* Time: 2020-01-24 14:44:54.101 -0500 */
+/* Salt: CDDC6618A422A242023A3119 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -800,8 +796,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2020-01-23 13:30:05.091 -0500 */
-/* Salt: 77D4F538AB983431650ABB4B */
+/* Time: 2020-01-24 14:44:54.758 -0500 */
+/* Salt: 8067F48A4AC8E11E3968F056 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -996,8 +992,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2020-01-23 13:30:05.624 -0500 */
-/* Salt: AAA3619D12EA59C772A85672 */
+/* Time: 2020-01-24 14:44:55.347 -0500 */
+/* Salt: EA999FA27F4C4624D0E23F78 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
