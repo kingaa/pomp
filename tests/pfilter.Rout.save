@@ -49,28 +49,12 @@ Error : 'pfilter' is undefined for 'data' of class 'character'.
 > 
 > try(pfilter(ou2))
 Error : in 'pfilter': 'Np' must be specified.
-In addition: Warning message:
-in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pfilter(ou2,Np=NULL))
 Error : in 'pfilter': 'Np' must be specified.
-In addition: Warning message:
-in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pfilter(ou2,Np=-10))
 Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
-In addition: Warning message:
-in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(pfilter(ou2,Np=c(10,20,30)))
 Error : in 'pfilter': 'Np' must have length 1 or length 101.
-In addition: Warning message:
-in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > pfilter(ou2,Np=ceiling(runif(101,min=10,max=100)))
 <object of class 'pfilterd_pomp'>
 Warning message:

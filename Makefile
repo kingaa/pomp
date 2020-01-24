@@ -131,8 +131,12 @@ library/$(PKG): dist
 	$(RCMD) INSTALL --library=library $(PKGVERS).tar.gz
 
 remove:
-	-$(RCMD) REMOVE --library=library $(PKG)
-	-rmdir library
+	if [ -d library ]; then \
+		$(RCMD) REMOVE --library=library $(PKG); \
+		rmdir library; \
+	fi
+
+fresh: clean remove
 
 inst/doc/*.html: install 
 

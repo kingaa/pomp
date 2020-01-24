@@ -257,18 +257,6 @@ pfilter.internal <- function (object, Np, tol, max.fail,
   filter.traj <- as.logical(filter.traj)
   save.states <- as.logical(save.states)
 
-  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
-    pStop_(sQuote("tol")," should be a small nonnegative number.")
-
-  if (tol != 0) {
-    pWarn(
-      "pfilter",
-      "the ",sQuote("tol")," argument is deprecated and will be removed in a future release.\n",
-      "Currently, the default value of ",sQuote("tol")," is 1e-17;\n",
-      "in future releases, the value will be 0, and the option to choose otherwise will be removed."
-    )
-  }
-
   params <- coef(object)
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
@@ -299,6 +287,15 @@ pfilter.internal <- function (object, Np, tol, max.fail,
 
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
     pStop_(sQuote("tol")," should be a small nonnegative number.")
+
+  if (tol != 0) {
+    pWarn(
+      "pfilter",
+      "the ",sQuote("tol")," argument is deprecated and will be removed in a future release.\n",
+      "Currently, the default value of ",sQuote("tol")," is 1e-17;\n",
+      "in future releases, the value will be 0, and the option to choose otherwise will be removed."
+    )
+  }
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
