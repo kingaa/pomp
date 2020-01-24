@@ -19,7 +19,6 @@
     - parallelization tools
     - reproducibility tools
     - extending the package
-- example for `accumvars`
 - make R-level functions for various distributions and transformations
 	- BetaBinom
 	- BetaNegBinom

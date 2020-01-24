@@ -13,4 +13,7 @@
 ##' \pkg{pomp} provides a facility to make such features more convenient.
 ##' Specifically, variables named in the \code{pomp}'s \code{accumvars} argument will be set to zero immediately following each observation.
 ##' See \code{\link{sir}} and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website} for examples.
+##'
+##' @example examples/accumulators.R
+##' 
 NULL
