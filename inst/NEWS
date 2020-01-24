@@ -16,6 +16,9 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._4._1:
         • Internal computations now use increased precision for means,
           variances, and certain calculations with likelihoods.
 
+        • A new help page, ‘pomp_examples’, lists the various example
+          datasets and pomp objects provided with the package.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._3._0:
 
         • The source codes underlying specification of basic model

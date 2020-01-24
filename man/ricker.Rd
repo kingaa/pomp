@@ -46,6 +46,7 @@ Other pomp examples:
 \code{\link{gompertz}()},
 \code{\link{measles}},
 \code{\link{ou2}()},
+\code{\link{pomp_examples}},
 \code{\link{rw2}()},
 \code{\link{sir_models}},
 \code{\link{verhulst}()}

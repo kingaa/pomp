@@ -66,6 +66,7 @@ Other pomp examples:
 \code{\link{ebola}},
 \code{\link{gompertz}()},
 \code{\link{measles}},
+\code{\link{pomp_examples}},
 \code{\link{ricker}()},
 \code{\link{rw2}()},
 \code{\link{sir_models}},

@@ -10,7 +10,6 @@
 ##' This and similar examples are discussed and constructed in tutorials
 ##' available on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
-##'
 ##' @name sir_models
 ##' @rdname sir
 ##' @aliases sir sir2

@@ -2,6 +2,7 @@
 
 ## For pomp 2:
 
+- include 'mcap' function
 - add documentation for existing "todo" issues
 - for log-barycentric transformations, check that parameters are contiguous
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.

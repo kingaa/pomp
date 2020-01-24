@@ -109,6 +109,7 @@ Collate:
     'parmat.R'
     'parus.R'
     'pipe.R'
+    'pomp_examp.R'
     'pred_mean.R'
     'pred_var.R'
     'show.R'

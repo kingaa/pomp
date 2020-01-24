@@ -7,6 +7,7 @@
     In a future release, these options will be removed entirely: the behavior will be similar to that obtained in the present release by setting \code{tol=0}.
     \item A new example illustrating the \code{accumvars} argument has been provided.
     \item Internal computations now use increased precision for means, variances, and certain calculations with likelihoods.
+    \item A new help page, \code{pomp_examples}, lists the various example datasets and pomp objects provided with the package.
   }
 }
 \section{Changes in \pkg{pomp} version 2.3.0}{
