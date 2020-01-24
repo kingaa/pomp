@@ -1,5 +1,21 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._4._1:
+
+        • In anticipation of forthcoming algorithmic changes, the ‘tol’
+          and ‘max.fail’ arguments of ‘pfilter’, ‘bsmc2’, ‘pmcmc’, and
+          ‘mif2’ are now deprecated.  A warning is issued if ‘tol’ is
+          set to anything other than 0.  In a future release, these
+          options will be removed entirely: the behavior will be
+          similar to that obtained in the present release by setting
+          ‘tol=0’.
+
+        • A new example illustrating the ‘accumvars’ argument has been
+          provided.
+
+        • Internal computations now use increased precision for means,
+          variances, and certain calculations with likelihoods.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._3._0:
 
         • The source codes underlying specification of basic model

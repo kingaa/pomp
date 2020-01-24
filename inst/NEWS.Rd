@@ -1,5 +1,14 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.4.1}{
+  \itemize{
+    \item In anticipation of forthcoming algorithmic changes, the \code{tol} and \code{max.fail} arguments of \code{pfilter}, \code{bsmc2}, \code{pmcmc}, and \code{mif2} are now deprecated.
+    A warning is issued if \code{tol} is set to anything other than 0.
+    In a future release, these options will be removed entirely: the behavior will be similar to that obtained in the present release by setting \code{tol=0}.
+    \item A new example illustrating the \code{accumvars} argument has been provided.
+    \item Internal computations now use increased precision for means, variances, and certain calculations with likelihoods.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.3.0}{
   \itemize{
     \item The source codes underlying specification of basic model components via \R functions has been reworked to remove reliance on deep \code{PROTECT} stacks.
