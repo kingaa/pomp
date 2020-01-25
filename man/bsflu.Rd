@@ -37,5 +37,20 @@ Other datasets:
 \code{\link{ebola}},
 \code{\link{measles}},
 \code{\link{parus}}
+
+Other pomp examples: 
+\code{\link{blowflies}},
+\code{\link{dacca}()},
+\code{\link{ebola}},
+\code{\link{gompertz}()},
+\code{\link{measles}},
+\code{\link{ou2}()},
+\code{\link{parus}},
+\code{\link{pomp_examples}},
+\code{\link{ricker}()},
+\code{\link{rw2}()},
+\code{\link{sir_models}},
+\code{\link{verhulst}()}
 }
 \concept{datasets}
+\concept{pomp examples}

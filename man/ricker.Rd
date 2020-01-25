@@ -41,11 +41,13 @@ simulate(po) \%>\% plot()
 \seealso{
 Other pomp examples: 
 \code{\link{blowflies}},
+\code{\link{bsflu}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{gompertz}()},
 \code{\link{measles}},
 \code{\link{ou2}()},
+\code{\link{parus}},
 \code{\link{pomp_examples}},
 \code{\link{rw2}()},
 \code{\link{sir_models}},

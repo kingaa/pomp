@@ -12,6 +12,7 @@
 ##' @rdname parus
 ##' @docType data
 ##' @family datasets
+##' @family pomp examples
 ##'
 ##' @references
 ##'

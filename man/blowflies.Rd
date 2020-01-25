@@ -88,11 +88,13 @@ plot(blowflies2())
 }
 \seealso{
 Other pomp examples: 
+\code{\link{bsflu}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{gompertz}()},
 \code{\link{measles}},
 \code{\link{ou2}()},
+\code{\link{parus}},
 \code{\link{pomp_examples}},
 \code{\link{ricker}()},
 \code{\link{rw2}()},

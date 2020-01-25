@@ -12,6 +12,7 @@
 ##' @aliases bsflu
 ##' @rdname bsflu
 ##' @family datasets
+##' @family pomp examples
 ##' @seealso \link{sir_models}
 ##'
 ##' @references
