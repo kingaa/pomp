@@ -82,13 +82,13 @@ One can pass data directly to these methods, along with the requisite model comp
 A consequence is that these codes have been streamlined, with increases in flexibility and ease of use, at no cost to performance.
 The following table shows the number of lines in the latest pre-2 **pomp** compared to the current **pomp** version 2.
 
-|category |  1.19| 2.1.0.0| fraction|
-|:--------|-----:|-------:|--------:|
-|man      |  4069|    5948|    0.462|
-|R        | 12150|    9799|   -0.193|
-|src      |  5238|    5391|    0.029|
-|tests    |  4846|    3664|   -0.244|
-|total    | 26303|   24802|   -0.057|
+|category |  1.19|   2.5| fraction|
+|:--------|-----:|-----:|--------:|
+|R        | 12150|  9847|   -0.190|
+|man      |  4069|  6908|    0.698|
+|src      |  5238|  5567|    0.063|
+|tests    |  4846|  3677|   -0.241|
+|total    | 26303| 25999|   -0.012|
 
 ## Terminology
 

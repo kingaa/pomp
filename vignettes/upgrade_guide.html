@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Aaron A. King" />
 
-<meta name="date" content="2019-06-03" />
+<meta name="date" content="2020-01-28" />
 
 <title>pomp version 2 upgrade guide</title>
 
@@ -96,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -117,9 +117,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -288,7 +285,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -303,7 +301,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore"><strong>pomp</strong> version 2 upgrade guide</h1>
 <h4 class="author">Aaron A. King</h4>
-<h4 class="date">3 June 2019</h4>
+<h4 class="date">28 January 2020</h4>
 
 
 <div id="TOC">
@@ -337,7 +335,7 @@ code {
   font-size: 110%;
 }
 </style>
-<p>This document was produced using <strong>pomp</strong> version 2.1.0.0 and <strong>R</strong> version 3.6.0.</p>
+<p>This document was produced using <strong>pomp</strong> version 2.4.1.3 and <strong>R</strong> version 3.6.2.</p>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
@@ -349,40 +347,40 @@ code {
 <tr class="header">
 <th align="left">category</th>
 <th align="right">1.19</th>
-<th align="right">2.1.0.0</th>
+<th align="right">2.5</th>
 <th align="right">fraction</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">man</td>
-<td align="right">4069</td>
-<td align="right">5948</td>
-<td align="right">0.462</td>
-</tr>
-<tr class="even">
 <td align="left">R</td>
 <td align="right">12150</td>
-<td align="right">9799</td>
-<td align="right">-0.193</td>
+<td align="right">9847</td>
+<td align="right">-0.190</td>
+</tr>
+<tr class="even">
+<td align="left">man</td>
+<td align="right">4069</td>
+<td align="right">6908</td>
+<td align="right">0.698</td>
 </tr>
 <tr class="odd">
 <td align="left">src</td>
 <td align="right">5238</td>
-<td align="right">5391</td>
-<td align="right">0.029</td>
+<td align="right">5567</td>
+<td align="right">0.063</td>
 </tr>
 <tr class="even">
 <td align="left">tests</td>
 <td align="right">4846</td>
-<td align="right">3664</td>
-<td align="right">-0.244</td>
+<td align="right">3677</td>
+<td align="right">-0.241</td>
 </tr>
 <tr class="odd">
 <td align="left">total</td>
 <td align="right">26303</td>
-<td align="right">24802</td>
-<td align="right">-0.057</td>
+<td align="right">25999</td>
+<td align="right">-0.012</td>
 </tr>
 </tbody>
 </table>
@@ -885,6 +883,9 @@ Y(t)\;\sim\;\mathrm{Lognormal}\left(\log{X(t)},\tau\right)
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
