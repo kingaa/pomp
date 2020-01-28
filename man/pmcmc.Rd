@@ -19,7 +19,7 @@
   Nmcmc = 1,
   proposal,
   Np,
-  tol = 1e-17,
+  tol = 0,
   max.fail = Inf,
   params,
   rinit,
@@ -35,7 +35,7 @@
   Nmcmc = 1,
   proposal,
   Np,
-  tol = 1e-17,
+  tol = 0,
   max.fail = Inf,
   ...,
   verbose = getOption("verbose", FALSE)

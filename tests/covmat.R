@@ -63,7 +63,7 @@ prop1 <- mvn.diag.rw(c(r=0.01,sigma=0.01))
 mcmc1 <- pmcmc(po,Nmcmc=100,Np=100,dprior=Csnippet("
     lik = dunif(r,0,1,1)+dnorm(sigma,0,1,1);
     lik = (give_log) ? lik : exp(lik);"),
-  paramnames=c("r","sigma"),tol=0,
+  paramnames=c("r","sigma"),
   proposal=prop1)
 
 covmat(mcmc1) -> v1

@@ -41,11 +41,7 @@ For information on upgrading your pomp version < 2 code, see the
 +     r = rlnorm(log(0.2),1);
 +     sigma = rlnorm(log(0.1),0.5);"),
 +   paramnames=c("r","K","sigma"),
-+   Np=1000,smooth=0.05,tol=1e-6)
-Warning message:
-in 'bsmc2': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
++   Np=1000,smooth=0.05)
 > 
 > plot(smc,y=NA)
 > plot(smc,pars=c("r","K"),thin=20)
@@ -83,34 +79,11 @@ Error : in 'bsmc2': 'params' must be a named numeric vector.
 Error : in 'bsmc2': 'Np' must be specified.
 > try(bsmc2(po,params=as.list(theta),Np=1))
 Error : in 'bsmc2': no parameters to estimate
-In addition: Warning message:
-in 'bsmc2': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(bsmc2(smc,Np=-10))
 Error : in 'bsmc2': 'Np' must be a positive integer.
-> try(bsmc2(smc,Np=100,tol=c(3,5)))
-Error : in 'bsmc2': 'tol' should be a small nonnegative number.
-> try(bsmc2(smc,Np=100,max.fail=-1,tol=10))
-Error : in 'bsmc2': too many filtering failures
-In addition: Warning message:
-in 'bsmc2': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
-> bsmc2(smc,Np=100,max.fail=Inf,tol=10)
-<object of class 'bsmcd_pomp'>
-Warning messages:
-1: in 'bsmc2': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
-2: 10 filtering failures occurred. 
 > try(bsmc2(smc,params=theta,Np=100,
 +   dmeasure=Csnippet("error(\"whoa nelly!\");")))
 Error : in 'bsmc2': in 'dmeasure': whoa nelly!
-In addition: Warning message:
-in 'bsmc2': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > try(bsmc2(smc,Np=100,smooth=5))
 Error : in 'bsmc2': 'smooth' must be a scalar in (0,1]
 > try(bsmc2(smc,Np=100,smooth=NA))
@@ -127,29 +100,18 @@ Error : in 'bsmc2': 'smooth' must be a scalar in (0,1]
 Error : in 'bsmc2': 'smooth' must be a scalar in (0,1]
 > try(bsmc2(smc,Np=100,smooth=list(1,2)))
 Error : in 'bsmc2': 'smooth' must be a scalar in (0,1]
-> try(bsmc2(smc,Np=100,rprocess=NULL,max.fail=Inf,tol=10))
+> try(bsmc2(smc,Np=100,rprocess=NULL))
 Error : in 'bsmc2': 'rprior', 'rprocess', 'dmeasure' are needed basic components.
-> try(bsmc2(smc,Np=100,params=NULL,max.fail=Inf,tol=10))
+> try(bsmc2(smc,Np=100,params=NULL))
 Error : in 'bsmc2': in 'rprior': variable 'r' not found among the parameters.
-In addition: Warning message:
-in 'bsmc2': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
-> try(bsmc2(smc,Np=100,dmeasure=NULL,max.fail=Inf,tol=10))
+> try(bsmc2(smc,Np=100,dmeasure=NULL))
 Error : in 'bsmc2': 'rprior', 'rprocess', 'dmeasure' are needed basic components.
-> try(bsmc2(smc,Np=100,rprior=NULL,max.fail=Inf,tol=10))
+> try(bsmc2(smc,Np=100,rprior=NULL))
 Error : in 'bsmc2': 'rprior', 'rprocess', 'dmeasure' are needed basic components.
 > 
 > theta <- coef(gompertz)
 > theta["K"] <- 1
-> try(capture.output(bsmc2(po,Np=2,params=theta,tol=10,max.fail=1,verbose=TRUE)) -> out)
-filtering failure at time t = 1
-filtering failure at time t = 2
-Error : in 'bsmc2': too many filtering failures
-In addition: Warning message:
-in 'bsmc2': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
+> try(capture.output(bsmc2(po,Np=2,params=theta,verbose=TRUE)) -> out)
 > 
 > smc %>% as.data.frame() %>%
 +   filter(.id=="posterior") %>%
@@ -162,7 +124,6 @@ in future releases, the value will be 0, and the option to choose otherwise will
 +     times="time",t0=-5,
 +     params=coef(gompertz),
 +     Np=1000,smooth=0.1,
-+     tol=0,
 +     rprior=Csnippet("
 +       K = runif(0.1,1);
 +       r = rlnorm(log(0.2),1);

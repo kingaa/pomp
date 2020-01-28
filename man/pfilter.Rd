@@ -19,7 +19,7 @@
 \S4method{pfilter}{data.frame}(
   data,
   Np,
-  tol = 1e-17,
+  tol = 0,
   max.fail = Inf,
   params,
   rinit,
@@ -37,7 +37,7 @@
 \S4method{pfilter}{pomp}(
   data,
   Np,
-  tol = 1e-17,
+  tol = 0,
   max.fail = Inf,
   pred.mean = FALSE,
   pred.var = FALSE,

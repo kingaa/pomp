@@ -21,7 +21,7 @@
   cooling.type = c("geometric", "hyperbolic"),
   cooling.fraction.50,
   Np,
-  tol = 1e-17,
+  tol = 0,
   max.fail = Inf,
   params,
   rinit,
@@ -39,7 +39,7 @@
   cooling.type = c("geometric", "hyperbolic"),
   cooling.fraction.50,
   Np,
-  tol = 1e-17,
+  tol = 0,
   max.fail = Inf,
   ...,
   verbose = getOption("verbose", FALSE)

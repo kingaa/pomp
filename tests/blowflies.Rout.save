@@ -63,10 +63,6 @@ variable [,1]
   3.2838   0.1607 679.9400   1.3512   0.7468   0.0266 
 > plot(simulate(flies[[1]],seed=599688L),var=c("y","R","S","N15"))
 > pf <- freeze(pfilter(flies[[1]],Np=1000),seed=599688L)
-Warning message:
-in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > plot(pf)
 > stopifnot(
 +   all.equal(
@@ -101,10 +97,6 @@ variable [,1]
   2.7319   0.1738 800.3100   1.4420   0.7603   0.0108 
 > plot(simulate(flies[[2]],seed=599688L),var=c("y","R","S","N8"))
 > pf <- freeze(pfilter(flies[[2]],Np=1000),seed=599688L)
-Warning message:
-in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > plot(pf)
 > stopifnot(
 +   all.equal(

@@ -15,7 +15,7 @@
   data,
   Np,
   smooth = 0.1,
-  tol = 1e-17,
+  tol = 0,
   max.fail = 0,
   params,
   rprior,
@@ -31,7 +31,7 @@
   data,
   Np,
   smooth = 0.1,
-  tol = 1e-17,
+  tol = 0,
   max.fail = 0,
   ...,
   verbose = getOption("verbose", FALSE)

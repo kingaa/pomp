@@ -102,7 +102,7 @@ For information on upgrading your pomp version < 2 code, see the
 +   labs(title="Gompertz model",subtitle="stochastic simulations")
 > 
 > ## ----pf1-----------------------------------------------------------------
-> pf <- replicate(n=10,pfilter(Gompertz,Np=500,tol=0))
+> pf <- replicate(n=10,pfilter(Gompertz,Np=500))
 > 
 > logmeanexp(sapply(pf,logLik),se=TRUE)
            se 
@@ -111,14 +111,14 @@ For information on upgrading your pomp version < 2 code, see the
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  8.239   0.105   8.345 
+  8.210   0.102   8.313 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.327   0.007   0.335 
-> system.time(pfilter(gompertz,Np=1000,tol=0))
+  0.326   0.004   0.331 
+> system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.770   0.000   0.771 
-> system.time(pfilter(Gompertz,Np=1000,tol=0))
+  0.721   0.000   0.721 
+> system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
   0.052   0.000   0.052 
 > 

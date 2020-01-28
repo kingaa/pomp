@@ -1,5 +1,18 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._7._1:
+
+        • As promised, the default value of ‘tol’ in the
+          particle-filtering algorithms ‘pfilter’, ‘pmcmc’, ‘mif2’, and
+          ‘bsmc2’ has been changed to zero.  A warning continues to be
+          issued if ‘tol’ is set to anything other than 0.  In a future
+          release, the option to choose a nonzero tolerance will be
+          removed entirely.
+
+        • In traces and diagnostic plotting methods, the ‘nfail’
+          variable (tracking numbers of filtering failures) has been
+          dropped.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._6._0:
 
         • Another documentation bug was fixed.

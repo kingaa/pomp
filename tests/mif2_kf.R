@@ -9,12 +9,12 @@ gompertz() %>% window(end=10) %>% simulate(seed=1176423047) -> po
 
 po %>%
   mif2(Nmif=100,Np=1000,cooling.fraction.50=0.4,cooling.type="geometric",
-    tol=0,rw.sd=rw.sd(sigma=0.02,r=0.02,X_0=ivp(0.05),tau=0.02)) %>%
+    rw.sd=rw.sd(sigma=0.02,r=0.02,X_0=ivp(0.05),tau=0.02)) %>%
   continue(Nmif=100) -> mf
-replicate(n=10,mf %>% pfilter(Np=3000,tol=0)) -> pfs
+replicate(n=10,mf %>% pfilter(Np=3000)) -> pfs
 pfs %>% sapply(logLik) %>% logmeanexp(se=TRUE) -> pf.ll.mle
 
-replicate(n=10,po %>% pfilter(Np=3000,tol=0)) %>%
+replicate(n=10,po %>% pfilter(Np=3000)) %>%
   sapply(logLik) %>%
   logmeanexp(se=TRUE) -> pf.ll.truth
 

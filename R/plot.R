@@ -333,7 +333,7 @@ mif2.diagnostics <- function (z) {
   mtext("time",side=1,line=3)
 
   ## plot mif convergence diagnostics
-  other.diagnostics <- c("loglik", "nfail")
+  other.diagnostics <- c("loglik")
   plotnames <- c(other.diagnostics,estnames)
   nplots <- length(plotnames)
   n.per.page <- min(nplots,10)

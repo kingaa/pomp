@@ -57,10 +57,6 @@ beta_trend   logbeta1   logbeta2   logbeta3   logbeta4   logbeta5   logbeta6
 > 
 > plot(simulate(window(po,end=1893,seed=1420306530L)),yax.flip=TRUE)
 > pf <- freeze(pfilter(window(po,end=1893),Np=1000),seed=1420306530L)
-Warning message:
-in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > plot(pf)
 > 
 > try(dacca(logbeta=c(1,2,3),logomega=c(10,20)))

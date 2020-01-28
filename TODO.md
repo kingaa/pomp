@@ -21,7 +21,7 @@
     - reproducibility tools
     - extending the package
 - make R-level functions for various distributions and transformations
-	- BetaBinom
+	- ~~BetaBinom~~
 	- BetaNegBinom
 - remove need to specify paramnames when log,logit,barycentric partrans is given? HOW?
 - `spy` methods for derived objects

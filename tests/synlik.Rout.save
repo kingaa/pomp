@@ -53,7 +53,6 @@ For information on upgrading your pomp version < 2 code, see the
 > loglik.probe <- replicate(n=500,logLik(probe(po,nsim=200,probes=function(x)x)))
 > ## likelihood from particle filters
 > loglik.pfilter <- replicate(n=500,logLik(pfilter(po,Np=200)))
-There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > kruskal.test(list(loglik.probe,loglik.pfilter))
 

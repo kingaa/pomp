@@ -95,7 +95,7 @@ setMethod(
   signature=signature(data="data.frame"),
   function (data,
     Nmcmc = 1, proposal,
-    Np, tol = 1e-17, max.fail = Inf,
+    Np, tol = 0, max.fail = Inf,
     params, rinit, rprocess, dmeasure, dprior,
     ..., verbose = getOption("verbose", FALSE)) {
 
@@ -130,7 +130,7 @@ setMethod(
   signature=signature(data="pomp"),
   function (data,
     Nmcmc = 1, proposal,
-    Np, tol = 1e-17, max.fail = Inf,
+    Np, tol = 0, max.fail = Inf,
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -294,10 +294,10 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   if (verbose)
     cat("performing",Nmcmc,"PMCMC iteration(s) using",Np[1L],"particles\n")
 
-  traces <- array(data=NA_real_,dim=c(Nmcmc+1,length(theta)+3),
+  traces <- array(data=NA_real_,dim=c(Nmcmc+1,length(theta)+2),
     dimnames=list(
       iteration=seq(from=0,to=Nmcmc,by=1),
-      variable=c("loglik","log.prior","nfail",names(theta))))
+      variable=c("loglik","log.prior",names(theta))))
 
   if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
 
@@ -316,8 +316,8 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
 
   }
 
-  traces[1,names(theta)] <- theta
-  traces[1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
+  traces[1L,names(theta)] <- theta
+  traces[1L,c(1L,2L)] <- c(pfp@loglik,log.prior)
 
   filt.t <- array(data=numeric(0),dim=replace(dim(pfp@filter.traj),2L,Nmcmc),
     dimnames=replace(dimnames(pfp@filter.traj),2L,
@@ -367,7 +367,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
 
     ## store a record of this iteration
     traces[n+1,names(theta)] <- theta
-    traces[n+1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
+    traces[n+1,c(1L,2L)] <- c(pfp@loglik,log.prior)
 
     if (verbose) cat("PMCMC iteration",n+.ndone,"of",Nmcmc+.ndone,
       "completed\nacceptance ratio:",
@@ -376,7 +376,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   }
 
   pars <- apply(traces,2,function(x)diff(range(x))>0)
-  pars <- setdiff(names(pars[pars]),c("loglik","log.prior","nfail"))
+  pars <- setdiff(names(pars[pars]),c("loglik","log.prior"))
 
   new(
     "pmcmcd_pomp",

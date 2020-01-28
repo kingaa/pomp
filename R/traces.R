@@ -137,11 +137,11 @@ traces.internal <- function (object, pars, transform = FALSE, ...) {
   transform <- as.logical(transform)
   if (transform) {
     retval <- cbind(
-      object@traces[,c(1,2)],
+      object@traces[,1L],
       t(
         partrans(
           object,
-          params=t(object@traces)[-c(1,2),,drop=FALSE],
+          params=t(object@traces)[-1L,,drop=FALSE],
           dir="fromEst"
         )
       )

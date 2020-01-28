@@ -122,7 +122,6 @@ Warning messages:
 +   scale.start=5,scale.cooling=0.1,shape.start=10) -> f
 > options(verbose=TRUE) -> op
 > capture.output(po %>% pmcmc(Nmcmc=200,Np=100,proposal=f) -> mcmc1) -> out
-There were 50 or more warnings (use warnings() to see the first 50)
 > stopifnot(sum(grepl("proposal covariance matrix:",out))==200)
 > evalq(covmat.emp,envir=environment(f))
          alpha_1  alpha_3

@@ -41,10 +41,6 @@ x1_0 x2_0   s1   s2  tau
 > stopifnot(all.equal(coef(rw2),partrans(rw2,coef(rw2,transform=TRUE),dir="from")))
 > plot(simulate(rw2,seed=1438408329L))
 > pf <- freeze(pfilter(rw2,Np=1000),seed=1438408329L)
-Warning message:
-in 'pfilter': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > plot(pf)
 > tj <- trajectory(rw2)
 > try(matplot(time(rw2),t(tj[,1,]),type="l",ylab=""))

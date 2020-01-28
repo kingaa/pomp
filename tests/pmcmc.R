@@ -13,7 +13,6 @@ mcmc1 <- pmcmc(po,Nmcmc=100,Np=100,dprior=Csnippet("
     lik = dunif(r,0,1,1)+dnorm(sigma,0,1,1);
     lik = (give_log) ? lik : exp(lik);"),
   paramnames=c("r","sigma"),
-  tol=0,
   proposal=prop1)
 
 try(pmcmc())
@@ -29,12 +28,12 @@ try(pmcmc(po,proposal=prop1,Np=NULL))
 try(pmcmc(po,proposal=prop1,Np=NA))
 try(pmcmc(po,proposal=prop1,Np=c(1,2,3)))
 try(pmcmc(po,proposal=prop1,Np=-5))
-pmcmc(po,proposal=prop1,Np=1,tol=0)
-pmcmc(po,proposal=prop1,Np=rep(1,11),tol=0)
+pmcmc(po,proposal=prop1,Np=1)
+pmcmc(po,proposal=prop1,Np=rep(1,11))
 try(pmcmc(po,proposal=prop1,Np=function(k)10*k))
-pmcmc(po,proposal=prop1,Np=function(k)10*k+10,tol=0)
+pmcmc(po,proposal=prop1,Np=function(k)10*k+10)
 
-pf <- pfilter(po,Np=100,tol=0)
+pf <- pfilter(po,Np=100)
 mcmc2 <- pmcmc(pf,Nmcmc=100,proposal=prop1)
 mcmc3 <- pmcmc(mcmc1,Nmcmc=50)
 mcmc3 <- continue(mcmc3,Nmcmc=50)
@@ -62,7 +61,7 @@ stopifnot(dim(filter.traj(mcmc1))==c(1,100,11),
 logLik(mcmc1)
 logLik(c(mcmc1,mcmc2,mcmc3))
 
-pmcmc(mcmc1,params=as.list(coef(mcmc3)),tol=0)
+pmcmc(mcmc1,params=as.list(coef(mcmc3)))
 try(pmcmc(mcmc1,params=NULL))
 try(pmcmc(mcmc1,params=-7))
 try(pmcmc(mcmc1,params="yes"))
@@ -109,7 +108,7 @@ gompertz %>%
   as.data.frame() %>%
   pmcmc(
     Nmcmc=10,Np=100,
-    times="time",t0=0,tol=0,
+    times="time",t0=0,
     rprocess=discrete_time(
       function (x, r, K, ...) {
         c(x=x*exp(r*(1-x/K)))

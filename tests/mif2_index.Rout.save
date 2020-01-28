@@ -31,7 +31,6 @@ For information on upgrading your pomp version < 2 code, see the
 > gompertz %>%
 +   mif2(Nmif=4,Np=1000,
 +     .indices=seq.int(1000),
-+     tol=0,
 +     rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
 +     cooling.fraction=0.5) %>%
 +   slot("indices") -> idx
@@ -45,7 +44,6 @@ For information on upgrading your pomp version < 2 code, see the
 > gompertz %>%
 +   mif2(Nmif=4,Np=100,
 +     .indices=as.list(seq.int(100)),
-+     tol=0,
 +     rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
 +     cooling.fraction=0.5) %>%
 +   slot("indices") -> idx
@@ -58,8 +56,4 @@ For information on upgrading your pomp version < 2 code, see the
 +   .indices=1:5,rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
 +   cooling.fraction=0.5))
 Error : in 'mif2': '.indices' has improper length.
-In addition: Warning message:
-in 'mif2': the 'tol' argument is deprecated and will be removed in a future release.
-Currently, the default value of 'tol' is 1e-17;
-in future releases, the value will be 0, and the option to choose otherwise will be removed. 
 > 

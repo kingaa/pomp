@@ -16,7 +16,6 @@
 ##' @family pomp parameter estimation methods
 ##'
 ##' @importFrom utils head
-##' @importFrom stats  weighted.mean
 ##'
 ##' @inheritParams pomp
 ##' @inheritParams pfilter
@@ -130,7 +129,7 @@ setMethod(
   definition = function (data,
     Nmif = 1, rw.sd,
     cooling.type = c("geometric", "hyperbolic"), cooling.fraction.50,
-    Np, tol = 1e-17, max.fail = Inf,
+    Np, tol = 0, max.fail = Inf,
     params, rinit, rprocess, dmeasure, partrans,
     ..., verbose = getOption("verbose", FALSE)) {
 
@@ -168,7 +167,7 @@ setMethod(
   definition = function (data,
     Nmif = 1, rw.sd,
     cooling.type = c("geometric", "hyperbolic"), cooling.fraction.50,
-    Np, tol = 1e-17, max.fail = Inf,
+    Np, tol = 0, max.fail = Inf,
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -263,7 +262,7 @@ setMethod(
     obj <- mif2(object,Nmif=Nmif,...,
       .ndone=ndone,.paramMatrix=object@paramMatrix)
 
-    object@traces[ndone+1,c('loglik','nfail')] <- obj@traces[1L,c('loglik','nfail')]
+    object@traces[ndone+1,"loglik"] <- obj@traces[1L,"loglik"]
     obj@traces <- rbind(
       object@traces,
       obj@traces[-1L,colnames(object@traces)]
@@ -277,7 +276,7 @@ setMethod(
 
 mif2.internal <- function (object, Nmif, rw.sd,
   cooling.type, cooling.fraction.50,
-  Np, tol = 1e-17, max.fail = Inf,
+  Np, tol = 0, max.fail = Inf,
   ..., verbose,
   .ndone = 0L, .indices = integer(0), .paramMatrix = NULL,
   .gnsi = TRUE) {
@@ -361,10 +360,10 @@ mif2.internal <- function (object, Nmif, rw.sd,
     paramMatrix <- .paramMatrix
   }
 
-  traces <- array(dim=c(Nmif+1,length(start)+2),
+  traces <- array(dim=c(Nmif+1,length(start)+1),
     dimnames=list(iteration=seq.int(.ndone,.ndone+Nmif),
-      variable=c('loglik','nfail',names(start))))
-  traces[1L,] <- c(NA,NA,start)
+      variable=c("loglik",names(start))))
+  traces[1L,] <- c(NA,start)
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
@@ -392,8 +391,8 @@ mif2.internal <- function (object, Nmif, rw.sd,
     gnsi <- FALSE
 
     paramMatrix <- pfp@paramMatrix
-    traces[n+1,-c(1,2)] <- coef(pfp)
-    traces[n,c(1,2)] <- c(pfp@loglik,pfp@nfail)
+    traces[n+1,-1L] <- coef(pfp)
+    traces[n,1L] <- pfp@loglik
     .indices <- pfp@indices
 
     if (verbose) cat("mif2 iteration",n,"of",Nmif,"completed\n")
@@ -442,7 +441,7 @@ mif2.cooling <- function (type, fraction, ntimes) {
 }
 
 mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
-  tol = 1e-17, max.fail = Inf, verbose, .indices = integer(0),
+  tol = 0, max.fail = Inf, verbose, .indices = integer(0),
   .gnsi = TRUE) {
 
   tol <- as.numeric(tol)
@@ -458,8 +457,8 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
     pWarn(
       "mif2",
       "the ",sQuote("tol")," argument is deprecated and will be removed in a future release.\n",
-      "Currently, the default value of ",sQuote("tol")," is 1e-17;\n",
-      "in future releases, the value will be 0, and the option to choose otherwise will be removed."
+      "Currently, the default value of ",sQuote("tol")," is 0;\n",
+      "in future releases, the option to choose otherwise will be removed."
     )
   }
 
@@ -564,7 +563,6 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
     indices=.indices,
     Np=Np,
     tol=tol,
-    nfail=as.integer(nfail),
     loglik=sum(loglik)
   )
 }

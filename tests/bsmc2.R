@@ -19,7 +19,7 @@ smc <- bsmc2(gompertz,
     r = rlnorm(log(0.2),1);
     sigma = rlnorm(log(0.1),0.5);"),
   paramnames=c("r","K","sigma"),
-  Np=1000,smooth=0.05,tol=1e-6)
+  Np=1000,smooth=0.05)
 
 plot(smc,y=NA)
 plot(smc,pars=c("r","K"),thin=20)
@@ -44,9 +44,6 @@ theta <- coef(smc)
 try(bsmc2(po,params=as.list(theta)))
 try(bsmc2(po,params=as.list(theta),Np=1))
 try(bsmc2(smc,Np=-10))
-try(bsmc2(smc,Np=100,tol=c(3,5)))
-try(bsmc2(smc,Np=100,max.fail=-1,tol=10))
-bsmc2(smc,Np=100,max.fail=Inf,tol=10)
 try(bsmc2(smc,params=theta,Np=100,
   dmeasure=Csnippet("error(\"whoa nelly!\");")))
 try(bsmc2(smc,Np=100,smooth=5))
@@ -57,14 +54,14 @@ try(bsmc2(smc,Np=100,smooth=Inf))
 try(bsmc2(smc,Np=100,smooth="yes"))
 try(bsmc2(smc,Np=100,smooth=c(1,2)))
 try(bsmc2(smc,Np=100,smooth=list(1,2)))
-try(bsmc2(smc,Np=100,rprocess=NULL,max.fail=Inf,tol=10))
-try(bsmc2(smc,Np=100,params=NULL,max.fail=Inf,tol=10))
-try(bsmc2(smc,Np=100,dmeasure=NULL,max.fail=Inf,tol=10))
-try(bsmc2(smc,Np=100,rprior=NULL,max.fail=Inf,tol=10))
+try(bsmc2(smc,Np=100,rprocess=NULL))
+try(bsmc2(smc,Np=100,params=NULL))
+try(bsmc2(smc,Np=100,dmeasure=NULL))
+try(bsmc2(smc,Np=100,rprior=NULL))
 
 theta <- coef(gompertz)
 theta["K"] <- 1
-try(capture.output(bsmc2(po,Np=2,params=theta,tol=10,max.fail=1,verbose=TRUE)) -> out)
+try(capture.output(bsmc2(po,Np=2,params=theta,verbose=TRUE)) -> out)
 
 smc %>% as.data.frame() %>%
   filter(.id=="posterior") %>%
@@ -77,7 +74,6 @@ gompertz %>%
     times="time",t0=-5,
     params=coef(gompertz),
     Np=1000,smooth=0.1,
-    tol=0,
     rprior=Csnippet("
       K = runif(0.1,1);
       r = rlnorm(log(0.2),1);
