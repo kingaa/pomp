@@ -12,7 +12,7 @@
 
 \newcommand{\Bratley1988}{P. Bratley and B.L. Fox. Algorithm 659 Implementing Sobol's quasirandom sequence generator. \emph{ACM Transactions on Mathematical Software} \bold{14}, 88--100, 1988.}
 
-\newcommand{\Breto2011}{C. Bretó and E. L. Ionides. Compound Markov counting processe and their applications to modeling infinitesimally over-dispersed systems. \emph{Stochastic Processes and their Applications} \bold{121}, 2571--2591, 2011.}
+\newcommand{\Breto2011}{C. \ifelse{latex}{\out{Bret\'o}}{\ifelse{html}{\out{Breto&oacute;}}{Breto}} and E. L. Ionides. Compound Markov counting processe and their applications to modeling infinitesimally over-dispersed systems. \emph{Stochastic Processes and their Applications} \bold{121}, 2571--2591, 2011.}
 
 \newcommand{\Brillinger1980}{D.R. Brillinger, J. Guckenheimer, P. Guttorp, and G. Oster. Empirical modelling of population time series: The case of age and density dependent rates. In: G. Oster (ed.), \emph{Some Questions in Mathematical Biology} vol. 13, pp. 65--90, American Mathematical Society, Providence, 1980.}
 
@@ -28,7 +28,7 @@
 
 \newcommand{\Ionides2011}{E.L. Ionides. Discussion of \dQuote{Feature Matching in Time Series Modeling} by Y. Xia and H. Tong. \emph{Statistical Science} \bold{26}, 49--52, 2011.}
 
-\newcommand{\Ionides2015}{E.L. Ionides, D. Nguyen, Y. Atchadé, S. Stoev, and A.A. King. Inference for dynamic and latent variable models via iterated, perturbed Bayes maps. \emph{Proceedings of the National Academy of Sciences} \bold{112}, 719--724, 2015.}
+\newcommand{\Ionides2015}{E.L. Ionides, D. Nguyen, Y. \ifelse{latex}{\out{Atchad\'e}}{\ifelse{html}{\out{Atchad&eacute;}}{Atchade}}, S. Stoev, and A.A. King. Inference for dynamic and latent variable models via iterated, perturbed Bayes maps. \emph{Proceedings of the National Academy of Sciences} \bold{112}, 719--724, 2015.}
 
 \newcommand{\Joe2003}{S. Joe and F.Y. Kuo. Remark on algorithm 659: Implementing Sobol' quasirandom sequence generator. \emph{ACM Transactions on Mathematical Software} \bold{29}, 49--57, 2003.}
 
@@ -38,7 +38,7 @@
 
 \newcommand{\King2008}{A.A. King, E.L. Ionides, M. Pascual, and M.J. Bouma. Inapparent infections and cholera dynamics. \emph{Nature} \bold{454}, 877-880, 2008}
 
-\newcommand{\King2015}{A.A. King, M. Domenech de Cellès, F.M.G. Magpantay, and P. Rohani. Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola. \emph{Proceedings of the Royal Society of London, Series B} \bold{282}, 20150347, 2015.}
+\newcommand{\King2015}{A.A. King, M. Domenech de \ifelse{latex}{\out{Cell\`es}}{\ifelse{html}{\out{Cell&egrave;s}}{Celles}}, F.M.G. Magpantay, and P. Rohani. Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola. \emph{Proceedings of the Royal Society of London, Series B} \bold{282}, 20150347, 2015.}
 
 \newcommand{\King2016}{A. A. King, D. Nguyen, and E. L. Ionides. Statistical Inference for Partially Observed Markov Processes via the Package \pkg{pomp}. \emph{Journal of Statistical Software} \bold{69}(12), 1--43, 2016.  An updated version of this paper is available on the \href{https://kingaa.github.io/pomp/docs.html}{package website}.}
 

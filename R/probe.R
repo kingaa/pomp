@@ -261,7 +261,7 @@ probe.internal <- function (object, probes, nsim, seed, ...,
 setMethod(
   "summary",
   signature=signature(object="probed_pomp"),
-  definition=function (object) {
+  definition=function (object, ...) {
     list(
       coef=coef(object),
       nsim=nrow(object@simvals),

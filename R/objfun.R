@@ -43,7 +43,7 @@ setMethod(
 setMethod(
   "summary",
   signature=signature(object="objfun"),
-  definition=function (object) {
+  definition=function (object, ...) {
     summary(object@env$object)
   }
 )

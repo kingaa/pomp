@@ -386,7 +386,7 @@ reuman.kernel <- function (kernel.width) {
 setMethod(
   "summary",
   signature=signature(object="spectd_pomp"),
-  definition=function (object) {
+  definition=function (object, ...) {
     list(
       coef=coef(object),
       nsim=nrow(object@simspec),

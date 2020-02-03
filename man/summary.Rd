@@ -10,11 +10,11 @@
 \alias{summary,objfun-method}
 \title{Summary methods}
 \usage{
-\S4method{summary}{probed_pomp}(object)
+\S4method{summary}{probed_pomp}(object, ...)
 
-\S4method{summary}{spectd_pomp}(object)
+\S4method{summary}{spectd_pomp}(object, ...)
 
-\S4method{summary}{objfun}(object)
+\S4method{summary}{objfun}(object, ...)
 }
 \arguments{
 \item{object}{a fitted model object}
