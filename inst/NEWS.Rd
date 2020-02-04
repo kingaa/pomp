@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.5.0}{
+  \itemize{
+    \item A documentation bug, identified by K. Hornik, was fixed.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.4.1}{
   \itemize{
     \item In anticipation of forthcoming algorithmic changes, the \code{tol} and \code{max.fail} arguments of \code{pfilter}, \code{bsmc2}, \code{pmcmc}, and \code{mif2} are now deprecated.
