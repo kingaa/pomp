@@ -41,6 +41,11 @@ inst/include/%.h: src/%.h
 
 htmldocs: inst/doc/*.html
 
+htmlhelp: install
+	rsync -avz library/pomp/html/ www/manual
+	(cd www/manual;	patch -p2 < links.patch)
+	$(CP) www/_includes/pompstyle.css www/manual/R.css
+
 vignettes: manual install
 	$(MAKE)	-C www/vignettes
 
@@ -128,7 +133,7 @@ install: library/$(PKG)
 
 library/$(PKG): dist
 	mkdir -p library
-	$(RCMD) INSTALL --library=library $(PKGVERS).tar.gz
+	$(RCMD) INSTALL --html --library=library $(PKGVERS).tar.gz
 
 remove:
 	if [ -d library ]; then \
