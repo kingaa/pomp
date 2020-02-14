@@ -1,97 +1,215 @@
+html {
+    overflow-y: scroll;
+}
+
 body {
-    background: white;
-    color: black;
+    color: #000000;
+    background: #ffffff;
+    font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
+    width: calc(80% - 50px);
+    padding-top: 20px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
-a:link {
-    background: white;
-    color: blue;
+code {
+    font-family: monospace;
+    font-size: 1.125em;
 }
 
-a:visited {
-    background: white;
-    color: rgb(50%, 0%, 50%);
+h1, h2, h3, h4 {
+    font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
+    font-weight: bold;
+    font-variant: normal;
 }
 
 h1 {
-    background: white;
-    color: rgb(55%, 55%, 55%);
-    font-family: monospace;
-    font-size: x-large;
-    text-align: center;
+    font-size: 1.5em;
 }
 
 h2 {
-    background: white;
-    color: rgb(40%, 40%, 40%);
-    font-family: monospace;
-    font-size: large;
-    text-align: center;
+    font-size: 1.375em;
 }
 
 h3 {
-    background: white;
-    color: rgb(40%, 40%, 40%);
-    font-family: monospace;
-    font-size: large;
+    font-size: 1.25em;
+    text-decoration: underline;
 }
 
 h4 {
-    background: white;
-    color: rgb(40%, 40%, 40%);
-    font-family: monospace;
-    font-style: italic;
-    font-size: large;
+    font-size: 1.125em;
 }
 
-h5 {
-    background: white;
-    color: rgb(40%, 40%, 40%);
-    font-family: monospace;
+p, ul, ol {
+    text-align: left;
 }
 
-h6 {
-    background: white;
-    color: rgb(40%, 40%, 40%);
-    font-family: monospace;
-    font-style: italic;
-}
-		
-img.toplogo {
-    width: 4em;
-    vertical-align: middle;
+td {
+    vertical-align: top;
 }
 
-img.arrow {
-    width: 30px;
-    height: 30px;
-    border: 0;
+a:link, a:visited {
+    color: #0000ff;
+    text-decoration: none;
+}
+a:hover, a:active {
+    color: #cc3333; 
+    text-decoration: none;
+}
+a.activated {
+    text-decoration: underline;
 }
 
-span.acronym {
-    font-size: small;
+thead {
+    display: table-header-group;
 }
 
-span.env {
-    font-family: monospace;
+dl, ul, ol, dd {
+    page-break-before: avoid;
 }
 
-span.file {
-    font-family: monospace;
+dt, dd, tr, h1, h2, h3, h4, li, p {
+    page-break-inside: avoid;
 }
 
-span.option{
-    font-family: monospace;
+dt, h1, h2, h3, h4 {
+    page-break-after: avoid;
 }
 
-span.pkg {
+dt, dd {
+    text-align: left;
+}
+
+dt {
     font-weight: bold;
 }
 
-span.samp{
-    font-family: monospace;
+#TOC ul li {
+    list-style: none;
 }
 
-div.vignettes a:hover {
-    background: rgb(85%, 85%, 85%);
+#main {
+    position: absolute;
+    top: 10px;
+    left: 52px;
+}
+
+#content {
+    text-align: left;
+    position: relative;
+    width: 80%;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+    padding-right: 40px;
+}
+
+#header {
+    text-align: left;
+    position: relative;
+    width: 70%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+    white-space: nowrap;
+}
+
+#header h1 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#toplink {
+    text-align: right;
+    padding-right: 40px;
+    display: none;
+}
+
+.header-section-number:after, .toc-section-number:after {
+    content: ".";
+}
+
+@media print {
+    #nav, #menu-icon, #menu {
+	display: none;
+    }
+}
+
+@media screen {
+
+    #menu-icon {
+	position: fixed;
+	top: 20px;
+	right: 40px;
+	z-index: 10;
+	display: none;
+    }
+
+    #menu {
+	position: fixed;
+	width: 180px;
+	top: 0px;
+	right: 0px;
+	z-index: 20;
+	text-align: left;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	padding-left: 10px;
+	padding-right: 20px;
+	background-color: #ffffff;
+	display: block;
+    }
+
+    #menu ul {
+	font-weight: bold;
+	list-style: none;
+	margin: 0px;
+	padding: 20px;
+    }
+
+    #header {
+	width: calc(80% - 200px);
+    }
+
+    #content {
+	width: calc(90% - 200px);
+    }
+
+}
+
+@media screen and (max-width: 1000px) {
+
+    #menu-icon {
+	display: block;
+    }
+
+    #menu {
+	display: none;
+    }
+
+    #nav:hover #menu {
+	display: block;
+    }
+
+}
+
+.emph {
+    color: #cc3333; 
+    font-weight: bold;
+}
+
+.emph1 {
+    color: #3333ff; 
+    font-weight: bold;
+}
+
+.firstcharacter { 
+    float: left; 
+    color: #3333ff; 
+    font-size: 40px;
+    line-height: 30px;
+    vertical-align: top;
+    padding-right: 5px;
 }
