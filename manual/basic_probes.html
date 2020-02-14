@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Useful probes for partially-observed Markov processes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for basic_probes {pomp}"><tr><td>basic_probes {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Useful probes for partially-observed Markov processes</h2>
+
+<h3>Description</h3>
+
+<p>Several simple and configurable probes are provided with in the package.
+These can be used directly and as templates for custom probes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+probe.mean(var, trim = 0, transform = identity, na.rm = TRUE)
+
+probe.median(var, na.rm = TRUE)
+
+probe.var(var, transform = identity, na.rm = TRUE)
+
+probe.sd(var, transform = identity, na.rm = TRUE)
+
+probe.period(var, kernel.width, transform = identity)
+
+probe.quantile(var, probs, ...)
+
+probe.acf(
+  var,
+  lags,
+  type = c("covariance", "correlation"),
+  transform = identity
+)
+
+probe.ccf(
+  vars,
+  lags,
+  type = c("covariance", "correlation"),
+  transform = identity
+)
+
+probe.marginal(var, ref, order = 3, diff = 1, transform = identity)
+
+probe.nlar(var, lags, powers, transform = identity)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>var, vars</code></td>
+<td>
+<p>character; the name(s) of the observed variable(s).</p>
+</td></tr>
+<tr valign="top"><td><code>trim</code></td>
+<td>
+<p>the fraction of observations to be trimmed (see <code><a href="../../base/html/mean.html">mean</a></code>).</p>
+</td></tr>
+<tr valign="top"><td><code>transform</code></td>
+<td>
+<p>transformation to be applied to the data before the probe is computed.</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>if <code>TRUE</code>, remove all NA observations prior to computing the probe.</p>
+</td></tr>
+<tr valign="top"><td><code>kernel.width</code></td>
+<td>
+<p>width of modified Daniell smoothing kernel to be used
+in power-spectrum computation: see <code><a href="../../stats/html/kernel.html">kernel</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>probs</code></td>
+<td>
+<p>the quantile or quantiles to compute: see <code><a href="../../stats/html/quantile.html">quantile</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments passed to the underlying algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>lags</code></td>
+<td>
+<p>In <code>probe.ccf</code>, a vector of lags between time series.
+Positive lags correspond to <code>x</code> advanced relative to <code>y</code>;
+negative lags, to the reverse.
+</p>
+<p>In <code>probe.nlar</code>, a vector of lags present in the nonlinear
+autoregressive model that will be fit to the actual and simulated data.
+See Details, below, for a precise description.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Compute autocorrelation or autocovariance?</p>
+</td></tr>
+<tr valign="top"><td><code>ref</code></td>
+<td>
+<p>empirical reference distribution.  Simulated data will be
+regressed against the values of <code>ref</code>, sorted and, optionally,
+differenced.  The resulting regression coefficients capture information
+about the shape of the marginal distribution.  A good choice for <code>ref</code>
+is the data itself.</p>
+</td></tr>
+<tr valign="top"><td><code>order</code></td>
+<td>
+<p>order of polynomial regression.</p>
+</td></tr>
+<tr valign="top"><td><code>diff</code></td>
+<td>
+<p>order of differencing to perform.</p>
+</td></tr>
+<tr valign="top"><td><code>powers</code></td>
+<td>
+<p>the powers of each term (corresponding to <code>lags</code>) in the
+the nonlinear autoregressive model that will be fit to the actual and
+simulated data.  See Details, below, for a precise description.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A call to any one of these functions returns a probe function,
+suitable for use in <code><a href="probe.html">probe</a></code> or <code><a href="probe_match.html">probe_objfun</a></code>.  That
+is, the function returned by each of these takes a data array (such as
+comes from a call to <code><a href="obs.html">obs</a></code>) as input and returns a single
+numerical value.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Daniel C. Reuman, Aaron A. King
+</p>
+
+
+<h3>References</h3>
+
+<p>B.E. Kendall, C.J. Briggs, W.W. Murdoch, P. Turchin, S.P. Ellner, E. McCauley, R.M. Nisbet, and S.N. Wood. Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches. <em>Ecology</em> <b>80</b>, 1789&ndash;1805, 1999.
+</p>
+<p>S. N. Wood Statistical inference for noisy nonlinear ecological dynamic systems. <em>Nature</em> <b>466</b>, 1102&ndash;1104, 2010.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other summary statistics methods: 
+<code><a href="abc.html">abc</a>()</code>,
+<code><a href="probe_match.html">probe.match</a></code>,
+<code><a href="probe.html">probe</a>()</code>,
+<code><a href="spect.html">spect</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

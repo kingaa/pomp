@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: rprocess</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rprocess {pomp}"><tr><td>rprocess {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>rprocess</h2>
+
+<h3>Description</h3>
+
+<p><code>rprocess</code> simulates the process-model portion of partially-observed Markov process.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'pomp'
+rprocess(object, x0, t0, times, params, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object of class &lsquo;pomp&rsquo;, or of a class that extends &lsquo;pomp&rsquo;.
+This will typically be the output of <code>pomp</code>, <code>simulate</code>, or one of the <span class="pkg">pomp</span> inference algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>x0</code></td>
+<td>
+<p>an <code>nvar</code> x <code>nrep</code> matrix containing the starting state of the system.
+Columns of <code>x0</code> correspond to states;
+rows to components of the state vector.
+One independent simulation will be performed for each column.
+Note that in this case, <code>params</code> must also have <code>nrep</code> columns.</p>
+</td></tr>
+<tr valign="top"><td><code>t0</code></td>
+<td>
+<p>the initial time, i.e., the time corresponding to the state in <code>x0</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>times</code></td>
+<td>
+<p>a numeric vector (length <code>ntimes</code>) containing times.
+These must be in non-decreasing order.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>a <code>npar</code> x <code>nrep</code> matrix of parameters.
+Each column is treated as an independent parameter set, in correspondence with the corresponding column of <code>x0</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments are ignored.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When <code>rprocess</code> is called, <code>t0</code> is taken to be the initial time (i.e., that corresponding to <code>x0</code>).
+The values in <code>times</code> are the times at which the state of the simulated processes are required.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>rprocess</code> returns a rank-3 array with rownames.
+Suppose <code>x</code> is the array returned.
+Then </p>
+<pre>dim(x)=c(nvars,nrep,ntimes),</pre>
+<p>where <code>nvars</code> is the number of state variables (=<code>nrow(x0)</code>),
+<code>nrep</code> is the number of independent realizations simulated (=<code>ncol(x0)</code>), and
+<code>ntimes</code> is the length of the vector <code>times</code>.
+<code>x[,j,k]</code> is the value of the state process in the <code>j</code>-th realization at time <code>times[k]</code>.
+The rownames of <code>x</code> will correspond to those of <code>x0</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Specification of the process-model simulator: <code><a href="rprocess_spec.html">rprocess_spec</a></code>
+</p>
+<p>Other pomp workhorses: 
+<code><a href="dmeasure.html">dmeasure</a>()</code>,
+<code><a href="dprior.html">dprior</a>()</code>,
+<code><a href="dprocess.html">dprocess</a>()</code>,
+<code><a href="flow.html">flow</a>()</code>,
+<code><a href="partrans.html">partrans</a>()</code>,
+<code><a href="rinit.html">rinit</a>()</code>,
+<code><a href="rmeasure.html">rmeasure</a>()</code>,
+<code><a href="rprior.html">rprior</a>()</code>,
+<code><a href="skeleton.html">skeleton</a>()</code>,
+<code><a href="workhorses.html">workhorses</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

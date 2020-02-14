@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The particle Markov chain Metropolis-Hastings algorithm</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pmcmc {pomp}"><tr><td>pmcmc {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The particle Markov chain Metropolis-Hastings algorithm</h2>
+
+<h3>Description</h3>
+
+<p>The Particle MCMC algorithm for estimating the parameters of a
+partially-observed Markov process.  Running <code>pmcmc</code> causes a particle
+random-walk Metropolis-Hastings Markov chain algorithm to run for the
+specified number of proposals.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'data.frame'
+pmcmc(
+  data,
+  Nmcmc = 1,
+  proposal,
+  Np,
+  tol = 1e-17,
+  max.fail = Inf,
+  params,
+  rinit,
+  rprocess,
+  dmeasure,
+  dprior,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'pomp'
+pmcmc(
+  data,
+  Nmcmc = 1,
+  proposal,
+  Np,
+  tol = 1e-17,
+  max.fail = Inf,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'pfilterd_pomp'
+pmcmc(
+  data,
+  Nmcmc = 1,
+  proposal,
+  Np,
+  tol,
+  max.fail = Inf,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'pmcmcd_pomp'
+pmcmc(data, Nmcmc, proposal, ..., verbose = getOption("verbose", FALSE))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>either a data frame holding the time series data,
+or an object of class &lsquo;pomp&rsquo;,
+i.e., the output of another <span class="pkg">pomp</span> calculation.</p>
+</td></tr>
+<tr valign="top"><td><code>Nmcmc</code></td>
+<td>
+<p>The number of PMCMC iterations to perform.</p>
+</td></tr>
+<tr valign="top"><td><code>proposal</code></td>
+<td>
+<p>optional function that draws from the proposal
+distribution.  Currently, the proposal distribution must be symmetric for
+proper inference: it is the user's responsibility to ensure that it is.
+Several functions that construct appropriate proposal function are
+provided: see <a href="proposals.html">MCMC proposals</a> for more information.</p>
+</td></tr>
+<tr valign="top"><td><code>Np</code></td>
+<td>
+<p>the number of particles to use.
+This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
+Alternatively, if one wishes the number of particles to vary across timesteps, one may specify <code>Np</code> either as a vector of positive integers of length </p>
+<pre>length(time(object,t0=TRUE))</pre><p> or as a function taking a positive integer argument.
+In the latter case, <code>Np(k)</code> must be a single positive integer, representing the number of particles to be used at the <code>k</code>-th timestep:
+<code>Np(0)</code> is the number of particles to use going from <code>timezero(object)</code> to <code>time(object)[1]</code>,
+<code>Np(1)</code>, from <code>timezero(object)</code> to <code>time(object)[1]</code>,
+and so on,
+while when <code>T=length(time(object,t0=TRUE))</code>, <code>Np(T)</code> is the number of particles to sample at the end of the time-series.</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>non-negative numeric scalar;
+particles with likelihood less than <code>tol</code> are considered to be incompatible with the data.
+See the section on <em>Filtering Failures</em> for more information.
+In a future release, this argument will be removed.</p>
+</td></tr>
+<tr valign="top"><td><code>max.fail</code></td>
+<td>
+<p>integer; the maximum number of filtering failures allowed (see below).
+If the number of filtering failures exceeds this number, execution will terminate with an error.
+By default, <code>max.fail</code> is set to infinity, so no error can be triggered.
+In a future release, this argument will be removed.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>optional; named numeric vector of parameters.
+This will be coerced internally to storage mode <code>double</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>rinit</code></td>
+<td>
+<p>simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>rinit=NULL</code> sets the initial-state simulator to its default.
+For more information, see <a href="rinit_spec.html">?rinit_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>rprocess</code></td>
+<td>
+<p>simulator of the latent state process, specified using one of the <a href="rprocess_spec.html">rprocess plugins</a>.
+Setting <code>rprocess=NULL</code> removes the latent-state simulator.
+For more information, <a href="rprocess_spec.html">see ?rprocess_spec for the documentation on these plugins</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>dmeasure</code></td>
+<td>
+<p>evaluator of the measurement model density, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>dmeasure=NULL</code> removes the measurement density evaluator.
+For more information, see <a href="dmeasure_spec.html">?dmeasure_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>dprior</code></td>
+<td>
+<p>optional; prior distribution density evaluator, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information, see <a href="prior_spec.html">?prior_spec</a>.
+Setting <code>dprior=NULL</code> resets the prior distribution to its default, which is a flat improper prior.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments supply new or modify existing model characteristics or components.
+See <code><a href="pomp.html">pomp</a></code> for a full list of recognized arguments.
+</p>
+<p>When named arguments not recognized by <code><a href="pomp.html">pomp</a></code> are provided, these are made available to all basic components via the so-called <dfn>userdata</dfn> facility.
+This allows the user to pass information to the basic components outside of the usual routes of covariates (<code>covar</code>) and model parameters (<code>params</code>).
+See <a href="userdata.html">?userdata</a> for information on how to use this facility.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical; if <code>TRUE</code>, diagnostic messages will be printed to the console.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of class &lsquo;pmcmcd_pomp&rsquo;.
+</p>
+
+
+<h3>Re-running PMCMC Iterations</h3>
+
+<p>To re-run a sequence of PMCMC
+iterations, one can use the <code>pmcmc</code> method on a &lsquo;pmcmc&rsquo; object.
+By default, the same parameters used for the original PMCMC run are re-used
+(except for <code>tol</code>, <code>max.fail</code>, and <code>verbose</code>, the defaults
+of which are shown above).  If one does specify additional arguments, these
+will override the defaults.
+</p>
+
+
+<h3>Filtering failures</h3>
+
+<p>If the degree of disagreement between model and data becomes sufficiently large, a &ldquo;filtering failure&rdquo; results.
+A filtering failure occurs when, at some time point, none of the <code>Np</code> particles is compatible with the data.
+In particular, if the conditional likelihood of a particle at any time is below the tolerance value <code>tol</code>, then that particle is considered to be uninformative and its likelihood is taken to be zero.
+A filtering failure occurs when this is the case for all particles.
+A warning is generated when this occurs unless the cumulative number of failures exceeds <code>max.fail</code>, in which case an error is generated.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Edward L. Ionides, Aaron A. King, Sebastian Funk
+</p>
+
+
+<h3>References</h3>
+
+<p>C. Andrieu, A. Doucet, and R. Holenstein. Particle Markov chain Monte Carlo methods. <em>Journal of the Royal Statistical Society, Series B</em> <b>72</b>, 269–342, 2010.
+</p>
+<p>C. Andrieu and G.O. Roberts. The pseudo-marginal approach for computation. <em>Annals of Statistics</em> <b>37</b>, 697&ndash;725, 2009.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="proposals.html">MCMC proposals</a>
+</p>
+<p>Other particle filter methods: 
+<code><a href="bsmc2.html">bsmc2</a>()</code>,
+<code><a href="cond_logLik.html">cond.logLik</a>()</code>,
+<code><a href="eff_sample_size.html">eff.sample.size</a>()</code>,
+<code><a href="filter_mean.html">filter.mean</a>()</code>,
+<code><a href="filter_traj.html">filter.traj</a>()</code>,
+<code><a href="mif2.html">mif2</a>()</code>,
+<code><a href="pfilter.html">pfilter</a>()</code>,
+<code><a href="pred_mean.html">pred.mean</a>()</code>,
+<code><a href="pred_var.html">pred.var</a>()</code>
+</p>
+<p>Other pomp parameter estimation methods: 
+<code><a href="abc.html">abc</a>()</code>,
+<code><a href="bsmc2.html">bsmc2</a>()</code>,
+<code><a href="kalman.html">kalman</a></code>,
+<code><a href="mif2.html">mif2</a>()</code>,
+<code><a href="nlf.html">nlf</a></code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="probe_match.html">probe.match</a></code>,
+<code><a href="spect_match.html">spect.match</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

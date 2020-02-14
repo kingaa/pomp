@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Lookup table</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lookup {pomp}"><tr><td>lookup {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Lookup table</h2>
+
+<h3>Description</h3>
+
+<p>Interpolate values from a lookup table
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lookup(table, t)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>table</code></td>
+<td>
+<p>a &lsquo;covartable&rsquo; object created by a call to <code><a href="covariate_table.html">covariate_table</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>t</code></td>
+<td>
+<p>numeric vector; times at which interpolated values of the covariates in <code>table</code> are required.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A warning will be generated if extrapolation is performed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A numeric vector or matrix of the interpolated values.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>covariate_table
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

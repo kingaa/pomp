@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Ensemble Kalman filters</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for kalman {pomp}"><tr><td>kalman {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Ensemble Kalman filters</h2>
+
+<h3>Description</h3>
+
+<p>The ensemble Kalman filter and ensemble adjustment Kalman filter.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'data.frame'
+enkf(
+  data,
+  Np,
+  h,
+  R,
+  params,
+  rinit,
+  rprocess,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'pomp'
+enkf(data, Np, h, R, ..., verbose = getOption("verbose", FALSE))
+
+## S4 method for signature 'data.frame'
+eakf(
+  data,
+  Np,
+  C,
+  R,
+  params,
+  rinit,
+  rprocess,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'pomp'
+eakf(data, Np, C, R, ..., verbose = getOption("verbose", FALSE))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>either a data frame holding the time series data,
+or an object of class &lsquo;pomp&rsquo;,
+i.e., the output of another <span class="pkg">pomp</span> calculation.</p>
+</td></tr>
+<tr valign="top"><td><code>Np</code></td>
+<td>
+<p>the number of particles to use.</p>
+</td></tr>
+<tr valign="top"><td><code>h</code></td>
+<td>
+<p>function returning the expected value of the observation given the
+state.</p>
+</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+<p>matrix; variance of the measurement noise.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>optional; named numeric vector of parameters.
+This will be coerced internally to storage mode <code>double</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>rinit</code></td>
+<td>
+<p>simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>rinit=NULL</code> sets the initial-state simulator to its default.
+For more information, see <a href="rinit_spec.html">?rinit_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>rprocess</code></td>
+<td>
+<p>simulator of the latent state process, specified using one of the <a href="rprocess_spec.html">rprocess plugins</a>.
+Setting <code>rprocess=NULL</code> removes the latent-state simulator.
+For more information, <a href="rprocess_spec.html">see ?rprocess_spec for the documentation on these plugins</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments supply new or modify existing model characteristics or components.
+See <code><a href="pomp.html">pomp</a></code> for a full list of recognized arguments.
+</p>
+<p>When named arguments not recognized by <code><a href="pomp.html">pomp</a></code> are provided, these are made available to all basic components via the so-called <dfn>userdata</dfn> facility.
+This allows the user to pass information to the basic components outside of the usual routes of covariates (<code>covar</code>) and model parameters (<code>params</code>).
+See <a href="userdata.html">?userdata</a> for information on how to use this facility.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical; if <code>TRUE</code>, diagnostic messages will be printed to the console.</p>
+</td></tr>
+<tr valign="top"><td><code>C</code></td>
+<td>
+<p>matrix converting state vector into expected value of the
+observation.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of class &lsquo;kalmand_pomp&rsquo;.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King
+</p>
+
+
+<h3>References</h3>
+
+<p>G. Evensen. Sequential data assimilation with a nonlinear quasi-geostrophic model using Monte Carlo methods to forecast error statistics. <em>Journal of Geophysical Research: Oceans</em> <b>99</b>, 10143&ndash;10162, 1994.
+</p>
+<p>J.L. Anderson. An Ensemble Adjustment Kalman Filter for Data Assimilation. <em>Monthly Weather Review</em> <b>129</b>, 2884&ndash;2903, 2001.
+</p>
+<p>G. Evensen. <em>Data assimilation: the ensemble Kalman filter</em>. Springer-Verlag, 2009.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other pomp parameter estimation methods: 
+<code><a href="abc.html">abc</a>()</code>,
+<code><a href="bsmc2.html">bsmc2</a>()</code>,
+<code><a href="mif2.html">mif2</a>()</code>,
+<code><a href="nlf.html">nlf</a></code>,
+<code><a href="pmcmc.html">pmcmc</a>()</code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="probe_match.html">probe.match</a></code>,
+<code><a href="spect_match.html">spect.match</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

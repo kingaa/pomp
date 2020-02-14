@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simulations of a partially-observed Markov process</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for simulate {pomp}"><tr><td>simulate {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simulations of a partially-observed Markov process</h2>
+
+<h3>Description</h3>
+
+<p><code>simulate</code> generates simulations of the state and measurement
+processes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'missing'
+simulate(
+  nsim = 1,
+  seed = NULL,
+  times,
+  t0,
+  params,
+  rinit,
+  rprocess,
+  rmeasure,
+  format = c("pomps", "arrays", "data.frame"),
+  include.data = FALSE,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'data.frame'
+simulate(
+  object,
+  nsim = 1,
+  seed = NULL,
+  times,
+  t0,
+  params,
+  rinit,
+  rprocess,
+  rmeasure,
+  format = c("pomps", "arrays", "data.frame"),
+  include.data = FALSE,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'pomp'
+simulate(
+  object,
+  nsim = 1,
+  seed = NULL,
+  format = c("pomps", "arrays", "data.frame"),
+  include.data = FALSE,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'objfun'
+simulate(object, nsim = 1, seed = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nsim</code></td>
+<td>
+<p>The number of simulations to perform.
+Note that the number of replicates will be <code>nsim</code> times <code>ncol(params)</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>optional;
+if set, the pseudorandom number generator (RNG) will be initialized with <code>seed</code>.  the random seed to use.
+The RNG will be restored to its original state afterward.</p>
+</td></tr>
+<tr valign="top"><td><code>times</code></td>
+<td>
+<p>the times at which observations are made.
+<code>times</code> must indicate the column of observation times by name or index.
+The time vector must be numeric and non-decreasing.
+Internally, <code>data</code> will be internally coerced to an array with storage-mode <code>double</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>t0</code></td>
+<td>
+<p>The zero-time, i.e., the time of the initial state.
+This must be no later than the time of the first observation, i.e., <code>t0 &lt;= times[1]</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>a named numeric vector or a matrix with rownames
+containing the parameters at which the simulations are to be performed.</p>
+</td></tr>
+<tr valign="top"><td><code>rinit</code></td>
+<td>
+<p>simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>rinit=NULL</code> sets the initial-state simulator to its default.
+For more information, see <a href="rinit_spec.html">?rinit_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>rprocess</code></td>
+<td>
+<p>simulator of the latent state process, specified using one of the <a href="rprocess_spec.html">rprocess plugins</a>.
+Setting <code>rprocess=NULL</code> removes the latent-state simulator.
+For more information, <a href="rprocess_spec.html">see ?rprocess_spec for the documentation on these plugins</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>rmeasure</code></td>
+<td>
+<p>simulator of the measurement model, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>rmeasure=NULL</code> removes the measurement model simulator.
+For more information, see <a href="rmeasure_spec.html">?rmeasure_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>the format in which to return the results.
+</p>
+<p><code>format = "pomps"</code> causes the results to be returned as a single &ldquo;pomp&rdquo; object,
+identical to <code>object</code> except for the latent states and observations,
+which have been replaced by the simulated values.
+</p>
+<p><code>format = "arrays"</code> causes the results to be returned as a list of two arrays.
+The &ldquo;states&rdquo; element will contain the simulated state trajectories in a rank-3 array with dimensions
+<code>nvar</code> x <code>(ncol(params)*nsim)</code> x <code>ntimes</code>.
+Here, <code>nvar</code> is the number of state variables and <code>ntimes</code> the length of the argument <code>times</code>.
+The &ldquo;obs&rdquo; element will contain the simulated data, returned as a rank-3 array with dimensions
+<code>nobs</code> x <code>(ncol(params)*nsim)</code> x <code>ntimes</code>.
+Here, <code>nobs</code> is the number of observables.
+</p>
+<p><code>format = "data.frame"</code> causes the results to be returned as a single data frame containing
+the time, states, and observations.
+An ordered factor variable, &lsquo;.id&rsquo;, distinguishes one simulation from another.</p>
+</td></tr>
+<tr valign="top"><td><code>include.data</code></td>
+<td>
+<p>if <code>TRUE</code>, the original data are included (with <code>.id = "rep"</code>).
+This option is ignored unless <code>format = "data.frame"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments supply new or modify existing model characteristics or components.
+See <code><a href="pomp.html">pomp</a></code> for a full list of recognized arguments.
+</p>
+<p>When named arguments not recognized by <code><a href="pomp.html">pomp</a></code> are provided, these are made available to all basic components via the so-called <dfn>userdata</dfn> facility.
+This allows the user to pass information to the basic components outside of the usual routes of covariates (<code>covar</code>) and model parameters (<code>params</code>).
+See <a href="userdata.html">?userdata</a> for information on how to use this facility.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical; if <code>TRUE</code>, diagnostic messages will be printed to the console.</p>
+</td></tr>
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>optional; if present, it should be the output of one of <span class="pkg">pomp</span>'s methods</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A single &ldquo;pomp&rdquo; object,
+a &ldquo;pompList&rdquo; object,
+a named list of two arrays,
+or a data frame, according to the <code>format</code> option.
+</p>
+<p>If <code>params</code> is a matrix, each column is treated as a distinct parameter set.
+In this case, if <code>nsim=1</code>,
+then <code>simulate</code> will return one simulation for each parameter set.
+If <code>nsim&gt;1</code>,
+then <code>simulate</code> will yield <code>nsim</code> simulations for each parameter set.
+These will be ordered such that
+the first <code>ncol(params)</code> simulations represent one simulation
+from each of the distinct parameter sets,
+the second <code>ncol(params)</code> simulations represent a second simulation from each,
+and so on.
+</p>
+<p>Adding column names to <code>params</code> can be helpful.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other elementary POMP methods: 
+<code><a href="pfilter.html">pfilter</a>()</code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="probe.html">probe</a>()</code>,
+<code><a href="spect.html">spect</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

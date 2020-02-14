@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The latent state process density</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dprocess_spec {pomp}"><tr><td>dprocess_spec {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The latent state process density</h2>
+
+<h3>Description</h3>
+
+<p>Specification of dprocess.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Suppose you have a procedure that allows you to compute the probability density
+of an arbitrary transition from state <i>x1</i> at time <i>t1</i>
+to state <i>x2</i> at time <i>t2</i>
+under the assumption that the state remains unchanged
+between <i>t1</i> and <i>t2</i>.
+Then you can furnish
+</p>
+<pre>
+    dprocess = f
+</pre>
+<p>to <code>pomp</code>, where <code>f</code> is a C snippet or <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function that implements your procedure.
+Specifically, <code>f</code> should compute the <em>log</em> probability density.
+</p>
+<p>Using a C snippet is much preferred, due to its much greater computational efficiency.
+See <code><a href="csnippet.html">Csnippet</a></code> for general rules on writing C snippets.
+The goal of a <dfn>dprocess</dfn> C snippet is to fill the variable <code>loglik</code> with the log probability density.
+In the context of such a C snippet, the parameters, and covariates will be defined, as will the times <code>t_1</code> and <code>t_2</code>.
+The state variables at time <code>t_1</code> will have their usual name (see <code>statenames</code>) with a &ldquo;<code>_1</code>&rdquo; appended.
+Likewise, the state variables at time <code>t_2</code> will have a &ldquo;<code>_2</code>&rdquo; appended.
+</p>
+<p>If <code>f</code> is given as an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, it should take as arguments any or all of the state variables, parameter, covariates, and time.
+The state-variable and time arguments will have suffices &ldquo;<code>_1</code>&rdquo; and &ldquo;<code>_2</code>&rdquo; appended.
+Thus for example, if <code>var</code> is a state variable, when <code>f</code> is called, <code>var_1</code> will value of state variable <code>var</code> at time <code>t_1</code>, <code>var_2</code> will have the value of <code>var</code> at time <code>t_2</code>.
+<code>f</code> should return the <em>log</em> likelihood of a transition from <code>x1</code> at time <code>t1</code> to <code>x2</code> at time <code>t2</code>,
+assuming that no intervening transitions have occurred.
+</p>
+<p>To see examples, consult the demos and the tutorials on the <a href="https://kingaa.github.io/pomp/">package website</a>.
+</p>
+
+
+<h3><strong>Note</strong></h3>
+
+<p>It is not typically necessary (or even feasible) to define <code>dprocess</code>.
+In fact, no current <span class="pkg">pomp</span> inference algorithm makes use of <code>dprocess</code>.
+This functionality is provided only to support future algorithm development.
+</p>
+
+
+<h3>Default behavior</h3>
+
+<p>By default, <code>dprocess</code> returns missing values (<code>NA</code>).
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other information on model implementation: 
+<code><a href="csnippet.html">Csnippet</a></code>,
+<code><a href="accumulators.html">accumulators</a></code>,
+<code><a href="covariate_table.html">covariate_table</a>()</code>,
+<code><a href="distributions.html">distributions</a></code>,
+<code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
+<code><a href="parameter_trans.html">parameter_trans</a>()</code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="prior_spec.html">prior_spec</a></code>,
+<code><a href="rinit_spec.html">rinit_spec</a></code>,
+<code><a href="rmeasure_spec.html">rmeasure_spec</a></code>,
+<code><a href="rprocess_spec.html">rprocess_spec</a></code>,
+<code><a href="skeleton_spec.html">skeleton_spec</a></code>,
+<code><a href="transformations.html">transformations</a></code>,
+<code><a href="userdata.html">userdata</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

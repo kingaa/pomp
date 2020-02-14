@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Constructor of the basic pomp object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pomp {pomp}"><tr><td>pomp {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Constructor of the basic pomp object</h2>
+
+<h3>Description</h3>
+
+<p>This function constructs a &lsquo;pomp&rsquo; object, encoding a partially-observed Markov process (<acronym><span class="acronym">POMP</span></acronym>) model together with a uni- or multi-variate time series.
+As such, it is central to all the package's functionality.
+One implements the <acronym><span class="acronym">POMP</span></acronym> model by specifying some or all of its <em>basic components</em>.
+These comprise:
+</p>
+
+<dl>
+<dt>rinit,</dt><dd><p>which samples from the distribution of the state process at the zero-time;</p>
+</dd>
+<dt>rprocess,</dt><dd><p>the simulator of the unobserved Markov state process;</p>
+</dd>
+<dt>dprocess,</dt><dd><p>the evaluator of the probability density function for transitions of the unobserved Markov state process;</p>
+</dd>
+<dt>rmeasure,</dt><dd><p>the simulator of the observed process, conditional on the unobserved state;</p>
+</dd>
+<dt>dmeasure,</dt><dd><p>the evaluator of the measurement model probability density function;</p>
+</dd>
+<dt>rprior,</dt><dd><p>which samples from a prior probability distribution on the parameters;</p>
+</dd>
+<dt>dprior,</dt><dd><p>which evaluates the prior probability density function;</p>
+</dd>
+<dt>skeleton,</dt><dd><p>which computes the deterministic skeleton of the unobserved state process;</p>
+</dd>
+<dt>partrans,</dt><dd><p>which performs parameter transformations.</p>
+</dd>
+</dl>
+
+<p>The basic structure and its rationale are described in the <em>Journal of Statistical Software</em> paper, an updated version of which is to be found on the <a href="https://kingaa.github.io/pomp/">package website</a>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pomp(
+  data,
+  times,
+  t0,
+  ...,
+  rinit,
+  rprocess,
+  dprocess,
+  rmeasure,
+  dmeasure,
+  skeleton,
+  rprior,
+  dprior,
+  partrans,
+  covar,
+  params,
+  accumvars,
+  obsnames,
+  statenames,
+  paramnames,
+  covarnames,
+  PACKAGE,
+  globals,
+  cdir = getOption("pomp_cdir", NULL),
+  cfile,
+  shlib.args,
+  compile = TRUE,
+  verbose = getOption("verbose", FALSE)
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>either a data frame holding the time series data,
+or an object of class &lsquo;pomp&rsquo;,
+i.e., the output of another <span class="pkg">pomp</span> calculation.</p>
+</td></tr>
+<tr valign="top"><td><code>times</code></td>
+<td>
+<p>the times at which observations are made.
+<code>times</code> must indicate the column of observation times by name or index.
+The time vector must be numeric and non-decreasing.
+Internally, <code>data</code> will be internally coerced to an array with storage-mode <code>double</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>t0</code></td>
+<td>
+<p>The zero-time, i.e., the time of the initial state.
+This must be no later than the time of the first observation, i.e., <code>t0 &lt;= times[1]</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments supply new or modify existing model characteristics or components.
+See <code><a href="pomp.html">pomp</a></code> for a full list of recognized arguments.
+</p>
+<p>When named arguments not recognized by <code><a href="pomp.html">pomp</a></code> are provided, these are made available to all basic components via the so-called <dfn>userdata</dfn> facility.
+This allows the user to pass information to the basic components outside of the usual routes of covariates (<code>covar</code>) and model parameters (<code>params</code>).
+See <a href="userdata.html">?userdata</a> for information on how to use this facility.</p>
+</td></tr>
+<tr valign="top"><td><code>rinit</code></td>
+<td>
+<p>simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>rinit=NULL</code> sets the initial-state simulator to its default.
+For more information, see <a href="rinit_spec.html">?rinit_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>rprocess</code></td>
+<td>
+<p>simulator of the latent state process, specified using one of the <a href="rprocess_spec.html">rprocess plugins</a>.
+Setting <code>rprocess=NULL</code> removes the latent-state simulator.
+For more information, <a href="rprocess_spec.html">see ?rprocess_spec for the documentation on these plugins</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>dprocess</code></td>
+<td>
+<p>optional;
+specification of the probability density evaluation function of the unobserved state process.
+Setting <code>dprocess=NULL</code> removes the latent-state density evaluator.
+For more information, see <a href="dprocess_spec.html">?dprocess_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>rmeasure</code></td>
+<td>
+<p>simulator of the measurement model, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>rmeasure=NULL</code> removes the measurement model simulator.
+For more information, see <a href="rmeasure_spec.html">?rmeasure_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>dmeasure</code></td>
+<td>
+<p>evaluator of the measurement model density, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>dmeasure=NULL</code> removes the measurement density evaluator.
+For more information, see <a href="dmeasure_spec.html">?dmeasure_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>skeleton</code></td>
+<td>
+<p>optional; the deterministic skeleton of the unobserved state process.
+Depending on whether the model operates in continuous or discrete time, this is either a vectorfield or a map.
+Accordingly, this is supplied using either the <code><a href="skeleton_spec.html">vectorfield</a></code> or <code><a href="skeleton_spec.html">map</a></code> fnctions.
+For more information, see <a href="skeleton_spec.html">?skeleton_spec</a>.
+Setting <code>skeleton=NULL</code> removes the deterministic skeleton.</p>
+</td></tr>
+<tr valign="top"><td><code>rprior</code></td>
+<td>
+<p>optional; prior distribution sampler, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information, see <a href="prior_spec.html">?prior_spec</a>.
+Setting <code>rprior=NULL</code> removes the prior distribution sampler.</p>
+</td></tr>
+<tr valign="top"><td><code>dprior</code></td>
+<td>
+<p>optional; prior distribution density evaluator, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information, see <a href="prior_spec.html">?prior_spec</a>.
+Setting <code>dprior=NULL</code> resets the prior distribution to its default, which is a flat improper prior.</p>
+</td></tr>
+<tr valign="top"><td><code>partrans</code></td>
+<td>
+<p>optional parameter transformations, constructed using <code><a href="parameter_trans.html">parameter_trans</a></code>.
+</p>
+<p>Many algorithms for parameter estimation search an unconstrained space of parameters.
+When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+One should supply the <code>partrans</code> argument via a call to <code><a href="parameter_trans.html">parameter_trans</a></code>.
+For more information, see <a href="parameter_trans.html">?parameter_trans</a>.
+Setting <code>partrans=NULL</code> removes the parameter transformations, i.e., sets them to the identity transformation.</p>
+</td></tr>
+<tr valign="top"><td><code>covar</code></td>
+<td>
+<p>optional covariate table, constructed using <code><a href="covariate_table.html">covariate_table</a></code>.
+</p>
+<p>If a covariate table is supplied, then the value of each of the covariates is interpolated as needed.
+The resulting interpolated values are made available to the appropriate basic components.
+See the documentation for <code><a href="covariate_table.html">covariate_table</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>optional; named numeric vector of parameters.
+This will be coerced internally to storage mode <code>double</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>accumvars</code></td>
+<td>
+<p>optional character vector;
+contains the names of accumulator variables.
+See <a href="accumulators.html">?accumulators</a> for a definition and discussion of accumulator variables.</p>
+</td></tr>
+<tr valign="top"><td><code>obsnames</code></td>
+<td>
+<p>optional character vector;
+names of the observables.
+It is not usually necessary to specify <code>obsnames</code> since, by default,
+these are read from the names of the data variables.</p>
+</td></tr>
+<tr valign="top"><td><code>statenames</code></td>
+<td>
+<p>optional character vector;
+names of the latent state variables.
+It is typically only necessary to supply <code>statenames</code> when C snippets are in use.</p>
+</td></tr>
+<tr valign="top"><td><code>paramnames</code></td>
+<td>
+<p>optional character vector;
+names of model parameters.
+It is typically only necessary to supply <code>paramnames</code> when C snippets are in use.</p>
+</td></tr>
+<tr valign="top"><td><code>covarnames</code></td>
+<td>
+<p>optional character vector;
+names of the covariates.
+It is not usually necessary to specify <code>covarnames</code> since, by default,
+these are read from the names of the covariates.</p>
+</td></tr>
+<tr valign="top"><td><code>PACKAGE</code></td>
+<td>
+<p>optional character;
+the name (without extension) of the external, dynamically loaded library in which any native routines are to be found.
+This is only useful if one or more of the model components has been specified using a precompiled dynamically loaded library;
+it is not used for any component specified using C snippets.
+<code>PACKAGE</code> can name at most one library.</p>
+</td></tr>
+<tr valign="top"><td><code>globals</code></td>
+<td>
+<p>optional character;
+arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
+If no C snippets are used, <code>globals</code> has no effect.</p>
+</td></tr>
+<tr valign="top"><td><code>cdir</code></td>
+<td>
+<p>optional character variable.
+<code>cdir</code> specifies the name of the directory within which C snippet code will be compiled.
+By default, this is in a temporary directory specific to the <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> session.
+One can also set this directory using the <code>pomp_cdir</code> option.</p>
+</td></tr>
+<tr valign="top"><td><code>cfile</code></td>
+<td>
+<p>optional character variable.
+<code>cfile</code> gives the name of the file (in directory <code>cdir</code>) into which C snippet codes will be written.
+By default, a random filename is used.
+If the chosen filename would result in over-writing an existing file, an error is generated.</p>
+</td></tr>
+<tr valign="top"><td><code>shlib.args</code></td>
+<td>
+<p>optional character variables.
+Command-line arguments to the <code>R CMD SHLIB</code> call that compiles the C snippets.</p>
+</td></tr>
+<tr valign="top"><td><code>compile</code></td>
+<td>
+<p>logical;
+if <code>FALSE</code>, compilation of the C snippets will be postponed until they are needed.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical; if <code>TRUE</code>, diagnostic messages will be printed to the console.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Each basic component is supplied via an argument of the same name.
+These can be given in the call to <code>pomp</code>, or to many of the package's other functions.
+In any case, the effect is the same: to add, remove, or modify the basic component.
+</p>
+<p>Each basic component can be furnished using C snippets, <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> functions, or pre-compiled native routine available in user-provided dynamically loaded libraries.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The <code>pomp</code> constructor function returns an object, call it <code>P</code>, of class &lsquo;pomp&rsquo;.
+<code>P</code> contains, in addition to the data, any elements of the model that have been specified as arguments to the <code>pomp</code> constructor function.
+One can add or modify elements of <code>P</code> by means of further calls to <code>pomp</code>, using <code>P</code> as the first argument in such calls.
+One can pass <code>P</code> to most of the <span class="pkg">pomp</span> package methods via their <code>data</code> argument.
+</p>
+
+
+<h3>Note</h3>
+
+<p><strong>It is not typically necessary (or indeed often feasible) to define all of the basic components for any given purpose.
+Each <span class="pkg">pomp</span> algorithm makes use of only a subset of these components.
+Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.
+FIXME </strong>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King
+</p>
+
+
+<h3>References</h3>
+
+<p>A. A. King, D. Nguyen, and E. L. Ionides. Statistical Inference for Partially Observed Markov Processes via the Package <span class="pkg">pomp</span>. <em>Journal of Statistical Software</em> <b>69</b>(12), 1&ndash;43, 2016.  An updated version of this paper is available on the <a href="https://kingaa.github.io/pomp/docs.html">package website</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

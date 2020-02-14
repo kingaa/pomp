@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a matrix of parameters</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for parmat {pomp}"><tr><td>parmat {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a matrix of parameters</h2>
+
+<h3>Description</h3>
+
+<p><code>parmat</code> is a utility that makes a vector of parameters suitable for
+use in <span class="pkg">pomp</span> functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+parmat(params, nrep = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>named numeric vector or matrix of parameters.</p>
+</td></tr>
+<tr valign="top"><td><code>nrep</code></td>
+<td>
+<p>number of replicates (columns) desired.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>parmat</code> returns a matrix consisting of <code>nrep</code> copies of
+<code>params</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## generate a bifurcation diagram for the Ricker map
+p &lt;- parmat(coef(ricker()),nrep=500)
+p["r",] &lt;- exp(seq(from=1.5,to=4,length=500))
+x &lt;- trajectory(ricker(),times=seq(from=1000,to=2000,by=1),params=p)
+matplot(p["r",],x["N",,],pch='.',col='black',xlab="log(r)",ylab="N",log='x')
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Two-dimensional random-walk process</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rw2 {pomp}"><tr><td>rw2 {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Two-dimensional random-walk process</h2>
+
+<h3>Description</h3>
+
+<p><code>rw2</code> constructs a &lsquo;pomp&rsquo; object encoding a 2-D Gaussian random walk.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rw2(x1_0 = 0, x2_0 = 0, s1 = 1, s2 = 3, tau = 1, times = 1:100, t0 = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x1_0, x2_0</code></td>
+<td>
+<p>initial conditions (i.e., latent state variable values at the zero time <code>t0</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>s1, s2</code></td>
+<td>
+<p>random walk intensities</p>
+</td></tr>
+<tr valign="top"><td><code>tau</code></td>
+<td>
+<p>observation error s.d.</p>
+</td></tr>
+<tr valign="top"><td><code>times</code></td>
+<td>
+<p>observation times</p>
+</td></tr>
+<tr valign="top"><td><code>t0</code></td>
+<td>
+<p>zero time</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The random-walk process is fully but noisily observed.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A &lsquo;pomp&rsquo; object containing simulated data.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other pomp examples: 
+<code><a href="blowflies.html">blowflies</a></code>,
+<code><a href="bsflu.html">bsflu</a></code>,
+<code><a href="dacca.html">dacca</a>()</code>,
+<code><a href="ebola.html">ebola</a></code>,
+<code><a href="gompertz.html">gompertz</a>()</code>,
+<code><a href="measles.html">measles</a></code>,
+<code><a href="ou2.html">ou2</a>()</code>,
+<code><a href="parus.html">parus</a></code>,
+<code><a href="pomp_examp.html">pomp_examples</a></code>,
+<code><a href="ricker.html">ricker</a>()</code>,
+<code><a href="sir.html">sir_models</a></code>,
+<code><a href="verhulst.html">verhulst</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(ggplot2)
+
+rw2() %&gt;% plot()
+
+rw2(s1=1,s2=1,tau=0.1) %&gt;%
+  simulate(nsim=10,format="d") %&gt;%
+  ggplot(aes(x=y1,y=y2,group=.id,color=.id))+
+  geom_path()+
+  guides(color=FALSE)+
+  theme_bw()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

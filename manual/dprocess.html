@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: dprocess</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dprocess {pomp}"><tr><td>dprocess {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>dprocess</h2>
+
+<h3>Description</h3>
+
+<p>Evaluates the probability density of a sequence of consecutive state transitions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'pomp'
+dprocess(object, x, times, params, ..., log = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object of class &lsquo;pomp&rsquo;, or of a class that extends &lsquo;pomp&rsquo;.
+This will typically be the output of <code>pomp</code>, <code>simulate</code>, or one of the <span class="pkg">pomp</span> inference algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an array containing states of the unobserved process.
+The dimensions of <code>x</code> are <code>nvars</code> x <code>nrep</code> x <code>ntimes</code>,
+where <code>nvars</code> is the number of state variables,
+<code>nrep</code> is the number of replicates,
+and <code>ntimes</code> is the length of <code>times</code>.
+One can also pass <code>x</code> as a named numeric vector, which is equivalent to the <code>nrep=1</code>, <code>ntimes=1</code> case.</p>
+</td></tr>
+<tr valign="top"><td><code>times</code></td>
+<td>
+<p>a numeric vector (length <code>ntimes</code>) containing times.
+These must be in non-decreasing order.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>a <code>npar</code> x <code>nrep</code> matrix of parameters.
+Each column is treated as an independent parameter set, in correspondence with the corresponding column of <code>x</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments are ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+<p>if TRUE, log probabilities are returned.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>dprocess</code> returns a matrix of dimensions <code>nrep</code> x <code>ntimes-1</code>.
+If <code>d</code> is the returned matrix, <code>d[j,k]</code> is the likelihood (or the log likelihood if <code>log=TRUE</code>) of the transition from state <code>x[,j,k-1]</code> at time <code>times[k-1]</code> to state <code>x[,j,k]</code> at time <code>times[k]</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Specification of the process-model density evaluator: <code><a href="dprocess_spec.html">dprocess_spec</a></code>
+</p>
+<p>Other pomp workhorses: 
+<code><a href="dmeasure.html">dmeasure</a>()</code>,
+<code><a href="dprior.html">dprior</a>()</code>,
+<code><a href="flow.html">flow</a>()</code>,
+<code><a href="partrans.html">partrans</a>()</code>,
+<code><a href="rinit.html">rinit</a>()</code>,
+<code><a href="rmeasure.html">rmeasure</a>()</code>,
+<code><a href="rprior.html">rprior</a>()</code>,
+<code><a href="rprocess.html">rprocess</a>()</code>,
+<code><a href="skeleton.html">skeleton</a>()</code>,
+<code><a href="workhorses.html">workhorses</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

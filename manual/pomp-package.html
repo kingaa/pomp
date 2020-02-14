@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Inference for partially observed Markov processes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pomp-package {pomp}"><tr><td>pomp-package {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Inference for partially observed Markov processes</h2>
+
+<h3>Description</h3>
+
+<p>The <span class="pkg">pomp</span> package provides facilities for inference on time series
+data using partially-observed Markov process (<acronym><span class="acronym">POMP</span></acronym>) models.
+These models are also known as state-space models, hidden Markov models, or
+nonlinear stochastic dynamical systems.  One can use <span class="pkg">pomp</span> to fit
+nonlinear, non-Gaussian dynamic models to time-series data.  The package is
+both a set of tools for data analysis and a platform upon which statistical
+inference methods for <acronym><span class="acronym">POMP</span></acronym> models can be implemented.
+</p>
+
+
+<h3>Data analysis using <span class="pkg">pomp</span></h3>
+
+<p><span class="pkg">pomp</span> provides algorithms for
+</p>
+
+<ol>
+<li><p> simulation of stochastic
+dynamical systems; see <code><a href="simulate.html">simulate</a></code>
+</p>
+</li>
+<li>
+<p>particle filtering (AKA sequential Monte Carlo or sequential importance
+sampling); see <code><a href="pfilter.html">pfilter</a></code>
+</p>
+</li>
+<li><p> the iterated filtering methods
+of Ionides et al. (2006, 2011, 2015); see <code><a href="mif2.html">mif2</a></code>
+</p>
+</li>
+<li><p> the
+nonlinear forecasting algorithm of Kendall et al. (2005); see
+<code><a href="nlf.html">nlf</a></code>
+</p>
+</li>
+<li><p> the particle MCMC approach of Andrieu et al. (2010); see <code><a href="pmcmc.html">pmcmc</a></code>
+</p>
+</li>
+<li><p> the probe-matching method of Kendall et al. (1999, 2005); see <code><a href="probe_match.html">probe.match</a></code>
+</p>
+</li>
+<li><p> a spectral probe-matching method (Reuman et al. 2006, 2008); see
+<code><a href="spect_match.html">spect.match</a></code>
+</p>
+</li>
+<li><p> synthetic likelihood a la Wood (2010); see <code><a href="probe.html">probe</a></code>
+</p>
+</li>
+<li><p> approximate Bayesian computation (Toni et al. 2009); see <code><a href="abc.html">abc</a></code>
+</p>
+</li>
+<li><p> the approximate Bayesian sequential
+Monte Carlo scheme of Liu &amp; West (2001); see <code><a href="bsmc2.html">bsmc2</a></code>
+</p>
+</li>
+<li><p> ensemble and ensemble adjusted Kalman filters; see <code><a href="kalman.html">kalman</a></code>
+</p>
+</li>
+<li><p> simple trajectory matching; see <code><a href="traj_match.html">traj.match</a></code>.
+</p>
+</li></ol>
+
+<p>The package
+also provides various tools for plotting and extracting information on
+models and data.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King
+</p>
+
+
+<h3>References</h3>
+
+<p>A. A. King, D. Nguyen, and E. L. Ionides. Statistical Inference for Partially Observed Markov Processes via the Package <span class="pkg">pomp</span>. <em>Journal of Statistical Software</em> <b>69</b>(12), 1&ndash;43, 2016.  An updated version of this paper is available on the <a href="https://kingaa.github.io/pomp/docs.html">package website</a>.
+</p>
+<p>See the package website, <a href="https://kingaa.github.io/pomp/">https://kingaa.github.io/pomp/</a>, for more
+references.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other information on model implementation: 
+<code><a href="csnippet.html">Csnippet</a></code>,
+<code><a href="accumulators.html">accumulators</a></code>,
+<code><a href="covariate_table.html">covariate_table</a>()</code>,
+<code><a href="distributions.html">distributions</a></code>,
+<code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
+<code><a href="dprocess_spec.html">dprocess_spec</a></code>,
+<code><a href="parameter_trans.html">parameter_trans</a>()</code>,
+<code><a href="prior_spec.html">prior_spec</a></code>,
+<code><a href="rinit_spec.html">rinit_spec</a></code>,
+<code><a href="rmeasure_spec.html">rmeasure_spec</a></code>,
+<code><a href="rprocess_spec.html">rprocess_spec</a></code>,
+<code><a href="skeleton_spec.html">skeleton_spec</a></code>,
+<code><a href="transformations.html">transformations</a></code>,
+<code><a href="userdata.html">userdata</a></code>
+</p>
+<p>Other pomp parameter estimation methods: 
+<code><a href="abc.html">abc</a>()</code>,
+<code><a href="bsmc2.html">bsmc2</a>()</code>,
+<code><a href="kalman.html">kalman</a></code>,
+<code><a href="mif2.html">mif2</a>()</code>,
+<code><a href="nlf.html">nlf</a></code>,
+<code><a href="pmcmc.html">pmcmc</a>()</code>,
+<code><a href="probe_match.html">probe.match</a></code>,
+<code><a href="spect_match.html">spect.match</a></code>
+</p>
+<p>Other elementary POMP methods: 
+<code><a href="pfilter.html">pfilter</a>()</code>,
+<code><a href="probe.html">probe</a>()</code>,
+<code><a href="simulate.html">simulate</a>()</code>,
+<code><a href="spect.html">spect</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

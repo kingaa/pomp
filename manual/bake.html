@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bake, stew, and freeze</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bake {pomp}"><tr><td>bake {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bake, stew, and freeze</h2>
+
+<h3>Description</h3>
+
+<p>Tools for reproducible computations.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bake(file, expr, seed = NULL, kind = NULL, normal.kind = NULL)
+
+stew(file, expr, seed = NULL, kind = NULL, normal.kind = NULL)
+
+freeze(expr, seed = NULL, kind = NULL, normal.kind = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>Name of the binary data file in which the result will be stored or retrieved, as appropriate.
+For <code>bake</code>, this will contain a single object and hence be an RDS file (extension &lsquo;rds&rsquo;);
+for <code>stew</code>, this will contain one or more named objects and hence be an RDA file (extension &lsquo;rda&rsquo;).</p>
+</td></tr>
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>Expression to be evaluated.</p>
+</td></tr>
+<tr valign="top"><td><code>seed, kind, normal.kind</code></td>
+<td>
+<p>optional.
+To set the state and of the RNG.
+See <code><a href="../../base/html/Random.html">set.seed</a></code>.
+The default, <code>seed = NULL</code>, will not change the RNG state.
+<code>seed</code> should be a single integer.
+See <code><a href="../../base/html/Random.html">set.seed</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.
+The <code>bake</code> and <code>stew</code> functions perform analogously:
+an computation is performed and stored in a named file.
+If the function is called again and the file is present, the computation is not executed.
+Instead, the results are loaded from the file in which they were previously stored.
+Moreover, via their optional <code>seed</code> argument, <code>bake</code> and <code>stew</code> can control the pseudorandom-number generator (RNG) for greater reproducibility.
+After the computation is finished, these functions restore the pre-existing RNG state to avoid side effects.
+</p>
+<p>The <code>freeze</code> function doesn't save results, but does set the RNG state to the specified value and restore it after the computation is complete.
+</p>
+<p>Both <code>bake</code> and <code>stew</code> first test to see whether <code>file</code> exists.
+If it does, <code>bake</code> reads it using <code><a href="../../base/html/readRDS.html">readRDS</a></code> and returns the resulting object.
+By contrast, <code>stew</code> loads the file using <code><a href="load.html">load</a></code> and copies the objects it contains into the user's workspace (or the environment of the call to <code>stew</code>).
+</p>
+<p>If <code>file</code> does not exist, then both <code>bake</code> and <code>stew</code> evaluate the expression <code>expr</code>; they differ in the results that they save.
+<code>bake</code> saves the value of the evaluated expression to <code>file</code> as a single object.
+The name of that object is not saved.
+By contrast, <code>stew</code> creates a local environment within which <code>expr</code> is evaluated; all objects in that environment are saved (by name) in <code>file</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>bake</code> returns the value of the evaluated expression <code>expr</code>.
+Other objects created in the evaluation of <code>expr</code> are discarded along with the temporary, local environment created for the evaluation.
+</p>
+<p>The latter behavior differs from that of <code>stew</code>, which returns the names of the objects created during the evaluation of <code>expr</code>.
+After <code>stew</code> completes, these objects exist in the parent environment (that from which <code>stew</code> was called).
+</p>
+<p><code>freeze</code> returns the value of evaluated expression <code>expr</code>.
+However, <code>freeze</code> evaluates <code>expr</code> within the parent environment, so other objects created in the evaluation of <code>expr</code> will therefore exist after <code>freeze</code> completes.
+</p>
+<p><code>bake</code> and <code>stew</code> return information about the time used in evaluating the expression.
+This is recorded in the <code>system.time</code> attribute of the return value.
+In addition, if <code>seed</code> is specified, information about the seed (and the kind of random-number generator used) are stored as attributes of the return value.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+  bake(file="example1.rds",{
+    x &lt;- runif(1000)
+    mean(x)
+  })
+
+  stew(file="example2.rda",{
+    x &lt;- runif(10)
+    y &lt;- rnorm(n=10,mean=3*x+5,sd=2)
+  })
+
+  plot(x,y)
+
+  freeze(runif(3),seed=5886730)
+  freeze(runif(3),seed=5886730)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

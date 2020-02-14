@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Probe matching</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for probe.match {pomp}"><tr><td>probe.match {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Probe matching</h2>
+
+<h3>Description</h3>
+
+<p>Estimation of parameters by maximum synthetic likelihood
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'data.frame'
+probe_objfun(
+  data,
+  est = character(0),
+  fail.value = NA,
+  probes,
+  nsim,
+  seed = NULL,
+  params,
+  rinit,
+  rprocess,
+  rmeasure,
+  partrans,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'pomp'
+probe_objfun(
+  data,
+  est = character(0),
+  fail.value = NA,
+  probes,
+  nsim,
+  seed = NULL,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'probed_pomp'
+probe_objfun(
+  data,
+  est = character(0),
+  fail.value = NA,
+  probes,
+  nsim,
+  seed = NULL,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'probe_match_objfun'
+probe_objfun(
+  data,
+  est,
+  fail.value,
+  seed = NULL,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>either a data frame holding the time series data,
+or an object of class &lsquo;pomp&rsquo;,
+i.e., the output of another <span class="pkg">pomp</span> calculation.</p>
+</td></tr>
+<tr valign="top"><td><code>est</code></td>
+<td>
+<p>character vector; the names of parameters to be estimated.</p>
+</td></tr>
+<tr valign="top"><td><code>fail.value</code></td>
+<td>
+<p>optional numeric scalar;
+if non-<code>NA</code>, this value is substituted for non-finite values of the objective function.
+It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).</p>
+</td></tr>
+<tr valign="top"><td><code>probes</code></td>
+<td>
+<p>a single probe or a list of one or more probes.
+A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a &lsquo;pomp&rsquo;.
+A vector-valued probe must always return a vector of the same size.
+A number of useful probes are provided with the package:
+see <a href="basic_probes.html">basic probes</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>nsim</code></td>
+<td>
+<p>the number of model simulations to be computed.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>integer.
+When fitting, it is often best to fix the seed of the random-number generator (RNG).
+This is accomplished by setting <code>seed</code> to an integer.
+By default, <code>seed = NULL</code>, which does not alter the RNG state.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>optional; named numeric vector of parameters.
+This will be coerced internally to storage mode <code>double</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>rinit</code></td>
+<td>
+<p>simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>rinit=NULL</code> sets the initial-state simulator to its default.
+For more information, see <a href="rinit_spec.html">?rinit_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>rprocess</code></td>
+<td>
+<p>simulator of the latent state process, specified using one of the <a href="rprocess_spec.html">rprocess plugins</a>.
+Setting <code>rprocess=NULL</code> removes the latent-state simulator.
+For more information, <a href="rprocess_spec.html">see ?rprocess_spec for the documentation on these plugins</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>rmeasure</code></td>
+<td>
+<p>simulator of the measurement model, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>rmeasure=NULL</code> removes the measurement model simulator.
+For more information, see <a href="rmeasure_spec.html">?rmeasure_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>partrans</code></td>
+<td>
+<p>optional parameter transformations, constructed using <code><a href="parameter_trans.html">parameter_trans</a></code>.
+</p>
+<p>Many algorithms for parameter estimation search an unconstrained space of parameters.
+When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+One should supply the <code>partrans</code> argument via a call to <code><a href="parameter_trans.html">parameter_trans</a></code>.
+For more information, see <a href="parameter_trans.html">?parameter_trans</a>.
+Setting <code>partrans=NULL</code> removes the parameter transformations, i.e., sets them to the identity transformation.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments supply new or modify existing model characteristics or components.
+See <code><a href="pomp.html">pomp</a></code> for a full list of recognized arguments.
+</p>
+<p>When named arguments not recognized by <code><a href="pomp.html">pomp</a></code> are provided, these are made available to all basic components via the so-called <dfn>userdata</dfn> facility.
+This allows the user to pass information to the basic components outside of the usual routes of covariates (<code>covar</code>) and model parameters (<code>params</code>).
+See <a href="userdata.html">?userdata</a> for information on how to use this facility.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical; if <code>TRUE</code>, diagnostic messages will be printed to the console.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In probe-matching, one attempts to minimize the discrepancy between simulated and actual data, as measured by a set of summary statistics called <em>probes</em>.
+In <span class="pkg">pomp</span>, this discrepancy is measured using the &ldquo;synthetic likelihood&rdquo; as defined by Wood (2010).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>probe_objfun</code> constructs a stateful objective function for probe matching.
+Specifically, <code>probe_objfun</code> returns an object of class &lsquo;probe_match_objfun&rsquo;, which is a function suitable for use in an <code><a href="../../stats/html/optim.html">optim</a></code>-like optimizer.
+In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in <code>est</code>, in that order.
+When called, it will return the negative synthetic log likelihood for the probes specified.
+It is a stateful function:
+Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
+</p>
+
+
+<h3>Important Note</h3>
+
+<p>Since <span class="pkg">pomp</span> cannot guarantee that the <em>final</em> call an optimizer makes to the function is a call <em>at</em> the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
+Therefore, it is a good idea to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/optim.html">optim</a></code> <code><a href="../../subplex/html/subplex.html">subplex</a></code> <code><a href="../../nloptr/html/nloptr.html">nloptr</a></code>
+</p>
+<p>Other summary statistics methods: 
+<code><a href="abc.html">abc</a>()</code>,
+<code><a href="basic_probes.html">basic_probes</a></code>,
+<code><a href="probe.html">probe</a>()</code>,
+<code><a href="spect.html">spect</a>()</code>
+</p>
+<p>Other pomp parameter estimation methods: 
+<code><a href="abc.html">abc</a>()</code>,
+<code><a href="bsmc2.html">bsmc2</a>()</code>,
+<code><a href="kalman.html">kalman</a></code>,
+<code><a href="mif2.html">mif2</a>()</code>,
+<code><a href="nlf.html">nlf</a></code>,
+<code><a href="pmcmc.html">pmcmc</a>()</code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="spect_match.html">spect.match</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+  library(magrittr)
+
+  gompertz() -&gt; po
+  
+  ## A list of probes:
+  plist &lt;- list(
+    mean=probe.mean("Y",trim=0.1,transform=sqrt),
+    sd=probe.sd("Y",transform=sqrt),
+    probe.marginal("Y",ref=obs(po)),
+    probe.acf("Y",lags=c(1,3,5),type="correlation",transform=sqrt),
+    probe.quantile("Y",prob=c(0.25,0.75),na.rm=TRUE)
+  )
+
+  ## Construct the probe-matching objective function.
+  ## Here, we just want to estimate 'K'.
+  po %&gt;%
+    probe_objfun(probes=plist,nsim=100,seed=5069977,
+      est="K") -&gt; f
+
+  ## Any numerical optimizer can be used to minimize 'f'.
+  library(subplex)
+
+  subplex(fn=f,par=0.4,control=list(reltol=1e-5)) -&gt; out
+
+  ## Call the objective one last time on the optimal parameters:
+  f(out$par)
+
+  ## There are 'plot' and 'summary' methods:
+  f %&gt;% as("probed_pomp") %&gt;% plot()
+  f %&gt;% summary()
+
+  f %&gt;% probe() %&gt;% plot()
+
+  ## One can modify the objective function with another call
+  ## to 'probe_objfun':
+
+  f %&gt;% probe_objfun(est=c("r","K")) -&gt; f1
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

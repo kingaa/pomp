@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: prior specification</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for prior_spec {pomp}"><tr><td>prior_spec {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>prior specification</h2>
+
+<h3>Description</h3>
+
+<p>Specify the prior distribution
+</p>
+
+
+<h3>Details</h3>
+
+<p>A prior distribution on parameters is specified by means of the <code>rprior</code> and/or <code>dprior</code> arguments to <code>pomp</code>.
+As with the other basic model components, it is preferable to specify these using C snippets.
+In writing a C snippet for the prior sampler (<code>rprior</code>), keep in mind that:
+</p>
+
+<ol>
+<li><p> Within the context in which the snippet will be evaluated, only the parameters will be defined.
+</p>
+</li>
+<li><p> The goal of such a snippet is the replacement of parameters with values drawn from the prior distribution.
+</p>
+</li>
+<li><p> Hyperparameters can be included in the ordinary parameter list.
+Obviously, hyperparameters should not be replaced with random draws.
+</p>
+</li></ol>
+
+<p>In writing a C snippet for the prior density function (<code>dprior</code>), observe that:
+</p>
+
+<ol>
+<li><p> Within the context in which the snippet will be evaluated, only the parameters and <code>give_log</code> will be defined.
+</p>
+</li>
+<li><p> The goal of such a snippet is computation of the prior probability density, or the log of same, at a given point in parameter space.
+This scalar value should be returned in the variable <code>lik</code>.
+When <code>give_log == 1</code>, <code>lik</code> should contain the log of the prior probability density.
+</p>
+</li>
+<li><p> Hyperparameters can be included in the ordinary parameter list.
+</p>
+</li></ol>
+
+<p>Alternatively, one can furnish <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> functions for one or both of these arguments.
+In this case, <code>rprior</code> must be a function of prototype </p>
+<pre>
+  f(params, \dots)</pre>
+<p>that makes a draw from the prior distribution given <code>params</code> and returns a named vector of the same length and with the same set of names, as <code>params</code>.
+The <code>dprior</code> function must be of prototype </p>
+<pre>
+  f(params, log = FALSE, \dots).</pre>
+<p>Its role is to evaluate the prior probability density (or log density if <code>log == TRUE</code>) and return that single scalar value.
+</p>
+
+
+<h3>Default behavior</h3>
+
+<p>By default, the prior is assumed flat and improper.
+In particular, <code>dprior</code> returns <code>1</code> (<code>0</code> if <code>log = TRUE</code>) for every parameter set.
+Since it is impossible to simulate from a flat improper prior, <code>rprocess</code> returns missing values (<code>NA</code>s).
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other information on model implementation: 
+<code><a href="csnippet.html">Csnippet</a></code>,
+<code><a href="accumulators.html">accumulators</a></code>,
+<code><a href="covariate_table.html">covariate_table</a>()</code>,
+<code><a href="distributions.html">distributions</a></code>,
+<code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
+<code><a href="dprocess_spec.html">dprocess_spec</a></code>,
+<code><a href="parameter_trans.html">parameter_trans</a>()</code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="rinit_spec.html">rinit_spec</a></code>,
+<code><a href="rmeasure_spec.html">rmeasure_spec</a></code>,
+<code><a href="rprocess_spec.html">rprocess_spec</a></code>,
+<code><a href="skeleton_spec.html">skeleton_spec</a></code>,
+<code><a href="transformations.html">transformations</a></code>,
+<code><a href="userdata.html">userdata</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

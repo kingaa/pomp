@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Influenza outbreak in a boarding school</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bsflu {pomp}"><tr><td>bsflu {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Influenza outbreak in a boarding school</h2>
+
+<h3>Description</h3>
+
+<p>An outbreak of influenza in an all-boys boarding school.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Data are recorded from a 1978 flu outbreak in a closed population.
+The variable &lsquo;B&rsquo; refers to boys confined to bed on the corresponding day and &lsquo;C&rsquo; to boys in convalescence,
+i.e., not yet allowed back to class.
+In total, 763 boys were at risk of infection and, over the course of the outbreak, 512 boys spent between 3 and 7 days away from class (either in bed or convalescent).
+The index case was a boy who arrived at school from holiday six days before the next case.
+</p>
+
+
+<h3>References</h3>
+
+<p>Anonymous. Influenza in a boarding school. <em>British Medical Journal</em> <b>1</b>, 587, 1978.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="sir.html">sir_models</a>
+</p>
+<p>Other datasets: 
+<code><a href="blowflies.html">blowflies</a></code>,
+<code><a href="dacca.html">dacca</a>()</code>,
+<code><a href="ebola.html">ebola</a></code>,
+<code><a href="measles.html">measles</a></code>,
+<code><a href="parus.html">parus</a></code>
+</p>
+<p>Other pomp examples: 
+<code><a href="blowflies.html">blowflies</a></code>,
+<code><a href="dacca.html">dacca</a>()</code>,
+<code><a href="ebola.html">ebola</a></code>,
+<code><a href="gompertz.html">gompertz</a>()</code>,
+<code><a href="measles.html">measles</a></code>,
+<code><a href="ou2.html">ou2</a>()</code>,
+<code><a href="parus.html">parus</a></code>,
+<code><a href="pomp_examp.html">pomp_examples</a></code>,
+<code><a href="ricker.html">ricker</a>()</code>,
+<code><a href="rw2.html">rw2</a>()</code>,
+<code><a href="sir.html">sir_models</a></code>,
+<code><a href="verhulst.html">verhulst</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(magrittr)
+library(tidyr)
+library(ggplot2)
+
+bsflu %&gt;%
+  gather(variable,value,-date,-day) %&gt;%
+  ggplot(aes(x=date,y=value,color=variable))+
+  geom_line()+
+  labs(y="number of boys",title="boarding school flu outbreak")+
+  theme_bw()
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

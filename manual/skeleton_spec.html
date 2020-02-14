@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The deterministic skeleton of a model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for skeleton_spec {pomp}"><tr><td>skeleton_spec {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The deterministic skeleton of a model</h2>
+
+<h3>Description</h3>
+
+<p>Specification of <dfn>skeleton</dfn>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vectorfield(f)
+
+map(f, delta.t = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>f</code></td>
+<td>
+<p>procedure for evaluating the deterministic skeleton
+This can be a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a native routine in a dynamically linked library.</p>
+</td></tr>
+<tr valign="top"><td><code>delta.t</code></td>
+<td>
+<p>positive numerical value; the size of the discrete time step corresponding to an application of the map</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The skeleton is a dynamical system that expresses the central tendency of the unobserved Markov state process.
+As such, it is not uniquely defined, but can be both interesting in itself and useful in practice.
+In <span class="pkg">pomp</span>, the skeleton is used by <code><a href="trajectory.html">trajectory</a></code> and <code><a href="traj_match.html">traj.match</a></code>.
+If the state process is a discrete-time stochastic process, then the skeleton is a discrete-time map.
+To specify it, provide </p>
+<pre>
+  skeleton = map(f, delta.t)</pre>
+<p>to <code>pomp</code>, where <code>f</code> implements the map and <code>delta.t</code> is the size of the timestep covered at one map iteration.
+If the state process is a continuous-time stochastic process, then the skeleton is a vectorfield (i.e., a system of ordinary differential equations).
+To specify it, supply </p>
+<pre>
+  skeleton = vectorfield(f)</pre>
+<p>to <code>pomp</code>, where <code>f</code> implements the vectorfield, i.e., the right-hand-size of the differential equations.
+In either case, <code>f</code> can be furnished either as a C snippet (the preferred choice), or an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function.
+In writing a <code>skeleton</code> C snippet, be aware that:
+</p>
+
+<ol>
+<li><p> For each state variable, there is a corresponding component of the deterministic skeleton.
+The goal of such a snippet is to compute all the components.
+</p>
+</li>
+<li><p> When the skeleton is a map, the component corresponding to state variable <code>x</code> is named <code>Dx</code> and is the new value of <code>x</code> after one iteration of the map.
+</p>
+</li>
+<li><p> When the skeleton is a vectorfield, the component corresponding to state variable <code>x</code> is named <code>Dx</code> and is the value of <i>dx/dt</i>.
+</p>
+</li>
+<li><p> As with the other C snippets, all states, parameters and covariates, as well as the current time, <code>t</code>, will be defined in the context within which the snippet is executed.
+</p>
+</li></ol>
+
+<p>The tutorials on the <a href="https://kingaa.github.io/pomp/">package website</a> give some examples.
+If <code>f</code> is an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, its arguments should be taken from among the state variables, parameters, covariates, and time.
+It must also take the argument &lsquo;<code>...</code>&rsquo;.
+As with the other basic components, <code>f</code> may take additional arguments, provided these are passed along with it in the call to <code>pomp</code>.
+The function <code>f</code> must return a numeric vector of the same length as the number of state variables, which contains the value of the map or vectorfield at the required point and time.
+</p>
+
+
+<h3>Default behavior</h3>
+
+<p>The default <code>skeleton</code> is undefined.
+It will yield missing values (<code>NA</code>) for all state variables.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other information on model implementation: 
+<code><a href="csnippet.html">Csnippet</a></code>,
+<code><a href="accumulators.html">accumulators</a></code>,
+<code><a href="covariate_table.html">covariate_table</a>()</code>,
+<code><a href="distributions.html">distributions</a></code>,
+<code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
+<code><a href="dprocess_spec.html">dprocess_spec</a></code>,
+<code><a href="parameter_trans.html">parameter_trans</a>()</code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="prior_spec.html">prior_spec</a></code>,
+<code><a href="rinit_spec.html">rinit_spec</a></code>,
+<code><a href="rmeasure_spec.html">rmeasure_spec</a></code>,
+<code><a href="rprocess_spec.html">rprocess_spec</a></code>,
+<code><a href="transformations.html">transformations</a></code>,
+<code><a href="userdata.html">userdata</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Log likelihood</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for logLik {pomp}"><tr><td>logLik {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Log likelihood</h2>
+
+<h3>Description</h3>
+
+<p>Extract the estimated log likelihood (or related quantity) from a fitted model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+logLik(object, ...)
+
+## S4 method for signature 'listie'
+logLik(object, ...)
+
+## S4 method for signature 'pfilterd_pomp'
+logLik(object)
+
+## S4 method for signature 'probed_pomp'
+logLik(object)
+
+## S4 method for signature 'kalmand_pomp'
+logLik(object)
+
+## S4 method for signature 'pmcmcd_pomp'
+logLik(object)
+
+## S4 method for signature 'bsmcd_pomp'
+logLik(object)
+
+## S4 method for signature 'objfun'
+logLik(object)
+
+## S4 method for signature 'spect_match_objfun'
+logLik(object)
+
+## S4 method for signature 'nlf_objfun'
+logLik(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>fitted model object</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>ignored</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>numerical value of the log likelihood.
+Note that some methods compute not the log likelihood itself but instead a related quantity.
+To keep the code simple, the <code>logLik</code> function is nevertheless used to extract this quantity.
+</p>
+<p>When <code>object</code> is of &lsquo;probed_pomp&rsquo; class (i.e., the result of a <code>probe</code> computation), <code>logLik</code> retrieves the &ldquo;synthetic likelihood&rdquo; (see <code><a href="probe.html">probe</a></code>).
+</p>
+<p>When <code>object</code> is of &lsquo;bsmcd_pomp&rsquo; class (i.e., the result of a <code>bsmc2</code> computation), <code>logLik</code> retrieves the &ldquo;log evidence&rdquo; (see <code><a href="bsmc2.html">bsmc2</a></code>).
+</p>
+<p>When <code>object</code> is an NLF objective function, i.e., the result of a call to <code>nlf_objfun</code>,
+<code>logLik</code> retrieves the &ldquo;quasi log likelihood&rdquo; (see <code><a href="nlf.html">nlf</a></code>).
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hitching C snippets and R functions to pomp_fun objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hitch {pomp}"><tr><td>hitch {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Hitching C snippets and R functions to pomp_fun objects</h2>
+
+<h3>Description</h3>
+
+<p>The algorithms in <span class="pkg">pomp</span> are formulated in terms of elementary functions
+that access the basic model components
+(<code>rprocess</code>, <code>dprocess</code>, <code>rmeasure</code>, <code>dmeasure</code>, etc.).
+For short, we refer to these elementary functions as &ldquo;<a href="workhorses.html">workhorses</a>&rdquo;.
+In implementing a model, the user specifies basic model components
+using functions, procedures in dynamically-linked libraries, or C snippets.
+Each component is then packaged into a &lsquo;pomp_fun&rsquo; objects, which gives a uniform interface.
+The construction of &lsquo;pomp_fun&rsquo; objects is handled by the <code>hitch</code> function,
+which conceptually &ldquo;hitches&rdquo; the workhorses to the user-defined procedures.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+hitch(
+  ...,
+  templates,
+  obsnames,
+  statenames,
+  paramnames,
+  covarnames,
+  PACKAGE,
+  globals,
+  cfile,
+  cdir = getOption("pomp_cdir", NULL),
+  shlib.args,
+  compile = TRUE,
+  verbose = getOption("verbose", FALSE)
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>named arguments representing the user procedures to be hitched.
+These can be functions, character strings naming routines in external, dynamically-linked libraries, C snippets, or <code>NULL</code>.
+The first three are converted by <code>hitch</code> to &lsquo;pomp_fun&rsquo; objects which perform the indicated computations.
+<code>NULL</code> arguments are translated to default &lsquo;pomp_fun&rsquo; objects.
+If any of these procedures are already &lsquo;pomp_fun&rsquo; objects, they are returned unchanged.</p>
+</td></tr>
+<tr valign="top"><td><code>templates</code></td>
+<td>
+<p>named list of templates.
+Each workhorse must have a corresponding template.
+See <code>pomp:::workhorse_templates</code> for a list.</p>
+</td></tr>
+<tr valign="top"><td><code>obsnames, statenames, paramnames, covarnames</code></td>
+<td>
+<p>character vectors
+specifying the names of observable variables, latent state variables, parameters, and covariates, respectively.
+These are only needed if one or more of the horses are furnished as C snippets.</p>
+</td></tr>
+<tr valign="top"><td><code>PACKAGE</code></td>
+<td>
+<p>optional character;
+the name (without extension) of the external, dynamically loaded library in which any native routines are to be found.
+This is only useful if one or more of the model components has been specified using a precompiled dynamically loaded library;
+it is not used for any component specified using C snippets.
+<code>PACKAGE</code> can name at most one library.</p>
+</td></tr>
+<tr valign="top"><td><code>globals</code></td>
+<td>
+<p>optional character;
+arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
+If no C snippets are used, <code>globals</code> has no effect.</p>
+</td></tr>
+<tr valign="top"><td><code>cfile</code></td>
+<td>
+<p>optional character variable.
+<code>cfile</code> gives the name of the file (in directory <code>cdir</code>) into which C snippet codes will be written.
+By default, a random filename is used.
+If the chosen filename would result in over-writing an existing file, an error is generated.</p>
+</td></tr>
+<tr valign="top"><td><code>cdir</code></td>
+<td>
+<p>optional character variable.
+<code>cdir</code> specifies the name of the directory within which C snippet code will be compiled.
+By default, this is in a temporary directory specific to the <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> session.
+One can also set this directory using the <code>pomp_cdir</code> option.</p>
+</td></tr>
+<tr valign="top"><td><code>shlib.args</code></td>
+<td>
+<p>optional character variables.
+Command-line arguments to the <code>R CMD SHLIB</code> call that compiles the C snippets.</p>
+</td></tr>
+<tr valign="top"><td><code>compile</code></td>
+<td>
+<p>logical;
+if <code>FALSE</code>, compilation of the C snippets will be postponed until they are needed.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical.
+Setting <code>verbose=TRUE</code> will cause additional information to be displayed.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>hitch</code> returns a named list of length two.  The element named
+&ldquo;funs&rdquo; is itself a named list of &lsquo;pomp_fun&rsquo; objects, each of
+which corresponds to one of the horses passed in.  The element named
+&ldquo;lib&rdquo; contains information on the shared-object library created
+using the C snippets (if any were passed to <code>hitch</code>).  If no C
+snippets were passed to <code>hitch</code>, <code>lib</code> is <code>NULL</code>.
+Otherwise, it is a length-3 named list with the following elements:
+</p>
+
+<dl>
+<dt>name</dt><dd><p>The name of the library created.</p>
+</dd>
+<dt>dir</dt><dd><p> The
+directory in which the library was created.  If this is <code>NULL</code>, the
+library was created in the session's temporary directory.  </p>
+</dd>
+<dt>src</dt><dd><p> A
+character string with the full contents of the C snippet file.  </p>
+</dd> </dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pomp.html">pomp</a></code>, <code><a href="spy.html">spy</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Conditional log likelihood</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cond.logLik {pomp}"><tr><td>cond.logLik {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Conditional log likelihood</h2>
+
+<h3>Description</h3>
+
+<p>The estimated conditional log likelihood from a fitted model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'kalmand_pomp'
+cond.logLik(object, ...)
+
+## S4 method for signature 'pfilterd_pomp'
+cond.logLik(object, ...)
+
+## S4 method for signature 'bsmcd_pomp'
+cond.logLik(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>result of a filtering computation</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>ignored</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The conditional likelihood is defined to be the value of the density
+of </p>
+<p style="text-align: center;"><i>Yk | Y1,&hellip;,Y(k-1)</i></p>
+<p> evaluated at <i>Yk = yk*</i>.
+Here, <i>Yk</i> is the observable process, and <i>yk*</i> the data, at time <i>t_k</i>.
+</p>
+<p>Thus the conditional log likelihood at time <i>t_k</i> is
+</p>
+<p style="text-align: center;"><i>ell_k(theta)=log f[Yk = yk* | Y1=y1*, &hellip;, Y(k-1)=y(k-1)*],</i></p>
+
+<p>where <i>f</i> is the probability density above.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The numerical value of the conditional log likelihood.
+Note that some methods compute not the log likelihood itself but instead a related quantity.
+To keep the code simple, the <code>cond.logLik</code> function is nevertheless used to extract this quantity.
+</p>
+<p>When <code>object</code> is of class &lsquo;bsmcd_pomp&rsquo; (i.e., the result of a <code>bsmc2</code> computation), <code>cond.logLik</code> returns the conditional log &ldquo;evidence&rdquo; (see <code><a href="bsmc2.html">bsmc2</a></code>).
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other particle filter methods: 
+<code><a href="bsmc2.html">bsmc2</a>()</code>,
+<code><a href="eff_sample_size.html">eff.sample.size</a>()</code>,
+<code><a href="filter_mean.html">filter.mean</a>()</code>,
+<code><a href="filter_traj.html">filter.traj</a>()</code>,
+<code><a href="mif2.html">mif2</a>()</code>,
+<code><a href="pfilter.html">pfilter</a>()</code>,
+<code><a href="pmcmc.html">pmcmc</a>()</code>,
+<code><a href="pred_mean.html">pred.mean</a>()</code>,
+<code><a href="pred_var.html">pred.var</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Model of cholera transmission for historic Bengal.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dacca {pomp}"><tr><td>dacca {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Model of cholera transmission for historic Bengal.</h2>
+
+<h3>Description</h3>
+
+<p><code>dacca</code> constructs a &lsquo;pomp&rsquo; object containing census and cholera
+mortality data from the Dacca district of the former British province of
+Bengal over the years 1891 to 1940 together with a stochastic differential
+equation transmission model.
+The model is that of King et al. (2008).
+The parameters are the MLE for the SIRS model with seasonal reservoir.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dacca(
+  gamma = 20.8,
+  eps = 19.1,
+  rho = 0,
+  delta = 0.02,
+  deltaI = 0.06,
+  clin = 1,
+  alpha = 1,
+  beta_trend = -0.00498,
+  logbeta = c(0.747, 6.38, -3.44, 4.23, 3.33, 4.55),
+  logomega = log(c(0.184, 0.0786, 0.0584, 0.00917, 0.000208, 0.0124)),
+  sd_beta = 3.13,
+  tau = 0.23,
+  S_0 = 0.621,
+  I_0 = 0.378,
+  Y_0 = 0,
+  R1_0 = 0.000843,
+  R2_0 = 0.000972,
+  R3_0 = 1.16e-07
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gamma</code></td>
+<td>
+<p>recovery rate</p>
+</td></tr>
+<tr valign="top"><td><code>eps</code></td>
+<td>
+<p>rate of waning of immunity for severe infections</p>
+</td></tr>
+<tr valign="top"><td><code>rho</code></td>
+<td>
+<p>rate of waning of immunity for inapparent infections</p>
+</td></tr>
+<tr valign="top"><td><code>delta</code></td>
+<td>
+<p>baseline mortality rate</p>
+</td></tr>
+<tr valign="top"><td><code>deltaI</code></td>
+<td>
+<p>cholera mortality rate</p>
+</td></tr>
+<tr valign="top"><td><code>clin</code></td>
+<td>
+<p>fraction of infections that lead to severe infection</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>transmission function exponent</p>
+</td></tr>
+<tr valign="top"><td><code>beta_trend</code></td>
+<td>
+<p>slope of secular trend in transmission</p>
+</td></tr>
+<tr valign="top"><td><code>logbeta</code></td>
+<td>
+<p>seasonal transmission rates</p>
+</td></tr>
+<tr valign="top"><td><code>logomega</code></td>
+<td>
+<p>seasonal environmental reservoir parameters</p>
+</td></tr>
+<tr valign="top"><td><code>sd_beta</code></td>
+<td>
+<p>environmental noise intensity</p>
+</td></tr>
+<tr valign="top"><td><code>tau</code></td>
+<td>
+<p>measurement error s.d.</p>
+</td></tr>
+<tr valign="top"><td><code>S_0</code></td>
+<td>
+<p>initial susceptible fraction</p>
+</td></tr>
+<tr valign="top"><td><code>I_0</code></td>
+<td>
+<p>initial fraction of population infected</p>
+</td></tr>
+<tr valign="top"><td><code>Y_0</code></td>
+<td>
+<p>initial fraction of the population in the Y class</p>
+</td></tr>
+<tr valign="top"><td><code>R1_0, R2_0, R3_0</code></td>
+<td>
+<p>initial fractions in the respective R classes</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Data are provided courtesy of Dr. Menno J. Bouma, London School of Tropical
+Medicine and Hygiene.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dacca</code> returns a &lsquo;pomp&rsquo; object containing the model, data, and MLE
+parameters, as estimated by King et al. (2008).
+</p>
+
+
+<h3>References</h3>
+
+<p>A.A. King, E.L. Ionides, M. Pascual, and M.J. Bouma. Inapparent infections and cholera dynamics. <em>Nature</em> <b>454</b>, 877-880, 2008
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other pomp examples: 
+<code><a href="blowflies.html">blowflies</a></code>,
+<code><a href="bsflu.html">bsflu</a></code>,
+<code><a href="ebola.html">ebola</a></code>,
+<code><a href="gompertz.html">gompertz</a>()</code>,
+<code><a href="measles.html">measles</a></code>,
+<code><a href="ou2.html">ou2</a>()</code>,
+<code><a href="parus.html">parus</a></code>,
+<code><a href="pomp_examp.html">pomp_examples</a></code>,
+<code><a href="ricker.html">ricker</a>()</code>,
+<code><a href="rw2.html">rw2</a>()</code>,
+<code><a href="sir.html">sir_models</a></code>,
+<code><a href="verhulst.html">verhulst</a>()</code>
+</p>
+<p>Other datasets: 
+<code><a href="blowflies.html">blowflies</a></code>,
+<code><a href="bsflu.html">bsflu</a></code>,
+<code><a href="ebola.html">ebola</a></code>,
+<code><a href="measles.html">measles</a></code>,
+<code><a href="parus.html">parus</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+po &lt;- dacca()
+plot(po)
+## MLE:
+coef(po)
+plot(simulate(po))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

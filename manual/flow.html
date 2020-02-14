@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Flow of a deterministic model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for flow {pomp}"><tr><td>flow {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Flow of a deterministic model</h2>
+
+<h3>Description</h3>
+
+<p>Compute the flow induced by a deterministic vectorfield or map.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'pomp'
+flow(object, x0, t0, times, params, ..., verbose = getOption("verbose", FALSE))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object of class &lsquo;pomp&rsquo;, or of a class that extends &lsquo;pomp&rsquo;.
+This will typically be the output of <code>pomp</code>, <code>simulate</code>, or one of the <span class="pkg">pomp</span> inference algorithms.</p>
+</td></tr>
+<tr valign="top"><td><code>x0</code></td>
+<td>
+<p>an array with dimensions <code>nvar</code> x <code>nrep</code> giving the initial conditions of the trajectories to be computed.</p>
+</td></tr>
+<tr valign="top"><td><code>t0</code></td>
+<td>
+<p>the time at which the initial conditions are assumed to hold.</p>
+</td></tr>
+<tr valign="top"><td><code>times</code></td>
+<td>
+<p>a numeric vector (length <code>ntimes</code>) containing times at which the itineraries are desired.
+These must be in non-decreasing order with <code>times[1]&gt;t0</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>a <code>npar</code> x <code>nrep</code> matrix of parameters.
+Each column is treated as an independent parameter set, in correspondence with the corresponding column of <code>x</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
+See <code><a href="../../deSolve/html/ode.html">ode</a></code> for a description of the additional arguments accepted by the ODE integrator.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical; if <code>TRUE</code>, diagnostic messages will be printed to the console.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In the case of a discrete-time system (map), <code>flow</code> iterates the map to yield trajectories of the system.
+In the case of a continuous-time system (vectorfield), <code>flow</code> uses the numerical solvers in <span class="pkg"><a href="../../deSolve/html/deSolve.html">deSolve</a></span> to integrate the vectorfield starting from given initial conditions.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>flow</code> returns an array of dimensions <code>nvar</code> x <code>nrep</code> x <code>ntimes</code>.
+If <code>x</code> is the returned matrix, <code>x[i,j,k]</code> is the i-th component of the state vector at time <code>times[k]</code> given parameters <code>params[,j]</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="skeleton.html">skeleton</a></code>, <code><a href="trajectory.html">trajectory</a></code>, <code><a href="rprocess.html">rprocess</a></code>
+</p>
+<p>Other pomp workhorses: 
+<code><a href="dmeasure.html">dmeasure</a>()</code>,
+<code><a href="dprior.html">dprior</a>()</code>,
+<code><a href="dprocess.html">dprocess</a>()</code>,
+<code><a href="partrans.html">partrans</a>()</code>,
+<code><a href="rinit.html">rinit</a>()</code>,
+<code><a href="rmeasure.html">rmeasure</a>()</code>,
+<code><a href="rprior.html">rprior</a>()</code>,
+<code><a href="rprocess.html">rprocess</a>()</code>,
+<code><a href="skeleton.html">skeleton</a>()</code>,
+<code><a href="workhorses.html">workhorses</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

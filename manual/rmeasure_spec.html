@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The measurement-model simulator</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rmeasure_spec {pomp}"><tr><td>rmeasure_spec {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The measurement-model simulator</h2>
+
+<h3>Description</h3>
+
+<p>Specification of rmeasure
+</p>
+
+
+<h3>Details</h3>
+
+<p>The measurement model is the link between the data and the unobserved state process.
+It can be specified either by using one or both of the <code>rmeasure</code> and <code>dmeasure</code> arguments.
+</p>
+<p>Suppose you have a procedure to simulate observations given the value of the latent state variables.
+Then you can furnish </p>
+<pre>
+  rmeasure = f</pre>
+<p>to <span class="pkg">pomp</span> algorithms,
+where <code>f</code> is a C snippet or <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function that implements your procedure.
+</p>
+<p>Using a C snippet is much preferred, due to its much greater computational efficiency.
+See <code><a href="csnippet.html">Csnippet</a></code> for general rules on writing C snippets.
+</p>
+<p>In writing an <code>rmeasure</code> C snippet, bear in mind that:
+</p>
+
+<ol>
+<li><p> The goal of such a snippet is to fill the observables with random values drawn from the measurement model distribution.
+Accordingly, each observable should be assigned a new value.
+</p>
+</li>
+<li><p> In addition to the states, parameters, covariates (if any), and observables, the variable <code>t</code>, containing the time of the observation, will be defined in the context in which the snippet is executed.
+</p>
+</li></ol>
+
+<p>The demos and the tutorials on the <a href="https://kingaa.github.io/pomp/">package website</a> give examples as well.
+</p>
+<p>It is also possible, though far less efficient, to specify <code>rmeasure</code> using an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function.
+In this case, specify the measurement model simulator by furnishing </p>
+<pre>
+  rmeasure = f</pre>
+<p>to <code>pomp</code>, where <code>f</code> is an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function.
+The arguments of <code>f</code> should be chosen from among the state variables, parameters, covariates, and time.
+It must also have the argument <code>...</code>.
+<code>f</code> must return a named numeric vector of length equal to the number of observable variables.
+</p>
+
+
+<h3>Default behavior</h3>
+
+<p>The default <code>rmeasure</code> is undefined.
+It will yield missing values (<code>NA</code>).
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other information on model implementation: 
+<code><a href="csnippet.html">Csnippet</a></code>,
+<code><a href="accumulators.html">accumulators</a></code>,
+<code><a href="covariate_table.html">covariate_table</a>()</code>,
+<code><a href="distributions.html">distributions</a></code>,
+<code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
+<code><a href="dprocess_spec.html">dprocess_spec</a></code>,
+<code><a href="parameter_trans.html">parameter_trans</a>()</code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="prior_spec.html">prior_spec</a></code>,
+<code><a href="rinit_spec.html">rinit_spec</a></code>,
+<code><a href="rprocess_spec.html">rprocess_spec</a></code>,
+<code><a href="skeleton_spec.html">skeleton_spec</a></code>,
+<code><a href="transformations.html">transformations</a></code>,
+<code><a href="userdata.html">userdata</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

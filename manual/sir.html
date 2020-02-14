@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compartmental epidemiological models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sir_models {pomp}"><tr><td>sir_models {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compartmental epidemiological models</h2>
+
+<h3>Description</h3>
+
+<p>Simple SIR-type models implemented in various ways.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sir(
+  gamma = 26,
+  mu = 0.02,
+  iota = 0.01,
+  beta1 = 400,
+  beta2 = 480,
+  beta3 = 320,
+  beta_sd = 0.001,
+  rho = 0.6,
+  pop = 2100000,
+  S_0 = 26/400,
+  I_0 = 0.001,
+  R_0 = 1 - S_0 - I_0,
+  t0 = 0,
+  times = seq(from = t0 + 1/52, to = t0 + 4, by = 1/52),
+  seed = 329343545
+)
+
+sir2(
+  gamma = 24,
+  mu = 1/70,
+  iota = 0.1,
+  beta1 = 330,
+  beta2 = 410,
+  beta3 = 490,
+  rho = 0.1,
+  pop = 1e+06,
+  S_0 = 0.05,
+  I_0 = 1e-04,
+  R_0 = 1 - S_0 - I_0,
+  t0 = 0,
+  times = seq(from = t0 + 1/12, to = t0 + 10, by = 1/12),
+  seed = 1772464524
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gamma</code></td>
+<td>
+<p>recovery rate</p>
+</td></tr>
+<tr valign="top"><td><code>mu</code></td>
+<td>
+<p>death rate (assumed equal to the birth rate)</p>
+</td></tr>
+<tr valign="top"><td><code>iota</code></td>
+<td>
+<p>infection import rate</p>
+</td></tr>
+<tr valign="top"><td><code>beta1, beta2, beta3</code></td>
+<td>
+<p>seasonal contact rates</p>
+</td></tr>
+<tr valign="top"><td><code>beta_sd</code></td>
+<td>
+<p>environmental noise intensity</p>
+</td></tr>
+<tr valign="top"><td><code>rho</code></td>
+<td>
+<p>reporting efficiency</p>
+</td></tr>
+<tr valign="top"><td><code>pop</code></td>
+<td>
+<p>overall host population size</p>
+</td></tr>
+<tr valign="top"><td><code>S_0, I_0, R_0</code></td>
+<td>
+<p>the fractions of the host population that are susceptible, infectious, and recovered, respectively, at time zero.</p>
+</td></tr>
+<tr valign="top"><td><code>t0</code></td>
+<td>
+<p>zero time</p>
+</td></tr>
+<tr valign="top"><td><code>times</code></td>
+<td>
+<p>observation times</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>seed of the random number generator</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>sir()</code> producees a &lsquo;pomp&rsquo; object encoding a simple seasonal SIR model with simulated data.
+Simulation is performed using an Euler multinomial approximation.
+</p>
+<p><code>sir2()</code> has the same model implemented using Gillespie's algorithm.
+</p>
+<p>This and similar examples are discussed and constructed in tutorials
+available on the <a href="https://kingaa.github.io/pomp/">package website</a>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>These functions return &lsquo;pomp&rsquo; objects containing simulated data.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other pomp examples: 
+<code><a href="blowflies.html">blowflies</a></code>,
+<code><a href="bsflu.html">bsflu</a></code>,
+<code><a href="dacca.html">dacca</a>()</code>,
+<code><a href="ebola.html">ebola</a></code>,
+<code><a href="gompertz.html">gompertz</a>()</code>,
+<code><a href="measles.html">measles</a></code>,
+<code><a href="ou2.html">ou2</a>()</code>,
+<code><a href="parus.html">parus</a></code>,
+<code><a href="pomp_examp.html">pomp_examples</a></code>,
+<code><a href="ricker.html">ricker</a>()</code>,
+<code><a href="rw2.html">rw2</a>()</code>,
+<code><a href="verhulst.html">verhulst</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+po &lt;- sir()
+plot(po)
+coef(po)
+
+po &lt;- sir2()
+plot(po)
+plot(simulate(window(po,end=3)))
+coef(po)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

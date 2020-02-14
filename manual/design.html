@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Design matrices for pomp calculations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for design {pomp}"><tr><td>design {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Design matrices for pomp calculations</h2>
+
+<h3>Description</h3>
+
+<p>These functions are useful for generating designs for the exploration of parameter space.
+</p>
+<p><code>profileDesign</code> generates a data-frame where each row can be used as the starting point for a profile likelihood calculation.
+</p>
+<p><code>runifDesign</code> generates a design based on random samples from a multivariate uniform distribution.
+</p>
+<p><code>sliceDesign</code> generates points along slices through a specified point.
+</p>
+<p><code>sobolDesign</code> generates a Latin hypercube design based on the Sobol' low-discrepancy sequence.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+profileDesign(
+  ...,
+  lower,
+  upper,
+  nprof,
+  type = c("sobol", "runif"),
+  stringsAsFactors = getOption("stringsAsFactors", FALSE)
+)
+
+runifDesign(lower = numeric(0), upper = numeric(0), nseq)
+
+sliceDesign(center, ...)
+
+sobolDesign(lower = numeric(0), upper = numeric(0), nseq)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>In <code>profileDesign</code>, additional arguments specify the parameters over which to profile and the values of these parameters.
+In <code>sliceDesign</code>, additional numeric vector arguments specify the locations of points along the slices.</p>
+</td></tr>
+<tr valign="top"><td><code>lower, upper</code></td>
+<td>
+<p>named numeric vectors giving the lower and upper bounds
+of the ranges, respectively.</p>
+</td></tr>
+<tr valign="top"><td><code>nprof</code></td>
+<td>
+<p>The number of points per profile point.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>the type of design to use.
+<code>type="sobol"</code> uses <code><a href="design.html">sobolDesign</a></code>;
+<code>type="runif"</code> uses <code><a href="design.html">runifDesign</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>stringsAsFactors</code></td>
+<td>
+<p>should character vectors be converted to factors?</p>
+</td></tr>
+<tr valign="top"><td><code>nseq</code></td>
+<td>
+<p>Total number of points requested.</p>
+</td></tr>
+<tr valign="top"><td><code>center</code></td>
+<td>
+<p><code>center</code> is a named numeric vector specifying the point
+through which the slice(s) is (are) to be taken.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Sobol' sequence generation is performed using codes from the
+<a href="http://ab-initio.mit.edu/nlopt/"><span class="pkg">NLopt</span> library</a> by S. Johnson.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>profileDesign</code> returns a data frame with <code>nprof</code> points per profile point.
+</p>
+<p><code>runifDesign</code> returns a data frame with <code>nseq</code> rows and one column for each variable named in <code>lower</code> and <code>upper</code>.
+</p>
+<p><code>sliceDesign</code> returns a data frame with one row per point.
+The &lsquo;slice&rsquo; variable indicates which slice the point belongs to.
+</p>
+<p><code>sobolDesign</code> returns a data frame with <code>nseq</code> rows and one column for each variable named in <code>lower</code> and <code>upper</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King
+</p>
+
+
+<h3>References</h3>
+
+<p>P. Bratley and B.L. Fox. Algorithm 659 Implementing Sobol's quasirandom sequence generator. <em>ACM Transactions on Mathematical Software</em> <b>14</b>, 88&ndash;100, 1988.
+</p>
+<p>S. Joe and F.Y. Kuo. Remark on algorithm 659: Implementing Sobol' quasirandom sequence generator. <em>ACM Transactions on Mathematical Software</em> <b>29</b>, 49&ndash;57, 2003.
+</p>
+<p>S.G. Johnson. The <span class="pkg">NLopt</span> nonlinear-optimization package. <a href="http://ab-initio.mit.edu/nlopt">http://ab-initio.mit.edu/nlopt</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Sobol' low-discrepancy design
+plot(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),nseq=100))
+
+## Uniform random design
+plot(runifDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),100))
+
+## A one-parameter profile design:
+x &lt;- profileDesign(p=1:10,lower=c(a=0,b=0),upper=c(a=1,b=5),nprof=20)
+dim(x)
+plot(x)
+
+## A two-parameter profile design:
+x &lt;- profileDesign(p=1:10,q=3:5,lower=c(a=0,b=0),upper=c(b=5,a=1),nprof=200)
+dim(x)
+plot(x)
+
+## A two-parameter profile design with random points:
+x &lt;- profileDesign(p=1:10,q=3:5,lower=c(a=0,b=0),upper=c(b=5,a=1),nprof=200,type="runif")
+dim(x)
+plot(x)
+
+## A single 11-point slice through the point c(A=3,B=8,C=0) along the B direction.
+x &lt;- sliceDesign(center=c(A=3,B=8,C=0),B=seq(0,10,by=1))
+dim(x)
+plot(x)
+
+## Two slices through the same point along the A and C directions.
+x &lt;- sliceDesign(c(A=3,B=8,C=0),A=seq(0,5,by=1),C=seq(0,5,length=11))
+dim(x)
+plot(x)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

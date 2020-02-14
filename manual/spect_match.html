@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Spectrum matching</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for spect.match {pomp}"><tr><td>spect.match {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Spectrum matching</h2>
+
+<h3>Description</h3>
+
+<p>Estimation of parameters by matching power spectra
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'data.frame'
+spect_objfun(
+  data,
+  est = character(0),
+  weights = 1,
+  fail.value = NA,
+  vars,
+  kernel.width,
+  nsim,
+  seed = NULL,
+  transform.data = identity,
+  detrend = c("none", "mean", "linear", "quadratic"),
+  params,
+  rinit,
+  rprocess,
+  rmeasure,
+  partrans,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'pomp'
+spect_objfun(
+  data,
+  est = character(0),
+  weights = 1,
+  fail.value = NA,
+  vars,
+  kernel.width,
+  nsim,
+  seed = NULL,
+  transform.data = identity,
+  detrend = c("none", "mean", "linear", "quadratic"),
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'spectd_pomp'
+spect_objfun(
+  data,
+  est = character(0),
+  weights = 1,
+  fail.value = NA,
+  vars,
+  kernel.width,
+  nsim,
+  seed = NULL,
+  transform.data = identity,
+  detrend,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+
+## S4 method for signature 'spect_match_objfun'
+spect_objfun(
+  data,
+  est,
+  weights,
+  fail.value,
+  seed = NULL,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>either a data frame holding the time series data,
+or an object of class &lsquo;pomp&rsquo;,
+i.e., the output of another <span class="pkg">pomp</span> calculation.</p>
+</td></tr>
+<tr valign="top"><td><code>est</code></td>
+<td>
+<p>character vector; the names of parameters to be estimated.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>optional numeric or function.
+The mismatch between model and data is measured by a weighted average of mismatch at each frequency.
+By default, all frequencies are weighted equally.
+<code>weights</code> can be specified either as a vector (which must have length equal to the number of frequencies) or as a function of frequency.
+If the latter, <code>weights(freq)</code> must return a nonnegative weight for each frequency.</p>
+</td></tr>
+<tr valign="top"><td><code>fail.value</code></td>
+<td>
+<p>optional numeric scalar;
+if non-<code>NA</code>, this value is substituted for non-finite values of the objective function.
+It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).</p>
+</td></tr>
+<tr valign="top"><td><code>vars</code></td>
+<td>
+<p>optional; names of observed variables for which the power spectrum will be computed.
+By default, the spectrum will be computed for all observables.</p>
+</td></tr>
+<tr valign="top"><td><code>kernel.width</code></td>
+<td>
+<p>width parameter for the smoothing kernel used for
+calculating the estimate of the spectrum.</p>
+</td></tr>
+<tr valign="top"><td><code>nsim</code></td>
+<td>
+<p>the number of model simulations to be computed.</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>integer.
+When fitting, it is often best to fix the seed of the random-number generator (RNG).
+This is accomplished by setting <code>seed</code> to an integer.
+By default, <code>seed = NULL</code>, which does not alter the RNG state.</p>
+</td></tr>
+<tr valign="top"><td><code>transform.data</code></td>
+<td>
+<p>function; this transformation will be applied to the
+observables prior to estimation of the spectrum, and prior to any
+detrending.</p>
+</td></tr>
+<tr valign="top"><td><code>detrend</code></td>
+<td>
+<p>de-trending operation to perform.  Options include no
+detrending, and subtraction of constant, linear, and quadratic trends from
+the data.  Detrending is applied to each data series and to each model
+simulation independently.</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+<p>optional; named numeric vector of parameters.
+This will be coerced internally to storage mode <code>double</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>rinit</code></td>
+<td>
+<p>simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>rinit=NULL</code> sets the initial-state simulator to its default.
+For more information, see <a href="rinit_spec.html">?rinit_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>rprocess</code></td>
+<td>
+<p>simulator of the latent state process, specified using one of the <a href="rprocess_spec.html">rprocess plugins</a>.
+Setting <code>rprocess=NULL</code> removes the latent-state simulator.
+For more information, <a href="rprocess_spec.html">see ?rprocess_spec for the documentation on these plugins</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>rmeasure</code></td>
+<td>
+<p>simulator of the measurement model, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting <code>rmeasure=NULL</code> removes the measurement model simulator.
+For more information, see <a href="rmeasure_spec.html">?rmeasure_spec</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>partrans</code></td>
+<td>
+<p>optional parameter transformations, constructed using <code><a href="parameter_trans.html">parameter_trans</a></code>.
+</p>
+<p>Many algorithms for parameter estimation search an unconstrained space of parameters.
+When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+One should supply the <code>partrans</code> argument via a call to <code><a href="parameter_trans.html">parameter_trans</a></code>.
+For more information, see <a href="parameter_trans.html">?parameter_trans</a>.
+Setting <code>partrans=NULL</code> removes the parameter transformations, i.e., sets them to the identity transformation.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional arguments supply new or modify existing model characteristics or components.
+See <code><a href="pomp.html">pomp</a></code> for a full list of recognized arguments.
+</p>
+<p>When named arguments not recognized by <code><a href="pomp.html">pomp</a></code> are provided, these are made available to all basic components via the so-called <dfn>userdata</dfn> facility.
+This allows the user to pass information to the basic components outside of the usual routes of covariates (<code>covar</code>) and model parameters (<code>params</code>).
+See <a href="userdata.html">?userdata</a> for information on how to use this facility.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>logical; if <code>TRUE</code>, diagnostic messages will be printed to the console.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In spectrum matching, one attempts to minimize the discrepancy between a <acronym><span class="acronym">POMP</span></acronym> model's predictions and data, as measured in the frequency domain by the power spectrum.
+</p>
+<p><code>spect_objfun</code> constructs an objective function that measures the discrepancy.
+It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>spect_objfun</code> constructs a stateful objective function for spectrum matching.
+Specifically, <code>spect_objfun</code> returns an object of class &lsquo;spect_match_objfun&rsquo;, which is a function suitable for use in an <code><a href="../../stats/html/optim.html">optim</a></code>-like optimizer.
+This function takes a single numeric-vector argument that is assumed to contain the parameters named in <code>est</code>, in that order.
+When called, it will return the (optionally weighted) <i>L2</i> distance between the data spectrum and simulated spectra.
+It is a stateful function:
+Each time it is called, it will remember the values of the parameters and the discrepancy measure.
+</p>
+
+
+<h3>Important Note</h3>
+
+<p>Since <span class="pkg">pomp</span> cannot guarantee that the <em>final</em> call an optimizer makes to the function is a call <em>at</em> the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
+Therefore, it is a good idea to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="spect.html">spect</a></code> <code><a href="../../stats/html/optim.html">optim</a></code>
+<code><a href="../../subplex/html/subplex.html">subplex</a></code> <code><a href="../../nloptr/html/nloptr.html">nloptr</a></code>
+</p>
+<p>Other pomp parameter estimation methods: 
+<code><a href="abc.html">abc</a>()</code>,
+<code><a href="bsmc2.html">bsmc2</a>()</code>,
+<code><a href="kalman.html">kalman</a></code>,
+<code><a href="mif2.html">mif2</a>()</code>,
+<code><a href="nlf.html">nlf</a></code>,
+<code><a href="pmcmc.html">pmcmc</a>()</code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="probe_match.html">probe.match</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+
+  library(magrittr)
+
+  ricker() %&gt;%
+    spect_objfun(
+      est=c("r","sigma","N_0"),
+      partrans=parameter_trans(log=c("r","sigma","N_0")),
+      paramnames=c("r","sigma","N_0"),
+      kernel.width=3,
+      nsim=100,
+      seed=5069977
+    ) -&gt; f
+
+  f(log(c(20,0.3,10)))
+  f %&gt;% spect() %&gt;% plot()
+
+  library(subplex)
+  subplex(fn=f,par=log(c(20,0.3,10)),control=list(reltol=1e-5)) -&gt; out
+  f(out$par)
+
+  f %&gt;% summary()
+
+  f %&gt;% spect() %&gt;% plot()
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

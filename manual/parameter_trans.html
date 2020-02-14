@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Parameter transformations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for parameter_trans {pomp}"><tr><td>parameter_trans {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Parameter transformations</h2>
+
+<h3>Description</h3>
+
+<p>Equipping models with parameter transformations.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'Csnippet,Csnippet'
+parameter_trans(toEst, fromEst, ..., log, logit, barycentric)
+
+## S4 method for signature 'missing,missing'
+parameter_trans(..., log, logit, barycentric)
+
+## S4 method for signature 'character,character'
+parameter_trans(toEst, fromEst, ...)
+
+## S4 method for signature ''function','function''
+parameter_trans(toEst, fromEst, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>toEst, fromEst</code></td>
+<td>
+<p>procedures that perform transformation of model parameters to and from the estimation scale, respectively.
+These can be furnished using C snippets, <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> functions, or via procedures in an external, dynamically loaded library.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+<p>names of parameters to be log transformed.</p>
+</td></tr>
+<tr valign="top"><td><code>logit</code></td>
+<td>
+<p>names of parameters to be logit transformed.</p>
+</td></tr>
+<tr valign="top"><td><code>barycentric</code></td>
+<td>
+<p>names of parameters to be collectively transformed according to the log barycentric transformation.
+<strong>Important note:</strong> variables to be log-barycentrically transformed <em>must be adjacent</em> in the parameter vector.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When parameter transformations are desired, they can be integrated into the &lsquo;pomp&rsquo; object via the <code>partrans</code> arguments using the <code>parameter_trans</code> function.
+As with the basic model components, these should ordinarily be specified using C snippets.
+When doing so, note that:
+</p>
+
+<ol>
+<li><p> The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to </p>
+<pre>parameter_trans(toEst,fromEst)</pre><p>.
+</p>
+</li>
+<li><p> The goal of these snippets is the transformation of the parameters from the natural scale to the estimation scale, and vice-versa.
+If <code>p</code> is the name of a variable on the natural scale, its value on the estimation scale is <code>T_p</code>.
+Thus the <code>toEst</code> snippet computes <code>T_p</code> given <code>p</code> whilst the <code>fromEst</code> snippet computes <code>p</code> given <code>T_p</code>.
+</p>
+</li>
+<li><p> Time-, state-, and covariate-dependent transformations are not allowed.
+Therefore, neither the time, nor any state variables, nor any of the covariates will be available in the context within which a parameter transformation snippet is executed.
+</p>
+</li></ol>
+
+<p>These transformations can also be specified using <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> functions with arguments chosen from among the parameters.
+Such an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function must also have the argument &lsquo;<code>...</code>&rsquo;.
+In this case, <code>toEst</code> should transform parameters from the scale that the basic components use internally to the scale used in estimation.
+<code>fromEst</code> should be the inverse of <code>toEst</code>.
+</p>
+<p>Note that it is the user's responsibility to make sure that the transformations are mutually inverse.
+If <code>obj</code> is the constructed &lsquo;pomp&rsquo; object, and <code>coef(obj)</code> is non-empty, a simple check of this property is </p>
+<pre>
+  x &lt;- coef(obj, transform = TRUE)
+  obj1 &lt;- obj
+  coef(obj1, transform = TRUE) &lt;- x
+  identical(coef(obj), coef(obj1))
+  identical(coef(obj1, transform=TRUE), x)</pre>
+<p>One can use the <code>log</code> and <code>logit</code> arguments of <code>parameter_trans</code> to name variables that should be log-transformed or logit-transformed, respectively.
+The <code>barycentric</code> argument can name sets of parameters that should be log-barycentric transformed.
+</p>
+<p>Note that using the <code>log</code>, <code>logit</code>, or <code>barycentric</code> arguments causes C snippets to be generated.
+Therefore, you must make sure that variables named in any of these arguments are also mentioned in <code>paramnames</code> at the same time.
+</p>
+<p>The logit transform is defined by
+</p>
+<p style="text-align: center;"><i>logit(theta) = log(theta/(1-theta)).</i></p>
+
+<p>The log barycentric transformation of variables <i>theta1,&hellip;,thetan</i> is given by
+</p>
+<p style="text-align: center;"><i>logbarycentric(theta1,&hellip;,thetan)=(log(theta1/sum(theta)),&hellip;,log(thetan/sum(theta))).</i></p>
+
+
+
+<h3>See Also</h3>
+
+<p>Other information on model implementation: 
+<code><a href="csnippet.html">Csnippet</a></code>,
+<code><a href="accumulators.html">accumulators</a></code>,
+<code><a href="covariate_table.html">covariate_table</a>()</code>,
+<code><a href="distributions.html">distributions</a></code>,
+<code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
+<code><a href="dprocess_spec.html">dprocess_spec</a></code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="prior_spec.html">prior_spec</a></code>,
+<code><a href="rinit_spec.html">rinit_spec</a></code>,
+<code><a href="rmeasure_spec.html">rmeasure_spec</a></code>,
+<code><a href="rprocess_spec.html">rprocess_spec</a></code>,
+<code><a href="skeleton_spec.html">skeleton_spec</a></code>,
+<code><a href="transformations.html">transformations</a></code>,
+<code><a href="userdata.html">userdata</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Prediction mean</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pred.mean {pomp}"><tr><td>pred.mean {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Prediction mean</h2>
+
+<h3>Description</h3>
+
+<p>The mean of the prediction distribution
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'kalmand_pomp'
+pred.mean(object, vars, ...)
+
+## S4 method for signature 'pfilterd_pomp'
+pred.mean(object, vars, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>result of a filtering computation</p>
+</td></tr>
+<tr valign="top"><td><code>vars</code></td>
+<td>
+<p>optional character; names of variables</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>ignored</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The prediction distribution is that of
+</p>
+<p style="text-align: center;"><i>Xk | Y1=y1*,&hellip;,Y(k-1)=y(k-1)*,</i></p>
+
+<p>where <i>Xk</i>, <i>Yk</i> are the latent state and observable processes, respectively, and <i>yk*</i> is the data, at time <i>tk</i>.
+</p>
+<p>The prediction mean is therefore the expectation of this distribution
+</p>
+<p style="text-align: center;"><i>E[Xk | Y1=y1*,&hellip;,Y(k-1)=y(k-1)*].</i></p>
+
+
+
+<h3>See Also</h3>
+
+<p>Other particle filter methods: 
+<code><a href="bsmc2.html">bsmc2</a>()</code>,
+<code><a href="cond_logLik.html">cond.logLik</a>()</code>,
+<code><a href="eff_sample_size.html">eff.sample.size</a>()</code>,
+<code><a href="filter_mean.html">filter.mean</a>()</code>,
+<code><a href="filter_traj.html">filter.traj</a>()</code>,
+<code><a href="mif2.html">mif2</a>()</code>,
+<code><a href="pfilter.html">pfilter</a>()</code>,
+<code><a href="pmcmc.html">pmcmc</a>()</code>,
+<code><a href="pred_var.html">pred.var</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

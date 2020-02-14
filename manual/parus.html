@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Parus major population dynamics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for parus {pomp}"><tr><td>parus {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Parus major population dynamics</h2>
+
+<h3>Description</h3>
+
+<p>Size of a population of great tits (<em>Parus major</em>) from Wytham Wood, near Oxford.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Provenance: Global Population Dynamics Database dataset #10163.
+(NERC Centre for Population Biology, Imperial College (2010)
+The Global Population Dynamics Database Version 2.
+<a href="https://www.imperial.ac.uk/cpb/gpdd2/">https://www.imperial.ac.uk/cpb/gpdd2/</a>).
+Original source: McCleer and Perrins (1991).
+</p>
+
+
+<h3>References</h3>
+
+<p>R. McCleery and C. Perrins. Effects of predation on the numbers of Great Tits, <em>Parus major</em>. In: C.M. Perrins, J.-D. Lebreton, and G.J.M. Hirons (eds.), <em>Bird Population Studies</em>, pp. 129&ndash;147, Oxford. Univ. Press, 1991.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other datasets: 
+<code><a href="blowflies.html">blowflies</a></code>,
+<code><a href="bsflu.html">bsflu</a></code>,
+<code><a href="dacca.html">dacca</a>()</code>,
+<code><a href="ebola.html">ebola</a></code>,
+<code><a href="measles.html">measles</a></code>
+</p>
+<p>Other pomp examples: 
+<code><a href="blowflies.html">blowflies</a></code>,
+<code><a href="bsflu.html">bsflu</a></code>,
+<code><a href="dacca.html">dacca</a>()</code>,
+<code><a href="ebola.html">ebola</a></code>,
+<code><a href="gompertz.html">gompertz</a>()</code>,
+<code><a href="measles.html">measles</a></code>,
+<code><a href="ou2.html">ou2</a>()</code>,
+<code><a href="pomp_examp.html">pomp_examples</a></code>,
+<code><a href="ricker.html">ricker</a>()</code>,
+<code><a href="rw2.html">rw2</a>()</code>,
+<code><a href="sir.html">sir_models</a></code>,
+<code><a href="verhulst.html">verhulst</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+parus %&gt;%
+  pfilter(Np=1000,times="year",t0=1960,
+  params=c(K=190,r=2.7,sigma=0.2,theta=0.05,N.0=148),
+  rprocess=discrete_time(
+     function (r, K, sigma, N, ...) {
+       e &lt;- rnorm(n=1,mean=0,sd=sigma)
+       c(N = exp(log(N)+r*(1-N/K)+e))
+     },
+     delta.t=1
+  ),
+  rmeasure=function (N, theta, ...) {
+     c(pop=rnbinom(n=1,size=1/theta,mu=N+1e-10))
+  },
+  dmeasure=function (pop, N, theta, ..., log) {
+     dnbinom(x=pop,mu=N+1e-10,size=1/theta,log=log)
+  },
+  partrans=parameter_trans(log=c("sigma","theta","N_0","r","K")),
+  paramnames=c("sigma","theta","N_0","r","K")
+) -&gt; pf
+
+pf %&gt;% logLik()
+
+pf %&gt;% simulate() %&gt;% plot()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.5.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>
