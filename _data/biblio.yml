@@ -244,6 +244,15 @@
   pages: "96&#x2013;118"
   doi: "https://doi.org/10.1214/15-sts534"
 
+- key: Funk2020
+  author: "S. Funk and A. A. King"
+  year: "2020"
+  title: "Choices and trade-offs in inference with infectious disease models"
+  journal: "Epidemics"
+  volume: "30"
+  pages: "100383"
+  doi: "https://doi.org/10.1016/j.epidem.2019.100383"
+
 - key: Gillespie1977a
   author: "D. T. Gillespie"
   year: "1977"
