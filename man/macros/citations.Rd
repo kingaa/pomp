@@ -4,7 +4,7 @@
 
 \newcommand{\Andrieu2009}{C. Andrieu and G.O. Roberts. The pseudo-marginal approach for computation. \emph{Annals of Statistics} \bold{37}, 697--725, 2009.}
 
-\newcommand{\Andrieu2010}{C. Andrieu, A. Doucet, and R. Holenstein. Particle Markov chain Monte Carlo methods. \emph{Journal of the Royal Statistical Society, Series B} \bold{72}, 269–342, 2010.}
+\newcommand{\Andrieu2010}{C. Andrieu, A. Doucet, and R. Holenstein. Particle Markov chain Monte Carlo methods. \emph{Journal of the Royal Statistical Society, Series B} \bold{72}, 269--342, 2010.}
 
 \newcommand{\Anonymous1978}{Anonymous. Influenza in a boarding school. \emph{British Medical Journal} \bold{1}, 587, 1978.}
 
