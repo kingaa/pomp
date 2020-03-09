@@ -145,8 +145,6 @@ A warning is generated when this occurs unless the cumulative number of failures
 
 \references{
 \Andrieu2010
-
-\Andrieu2009
 }
 \seealso{
 \link[=proposals]{MCMC proposals}

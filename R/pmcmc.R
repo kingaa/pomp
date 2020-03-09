@@ -39,8 +39,6 @@
 ##' @references
 ##'
 ##' \Andrieu2010
-##'
-##' \Andrieu2009
 ##' 
 NULL
 
