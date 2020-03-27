@@ -186,6 +186,13 @@ When \code{cooling.type="hyperbolic"}, we have \deqn{c_{m,n}=\frac{s+1}{s+n+(m-1
 Thus, in either case, the perturbations at the end of 50 IF2 iterations are a fraction \eqn{\alpha}{alpha} smaller than they are at first.
 }
 
+\section{Change in default tolerance}{
+
+From \pkg{pomp} version 2.4.1, warnings have been issued whenever the value of \code{tol} is set to anything other than zero.
+As of version 2.7.1, the default value of \code{tol} is zero and warnings will be generated whenever it is set by the user to anything else.
+This behavior is in anticipation of a forthcoming release, which will remove the \code{tol} and \code{max.fail} arguments altogether.
+}
+
 \section{Filtering failures}{
 
 If the degree of disagreement between model and data becomes sufficiently large, a \dQuote{filtering failure} results.

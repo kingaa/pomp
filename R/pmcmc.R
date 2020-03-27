@@ -34,6 +34,8 @@
 ##' of which are shown above).  If one does specify additional arguments, these
 ##' will override the defaults.
 ##'
+##' @inheritSection pfilter Change in default tolerance
+##' 
 ##' @inheritSection pfilter Filtering failures
 ##'
 ##' @references

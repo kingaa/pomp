@@ -38,6 +38,8 @@
 ##' \item{\code{\link{as.data.frame}}}{puts the prior and posterior samples into a data frame}
 ##' }
 ##'
+##' @inheritSection pfilter Change in default tolerance
+##' 
 ##' @inheritSection pfilter Filtering failures
 ##'
 ##' @author Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides

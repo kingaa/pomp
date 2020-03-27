@@ -77,6 +77,8 @@
 ##' When \code{cooling.type="hyperbolic"}, we have \deqn{c_{m,n}=\frac{s+1}{s+n+(m-1)N},}{c[m,n]=(s+1)/(s+n+(m-1)N),} where \eqn{s} satisfies \deqn{\frac{s+1}{s+50N}=\alpha.}{(s+1)/(s+50N)=alpha.}
 ##' Thus, in either case, the perturbations at the end of 50 IF2 iterations are a fraction \eqn{\alpha}{alpha} smaller than they are at first.
 ##'
+##' @inheritSection pfilter Change in default tolerance
+##' 
 ##' @inheritSection pfilter Filtering failures
 ##'
 ##' @references
