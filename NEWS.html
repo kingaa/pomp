@@ -7,6 +7,21 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
+<h3>Changes in <span class="pkg">pomp</span> version 2.7.1</h3>
+
+
+<ul>
+<li><p> As promised, the default value of <code>tol</code> in the particle-filtering algorithms <code>pfilter</code>, <code>pmcmc</code>, <code>mif2</code>, and <code>bsmc2</code> has been changed to zero.
+A warning continues to be issued if <code>tol</code> is set to anything other than 0.
+In a future release, the option to choose a nonzero tolerance will be removed entirely.
+</p>
+</li>
+<li><p> In traces and diagnostic plotting methods, the <code>nfail</code> variable (tracking numbers of filtering failures) has been dropped.
+</p>
+</li></ul>
+
+
+
 <h3>Changes in <span class="pkg">pomp</span> version 2.6.0</h3>
 
 

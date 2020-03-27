@@ -25,7 +25,7 @@ pmcmc(
   Nmcmc = 1,
   proposal,
   Np,
-  tol = 1e-17,
+  tol = 0,
   max.fail = Inf,
   params,
   rinit,
@@ -42,7 +42,7 @@ pmcmc(
   Nmcmc = 1,
   proposal,
   Np,
-  tol = 1e-17,
+  tol = 0,
   max.fail = Inf,
   ...,
   verbose = getOption("verbose", FALSE)
@@ -175,6 +175,14 @@ will override the defaults.
 </p>
 
 
+<h3>Change in default tolerance</h3>
+
+<p>From <span class="pkg">pomp</span> version 2.4.1, warnings have been issued whenever the value of <code>tol</code> is set to anything other than zero.
+As of version 2.7.1, the default value of <code>tol</code> is zero and warnings will be generated whenever it is set by the user to anything else.
+This behavior is in anticipation of a forthcoming release, which will remove the <code>tol</code> and <code>max.fail</code> arguments altogether.
+</p>
+
+
 <h3>Filtering failures</h3>
 
 <p>If the degree of disagreement between model and data becomes sufficiently large, a &ldquo;filtering failure&rdquo; results.
@@ -194,8 +202,6 @@ A warning is generated when this occurs unless the cumulative number of failures
 <h3>References</h3>
 
 <p>C. Andrieu, A. Doucet, and R. Holenstein. Particle Markov chain Monte Carlo methods. <em>Journal of the Royal Statistical Society, Series B</em> <b>72</b>, 269&ndash;342, 2010.
-</p>
-<p>C. Andrieu and G.O. Roberts. The pseudo-marginal approach for computation. <em>Annals of Statistics</em> <b>37</b>, 697&ndash;725, 2009.
 </p>
 
 
@@ -225,5 +231,5 @@ A warning is generated when this occurs unless the cumulative number of failures
 <code><a href="spect_match.html">spect.match</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.7.0.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.7.1.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
