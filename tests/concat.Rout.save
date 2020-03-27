@@ -1,6 +1,6 @@
 
-R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
-Copyright (C) 2019 The R Foundation for Statistical Computing
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -20,9 +20,16 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp)
-Welcome to pomp version 2!
+Welcome to pomp version 2.7.1.0!
+As of version 2.7.1.0, important changes have been made to the
+default settings of the particle filtering algorithms in
+'pfilter', 'mif2', 'pmcmc', 'bsmc2'.
+These changes are not backward compatible.
+See the package NEWS for the details.
+
 For information on upgrading your pomp version < 2 code, see the
-'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
+"pomp version 2 upgrade guide" at https://kingaa.github.io/pomp/.
+
 > 
 > try(pomp:::concat())
 Error : 'c' is not defined for objects of mixed class.

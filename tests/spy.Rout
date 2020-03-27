@@ -1,6 +1,6 @@
 
-R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
-Copyright (C) 2019 The R Foundation for Statistical Computing
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -20,9 +20,16 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp)
-Welcome to pomp version 2!
+Welcome to pomp version 2.7.1.0!
+As of version 2.7.1.0, important changes have been made to the
+default settings of the particle filtering algorithms in
+'pfilter', 'mif2', 'pmcmc', 'bsmc2'.
+These changes are not backward compatible.
+See the package NEWS for the details.
+
 For information on upgrading your pomp version < 2 code, see the
-'pomp version 2 upgrade guide' at https://kingaa.github.io/pomp/.
+"pomp version 2 upgrade guide" at https://kingaa.github.io/pomp/.
+
 > 
 > gompertz() -> po
 > 
@@ -156,8 +163,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2020-01-28 13:03:26.981 -0500 */
-/* Salt: 785C082D768B9598479267F4 */
+/* Time: 2020-03-27 11:14:17.031 -0400 */
+/* Salt: E70E33C14AEFFDAF18E4B05E */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -274,8 +281,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2020-01-28 13:03:27.107 -0500 */
-/* Salt: 113597CA2019AF1E7501DBC3 */
+/* Time: 2020-03-27 11:14:17.160 -0400 */
+/* Salt: 15C553837EC6E5BE73DEC7B4 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -796,8 +803,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2020-01-28 13:03:27.805 -0500 */
-/* Salt: 940CAF2865A7685DBAD7A346 */
+/* Time: 2020-03-27 11:14:17.838 -0400 */
+/* Salt: 7A9C58EDB3012C744CFEDECF */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -992,8 +999,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2020-01-28 13:03:28.347 -0500 */
-/* Salt: 8FAFC84D7CD8961E246FDD92 */
+/* Time: 2020-03-27 11:14:18.421 -0400 */
+/* Salt: 1517FAE533BE04A881FE22CB */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
