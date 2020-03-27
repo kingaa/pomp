@@ -623,7 +623,7 @@ For the `rprocess` portion, we could simulate from the continuous-time Markov pr
 the **pomp** function `gillespie.sim` implements this algorithm.
 However, for practical purposes, the exact algorithm is often prohibitively slow.
 
-If we are willing to live with an approximate simulation scheme, we can use the so-called "tau-leap" algorithm, one version of which is implemented in **pomp** via the `euler.sim` plug-in.
+If we are willing to live with an approximate simulation scheme, we can use the so-called "tau-leap" algorithm, one version of which is implemented in **pomp** via the `euler` plug-in.
 
 This algorithm holds the transition rates $\lambda$, $\mu$, $\gamma$ constant over a small interval of time $\dlta{t}$ and simulates the numbers of births, deaths, and transitions that occur over that interval.
 
@@ -647,7 +647,7 @@ Specifically, the functions `reulermultinom` and `deulermultinom` respectively d
 As the help pages relate, `reulermultinom` and `deulermultinom` parameterize the Euler-multinomial distributions by the size ($S(t)$ in \cref{eq:eulermultinomial}), rates ($\lambda(t)$ and $\mu$), and time interval $\dlta{t}$.
 Obviously, the Euler-multinomial distributions generalize to an arbitrary number of exit routes.
 
-The help page (`?euler.sim`) informs us that to use `euler.sim`, we need to specify a procedure that advances the states from $t$ to $t+\dlta{t}$.
+The help page (`?euler`) informs us that to use `euler`, we need to specify a procedure that advances the states from $t$ to $t+\dlta{t}$.
 We do this via a Csnippet:
 ```{r sir-proc-sim-def}
 sir.step <- "

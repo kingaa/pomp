@@ -1,4 +1,4 @@
-## ----opts,include=FALSE,cache=FALSE--------------------------------------
+## ----opts,include=FALSE,cache=FALSE-------------------------------------------
 options(stringsAsFactors=FALSE)
 library(ggplot2)
 theme_set(theme_bw())
@@ -7,23 +7,23 @@ set.seed(2028866059L)
 
 
 
-## ----parus-data----------------------------------------------------------
+## ----parus-data---------------------------------------------------------------
 loc <- url("https://kingaa.github.io/pomp/vignettes/parus.csv")
 dat <- read.csv(loc)
 head(dat)
 plot(pop~year,data=dat,type='o')
 
 
-## ----parus-pomp1---------------------------------------------------------
+## ----parus-pomp1--------------------------------------------------------------
 library(pomp)
 parus <- pomp(dat,times="year",t0=1959)
 
 
-## ----parus-plot1---------------------------------------------------------
+## ----parus-plot1--------------------------------------------------------------
 plot(parus)
 
 
-## ----parus-sim-defn------------------------------------------------------
+## ----parus-sim-defn-----------------------------------------------------------
 stochStep <- Csnippet("
   N = r*N*exp(-c*N+rnorm(0,sigma));
 ")
@@ -37,22 +37,22 @@ pomp(
 ) -> parus
 
 
-## ----ricker-first-sim----------------------------------------------------
+## ----ricker-first-sim---------------------------------------------------------
 sim <- simulate(parus, params=c(N_0=1,r=12,c=1,sigma=0.5),
                 format="data.frame")
 
 plot(N~year,data=sim,type='o')
 
 
-## ----parus-rmeas-defn----------------------------------------------------
+## ----parus-rmeas-defn---------------------------------------------------------
 rmeas <- Csnippet("pop = rpois(phi*N);")
 
 
-## ----parus-dmeas-defn----------------------------------------------------
+## ----parus-dmeas-defn---------------------------------------------------------
 dmeas <- Csnippet("lik = dpois(pop,phi*N,give_log);")
 
 
-## ----parus-add-meas------------------------------------------------------
+## ----parus-add-meas-----------------------------------------------------------
 pomp(parus,
      rmeasure=rmeas,
      dmeasure=dmeas,
@@ -61,11 +61,11 @@ pomp(parus,
 ) -> parus
 
 
-## ----ricker-add-params---------------------------------------------------
+## ----ricker-add-params--------------------------------------------------------
 coef(parus) <- c(N_0=1,r=20,c=1,sigma=0.1,phi=200)
 
 
-## ----ricker-second-sim,results='markup',fig.height=6,fig.width=5---------
+## ----ricker-second-sim,results='markup',fig.height=6,fig.width=5--------------
 library(ggplot2)
 
 sims <- simulate(parus,nsim=3,format="data.frame",include.data=TRUE)
@@ -76,26 +76,26 @@ ggplot(data=sims,
   facet_wrap(~.id,ncol=1,scales="free_y")
 
 
-## ----plot-ricker---------------------------------------------------------
+## ----plot-ricker--------------------------------------------------------------
 plot(parus)
 
 
-## ----sim-ricker1---------------------------------------------------------
+## ----sim-ricker1--------------------------------------------------------------
 x <- simulate(parus)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 class(x)
 plot(x)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 y <- as.data.frame(parus)
 head(y)
 head(simulate(parus,format="data.frame"))
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 x <- simulate(parus,nsim=10)
 class(x)
 sapply(x,class)
@@ -104,7 +104,7 @@ head(x)
 str(x)
 
 
-## ----fig.height=8--------------------------------------------------------
+## ----fig.height=8-------------------------------------------------------------
 library(ggplot2)
 x <- simulate(parus,nsim=9,format="data.frame",include.data=TRUE)
 ggplot(data=x,aes(x=year,y=pop,group=.id,color=(.id=="data")))+
@@ -112,11 +112,11 @@ ggplot(data=x,aes(x=year,y=pop,group=.id,color=(.id=="data")))+
   facet_wrap(~.id,ncol=2)
 
 
-## ----coef-ricker---------------------------------------------------------
+## ----coef-ricker--------------------------------------------------------------
 coef(parus)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 theta <- coef(parus)
 theta[c("r","N_0")] <- c(5,3)
 
@@ -125,13 +125,13 @@ x <- simulate(parus,params=theta)
 plot(x,var="pop")
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 coef(parus,c("r","N_0","sigma")) <- c(5,1.5,0.1)
 coef(parus)
 plot(simulate(parus),var=c("pop","N"))
 
 
-## ----ricker-pfilter------------------------------------------------------
+## ----ricker-pfilter-----------------------------------------------------------
 pf <- pfilter(parus,Np=1000)
 class(pf)
 logLik(pf)
@@ -139,7 +139,7 @@ logLik(pf)
 plot(pf,var=c("ess","cond.loglik"))
 
 
-## ----sir-measmodel-------------------------------------------------------
+## ----sir-measmodel------------------------------------------------------------
 rmeas <- "
   cases = rnbinom_mu(theta, rho * H);
 "
@@ -149,7 +149,7 @@ dmeas <- "
 "
 
 
-## ----sir-proc-sim-def----------------------------------------------------
+## ----sir-proc-sim-def---------------------------------------------------------
 sir.step <- "
   double rate[6];
   double dN[6];
@@ -172,7 +172,7 @@ sir.step <- "
 "
 
 
-## ----sir-pomp-def,eval=T,echo=T,results="hide"---------------------------
+## ----sir-pomp-def,eval=T,echo=T,results="hide"--------------------------------
 sir1 <- simulate(
   times = seq(0, 10, by = 1/52),
   t0 = -1/52, 
@@ -197,13 +197,13 @@ sir1 <- simulate(
   seed = 1914679908L) -> sir1
 
 
-## ----fig.height=5,echo=FALSE---------------------------------------------
+## ----fig.height=5,echo=FALSE--------------------------------------------------
 ops <- options(scipen=-10)
 plot(sir1,mar=c(0,5,2,0))
 options(ops)
 
 
-## ----birthdat,eval=T,echo=F,results="hide"-------------------------------
+## ----birthdat,eval=T,echo=F,results="hide"------------------------------------
 ##' Construct some fake birthrate data.
 birthdat <- data.frame(time=seq(-1,11,by=1/12))
 birthdat$births <- 5e5*bspline.basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
@@ -211,7 +211,7 @@ birthdat$births <- freeze(seed=5853712L,{
   ceiling(rlnorm(n=nrow(birthdat),meanlog=log(birthdat$births),sdlog=0.001))})
 
 
-## ----complex-sir-def,echo=T,eval=T,results="hide"------------------------
+## ----complex-sir-def,echo=T,eval=T,results="hide"-----------------------------
 seas.sir.step <- "
   double rate[6];
   double dN[6];
@@ -269,20 +269,20 @@ sir2 <- simulate(
 )
 
 
-## ----sir2-plot,echo=F,fig.height=6.5-------------------------------------
+## ----sir2-plot,echo=F,fig.height=6.5------------------------------------------
 ops <- options(scipen=-10)
 plot(sir2,mar=c(0,5,2,0))
 options(ops)
 
 
-## ----parus-pfilter1,warning=FALSE----------------------------------------
+## ----parus-pfilter1,warning=FALSE---------------------------------------------
 pf <- replicate(10, pfilter(parus,Np=5000))
 plot(pf[[1]])
 ll <- sapply(pf,logLik)
 logmeanexp(ll,se=TRUE)
 
 
-## ----parus-mif1----------------------------------------------------------
+## ----parus-mif1---------------------------------------------------------------
 mif2(parus, Nmif=30, Np=1000, 
      cooling.fraction.50=0.8,cooling.type="geometric",
      rw.sd=rw.sd(r=0.02,sigma=0.02,phi=0.02,N_0=ivp(0.1))
@@ -291,13 +291,13 @@ mif2(parus, Nmif=30, Np=1000,
 plot(mf)
 
 
-## ----parus-pfilter2------------------------------------------------------
+## ----parus-pfilter2-----------------------------------------------------------
 pf <- replicate(5, pfilter(mf,Np=1000))
 ll <- sapply(pf,logLik)
 logmeanexp(ll,se=TRUE)
 
 
-## ----parus-sim3----------------------------------------------------------
+## ----parus-sim3---------------------------------------------------------------
 simulate(mf,nsim=5,format="data.frame",include.data=TRUE) -> sims
 
 library(ggplot2)
@@ -309,7 +309,7 @@ ggplot(sims,
   facet_wrap(~.id)
 
 
-## ----parus-probe1,fig.height=6,fig.width=6-------------------------------
+## ----parus-probe1,fig.height=6,fig.width=6------------------------------------
 probe(mf, nsim=200, 
       probes=list(
         mean=probe.mean("pop"),
@@ -321,7 +321,7 @@ probe(mf, nsim=200,
 plot(pb)
 
 
-## ----parus-probematch1---------------------------------------------------
+## ----parus-probematch1--------------------------------------------------------
 probe_objfun(pb, nsim=200, est = c("N_0","r"),
   seed = 669237763L) -> pm
 library(subplex)
@@ -331,7 +331,7 @@ summary(pm)
 plot(pm)
 
 
-## ----parus-pmcmc1,fig.height=8-------------------------------------------
+## ----parus-pmcmc1,fig.height=8------------------------------------------------
 priorDens <- "
   lik = dnorm(sigma,0.2,1,1)+
     dnorm(phi,200,100,1)+
@@ -349,7 +349,7 @@ pmcmc(pomp(mf, dprior=Csnippet(priorDens),
 plot(pmh,pars=c("loglik","log.prior","N_0","sigma","r","phi"))
 
 
-## ----parus-coda1---------------------------------------------------------
+## ----parus-coda1--------------------------------------------------------------
 library(coda)
 
 traces(pmh) -> trace
