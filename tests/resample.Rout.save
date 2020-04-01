@@ -18,7 +18,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Welcome to pomp version 2.7.1.0!
+Welcome to pomp version 2.7.2.0!
 As of version 2.7.1.0, important changes have been made to the
 default settings of the particle filtering algorithms in
 'pfilter', 'mif2', 'pmcmc', 'bsmc2'.

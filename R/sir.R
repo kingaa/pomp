@@ -37,6 +37,7 @@ NULL
 ##' @param t0 zero time
 ##' @param times observation times
 ##' @param seed seed of the random number generator
+##' @param delta.t Euler step size
 ##'
 ##' @export
 sir <- function (
@@ -47,7 +48,7 @@ sir <- function (
   S_0 = 26/400, I_0 = 0.001, R_0 = 1-S_0-I_0,
   t0 = 0,
   times = seq(from = t0 + 1/52, to = t0 + 4, by = 1/52),
-  seed=329343545
+  seed=329343545, delta.t = 1/52/20
 ) {
   
   tt0 <- t0
@@ -119,7 +120,7 @@ sir <- function (
         cases += trans[3];		// cases are cumulative recoveries
         if (beta_sd > 0.0)  W += (dW-dt)/beta_sd;"
       ),
-      delta.t=1/52/20
+      delta.t=delta.t
     ),
     skeleton=vectorfield(Csnippet("
       int nrate = 6;

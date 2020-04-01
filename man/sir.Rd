@@ -22,7 +22,8 @@ sir(
   R_0 = 1 - S_0 - I_0,
   t0 = 0,
   times = seq(from = t0 + 1/52, to = t0 + 4, by = 1/52),
-  seed = 329343545
+  seed = 329343545,
+  delta.t = 1/52/20
 )
 
 sir2(
@@ -64,6 +65,8 @@ sir2(
 \item{times}{observation times}
 
 \item{seed}{seed of the random number generator}
+
+\item{delta.t}{Euler step size}
 }
 \value{
 These functions return \sQuote{pomp} objects containing simulated data.

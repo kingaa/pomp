@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.7.2}{
+  \itemize{
+    \item The Euler step size in \code{sir} is now adjustable.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.7.1}{
   \itemize{
     \item As promised, the default value of \code{tol} in the particle-filtering algorithms \code{pfilter}, \code{pmcmc}, \code{mif2}, and \code{bsmc2} has been changed to zero.
