@@ -26,7 +26,8 @@ default:
 .PHONY: clean win wind tests check
 
 dist manual vignettes: export R_QPDF=qpdf
-dist manual vignettes: export R_HOME=$(shell $(REXE) RHOME)
+headers: export LC_COLLATE=C
+roxy headers dist manual vignettes: export R_HOME=$(shell $(REXE) RHOME)
 check xcheck xxcheck: export FULL_TESTS=yes
 revdeps xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
 revdeps session xxcheck htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
@@ -67,7 +68,7 @@ revdeps: install
 	$(REXE) -e "pkgs <- strsplit('$(REVDEPS)',' ')[[1]]; download.packages(pkgs,destdir='library',repos='https://mirrors.nics.utk.edu/cran/')"
 	$(RCMD) check --library=library -o check library/*.tar.gz
 
-roxy: $(SOURCE)
+roxy: $(SOURCE) headers
 	$(REXE) -e "pkgbuild::compile_dll(); devtools::document(roclets=c('rd','collate','namespace'))"
 
 dist: NEWS $(PKGVERS).tar.gz
