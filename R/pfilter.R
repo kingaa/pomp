@@ -233,29 +233,7 @@ pfilter.internal <- function (object, Np,
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
 
-  if (missing(Np) || is.null(Np)) {
-    pStop_(sQuote("Np")," must be specified.")
-  } else if (is.function(Np)) {
-    Np <- tryCatch(
-      vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
-      error = function (e) {
-        pStop_("if ",sQuote("Np")," is a function, it must return ",
-          "a single positive integer.")
-      }
-    )
-  } else if (!is.numeric(Np)) {
-    pStop_(sQuote("Np")," must be a number, a vector of numbers, or a function.")
-  }
-
-  if (length(Np) == 1)
-    Np <- rep(Np,times=ntimes+1)
-  else if (length(Np) != (ntimes+1))
-    pStop_(sQuote("Np")," must have length 1 or length ",ntimes+1,".")
-
-  if (!all(is.finite(Np)) || any(Np <= 0))
-    pStop_("number of particles, ",sQuote("Np"),", must be a positive integer.")
-
-  Np <- as.integer(Np)
+  Np <- np_check(Np,ntimes)
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
@@ -406,4 +384,30 @@ illegal_dmeasure_error <- function (time, loglik, datvals, states, params) {
     "Log likelihood, data, states, and parameters are:\n",
     paste0(m1,": ",m2,collapse="\n")
   )
+}
+
+np_check <- function (Np, ntimes) {
+  if (missing(Np) || is.null(Np)) {
+    pStop_(sQuote("Np")," must be specified.")
+  } else if (is.function(Np)) {
+    Np <- tryCatch(
+      vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
+      error = function (e) {
+        pStop_("if ",sQuote("Np")," is a function, it must return ",
+          "a single positive integer.")
+      }
+    )
+  } else if (!is.numeric(Np)) {
+    pStop_(sQuote("Np")," must be a number, a vector of numbers, or a function.")
+  }
+  
+  if (length(Np) == 1)
+    Np <- rep(Np,times=ntimes+1)
+  else if (length(Np) != (ntimes+1))
+    pStop_(sQuote("Np")," must have length 1 or length ",ntimes+1,".")
+  
+  if (!all(is.finite(Np)) || any(Np <= 0))
+    pStop_("number of particles, ",sQuote("Np"),", must be a positive integer.")
+
+  as.integer(Np)
 }

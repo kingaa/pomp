@@ -132,7 +132,8 @@ Other particle filter methods:
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pred.mean}()},
-\code{\link{pred.var}()}
+\code{\link{pred.var}()},
+\code{\link{wpfilter}()}
 
 Other pomp parameter estimation methods: 
 \code{\link{abc}()},

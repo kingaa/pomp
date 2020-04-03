@@ -13,10 +13,10 @@ static void filt_mean (int, int, int, long double, const double *, const double 
 // if length(weights) == 1, an unweighted average is computed.
 // tracks ancestry of particles if desired.
 // returns all of the above in a named list.
-SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
-                           SEXP predmean, SEXP predvar,
-                           SEXP filtmean, SEXP trackancestry, SEXP doparRS,
-                           SEXP weights, SEXP wave)
+SEXP pfilter (SEXP x, SEXP params, SEXP Np,
+	      SEXP predmean, SEXP predvar,
+	      SEXP filtmean, SEXP trackancestry, SEXP doparRS,
+	      SEXP weights, SEXP wave)
 {
 
   SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue;

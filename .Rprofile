@@ -1,4 +1,4 @@
 options(
-    repos = c(CRAN="https://cran.r-project.org"),
-    useFancyQuotes=FALSE
+  repos = c(CRAN="https://cran.r-project.org"),
+  useFancyQuotes=FALSE
 )

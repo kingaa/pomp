@@ -1,0 +1,54 @@
+
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> png(filename="wpfilter-%02d.png",res=100)
+> 
+> library(pomp)
+Welcome to pomp version 2.7.2.0!
+As of version 2.7.1.0, important changes have been made to the
+default settings of the particle filtering algorithms in
+'pfilter', 'mif2', 'pmcmc', 'bsmc2'.
+These changes are not backward compatible.
+See the package NEWS for the details.
+
+For information on upgrading your pomp version < 2 code, see the
+"pomp version 2 upgrade guide" at https://kingaa.github.io/pomp/.
+
+> 
+> set.seed(9994847L)
+> 
+> ricker() -> po
+> try(wpfilter(po))
+Error : in 'wpfilter': 'Np' must be specified.
+> try(wpfilter(po,Np=NULL))
+Error : in 'wpfilter': 'Np' must be specified.
+> try(wpfilter(po,Np=-10))
+Error : in 'wpfilter': number of particles, 'Np', must be a positive integer.
+> try(wpfilter(po,Np=c(10,20,30)))
+Error : in 'wpfilter': 'Np' must have length 1 or length 52.
+> wpfilter(po,Np=ceiling(runif(52,min=10,max=100)))
+<object of class 'wpfilterd_pomp'>
+> po %>% wpfilter(Np=100) -> pf
+> plot(pf)
+> 
+> dev.off()
+null device 
+          1 
+> 
