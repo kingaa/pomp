@@ -4,6 +4,18 @@
   \itemize{
     \item As promised from version 2.4.1, the \code{tol} and \code{max.fail} arguments have been removed completely from all particle-filtering algorithms, including \code{pfilter}, \code{pmcmc}, \code{bsmc2}, and \code{mif2}.
     See the \href{https://kingaa.github.io/pomp/blog.html}{\pkg{pomp} news blog} (\url{https://kingaa.github.io/pomp/blog.html}) for more information.
+    \item The long-deprecated functions \code{onestep.dens}, \code{onestep.sim}, \code{discrete.time.sim}, \code{euler.sim}, \code{gillespie.sim}, \code{gillespie.hl.sim}, \code{conv.rec}, and \code{values}  have been removed.
+    These have been replaced as follows
+    \tabular{ll}{
+      \code{onestep.dens} \tab direct specification of \code{dprocess} component \cr
+      \code{onestep.sim} \tab \code{onestep} \cr
+      \code{discrete.time.sim} \tab \code{discrete_time} \cr
+      \code{euler.sim} \tab \code{euler} \cr
+      \code{gillespie.sim} \tab \code{gillespie} \cr
+      \code{gillespie.hl.sim} \tab \code{gillespie_hl} \cr
+      \code{conv.rec} \tab \code{traces} \cr
+      \code{values} \tab \code{as.data.frame} or \code{as(x,"data.frame")} \cr
+    }
   }
 }
 \section{Changes in \pkg{pomp} version 2.8.0}{
