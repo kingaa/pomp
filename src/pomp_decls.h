@@ -59,7 +59,7 @@ extern SEXP probe_marginal_solve(SEXP x, SEXP setup, SEXP diff);
 /* src/probe_nlar.c */
 extern SEXP probe_nlar(SEXP x, SEXP lags, SEXP powers);
 /* src/resample.c */
-extern SEXP systematic_resampling(SEXP weights);
+extern SEXP systematic_resampling(SEXP weights, SEXP np);
 extern void nosort_resamp(int nw, double *w, int np, int *p, int offset);
 /* src/rinit.c */
 extern SEXP do_rinit(SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi);

@@ -3,19 +3,20 @@
 #include <Rdefines.h>
 #include "pomp_internal.h"
 
-SEXP systematic_resampling(SEXP weights);
+SEXP systematic_resampling(SEXP weights, SEXP np);
 void nosort_resamp(int nw, double *w, int np, int *p, int offset);
 
-SEXP systematic_resampling (SEXP weights)
+SEXP systematic_resampling (SEXP weights, SEXP np)
 {
-  int n;
+  int m, n;
   SEXP perm;
 
+  m = *(INTEGER(AS_INTEGER(np)));
   n = LENGTH(weights);
-  PROTECT(perm = NEW_INTEGER(n));
+  PROTECT(perm = NEW_INTEGER(m));
   PROTECT(weights = AS_NUMERIC(weights));
   GetRNGstate();
-  nosort_resamp(n,REAL(weights),n,INTEGER(perm),1);
+  nosort_resamp(n,REAL(weights),m,INTEGER(perm),1);
   PutRNGstate();
   UNPROTECT(2);
   return(perm);

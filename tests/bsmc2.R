@@ -97,4 +97,8 @@ try(gompertz %>%
       statenames=c("X"),
       paramnames=c("r","K","sigma")))
 
+smc %>%
+  bsmc2(Np=seq(10,length=12,by=10)) %>%
+  eff.sample.size()
+
 dev.off()

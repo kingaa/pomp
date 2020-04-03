@@ -23,8 +23,6 @@
 ##' @inheritParams pomp
 ##' @inheritParams pfilter
 ##'
-##' @param Np number of particles
-##'
 ##' @param smooth Kernel density smoothing parameter.
 ##' The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
 ##' Thus, \code{smooth=0} means that no noise will be added to parameters.
@@ -185,12 +183,11 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
 
   gnsi <- as.logical(.gnsi)
 
-  if (missing(Np)) pStop_(sQuote("Np")," must be specified.")
-  if (!missing(Np) && (length(Np) > 1 || !is.finite(Np) || Np < 1))
-    pStop_(sQuote("Np")," must be a positive integer.")
-  Np <- as.integer(Np)
+  ntimes <- length(time(object))
 
-  params <- parmat(coef(object),Np)
+  Np <- np_check(Np,ntimes+1)
+
+  params <- parmat(coef(object),Np[1L])
 
   if (!is.numeric(smooth) || length(smooth) != 1 || (!is.finite(smooth)) ||
       (smooth>1) || (smooth<=0))
@@ -205,14 +202,11 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
 
   params <- rprior(object,params=params,.gnsi=gnsi)
 
-  ntimes <- length(time(object))
-  npars <- nrow(params)
   paramnames <- rownames(params)
   prior <- params
 
   times <- time(object,t0=TRUE)
   x <- rinit(object,params=params,.gnsi=gnsi)
-  nvars <- nrow(x)
 
   params <- partrans(object,params,dir="toEst",.gnsi=gnsi)
 
@@ -223,11 +217,6 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
 
   evidence <- as.numeric(rep(NA,ntimes))
   eff.sample.size <- as.numeric(rep(NA,ntimes))
-
-  mu <- array(data=NA,dim=c(nvars,Np,1L))
-  rownames(mu) <- rownames(x)
-  m  <- array(data=NA,dim=c(npars,Np))
-  rownames(m) <- rownames(params)
 
   for (nt in seq_len(ntimes)) {
 
@@ -246,18 +235,18 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
       )
     }
 
-    m <- shrink*params+(1-shrink)*params.mean
+    m <- shrink*params[estind,]+(1-shrink)*params.mean[estind]
 
     ## sample new parameter vector as per L&W AGM (3) and Liu & West eq(3.2)
     pert <- tryCatch(
-      rmvnorm(n=Np,mean=rep(0,nest),sigma=hsq*params.var,method="svd"),
+      rmvnorm(n=Np[nt],mean=rep(0,nest),sigma=hsq*params.var,method="svd"),
       error = function (e)
         pStop("rmvnorm",conditionMessage(e))
     )
 
     if (!all(is.finite(pert))) pStop_("extreme particle depletion") #nocov
 
-    params[estind,] <- m[estind,]+t(pert)
+    params[estind,] <- m+t(pert)
 
     tparams <- partrans(object,params,dir="fromEst",.gnsi=gnsi)
 
@@ -284,9 +273,9 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
       cat("effective sample size =",round(eff.sample.size[nt],1),"\n")
 
     ## Matrix with samples (columns) from filtering distribution theta.t | Y.t
-    smp <- .Call(P_systematic_resampling,weights)
+    smp <- systematic_resample(weights,Np[nt+1])
     x <- x[,smp,drop=FALSE]
-    params[estind,] <- params[estind,smp,drop=FALSE]
+    params <- params[,smp,drop=FALSE]
 
   }
 

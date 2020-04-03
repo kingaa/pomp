@@ -4,7 +4,7 @@
 static const R_CallMethodDef callMethods[] = {
   {"bspline_basis", (DL_FUNC) &bspline_basis, 4},
   {"periodic_bspline_basis", (DL_FUNC) &periodic_bspline_basis, 5},
-  {"systematic_resampling", (DL_FUNC) &systematic_resampling, 1},
+  {"systematic_resampling", (DL_FUNC) &systematic_resampling, 2},
   {"euler_model_simulator", (DL_FUNC) &euler_model_simulator, 11},
   {"lookup_in_table", (DL_FUNC) &lookup_in_table, 2},
   {"load_stack_incr", (DL_FUNC) &load_stack_incr, 1},

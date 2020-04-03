@@ -9,11 +9,14 @@
 ##' @name resample
 ##' @keywords internal
 ##'
+##' @param weights numeric; vector of weights.
+##' @param np integer scalar; number of samples to draw.
+##'
 NULL
 
 ##' @export
 ##' @name systematic_resample
 ##' @rdname resample
 ##'
-systematic_resample <- function (weights)
-  .Call(P_systematic_resampling,weights)
+systematic_resample <- function (weights, Np = length(weights))
+  .Call(P_systematic_resampling,weights,Np)

@@ -87,7 +87,7 @@ Error : in 'bsmc2': 'Np' must be specified.
 > try(bsmc2(po,params=as.list(theta),Np=1))
 Error : in 'bsmc2': no parameters to estimate
 > try(bsmc2(smc,Np=-10))
-Error : in 'bsmc2': 'Np' must be a positive integer.
+Error : in 'bsmc2': number of particles, 'Np', must be a positive integer.
 > try(bsmc2(smc,params=theta,Np=100,
 +   dmeasure=Csnippet("error(\"whoa nelly!\");")))
 Error : in 'bsmc2': in 'dmeasure': whoa nelly!
@@ -154,6 +154,11 @@ Error : in 'bsmc2': 'rprior', 'rprocess', 'dmeasure' are needed basic components
 +       statenames=c("X"),
 +       paramnames=c("r","K","sigma")))
 Error : in 'bsmc2': bad option for 'rprior' argument.
+> 
+> smc %>%
++   bsmc2(Np=seq(10,length=12,by=10)) %>%
++   eff.sample.size()
+ [1]  5.3 14.3 21.1 17.4 11.3 18.6 32.9 61.0 61.1 34.3
 > 
 > dev.off()
 null device 
