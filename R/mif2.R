@@ -270,8 +270,7 @@ setMethod(
 )
 
 mif2.internal <- function (object, Nmif, rw.sd,
-  cooling.type, cooling.fraction.50,
-  Np, ..., verbose,
+  cooling.type, cooling.fraction.50, Np, ..., verbose,
   .ndone = 0L, .indices = integer(0), .paramMatrix = NULL,
   .gnsi = TRUE) {
 
@@ -296,38 +295,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
 
   ntimes <- length(time(object))
 
-  if (is.null(Np)) {
-    pStop_(sQuote("Np")," must be specified.")
-  } else if (is.function(Np)) {
-    Np <- tryCatch(
-      vapply(seq_len(ntimes),Np,numeric(1)),
-      error = function (e) {
-        pStop_("if ",sQuote("Np"),
-          " is a function, it must return a single positive integer.")
-      }
-    )
-  } else if (!is.numeric(Np)) {
-    pStop_(sQuote("Np"),
-      " must be a number, a vector of numbers, or a function.")
-  }
-
-  if (length(Np) == 1) {
-    Np <- rep(Np,times=ntimes)
-  } else if (length(Np) > ntimes) {
-    if (Np[1L] != Np[ntimes+1] || length(Np) > ntimes+1) {
-      pWarn("mif2","Np[k] ignored for k > ",sQuote("length(time(object))"),".")
-    }
-    Np <- head(Np,ntimes)
-  } else if (length(Np) < ntimes) {
-    pStop_(sQuote("Np")," must have length 1 or ",
-      sQuote("length(time(object))"),".")
-  }
-
-  if (!all(is.finite(Np)) || any(Np <= 0))
-    pStop_(sQuote("Np")," must be a positive integer.")
-
-  Np <- as.integer(Np)
-  Np <- c(Np,Np[1L])
+  Np <- mif2_np_check(Np,ntimes)
 
   if (missing(rw.sd))
     pStop_(sQuote("rw.sd")," must be specified!")
@@ -402,6 +370,40 @@ mif2.internal <- function (object, Nmif, rw.sd,
     traces=traces
   )
 
+}
+
+mif2_np_check <- function (Np, ntimes) {
+  if (missing(Np) || is.null(Np)) {
+    pStop_(sQuote("Np")," must be specified.")
+  } else if (is.function(Np)) {
+    Np <- tryCatch(
+      vapply(seq_len(ntimes),Np,numeric(1)),
+      error = function (e) {
+        pStop_("if ",sQuote("Np")," is a function, it must return ",
+          "a single positive integer.")
+      }
+    )
+  } else if (!is.numeric(Np)) {
+    pStop_(sQuote("Np")," must be a number, a vector of numbers, or a function.")
+  }
+
+  if (length(Np) == 1) {
+    Np <- rep(Np,times=ntimes)
+  } else if (length(Np) > ntimes) {
+    if (Np[1L] != Np[ntimes+1] || length(Np) > ntimes+1) {
+      pWarn("mif2","Np[k] ignored for k > ",sQuote("length(time(object))"),".")
+    }
+    Np <- head(Np,ntimes)
+  } else if (length(Np) < ntimes) {
+    pStop_(sQuote("Np")," must have length 1 or ",
+      sQuote("length(time(object))"),".")
+  }
+
+  if (!all(is.finite(Np)) || any(Np <= 0))
+    pStop_(sQuote("Np")," must be a positive integer.")
+
+  Np <- as.integer(Np)
+  c(Np,Np[1L])
 }
 
 mif2.cooling <- function (type, fraction, ntimes) {

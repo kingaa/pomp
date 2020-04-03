@@ -2,6 +2,11 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 3.0.0}{
   \itemize{
+    \item A new, weighted particle filter has been introduced, accessed via the function \code{wpfilter}.
+    This facility is in alpha stage: both implementation and interface may change without warning.
+    \item \code{bsmc2} can now accept a variable number of particles, as do the other particle-filter based algorithms \code{pfilter}, \code{pmcmc}, and \code{mif2}.
+    \item The internal \code{systematic_resample} function now allows the user to specify the number of samples desired.
+    Previously, these were always equal to the number of weights supplied.
     \item As promised from version 2.4.1, the \code{tol} and \code{max.fail} arguments have been removed completely from all particle-filtering algorithms, including \code{pfilter}, \code{pmcmc}, \code{bsmc2}, and \code{mif2}.
     See the \href{https://kingaa.github.io/pomp/blog.html}{\pkg{pomp} news blog} (\url{https://kingaa.github.io/pomp/blog.html}) for more information.
     \item The long-deprecated functions \code{onestep.dens}, \code{onestep.sim}, \code{discrete.time.sim}, \code{euler.sim}, \code{gillespie.sim}, \code{gillespie.hl.sim}, \code{conv.rec}, and \code{values}  have been removed.

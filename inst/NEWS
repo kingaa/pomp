@@ -2,6 +2,19 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._0._0:
 
+        • A new, weighted particle filter has been introduced, accessed
+          via the function ‘wpfilter’.  This facility is in alpha
+          stage: both implementation and interface may change without
+          warning.
+
+        • ‘bsmc2’ can now accept a variable number of particles, as do
+          the other particle-filter based algorithms ‘pfilter’,
+          ‘pmcmc’, and ‘mif2’.
+
+        • The internal ‘systematic_resample’ function now allows the
+          user to specify the number of samples desired.  Previously,
+          these were always equal to the number of weights supplied.
+
         • As promised from version 2.4.1, the ‘tol’ and ‘max.fail’
           arguments have been removed completely from all
           particle-filtering algorithms, including ‘pfilter’, ‘pmcmc’,
