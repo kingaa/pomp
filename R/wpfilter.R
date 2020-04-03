@@ -207,7 +207,7 @@ wpfilter.internal <- function (object, Np, ...,
     if (is.integer(xx)) {
       illegal_dmeasure_error(
         time=times[nt+1],
-        lik=weights[xx],
+        loglik=weights[xx],
         datvals=object@data[,nt],
         states=X[,xx,1L],
         params=params
