@@ -133,17 +133,17 @@ Error : in 'mif2': 'Np' must be a number, a vector of numbers, or a function.
 > try(mif2(po,Nmif=list(),Np=100))
 Error : in 'mif2': 'Nmif' must be a positive integer.
 > try(mif2(po,Nmif=1,Np=Inf))
-Error : in 'mif2': 'Np' must be a positive integer.
+Error : in 'mif2': number of particles, 'Np', must be a positive integer.
 > try(mif2(po,Nmif=1,Np=100))
 Error : in 'mif2': 'rw.sd' must be specified!
 > try(mif2(po,Nmif=1,Np=NULL))
 Error : in 'mif2': 'Np' must be specified.
 > try(mif2(po,Nmif=1,Np=c(3,4)))
-Error : in 'mif2': 'Np' must have length 1 or 'length(time(object))'.
-> mif2(po,Nmif=1,Np=c(rep(100,11),40),rw.sd=rw.sd(sigma=0.1),cooling.frac=0.5)
+Error : in 'mif2': 'Np' must have length 1 or length 11.
+> try(mif2(po,Nmif=1,Np=c(rep(100,10),40),rw.sd=rw.sd(sigma=0.1),cooling.frac=0.5))
+Error : in 'mif2': Np[1] must equal Np[11].
+> mif2(po,Nmif=1,Np=c(rep(100,9),40,100),rw.sd=rw.sd(sigma=0.1),cooling.frac=0.5)
 <object of class 'mif2d_pomp'>
-Warning message:
-in 'mif2': Np[k] ignored for k > 'length(time(object))'. 
 > try(mif2(po,Nmif=1,Np=100,rw.sd=3))
 Error : in 'mif2': 'rw.sd' should be specified using the 'rw.sd' function. See '?mif2'.
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd()))
@@ -173,9 +173,7 @@ Error : in 'mif2': 'list' object cannot be coerced to type 'double'
 > try(mif2(po,params=c(3,2,1),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
 Error : in 'mif2': 'params' must be a named numeric vector.
 > try(mif2(po,Nmif=1,Np=100:1000,rw.sd=rw.sd(sigma=0.1)))
-Error : in 'mif2': 'cooling.fraction.50' is a required argument.
-In addition: Warning message:
-in 'mif2': Np[k] ignored for k > 'length(time(object))'. 
+Error : in 'mif2': 'Np' must have length 1 or length 11.
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
 +   cooling.fraction.50=0.1,cooling.type="geometric",
 +   params=as.list(coef(po)))
@@ -193,12 +191,12 @@ Log likelihood, data, states, and parameters are:
   time:            1
 loglik:           NA
      Y:      1.02624
-     X:     0.937703
+     X:      1.10739
      K:            1
      r:          0.1
- sigma:    0.0991013
+ sigma:    0.0996772
    tau:          0.1
-   X_0:      1.00091
+   X_0:     0.990808
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),
 +   cooling.type="hyper",cooling.fraction.50=0.1,
 +   drpocess="oops",

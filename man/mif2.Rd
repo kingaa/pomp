@@ -76,14 +76,14 @@ i.e., the manner and rate with which the intensity of the parameter perturbation
 \code{cooling.type} specifies the nature of the cooling schedule.
 See below (under \dQuote{Specifying the perturbations}) for more detail.}
 
-\item{Np}{the number of particles to use in filtering.
+\item{Np}{the number of particles to use.
 This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
-Alternatively, if one wishes the number of particles to vary across timestep, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object))}) or as a function taking a positive integer argument.
-In the latter case, \code{Np(n)} must be a single positive integer,
-representing the number of particles to be used at the \code{n}-th timestep:
-\code{Np(1)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
-\code{Np(2)}, from \code{time(object)[1]} to \code{time(object)[2]},
-and so on.}
+Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers of length \preformatted{length(time(object,t0=TRUE))} or as a function taking a positive integer argument.
+In the latter case, \code{Np(k)} must be a single positive integer, representing the number of particles to be used at the \code{k}-th timestep:
+\code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
+\code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
+and so on,
+while when \code{T=length(time(object))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -130,6 +130,12 @@ This extra variability effectively smooths the likelihood surface and combats pa
 As the iterations progress, the magnitude of the perturbations is diminished according to a user-specified cooling schedule.
 The algorithm is presented and justified in Ionides et al. (2015).
 }
+\section{Number of particles}{
+
+If \code{Np} is anything other than a constant, the user must take care that the number of particles requested at the end of the time series matches that requested at the beginning.
+In particular, if \code{T=length(time(object))}, then one should have \code{Np[1]==Np[T+1]} when \code{Np} is furnished as an integer vector and \code{Np(0)==Np(T)} when \code{Np} is furnished as a function.
+}
+
 \section{Methods}{
 
 The following methods are available for such an object:

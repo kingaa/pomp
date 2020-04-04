@@ -20,14 +20,6 @@
 ##' @inheritParams pomp
 ##' @inheritParams pfilter
 ##' @param Nmif The number of filtering iterations to perform.
-##' @param Np the number of particles to use in filtering.
-##' This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
-##' Alternatively, if one wishes the number of particles to vary across timestep, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object))}) or as a function taking a positive integer argument.
-##' In the latter case, \code{Np(n)} must be a single positive integer,
-##' representing the number of particles to be used at the \code{n}-th timestep:
-##' \code{Np(1)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
-##' \code{Np(2)}, from \code{time(object)[1]} to \code{time(object)[2]},
-##' and so on.
 ##' @param rw.sd specification of the magnitude of the random-walk perturbations that will be applied to some or all model parameters.
 ##' Parameters that are to be estimated should have positive perturbations specified here.
 ##' The specification is given using the \code{\link{rw.sd}} function, which creates a list of unevaluated expressions.
@@ -46,6 +38,10 @@
 ##' @return
 ##' Upon successful completion, \code{mif2} returns an object of class
 ##' \sQuote{mif2d_pomp}.
+##'
+##' @section Number of particles:
+##' If \code{Np} is anything other than a constant, the user must take care that the number of particles requested at the end of the time series matches that requested at the beginning.
+##' In particular, if \code{T=length(time(object))}, then one should have \code{Np[1]==Np[T+1]} when \code{Np} is furnished as an integer vector and \code{Np(0)==Np(T)} when \code{Np} is furnished as a function.
 ##'
 ##' @section Methods:
 ##' The following methods are available for such an object:
@@ -295,7 +291,9 @@ mif2.internal <- function (object, Nmif, rw.sd,
 
   ntimes <- length(time(object))
 
-  Np <- mif2_np_check(Np,ntimes)
+  Np <- np_check(Np,ntimes)
+  if (Np[1L] != Np[ntimes+1L])
+    pStop_("Np[1] must equal Np[",ntimes+1L,"].")
 
   if (missing(rw.sd))
     pStop_(sQuote("rw.sd")," must be specified!")
@@ -370,40 +368,6 @@ mif2.internal <- function (object, Nmif, rw.sd,
     traces=traces
   )
 
-}
-
-mif2_np_check <- function (Np, ntimes) {
-  if (missing(Np) || is.null(Np)) {
-    pStop_(sQuote("Np")," must be specified.")
-  } else if (is.function(Np)) {
-    Np <- tryCatch(
-      vapply(seq_len(ntimes),Np,numeric(1)),
-      error = function (e) {
-        pStop_("if ",sQuote("Np")," is a function, it must return ",
-          "a single positive integer.")
-      }
-    )
-  } else if (!is.numeric(Np)) {
-    pStop_(sQuote("Np")," must be a number, a vector of numbers, or a function.")
-  }
-
-  if (length(Np) == 1) {
-    Np <- rep(Np,times=ntimes)
-  } else if (length(Np) > ntimes) {
-    if (Np[1L] != Np[ntimes+1] || length(Np) > ntimes+1) {
-      pWarn("mif2","Np[k] ignored for k > ",sQuote("length(time(object))"),".")
-    }
-    Np <- head(Np,ntimes)
-  } else if (length(Np) < ntimes) {
-    pStop_(sQuote("Np")," must have length 1 or ",
-      sQuote("length(time(object))"),".")
-  }
-
-  if (!all(is.finite(Np)) || any(Np <= 0))
-    pStop_(sQuote("Np")," must be a positive integer.")
-
-  Np <- as.integer(Np)
-  c(Np,Np[1L])
 }
 
 mif2.cooling <- function (type, fraction, ntimes) {

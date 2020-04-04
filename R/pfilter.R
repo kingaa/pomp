@@ -23,7 +23,7 @@
 ##' \code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
 ##' \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
 ##' and so on,
-##' while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.
+##' while when \code{T=length(time(object))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.
 ##'
 ##' @param pred.mean logical; if \code{TRUE}, the prediction means are calculated for the state variables and parameters.
 ##'

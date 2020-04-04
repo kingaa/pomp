@@ -39,7 +39,7 @@ In the latter case, \code{Np(k)} must be a single positive integer, representing
 \code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
 \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
 and so on,
-while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.}
+while when \code{T=length(time(object))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.}
 
 \item{smooth}{Kernel density smoothing parameter.
 The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
