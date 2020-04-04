@@ -24,7 +24,8 @@
 ##'   When \code{give_log == 1}, \code{lik} should contain the log of the prior probability density.
 ##'   \item Hyperparameters can be included in the ordinary parameter list.
 ##' }
-
+##' \link[=Csnippet]{General rules for writing C snippets can be found here}.
+##' 
 ##' Alternatively, one can furnish \R functions for one or both of these arguments.
 ##' In this case, \code{rprior} must be a function of prototype \preformatted{
 ##'   f(params, \dots)}
