@@ -3,7 +3,7 @@
 
 .onAttach <- function (...) {
   packageStartupMessage(
-    "Welcome to pomp version ",utils::packageVersion("pomp"),"!\n",
+    "Welcome to pomp!\n",
     "As of version 2.7.1.0, important changes have been made to the\n",
     "default settings of the particle filtering algorithms in\n",
     paste(sapply(c("pfilter","mif2","pmcmc","bsmc2"),sQuote),collapse=", "),".\n",

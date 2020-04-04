@@ -20,7 +20,7 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp)
-Welcome to pomp version 2.7.2.0!
+Welcome to pomp!
 As of version 2.7.1.0, important changes have been made to the
 default settings of the particle filtering algorithms in
 'pfilter', 'mif2', 'pmcmc', 'bsmc2'.
@@ -163,8 +163,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2020-03-31 10:59:55.301 -0400 */
-/* Salt: FA81E2F4E061EE73BA413408 */
+/* Time: 2020-04-04 08:41:40.627 -0400 */
+/* Salt: DEE1C2692A5275FBB69344F9 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -281,8 +281,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2020-03-31 10:59:55.383 -0400 */
-/* Salt: 99C0986A7E4BFA6E6172355E */
+/* Time: 2020-04-04 08:41:40.755 -0400 */
+/* Salt: 22A93381318D7EB0B5842A92 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -803,8 +803,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2020-03-31 10:59:55.776 -0400 */
-/* Salt: EFBD9C7456DAE9A10A201117 */
+/* Time: 2020-04-04 08:41:41.381 -0400 */
+/* Salt: 74BCCF2908E4771382CC6314 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -999,8 +999,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2020-03-31 10:59:56.093 -0400 */
-/* Salt: DCC5AD3A82E36CFE256B1460 */
+/* Time: 2020-04-04 08:41:41.957 -0400 */
+/* Salt: CDF4AFE56E06374EF9E0457B */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

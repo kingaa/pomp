@@ -21,7 +21,7 @@ Type 'q()' to quit R.
 > options(digits=2)
 > 
 > library(pomp)
-Welcome to pomp version 2.7.2.0!
+Welcome to pomp!
 As of version 2.7.1.0, important changes have been made to the
 default settings of the particle filtering algorithms in
 'pfilter', 'mif2', 'pmcmc', 'bsmc2'.
