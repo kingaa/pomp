@@ -42,17 +42,21 @@ This can be a C snippet, an <span style="font-family: Courier New, Courier; colo
 <p>The skeleton is a dynamical system that expresses the central tendency of the unobserved Markov state process.
 As such, it is not uniquely defined, but can be both interesting in itself and useful in practice.
 In <span class="pkg">pomp</span>, the skeleton is used by <code><a href="trajectory.html">trajectory</a></code> and <code><a href="traj_match.html">traj.match</a></code>.
-If the state process is a discrete-time stochastic process, then the skeleton is a discrete-time map.
+</p>
+<p>If the state process is a discrete-time stochastic process, then the skeleton is a discrete-time map.
 To specify it, provide </p>
 <pre>
   skeleton = map(f, delta.t)</pre>
 <p>to <code>pomp</code>, where <code>f</code> implements the map and <code>delta.t</code> is the size of the timestep covered at one map iteration.
-If the state process is a continuous-time stochastic process, then the skeleton is a vectorfield (i.e., a system of ordinary differential equations).
+</p>
+<p>If the state process is a continuous-time stochastic process, then the skeleton is a vectorfield (i.e., a system of ordinary differential equations).
 To specify it, supply </p>
 <pre>
   skeleton = vectorfield(f)</pre>
 <p>to <code>pomp</code>, where <code>f</code> implements the vectorfield, i.e., the right-hand-size of the differential equations.
-In either case, <code>f</code> can be furnished either as a C snippet (the preferred choice), or an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function.
+</p>
+<p>In either case, <code>f</code> can be furnished either as a C snippet (the preferred choice), or an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function.
+<a href="csnippet.html">General rules for writing C snippets can be found here</a>.
 In writing a <code>skeleton</code> C snippet, be aware that:
 </p>
 
@@ -72,7 +76,8 @@ The goal of such a snippet is to compute all the components.
 </li></ol>
 
 <p>The tutorials on the <a href="https://kingaa.github.io/pomp/">package website</a> give some examples.
-If <code>f</code> is an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, its arguments should be taken from among the state variables, parameters, covariates, and time.
+</p>
+<p>If <code>f</code> is an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, its arguments should be taken from among the state variables, parameters, covariates, and time.
 It must also take the argument &lsquo;<code>...</code>&rsquo;.
 As with the other basic components, <code>f</code> may take additional arguments, provided these are passed along with it in the call to <code>pomp</code>.
 The function <code>f</code> must return a numeric vector of the same length as the number of state variables, which contains the value of the map or vectorfield at the required point and time.
@@ -105,5 +110,5 @@ It will yield missing values (<code>NA</code>) for all state variables.
 <code><a href="userdata.html">userdata</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.7.1.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.7.2.1 <a href="00Index.html">Index</a>]</div>
 </body></html>
