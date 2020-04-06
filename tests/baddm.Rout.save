@@ -1,0 +1,98 @@
+
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> png(filename="baddm-%02d.png",res=100)
+> options(digits=2)
+> 
+> library(pomp)
+Welcome to pomp!
+As of version 2.7.1.0, important changes have been made to the
+default settings of the particle filtering algorithms in
+'pfilter', 'mif2', 'pmcmc', 'bsmc2'.
+These changes are not backward compatible.
+See the package NEWS for the details.
+
+For information on upgrading your pomp version < 2 code, see the
+"pomp version 2 upgrade guide" at https://kingaa.github.io/pomp/.
+
+> 
+> set.seed(398585L)
+> 
+> try(
++   gompertz() %>%
++     pfilter(Np=10,dmeasure=function(...,log) Inf)
++ )
+Error : in 'pfilter': 'dmeasure' with log=TRUE returns illegal value.
+Log likelihood, data, states, and parameters are:
+  time:            1
+loglik:          Inf
+     Y:      1.02624
+     X:     0.908756
+     K:            1
+     r:          0.1
+ sigma:          0.1
+   tau:          0.1
+   X_0:            1
+> 
+> try(
++   gompertz() %>%
++     mif2(
++       Np=10,Nmif=2,
++       dmeasure=function(...,log) NaN,
++       rw.sd=rw.sd(r=0.01),
++       cooling.fraction.50=0.1
++     )
++ )
+Error : in 'mif2': 'dmeasure' with log=TRUE returns illegal value.
+Log likelihood, data, states, and parameters are:
+  time:            1
+loglik:          NaN
+     Y:      1.02624
+     X:     0.934271
+     K:            1
+     r:     0.100409
+ sigma:          0.1
+   tau:          0.1
+   X_0:            1
+> 
+> try(
++   gompertz() %>%
++     bsmc2(
++       Np=10,
++       rprior=function(...)c(r=runif(n=1,min=0,max=1)),
++       dmeasure=function(...,log) NA_real_,
++       partrans=NULL
++     )
++ )
+Error : in 'bsmc2': 'dmeasure' with log=TRUE returns illegal value.
+Log likelihood, data, states, and parameters are:
+  time:            1
+loglik:           NA
+     Y:      1.02624
+     X:      1.09411
+     K:            1
+     r:     0.714618
+ sigma:          0.1
+   tau:          0.1
+   X_0:            1
+> 
+> dev.off()
+null device 
+          1 
+> 

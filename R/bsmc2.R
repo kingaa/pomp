@@ -258,9 +258,19 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
       times=times[nt+1],params=tparams,log=FALSE,.gnsi=gnsi)
     gnsi <- FALSE  ## all native symbols have been looked up
 
-    if (any(!is.finite(weights)))
-      pStop_("non-finite likelihoods generated.")
-    
+    ## the following is triggered by the first illegal weight value
+    xx <- is.finite(weights) | isTRUE(weights==-Inf)
+    if (!all(xx)) {
+      xx <- which(!xx)[1L]
+      illegal_dmeasure_error(
+        time=times[nt+1],
+        loglik=weights[xx],
+        datvals=object@data[,nt],
+        states=xpred[,xx,1L],
+        params=params[,xx]
+      )
+    }
+
     x[,] <- xpred
 
     dim(weights) <- NULL ### needed?  FIXME
