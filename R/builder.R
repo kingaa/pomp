@@ -122,7 +122,7 @@ hitch <- function (..., templates,
 
   if (anyDuplicated(c(statenames,paramnames,obsnames,covarnames))) {
     pStop(ep,"the variable names in ",sQuote("statenames"),", ",
-      sQuote("paramnames"),", ",sQuote("covarnames"),", ",
+      sQuote("paramnames"),", ",sQuote("covarnames"),
       ", and ",sQuote("obsnames")," must be unique and disjoint.")
   }
 
