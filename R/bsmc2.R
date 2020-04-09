@@ -253,9 +253,9 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
     xpred <- rprocess(object,x0=x,t0=times[nt],times=times[nt+1],
       params=tparams,.gnsi=gnsi)
 
-    ## evaluate likelihood of observation given xpred (from L&W AGM (4))
+    ## evaluate log likelihood of observation given xpred
     weights <- dmeasure(object,y=object@data[,nt,drop=FALSE],x=xpred,
-      times=times[nt+1],params=tparams,log=FALSE,.gnsi=gnsi)
+      times=times[nt+1],params=tparams,log=TRUE,.gnsi=gnsi)
     gnsi <- FALSE  ## all native symbols have been looked up
 
     ## the following is triggered by the first illegal weight value
@@ -267,17 +267,18 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
         loglik=weights[xx],
         datvals=object@data[,nt],
         states=xpred[,xx,1L],
-        params=params[,xx]
+        params=tparams[,xx]
       )
     }
 
     x[,] <- xpred
 
-    dim(weights) <- NULL ### needed?  FIXME
+    dim(weights) <- NULL
+    evidence[nt] <- lmw <- logmeanexp(weights)
+    weights <- exp(weights-lmw)
     weights <- weights/sum(weights)
     ## compute effective sample-size
     eff.sample.size[nt] <- 1/crossprod(weights)
-    evidence[nt] <- log(mean(weights))
 
     if (verbose)
       cat("effective sample size =",round(eff.sample.size[nt],1),"\n")
