@@ -1,5 +1,4 @@
 ##' @include pomp-package.R
-##' @importFrom utils packageVersion
 
 .onAttach <- function (...) {
   packageStartupMessage(
