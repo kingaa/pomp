@@ -18,7 +18,7 @@ PKGVERS = $(PKG)_$(VERSION)
 SOURCE=$(shell ls R/*R src/*.c src/*.h data/*)
 CSOURCE=$(shell ls src/*.c)
 TESTS=$(shell ls tests/*R)
-REVDEPS=spaero epimdr DTAT CollocInfer
+REVDEPS=spaero epimdr CollocInfer
 
 default:
 	@echo $(PKGVERS)
@@ -29,6 +29,7 @@ dist manual vignettes: export R_QPDF=qpdf
 headers: export LC_COLLATE=C
 roxy headers dist manual vignettes: export R_HOME=$(shell $(REXE) RHOME)
 check xcheck xxcheck: export FULL_TESTS=yes
+dist revdeps session tests check xcheck xxcheck: export R_KEEP_PKG_SOURCE=yes
 revdeps xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
 revdeps session xxcheck htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
 session: export R_DEFAULT_PACKAGES=datasets,utils,grDevices,graphics,stats,methods,pomp,tidyverse
@@ -77,7 +78,8 @@ $(PKGVERS).tar.gz: $(SOURCE) $(TESTS) includes headers
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both --md5 .
 
 src/pomp_decls.h: $(CSOURCE)
-	LC_COLLATE=C cproto -I $(shell R RHOME)/include -e $(CSOURCE) > $@
+	cproto -I $(R_HOME)/include -e $(CSOURCE) > tmp.h
+	mv tmp.h $@
 
 binary: dist
 	mkdir -p plib

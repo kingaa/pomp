@@ -44,7 +44,7 @@ NULL
 > 
 > try(hitch(templates=pomp:::workhorse_templates,
 +   statenames=c("a","b"),paramnames=c("b","c")))
-Error : in 'hitch': the variable names in 'statenames', 'paramnames', 'covarnames', , and 'obsnames' must be unique and disjoint.
+Error : in 'hitch': the variable names in 'statenames', 'paramnames', 'covarnames', and 'obsnames' must be unique and disjoint.
 > 
 > hitch(step.fn=Csnippet("int bob; bob = 3"),
 +   templates=pomp:::workhorse_templates,
