@@ -90,7 +90,7 @@ if (window.hljs) {
 <li><a href="#extrapolation-warnings"><span class="toc-section-number">4.5</span> I get warnings about extrapolation in ‘table_lookup’. What is this about?</a></li>
 </ul></li>
 <li><a href="#interpreting-results"><span class="toc-section-number">5</span> Interpreting results</a><ul>
-<li><a href="#mif-vs-pfilter-likelihood"><span class="toc-section-number">5.1</span> Is the likelihood <code>mif</code> gives me the same as the likelihood I get from <code>pfilter</code>?</a></li>
+<li><a href="#mif-vs-pfilter-likelihood"><span class="toc-section-number">5.1</span> Is the likelihood <code>mif2</code> gives me the same as the likelihood I get from <code>pfilter</code>?</a></li>
 <li><a href="#decreasing-mif-likelihood"><span class="toc-section-number">5.2</span> Why does the likelihood seem to be decreasing, not increasing, with <code>mif2</code> iterations?</a></li>
 </ul></li>
 </ul>
@@ -498,9 +498,9 @@ list()</code></pre>
 <div id="interpreting-results" class="section level1">
 <h1><span class="header-section-number">5</span> Interpreting results</h1>
 <div id="mif-vs-pfilter-likelihood" class="section level2">
-<h2><span class="header-section-number">5.1</span> Is the likelihood <code>mif</code> gives me the same as the likelihood I get from <code>pfilter</code>?</h2>
-<p>No. As its name suggests, iterated filtering (IF) algorithms (those implemented in <strong>pomp</strong> as <code>mif</code> and <code>mif2</code>) work by iteratively performing particle filtering on a model, but that model is slightly different from the focal model. In particular, IF pertubs the parameters of the model by adding random noise to them. Actually, if one were to simulate from this model, the parameters would be taking random walks. This effectively smooths the likelihood surface, combats particle depletion, and—critically for IF—allows local exploration of the parameter space. The likelihood that <code>mif</code> and <code>mif2</code> report is the estimated likelihood of this perturbed model. It can be either higher or lower than that of the focal model. Iterated filtering works by gradually reducing the magnitude of the perturbations with successive iterations (“cooling”), so that the perturbed model gradually becomes more similar to the focal model.</p>
-<p>To compute the likelihood at a point returned by <code>mif</code> or <code>mif2</code>, it is necessary to re-run the particle filter. By doing the latter several times, one can obtain a more accurate estimate of the likelihood along with a measure of the associated uncertainty.</p>
+<h2><span class="header-section-number">5.1</span> Is the likelihood <code>mif2</code> gives me the same as the likelihood I get from <code>pfilter</code>?</h2>
+<p>No. As its name suggests, the iterated filtering (IF) algorithm (that implemented in <strong>pomp</strong> as <code>mif2</code>) work by iteratively performing particle filtering on a model, but that model is slightly different from the focal model. In particular, IF pertubs the parameters of the model by adding random noise to them. Actually, if one were to simulate from this model, the parameters would be taking random walks. This effectively smooths the likelihood surface, combats particle depletion, and—critically for IF—allows local exploration of the parameter space. The likelihood that <code>mif2</code> reports is the estimated likelihood of this perturbed model. It can be either higher or lower than that of the focal model. Iterated filtering works by gradually reducing the magnitude of the perturbations with successive iterations (“cooling”), so that the perturbed model gradually becomes more similar to the focal model.</p>
+<p>To compute the likelihood at a point returned by <code>mif2</code>, it is necessary to re-run the particle filter. By doing the latter several times, one can obtain a more accurate estimate of the likelihood along with a measure of the associated uncertainty.</p>
 </div>
 <div id="decreasing-mif-likelihood" class="section level2">
 <h2><span class="header-section-number">5.2</span> Why does the likelihood seem to be decreasing, not increasing, with <code>mif2</code> iterations?</h2>

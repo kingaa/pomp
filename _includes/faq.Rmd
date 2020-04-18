@@ -560,17 +560,17 @@ To avoid warnings (and the potential inaccuracy they signal) in this case, it ma
 
 # Interpreting results
 
-## Is the likelihood `mif` gives me the same as the likelihood I get from `pfilter`? {#mif-vs-pfilter-likelihood}
+## Is the likelihood `mif2` gives me the same as the likelihood I get from `pfilter`? {#mif-vs-pfilter-likelihood}
 
-No.  As its name suggests, iterated filtering (IF) algorithms (those implemented in **pomp** as `mif` and `mif2`) work by iteratively performing particle filtering on a model, but that model is slightly different from the focal model.
+No.  As its name suggests, the iterated filtering (IF) algorithm (that implemented in **pomp** as `mif2`) work by iteratively performing particle filtering on a model, but that model is slightly different from the focal model.
 In particular, IF pertubs the parameters of the model by adding random noise to them.
 Actually, if one were to simulate from this model, the parameters would be taking random walks.
 This effectively smooths the likelihood surface, combats particle depletion, and---critically for IF---allows local exploration of the parameter space.
-The likelihood that `mif` and `mif2` report is the estimated likelihood of this perturbed model.
+The likelihood that `mif2` reports is the estimated likelihood of this perturbed model.
 It can be either higher or lower than that of the focal model.
 Iterated filtering works by gradually reducing the magnitude of the perturbations with successive iterations ("cooling"), so that the perturbed model gradually becomes more similar to the focal model.
 
-To compute the likelihood at a point returned by `mif` or `mif2`, it is necessary to re-run the particle filter.
+To compute the likelihood at a point returned by `mif2`, it is necessary to re-run the particle filter.
 By doing the latter several times, one can obtain a more accurate estimate of the likelihood along with a measure of the associated uncertainty.
 
 ## Why does the likelihood seem to be decreasing, not increasing, with `mif2` iterations? {#decreasing-mif-likelihood}
