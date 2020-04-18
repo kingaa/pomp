@@ -480,10 +480,10 @@ where `mu` is a vector containing the rates.
 
 A common error message is 
 ```
-Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value
+Error : in ‘pfilter’: ‘dmeasure’ returns illegal value
 ```
 
-This error arises because your `dmeasure` function is giving a non-finite value of the likelihood.
+This error arises because your `dmeasure` function is giving a negative, infinite, `NA`, or otherwise illegal value of the likelihood.
 Common causes are:
 
 - negative or non-integer state variables when the dmeasure assumes non-negative or integer values,
