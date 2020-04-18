@@ -2,12 +2,14 @@
 
 ## For pomp 2:
 
+- iterated EnKF
 - include 'mcap' function
-- add documentation for existing "todo" issues
+- documentation for existing issues with "todo" label
 - for log-barycentric transformations, check that parameters are contiguous
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - more/better examples
 	- need examples of objective function methods
+	- `pmcmc` examples
 - more toy models
 - get the metaphors straight! "horses" vs "hitches" vs "workhorses" ("wagons"?)
 - manual pages on the organization of the package
