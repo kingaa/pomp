@@ -476,7 +476,7 @@ where `mu` is a vector containing the rates.
 
 # Error messages and warnings. {#error-messages}
 
-## I see an error about `dmeasure` returning non-finite values.  What does it mean? {#non-finite-dmeasure}
+## I see an error about `dmeasure` returning illegal values.  What does it mean? {#illegal-dmeasure}
 
 A common error message is 
 ```

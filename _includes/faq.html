@@ -83,7 +83,7 @@ if (window.hljs) {
 <li><a href="#eulermultinomial-approximation"><span class="toc-section-number">3.6</span> What is the Euler-multinomial approximation?</a></li>
 </ul></li>
 <li><a href="#error-messages"><span class="toc-section-number">4</span> Error messages and warnings.</a><ul>
-<li><a href="#non-finite-dmeasure"><span class="toc-section-number">4.1</span> I see an error about <code>dmeasure</code> returning non-finite values. What does it mean?</a></li>
+<li><a href="#illegal-dmeasure"><span class="toc-section-number">4.1</span> I see an error about <code>dmeasure</code> returning illegal values. What does it mean?</a></li>
 <li><a href="#why-cant-i-run-csnippets"><span class="toc-section-number">4.2</span> Why can’t I run the demos, or other codes that use the C snippet facility?</a></li>
 <li><a href="#could-not-compile"><span class="toc-section-number">4.3</span> Why do I get an error message “Could not compile shared-object library” when I run <code>pomp</code>?</a></li>
 <li><a href="#could-not-find-symbol-recursive"><span class="toc-section-number">4.4</span> I get the error message ‘could not find symbol “recursive” in environment of the generic function’ when I use the <code>c</code> operator to concatenate certain kinds of <strong>pomp</strong> structures. How do I fix this?</a></li>
@@ -446,8 +446,8 @@ bsflu %&gt;%
 </div>
 <div id="error-messages" class="section level1">
 <h1><span class="header-section-number">4</span> Error messages and warnings.</h1>
-<div id="non-finite-dmeasure" class="section level2">
-<h2><span class="header-section-number">4.1</span> I see an error about <code>dmeasure</code> returning non-finite values. What does it mean?</h2>
+<div id="illegal-dmeasure" class="section level2">
+<h2><span class="header-section-number">4.1</span> I see an error about <code>dmeasure</code> returning illegal values. What does it mean?</h2>
 <p>A common error message is</p>
 <pre><code>Error : in ‘pfilter’: ‘dmeasure’ returns illegal value</code></pre>
 <p>This error arises because your <code>dmeasure</code> function is giving a negative, infinite, <code>NA</code>, or otherwise illegal value of the likelihood. Common causes are:</p>
