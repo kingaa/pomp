@@ -127,7 +127,13 @@ flow.internal <- function (object, x0, t0, times, params, ...,
   } else if (type == skeletontype$vectorfield) {   ## VECTORFIELD
 
     znames <- object@accumvars
-    if (length(znames)>0) x0[znames,,] <- 0
+    if (length(znames)>0) {
+      if (!all(znames %in% statenames)) {
+        mz <- znames[which(!(znames %in% statenames))[1L]]
+        pStop_("accumulator variable ",sQuote(mz)," not found among the state variables.")
+      }
+      x0[znames,,] <- 0
+    }
 
     .Call(P_pomp_desolve_setup,object,x0,params,.gnsi)
     .gnsi <- FALSE

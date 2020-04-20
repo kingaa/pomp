@@ -70,6 +70,7 @@ try(trajectory(fhn,params=NULL))
 try(trajectory(fhn,params=list(a=3,b=2)))
 try(trajectory(fhn,maxsteps=-1))
 try(trajectory(fhn,maxsteps=1,verbose=TRUE) -> x)
+try(trajectory(pomp(fhn,accumvars="q")) -> x)
 fhn@skeleton@type <- 3L
 stopifnot(
   {
