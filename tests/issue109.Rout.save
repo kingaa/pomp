@@ -1,0 +1,66 @@
+
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Welcome to pomp!
+As of version 2.7.1.0, important changes have been made to the
+default settings of the particle filtering algorithms in
+'pfilter', 'mif2', 'pmcmc', 'bsmc2'.
+These changes are not backward compatible.
+See the package NEWS for the details.
+
+For information on upgrading your pomp version < 2 code, see the
+"pomp version 2 upgrade guide" at https://kingaa.github.io/pomp/.
+
+> sir_step <- Csnippet("
++   double dN_SI = rbinom(S,1-exp(-exp(Beta)*(I/10000)*dt));
++   double dN_IR = rbinom(I,1-exp(-exp(mu_IR)*dt));
++   S -= dN_SI;
++   I += dN_SI - dN_IR;
++   R += dN_IR;
++   H += dN_SI;")
+> sir_init <- Csnippet("
++   S = 10000-1;
++   I = 1;
++   R = 0;
++   H = 0;")
+> dmeas <- Csnippet("
++   lik = dbinom(reports,H,1 - exp(-exp(rho)),give_log);")
+> rmeas <- Csnippet("
++   reports = rbinom(H,1-exp(-exp(rho)));")
+> simulate(
++   times=1:10,
++   t0=1,
++   rmeasure = rmeas,
++   dmeasure = dmeas,
++   rprocess = discrete_time(step.fun = Csnippet(sir_step), delta.t = 1),
++   obsnames="reports",
++   statenames = c("S", "I", "R", "H"),
++   paramnames = c("Beta", "mu_IR", "rho"),
++   rinit = sir_init,
++   params = c(Beta = log(1), mu_IR = log(0.1), rho = log(0.1))
++ ) %>%
++   pmcmc(
++     Np = 1000,
++     Nmcmc = 100,
++     proposal = mvn.diag.rw(c(Beta = 5, mu_IR = 5, rho = 5))
++ #    proposal = mvn.diag.rw(c(Beta = 0.2, mu_IR = 0.2, rho = 0.2))
++   ) -> pmcmcSIR
+There were 50 or more warnings (use warnings() to see the first 50)
+> 

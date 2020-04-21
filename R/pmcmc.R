@@ -356,7 +356,11 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
 
       ## PMCMC update rule (OK because proposal is symmetric)
       alpha <- exp(pfp.prop@loglik+log.prior.prop-pfp@loglik-log.prior)
-      if (runif(1) < alpha) {
+
+      if (!is.finite(alpha))
+        pWarn_("non-finite log likelihood or log prior encountered.")
+
+      if (is.finite(alpha) && runif(1) < alpha) {
         pfp <- pfp.prop
         theta <- theta.prop
         log.prior <- log.prior.prop
