@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.8.0}{
+  \itemize{
+    \item Trap error from non-finite likelihoods in \code{pmcmc}.
+    \item New test of \code{pmcmc} codes in \file{tests/issue109.R}.
+    \item Trap error from missing accumulator varibles in \code{trajectory}.
+  }
+}
 \section{Changes in \pkg{pomp} version 2.7.2}{
   \itemize{
     \item The Euler step size in \code{sir} is now adjustable.
