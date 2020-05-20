@@ -1,5 +1,5 @@
 
-R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+R version 4.0.0 (2020-04-24) -- "Arbor Day"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -163,8 +163,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2020-04-04 08:41:40.627 -0400 */
-/* Salt: DEE1C2692A5275FBB69344F9 */
+/* Time: 2020-05-19 19:09:06.737 -0400 */
+/* Salt: E0F09E96A654F83E178CFA2D */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -281,8 +281,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2020-04-04 08:41:40.755 -0400 */
-/* Salt: 22A93381318D7EB0B5842A92 */
+/* Time: 2020-05-19 19:09:06.874 -0400 */
+/* Salt: 1F340AA330AB3472C197427E */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -803,8 +803,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2020-04-04 08:41:41.381 -0400 */
-/* Salt: 74BCCF2908E4771382CC6314 */
+/* Time: 2020-05-19 19:09:07.551 -0400 */
+/* Salt: 005E1CB3B7320D322C97D3A3 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -999,8 +999,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2020-04-04 08:41:41.957 -0400 */
-/* Salt: CDF4AFE56E06374EF9E0457B */
+/* Time: 2020-05-19 19:09:08.117 -0400 */
+/* Salt: C8E21906D4E14DD0376925CF */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

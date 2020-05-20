@@ -1,4 +1,4 @@
-\donttest{
+\dontrun{
   bake(file="example1.rds",{
     x <- runif(1000)
     mean(x)
