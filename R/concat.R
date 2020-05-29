@@ -121,27 +121,22 @@ setMethod(
   }
 )
 
-##' @method c Pomp
 ##' @rdname concat
 ##' @export
 c.Pomp <- function (...) concat(...)
 
-##' @method c Pfilter
 ##' @rdname concat
 ##' @export
 c.Pfilter <- function (...) concat(...)
 
-##' @method c Abc
 ##' @rdname concat
 ##' @export
 c.Abc <- function (...) concat(...)
 
-##' @method c Mif2
 ##' @rdname concat
 ##' @export
 c.Mif2 <- function (...) concat(...)
 
-##' @method c Pmcmc
 ##' @rdname concat
 ##' @export
 c.Pmcmc <- function (...) concat(...)
