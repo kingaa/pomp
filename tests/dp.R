@@ -135,7 +135,7 @@ create_example(N_0=1000,mu=0.02,simulator="gillespie",
   ggplot(aes(x=N,group=time))+
   geom_histogram(aes(y=..density..),binwidth=10)+
   labs(title="death process, Gillespie",subtitle=expression(mu==0.02))+
-  facet_grid(time~.,labeller=label_bquote(t==.(signif(time,3))))+
+  facet_grid(time~.,labeller=label_bquote(t==.(time)))+
   theme(strip.text=element_text(size=6))
 
 create_example(N_0=1000,mu=0.02,simulator="onestep",
@@ -144,7 +144,7 @@ create_example(N_0=1000,mu=0.02,simulator="onestep",
   ggplot(aes(x=N,group=time))+
   geom_histogram(aes(y=..density..),binwidth=10)+
   labs(title="death process, onestep",subtitle=expression(mu==0.02))+
-  facet_grid(time~.,labeller=label_bquote(t==.(signif(time,3))))+
+  facet_grid(time~.,labeller=label_bquote(t==.(time)))+
   theme(strip.text=element_text(size=6))
 
 create_example(N_0=1000,mu=0.02,simulator="euler",
@@ -153,7 +153,7 @@ create_example(N_0=1000,mu=0.02,simulator="euler",
   ggplot(aes(x=N,group=time))+
   geom_histogram(aes(y=..density..),binwidth=10)+
   labs(title="death process, Euler",subtitle=expression(mu==0.02))+
-  facet_grid(time~.,labeller=label_bquote(t==.(signif(time,3))))+
+  facet_grid(time~.,labeller=label_bquote(t==.(time)))+
   theme(strip.text=element_text(size=6))
 
 dev.off()
