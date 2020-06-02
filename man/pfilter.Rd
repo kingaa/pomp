@@ -146,7 +146,8 @@ Other elementary POMP methods:
 \code{\link{pomp-package}},
 \code{\link{probe}()},
 \code{\link{simulate}()},
-\code{\link{spect}()}
+\code{\link{spect}()},
+\code{\link{wpfilter}()}
 
 Other particle filter methods: 
 \code{\link{bsmc2}()},
@@ -157,7 +158,8 @@ Other particle filter methods:
 \code{\link{mif2}()},
 \code{\link{pmcmc}()},
 \code{\link{pred.mean}()},
-\code{\link{pred.var}()}
+\code{\link{pred.var}()},
+\code{\link{wpfilter}()}
 }
 \author{
 Aaron A. King

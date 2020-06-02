@@ -148,7 +148,8 @@ Other elementary POMP methods:
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{simulate}()},
-\code{\link{spect}()}
+\code{\link{spect}()},
+\code{\link{wpfilter}()}
 
 Other summary statistics methods: 
 \code{\link{abc}()},

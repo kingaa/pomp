@@ -8,11 +8,15 @@
 \alias{eff.sample.size,bsmcd_pomp-method}
 \alias{eff.sample.size-pfilterd_pomp}
 \alias{eff.sample.size,pfilterd_pomp-method}
+\alias{eff.sample.size-wpfilterd_pomp}
+\alias{eff.sample.size,wpfilterd_pomp-method}
 \title{Effective sample size}
 \usage{
 \S4method{eff.sample.size}{bsmcd_pomp}(object, ...)
 
 \S4method{eff.sample.size}{pfilterd_pomp}(object, ...)
+
+\S4method{eff.sample.size}{wpfilterd_pomp}(object, ...)
 }
 \arguments{
 \item{object}{result of a filtering computation}
@@ -37,6 +41,7 @@ Other particle filter methods:
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
 \code{\link{pred.mean}()},
-\code{\link{pred.var}()}
+\code{\link{pred.var}()},
+\code{\link{wpfilter}()}
 }
 \concept{particle filter methods}
