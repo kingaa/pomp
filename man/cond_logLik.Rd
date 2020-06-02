@@ -9,8 +9,6 @@
 \alias{cond.logLik,kalmand_pomp-method}
 \alias{cond.logLik-pfilterd_pomp}
 \alias{cond.logLik,pfilterd_pomp-method}
-\alias{cond.logLik-wpfilterd_pomp}
-\alias{cond.logLik,wpfilterd_pomp-method}
 \alias{cond.logLik-bsmcd_pomp}
 \alias{cond.logLik,bsmcd_pomp-method}
 \title{Conditional log likelihood}
@@ -18,8 +16,6 @@
 \S4method{cond.logLik}{kalmand_pomp}(object, ...)
 
 \S4method{cond.logLik}{pfilterd_pomp}(object, ...)
-
-\S4method{cond.logLik}{wpfilterd_pomp}(object, ...)
 
 \S4method{cond.logLik}{bsmcd_pomp}(object, ...)
 }
@@ -57,7 +53,6 @@ Other particle filter methods:
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
 \code{\link{pred.mean}()},
-\code{\link{pred.var}()},
-\code{\link{wpfilter}()}
+\code{\link{pred.var}()}
 }
 \concept{particle filter methods}

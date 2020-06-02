@@ -13,7 +13,7 @@
 ##' @name cond.logLik
 ##' @docType methods
 ##' @rdname cond_logLik
-##' @include pomp_class.R kalman.R pfilter.R wpfilter.R
+##' @include pomp_class.R kalman.R pfilter.R
 ##' @aliases cond.logLik cond.logLik,missing-method cond.logLik,ANY-method
 ##' @family particle filter methods
 ##' @inheritParams filter.mean
@@ -62,16 +62,6 @@ setMethod(
 setMethod(
   "cond.logLik",
   signature=signature(object="pfilterd_pomp"),
-  definition=function(object,...)object@cond.loglik
-)
-
-##' @name cond.logLik-wpfilterd_pomp
-##' @aliases cond.logLik,wpfilterd_pomp-method
-##' @rdname cond_logLik
-##' @export
-setMethod(
-  "cond.logLik",
-  signature=signature(object="wpfilterd_pomp"),
   definition=function(object,...)object@cond.loglik
 )
 

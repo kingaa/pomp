@@ -81,8 +81,7 @@ Other elementary POMP methods:
 \code{\link{pfilter}()},
 \code{\link{probe}()},
 \code{\link{simulate}()},
-\code{\link{spect}()},
-\code{\link{wpfilter}()}
+\code{\link{spect}()}
 }
 \author{
 Aaron A. King

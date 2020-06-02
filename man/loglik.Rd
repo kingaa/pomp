@@ -7,8 +7,6 @@
 \alias{logLik,listie-method}
 \alias{logLik-pfilterd_pomp}
 \alias{logLik,pfilterd_pomp-method}
-\alias{logLik-wpfilterd_pomp}
-\alias{logLik,wpfilterd_pomp-method}
 \alias{logLik-probed_pomp}
 \alias{logLik,probed_pomp-method}
 \alias{logLik-kalmand_pomp}
@@ -30,8 +28,6 @@ logLik(object, ...)
 \S4method{logLik}{listie}(object, ...)
 
 \S4method{logLik}{pfilterd_pomp}(object)
-
-\S4method{logLik}{wpfilterd_pomp}(object)
 
 \S4method{logLik}{probed_pomp}(object)
 

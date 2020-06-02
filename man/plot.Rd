@@ -9,8 +9,6 @@
 \alias{plot,pomp-method}
 \alias{plot,pfilterd_pomp-method}
 \alias{plot-pfilterd_pomp}
-\alias{plot,wpfilterd_pomp-method}
-\alias{plot-wpfilterd_pomp}
 \alias{plot-Pmcmc}
 \alias{plot,Pmcmc-method}
 \alias{plot,pmcmcd_pomp-method}

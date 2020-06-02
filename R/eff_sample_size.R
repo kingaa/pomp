@@ -8,7 +8,7 @@
 ##'
 ##' @name eff.sample.size
 ##' @rdname eff_sample_size
-##' @include pfilter.R wpfilter.R bsmc2.R
+##' @include pfilter.R bsmc2.R
 ##' @aliases eff.sample.size eff.sample.size,missing-method eff.sample.size,ANY-method
 ##' @family particle filter methods
 ##' @inheritParams filter.mean
@@ -54,15 +54,5 @@ setMethod(
 setMethod(
   "eff.sample.size",
   signature=signature(object="pfilterd_pomp"),
-  definition=function(object,...)object@eff.sample.size
-)
-
-##' @name eff.sample.size-wpfilterd_pomp
-##' @aliases eff.sample.size,wpfilterd_pomp-method
-##' @rdname eff_sample_size
-##' @export
-setMethod(
-  "eff.sample.size",
-  signature=signature(object="wpfilterd_pomp"),
   definition=function(object,...)object@eff.sample.size
 )

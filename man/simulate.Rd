@@ -148,8 +148,7 @@ Other elementary POMP methods:
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{probe}()},
-\code{\link{spect}()},
-\code{\link{wpfilter}()}
+\code{\link{spect}()}
 }
 \author{
 Aaron A. King

@@ -38,7 +38,6 @@ Other particle filter methods:
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
-\code{\link{pred.mean}()},
-\code{\link{wpfilter}()}
+\code{\link{pred.mean}()}
 }
 \concept{particle filter methods}
