@@ -29,7 +29,8 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._8._0:
 
         • New test of ‘pmcmc’ codes in ‘tests/issue109.R’.
 
-        • Trap error from missing accumulator varibles in ‘trajectory’.
+        • Trap error from missing accumulator variables in
+          ‘trajectory’.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._7._2:
 
