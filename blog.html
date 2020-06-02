@@ -3,12 +3,12 @@ layout: pomp
 id: blog
 title: pomp news blog
 ---
-<h2>News blog</h2>
+<h1>News blog</h1>
 
 <hr style="size: 1px; color: #eeeeee;"/>
 {% for post in site.posts limit:5 %}
 <a id="{{ post.title | slugify }}"></a>
-<h3>{{ post.title }}</h3>
+<h2>{{ post.title }}</h2>
 <h5>{{ post.date | date_to_long_string }}</h5>
 {{ post.content }}
 <hr style="size: 1px; color: #eeeeee;"/>
