@@ -21,8 +21,6 @@ bsmc2(
   data,
   Np,
   smooth = 0.1,
-  tol = 0,
-  max.fail = 0,
   params,
   rprior,
   rinit,
@@ -34,15 +32,7 @@ bsmc2(
 )
 
 ## S4 method for signature 'pomp'
-bsmc2(
-  data,
-  Np,
-  smooth = 0.1,
-  tol = 0,
-  max.fail = 0,
-  ...,
-  verbose = getOption("verbose", FALSE)
-)
+bsmc2(data, Np, smooth = 0.1, ..., verbose = getOption("verbose", FALSE))
 </pre>
 
 
@@ -57,7 +47,15 @@ i.e., the output of another <span class="pkg">pomp</span> calculation.</p>
 </td></tr>
 <tr valign="top"><td><code>Np</code></td>
 <td>
-<p>number of particles</p>
+<p>the number of particles to use.
+This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
+Alternatively, if one wishes the number of particles to vary across timesteps, one may specify <code>Np</code> either as a vector of positive integers of length </p>
+<pre>length(time(object,t0=TRUE))</pre><p> or as a function taking a positive integer argument.
+In the latter case, <code>Np(k)</code> must be a single positive integer, representing the number of particles to be used at the <code>k</code>-th timestep:
+<code>Np(0)</code> is the number of particles to use going from <code>timezero(object)</code> to <code>time(object)[1]</code>,
+<code>Np(1)</code>, from <code>timezero(object)</code> to <code>time(object)[1]</code>,
+and so on,
+while when <code>T=length(time(object))</code>, <code>Np(T)</code> is the number of particles to sample at the end of the time-series.</p>
 </td></tr>
 <tr valign="top"><td><code>smooth</code></td>
 <td>
@@ -65,20 +63,6 @@ i.e., the output of another <span class="pkg">pomp</span> calculation.</p>
 The compensating shrinkage factor will be <code>sqrt(1-smooth^2)</code>.
 Thus, <code>smooth=0</code> means that no noise will be added to parameters.
 The general recommendation is that the value of <code>smooth</code> should be chosen close to 0 (e.g., <code>shrink</code> ~ 0.1).</p>
-</td></tr>
-<tr valign="top"><td><code>tol</code></td>
-<td>
-<p>non-negative numeric scalar;
-particles with likelihood less than <code>tol</code> are considered to be incompatible with the data.
-See the section on <em>Filtering Failures</em> for more information.
-In a future release, this argument will be removed.</p>
-</td></tr>
-<tr valign="top"><td><code>max.fail</code></td>
-<td>
-<p>integer; the maximum number of filtering failures allowed (see below).
-If the number of filtering failures exceeds this number, execution will terminate with an error.
-By default, <code>max.fail</code> is set to infinity, so no error can be triggered.
-In a future release, this argument will be removed.</p>
 </td></tr>
 <tr valign="top"><td><code>params</code></td>
 <td>
@@ -162,24 +146,6 @@ The following methods are avaiable:
 
 
 
-<h3>Change in default tolerance</h3>
-
-<p>From <span class="pkg">pomp</span> version 2.4.1, warnings have been issued whenever the value of <code>tol</code> is set to anything other than zero.
-As of version 2.7.1, the default value of <code>tol</code> is zero and warnings will be generated whenever it is set by the user to anything else.
-This behavior is in anticipation of a forthcoming release, which will remove the <code>tol</code> and <code>max.fail</code> arguments altogether.
-</p>
-
-
-<h3>Filtering failures</h3>
-
-<p>If the degree of disagreement between model and data becomes sufficiently large, a &ldquo;filtering failure&rdquo; results.
-A filtering failure occurs when, at some time point, none of the <code>Np</code> particles is compatible with the data.
-In particular, if the conditional likelihood of a particle at any time is below the tolerance value <code>tol</code>, then that particle is considered to be uninformative and its likelihood is taken to be zero.
-A filtering failure occurs when this is the case for all particles.
-A warning is generated when this occurs unless the cumulative number of failures exceeds <code>max.fail</code>, in which case an error is generated.
-</p>
-
-
 <h3>Author(s)</h3>
 
 <p>Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
@@ -220,5 +186,5 @@ Springer, New York, 2001.
 <code><a href="spect_match.html">spect.match</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.8.0.3 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.0.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

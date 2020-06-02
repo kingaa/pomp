@@ -21,8 +21,6 @@ Resampling is performed at each observation.
 pfilter(
   data,
   Np,
-  tol = 0,
-  max.fail = Inf,
   params,
   rinit,
   rprocess,
@@ -40,8 +38,6 @@ pfilter(
 pfilter(
   data,
   Np,
-  tol = 0,
-  max.fail = Inf,
   pred.mean = FALSE,
   pred.var = FALSE,
   filter.mean = FALSE,
@@ -52,7 +48,7 @@ pfilter(
 )
 
 ## S4 method for signature 'pfilterd_pomp'
-pfilter(data, Np, tol, ..., verbose = getOption("verbose", FALSE))
+pfilter(data, Np, ..., verbose = getOption("verbose", FALSE))
 
 ## S4 method for signature 'objfun'
 pfilter(data, ...)
@@ -78,21 +74,7 @@ In the latter case, <code>Np(k)</code> must be a single positive integer, repres
 <code>Np(0)</code> is the number of particles to use going from <code>timezero(object)</code> to <code>time(object)[1]</code>,
 <code>Np(1)</code>, from <code>timezero(object)</code> to <code>time(object)[1]</code>,
 and so on,
-while when <code>T=length(time(object,t0=TRUE))</code>, <code>Np(T)</code> is the number of particles to sample at the end of the time-series.</p>
-</td></tr>
-<tr valign="top"><td><code>tol</code></td>
-<td>
-<p>non-negative numeric scalar;
-particles with likelihood less than <code>tol</code> are considered to be incompatible with the data.
-See the section on <em>Filtering Failures</em> for more information.
-In a future release, this argument will be removed.</p>
-</td></tr>
-<tr valign="top"><td><code>max.fail</code></td>
-<td>
-<p>integer; the maximum number of filtering failures allowed (see below).
-If the number of filtering failures exceeds this number, execution will terminate with an error.
-By default, <code>max.fail</code> is set to infinity, so no error can be triggered.
-In a future release, this argument will be removed.</p>
+while when <code>T=length(time(object))</code>, <code>Np(T)</code> is the number of particles to sample at the end of the time-series.</p>
 </td></tr>
 <tr valign="top"><td><code>params</code></td>
 <td>
@@ -190,24 +172,6 @@ Useful for building up the smoothing distribution.
 
 
 
-<h3>Change in default tolerance</h3>
-
-<p>From <span class="pkg">pomp</span> version 2.4.1, warnings have been issued whenever the value of <code>tol</code> is set to anything other than zero.
-As of version 2.7.1, the default value of <code>tol</code> is zero and warnings will be generated whenever it is set by the user to anything else.
-This behavior is in anticipation of a forthcoming release, which will remove the <code>tol</code> and <code>max.fail</code> arguments altogether.
-</p>
-
-
-<h3>Filtering failures</h3>
-
-<p>If the degree of disagreement between model and data becomes sufficiently large, a &ldquo;filtering failure&rdquo; results.
-A filtering failure occurs when, at some time point, none of the <code>Np</code> particles is compatible with the data.
-In particular, if the conditional likelihood of a particle at any time is below the tolerance value <code>tol</code>, then that particle is considered to be uninformative and its likelihood is taken to be zero.
-A filtering failure occurs when this is the case for all particles.
-A warning is generated when this occurs unless the cumulative number of failures exceeds <code>max.fail</code>, in which case an error is generated.
-</p>
-
-
 <h3>Author(s)</h3>
 
 <p>Aaron A. King
@@ -258,5 +222,5 @@ fm &lt;- filter.mean(pf)    	## extract the filtering means
 ft &lt;- filter.traj(pf)    	## one draw from the smoothing distribution
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.8.0.3 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.0.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

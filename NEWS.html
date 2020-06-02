@@ -7,6 +7,79 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
+<h3>Changes in <span class="pkg">pomp</span> version 3.0.0</h3>
+
+
+<ul>
+<li><p> In <code>mif2</code>, the specification of particle numbers, <code>Np</code>, has changed.
+When <code>Np</code> is supplied as a function, <code>Np(0)</code> is the requested number of particles at the beginning of the time series.
+The previous behavior was that <code>Np(1)</code> specified the requested number of particles.
+This behavior now matches that of the other particle filtering algorithms, <code>pfilter</code>, <code>wpfilter</code>, <code>bsmc2</code>, and <code>pmcmc</code>.
+</p>
+</li>
+<li><p> A new, weighted particle filter has been introduced, accessed via the function <code>wpfilter</code>.
+This facility is in alpha stage: both implementation and interface may change without warning.
+</p>
+</li>
+<li> <p><code>bsmc2</code> can now accept a variable number of particles, as do the other particle-filter based algorithms <code>pfilter</code>, <code>pmcmc</code>, and <code>mif2</code>.
+</p>
+</li>
+<li><p> The internal <code>systematic_resample</code> function now allows the user to specify the number of samples desired.
+Previously, these were always equal to the number of weights supplied.
+</p>
+</li>
+<li><p> As promised from version 2.4.1, the <code>tol</code> and <code>max.fail</code> arguments have been removed completely from all particle-filtering algorithms, including <code>pfilter</code>, <code>pmcmc</code>, <code>bsmc2</code>, and <code>mif2</code>.
+See the <a href="https://kingaa.github.io/pomp/blog.html"><span class="pkg">pomp</span> news blog</a> (<a href="https://kingaa.github.io/pomp/blog.html">https://kingaa.github.io/pomp/blog.html</a>) for more information.
+</p>
+</li>
+<li><p> The long-deprecated functions <code>onestep.dens</code>, <code>onestep.sim</code>, <code>discrete.time.sim</code>, <code>euler.sim</code>, <code>gillespie.sim</code>, <code>gillespie.hl.sim</code>, <code>conv.rec</code>, and <code>values</code>  have been removed.
+These have been replaced as follows
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+      <code>onestep.dens</code> </td><td style="text-align: left;"> direct specification of <code>dprocess</code> component </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      <code>onestep.sim</code> </td><td style="text-align: left;"> <code>onestep</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      <code>discrete.time.sim</code> </td><td style="text-align: left;"> <code>discrete_time</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      <code>euler.sim</code> </td><td style="text-align: left;"> <code>euler</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      <code>gillespie.sim</code> </td><td style="text-align: left;"> <code>gillespie</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      <code>gillespie.hl.sim</code> </td><td style="text-align: left;"> <code>gillespie_hl</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      <code>conv.rec</code> </td><td style="text-align: left;"> <code>traces</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      <code>values</code> </td><td style="text-align: left;"> <code>as.data.frame</code> or <code>as(x,"data.frame")</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    </td>
+</tr>
+
+</table>
+
+</li></ul>
+
+
+
 <h3>Changes in <span class="pkg">pomp</span> version 2.8.0</h3>
 
 
@@ -17,7 +90,7 @@
 <li><p> New test of <code>pmcmc</code> codes in &lsquo;<span class="file">tests/issue109.R</span>&rsquo;.
 </p>
 </li>
-<li><p> Trap error from missing accumulator varibles in <code>trajectory</code>.
+<li><p> Trap error from missing accumulator variables in <code>trajectory</code>.
 </p>
 </li></ul>
 

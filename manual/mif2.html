@@ -29,8 +29,6 @@ mif2(
   cooling.type = c("geometric", "hyperbolic"),
   cooling.fraction.50,
   Np,
-  tol = 0,
-  max.fail = Inf,
   params,
   rinit,
   rprocess,
@@ -48,22 +46,12 @@ mif2(
   cooling.type = c("geometric", "hyperbolic"),
   cooling.fraction.50,
   Np,
-  tol = 0,
-  max.fail = Inf,
   ...,
   verbose = getOption("verbose", FALSE)
 )
 
 ## S4 method for signature 'pfilterd_pomp'
-mif2(
-  data,
-  Nmif = 1,
-  Np,
-  tol,
-  max.fail = Inf,
-  ...,
-  verbose = getOption("verbose", FALSE)
-)
+mif2(data, Nmif = 1, Np, ..., verbose = getOption("verbose", FALSE))
 
 ## S4 method for signature 'mif2d_pomp'
 mif2(
@@ -115,28 +103,15 @@ See below (under &ldquo;Specifying the perturbations&rdquo;) for more detail.</p
 </td></tr>
 <tr valign="top"><td><code>Np</code></td>
 <td>
-<p>the number of particles to use in filtering.
+<p>the number of particles to use.
 This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
-Alternatively, if one wishes the number of particles to vary across timestep, one may specify <code>Np</code> either as a vector of positive integers (of length <code>length(time(object))</code>) or as a function taking a positive integer argument.
-In the latter case, <code>Np(n)</code> must be a single positive integer,
-representing the number of particles to be used at the <code>n</code>-th timestep:
-<code>Np(1)</code> is the number of particles to use going from <code>timezero(object)</code> to <code>time(object)[1]</code>,
-<code>Np(2)</code>, from <code>time(object)[1]</code> to <code>time(object)[2]</code>,
-and so on.</p>
-</td></tr>
-<tr valign="top"><td><code>tol</code></td>
-<td>
-<p>non-negative numeric scalar;
-particles with likelihood less than <code>tol</code> are considered to be incompatible with the data.
-See the section on <em>Filtering Failures</em> for more information.
-In a future release, this argument will be removed.</p>
-</td></tr>
-<tr valign="top"><td><code>max.fail</code></td>
-<td>
-<p>integer; the maximum number of filtering failures allowed (see below).
-If the number of filtering failures exceeds this number, execution will terminate with an error.
-By default, <code>max.fail</code> is set to infinity, so no error can be triggered.
-In a future release, this argument will be removed.</p>
+Alternatively, if one wishes the number of particles to vary across timesteps, one may specify <code>Np</code> either as a vector of positive integers of length </p>
+<pre>length(time(object,t0=TRUE))</pre><p> or as a function taking a positive integer argument.
+In the latter case, <code>Np(k)</code> must be a single positive integer, representing the number of particles to be used at the <code>k</code>-th timestep:
+<code>Np(0)</code> is the number of particles to use going from <code>timezero(object)</code> to <code>time(object)[1]</code>,
+<code>Np(1)</code>, from <code>timezero(object)</code> to <code>time(object)[1]</code>,
+and so on,
+while when <code>T=length(time(object))</code>, <code>Np(T)</code> is the number of particles to sample at the end of the time-series.</p>
 </td></tr>
 <tr valign="top"><td><code>params</code></td>
 <td>
@@ -195,6 +170,13 @@ See <a href="userdata.html">?userdata</a> for information on how to use this fac
 </p>
 
 
+<h3>Number of particles</h3>
+
+<p>If <code>Np</code> is anything other than a constant, the user must take care that the number of particles requested at the end of the time series matches that requested at the beginning.
+In particular, if <code>T=length(time(object))</code>, then one should have <code>Np[1]==Np[T+1]</code> when <code>Np</code> is furnished as an integer vector and <code>Np(0)==Np(T)</code> when <code>Np</code> is furnished as a function.
+</p>
+
+
 <h3>Methods</h3>
 
 <p>The following methods are available for such an object:
@@ -245,21 +227,11 @@ Then, when <code>cooling.type="geometric"</code>, we have </p>
 </p>
 
 
-<h3>Change in default tolerance</h3>
+<h3>Re-running IF2 iterations</h3>
 
-<p>From <span class="pkg">pomp</span> version 2.4.1, warnings have been issued whenever the value of <code>tol</code> is set to anything other than zero.
-As of version 2.7.1, the default value of <code>tol</code> is zero and warnings will be generated whenever it is set by the user to anything else.
-This behavior is in anticipation of a forthcoming release, which will remove the <code>tol</code> and <code>max.fail</code> arguments altogether.
-</p>
-
-
-<h3>Filtering failures</h3>
-
-<p>If the degree of disagreement between model and data becomes sufficiently large, a &ldquo;filtering failure&rdquo; results.
-A filtering failure occurs when, at some time point, none of the <code>Np</code> particles is compatible with the data.
-In particular, if the conditional likelihood of a particle at any time is below the tolerance value <code>tol</code>, then that particle is considered to be uninformative and its likelihood is taken to be zero.
-A filtering failure occurs when this is the case for all particles.
-A warning is generated when this occurs unless the cumulative number of failures exceeds <code>max.fail</code>, in which case an error is generated.
+<p>To re-run a sequence of IF2 iterations, one can use the <code>mif2</code> method on a &lsquo;mif2d_pomp&rsquo; object.
+By default, the same parameters used for the original IF2 run are re-used (except for <code>verbose</code>, the default of which is shown above).
+If one does specify additional arguments, these will override the defaults.
 </p>
 
 
@@ -299,5 +271,5 @@ A warning is generated when this occurs unless the cumulative number of failures
 <code><a href="spect_match.html">spect.match</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.8.0.3 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.0.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
