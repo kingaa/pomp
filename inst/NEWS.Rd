@@ -5,9 +5,7 @@
     \item In \code{mif2}, the specification of particle numbers, \code{Np}, has changed.
     When \code{Np} is supplied as a function, \code{Np(0)} is the requested number of particles at the beginning of the time series.
     The previous behavior was that \code{Np(1)} specified the requested number of particles.
-    This behavior now matches that of the other particle filtering algorithms, \code{pfilter}, \code{wpfilter}, \code{bsmc2}, and \code{pmcmc}.
-    \item A new, weighted particle filter has been introduced, accessed via the function \code{wpfilter}.
-    This facility is in alpha stage: both implementation and interface may change without warning.
+    This behavior now matches that of the other particle filtering algorithms, \code{pfilter}, \code{bsmc2}, and \code{pmcmc}.
     \item \code{bsmc2} can now accept a variable number of particles, as do the other particle-filter based algorithms \code{pfilter}, \code{pmcmc}, and \code{mif2}.
     \item The internal \code{systematic_resample} function now allows the user to specify the number of samples desired.
     Previously, these were always equal to the number of weights supplied.

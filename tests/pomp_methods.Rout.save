@@ -19,14 +19,10 @@ Type 'q()' to quit R.
 
 > library(pomp)
 Welcome to pomp!
-As of version 2.7.1.0, important changes have been made to the
-default settings of the particle filtering algorithms in
-'pfilter', 'mif2', 'pmcmc', 'bsmc2'.
-These changes are not backward compatible.
+Version 3 incorporates some changes to the behavior of
+package algorithms that are not backward compatible.
 See the package NEWS for the details.
 
-For information on upgrading your pomp version < 2 code, see the
-"pomp version 2 upgrade guide" at https://kingaa.github.io/pomp/.
 
 > 
 > gompertz() -> po

@@ -8,12 +8,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._0._0:
           series.  The previous behavior was that ‘Np(1)’ specified the
           requested number of particles.  This behavior now matches
           that of the other particle filtering algorithms, ‘pfilter’,
-          ‘wpfilter’, ‘bsmc2’, and ‘pmcmc’.
-
-        • A new, weighted particle filter has been introduced, accessed
-          via the function ‘wpfilter’.  This facility is in alpha
-          stage: both implementation and interface may change without
-          warning.
+          ‘bsmc2’, and ‘pmcmc’.
 
         • ‘bsmc2’ can now accept a variable number of particles, as do
           the other particle-filter based algorithms ‘pfilter’,

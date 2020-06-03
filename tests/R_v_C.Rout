@@ -23,14 +23,10 @@ Type 'q()' to quit R.
 > ## ----packages------------------------------------------------------------
 > library(pomp)
 Welcome to pomp!
-As of version 2.7.1.0, important changes have been made to the
-default settings of the particle filtering algorithms in
-'pfilter', 'mif2', 'pmcmc', 'bsmc2'.
-These changes are not backward compatible.
+Version 3 incorporates some changes to the behavior of
+package algorithms that are not backward compatible.
 See the package NEWS for the details.
 
-For information on upgrading your pomp version < 2 code, see the
-"pomp version 2 upgrade guide" at https://kingaa.github.io/pomp/.
 
 > library(ggplot2)
 > 
@@ -118,16 +114,16 @@ For information on upgrading your pomp version < 2 code, see the
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  7.902   0.005   7.907 
+  9.378   0.105   9.485 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.291   0.000   0.291 
+  0.327   0.017   0.343 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.738   0.000   0.738 
+  0.814   0.007   0.821 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.046   0.000   0.046 
+  0.056   0.000   0.056 
 > 
 > dev.off()
 null device 
