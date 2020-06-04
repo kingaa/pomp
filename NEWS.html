@@ -14,11 +14,7 @@
 <li><p> In <code>mif2</code>, the specification of particle numbers, <code>Np</code>, has changed.
 When <code>Np</code> is supplied as a function, <code>Np(0)</code> is the requested number of particles at the beginning of the time series.
 The previous behavior was that <code>Np(1)</code> specified the requested number of particles.
-This behavior now matches that of the other particle filtering algorithms, <code>pfilter</code>, <code>wpfilter</code>, <code>bsmc2</code>, and <code>pmcmc</code>.
-</p>
-</li>
-<li><p> A new, weighted particle filter has been introduced, accessed via the function <code>wpfilter</code>.
-This facility is in alpha stage: both implementation and interface may change without warning.
+This behavior now matches that of the other particle filtering algorithms, <code>pfilter</code>, <code>bsmc2</code>, and <code>pmcmc</code>.
 </p>
 </li>
 <li> <p><code>bsmc2</code> can now accept a variable number of particles, as do the other particle-filter based algorithms <code>pfilter</code>, <code>pmcmc</code>, and <code>mif2</code>.

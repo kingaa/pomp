@@ -11,7 +11,7 @@ output:
 require(knitr)
 require(pomp)
 knitr::opts_chunk$set(cache=FALSE,results="hide",echo=TRUE,fig.show="asis",
-  message=FALSE,warning=TRUE,error=TRUE,out.width="70%")
+                      message=FALSE,warning=TRUE,error=TRUE,out.width="70%")
 require(ggplot2)
 theme_set(theme_bw())
 set.seed(1810027260)
@@ -244,13 +244,13 @@ dmeas <- Csnippet("
 
 dat %>%
   pomp(time="day",t0=0,
-    rprocess=euler(sir_step,delta.t=1/12),
-    rinit=sir_init,
-    rmeasure=rmeas,
-    dmeasure=dmeas,
-    accumvars="H",
-    paramnames=c("Beta","gamma","N", "rho"),
-    statenames=c("S","I","R","H")
+       rprocess=euler(sir_step,delta.t=1/12),
+       rinit=sir_init,
+       rmeasure=rmeas,
+       dmeasure=dmeas,
+       accumvars="H",
+       paramnames=c("Beta","gamma","N", "rho"),
+       statenames=c("S","I","R","H")
   ) -> sir_na
 ```
 
@@ -351,13 +351,13 @@ day,B
 
 dat %>%
   pomp(time="day",t0=-8,
-    rprocess=euler(sir_step,delta.t=1/12),
-    rinit=sir_init,
-    rmeasure=rmeas,
-    dmeasure=dmeas,
-    accumvars="H",
-    paramnames=c("Beta","gamma","N", "rho"),
-    statenames=c("S","I","R","H")
+       rprocess=euler(sir_step,delta.t=1/12),
+       rinit=sir_init,
+       rmeasure=rmeas,
+       dmeasure=dmeas,
+       accumvars="H",
+       paramnames=c("Beta","gamma","N", "rho"),
+       statenames=c("S","I","R","H")
   ) -> bsflu
 ```
 
@@ -376,7 +376,7 @@ bsflu %>%
 
 bsflu %>%
   simulate(params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
-    nsim=10,format="d",include.data=TRUE) %>%
+           nsim=10,format="d",include.data=TRUE) %>%
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
   guides(color=FALSE)+
@@ -397,18 +397,18 @@ dat %>%
   rbind(data.frame(day=0,B=NA)) %>%
   arrange(day) %>%
   pomp(time="day",t0=-8,
-    rprocess=euler(sir_step,delta.t=1/12),
-    rinit=sir_init,
-    rmeasure=rmeas,
-    dmeasure=dmeas,
-    accumvars="H",
-    paramnames=c("Beta","gamma","N", "rho"),
-    statenames=c("S","I","R","H")
+       rprocess=euler(sir_step,delta.t=1/12),
+       rinit=sir_init,
+       rmeasure=rmeas,
+       dmeasure=dmeas,
+       accumvars="H",
+       paramnames=c("Beta","gamma","N", "rho"),
+       statenames=c("S","I","R","H")
   ) -> bsflu
 
 bsflu %>%
   simulate(params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
-    nsim=10,format="d",include.data=TRUE) %>%
+           nsim=10,format="d",include.data=TRUE) %>%
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
   guides(color=FALSE)+
@@ -438,7 +438,7 @@ pushViewport(vp)
 grid.rect(x=c(1/4),y=3/4,width=1/2,height=1/2,just=c(0.5,0.5),gp=gpar(fill="white",lwd=3))
 grid.text(x=c(1/4),y=3/4,label=c(expression(N)),gp=gpar(fontsize=36))
 grid.text(x=unit(c(3/4,1/4),"npc")+unit(c(0,18),"point"),y=unit(c(3/4,1/4),"npc")+unit(c(18,0),"point"),
-    label=c(expression(mu[1]),expression(mu[2])),gp=gpar(fontsize=24))
+          label=c(expression(mu[1]),expression(mu[2])),gp=gpar(fontsize=24))
 grid.lines(x=c(1/2,1),y=3/4,arrow=arrow(length=unit(0.04,"npc")),gp=gpar(lwd=3))
 grid.lines(x=c(1/4),y=c(1/2,0),arrow=arrow(length=unit(0.04,"npc")),gp=gpar(lwd=3))
 popViewport()
@@ -502,15 +502,19 @@ Remember, `dmeasure` has to be able to return the likelihood---or the log likeli
 ## Why can't I run the demos, or other codes that use the C snippet facility? {#why-cant-i-run-csnippets}
 
 If your system does not support `R CMD SHLIB`, you won't be able to use C snippets.
-**R** compiles native codes (C and FORTRAN) into shared-object libraries using `SHLIB`.
+**R** compiles native codes (C, C++, and FORTRAN) into shared-object libraries using `SHLIB`.
 To check whether your **R** installation is configured to use `SHLIB`, run the following code snippet in an **R** session:
-```
-cat("#include <R.h>
-void hello (void) {
-Rprintf(\"hello world!\\n\");
-}",file="hello.c")
+```{r eval=FALSE}
+cat(
+  "#include <R.h>
+   void hello (void) {
+     Rprintf(\"hello world!\\n\");
+   }",
+  file="hello.c")
+
 system("R CMD SHLIB hello.c")
 dyn.load(paste0("hello",.Platform$dynlib.ext))
+
 .C("hello",PACKAGE="hello")
 ```
 If it works, you should see
