@@ -59,6 +59,15 @@
   pages: "14595&#x2013;14600"
   doi: "https://doi.org/10.1073/pnas.1604976113"
 
+- key: Becker2020
+  author: "A. D. Becker, S. H. Zhou, A. Wesolowski, and B. T. Grenfell"
+  year: "2020"
+  title: "Coexisting attractors in the context of cross-scale population dynamics: measles in London as a case study"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "287"
+  pages: "20191510"
+  doi: "https://doi.org/10.1098/rspb.2019.1510"
+
 - key: Bhadra2010
   author: "A. Bhadra"
   year: "2010"
@@ -175,6 +184,15 @@
   pages: "3635&#x2013;3643"
   doi: "https://doi.org/10.1098/rspb.2011.0300"
 
+- key: Cotterill2020
+  author: "G. G. Cotterill, P. C. Cross, J. A. Merkle, J. D. Rogerson, B. M. Scurlock, and J. T. du Toit"
+  year: "2020"
+  title: "Parsing the effects of demography, climate and management on recurrent brucellosis outbreaks in elk"
+  journal: "Journal of Applied Ecology"
+  volume: "57"
+  pages: "379&#x2013;389"
+  doi: "https://doi.org/10.1111/1365-2664.13553"
+
 - key: DomenechdeCelles2018
   author: "M. Domenech de Cell&egrave;s, F. M. G. Magpantay, A. A. King, and P. Rohani"
   year: "2018"
@@ -192,6 +210,15 @@
   volume: "116"
   pages: "1802"
   doi: "https://doi.org/10.1073/pnas.1812388116"
+
+- key: DomenechdeCelles2020
+  author: "M. Domenech de Cell&egrave;s, H. Campbell, R. Borrow, M.-K. Taha, and L. Opatowski"
+  year: "2020"
+  title: "Transmissibility and pathogenicity of the emerging meningococcal serogroup W sequence type-11 complex South American strain: a mathematical modeling study"
+  journal: "BMC Medicine"
+  volume: "18"
+  pages: "1&#x2013;12"
+  doi: "https://doi.org/10.1186/s12916-020-01552-7"
 
 - key: Doucet2015
   author: "A. Doucet, M. K. Pitt, G. Deligiannidis, and R. Kohn"
@@ -312,6 +339,15 @@
   volume: "280"
   pages: "20131345"
   doi: "https://doi.org/10.1098/rspb.2013.1345"
+
+- key: He2020
+  author: "D. He, S. Zhao, Q. Lin, S. S. Musa, and L. Stone"
+  year: "2020"
+  title: "New estimates of the Zika virus epidemic attack rate in Northeastern Brazil from 2015 to 2016: A modelling analysis based on Guillain-Barr&eacute; Syndrome (GBS) surveillance data"
+  journal: "PLOS Neglected Tropical Diseases"
+  volume: "14"
+  pages: "e0007502"
+  doi: "https://doi.org/10.1371/journal.pntd.0007502"
 
 - key: Ionides2006
   author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
@@ -537,6 +573,15 @@
   pages: "e1002172"
   doi: "https://doi.org/10.1371/journal.pbio.1002172"
 
+- key: Musa2020
+  author: "S. S. Musa, S. Zhao, D. Gao, Q. Lin, G. Chowell, and D. He"
+  year: "2020"
+  title: "Mechanistic modelling of the large-scale Lassa fever epidemics in Nigeria from 2016 to 2019"
+  journal: "Journal of Theoretical Biology"
+  volume: "493"
+  pages: "110209"
+  url: "http://www.sciencedirect.com/science/article/pii/S0022519320300643"
+
 - key: Navideh2019
   author: "N. Noori and P. Rohani"
   year: "2019"
@@ -650,6 +695,15 @@
   pages: "kxy057&#x2013;kxy057"
   doi: "https://doi.org/10.1093/biostatistics/kxy057"
 
+- key: Stocks2020
+  author: "T. Stocks, L. J. Martin, S. K&uuml;hlmann-Berenzon, and T. Britton"
+  year: "2020"
+  title: "Dynamic modeling of hepatitis C transmission among people who inject drugs"
+  journal: "Epidemics"
+  volume: "30"
+  pages: "100378"
+  doi: "https://doi.org/10.1016/j.epidem.2019.100378"
+
 - key: Tavakoli2016
   author: "S. Tavakoli and V. M. Panaretos"
   year: "2016"
@@ -693,6 +747,13 @@
   volume: "14"
   pages: "e1002416"
   doi: "https://doi.org/10.1371/journal.pmed.1002416"
+
+- key: Whittles2020
+  author: "L. K. Whittles, P. J. White, and X. Didelot"
+  year: "2020"
+  title: "Assessment of the Potential of Vaccination to Combat Antibiotic Resistance in Gonorrhea: A Modeling Analysis to Determine Preferred Product Characteristics"
+  journal: "Clinical Infectious Diseases"
+  doi: "https://doi.org/10.1093/cid/ciz1241"
 
 - key: Wood2010
   author: "S. N. Wood"
