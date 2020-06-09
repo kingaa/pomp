@@ -704,6 +704,15 @@
   pages: "100378"
   doi: "https://doi.org/10.1016/j.epidem.2019.100378"
 
+- key: Szczepocki2020
+  author: "P. Szczepocki"
+  year: "2020"
+  title: "Application of iterated filtering to stochastic volatility models based on non-Gaussian Ornstein-Uhlenbeck process"
+  journal: "Statistics in Transition New Series"
+  volume: "21"
+  pages: "173&#x2013;187"
+  doi: "https://doi.org/10.21307/stattrans-2020-019"
+
 - key: Tavakoli2016
   author: "S. Tavakoli and V. M. Panaretos"
   year: "2016"
