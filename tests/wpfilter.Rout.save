@@ -1,5 +1,5 @@
 
-R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+R version 4.0.0 (2020-04-24) -- "Arbor Day"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -21,15 +21,10 @@ Type 'q()' to quit R.
 > png(filename="wpfilter-%02d.png",res=100)
 > 
 > library(pomp)
-Welcome to pomp!
-As of version 2.7.1.0, important changes have been made to the
-default settings of the particle filtering algorithms in
-'pfilter', 'mif2', 'pmcmc', 'bsmc2'.
-These changes are not backward compatible.
-See the package NEWS for the details.
 
-For information on upgrading your pomp version < 2 code, see the
-"pomp version 2 upgrade guide" at https://kingaa.github.io/pomp/.
+Welcome to pomp! Version 3 incorporates some changes to the behavior of
+package algorithms that are not backward compatible. See the package
+NEWS for the details.
 
 > 
 > set.seed(9994847L)
@@ -45,8 +40,34 @@ Error : in 'wpfilter': number of particles, 'Np', must be a positive integer.
 Error : in 'wpfilter': 'Np' must have length 1 or length 52.
 > wpfilter(po,Np=ceiling(runif(52,min=10,max=100)))
 <object of class 'wpfilterd_pomp'>
-> po %>% wpfilter(Np=100) -> pf
-> plot(pf)
+> 
+> wpfilter(po,Np=200,trigger=1,target=1) %>% plot()
+> wpfilter(po,Np=200,trigger=1,target=0.5) %>% plot()
+> wpfilter(po,Np=200,trigger=1,target=0) %>% plot()
+> wpfilter(po,Np=200,trigger=0.8) %>% plot()
+> 
+> wpfilter(po,Np=1000,trigger=0.5,target=0.5) %>% logLik()
+[1] -140
+> wpfilter(po,Np=1000,trigger=0.5,target=0.2) %>% logLik()
+[1] -139
+> wpfilter(po,Np=1000,trigger=0.5,target=0) %>% logLik()
+[1] -139
+> wpfilter(po,Np=1000,trigger=1,target=0) %>% logLik()
+[1] -139
+> 
+> do.call(c,replicate(n=10,pfilter(window(po,end=4),Np=1000))) %>% logLik() %>% logmeanexp(se=TRUE)
+               se 
+-13.1033   0.0218 
+> do.call(c,replicate(n=10,wpfilter(window(po,end=4),Np=1000))) %>% logLik() %>% logmeanexp(se=TRUE)
+               se 
+-13.0674   0.0345 
+> 
+> do.call(c,replicate(n=10,pfilter(window(po,end=20),Np=1000))) %>% logLik() %>% logmeanexp(se=TRUE)
+             se 
+-57.166   0.063 
+> do.call(c,replicate(n=10,wpfilter(window(po,end=20),Np=1000,trigger=0.8))) %>% logLik() %>% logmeanexp(se=TRUE)
+               se 
+-57.0374   0.0622 
 > 
 > dev.off()
 null device 

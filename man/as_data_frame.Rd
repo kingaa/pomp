@@ -7,8 +7,6 @@
 \alias{as.data.frame.pomp}
 \alias{as,pfilterd_pomp-method}
 \alias{coerce,pfilterd_pomp,data.frame-method}
-\alias{as,wpfilterd_pomp-method}
-\alias{coerce,wpfilterd_pomp,data.frame-method}
 \alias{as.data.frame.pfilterd_pomp}
 \alias{as,probed_pomp-method}
 \alias{coerce,probed_pomp,data.frame-method}
@@ -26,6 +24,9 @@
 \alias{as.data.frame.abcList}
 \alias{as.data.frame.mif2List}
 \alias{as.data.frame.pmcmcList}
+\alias{as,wpfilterd_pomp-method}
+\alias{coerce,wpfilterd_pomp,data.frame-method}
+\alias{as.data.frame.wpfilterd_pomp}
 \alias{coerce-objfun-data.frame}
 \alias{coerce,objfun,data.frame-method}
 \title{Coerce to data frame}
@@ -49,6 +50,8 @@
 \method{as.data.frame}{mif2List}(x, ...)
 
 \method{as.data.frame}{pmcmcList}(x, ...)
+
+\method{as.data.frame}{wpfilterd_pomp}(x, ...)
 }
 \arguments{
 \item{x}{any \R object.}
@@ -69,10 +72,6 @@ When \code{object} is a \sQuote{pfilterd_pomp} object,
 coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
 but with conditional log likelihood and effective sample size estimates included, as well as filtering means, prediction means, and prediction variances, if these have been computed.
 
-When \code{object} is a \sQuote{wpfilterd_pomp} object,
-coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
-but with conditional log likelihood and effective sample size estimates included.
-
 When \code{object} is a \sQuote{probed_pomp} object,
 coercion to a data frame results in a data frame with the values of the probes computed on the data and on simulations.
 
@@ -82,4 +81,8 @@ coercion to a data frame results in a data frame with prediction means, filter m
 When \code{object} is a \sQuote{bsmcd_pomp} object,
 coercion to a data frame results in a data frame with samples from the prior and posterior distribution.
 The \code{.id} variable distinguishes them.
+
+When \code{object} is a \sQuote{wpfilterd_pomp} object,
+coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
+but with conditional log likelihood and effective sample size estimates included.
 }

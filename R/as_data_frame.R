@@ -88,27 +88,6 @@ setAs(
   }
 )
 
-##' @name as,wpfilterd_pomp-method
-##' @aliases coerce,wpfilterd_pomp,data.frame-method
-##' @rdname as_data_frame
-##'
-##' @details When \code{object} is a \sQuote{wpfilterd_pomp} object,
-##' coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
-##' but with conditional log likelihood and effective sample size estimates included.
-##'
-setAs(
-  from="wpfilterd_pomp",
-  to="data.frame",
-  def = function (from) {
-    out <- cbind(
-      as(as(from,"pomp"),"data.frame"),
-      ess=eff.sample.size(from),
-      cond.loglik=cond.logLik(from)
-    )
-    out
-  }
-)
-
 ##' @method as.data.frame pfilterd_pomp
 ##' @rdname as_data_frame
 ##' @export
@@ -264,3 +243,30 @@ as.data.frame.mif2List <- function (x, ...) {
 as.data.frame.pmcmcList <- function (x, ...) {
   as(x,"data.frame")
 }
+
+
+##' @name as,wpfilterd_pomp-method
+##' @aliases coerce,wpfilterd_pomp,data.frame-method
+##' @rdname as_data_frame
+##'
+##' @details When \code{object} is a \sQuote{wpfilterd_pomp} object,
+##' coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
+##' but with conditional log likelihood and effective sample size estimates included.
+##'
+setAs(
+  from="wpfilterd_pomp",
+  to="data.frame",
+  def = function (from) {
+    cbind(
+      as(as(from,"pomp"),"data.frame"),
+      ess=eff.sample.size(from),
+      cond.loglik=cond.logLik(from)
+    )
+  }
+)
+
+##' @method as.data.frame wpfilterd_pomp
+##' @rdname as_data_frame
+##' @export
+as.data.frame.wpfilterd_pomp <- function (x, ...) as(x,"data.frame")
+

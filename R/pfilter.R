@@ -39,6 +39,8 @@
 ##'
 ##' @return
 ##' An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
+##' Information can be extracted from this object using the methods documented below.
+##' 
 ##' @section Methods:
 ##' \describe{
 ##' \item{\code{\link{logLik}}}{ the estimated log likelihood  }

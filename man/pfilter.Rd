@@ -101,6 +101,7 @@ See \link[=userdata]{?userdata} for information on how to use this facility.}
 }
 \value{
 An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
+Information can be extracted from this object using the methods documented below.
 }
 \description{
 A plain vanilla sequential Monte Carlo (particle filter) algorithm.

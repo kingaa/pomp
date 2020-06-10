@@ -2,6 +2,8 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 3.0.0}{
   \itemize{
+    \item A new sequential importance sampling algorithm has been implemented as \code{wpfilter}.
+    This is a generalization of the algorithm in \code{pfilter} in that it tracks the weights of the particles and allows the user to customize the resampling scheme.
     \item In \code{mif2}, the specification of particle numbers, \code{Np}, has changed.
     When \code{Np} is supplied as a function, \code{Np(0)} is the requested number of particles at the beginning of the time series.
     The previous behavior was that \code{Np(1)} specified the requested number of particles.

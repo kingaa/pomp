@@ -101,4 +101,4 @@ extern const int *get_userdata_int(const char *name);
 extern const double *get_userdata_double(const char *name);
 extern void unset_pomp_userdata(void);
 /* src/wpfilter.c */
-extern SEXP wpfilter(SEXP x, SEXP params, SEXP Np, SEXP weights);
+extern SEXP wpfilter(SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Target, SEXP Np);

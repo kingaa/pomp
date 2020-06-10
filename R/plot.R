@@ -9,7 +9,7 @@
 ##' @include listie.R
 ##' @aliases plot,missing-method
 ##'
-##' @importFrom graphics plot par abline pairs matplot box axis mtext points polygon lines plot.default legend hist rect text title
+##' @importFrom graphics par abline pairs matplot box axis mtext points polygon lines plot.default legend hist rect text title
 ##' @importFrom grDevices rgb dev.interactive
 ##' @importFrom stats quantile cor density
 ##'

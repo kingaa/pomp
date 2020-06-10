@@ -32,7 +32,7 @@ jobs:
     os: linux
   - r: devel
     os: linux
-  - r: 3.5.0
+  - r: 4.0.0
     os: linux
   - r: release
     os: osx

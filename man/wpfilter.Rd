@@ -21,13 +21,22 @@
   rinit,
   rprocess,
   dmeasure,
+  trigger = 0,
+  target = 0.5,
   ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{wpfilter}{pomp}(data, Np, ..., verbose = getOption("verbose", FALSE))
+\S4method{wpfilter}{pomp}(
+  data,
+  Np,
+  trigger = 0,
+  target = 0.5,
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 
-\S4method{wpfilter}{wpfilterd_pomp}(data, Np, ..., verbose = getOption("verbose", FALSE))
+\S4method{wpfilter}{wpfilterd_pomp}(data, Np, trigger, target, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -59,6 +68,10 @@ For more information, \link[=rprocess_spec]{see ?rprocess_spec for the documenta
 Setting \code{dmeasure=NULL} removes the measurement density evaluator.
 For more information, see \link[=dmeasure_spec]{?dmeasure_spec}.}
 
+\item{trigger}{numeric; if the effective sample size becomes smaller than \code{trigger * Np}, resampling is triggered.}
+
+\item{target}{numeric; target power.}
+
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
 
@@ -70,15 +83,29 @@ See \link[=userdata]{?userdata} for information on how to use this facility.}
 }
 \value{
 An object of class \sQuote{wpfilterd_pomp}, which extends class \sQuote{pomp}.
+Information can be extracted from this object using the methods documented below.
 }
 \description{
-A weighted sequential Monte Carlo (particle filter) algorithm.
-Resampling is performed according to a trigger.
+A sequential importance sampling (particle filter) algorithm.
+Unlike in \code{pfilter}, resampling is performed only when triggered by
+deficiency in the effective sample size.
 }
 \details{
-THIS FUNCTION IS EXPERIMENTAL.
-IT MAY CHANGE WITHOUT WARNING AT ANY TIME.
+\bold{This function is experimental and should be considered in alpha stage.
+Both interface and underlying algorithms may change without warning at any time.
+Please explore the function and give feedback via the \pkg{pomp} Issues page.}
 }
+\section{Methods}{
+
+\describe{
+\item{\code{\link{logLik}}}{ the estimated log likelihood}
+\item{\code{\link{cond.logLik}}}{ the estimated conditional log likelihood}
+\item{\code{\link{eff.sample.size}}}{the (time-dependent) estimated effective sample size}
+\item{\code{\link{as.data.frame}}}{ coerce to a data frame}
+\item{\code{\link{plot}}}{diagnostic plots}
+}
+}
+
 \references{
 \Arulampalam2002
 }
