@@ -8,6 +8,7 @@ warnings_are_errors: true
 
 r-packages:
   - roxygen2
+  - nloptr
 
 addons:
   apt:
