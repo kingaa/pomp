@@ -1,4 +1,9 @@
+##' @name pipe
+##' @rdname pipe
+##' @keywords internal
 ##' @importFrom magrittr %>%
-##' @docType import
+##' 
+##' @details See \code{magrittr::\link[magrittr]{\%>\%}} for details.
+##' 
 ##' @export
 magrittr::`%>%`

@@ -1,13 +1,18 @@
+##' @rdname melt
+##' @keywords internal
 ##' @importFrom reshape2 melt
-##' @docType import
+##' 
+##' @details See \code{reshape2::\link[reshape2]{melt}} for details.
+##' 
 ##' @export
 reshape2::melt
 
+##' @rdname melt
 ##' @name melt,pomp-method
-##' @include melt.R
-##' @rdname as_data_frame
+##' @keywords internal
 ##' @details A \sQuote{pomp} object can be melted into a data frame.
 ##' @inheritParams reshape2::melt
+##' 
 ##' @export
 setMethod(
   "melt",
