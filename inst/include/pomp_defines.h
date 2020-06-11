@@ -37,7 +37,7 @@ typedef void set_pomp_userdata_t (SEXP userdata);
 typedef void unset_pomp_userdata_t (void);
 typedef SEXP get_covariate_names_t (SEXP object);
 
-static R_INLINE SEXP makearray (int rank, int *dim) {
+static R_INLINE SEXP makearray (int rank, const int *dim) {
   int *dimp, k;
   double *xp;
   SEXP dimx, x;

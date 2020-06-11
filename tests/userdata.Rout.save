@@ -21,11 +21,10 @@ Type 'q()' to quit R.
 > set.seed(58668844L)
 > 
 > library(pomp)
-Welcome to pomp!
-Version 3 incorporates some changes to the behavior of
-package algorithms that are not backward compatible.
-See the package NEWS for the details.
 
+Welcome to pomp! Version 3 incorporates some changes to the behavior of
+package algorithms that are not backward compatible. See the package
+NEWS for the details.
 
 > 
 > simulate(times=seq(1,100),t0=0,

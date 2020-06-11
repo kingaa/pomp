@@ -18,11 +18,10 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Welcome to pomp!
-Version 3 incorporates some changes to the behavior of
-package algorithms that are not backward compatible.
-See the package NEWS for the details.
 
+Welcome to pomp! Version 3 incorporates some changes to the behavior of
+package algorithms that are not backward compatible. See the package
+NEWS for the details.
 
 > sir_step <- Csnippet("
 +   double dN_SI = rbinom(S,1-exp(-exp(Beta)*(I/10000)*dt));
@@ -58,5 +57,4 @@ See the package NEWS for the details.
 +     proposal = mvn.diag.rw(c(Beta = 5, mu_IR = 5, rho = 5))
 + #    proposal = mvn.diag.rw(c(Beta = 0.2, mu_IR = 0.2, rho = 0.2))
 +   ) -> pmcmcSIR
-There were 50 or more warnings (use warnings() to see the first 50)
 > 

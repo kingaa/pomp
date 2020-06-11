@@ -32,7 +32,7 @@ check xcheck xxcheck: export FULL_TESTS=yes
 dist revdeps session tests check xcheck xxcheck: export R_KEEP_PKG_SOURCE=yes
 revdeps xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
 revdeps session xxcheck htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
-session: export R_DEFAULT_PACKAGES=datasets,utils,grDevices,graphics,stats,methods,pomp,tidyverse
+session: export R_DEFAULT_PACKAGES=datasets,utils,grDevices,graphics,stats,methods,tidyverse,pomp
 
 includes: inst/include/pomp.h inst/include/pomp_defines.h
 

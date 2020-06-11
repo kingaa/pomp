@@ -104,7 +104,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
       }
     }
 
-    *(REAL(loglik)) = maxw + log(w/((double) nreps)); // mean of weights is likelihood
+    *(REAL(loglik)) = maxw + log(w/((long double) nreps)); // mean of weights is likelihood
     *(REAL(ess)) = w*w/ws;      // effective sample size
   }
 
@@ -150,7 +150,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
       double *xp = REAL(params)+j;
       if (all_fail) {           // unweighted average
         for (k = 0, sum = 0; k < nreps; k++, xp += npars) sum += *xp;
-        *xwm = sum/((double) nreps);
+        *xwm = sum/((long double) nreps);
       } else {
         for (k = 0, sum = 0; k < nreps; k++, xp += npars) {
 	  if (xw[k]!=0) sum += xw[k]*(*xp);
@@ -277,7 +277,7 @@ static void pred_mean_var (int nvars, int nreps, int do_pv,
     
     // compute prediction mean
     for (k = 0, sum = 0; k < nreps; k++, xx += nvars) sum += *xx;
-    *pm = sum/((double) nreps);
+    *pm = sum/((long double) nreps);
     
     // compute prediction variance
     if (do_pv) {
@@ -286,7 +286,7 @@ static void pred_mean_var (int nvars, int nreps, int do_pv,
 	vsq = *xx - sum;
 	sumsq += vsq*vsq;
       }
-      *pv = sumsq/((double) (nreps - 1));
+      *pv = sumsq/((long double) (nreps - 1));
     }
   }
 }
@@ -301,7 +301,7 @@ static void filt_mean (int nvars, int nreps, int all_fail, long double wsum,
     xx = x+j;
     if (all_fail) {           // unweighted average
       for (k = 0, sum = 0; k < nreps; k++, xx += nvars) sum += *xx;
-      *fm = sum/((double) nreps);
+      *fm = sum/((long double) nreps);
     } else {                  // weighted average
       for (k = 0, sum = 0; k < nreps; k++, xx += nvars) sum += w[k]*(*xx);
       *fm = sum/wsum;
