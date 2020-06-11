@@ -1,5 +1,6 @@
 ##' @rdname melt
 ##' @keywords internal
+##' @docType import
 ##' @importFrom reshape2 melt
 ##' 
 ##' @details See \code{reshape2::\link[reshape2]{melt}} for details.

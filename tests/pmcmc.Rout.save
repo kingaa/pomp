@@ -83,7 +83,7 @@ Error : in 'pmcmc': in 'pfilter': number of particles, 'Np', must be a positive 
 > plot(c(mcmc1,c(mcmc2,mcmc3)),pars=c("r","sigma"),trace=FALSE)
 > invisible(window(traces(c(c(mcmc1,c(mcmc2,mcmc3)))),thin=10))
 > plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
-> try(plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","bob"))))
+> try(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","bob")))
 Error : in 'traces': parameter 'bob' not found.
 > dim(as.data.frame(c(mcmc1,mcmc2)))
 [1] 20  5

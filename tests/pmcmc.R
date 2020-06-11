@@ -42,7 +42,7 @@ plot(c(mcmc1,mcmc2,mcmc3),pars=c("r","sigma"),density=FALSE)
 plot(c(mcmc1,c(mcmc2,mcmc3)),pars=c("r","sigma"),trace=FALSE)
 invisible(window(traces(c(c(mcmc1,c(mcmc2,mcmc3)))),thin=10))
 plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
-try(plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","bob"))))
+try(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","bob")))
 dim(as.data.frame(c(mcmc1,mcmc2)))
 
 filter.traj(c(mcmc1,mcmc2,mcmc3)) -> ft

@@ -1,5 +1,6 @@
 ##' @name pipe
 ##' @rdname pipe
+##' @docType import
 ##' @keywords internal
 ##' @importFrom magrittr %>%
 ##' 
