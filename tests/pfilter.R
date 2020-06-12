@@ -63,7 +63,8 @@ try(pfilter(pf,params=theta,pred.var=TRUE))
 try(pfilter(pf,rprocess=onestep(
   function(x, t, params, delta.t, ...)stop("yikes!"))))
 try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
-try(pfilter(pf,dmeasure=function(log,...) -Inf))
+pfilter(pf,dmeasure=function(log,...) -Inf)
+pfilter(pf,dmeasure=function(log,...) -Inf,filter.mean=TRUE)
 
 pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
 pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)
@@ -99,3 +100,4 @@ ou2 %>%
       if (log) ll else exp(ll)
     }
   )
+

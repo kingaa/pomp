@@ -21,7 +21,7 @@
   rinit,
   rprocess,
   dmeasure,
-  trigger = 0,
+  trigger = 1,
   target = 0.5,
   ...,
   verbose = getOption("verbose", FALSE)
@@ -30,7 +30,7 @@
 \S4method{wpfilter}{pomp}(
   data,
   Np,
-  trigger = 0,
+  trigger = 1,
   target = 0.5,
   ...,
   verbose = getOption("verbose", FALSE)

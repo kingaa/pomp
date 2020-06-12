@@ -124,4 +124,8 @@ po %>%
     rinit=function(...)c(X=0)
   )
 
+mf3 %>%
+  continue(dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"))
+
+
 dev.off()

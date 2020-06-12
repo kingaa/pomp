@@ -143,7 +143,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
   // compute weighed average of parameters
   if (do_wave) {
     if (all_fail)
-      warn("filtering failure at last filter iteration: ",
+      warn("%s %s","filtering failure at last filter iteration:",
 	   "using unweighted mean for point estimate.");
     double *xwm = REAL(wmean);
     for (j = 0; j < npars; j++, xwm++) {

@@ -96,7 +96,7 @@ setMethod(
     data,
     Np,
     params, rinit, rprocess, dmeasure,
-    trigger = 0, target = 0.5,
+    trigger = 1, target = 0.5,
     ...,
     verbose = getOption("verbose", FALSE)) {
 
@@ -129,7 +129,7 @@ setMethod(
   definition=function (
     data,
     Np,
-    trigger = 0, target = 0.5,
+    trigger = 1, target = 0.5,
     ...,
     verbose = getOption("verbose", FALSE)) {
 
@@ -191,10 +191,10 @@ wpfilter.internal <- function (object, Np, trigger, target, ...,
   on.exit(pompUnload(object,verbose=verbose))
 
   trigger <- as.numeric(trigger)
-  if (length(trigger)!=1L || trigger < 0)
+  if (length(trigger)!=1L || !is.finite(trigger) || trigger < 0)
     pStop_(sQuote("trigger")," should be a non-negative scalar.")
   target <- as.numeric(target)
-  if (length(target)!=1L || target < 0 || target > 1)
+  if (length(target)!=1L || !is.finite(trigger) || target < 0 || target > 1)
     pStop_(sQuote("target")," should be a scalar in [0,1].")
 
   x <- rinit(object,params=params,nsim=Np[1L],.gnsi=gnsi)
@@ -223,12 +223,12 @@ wpfilter.internal <- function (object, Np, trigger, target, ...,
         loglik=w[xx],
         datvals=object@data[,nt],
         states=X[,xx,1L],
-        params=params[,1L]
+        params=params
       )
     }
 
     x <- xx$states
-    params <- xx$params
+    params <- xx$params[,1L]
     W <- xx$weights
     loglik[nt] <- xx$loglik
     eff.sample.size[nt] <- xx$ess

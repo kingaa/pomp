@@ -147,7 +147,9 @@ Error : in 'pfilter': non-finite state variable: x1
 Error : in 'pfilter': in 'rprocess': yikes!
 > try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 Error : in 'pfilter': in 'dmeasure': ouch!
-> try(pfilter(pf,dmeasure=function(log,...) -Inf))
+> pfilter(pf,dmeasure=function(log,...) -Inf)
+<object of class 'pfilterd_pomp'>
+> pfilter(pf,dmeasure=function(log,...) -Inf,filter.mean=TRUE)
 <object of class 'pfilterd_pomp'>
 > 
 > pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
@@ -216,4 +218,5 @@ Error : in 'pfilter': 'times' should either be a numeric vector of observation t
 +     }
 +   )
 <object of class 'pfilterd_pomp'>
+> 
 > 

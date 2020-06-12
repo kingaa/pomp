@@ -235,6 +235,13 @@ Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', ar
 +   )
 <object of class 'mif2d_pomp'>
 > 
+> mf3 %>%
++   continue(dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"))
+<object of class 'mif2d_pomp'>
+Warning message:
+filtering failure at last filter iteration: using unweighted mean for point estimate. 
+> 
+> 
 > dev.off()
 null device 
           1 

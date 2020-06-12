@@ -6,13 +6,16 @@
 // examines weights for filtering failure.
 // computes conditional log likelihood and effective sample size.
 // returns a named list.
+// AT PRESENT, NO PARAMETER RESAMPLING IS PERFORMED.
 SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Target, SEXP Np)
 {
 
   SEXP dimX, dimP, Xnames, Pnames;
-  int nvars, npars, nreps, np;
+  int nvars, nreps, np;
+  // REVISIT THIS IF PARAMETER RESAMPLING IS IMPLEMENTED
+  //  int npars;
+  //  int do_pr = 0;  // do parameter resampling?  at the moment, we do not
   int *dim, k;
-  int do_pr = 0;
   const char *dimnm[] = {"variable","rep"};
 
   PROTECT(dimX = GET_DIM(X));
@@ -23,13 +26,14 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
   PROTECT(Params = as_matrix(Params));
   PROTECT(dimP = GET_DIM(Params));
   dim = INTEGER(dimP);
-  npars = dim[0];
+  //  npars = dim[0];
   if (dim[1] > 1 && nreps != dim[1])
     err("ncol('params') does not match ncol('states')"); // # nocov
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(Params)));
 
   np = *INTEGER(AS_INTEGER(Np));
-  do_pr = (dim[1] > 1);	      // resample parameters as well as states
+  // REVISIT THIS IF PARAMETER RESAMPLING IS IMPLEMENTED
+  //  do_pr = (dim[1] > 1);	      // resample parameters as well as states
 
   PROTECT(Weights = duplicate(AS_NUMERIC(Weights)));
   PROTECT(W = duplicate(AS_NUMERIC(W)));
@@ -40,9 +44,7 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
   trigger = *REAL(AS_NUMERIC(Trigger));
   target = *REAL(AS_NUMERIC(Target));
 
-  // add W to Weights
-  // check weights for NAN or +Inf,
-  // find max of weights.
+  // add W to Weights. check weights for NAN or +Inf. find max of weights.
   long double maxlogw = R_NegInf, oldw = 0;
   double *xW = REAL(Weights);
   double *xw = REAL(W);
@@ -133,20 +135,21 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
     }
     SET_ELEMENT(retval,0,newstates);
       
+    // REVISIT THIS IF PARAMETER RESAMPLING IS IMPLEMENTED
     // create storage for new parameters
-    SEXP newparams = R_NilValue;
-    double *ps = 0, *pt = 0;
-    if (do_pr) {
-      int xdim[] = {npars, np};
-      PROTECT(newparams = makearray(2,xdim)); nprotect++;
-      setrownames(newparams,Pnames,2);
-      fixdimnames(newparams,dimnm,2);
-      ps = REAL(Params);
-      pt = REAL(newparams);
-      SET_ELEMENT(retval,1,newparams);
-    } else {
-      SET_ELEMENT(retval,1,Params);
-    }
+    //    SEXP newparams = R_NilValue;
+    //    double *ps = 0, *pt = 0;
+    // if (do_pr) {
+    //   int xdim[] = {npars, np};
+    //   PROTECT(newparams = makearray(2,xdim)); nprotect++;
+    //   setrownames(newparams,Pnames,2);
+    //   fixdimnames(newparams,dimnm,2);
+    //   ps = REAL(Params);
+    //   pt = REAL(newparams);
+    //   SET_ELEMENT(retval,1,newparams);
+    // } else {
+    SET_ELEMENT(retval,1,Params);
+    // }
       
     // create storage for new weights
     SEXP newweights = R_NilValue;
@@ -174,13 +177,15 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
       
       for (k = 0; k < np; k++) { // copy the particles
 	int sp = sample[k], j;
-	double *xx, *xp;
+	double *xx;
+	//	double *xp;
 	for (j = 0, xx = ss+nvars*sp; j < nvars; j++, st++, xx++)
 	  *st = *xx;
-	if (do_pr) {
-	  for (j = 0, xp = ps+npars*sp; j < npars; j++, pt++, xp++)
-	    *pt = *xp;
-	}
+	// REVISIT THIS IF PARAMETER RESAMPLING IS IMPLEMENTED
+	// if (do_pr) {
+	//   for (j = 0, xp = ps+npars*sp; j < npars; j++, pt++, xp++)
+	//     *pt = *xp;
+	// }
 	wt[k] = ws[sp];
       }
     }
