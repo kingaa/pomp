@@ -1,16 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Particle filter</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Weighted particle filter</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
-<table width="100%" summary="page for pfilter {pomp}"><tr><td>pfilter {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+<table width="100%" summary="page for wpfilter {pomp}"><tr><td>wpfilter {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Particle filter</h2>
+<h2>Weighted particle filter</h2>
 
 <h3>Description</h3>
 
-<p>A plain vanilla sequential Monte Carlo (particle filter) algorithm.
-Resampling is performed at each observation.
+<p>A sequential importance sampling (particle filter) algorithm.
+Unlike in <code>pfilter</code>, resampling is performed only when triggered by
+deficiency in the effective sample size.
 </p>
 
 
@@ -18,40 +19,31 @@ Resampling is performed at each observation.
 
 <pre>
 ## S4 method for signature 'data.frame'
-pfilter(
+wpfilter(
   data,
   Np,
   params,
   rinit,
   rprocess,
   dmeasure,
-  pred.mean = FALSE,
-  pred.var = FALSE,
-  filter.mean = FALSE,
-  filter.traj = FALSE,
-  save.states = FALSE,
+  trigger = 1,
+  target = 0.5,
   ...,
   verbose = getOption("verbose", FALSE)
 )
 
 ## S4 method for signature 'pomp'
-pfilter(
+wpfilter(
   data,
   Np,
-  pred.mean = FALSE,
-  pred.var = FALSE,
-  filter.mean = FALSE,
-  filter.traj = FALSE,
-  save.states = FALSE,
+  trigger = 1,
+  target = 0.5,
   ...,
   verbose = getOption("verbose", FALSE)
 )
 
-## S4 method for signature 'pfilterd_pomp'
-pfilter(data, Np, ..., verbose = getOption("verbose", FALSE))
-
-## S4 method for signature 'objfun'
-pfilter(data, ...)
+## S4 method for signature 'wpfilterd_pomp'
+wpfilter(data, Np, trigger, target, ..., verbose = getOption("verbose", FALSE))
 </pre>
 
 
@@ -100,27 +92,13 @@ For more information, <a href="rprocess_spec.html">see ?rprocess_spec for the do
 Setting <code>dmeasure=NULL</code> removes the measurement density evaluator.
 For more information, see <a href="dmeasure_spec.html">?dmeasure_spec</a>.</p>
 </td></tr>
-<tr valign="top"><td><code>pred.mean</code></td>
+<tr valign="top"><td><code>trigger</code></td>
 <td>
-<p>logical; if <code>TRUE</code>, the prediction means are calculated for the state variables and parameters.</p>
+<p>numeric; if the effective sample size becomes smaller than <code>trigger * Np</code>, resampling is triggered.</p>
 </td></tr>
-<tr valign="top"><td><code>pred.var</code></td>
+<tr valign="top"><td><code>target</code></td>
 <td>
-<p>logical; if <code>TRUE</code>, the prediction variances are calculated for the state variables and parameters.</p>
-</td></tr>
-<tr valign="top"><td><code>filter.mean</code></td>
-<td>
-<p>logical; if <code>TRUE</code>, the filtering means are calculated for the state variables and parameters.</p>
-</td></tr>
-<tr valign="top"><td><code>filter.traj</code></td>
-<td>
-<p>logical; if <code>TRUE</code>, a filtered trajectory is returned for the state variables and parameters.
-See <code><a href="filter_traj.html">filter.traj</a></code> for more information.</p>
-</td></tr>
-<tr valign="top"><td><code>save.states</code></td>
-<td>
-<p>logical.
-If <code>save.states=TRUE</code>, the state-vector for each particle at each time is saved.</p>
+<p>numeric; target power.</p>
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
@@ -138,9 +116,17 @@ See <a href="userdata.html">?userdata</a> for information on how to use this fac
 </table>
 
 
+<h3>Details</h3>
+
+<p><b>This function is experimental and should be considered in alpha stage.
+Both interface and underlying algorithms may change without warning at any time.
+Please explore the function and give feedback via the <span class="pkg">pomp</span> Issues page.</b>
+</p>
+
+
 <h3>Value</h3>
 
-<p>An object of class &lsquo;pfilterd_pomp&rsquo;, which extends class &lsquo;pomp&rsquo;.
+<p>An object of class &lsquo;wpfilterd_pomp&rsquo;, which extends class &lsquo;pomp&rsquo;.
 Information can be extracted from this object using the methods documented below.
 </p>
 
@@ -149,23 +135,13 @@ Information can be extracted from this object using the methods documented below
 
 
 <dl>
-<dt><code><a href="loglik.html">logLik</a></code></dt><dd><p> the estimated log likelihood  </p>
+<dt><code><a href="loglik.html">logLik</a></code></dt><dd><p> the estimated log likelihood</p>
 </dd>
-<dt><code><a href="cond_logLik.html">cond.logLik</a></code></dt><dd><p> the estimated conditional log likelihood </p>
+<dt><code><a href="cond_logLik.html">cond.logLik</a></code></dt><dd><p> the estimated conditional log likelihood</p>
 </dd>
-<dt><code><a href="eff_sample_size.html">eff.sample.size</a></code></dt><dd>
-<p>the (time-dependent) estimated effective sample size </p>
+<dt><code><a href="eff_sample_size.html">eff.sample.size</a></code></dt><dd><p>the (time-dependent) estimated effective sample size</p>
 </dd>
-<dt><code><a href="pred_mean.html">pred.mean</a></code>, <code><a href="pred_var.html">pred.var</a></code></dt><dd><p> the mean and variance of the approximate prediction distribution </p>
-</dd>
-<dt><code><a href="filter_mean.html">filter.mean</a></code></dt><dd><p> the mean of the filtering distribution </p>
-</dd>
-<dt><code><a href="filter_traj.html">filter.traj</a></code></dt><dd>
-<p>retrieve one particle trajectory.
-Useful for building up the smoothing distribution.
-</p>
-</dd>
-<dt><code><a href="as_data_frame.html">as.data.frame</a></code></dt><dd><p> coerce to a data frame </p>
+<dt><code><a href="as_data_frame.html">as.data.frame</a></code></dt><dd><p> coerce to a data frame</p>
 </dd>
 <dt><code><a href="plot.html">plot</a></code></dt><dd><p>diagnostic plots</p>
 </dd>
@@ -188,11 +164,11 @@ Useful for building up the smoothing distribution.
 <h3>See Also</h3>
 
 <p>Other elementary POMP methods: 
+<code><a href="pfilter.html">pfilter</a>()</code>,
 <code><a href="pomp-package.html">pomp-package</a></code>,
 <code><a href="probe.html">probe</a>()</code>,
 <code><a href="simulate.html">simulate</a>()</code>,
-<code><a href="spect.html">spect</a>()</code>,
-<code><a href="wpfilter.html">wpfilter</a>()</code>
+<code><a href="spect.html">spect</a>()</code>
 </p>
 <p>Other particle filter methods: 
 <code><a href="bsmc2.html">bsmc2</a>()</code>,
@@ -201,29 +177,11 @@ Useful for building up the smoothing distribution.
 <code><a href="filter_mean.html">filter.mean</a>()</code>,
 <code><a href="filter_traj.html">filter.traj</a>()</code>,
 <code><a href="mif2.html">mif2</a>()</code>,
+<code><a href="pfilter.html">pfilter</a>()</code>,
 <code><a href="pmcmc.html">pmcmc</a>()</code>,
 <code><a href="pred_mean.html">pred.mean</a>()</code>,
-<code><a href="pred_var.html">pred.var</a>()</code>,
-<code><a href="wpfilter.html">wpfilter</a>()</code>
+<code><a href="pred_var.html">pred.var</a>()</code>
 </p>
-
-
-<h3>Examples</h3>
-
-<pre>
-pf &lt;- pfilter(gompertz(),Np=1000)	## use 1000 particles
-
-plot(pf)
-logLik(pf)
-cond.logLik(pf)			## conditional log-likelihoods
-eff.sample.size(pf)             ## effective sample size
-logLik(pfilter(pf))      	## run it again with 1000 particles
-
-## run it again with 2000 particles
-pf &lt;- pfilter(pf,Np=2000,filter.mean=TRUE,filter.traj=TRUE)
-fm &lt;- filter.mean(pf)    	## extract the filtering means
-ft &lt;- filter.traj(pf)    	## one draw from the smoothing distribution
-</pre>
 
 <hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.0.1.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -47,8 +47,8 @@ as.data.frame(x, ...)
 ## S3 method for class 'pmcmcList'
 as.data.frame(x, ...)
 
-## S4 method for signature 'pomp'
-melt(data, ..., na.rm = FALSE, value.name = "value")
+## S3 method for class 'wpfilterd_pomp'
+as.data.frame(x, ...)
 </pre>
 
 
@@ -62,19 +62,6 @@ melt(data, ..., na.rm = FALSE, value.name = "value")
 <tr valign="top"><td><code>...</code></td>
 <td>
 <p>additional arguments to be passed to or from methods.</p>
-</td></tr>
-<tr valign="top"><td><code>data</code></td>
-<td>
-<p>Data set to melt</p>
-</td></tr>
-<tr valign="top"><td><code>na.rm</code></td>
-<td>
-<p>Should NA values be removed from the data set? This will
-convert explicit missings to implicit missings.</p>
-</td></tr>
-<tr valign="top"><td><code>value.name</code></td>
-<td>
-<p>name of variable used to store values</p>
 </td></tr>
 </table>
 
@@ -100,8 +87,10 @@ coercion to a data frame results in a data frame with prediction means, filter m
 coercion to a data frame results in a data frame with samples from the prior and posterior distribution.
 The <code>.id</code> variable distinguishes them.
 </p>
-<p>A &lsquo;pomp&rsquo; object can be melted into a data frame.
+<p>When <code>object</code> is a &lsquo;wpfilterd_pomp&rsquo; object,
+coercion to a data frame results in a data frame with the same content as for a simple &lsquo;pomp&rsquo;,
+but with conditional log likelihood and effective sample size estimates included.
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.0.0.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.0.1.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
