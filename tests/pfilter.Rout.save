@@ -40,7 +40,7 @@ NEWS for the details.
 [1] -9.32 -3.84
 > names(as(pf,"data.frame"))
 [1] "time"        "y1"          "y2"          "x1"          "x2"         
-[6] "ess"         "cond.loglik"
+[6] "ess"         "cond.logLik"
 > identical(as(pf,"data.frame"),as.data.frame(pf))
 [1] TRUE
 > 
@@ -159,7 +159,7 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 +   filter.traj=TRUE)
 > names(as(pf2,"data.frame"))
  [1] "time"           "y1"             "y2"             "ess"           
- [5] "cond.loglik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   
+ [5] "cond.logLik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   
  [9] "pred.var.x2"    "filter.mean.x1" "filter.mean.x2"
 > dim(filter.traj(pf3))
 [1]   2   1 100

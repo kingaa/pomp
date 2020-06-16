@@ -113,16 +113,16 @@ NEWS for the details.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  8.997   0.111   9.108 
+  9.569   0.098   9.666 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.332   0.004   0.336 
+  0.331   0.005   0.335 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.803   0.000   0.803 
+  0.866   0.023   0.889 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.054   0.000   0.055 
+  0.055   0.001   0.056 
 > 
 > dev.off()
 null device 

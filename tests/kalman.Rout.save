@@ -115,7 +115,7 @@ NEWS for the details.
          variable  n
 1              y1 20
 2              y2 20
-3     cond.loglik 20
+3     cond.logLik 20
 4    pred.mean.x1 20
 5    pred.mean.x2 20
 6    pred.mean.x3 20
@@ -131,7 +131,7 @@ NEWS for the details.
          variable  n
 1              y1 20
 2              y2 20
-3     cond.loglik 20
+3     cond.logLik 20
 4    pred.mean.x1 20
 5    pred.mean.x2 20
 6    pred.mean.x3 20

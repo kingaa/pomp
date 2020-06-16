@@ -78,7 +78,7 @@ Error : in 'eakf': 'times' should either be a numeric vector of observation time
 > kf %>% plot()
 > 
 > kf %>% as.data.frame() %>% names()
-[1] "time"          "Y"             "cond.loglik"   "pred.mean.x"  
+[1] "time"          "Y"             "cond.logLik"   "pred.mean.x"  
 [5] "filter.mean.x" "forecast.Y"   
 > kf %>% melt(id="time") %>% names()
 [1] "time"     "variable" "value"   
