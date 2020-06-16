@@ -484,7 +484,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
     as(object,"pomp"),
     paramMatrix=params,
     eff.sample.size=eff.sample.size,
-    cond.loglik=loglik,
+    cond.logLik=loglik,
     indices=.indices,
     Np=Np,
     loglik=sum(loglik)

@@ -300,7 +300,7 @@ mif2.diagnostics <- function (z) {
   parnames <- names(coef(xx,transform=TRUE))
   estnames <- parnames
 
-  ## plot ESS and cond.loglik
+  ## plot ESS and cond.logLik
   nplots <- 2
   n.per.page <- 2
   nc <- 1

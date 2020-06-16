@@ -40,7 +40,7 @@ setClass(
     pred.mean="array",
     filter.mean="array",
     forecast="array",
-    cond.loglik="numeric",
+    cond.logLik="numeric",
     loglik="numeric"
   ),
   prototype=prototype(
@@ -48,7 +48,7 @@ setClass(
     pred.mean=array(data=numeric(0),dim=c(0,0)),
     filter.mean=array(data=numeric(0),dim=c(0,0)),
     forecast=array(data=numeric(0),dim=c(0,0)),
-    cond.loglik=numeric(0),
+    cond.logLik=numeric(0),
     loglik=as.double(NA)
   )
 )
@@ -307,7 +307,7 @@ enkf.internal <- function (object,
     filter.mean=filterMeans,
     pred.mean=predMeans,
     forecast=forecast,
-    cond.loglik=condlogLik,
+    cond.logLik=condlogLik,
     loglik=sum(condlogLik))
 
 }
@@ -396,7 +396,7 @@ eakf.internal <- function (object,
     filter.mean=filterMeans,
     pred.mean=predMeans,
     forecast=forecast,
-    cond.loglik=condlogLik,
+    cond.logLik=condlogLik,
     loglik=sum(condlogLik))
 
 }
@@ -453,7 +453,7 @@ kalmanFilter <- function (t, y, X0, A, Q, C, R) {
     filterMeans=filterMeans,
     predMeans=predMeans,
     forecast=forecast,
-    cond.loglik=condlogLik,
+    cond.logLik=condlogLik,
     loglik=sum(condlogLik)
   )
 

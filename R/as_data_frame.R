@@ -67,7 +67,7 @@ setAs(
     out <- cbind(
       as(as(from,"pomp"),"data.frame"),
       ess=eff.sample.size(from),
-      cond.loglik=cond.logLik(from)
+      cond.logLik=cond.logLik(from)
     )
     if (length(pm)>0) {
       pm <- as.data.frame(t(pm))
@@ -133,7 +133,7 @@ setAs(
     fc <- forecast(from)
     out <- cbind(
       as(as(from,"pomp"),"data.frame"),
-      cond.loglik=cond.logLik(from)
+      cond.logLik=cond.logLik(from)
     )
     if (length(pm)>0) {
       pm <- as.data.frame(t(pm))
@@ -260,7 +260,7 @@ setAs(
     cbind(
       as(as(from,"pomp"),"data.frame"),
       ess=eff.sample.size(from),
-      cond.loglik=cond.logLik(from)
+      cond.logLik=cond.logLik(from)
     )
   }
 )

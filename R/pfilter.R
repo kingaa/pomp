@@ -76,7 +76,7 @@ setClass(
     paramMatrix="array",
     indices="vector",
     eff.sample.size="numeric",
-    cond.loglik="numeric",
+    cond.logLik="numeric",
     saved.states="list",
     Np="integer",
     loglik="numeric"
@@ -89,7 +89,7 @@ setClass(
     paramMatrix=array(data=numeric(0),dim=c(0,0)),
     indices=integer(0),
     eff.sample.size=numeric(0),
-    cond.loglik=numeric(0),
+    cond.logLik=numeric(0),
     saved.states=list(),
     Np=as.integer(NA),
     loglik=as.double(NA)
@@ -370,7 +370,7 @@ pfilter.internal <- function (object, Np,
     filter.traj=filt.t,
     paramMatrix=array(data=numeric(0),dim=c(0,0)),
     eff.sample.size=eff.sample.size,
-    cond.loglik=loglik,
+    cond.logLik=loglik,
     saved.states=xparticles,
     Np=as.integer(Np),
     loglik=sum(loglik)

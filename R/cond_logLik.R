@@ -52,7 +52,7 @@ setMethod(
 setMethod(
   "cond.logLik",
   signature=signature(object="kalmand_pomp"),
-  definition=function(object,...)object@cond.loglik
+  definition=function(object,...)object@cond.logLik
 )
 
 ##' @name cond.logLik-pfilterd_pomp
@@ -62,7 +62,7 @@ setMethod(
 setMethod(
   "cond.logLik",
   signature=signature(object="pfilterd_pomp"),
-  definition=function(object,...)object@cond.loglik
+  definition=function(object,...)object@cond.logLik
 )
 
 ##' @name cond.logLik-wpfilterd_pomp
@@ -72,7 +72,7 @@ setMethod(
 setMethod(
   "cond.logLik",
   signature=signature(object="wpfilterd_pomp"),
-  definition=function(object,...)object@cond.loglik
+  definition=function(object,...)object@cond.logLik
 )
 
 ##' @name cond.logLik-bsmcd_pomp

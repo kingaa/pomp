@@ -49,7 +49,7 @@ setClass(
     trigger="numeric",
     target="numeric",
     eff.sample.size="numeric",
-    cond.loglik="numeric",
+    cond.logLik="numeric",
     Np="integer",
     loglik="numeric"
   ),
@@ -57,7 +57,7 @@ setClass(
     trigger=0.0,
     target=0.5,
     eff.sample.size=numeric(0),
-    cond.loglik=numeric(0),
+    cond.logLik=numeric(0),
     Np=as.integer(NA),
     loglik=as.double(NA)
   )
@@ -241,7 +241,7 @@ wpfilter.internal <- function (object, Np, trigger, target, ...,
     trigger=trigger,
     target=target,
     eff.sample.size=eff.sample.size,
-    cond.loglik=loglik,
+    cond.logLik=loglik,
     Np=as.integer(Np),
     loglik=sum(loglik)
   )
