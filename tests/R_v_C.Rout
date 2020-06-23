@@ -1,5 +1,5 @@
 
-R version 4.0.0 (2020-04-24) -- "Arbor Day"
+R version 4.0.1 (2020-06-06) -- "See Things Now"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -113,16 +113,16 @@ NEWS for the details.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  9.569   0.098   9.666 
+  9.517   0.214   9.732 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.331   0.005   0.335 
+  0.329   0.004   0.334 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.866   0.023   0.889 
+  0.852   0.000   0.853 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.055   0.001   0.056 
+  0.057   0.000   0.056 
 > 
 > dev.off()
 null device 

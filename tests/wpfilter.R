@@ -36,6 +36,8 @@ wpfilter(po,Np=100,dmeasure=function(...,log)-Inf)
 
 wpfilter(po,Np=100) %>% wpfilter() -> pf
 wpfilter(po,Np=100) %>% wpfilter(target=0,trigger=0.1,Np=200) -> pf
+pf %>% as.data.frame() %>% nrow()
+pf %>% as("data.frame") %>% names()
 try(wpfilter(po,dmeasure=NULL))
 try(wpfilter(po,rprocess=NULL))
 try(wpfilter(po,Np=100,trigger=-1))

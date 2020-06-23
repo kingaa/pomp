@@ -1,5 +1,5 @@
 
-R version 4.0.0 (2020-04-24) -- "Arbor Day"
+R version 4.0.1 (2020-06-06) -- "See Things Now"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -44,7 +44,8 @@ Error : 'partrans' is undefined for 'object' of class 'character'.
 Error : in 'partrans': variable 'K' not found among the parameters.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("K = exp(T_K);")),
 +   paramnames="K"),theta3))
-Error : in 'parameter_trans': if one of 'toEst', 'fromEst' is supplied, then so must the other be.
+Error in h(simpleError(msg, call)) : 
+  error in evaluating the argument 'object' in selecting a method for function 'partrans': in 'parameter_trans': if one of 'toEst', 'fromEst' is supplied, then so must the other be.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("K = exp(T_K);"),
 +   to=Csnippet("T_K = log(K);")),paramnames="K"),theta3))
 Error : in 'partrans': variable 'K' not found among the parameters.
@@ -63,7 +64,8 @@ Error : in 'partrans': argument "params" is missing, with no default
 Error : in 'partrans': user transformation functions must return named numeric vectors.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(
 +   from=function(...)unname(list(...)),to=NULL)),pp))
-Error : 'parameter_trans' not defined for arguments of class 'NULL', 'function'.
+Error in h(simpleError(msg, call)) : 
+  error in evaluating the argument 'object' in selecting a method for function 'partrans': 'parameter_trans' not defined for arguments of class 'NULL', 'function'.
 > 
 > parameter_trans(toEst=NULL,fromEst=NULL)
   - to estimation scale: <identity>

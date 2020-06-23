@@ -27,7 +27,7 @@ setMethod(
   "coef<-",
   signature=signature(object="missing"),
   definition=function (...) {
-    reqd_arg("coef<-","object")
+    reqd_arg("coef<-","object") #nocov
   }
 )
 

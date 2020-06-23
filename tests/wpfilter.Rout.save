@@ -1,5 +1,5 @@
 
-R version 4.0.0 (2020-04-24) -- "Arbor Day"
+R version 4.0.1 (2020-06-06) -- "See Things Now"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -81,6 +81,10 @@ Error : 'wpfilter' is undefined for 'data' of class 'list'.
 > 
 > wpfilter(po,Np=100) %>% wpfilter() -> pf
 > wpfilter(po,Np=100) %>% wpfilter(target=0,trigger=0.1,Np=200) -> pf
+> pf %>% as.data.frame() %>% nrow()
+[1] 51
+> pf %>% as("data.frame") %>% names()
+[1] "time"        "y"           "ess"         "cond.logLik"
 > try(wpfilter(po,dmeasure=NULL))
 Error : in 'wpfilter': 'rprocess', 'dmeasure' are needed basic components.
 > try(wpfilter(po,rprocess=NULL))
