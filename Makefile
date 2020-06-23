@@ -45,7 +45,7 @@ htmldocs: inst/doc/*.html
 
 htmlhelp: install
 	rsync -avz library/pomp/html/ www/manual
-	(cd www/manual;	patch -p2 < links.patch)
+	(cd www/manual;	(cat links.ed && echo w ) | ed - 00Index.html)
 	$(CP) www/_includes/pompstyle.css www/manual/R.css
 
 vignettes: manual install
