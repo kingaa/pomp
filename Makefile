@@ -2,6 +2,7 @@ REXE = R --vanilla
 RCMD = $(REXE) CMD
 RCMD_ALT = R --no-save --no-restore CMD
 RSCRIPT = Rscript --vanilla
+REPODIR = ../www
 
 PDFLATEX = pdflatex
 BIBTEX = bibtex
@@ -87,9 +88,9 @@ binary: dist
 	rm -rf plib
 
 publish: dist manual news
-	$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).tar.gz",repodir="../www",action="prune")'
-	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).tgz",repodir="../www",action="prune")'
-	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).zip",repodir="../www",action="prune")'
+	$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).tar.gz",repodir="$(REPODIR)",action="prune")'
+	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).tgz",repodir="$(REPODIR)",action="prune")'
+	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).zip",repodir="$(REPODIR)",action="prune")'
 	$(CP) $(PKG).pdf ../www/manuals
 
 win: dist
