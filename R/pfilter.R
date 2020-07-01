@@ -53,6 +53,7 @@
 ##'   retrieve one particle trajectory.
 ##'   Useful for building up the smoothing distribution.
 ##' }
+##' \item{\code{\link{saved.states}}}{retrieve list of saved states.}
 ##' \item{\code{\link{as.data.frame}}}{ coerce to a data frame }
 ##' \item{\code{\link{plot}}}{diagnostic plots}
 ##' }

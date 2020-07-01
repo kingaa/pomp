@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.0.3}{
+  \itemize{
+    \item A new \code{saved.states} method allows one to extract the saved states from a particle filter computation.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.0.2}{
   \itemize{
     \item All instances of \code{cond.loglik} have been changed to \code{cond.logLik}, to remove a common source of typographical error.

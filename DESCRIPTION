@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 3.0.2.1
-Date: 2020-06-23
+Version: 3.0.3.0
+Date: 2020-07-01
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -119,6 +119,7 @@ Collate:
     'runif_design.R'
     'rw2.R'
     'sannbox.R'
+    'saved_states.R'
     'sir.R'
     'slice_design.R'
     'sobol.R'
@@ -131,4 +132,4 @@ Collate:
     'userdata.R'
     'verhulst.R'
     'window.R'
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

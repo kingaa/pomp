@@ -1,5 +1,5 @@
 
-R version 4.0.1 (2020-06-06) -- "See Things Now"
+R version 4.0.2 (2020-06-22) -- "Taking Off Again"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -158,8 +158,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2020-06-23 09:13:20.447 -0400 */
-/* Salt: EC805DEBCDBEC20D6A97A71C */
+/* Time: 2020-07-01 10:23:40.027 -0400 */
+/* Salt: 31CC236DAB3D2AD950E0A82A */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -276,8 +276,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2020-06-23 09:13:20.589 -0400 */
-/* Salt: A593F311C6AB4971B89BCAC0 */
+/* Time: 2020-07-01 10:23:40.167 -0400 */
+/* Salt: 36778FC102A385198578A94F */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -798,8 +798,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2020-06-23 09:13:21.264 -0400 */
-/* Salt: 7DA7E36FB117639830FDA01A */
+/* Time: 2020-07-01 10:23:40.843 -0400 */
+/* Salt: 36B43760F34DAB37F594D3A9 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -994,8 +994,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2020-06-23 09:13:21.835 -0400 */
-/* Salt: B8C5330C1186EBC3939ADDB2 */
+/* Time: 2020-07-01 10:23:41.409 -0400 */
+/* Salt: 5300C9B720DDE8364ADD1133 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

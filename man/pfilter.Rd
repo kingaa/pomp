@@ -120,6 +120,7 @@ the (time-dependent) estimated effective sample size }
   retrieve one particle trajectory.
   Useful for building up the smoothing distribution.
 }
+\item{\code{\link{saved.states}}}{retrieve list of saved states.}
 \item{\code{\link{as.data.frame}}}{ coerce to a data frame }
 \item{\code{\link{plot}}}{diagnostic plots}
 }
@@ -135,9 +136,10 @@ eff.sample.size(pf)             ## effective sample size
 logLik(pfilter(pf))      	## run it again with 1000 particles
 
 ## run it again with 2000 particles
-pf <- pfilter(pf,Np=2000,filter.mean=TRUE,filter.traj=TRUE)
+pf <- pfilter(pf,Np=2000,filter.mean=TRUE,filter.traj=TRUE,save.states=TRUE)
 fm <- filter.mean(pf)    	## extract the filtering means
 ft <- filter.traj(pf)    	## one draw from the smoothing distribution
+ss <- saved.states(pf)          ## the latent-state portion of each particle
 }
 \references{
 \Arulampalam2002
@@ -160,6 +162,7 @@ Other particle filter methods:
 \code{\link{pmcmc}()},
 \code{\link{pred.mean}()},
 \code{\link{pred.var}()},
+\code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 }
 \author{

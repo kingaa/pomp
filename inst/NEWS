@@ -1,5 +1,10 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._0._3:
+
+        • A new ‘saved.states’ method allows one to extract the saved
+          states from a particle filter computation.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._0._2:
 
         • All instances of ‘cond.loglik’ have been changed to

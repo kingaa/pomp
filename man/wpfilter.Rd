@@ -127,7 +127,8 @@ Other particle filter methods:
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
 \code{\link{pred.mean}()},
-\code{\link{pred.var}()}
+\code{\link{pred.var}()},
+\code{\link{saved.states}()}
 }
 \author{
 Aaron A. King

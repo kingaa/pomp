@@ -39,6 +39,7 @@ Other particle filter methods:
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
 \code{\link{pred.mean}()},
+\code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 }
 \concept{particle filter methods}
