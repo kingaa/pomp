@@ -67,10 +67,14 @@ pfilter(pf,dmeasure=function(log,...) -Inf)
 pfilter(pf,dmeasure=function(log,...) -Inf,filter.mean=TRUE)
 
 pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
-pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)
+pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE,save.states=TRUE)
 pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
   filter.traj=TRUE)
+pf1 %>% saved.states() %>% melt() %>% names()
+pf1 %>% saved.states() %>% melt() %>% dim()
+c(A=pf1,B=pf2) %>% saved.states() %>% melt() %>% names()
+c(A=pf1,B=pf2) %>% saved.states() %>% melt() %>% sapply(class)
 names(as(pf2,"data.frame"))
 dim(filter.traj(pf3))
 dimnames(filter.traj(pf3))
@@ -81,6 +85,10 @@ names(dimnames(filter.traj(c(pf1,pf4))))
 names(melt(as(c(pf1,pf4),"data.frame")))
 pf2 %>% melt() %>% names()
 pf2 %>% melt(id="time") %>% names()
+
+try(saved.states())
+try(saved.states(NULL))
+try(saved.states("bob"))
 
 try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
 

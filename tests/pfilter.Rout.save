@@ -153,10 +153,19 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 <object of class 'pfilterd_pomp'>
 > 
 > pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
-> pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)
+> pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE,save.states=TRUE)
 > pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 +   filter.traj=TRUE)
+> pf1 %>% saved.states() %>% melt() %>% names()
+[1] "variable" "rep"      "value"    "L1"      
+> pf1 %>% saved.states() %>% melt() %>% dim()
+[1] 20000     4
+> c(A=pf1,B=pf2) %>% saved.states() %>% melt() %>% names()
+[1] "variable" "rep"      "value"    "L2"       "L1"      
+> c(A=pf1,B=pf2) %>% saved.states() %>% melt() %>% sapply(class)
+   variable         rep       value          L2          L1 
+   "factor"   "integer"   "numeric" "character" "character" 
 > names(as(pf2,"data.frame"))
  [1] "time"           "y1"             "y2"             "ess"           
  [5] "cond.logLik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   
@@ -197,6 +206,13 @@ No id variables; using all as measure variables
 [1] "variable" "value"   
 > pf2 %>% melt(id="time") %>% names()
 [1] "time"     "variable" "value"   
+> 
+> try(saved.states())
+Error : in 'saved.states': 'object' is a required argument.
+> try(saved.states(NULL))
+Error : 'saved.states' is undefined for 'object' of class 'NULL'.
+> try(saved.states("bob"))
+Error : 'saved.states' is undefined for 'object' of class 'character'.
 > 
 > try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
 Error : in 'pfilter': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
