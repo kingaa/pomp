@@ -88,3 +88,12 @@ setMethod(
   signature=signature(object="bsmcd_pomp"),
   definition=function(object,...)object@cond.log.evidence
 )
+
+##' @name cond.loglik
+##' @aliases cond.loglik
+##' @rdname cond_logLik
+##' @export
+cond.loglik <- function (...) {
+  .Deprecated("cond.logLik",package="pomp")
+  cond.logLik(...)
+}

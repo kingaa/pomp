@@ -170,12 +170,14 @@ pomp <- function (data, times, t0, ...,
       "class ",sQuote("pomp"),".")
 
   ## return as quickly as possible if no work is to be done
-  if (is(data,"pomp") && missing(times) && missing(t0) &&
+  if (
+    is(data,"pomp") && missing(times) && missing(t0) &&
       missing(rinit) && missing(rprocess) && missing(dprocess) &&
       missing(rmeasure) && missing(dmeasure) && missing(skeleton) &&
       missing(rprior) && missing(dprior) && missing(partrans) &&
       missing(covar) && missing(params) && missing(accumvars) &&
-      length(list(...)) == 0)
+      ...length() == 0
+  )
     return(as(data,"pomp"))
 
   if (missing(times)) times <- NULL

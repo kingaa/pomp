@@ -36,6 +36,12 @@ NEWS for the details.
 > stopifnot(logLik(pf)==sum(cond.logLik(pf)))
 > range(eff.sample.size(pf))
 [1]   2.88 243.72
+> range(cond.loglik(pf))
+[1] -9.32 -3.84
+Warning message:
+'cond.loglik' is deprecated.
+Use 'cond.logLik' instead.
+See help("Deprecated") and help("pomp-deprecated"). 
 > range(cond.logLik(pf))
 [1] -9.32 -3.84
 > names(as(pf,"data.frame"))

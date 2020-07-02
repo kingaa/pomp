@@ -13,6 +13,7 @@
 \alias{cond.logLik,wpfilterd_pomp-method}
 \alias{cond.logLik-bsmcd_pomp}
 \alias{cond.logLik,bsmcd_pomp-method}
+\alias{cond.loglik}
 \title{Conditional log likelihood}
 \usage{
 \S4method{cond.logLik}{kalmand_pomp}(object, ...)
@@ -22,6 +23,8 @@
 \S4method{cond.logLik}{wpfilterd_pomp}(object, ...)
 
 \S4method{cond.logLik}{bsmcd_pomp}(object, ...)
+
+cond.loglik(...)
 }
 \arguments{
 \item{object}{result of a filtering computation}
