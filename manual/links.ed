@@ -1,6 +1,6 @@
-18c
+16,18c
+<li><a href="../docs.html">User guides, package vignettes and other documentation.</a></li>
 <li><a href="../NEWS.html">Package NEWS</a>.</li>
 .
-16d
 12,13d
 8d

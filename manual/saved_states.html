@@ -1,26 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Prediction mean</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Saved states</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
-<table width="100%" summary="page for pred.mean {pomp}"><tr><td>pred.mean {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+<table width="100%" summary="page for saved.states {pomp}"><tr><td>saved.states {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Prediction mean</h2>
+<h2>Saved states</h2>
 
 <h3>Description</h3>
 
-<p>The mean of the prediction distribution
+<p>Retrieve latent state trajectories from a particle filter calculation.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-## S4 method for signature 'kalmand_pomp'
-pred.mean(object, vars, ...)
-
 ## S4 method for signature 'pfilterd_pomp'
-pred.mean(object, vars, ...)
+saved.states(object, ...)
+
+## S4 method for signature 'pfilterList'
+saved.states(object, ...)
 </pre>
 
 
@@ -31,10 +31,6 @@ pred.mean(object, vars, ...)
 <td>
 <p>result of a filtering computation</p>
 </td></tr>
-<tr valign="top"><td><code>vars</code></td>
-<td>
-<p>optional character; names of variables</p>
-</td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
 <p>ignored</p>
@@ -44,16 +40,16 @@ pred.mean(object, vars, ...)
 
 <h3>Details</h3>
 
-<p>The prediction distribution is that of
+<p>When one calls <code><a href="pfilter.html">pfilter</a></code> with <code>save.states=TRUE</code>, the latent state vector associated with each particle is saved.
+This can be extracted by calling <code>saved.states</code> on the &lsquo;pfilterd.pomp&rsquo; object.
 </p>
-<p style="text-align: center;"><i>Xk | Y1=y1*,&hellip;,Y(k-1)=y(k-1)*,</i></p>
 
-<p>where <i>Xk</i>, <i>Yk</i> are the latent state and observable processes, respectively, and <i>yk*</i> is the data, at time <i>tk</i>.
-</p>
-<p>The prediction mean is therefore the expectation of this distribution
-</p>
-<p style="text-align: center;"><i>E[Xk | Y1=y1*,&hellip;,Y(k-1)=y(k-1)*].</i></p>
 
+<h3>Value</h3>
+
+<p>The saved states are returned in the form of a list, with one element per time-point.
+Each element consists of a matrix, with one row for each state variable and one column for each particle.
+</p>
 
 
 <h3>See Also</h3>
@@ -67,8 +63,8 @@ pred.mean(object, vars, ...)
 <code><a href="mif2.html">mif2</a>()</code>,
 <code><a href="pfilter.html">pfilter</a>()</code>,
 <code><a href="pmcmc.html">pmcmc</a>()</code>,
+<code><a href="pred_mean.html">pred.mean</a>()</code>,
 <code><a href="pred_var.html">pred.var</a>()</code>,
-<code><a href="saved_states.html">saved.states</a>()</code>,
 <code><a href="wpfilter.html">wpfilter</a>()</code>
 </p>
 
