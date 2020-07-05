@@ -4,7 +4,7 @@
 ##' @keywords internal
 ##' @importFrom magrittr %>%
 ##' 
-##' @details See \code{magrittr::\link[magrittr]{\%>\%}} for details.
+##' @details See \code{\link[magrittr::pipe]{magrittr::\%>\%}} for details.
 ##' 
 ##' @export
 magrittr::`%>%`
