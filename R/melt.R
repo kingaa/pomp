@@ -3,7 +3,7 @@
 ##' @docType import
 ##' @importFrom reshape2 melt
 ##' 
-##' @details See \code{reshape2::\link[reshape2]{melt}} for details.
+##' @details See \code{\link[reshape2:melt]{reshape2::melt}} for details.
 ##' 
 ##' @export
 reshape2::melt

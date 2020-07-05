@@ -6,7 +6,7 @@
 \alias{\%>\%}
 \title{Objects exported from other packages}
 \details{
-See \code{\link[magrittr::pipe]{magrittr::\%>\%}} for details.
+See \code{\link[magrittr:pipe]{magrittr::\%>\%}} for details.
 }
 \keyword{internal}
 \description{

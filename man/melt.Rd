@@ -20,7 +20,7 @@ convert explicit missings to implicit missings.}
 \item{value.name}{name of variable used to store values}
 }
 \details{
-See \code{reshape2::\link[reshape2]{melt}} for details.
+See \code{\link[reshape2:melt]{reshape2::melt}} for details.
 
 A \sQuote{pomp} object can be melted into a data frame.
 }
