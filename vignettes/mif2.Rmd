@@ -6,7 +6,7 @@ output:
     theme: default
     toc: yes
 bibliography: pomp.bib
-csl: ecology.csl
+csl: jss.csl
 ---
 
 [Licensed under the Creative Commons Attribution-NonCommercial license](http://creativecommons.org/licenses/by-nc/4.0/).
@@ -272,8 +272,9 @@ Compare this with the [performance of IF1 (`mif`) on the same task](https://king
 
 The fact that the likelihood, $\ell$, at the IF2 MLE is higher than it is at the truth is evidence that this parameter is actually close to the true MLE.
 
-## [**pomp** homepage](https://kingaa.github.io/pomp/)
+## Links
 
-## [**R** codes for this document](https://raw.githubusercontent.com/kingaa/pomp/gh-pages/vignettes/mif2.R)
+[**pomp** homepage](https://kingaa.github.io/pomp/)  
+[**R** codes for this document](https://raw.githubusercontent.com/kingaa/pomp/gh-pages/vignettes/mif2.R)  
 
 ## References

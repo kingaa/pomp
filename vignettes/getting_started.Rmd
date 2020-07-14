@@ -14,11 +14,11 @@ output:
     number_sections: FALSE
     df_print: paged
 params:
-  prefix: "getting-started2"
-  min.pomp.version: "2.0.9"
+  prefix: "getting-started"
+  min.pomp.version: "3.1"
   show_solns: TRUE
 bibliography: pomp.bib
-csl: ecology.csl
+csl: jss.csl
 ---
 
 Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
@@ -27,7 +27,7 @@ Please share and remix noncommercially, mentioning its origin.
 
 This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
 
-```{r knitr-opts,include=FALSE,purl=FALSE}
+```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
 library(knitr)
 opts_chunk$set(
   progress=TRUE,
@@ -48,8 +48,8 @@ opts_chunk$set(
   fig.pos="h!",
   fig.align='center',
   fig.height=4,fig.width=6.83,
-  dpi=300,
-  dev='png',
+  dpi=200,
+  dev='CairoPNG',
   dev.args=list(bg='transparent')
 )
 ```
@@ -289,7 +289,7 @@ We refer to these as 'pomp' objects.
 
 To get more insight into the structure of `sim1`, we can use `spy`:
 
-```{r sim1_spy,eval=FALSE}
+```{r sim1_spy,eval=FALSE,purl=FALSE}
 spy(sim1)
 ```
 
@@ -363,7 +363,7 @@ simulate(
 
 As before, we can examine our handiwork:
 
-```{r sim2_spy,eval=FALSE}
+```{r sim2_spy,eval=FALSE,purl=FALSE}
 spy(sim2)
 ```
 ```{r sim2_print_plot}
@@ -565,7 +565,7 @@ We fold this with the data into a 'pomp' object via a call to the 'pomp'-object 
 We'll also include the same measurement model we used before.
 Because everything but the 'rprocess' component is the same as with the Ricker model, to accomplish this, we can simply do
 
-```{r vp1,eval=FALSE,include=FALSE}
+```{r vp1,eval=FALSE,include=FALSE,purl=FALSE}
 parus %>%
   pomp(
     times="year", t0=1960,
@@ -1078,10 +1078,10 @@ We begin by constructing a large number of "guesses".
 Our design is to distribute these around some multidimensional "box" that, we hope, contains the MLE.
 Importantly, although our hope is that the box we construct here embraces the MLE, our eventual success does not necessarily depend on it doing so:
 the IF2 algorithm will be free to search parameter space outside the box.
-We use the `sobolDesign` function to construct an overdispersed sequence of points within the selected box.
+We use the `sobol_design` function to construct an overdispersed sequence of points within the selected box.
 
 ```{r mif_guesses,fig.width=4,fig.height=4}
-sobolDesign(
+sobol_design(
   lower=c(r=0,K=100,sigma=0,N_0=150,b=1),
   upper=c(r=5,K=600,sigma=2,N_0=150,b=1),
   nseq=100
@@ -1161,6 +1161,12 @@ replicate(5, mf1 %>% pfilter() %>% logLik()) %>% logmeanexp(se=TRUE)
 Now we repeat this calculation from each of our `r nrow(guesses)` guesses.
 Because these computations are each independent of the others, it is both easy and worthwhile to parallelize them.
 The **foreach** package provides some useful tools in this regard.
+
+```{r cluster_setup,purl=TRUE,include=FALSE}
+if (file.exists("CLUSTE.R")) {
+  source("CLUSTE.R")
+}
+```
 
 ```{r parus_mif1,purl=FALSE,eval=FALSE}
 library(foreach)
@@ -1260,7 +1266,7 @@ To actually parallelize, one must *register* a *parallel backend*.
 A good first choice is **doParallel**, which is a separate package that you must explicitly load.
 The following chunk of code shows how to do this, and prints the number of "workers" that result.
 
-```{r eval=FALSE}
+```{r eval=FALSE,purl=FALSE}
 library(doParallel)
 registerDoParallel()
 getDoParWorkers()
@@ -1355,7 +1361,7 @@ estimates %>%
   apply(2,range) -> ranges
 ranges
 
-profileDesign(
+profile_design(
   r=10^seq(
     from=log10(ranges[1,1]),
     to=log10(ranges[2,1]),
@@ -1573,7 +1579,11 @@ the main goal of the package is to facilitate effective inference by bringing a 
 Although the goal of this document has been to introduce the beginner to the package through a display of the **pomp** toolbox in the context of a rudimentary and incomplete data analysis of a short time series with toy models, it is important to realize that these tools have proven their utility on some extremely challenging problems, including some for which other existing methods are either less efficient or entirely infeasible.
 The [bibliography](https://kingaa.github.io/pomp/biblio.html) has links to peer-reviewed publications that have used these methods.
 
-## [**R** codes for this document](getting_started.R)
-## [**pomp** homepage](https://kingaa.github.io/pomp/)
+---------------------------------------
+
+## Links
+
+[**R** codes for this document](getting_started.R)  
+[**pomp** homepage](https://kingaa.github.io/pomp/)  
 
 ## References

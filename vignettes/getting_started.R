@@ -1,8 +1,7 @@
 params <-
-list(prefix = "getting-started2", min.pomp.version = "2.0.9", 
-    show_solns = TRUE)
+list(prefix = "getting-started", min.pomp.version = "3.1", show_solns = TRUE)
 
-## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
+## ----prelims,echo=FALSE,cache=FALSE-------------------------------------------
 stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 options(
   keep.source=TRUE,
@@ -18,7 +17,7 @@ theme_set(theme_bw())
 
 
 
-## ----sim1,warning=TRUE---------------------------------------------------
+## ----sim1,warning=TRUE--------------------------------------------------------
 library(pomp)
 
 simulate(t0=0, times=1:20,
@@ -36,28 +35,26 @@ simulate(t0=0, times=1:20,
 ) -> sim1
 
 
-## ----sim1_print----------------------------------------------------------
+## ----sim1_print---------------------------------------------------------------
 sim1
 
 
-## ----sim1_spy,eval=FALSE-------------------------------------------------
-## spy(sim1)
 
 
-## ----sim1_plot-----------------------------------------------------------
+## ----sim1_plot----------------------------------------------------------------
 plot(sim1)
 
 
-## ----sim1_print2---------------------------------------------------------
+## ----sim1_print2--------------------------------------------------------------
 as(sim1,"data.frame")
 
 
-## ----sim1_plot2----------------------------------------------------------
+## ----sim1_plot2---------------------------------------------------------------
   ggplot(data=as.data.frame(sim1),aes(x=time,y=N))+
   geom_line()
 
 
-## ----sim2----------------------------------------------------------------
+## ----sim2---------------------------------------------------------------------
 simulate(t0=0, times=1:20,
   params=c(r=1.2,K=200,sigma=0.1,N_0=50,b=0.05),
   rinit=function (N_0, ...) {
@@ -76,7 +73,7 @@ simulate(t0=0, times=1:20,
 ) -> sim2
 
 
-## ----sim2_alt------------------------------------------------------------
+## ----sim2_alt-----------------------------------------------------------------
 simulate(
   sim1,
   params=c(r=1.2,K=200,sigma=0.1,N_0=50,b=0.05),
@@ -86,10 +83,8 @@ simulate(
 ) -> sim2
 
 
-## ----sim2_spy,eval=FALSE-------------------------------------------------
-## spy(sim2)
 
-## ----sim2_print_plot-----------------------------------------------------
+## ----sim2_print_plot----------------------------------------------------------
 as(sim2,"data.frame")
 plot(sim2)
 ggplot(data=gather(
@@ -99,7 +94,7 @@ ggplot(data=gather(
   geom_line()
 
 
-## ----sim2_sim1-----------------------------------------------------------
+## ----sim2_sim1----------------------------------------------------------------
 simulate(sim2,nsim=20) -> sims
 
 ggplot(data=gather(
@@ -113,7 +108,7 @@ ggplot(data=gather(
   labs(y="",color="")
 
 
-## ----sim2_sim2-----------------------------------------------------------
+## ----sim2_sim2----------------------------------------------------------------
 p <- parmat(coef(sim2),3)
 p["sigma",] <- c(0.05,0.25,1)
 colnames(p) <- LETTERS[1:3]
@@ -129,7 +124,7 @@ ggplot(data=sims,aes(x=time,y=value,color=variable,
   labs(y="",color="")
 
 
-## ----sim2_sim3,message=F-------------------------------------------------
+## ----sim2_sim3,message=F------------------------------------------------------
 simulate(sim2,params=p,
   times=seq(0,3),
   nsim=500,format="data.frame") -> sims
@@ -141,7 +136,7 @@ ggplot(data=separate(sims,.id,c("parset","rep")),
   lims(x=c(NA,1000))
 
 
-## ----parus-plot----------------------------------------------------------
+## ----parus-plot---------------------------------------------------------------
 parus %>%
   ggplot(aes(x=year,y=pop))+
   geom_line()+geom_point()+
@@ -149,7 +144,7 @@ parus %>%
 parus
 
 
-## ----rick----------------------------------------------------------------
+## ----rick---------------------------------------------------------------------
 parus %>%
   pomp(
     times="year", t0=1960,
@@ -169,31 +164,19 @@ parus %>%
   ) -> rick
 
 
-## ----logistic-step-fun---------------------------------------------------
+## ----logistic-step-fun--------------------------------------------------------
 vpstep <- function (N, r, K, sigma, delta.t, ...) {
   dW <- rnorm(n=1,mean=0,sd=sqrt(delta.t))
   c(N = N + r*N*(1-N/K)*delta.t + sigma*N*dW)
 }
 
 
-## ----vp1,eval=FALSE,include=FALSE----------------------------------------
-## parus %>%
-##   pomp(
-##     times="year", t0=1960,
-##     rinit=function (N_0, ...) {
-##       c(N=N_0)
-##     },
-##     rprocess=euler(vpstep,delta.t=1/365),
-##     rmeasure=function (N, b, ...) {
-##       c(pop=rpois(n=1,lambda=b*N))
-##     }
-##   ) -> vp
 
-## ----vp------------------------------------------------------------------
+## ----vp-----------------------------------------------------------------------
 rick %>% pomp(rprocess=euler(vpstep,delta.t=1/365)) -> vp
 
 
-## ----vp_sim1-------------------------------------------------------------
+## ----vp_sim1------------------------------------------------------------------
 vp %>%
   simulate(
     params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
@@ -204,7 +187,7 @@ vp %>%
   labs(color="")
 
 
-## ----two_snips-----------------------------------------------------------
+## ----two_snips----------------------------------------------------------------
 Csnippet("
   pop = rpois(b*N);  
   ") -> rmeas
@@ -214,7 +197,7 @@ Csnippet("
   ") -> rinit
 
 
-## ----more_snips----------------------------------------------------------
+## ----more_snips---------------------------------------------------------------
 Csnippet("
   double eps = rnorm(0,sigma);
   N = r*N*exp(1-N/K+eps);
@@ -226,7 +209,7 @@ Csnippet("
 ") -> vpstepC
 
 
-## ----rickC---------------------------------------------------------------
+## ----rickC--------------------------------------------------------------------
 parus %>%
   pomp(
     times="year", t0=1960,
@@ -238,7 +221,7 @@ parus %>%
   ) -> rickC
 
 
-## ----vpC-----------------------------------------------------------------
+## ----vpC----------------------------------------------------------------------
 parus %>%
   pomp(
     times="year", t0=1960,
@@ -250,13 +233,13 @@ parus %>%
   ) -> vpC
 
 
-## ----logistic-dmeasure---------------------------------------------------
+## ----logistic-dmeasure--------------------------------------------------------
 Csnippet("
   lik = dpois(pop,b*N,give_log);
 ") -> dmeas
 
 
-## ----pfilter1------------------------------------------------------------
+## ----pfilter1-----------------------------------------------------------------
 rickC %>%
   pfilter(Np=1000,
     params=c(r=1.2,K=2000,sigma=0.3,N_0=1600,b=0.1),
@@ -264,27 +247,27 @@ rickC %>%
     paramnames="b",statenames="N") -> pfrick
 
 
-## ----pfrick_print--------------------------------------------------------
+## ----pfrick_print-------------------------------------------------------------
 pfrick
 
 
-## ----pfrick_loglik-------------------------------------------------------
+## ----pfrick_loglik------------------------------------------------------------
 logLik(pfrick)
 
 
-## ----pfrick_plot---------------------------------------------------------
+## ----pfrick_plot--------------------------------------------------------------
 plot(pfrick)
 as(pfrick,"data.frame")
 
 
-## ----rick_loglik---------------------------------------------------------
+## ----rick_loglik--------------------------------------------------------------
 replicate(10, pfrick %>% pfilter() %>% logLik()) -> lls
 lls
 logmeanexp(lls,se=TRUE) -> ll_rick1
 ll_rick1
 
 
-## ----vp_loglik-----------------------------------------------------------
+## ----vp_loglik----------------------------------------------------------------
 replicate(10,
   vpC %>%
     pfilter(Np=1000,dmeasure=dmeas,
@@ -295,7 +278,7 @@ replicate(10,
 ll_vp1
 
 
-## ----rick_skel-----------------------------------------------------------
+## ----rick_skel----------------------------------------------------------------
 rickC %>%
   pomp(
     skeleton=map(
@@ -306,7 +289,7 @@ rickC %>%
   ) -> rickC
 
 
-## ----vp_skel-------------------------------------------------------------
+## ----vp_skel------------------------------------------------------------------
 vpC %>%
   pomp(
     skeleton=vectorfield(Csnippet("DN = r*N*(1-N/K);")),
@@ -314,7 +297,7 @@ vpC %>%
   ) -> vpC
 
 
-## ----vp_traj1------------------------------------------------------------
+## ----vp_traj1-----------------------------------------------------------------
 p <- parmat(c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),10)
 p["N_0",] <- seq(10,3000,length=10)
 vpC %>%
@@ -325,7 +308,7 @@ vpC %>%
   theme_bw()
 
 
-## ----vp_traj_objfun------------------------------------------------------
+## ----vp_traj_objfun-----------------------------------------------------------
 vpC %>%
   traj_objfun(
     est=c("K","N_0"),
@@ -334,28 +317,28 @@ vpC %>%
   ) -> ofun
 
 
-## ----ofun_print----------------------------------------------------------
+## ----ofun_print---------------------------------------------------------------
 ofun
 
 
-## ----ofun_eval-----------------------------------------------------------
+## ----ofun_eval----------------------------------------------------------------
 ofun(c(1000,3000))
 
 
-## ----traj_match1---------------------------------------------------------
+## ----traj_match1--------------------------------------------------------------
 library(subplex)
 
 subplex(c(2000,1500),fn=ofun) -> fit
 fit 
 
 
-## ----traj_match_print----------------------------------------------------
+## ----traj_match_print---------------------------------------------------------
 ofun(fit$par)
 coef(ofun)
 logLik(ofun)
 
 
-## ----traj_match_traj-----------------------------------------------------
+## ----traj_match_traj----------------------------------------------------------
 ofun %>%
   trajectory(format="data.frame") %>%
   ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
@@ -364,7 +347,7 @@ ofun %>%
   theme_bw()
 
 
-## ----traj_match_plot-----------------------------------------------------
+## ----traj_match_plot----------------------------------------------------------
 ofun %>%
   trajectory(format="data.frame") %>%
   mutate(
@@ -387,11 +370,11 @@ ofun %>%
   labs(y="pop")
 
 
-## ----vp_partrans---------------------------------------------------------
+## ----vp_partrans--------------------------------------------------------------
 vpr_partrans <- parameter_trans(log=c("r","K","sigma","b","N_0"))
 
 
-## ----ofun2---------------------------------------------------------------
+## ----ofun2--------------------------------------------------------------------
 vpC %>%
   traj_objfun(
     est=c("b","K","N_0"),
@@ -405,8 +388,8 @@ ofun2(fit$par)
 coef(ofun2)
 
 
-## ----mif_guesses,fig.width=4,fig.height=4--------------------------------
-sobolDesign(
+## ----mif_guesses,fig.width=4,fig.height=4-------------------------------------
+sobol_design(
   lower=c(r=0,K=100,sigma=0,N_0=150,b=1),
   upper=c(r=5,K=600,sigma=2,N_0=150,b=1),
   nseq=100
@@ -415,7 +398,7 @@ guesses
 plot(guesses,pch=16)
 
 
-## ----vp_mif1-------------------------------------------------------------
+## ----vp_mif1------------------------------------------------------------------
 vpC %>%
   mif2(
     params=guesses[1,],
@@ -430,20 +413,26 @@ vpC %>%
   ) -> mf1
 
 
-## ----mf1_display---------------------------------------------------------
+## ----mf1_display--------------------------------------------------------------
 mf1
 
 
-## ----mif_plot1-----------------------------------------------------------
+## ----mif_plot1----------------------------------------------------------------
 plot(mf1)
 
 
-## ----mf_pfilter1---------------------------------------------------------
+## ----mf_pfilter1--------------------------------------------------------------
 replicate(5, mf1 %>% pfilter() %>% logLik()) %>% logmeanexp(se=TRUE)
 
 
+## ----cluster_setup,purl=TRUE,include=FALSE------------------------------------
+if (file.exists("CLUSTE.R")) {
+  source("CLUSTE.R")
+}
 
-## ----parus_mif1_eval,include=FALSE,eval=TRUE,purl=TRUE-------------------
+
+
+## ----parus_mif1_eval,include=FALSE,eval=TRUE,purl=TRUE------------------------
 bake(file="parus_mif1.rds",{
   library(foreach)
   
@@ -457,7 +446,7 @@ bake(file="parus_mif1.rds",{
 }) -> mifs
 
 
-## ----mif_plot2-----------------------------------------------------------
+## ----mif_plot2----------------------------------------------------------------
 mifs %>%
   traces() %>%
   melt() %>%
@@ -469,7 +458,7 @@ mifs %>%
 
 
 
-## ----mif_plot3-----------------------------------------------------------
+## ----mif_plot3----------------------------------------------------------------
 mifs %>% 
   as("data.frame") %>% 
   gather(variable,value,-year,-.id) %>%
@@ -480,7 +469,7 @@ mifs %>%
 
 
 
-## ----parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE--------------------
+## ----parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE-------------------------
 bake(file="parus_pf1.rds",{
   foreach (mf=mifs,
     .combine=rbind, .packages=c("pomp"), 
@@ -497,7 +486,7 @@ bake(file="parus_pf1.rds",{
 }) -> estimates
 
 
-## ----mif_plot4,warning=FALSE,fig.width=4,fig.height=4--------------------
+## ----mif_plot4,warning=FALSE,fig.width=4,fig.height=4-------------------------
 estimates %>%
   full_join(guesses) %>%
   filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) %>%
@@ -510,14 +499,10 @@ estimates %>%
   invisible()
 
 
-## ----eval=FALSE----------------------------------------------------------
-## library(doParallel)
-## registerDoParallel()
-## getDoParWorkers()
 
 
 
-## ----parus_mif2_eval,include=FALSE,eval=TRUE,purl=TRUE-------------------
+## ----parus_mif2_eval,include=FALSE,eval=TRUE,purl=TRUE------------------------
 bake(file="parus_mif2.rds",{
   estimates %>%
     filter(!is.na(loglik)) %>%
@@ -543,7 +528,7 @@ bake(file="parus_mif2.rds",{
 }) -> ests1
 
 
-## ----db1-----------------------------------------------------------------
+## ----db1----------------------------------------------------------------------
 estimates %>%
   rbind(ests1) -> estimates
 
@@ -551,7 +536,7 @@ estimates%>%
   arrange(-loglik)
 
 
-## ----mif2_plot1,fig.width=4,fig.height=4---------------------------------
+## ----mif2_plot1,fig.width=4,fig.height=4--------------------------------------
 estimates %>%
   filter(loglik>max(loglik,na.rm=TRUE)-4) %>%
   do({
@@ -563,14 +548,14 @@ estimates %>%
   invisible()
 
 
-## ----parus_pd,fig.width=4,fig.height=4-----------------------------------
+## ----parus_pd,fig.width=4,fig.height=4----------------------------------------
 estimates %>%
   filter(loglik>max(loglik)-10) %>%
   select(r,K,sigma,N_0,b) %>%
   apply(2,range) -> ranges
 ranges
 
-profileDesign(
+profile_design(
   r=10^seq(
     from=log10(ranges[1,1]),
     to=log10(ranges[2,1]),
@@ -586,7 +571,7 @@ dim(starts)
 pairs(~r+K+sigma+N_0+b,data=starts)
 
 
-## ----parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE----------------
+## ----parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE---------------------
 bake("parus_profile.rds",{
   foreach (start=iter(starts,"row"),
     .combine=rbind, .packages=c("pomp"),
@@ -611,12 +596,12 @@ bake("parus_profile.rds",{
 }) -> r_prof
 
 
-## ----db2-----------------------------------------------------------------
+## ----db2----------------------------------------------------------------------
 estimates %>%
   rbind(r_prof) -> estimates
 
 
-## ----prof_plot1----------------------------------------------------------
+## ----prof_plot1---------------------------------------------------------------
 r_prof %>%
   group_by(r) %>%
   filter(rank(-loglik)<=2) %>%
@@ -629,7 +614,7 @@ r_prof %>%
   scale_x_log10()
 
 
-## ----r_prof_lrt,echo=FALSE-----------------------------------------------
+## ----r_prof_lrt,echo=FALSE----------------------------------------------------
 r_prof %>%
   group_by(r) %>%
   filter(rank(-loglik)<=2) %>%
@@ -646,7 +631,7 @@ cutoff <- max(prof$loglik)-crit
 ci <- range(prof$r[prof$loglik>cutoff])
 
 
-## ----prof_plot2----------------------------------------------------------
+## ----prof_plot2---------------------------------------------------------------
 r_prof %>%
   group_by(r) %>%
   filter(rank(-loglik)<=2) %>%
@@ -658,7 +643,7 @@ r_prof %>%
   labs(y=expression(sigma))
 
 
-## ----mle_sim_plot1-------------------------------------------------------
+## ----mle_sim_plot1------------------------------------------------------------
 r_prof %>% 
   filter(loglik==max(loglik)) -> mle
 
@@ -675,7 +660,7 @@ mlepomp %>%
   theme_bw()
 
 
-## ----mle_sim_plot2-------------------------------------------------------
+## ----mle_sim_plot2------------------------------------------------------------
 mlepomp %>%
   simulate(nsim=11,format="data.frame",include.data=TRUE) %>%
   ggplot(mapping=aes(x=year,y=pop,group=.id,color=(.id=="data")))+
@@ -687,7 +672,7 @@ mlepomp %>%
   theme_bw()
 
 
-## ----probe1--------------------------------------------------------------
+## ----probe1-------------------------------------------------------------------
 mlepomp %>%
   probe(nsim=200,probes=list(
     mean=probe.mean("pop"),
@@ -698,10 +683,10 @@ mlepomp %>%
 vp_probe
 
 
-## ----probe1_summary------------------------------------------------------
+## ----probe1_summary-----------------------------------------------------------
 summary(vp_probe)
 
 
-## ----probe1_plot,fig.width=6.8,fig.height=6.8----------------------------
+## ----probe1_plot,fig.width=6.8,fig.height=6.8---------------------------------
 plot(vp_probe)
 

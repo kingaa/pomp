@@ -6,7 +6,7 @@ output:
     theme: default
     toc: yes
 bibliography: pomp.bib
-csl: ecology.csl
+csl: jss.csl
 nocite: |
   @Ellner1998, @Kendall1999
 ---

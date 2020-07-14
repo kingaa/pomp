@@ -6,7 +6,7 @@ output:
     theme: flatly
     toc: yes
 bibliography: pomp.bib
-csl: ecology.csl
+csl: jss.csl
 ---
 
 Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).

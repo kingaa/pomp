@@ -1,9 +1,9 @@
-## ----select-town,echo=FALSE----------------------------------------------
+## ----select-town,echo=FALSE---------------------------------------------------
 TOWN <- "London"
 
 
 
-## ----opts,include=FALSE,cache=FALSE--------------------------------------
+## ----opts,include=FALSE,cache=FALSE-------------------------------------------
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -17,21 +17,20 @@ library(ggplot2)
 theme_set(theme_bw())
 
 
-## ----pomp-install,eval=FALSE---------------------------------------------
+## ----pomp-install,eval=FALSE--------------------------------------------------
 ## library(devtools)
 ## install_github("kingaa/pomp")
 
 
-## ----prelims,cache=FALSE-------------------------------------------------
+## ----prelims,cache=FALSE------------------------------------------------------
 set.seed(594709947L)
 library(ggplot2)
-library(plyr)
 library(tidyverse)
 library(pomp)
-stopifnot(packageVersion("pomp")>="2.0.9.1")
+stopifnot(packageVersion("pomp")>="3.1")
 
 
-## ----load-data-----------------------------------------------------------
+## ----load-data----------------------------------------------------------------
 load("twentycities.rda")
 measles %>% 
   mutate(year=as.integer(format(date,"%Y"))) %>%
@@ -43,7 +42,7 @@ demog %>% filter(town==TOWN) %>%
   select(-town) -> demog
 
 
-## ----data-plot-----------------------------------------------------------
+## ----data-plot----------------------------------------------------------------
 dat %>% ggplot(aes(x=time,y=cases))+geom_line()
 demog %>% 
   gather(variable,value,-year) %>%
@@ -51,16 +50,16 @@ demog %>%
   facet_wrap(~variable,ncol=1,scales="free_y")
 
 
-## ----prep-covariates-----------------------------------------------------
+## ----prep-covariates----------------------------------------------------------
 demog %>% 
-  plyr::summarize(
+  summarize(
     time=seq(from=min(year),to=max(year),by=1/12),
     pop=predict(smooth.spline(x=year,y=pop),x=time)$y,
     birthrate=predict(smooth.spline(x=year+0.5,y=births),x=time-4)$y
   ) -> covar
 
 
-## ----covarplot-----------------------------------------------------------
+## ----covarplot----------------------------------------------------------------
 plot(pop~time,data=covar,type='l')
 points(pop~year,data=demog)
 plot(birthrate~time,data=covar,type='l')
@@ -69,7 +68,7 @@ plot(birthrate~I(time-4),data=covar,type='l')
 points(births~I(year+0.5),data=demog)
 
 
-## ----rprocess------------------------------------------------------------
+## ----rprocess-----------------------------------------------------------------
 rproc <- Csnippet("
   double beta, br, seas, foi, dw, births;
   double rate[6], trans[6];
@@ -117,7 +116,7 @@ rproc <- Csnippet("
 ")
 
 
-## ----initializer---------------------------------------------------------
+## ----initializer--------------------------------------------------------------
 rinit <- Csnippet("
   double m = pop/(S_0+E_0+I_0+R_0);
   S = nearbyint(m*S_0);
@@ -128,7 +127,7 @@ rinit <- Csnippet("
 ")
 
 
-## ----dmeasure------------------------------------------------------------
+## ----dmeasure-----------------------------------------------------------------
 dmeas <- Csnippet("
   double m = rho*C;
   double v = m*(1.0-rho+psi*psi*m);
@@ -138,10 +137,11 @@ dmeas <- Csnippet("
   } else {
     lik = pnorm(cases+0.5,m,sqrt(v)+tol,1,0)+tol;
   }
+  if (give_log) lik = log(lik);
 ")
 
 
-## ----rmeasure------------------------------------------------------------
+## ----rmeasure-----------------------------------------------------------------
 rmeas <- Csnippet("
   double m = rho*C;
   double v = m*(1.0-rho+psi*psi*m);
@@ -155,7 +155,7 @@ rmeas <- Csnippet("
 ")
 
 
-## ----pomp-construction---------------------------------------------------
+## ----pomp-construction--------------------------------------------------------
 dat %>% 
   pomp(t0=with(dat,2*time[1]-time[2]),
     time="time",
@@ -177,7 +177,7 @@ dat %>%
   ) -> m1
 
 
-## ----plot-pomp-----------------------------------------------------------
+## ----plot-pomp----------------------------------------------------------------
 m1 %>% 
   as.data.frame() %>% 
   gather(variable,value,-time) %>%
@@ -186,7 +186,7 @@ m1 %>%
   facet_grid(variable~.,scales="free_y")
 
 
-## ----load-mle,echo=FALSE-------------------------------------------------
+## ----load-mle,echo=FALSE------------------------------------------------------
 read.csv(text="
 town,loglik,loglik.sd,mu,delay,sigma,gamma,rho,R0,amplitude,alpha,iota,cohort,psi,S_0,E_0,I_0,R_0,sigmaSE
 Bedwellty,-1125.1,0.14,0.02,4,57.9,146,0.311,24.7,0.16,0.937,0.0396,0.351,0.951,0.0396,2.64e-05,2.45e-05,0.96,0.0611
@@ -211,19 +211,19 @@ Oswestry,-696.1,0.49,0.02,4,37.3,168,0.631,52.9,0.339,1.04,0.0298,0.263,0.476,0.
 Sheffield,-2810.7,0.21,0.02,4,54.3,62.2,0.649,33.1,0.313,1.02,0.853,0.225,0.175,0.0291,6.04e-05,8.86e-05,0.971,0.0428
 ",stringsAsFactors=FALSE) -> mles
 
-## ----mle-----------------------------------------------------------------
+## ----mle----------------------------------------------------------------------
 mles %>% filter(town==TOWN) -> mle
 paramnames <- c("R0","mu","sigma","gamma","alpha","iota",
   "rho","sigmaSE","psi","cohort","amplitude",
   "S_0","E_0","I_0","R_0")
 theta <- unlist(mle[paramnames])
 
-## ----mle-table,echo=FALSE------------------------------------------------
+## ----mle-table,echo=FALSE-----------------------------------------------------
 library(knitr)
 kable(subset(mle,select=-c(town,mu,loglik.sd,delay,S_0,E_0,I_0,R_0)),row.names=FALSE)
 
 
-## ----pfilter1------------------------------------------------------------
+## ----pfilter1-----------------------------------------------------------------
 library(foreach)
 library(doParallel)
 library(doRNG)
@@ -237,7 +237,7 @@ foreach(i=1:4) %dopar% {
 pfs %>% sapply(logLik) %>% logmeanexp(se=TRUE)
 
 
-## ----sims1,fig.height=8--------------------------------------------------
+## ----sims1,fig.height=8-------------------------------------------------------
 m1 %>% 
   simulate(params=theta,nsim=9,format="d",include.data=TRUE) %>%
   ggplot(aes(x=time,y=cases,group=.id,color=(.id=="data")))+
@@ -245,16 +245,17 @@ m1 %>%
   geom_line()+facet_wrap(~.id,ncol=2)
 
 
-## ----sims2---------------------------------------------------------------
+## ----sims2--------------------------------------------------------------------
 m1 %>% 
   simulate(params=theta,nsim=200,format="d",include.data=TRUE) %>%
   select(time,.id,cases) %>%
-  mutate(data=.id=="data") %>%
-  ddply(~time+data,plyr::summarize,
-    p=c(0.05,0.5,0.95),q=quantile(cases,prob=p,names=FALSE)) %>%
   mutate(
-    p=mapvalues(p,from=c(0.05,0.5,0.95),to=c("lo","med","hi")),
-    data=mapvalues(data,from=c(TRUE,FALSE),to=c("data","simulation"))
+    data=if_else(.id=="data","data","simulation")
+  ) %>%
+  group_by(time,data) %>%
+  summarize(
+    p=c("lo","med","hi"),
+    q=quantile(cases,prob=c(0.05,0.5,0.95),names=FALSE)
   ) %>%
   spread(p,q) %>%
   ggplot(aes(x=time,y=med,color=data,fill=data,ymin=lo,ymax=hi))+

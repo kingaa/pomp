@@ -136,7 +136,7 @@ pf <- pfilter(parus,Np=1000)
 class(pf)
 logLik(pf)
 
-plot(pf,var=c("ess","cond.loglik"))
+plot(pf,var=c("ess","cond.logLik"))
 
 
 ## ----sir-measmodel------------------------------------------------------------

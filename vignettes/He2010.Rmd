@@ -7,7 +7,7 @@ output:
     theme: default
     toc: yes
 bibliography: pomp.bib
-csl: ecology.csl
+csl: jss.csl
 
 ---
 
@@ -58,7 +58,7 @@ opts_chunk$set(
   fig.align='center',
   fig.height=4,fig.width=6.83,
   dpi=300,
-  dev='png',
+  dev='CairoPNG',
   dev.args=list(bg='transparent')
 )
 options(cores=4)
@@ -91,10 +91,9 @@ Now we'll load the packages we'll need, and set the random seed, to allow reprod
 ```{r prelims,cache=FALSE}
 set.seed(594709947L)
 library(ggplot2)
-library(plyr)
 library(tidyverse)
 library(pomp)
-stopifnot(packageVersion("pomp")>="2.0.9.1")
+stopifnot(packageVersion("pomp")>="3.1")
 ```
 
 ## Data and covariates
@@ -131,7 +130,7 @@ Note that, for reasons discussed in @He2010, we lag the birthrate by 4&nbsp;yr.
 
 ```{r prep-covariates}
 demog %>% 
-  plyr::summarize(
+  summarize(
     time=seq(from=min(year),to=max(year),by=1/12),
     pop=predict(smooth.spline(x=year,y=pop),x=time)$y,
     birthrate=predict(smooth.spline(x=year+0.5,y=births),x=time-4)$y
@@ -236,6 +235,7 @@ dmeas <- Csnippet("
   } else {
     lik = pnorm(cases+0.5,m,sqrt(v)+tol,1,0)+tol;
   }
+  if (give_log) lik = log(lik);
 ")
 ```
 
@@ -381,12 +381,13 @@ The following computes a larger number of simulations and plots the data togethe
 m1 %>% 
   simulate(params=theta,nsim=200,format="d",include.data=TRUE) %>%
   select(time,.id,cases) %>%
-  mutate(data=.id=="data") %>%
-  ddply(~time+data,plyr::summarize,
-    p=c(0.05,0.5,0.95),q=quantile(cases,prob=p,names=FALSE)) %>%
   mutate(
-    p=mapvalues(p,from=c(0.05,0.5,0.95),to=c("lo","med","hi")),
-    data=mapvalues(data,from=c(TRUE,FALSE),to=c("data","simulation"))
+    data=if_else(.id=="data","data","simulation")
+  ) %>%
+  group_by(time,data) %>%
+  summarize(
+    p=c("lo","med","hi"),
+    q=quantile(cases,prob=c(0.05,0.5,0.95),names=FALSE)
   ) %>%
   spread(p,q) %>%
   ggplot(aes(x=time,y=med,color=data,fill=data,ymin=lo,ymax=hi))+
