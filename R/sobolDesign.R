@@ -1,6 +1,6 @@
 ##' @description
-##' \code{sobolDesign} generates a Latin hypercube design based on the Sobol' low-discrepancy sequence.
-##' @rdname design
+##' Obsolete: replaced by \code{sobol_design}.
+##' @rdname deprecated
 ##' 
 ##' @details
 ##' The Sobol' sequence generation is performed using codes from the
@@ -13,6 +13,7 @@
 ##' 
 ##' @export
 sobolDesign <- function (lower = numeric(0), upper = numeric(0), nseq) {
+  .Deprecated("sobol_design",package="pomp")
   ep <- "sobolDesign"
   if (length(lower)!=length(upper))
     pStop(ep,sQuote("lower")," and ",sQuote("upper")," must have same length.")
@@ -28,20 +29,4 @@ sobolDesign <- function (lower = numeric(0), upper = numeric(0), nseq) {
     sobol(ranges,n=as.integer(nseq)),
     error = function (e) pStop(ep,conditionMessage(e))
   )
-}
-
-sobol <- function (vars, n) {
-  d <- length(vars)
-  if (!is.finite(n) || (n > 1073741824L))
-    pStop_("too many points requested.")
-  x <- .Call(P_sobol_sequence,as.integer(d),as.integer(n))
-  y <- vapply(
-    seq_len(d),
-    function (k) {
-      vars[[k]][1L]+(vars[[k]][2L]-vars[[k]][1L])*x[k,]
-    },
-    numeric(n)
-  )
-  colnames(y) <- names(vars)
-  as.data.frame(y)
 }

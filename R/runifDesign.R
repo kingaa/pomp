@@ -1,12 +1,13 @@
 ##' @description
-##' \code{runif_design} generates a design based on random samples from a multivariate uniform distribution.
-##' @rdname design
+##' Obsolete: replaced by \code{runif_design}.
+##' @rdname deprecated
 ##' @return
-##' \code{runif_design} returns a data frame with \code{nseq} rows and one column for each variable named in \code{lower} and \code{upper}.
+##' \code{runifDesign} returns a data frame with \code{nseq} rows and one column for each variable named in \code{lower} and \code{upper}.
 ##'
 ##' @export
-runif_design <- function (lower = numeric(0), upper = numeric(0), nseq) {
-  ep <- "runif_design"
+runifDesign <- function (lower = numeric(0), upper = numeric(0), nseq) {
+  ep <- "runifDesign"
+  .Deprecated("runif_design",package="pomp")
   if (length(lower)!=length(upper))
     pStop(ep,sQuote("lower")," and ",sQuote("upper")," must have same length.")
   lnames <- names(lower)

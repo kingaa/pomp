@@ -1,23 +1,24 @@
 ##' @description
-##' \code{slice_design} generates points along slices through a specified point.
-##' @rdname design
+##' Obsolete: replaced by \code{slice_design}.
+##' @rdname deprecated
 ##' @return
-##' \code{slice_design} returns a data frame with one row per point.
+##' \code{sliceDesign} returns a data frame with one row per point.
 ##' The \sQuote{slice} variable indicates which slice the point belongs to.
 ##' @param center \code{center} is a named numeric vector specifying the point
 ##' through which the slice(s) is (are) to be taken.
 ##' 
 ##' @export
-slice_design <- function (center, ...) {
+sliceDesign <- function (center, ...) {
+  .Deprecated("slice_design",package="pomp")
   slices <- list(...)
   if ((!is.numeric(center))||is.null(names(center)))
-    pStop("slice_design",sQuote("center")," must be a named numeric vector")
+    pStop("sliceDesign",sQuote("center")," must be a named numeric vector")
   slnm <- names(slices)
   if (any(slnm==""))
-    pStop("slice_design","cannot slice along an unnamed parameter.")
+    pStop("sliceDesign","cannot slice along an unnamed parameter.")
   if (!all(slnm%in%names(center))) {
     problems <- slnm[!(slnm%in%names(center))]
-    pStop("slice_design",
+    pStop("sliceDesign",
       ngettext(length(problems),"variable ","variables "),
       paste(sapply(problems,sQuote),collapse=","),
       ngettext(length(problems)," does "," do "),

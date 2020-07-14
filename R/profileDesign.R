@@ -1,22 +1,23 @@
 ##' @description
-##' \code{profile_design} generates a data-frame where each row can be used as the starting point for a profile likelihood calculation.
+##' Obsolete: replaced by \code{\link{profile_design}}. 
 ##' 
-##' @rdname design
+##' @rdname deprecated
 ##' @return 
-##' \code{profile_design} returns a data frame with \code{nprof} points per profile point.
+##' \code{profileDesign} returns a data frame with \code{nprof} points per profile point.
 ##' @param nprof The number of points per profile point.
 ##' @param type the type of design to use.
-##' \code{type="runif"} uses \code{\link{runif_design}}.
-##' \code{type="sobol"} uses \code{\link{sobol_design}};
+##' \code{type="sobol"} uses \code{\link{sobolDesign}};
+##' \code{type="runif"} uses \code{\link{runifDesign}}.
 ##' @param stringsAsFactors should character vectors be converted to factors?
 ##' 
 ##' @export
-profile_design <- function (...,
+profileDesign <- function (...,
   lower, upper, nprof,
-  type = c("runif","sobol"),
+  type = c("sobol","runif"),
   stringsAsFactors = getOption("stringsAsFactors",FALSE)
 ) {
-  ep <- "profile_design"
+  .Deprecated("profile_design",package="pomp")
+  ep <- "profileDesign"
   type <- match.arg(type)
   prof <- list(...)
   pvars <- names(prof)
@@ -26,16 +27,14 @@ profile_design <- function (...,
   if (!all(sort(ovars)==sort(names(upper))))
     pStop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match!")
   x <- expand.grid(...,stringsAsFactors=stringsAsFactors)
-  n <- nrow(x)
-  z <- vector(mode='list',length=n)
+  z <- vector(mode='list',length=nrow(x))
   y <- switch(type,
-    runif=runif_design(lower=lower,upper=upper,nseq=n*nprof),
-    sobol_design(lower=lower,upper=upper,nseq=n*nprof)
+    runif=runifDesign(lower=lower,upper=upper,nseq=nprof),
+    sobolDesign(lower=lower,upper=upper,nseq=nprof)
   )
-  y <- split(y,rep(seq_len(n),each=nprof))
-  for (i in seq_len(n)) {
+  for (i in seq_len(nrow(x))) {
     z[[i]] <- data.frame(
-      x[i,,drop=FALSE], y[[i]],
+      x[i,,drop=FALSE],y,
       check.rows=FALSE,
       check.names=FALSE,
       row.names=seq_len(nprof)
