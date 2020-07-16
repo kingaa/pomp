@@ -562,6 +562,14 @@ To avoid this, be sure to give values for the covariates over a time interval th
 Note that the ODE integration algorithms underlying `trajectory` can sometimes evaluate the covariates beyond the last observation time.
 To avoid warnings (and the potential inaccuracy they signal) in this case, it may be necessary to supply values for the covariates somewhat beyond the final observation time.
 
+## When trying to use Csnippets, I get an error message that refers to files and directories that don't exist. What is going on?
+
+See [Issue 115](https://github.com/kingaa/pomp/issues/115) for an example.
+This can happen if you use file or directory names that contain whitespace. 
+For the tools that compile the Csnippets---as with (all?) other command-line tools---whitespace is syntactic.
+By far the best solution to this problem is to ***avoid using whitespace altogether in file and directory names***!
+The standard choice is to substitute the underscore "_" for whitespace.
+
 # Interpreting results
 
 ## Is the likelihood `mif2` gives me the same as the likelihood I get from `pfilter`? {#mif-vs-pfilter-likelihood}
