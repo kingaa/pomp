@@ -69,9 +69,6 @@ Obsolete: replaced by \code{sobol_design}.
 The Sobol' sequence generation is performed using codes from the
 \href{http://ab-initio.mit.edu/nlopt/}{\pkg{NLopt} library} by S. Johnson.
 }
-\references{
-
-}
 \author{
 Aaron A. King
 }

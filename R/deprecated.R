@@ -7,8 +7,6 @@
 ##'
 ##' @author Aaron A. King
 ##'
-##' @references
-##'
 ##' @keywords internal
 ##' @param ...
 ##' In \code{profileDesign}, additional arguments specify the parameters over which to profile and the values of these parameters.
