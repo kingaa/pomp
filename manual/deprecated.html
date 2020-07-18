@@ -1,37 +1,109 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Deprecated functions</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Deprecated functions.</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for deprecated {pomp}"><tr><td>deprecated {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Deprecated functions</h2>
+<h2>Deprecated functions.</h2>
 
 <h3>Description</h3>
 
-<p>Deprecated functions
+<p>These functions are obsolete and will be removed in a future release.
+</p>
+<p>Obsolete: replaced by <code><a href="design.html">profile_design</a></code>.
+</p>
+<p>Obsolete: replaced by <code>runif_design</code>.
+</p>
+<p>Obsolete: replaced by <code>slice_design</code>.
+</p>
+<p>Obsolete: replaced by <code>sobol_design</code>.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-conv.rec(object, ...)
+profileDesign(
+  ...,
+  lower,
+  upper,
+  nprof,
+  type = c("sobol", "runif"),
+  stringsAsFactors = getOption("stringsAsFactors", FALSE)
+)
 
-values(object, ...)
+runifDesign(lower = numeric(0), upper = numeric(0), nseq)
 
-onestep.dens(dens.fun, PACKAGE)
+sliceDesign(center, ...)
 
-onestep.sim(step.fun)
-
-discrete.time.sim(step.fun, delta.t = 1)
-
-euler.sim(step.fun, delta.t)
-
-gillespie.sim(rate.fun, v, hmax = Inf)
-
-gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)
+sobolDesign(lower = numeric(0), upper = numeric(0), nseq)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 2.8.0.3 <a href="00Index.html">Index</a>]</div>
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>In <code>profileDesign</code>, additional arguments specify the parameters over which to profile and the values of these parameters.
+In <code>sliceDesign</code>, additional numeric vector arguments specify the locations of points along the slices.</p>
+</td></tr>
+<tr valign="top"><td><code>lower, upper</code></td>
+<td>
+<p>named numeric vectors giving the lower and upper bounds
+of the ranges, respectively.</p>
+</td></tr>
+<tr valign="top"><td><code>nprof</code></td>
+<td>
+<p>The number of points per profile point.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>the type of design to use.
+<code>type="sobol"</code> uses <code><a href="deprecated.html">sobolDesign</a></code>;
+<code>type="runif"</code> uses <code><a href="deprecated.html">runifDesign</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>stringsAsFactors</code></td>
+<td>
+<p>should character vectors be converted to factors?</p>
+</td></tr>
+<tr valign="top"><td><code>nseq</code></td>
+<td>
+<p>Total number of points requested.</p>
+</td></tr>
+<tr valign="top"><td><code>center</code></td>
+<td>
+<p><code>center</code> is a named numeric vector specifying the point
+through which the slice(s) is (are) to be taken.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The Sobol' sequence generation is performed using codes from the
+<a href="http://ab-initio.mit.edu/nlopt/"><span class="pkg">NLopt</span> library</a> by S. Johnson.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>profileDesign</code> returns a data frame with <code>nprof</code> points per profile point.
+</p>
+<p><code>runifDesign</code> returns a data frame with <code>nseq</code> rows and one column for each variable named in <code>lower</code> and <code>upper</code>.
+</p>
+<p><code>sliceDesign</code> returns a data frame with one row per point.
+The &lsquo;slice&rsquo; variable indicates which slice the point belongs to.
+</p>
+<p><code>sobolDesign</code> returns a data frame with <code>nseq</code> rows and one column for each variable named in <code>lower</code> and <code>upper</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.1.1.1 <a href="00Index.html">Index</a>]</div>
 </body></html>
