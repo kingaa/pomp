@@ -60,7 +60,7 @@ In doing so, please [follow the instructions in FAQ 1.1 above](#effective-reques
 ## I am running a piece of **pomp** code I found on the web, but I get errors. What is going on?
 
 Of course, there could be many reasons for this.
-However, you should know that **pomp** version 2 made many changes to the **pomp** interface so that older code will not run under versions >= 2.
+However, you should know that **pomp** version 2 made many changes to the **pomp** interface so that older code will not run under versions &ge; 2.
 See the [**pomp** version 2 upgrade guide](https://kingaa.github.io/pomp/vignettes/upgrade_guide.html) for information on how to fix broken code from earlier versions.
 
 # Installation problems
@@ -74,7 +74,7 @@ See the [installation instructions](./install.html).
 Compilation of **pomp** requires a FORTRAN compiler, which has not been installed (or not installed properly) on your system.
 See the [installation instructions](https://kingaa.github.io/pomp/install.html#important-note-for-mac-os-x-users).
 
-## I am using **R** version X. When I try to install the package, I get the error that "package **pomp** is not available (for R version X)". Yet it is stated that **pomp** is compatible with R(>=Y), where X > Y. What is going wrong?
+## I am using **R** version X. When I try to install the package, I get the error that "package **pomp** is not available (for R version X)". Yet it is stated that **pomp** is compatible with R(&ge;Y), where X > Y. What is going wrong?
 
 Firstly, as a general rule, it's very probably a good idea to simply install the latest version of **R**, since each new release fixes bugs, adds and improves features, etc.
 
