@@ -475,6 +475,15 @@
   pages: "e72086"
   doi: "https://doi.org/10.1371/journal.pone.0072086"
 
+- key: Lee2020
+  author: "E. C. Lee, D. L. Chao, J. C. Lemaitre, L. Matrajt, D. Pasetto, J. Perez-Saez, F. Finger, A. Rinaldo, J. D. Sugimoto, M. E. Halloran, I. M. Longini, R. Ternier, K. Vissieres, A. S. Azman, J. Lessler, and L. C. Ivers"
+  year: "2020"
+  title: "Achieving coordinated national immunity and cholera elimination in Haiti through vaccination: a modelling study"
+  journal: "Lancet Global Health"
+  volume: "8"
+  pages: "e1081&#x2013;e1089"
+  doi: "https://doi.org/10.1016/S2214-109X(20)30310-7"
+
 - key: Lemaitre2019
   author: "J. Lemaitre, D. Pasetto, J. Perez-Saez, C. Sciarra, J. F. Wamala, and A. Rinaldo"
   year: "2019"
