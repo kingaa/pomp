@@ -184,6 +184,15 @@
   pages: "3635&#x2013;3643"
   doi: "https://doi.org/10.1098/rspb.2011.0300"
 
+- key: Coffeng2019
+  author: "L. E. Coffeng, E. A. Le Rutte, J. Mu&ntilde;oz, E. R. Adams, J. M. Prada, S. J. de Vlas, and G. F. Medley"
+  year: "2019"
+  title: "Impact of changes in detection effort on control of visceral leishmaniasis in the Indian subcontinent"
+  journal: "Journal of Infectious Diseases"
+  volume: "221"
+  pages: "S546&#x2013;S553"
+  doi: "https://doi.org/10.1093/infdis/jiz644"
+
 - key: Cotterill2020
   author: "G. G. Cotterill, P. C. Cross, J. A. Merkle, J. D. Rogerson, B. M. Scurlock, and J. T. du Toit"
   year: "2020"
@@ -701,7 +710,7 @@
   year: "2018"
   title: "Model selection and parameter estimation for dynamic epidemic models via iterated filtering: application to rotavirus in Germany"
   journal: "Biostatistics"
-  pages: "kxy057&#x2013;kxy057"
+  pages: "400&#x2013;416"
   doi: "https://doi.org/10.1093/biostatistics/kxy057"
 
 - key: Stocks2020
