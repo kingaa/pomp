@@ -86,6 +86,15 @@
   pages: "440&#x2013;451"
   doi: "https://doi.org/10.1198/jasa.2011.ap10323"
 
+- key: Bhadra2016
+  author: "A. Bhadra and E. L. Ionides"
+  year: "2016"
+  title: "Adaptive particle allocation in iterated sequential Monte Carlo via approximating meta-models"
+  journal: "Statistics and Computing"
+  volume: "26"
+  pages: "393&#x2013;407"
+  doi: "https://doi.org/10.1007/s11222-014-9513-x"
+
 - key: Blackwood2013
   author: "J. C. Blackwood, D. A. T. Cummings, H. Broutin, S. Iamsirithaworn, and P. Rohani"
   year: "2013"
@@ -420,6 +429,15 @@
   volume: "75"
   pages: "259&#x2013;276"
   doi: "https://doi.org/10.1890/03-4056"
+
+- key: Kennedy2018
+  author: "D. A. Kennedy, P. A. Dunn, and A. F. Read"
+  year: "2018"
+  title: "Modeling Marek&rsquo;s disease virus transmission: A framework for evaluating the impact of farming practices and evolution"
+  journal: "Epidemics"
+  volume: "23"
+  pages: "85&#x2013;95"
+  doi: "https://doi.org/10.1016/j.epidem.2018.01.001"
 
 - key: King2008
   author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
