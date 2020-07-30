@@ -231,7 +231,7 @@ If no C snippets are used, <code>globals</code> has no effect.</p>
 <p>optional character variable.
 <code>cdir</code> specifies the name of the directory within which C snippet code will be compiled.
 By default, this is in a temporary directory specific to the <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> session.
-One can also set this directory using the <code>pomp_cdir</code> option.</p>
+One can also set this directory using the <code>pomp_cdir</code> global option.</p>
 </td></tr>
 <tr valign="top"><td><code>cfile</code></td>
 <td>
@@ -278,10 +278,17 @@ One can pass <code>P</code> to most of the <span class="pkg">pomp</span> package
 
 <h3>Note</h3>
 
-<p><strong>It is not typically necessary (or indeed often feasible) to define all of the basic components for any given purpose.
-Each <span class="pkg">pomp</span> algorithm makes use of only a subset of these components.
-Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.
-FIXME </strong>
+<p>It is not typically necessary (or indeed feasible) to define all of the basic components for any given purpose.
+However, each <span class="pkg">pomp</span> algorithm makes use of only a subset of these components.
+When an algorithm requires a basic component that has not been furnished, an error is generated to let you know that you must provide the needed component to use the algorithm.
+</p>
+
+
+<h3>Note for Windows users</h3>
+
+<p>Some Windows users report problems when using C snippets in parallel computations.
+These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
+To circumvent this problem, use the <code>cdir</code> and <code>cfile</code> options <a href="pomp.html">(described here)</a> to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
 </p>
 
 
@@ -296,5 +303,5 @@ FIXME </strong>
 <p>A. A. King, D. Nguyen, and E. L. Ionides. Statistical Inference for Partially Observed Markov Processes via the Package <span class="pkg">pomp</span>. <em>Journal of Statistical Software</em> <b>69</b>(12), 1&ndash;43, 2016.  An updated version of this paper is available on the <a href="https://kingaa.github.io/pomp/docs.html">package website</a>.
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.1.1.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.1.1.3 <a href="00Index.html">Index</a>]</div>
 </body></html>

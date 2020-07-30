@@ -148,6 +148,14 @@ Each time it is called, it will remember the values of the parameters and its es
 </p>
 
 
+<h3>Note for Windows users</h3>
+
+<p>Some Windows users report problems when using C snippets in parallel computations.
+These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
+To circumvent this problem, use the <code>cdir</code> and <code>cfile</code> options <a href="pomp.html">(described here)</a> to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+</p>
+
+
 <h3>Important Note</h3>
 
 <p>Since <span class="pkg">pomp</span> cannot guarantee that the <em>final</em> call an optimizer makes to the function is a call <em>at</em> the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
@@ -191,5 +199,5 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.1.1.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.1.1.3 <a href="00Index.html">Index</a>]</div>
 </body></html>
