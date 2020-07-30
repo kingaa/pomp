@@ -10,6 +10,8 @@
 
 \newcommand{\Arulampalam2002}{M.S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp. A Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian Bayesian Tracking. \emph{IEEE Transactions on Signal Processing} \bold{50}, 174--188, 2002.}
 
+\newcommand{\Bhadra2016}{A. Bhadra and E.L. Ionides. Adaptive particle allocation in iterated sequential Monte Carlo via approximating meta-models. \emph{Statistics and Computing} \bold{26}, 393--407, 2016.}
+
 \newcommand{\Bratley1988}{P. Bratley and B.L. Fox. Algorithm 659 Implementing Sobol's quasirandom sequence generator. \emph{ACM Transactions on Mathematical Software} \bold{14}, 88--100, 1988.}
 
 \newcommand{\Breto2011}{C. \ifelse{latex}{\out{Bret\'o}}{\ifelse{html}{\out{Breto&oacute;}}{Breto}} and E. L. Ionides. Compound Markov counting processe and their applications to modeling infinitesimally over-dispersed systems. \emph{Stochastic Processes and their Applications} \bold{121}, 2571--2591, 2011.}

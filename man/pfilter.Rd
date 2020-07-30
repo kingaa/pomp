@@ -143,6 +143,8 @@ ss <- saved.states(pf)          ## the latent-state portion of each particle
 }
 \references{
 \Arulampalam2002
+
+\Bhadra2016
 }
 \seealso{
 Other elementary POMP methods: 

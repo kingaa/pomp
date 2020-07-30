@@ -62,6 +62,8 @@
 ##'
 ##' \Arulampalam2002
 ##'
+##' \Bhadra2016
+##'
 ##' @example examples/pfilter.R
 ##'
 NULL
