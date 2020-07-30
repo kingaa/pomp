@@ -16,6 +16,8 @@
 ##' @family elementary POMP methods
 ##' @family particle filter methods
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R pfilter.R
 ##' @importFrom stats setNames
 ##'

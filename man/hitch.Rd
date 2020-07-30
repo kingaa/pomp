@@ -54,7 +54,7 @@ If the chosen filename would result in over-writing an existing file, an error i
 \item{cdir}{optional character variable.
 \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
 By default, this is in a temporary directory specific to the \R session.
-One can also set this directory using the \code{pomp_cdir} option.}
+One can also set this directory using the \code{pomp_cdir} global option.}
 
 \item{shlib.args}{optional character variables.
 Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.}

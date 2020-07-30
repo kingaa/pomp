@@ -14,6 +14,7 @@
 ##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R
 ##' @importFrom stats setNames
 ##'
+##' @inheritSection pomp Note for Windows users
 ##' @inheritParams pomp
 ##'
 ##' @param Np the number of particles to use.

@@ -26,6 +26,8 @@
 ##'
 ##' @return An object of class \sQuote{pmcmcd_pomp}.
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @section Re-running PMCMC Iterations:
 ##' To re-run a sequence of PMCMC
 ##' iterations, one can use the \code{pmcmc} method on a \sQuote{pmcmc} object.

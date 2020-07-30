@@ -36,6 +36,8 @@
 ##' \item{\code{\link{as.data.frame}}}{puts the prior and posterior samples into a data frame}
 ##' }
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @author Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
 ##'
 ##' @references

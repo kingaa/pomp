@@ -23,6 +23,8 @@
 ##' @family elementary POMP methods
 ##' @family summary statistics methods
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @include pomp_class.R pomp_fun.R pomp.R
 ##' @importFrom stats quantile
 ##'

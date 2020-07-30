@@ -20,6 +20,8 @@
 ##' @family summary statistics methods
 ##' @family elementary POMP methods
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @include simulate.R pomp.R
 ##' @importFrom stats spec.pgram kernel .lm.fit
 ##'

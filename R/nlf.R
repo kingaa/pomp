@@ -22,6 +22,8 @@
 ##'
 ##' @aliases nlf nlf_objfun nlf_objfun,missing-method nlf_objfun,ANY-method
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
 ##'
 ##' @family pomp parameter estimation methods

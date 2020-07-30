@@ -19,7 +19,9 @@
 ##' @param Nabc the number of ABC iterations to perform.
 ##' @param scale named numeric vector of scales.
 ##' @param epsilon ABC tolerance.
-
+##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @section Running ABC:
 ##'
 ##' \code{abc} returns an object of class \sQuote{abcd_pomp}.

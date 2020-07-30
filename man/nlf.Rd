@@ -174,6 +174,14 @@ constructed using tensor products of basis functions of observables with
 basis functions of time.
 }
 
+\section{Note for Windows users}{
+
+
+Some Windows users report problems when using C snippets in parallel computations.
+These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
+To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=pomp]{(described here)} to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+}
+
 \section{Important Note}{
 
 Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.

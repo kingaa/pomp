@@ -102,6 +102,14 @@ Samples from the prior distribution are drawn using the \code{rprior} component.
 This is allowed to depend on elements of \code{params}, i.e., some of the elements of \code{params} can be treated as \dQuote{hyperparameters}.
 \code{Np} draws are made from the prior distribution.
 }
+\section{Note for Windows users}{
+
+
+Some Windows users report problems when using C snippets in parallel computations.
+These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
+To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=pomp]{(described here)} to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+}
+
 \references{
 Liu, J. and M. West.
 Combining Parameter and State Estimation in Simulation-Based Filtering.

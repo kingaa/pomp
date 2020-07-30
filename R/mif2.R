@@ -78,6 +78,8 @@
 ##' By default, the same parameters used for the original IF2 run are re-used (except for \code{verbose}, the default of which is shown above).
 ##' If one does specify additional arguments, these will override the defaults.
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @references
 ##'
 ##' \Ionides2015

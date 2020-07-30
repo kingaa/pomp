@@ -142,7 +142,7 @@ If no C snippets are used, \code{globals} has no effect.}
 \item{cdir}{optional character variable.
 \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
 By default, this is in a temporary directory specific to the \R session.
-One can also set this directory using the \code{pomp_cdir} option.}
+One can also set this directory using the \code{pomp_cdir} global option.}
 
 \item{cfile}{optional character variable.
 \code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
@@ -191,10 +191,17 @@ Each basic component can be furnished using C snippets, \R functions, or pre-com
 \section{Note}{
 
 
-\strong{It is not typically necessary (or indeed often feasible) to define all of the basic components for any given purpose.
-Each \pkg{pomp} algorithm makes use of only a subset of these components.
-Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.
-FIXME }
+It is not typically necessary (or indeed feasible) to define all of the basic components for any given purpose.
+However, each \pkg{pomp} algorithm makes use of only a subset of these components.
+When an algorithm requires a basic component that has not been furnished, an error is generated to let you know that you must provide the needed component to use the algorithm.
+}
+
+\section{Note for Windows users}{
+
+
+Some Windows users report problems when using C snippets in parallel computations.
+These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
+To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=pomp]{(described here)} to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
 }
 
 \references{
