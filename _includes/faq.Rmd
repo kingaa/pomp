@@ -80,7 +80,7 @@ Firstly, as a general rule, it's very probably a good idea to simply install the
 
 Usually, this warning arises because you are trying to install binaries from a repository on which binaries built for your version of **R** are no longer available.
 The preferred solution in this case is, again, to upgrade **R**, but if for some reason that is impossible or undesirable, you can always build the package from source using the source code retrieved from the [package website](https://kingaa.github.io/pomp/) or from one of the [CRAN mirrors](https://cran.r-project.org/mirrors.html).
-For more, see the [installation instructions](https://kingaa.github.io/pomp/install.html)
+For more, see the [installation instructions](https://kingaa.github.io/pomp/install.html).
 
 To be clear: the statement that pomp will work for **R**(>=Y) is a guarantee that the code is compatible with those versions of **R**.
 It is not a promise that binaries will always be available for old versions of **R**.
@@ -529,6 +529,10 @@ If it doesn't work, consult the [installation instructions](https://kingaa.githu
 
 See [the preceding FAQ](#why-cant-i-run-csnippets).
 
+Also, some Windows users using C snippets in parallel computations report errors (e.g., [issue 120](https://github.com/kingaa/pomp/issues/120)) that appear to be triggered when the temporary files created during C snippet compilation are created or destroyed.
+This problem does not appear to crop up on other platforms.
+A workaround for this involves compiling all codes *before* parallel computations commence and using the `cdir` and `cfile` arguments---which can be passed to `pomp` or any of the **pomp** elementary algorithms or inference algorithms---to cause the C snippets to be compiled in the directory, and with the file name, of your choice.
+
 ## I get the error message 'could not find symbol "recursive" in environment of the generic function' when I use the `c` operator to concatenate certain kinds of **pomp** structures. How do I fix this?  {#could-not-find-symbol-recursive}
 
 This appears to arise from incompatibility between certain **R** installations and binary versions of the **pomp** package from CRAN.
@@ -562,11 +566,11 @@ To avoid this, be sure to give values for the covariates over a time interval th
 Note that the ODE integration algorithms underlying `trajectory` can sometimes evaluate the covariates beyond the last observation time.
 To avoid warnings (and the potential inaccuracy they signal) in this case, it may be necessary to supply values for the covariates somewhat beyond the final observation time.
 
-## When trying to use Csnippets, I get an error message that refers to files and directories that don't exist. What is going on?
+## When trying to use C snippets, I get an error message that refers to files and directories that don't exist. What is going on?
 
 See [Issue 115](https://github.com/kingaa/pomp/issues/115) for an example.
 This can happen if you use file or directory names that contain whitespace. 
-For the tools that compile the Csnippets---as with (all?) other command-line tools---whitespace is syntactic.
+For the tools that compile the C snippets---as with (all?) other command-line tools---whitespace is syntactic.
 By far the best solution to this problem is to ***avoid using whitespace altogether in file and directory names***!
 The standard choice is to substitute the underscore "_" for whitespace.
 
