@@ -33,6 +33,8 @@
 ##' When the state process is initialized, these are simply copied over as initial conditions.
 ##' The names of the resulting state variables are obtained by dropping the suffix.
 ##'
+##' @inheritSection pomp Note for Windows users
+##'
 ##' @name rinit_spec
 ##' @rdname rinit_spec
 ##' @family information on model implementation

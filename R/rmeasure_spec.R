@@ -2,6 +2,8 @@
 ##'
 ##' Specification of rmeasure
 ##'
+##' @inheritSection pomp Note for Windows users
+##'
 ##' @name rmeasure_spec
 ##' @rdname rmeasure_spec
 ##' @family information on model implementation

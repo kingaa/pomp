@@ -37,6 +37,8 @@
 ##' @section Default behavior:
 ##' By default, \code{dprocess} returns missing values (\code{NA}).
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @name dprocess_spec
 ##' @rdname dprocess_spec
 ##' @family information on model implementation

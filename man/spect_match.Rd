@@ -165,6 +165,14 @@ In spectrum matching, one attempts to minimize the discrepancy between a \acrony
 \code{spect_objfun} constructs an objective function that measures the discrepancy.
 It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 }
+\section{Note for Windows users}{
+
+
+Some Windows users report problems when using C snippets in parallel computations.
+These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
+To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=pomp]{(described here)} to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+}
+
 \section{Important Note}{
 
 Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.

@@ -20,6 +20,8 @@
 ##' \strong{Important note:} variables to be log-barycentrically transformed \emph{must be adjacent} in the parameter vector.
 ##' @param \dots ignored.
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @details
 ##' When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans} function.
 ##' As with the basic model components, these should ordinarily be specified using C snippets.

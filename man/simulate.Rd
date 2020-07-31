@@ -143,6 +143,14 @@ Adding column names to \code{params} can be helpful.
 \code{simulate} generates simulations of the state and measurement
 processes.
 }
+\section{Note for Windows users}{
+
+
+Some Windows users report problems when using C snippets in parallel computations.
+These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
+To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=pomp]{(described here)} to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+}
+
 \seealso{
 Other elementary POMP methods: 
 \code{\link{pfilter}()},

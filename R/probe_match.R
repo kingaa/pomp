@@ -37,6 +37,8 @@
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @inheritSection objfun Important Note
 ##'
 ##' @example examples/probe_match.R

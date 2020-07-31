@@ -8,6 +8,8 @@
 ##' @include pomp_fun.R csnippet.R
 ##' @family information on model implementation
 ##'
+##' @inheritSection pomp Note for Windows users
+##'
 ##' @details
 ##' The skeleton is a dynamical system that expresses the central tendency of the unobserved Markov state process.
 ##' As such, it is not uniquely defined, but can be both interesting in itself and useful in practice.

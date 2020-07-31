@@ -12,6 +12,8 @@
 ##' @family particle filtering methods
 ##' @family pomp parameter estimation methods
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @inheritParams pomp
 ##' @param Np the number of particles to use.
 ##' @param h function returning the expected value of the observation given the

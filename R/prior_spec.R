@@ -6,6 +6,8 @@
 ##' @rdname prior_spec
 ##' @family information on model implementation
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @details
 ##' A prior distribution on parameters is specified by means of the \code{rprior} and/or \code{dprior} arguments to \code{pomp}.
 ##' As with the other basic model components, it is preferable to specify these using C snippets.

@@ -34,6 +34,8 @@
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and the discrepancy measure.
 ##'
+##' @inheritSection pomp Note for Windows users
+##' 
 ##' @inheritSection objfun Important Note
 ##'
 ##' @seealso \code{\link{spect}} \code{\link{optim}}

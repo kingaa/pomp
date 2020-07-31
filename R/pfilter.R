@@ -15,6 +15,7 @@
 ##' @importFrom stats setNames
 ##'
 ##' @inheritSection pomp Note for Windows users
+##' 
 ##' @inheritParams pomp
 ##'
 ##' @param Np the number of particles to use.

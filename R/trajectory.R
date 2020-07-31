@@ -13,7 +13,9 @@
 ##' @rdname trajectory
 ##' @include workhorses.R pomp_class.R flow.R
 ##' @aliases trajectory trajectory,missing-method trajectory,ANY-method
-
+##'
+##' @inheritSection pomp Note for Windows users
+##'
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames
 ##'

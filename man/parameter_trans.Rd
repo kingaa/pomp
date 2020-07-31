@@ -80,6 +80,14 @@ The logit transform is defined by
 The log barycentric transformation of variables \eqn{\theta_1,\dots,\theta_n}{theta1,\dots,thetan} is given by
 \deqn{\mathrm{logbarycentric}(\theta_1,\dots,\theta_n)=\left(\log\frac{\theta_1}{\sum_i \theta_i},\dots,\log\frac{\theta_n}{\sum_i \theta_i}\right).}{logbarycentric(theta1,\dots,thetan)=(log(theta1/sum(theta)),\dots,log(thetan/sum(theta))).}
 }
+\section{Note for Windows users}{
+
+
+Some Windows users report problems when using C snippets in parallel computations.
+These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
+To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=pomp]{(described here)} to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+}
+
 \seealso{
 Other information on model implementation: 
 \code{\link{Csnippet}},

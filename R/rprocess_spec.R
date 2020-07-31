@@ -2,6 +2,8 @@
 ##'
 ##' Specification of rprocess using \dQuote{plugins}.
 ##'
+##' @inheritSection pomp Note for Windows users
+##'
 ##' @section Discrete-time processes:
 ##' If the state process evolves in discrete time, specify \code{rprocess} using the \code{discrete_time} plug-in.
 ##' Specifically, provide
