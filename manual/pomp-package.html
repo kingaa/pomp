@@ -21,58 +21,66 @@ inference methods for <acronym><span class="acronym">POMP</span></acronym> model
 
 <h3>Data analysis using <span class="pkg">pomp</span></h3>
 
-<p><span class="pkg">pomp</span> provides algorithms for
+<p><span class="pkg">pomp</span> provides algorithms for:
 </p>
 
 <ol>
-<li><p> simulation of stochastic
-dynamical systems; see <code><a href="simulate.html">simulate</a></code>
+<li><p> Simulation of stochastic
+dynamical systems; see <code><a href="simulate.html">simulate</a></code>.
 </p>
 </li>
 <li>
-<p>particle filtering (AKA sequential Monte Carlo or sequential importance
-sampling); see <code><a href="pfilter.html">pfilter</a></code>
+<p>Particle filtering (AKA sequential Monte Carlo or sequential importance
+sampling); see <code><a href="pfilter.html">pfilter</a></code> and <code><a href="wpfilter.html">wpfilter</a></code>.
 </p>
 </li>
-<li><p> the iterated filtering methods
-of Ionides et al. (2006, 2011, 2015); see <code><a href="mif2.html">mif2</a></code>
+<li><p> The iterated filtering methods
+of Ionides et al. (2006, 2011, 2015); see <code><a href="mif2.html">mif2</a></code>.
 </p>
 </li>
-<li><p> the
+<li><p> The
 nonlinear forecasting algorithm of Kendall et al. (2005); see
-<code><a href="nlf.html">nlf</a></code>
+<code><a href="nlf.html">nlf</a></code>.
 </p>
 </li>
-<li><p> the particle MCMC approach of Andrieu et al. (2010); see <code><a href="pmcmc.html">pmcmc</a></code>
+<li><p> The particle MCMC approach of Andrieu et al. (2010); see <code><a href="pmcmc.html">pmcmc</a></code>.
 </p>
 </li>
-<li><p> the probe-matching method of Kendall et al. (1999, 2005); see <code><a href="probe_match.html">probe.match</a></code>
+<li><p> The probe-matching method of Kendall et al. (1999, 2005); see <code><a href="probe_match.html">probe.match</a></code>.
 </p>
 </li>
-<li><p> a spectral probe-matching method (Reuman et al. 2006, 2008); see
-<code><a href="spect_match.html">spect.match</a></code>
+<li><p> A spectral probe-matching method (Reuman et al. 2006, 2008); see
+<code><a href="spect_match.html">spect.match</a></code>.
 </p>
 </li>
-<li><p> synthetic likelihood a la Wood (2010); see <code><a href="probe.html">probe</a></code>
+<li><p> Synthetic likelihood a la Wood (2010); see <code><a href="probe.html">probe</a></code>.
 </p>
 </li>
-<li><p> approximate Bayesian computation (Toni et al. 2009); see <code><a href="abc.html">abc</a></code>
+<li><p> Approximate Bayesian computation (Toni et al. 2009); see <code><a href="abc.html">abc</a></code>.
 </p>
 </li>
-<li><p> the approximate Bayesian sequential
-Monte Carlo scheme of Liu &amp; West (2001); see <code><a href="bsmc2.html">bsmc2</a></code>
+<li><p> The approximate Bayesian sequential
+Monte Carlo scheme of Liu &amp; West (2001); see <code><a href="bsmc2.html">bsmc2</a></code>.
 </p>
 </li>
-<li><p> ensemble and ensemble adjusted Kalman filters; see <code><a href="kalman.html">kalman</a></code>
+<li><p> Ensemble and ensemble adjusted Kalman filters; see <code><a href="kalman.html">kalman</a></code>.
 </p>
 </li>
-<li><p> simple trajectory matching; see <code><a href="traj_match.html">traj.match</a></code>.
+<li><p> Simple trajectory matching; see <code><a href="traj_match.html">traj.match</a></code>.
 </p>
 </li></ol>
 
-<p>The package
-also provides various tools for plotting and extracting information on
-models and data.
+<p>The package also provides various tools for plotting and extracting information on models and data.
+</p>
+
+
+<h3>Structure of the package</h3>
+
+<p><span class="pkg">pomp</span> algorithms are arranged on several levels.
+<a href="estimation_algorithms.html">Estimation algorithms</a> estimate model parameters and return information needed for other aspects of inference.
+<a href="elementary_algorithms.html">Elementary algorithms</a> perform common operations on POMP models, including simulation, filtering, and application of diagnostic probes.
+<a href="workhorses.html">Workhorse functions</a> provide the interface to <a href="basic_components.html">basic POMP model components</a>.
+Beyond these, <span class="pkg">pomp</span> provides a variety of auxiliary functions for manipulating and extracting information from &lsquo;pomp&rsquo; objects, producing diagnostic plots, <a href="bake.html">caching computations</a>, and so on.
 </p>
 
 
@@ -96,6 +104,7 @@ references.
 <p>Other information on model implementation: 
 <code><a href="csnippet.html">Csnippet</a></code>,
 <code><a href="accumulators.html">accumulators</a></code>,
+<code><a href="basic_components.html">basic_components</a></code>,
 <code><a href="covariate_table.html">covariate_table</a>()</code>,
 <code><a href="distributions.html">distributions</a></code>,
 <code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
@@ -112,6 +121,7 @@ references.
 <p>Other pomp parameter estimation methods: 
 <code><a href="abc.html">abc</a>()</code>,
 <code><a href="bsmc2.html">bsmc2</a>()</code>,
+<code><a href="estimation_algorithms.html">estimation_algorithms</a></code>,
 <code><a href="kalman.html">kalman</a></code>,
 <code><a href="mif2.html">mif2</a>()</code>,
 <code><a href="nlf.html">nlf</a></code>,
@@ -119,13 +129,15 @@ references.
 <code><a href="probe_match.html">probe.match</a></code>,
 <code><a href="spect_match.html">spect.match</a></code>
 </p>
-<p>Other elementary POMP methods: 
+<p>Other elementary POMP algorithms: 
+<code><a href="elementary_algorithms.html">elementary_algorithms</a></code>,
 <code><a href="pfilter.html">pfilter</a>()</code>,
 <code><a href="probe.html">probe</a>()</code>,
 <code><a href="simulate.html">simulate</a>()</code>,
 <code><a href="spect.html">spect</a>()</code>,
+<code><a href="trajectory.html">trajectory</a>()</code>,
 <code><a href="wpfilter.html">wpfilter</a>()</code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.1.1.4 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.1.1.5 <a href="00Index.html">Index</a>]</div>
 </body></html>

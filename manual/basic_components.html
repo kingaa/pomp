@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Basic POMP model components.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for basic_components {pomp}"><tr><td>basic_components {pomp}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Basic POMP model components.</h2>
+
+<h3>Description</h3>
+
+<p>Mathematically, the parts of a POMP model include the latent-state process transition distribution, the measurement-process distribution, the initial-state distribution, and possibly a prior parameter distribution.
+Algorithmically, each of these corresponds to at least two distinct operations.
+In particular, for each of the above parts, one sometimes needs to make a random draw from the distribution and sometimes to evaluate the density function.
+Accordingly, for each such component, there are two basic model components, one prefixed by a &lsquo;r&rsquo;, the other by a &lsquo;d&rsquo;, following the usual <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> convention.
+</p>
+
+
+<h3>Details</h3>
+
+<p>In addition to the parts listed above, <span class="pkg">pomp</span> includes two additional basic model components: the deterministic skeleton, and parameter transformations that can be used to map the parameter space onto a Euclidean space for estimation purposes.
+</p>
+<p>There are thus altogether nine <b>basic model components</b>:
+</p>
+
+<ol>
+<li> <p><a href="rprocess_spec.html">rprocess</a>, which samples from the latent-state transition distribution,
+</p>
+</li>
+<li> <p><a href="dprocess_spec.html">dprocess</a>, which evaluates the latent-state transition density,
+</p>
+</li>
+<li> <p><a href="rmeasure_spec.html">rmeasure</a>, which samples from the measurement distribution,
+</p>
+</li>
+<li> <p><a href="dmeasure_spec.html">dmeasure</a>, which evaluates the measurement density,
+</p>
+</li>
+<li> <p><a href="prior_spec.html">rprior</a>, which samples from the prior distribution,
+</p>
+</li>
+<li> <p><a href="prior_spec.html">dprior</a>, which evaluates the prior density,
+</p>
+</li>
+<li> <p><a href="rinit_spec.html">rinit</a>, which samples from the initial-state distribution,
+</p>
+</li>
+<li> <p><a href="skeleton_spec.html">skeleton</a>, which evaluates the deterministic skeleton,
+</p>
+</li>
+<li> <p><a href="parameter_trans.html">partrans</a>, which evaluates the forward or inverse parameter transformations.
+</p>
+</li></ol>
+
+<p>Each of these can be set or modified in the <code>pomp</code> constructor function or in any of the <span class="pkg">pomp</span> <a href="elementary_algorithms.html">elementary algorithms</a> or <a href="basic_components.html">estimation algorithms</a> using an argument that matches the basic model component.
+A basic model component can be unset by passing <code>NULL</code> in the same way.
+</p>
+<p>Help pages detailing each basic model component are provided.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other information on model implementation: 
+<code><a href="csnippet.html">Csnippet</a></code>,
+<code><a href="accumulators.html">accumulators</a></code>,
+<code><a href="covariate_table.html">covariate_table</a>()</code>,
+<code><a href="distributions.html">distributions</a></code>,
+<code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
+<code><a href="dprocess_spec.html">dprocess_spec</a></code>,
+<code><a href="parameter_trans.html">parameter_trans</a>()</code>,
+<code><a href="pomp-package.html">pomp-package</a></code>,
+<code><a href="prior_spec.html">prior_spec</a></code>,
+<code><a href="rinit_spec.html">rinit_spec</a></code>,
+<code><a href="rmeasure_spec.html">rmeasure_spec</a></code>,
+<code><a href="rprocess_spec.html">rprocess_spec</a></code>,
+<code><a href="skeleton_spec.html">skeleton_spec</a></code>,
+<code><a href="transformations.html">transformations</a></code>,
+<code><a href="userdata.html">userdata</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.1.1.5 <a href="00Index.html">Index</a>]</div>
+</body></html>
