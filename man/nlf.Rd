@@ -219,6 +219,7 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 Other pomp parameter estimation methods: 
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
+\code{\link{estimation_algorithms}},
 \code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{pmcmc}()},

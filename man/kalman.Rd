@@ -107,6 +107,7 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 Other pomp parameter estimation methods: 
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
+\code{\link{estimation_algorithms}},
 \code{\link{mif2}()},
 \code{\link{nlf}},
 \code{\link{pmcmc}()},

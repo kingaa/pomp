@@ -152,14 +152,16 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 }
 
 \seealso{
-Other elementary POMP methods: 
+Other elementary POMP algorithms: 
+\code{\link{elementary_algorithms}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{probe}()},
 \code{\link{spect}()},
+\code{\link{trajectory}()},
 \code{\link{wpfilter}()}
 }
 \author{
 Aaron A. King
 }
-\concept{elementary POMP methods}
+\concept{elementary POMP algorithms}

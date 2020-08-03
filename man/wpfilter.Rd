@@ -118,12 +118,14 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Arulampalam2002
 }
 \seealso{
-Other elementary POMP methods: 
+Other elementary POMP algorithms: 
+\code{\link{elementary_algorithms}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{probe}()},
 \code{\link{simulate}()},
-\code{\link{spect}()}
+\code{\link{spect}()},
+\code{\link{trajectory}()}
 
 Other particle filter methods: 
 \code{\link{bsmc2}()},
@@ -141,5 +143,5 @@ Other particle filter methods:
 \author{
 Aaron A. King
 }
-\concept{elementary POMP methods}
+\concept{elementary POMP algorithms}
 \concept{particle filter methods}

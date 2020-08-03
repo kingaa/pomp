@@ -8,7 +8,7 @@ Specify the prior distribution
 }
 \details{
 A prior distribution on parameters is specified by means of the \code{rprior} and/or \code{dprior} arguments to \code{pomp}.
-As with the other basic model components, it is preferable to specify these using C snippets.
+As with the other \link[=basic_components]{basic model components}, it is preferable to specify these using C snippets.
 In writing a C snippet for the prior sampler (\code{rprior}), keep in mind that:
 \enumerate{
   \item Within the context in which the snippet will be evaluated, only the parameters will be defined.
@@ -53,6 +53,7 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 Other information on model implementation: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
+\code{\link{basic_components}},
 \code{\link{covariate_table}()},
 \code{\link{distributions}},
 \code{\link{dmeasure_spec}},

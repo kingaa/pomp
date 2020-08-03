@@ -52,6 +52,7 @@ Thus, \preformatted{
 Other information on model implementation: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
+\code{\link{basic_components}},
 \code{\link{covariate_table}()},
 \code{\link{distributions}},
 \code{\link{dmeasure_spec}},

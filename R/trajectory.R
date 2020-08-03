@@ -13,6 +13,7 @@
 ##' @rdname trajectory
 ##' @include workhorses.R pomp_class.R flow.R
 ##' @aliases trajectory trajectory,missing-method trajectory,ANY-method
+##' @family elementary POMP algorithms
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##'

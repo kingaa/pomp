@@ -44,7 +44,7 @@ Equipping models with parameter transformations.
 }
 \details{
 When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans} function.
-As with the basic model components, these should ordinarily be specified using C snippets.
+As with the other \link[=basic_components]{basic model components}, these should ordinarily be specified using C snippets.
 When doing so, note that:
 \enumerate{
   \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \preformatted{parameter_trans(toEst,fromEst)}.
@@ -92,6 +92,7 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 Other information on model implementation: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
+\code{\link{basic_components}},
 \code{\link{covariate_table}()},
 \code{\link{distributions}},
 \code{\link{dmeasure_spec}},

@@ -20,7 +20,7 @@
 ##' @rdname probe
 ##' @aliases probe probe,missing-method probe,ANY-method
 ##' @author Daniel C. Reuman, Aaron A. King
-##' @family elementary POMP methods
+##' @family elementary POMP algorithms
 ##' @family summary statistics methods
 ##'
 ##' @inheritSection pomp Note for Windows users

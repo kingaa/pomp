@@ -162,15 +162,17 @@ Other summary statistics methods:
 \code{\link{probe.match}},
 \code{\link{probe}()}
 
-Other elementary POMP methods: 
+Other elementary POMP algorithms: 
+\code{\link{elementary_algorithms}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{probe}()},
 \code{\link{simulate}()},
+\code{\link{trajectory}()},
 \code{\link{wpfilter}()}
 }
 \author{
 Daniel C. Reuman, Cai GoGwilt, Aaron A. King
 }
-\concept{elementary POMP methods}
+\concept{elementary POMP algorithms}
 \concept{summary statistics methods}

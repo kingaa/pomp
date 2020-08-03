@@ -81,6 +81,7 @@ plot(simulate(times=1:5,t0=0,params=c(X0=3,Y0=-7),
 Other information on model implementation: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
+\code{\link{basic_components}},
 \code{\link{covariate_table}()},
 \code{\link{distributions}},
 \code{\link{dmeasure_spec}},

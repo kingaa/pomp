@@ -75,4 +75,14 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 
 \seealso{
 \code{\link{skeleton}}, \code{\link{flow}}
+
+Other elementary POMP algorithms: 
+\code{\link{elementary_algorithms}},
+\code{\link{pfilter}()},
+\code{\link{pomp-package}},
+\code{\link{probe}()},
+\code{\link{simulate}()},
+\code{\link{spect}()},
+\code{\link{wpfilter}()}
 }
+\concept{elementary POMP algorithms}

@@ -152,11 +152,13 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Wood2010
 }
 \seealso{
-Other elementary POMP methods: 
+Other elementary POMP algorithms: 
+\code{\link{elementary_algorithms}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{simulate}()},
 \code{\link{spect}()},
+\code{\link{trajectory}()},
 \code{\link{wpfilter}()}
 
 Other summary statistics methods: 
@@ -168,5 +170,5 @@ Other summary statistics methods:
 \author{
 Daniel C. Reuman, Aaron A. King
 }
-\concept{elementary POMP methods}
+\concept{elementary POMP algorithms}
 \concept{summary statistics methods}

@@ -18,7 +18,7 @@
 ##' @rdname spect
 ##' @aliases spect spect,missing-method spect,ANY-method
 ##' @family summary statistics methods
-##' @family elementary POMP methods
+##' @family elementary POMP algorithms
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 

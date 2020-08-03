@@ -155,11 +155,13 @@ ss <- saved.states(pf)          ## the latent-state portion of each particle
 \Bhadra2016
 }
 \seealso{
-Other elementary POMP methods: 
+Other elementary POMP algorithms: 
+\code{\link{elementary_algorithms}},
 \code{\link{pomp-package}},
 \code{\link{probe}()},
 \code{\link{simulate}()},
 \code{\link{spect}()},
+\code{\link{trajectory}()},
 \code{\link{wpfilter}()}
 
 Other particle filter methods: 
@@ -178,5 +180,5 @@ Other particle filter methods:
 \author{
 Aaron A. King
 }
-\concept{elementary POMP methods}
+\concept{elementary POMP algorithms}
 \concept{particle filter methods}

@@ -147,6 +147,7 @@ Other particle filter methods:
 Other pomp parameter estimation methods: 
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
+\code{\link{estimation_algorithms}},
 \code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{nlf}},

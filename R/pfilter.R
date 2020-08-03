@@ -8,7 +8,7 @@
 ##' @aliases pfilter pfilter,ANY-method pfilter,missing-method
 ##' pfilterd_pomp-class pfilterd_pomp
 ##' @author Aaron A. King
-##' @family elementary POMP methods
+##' @family elementary POMP algorithms
 ##' @family particle filter methods
 ##'
 ##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R

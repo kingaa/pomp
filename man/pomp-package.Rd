@@ -16,32 +16,40 @@ inference methods for \acronym{POMP} models can be implemented.
 }
 \section{Data analysis using \pkg{pomp}}{
 
-\pkg{pomp} provides algorithms for
+\pkg{pomp} provides algorithms for:
 \enumerate{
-\item simulation of stochastic
-dynamical systems; see \code{\link[=simulate-pomp]{simulate}}
+\item Simulation of stochastic
+dynamical systems; see \code{\link[=simulate-pomp]{simulate}}.
 \item
-particle filtering (AKA sequential Monte Carlo or sequential importance
-sampling); see \code{\link{pfilter}}
-\item the iterated filtering methods
-of Ionides et al. (2006, 2011, 2015); see \code{\link{mif2}}
-\item the
+Particle filtering (AKA sequential Monte Carlo or sequential importance
+sampling); see \code{\link{pfilter}} and \code{\link{wpfilter}}.
+\item The iterated filtering methods
+of Ionides et al. (2006, 2011, 2015); see \code{\link{mif2}}.
+\item The
 nonlinear forecasting algorithm of Kendall et al. (2005); see
-\code{\link{nlf}}
-\item the particle MCMC approach of Andrieu et al. (2010); see \code{\link{pmcmc}}
-\item the probe-matching method of Kendall et al. (1999, 2005); see \code{\link{probe.match}}
-\item a spectral probe-matching method (Reuman et al. 2006, 2008); see
-\code{\link{spect.match}}
-\item synthetic likelihood a la Wood (2010); see \code{\link{probe}}
-\item approximate Bayesian computation (Toni et al. 2009); see \code{\link{abc}}
-\item the approximate Bayesian sequential
-Monte Carlo scheme of Liu & West (2001); see \code{\link{bsmc2}}
-\item ensemble and ensemble adjusted Kalman filters; see \code{\link{kalman}}
-\item simple trajectory matching; see \code{\link{traj.match}}.
+\code{\link{nlf}}.
+\item The particle MCMC approach of Andrieu et al. (2010); see \code{\link{pmcmc}}.
+\item The probe-matching method of Kendall et al. (1999, 2005); see \code{\link{probe.match}}.
+\item A spectral probe-matching method (Reuman et al. 2006, 2008); see
+\code{\link{spect.match}}.
+\item Synthetic likelihood a la Wood (2010); see \code{\link{probe}}.
+\item Approximate Bayesian computation (Toni et al. 2009); see \code{\link{abc}}.
+\item The approximate Bayesian sequential
+Monte Carlo scheme of Liu & West (2001); see \code{\link{bsmc2}}.
+\item Ensemble and ensemble adjusted Kalman filters; see \code{\link{kalman}}.
+\item Simple trajectory matching; see \code{\link{traj.match}}.
 }
-The package
-also provides various tools for plotting and extracting information on
-models and data.
+The package also provides various tools for plotting and extracting information on models and data.
+}
+
+\section{Structure of the package}{
+
+
+\pkg{pomp} algorithms are arranged on several levels.
+\link[=estimation_algorithms]{Estimation algorithms} estimate model parameters and return information needed for other aspects of inference.
+\link[=elementary_algorithms]{Elementary algorithms} perform common operations on POMP models, including simulation, filtering, and application of diagnostic probes.
+\link[=workhorses]{Workhorse functions} provide the interface to \link[=basic_components]{basic POMP model components}.
+Beyond these, \pkg{pomp} provides a variety of auxiliary functions for manipulating and extracting information from \sQuote{pomp} objects, producing diagnostic plots, \link[=bake]{caching computations}, and so on.
 }
 
 \references{
@@ -54,6 +62,7 @@ references.
 Other information on model implementation: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
+\code{\link{basic_components}},
 \code{\link{covariate_table}()},
 \code{\link{distributions}},
 \code{\link{dmeasure_spec}},
@@ -70,6 +79,7 @@ Other information on model implementation:
 Other pomp parameter estimation methods: 
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
+\code{\link{estimation_algorithms}},
 \code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{nlf}},
@@ -77,17 +87,19 @@ Other pomp parameter estimation methods:
 \code{\link{probe.match}},
 \code{\link{spect.match}}
 
-Other elementary POMP methods: 
+Other elementary POMP algorithms: 
+\code{\link{elementary_algorithms}},
 \code{\link{pfilter}()},
 \code{\link{probe}()},
 \code{\link{simulate}()},
 \code{\link{spect}()},
+\code{\link{trajectory}()},
 \code{\link{wpfilter}()}
 }
 \author{
 Aaron A. King
 }
-\concept{elementary POMP methods}
+\concept{elementary POMP algorithms}
 \concept{information on model implementation}
 \concept{pomp parameter estimation methods}
 \keyword{models}

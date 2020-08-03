@@ -24,7 +24,7 @@
 ##' 
 ##' @details
 ##' When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans} function.
-##' As with the basic model components, these should ordinarily be specified using C snippets.
+##' As with the other \link[=basic_components]{basic model components}, these should ordinarily be specified using C snippets.
 ##' When doing so, note that:
 ##' \enumerate{
 ##'   \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \preformatted{parameter_trans(toEst,fromEst)}.
