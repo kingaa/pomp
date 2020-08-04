@@ -46,7 +46,7 @@ logLik(pf)
 spy(po)
 }
 \seealso{
-Other pomp examples: 
+More examples provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{dacca}()},
@@ -60,4 +60,4 @@ Other pomp examples:
 \code{\link{rw2}()},
 \code{\link{sir_models}}
 }
-\concept{pomp examples}
+\concept{pomp_examples}

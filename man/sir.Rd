@@ -94,7 +94,7 @@ plot(simulate(window(po,end=3)))
 coef(po)
 }
 \seealso{
-Other pomp examples: 
+More examples provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{dacca}()},
@@ -108,6 +108,6 @@ Other pomp examples:
 \code{\link{rw2}()},
 \code{\link{verhulst}()}
 }
-\concept{pomp examples}
-\keyword{datasets}
+\concept{pomp_examples}
 \keyword{models}
+\keyword{pomp_datasets}

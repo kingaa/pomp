@@ -17,6 +17,6 @@
 ##'
 ##' @name elementary_algorithms
 ##' @rdname elementary_algorithms
-##' @family elementary POMP algorithms
+##' @family elementary_algorithms
 ##' 
 NULL

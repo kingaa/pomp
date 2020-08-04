@@ -15,7 +15,7 @@
 ##' @aliases covariate_table covariate_table,missing-method
 ##' covariate_table,ANY-method
 ##' @include pomp_class.R pstop.R
-##' @family information on model implementation
+##' @family implementation_info
 ##' @seealso lookup
 ##'
 ##' @param times the times corresponding to the covariates.

@@ -149,7 +149,7 @@ simulate(times=1:100,t0=0,
 ) -> rick3
 }
 \seealso{
-Other information on model implementation: 
+More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic_components}},
@@ -166,4 +166,4 @@ Other information on model implementation:
 \code{\link{skeleton_spec}},
 \code{\link{transformations}}
 }
-\concept{information on model implementation}
+\concept{implementation_info}

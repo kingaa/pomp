@@ -10,7 +10,7 @@
 ##' @rdname csnippet
 ##' @aliases as,Csnippet-method Csnippet-class
 ##' @include pomp-package.R
-##' @family information on model implementation
+##' @family implementation_info
 ##'
 ##' @section Note to Windows and Mac users:
 ##'

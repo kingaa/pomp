@@ -159,13 +159,13 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \seealso{
 \link[=proposals]{MCMC proposals}
 
-Other summary statistics methods: 
+More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{basic_probes}},
 \code{\link{probe.match}},
 \code{\link{probe}()},
 \code{\link{spect}()}
 
-Other pomp parameter estimation methods: 
+More on \pkg{pomp} estimation algorithms:
 \code{\link{bsmc2}()},
 \code{\link{estimation_algorithms}},
 \code{\link{kalman}},
@@ -179,5 +179,5 @@ Other pomp parameter estimation methods:
 \author{
 Edward L. Ionides, Aaron A. King
 }
-\concept{pomp parameter estimation methods}
-\concept{summary statistics methods}
+\concept{estimation_methods}
+\concept{summary_stats_methods}

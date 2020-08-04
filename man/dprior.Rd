@@ -31,7 +31,7 @@ Evaluates the prior probability density.
 \seealso{
 Specification of the prior density evaluator: \code{\link{prior_spec}}
 
-Other pomp workhorses: 
+More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
 \code{\link{dprocess}()},
 \code{\link{flow}()},
@@ -43,4 +43,4 @@ Other pomp workhorses:
 \code{\link{skeleton}()},
 \code{\link{workhorses}}
 }
-\concept{pomp workhorses}
+\concept{pomp_workhorses}

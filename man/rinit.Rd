@@ -34,7 +34,7 @@ Samples from the initial-state distribution.
 \seealso{
 Specification of the initial-state distribution: \code{\link{rinit_spec}}
 
-Other pomp workhorses: 
+More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},
@@ -46,4 +46,4 @@ Other pomp workhorses:
 \code{\link{skeleton}()},
 \code{\link{workhorses}}
 }
-\concept{pomp workhorses}
+\concept{pomp_workhorses}

@@ -10,7 +10,7 @@
 ##' @importFrom stats simulate
 ##'
 ##' @author Aaron A. King
-##' @family elementary POMP algorithms
+##' @family elementary_algorithms
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 

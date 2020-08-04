@@ -11,8 +11,8 @@
 ##' @name parus
 ##' @rdname parus
 ##' @docType data
-##' @family datasets
-##' @family pomp examples
+##' @family pomp_datasets
+##' @family pomp_examples
 ##'
 ##' @references
 ##'

@@ -14,8 +14,8 @@
 ##' @rdname bsmc2
 ##' @include pomp_class.R workhorses.R pomp.R plot.R
 ##' @aliases bsmc2 bsmc2,missing-method bsmc2,ANY-method
-##' @family particle filter methods
-##' @family pomp parameter estimation methods
+##' @family particle_filter_methods
+##' @family estimation_methods
 ##'
 ##' @importFrom mvtnorm rmvnorm
 ##' @importFrom stats median cov setNames

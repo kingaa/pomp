@@ -14,8 +14,8 @@
 ##' @rdname sir
 ##' @aliases sir sir2
 ##' @docType data
-##' @keywords datasets models
-##' @family pomp examples
+##' @keywords pomp_datasets models
+##' @family pomp_examples
 ##'
 ##' @return
 ##' These functions return \sQuote{pomp} objects containing simulated data.

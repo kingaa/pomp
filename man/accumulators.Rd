@@ -140,7 +140,7 @@ ew3 \%>\%
 \seealso{
 \code{\link{sir}}
 
-Other information on model implementation: 
+More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{basic_components}},
 \code{\link{covariate_table}()},
@@ -157,4 +157,4 @@ Other information on model implementation:
 \code{\link{transformations}},
 \code{\link{userdata}}
 }
-\concept{information on model implementation}
+\concept{implementation_info}

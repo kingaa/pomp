@@ -10,7 +10,7 @@
 ##' parameter_trans,ANY,ANY-method parameter_trans,ANY,missing-method
 ##' parameter_trans,NULL,NULL-method parameter_trans,function,function-method
 ##' parameter_trans,missing,ANY-method parameter_trans,pomp_fun,pomp_fun-method
-##' @family information on model implementation
+##' @family implementation_info
 ##'
 ##' @param toEst,fromEst procedures that perform transformation of model parameters to and from the estimation scale, respectively.
 ##' These can be furnished using C snippets, \R functions, or via procedures in an external, dynamically loaded library.

@@ -45,11 +45,12 @@ One accomplishes this by setting \code{filter.traj = TRUE} in each \code{\link{p
 In particle MCMC (\code{\link{pmcmc}}), the tracking of an individual trajectory is performed automatically.
 }
 \seealso{
-Other particle filter methods: 
+More on particle-filter based methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},
 \code{\link{filter.mean}()},
+\code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
@@ -58,4 +59,4 @@ Other particle filter methods:
 \code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 }
-\concept{particle filter methods}
+\concept{particle_filter_methods}

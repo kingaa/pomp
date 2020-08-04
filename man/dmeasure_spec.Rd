@@ -55,7 +55,7 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 }
 
 \seealso{
-Other information on model implementation: 
+More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic_components}},
@@ -72,4 +72,4 @@ Other information on model implementation:
 \code{\link{transformations}},
 \code{\link{userdata}}
 }
-\concept{information on model implementation}
+\concept{implementation_info}

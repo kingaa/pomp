@@ -42,7 +42,7 @@
 ##' numerical value.
 ##'
 ##' @author Daniel C. Reuman, Aaron A. King
-##' @family summary statistics methods
+##' @family summary_stats_methods
 ##' @concept diagnostics
 ##'
 ##' @references

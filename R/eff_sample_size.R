@@ -10,7 +10,7 @@
 ##' @rdname eff_sample_size
 ##' @include pfilter.R wpfilter.R bsmc2.R
 ##' @aliases eff.sample.size eff.sample.size,missing-method eff.sample.size,ANY-method
-##' @family particle filter methods
+##' @family particle_filter_methods
 ##' @inheritParams filter.mean
 ##'
 NULL

@@ -6,8 +6,8 @@
 ##'
 ##' @name rw2
 ##' @docType data
-##' @keywords datasets models
-##' @family pomp examples
+##' @keywords pomp_datasets models
+##' @family pomp_examples
 ##'
 ##' @return
 ##' A \sQuote{pomp} object containing simulated data.

@@ -118,7 +118,7 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Arulampalam2002
 }
 \seealso{
-Other elementary POMP algorithms: 
+More on \pkg{pomp} elementary algorithms: 
 \code{\link{elementary_algorithms}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
@@ -127,12 +127,13 @@ Other elementary POMP algorithms:
 \code{\link{spect}()},
 \code{\link{trajectory}()}
 
-Other particle filter methods: 
+More on particle-filter based methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},
 \code{\link{filter.mean}()},
 \code{\link{filter.traj}()},
+\code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
@@ -143,5 +144,5 @@ Other particle filter methods:
 \author{
 Aaron A. King
 }
-\concept{elementary POMP algorithms}
-\concept{particle filter methods}
+\concept{elementary_algorithms}
+\concept{particle_filter_methods}

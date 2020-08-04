@@ -104,7 +104,21 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Evensen2009
 }
 \seealso{
-Other pomp parameter estimation methods: 
+More on particle-filter based methods in \pkg{pomp}: 
+\code{\link{bsmc2}()},
+\code{\link{cond.logLik}()},
+\code{\link{eff.sample.size}()},
+\code{\link{filter.mean}()},
+\code{\link{filter.traj}()},
+\code{\link{mif2}()},
+\code{\link{pfilter}()},
+\code{\link{pmcmc}()},
+\code{\link{pred.mean}()},
+\code{\link{pred.var}()},
+\code{\link{saved.states}()},
+\code{\link{wpfilter}()}
+
+More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{estimation_algorithms}},
@@ -118,5 +132,5 @@ Other pomp parameter estimation methods:
 \author{
 Aaron A. King
 }
-\concept{particle filtering methods}
-\concept{pomp parameter estimation methods}
+\concept{estimation_methods}
+\concept{particle_filter_methods}

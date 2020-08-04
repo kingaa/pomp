@@ -78,7 +78,7 @@ plot(simulate(times=1:5,t0=0,params=c(X0=3,Y0=-7),
   rinit=g,rprocess=onestep(trivial)))
 }
 \seealso{
-Other information on model implementation: 
+More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic_components}},
@@ -95,4 +95,4 @@ Other information on model implementation:
 \code{\link{transformations}},
 \code{\link{userdata}}
 }
-\concept{information on model implementation}
+\concept{implementation_info}

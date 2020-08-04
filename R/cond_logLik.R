@@ -15,7 +15,7 @@
 ##' @rdname cond_logLik
 ##' @include pomp_class.R kalman.R pfilter.R wpfilter.R
 ##' @aliases cond.logLik cond.logLik,missing-method cond.logLik,ANY-method
-##' @family particle filter methods
+##' @family particle_filter_methods
 ##' @inheritParams filter.mean
 ##'
 ##' @return

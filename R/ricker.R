@@ -14,8 +14,8 @@
 ##'
 ##' @name ricker
 ##' @docType data
-##' @keywords datasets models
-##' @family pomp examples
+##' @keywords pomp_datasets models
+##' @family pomp_examples
 ##' @include pomp.R
 ##' @importFrom utils read.csv2
 ##'

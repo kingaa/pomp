@@ -6,6 +6,7 @@ tests/(.+?)\.Rout$
 inst/doc/Makefile
 inst/doc/(.+?).md
 inst/doc/(.+?).Rmd
+man/roxygen
 LICENSE\.md$
 README\.md$
 TODO\.md$

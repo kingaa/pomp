@@ -11,8 +11,8 @@
 ##' probe_objfun,ANY-method
 ##' @include probe.R plot.R
 ##' @author Aaron A. King
-##' @family summary statistics methods
-##' @family pomp parameter estimation methods
+##' @family summary_stats_methods
+##' @family estimation_methods
 ##' @seealso \code{\link{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##'
 ##' @param est character vector; the names of parameters to be estimated.

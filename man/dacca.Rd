@@ -86,7 +86,7 @@ plot(simulate(po))
 \King2008
 }
 \seealso{
-Other pomp examples: 
+More examples provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{ebola}},
@@ -100,14 +100,14 @@ Other pomp examples:
 \code{\link{sir_models}},
 \code{\link{verhulst}()}
 
-Other datasets: 
+More data sets provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{ebola}},
 \code{\link{measles}},
 \code{\link{parus}}
 }
-\concept{datasets}
-\concept{pomp examples}
-\keyword{datasets}
+\concept{pomp_datasets}
+\concept{pomp_examples}
 \keyword{models}
+\keyword{pomp_datasets}

@@ -131,7 +131,7 @@
 ##' @rdname rprocess_spec
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R
-##' @family information on model implementation
+##' @family implementation_info
 ##'
 ##' @param step.fun a C snippet, an R function, or
 ##' the name of a native routine in a shared-object library.

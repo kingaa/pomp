@@ -79,6 +79,6 @@
 ##' @name userdata
 ##' @rdname userdata
 ##' @include pomp.R pomp_class.R
-##' @family information on model implementation
+##' @family implementation_info
 ##'
 NULL

@@ -44,7 +44,7 @@ it does not iterate or integrate (see \code{\link{trajectory}} for this).
 \seealso{
 Specification of the deterministic skeleton: \code{\link{skeleton_spec}}
 
-Other pomp workhorses: 
+More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},
@@ -56,4 +56,4 @@ Other pomp workhorses:
 \code{\link{rprocess}()},
 \code{\link{workhorses}}
 }
-\concept{pomp workhorses}
+\concept{pomp_workhorses}

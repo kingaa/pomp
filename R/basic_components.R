@@ -20,13 +20,13 @@
 ##' \item \link[=parameter_trans]{partrans}, which evaluates the forward or inverse parameter transformations.
 ##' }
 ##'
-##' Each of these can be set or modified in the \code{pomp} constructor function or in any of the \pkg{pomp} \link[=elementary_algorithms]{elementary algorithms} or \link[=basic_components]{estimation algorithms} using an argument that matches the basic model component.
+##' Each of these can be set or modified in the \code{pomp} constructor function or in any of the \pkg{pomp} \link[=elementary_algorithms]{elementary algorithms} or \link[=estimation_algorithms]{estimation algorithms} using an argument that matches the basic model component.
 ##' A basic model component can be unset by passing \code{NULL} in the same way.
 ##'
 ##' Help pages detailing each basic model component are provided.
 ##'
 ##' @name basic_components
 ##' @rdname basic_components
-##' @family information on model implementation
+##' @family implementation_info
 ##' 
 NULL

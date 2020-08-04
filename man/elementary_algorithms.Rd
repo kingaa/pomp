@@ -21,7 +21,7 @@ There are six elementary algorithms in \pkg{pomp}:
 Help pages detailing each elementary algorithm component are provided.
 }
 \seealso{
-Other elementary POMP algorithms: 
+More on \pkg{pomp} elementary algorithms: 
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{probe}()},
@@ -30,4 +30,4 @@ Other elementary POMP algorithms:
 \code{\link{trajectory}()},
 \code{\link{wpfilter}()}
 }
-\concept{elementary POMP algorithms}
+\concept{elementary_algorithms}

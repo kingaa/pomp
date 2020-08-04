@@ -9,7 +9,7 @@
 ##' @aliases saved.states saved.states,ANY-method saved.states,missing-method
 ##' @include pfilter.R pmcmc.R
 ##' @rdname saved_states
-##' @family particle filter methods
+##' @family particle_filter_methods
 ##' @inheritParams filter.mean
 ##'
 ##' @return The saved states are returned in the form of a list, with one element per time-point.

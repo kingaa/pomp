@@ -79,7 +79,7 @@ See the package website, \url{https://kingaa.github.io/pomp/}, for more
 references.
 }
 \seealso{
-Other information on model implementation: 
+More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic_components}},
@@ -96,7 +96,7 @@ Other information on model implementation:
 \code{\link{transformations}},
 \code{\link{userdata}}
 
-Other pomp parameter estimation methods: 
+More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{estimation_algorithms}},
@@ -107,7 +107,7 @@ Other pomp parameter estimation methods:
 \code{\link{probe.match}},
 \code{\link{spect.match}}
 
-Other elementary POMP algorithms: 
+More on \pkg{pomp} elementary algorithms: 
 \code{\link{elementary_algorithms}},
 \code{\link{pfilter}()},
 \code{\link{probe}()},
@@ -119,9 +119,9 @@ Other elementary POMP algorithms:
 \author{
 Aaron A. King
 }
-\concept{elementary POMP algorithms}
-\concept{information on model implementation}
-\concept{pomp parameter estimation methods}
+\concept{elementary_algorithms}
+\concept{estimation_methods}
+\concept{implementation_info}
 \keyword{models}
 \keyword{multivariate}
 \keyword{ts}

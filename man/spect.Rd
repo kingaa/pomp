@@ -156,13 +156,13 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Reuman2008
 }
 \seealso{
-Other summary statistics methods: 
+More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{abc}()},
 \code{\link{basic_probes}},
 \code{\link{probe.match}},
 \code{\link{probe}()}
 
-Other elementary POMP algorithms: 
+More on \pkg{pomp} elementary algorithms: 
 \code{\link{elementary_algorithms}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
@@ -174,5 +174,5 @@ Other elementary POMP algorithms:
 \author{
 Daniel C. Reuman, Cai GoGwilt, Aaron A. King
 }
-\concept{elementary POMP algorithms}
-\concept{summary statistics methods}
+\concept{elementary_algorithms}
+\concept{summary_stats_methods}

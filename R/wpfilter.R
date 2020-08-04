@@ -13,8 +13,8 @@
 ##' @aliases wpfilter wpfilter,ANY-method wpfilter,missing-method
 ##' wpfilterd_pomp-class wpfilterd_pomp
 ##' @author Aaron A. King
-##' @family elementary POMP algorithms
-##' @family particle filter methods
+##' @family elementary_algorithms
+##' @family particle_filter_methods
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 

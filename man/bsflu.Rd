@@ -31,14 +31,14 @@ bsflu \%>\%
 \seealso{
 \link{sir_models}
 
-Other datasets: 
+More data sets provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{measles}},
 \code{\link{parus}}
 
-Other pomp examples: 
+More examples provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
@@ -52,5 +52,5 @@ Other pomp examples:
 \code{\link{sir_models}},
 \code{\link{verhulst}()}
 }
-\concept{datasets}
-\concept{pomp examples}
+\concept{pomp_datasets}
+\concept{pomp_examples}

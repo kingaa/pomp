@@ -48,11 +48,12 @@ Thus the conditional log likelihood at time \eqn{t_k} is
 where \eqn{f} is the probability density above.
 }
 \seealso{
-Other particle filter methods: 
+More on particle-filter based methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{eff.sample.size}()},
 \code{\link{filter.mean}()},
 \code{\link{filter.traj}()},
+\code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
@@ -61,4 +62,4 @@ Other particle filter methods:
 \code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 }
-\concept{particle filter methods}
+\concept{particle_filter_methods}

@@ -16,6 +16,6 @@
 ##'
 ##' @name estimation_algorithms
 ##' @rdname estimation_algorithms
-##' @family pomp parameter estimation methods
+##' @family estimation_methods
 ##' 
 NULL

@@ -101,7 +101,7 @@ These can be used directly and as templates for custom probes.
 \Wood2010
 }
 \seealso{
-Other summary statistics methods: 
+More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{abc}()},
 \code{\link{probe.match}},
 \code{\link{probe}()},
@@ -111,4 +111,4 @@ Other summary statistics methods:
 Daniel C. Reuman, Aaron A. King
 }
 \concept{diagnostics}
-\concept{summary statistics methods}
+\concept{summary_stats_methods}

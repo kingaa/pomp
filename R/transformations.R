@@ -7,7 +7,7 @@
 ##'
 ##' @name transformations
 ##' @rdname transformations
-##' @family information on model implementation
+##' @family implementation_info
 ##' @concept parameter transformations
 ##'
 NULL

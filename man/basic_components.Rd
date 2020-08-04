@@ -25,13 +25,13 @@ There are thus altogether nine \bold{basic model components}:
 \item \link[=parameter_trans]{partrans}, which evaluates the forward or inverse parameter transformations.
 }
 
-Each of these can be set or modified in the \code{pomp} constructor function or in any of the \pkg{pomp} \link[=elementary_algorithms]{elementary algorithms} or \link[=basic_components]{estimation algorithms} using an argument that matches the basic model component.
+Each of these can be set or modified in the \code{pomp} constructor function or in any of the \pkg{pomp} \link[=elementary_algorithms]{elementary algorithms} or \link[=estimation_algorithms]{estimation algorithms} using an argument that matches the basic model component.
 A basic model component can be unset by passing \code{NULL} in the same way.
 
 Help pages detailing each basic model component are provided.
 }
 \seealso{
-Other information on model implementation: 
+More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{covariate_table}()},
@@ -48,4 +48,4 @@ Other information on model implementation:
 \code{\link{transformations}},
 \code{\link{userdata}}
 }
-\concept{information on model implementation}
+\concept{implementation_info}

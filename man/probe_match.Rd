@@ -192,13 +192,13 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 \seealso{
 \code{\link{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 
-Other summary statistics methods: 
+More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{abc}()},
 \code{\link{basic_probes}},
 \code{\link{probe}()},
 \code{\link{spect}()}
 
-Other pomp parameter estimation methods: 
+More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{estimation_algorithms}},
@@ -212,5 +212,5 @@ Other pomp parameter estimation methods:
 \author{
 Aaron A. King
 }
-\concept{pomp parameter estimation methods}
-\concept{summary statistics methods}
+\concept{estimation_methods}
+\concept{summary_stats_methods}

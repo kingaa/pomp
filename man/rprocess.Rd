@@ -51,7 +51,7 @@ The values in \code{times} are the times at which the state of the simulated pro
 \seealso{
 Specification of the process-model simulator: \code{\link{rprocess_spec}}
 
-Other pomp workhorses: 
+More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},
@@ -63,4 +63,4 @@ Other pomp workhorses:
 \code{\link{skeleton}()},
 \code{\link{workhorses}}
 }
-\concept{pomp workhorses}
+\concept{pomp_workhorses}

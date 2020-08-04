@@ -32,11 +32,12 @@ Effective sample size is computed as
 where \eqn{w_{it}}{w_it} is the normalized weight of particle \eqn{i} at time \eqn{t}.
 }
 \seealso{
-Other particle filter methods: 
+More on particle-filter based methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{filter.mean}()},
 \code{\link{filter.traj}()},
+\code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
@@ -45,4 +46,4 @@ Other particle filter methods:
 \code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 }
-\concept{particle filter methods}
+\concept{particle_filter_methods}

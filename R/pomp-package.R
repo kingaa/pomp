@@ -12,9 +12,9 @@
 ##' @aliases pomp,package pomp-package
 ##' @docType package
 ##' @author Aaron A. King
-##' @family information on model implementation
-##' @family pomp parameter estimation methods
-##' @family elementary POMP algorithms
+##' @family implementation_info
+##' @family estimation_methods
+##' @family elementary_algorithms
 ##' @keywords ts models multivariate
 ##'
 ##' @section Data analysis using \pkg{pomp}:

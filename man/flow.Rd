@@ -43,7 +43,7 @@ In the case of a continuous-time system (vectorfield), \code{flow} uses the nume
 \seealso{
 \code{\link{skeleton}}, \code{\link{trajectory}}, \code{\link{rprocess}}
 
-Other pomp workhorses: 
+More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},
@@ -55,4 +55,4 @@ Other pomp workhorses:
 \code{\link{skeleton}()},
 \code{\link{workhorses}}
 }
-\concept{pomp workhorses}
+\concept{pomp_workhorses}

@@ -13,7 +13,7 @@
 ##' @name verhulst
 ##' @rdname verhulst
 ##' @docType data
-##' @family pomp examples
+##' @family pomp_examples
 ##'
 ##' @param r intrinsic growth rate
 ##' @param K carrying capacity

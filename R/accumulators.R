@@ -5,7 +5,7 @@
 ##' @name accumulators
 ##' @rdname accumulators
 ##' @aliases accumvars
-##' @family information on model implementation
+##' @family implementation_info
 ##' @seealso \code{\link{sir}}
 ##'
 ##' @details

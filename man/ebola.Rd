@@ -97,14 +97,14 @@ plot(ebolaModel(country="GIN"))
 \He2010
 }
 \seealso{
-Other datasets: 
+More data sets provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{dacca}()},
 \code{\link{measles}},
 \code{\link{parus}}
 
-Other pomp examples: 
+More examples provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{dacca}()},
@@ -118,5 +118,5 @@ Other pomp examples:
 \code{\link{sir_models}},
 \code{\link{verhulst}()}
 }
-\concept{datasets}
-\concept{pomp examples}
+\concept{pomp_datasets}
+\concept{pomp_examples}

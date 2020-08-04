@@ -20,7 +20,7 @@
 Help pages detailing each estimation algorithm are provided.
 }
 \seealso{
-Other pomp parameter estimation methods: 
+More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{kalman}},
@@ -31,4 +31,4 @@ Other pomp parameter estimation methods:
 \code{\link{probe.match}},
 \code{\link{spect.match}}
 }
-\concept{pomp parameter estimation methods}
+\concept{estimation_methods}

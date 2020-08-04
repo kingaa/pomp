@@ -13,7 +13,7 @@
 ##' @aliases pred.var pred.var,ANY-method pred.var,missing-method
 ##' @include pfilter.R kalman.R
 ##' @rdname pred_var
-##' @family particle filter methods
+##' @family particle_filter_methods
 ##' @inheritParams filter.mean-kalmand_pomp
 ##'
 NULL

@@ -16,8 +16,8 @@
 ##'
 ##' @name dacca
 ##' @docType data
-##' @family pomp examples
-##' @family datasets
+##' @family pomp_examples
+##' @family pomp_datasets
 ##' @include pomp.R
 ##' @importFrom stats smooth.spline predict
 ##'
@@ -25,7 +25,7 @@
 ##'
 ##' \King2008
 ##'
-##' @keywords models datasets
+##' @keywords models pomp_datasets
 ##' @example examples/dacca.R
 ##'
 NULL

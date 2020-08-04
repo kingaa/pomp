@@ -33,12 +33,13 @@ The prediction mean is therefore the expectation of this distribution
 \deqn{E[X(t_k) \vert Y(t_1)=y^*_1,\dots,Y(t_{k-1})=y^*_{k-1}].}{E[Xk | Y1=y1*,\dots,Y(k-1)=y(k-1)*].}
 }
 \seealso{
-Other particle filter methods: 
+More on particle-filter based methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},
 \code{\link{filter.mean}()},
 \code{\link{filter.traj}()},
+\code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
@@ -46,4 +47,4 @@ Other particle filter methods:
 \code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 }
-\concept{particle filter methods}
+\concept{particle_filter_methods}

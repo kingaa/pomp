@@ -31,12 +31,13 @@ When one calls \code{\link{pfilter}} with \code{save.states=TRUE}, the latent st
 This can be extracted by calling \code{saved.states} on the \sQuote{pfilterd.pomp} object.
 }
 \seealso{
-Other particle filter methods: 
+More on particle-filter based methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},
 \code{\link{filter.mean}()},
 \code{\link{filter.traj}()},
+\code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
@@ -44,4 +45,4 @@ Other particle filter methods:
 \code{\link{pred.var}()},
 \code{\link{wpfilter}()}
 }
-\concept{particle filter methods}
+\concept{particle_filter_methods}
