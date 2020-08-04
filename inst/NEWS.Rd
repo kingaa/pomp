@@ -2,6 +2,8 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 3.1.1}{
   \itemize{
+    \item The help pages have been improved, with an description of the overall package structure and pages on basic model components, elementary algorithms, and estimation algorithms.
+    \item A note to Windows users on avoiding certain C snippet compilation errors has been added to the help pages.
     \item The behavior of \code{profile_design} has changed.
     Previously, the same random (or sub-random) sequence was used for all non-profile parameters.
     Now, for each profile slice, a distinct set of points is generated.
