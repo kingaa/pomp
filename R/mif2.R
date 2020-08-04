@@ -59,12 +59,12 @@
 ##' These are then evaluated in a context containing the model \code{time} variable.  This allows for easy specification of the structure of the perturbations that are to be applied.
 ##' For example,
 ##' \preformatted{
-##'     rw.sd(a=0.05, b=ifelse(0.2,time==time[1],0),
+##'     rw.sd(a=0.05, b=ifelse(time==time[1],0.2,0),
 ##'           c=ivp(0.2), d=ifelse(time==time[13],0.2,0),
 ##'           e=ivp(0.2,lag=13), f=ifelse(time<23,0.02,0))
 ##' }
-##' results in perturbations of parameter \code{a} with s.d. 0.05 at every time step, while parameters \code{b} and \code{c} both get perturbations of s.d. 0.2 only before the first observation.
-##' Parameters \code{d} and \code{e}, by contrast, get perturbations of s.d.  0.2 only before the thirteenth observation.
+##' results in perturbations of parameter \code{a} with s.d. 0.05 at every time step, while parameters \code{b} and \code{c} both get perturbations of s.d. 0.2 only just before the first observation.
+##' Parameters \code{d} and \code{e}, by contrast, get perturbations of s.d.  0.2 only just before the thirteenth observation.
 ##' Finally, parameter \code{f} gets a random perturbation of size 0.02 before every observation falling before \eqn{t=23}.
 ##'
 ##' On the \eqn{m}-th IF2 iteration, prior to time-point \eqn{n}, the \eqn{d}-th parameter is given a random increment normally distributed with mean \eqn{0} and standard deviation \eqn{c_{m,n} \sigma_{d,n}}{c[m,n] sigma[d,n]}, where \eqn{c} is the cooling schedule and \eqn{\sigma}{sigma} is specified using \code{rw.sd}, as described above.
