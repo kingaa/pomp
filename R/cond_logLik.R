@@ -91,7 +91,7 @@ setMethod(
 
 ##' @name cond.loglik
 ##' @aliases cond.loglik
-##' @rdname cond_logLik
+##' @rdname deprecated
 ##' @export
 cond.loglik <- function (...) {
   .Deprecated("cond.logLik",package="pomp")

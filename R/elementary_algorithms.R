@@ -3,7 +3,7 @@
 ##' In \pkg{pomp}, elementary algorithms perform POMP model operations.
 ##' These operations do not themselves estimate parameters, though they may be instrumental in inference methods.
 ##' 
-##' There are four elementary algorithms in \pkg{pomp}:
+##' There are six elementary algorithms in \pkg{pomp}:
 ##' \itemize{
 ##' \item \code{\link[=simulate-pomp]{simulate}} which simulates from the joint distribution of latent and observed variables,
 ##' \item \code{\link{pfilter}}, which performs a simple particle filter operation,

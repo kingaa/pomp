@@ -46,11 +46,27 @@
 ##' @section Structure of the package:
 ##'
 ##' \pkg{pomp} algorithms are arranged on several levels.
-##' \link[=estimation_algorithms]{Estimation algorithms} estimate model parameters and return information needed for other aspects of inference.
-##' \link[=elementary_algorithms]{Elementary algorithms} perform common operations on POMP models, including simulation, filtering, and application of diagnostic probes.
-##' \link[=workhorses]{Workhorse functions} provide the interface to \link[=basic_components]{basic POMP model components}.
+##' At the top level, \link[=estimation_algorithms]{estimation algorithms} estimate model parameters and return information needed for other aspects of inference.
+##' \link[=elementary_algorithms]{Elementary algorithms} perform common operations on POMP models, including simulation, filtering, and application of diagnostic probes;
+##' these functions may be useful in inference, but they do not themselves perform estimation.
+##' At the lowest level, \link[=workhorses]{workhorse functions} provide the interface to \link[=basic_components]{basic POMP model components}.
 ##' Beyond these, \pkg{pomp} provides a variety of auxiliary functions for manipulating and extracting information from \sQuote{pomp} objects, producing diagnostic plots, \link[=bake]{caching computations}, and so on.
 ##'
+##' @section Implementing a model:
+##'
+##' The basic structure at the heart of the package is the \sQuote{pomp object}.
+##' This is a container holding a time series of data (possibly multivariate) and a model.
+##' The model is specified by specifying some or all of its \link[=basic_components]{basic model components}.
+##' One does this using the \link[=basic_components]{basic component arguments} to the \code{\link{pomp}} constructor.
+##' One can also add, modify, or delete basic model components \dQuote{on the fly} in any \pkg{pomp} function that accepts them.
+##'
+##' @section Documentation and examples:
+##'
+##' The package contains a number of examples.
+##' Some of these are included in the help pages.
+##' In addition, \link[=pomp_examples]{several pre-built POMP models} are included with the package.
+##' Tutorials and other documentation, including a \href{https://kingaa.github.io/pomp/FAQ.html}{package FAQ}, are available from the \href{https://kingaa.github.io/pomp/}{package website}.
+##' 
 ##' @references
 ##'
 ##' \King2016
