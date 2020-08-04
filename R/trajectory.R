@@ -15,8 +15,6 @@
 ##' @aliases trajectory trajectory,missing-method trajectory,ANY-method
 ##' @family elementary_algorithms
 ##'
-##' @inheritSection pomp Note for Windows users
-##'
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames
 ##'

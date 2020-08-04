@@ -65,14 +65,6 @@ In the case of a continuous-time system, the deterministic skeleton is a vector-
 Note that the handling of \code{\dots} in \code{trajectory} differs from that of most other functions in \pkg{pomp}.
 In particular, it is not possible to modify the model structure in a call to \code{trajectory}.
 }
-\section{Note for Windows users}{
-
-
-Some Windows users report problems when using C snippets in parallel computations.
-These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
-To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=pomp]{(described here)} to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
-}
-
 \seealso{
 \code{\link{skeleton}}, \code{\link{flow}}
 
