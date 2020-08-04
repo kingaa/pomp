@@ -205,12 +205,12 @@ These are then evaluated in a context containing the model <code>time</code> var
 For example,
 </p>
 <pre>
-    rw.sd(a=0.05, b=ifelse(0.2,time==time[1],0),
+    rw.sd(a=0.05, b=ifelse(time==time[1],0.2,0),
           c=ivp(0.2), d=ifelse(time==time[13],0.2,0),
           e=ivp(0.2,lag=13), f=ifelse(time&lt;23,0.02,0))
 </pre>
-<p>results in perturbations of parameter <code>a</code> with s.d. 0.05 at every time step, while parameters <code>b</code> and <code>c</code> both get perturbations of s.d. 0.2 only before the first observation.
-Parameters <code>d</code> and <code>e</code>, by contrast, get perturbations of s.d.  0.2 only before the thirteenth observation.
+<p>results in perturbations of parameter <code>a</code> with s.d. 0.05 at every time step, while parameters <code>b</code> and <code>c</code> both get perturbations of s.d. 0.2 only just before the first observation.
+Parameters <code>d</code> and <code>e</code>, by contrast, get perturbations of s.d.  0.2 only just before the thirteenth observation.
 Finally, parameter <code>f</code> gets a random perturbation of size 0.02 before every observation falling before <i>t=23</i>.
 </p>
 <p>On the <i>m</i>-th IF2 iteration, prior to time-point <i>n</i>, the <i>d</i>-th parameter is given a random increment normally distributed with mean <i>0</i> and standard deviation <i>c[m,n] sigma[d,n]</i>, where <i>c</i> is the cooling schedule and <i>sigma</i> is specified using <code>rw.sd</code>, as described above.
@@ -282,5 +282,5 @@ To circumvent this problem, use the <code>cdir</code> and <code>cfile</code> opt
 <code><a href="spect_match.html">spect.match</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.1.1.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.1.1.7 <a href="00Index.html">Index</a>]</div>
 </body></html>
