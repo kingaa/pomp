@@ -19,8 +19,9 @@
 ##' @include pomp_class.R pomp_fun.R load.R pstop.R
 ##' @docType methods
 ##' @family pomp_workhorses
-##' @seealso \code{\link[=simulate-pomp]{simulate}}, \code{\link{trajectory}},
-##' \code{\link{pfilter}}, \code{\link{probe}}
+##' @seealso \link[=basic_components]{basic model components},
+##' \link[=elementary_algorithms]{elementary algorithms},
+##' \link[=estimation_algorithms]{estimation algorithms}
 ##'
 ##' @author Aaron A. King
 ##'

@@ -21,6 +21,10 @@ There are six elementary algorithms in \pkg{pomp}:
 Help pages detailing each elementary algorithm component are provided.
 }
 \seealso{
+\link[=basic_components]{basic model components},
+\link[=workhorses]{workhorse functions},
+\link[=estimation_algorithms]{estimation algorithms}.
+
 More on \pkg{pomp} elementary algorithms: 
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},

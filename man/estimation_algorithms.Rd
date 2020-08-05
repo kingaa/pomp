@@ -20,6 +20,10 @@
 Help pages detailing each estimation algorithm are provided.
 }
 \seealso{
+\link[=basic_components]{basic model components},
+\link[=workhorses]{workhorse functions},
+\link[=elementary_algorithms]{elementary algorithms}.
+
 More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},

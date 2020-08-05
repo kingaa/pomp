@@ -17,5 +17,8 @@
 ##' @name estimation_algorithms
 ##' @rdname estimation_algorithms
 ##' @family estimation_methods
+##' @seealso \link[=basic_components]{basic model components},
+##' \link[=workhorses]{workhorse functions},
+##' \link[=elementary_algorithms]{elementary algorithms}.
 ##' 
 NULL

@@ -28,5 +28,8 @@
 ##' @name basic_components
 ##' @rdname basic_components
 ##' @family implementation_info
+##' @seealso \link[=workhorses]{workhorse functions},
+##' \link[=elementary_algorithms]{elementary algorithms},
+##' \link[=estimation_algorithms]{estimation algorithms}.
 ##' 
 NULL

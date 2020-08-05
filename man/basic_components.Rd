@@ -31,6 +31,10 @@ A basic model component can be unset by passing \code{NULL} in the same way.
 Help pages detailing each basic model component are provided.
 }
 \seealso{
+\link[=workhorses]{workhorse functions},
+\link[=elementary_algorithms]{elementary algorithms},
+\link[=estimation_algorithms]{estimation algorithms}.
+
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},

@@ -22,8 +22,9 @@ They include \describe{
 }
 }
 \seealso{
-\code{\link[=simulate-pomp]{simulate}}, \code{\link{trajectory}},
-\code{\link{pfilter}}, \code{\link{probe}}
+\link[=basic_components]{basic model components},
+\link[=elementary_algorithms]{elementary algorithms},
+\link[=estimation_algorithms]{estimation algorithms}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
