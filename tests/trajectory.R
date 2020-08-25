@@ -23,7 +23,7 @@ x <- array(c(0,1,1,2,1,1,0,-1),
   dimnames=list(c("V","R"),NULL,NULL))
 params <- rbind(a=c(0.7,0.5),b=c(0.8,0.5),c=c(2,5),i=c(0.8,0))
 skeleton(fhn,x,t=c(0,3),params=params)
-y <- trajectory(fhn,params=params,hmax=0.1)
+y <- trajectory(fhn,params=params,ode_control=list(hmax=0.1))
 invisible(y[,,599:601])
 matplot(time(fhn),t(y["V",,]),type='l',lty=1)
 plot(y[1,,],y[2,,],type='n')
@@ -53,7 +53,7 @@ pomp(
 
 params <- params[c("a","b","c"),]
 invisible(skeleton(fhn1,x,t=c(0,3),params=params))
-y <- trajectory(fhn1,params=params,hmax=0.01)
+y <- trajectory(fhn1,params=params,ode_control=list(hmax=0.01))
 y[,,199:201]
 matplot(time(fhn1),t(y["V",,]),type='l',lty=1)
 plot(y[1,,],y[2,,],type='n')
@@ -61,15 +61,15 @@ points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
 points(y[1,2,],y[2,2,],pch='.',cex=3,col='red')
 
 invisible(trajectory(fhn,times=c(1,5)))
-try(trajectory(fhn,times=NULL))
+try(trajectory(fhn,times=numeric(0)))
 try(trajectory(fhn,times=c(1,1,1)))
 try(trajectory(fhn,t0=10))
 try(trajectory(fhn,params=c(3,2,1)))
 try(trajectory(fhn,params=matrix(c(3,2,1,5),2,2)))
 try(trajectory(fhn,params=NULL))
 try(trajectory(fhn,params=list(a=3,b=2)))
-try(trajectory(fhn,maxsteps=-1))
-try(trajectory(fhn,maxsteps=1,verbose=TRUE) -> x)
+try(trajectory(fhn,ode_control=list(maxsteps=-1)))
+try(trajectory(fhn,ode_control=list(maxsteps=1),verbose=TRUE) -> x)
 try(trajectory(pomp(fhn,accumvars="q")) -> x)
 fhn@skeleton@type <- 3L
 stopifnot(
@@ -113,5 +113,25 @@ try(
 stopifnot(po3 %>% trajectory(times=seq(0,100,by=5)) %>% dim()==c(2,1,21))
 
 stopifnot(po3 %>% pomp(skeleton=NULL) %>% trajectory() %>% is.na())
+
+trajectory(
+  t0=0,times=seq(0,10,by=0.1),
+  rinit=function(...)c(x=1,y=0),
+  skeleton=vectorfield(function(x,y,t,...)c(x=x,y=200*t)),
+  format="d"
+) -> dat
+plot(x~time,data=dat,col=2,type="l",ylab="")
+lines(y~time,data=dat,col=3)
+
+dat1 <- dat[c("time","x","y")]
+names(dat1) <- c("time","X","Y")
+dat1 %>%
+  trajectory(
+    t0=0,times="time",
+    rinit=function(...)c(x=1,y=0),
+    skeleton=vectorfield(function(x,y,t,...)c(x=x,y=200*t)),
+    format="d"
+  ) -> dat2
+stopifnot(all.equal(dat,dat2))
 
 dev.off()

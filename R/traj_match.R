@@ -26,8 +26,6 @@
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 
-##' @param ode_control optional list;
-##' the elements of this list will be passed to \code{\link[=deSolve]{ode}}.
 ##' @param \dots additional arguments will modify the model structure
 ##'
 ##' @return

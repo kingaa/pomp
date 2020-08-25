@@ -56,7 +56,7 @@ if non-\code{NA}, this value is substituted for non-finite values of the objecti
 It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
 
 \item{ode_control}{optional list;
-the elements of this list will be passed to \code{\link[=deSolve]{ode}}.}
+the elements of this list will be passed to \code{\link[=deSolve]{ode}} if the skeleton is a vectorfield, and ignored if it is a map.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}

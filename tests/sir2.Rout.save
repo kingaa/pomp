@@ -47,7 +47,7 @@ variable    [,1]
 > plot(simulate(sir2,seed=48832734L))
 > pf <- freeze(pfilter(window(sir2,end=0.5),Np=1000),seed=48832734L)
 > plot(pf)
-> tj <- trajectory(sir2,maxsteps=10000)
+> tj <- trajectory(sir2,ode_control=list(maxsteps=10000))
 > matplot(time(sir2),t(tj[c("I","cases"),1,]),type="l",ylab="")
 > 
 > dev.off()

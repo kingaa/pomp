@@ -10,7 +10,7 @@ static R_INLINE SEXP ret_array (int nvars, int nreps, int ntimes, SEXP Snames)
 {
   SEXP X;
   int dim[3] = {nvars, nreps, ntimes};
-  const char *dimnms[3] = {"variable","rep","time"};
+  const char *dimnms[3] = {"variable",".id","time"};
   PROTECT(X = makearray(3,dim));
   setrownames(X,Snames,3);
   fixdimnames(X,dimnms,3);

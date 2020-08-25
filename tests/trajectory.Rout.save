@@ -56,7 +56,7 @@ variable  [,1] [,2]
        V 0.933  5.0
        R 0.450  0.2
 
-> y <- trajectory(fhn,params=params,hmax=0.1)
+> y <- trajectory(fhn,params=params,ode_control=list(hmax=0.1))
 > invisible(y[,,599:601])
 > matplot(time(fhn),t(y["V",,]),type='l',lty=1)
 > plot(y[1,,],y[2,,],type='n')
@@ -86,7 +86,7 @@ variable  [,1] [,2]
 > 
 > params <- params[c("a","b","c"),]
 > invisible(skeleton(fhn1,x,t=c(0,3),params=params))
-> y <- trajectory(fhn1,params=params,hmax=0.01)
+> y <- trajectory(fhn1,params=params,ode_control=list(hmax=0.01))
 > y[,,199:201]
 , , 1
 
@@ -115,12 +115,32 @@ variable   [,1]   [,2]
 > points(y[1,2,],y[2,2,],pch='.',cex=3,col='red')
 > 
 > invisible(trajectory(fhn,times=c(1,5)))
-> try(trajectory(fhn,times=NULL))
-Error : in 'trajectory': 'times' is empty, there is no work to do.
+> try(trajectory(fhn,times=numeric(0)))
+Error : in 'trajectory': in 'time<-':  times must be numeric and finite.
 > try(trajectory(fhn,times=c(1,1,1)))
-Error : in 'trajectory': 'times' must be a strictly increasing numeric sequence.
+, , 1
+
+        rep
+variable [,1]
+       V 1.73
+       R 0.98
+
+, , 2
+
+        rep
+variable [,1]
+       V 1.73
+       R 0.98
+
+, , 3
+
+        rep
+variable [,1]
+       V 1.73
+       R 0.98
+
 > try(trajectory(fhn,t0=10))
-Error : in 'trajectory': the zero-time 't0' must occur no later than the first observation.
+Error : in 'trajectory': 't0' must be a single number not greater than 'times[1]'.
 > try(trajectory(fhn,params=c(3,2,1)))
 Error : in 'trajectory': in 'rinit': variable 'c' not found among the parameters.
 > try(trajectory(fhn,params=matrix(c(3,2,1,5),2,2)))
@@ -129,12 +149,12 @@ Error : in 'trajectory': in 'rinit': variable 'c' not found among the parameters
 Error : in 'trajectory': in 'rinit': variable 'c' not found among the parameters.
 > try(trajectory(fhn,params=list(a=3,b=2)))
 Error : in 'trajectory': in 'rinit': variable 'c' not found among the parameters.
-> try(trajectory(fhn,maxsteps=-1))
+> try(trajectory(fhn,ode_control=list(maxsteps=-1)))
 DLSODA-  MXSTEP (=I1) .lt. 0  
 In above message, I1 = -1
  
 Error : in 'trajectory': in 'flow': error in ODE integrator: illegal input detected before taking any integration steps - see written message
-> try(trajectory(fhn,maxsteps=1,verbose=TRUE) -> x)
+> try(trajectory(fhn,ode_control=list(maxsteps=1),verbose=TRUE) -> x)
 DLSODA-  At current T (=R1), MXSTEP (=I1) steps   
       taken on this call before reaching TOUT     
 In above message, I1 = 1
@@ -195,7 +215,7 @@ Error : in 'trajectory': in 'flow': accumulator variable 'q' not found among the
 > try(trajectory("fhn"))
 Error : 'trajectory' is undefined for 'object' of class 'character'.
 > try(trajectory())
-Error : in 'trajectory': 'object' is a required argument.
+Error : in 'trajectory': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
 > sir() -> sir
 > trajectory(sir,format="data.frame") -> x
@@ -230,6 +250,26 @@ Error : in 'trajectory': in 'flow': 'skeleton' returns a vector of 3 state varia
 > stopifnot(po3 %>% trajectory(times=seq(0,100,by=5)) %>% dim()==c(2,1,21))
 > 
 > stopifnot(po3 %>% pomp(skeleton=NULL) %>% trajectory() %>% is.na())
+> 
+> trajectory(
++   t0=0,times=seq(0,10,by=0.1),
++   rinit=function(...)c(x=1,y=0),
++   skeleton=vectorfield(function(x,y,t,...)c(x=x,y=200*t)),
++   format="d"
++ ) -> dat
+> plot(x~time,data=dat,col=2,type="l",ylab="")
+> lines(y~time,data=dat,col=3)
+> 
+> dat1 <- dat[c("time","x","y")]
+> names(dat1) <- c("time","X","Y")
+> dat1 %>%
++   trajectory(
++     t0=0,times="time",
++     rinit=function(...)c(x=1,y=0),
++     skeleton=vectorfield(function(x,y,t,...)c(x=x,y=200*t)),
++     format="d"
++   ) -> dat2
+> stopifnot(all.equal(dat,dat2))
 > 
 > dev.off()
 null device 

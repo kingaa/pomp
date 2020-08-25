@@ -6,21 +6,22 @@
   
   ## we add or change the deterministic skeleton
   ## using the 'skeleton' argument in any 'pomp'
-  ## estimation function, or in the 'pomp' constructor
-  ## itself). Here, we pass the skeleton specification
-  ## to 'pomp' as an R function.
+  ## elementary or estimation function, or in the
+  ## 'pomp' constructor itself).
+  ## Here, we pass the skeleton specification
+  ## to 'trajectory' as an R function.
   ## Since this is a continuous-time POMP, the
   ## skeleton is a vectorfield.
 
   po %>%
-    pomp(
+    trajectory(
       skeleton=vectorfield(
         function(r, K, n, ...) {
           c(n=r*n*(1-n/K))
         }
-      )
-    ) %>%
-    trajectory(format="data.frame") -> traj
+      ),
+      format="data.frame"
+    ) -> traj
 
   ## We can also pass it as a C snippet:
 

@@ -6,9 +6,6 @@
 ##' In the case of a continuous-time system, the deterministic skeleton is a vector-field;
 ##' \code{trajectory} uses the numerical solvers in \pkg{\link[deSolve]{deSolve}} to integrate the vectorfield.
 ##'
-##' Note that the handling of \code{\dots} in \code{trajectory} differs from that of most other functions in \pkg{pomp}.
-##' In particular, it is not possible to modify the model structure in a call to \code{trajectory}.
-##' 
 ##' @name trajectory
 ##' @rdname trajectory
 ##' @include workhorses.R pomp_class.R flow.R
@@ -19,10 +16,12 @@
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames
 ##'
-##' @inheritParams flow
-##' @inheritParams rinit
 ##' @inheritParams pomp
 ##'
+##' @param object optional;
+##' if present, it should be a data frame or a \sQuote{pomp} object.
+##' @param ode_control optional list;
+##' the elements of this list will be passed to \code{\link[=deSolve]{ode}} if the skeleton is a vectorfield, and ignored if it is a map.
 ##' @param format the format in which to return the results.
 ##'
 ##' \code{format = "array"} causes the trajectories to be returned
@@ -66,55 +65,135 @@ setMethod(
 ##' @export
 setMethod(
   "trajectory",
-  signature=signature(object="pomp"),
-  definition=function (object, params, times, t0,
-    format = c("array", "data.frame"), ...,
+  signature=signature(object="missing"),
+  definition=function (
+    times, t0, params,
+    skeleton, rinit,
+    ...,
+    ode_control = list(),
+    format = c("array", "data.frame"),
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      trajectory.internal(object=object,params=params,times=times,t0=t0,
-        format=format,...,verbose=verbose),
+      trajectory.internal(
+        object=NULL,
+        times=times,
+        t0=t0,
+        params=params,
+        skeleton=skeleton,
+        rinit=rinit,
+        ...,
+        ode_control=ode_control,
+        format=format,
+        verbose=verbose
+      ),
       error = function (e) pStop("trajectory",conditionMessage(e))
     )
 
   }
 )
 
-trajectory.internal <- function (object, params, times, t0,
-  format = c("array", "data.frame"), ..., .gnsi = TRUE, verbose) {
+##' @rdname trajectory
+##' @export
+setMethod(
+  "trajectory",
+  signature=signature(object="data.frame"),
+  definition=function (
+    object,
+    ...,
+    times, t0, params,
+    skeleton, rinit,
+    ode_control = list(),
+    format = c("array", "data.frame"),
+    verbose = getOption("verbose", FALSE)) {
+
+    tryCatch(
+      trajectory.internal(
+        object=object,
+        params=params,
+        times=times,
+        t0=t0,
+        skeleton=skeleton,
+        rinit=rinit,
+        ...,
+        ode_control=ode_control,
+        format=format,
+        verbose=verbose
+      ),
+      error = function (e) pStop("trajectory",conditionMessage(e))
+    )
+    
+  }
+)
+
+##' @rdname trajectory
+##' @export
+setMethod(
+  "trajectory",
+  signature=signature(object="pomp"),
+  definition=function (
+    object,
+    params,
+    ...,
+    skeleton, rinit,
+    ode_control = list(),
+    format = c("array", "data.frame"),
+    verbose = getOption("verbose", FALSE)) {
+
+    tryCatch(
+      trajectory.internal(
+        object=object,
+        params=params,
+        skeleton=skeleton,
+        rinit=rinit,
+        ...,
+        ode_control=ode_control,
+        format=format,
+        verbose=verbose
+      ),
+      error = function (e) pStop("trajectory",conditionMessage(e))
+    )
+
+  }
+)
+
+trajectory.internal <- function (
+  object, params,
+  ...,
+  format = c("array", "data.frame"),
+  ode_control = list(),
+  .gnsi = TRUE,
+  verbose
+) {
 
   format <- match.arg(format)
   verbose <- as.logical(verbose)
 
-  if (missing(times)) times <- time(object,t0=FALSE)
-  else times <- as.numeric(times)
-
-  if (length(times)==0)
-    pStop_(sQuote("times")," is empty, there is no work to do.")
-
-  if (any(diff(times)<=0))
-    pStop_(sQuote("times")," must be a strictly increasing numeric sequence.")
-
-  if (missing(t0)) t0 <- timezero(object)
-  else t0 <- as.numeric(t0)
-
-  if (t0>times[1L])
-    pStop_("the zero-time ",sQuote("t0"),
-      " must occur no later than the first observation.")
+  object <- pomp(object,...,verbose=verbose)
 
   if (missing(params)) params <- coef(object)
   if (is.list(params)) params <- unlist(params)
   if (is.null(params)) params <- numeric(0)
-
+  if (!is.numeric(params))
+    pStop_(sQuote("params")," must be named and numeric.")
+  params <- as.matrix(params)
   storage.mode(params) <- "double"
+
+  if (ncol(params) == 1) object@params <- params[,1L]
 
   pompLoad(object)
   on.exit(pompUnload(object))
 
-  x0 <- rinit(object,params=params,t0=t0)
+  x0 <- rinit(object,params=params,verbose=verbose,.gnsi=.gnsi)
 
-  x <- flow(object,x0=x0,t0=t0,params=params,times=times,
-    ...,.gnsi=.gnsi,verbose=verbose)
+  x <- do.call(
+    flow,
+    c(
+      list(object,x0=x0,params=params),
+      ode_control,
+      list(.gnsi=.gnsi,verbose=verbose)
+    )
+  )
 
   if (format == "data.frame") {
     x <- lapply(
@@ -125,7 +204,7 @@ trajectory.internal <- function (object, params, times, t0,
         dim(y) <- dim(y)[c(1L,3L)]
         y <- as.data.frame(t(y))
         names(y) <- nm
-        y[[object@timename]] <- times
+        y[[object@timename]] <- object@times
         y$.id <- as.integer(k)
         y
       }
