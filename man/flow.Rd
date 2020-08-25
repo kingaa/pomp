@@ -15,16 +15,19 @@ This will typically be the output of \code{pomp}, \code{simulate}, or one of the
 
 \item{x0}{an array with dimensions \code{nvar} x \code{nrep} giving the initial conditions of the trajectories to be computed.}
 
-\item{t0}{the time at which the initial conditions are assumed to hold.}
+\item{t0}{the time at which the initial conditions are assumed to hold.
+By default, this is the zero-time (see \code{\link{timezero}}).}
 
 \item{times}{a numeric vector (length \code{ntimes}) containing times at which the itineraries are desired.
-These must be in non-decreasing order with \code{times[1]>t0}.}
+These must be in non-decreasing order with \code{times[1]>t0}.
+By default, this is the full set of observation times (see \code{\link{time}}).}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
 
 \item{...}{Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
-See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.}
+See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.
+By default, this is the parameter vector stored in \code{object} (see \code{\link[pomp]{coef}}).}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

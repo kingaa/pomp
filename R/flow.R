@@ -21,12 +21,15 @@
 ##' @param x0 an array with dimensions \code{nvar} x \code{nrep} giving the initial conditions of the trajectories to be computed.
 ##'
 ##' @param t0 the time at which the initial conditions are assumed to hold.
+##' By default, this is the zero-time (see \code{\link{timezero}}).
 ##' 
 ##' @param times a numeric vector (length \code{ntimes}) containing times at which the itineraries are desired.
 ##' These must be in non-decreasing order with \code{times[1]>t0}.
+##' By default, this is the full set of observation times (see \code{\link{time}}).
 ##' 
 ##' @param ... Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
 ##' See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.
+##' By default, this is the parameter vector stored in \code{object} (see \code{\link[pomp]{coef}}).
 ##'
 ##' @return
 ##' \code{flow} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
@@ -79,14 +82,17 @@ flow.internal <- function (object, x0, t0, times, params, ...,
   verbose <- as.logical(verbose)
 
   if (missing(t0))
-    reqd_arg("flow","t0")
+    t0 <- object@t0
   else
     t0 <- as.numeric(t0)
 
   if (missing(times))
-    reqd_arg("flow","times")
+    times <- object@times
   else
     times <- as.numeric(times)
+
+  if (missing(params))
+    params <- object@params
 
   if (length(times)==0)
     pStop_(sQuote("times")," is empty, there is no work to do.")
@@ -99,11 +105,10 @@ flow.internal <- function (object, x0, t0, times, params, ...,
 
   params <- as.matrix(params)
   nrep <- ncol(params)
+  storage.mode(params) <- "double"
 
   x0 <- as.matrix(x0)
   nvar <- nrow(x0)
-
-  storage.mode(params) <- "double"
   storage.mode(x0) <- "double"
 
   statenames <- rownames(x0)

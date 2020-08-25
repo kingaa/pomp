@@ -156,15 +156,16 @@ setMethod(
   }
 )
 
-tmof.internal <- function (object,
-  est, fail.value, ode_control,
-  ..., verbose) {
+tmof.internal <- function (
+  object, est, fail.value, ode_control, ..., verbose
+) {
 
   verbose <- as.logical(verbose)
   object <- pomp(object,...,verbose=verbose)
 
   if (undefined(object@skeleton) || undefined(object@dmeasure))
-    pStop_(paste(sQuote(c("skeleton","dmeasure")),collapse=", ")," are needed basic components.")
+    pStop_(paste(sQuote(c("skeleton","dmeasure")),collapse=", "),
+      " are needed basic components.")
 
   fail.value <- as.numeric(fail.value)
 
@@ -201,11 +202,21 @@ tmof.internal <- function (object,
 
 }
 
-traj.match.loglik <- function (object, seed, ode_control) {
-  object@states <- do.call(trajectory,c(list(object),ode_control))
-  sum(dmeasure(object,y=obs(object),x=object@states,
-    times=time(object),params=coef(object),
-    log=TRUE))
+traj.match.loglik <- function (object, ode_control) {
+  object@states <- do.call(
+    flow,
+    c(list(object,x0=rinit(object)),ode_control)
+  )
+  sum(
+    dmeasure(
+      object,
+      y=object@data,
+      x=object@states,
+      times=object@times,
+      params=object@params,
+      log=TRUE
+    )
+  )
 }
 
 ##' @rdname trajectory
