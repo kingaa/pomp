@@ -5,6 +5,8 @@ output:
     toc: yes
     toc_depth: 4
     number_sections: true
+bibliography: ../vignettes/pomp.bib
+csl: ../vignettes/jss.csl    
 ---
 
 ```{r options,include=FALSE,cache=FALSE}
@@ -621,3 +623,76 @@ This in turn suggests that the MOI may lack the variability needed to explain th
 In other words, a model with more variability than is possible in the MOI may be needed to explain the variability in the data, at least in the parameter regimes so far explored.
 
 See also [Issue 27](https://github.com/kingaa/pomp/issues/27).
+
+# Algorithm settings
+
+## What are "parameter transformations" (`partrans`, `parameter_trans`) in **pomp** and when should I use them?
+
+It is frequently the case that the parameters of a model make sense only for some restricted set of values.
+For example, rates are typically positive numbers, and probabilities must be between 0 and 1.
+Put another way, the parameter space that is to be searched is *constrained*.
+Many powerful estimation algorithms, however, are *unconstrained optimization algorithms*, i.e., they assume that the parameter space to be searched is Euclidean space $\mathbb{R}^n$.
+These algorithms will therefore potentially explore regions of parameter space for which the model constraints are violated (e.g., negative rates and probabilities $>1$.)
+One way to enforce the constraints is to transform the model parameter space so as to remove the constraints.
+Thus for example, the logarithm transforms the space of positive rates onto the real line and the *logit* function (the log-odds-ratio) transforms the unit interval $(0,1)$ onto the real line.
+
+To accommodate this approach, **pomp** provides a facility for the user to supply such parameter transformations.
+These transformations take the parameters on the "natural scale" to another "estimation scale".
+One specifies parameter transformations using the `parameter_trans` function, passing its output to the `partrans` argument to any **pomp** estimation algorithm (or to the basic constructor, `pomp`).
+For convenience, shortcuts for the commonly used log, logit, and log-barycentric transformations are provided.
+[Note that the latter use C snippets internally, so that the `paramnames` argument must be specified when the `log`, `logit`, or `barycentric` arguments of `parameter_trans` are used.]
+See the `parameter_trans` manual page for more detail.
+
+## Iterated filtering (`mif2`)
+
+### How should I choose the random-walk intensities (`rw.sd`)?
+
+First, some background on how the iterated filtering (IF2) algorithm works. 
+As its name suggests, IF2 (implemented as `mif2` in **pomp**) essentially iterates a particle filter. 
+It does this `Nmif` times. 
+Crucially, however, it does this not using the exact model you've specified in your pomp object, which has parameters that are constant in time. 
+Instead, it filters a model in which the time-constant parameters have been replaced by parameters that take a random walk with intensities given by the `rw.sd` argument. 
+In other words, at each time-step, a random value (normally distributed in the current implementation) with mean zero and s.d. set by `rw.sd` is added to the parameter's value. 
+As the iterations proceed, the intensities are gradually drawn down (according to the "cooling schedule" specified by `cooling.type` and `cooling.factor.50`). 
+The theory tells us that the swarm of particles will then concentrate around the maximum likelihood estimate (MLE) eventually, i.e., with sufficiently many iterations if the cooling is not too quick. 
+All this is explained in the [IF2 paper [@Ionides2015]](https://doi.org/10.1073/pnas.1410597112).
+
+Some insight into the algorithm's effectiveness is afforded by considering that the effect of the added perturbations is to smooth the likelihood surface.
+This smoothing out of the local structure is a double-edged sword.
+On the one hand, it makes the large-scale structure of the surface plainer, which is useful when one is far from the MLE.
+On the other hand, it makes it impossible to find the exact MLE when it is close by.
+
+The key thing to understand is that there are two parameter-space scales at work.
+First, there is the scale dictated by the distance between your starting guess and the MLE.
+This can be hard to know *a priori*, obviously.
+(I.e., if you knew where the MLE was, you wouldn't be searching for it.)
+Second, there is the scale over which the log likelihood function changes appreciably.
+(Recall that a unit change in the log likelihood is considered "appreciable".)
+Again, this can be hard to know *a priori* and it can be very different in different regions of parameter space.
+In particular, it can be quite different in the lowlands far from the MLE than it is in the high country near the maximum of the likelihood.
+Moreover, there is a tension between these scales:
+If you choose the random-walk intensities too small, it will take more IF2 iterations to reach the MLE;
+If you choose it too large, the random-walk noise will obscure the fine-structure of the likelihood surface.
+
+So, back to the question: What to do?
+The following gives some heuristics.
+When model parameters are rates (or probabilities), it is plausible to imagine that multiplicative perturbations on the order of a few percent to the rates (or odds ratios) will lead to relatively small effects on the model behavior.
+Of course, this is famously not the case in general!
+Nevertheless, it suggests perturbing the rates (or odds ratios) additively on the log scale with random increments on the order of a few percent.
+The idea here is to err on the side of small perturbations, counting on cheap computing power to perform the IF2 iterations needed to achieve the MLE.
+At any rate, this is the reasoning behind the common choice of setting `rw.sd` to a few percent (say 0.01--0.05).
+[When [parameter transformations](#what-are-parameter-transformations-partrans-parameter_trans-in-pomp-and-when-should-i-use-them) are in use, the perturbations will be applied on the estimation scale.]
+It frequently happens, then, that IF2 rapidly climbs the likelihood surface, despite the choice of a "small" `rw.sd`.
+In subsequent iterations, it is often useful to reduce the random-walk intensities further, as attention shifts to the fine structure in the highlands of the likelihood surface.
+
+Special considerations apply in the case of so-called *initial value parameters* (IVPs).
+Commonly, a model has some parameters that affect only the initial values (i.e., the values at $t = t_0$) of the latent Markovian state process.
+Clearly, it is useless to perturb these parameters when $t > t_0$.
+Indeed, it's worse than useless since the perturbations will impede the progress of such parameters toward their maximum-likelihood values.
+Declaring such parameters to be initial value parameters using `ivp` results in perturbations that are only applied at $t = t_0$.
+More generally, there may be parameters for which perturbations should only be applied at certain times.
+The `rw.sd` function allows one to specify (via a simple **R** expression in terms of time `t`) which parameters fall into this category and when and how much they are to be perturbed.
+See the manual page for `rw.sd` for details.
+
+# References
+
