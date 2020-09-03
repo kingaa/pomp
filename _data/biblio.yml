@@ -158,12 +158,13 @@
   pages: "57&#x2013;69"
   doi: "https://doi.org/10.1214/17-STS636"
 
-- key: Breto2019
+- key: Breto2020
   author: "C. Bret&oacute;, E. L. Ionides, and A. A. King"
-  year: "2019"
+  year: "2020"
   title: "Panel data analysis via mechanistic models"
   journal: "Journal of the American Statistical Association"
-  volume: "published online"
+  volume: "115"
+  pages: "1178&#x2013;1188"
   doi: "https://doi.org/10.1080/01621459.2019.1604367"
 
 - key: Buhnerkempe2017
