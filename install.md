@@ -26,6 +26,11 @@ devtools::install_github("kingaa/pomp")
 
 Source and binaries for the [CRAN version are available here](http://cran.r-project.org/package=pomp){:target="_blank"}.
 
+Install **pomp** from CRAN just like any other **R** package:
+```
+install.packages("pomp")
+```
+
 ## Changes from version 1:
 
 **pomp** version 2 introduced a number of changes that were not compatible with earlier versions.
