@@ -314,8 +314,8 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL,
   cflags <- Sys.getenv("PKG_CPPFLAGS")
   cflags <- paste0("PKG_CPPFLAGS=\"",
     if (nchar(cflags)>0) paste0(cflags," ") else "",
-    "-I",system.file("include",package="pomp"),
-    " -I",getwd(),"\"")
+    "-I",shQuote(system.file("include",package="pomp")),
+    " -I",shQuote(getwd()),"\"")
 
   shlib.args <- as.character(shlib.args)
 
