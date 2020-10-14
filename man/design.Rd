@@ -67,7 +67,7 @@ These functions are useful for generating designs for the exploration of paramet
 }
 \details{
 The Sobol' sequence generation is performed using codes from the
-\href{http://ab-initio.mit.edu/nlopt/}{\pkg{NLopt} library} by S. Johnson.
+\href{https://nlopt.readthedocs.io/en/latest/}{\pkg{NLopt} library} by S. Johnson.
 }
 \examples{
 ## Sobol' low-discrepancy design

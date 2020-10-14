@@ -4,7 +4,7 @@
 ##' 
 ##' @details
 ##' The Sobol' sequence generation is performed using codes from the
-##' \href{http://ab-initio.mit.edu/nlopt/}{\pkg{NLopt} library} by S. Johnson.
+##' \href{https://nlopt.readthedocs.io/en/latest/}{\pkg{NLopt} library} by S. Johnson.
 ##' @return
 ##' \code{sobol_design} returns a data frame with \code{nseq} rows and one column for each variable named in \code{lower} and \code{upper}.
 ##' @param lower,upper named numeric vectors giving the lower and upper bounds

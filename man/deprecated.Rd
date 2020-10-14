@@ -70,7 +70,7 @@ Obsolete: replaced by \code{sobol_design}.
 }
 \details{
 The Sobol' sequence generation is performed using codes from the
-\href{http://ab-initio.mit.edu/nlopt/}{\pkg{NLopt} library} by S. Johnson.
+\href{https://nlopt.readthedocs.io/en/latest/}{\pkg{NLopt} library} by S. Johnson.
 }
 \author{
 Aaron A. King
