@@ -65,10 +65,10 @@ bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL) {
     pWarn(ep,"returning 0 since ",sQuote("deriv")," > ",sQuote("degree"))
   if (!is.null(names)) {
     if (length(names)==1) {
-      nm <- sprintf(names,seq_len(nbasis))
-      if (length(unique(nm))!=nbasis)
-        nm <- paste(names,seq_len(nbasis),sep=".")
-      colnames(y) <- nm
+      if (!grepl("%",names)) {
+        names <- paste0(names,".%d")
+      }
+      colnames(y) <- sprintf(names,seq_len(nbasis))
     } else if (length(names)==nbasis) {
       colnames(y) <- names
     } else {
@@ -93,10 +93,10 @@ periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1,
     pWarn(ep,"returning 0 since ",sQuote("deriv")," > ",sQuote("degree"))
   if (!is.null(names)) {
     if (length(names)==1) {
-      nm <- sprintf(names,seq_len(nbasis))
-      if (length(unique(nm))!=nbasis)
-        nm <- paste(names,seq_len(nbasis),sep=".")
-      colnames(y) <- nm
+      if (!grepl("%",names)) {
+        names <- paste0(names,".%d")
+      }
+      colnames(y) <- sprintf(names,seq_len(nbasis))
     } else if (length(names)==nbasis) {
       colnames(y) <- names
     } else {
