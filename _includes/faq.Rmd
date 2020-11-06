@@ -576,6 +576,20 @@ For the tools that compile the C snippets---as with (all?) other command-line to
 By far the best solution to this problem is to ***avoid using whitespace altogether in file and directory names***!
 The standard choice is to substitute the underscore "_" for whitespace.
 
+## 'Warning: "beta" redefined.
+
+```
+Error messages containing the following elements often arise.
+Error: error in building shared-object library from C snippets: in ‘Cbuilder’: compilation error: cannot compile shared-object library ...
+compiler messages:
+...
+warning: "beta" redefined
+```
+
+The error you got is just due to a name conflict between a parameter `beta` and the beta function, which is defined in `Rmath.h` and [documented in the R extensions manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions).
+To work around this, simply rename the parameter.
+For example, it could be called `Beta` instead.
+
 # Interpreting results
 
 ## Is the likelihood `mif2` gives me the same as the likelihood I get from `pfilter`? {#mif-vs-pfilter-likelihood}
