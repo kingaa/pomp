@@ -571,7 +571,7 @@ compiler messages:
 ...
 warning: &quot;beta&quot; redefined
 ...</code></pre>
-<p>This is due to a name conflict between a quantity <code>beta</code> defined as a model parameter, covariate, data variable, or in some other way defined in a C snippet, and the <a href="https://en.wikipedia.org/wiki/Beta_function"><em>beta function</em></a>, which is defined as <code>beta</code> in <code>Rmath.h</code> and <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions">documented in the R extensions manual</a>. To work around this, simply rename the parameter. For example, it could be called <code>Beta</code> instead.</p>
+<p>This is due to a name conflict between a quantity <code>beta</code> defined as a model parameter, covariate, data variable, or in some other way defined in a C snippet, and the <a href="https://en.wikipedia.org/wiki/Beta_function"><em>Euler beta function</em></a>, which is defined as <code>beta</code> in <code>Rmath.h</code> and documented in the <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions">R extensions manual</a>. To work around this, simply rename the parameter. For example, it could be called <code>Beta</code> instead.</p>
 </div>
 </div>
 <div id="interpreting-results" class="section level1">

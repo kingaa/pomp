@@ -591,7 +591,7 @@ warning: "beta" redefined
 ...
 ```
 
-This is due to a name conflict between a quantity `beta` defined as a model parameter, covariate, data variable, or in some other way defined in a C snippet, and the [*beta function*](https://en.wikipedia.org/wiki/Beta_function), which is defined as `beta` in `Rmath.h` and [documented in the R extensions manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions).
+This is due to a name conflict between a quantity `beta` defined as a model parameter, covariate, data variable, or in some other way defined in a C snippet, and the [*Euler beta function*](https://en.wikipedia.org/wiki/Beta_function), which is defined as `beta` in `Rmath.h` and documented in the [R extensions manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions).
 To work around this, simply rename the parameter.
 For example, it could be called `Beta` instead.
 
