@@ -581,10 +581,14 @@ The standard choice is to substitute the underscore "_" for whitespace.
 Error messages containing the following elements often arise.
 
 ```
-Error: error in building shared-object library from C snippets: in ‘Cbuilder’: compilation error: cannot compile shared-object library ...
+...
+Error: error in building shared-object library from C snippets:
+in ‘Cbuilder’: compilation error: cannot compile shared-object library 
+...
 compiler messages:
 ...
 warning: "beta" redefined
+...
 ```
 
 This is due to a name conflict between a quantity `beta` defined as a model parameter, covariate, data variable, or in some other way defined in a C snippet, and the [*beta function*](https://en.wikipedia.org/wiki/Beta_function), which is defined as `beta` in `Rmath.h` and [documented in the R extensions manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions).
@@ -608,7 +612,7 @@ By doing the latter several times, one can obtain a more accurate estimate of th
 
 ## Why does the likelihood seem to be decreasing, not increasing, with `mif2` iterations? {#decreasing-mif-likelihood}
 
-In [Issue 27](https://github.com/kingaa/pomp/issues/27), @theresasophia asked this question.
+In [Issue 27](https://github.com/kingaa/pomp/issues/27), \@theresasophia asked this question.
 She provided codes for an estimation procedure based on `mif2`.
 The plot below illustrates what she found.
 
