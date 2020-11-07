@@ -59,7 +59,7 @@ You can do this by submitting a help request via the package [issues page](https
 Display the error message you get and document how it arises.
 In doing so, please [follow the instructions in FAQ 1.1 above](#effective-request).
 
-## I am running a piece of **pomp** code I found on the web, but I get errors. What is going on?
+## I am running a piece of **pomp** code I found on the web, but I get errors. What is going on? {#old-code}
 
 Of course, there could be many reasons for this.
 However, you should know that **pomp** version 2 made many changes to the **pomp** interface so that older code will not run under versions &ge; 2.
@@ -76,7 +76,7 @@ See the [installation instructions](./install.html).
 Compilation of **pomp** requires a FORTRAN compiler, which has not been installed (or not installed properly) on your system.
 See the [installation instructions](https://kingaa.github.io/pomp/install.html#important-note-for-mac-os-x-users).
 
-## I am using **R** version X. When I try to install the package, I get the error that "package **pomp** is not available (for R version X)". Yet it is stated that **pomp** is compatible with R(&ge;Y), where X > Y. What is going wrong?
+## I am using **R** version X. When I try to install the package, I get the error that "package **pomp** is not available (for R version X)". Yet it is stated that **pomp** is compatible with R(&ge;Y), where X > Y. What is going wrong? {#old-R}
 
 Firstly, as a general rule, it's very probably a good idea to simply install the latest version of **R**, since each new release fixes bugs, adds and improves features, etc.
 
@@ -568,7 +568,7 @@ To avoid this, be sure to give values for the covariates over a time interval th
 Note that the ODE integration algorithms underlying `trajectory` can sometimes evaluate the covariates beyond the last observation time.
 To avoid warnings (and the potential inaccuracy they signal) in this case, it may be necessary to supply values for the covariates somewhat beyond the final observation time.
 
-## When trying to use C snippets, I get an error message that refers to files and directories that don't exist. What is going on?
+## When trying to use C snippets, I get an error message that refers to files and directories that don't exist. What is going on? {#whitespace-error}
 
 See [Issue 115](https://github.com/kingaa/pomp/issues/115) for an example.
 This can happen if you use file or directory names that contain whitespace. 
@@ -576,7 +576,7 @@ For the tools that compile the C snippets---as with (all?) other command-line to
 By far the best solution to this problem is to ***avoid using whitespace altogether in file and directory names***!
 The standard choice is to substitute the underscore "_" for whitespace.
 
-## 'Warning: "beta" redefined.'
+## 'Warning: "beta" redefined.' {#beta-redefined}
 
 Error messages containing the following elements often arise.
 
@@ -645,7 +645,7 @@ See also [Issue 27](https://github.com/kingaa/pomp/issues/27).
 
 # Algorithm settings
 
-## What are "parameter transformations" (`partrans`, `parameter_trans`) in **pomp** and when should I use them?
+## What are "parameter transformations" (`partrans`, `parameter_trans`) in **pomp** and when should I use them? {#partrans}
 
 It is frequently the case that the parameters of a model make sense only for some restricted set of values.
 For example, rates are typically positive numbers, and probabilities must be between 0 and 1.
@@ -664,7 +664,7 @@ See the `parameter_trans` manual page for more detail.
 
 ## Iterated filtering (`mif2`)
 
-### How should I choose the random-walk intensities (`rw.sd`)?
+### How should I choose the random-walk intensities (`rw.sd`)? {#rw-sd-choice}
 
 First, some background on how the iterated filtering (IF2) algorithm works. 
 As its name suggests, IF2 (implemented as `mif2` in **pomp**) essentially iterates a particle filter. 

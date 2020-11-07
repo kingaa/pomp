@@ -115,12 +115,12 @@ if (window.hljs) {
 <li><a href="#effective-request"><span class="toc-section-number">1.1</span> How can I submit an effective request for help?</a></li>
 <li><a href="#cite-pomp"><span class="toc-section-number">1.2</span> What’s the proper way to cite <strong>pomp</strong>?</a></li>
 <li><a href="#help-with-error-message"><span class="toc-section-number">1.3</span> I have an error message that I don’t understand, and my question isn’t answered below. How can I get help?</a></li>
-<li><a href="#i-am-running-a-piece-of-pomp-code-i-found-on-the-web-but-i-get-errors.-what-is-going-on"><span class="toc-section-number">1.4</span> I am running a piece of <strong>pomp</strong> code I found on the web, but I get errors. What is going on?</a></li>
+<li><a href="#old-code"><span class="toc-section-number">1.4</span> I am running a piece of <strong>pomp</strong> code I found on the web, but I get errors. What is going on?</a></li>
 </ul></li>
 <li><a href="#installation-problems"><span class="toc-section-number">2</span> Installation problems</a><ul>
 <li><a href="#install-pomp"><span class="toc-section-number">2.1</span> How do I install <strong>pomp</strong>?</a></li>
 <li><a href="#mac-gfortran"><span class="toc-section-number">2.2</span> Why do I get an error message about <code>gfortran</code> when I try to install <strong>pomp</strong> from source on my Mac?</a></li>
-<li><a href="#i-am-using-r-version-x.-when-i-try-to-install-the-package-i-get-the-error-that-package-pomp-is-not-available-for-r-version-x.-yet-it-is-stated-that-pomp-is-compatible-with-ry-where-x-y.-what-is-going-wrong"><span class="toc-section-number">2.3</span> I am using <strong>R</strong> version X. When I try to install the package, I get the error that “package <strong>pomp</strong> is not available (for R version X)”. Yet it is stated that <strong>pomp</strong> is compatible with R(≥Y), where X &gt; Y. What is going wrong?</a></li>
+<li><a href="#old-R"><span class="toc-section-number">2.3</span> I am using <strong>R</strong> version X. When I try to install the package, I get the error that “package <strong>pomp</strong> is not available (for R version X)”. Yet it is stated that <strong>pomp</strong> is compatible with R(≥Y), where X &gt; Y. What is going wrong?</a></li>
 </ul></li>
 <li><a href="#implementing-pomp-models."><span class="toc-section-number">3</span> Implementing POMP models.</a><ul>
 <li><a href="#vector-in-csnippet"><span class="toc-section-number">3.1</span> How can I include a vector of variables in a C snippet?</a></li>
@@ -136,17 +136,17 @@ if (window.hljs) {
 <li><a href="#could-not-compile"><span class="toc-section-number">4.3</span> Why do I get an error message “Could not compile shared-object library” when I run <code>pomp</code>?</a></li>
 <li><a href="#could-not-find-symbol-recursive"><span class="toc-section-number">4.4</span> I get the error message ‘could not find symbol “recursive” in environment of the generic function’ when I use the <code>c</code> operator to concatenate certain kinds of <strong>pomp</strong> structures. How do I fix this?</a></li>
 <li><a href="#extrapolation-warnings"><span class="toc-section-number">4.5</span> I get warnings about extrapolation in ‘table_lookup’. What is this about?</a></li>
-<li><a href="#when-trying-to-use-c-snippets-i-get-an-error-message-that-refers-to-files-and-directories-that-dont-exist.-what-is-going-on"><span class="toc-section-number">4.6</span> When trying to use C snippets, I get an error message that refers to files and directories that don’t exist. What is going on?</a></li>
-<li><a href="#warning-beta-redefined."><span class="toc-section-number">4.7</span> ‘Warning: “beta” redefined.’</a></li>
+<li><a href="#whitespace-error"><span class="toc-section-number">4.6</span> When trying to use C snippets, I get an error message that refers to files and directories that don’t exist. What is going on?</a></li>
+<li><a href="#beta-redefined"><span class="toc-section-number">4.7</span> ‘Warning: “beta” redefined.’</a></li>
 </ul></li>
 <li><a href="#interpreting-results"><span class="toc-section-number">5</span> Interpreting results</a><ul>
 <li><a href="#mif-vs-pfilter-likelihood"><span class="toc-section-number">5.1</span> Is the likelihood <code>mif2</code> gives me the same as the likelihood I get from <code>pfilter</code>?</a></li>
 <li><a href="#decreasing-mif-likelihood"><span class="toc-section-number">5.2</span> Why does the likelihood seem to be decreasing, not increasing, with <code>mif2</code> iterations?</a></li>
 </ul></li>
 <li><a href="#algorithm-settings"><span class="toc-section-number">6</span> Algorithm settings</a><ul>
-<li><a href="#what-are-parameter-transformations-partrans-parameter_trans-in-pomp-and-when-should-i-use-them"><span class="toc-section-number">6.1</span> What are “parameter transformations” (<code>partrans</code>, <code>parameter_trans</code>) in <strong>pomp</strong> and when should I use them?</a></li>
+<li><a href="#partrans"><span class="toc-section-number">6.1</span> What are “parameter transformations” (<code>partrans</code>, <code>parameter_trans</code>) in <strong>pomp</strong> and when should I use them?</a></li>
 <li><a href="#iterated-filtering-mif2"><span class="toc-section-number">6.2</span> Iterated filtering (<code>mif2</code>)</a><ul>
-<li><a href="#how-should-i-choose-the-random-walk-intensities-rw.sd"><span class="toc-section-number">6.2.1</span> How should I choose the random-walk intensities (<code>rw.sd</code>)?</a></li>
+<li><a href="#rw-sd-choice"><span class="toc-section-number">6.2.1</span> How should I choose the random-walk intensities (<code>rw.sd</code>)?</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#references">References</a></li>
@@ -178,7 +178,7 @@ if (window.hljs) {
 <h2><span class="header-section-number">1.3</span> I have an error message that I don’t understand, and my question isn’t answered below. How can I get help?</h2>
 <p>The pomp developers have a goal of replacing all unhelpful error messages with helpful ones. Please help us while we help you! You can do this by submitting a help request via the package <a href="https://github.com/kingaa/pomp/issues">issues page</a>. Display the error message you get and document how it arises. In doing so, please <a href="#effective-request">follow the instructions in FAQ 1.1 above</a>.</p>
 </div>
-<div id="i-am-running-a-piece-of-pomp-code-i-found-on-the-web-but-i-get-errors.-what-is-going-on" class="section level2">
+<div id="old-code" class="section level2">
 <h2><span class="header-section-number">1.4</span> I am running a piece of <strong>pomp</strong> code I found on the web, but I get errors. What is going on?</h2>
 <p>Of course, there could be many reasons for this. However, you should know that <strong>pomp</strong> version 2 made many changes to the <strong>pomp</strong> interface so that older code will not run under versions ≥ 2. See the <a href="https://kingaa.github.io/pomp/vignettes/upgrade_guide.html"><strong>pomp</strong> version 2 upgrade guide</a> for information on how to fix broken code from earlier versions.</p>
 </div>
@@ -193,7 +193,7 @@ if (window.hljs) {
 <h2><span class="header-section-number">2.2</span> Why do I get an error message about <code>gfortran</code> when I try to install <strong>pomp</strong> from source on my Mac?</h2>
 <p>Compilation of <strong>pomp</strong> requires a FORTRAN compiler, which has not been installed (or not installed properly) on your system. See the <a href="https://kingaa.github.io/pomp/install.html#important-note-for-mac-os-x-users">installation instructions</a>.</p>
 </div>
-<div id="i-am-using-r-version-x.-when-i-try-to-install-the-package-i-get-the-error-that-package-pomp-is-not-available-for-r-version-x.-yet-it-is-stated-that-pomp-is-compatible-with-ry-where-x-y.-what-is-going-wrong" class="section level2">
+<div id="old-R" class="section level2">
 <h2><span class="header-section-number">2.3</span> I am using <strong>R</strong> version X. When I try to install the package, I get the error that “package <strong>pomp</strong> is not available (for R version X)”. Yet it is stated that <strong>pomp</strong> is compatible with R(≥Y), where X &gt; Y. What is going wrong?</h2>
 <p>Firstly, as a general rule, it’s very probably a good idea to simply install the latest version of <strong>R</strong>, since each new release fixes bugs, adds and improves features, etc.</p>
 <p>Usually, this warning arises because you are trying to install binaries from a repository on which binaries built for your version of <strong>R</strong> are no longer available. The preferred solution in this case is, again, to upgrade <strong>R</strong>, but if for some reason that is impossible or undesirable, you can always build the package from source using the source code retrieved from the <a href="https://kingaa.github.io/pomp/">package website</a> or from one of the <a href="https://cran.r-project.org/mirrors.html">CRAN mirrors</a>. For more, see the <a href="https://kingaa.github.io/pomp/install.html">installation instructions</a>.</p>
@@ -556,11 +556,11 @@ list()</code></pre>
 <p>This can be a problem if the linear extrapolation is not accurate. To avoid this, be sure to give values for the covariates over a time interval that covers the full range of relevant times, i.e., <code>t0</code> to the time of the last observation.</p>
 <p>Note that the ODE integration algorithms underlying <code>trajectory</code> can sometimes evaluate the covariates beyond the last observation time. To avoid warnings (and the potential inaccuracy they signal) in this case, it may be necessary to supply values for the covariates somewhat beyond the final observation time.</p>
 </div>
-<div id="when-trying-to-use-c-snippets-i-get-an-error-message-that-refers-to-files-and-directories-that-dont-exist.-what-is-going-on" class="section level2">
+<div id="whitespace-error" class="section level2">
 <h2><span class="header-section-number">4.6</span> When trying to use C snippets, I get an error message that refers to files and directories that don’t exist. What is going on?</h2>
 <p>See <a href="https://github.com/kingaa/pomp/issues/115">Issue 115</a> for an example. This can happen if you use file or directory names that contain whitespace. For the tools that compile the C snippets—as with (all?) other command-line tools—whitespace is syntactic. By far the best solution to this problem is to <strong><em>avoid using whitespace altogether in file and directory names</em></strong>! The standard choice is to substitute the underscore &quot;_&quot; for whitespace.</p>
 </div>
-<div id="warning-beta-redefined." class="section level2">
+<div id="beta-redefined" class="section level2">
 <h2><span class="header-section-number">4.7</span> ‘Warning: “beta” redefined.’</h2>
 <p>Error messages containing the following elements often arise.</p>
 <pre><code>...
@@ -602,14 +602,14 @@ warning: &quot;beta&quot; redefined
 </div>
 <div id="algorithm-settings" class="section level1">
 <h1><span class="header-section-number">6</span> Algorithm settings</h1>
-<div id="what-are-parameter-transformations-partrans-parameter_trans-in-pomp-and-when-should-i-use-them" class="section level2">
+<div id="partrans" class="section level2">
 <h2><span class="header-section-number">6.1</span> What are “parameter transformations” (<code>partrans</code>, <code>parameter_trans</code>) in <strong>pomp</strong> and when should I use them?</h2>
 <p>It is frequently the case that the parameters of a model make sense only for some restricted set of values. For example, rates are typically positive numbers, and probabilities must be between 0 and 1. Put another way, the parameter space that is to be searched is <em>constrained</em>. Many powerful estimation algorithms, however, are <em>unconstrained optimization algorithms</em>, i.e., they assume that the parameter space to be searched is Euclidean space <span class="math inline">\(\mathbb{R}^n\)</span>. These algorithms will therefore potentially explore regions of parameter space for which the model constraints are violated (e.g., negative rates and probabilities <span class="math inline">\(&gt;1\)</span>.) One way to enforce the constraints is to transform the model parameter space so as to remove the constraints. Thus for example, the logarithm transforms the space of positive rates onto the real line and the <em>logit</em> function (the log-odds-ratio) transforms the unit interval <span class="math inline">\((0,1)\)</span> onto the real line.</p>
 <p>To accommodate this approach, <strong>pomp</strong> provides a facility for the user to supply such parameter transformations. These transformations take the parameters on the “natural scale” to another “estimation scale”. One specifies parameter transformations using the <code>parameter_trans</code> function, passing its output to the <code>partrans</code> argument to any <strong>pomp</strong> estimation algorithm (or to the basic constructor, <code>pomp</code>). For convenience, shortcuts for the commonly used log, logit, and log-barycentric transformations are provided. [Note that the latter use C snippets internally, so that the <code>paramnames</code> argument must be specified when the <code>log</code>, <code>logit</code>, or <code>barycentric</code> arguments of <code>parameter_trans</code> are used.] See the <code>parameter_trans</code> manual page for more detail.</p>
 </div>
 <div id="iterated-filtering-mif2" class="section level2">
 <h2><span class="header-section-number">6.2</span> Iterated filtering (<code>mif2</code>)</h2>
-<div id="how-should-i-choose-the-random-walk-intensities-rw.sd" class="section level3">
+<div id="rw-sd-choice" class="section level3">
 <h3><span class="header-section-number">6.2.1</span> How should I choose the random-walk intensities (<code>rw.sd</code>)?</h3>
 <p>First, some background on how the iterated filtering (IF2) algorithm works. As its name suggests, IF2 (implemented as <code>mif2</code> in <strong>pomp</strong>) essentially iterates a particle filter. It does this <code>Nmif</code> times. Crucially, however, it does this not using the exact model you’ve specified in your pomp object, which has parameters that are constant in time. Instead, it filters a model in which the time-constant parameters have been replaced by parameters that take a random walk with intensities given by the <code>rw.sd</code> argument. In other words, at each time-step, a random value (normally distributed in the current implementation) with mean zero and s.d. set by <code>rw.sd</code> is added to the parameter’s value. As the iterations proceed, the intensities are gradually drawn down (according to the “cooling schedule” specified by <code>cooling.type</code> and <code>cooling.factor.50</code>). The theory tells us that the swarm of particles will then concentrate around the maximum likelihood estimate (MLE) eventually, i.e., with sufficiently many iterations if the cooling is not too quick. All this is explained in the <a href="https://doi.org/10.1073/pnas.1410597112">IF2 paper <span class="citation">(Ionides, Nguyen, Atchadé, Stoev, and King 2015)</span></a>.</p>
 <p>Some insight into the algorithm’s effectiveness is afforded by considering that the effect of the added perturbations is to smooth the likelihood surface. This smoothing out of the local structure is a double-edged sword. On the one hand, it makes the large-scale structure of the surface plainer, which is useful when one is far from the MLE. On the other hand, it makes it impossible to find the exact MLE when it is close by.</p>
