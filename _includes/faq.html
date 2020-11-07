@@ -137,7 +137,7 @@ if (window.hljs) {
 <li><a href="#could-not-find-symbol-recursive"><span class="toc-section-number">4.4</span> I get the error message ‘could not find symbol “recursive” in environment of the generic function’ when I use the <code>c</code> operator to concatenate certain kinds of <strong>pomp</strong> structures. How do I fix this?</a></li>
 <li><a href="#extrapolation-warnings"><span class="toc-section-number">4.5</span> I get warnings about extrapolation in ‘table_lookup’. What is this about?</a></li>
 <li><a href="#when-trying-to-use-c-snippets-i-get-an-error-message-that-refers-to-files-and-directories-that-dont-exist.-what-is-going-on"><span class="toc-section-number">4.6</span> When trying to use C snippets, I get an error message that refers to files and directories that don’t exist. What is going on?</a></li>
-<li><a href="#warning-beta-redefined."><span class="toc-section-number">4.7</span> ’Warning: “beta” redefined.</a></li>
+<li><a href="#warning-beta-redefined."><span class="toc-section-number">4.7</span> ‘Warning: “beta” redefined.’</a></li>
 </ul></li>
 <li><a href="#interpreting-results"><span class="toc-section-number">5</span> Interpreting results</a><ul>
 <li><a href="#mif-vs-pfilter-likelihood"><span class="toc-section-number">5.1</span> Is the likelihood <code>mif2</code> gives me the same as the likelihood I get from <code>pfilter</code>?</a></li>
@@ -561,13 +561,13 @@ list()</code></pre>
 <p>See <a href="https://github.com/kingaa/pomp/issues/115">Issue 115</a> for an example. This can happen if you use file or directory names that contain whitespace. For the tools that compile the C snippets—as with (all?) other command-line tools—whitespace is syntactic. By far the best solution to this problem is to <strong><em>avoid using whitespace altogether in file and directory names</em></strong>! The standard choice is to substitute the underscore &quot;_&quot; for whitespace.</p>
 </div>
 <div id="warning-beta-redefined." class="section level2">
-<h2><span class="header-section-number">4.7</span> ’Warning: “beta” redefined.</h2>
-<pre><code>Error messages containing the following elements often arise.
-Error: error in building shared-object library from C snippets: in ‘Cbuilder’: compilation error: cannot compile shared-object library ...
+<h2><span class="header-section-number">4.7</span> ‘Warning: “beta” redefined.’</h2>
+<p>Error messages containing the following elements often arise.</p>
+<pre><code>Error: error in building shared-object library from C snippets: in ‘Cbuilder’: compilation error: cannot compile shared-object library ...
 compiler messages:
 ...
 warning: &quot;beta&quot; redefined</code></pre>
-<p>The error you got is just due to a name conflict between a parameter <code>beta</code> and the beta function, which is defined in <code>Rmath.h</code> and <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions">documented in the R extensions manual</a>. To work around this, simply rename the parameter. For example, it could be called <code>Beta</code> instead.</p>
+<p>This is due to a name conflict between a quantity <code>beta</code> defined as a model parameter, covariate, data variable, or in some other way defined in a C snippet, and the <a href="https://en.wikipedia.org/wiki/Beta_function"><em>beta function</em></a>, which is defined as <code>beta</code> in <code>Rmath.h</code> and <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions">documented in the R extensions manual</a>. To work around this, simply rename the parameter. For example, it could be called <code>Beta</code> instead.</p>
 </div>
 </div>
 <div id="interpreting-results" class="section level1">
