@@ -36,6 +36,7 @@ jobs:
     os: linux
   - r: release
     os: osx
+    osx_image: xcode12.2
   - stage: coverage
     r: release
     os: linux
@@ -46,6 +47,7 @@ jobs:
   - stage: deploy
     r: release
     os: osx
+    osx_image: xcode12.2
     script:
     - make binary
     deploy:
