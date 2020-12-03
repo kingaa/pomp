@@ -1,6 +1,6 @@
 % unlike in latex, new lines within \newcommand end the command (even using %)
 
-\newcommand{\Anderson2001}{J.L. Anderson. An Ensemble Adjustment Kalman Filter for Data Assimilation. \emph{Monthly Weather Review} \bold{129}, 2884--2903, 2001.}
+\newcommand{\Anderson2001}{J.L. Anderson. An ensemble adjustment Kalman filter for data assimilation. \emph{Monthly Weather Review} \bold{129}, 2884--2903, 2001.}
 
 \newcommand{\Andrieu2009}{C. Andrieu and G.O. Roberts. The pseudo-marginal approach for computation. \emph{Annals of Statistics} \bold{37}, 697--725, 2009.}
 
@@ -8,7 +8,7 @@
 
 \newcommand{\Anonymous1978}{Anonymous. Influenza in a boarding school. \emph{British Medical Journal} \bold{1}, 587, 1978.}
 
-\newcommand{\Arulampalam2002}{M.S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp. A Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian Bayesian Tracking. \emph{IEEE Transactions on Signal Processing} \bold{50}, 174--188, 2002.}
+\newcommand{\Arulampalam2002}{M.S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp. A tutorial on particle filters for online nonlinear, non-Gaussian Bayesian tracking. \emph{IEEE Transactions on Signal Processing} \bold{50}, 174--188, 2002.}
 
 \newcommand{\Bhadra2016}{A. Bhadra and E.L. Ionides. Adaptive particle allocation in iterated sequential Monte Carlo via approximating meta-models. \emph{Statistics and Computing} \bold{26}, 393--407, 2016.}
 
@@ -28,7 +28,7 @@
 
 \newcommand{\He2010}{D. He, E.L. Ionides, & A.A. King. Plug-and-play inference for disease dynamics: measles in large and small populations as a case study.  \emph{Journal of the Royal Society Interface} \bold{7}, 271--283, 2010.}
 
-\newcommand{\Ionides2011}{E.L. Ionides. Discussion of \dQuote{Feature Matching in Time Series Modeling} by Y. Xia and H. Tong. \emph{Statistical Science} \bold{26}, 49--52, 2011.}
+\newcommand{\Ionides2011}{E.L. Ionides. Discussion of \dQuote{Feature matching in time series modeling} by Y. Xia and H. Tong. \emph{Statistical Science} \bold{26}, 49--52, 2011.}
 
 \newcommand{\Ionides2015}{E.L. Ionides, D. Nguyen, Y. \ifelse{latex}{\out{Atchad\'e}}{\ifelse{html}{\out{Atchad&eacute;}}{Atchade}}, S. Stoev, and A.A. King. Inference for dynamic and latent variable models via iterated, perturbed Bayes maps. \emph{Proceedings of the National Academy of Sciences} \bold{112}, 719--724, 2015.}
 
@@ -42,17 +42,19 @@
 
 \newcommand{\King2015}{A.A. King, M. Domenech de \ifelse{latex}{\out{Cell\`es}}{\ifelse{html}{\out{Cell&egrave;s}}{Celles}}, F.M.G. Magpantay, and P. Rohani. Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola. \emph{Proceedings of the Royal Society of London, Series B} \bold{282}, 20150347, 2015.}
 
-\newcommand{\King2016}{A. A. King, D. Nguyen, and E. L. Ionides. Statistical Inference for Partially Observed Markov Processes via the Package \pkg{pomp}. \emph{Journal of Statistical Software} \bold{69}(12), 1--43, 2016.  An updated version of this paper is available on the \href{https://kingaa.github.io/pomp/docs.html}{package website}.}
+\newcommand{\King2016}{A. A. King, D. Nguyen, and E. L. Ionides. Statistical inference for partially observed Markov processes via the package \pkg{pomp}. \emph{Journal of Statistical Software} \bold{69}(12), 1--43, 2016.  An updated version of this paper is available on the \href{https://kingaa.github.io/pomp/docs.html}{package website}.}
+
+\newcommand{\Kucherenko2005}{S. Kucherenko and Y. Sytsko. Application of deterministic low-discrepancy sequences in global optimization. \emph{Computational Optimization and Applications} \bold{30}, 297--318, 2005. \doi{10.1007/s10589-005-4615-1}.}
 
 \newcommand{\Liu2001}{J. Liu and M. West. Combining Parameter and State Estimation in Simulation-Based Filtering. In A. Doucet, N. de Freitas, and N. J. Gordon, (eds.), \emph{Sequential Monte Carlo Methods in Practice}, pp. 197--224. Springer, New York, 2001.}
 
-\newcommand{\London1973}{W. P. London and J. A. Yorke, Recurrent Outbreaks of Measles, Chickenpox and Mumps: I. Seasonal Variation in Contact Rates, \emph{American Journal of Epidemiology} \bold{98}, 453--468, 1973.}
+\newcommand{\London1973}{W. P. London and J. A. Yorke, Recurrent outbreaks of measles, chickenpox and mumps: I. Seasonal variation in contact rates. \emph{American Journal of Epidemiology} \bold{98}, 453--468, 1973.}
 
 \newcommand{\Marin2012}{J.-M. Marin, P. Pudlo, C. P. Robert, and R. J. Ryder. Approximate Bayesian computational methods. \emph{Statistics and Computing} \bold{22}, 1167--1180, 2012.}
 
 \newcommand{\McCleery1991}{R. McCleery and C. Perrins. Effects of predation on the numbers of Great Tits, \emph{Parus major}. In: C.M. Perrins, J.-D. Lebreton, and G.J.M. Hirons (eds.), \emph{Bird Population Studies}, pp. 129--147, Oxford. Univ. Press, 1991.}
 
-\newcommand{\NLopt}{S.G. Johnson. The \pkg{NLopt} nonlinear-optimization package. \url{http://ab-initio.mit.edu/nlopt}.}
+\newcommand{\NLopt}{S.G. Johnson. The \pkg{NLopt} nonlinear-optimization package. \url{https://github.com/stevengj/nlopt/}.}
 
 \newcommand{\Nicholson1957}{A.J. Nicholson. The self-adjustment of populations to change. \emph{Cold Spring Harbor Symposia on Quantitative Biology} \bold{22}, 153--173, 1957.}
 
@@ -60,7 +62,7 @@
 
 \newcommand{\Reuman2008}{D.C. Reuman, R.F. Costantino, R.A. Desharnais, J.E. Cohen. Color of environmental noise affects the nonlinear dynamics of cycling, stage-structured populations. \emph{Ecology Letters} \bold{11}, 820-830, 2008.}
 
-\newcommand{\Roberts2009}{G.O. Roberts and J.S. Rosenthal. Examples of Adaptive MCMC. \emph{Journal of Computational and Graphical Statistics} \bold{18}, 349--367, 2009.}
+\newcommand{\Roberts2009}{G.O. Roberts and J.S. Rosenthal. Examples of adaptive MCMC. \emph{Journal of Computational and Graphical Statistics} \bold{18}, 349--367, 2009.}
 
 \newcommand{\Toni2009}{T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf. Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems. \emph{Journal of the Royal Society Interface} \bold{6}, 187--202, 2009.}
 
@@ -70,4 +72,4 @@
 
 \newcommand{\Wood2010}{S. N. Wood Statistical inference for noisy nonlinear ecological dynamic systems. \emph{Nature} \bold{466}, 1102--1104, 2010.}
 
-\newcommand{\Xia2011}{Y. Xia and H. Tong. Feature Matching in Time Series Modeling. \emph{Statistical Science} \bold{26}, 21--46, 2011.}
+\newcommand{\Xia2011}{Y. Xia and H. Tong. Feature matching in time series modeling. \emph{Statistical Science} \bold{26}, 21--46, 2011.}

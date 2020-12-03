@@ -7,14 +7,6 @@
 ##'
 ##' @author Aaron A. King
 ##'
-##' @references
-##'
-##' \Bratley1988
-##'
-##' \Joe2003
-##'
-##' \NLopt
-##'
 ##' @param ...
 ##' In \code{profile_design}, additional arguments specify the parameters over which to profile and the values of these parameters.
 ##' In \code{slice_design}, additional numeric vector arguments specify the locations of points along the slices.

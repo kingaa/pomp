@@ -66,8 +66,7 @@ These functions are useful for generating designs for the exploration of paramet
 \code{sobol_design} generates a Latin hypercube design based on the Sobol' low-discrepancy sequence.
 }
 \details{
-The Sobol' sequence generation is performed using codes from the
-\href{https://nlopt.readthedocs.io/en/latest/}{\pkg{NLopt} library} by S. Johnson.
+The Sobol' sequence generation is performed using codes from the \pkg{NLopt} library by S. Johnson.
 }
 \examples{
 ## Sobol' low-discrepancy design
@@ -103,11 +102,13 @@ plot(x)
 
 }
 \references{
+\Kucherenko2005
+
+\NLopt
+
 \Bratley1988
 
 \Joe2003
-
-\NLopt
 }
 \author{
 Aaron A. King

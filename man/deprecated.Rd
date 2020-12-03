@@ -69,8 +69,7 @@ Obsolete: replaced by \code{slice_design}.
 Obsolete: replaced by \code{sobol_design}.
 }
 \details{
-The Sobol' sequence generation is performed using codes from the
-\href{https://nlopt.readthedocs.io/en/latest/}{\pkg{NLopt} library} by S. Johnson.
+The Sobol' sequence generation is performed using codes from the \pkg{NLopt} library by S. Johnson.
 }
 \author{
 Aaron A. King

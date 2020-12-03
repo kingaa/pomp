@@ -3,14 +3,21 @@
 ##' @rdname design
 ##' 
 ##' @details
-##' The Sobol' sequence generation is performed using codes from the
-##' \href{https://nlopt.readthedocs.io/en/latest/}{\pkg{NLopt} library} by S. Johnson.
+##' The Sobol' sequence generation is performed using codes from the \pkg{NLopt} library by S. Johnson.
 ##' @return
 ##' \code{sobol_design} returns a data frame with \code{nseq} rows and one column for each variable named in \code{lower} and \code{upper}.
 ##' @param lower,upper named numeric vectors giving the lower and upper bounds
 ##' of the ranges, respectively.
 ##' @param nseq Total number of points requested.
+##' @references
+##' \Kucherenko2005
 ##' 
+##' \NLopt
+##'
+##' \Bratley1988
+##'
+##' \Joe2003
+##'
 ##' @export
 sobol_design <- function (lower = numeric(0), upper = numeric(0), nseq) {
   ep <- "sobol_design"
