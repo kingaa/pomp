@@ -420,11 +420,13 @@ bsflu %>%
 ## What is the best measurement model to use? {#what-is-the-best-measurement-model}
 
 The answer to this question depends on the nature of the data.
-The measurement model is as much a part of the model as the latent process model. Accordingly, the choice of the measurement model is governed by the same considerations: Which model fits the data best? 
+The measurement model is as much a part of the model as the latent process model. Accordingly, the choice of the measurement model is governed by the same considerations: 
+Which model fits the data best? 
 Which model has the greater predictive power?
+Which model makes the most sense?
 
 Nor is the choice of the measurement model without consequences for the choice of the latent process model.
-Despite the fact that one typically is much more interested in the latent process than in the measurement, if one does not pay careful attention to both, one risks making incorrect or suboptimal inference.
+Despite the fact that one typically is much more interested in the latent process than in the measurement, if one does not pay careful attention to both, one risks making incorrect or sub-optimal inference.
 
 ## What is the Euler-multinomial approximation? {#eulermultinomial-approximation}
 
@@ -712,6 +714,34 @@ Declaring such parameters to be initial value parameters using `ivp` results in 
 More generally, there may be parameters for which perturbations should only be applied at certain times.
 The `rw.sd` function allows one to specify (via a simple **R** expression in terms of time `t`) which parameters fall into this category and when and how much they are to be perturbed.
 See the manual page for `rw.sd` for details.
+
+# Debugging
+
+## How can I debug C snippets? {#debug-c-snippets}
+
+To see what is happening during the execution of a C snippet, one can [embed calls to `Rprintf`](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Printing).
+Such calls cause information to be printed to the **R** console.
+In the following example, we have a dmeasure snippet that implements a measurement model wherein $D_1$ is negative-binomially distributed with mean $\rho_1\,N_1$ and variance $\rho_1\,N_1\,(1+k\,{\rho_1}/{N_1})$ and $D_2$ is binomially distributed with size $N_2$ and probability $\rho_2$.
+Whenever a non-finite log likelihood results (i.e., `-Inf`, `Inf`, `NA`, or `NaN`), the values of some relevant quantities are printed.
+
+```{r}
+dmeas <- Csnippet("
+   lik = dnbinom_mu(D1,1/k,rho1*N1,1) + dbinom(D2,N2,rho2,1);
+   if (!R_FINITE(lik)) {
+       Rprintf(\"t = %lg, D1 = %lg, loglik = %lg\\n\",t,D1,lik);
+   }
+   lik = (log) ? lik : exp(lik);
+")
+```
+
+
+```{r include=FALSE}
+## Check the above C snippet.
+  pomp(data.frame(t=1:10,D1=1:10,D2=2),time='t',t0=0,dmeasure=dmeas,
+       statenames=c("N1","N2"),paramnames=c("rho1","rho2","k"))
+```
+
+More generally, one can make use of [any aspect of **R**'s C API](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API) in writing C snippets.
 
 # References
 
