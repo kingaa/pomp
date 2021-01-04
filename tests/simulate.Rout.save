@@ -1,5 +1,5 @@
 
-R version 4.0.2 (2020-06-22) -- "Taking Off Again"
+R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -252,6 +252,8 @@ Error : in 'simulate': 'params' must be named and numeric.
 > simulate(rw2,times=c(1:5,5,5),format="d",seed=49569969) -> x
 > stopifnot(with(x,c(x1[6:7]==x1[5],x2[6:7]==x2[5],time[6:7]==time[5],
 +   y1[6:7]!=y1[5],y2[6:7]!=y2[5])))
+> 
+> simulate(rw2,rinit=function(...) c(x1=0,x2=0)) -> x
 > 
 > dev.off()
 null device 

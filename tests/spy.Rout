@@ -1,5 +1,5 @@
 
-R version 4.0.2 (2020-06-22) -- "Taking Off Again"
+R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -158,8 +158,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2020-07-14 04:21:01.044 -0400 */
-/* Salt: 86D4FBDC66133A0175CC27D4 */
+/* Time: 2021-01-04 09:09:00.706 -0500 */
+/* Salt: D023879C0360414CBDA98CF9 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -276,8 +276,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2020-07-14 04:21:01.186 -0400 */
-/* Salt: 2796D4FD53D4EA9D22A06AF9 */
+/* Time: 2021-01-04 09:09:00.807 -0500 */
+/* Salt: 755CB0CBF79B266D618E49F1 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -798,8 +798,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2020-07-14 04:21:01.883 -0400 */
-/* Salt: AC2C1A3DB36885A4D39318CC */
+/* Time: 2021-01-04 09:09:01.244 -0500 */
+/* Salt: EC1343678600A50B2CD4BD24 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -994,8 +994,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2020-07-14 04:21:02.434 -0400 */
-/* Salt: 6017475D800A96D40454AE39 */
+/* Time: 2021-01-04 09:09:01.577 -0500 */
+/* Salt: F8987778A4A121B8E50D2E25 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

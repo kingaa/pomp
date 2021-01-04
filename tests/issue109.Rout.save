@@ -1,5 +1,5 @@
 
-R version 4.0.2 (2020-06-22) -- "Taking Off Again"
+R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -57,7 +57,5 @@ NEWS for the details.
 +     proposal = mvn.diag.rw(c(Beta = 5, mu_IR = 5, rho = 5))
 + #    proposal = mvn.diag.rw(c(Beta = 0.2, mu_IR = 0.2, rho = 0.2))
 +   ) -> pmcmcSIR
-Warning messages:
-1: non-finite log likelihood or log prior encountered. 
-2: non-finite log likelihood or log prior encountered. 
+There were 50 or more warnings (use warnings() to see the first 50)
 > 

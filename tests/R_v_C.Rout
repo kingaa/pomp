@@ -1,5 +1,5 @@
 
-R version 4.0.2 (2020-06-22) -- "Taking Off Again"
+R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -113,16 +113,16 @@ NEWS for the details.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  9.414   0.065   9.479 
+  7.701   0.019   7.719 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.327   0.007   0.334 
+  0.304   0.004   0.308 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.830   0.007   0.837 
+  0.747   0.000   0.747 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.056   0.000   0.056 
+  0.046   0.000   0.046 
 > 
 > dev.off()
 null device 

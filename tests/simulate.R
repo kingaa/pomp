@@ -164,4 +164,6 @@ simulate(rw2,times=c(1:5,5,5),format="d",seed=49569969) -> x
 stopifnot(with(x,c(x1[6:7]==x1[5],x2[6:7]==x2[5],time[6:7]==time[5],
   y1[6:7]!=y1[5],y2[6:7]!=y2[5])))
 
+simulate(rw2,rinit=function(...) c(x1=0,x2=0)) -> x
+
 dev.off()
