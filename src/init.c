@@ -59,9 +59,11 @@ void R_init_pomp (DllInfo *info) {
   R_RegisterCCallable("pomp","make_covariate_table",(DL_FUNC) &make_covariate_table);
   R_RegisterCCallable("pomp","get_covariate_names",(DL_FUNC) &get_covariate_names);
   R_RegisterCCallable("pomp","table_lookup",(DL_FUNC) &table_lookup);
+  R_RegisterCCallable("pomp","lookup_in_table",(DL_FUNC) &lookup_in_table);
   R_RegisterCCallable("pomp","apply_probe_data",(DL_FUNC) &apply_probe_data);
   R_RegisterCCallable("pomp","apply_probe_sim",(DL_FUNC) &apply_probe_sim);
   R_RegisterCCallable("pomp","systematic_resampling",(DL_FUNC) &systematic_resampling);
+  R_RegisterCCallable("pomp","randwalk_perturbation", (DL_FUNC) &randwalk_perturbation);
 
   // Register routines
   R_registerRoutines(info,NULL,callMethods,NULL,NULL);
