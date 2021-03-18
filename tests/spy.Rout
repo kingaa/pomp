@@ -1,6 +1,6 @@
 
-R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
-Copyright (C) 2020 The R Foundation for Statistical Computing
+R version 4.0.4 (2021-02-15) -- "Lost Library Book"
+Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -158,8 +158,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2021-01-04 09:09:00.706 -0500 */
-/* Salt: D023879C0360414CBDA98CF9 */
+/* Time: 2021-03-18 10:31:37.312 -0400 */
+/* Salt: F36983A3ED1346569A6E6F30 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -276,8 +276,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2021-01-04 09:09:00.807 -0500 */
-/* Salt: 755CB0CBF79B266D618E49F1 */
+/* Time: 2021-03-18 10:31:37.454 -0400 */
+/* Salt: 4B86DE80E3316B6090A60F5D */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -798,8 +798,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2021-01-04 09:09:01.244 -0500 */
-/* Salt: EC1343678600A50B2CD4BD24 */
+/* Time: 2021-03-18 10:31:38.172 -0400 */
+/* Salt: FA9F17DC6E3E8FFE747E9138 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -994,8 +994,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2021-01-04 09:09:01.577 -0500 */
-/* Salt: F8987778A4A121B8E50D2E25 */
+/* Time: 2021-03-18 10:31:38.777 -0400 */
+/* Salt: 3AE458261DC9C48435E131C8 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

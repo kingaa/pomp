@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.2.0}{
+  \itemize{
+    \item The \pkg{pomp} C API has been expanded a bit, to facilitate other packages' linking to the \pkg{pomp} library.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.1.1}{
   \itemize{
     \item The help pages have been improved, with an description of the overall package structure and pages on basic model components, elementary algorithms, and estimation algorithms.
