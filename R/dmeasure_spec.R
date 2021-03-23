@@ -35,7 +35,7 @@
 ##' to \code{pomp}, where \code{f} is a function.
 ##' The arguments of \code{f} should be chosen from among the observables, state variables, parameters, covariates, and time.
 ##' It must also have the arguments \code{\dots}, and \code{log}.
-##' It can take additional arguments via the \link[=userdata]{facility}.
+##' It can take additional arguments via the \link[=userdata]{userdata facility}.
 ##' \code{f} must return a single numeric value, the probability density (or log probability density if \code{log = TRUE}) of \code{y} given \code{x} at time \code{t}.
 ##'
 ##' @section Important note:
