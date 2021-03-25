@@ -4,11 +4,10 @@ id: about
 layout: pomp
 ---
 
-<span class="firstcharacter">**pomp**</span> provides a very general realization of nonlinear partially-observed Markov processes (AKA nonlinear stochastic dynamical systems).
+<span class="firstcharacter">**pomp**</span> provides a very general realization of nonlinear partially-observed Markov processes (also known as nonlinear stochastic dynamical systems, hidden Markov models, and state space models).
 These are a generalization of linear state-space and hidden Markov models to nonlinear, non-Gaussian processes in either discrete or continuous time.
 In **pomp**, one can implement a model by specifying its unobserved process and measurement components;
 the package uses these functions in algorithms to simulate, analyze, and fit the model to data.
-The motivation, structure, and contents of the package are described, with examples, in a *Journal of Statistical Software* paper, [an updated version of which is provided on this site](./vignettes/pompjss.pdf){:target="_blank"}.
 
 Currently, **pomp** provides support for
 
@@ -26,6 +25,8 @@ Currently, **pomp** provides support for
 
 **pomp** is also a platform upon which general inference algorithms for partially observed Markov processes can be implemented.
 We welcome contributions in the form of codes, examples, improvements to the documentation, bug reports, feature requests, and requests for help!
+
+This website contains [installation instructions](/install.html), a wide range of [tutorials and examples](/docs.html), access to the [source code](https://github.com/kingaa/pomp/), a facility for [reporting issues with the package](https://github.com/kingaa/pomp/issues), and an extensive but incomplete [bibliography](/biblio.html) of publications describing **pomp** methods and **pomp** applications.
 
 Please let the developers know if you find **pomp** useful, if you publish results obtained using it, [if you come up with improvements, find bugs, or have suggestions or feature requests!](https://github.com/kingaa/pomp/issues){:target="_blank"}
 There is also a [wiki](https://github.com/kingaa/pomp/wiki/pimp-my-pomp){:target="_blank"}:

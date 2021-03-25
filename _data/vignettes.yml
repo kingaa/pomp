@@ -1,10 +1,23 @@
-- title: Statistical Inference for Partially Observed Markov Processes via the R Package <strong>pomp</strong> (a <i>Journal of Statistical Software</i> paper)
-  pdf: vignettes/pompjss.pdf
-  R: vignettes/pompjss.R
+- title: Simulation-based Inference for Epidemiological Dynamics<br/> (a short course)
+  html: https://kingaa.github.io/sbied/
 
 - title: Getting started with <strong>pomp</strong>
   html: vignettes/getting_started.html
   R: vignettes/getting_started.R
+
+- title: <strong>pomp</strong> package manual
+  pdf: https://kingaa.github.io/manuals/pomp.pdf
+  html: manual/00Index.html
+
+- title: <strong>pomp</strong> C API
+  html: vignettes/C_API.html
+
+- title: Frequently Asked Questions
+  html: FAQ.html
+
+- title: Two perspectives on the <strong>pomp</strong> project
+  html: vignettes/oaxaca.html
+  video: https://www.youtube.com/playlist?list=PLluGwj6FGt2SufYmENYAngy8dEMtfFEU8
 
 - title: <strong>pomp</strong> version 2 upgrade guide
   html: vignettes/upgrade_guide.html
@@ -22,27 +35,14 @@
   R: vignettes/He2010.R
   data: vignettes/twentycities.rda
 
-- title: Simulation-based Inference for Epidemiological Dynamics<br/> (a short course)
-  html: https://kingaa.github.io/sbied/
+- title: Statistical Inference for Partially Observed Markov Processes via the R Package <strong>pomp</strong> (a <i>Journal of Statistical Software</i> paper)
+  pdf: vignettes/pompjss.pdf
+  R: vignettes/pompjss.R
 
 - title: Model-based Inference in Ecology and Epidemiology (a short course)
   html: https://kingaa.github.io/short-course/
 
-- title: Two perspectives on the <strong>pomp</strong> project
-  html: vignettes/oaxaca.html
-  video: https://www.youtube.com/playlist?list=PLluGwj6FGt2SufYmENYAngy8dEMtfFEU8
-
-- title: <strong>pomp</strong> package manual
-  pdf: https://kingaa.github.io/manuals/pomp.pdf
-  html: manual/00Index.html
-
-- title: <strong>pomp</strong> C API
-  html: vignettes/C_API.html
-
-- title: Frequently Asked Questions
-  html: FAQ.html
-
-- title: Pimp my pomp
+- title: Pimp my pomp, a community wiki
   html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp
 
 - title: Package NEWS
