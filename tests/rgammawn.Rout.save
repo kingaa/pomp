@@ -1,0 +1,31 @@
+
+R version 4.0.4 (2021-02-15) -- "Lost Library Book"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+
+Welcome to pomp! Version 3 incorporates some changes to the behavior of
+package algorithms that are not backward compatible. See the package
+NEWS for the details.
+
+> set.seed(39596886L)
+> rgammawn(5,sigma=1,dt=0.1)
+[1] 2.466336e-01 4.092492e-01 3.124484e-16 3.645478e-09 1.393781e-06
+> rgammawn(5,sigma=0.1,dt=0.1)
+[1] 0.08780433 0.09923067 0.10244152 0.10055270 0.13275830
+> 
