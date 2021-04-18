@@ -11,6 +11,7 @@ LICENSE\.md$
 README\.md$
 TODO\.md$
 ^\.gitignore$
+\.github
 ^\.travis\.yml$
 ^codecov\.yml$
 ^.*\.Rproj$
