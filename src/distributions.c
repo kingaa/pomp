@@ -81,8 +81,11 @@ SEXP R_GammaWN (SEXP n, SEXP sigma, SEXP deltat) {
   dt = REAL(deltat);
   PROTECT(ans = NEW_NUMERIC(nval));
   x = REAL(ans);
-  for (k = 0; k < nval; k++) 
+  GetRNGstate();
+  for (k = 0; k < nval; k++) {
     x[k] = rgammawn(sig[k%nsig],dt[k%ndt]);
+  }
+  PutRNGstate();
   UNPROTECT(4);
   return ans;
 }
