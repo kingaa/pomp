@@ -15,6 +15,15 @@
 - title: Frequently Asked Questions
   html: FAQ.html
 
+- title: <strong>pomp</strong> discussions
+  html: https://github.com/kingaa/pomp/discussions
+
+- title: Pimp my pomp, a community wiki
+  html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp
+
+- title: Package NEWS
+  html: NEWS.html
+
 - title: Two perspectives on the <strong>pomp</strong> project
   html: vignettes/oaxaca.html
   video: https://www.youtube.com/playlist?list=PLluGwj6FGt2SufYmENYAngy8dEMtfFEU8
@@ -41,9 +50,3 @@
 
 - title: Model-based Inference in Ecology and Epidemiology (a short course)
   html: https://kingaa.github.io/short-course/
-
-- title: Pimp my pomp, a community wiki
-  html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp
-
-- title: Package NEWS
-  html: NEWS.html
