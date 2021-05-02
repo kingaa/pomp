@@ -24,8 +24,17 @@ package algorithms that are not backward compatible. See the package
 NEWS for the details.
 
 > set.seed(39596886L)
-> rgammawn(5,sigma=1,dt=0.1)
-[1] 2.466336e-01 4.092492e-01 3.124484e-16 3.645478e-09 1.393781e-06
-> rgammawn(5,sigma=0.1,dt=0.1)
-[1] 0.08780433 0.09923067 0.10244152 0.10055270 0.13275830
+> 
+> stopifnot(
++   `m1 fail`=rgammawn(n=10000,sigma=1,dt=0.1) %>%
++     mean() %>%
++     all.equal(0.1,tolerance=0.05),
++   `m2 fail`=rgammawn(n=10000,sigma=0.1,dt=0.1) %>%
++     mean() %>%
++     all.equal(0.1,tolerance=0.05),
++   `v1 fail`=rgammawn(n=10000,sigma=1,dt=0.1) %>%
++     var() %>%
++     all.equal(0.1,tolerance=0.05)
++ )
+> 
 > 
