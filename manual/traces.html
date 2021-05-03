@@ -67,10 +67,9 @@ traces(object, pars, ...)
 <h3>Value</h3>
 
 <p>When <code>object</code> is the result of a <code><a href="mif2.html">mif2</a></code> calculation,
-<code>traces(object, pars, transform = FALSE)</code> returns the traces of the parameters named in <code>pars</code>.
+<code>traces(object, pars)</code> returns the traces of the parameters named in <code>pars</code>.
 By default, the traces of all parameters are returned.
-Note that, if the computation was performed with transformed parameters, the traces are on the estimation scale.
-If <code>transform=TRUE</code>, the parameters are transformed from the estimation scale onto the natural scale.
+If <code>transform=TRUE</code>, the parameters are transformed from the natural scale to the estimation scale.
 </p>
 <p>When <code>object</code> is a &lsquo;abcd_pomp&rsquo;, <code>traces(object)</code>
 extracts the traces as a <code>coda::mcmc</code>.
@@ -85,5 +84,5 @@ extracts the traces as a <code>coda::mcmc</code>.
 extracts the traces as a <code>coda::mcmc.list</code>.
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.3.0.4 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.3.1.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
