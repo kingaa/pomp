@@ -1,7 +1,7 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 3.3.0.6
+Version: 3.3.1.0
 Date: 2021-05-03
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
@@ -83,7 +83,6 @@ Collate:
     'cond_logLik.R'
     'covmat.R'
     'dacca.R'
-    'deprecated.R'
     'design.R'
     'distributions.R'
     'ebola.R'
@@ -117,19 +116,15 @@ Collate:
     'pred_var.R'
     'show.R'
     'print.R'
-    'profileDesign.R'
     'profile_design.R'
     'resample.R'
     'ricker.R'
-    'runifDesign.R'
     'runif_design.R'
     'rw2.R'
     'sannbox.R'
     'saved_states.R'
     'sir.R'
-    'sliceDesign.R'
     'slice_design.R'
-    'sobolDesign.R'
     'sobol_design.R'
     'spy.R'
     'states.R'

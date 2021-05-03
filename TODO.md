@@ -3,7 +3,7 @@
 ## For pomp:
 
 - iterated EnKF
-- include 'mcap' function
+- include `mcap` function
 - for log-barycentric transformations, check that parameters are contiguous
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - more/better examples

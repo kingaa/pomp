@@ -1,5 +1,19 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._3._0:
+
+        • The package manual and help pages has been streamlined.
+
+        • The ‘mif2’ diagnostic plots have been made more flexible.
+
+        • Some deprecated functions have been removed.  These include
+          ‘cond.loglik’, ‘sliceDesign’, ‘runifDesign’, ‘sobolDesign’,
+          and ‘profileDesign’, which have been replaced by
+          ‘code.logLik’, ‘slice_design’, ‘runif_design’,
+          ‘sobol_design’, and ‘profile_design’, respectively.
+
+        • A bug in ‘rgammawn’ has been fixed.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._2._0:
 
         • The ‘pomp’ C API has been expanded a bit, to facilitate other

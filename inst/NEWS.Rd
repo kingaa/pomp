@@ -1,5 +1,18 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.3.1}{
+  \itemize{
+    \item The package manual and help pages has been streamlined.
+    \item The \code{mif2} diagnostic plots have been made more flexible.
+    \item Some deprecated functions have been removed.
+    These include \code{cond.loglik}, \code{sliceDesign}, \code{runifDesign}, \code{sobolDesign}, and \code{profileDesign}, which have been replaced by \code{code.logLik}, \code{slice_design}, \code{runif_design}, \code{sobol_design}, and \code{profile_design}, respectively.
+  }
+}
+\section{Changes in \pkg{pomp} version 3.3.0}{
+  \itemize{
+    \item A bug in \code{rgammawn} has been fixed.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.2.0}{
   \itemize{
     \item The \pkg{pomp} C API has been expanded a bit, to facilitate other packages' linking to the \pkg{pomp} library.
