@@ -70,11 +70,7 @@
 ##'
 NULL
 
-setGeneric(
-  "simulate",
-  function (object, nsim=1, seed=NULL, ...)
-    standardGeneric("simulate")
-)
+setGeneric("simulate")
 
 ##' @name simulate-missing
 ##' @aliases simulate,missing-method

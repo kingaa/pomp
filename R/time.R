@@ -9,11 +9,7 @@
 ##' @importFrom stats time
 NULL
 
-setGeneric(
-  "time",
-  function (x, ...)
-    standardGeneric("time")
-)
+setGeneric("time")
 
 setGeneric(
   "time<-",

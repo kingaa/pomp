@@ -1,4 +1,4 @@
-##' Plotting
+##' pomp plotting facilities
 ##'
 ##' Diagnostic plots.
 ##'
@@ -15,11 +15,7 @@
 ##'
 NULL
 
-setGeneric(
-  "plot",
-  function (x, y, ...)
-    standardGeneric("plot")
-)
+setGeneric("plot")
 
 setClassUnion("pomp_plottable",c("pomp","pfilterd_pomp","wpfilterd_pomp"))
 

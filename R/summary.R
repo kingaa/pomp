@@ -9,8 +9,4 @@
 ##' @param \dots ignored
 NULL
 
-setGeneric(
-  "summary",
-  function (object, ...)
-    standardGeneric("summary")
-)
+setGeneric("summary")

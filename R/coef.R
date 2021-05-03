@@ -11,11 +11,7 @@
 ##' @importFrom stats coef
 NULL
 
-setGeneric(
-  "coef",
-  function (object, ...)
-    standardGeneric("coef")
-)
+setGeneric("coef")
 
 setGeneric(
   "coef<-",

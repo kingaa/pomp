@@ -9,11 +9,7 @@
 ##' @importFrom stats window
 NULL
 
-setGeneric(
-  "window",
-  function (x, ...)
-    standardGeneric("window")
-)
+setGeneric("window")
 
 ##' @name window-pomp
 ##' @rdname window

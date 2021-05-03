@@ -8,11 +8,7 @@
 ##' @aliases print,listie-method print,pomp_fun-method print,unshowable-method
 NULL
 
-setGeneric(
-    "print",
-    function (x, ...)
-        standardGeneric("print")
-)
+setGeneric("print")
 
 ##' @export
 setMethod(

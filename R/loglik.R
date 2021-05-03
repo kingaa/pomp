@@ -19,12 +19,9 @@
 NULL
 
 ##' @rdname loglik
+##' @importFrom stats logLik
 ##' @export
-setGeneric(
-  "logLik",
-  function (object, ...)
-    standardGeneric("logLik")
-)
+setGeneric("logLik")
 
 setMethod(
   "logLik",
