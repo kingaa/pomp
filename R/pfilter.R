@@ -5,19 +5,14 @@
 ##'
 ##' @name pfilter
 ##' @rdname pfilter
-##' @aliases pfilter pfilter,ANY-method pfilter,missing-method
-##' pfilterd_pomp-class pfilterd_pomp
+##' @aliases pfilter,ANY-method pfilter,missing-method
 ##' @author Aaron A. King
 ##' @family elementary_algorithms
 ##' @family particle_filter_methods
-##'
 ##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R
 ##' @importFrom stats setNames
-##'
 ##' @inheritSection pomp Note for Windows users
-##' 
 ##' @inheritParams pomp
-##'
 ##' @param Np the number of particles to use.
 ##' This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
 ##' Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers of length \preformatted{length(time(object,t0=TRUE))} or as a function taking a positive integer argument.
@@ -123,8 +118,6 @@ setMethod(
   }
 )
 
-##' @name pfilter-data.frame
-##' @aliases pfilter,data.frame-method
 ##' @rdname pfilter
 ##' @export
 setMethod(
@@ -164,8 +157,6 @@ setMethod(
   }
 )
 
-##' @name pfilter-pomp
-##' @aliases pfilter,pomp-method
 ##' @rdname pfilter
 ##' @export
 setMethod(
@@ -200,8 +191,6 @@ setMethod(
   }
 )
 
-##' @name pfilter-pfilterd_pomp
-##' @aliases pfilter,pfilterd_pomp-method
 ##' @rdname pfilter
 ##' @export
 setMethod(

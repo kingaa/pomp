@@ -16,13 +16,10 @@ setGeneric(
         standardGeneric("obs")
 )
 
-##' @name obs-pomp
-##' @aliases obs obs,pomp-method
 ##' @rdname obs
 ##' @param object an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}
 ##' @param vars names of variables to retrieve
 ##' @param \dots ignored
-##'
 ##' @export
 setMethod(
   "obs",

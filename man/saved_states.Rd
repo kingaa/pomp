@@ -4,9 +4,7 @@
 \alias{saved.states}
 \alias{saved.states,ANY-method}
 \alias{saved.states,missing-method}
-\alias{saved.states-pfilterd_pomp}
 \alias{saved.states,pfilterd_pomp-method}
-\alias{saved.states-pfilterList}
 \alias{saved.states,pfilterList-method}
 \title{Saved states}
 \usage{

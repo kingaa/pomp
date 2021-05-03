@@ -6,16 +6,11 @@
 ##'
 ##' @param params named numeric vector or matrix of parameters.
 ##' @param nrep number of replicates (columns) desired.
-##'
 ##' @return \code{parmat} returns a matrix consisting of \code{nrep} copies of
 ##' \code{params}.
-##'
 ##' @author Aaron A. King
-##'
 ##' @example examples/ricker-bifdiag.R
-##'
 ##' @export
-
 parmat <- function (params, nrep = 1) {
   d <- dim(params)
   if (is.null(d) || length(d) == 1) {

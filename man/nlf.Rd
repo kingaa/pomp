@@ -5,11 +5,8 @@
 \alias{nlf_objfun}
 \alias{nlf_objfun,missing-method}
 \alias{nlf_objfun,ANY-method}
-\alias{nlf_objfun-data.frame}
 \alias{nlf_objfun,data.frame-method}
-\alias{nlf_objfun-pomp}
 \alias{nlf_objfun,pomp-method}
-\alias{nlf_objfun-nlf_objfun}
 \alias{nlf_objfun,nlf_objfun-method}
 \title{Nonlinear forecasting}
 \usage{

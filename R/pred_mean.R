@@ -10,7 +10,7 @@
 ##' \deqn{E[X(t_k) \vert Y(t_1)=y^*_1,\dots,Y(t_{k-1})=y^*_{k-1}].}{E[Xk | Y1=y1*,\dots,Y(k-1)=y(k-1)*].}
 ##'
 ##' @name pred.mean
-##' @aliases pred.mean pred.mean,ANY-method pred.mean,missing-method
+##' @aliases pred.mean,ANY-method pred.mean,missing-method
 ##' @include pfilter.R kalman.R
 ##' @rdname pred_mean
 ##' @family particle_filter_methods
@@ -40,8 +40,6 @@ setMethod(
   }
 )
 
-##' @name pred.mean-kalmand_pomp
-##' @aliases pred.mean,kalmand_pomp-method
 ##' @rdname pred_mean
 ##' @export
 setMethod(
@@ -53,8 +51,6 @@ setMethod(
   }
 )
 
-##' @name pred.mean-pfilterd_pomp
-##' @aliases pred.mean,pfilterd_pomp-method
 ##' @rdname pred_mean
 ##' @export
 setMethod(

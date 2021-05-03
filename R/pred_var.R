@@ -10,11 +10,11 @@
 ##' \deqn{\mathrm{Var}[X(t_k) \vert Y(t_1)=y^*_1,\dots,Y(t_{k-1})=y^*_{k-1}].}{Var[Xk | Y1=y1*,\dots,Y(k-1)=y(k-1)*].}
 ##'
 ##' @name pred.var
-##' @aliases pred.var pred.var,ANY-method pred.var,missing-method
+##' @aliases pred.var,ANY-method pred.var,missing-method
 ##' @include pfilter.R kalman.R
 ##' @rdname pred_var
 ##' @family particle_filter_methods
-##' @inheritParams filter.mean-kalmand_pomp
+##' @inheritParams filter.mean
 ##'
 NULL
 
@@ -40,8 +40,6 @@ setMethod(
   }
 )
 
-##' @name pred.var-pfilterd_pomp
-##' @aliases pred.var,pfilterd_pomp-method
 ##' @rdname pred_var
 ##' @export
 setMethod(

@@ -2,10 +2,6 @@
 % Please edit documentation in R/csnippet.R
 \name{Csnippet}
 \alias{Csnippet}
-\alias{as,Csnippet-method}
-\alias{Csnippet-class}
-\alias{as-csnippet}
-\alias{coerce,Csnippet,character-method}
 \title{C snippets}
 \usage{
 Csnippet(text)

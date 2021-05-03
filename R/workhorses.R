@@ -35,8 +35,7 @@ NULL
 ##'
 ##' @name dmeasure
 ##' @docType methods
-##' @aliases dmeasure dmeasure,pomp-method dmeasure-pomp
-##' dmeasure,ANY-method dmeasure,missing-method
+##' @aliases dmeasure,ANY-method dmeasure,missing-method
 ##' @family pomp_workhorses
 ##' @seealso Specification of the measurement density evaluator: \code{\link{dmeasure_spec}}
 ##'
@@ -122,8 +121,7 @@ dmeasure.internal <- function (object, y, x, times, params, ..., log = FALSE,
 ##'
 ##' @name dprior
 ##' @docType methods
-##' @aliases dprior dprior,pomp-method dprior-pomp
-##' dprior,ANY-method dprior,missing-method
+##' @aliases dprior,ANY-method dprior,missing-method
 ##' @family pomp_workhorses
 ##' @seealso Specification of the prior density evaluator: \code{\link{prior_spec}}
 ##'
@@ -183,8 +181,7 @@ dprior.internal <- function (object, params, log = FALSE,
 ##'
 ##' @name dprocess
 ##' @docType methods
-##' @aliases dprocess dprocess,pomp-method dprocess-pomp
-##' dprocess,ANY-method dprocess,missing-method
+##' @aliases dprocess,ANY-method dprocess,missing-method
 ##' @family pomp_workhorses
 ##' @seealso Specification of the process-model density evaluator: \code{\link{dprocess_spec}}
 ##'
@@ -245,8 +242,7 @@ dprocess.internal <- function (object, x, times, params, log = FALSE, .gnsi = TR
 ##'
 ##' @name partrans
 ##' @docType methods
-##' @aliases  partrans partrans,pomp-method partrans-pomp
-##' partrans,ANY-method partrans,missing-method
+##' @aliases partrans,ANY-method partrans,missing-method
 ##' @family pomp_workhorses
 ##' @seealso Specification of parameter transformations: \code{\link{parameter_trans}}
 ##'
@@ -313,8 +309,7 @@ partrans.internal <- function (object, params, dir = c("fromEst", "toEst"),
 ##'
 ##' @name rinit
 ##' @docType methods
-##' @aliases rinit rinit,pomp-method rinit-pomp
-##' rinit,ANY-method rinit,missing-method
+##' @aliases rinit,ANY-method rinit,missing-method
 ##' @family pomp_workhorses
 ##' @seealso Specification of the initial-state distribution: \code{\link{rinit_spec}}
 ##'
@@ -379,8 +374,7 @@ rinit.internal <- function (object, params, t0, nsim = 1,
 ##'
 ##' @name rmeasure
 ##' @docType methods
-##' @aliases rmeasure rmeasure,pomp-method rmeasure-pomp
-##' rmeasure,ANY-method rmeasure,missing-method
+##' @aliases rmeasure,ANY-method rmeasure,missing-method
 ##' @family pomp_workhorses
 ##' @seealso Specification of the measurement-model simulator: \code{\link{rmeasure_spec}}
 ##'
@@ -443,8 +437,7 @@ rmeasure.internal <- function (object, x, times, params,
 ##'
 ##' @name rprior
 ##' @docType methods
-##' @aliases rprior rprior,pomp-method rprior-pomp
-##' rprior,ANY-method rprior,missing-method
+##' @aliases rprior,ANY-method rprior,missing-method
 ##' @family pomp_workhorses
 ##' @seealso Specification of the prior distribution simulator: \code{\link{prior_spec}}
 ##'
@@ -505,8 +498,7 @@ rprior.internal <- function (object, params, .gnsi = TRUE, ...) {
 ##'
 ##' @name rprocess
 ##' @docType methods
-##' @aliases rprocess rprocess,pomp-method rprocess-pomp
-##' rprocess,ANY-method rprocess,missing-method
+##' @aliases rprocess,ANY-method rprocess,missing-method
 ##' @family pomp_workhorses
 ##' @seealso Specification of the process-model simulator: \code{\link{rprocess_spec}}
 ##'
@@ -589,8 +581,7 @@ rprocess.internal <- function (object, x0, t0, times, params, ...,
 ##'
 ##' @name skeleton
 ##' @docType methods
-##' @aliases skeleton skeleton,pomp-method skeleton-pomp
-##' skeleton,ANY-method skeleton,missing-method
+##' @aliases skeleton,ANY-method skeleton,missing-method
 ##' @family pomp_workhorses
 ##' @seealso Specification of the deterministic skeleton: \code{\link{skeleton_spec}}
 ##'

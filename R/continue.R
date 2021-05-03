@@ -3,7 +3,7 @@
 ##' Continue an iterative computation where it left off.
 ##'
 ##' @name continue
-##' @aliases continue continue,missing-method continue,ANY-method
+##' @aliases continue,missing-method continue,ANY-method
 ##' @rdname continue
 ##' @seealso \code{\link{mif2}} \code{\link{pmcmc}} \code{\link{abc}}
 ##'

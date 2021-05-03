@@ -4,11 +4,8 @@
 \alias{continue}
 \alias{continue,missing-method}
 \alias{continue,ANY-method}
-\alias{continue-abcd_pomp}
 \alias{continue,abcd_pomp-method}
-\alias{continue-pmcmcd_pomp}
 \alias{continue,pmcmcd_pomp-method}
-\alias{continue-mif2d_pomp}
 \alias{continue,mif2d_pomp-method}
 \title{Continue an iterative calculation}
 \usage{

@@ -1,12 +1,12 @@
 ##' @include listie.R
 ##' @keywords internal
 ##' @rdname listie
-#' @name [-listie
-#' @aliases [,listie-method
+##' @name [-listie
+##' @aliases [,listie-method
 NULL
 
-##' @export
 ##' @rdname listie
+##' @export
 setMethod(
   "[",
   signature=signature(x="listie"),

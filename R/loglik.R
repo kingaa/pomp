@@ -4,8 +4,7 @@
 ##'
 ##' @name logLik
 ##' @rdname loglik
-##' @aliases logLik logLik,ANY-method logLik,missing-method
-##' logLik,listie-method
+##' @aliases logLik,ANY-method logLik,missing-method
 ##' @include pfilter.R wpfilter.R mif2.R pmcmc.R probe.R kalman.R nlf.R listie.R
 ##' @include objfun.R spect_match.R nlf.R
 ##'
@@ -49,8 +48,6 @@ setMethod(
   }
 )
 
-##' @name logLik-pfilterd_pomp
-##' @aliases logLik,pfilterd_pomp-method
 ##' @rdname loglik
 ##' @export
 setMethod(
@@ -59,8 +56,6 @@ setMethod(
   definition=function(object)object@loglik
 )
 
-##' @name logLik-wpfilterd_pomp
-##' @aliases logLik,wpfilterd_pomp-method
 ##' @rdname loglik
 ##' @export
 setMethod(
@@ -69,10 +64,7 @@ setMethod(
   definition=function(object)object@loglik
 )
 
-##' @name logLik-probed_pomp
-##' @aliases logLik,probed_pomp-method
 ##' @rdname loglik
-##'
 ##' @return
 ##' When \code{object} is of \sQuote{probed_pomp} class (i.e., the result of a \code{probe} computation), \code{logLik} retrieves the \dQuote{synthetic likelihood} (see \code{\link{probe}}).
 ##'
@@ -82,8 +74,6 @@ setMethod(
   definition=function(object)object@synth.loglik
 )
 
-##' @name logLik-kalmand_pomp
-##' @aliases logLik,kalmand_pomp-method
 ##' @rdname loglik
 ##' @export
 setMethod(
@@ -92,8 +82,6 @@ setMethod(
   definition=function(object)object@loglik
 )
 
-##' @name logLik-pmcmcd_pomp
-##' @aliases logLik,pmcmcd_pomp-method
 ##' @rdname loglik
 ##' @export
 setMethod(
@@ -103,15 +91,9 @@ setMethod(
     object@loglik
 )
 
-##' @name logLik-bsmcd_pomp
-##' @aliases logLik,bsmcd_pomp-method
 ##' @rdname loglik
-##'
-##' @importFrom stats logLik
-##'
 ##' @return
 ##' When \code{object} is of \sQuote{bsmcd_pomp} class (i.e., the result of a \code{bsmc2} computation), \code{logLik} retrieves the \dQuote{log evidence} (see \code{\link{bsmc2}}).
-##'
 ##' @export
 setMethod(
   "logLik",
@@ -119,9 +101,7 @@ setMethod(
   definition=function(object)object@log.evidence
 )
 
-##' @name logLik-objfun
 ##' @rdname loglik
-##' @aliases logLik,objfun-method
 ##' @export
 setMethod(
   "logLik",
@@ -131,9 +111,7 @@ setMethod(
   }
 )
 
-##' @name logLik-spect_match_objfun
 ##' @rdname loglik
-##' @aliases logLik,spect_match_objfun-method
 ##' @export
 setMethod(
   "logLik",
@@ -143,14 +121,10 @@ setMethod(
   }
 )
 
-##' @name logLik-nlf_objfun
-##' @aliases logLik,nlf_objfun-method
 ##' @rdname loglik
-##'
 ##' @return
 ##' When \code{object} is an NLF objective function, i.e., the result of a call to \code{nlf_objfun},
 ##' \code{logLik} retrieves the \dQuote{quasi log likelihood} (see \code{\link{nlf}}).
-##'
 ##' @export
 setMethod(
   "logLik",

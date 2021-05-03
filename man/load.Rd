@@ -4,14 +4,11 @@
 \name{load}
 \alias{load}
 \alias{pompLoad}
-\alias{pompLoad,pomp-method}
-\alias{pompLoad-pomp}
 \alias{pompUnload}
-\alias{pompUnload,pomp-method}
-\alias{pompUnload-pomp}
 \alias{solibs<-}
+\alias{pompLoad,pomp-method}
+\alias{pompUnload,pomp-method}
 \alias{solibs<-,pomp-method}
-\alias{solibs<--pomp}
 \title{Loading and unloading shared-object libraries}
 \usage{
 \S4method{pompLoad}{pomp}(object, ...)
@@ -22,9 +19,6 @@
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or extending this class.}
-}
-\value{
-NULL, invisibly.
 }
 \description{
 \code{pompLoad} and \code{pompUnload} cause compiled codes associated with \code{object} to be dynamically linked or unlinked, respectively.

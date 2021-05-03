@@ -4,24 +4,12 @@
 \alias{traces}
 \alias{traces,missing-method}
 \alias{traces,ANY-method}
-\alias{traces-mif2d_pomp}
 \alias{traces,mif2d_pomp-method}
-\alias{traces-mif2List}
 \alias{traces,mif2List-method}
-\alias{traces-Mif2}
-\alias{traces,Mif2-method}
-\alias{traces-abcd_pomp}
 \alias{traces,abcd_pomp-method}
-\alias{traces-abcList}
 \alias{traces,abcList-method}
-\alias{traces-Abc}
-\alias{traces,Abc-method}
-\alias{traces-pmcmcd_pomp}
 \alias{traces,pmcmcd_pomp-method}
-\alias{traces-pmcmcList}
 \alias{traces,pmcmcList-method}
-\alias{traces-Pmcmc}
-\alias{traces,Pmcmc-method}
 \title{Traces}
 \usage{
 \S4method{traces}{mif2d_pomp}(object, pars, transform = FALSE, ...)

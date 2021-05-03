@@ -3,10 +3,9 @@
 \docType{methods}
 \name{rmeasure}
 \alias{rmeasure}
-\alias{rmeasure,pomp-method}
-\alias{rmeasure-pomp}
 \alias{rmeasure,ANY-method}
 \alias{rmeasure,missing-method}
+\alias{rmeasure,pomp-method}
 \title{rmeasure}
 \usage{
 \S4method{rmeasure}{pomp}(object, x, times, params, ...)

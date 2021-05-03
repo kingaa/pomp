@@ -9,7 +9,6 @@
 ##' @include abc.R pmcmc.R mif2.R pfilter.R
 NULL
 
-##' @rdname listie
 setClass(
   "pompList",
   contains="list",
@@ -27,7 +26,6 @@ setClass(
   }
 )
 
-##' @rdname listie
 setClass(
   "abcList",
   contains="list",
@@ -54,7 +52,6 @@ setClass(
   }
 )
 
-##' @rdname listie
 setClass(
   "mif2List",
   contains="list",
@@ -81,7 +78,6 @@ setClass(
   }
 )
 
-##' @rdname listie
 setClass(
   "pmcmcList",
   contains="list",
@@ -108,7 +104,6 @@ setClass(
   }
 )
 
-##' @rdname listie
 setClass(
   "pfilterList",
   contains="list",
@@ -126,21 +121,15 @@ setClass(
   }
 )
 
-##' @rdname listie
 setClassUnion("Pomp",c("pomp","pompList"))
 
-##' @rdname listie
 setClassUnion("Pfilter",c("pfilterd_pomp","pfilterList"))
 
-##' @rdname listie
 setClassUnion("Abc",c("abcd_pomp","abcList"))
 
-##' @rdname listie
 setClassUnion("Mif2",c("mif2d_pomp","mif2List"))
 
-##' @rdname listie
 setClassUnion("Pmcmc",c("pmcmcd_pomp","pmcmcList"))
 
-##' @rdname listie
 setClassUnion("listie",
   members=c("pompList","abcList","mif2List","pmcmcList","pfilterList"))

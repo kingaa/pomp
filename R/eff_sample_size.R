@@ -9,7 +9,7 @@
 ##' @name eff.sample.size
 ##' @rdname eff_sample_size
 ##' @include pfilter.R wpfilter.R bsmc2.R
-##' @aliases eff.sample.size eff.sample.size,missing-method eff.sample.size,ANY-method
+##' @aliases eff.sample.size,missing-method eff.sample.size,ANY-method
 ##' @family particle_filter_methods
 ##' @inheritParams filter.mean
 ##'
@@ -37,8 +37,6 @@ setMethod(
   }
 )
 
-##' @name eff.sample.size-bsmcd_pomp
-##' @aliases eff.sample.size,bsmcd_pomp-method
 ##' @rdname eff_sample_size
 ##' @export
 setMethod(
@@ -47,8 +45,6 @@ setMethod(
   definition=function(object,...)object@eff.sample.size
 )
 
-##' @name eff.sample.size-pfilterd_pomp
-##' @aliases eff.sample.size,pfilterd_pomp-method
 ##' @rdname eff_sample_size
 ##' @export
 setMethod(
@@ -57,8 +53,6 @@ setMethod(
   definition=function(object,...)object@eff.sample.size
 )
 
-##' @name eff.sample.size-wpfilterd_pomp
-##' @aliases eff.sample.size,wpfilterd_pomp-method
 ##' @rdname eff_sample_size
 ##' @export
 setMethod(

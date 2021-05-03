@@ -7,18 +7,9 @@
 ##' @rdname as_data_frame
 ##' @include pomp_class.R pfilter.R bsmc2.R mif2.R pmcmc.R abc.R wpfilter.R
 ##' @include probe.R kalman.R
+##'
 NULL
 
-##' @name coerce-pomp-data.frame
-##' @aliases coerce,pomp,data.frame-method
-##' @rdname as_data_frame
-##'
-##' @details
-##' When \code{object} is a simple \sQuote{pomp} object,
-##' \code{as(object,"data.frame")} or \code{as.data.frame(object)} results in a
-##' data frame with the times, observables, states (if known), and
-##' interpolated covariates (if any).
-##'
 setAs(
   from="pomp",
   to="data.frame",
@@ -43,20 +34,15 @@ setAs(
 
 ##' @method as.data.frame pomp
 ##' @rdname as_data_frame
-##'
 ##' @inheritParams base::as.data.frame
+##' @details
+##' When \code{object} is a simple \sQuote{pomp} object,
+##' \code{as(object,"data.frame")} or \code{as.data.frame(object)} results in a
+##' data frame with the times, observables, states (if known), and
+##' interpolated covariates (if any).
 ##' @export
-##'
 as.data.frame.pomp <- function (x, ...) as(x,"data.frame")
 
-##' @name as,pfilterd_pomp-method
-##' @aliases coerce,pfilterd_pomp,data.frame-method
-##' @rdname as_data_frame
-##'
-##' @details When \code{object} is a \sQuote{pfilterd_pomp} object,
-##' coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
-##' but with conditional log likelihood and effective sample size estimates included, as well as filtering means, prediction means, and prediction variances, if these have been computed.
-##'
 setAs(
   from="pfilterd_pomp",
   to="data.frame",
@@ -90,16 +76,12 @@ setAs(
 
 ##' @method as.data.frame pfilterd_pomp
 ##' @rdname as_data_frame
+##' @details When \code{object} is a \sQuote{pfilterd_pomp} object,
+##' coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
+##' but with conditional log likelihood and effective sample size estimates included, as well as filtering means, prediction means, and prediction variances, if these have been computed.
 ##' @export
 as.data.frame.pfilterd_pomp <- function (x, ...) as(x,"data.frame")
 
-##' @name as,probed_pomp-method
-##' @aliases coerce,probed_pomp,data.frame-method
-##' @rdname as_data_frame
-##'
-##' @details When \code{object} is a \sQuote{probed_pomp} object,
-##' coercion to a data frame results in a data frame with the values of the probes computed on the data and on simulations.
-##'
 setAs(
   from="probed_pomp",
   to="data.frame",
@@ -113,17 +95,12 @@ setAs(
 
 ##' @method as.data.frame probed_pomp
 ##' @rdname as_data_frame
+##' @details When \code{object} is a \sQuote{probed_pomp} object,
+##' coercion to a data frame results in a data frame with the values of the probes computed on the data and on simulations.
 ##' @export
 as.data.frame.probed_pomp <- function (x, ...)
   as(x,"data.frame")
 
-##' @name as,kalmand_pomp-method
-##' @aliases coerce,kalmand_pomp,data.frame-method
-##' @rdname as_data_frame
-##'
-##' @details When \code{object} is a \sQuote{kalmand_pomp} object,
-##' coercion to a data frame results in a data frame with prediction means, filter means and forecasts, in addition to the data.
-##'
 setAs(
   from="kalmand_pomp",
   to="data.frame",
@@ -156,19 +133,13 @@ setAs(
 
 ##' @method as.data.frame kalmand_pomp
 ##' @rdname as_data_frame
+##' @details When \code{object} is a \sQuote{kalmand_pomp} object,
+##' coercion to a data frame results in a data frame with prediction means, filter means and forecasts, in addition to the data.
 ##' @export
 as.data.frame.kalmand_pomp <- function (x, ...) {
   as(x,"data.frame")
 }
 
-##' @name as,bsmcd_pomp-method
-##' @aliases coerce,bsmcd_pomp,data.frame-method
-##' @rdname as_data_frame
-##'
-##' @details When \code{object} is a \sQuote{bsmcd_pomp} object,
-##' coercion to a data frame results in a data frame with samples from the prior and posterior distribution.
-##' The \code{.id} variable distinguishes them.
-##'
 setAs(
   from="bsmcd_pomp",
   to="data.frame",
@@ -183,14 +154,14 @@ setAs(
 
 ##' @method as.data.frame bsmcd_pomp
 ##' @rdname as_data_frame
+##' @details When \code{object} is a \sQuote{bsmcd_pomp} object,
+##' coercion to a data frame results in a data frame with samples from the prior and posterior distribution.
+##' The \code{.id} variable distinguishes them.
 ##' @export
 as.data.frame.bsmcd_pomp <- function (x, ...) {
   as(x,"data.frame")
 }
 
-##' @name as,listie-method
-##' @aliases coerce,listie,data.frame-method
-##' @rdname as_data_frame
 ##' @importFrom plyr rbind.fill
 setAs(
   from="listie",
@@ -244,15 +215,6 @@ as.data.frame.pmcmcList <- function (x, ...) {
   as(x,"data.frame")
 }
 
-
-##' @name as,wpfilterd_pomp-method
-##' @aliases coerce,wpfilterd_pomp,data.frame-method
-##' @rdname as_data_frame
-##'
-##' @details When \code{object} is a \sQuote{wpfilterd_pomp} object,
-##' coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
-##' but with conditional log likelihood and effective sample size estimates included.
-##'
 setAs(
   from="wpfilterd_pomp",
   to="data.frame",
@@ -267,6 +229,9 @@ setAs(
 
 ##' @method as.data.frame wpfilterd_pomp
 ##' @rdname as_data_frame
+##' @details When \code{object} is a \sQuote{wpfilterd_pomp} object,
+##' coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
+##' but with conditional log likelihood and effective sample size estimates included.
 ##' @export
 as.data.frame.wpfilterd_pomp <- function (x, ...) as(x,"data.frame")
 

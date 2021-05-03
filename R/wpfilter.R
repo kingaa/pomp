@@ -10,17 +10,13 @@
 ##'
 ##' @name wpfilter
 ##' @rdname wpfilter
-##' @aliases wpfilter wpfilter,ANY-method wpfilter,missing-method
-##' wpfilterd_pomp-class wpfilterd_pomp
+##' @aliases wpfilter,ANY-method wpfilter,missing-method
 ##' @author Aaron A. King
 ##' @family elementary_algorithms
 ##' @family particle_filter_methods
-##'
 ##' @inheritSection pomp Note for Windows users
-##' 
 ##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R pfilter.R
 ##' @importFrom stats setNames
-##'
 ##' @inheritParams pfilter
 ##' @param trigger numeric; if the effective sample size becomes smaller than \code{trigger * Np}, resampling is triggered.
 ##' @param target numeric; target power.
@@ -87,8 +83,6 @@ setMethod(
   }
 )
 
-##' @name wpfilter-data.frame
-##' @aliases wpfilter,data.frame-method
 ##' @rdname wpfilter
 ##' @export
 setMethod(
@@ -121,8 +115,6 @@ setMethod(
   }
 )
 
-##' @name wpfilter-pomp
-##' @aliases wpfilter,pomp-method
 ##' @rdname wpfilter
 ##' @export
 setMethod(
@@ -150,8 +142,6 @@ setMethod(
   }
 )
 
-##' @name wpfilter-wpfilterd_pomp
-##' @aliases wpfilter,wpfilterd_pomp-method
 ##' @rdname wpfilter
 ##' @export
 setMethod(

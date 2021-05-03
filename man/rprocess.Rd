@@ -3,10 +3,9 @@
 \docType{methods}
 \name{rprocess}
 \alias{rprocess}
-\alias{rprocess,pomp-method}
-\alias{rprocess-pomp}
 \alias{rprocess,ANY-method}
 \alias{rprocess,missing-method}
+\alias{rprocess,pomp-method}
 \title{rprocess}
 \usage{
 \S4method{rprocess}{pomp}(object, x0, t0, times, params, ...)

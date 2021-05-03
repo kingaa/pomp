@@ -4,13 +4,9 @@
 \alias{filter.traj}
 \alias{filter.traj,ANY-method}
 \alias{filter.traj,missing-method}
-\alias{filter.traj-pfilterd_pomp}
 \alias{filter.traj,pfilterd_pomp-method}
-\alias{filter.traj-pfilterList}
 \alias{filter.traj,pfilterList-method}
-\alias{filter.traj-pmcmcd_pomp}
 \alias{filter.traj,pmcmcd_pomp-method}
-\alias{filter.traj-pmcmcList}
 \alias{filter.traj,pmcmcList-method}
 \title{Filtering trajectories}
 \usage{

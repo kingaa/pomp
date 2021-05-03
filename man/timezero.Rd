@@ -8,9 +8,7 @@
 \alias{timezero,ANY-method}
 \alias{timezero<-,missing-method}
 \alias{timezero<-,ANY-method}
-\alias{timezero-pomp}
 \alias{timezero,pomp-method}
-\alias{timezero<--pomp}
 \alias{timezero<-,pomp-method}
 \title{The zero time}
 \usage{

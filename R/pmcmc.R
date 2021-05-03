@@ -8,7 +8,7 @@
 ##' @name pmcmc
 ##' @rdname pmcmc
 ##' @include pfilter.R proposals.R load.R continue.R
-##' @aliases pmcmc pmcmc,ANY-method pmcmc,missing-method
+##' @aliases pmcmc,ANY-method pmcmc,missing-method
 ##' @author Edward L. Ionides, Aaron A. King, Sebastian Funk
 ##' @seealso \link[=proposals]{MCMC proposals}
 ##' @family particle_filter_methods
@@ -85,8 +85,6 @@ setMethod(
   }
 )
 
-##' @name pmcmc-data.frame
-##' @aliases pmcmc,data.frame-method
 ##' @rdname pmcmc
 ##' @export
 setMethod(
@@ -118,8 +116,6 @@ setMethod(
   }
 )
 
-##' @name pmcmc-pomp
-##' @aliases pmcmc,pomp-method
 ##' @rdname pmcmc
 ##' @export
 setMethod(
@@ -145,8 +141,6 @@ setMethod(
   }
 )
 
-##' @name pmcmc-pfilterd_pomp
-##' @aliases pmcmc,pfilterd_pomp-method
 ##' @rdname pmcmc
 ##' @export
 setMethod(
@@ -171,8 +165,6 @@ setMethod(
   }
 )
 
-##' @name pmcmc-pmcmcd_pomp
-##' @aliases pmcmc,pmcmcd_pomp-method
 ##' @rdname pmcmc
 ##' @export
 setMethod(
@@ -196,12 +188,8 @@ setMethod(
   }
 )
 
-##' @name continue-pmcmcd_pomp
-##' @aliases continue,pmcmcd_pomp-method
 ##' @rdname continue
-##'
 ##' @param Nmcmc positive integer; number of additional PMCMC iterations to perform
-##'
 ##' @export
 setMethod(
   "continue",

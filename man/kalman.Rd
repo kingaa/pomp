@@ -2,19 +2,15 @@
 % Please edit documentation in R/kalman.R
 \name{kalman}
 \alias{kalman}
-\alias{enkf}
-\alias{eakf}
 \alias{enkf,ANY-method}
 \alias{enkf,missing-method}
 \alias{eakf,ANY-method}
 \alias{eakf,missing-method}
-\alias{enkf-data.frame}
 \alias{enkf,data.frame-method}
-\alias{enkf-pomp}
+\alias{enkf}
 \alias{enkf,pomp-method}
-\alias{eakf-data.frame}
 \alias{eakf,data.frame-method}
-\alias{eakf-pomp}
+\alias{eakf}
 \alias{eakf,pomp-method}
 \title{Ensemble Kalman filters}
 \usage{

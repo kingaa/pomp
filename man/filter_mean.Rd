@@ -5,9 +5,7 @@
 \alias{filter.mean}
 \alias{filter.mean,ANY-method}
 \alias{filter.mean,missing-method}
-\alias{filter.mean-kalmand_pomp}
 \alias{filter.mean,kalmand_pomp-method}
-\alias{filter.mean-pfilterd_pomp}
 \alias{filter.mean,pfilterd_pomp-method}
 \title{Filtering mean}
 \usage{
@@ -20,7 +18,7 @@
 
 \item{vars}{optional character; names of variables}
 
-\item{\dots}{ignored}
+\item{...}{ignored}
 }
 \description{
 The mean of the filtering distribution

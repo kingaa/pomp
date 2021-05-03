@@ -8,7 +8,6 @@
 ##'
 ##' @name Csnippet
 ##' @rdname csnippet
-##' @aliases as,Csnippet-method Csnippet-class
 ##' @include pomp-package.R
 ##' @family implementation_info
 ##'
@@ -68,9 +67,6 @@ Csnippet <- function (text) {
   new("Csnippet",text=as.character(text))
 }
 
-##' @name as-csnippet
-##' @rdname csnippet
-##' @aliases coerce,Csnippet,character-method
 setAs(
   from="Csnippet",
   to="character",

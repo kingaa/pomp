@@ -3,16 +3,11 @@
 \docType{methods}
 \name{coef}
 \alias{coef}
-\alias{coef,missing-method}
-\alias{coef<-,missing-method}
-\alias{coef-listie}
-\alias{coef,listie-method}
-\alias{coef-pomp}
-\alias{coef,pomp-method}
-\alias{coef<--pomp}
 \alias{coef<-}
+\alias{coef<-,missing-method}
+\alias{coef,listie-method}
+\alias{coef,pomp-method}
 \alias{coef<-,pomp-method}
-\alias{coef-objfun}
 \alias{coef,objfun-method}
 \title{Extract, set, or alter coefficients}
 \usage{

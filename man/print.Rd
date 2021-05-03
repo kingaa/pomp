@@ -2,10 +2,23 @@
 % Please edit documentation in R/print.R
 \name{print}
 \alias{print}
+\alias{print,unshowable-method}
 \alias{print,listie-method}
 \alias{print,pomp_fun-method}
-\alias{print,unshowable-method}
 \title{Print methods}
+\usage{
+\S4method{print}{unshowable}(x, ...)
+
+\S4method{print}{listie}(x, ...)
+
+\S4method{print}{pomp_fun}(x, ...)
+}
+\arguments{
+\item{x}{object to print}
+
+\item{...}{ignored}
+}
 \description{
 These methods print their argument and return it *invisibly*.
 }
+\keyword{internals}

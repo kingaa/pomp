@@ -6,7 +6,7 @@
 ##' This can be extracted by calling \code{saved.states} on the \sQuote{pfilterd.pomp} object.
 ##' 
 ##' @name saved.states
-##' @aliases saved.states saved.states,ANY-method saved.states,missing-method
+##' @aliases saved.states,ANY-method saved.states,missing-method
 ##' @include pfilter.R pmcmc.R
 ##' @rdname saved_states
 ##' @family particle_filter_methods
@@ -38,10 +38,7 @@ setMethod(
   }
 )
 
-##' @name saved.states-pfilterd_pomp
-##' @aliases saved.states,pfilterd_pomp-method
 ##' @rdname saved_states
-##'
 ##' @export
 setMethod(
   "saved.states",
@@ -51,8 +48,6 @@ setMethod(
   }
 )
 
-##' @name saved.states-pfilterList
-##' @aliases saved.states,pfilterList-method
 ##' @rdname saved_states
 ##' @export
 setMethod(

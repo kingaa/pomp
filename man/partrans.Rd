@@ -3,10 +3,9 @@
 \docType{methods}
 \name{partrans}
 \alias{partrans}
-\alias{partrans,pomp-method}
-\alias{partrans-pomp}
 \alias{partrans,ANY-method}
 \alias{partrans,missing-method}
+\alias{partrans,pomp-method}
 \title{partrans}
 \usage{
 \S4method{partrans}{pomp}(object, params, dir = c("fromEst", "toEst"), ...)

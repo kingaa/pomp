@@ -4,9 +4,7 @@
 \alias{trajectory}
 \alias{trajectory,missing-method}
 \alias{trajectory,ANY-method}
-\alias{trajectory-pomp}
 \alias{trajectory,pomp-method}
-\alias{trajectory-traj_match_objfun}
 \alias{trajectory,traj_match_objfun-method}
 \title{Trajectory of a deterministic model}
 \usage{

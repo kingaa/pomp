@@ -4,7 +4,6 @@
 \alias{pred.var}
 \alias{pred.var,ANY-method}
 \alias{pred.var,missing-method}
-\alias{pred.var-pfilterd_pomp}
 \alias{pred.var,pfilterd_pomp-method}
 \title{Prediction variance}
 \usage{

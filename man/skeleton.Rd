@@ -3,10 +3,9 @@
 \docType{methods}
 \name{skeleton}
 \alias{skeleton}
-\alias{skeleton,pomp-method}
-\alias{skeleton-pomp}
 \alias{skeleton,ANY-method}
 \alias{skeleton,missing-method}
+\alias{skeleton,pomp-method}
 \title{skeleton}
 \usage{
 \S4method{skeleton}{pomp}(object, x, times, params, ...)

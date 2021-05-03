@@ -7,20 +7,20 @@
 \alias{parameter_trans,ANY,ANY-method}
 \alias{parameter_trans,ANY,missing-method}
 \alias{parameter_trans,NULL,NULL-method}
-\alias{parameter_trans,function,function-method}
 \alias{parameter_trans,missing,ANY-method}
 \alias{parameter_trans,pomp_fun,pomp_fun-method}
-\alias{parameter_trans-Csnippet,Csnippet}
 \alias{parameter_trans,Csnippet,Csnippet-method}
-\alias{parameter_trans-missing,missing}
-\alias{parameter_trans-character,character}
 \alias{parameter_trans,character,character-method}
-\alias{parameter_trans-function,function}
+\alias{parameter_trans,function,function-method}
 \title{Parameter transformations}
 \usage{
-\S4method{parameter_trans}{Csnippet,Csnippet}(toEst, fromEst, ..., log, logit, barycentric)
+parameter_trans(toEst, fromEst, ...)
 
-\S4method{parameter_trans}{missing,missing}(..., log, logit, barycentric)
+\S4method{parameter_trans}{`NULL`,`NULL`}(toEst, fromEst, ...)
+
+\S4method{parameter_trans}{pomp_fun,pomp_fun}(toEst, fromEst, ...)
+
+\S4method{parameter_trans}{Csnippet,Csnippet}(toEst, fromEst, ..., log, logit, barycentric)
 
 \S4method{parameter_trans}{character,character}(toEst, fromEst, ...)
 

@@ -6,7 +6,7 @@
 ##' @rdname kalman
 ##' @include pomp_class.R pomp.R workhorses.R
 ##' @importFrom stats dnorm rnorm
-##' @aliases enkf eakf enkf,ANY-method enkf,missing-method
+##' @aliases enkf,ANY-method enkf,missing-method
 ##' eakf,ANY-method eakf,missing-method
 ##' @author Aaron A. King
 ##' @family particle_filter_methods
@@ -113,9 +113,8 @@ setMethod(
 ## Updated ensemble: $X^u_{t}=X_t + K_t\,(O_t - Y_t)$
 ## Filter mean: $m_t=\langle X^u_t \rangle = \frac{1}{q} \sum\limits_{i=1}^q x^{u_i}_t$
 
-##' @name enkf-data.frame
-##' @aliases enkf,data.frame-method
 ##' @rdname kalman
+##' @aliases enkf
 ##' @export
 setMethod(
   "enkf",
@@ -143,8 +142,6 @@ setMethod(
   }
 )
 
-##' @name enkf-pomp
-##' @aliases enkf,pomp-method
 ##' @rdname kalman
 ##' @export
 setMethod(
@@ -181,9 +178,8 @@ setMethod(
 ## Filter mean: $m_t=M_t+K_t\,(y_t-C\,M_t)$
 ## Updated ensemble: $x_{t}=B\,(X_t-M_t\,\mathbb{1})+m_t\,\mathbb{1}$
 
-##' @name eakf-data.frame
-##' @aliases eakf,data.frame-method
 ##' @rdname kalman
+##' @aliases eakf
 ##' @export
 setMethod(
   "eakf",
@@ -211,8 +207,6 @@ setMethod(
   }
 )
 
-##' @name eakf-pomp
-##' @aliases eakf,pomp-method
 ##' @rdname kalman
 ##' @export
 setMethod(

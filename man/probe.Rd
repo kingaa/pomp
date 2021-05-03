@@ -5,17 +5,10 @@
 \alias{probe}
 \alias{probe,missing-method}
 \alias{probe,ANY-method}
-\alias{probe-data.frame}
 \alias{probe,data.frame-method}
-\alias{probe-pomp}
 \alias{probe,pomp-method}
-\alias{probe-probed_pomp}
 \alias{probe,probed_pomp-method}
-\alias{probe-probe_match_obfjun}
 \alias{probe,probe_match_objfun-method}
-\alias{coerce-probe_match_objfun-probed_pomp}
-\alias{coerce,probe_match_objfun,probed_pomp-method}
-\alias{probe-objfun}
 \alias{probe,objfun-method}
 \title{Probes (AKA summary statistics)}
 \usage{

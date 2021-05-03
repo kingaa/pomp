@@ -3,7 +3,6 @@
 \docType{methods}
 \name{window}
 \alias{window}
-\alias{window-pomp}
 \alias{window,pomp-method}
 \title{Window}
 \usage{

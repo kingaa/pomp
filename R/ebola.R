@@ -28,8 +28,6 @@
 NULL
 
 ##' @rdname ebola
-##' @aliases ebolaModel
-##'
 ##' @param country ISO symbol for the country (GIN=Guinea, LBR=Liberia, SLE=Sierra Leone).
 ##' @param data if NULL, the situation report data (see \code{ebolaWHO}) for the appropriate country or region will be used.
 ##' Providing a dataset here will override this behavior.
@@ -50,7 +48,6 @@ NULL
 ##'   \deqn{p(R_t, D_t| C_t) = p(R_t | C_t) p(D_t | C_t, R_t).}
 ##' Here, \eqn{p(R_t | C_t)} is negative binomial with mean \eqn{\rho C_t} and dispersion parameter \eqn{1/k};
 ##' \eqn{p(D_t | C_t, R_t)} is binomial with size \eqn{R_t} and probability equal to the case fatality rate \code{cfr}.
-##'
 ##' @export
 ebolaModel <- function (
   country=c("GIN", "LBR", "SLE"),

@@ -11,14 +11,14 @@
 ##'
 ##' @name filter.mean
 ##' @docType methods
-##' @aliases filter.mean filter.mean,ANY-method filter.mean,missing-method
+##' @aliases filter.mean,ANY-method filter.mean,missing-method
 ##' @include pfilter.R kalman.R
 ##' @rdname filter_mean
 ##' @family particle_filter_methods
 ##'
 ##' @param object result of a filtering computation
 ##' @param vars optional character; names of variables
-##' @param \dots ignored
+##' @param ... ignored
 ##'
 NULL
 
@@ -44,8 +44,6 @@ setMethod(
   }
 )
 
-##' @name filter.mean-kalmand_pomp
-##' @aliases filter.mean,kalmand_pomp-method
 ##' @rdname filter_mean
 ##' @export
 setMethod(
@@ -57,8 +55,6 @@ setMethod(
   }
 )
 
-##' @name filter.mean-pfilterd_pomp
-##' @aliases filter.mean,pfilterd_pomp-method
 ##' @rdname filter_mean
 ##' @export
 setMethod(

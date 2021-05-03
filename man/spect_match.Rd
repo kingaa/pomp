@@ -6,13 +6,9 @@
 \alias{spect_objfun}
 \alias{spect_objfun,missing-method}
 \alias{spect_objfun,ANY-method}
-\alias{spect_objfun-data.frame}
 \alias{spect_objfun,data.frame-method}
-\alias{spect_objfun-pomp}
 \alias{spect_objfun,pomp-method}
-\alias{spect_objfun-spectd_pomp}
 \alias{spect_objfun,spectd_pomp-method}
-\alias{spect_objfun-spect_match_objfun}
 \alias{spect_objfun,spect_match_objfun-method}
 \title{Spectrum matching}
 \usage{

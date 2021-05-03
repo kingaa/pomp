@@ -4,7 +4,7 @@
 ##'
 ##' @name forecast
 ##' @rdname forecast
-##' @aliases forecast forecast,missing-method forecast,ANY-method
+##' @aliases forecast,missing-method forecast,ANY-method
 ##' @include kalman.R
 
 setGeneric(
@@ -29,10 +29,8 @@ setMethod(
   }
 )
 
-##' @name forecast-kalmand_pomp
-##' @aliases forecast,kalmand_pomp-method
 ##' @rdname forecast
-##' @inheritParams filter.mean-kalmand_pomp
+##' @inheritParams filter.mean
 ##'
 ##' @export
 setMethod(

@@ -14,7 +14,7 @@
 ##' In particle MCMC (\code{\link{pmcmc}}), the tracking of an individual trajectory is performed automatically.
 ##' 
 ##' @name filter.traj
-##' @aliases filter.traj filter.traj,ANY-method filter.traj,missing-method
+##' @aliases filter.traj,ANY-method filter.traj,missing-method
 ##' @include pfilter.R pmcmc.R
 ##' @rdname filter_traj
 ##' @family particle_filter_methods
@@ -42,10 +42,7 @@ setMethod(
   }
 )
 
-##' @name filter.traj-pfilterd_pomp
-##' @aliases filter.traj,pfilterd_pomp-method
 ##' @rdname filter_traj
-##'
 ##' @export
 setMethod(
   "filter.traj",
@@ -56,8 +53,6 @@ setMethod(
   }
 )
 
-##' @name filter.traj-pfilterList
-##' @aliases filter.traj,pfilterList-method
 ##' @rdname filter_traj
 ##' @export
 setMethod(
@@ -77,8 +72,6 @@ setMethod(
   }
 )
 
-##' @name filter.traj-pmcmcd_pomp
-##' @aliases filter.traj,pmcmcd_pomp-method
 ##' @rdname filter_traj
 ##' @export
 setMethod(
@@ -89,8 +82,6 @@ setMethod(
   }
 )
 
-##' @name filter.traj-pmcmcList
-##' @aliases filter.traj,pmcmcList-method
 ##' @rdname filter_traj
 ##' @export
 setMethod(

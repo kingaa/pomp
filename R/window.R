@@ -11,13 +11,10 @@ NULL
 
 setGeneric("window")
 
-##' @name window-pomp
 ##' @rdname window
-##' @aliases window window,pomp-method
 ##' @param x a \sQuote{pomp} object or object of class extending \sQuote{pomp}
 ##' @param start,end the left and right ends of the window, in units of time
 ##' @param \dots ignored
-##'
 ##' @export
 setMethod(
   "window",

@@ -12,8 +12,8 @@
 ##' @name bsmc2
 ##' @docType methods
 ##' @rdname bsmc2
+##' @aliases bsmc2,missing-method bsmc2,ANY-method
 ##' @include pomp_class.R workhorses.R pomp.R plot.R
-##' @aliases bsmc2 bsmc2,missing-method bsmc2,ANY-method
 ##' @family particle_filter_methods
 ##' @family estimation_methods
 ##'
@@ -91,9 +91,7 @@ setMethod(
   }
 )
 
-##' @name bsmc2-data.frame
 ##' @rdname bsmc2
-##' @aliases bsmc2-data.frame bsmc2,data.frame-method
 ##' @export
 setMethod(
   "bsmc2",
@@ -123,9 +121,7 @@ setMethod(
   }
 )
 
-##' @name bsmc2-pomp
 ##' @rdname bsmc2
-##' @aliases bsmc2-pomp bsmc2,pomp-method
 ##' @export
 setMethod(
   "bsmc2",
@@ -148,13 +144,9 @@ setMethod(
   }
 )
 
-##' @name plot-bsmcd_pomp
-##' @aliases plot,bsmcd_pomp-method
 ##' @rdname plot
-##'
 ##' @param thin integer; when the number of samples is very large, it can be helpful to plot a random subsample:
 ##' \code{thin} specifies the size of this subsample.
-##'
 ##' @export
 setMethod(
   "plot",

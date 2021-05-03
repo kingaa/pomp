@@ -7,8 +7,7 @@
 ##'
 ##' @name probe.match
 ##' @rdname probe_match
-##' @aliases probe.match probe_objfun probe_objfun,missing-method
-##' probe_objfun,ANY-method
+##' @aliases probe_objfun probe_objfun,missing-method probe_objfun,ANY-method
 ##' @include probe.R plot.R
 ##' @author Aaron A. King
 ##' @family summary_stats_methods
@@ -76,8 +75,6 @@ setMethod(
   }
 )
 
-##' @name probe_objfun-data.frame
-##' @aliases probe_objfun,data.frame-method
 ##' @rdname probe_match
 ##' @export
 setMethod(
@@ -111,8 +108,6 @@ setMethod(
   }
 )
 
-##' @name probe_objfun-pomp
-##' @aliases probe_objfun,pomp-method
 ##' @rdname probe_match
 ##' @export
 setMethod(
@@ -140,8 +135,6 @@ setMethod(
   }
 )
 
-##' @name probe_objfun-probed_pomp
-##' @aliases probe_objfun,probed_pomp-method
 ##' @rdname probe_match
 ##' @export
 setMethod(
@@ -169,8 +162,6 @@ setMethod(
   }
 )
 
-##' @name probe_objfun-probe_match_objfun
-##' @aliases probe_objfun,probe_match_objfun-method
 ##' @rdname probe_match
 ##' @export
 setMethod(
@@ -257,15 +248,11 @@ probe.eval <- function (object) {
 
 }
 
-##' @name probe-probe_match_obfjun
 ##' @rdname probe
-##' @aliases probe,probe_match_objfun-method
-##'
 ##' @details
 ##' When \code{probe} operates on a probe-matching objective function (a \sQuote{probe_match_objfun} object), by default, the
 ##' random-number generator seed is fixed at the value given when the objective function was constructed.
 ##' Specifying \code{NULL} or an integer for \code{seed} overrides this behavior.
-##'
 ##' @export
 setMethod(
   "probe",
@@ -285,10 +272,6 @@ setMethod(
   }
 )
 
-##' @name coerce-probe_match_objfun-probed_pomp
-##' @aliases coerce,probe_match_objfun,probed_pomp-method
-##' @rdname probe
-##'
 setAs(
   from="probe_match_objfun",
   to="probed_pomp",
@@ -297,8 +280,6 @@ setAs(
   }
 )
 
-##' @name plot-probe_match_objfun
-##' @aliases plot,probe_match_objfun-method
 ##' @rdname plot
 ##' @export
 setMethod(

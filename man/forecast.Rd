@@ -4,7 +4,6 @@
 \alias{forecast}
 \alias{forecast,missing-method}
 \alias{forecast,ANY-method}
-\alias{forecast-kalmand_pomp}
 \alias{forecast,kalmand_pomp-method}
 \title{Forecast mean}
 \usage{

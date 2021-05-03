@@ -6,12 +6,10 @@
 ##' @rdname parameter_trans
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R pstop.R undefined.R
-##' @aliases parameter_trans parameter_trans,missing,missing-method
+##' @aliases parameter_trans,missing,missing-method
 ##' parameter_trans,ANY,ANY-method parameter_trans,ANY,missing-method
-##' parameter_trans,NULL,NULL-method parameter_trans,function,function-method
-##' parameter_trans,missing,ANY-method parameter_trans,pomp_fun,pomp_fun-method
+##' parameter_trans,NULL,NULL-method parameter_trans,missing,ANY-method
 ##' @family implementation_info
-##'
 ##' @param toEst,fromEst procedures that perform transformation of model parameters to and from the estimation scale, respectively.
 ##' These can be furnished using C snippets, \R functions, or via procedures in an external, dynamically loaded library.
 ##' @param log names of parameters to be log transformed.
@@ -19,9 +17,7 @@
 ##' @param barycentric names of parameters to be collectively transformed according to the log barycentric transformation.
 ##' \strong{Important note:} variables to be log-barycentrically transformed \emph{must be adjacent} in the parameter vector.
 ##' @param \dots ignored.
-##'
 ##' @inheritSection pomp Note for Windows users
-##' 
 ##' @details
 ##' When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans} function.
 ##' As with the other \link[=basic_components]{basic model components}, these should ordinarily be specified using C snippets.
@@ -84,6 +80,7 @@ setMethod(
   }
 )
 
+##' @rdname parameter_trans
 ##' @export
 setGeneric(
   "parameter_trans",
@@ -91,6 +88,7 @@ setGeneric(
     standardGeneric("parameter_trans")
 )
 
+##' @rdname parameter_trans
 ##' @export
 setMethod(
   "parameter_trans",
@@ -100,6 +98,7 @@ setMethod(
   }
 )
 
+##' @rdname parameter_trans
 ##' @export
 setMethod(
   "parameter_trans",
@@ -112,8 +111,6 @@ setMethod(
   }
 )
 
-##' @name parameter_trans-Csnippet,Csnippet
-##' @aliases parameter_trans,Csnippet,Csnippet-method
 ##' @rdname parameter_trans
 ##' @export
 setMethod(
@@ -129,10 +126,6 @@ setMethod(
   }
 )
 
-##' @name parameter_trans-missing,missing
-##' @aliases parameter_trans,missing,missing-method
-##' @rdname parameter_trans
-##' @export
 setMethod(
   "parameter_trans",
   signature=signature(toEst="missing",fromEst="missing"),
@@ -145,8 +138,6 @@ setMethod(
   }
 )
 
-##' @name parameter_trans-character,character
-##' @aliases parameter_trans,character,character-method
 ##' @rdname parameter_trans
 ##' @export
 setMethod(
@@ -157,8 +148,6 @@ setMethod(
   }
 )
 
-##' @name parameter_trans-function,function
-##' @aliases parameter_trans,function,function-method
 ##' @rdname parameter_trans
 ##' @export
 setMethod(
@@ -196,6 +185,8 @@ setMethod(
   }
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature(object="partransPlugin"),

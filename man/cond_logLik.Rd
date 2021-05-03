@@ -5,13 +5,9 @@
 \alias{cond.logLik}
 \alias{cond.logLik,missing-method}
 \alias{cond.logLik,ANY-method}
-\alias{cond.logLik-kalmand_pomp}
 \alias{cond.logLik,kalmand_pomp-method}
-\alias{cond.logLik-pfilterd_pomp}
 \alias{cond.logLik,pfilterd_pomp-method}
-\alias{cond.logLik-wpfilterd_pomp}
 \alias{cond.logLik,wpfilterd_pomp-method}
-\alias{cond.logLik-bsmcd_pomp}
 \alias{cond.logLik,bsmcd_pomp-method}
 \title{Conditional log likelihood}
 \usage{

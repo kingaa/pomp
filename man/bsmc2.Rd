@@ -5,9 +5,7 @@
 \alias{bsmc2}
 \alias{bsmc2,missing-method}
 \alias{bsmc2,ANY-method}
-\alias{bsmc2-data.frame}
 \alias{bsmc2,data.frame-method}
-\alias{bsmc2-pomp}
 \alias{bsmc2,pomp-method}
 \title{The Liu and West Bayesian particle filter}
 \usage{

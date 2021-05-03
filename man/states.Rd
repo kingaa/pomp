@@ -3,7 +3,6 @@
 \docType{methods}
 \name{states}
 \alias{states}
-\alias{states-pomp}
 \alias{states,pomp-method}
 \title{Latent states}
 \usage{

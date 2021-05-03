@@ -25,7 +25,6 @@
 ##' Default parameter values are the MLEs as estimated by Ionides (2011).
 ##'
 ##' @name blowflies
-##' @aliases blowflies
 ##' @docType data
 ##' @family pomp_examples
 ##' @family pomp_datasets

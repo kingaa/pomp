@@ -10,13 +10,11 @@
 ##' @name mif2
 ##' @rdname mif2
 ##' @include pfilter.R workhorses.R pomp_class.R safecall.R continue.R
-##' @aliases mif2 mif2,missing-method mif2,ANY-method
+##' @aliases mif2,missing-method mif2,ANY-method
 ##' @author Aaron A. King, Edward L. Ionides, Dao Nguyen
 ##' @family particle_filter_methods
 ##' @family estimation_methods
-##'
 ##' @importFrom utils head
-##'
 ##' @inheritParams pomp
 ##' @inheritParams pfilter
 ##' @param Nmif The number of filtering iterations to perform.
@@ -120,8 +118,6 @@ setMethod(
   }
 )
 
-##' @name mif2-data.frame
-##' @aliases mif2,data.frame-method
 ##' @rdname mif2
 ##' @export
 setMethod(
@@ -156,8 +152,6 @@ setMethod(
   }
 )
 
-##' @name mif2-pomp
-##' @aliases mif2,pomp-method
 ##' @rdname mif2
 ##' @export
 setMethod(
@@ -185,8 +179,6 @@ setMethod(
   }
 )
 
-##' @name mif2-pfilterd_pomp
-##' @aliases mif2,pfilterd_pomp-method
 ##' @rdname mif2
 ##' @export
 setMethod(
@@ -208,8 +200,6 @@ setMethod(
   }
 )
 
-##' @name mif2-mif2d_pomp
-##' @aliases mif2,mif2d_pomp-method
 ##' @rdname mif2
 ##' @export
 setMethod(
@@ -238,12 +228,8 @@ setMethod(
   }
 )
 
-##' @name continue-mif2d_pomp
-##' @aliases continue,mif2d_pomp-method
 ##' @rdname continue
-##'
 ##' @param Nmif positive integer; number of additional filtering iterations to perform
-##'
 ##' @export
 setMethod(
   "continue",

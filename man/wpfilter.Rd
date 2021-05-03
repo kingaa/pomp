@@ -4,13 +4,8 @@
 \alias{wpfilter}
 \alias{wpfilter,ANY-method}
 \alias{wpfilter,missing-method}
-\alias{wpfilterd_pomp-class}
-\alias{wpfilterd_pomp}
-\alias{wpfilter-data.frame}
 \alias{wpfilter,data.frame-method}
-\alias{wpfilter-pomp}
 \alias{wpfilter,pomp-method}
-\alias{wpfilter-wpfilterd_pomp}
 \alias{wpfilter,wpfilterd_pomp-method}
 \title{Weighted particle filter}
 \usage{

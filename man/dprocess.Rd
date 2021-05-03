@@ -3,10 +3,9 @@
 \docType{methods}
 \name{dprocess}
 \alias{dprocess}
-\alias{dprocess,pomp-method}
-\alias{dprocess-pomp}
 \alias{dprocess,ANY-method}
 \alias{dprocess,missing-method}
+\alias{dprocess,pomp-method}
 \title{dprocess}
 \usage{
 \S4method{dprocess}{pomp}(object, x, times, params, ..., log = FALSE)

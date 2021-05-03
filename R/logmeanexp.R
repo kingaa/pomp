@@ -8,19 +8,14 @@
 ##' variance in \eqn{log(x)}.
 ##'
 ##' @importFrom stats sd
-##'
 ##' @param x numeric
 ##' @param se logical; give approximate standard error?
-##'
 ##' @return
 ##' \code{log(mean(exp(x)))} computed so as to avoid over- or
 ##' underflow.  If \code{se = FALSE}, the approximate standard error is
 ##' returned as well.
-##'
 ##' @author Aaron A. King
-##' 
 ##' @example examples/logmeanexp.R
-##' 
 ##' @export
 logmeanexp <- function (x, se = FALSE) {
   se <- isTRUE(se)

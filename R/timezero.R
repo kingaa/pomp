@@ -5,9 +5,8 @@
 ##' @name timezero
 ##' @rdname timezero
 ##' @docType methods
-##' @aliases timezero timezero<- timezero,missing-method timezero,ANY-method
+##' @aliases timezero<- timezero,missing-method timezero,ANY-method
 ##' timezero<-,missing-method timezero<-,ANY-method
-##'
 ##' @return
 ##' the value of the zero time
 ##'
@@ -25,13 +24,9 @@ setGeneric(
     standardGeneric("timezero<-")
 )
 
-##' @name timezero-pomp
-##' @aliases timezero,pomp-method
 ##' @rdname timezero
-##'
 ##' @param object an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}
 ##' @param \dots ignored
-##'
 ##' @export
 setMethod(
   "timezero",
@@ -39,12 +34,8 @@ setMethod(
   definition = function (object, ...) object@t0
 )
 
-##' @name timezero<--pomp
-##' @aliases timezero<-,pomp-method
 ##' @rdname timezero
-##'
 ##' @param value numeric; the new zero-time value
-##'
 ##' @export
 setMethod(
   "timezero<-",

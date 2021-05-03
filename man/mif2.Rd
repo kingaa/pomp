@@ -4,13 +4,9 @@
 \alias{mif2}
 \alias{mif2,missing-method}
 \alias{mif2,ANY-method}
-\alias{mif2-data.frame}
 \alias{mif2,data.frame-method}
-\alias{mif2-pomp}
 \alias{mif2,pomp-method}
-\alias{mif2-pfilterd_pomp}
 \alias{mif2,pfilterd_pomp-method}
-\alias{mif2-mif2d_pomp}
 \alias{mif2,mif2d_pomp-method}
 \title{Iterated filtering: maximum likelihood by iterated, perturbed Bayes maps}
 \usage{

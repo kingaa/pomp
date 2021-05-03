@@ -4,7 +4,6 @@
 \alias{flow}
 \alias{flow,missing-method}
 \alias{flow,ANY-method}
-\alias{flow-pomp}
 \alias{flow,pomp-method}
 \title{Flow of a deterministic model}
 \usage{

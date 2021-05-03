@@ -3,7 +3,6 @@
 \docType{methods}
 \name{obs}
 \alias{obs}
-\alias{obs-pomp}
 \alias{obs,pomp-method}
 \title{obs}
 \usage{

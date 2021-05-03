@@ -9,7 +9,6 @@
 ##' The index case was a boy who arrived at school from holiday six days before the next case.
 ##'
 ##' @name bsflu
-##' @aliases bsflu
 ##' @rdname bsflu
 ##' @family pomp_datasets
 ##' @family pomp_examples

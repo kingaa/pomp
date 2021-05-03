@@ -4,11 +4,8 @@
 \alias{eff.sample.size}
 \alias{eff.sample.size,missing-method}
 \alias{eff.sample.size,ANY-method}
-\alias{eff.sample.size-bsmcd_pomp}
 \alias{eff.sample.size,bsmcd_pomp-method}
-\alias{eff.sample.size-pfilterd_pomp}
 \alias{eff.sample.size,pfilterd_pomp-method}
-\alias{eff.sample.size-wpfilterd_pomp}
 \alias{eff.sample.size,wpfilterd_pomp-method}
 \title{Effective sample size}
 \usage{

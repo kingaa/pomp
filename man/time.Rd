@@ -4,9 +4,7 @@
 \alias{time}
 \alias{time<-}
 \alias{time,missing-method}
-\alias{time-pomp}
 \alias{time,pomp-method}
-\alias{time<--pomp}
 \alias{time<-,pomp-method}
 \title{Methods to manipulate the obseration times}
 \usage{

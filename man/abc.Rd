@@ -3,11 +3,9 @@
 \docType{methods}
 \name{abc}
 \alias{abc}
-\alias{abc,ANY-method}
 \alias{abc,missing-method}
-\alias{abc-data.frame}
+\alias{abc,ANY-method}
 \alias{abc,data.frame-method}
-\alias{abc-pomp}
 \alias{abc,pomp-method}
 \alias{abc,probed_pomp-method}
 \alias{abc,abcd_pomp-method}

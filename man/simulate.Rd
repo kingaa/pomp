@@ -3,13 +3,10 @@
 \docType{methods}
 \name{simulate}
 \alias{simulate}
-\alias{simulate-missing}
-\alias{simulate,missing-method}
-\alias{simulate-data.frame}
-\alias{simulate,data.frame-method}
 \alias{simulate-pomp}
+\alias{simulate,missing-method}
+\alias{simulate,data.frame-method}
 \alias{simulate,pomp-method}
-\alias{simulate-objfun}
 \alias{simulate,objfun-method}
 \title{Simulations of a partially-observed Markov process}
 \usage{

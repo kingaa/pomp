@@ -3,10 +3,9 @@
 \docType{methods}
 \name{dmeasure}
 \alias{dmeasure}
-\alias{dmeasure,pomp-method}
-\alias{dmeasure-pomp}
 \alias{dmeasure,ANY-method}
 \alias{dmeasure,missing-method}
+\alias{dmeasure,pomp-method}
 \title{dmeasure}
 \usage{
 \S4method{dmeasure}{pomp}(object, y, x, times, params, ..., log = FALSE)

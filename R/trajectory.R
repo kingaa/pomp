@@ -12,7 +12,7 @@
 ##' @name trajectory
 ##' @rdname trajectory
 ##' @include workhorses.R pomp_class.R flow.R
-##' @aliases trajectory trajectory,missing-method trajectory,ANY-method
+##' @aliases trajectory,missing-method trajectory,ANY-method
 ##' @family elementary_algorithms
 ##'
 ##' @importFrom deSolve ode diagnostics
@@ -62,8 +62,6 @@ setMethod(
   }
 )
 
-##' @name trajectory-pomp
-##' @aliases trajectory,pomp-method
 ##' @rdname trajectory
 ##' @export
 setMethod(

@@ -4,13 +4,9 @@
 \alias{pmcmc}
 \alias{pmcmc,ANY-method}
 \alias{pmcmc,missing-method}
-\alias{pmcmc-data.frame}
 \alias{pmcmc,data.frame-method}
-\alias{pmcmc-pomp}
 \alias{pmcmc,pomp-method}
-\alias{pmcmc-pfilterd_pomp}
 \alias{pmcmc,pfilterd_pomp-method}
-\alias{pmcmc-pmcmcd_pomp}
 \alias{pmcmc,pmcmcd_pomp-method}
 \title{The particle Markov chain Metropolis-Hastings algorithm}
 \usage{

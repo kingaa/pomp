@@ -3,8 +3,8 @@
 ##' The approximate Bayesian computation (ABC) algorithm for estimating the parameters of a partially-observed Markov process.
 ##'
 ##' @name abc
-##' @aliases abc abc,ANY-method abc,missing-method
 ##' @rdname abc
+##' @aliases abc,missing-method abc,ANY-method
 ##' @docType methods
 ##' @include pomp_class.R probe.R continue.R workhorses.R
 ##' @importFrom stats runif
@@ -104,8 +104,6 @@ setMethod(
   }
 )
 
-##' @name abc-data.frame
-##' @aliases abc,data.frame-method
 ##' @rdname abc
 ##' @export
 setMethod(
@@ -122,7 +120,7 @@ setMethod(
         data,
         Nabc=Nabc,
         proposal=proposal,
-         scale=scale,
+        scale=scale,
         epsilon=epsilon,
         probes=probes,
         params=params,
@@ -139,8 +137,6 @@ setMethod(
   }
 )
 
-##' @name abc-pomp
-##' @aliases abc,pomp-method
 ##' @rdname abc
 ##' @export
 setMethod(
@@ -218,12 +214,8 @@ setMethod(
   }
 )
 
-##' @name continue-abcd_pomp
-##' @aliases continue,abcd_pomp-method
 ##' @rdname continue
-##'
 ##' @param Nabc positive integer; number of additional ABC iterations to perform
-##'
 ##' @export
 setMethod(
   "continue",

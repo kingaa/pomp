@@ -93,6 +93,8 @@ setClass(
   )
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature(object="skelPlugin"),
@@ -101,6 +103,8 @@ setMethod(
   }
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature(object="vectorfieldPlugin"),
@@ -110,6 +114,8 @@ setMethod(
   }
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature(object="mapPlugin"),
@@ -130,21 +136,17 @@ skel_plugin <- function (object, skel.fn) {
   }
 }
 
-##' @name vectorfield
 ##' @rdname skeleton_spec
 ##' @param f procedure for evaluating the deterministic skeleton
 ##' This can be a C snippet, an \R function, or the name of a native routine in a dynamically linked library.
 ##' @export
-##'
 vectorfield <- function (f) {
   new("vectorfieldPlugin",skel.fn=f)
 }
 
-##' @name map
 ##' @rdname skeleton_spec
 ##' @param delta.t positive numerical value; the size of the discrete time step corresponding to an application of the map
 ##' @export
-##'
 map <- function (f, delta.t = 1) {
   if (!isTRUE(length(delta.t)==1 && is.finite(delta.t) && delta.t > 0))
     pStop("map",sQuote("delta.t")," must be a positive number.")

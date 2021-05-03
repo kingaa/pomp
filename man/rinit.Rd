@@ -3,10 +3,9 @@
 \docType{methods}
 \name{rinit}
 \alias{rinit}
-\alias{rinit,pomp-method}
-\alias{rinit-pomp}
 \alias{rinit,ANY-method}
 \alias{rinit,missing-method}
+\alias{rinit,pomp-method}
 \title{rinit}
 \usage{
 \S4method{rinit}{pomp}(object, params, t0, nsim = 1, ...)

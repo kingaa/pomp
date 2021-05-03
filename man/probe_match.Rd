@@ -5,13 +5,9 @@
 \alias{probe_objfun}
 \alias{probe_objfun,missing-method}
 \alias{probe_objfun,ANY-method}
-\alias{probe_objfun-data.frame}
 \alias{probe_objfun,data.frame-method}
-\alias{probe_objfun-pomp}
 \alias{probe_objfun,pomp-method}
-\alias{probe_objfun-probed_pomp}
 \alias{probe_objfun,probed_pomp-method}
-\alias{probe_objfun-probe_match_objfun}
 \alias{probe_objfun,probe_match_objfun-method}
 \title{Probe matching}
 \usage{

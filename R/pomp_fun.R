@@ -178,6 +178,8 @@ setMethod(
   definition=function (f, ...) f
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature("pomp_fun"),

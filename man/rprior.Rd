@@ -3,10 +3,9 @@
 \docType{methods}
 \name{rprior}
 \alias{rprior}
-\alias{rprior,pomp-method}
-\alias{rprior-pomp}
 \alias{rprior,ANY-method}
 \alias{rprior,missing-method}
+\alias{rprior,pomp-method}
 \title{rprior}
 \usage{
 \S4method{rprior}{pomp}(object, params, ...)

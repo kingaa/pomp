@@ -3,10 +3,9 @@
 \docType{methods}
 \name{dprior}
 \alias{dprior}
-\alias{dprior,pomp-method}
-\alias{dprior-pomp}
 \alias{dprior,ANY-method}
 \alias{dprior,missing-method}
+\alias{dprior,pomp-method}
 \title{dprior}
 \usage{
 \S4method{dprior}{pomp}(object, params, ..., log = FALSE)

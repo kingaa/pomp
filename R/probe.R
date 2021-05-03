@@ -18,7 +18,7 @@
 ##' @name probe
 ##' @docType methods
 ##' @rdname probe
-##' @aliases probe probe,missing-method probe,ANY-method
+##' @aliases probe,missing-method probe,ANY-method
 ##' @author Daniel C. Reuman, Aaron A. King
 ##' @family elementary_algorithms
 ##' @family summary_stats_methods
@@ -103,8 +103,6 @@ setMethod(
   }
 )
 
-##' @name probe-data.frame
-##' @aliases probe,data.frame-method
 ##' @rdname probe
 ##' @export
 setMethod(
@@ -126,8 +124,6 @@ setMethod(
   }
 )
 
-##' @name probe-pomp
-##' @aliases probe,pomp-method
 ##' @rdname probe
 ##' @export
 setMethod(
@@ -147,8 +143,6 @@ setMethod(
   }
 )
 
-##' @name probe-probed_pomp
-##' @aliases probe,probed_pomp-method
 ##' @rdname probe
 ##' @export
 setMethod(
@@ -257,9 +251,9 @@ probe.internal <- function (object, probes, nsim, seed, ...,
   )
 }
 
-##' @name summary-probed_pomp
-##' @aliases summary,probed_pomp-method
 ##' @rdname summary
+##' @include summary.R
+##' @export
 setMethod(
   "summary",
   signature=signature(object="probed_pomp"),

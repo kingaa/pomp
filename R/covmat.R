@@ -3,7 +3,7 @@
 ##' A helper function to extract a covariance matrix.
 ##'
 ##' @name covmat
-##' @aliases covmat covmat,missing-method covmat,ANY-method
+##' @aliases covmat,missing-method covmat,ANY-method
 ##' @include pmcmc.R abc.R probe.R
 ##' @rdname covmat
 ##'
@@ -16,22 +16,17 @@ setGeneric(
     standardGeneric("covmat")
 )
 
-##' @name covmat-pmcmcd_pomp
-##' @aliases covmat,pmcmcd_pomp-method
 ##' @rdname covmat
-##'
 ##' @param object an object extending \sQuote{pomp}
 ##' @param start the first iteration number to be used in estimating the covariance matrix.
 ##' Setting \code{thin > 1} allows for a burn-in period.
 ##' @param thin factor by which the chains are to be thinned
 ##' @param expand the expansion factor
 ##' @param \dots ignored
-##'
 ##' @return
 ##' When \code{object} is the result of a \code{pmcmc} or \code{abc} computation,
 ##' \code{covmat(object)} gives the covariance matrix of the chains.
 ##' This can be useful, for example, in tuning the proposal distribution.
-##'
 ##' @export
 setMethod(
   "covmat",
@@ -42,8 +37,6 @@ setMethod(
       start=start,thin=thin,expand=expand)
   })
 
-##' @name covmat-pmcmcList
-##' @aliases covmat,pmcmcList-method
 ##' @rdname covmat
 ##' @export
 setMethod(
@@ -56,8 +49,6 @@ setMethod(
       start=start,thin=thin,expand=expand)
   })
 
-##' @name covmat-abcd_pomp
-##' @aliases covmat,abcd_pomp-method
 ##' @rdname covmat
 ##' @export
 setMethod(
@@ -69,10 +60,7 @@ setMethod(
       start=start,thin=thin,expand=expand)
   })
 
-##' @name covmat-abcList
-##' @aliases covmat,abcList-method
 ##' @rdname covmat
-##'
 ##' @export
 setMethod(
   "covmat",
@@ -84,16 +72,12 @@ setMethod(
       start=start,thin=thin,expand=expand)
   })
 
-##' @name covmat-probed_pomp
-##' @aliases covmat,probed_pomp-method
 ##' @rdname covmat
 ##' @importFrom stats var
-##'
 ##' @return
 ##' When \code{object} is a \sQuote{probed_pomp} object (i.e., the result
 ##' of a \code{probe} computation), \code{covmat(object)} returns the
 ##' covariance matrix of the probes, as applied to simulated data.
-##'
 ##' @export
 setMethod(
   "covmat",

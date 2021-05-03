@@ -24,9 +24,7 @@ setClassUnion(
   )
 )
 
-##' @name coef-objfun
 ##' @rdname coef
-##' @aliases coef,objfun-method
 ##' @export
 setMethod(
   "coef",
@@ -36,9 +34,7 @@ setMethod(
   }
 )
 
-##' @name summary-objfun
 ##' @rdname summary
-##' @aliases summary,objfun-method
 ##' @export
 setMethod(
   "summary",
@@ -48,10 +44,6 @@ setMethod(
   }
 )
 
-##' @name coerce-objfun-pomp
-##' @aliases coerce,objfun,pomp-method
-##' @rdname as_pomp
-##'
 setAs(
   from="objfun",
   to="pomp",
@@ -60,10 +52,6 @@ setAs(
   }
 )
 
-##' @name coerce-objfun-data.frame
-##' @aliases coerce,objfun,data.frame-method
-##' @rdname as_data_frame
-##'
 setAs(
   from="objfun",
   to="data.frame",
@@ -72,8 +60,6 @@ setAs(
   }
 )
 
-##' @name simulate-objfun
-##' @aliases simulate,objfun-method
 ##' @rdname simulate
 ##' @export
 setMethod(
@@ -84,8 +70,6 @@ setMethod(
   }
 )
 
-##' @name probe-objfun
-##' @aliases probe,objfun-method
 ##' @rdname probe
 ##' @export
 setMethod(
@@ -96,8 +80,6 @@ setMethod(
   }
 )
 
-##' @name pfilter-objfun
-##' @aliases pfilter,objfun-method
 ##' @rdname pfilter
 ##' @export
 setMethod(
@@ -108,8 +90,6 @@ setMethod(
   }
 )
 
-##' @name spect-objfun
-##' @aliases spect,objfun-method
 ##' @rdname spect
 ##' @export
 setMethod(

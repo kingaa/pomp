@@ -6,20 +6,6 @@
 ##' @rdname show
 ##' @docType methods
 ##' @keywords internal
-##'
-##' @aliases show,unshowable-method show,listie-method show,pomp_fun-method
-##' show,pomp-method show,abcd_pomp-method
-##' show,bsmcd_pomp-method show,kalmand_pomp-method show,mif2d_pomp-method
-##' show,nlfd_pomp-method show,pfilterd_pomp-method show,pmcmcd_pomp-method
-##' show,probed_pomp-method show,spectd_pomp-method
-##' show,rprocPlugin-method
-##' show,discreteRprocPlugin-method show,eulerRprocPlugin-method
-##' show,gillespieRprocPlugin-method show,onestepRprocPlugin-method
-##' show,skelPlugin-method
-##' show,mapPlugin-method show,vectorfieldPlugin-method
-##' show,partransPlugin-method
-##' show,covartable-method
-##'
 ##' @include pomp_class.R abc.R bsmc2.R kalman.R mif2.R nlf.R pfilter.R
 ##' @include pmcmc.R probe.R spect.R
 ##' @include probe_match.R traj_match.R spect_match.R
@@ -30,6 +16,7 @@ setClassUnion("unshowable",members=c("pomp","abcd_pomp","bsmcd_pomp",
   "probed_pomp","spectd_pomp","probe_match_objfun","spect_match_objfun",
   "nlf_objfun","traj_match_objfun"))
 
+##' @rdname show
 ##' @export
 setMethod(
   "show",
@@ -40,6 +27,7 @@ setMethod(
   }
 )
 
+##' @rdname show
 ##' @export
 setMethod(
   "show",
@@ -51,6 +39,8 @@ setMethod(
   }
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature(object="rprocPlugin"),
@@ -59,6 +49,8 @@ setMethod(
   }
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature(object="onestepRprocPlugin"),
@@ -69,6 +61,8 @@ setMethod(
   }
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature(object="discreteRprocPlugin"),
@@ -80,6 +74,8 @@ setMethod(
   }
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature(object="eulerRprocPlugin"),
@@ -91,6 +87,8 @@ setMethod(
   }
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature(object="gillespieRprocPlugin"),

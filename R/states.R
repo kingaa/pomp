@@ -16,11 +16,8 @@ setGeneric(
     standardGeneric("states")
 )
 
-##' @name states-pomp
-##' @aliases states states,pomp-method
 ##' @rdname states
 ##' @inheritParams obs
-##'
 ##' @export
 setMethod(
   "states",

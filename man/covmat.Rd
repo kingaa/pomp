@@ -4,15 +4,10 @@
 \alias{covmat}
 \alias{covmat,missing-method}
 \alias{covmat,ANY-method}
-\alias{covmat-pmcmcd_pomp}
 \alias{covmat,pmcmcd_pomp-method}
-\alias{covmat-pmcmcList}
 \alias{covmat,pmcmcList-method}
-\alias{covmat-abcd_pomp}
 \alias{covmat,abcd_pomp-method}
-\alias{covmat-abcList}
 \alias{covmat,abcList-method}
-\alias{covmat-probed_pomp}
 \alias{covmat,probed_pomp-method}
 \title{Estimate a covariance matrix from algorithm traces}
 \usage{

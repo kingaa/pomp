@@ -5,23 +5,14 @@
 \alias{logLik,ANY-method}
 \alias{logLik,missing-method}
 \alias{logLik,listie-method}
-\alias{logLik-pfilterd_pomp}
 \alias{logLik,pfilterd_pomp-method}
-\alias{logLik-wpfilterd_pomp}
 \alias{logLik,wpfilterd_pomp-method}
-\alias{logLik-probed_pomp}
 \alias{logLik,probed_pomp-method}
-\alias{logLik-kalmand_pomp}
 \alias{logLik,kalmand_pomp-method}
-\alias{logLik-pmcmcd_pomp}
 \alias{logLik,pmcmcd_pomp-method}
-\alias{logLik-bsmcd_pomp}
 \alias{logLik,bsmcd_pomp-method}
-\alias{logLik-objfun}
 \alias{logLik,objfun-method}
-\alias{logLik-spect_match_objfun}
 \alias{logLik,spect_match_objfun-method}
-\alias{logLik-nlf_objfun}
 \alias{logLik,nlf_objfun-method}
 \title{Log likelihood}
 \usage{

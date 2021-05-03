@@ -5,17 +5,10 @@
 \alias{spect}
 \alias{spect,missing-method}
 \alias{spect,ANY-method}
-\alias{spect-data.frame}
 \alias{spect,data.frame-method}
-\alias{spect-pomp}
 \alias{spect,pomp-method}
-\alias{spect-spectd_pomp}
 \alias{spect,spectd_pomp-method}
-\alias{spect-spect_match_objfun}
 \alias{spect,spect_match_objfun-method}
-\alias{coerce-spect_match_objfun-spectd_pomp}
-\alias{coerce,spect_match_objfun,spectd_pomp-method}
-\alias{spect-objfun}
 \alias{spect,objfun-method}
 \title{Power spectrum}
 \usage{

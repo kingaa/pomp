@@ -30,12 +30,8 @@ setMethod(
   }
 )
 
-##' @name traces-mif2d_pomp
-##' @aliases traces,mif2d_pomp-method
 ##' @rdname traces
-##'
 ##' @importFrom coda mcmc mcmc.list
-##'
 ##' @param object an object of class extending \sQuote{pomp}, the result of the application of a parameter estimation algorithm
 ##' @param pars names of parameters
 ##' @param transform logical; should the traces be transformed back onto the natural scale?
@@ -56,8 +52,6 @@ setMethod(
   }
 )
 
-##' @name traces-mif2List
-##' @aliases traces,mif2List-method traces-Mif2 traces,Mif2-method
 ##' @rdname traces
 ##' @export
 setMethod(
@@ -68,8 +62,6 @@ setMethod(
   }
 )
 
-##' @name traces-abcd_pomp
-##' @aliases traces,abcd_pomp-method
 ##' @rdname traces
 ##' @return
 ##' When \code{object} is a \sQuote{abcd_pomp}, \code{traces(object)}
@@ -84,8 +76,6 @@ setMethod(
   }
 )
 
-##' @name traces-abcList
-##' @aliases traces,abcList-method traces-Abc traces,Abc-method
 ##' @rdname traces
 ##' @return
 ##' When \code{object} is a \sQuote{abcList}, \code{traces(object)}
@@ -99,8 +89,6 @@ setMethod(
   }
 )
 
-##' @name traces-pmcmcd_pomp
-##' @aliases traces,pmcmcd_pomp-method
 ##' @rdname traces
 ##' @return
 ##' When \code{object} is a \sQuote{pmcmcd_pomp}, \code{traces(object)}
@@ -117,8 +105,6 @@ setMethod(
   }
 )
 
-##' @name traces-pmcmcList
-##' @aliases traces,pmcmcList-method traces-Pmcmc traces,Pmcmc-method
 ##' @rdname traces
 ##' @return
 ##' When \code{object} is a \sQuote{pmcmcList}, \code{traces(object)}

@@ -14,7 +14,7 @@
 ##' @docType methods
 ##' @rdname cond_logLik
 ##' @include pomp_class.R kalman.R pfilter.R wpfilter.R
-##' @aliases cond.logLik cond.logLik,missing-method cond.logLik,ANY-method
+##' @aliases cond.logLik,missing-method cond.logLik,ANY-method
 ##' @family particle_filter_methods
 ##' @inheritParams filter.mean
 ##'
@@ -45,8 +45,6 @@ setMethod(
   }
 )
 
-##' @name cond.logLik-kalmand_pomp
-##' @aliases cond.logLik,kalmand_pomp-method
 ##' @rdname cond_logLik
 ##' @export
 setMethod(
@@ -55,8 +53,6 @@ setMethod(
   definition=function(object,...)object@cond.logLik
 )
 
-##' @name cond.logLik-pfilterd_pomp
-##' @aliases cond.logLik,pfilterd_pomp-method
 ##' @rdname cond_logLik
 ##' @export
 setMethod(
@@ -65,8 +61,6 @@ setMethod(
   definition=function(object,...)object@cond.logLik
 )
 
-##' @name cond.logLik-wpfilterd_pomp
-##' @aliases cond.logLik,wpfilterd_pomp-method
 ##' @rdname cond_logLik
 ##' @export
 setMethod(
@@ -75,25 +69,12 @@ setMethod(
   definition=function(object,...)object@cond.logLik
 )
 
-##' @name cond.logLik-bsmcd_pomp
-##' @aliases cond.logLik,bsmcd_pomp-method
 ##' @rdname cond_logLik
-##'
 ##' @return
 ##' When \code{object} is of class \sQuote{bsmcd_pomp} (i.e., the result of a \code{bsmc2} computation), \code{cond.logLik} returns the conditional log \dQuote{evidence} (see \code{\link{bsmc2}}).
-##'
 ##' @export
 setMethod(
   "cond.logLik",
   signature=signature(object="bsmcd_pomp"),
   definition=function(object,...)object@cond.log.evidence
 )
-
-##' @name cond.loglik
-##' @aliases cond.loglik
-##' @rdname deprecated
-##' @export
-cond.loglik <- function (...) {
-  .Deprecated("cond.logLik",package="pomp")
-  cond.logLik(...)
-}

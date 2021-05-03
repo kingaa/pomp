@@ -12,8 +12,7 @@
 ##'
 ##' @name covariate_table
 ##' @rdname covariate_table
-##' @aliases covariate_table covariate_table,missing-method
-##' covariate_table,ANY-method
+##' @aliases covariate_table,missing-method covariate_table,ANY-method
 ##' @include pomp_class.R pstop.R
 ##' @family implementation_info
 ##' @seealso lookup
@@ -52,6 +51,8 @@ setGeneric(
     standardGeneric("covariate_table")
 )
 
+##' @rdname show
+##' @export
 setMethod(
   "show",
   signature=signature(object="covartable"),
@@ -87,9 +88,7 @@ setMethod(
 )
 
 ##' @rdname covariate_table
-##' @aliases covariate_table-numeric,covariate_table,numeric-method
 ##' @export
-##'
 setMethod(
   "covariate_table",
   signature=signature(times="numeric"),
@@ -107,9 +106,7 @@ setMethod(
 )
 
 ##' @rdname covariate_table
-##' @aliases covariate_table-character,covariate_table,character-method
 ##' @export
-##'
 setMethod(
   "covariate_table",
   signature=signature(times="character"),

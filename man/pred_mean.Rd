@@ -4,9 +4,7 @@
 \alias{pred.mean}
 \alias{pred.mean,ANY-method}
 \alias{pred.mean,missing-method}
-\alias{pred.mean-kalmand_pomp}
 \alias{pred.mean,kalmand_pomp-method}
-\alias{pred.mean-pfilterd_pomp}
 \alias{pred.mean,pfilterd_pomp-method}
 \title{Prediction mean}
 \usage{

@@ -5,9 +5,7 @@
 \alias{covariate_table,missing-method}
 \alias{covariate_table,ANY-method}
 \alias{covariate_table,numeric-method}
-\alias{covariate_table-numeric,covariate_table,numeric-method}
 \alias{covariate_table,character-method}
-\alias{covariate_table-character,covariate_table,character-method}
 \title{Covariates}
 \usage{
 \S4method{covariate_table}{numeric}(..., order = c("linear", "constant"), times)
