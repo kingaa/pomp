@@ -99,8 +99,9 @@ theta["sigma"] <- 0.2
 po %>%
   pfilter(Np=100,params=theta) %>%
   mif2(Nmif=3,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),cooling.fraction.50=0.5) %>%
-  mif2() %>% continue(Nmif=3,cooling.fraction.50=0.1) %>%
-  plot()
+  mif2() %>% continue(Nmif=3,cooling.fraction.50=0.1) -> mf
+mf %>%
+  plot(pars=c("X_0","sigma"),transform=TRUE)
 
 capture.output(
   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),

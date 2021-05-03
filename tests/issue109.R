@@ -1,4 +1,5 @@
 library(pomp)
+set.seed(964484044)
 sir_step <- Csnippet("
   double dN_SI = rbinom(S,1-exp(-exp(Beta)*(I/10000)*dt));
   double dN_IR = rbinom(I,1-exp(-exp(mu_IR)*dt));

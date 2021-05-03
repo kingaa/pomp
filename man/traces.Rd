@@ -47,10 +47,9 @@
 }
 \value{
 When \code{object} is the result of a \code{\link{mif2}} calculation,
-\code{traces(object, pars, transform = FALSE)} returns the traces of the parameters named in \code{pars}.
+\code{traces(object, pars)} returns the traces of the parameters named in \code{pars}.
 By default, the traces of all parameters are returned.
-Note that, if the computation was performed with transformed parameters, the traces are on the estimation scale.
-If \code{transform=TRUE}, the parameters are transformed from the estimation scale onto the natural scale.
+If \code{transform=TRUE}, the parameters are transformed from the natural scale to the estimation scale.
 
 When \code{object} is a \sQuote{abcd_pomp}, \code{traces(object)}
 extracts the traces as a \code{coda::mcmc}.

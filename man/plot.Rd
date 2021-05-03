@@ -33,7 +33,7 @@
 \alias{plot,probe_match_objfun-method}
 \alias{plot-spect_match_objfun}
 \alias{plot,spect_match_objfun-method}
-\title{Plotting}
+\title{pomp plotting facilities}
 \usage{
 \S4method{plot}{pomp_plottable}(
   x,
@@ -51,7 +51,7 @@
 
 \S4method{plot}{Abc}(x, ..., pars, scatter = FALSE)
 
-\S4method{plot}{Mif2}(x, y, ...)
+\S4method{plot}{Mif2}(x, ..., pars, transform = FALSE)
 
 \S4method{plot}{probed_pomp}(x, y, ...)
 
@@ -95,6 +95,8 @@ Modify with care!}
 
 \item{scatter}{logical; if \code{FALSE}, traces of the parameters named in \code{pars} will be plotted against ABC iteration number.
 If \code{TRUE}, the traces will be displayed or as a scatterplot.}
+
+\item{transform}{logical; should the parameter be transformed onto the estimation scale?}
 
 \item{y}{ignored}
 

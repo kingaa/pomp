@@ -87,20 +87,20 @@ setMethod(
 
 ##' @name plot-Mif2
 ##' @aliases plot,Mif2-method plot,mif2d_pomp-method plot,mif2List-method
+##' @param transform logical; should the parameter be transformed onto the estimation scale?
 ##' @rdname plot
-##' @param y ignored
-##'
 ##' @export
 setMethod(
   "plot",
   signature=signature(x="Mif2"),
-  definition=function (x, ...) {
-    mif2.diagnostics(x)
+  definition=function (x, ..., pars, transform = FALSE) {
+    mif2.diagnostics(x,pars,transform=as.logical(transform))
   }
 )
 
 ##' @name plot-probed_pomp
 ##' @aliases plot,probed_pomp-method
+##' @param y ignored
 ##' @rdname plot
 ##' @export
 setMethod(
@@ -287,14 +287,13 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
   invisible(NULL)
 }
 
-mif2.diagnostics <- function (z) {
+mif2.diagnostics <- function (z, pars, transform) {
   if (!is.list(z)) z <- list(z)
   ## assumes that z is a list of mif2d_pomps with identical structure
   mar.multi <- c(0,5.1,0,2.1)
   oma.multi <- c(6,0,5,0)
   xx <- z[[1]]
-  parnames <- names(coef(xx,transform=TRUE))
-  estnames <- parnames
+  estnames <- names(coef(xx,pars=pars,transform=transform))
 
   ## plot ESS and cond.logLik
   nplots <- 2
@@ -345,9 +344,17 @@ mif2.diagnostics <- function (z) {
     hi <- min(low+n.per.page-1,nplots)
     for (i in seq(from=low,to=hi,by=1)) {
       n <- i-low+1
-      dat <- sapply(z,function(po,label) traces(po,label),label=plotnames[i])
       matplot(
-        y=dat,
+        y=sapply(
+          z,
+          function (po, label) {
+            traces(
+              po,label,
+              transform=(transform && label %in% estnames)
+            )
+          },
+          label=plotnames[i]
+        ),
         x=iteration,
         axes = FALSE,
         xlab = "",
