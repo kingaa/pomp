@@ -4,6 +4,8 @@
 ##' The contents of the resulting data frame depend on the nature of the object.
 ##'
 ##' @name as.data.frame
+##' @docType methods
+##' @keywords internal
 ##' @rdname as_data_frame
 ##' @include pomp_class.R pfilter.R bsmc2.R mif2.R pmcmc.R abc.R wpfilter.R
 ##' @include probe.R kalman.R
