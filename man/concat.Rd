@@ -2,6 +2,7 @@
 % Please edit documentation in R/concat.R
 \name{concat}
 \alias{concat}
+\alias{c}
 \alias{concat,Pomp-method}
 \alias{concat,Pfilter-method}
 \alias{concat,Abc-method}

@@ -87,7 +87,7 @@ binary: dist
 	$(RCMD) INSTALL --build --library=plib --preclean --clean $(PKGVERS).tar.gz
 	rm -rf plib
 
-publish: dist manual news
+publish: dist manual news htmlhelp
 	$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).tar.gz",repodir="$(REPODIR)",action="prune")'
 	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).tgz",repodir="$(REPODIR)",action="prune")'
 	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).zip",repodir="$(REPODIR)",action="prune")'

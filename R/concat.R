@@ -4,6 +4,7 @@
 ##'
 ##' @name concat
 ##' @rdname concat
+##' @aliases c
 ##' @include listie.R
 ##' @importFrom stats setNames
 ##' @keywords internal
