@@ -8,7 +8,7 @@
 ##'
 ##' @name Csnippet
 ##' @rdname csnippet
-##' @include pomp-package.R
+##' @include package.R
 ##' @family implementation_info
 ##'
 ##' @section Note to Windows and Mac users:

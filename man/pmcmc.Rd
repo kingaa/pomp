@@ -147,10 +147,10 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{estimation_algorithms}},
 \code{\link{kalman}},
 \code{\link{mif2}()},
-\code{\link{nlf}},
+\code{\link{nonlinear_forecasting}},
 \code{\link{pomp-package}},
-\code{\link{probe.match}},
-\code{\link{spect.match}}
+\code{\link{probe_matching}},
+\code{\link{spectrum_matching}}
 }
 \author{
 Edward L. Ionides, Aaron A. King, Sebastian Funk

@@ -7,7 +7,7 @@
 ##' \code{spect_objfun} constructs an objective function that measures the discrepancy.
 ##' It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 ##'
-##' @name spect.match
+##' @name spectrum_matching
 ##' @docType methods
 ##' @rdname spect_match
 ##' @family estimation_methods
@@ -23,7 +23,7 @@
 ##' \code{weights} can be specified either as a vector (which must have length equal to the number of frequencies) or as a function of frequency.
 ##' If the latter, \code{weights(freq)} must return a nonnegative weight for each frequency.
 ##'
-##' @inheritParams probe.match
+##' @inheritParams probe_matching
 ##' @inheritParams spect
 ##' @inheritParams pomp
 ##'

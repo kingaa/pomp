@@ -159,7 +159,7 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 
 More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{basic_probes}},
-\code{\link{probe.match}},
+\code{\link{probe_matching}},
 \code{\link{probe}()},
 \code{\link{spect}()}
 
@@ -168,11 +168,11 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{estimation_algorithms}},
 \code{\link{kalman}},
 \code{\link{mif2}()},
-\code{\link{nlf}},
+\code{\link{nonlinear_forecasting}},
 \code{\link{pmcmc}()},
 \code{\link{pomp-package}},
-\code{\link{probe.match}},
-\code{\link{spect.match}}
+\code{\link{probe_matching}},
+\code{\link{spectrum_matching}}
 }
 \author{
 Edward L. Ionides, Aaron A. King

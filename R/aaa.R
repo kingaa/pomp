@@ -1,4 +1,4 @@
-##' @include pomp-package.R
+##' @include package.R
 
 .onAttach <- function (...) {
   msg <- "

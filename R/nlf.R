@@ -13,7 +13,7 @@
 ##'
 ##' NLF assumes that the observation frequency (equivalently the time between successive observations) is uniform.
 ##'
-##' @name nlf
+##' @name nonlinear_forecasting
 ##' @rdname nlf
 ##' @include pomp.R simulate.R probe_match.R
 ##'
@@ -91,7 +91,7 @@
 ##'
 ##' @example examples/nlf.R
 ##'
-##' @inheritParams probe.match
+##' @inheritParams probe_matching
 ##' @inheritParams pomp
 ##'
 NULL

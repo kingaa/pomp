@@ -152,7 +152,7 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{abc}()},
 \code{\link{basic_probes}},
-\code{\link{probe.match}},
+\code{\link{probe_matching}},
 \code{\link{probe}()}
 
 More on \pkg{pomp} elementary algorithms: 

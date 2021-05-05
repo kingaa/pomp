@@ -5,7 +5,7 @@
 ##' In probe-matching, one attempts to minimize the discrepancy between simulated and actual data, as measured by a set of summary statistics called \emph{probes}.
 ##' In \pkg{pomp}, this discrepancy is measured using the \dQuote{synthetic likelihood} as defined by Wood (2010).
 ##'
-##' @name probe.match
+##' @name probe_matching
 ##' @rdname probe_match
 ##' @aliases probe_objfun probe_objfun,missing-method probe_objfun,ANY-method
 ##' @include probe.R plot.R

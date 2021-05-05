@@ -119,11 +119,11 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{bsmc2}()},
 \code{\link{estimation_algorithms}},
 \code{\link{mif2}()},
-\code{\link{nlf}},
+\code{\link{nonlinear_forecasting}},
 \code{\link{pmcmc}()},
 \code{\link{pomp-package}},
-\code{\link{probe.match}},
-\code{\link{spect.match}}
+\code{\link{probe_matching}},
+\code{\link{spectrum_matching}}
 }
 \author{
 Aaron A. King

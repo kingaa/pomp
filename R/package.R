@@ -9,7 +9,7 @@
 ##' inference methods for \acronym{POMP} models can be implemented.
 ##'
 ##' @name pomp-package
-##' @aliases pomp,package pomp-package
+##' @aliases pomp,package
 ##' @docType package
 ##' @author Aaron A. King
 ##' @family implementation_info
@@ -29,17 +29,17 @@
 ##' of Ionides et al. (2006, 2011, 2015); see \code{\link{mif2}}.
 ##' \item The
 ##' nonlinear forecasting algorithm of Kendall et al. (2005); see
-##' \code{\link{nlf}}.
+##' \link{nonlinear_forecasting}.
 ##' \item The particle MCMC approach of Andrieu et al. (2010); see \code{\link{pmcmc}}.
-##' \item The probe-matching method of Kendall et al. (1999, 2005); see \code{\link{probe.match}}.
+##' \item The probe-matching method of Kendall et al. (1999, 2005); see \link{probe_matching}.
 ##' \item A spectral probe-matching method (Reuman et al. 2006, 2008); see
-##' \code{\link{spect.match}}.
+##' \link{spectrum_matching}.
 ##' \item Synthetic likelihood a la Wood (2010); see \code{\link{probe}}.
 ##' \item Approximate Bayesian computation (Toni et al. 2009); see \code{\link{abc}}.
 ##' \item The approximate Bayesian sequential
 ##' Monte Carlo scheme of Liu & West (2001); see \code{\link{bsmc2}}.
 ##' \item Ensemble and ensemble adjusted Kalman filters; see \code{\link{kalman}}.
-##' \item Simple trajectory matching; see \code{\link{traj.match}}.
+##' \item Simple trajectory matching; see \link{trajectory_matching}.
 ##' }
 ##' The package also provides various tools for plotting and extracting information on models and data.
 ##'
