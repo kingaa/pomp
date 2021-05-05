@@ -21,7 +21,7 @@ Interpolate values from a lookup table
 A warning will be generated if extrapolation is performed.
 }
 \seealso{
-covariate_table
+\code{\link{covariate_table}}
 }
 \concept{interpolation}
 \keyword{internal}

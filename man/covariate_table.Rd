@@ -38,7 +38,7 @@ covariate-dependent priors are not allowed.
 Nor are parameter transformations permitted to depend upon covariates.
 }
 \seealso{
-lookup
+\code{\link{lookup}}
 
 More on implementing POMP models: 
 \code{\link{Csnippet}},
