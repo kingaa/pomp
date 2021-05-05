@@ -48,12 +48,22 @@ numerical value of the log likelihood.
 Note that some methods compute not the log likelihood itself but instead a related quantity.
 To keep the code simple, the \code{logLik} function is nevertheless used to extract this quantity.
 
-When \code{object} is of \sQuote{probed_pomp} class (i.e., the result of a \code{probe} computation), \code{logLik} retrieves the \dQuote{synthetic likelihood} (see \code{\link{probe}}).
+When \code{object} is of \sQuote{pfilterd_pomp} class (i.e., the result of a \code{wpfilter} computation), \code{logLik} retrieves the estimated log likelihood.
 
-When \code{object} is of \sQuote{bsmcd_pomp} class (i.e., the result of a \code{bsmc2} computation), \code{logLik} retrieves the \dQuote{log evidence} (see \code{\link{bsmc2}}).
+When \code{object} is of \sQuote{wpfilterd_pomp} class (i.e., the result of a \code{wpfilter} computation), \code{logLik} retrieves the estimated log likelihood.
 
-When \code{object} is an NLF objective function, i.e., the result of a call to \code{nlf_objfun},
-\code{logLik} retrieves the \dQuote{quasi log likelihood} (see \code{\link{nlf}}).
+When \code{object} is of \sQuote{probed_pomp} class (i.e., the result of a \code{\link{probe}} computation), \code{logLik} retrieves the \dQuote{synthetic likelihood}.
+
+When \code{object} is of \sQuote{kalmand_pomp} class (i.e., the result of an \code{\link{eakf}} or \code{\link{enkf}} computation), \code{logLik} retrieves the estimated log likelihood.
+
+When \code{object} is of \sQuote{pmcmcd_pomp} class (i.e., the result of a \code{\link{pmcmc}} computation), \code{logLik} retrieves the estimated log likelihood as of the last particle filter operation.
+
+When \code{object} is of \sQuote{bsmcd_pomp} class (i.e., the result of a \code{\link{bsmc2}} computation), \code{logLik} retrieves the \dQuote{log evidence}.
+
+When \code{object} is of \sQuote{spect_match_objfun} class (i.e., an objective function constructed by \code{\link{spect_objfun}}), \code{logLik} retrieves minus the spectrum mismatch.
+
+When \code{object} is an NLF objective function, i.e., the result of a call to \code{\link{nlf_objfun}},
+\code{logLik} retrieves the \dQuote{quasi log likelihood}.
 }
 \description{
 Extract the estimated log likelihood (or related quantity) from a fitted model.

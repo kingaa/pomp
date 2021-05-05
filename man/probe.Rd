@@ -5,6 +5,7 @@
 \alias{probe}
 \alias{probe,missing-method}
 \alias{probe,ANY-method}
+\alias{synthetic_likelihood}
 \alias{probe,data.frame-method}
 \alias{probe,pomp-method}
 \alias{probe,probed_pomp-method}

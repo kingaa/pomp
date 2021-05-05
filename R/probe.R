@@ -18,7 +18,7 @@
 ##' @name probe
 ##' @docType methods
 ##' @rdname probe
-##' @aliases probe,missing-method probe,ANY-method
+##' @aliases probe,missing-method probe,ANY-method synthetic_likelihood
 ##' @author Daniel C. Reuman, Aaron A. King
 ##' @family elementary_algorithms
 ##' @family summary_stats_methods
