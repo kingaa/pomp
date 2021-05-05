@@ -70,12 +70,22 @@ logLik(object, ...)
 Note that some methods compute not the log likelihood itself but instead a related quantity.
 To keep the code simple, the <code>logLik</code> function is nevertheless used to extract this quantity.
 </p>
-<p>When <code>object</code> is of &lsquo;probed_pomp&rsquo; class (i.e., the result of a <code>probe</code> computation), <code>logLik</code> retrieves the &ldquo;synthetic likelihood&rdquo; (see <code><a href="probe.html">probe</a></code>).
+<p>When <code>object</code> is of &lsquo;pfilterd_pomp&rsquo; class (i.e., the result of a <code>wpfilter</code> computation), <code>logLik</code> retrieves the estimated log likelihood.
 </p>
-<p>When <code>object</code> is of &lsquo;bsmcd_pomp&rsquo; class (i.e., the result of a <code>bsmc2</code> computation), <code>logLik</code> retrieves the &ldquo;log evidence&rdquo; (see <code><a href="bsmc2.html">bsmc2</a></code>).
+<p>When <code>object</code> is of &lsquo;wpfilterd_pomp&rsquo; class (i.e., the result of a <code>wpfilter</code> computation), <code>logLik</code> retrieves the estimated log likelihood.
 </p>
-<p>When <code>object</code> is an NLF objective function, i.e., the result of a call to <code>nlf_objfun</code>,
-<code>logLik</code> retrieves the &ldquo;quasi log likelihood&rdquo; (see <code><a href="nlf.html">nlf</a></code>).
+<p>When <code>object</code> is of &lsquo;probed_pomp&rsquo; class (i.e., the result of a <code><a href="probe.html">probe</a></code> computation), <code>logLik</code> retrieves the &ldquo;synthetic likelihood&rdquo;.
+</p>
+<p>When <code>object</code> is of &lsquo;kalmand_pomp&rsquo; class (i.e., the result of an <code><a href="kalman.html">eakf</a></code> or <code><a href="kalman.html">enkf</a></code> computation), <code>logLik</code> retrieves the estimated log likelihood.
+</p>
+<p>When <code>object</code> is of &lsquo;pmcmcd_pomp&rsquo; class (i.e., the result of a <code><a href="pmcmc.html">pmcmc</a></code> computation), <code>logLik</code> retrieves the estimated log likelihood as of the last particle filter operation.
+</p>
+<p>When <code>object</code> is of &lsquo;bsmcd_pomp&rsquo; class (i.e., the result of a <code><a href="bsmc2.html">bsmc2</a></code> computation), <code>logLik</code> retrieves the &ldquo;log evidence&rdquo;.
+</p>
+<p>When <code>object</code> is of &lsquo;spect_match_objfun&rsquo; class (i.e., an objective function constructed by <code><a href="spect_match.html">spect_objfun</a></code>), <code>logLik</code> retrieves minus the spectrum mismatch.
+</p>
+<p>When <code>object</code> is an NLF objective function, i.e., the result of a call to <code><a href="nlf.html">nlf_objfun</a></code>,
+<code>logLik</code> retrieves the &ldquo;quasi log likelihood&rdquo;.
 </p>
 
 <hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.3.2.0 <a href="00Index.html">Index</a>]</div>
