@@ -35,7 +35,7 @@ We can implement a simulator for the aforementioned measurement model so: \prefo
       setNames(y,c("y1","y2"))
    }}
 So far, so good, but how do we get \code{theta} to this function?
-We simply provide an additional argument to whichever \pkg{pomp} algorithm we are employing (e.g., \code{\link[=simulate-pomp]{simulate}}, \code{\link{pfilter}}, \code{\link{mif2}}, \code{\link{abc}}, etc.).
+We simply provide an additional argument to whichever \pkg{pomp} algorithm we are employing (e.g., \code{\link{simulate}}, \code{\link{pfilter}}, \code{\link{mif2}}, \code{\link{abc}}, etc.).
 For example:
 \preformatted{
     simulate(..., rmeasure = f, theta = 42, ...)

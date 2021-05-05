@@ -5,7 +5,7 @@
 ##' 
 ##' There are six elementary algorithms in \pkg{pomp}:
 ##' \itemize{
-##' \item \code{\link[=simulate-pomp]{simulate}} which simulates from the joint distribution of latent and observed variables,
+##' \item \code{\link{simulate}} which simulates from the joint distribution of latent and observed variables,
 ##' \item \code{\link{pfilter}}, which performs a simple particle filter operation,
 ##' \item \code{\link{wpfilter}}, which performs a weighted particle filter operation,
 ##' \item \code{\link{probe}}, which computes a suite of user-specified summary statistics to actual and simulated data,

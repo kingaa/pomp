@@ -32,7 +32,7 @@
 ##' @param nsim number of model simulations to be computed.
 ##' @param seed optional; if non-\code{NULL}, the random number generator will
 ##' be initialized with this seed for simulations.
-##' See \code{\link[=simulate-pomp]{simulate}}.
+##' See \code{\link{simulate}}.
 ##' @param transform.data function; this transformation will be applied to the
 ##' observables prior to estimation of the spectrum, and prior to any
 ##' detrending.

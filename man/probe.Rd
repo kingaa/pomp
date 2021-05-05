@@ -63,7 +63,7 @@ see \link[=basic_probes]{basic probes}.}
 
 \item{seed}{optional integer;
 if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
-See \code{\link[=simulate-pomp]{simulate}}.}
+See \code{\link{simulate}}.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -105,7 +105,7 @@ generalized method-of-moments approach to parameter estimation.
 
 A call to \code{probe} results in the evaluation of the probe(s) in
 \code{probes} on the data.  Additionally, \code{nsim} simulated data sets
-are generated (via a call to \code{\link[=simulate-pomp]{simulate}}) and
+are generated (via a call to \code{\link{simulate}}) and
 the probe(s) are applied to each of these.  The results of the probe
 computations on real and simulated data are stored in an object of class
 \sQuote{probed_pomp}.

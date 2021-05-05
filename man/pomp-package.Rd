@@ -19,7 +19,7 @@ inference methods for \acronym{POMP} models can be implemented.
 \pkg{pomp} provides algorithms for:
 \enumerate{
 \item Simulation of stochastic
-dynamical systems; see \code{\link[=simulate-pomp]{simulate}}.
+dynamical systems; see \code{\link{simulate}}.
 \item
 Particle filtering (AKA sequential Monte Carlo or sequential importance
 sampling); see \code{\link{pfilter}} and \code{\link{wpfilter}}.

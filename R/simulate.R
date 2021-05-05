@@ -4,7 +4,6 @@
 ##' processes.
 ##'
 ##' @name simulate
-##' @aliases simulate-pomp
 ##' @docType methods
 ##' @rdname simulate
 ##' @include workhorses.R pomp_class.R pomp.R

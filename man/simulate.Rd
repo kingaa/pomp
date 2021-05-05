@@ -3,7 +3,6 @@
 \docType{methods}
 \name{simulate}
 \alias{simulate}
-\alias{simulate-pomp}
 \alias{simulate,missing-method}
 \alias{simulate,data.frame-method}
 \alias{simulate,pomp-method}
