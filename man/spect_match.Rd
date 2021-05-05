@@ -178,8 +178,6 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 \examples{
 \donttest{
 
-  library(magrittr)
-
   ricker() \%>\%
     spect_objfun(
       est=c("r","sigma","N_0"),

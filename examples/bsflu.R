@@ -1,4 +1,3 @@
-library(magrittr)
 library(tidyr)
 library(ggplot2)
 

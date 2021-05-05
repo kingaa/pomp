@@ -1,7 +1,5 @@
 \donttest{
 
-  library(magrittr)
-
   ricker() %>%
     traj_objfun(
       est=c("r","sigma","N_0"),

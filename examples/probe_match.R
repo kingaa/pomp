@@ -1,6 +1,4 @@
 \donttest{
-  library(magrittr)
-
   gompertz() -> po
   
   ## A list of probes:
@@ -25,10 +23,15 @@
 
   ## Call the objective one last time on the optimal parameters:
   f(out$par)
+  coef(f)
 
   ## There are 'plot' and 'summary' methods:
   f %>% as("probed_pomp") %>% plot()
   f %>% summary()
+
+  ## One can convert an objective function to a data frame:
+  f %>% as("data.frame") %>% head()
+  f %>% as("probed_pomp") %>% as("data.frame") %>% head()
 
   f %>% probe() %>% plot()
 
@@ -36,4 +39,7 @@
   ## to 'probe_objfun':
 
   f %>% probe_objfun(est=c("r","K")) -> f1
+  subplex(fn=f1,par=c(0.3,0.3),control=list(reltol=1e-5)) -> out
+  f1(out$par)
+  coef(f1)
 }
