@@ -223,8 +223,6 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 
 <pre>
 
-  library(magrittr)
-
   gompertz() -&gt; po
   
   ## A list of probes:
@@ -249,10 +247,15 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 
   ## Call the objective one last time on the optimal parameters:
   f(out$par)
+  coef(f)
 
   ## There are 'plot' and 'summary' methods:
   f %&gt;% as("probed_pomp") %&gt;% plot()
   f %&gt;% summary()
+
+  ## One can convert an objective function to a data frame:
+  f %&gt;% as("data.frame") %&gt;% head()
+  f %&gt;% as("probed_pomp") %&gt;% as("data.frame") %&gt;% head()
 
   f %&gt;% probe() %&gt;% plot()
 
@@ -260,8 +263,11 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
   ## to 'probe_objfun':
 
   f %&gt;% probe_objfun(est=c("r","K")) -&gt; f1
+  subplex(fn=f1,par=c(0.3,0.3),control=list(reltol=1e-5)) -&gt; out
+  f1(out$par)
+  coef(f1)
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.3.1.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.3.2.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
