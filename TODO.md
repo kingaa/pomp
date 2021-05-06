@@ -27,7 +27,6 @@
 	- what would the corresponding `dprocess` be?
 - Kalman filter?
 
-- `melt` for listies
 - `coef` returns data frame in some circumstances?
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?

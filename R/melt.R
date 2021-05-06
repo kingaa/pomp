@@ -19,3 +19,15 @@ setMethod(
     melt(as(data,"data.frame"),...)
   }
 )
+
+##' @rdname melt
+##' @include listie.R
+##' @inheritParams melt,pomp-method
+##' @export
+setMethod(
+  "melt",
+  signature=signature(data="listie"),
+  definition=function (data, ...) {
+    melt(as(data,"data.frame"),...)
+  }
+)

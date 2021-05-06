@@ -5,9 +5,12 @@
 \alias{reexports}
 \alias{melt}
 \alias{melt,pomp-method}
+\alias{melt,listie-method}
 \title{Objects exported from other packages}
 \usage{
 \S4method{melt}{pomp}(data, ..., na.rm = FALSE, value.name = "value")
+
+\S4method{melt}{listie}(data, ..., na.rm = FALSE, value.name = "value")
 }
 \arguments{
 \item{data}{Data set to melt}

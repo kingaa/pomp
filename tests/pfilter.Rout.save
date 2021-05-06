@@ -166,6 +166,16 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 > c(A=pf1,B=pf2) %>% saved.states() %>% melt() %>% sapply(class)
    variable         rep       value          L2          L1 
    "factor"   "integer"   "numeric" "character" "character" 
+> c(A=pf1,B=pf2) %>% as.data.frame() %>% sapply(class)
+          time             y1             y2            ess    cond.logLik 
+     "numeric"      "numeric"      "numeric"      "numeric"      "numeric" 
+           .id   pred.mean.x1   pred.mean.x2    pred.var.x1    pred.var.x2 
+   "character"      "numeric"      "numeric"      "numeric"      "numeric" 
+filter.mean.x1 filter.mean.x2 
+     "numeric"      "numeric" 
+> c(A=pf1,B=pf2) %>% melt(id=c("time",".id")) %>% sapply(class)
+       time         .id    variable       value 
+  "numeric" "character"    "factor"   "numeric" 
 > names(as(pf2,"data.frame"))
  [1] "time"           "y1"             "y2"             "ess"           
  [5] "cond.logLik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   
