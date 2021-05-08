@@ -2,7 +2,7 @@ language: r
 cache: packages
 latex: false
 pandoc: false
-warnings_are_errors: false
+warnings_are_errors: true
 
 r_packages:
   - roxygen2

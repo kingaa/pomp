@@ -4,7 +4,7 @@
 ##'
 ##' @name abc
 ##' @rdname abc
-##' @aliases abc,missing-method abc,ANY-method
+##' @aliases approximate_Bayesian_computation abc,missing-method abc,ANY-method
 ##' @docType methods
 ##' @include pomp_class.R probe.R continue.R workhorses.R
 ##' @importFrom stats runif

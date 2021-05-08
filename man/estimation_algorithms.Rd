@@ -9,9 +9,9 @@
 \item \link[=mif2]{iterated filtering (IF2)}
 \item \link[=pmcmc]{particle Markov chain Monte Carlo (PMCMC)}
 \item \link[=abc]{approximate Bayesian computation (ABC)}
-\item \link[=probe.match]{probe-matching via synthetic likelihood}
-\item \link[=nlf]{nonlinear forecasting}
-\item \link[=spect.match]{power-spectrum matching}
+\item \link[=probe_matching]{probe-matching via synthetic likelihood}
+\item \link[=nonlinear_forecasting]{nonlinear forecasting}
+\item \link[=spectrum_matching]{power-spectrum matching}
 \item \link[=bsmc2]{Liu-West Bayesian sequential Monte Carlo}
 \item \link[=kalman]{Ensemble and ensemble-adjusted Kalman filters}
 }

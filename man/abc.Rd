@@ -3,6 +3,7 @@
 \docType{methods}
 \name{abc}
 \alias{abc}
+\alias{approximate_Bayesian_computation}
 \alias{abc,missing-method}
 \alias{abc,ANY-method}
 \alias{abc,data.frame-method}

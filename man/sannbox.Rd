@@ -73,7 +73,7 @@ default, \code{lower=-Inf} and \code{upper=Inf}, i.e., there are no
 constraints.} }
 }
 \seealso{
-\code{\link{traj.match}}, \code{\link{probe.match}}.
+\link{trajectory_matching}, \link{probe_matching}.
 }
 \author{
 Daniel Reuman, Aaron A. King

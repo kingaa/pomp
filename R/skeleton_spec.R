@@ -13,7 +13,7 @@
 ##' @details
 ##' The skeleton is a dynamical system that expresses the central tendency of the unobserved Markov state process.
 ##' As such, it is not uniquely defined, but can be both interesting in itself and useful in practice.
-##' In \pkg{pomp}, the skeleton is used by \code{\link{trajectory}} and \code{\link{traj.match}}.
+##' In \pkg{pomp}, the skeleton is used by \code{\link{trajectory}} and \code{\link{traj_objfun}}.
 ##' 
 ##' If the state process is a discrete-time stochastic process, then the skeleton is a discrete-time map.
 ##' To specify it, provide \preformatted{
