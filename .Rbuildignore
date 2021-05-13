@@ -27,3 +27,4 @@ www
 ^(.+?)\.tgz
 ^(.+?)\.zip
 hub_cov\.R
+covr.html

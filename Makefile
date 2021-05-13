@@ -93,6 +93,12 @@ publish: dist manual news htmlhelp
 	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).zip",repodir="$(REPODIR)",action="prune")'
 	$(CP) $(PKG).pdf ../www/manuals
 
+rhub:
+	$(REXE) -e 'library(rhub); check_with_sanitizers(); check_on_windows();'
+
+covr:
+	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; report(cov,file="covr.html",browse=TRUE);'
+
 win: dist
 	curl -T $(PKGVERS).tar.gz ftp://win-builder.r-project.org/R-release/
 
