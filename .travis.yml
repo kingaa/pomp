@@ -1,5 +1,4 @@
 language: r
-cache: packages
 latex: false
 pandoc: false
 warnings_are_errors: true
@@ -23,6 +22,17 @@ stages:
   if: tag IS blank
 - name: deploy
   if: tag IS present
+
+cache: 
+  - packages
+  - directories: 
+      - externalobjects
+      - $HOME/Library/Caches/Homebrew
+      - /usr/local/Homebrew
+
+before_cache:
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew cleanup; fi
+  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then find /usr/local/Homebrew \! -regex ".+\.git.+" -delete; fi
 
 jobs:
   include:
