@@ -1,12 +1,3 @@
-language: r
-latex: false
-pandoc: false
-warnings_are_errors: true
-
-r_packages:
-  - roxygen2
-  - nloptr
-
 addons:
   apt:
     packages:
@@ -14,26 +5,12 @@ addons:
   homebrew:
     packages:
     - libgit2
-
-stages:
-- name: test
-  if: tag IS blank
-- name: coverage
-  if: tag IS blank
-- name: deploy
-  if: tag IS present
-
 cache: 
   - packages
   - directories: 
       - externalobjects
       - $HOME/Library/Caches/Homebrew
-      - /usr/local/Homebrew
-
-before_cache:
-  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew cleanup; fi
-  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then find /usr/local/Homebrew \! -regex ".+\.git.+" -delete; fi
-
+      - /usr/local/Cellar
 jobs:
   include:
   - r: release
@@ -69,3 +46,18 @@ jobs:
       skip_cleanup: true
       on:
         tags: true
+language: r
+latex: false
+pandoc: false
+r_packages:
+  - roxygen2
+  - nloptr
+stages:
+- name: test
+  if: tag IS blank
+- name: coverage
+  if: tag IS blank
+- name: deploy
+  if: tag IS present
+warnings_are_errors: true
+
