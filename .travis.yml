@@ -1,6 +1,7 @@
 language: r
 latex: false
 pandoc: false
+cache: packages
 warnings_are_errors: true
 
 r_packages:
@@ -23,13 +24,6 @@ stages:
 - name: deploy
   if: tag IS present
 
-cache: 
-  - packages
-  - directories: 
-      - externalobjects
-      - $HOME/Library/Caches/Homebrew
-      - /usr/local/Cellar
-
 jobs:
   include:
   - r: release
@@ -41,6 +35,11 @@ jobs:
   - r: release
     os: osx
     osx_image: xcode12.2
+    cache: 
+      - directories: 
+        - externalobjects
+        - $HOME/Library/Caches/Homebrew
+        - /usr/local/Cellar
   - stage: coverage
     r: release
     os: linux
