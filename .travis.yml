@@ -35,11 +35,13 @@ jobs:
   - r: release
     os: osx
     osx_image: xcode12.2
-    cache: 
+    cache:
+      - packages
       - directories: 
         - externalobjects
         - $HOME/Library/Caches/Homebrew
         - /usr/local/Cellar
+	- /usr/local/gfortran
   - stage: coverage
     r: release
     os: linux
