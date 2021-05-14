@@ -41,7 +41,7 @@ jobs:
         - externalobjects
         - $HOME/Library/Caches/Homebrew
         - /usr/local/Cellar
-	- /usr/local/gfortran
+        - /usr/local/gfortran
   - stage: coverage
     r: release
     os: linux
