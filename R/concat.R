@@ -19,7 +19,7 @@ setGeneric(
 setMethod(
   "concat",
   signature=signature(...="missing"),
-  definition=function(...) {
+  definition=function (...) {
     NULL   #nocov
   }
 )
@@ -27,7 +27,7 @@ setMethod(
 setMethod(
   "concat",
   signature=signature(...="ANY"),
-  definition=function(...) {
+  definition=function (...) {
     pStop_(sQuote("c")," is not defined for objects of mixed class.")
   }
 )

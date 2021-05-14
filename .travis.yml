@@ -42,6 +42,7 @@ jobs:
         - $HOME/Library/Caches/Homebrew
         - /usr/local/Cellar
         - /usr/local/gfortran
+        - $HOME/R
   - stage: coverage
     r: release
     os: linux
