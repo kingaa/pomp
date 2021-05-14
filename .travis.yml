@@ -1,7 +1,6 @@
 language: r
 latex: false
 pandoc: false
-cache: packages
 warnings_are_errors: true
 
 r_packages:
@@ -28,15 +27,17 @@ jobs:
   include:
   - r: release
     os: linux
+    cache: packages
   - r: devel
     os: linux
+    cache: packages
   - r: 4.0.0
     os: linux
+    cache: packages
   - r: release
     os: osx
     osx_image: xcode12.2
     cache:
-      - packages
       - directories: 
         - externalobjects
         - $HOME/Library/Caches/Homebrew
@@ -50,10 +51,18 @@ jobs:
     - covr
     script:
     - travis_wait 30 Rscript -e 'covr::codecov(type=c("tests","examples"))'
+    cache: packages
   - stage: deploy
     r: release
     os: osx
     osx_image: xcode12.2
+    cache:
+      - directories: 
+        - externalobjects
+        - $HOME/Library/Caches/Homebrew
+        - /usr/local/Cellar
+        - /usr/local/gfortran
+        - $HOME/R
     script:
     - make binary
     deploy:
