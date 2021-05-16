@@ -11,6 +11,7 @@
 	- BetaBinom
 	- BetaNegBinom
 - `spy` methods for derived objects
+- Kalman filter?
 - iterated EnKF
 - for log-barycentric transformations, check that parameters are contiguous
 - more toy models
@@ -25,7 +26,6 @@
 - better scheme for indicating derivatives and maps in C snippets
 - should the default process model be persistence?
 	- what would the corresponding `dprocess` be?
-- Kalman filter?
 
 - `coef` returns data frame in some circumstances?
 - demonstration of Fisher information via `pfilter` on slice designs?
