@@ -25,13 +25,13 @@ stages:
 
 jobs:
   include:
+  - r: 4.0.0
+    os: linux
+    cache: packages
   - r: release
     os: linux
     cache: packages
   - r: devel
-    os: linux
-    cache: packages
-  - r: 4.0.0
     os: linux
     cache: packages
   - r: release
@@ -41,7 +41,7 @@ jobs:
       CACHE_NAME=macos
     cache:
       - directories: 
-	- $HOME/R
+        - $HOME/R
         - externalobjects
         - $HOME/Library/Caches/Homebrew
         - /usr/local/Cellar
@@ -61,7 +61,7 @@ jobs:
       CACHE_NAME=macos
     cache:
       - directories: 
-	- $HOME/R
+        - $HOME/R
         - externalobjects
         - $HOME/Library/Caches/Homebrew
         - /usr/local/Cellar
