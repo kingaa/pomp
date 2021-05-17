@@ -37,8 +37,6 @@ jobs:
   - r: release
     os: osx
     osx_image: xcode12.2
-    env:
-      CACHE_NAME=macos
     cache: packages
   - stage: coverage
     r: release
@@ -52,8 +50,6 @@ jobs:
     r: release
     os: osx
     osx_image: xcode12.2
-    env:
-      CACHE_NAME=macos
     cache:
       - directories: 
         - $HOME/R
