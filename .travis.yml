@@ -41,9 +41,7 @@ jobs:
       CACHE_NAME=macos
     cache:
       - directories: 
-        - $HOME/R
         - externalobjects
-        - $HOME/Library/Caches/Homebrew
         - /usr/local/Cellar
   - stage: coverage
     r: release
