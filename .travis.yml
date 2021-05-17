@@ -39,10 +39,7 @@ jobs:
     osx_image: xcode12.2
     env:
       CACHE_NAME=macos
-    cache:
-      - directories: 
-        - externalobjects
-        - /usr/local/Cellar
+    cache: packages
   - stage: coverage
     r: release
     os: linux
