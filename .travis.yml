@@ -36,7 +36,7 @@ jobs:
     os: osx
     osx_image: xcode12.2
     env:
-    - CACHE_NAME = macos
+    - CACHE_NAME=macos
   - stage: coverage
     r: release
     os: linux
@@ -49,7 +49,7 @@ jobs:
     os: osx
     osx_image: xcode12.2
     env:
-    - CACHE_NAME = macos
+    - CACHE_NAME=macos
     script:
     - make binary
     deploy:
