@@ -37,7 +37,12 @@ jobs:
   - r: release
     os: osx
     osx_image: xcode12.2
-    cache: packages
+    cache:
+      - directories:
+        - externalobjects
+	- $HOME/Library/Caches/Homebrew
+	- /usr/local/Cellar
+      - packages
   - stage: coverage
     r: release
     os: linux
