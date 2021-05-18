@@ -40,8 +40,8 @@ jobs:
     cache:
       - directories:
         - externalobjects
-	- $HOME/Library/Caches/Homebrew
-	- /usr/local/Cellar
+        - $HOME/Library/Caches/Homebrew
+        - /usr/local/Cellar
       - packages
   - stage: coverage
     r: release
