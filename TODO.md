@@ -7,9 +7,6 @@
 	- need examples of objective function methods
 	- `pmcmc` examples
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
-- make R-level functions for various distributions and transformations
-	- BetaBinom
-	- BetaNegBinom
 - `spy` methods for derived objects
 - Kalman filter?
 - iterated EnKF
@@ -22,6 +19,9 @@
     - plotting methods
     - parallelization tools
     - extending the package
+- make R-level functions for various distributions and transformations
+	- BetaBinom
+	- BetaNegBinom
 - remove need to specify paramnames when log,logit,barycentric partrans is given? HOW?
 - better scheme for indicating derivatives and maps in C snippets
 - should the default process model be persistence?
