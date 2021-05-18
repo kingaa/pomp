@@ -2,6 +2,7 @@ language: r
 latex: false
 pandoc: false
 warnings_are_errors: true
+cache: packages
 
 r_packages:
   - roxygen2
@@ -25,24 +26,17 @@ stages:
 
 jobs:
   include:
-  - r: 4.0.0
-    os: linux
-    cache: packages
   - r: release
     os: linux
-    cache: packages
   - r: devel
     os: linux
-    cache: packages
+  - r: 4.0.0
+    os: linux
   - r: release
     os: osx
     osx_image: xcode12.2
-    cache:
-      - directories:
-        - externalobjects
-        - $HOME/Library/Caches/Homebrew
-        - /usr/local/Cellar
-      - packages
+    env:
+    - CACHE_NAME = macos
   - stage: coverage
     r: release
     os: linux
@@ -50,17 +44,12 @@ jobs:
     - covr
     script:
     - travis_wait 30 Rscript -e 'covr::codecov(type=c("tests","examples"))'
-    cache: packages
   - stage: deploy
     r: release
     os: osx
     osx_image: xcode12.2
-    cache:
-      - directories: 
-        - $HOME/R
-        - externalobjects
-        - $HOME/Library/Caches/Homebrew
-        - /usr/local/Cellar
+    env:
+    - CACHE_NAME = macos
     script:
     - make binary
     deploy:
