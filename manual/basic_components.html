@@ -24,35 +24,35 @@ Accordingly, for each such component, there are two basic model components, one 
 </p>
 
 <ol>
-<li> <p><a href="rprocess_spec.html">rprocess</a>, which samples from the latent-state transition distribution,
+<li> <p><a href="../../pomp/help/rprocess_spec.html">rprocess</a>, which samples from the latent-state transition distribution,
 </p>
 </li>
-<li> <p><a href="dprocess_spec.html">dprocess</a>, which evaluates the latent-state transition density,
+<li> <p><a href="../../pomp/help/dprocess_spec.html">dprocess</a>, which evaluates the latent-state transition density,
 </p>
 </li>
-<li> <p><a href="rmeasure_spec.html">rmeasure</a>, which samples from the measurement distribution,
+<li> <p><a href="../../pomp/help/rmeasure_spec.html">rmeasure</a>, which samples from the measurement distribution,
 </p>
 </li>
-<li> <p><a href="dmeasure_spec.html">dmeasure</a>, which evaluates the measurement density,
+<li> <p><a href="../../pomp/help/dmeasure_spec.html">dmeasure</a>, which evaluates the measurement density,
 </p>
 </li>
-<li> <p><a href="prior_spec.html">rprior</a>, which samples from the prior distribution,
+<li> <p><a href="../../pomp/help/prior_spec.html">rprior</a>, which samples from the prior distribution,
 </p>
 </li>
-<li> <p><a href="prior_spec.html">dprior</a>, which evaluates the prior density,
+<li> <p><a href="../../pomp/help/prior_spec.html">dprior</a>, which evaluates the prior density,
 </p>
 </li>
-<li> <p><a href="rinit_spec.html">rinit</a>, which samples from the initial-state distribution,
+<li> <p><a href="../../pomp/help/rinit_spec.html">rinit</a>, which samples from the initial-state distribution,
 </p>
 </li>
-<li> <p><a href="skeleton_spec.html">skeleton</a>, which evaluates the deterministic skeleton,
+<li> <p><a href="../../pomp/help/skeleton_spec.html">skeleton</a>, which evaluates the deterministic skeleton,
 </p>
 </li>
-<li> <p><a href="parameter_trans.html">partrans</a>, which evaluates the forward or inverse parameter transformations.
+<li> <p><a href="../../pomp/help/parameter_trans.html">partrans</a>, which evaluates the forward or inverse parameter transformations.
 </p>
 </li></ol>
 
-<p>Each of these can be set or modified in the <code>pomp</code> constructor function or in any of the <span class="pkg">pomp</span> <a href="elementary_algorithms.html">elementary algorithms</a> or <a href="estimation_algorithms.html">estimation algorithms</a> using an argument that matches the basic model component.
+<p>Each of these can be set or modified in the <code>pomp</code> constructor function or in any of the <span class="pkg">pomp</span> <a href="../../pomp/help/elementary_algorithms.html">elementary algorithms</a> or <a href="../../pomp/help/estimation_algorithms.html">estimation algorithms</a> using an argument that matches the basic model component.
 A basic model component can be unset by passing <code>NULL</code> in the same way.
 </p>
 <p>Help pages detailing each basic model component are provided.
@@ -61,27 +61,27 @@ A basic model component can be unset by passing <code>NULL</code> in the same wa
 
 <h3>See Also</h3>
 
-<p><a href="workhorses.html">workhorse functions</a>,
-<a href="elementary_algorithms.html">elementary algorithms</a>,
-<a href="estimation_algorithms.html">estimation algorithms</a>.
+<p><a href="../../pomp/help/workhorses.html">workhorse functions</a>,
+<a href="../../pomp/help/elementary_algorithms.html">elementary algorithms</a>,
+<a href="../../pomp/help/estimation_algorithms.html">estimation algorithms</a>.
 </p>
 <p>More on implementing POMP models: 
-<code><a href="csnippet.html">Csnippet</a></code>,
-<code><a href="accumulators.html">accumulators</a></code>,
-<code><a href="covariate_table.html">covariate_table</a>()</code>,
-<code><a href="distributions.html">distributions</a></code>,
-<code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
-<code><a href="dprocess_spec.html">dprocess_spec</a></code>,
-<code><a href="parameter_trans.html">parameter_trans</a>()</code>,
-<code><a href="pomp-package.html">pomp-package</a></code>,
-<code><a href="prior_spec.html">prior_spec</a></code>,
-<code><a href="rinit_spec.html">rinit_spec</a></code>,
-<code><a href="rmeasure_spec.html">rmeasure_spec</a></code>,
-<code><a href="rprocess_spec.html">rprocess_spec</a></code>,
-<code><a href="skeleton_spec.html">skeleton_spec</a></code>,
-<code><a href="transformations.html">transformations</a></code>,
-<code><a href="userdata.html">userdata</a></code>
+<code><a href="../../pomp/help/Csnippet.html">Csnippet</a></code>,
+<code><a href="../../pomp/help/accumulators.html">accumulators</a></code>,
+<code><a href="../../pomp/help/covariate_table.html">covariate_table</a>()</code>,
+<code><a href="../../pomp/help/distributions.html">distributions</a></code>,
+<code><a href="../../pomp/help/dmeasure_spec.html">dmeasure_spec</a></code>,
+<code><a href="../../pomp/help/dprocess_spec.html">dprocess_spec</a></code>,
+<code><a href="../../pomp/help/parameter_trans.html">parameter_trans</a>()</code>,
+<code><a href="../../pomp/help/pomp-package.html">pomp-package</a></code>,
+<code><a href="../../pomp/help/prior_spec.html">prior_spec</a></code>,
+<code><a href="../../pomp/help/rinit_spec.html">rinit_spec</a></code>,
+<code><a href="../../pomp/help/rmeasure_spec.html">rmeasure_spec</a></code>,
+<code><a href="../../pomp/help/rprocess_spec.html">rprocess_spec</a></code>,
+<code><a href="../../pomp/help/skeleton_spec.html">skeleton_spec</a></code>,
+<code><a href="../../pomp/help/transformations.html">transformations</a></code>,
+<code><a href="../../pomp/help/userdata.html">userdata</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

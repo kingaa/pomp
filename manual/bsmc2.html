@@ -72,7 +72,7 @@ This will be coerced internally to storage mode <code>double</code>.</p>
 <tr valign="top"><td><code>rprior</code></td>
 <td>
 <p>optional; prior distribution sampler, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information, see <a href="prior_spec.html">?prior_spec</a>.
+For more information, see <a href="../../pomp/help/prior_spec.html">?prior_spec</a>.
 Setting <code>rprior=NULL</code> removes the prior distribution sampler.</p>
 </td></tr>
 <tr valign="top"><td><code>rinit</code></td>
@@ -80,38 +80,38 @@ Setting <code>rprior=NULL</code> removes the prior distribution sampler.</p>
 <p>simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting <code>rinit=NULL</code> sets the initial-state simulator to its default.
-For more information, see <a href="rinit_spec.html">?rinit_spec</a>.</p>
+For more information, see <a href="../../pomp/help/rinit_spec.html">?rinit_spec</a>.</p>
 </td></tr>
 <tr valign="top"><td><code>rprocess</code></td>
 <td>
-<p>simulator of the latent state process, specified using one of the <a href="rprocess_spec.html">rprocess plugins</a>.
+<p>simulator of the latent state process, specified using one of the <a href="../../pomp/help/rprocess_spec.html">rprocess plugins</a>.
 Setting <code>rprocess=NULL</code> removes the latent-state simulator.
-For more information, <a href="rprocess_spec.html">see ?rprocess_spec for the documentation on these plugins</a>.</p>
+For more information, <a href="../../pomp/help/rprocess_spec.html">see ?rprocess_spec for the documentation on these plugins</a>.</p>
 </td></tr>
 <tr valign="top"><td><code>dmeasure</code></td>
 <td>
 <p>evaluator of the measurement model density, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting <code>dmeasure=NULL</code> removes the measurement density evaluator.
-For more information, see <a href="dmeasure_spec.html">?dmeasure_spec</a>.</p>
+For more information, see <a href="../../pomp/help/dmeasure_spec.html">?dmeasure_spec</a>.</p>
 </td></tr>
 <tr valign="top"><td><code>partrans</code></td>
 <td>
-<p>optional parameter transformations, constructed using <code><a href="parameter_trans.html">parameter_trans</a></code>.
+<p>optional parameter transformations, constructed using <code><a href="../../pomp/help/parameter_trans.html">parameter_trans</a></code>.
 </p>
 <p>Many algorithms for parameter estimation search an unconstrained space of parameters.
 When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
-One should supply the <code>partrans</code> argument via a call to <code><a href="parameter_trans.html">parameter_trans</a></code>.
-For more information, see <a href="parameter_trans.html">?parameter_trans</a>.
+One should supply the <code>partrans</code> argument via a call to <code><a href="../../pomp/help/parameter_trans.html">parameter_trans</a></code>.
+For more information, see <a href="../../pomp/help/parameter_trans.html">?parameter_trans</a>.
 Setting <code>partrans=NULL</code> removes the parameter transformations, i.e., sets them to the identity transformation.</p>
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
 <p>additional arguments supply new or modify existing model characteristics or components.
-See <code><a href="pomp.html">pomp</a></code> for a full list of recognized arguments.
+See <code><a href="../../pomp/help/pomp.html">pomp</a></code> for a full list of recognized arguments.
 </p>
-<p>When named arguments not recognized by <code><a href="pomp.html">pomp</a></code> are provided, these are made available to all basic components via the so-called <dfn>userdata</dfn> facility.
+<p>When named arguments not recognized by <code><a href="../../pomp/help/pomp.html">pomp</a></code> are provided, these are made available to all basic components via the so-called <dfn>userdata</dfn> facility.
 This allows the user to pass information to the basic components outside of the usual routes of covariates (<code>covar</code>) and model parameters (<code>params</code>).
-See <a href="userdata.html">?userdata</a> for information on how to use this facility.</p>
+See <a href="../../pomp/help/userdata.html">?userdata</a> for information on how to use this facility.</p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
@@ -138,9 +138,9 @@ The following methods are avaiable:
 </p>
 
 <dl>
-<dt><code><a href="plot.html">plot</a></code></dt><dd><p>produces diagnostic plots</p>
+<dt><code><a href="../../pomp/help/plot,bsmcd_pomp-method.html">plot</a></code></dt><dd><p>produces diagnostic plots</p>
 </dd>
-<dt><code><a href="as_data_frame.html">as.data.frame</a></code></dt><dd><p>puts the prior and posterior samples into a data frame</p>
+<dt><code><a href="../../pomp/help/as.data.frame.html">as.data.frame</a></code></dt><dd><p>puts the prior and posterior samples into a data frame</p>
 </dd>
 </dl>
 
@@ -150,7 +150,7 @@ The following methods are avaiable:
 
 <p>Some Windows users report problems when using C snippets in parallel computations.
 These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
-To circumvent this problem, use the <code>cdir</code> and <code>cfile</code> options <a href="pomp.html">(described here)</a> to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+To circumvent this problem, use the <code>cdir</code> and <code>cfile</code> options <a href="../../pomp/help/pomp.html">(described here)</a> to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
 </p>
 
 
@@ -173,30 +173,30 @@ Springer, New York, 2001.
 <h3>See Also</h3>
 
 <p>More on particle-filter based methods in <span class="pkg">pomp</span>: 
-<code><a href="cond_logLik.html">cond.logLik</a>()</code>,
-<code><a href="eff_sample_size.html">eff.sample.size</a>()</code>,
-<code><a href="filter_mean.html">filter.mean</a>()</code>,
-<code><a href="filter_traj.html">filter.traj</a>()</code>,
-<code><a href="kalman.html">kalman</a></code>,
-<code><a href="mif2.html">mif2</a>()</code>,
-<code><a href="pfilter.html">pfilter</a>()</code>,
-<code><a href="pmcmc.html">pmcmc</a>()</code>,
-<code><a href="pred_mean.html">pred.mean</a>()</code>,
-<code><a href="pred_var.html">pred.var</a>()</code>,
-<code><a href="saved_states.html">saved.states</a>()</code>,
-<code><a href="wpfilter.html">wpfilter</a>()</code>
+<code><a href="../../pomp/help/cond.logLik.html">cond.logLik</a>()</code>,
+<code><a href="../../pomp/help/eff.sample.size.html">eff.sample.size</a>()</code>,
+<code><a href="../../pomp/help/filter.mean.html">filter.mean</a>()</code>,
+<code><a href="../../pomp/help/filter.traj.html">filter.traj</a>()</code>,
+<code><a href="../../pomp/help/kalman.html">kalman</a></code>,
+<code><a href="../../pomp/help/mif2.html">mif2</a>()</code>,
+<code><a href="../../pomp/help/pfilter.html">pfilter</a>()</code>,
+<code><a href="../../pomp/help/pmcmc.html">pmcmc</a>()</code>,
+<code><a href="../../pomp/help/pred.mean.html">pred.mean</a>()</code>,
+<code><a href="../../pomp/help/pred.var.html">pred.var</a>()</code>,
+<code><a href="../../pomp/help/saved.states.html">saved.states</a>()</code>,
+<code><a href="../../pomp/help/wpfilter.html">wpfilter</a>()</code>
 </p>
 <p>More on <span class="pkg">pomp</span> estimation algorithms:
-<code><a href="abc.html">abc</a>()</code>,
-<code><a href="estimation_algorithms.html">estimation_algorithms</a></code>,
-<code><a href="kalman.html">kalman</a></code>,
-<code><a href="mif2.html">mif2</a>()</code>,
-<code><a href="nlf.html">nonlinear_forecasting</a></code>,
-<code><a href="pmcmc.html">pmcmc</a>()</code>,
-<code><a href="pomp-package.html">pomp-package</a></code>,
-<code><a href="probe_match.html">probe_matching</a></code>,
-<code><a href="spect_match.html">spectrum_matching</a></code>
+<code><a href="../../pomp/help/abc.html">abc</a>()</code>,
+<code><a href="../../pomp/help/estimation_algorithms.html">estimation_algorithms</a></code>,
+<code><a href="../../pomp/help/kalman.html">kalman</a></code>,
+<code><a href="../../pomp/help/mif2.html">mif2</a>()</code>,
+<code><a href="../../pomp/help/nonlinear_forecasting.html">nonlinear_forecasting</a></code>,
+<code><a href="../../pomp/help/pmcmc.html">pmcmc</a>()</code>,
+<code><a href="../../pomp/help/pomp-package.html">pomp-package</a></code>,
+<code><a href="../../pomp/help/probe_matching.html">probe_matching</a></code>,
+<code><a href="../../pomp/help/spectrum_matching.html">spectrum_matching</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -15,11 +15,11 @@
 
 <h3>Details</h3>
 
-<p>It can happen that one desires to pass information to one of the <acronym><span class="acronym">POMP</span></acronym> model <dfn>basic components</dfn> (see <a href="pomp.html">here for a definition of this term</a>) outside of the standard routes (i.e., via model parameters or covariates).
+<p>It can happen that one desires to pass information to one of the <acronym><span class="acronym">POMP</span></acronym> model <dfn>basic components</dfn> (see <a href="../../pomp/help/pomp.html">here for a definition of this term</a>) outside of the standard routes (i.e., via model parameters or covariates).
 <span class="pkg">pomp</span> provides facilities for this purpose.
 We refer to the objects one wishes to pass in this way as <dfn>user data</dfn>.
 </p>
-<p>The following will apply to every <a href="basic_components.html">basic model component</a>.
+<p>The following will apply to every <a href="../../pomp/help/basic_components.html">basic model component</a>.
 For the sake of definiteness, however, we'll use the <code>rmeasure</code> component as an example.
 To be even more specific, the measurement model we wish to implement is
 </p>
@@ -55,7 +55,7 @@ Although it would be very easy (and indeed far preferable) to include <code>thet
       setNames(y,c("y1","y2"))
    }</pre>
 <p>So far, so good, but how do we get <code>theta</code> to this function?
-We simply provide an additional argument to whichever <span class="pkg">pomp</span> algorithm we are employing (e.g., <code><a href="simulate.html">simulate</a></code>, <code><a href="pfilter.html">pfilter</a></code>, <code><a href="mif2.html">mif2</a></code>, <code><a href="abc.html">abc</a></code>, etc.).
+We simply provide an additional argument to whichever <span class="pkg">pomp</span> algorithm we are employing (e.g., <code><a href="../../pomp/help/simulate.html">simulate</a></code>, <code><a href="../../pomp/help/pfilter.html">pfilter</a></code>, <code><a href="../../pomp/help/mif2.html">mif2</a></code>, <code><a href="../../pomp/help/abc.html">abc</a></code>, etc.).
 For example:
 </p>
 <pre>
@@ -114,21 +114,21 @@ See the example below.
 <h3>See Also</h3>
 
 <p>More on implementing POMP models: 
-<code><a href="csnippet.html">Csnippet</a></code>,
-<code><a href="accumulators.html">accumulators</a></code>,
-<code><a href="basic_components.html">basic_components</a></code>,
-<code><a href="covariate_table.html">covariate_table</a>()</code>,
-<code><a href="distributions.html">distributions</a></code>,
-<code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
-<code><a href="dprocess_spec.html">dprocess_spec</a></code>,
-<code><a href="parameter_trans.html">parameter_trans</a>()</code>,
-<code><a href="pomp-package.html">pomp-package</a></code>,
-<code><a href="prior_spec.html">prior_spec</a></code>,
-<code><a href="rinit_spec.html">rinit_spec</a></code>,
-<code><a href="rmeasure_spec.html">rmeasure_spec</a></code>,
-<code><a href="rprocess_spec.html">rprocess_spec</a></code>,
-<code><a href="skeleton_spec.html">skeleton_spec</a></code>,
-<code><a href="transformations.html">transformations</a></code>
+<code><a href="../../pomp/help/Csnippet.html">Csnippet</a></code>,
+<code><a href="../../pomp/help/accumulators.html">accumulators</a></code>,
+<code><a href="../../pomp/help/basic_components.html">basic_components</a></code>,
+<code><a href="../../pomp/help/covariate_table.html">covariate_table</a>()</code>,
+<code><a href="../../pomp/help/distributions.html">distributions</a></code>,
+<code><a href="../../pomp/help/dmeasure_spec.html">dmeasure_spec</a></code>,
+<code><a href="../../pomp/help/dprocess_spec.html">dprocess_spec</a></code>,
+<code><a href="../../pomp/help/parameter_trans.html">parameter_trans</a>()</code>,
+<code><a href="../../pomp/help/pomp-package.html">pomp-package</a></code>,
+<code><a href="../../pomp/help/prior_spec.html">prior_spec</a></code>,
+<code><a href="../../pomp/help/rinit_spec.html">rinit_spec</a></code>,
+<code><a href="../../pomp/help/rmeasure_spec.html">rmeasure_spec</a></code>,
+<code><a href="../../pomp/help/rprocess_spec.html">rprocess_spec</a></code>,
+<code><a href="../../pomp/help/skeleton_spec.html">skeleton_spec</a></code>,
+<code><a href="../../pomp/help/transformations.html">transformations</a></code>
 </p>
 
 
@@ -196,5 +196,5 @@ simulate(times=1:100,t0=0,
 ) -&gt; rick3
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

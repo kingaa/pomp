@@ -29,7 +29,7 @@ Then you can furnish
 Specifically, <code>f</code> should compute the <em>log</em> probability density.
 </p>
 <p>Using a C snippet is much preferred, due to its much greater computational efficiency.
-See <code><a href="csnippet.html">Csnippet</a></code> for general rules on writing C snippets.
+See <code><a href="../../pomp/help/Csnippet.html">Csnippet</a></code> for general rules on writing C snippets.
 The goal of a <dfn>dprocess</dfn> C snippet is to fill the variable <code>loglik</code> with the log probability density.
 In the context of such a C snippet, the parameters, and covariates will be defined, as will the times <code>t_1</code> and <code>t_2</code>.
 The state variables at time <code>t_1</code> will have their usual name (see <code>statenames</code>) with a &ldquo;<code>_1</code>&rdquo; appended.
@@ -63,29 +63,29 @@ This functionality is provided only to support future algorithm development.
 
 <p>Some Windows users report problems when using C snippets in parallel computations.
 These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
-To circumvent this problem, use the <code>cdir</code> and <code>cfile</code> options <a href="pomp.html">(described here)</a> to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+To circumvent this problem, use the <code>cdir</code> and <code>cfile</code> options <a href="../../pomp/help/pomp.html">(described here)</a> to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
 </p>
 
 
 <h3>See Also</h3>
 
 <p>More on implementing POMP models: 
-<code><a href="csnippet.html">Csnippet</a></code>,
-<code><a href="accumulators.html">accumulators</a></code>,
-<code><a href="basic_components.html">basic_components</a></code>,
-<code><a href="covariate_table.html">covariate_table</a>()</code>,
-<code><a href="distributions.html">distributions</a></code>,
-<code><a href="dmeasure_spec.html">dmeasure_spec</a></code>,
-<code><a href="parameter_trans.html">parameter_trans</a>()</code>,
-<code><a href="pomp-package.html">pomp-package</a></code>,
-<code><a href="prior_spec.html">prior_spec</a></code>,
-<code><a href="rinit_spec.html">rinit_spec</a></code>,
-<code><a href="rmeasure_spec.html">rmeasure_spec</a></code>,
-<code><a href="rprocess_spec.html">rprocess_spec</a></code>,
-<code><a href="skeleton_spec.html">skeleton_spec</a></code>,
-<code><a href="transformations.html">transformations</a></code>,
-<code><a href="userdata.html">userdata</a></code>
+<code><a href="../../pomp/help/Csnippet.html">Csnippet</a></code>,
+<code><a href="../../pomp/help/accumulators.html">accumulators</a></code>,
+<code><a href="../../pomp/help/basic_components.html">basic_components</a></code>,
+<code><a href="../../pomp/help/covariate_table.html">covariate_table</a>()</code>,
+<code><a href="../../pomp/help/distributions.html">distributions</a></code>,
+<code><a href="../../pomp/help/dmeasure_spec.html">dmeasure_spec</a></code>,
+<code><a href="../../pomp/help/parameter_trans.html">parameter_trans</a>()</code>,
+<code><a href="../../pomp/help/pomp-package.html">pomp-package</a></code>,
+<code><a href="../../pomp/help/prior_spec.html">prior_spec</a></code>,
+<code><a href="../../pomp/help/rinit_spec.html">rinit_spec</a></code>,
+<code><a href="../../pomp/help/rmeasure_spec.html">rmeasure_spec</a></code>,
+<code><a href="../../pomp/help/rprocess_spec.html">rprocess_spec</a></code>,
+<code><a href="../../pomp/help/skeleton_spec.html">skeleton_spec</a></code>,
+<code><a href="../../pomp/help/transformations.html">transformations</a></code>,
+<code><a href="../../pomp/help/userdata.html">userdata</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

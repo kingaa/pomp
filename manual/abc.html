@@ -81,7 +81,7 @@ i.e., the output of another <span class="pkg">pomp</span> calculation.</p>
 distribution.  Currently, the proposal distribution must be symmetric for
 proper inference: it is the user's responsibility to ensure that it is.
 Several functions that construct appropriate proposal function are
-provided: see <a href="proposals.html">MCMC proposals</a> for more information.</p>
+provided: see <a href="../../pomp/help/proposals.html">MCMC proposals</a> for more information.</p>
 </td></tr>
 <tr valign="top"><td><code>scale</code></td>
 <td>
@@ -97,7 +97,7 @@ provided: see <a href="proposals.html">MCMC proposals</a> for more information.<
 A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a &lsquo;pomp&rsquo;.
 A vector-valued probe must always return a vector of the same size.
 A number of useful probes are provided with the package:
-see <a href="basic_probes.html">basic probes</a>.</p>
+see <a href="../../pomp/help/basic_probes.html">basic probes</a>.</p>
 </td></tr>
 <tr valign="top"><td><code>params</code></td>
 <td>
@@ -109,34 +109,34 @@ This will be coerced internally to storage mode <code>double</code>.</p>
 <p>simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting <code>rinit=NULL</code> sets the initial-state simulator to its default.
-For more information, see <a href="rinit_spec.html">?rinit_spec</a>.</p>
+For more information, see <a href="../../pomp/help/rinit_spec.html">?rinit_spec</a>.</p>
 </td></tr>
 <tr valign="top"><td><code>rprocess</code></td>
 <td>
-<p>simulator of the latent state process, specified using one of the <a href="rprocess_spec.html">rprocess plugins</a>.
+<p>simulator of the latent state process, specified using one of the <a href="../../pomp/help/rprocess_spec.html">rprocess plugins</a>.
 Setting <code>rprocess=NULL</code> removes the latent-state simulator.
-For more information, <a href="rprocess_spec.html">see ?rprocess_spec for the documentation on these plugins</a>.</p>
+For more information, <a href="../../pomp/help/rprocess_spec.html">see ?rprocess_spec for the documentation on these plugins</a>.</p>
 </td></tr>
 <tr valign="top"><td><code>rmeasure</code></td>
 <td>
 <p>simulator of the measurement model, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting <code>rmeasure=NULL</code> removes the measurement model simulator.
-For more information, see <a href="rmeasure_spec.html">?rmeasure_spec</a>.</p>
+For more information, see <a href="../../pomp/help/rmeasure_spec.html">?rmeasure_spec</a>.</p>
 </td></tr>
 <tr valign="top"><td><code>dprior</code></td>
 <td>
 <p>optional; prior distribution density evaluator, specified either as a C snippet, an <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information, see <a href="prior_spec.html">?prior_spec</a>.
+For more information, see <a href="../../pomp/help/prior_spec.html">?prior_spec</a>.
 Setting <code>dprior=NULL</code> resets the prior distribution to its default, which is a flat improper prior.</p>
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
 <p>additional arguments supply new or modify existing model characteristics or components.
-See <code><a href="pomp.html">pomp</a></code> for a full list of recognized arguments.
+See <code><a href="../../pomp/help/pomp.html">pomp</a></code> for a full list of recognized arguments.
 </p>
-<p>When named arguments not recognized by <code><a href="pomp.html">pomp</a></code> are provided, these are made available to all basic components via the so-called <dfn>userdata</dfn> facility.
+<p>When named arguments not recognized by <code><a href="../../pomp/help/pomp.html">pomp</a></code> are provided, these are made available to all basic components via the so-called <dfn>userdata</dfn> facility.
 This allows the user to pass information to the basic components outside of the usual routes of covariates (<code>covar</code>) and model parameters (<code>params</code>).
-See <a href="userdata.html">?userdata</a> for information on how to use this facility.</p>
+See <a href="../../pomp/help/userdata.html">?userdata</a> for information on how to use this facility.</p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
@@ -177,7 +177,7 @@ Additional arguments will override the defaults.
 <dl>
 <dt>plot</dt><dd><p>produces a series of diagnostic plots</p>
 </dd>
-<dt>traces</dt><dd><p>produces a <code><a href="../../coda/html/mcmc.html">mcmc</a></code> object, to which the various <span class="pkg">coda</span> convergence diagnostics can be applied</p>
+<dt>traces</dt><dd><p>produces a <code><a href="../../coda/help/mcmc.html">mcmc</a></code> object, to which the various <span class="pkg">coda</span> convergence diagnostics can be applied</p>
 </dd>
 </dl>
 
@@ -187,7 +187,7 @@ Additional arguments will override the defaults.
 
 <p>Some Windows users report problems when using C snippets in parallel computations.
 These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
-To circumvent this problem, use the <code>cdir</code> and <code>cfile</code> options <a href="pomp.html">(described here)</a> to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+To circumvent this problem, use the <code>cdir</code> and <code>cfile</code> options <a href="../../pomp/help/pomp.html">(described here)</a> to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
 </p>
 
 
@@ -209,25 +209,25 @@ To circumvent this problem, use the <code>cdir</code> and <code>cfile</code> opt
 
 <h3>See Also</h3>
 
-<p><a href="proposals.html">MCMC proposals</a>
+<p><a href="../../pomp/help/proposals.html">MCMC proposals</a>
 </p>
 <p>More on <span class="pkg">pomp</span> methods based on summary statistics: 
-<code><a href="basic_probes.html">basic_probes</a></code>,
-<code><a href="probe_match.html">probe_matching</a></code>,
-<code><a href="probe.html">probe</a>()</code>,
-<code><a href="spect.html">spect</a>()</code>
+<code><a href="../../pomp/help/basic_probes.html">basic_probes</a></code>,
+<code><a href="../../pomp/help/probe_matching.html">probe_matching</a></code>,
+<code><a href="../../pomp/help/probe.html">probe</a>()</code>,
+<code><a href="../../pomp/help/spect.html">spect</a>()</code>
 </p>
 <p>More on <span class="pkg">pomp</span> estimation algorithms:
-<code><a href="bsmc2.html">bsmc2</a>()</code>,
-<code><a href="estimation_algorithms.html">estimation_algorithms</a></code>,
-<code><a href="kalman.html">kalman</a></code>,
-<code><a href="mif2.html">mif2</a>()</code>,
-<code><a href="nlf.html">nonlinear_forecasting</a></code>,
-<code><a href="pmcmc.html">pmcmc</a>()</code>,
-<code><a href="pomp-package.html">pomp-package</a></code>,
-<code><a href="probe_match.html">probe_matching</a></code>,
-<code><a href="spect_match.html">spectrum_matching</a></code>
+<code><a href="../../pomp/help/bsmc2.html">bsmc2</a>()</code>,
+<code><a href="../../pomp/help/estimation_algorithms.html">estimation_algorithms</a></code>,
+<code><a href="../../pomp/help/kalman.html">kalman</a></code>,
+<code><a href="../../pomp/help/mif2.html">mif2</a>()</code>,
+<code><a href="../../pomp/help/nonlinear_forecasting.html">nonlinear_forecasting</a></code>,
+<code><a href="../../pomp/help/pmcmc.html">pmcmc</a>()</code>,
+<code><a href="../../pomp/help/pomp-package.html">pomp-package</a></code>,
+<code><a href="../../pomp/help/probe_matching.html">probe_matching</a></code>,
+<code><a href="../../pomp/help/spectrum_matching.html">spectrum_matching</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.0.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
