@@ -12,6 +12,7 @@ For installation instructions and user guides, see [the package website](https:/
 
 Related packages:
 
+- [**spatPomp**](https://github.com/kidusasfaw/spatPomp)
 - [**panelPomp**](https://cbreto.github.io/panelPomp/)
 - [**circumstance**](https://github.com/kingaa/circumstance/)
 - [**subplex**](https://github.com/kingaa/subplex/)
