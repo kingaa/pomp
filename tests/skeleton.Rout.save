@@ -1,5 +1,5 @@
 
-R version 4.0.4 (2021-02-15) -- "Lost Library Book"
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -69,7 +69,7 @@ Error : 'skeleton' is undefined for 'object' of class 'character'.
 +   geom_point()+
 +   geom_abline(intercept=0,slope=1,color='black')+
 +   facet_grid(rep~variable,labeller=labeller(rep=label_both))+
-+   guides(color=FALSE)+
++   guides(color="none")+
 +   labs(x="derivative",y="finite difference")+
 +   theme_bw()
 Warning message:

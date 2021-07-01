@@ -43,7 +43,7 @@ join(f,dtj,by=c("time","variable","rep")) %>%
   geom_point()+
   geom_abline(intercept=0,slope=1,color='black')+
   facet_grid(rep~variable,labeller=labeller(rep=label_both))+
-  guides(color=FALSE)+
+  guides(color="none")+
   labs(x="derivative",y="finite difference")+
   theme_bw()
 

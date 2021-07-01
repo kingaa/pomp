@@ -39,4 +39,48 @@ f1 %>% as("data.frame") %>% names()
 f1 %>% traj_objfun(fail.value=1e10) -> f2
 f2(NA)
 
+## ------------------
+## cf issue #149
+## ------------------
+
+enames <- c("gamma","iota","rho","k")
+
+sir() |>
+  traj_objfun(
+    dmeasure=Csnippet("
+      lik = dnbinom_mu(nearbyint(reports),1/k,rho*cases,give_log);
+    "),
+    rmeasure=NULL,
+    params=c(coef(sir()),k=1),
+    partrans=parameter_trans(
+      log=c("gamma","iota","k"),
+      logit="rho"
+    ),
+    est=enames,
+    paramnames=enames,
+    statenames="cases"
+  ) -> ofun
+
+theta <- c(gamma=10,iota=1,rho=0.2,k=1)
+
+subplex(
+  fn=ofun,
+  par=partrans(ofun,theta,dir="toEst")
+) -> fit
+
+invisible(ofun(fit$par))
+
+library(ggplot2)
+
+ofun %>%
+  trajectory(format="d") %>%
+  ggplot(aes(x=time,y=coef(ofun,"rho")*cases))+
+  geom_line()+
+  geom_point(
+    data=as(ofun,"data.frame"),
+    mapping=aes(x=time,y=reports)
+  )+
+  theme_bw()
+## ------------------
+
 dev.off()

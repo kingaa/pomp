@@ -77,7 +77,8 @@ simStates %>%
   melt() %>%
   spread(variable,value) %>%
   ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
-  geom_line()+guides(color=FALSE)+
+  geom_line()+
+  guides(color="none")+
   theme_bw()
 
 ## ----logistic-rmeasure---------------------------------------------------
@@ -97,7 +98,8 @@ sim %>%
   melt() %>%
   ggplot(mapping=aes(x=time,y=value,group=rep,color=factor(rep)))+
   geom_line()+
-  guides(color=FALSE)+scale_y_sqrt()+
+  guides(color="none")+
+  scale_y_sqrt()+
   facet_grid(variable~.,scales="free_y")+
   theme_bw()
 
@@ -110,7 +112,7 @@ sim %>%
   ggplot(mapping=aes(x=N,y=P,color=factor(rep)))+
   geom_point()+scale_x_sqrt()+scale_y_sqrt()+
   coord_equal()+
-  guides(color=FALSE)+
+  guides(color="none")+
   theme_bw()
 
 ## ----logistic-dmeasure---------------------------------------------------
@@ -141,7 +143,7 @@ traj <- trajectory(parus,params=pars,times=seq(1959,1970,by=0.01))
 parus %>%
   trajectory(params=pars,times=seq(1959,1970,by=0.01),format="data.frame") %>%
   ggplot(mapping=aes(x=year,y=N,group=.id,color=.id))+
-  guides(color=FALSE)+
+  guides(color="none")+
   geom_line()+
   theme_bw()
 

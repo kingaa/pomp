@@ -60,6 +60,16 @@ setAs(
   }
 )
 
+##' @rdname partrans
+##' @export
+setMethod(
+  "partrans",
+  signature=signature(object="objfun"),
+  definition=function (object, ...) {
+    partrans(as(object,"pomp"),...)
+  }
+)
+
 ##' @rdname simulate
 ##' @export
 setMethod(
