@@ -75,7 +75,7 @@ p["X.0",] <- c(0.5,0.9,1.1,1.5)
 simulate(Gompertz,params=p,format="data.frame") %>%
   ggplot(aes(x=time,y=X,group=.id,color=.id))+
   geom_line()+
-  guides(color=FALSE)+
+  guides(color="none")+
   theme_bw()+
   labs(title="Gompertz model",subtitle="stochastic simulations")
 

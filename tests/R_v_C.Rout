@@ -1,5 +1,5 @@
 
-R version 4.0.4 (2021-02-15) -- "Lost Library Book"
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -99,7 +99,7 @@ NEWS for the details.
 > simulate(Gompertz,params=p,format="data.frame") %>%
 +   ggplot(aes(x=time,y=X,group=.id,color=.id))+
 +   geom_line()+
-+   guides(color=FALSE)+
++   guides(color="none")+
 +   theme_bw()+
 +   labs(title="Gompertz model",subtitle="stochastic simulations")
 > 
@@ -113,16 +113,16 @@ NEWS for the details.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  9.689   0.054   9.743 
+   7.03    0.00    7.03 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.328   0.001   0.329 
+   0.17    0.00    0.17 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.899   0.000   0.900 
+  0.645   0.000   0.645 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.057   0.000   0.056 
+  0.033   0.000   0.034 
 > 
 > dev.off()
 null device 

@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.4.2}{
+  \itemize{
+    \item Fix bug in \code{bsmc2} arising when some particles have zero likelihood.
+    This is Issue #152.
+    Thanks to Hola-Kwame Adrakey for reporting it.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.4.1}{
   \itemize{
     \item It is now possible to call \code{partrans} directly on an objective function, such as those created by \code{traj_objfun}, \code{nlf_objfun}, \code{probe_objfun}, or \code{spect_objfun}.
