@@ -253,7 +253,7 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
     gnsi <- FALSE  ## all native symbols have been looked up
 
     ## the following is triggered by the first illegal weight value
-    xx <- is.finite(weights) | isTRUE(weights==-Inf)
+    xx <- is.finite(weights) | weights==-Inf
     if (!all(xx)) {
       xx <- which(!xx)[1L]
       illegal_dmeasure_error(
