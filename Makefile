@@ -99,6 +99,9 @@ rhub:
 covr:
 	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; report(cov,file="covr.html",browse=TRUE);'
 
+xcovr:
+	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; report(cov,file="covr.html",browse=TRUE); codecov(coverage=cov,token="cbbc302d-fff3-4530-8474-0f3f48db6776",quiet=FALSE)'
+
 win: dist
 	curl -T $(PKGVERS).tar.gz ftp://win-builder.r-project.org/R-release/
 
