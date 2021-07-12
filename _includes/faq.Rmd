@@ -1,4 +1,5 @@
 ---
+title: ""
 output:
   html_document:
     theme: null
@@ -596,6 +597,22 @@ warning: "beta" redefined
 This is due to a name conflict between a quantity `beta` defined as a model parameter, covariate, data variable, or in some other way defined in a C snippet, and the [*Euler beta function*](https://en.wikipedia.org/wiki/Beta_function), which is defined as `beta` in `Rmath.h` and documented in the [R extensions manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions).
 To work around this, simply rename the parameter.
 For example, it could be called `Beta` instead.
+
+## I get an error saying X "must be a function of prototype" Y.  What does this mean?
+
+The error message displays the "prototype" of the function **pomp** expects.
+For example, in the message
+```
+Error : in 'sannbox': 'candidate.dist' must be a function of prototype 'candidate.dist(par, temp, scale, ...)'.
+```
+the prototype expected is `candidate.dist(par, temp, scale, ...)`.
+This means that a function supplied to the `candidate.dist` argument must have at least the arguments `par`, `temp`, `scale`, and `...`.
+Note that the ellipses (`...`) are necessary.
+Similarly, the error message
+```
+Error: in ‘rmeasure’: ‘rmeasure’ must be a function of prototype ‘rmeasure(...)’
+```
+tells us that we have left the `...` out of the argument list in the function we supplied for `rmeasure`.
 
 # Interpreting results
 
