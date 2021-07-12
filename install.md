@@ -55,3 +55,15 @@ These facilities are provided in the <code>Xcode</code> app, which is free and c
 
 Some users report problems installing **pomp** from source due to lack of an appropriate **gfortran** installation, which is not included by default in all versions of **Xcode**.
 If you have this problem, see [these instructions](https://mac.r-project.org/tools/){:target="_blank"}.
+
+## Important note for Linux users
+
+You may need to install the `gfortran` FORTRAN compiler on your machine, if it is not already there.
+For example, on a Debian-based system (e.g., Ubuntu):
+```
+sudo apt install gfortran
+```
+On an RPM-based system:
+```
+sudo yum install gcc-gfortran
+```
