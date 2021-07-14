@@ -534,9 +534,27 @@ If it doesn't work, consult the [installation instructions](https://kingaa.githu
 
 See [the preceding FAQ](#why-cant-i-run-csnippets).
 
-Also, some Windows users using C snippets in parallel computations report errors (e.g., [issue 120](https://github.com/kingaa/pomp/issues/120)) that appear to be triggered when the temporary files created during C snippet compilation are created or destroyed.
-This problem does not appear to crop up on other platforms.
-A workaround for this involves compiling all codes *before* parallel computations commence and using the `cdir` and `cfile` arguments---which can be passed to `pomp` or any of the **pomp** elementary algorithms or inference algorithms---to cause the C snippets to be compiled in the directory, and with the file name, of your choice.
+Also, some Windows users have reported trouble with certain parallel codes.
+Specifically, **pomp** codes that require compilation of C snippets trigger errors when executed in parallel on certain Windows machines.
+
+The workaround is to execute *serially* all codes that require compilation;
+that is, to execute them *outside* of all parallel code blocks.
+
+Calls that induce compilation include:
+
+1. Every call to a **pomp** function in which a basic model component is specified using a C snippet.
+Recall that the basic model components include `rmeasure`, `dmeasure`, `rprocess`, `dprocess`, `skeleton`, `rprior`, `dprior`, `partrans`, and `rinit`.
+Whenever one of these arguments is furnished a `Csnippet`, the snippet is compiled.  
+2. Every call to a **pomp** function in which a parameter transformation is specified by giving the names of parameters to log-transform, logit-transform, or log-barycentric transform.
+Even though the user does not supply a `Csnippet` in such cases, each such call results in a `Csnippet` being written internally, and then compiled.
+
+In addition, the use of temporary directories to hold the C files and dynamically loadable libraries created from them that underlie the C snippet facility causes problems on certain Windows machines.
+We hypothesize that this is due to Windows securities features.
+
+Again, there is a workaround.
+One can specify to **pomp** that all compilation should be done in the current working directory.
+
+An illustration is given in the [Simulation-based Inference for Epidemiological Dynamics](https://kingaa.github.io/sbied/mif/windows.html) short course.
 
 ## I get the error message 'could not find symbol "recursive" in environment of the generic function' when I use the `c` operator to concatenate certain kinds of **pomp** structures. How do I fix this?  {#could-not-find-symbol-recursive}
 
