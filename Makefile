@@ -94,7 +94,7 @@ publish: dist manual news htmlhelp
 	$(CP) $(PKG).pdf ../www/manuals
 
 rhub:
-	$(REXE) -e 'library(rhub); check_with_sanitizers(); check_on_windows(); check_on_macos();'
+	$(REXE) -e 'library(rhub); check_with_sanitizers(); check_on_windows(); check(platform="macos-highsierra-release-cran");'
 
 covr:
 	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; report(cov,file="covr.html",browse=TRUE);'

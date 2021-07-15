@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 3.4.2.1
-Date: 2021-07-06
+Version: 3.4.3.0
+Date: 2021-07-13
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -31,10 +31,9 @@ Contact: kingaa at umich dot edu
 BugReports: https://github.com/kingaa/pomp/issues/
 Encoding: UTF-8
 Collate: 
-    'package.R'
-    'aaa.R'
     'pstop.R'
     'undefined.R'
+    'package.R'
     'csnippet.R'
     'pomp_fun.R'
     'parameter_trans.R'
@@ -135,4 +134,4 @@ Collate:
     'userdata.R'
     'verhulst.R'
     'window.R'
-RoxygenNote: 7.1.1.9000
+RoxygenNote: 7.1.1
