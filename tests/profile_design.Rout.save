@@ -19,11 +19,6 @@ Type 'q()' to quit R.
 
 > png(filename="profile_design-%02d.png",res=100)
 > library(pomp)
-
-Welcome to pomp! Version 3 incorporates some changes to the behavior of
-package algorithms that are not backward compatible. See the package
-NEWS for the details.
-
 > library(dplyr)
 
 Attaching package: 'dplyr'
@@ -37,6 +32,7 @@ The following objects are masked from 'package:base':
     intersect, setdiff, setequal, union
 
 > library(magrittr)
+> set.seed(722855899)
 > 
 > ## A one-parameter profile design:
 > x <- profile_design(p=1:10,lower=c(q=3,a=0,b=0),upper=c(q=5,a=1,b=5),nprof=20)

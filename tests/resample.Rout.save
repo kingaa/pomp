@@ -18,11 +18,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-
-Welcome to pomp! Version 3 incorporates some changes to the behavior of
-package algorithms that are not backward compatible. See the package
-NEWS for the details.
-
 > set.seed(807969746L)
 > 
 > w <- runif(100)

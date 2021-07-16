@@ -20,11 +20,6 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp)
-
-Welcome to pomp! Version 3 incorporates some changes to the behavior of
-package algorithms that are not backward compatible. See the package
-NEWS for the details.
-
 > 
 > gompertz() -> po
 > 
@@ -158,8 +153,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2021-07-06 10:53:08.704 -0400 */
-/* Salt: E64B81ABA0F0197CC3CF547B */
+/* Time: 2021-07-15 22:55:08.291 -0400 */
+/* Salt: 861EF21828715A96E898106F */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -276,8 +271,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2021-07-06 10:53:08.844 -0400 */
-/* Salt: B659A63F4AE9C4DE6B537EE3 */
+/* Time: 2021-07-15 22:55:08.431 -0400 */
+/* Salt: 7E9EFD53FAB2AC9399813E38 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -798,8 +793,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2021-07-06 10:53:09.520 -0400 */
-/* Salt: 02117E8483556ED72FBB9C39 */
+/* Time: 2021-07-15 22:55:09.101 -0400 */
+/* Salt: 1C9E152C007375FCA4DD0D86 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -994,8 +989,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2021-07-06 10:53:10.136 -0400 */
-/* Salt: A6C2624D439673D1B707C17B */
+/* Time: 2021-07-15 22:55:09.704 -0400 */
+/* Salt: 6DC49EDD61FD9014A1B06B70 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

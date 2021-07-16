@@ -22,11 +22,6 @@ Type 'q()' to quit R.
 > 
 > ## ----packages------------------------------------------------------------
 > library(pomp)
-
-Welcome to pomp! Version 3 incorporates some changes to the behavior of
-package algorithms that are not backward compatible. See the package
-NEWS for the details.
-
 > library(ggplot2)
 > 
 > ## ----seed,echo=FALSE-----------------------------------------------------
@@ -113,16 +108,16 @@ NEWS for the details.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-   7.03    0.00    7.03 
+  9.290   0.043   9.334 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-   0.17    0.00    0.17 
+  0.331   0.000   0.330 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.645   0.000   0.645 
+  0.842   0.000   0.841 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.033   0.000   0.034 
+  0.056   0.000   0.056 
 > 
 > dev.off()
 null device 

@@ -18,11 +18,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-
-Welcome to pomp! Version 3 incorporates some changes to the behavior of
-package algorithms that are not backward compatible. See the package
-NEWS for the details.
-
 > set.seed(964484044)
 > sir_step <- Csnippet("
 +   double dN_SI = rbinom(S,1-exp(-exp(Beta)*(I/10000)*dt));

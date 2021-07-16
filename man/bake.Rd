@@ -70,6 +70,16 @@ By contrast, \code{stew} creates a local environment within which \code{expr} is
     mean(x)
   })
 
+  bake(file="example1.rds",{
+    x <- runif(1000)
+    mean(x)
+  })
+
+  bake(file="example1.rds",{
+    x <- runif(100)
+    sd(x)
+  })
+
   stew(file="example2.rda",{
     x <- runif(10)
     y <- rnorm(n=10,mean=3*x+5,sd=2)

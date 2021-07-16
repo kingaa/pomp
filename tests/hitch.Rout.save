@@ -20,11 +20,6 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp)
-
-Welcome to pomp! Version 3 incorporates some changes to the behavior of
-package algorithms that are not backward compatible. See the package
-NEWS for the details.
-
 > 
 > try(hitch())
 Error : in 'hitch': 'templates' must be supplied.

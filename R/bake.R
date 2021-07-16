@@ -55,14 +55,33 @@
 ##'
 NULL
 
+##' @importFrom digest digest    
+check_digest <- function (x, dig, code, ...) {
+  code2 <- attr(x,"code")
+  attr(x,"system.time") <- NULL
+  attr(x,"code") <- NULL
+  attr(x,"result") <- NULL
+  attr(x,"normal.kind") <- NULL
+  attr(x,"kind") <- NULL
+  attr(x,"seed") <- NULL
+  identical(digest(x,...),dig) &&
+    identical(code,code2)
+}
+
 ##' @rdname bake
+##' @importFrom digest digest    
 ##' @export
 bake <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
+  expr <- substitute(expr)
+  code <- digest(deparse(expr))
+  run <- TRUE
   if (file.exists(file)) {
-    readRDS(file)
-  } else {
+    val <- readRDS(file)
+    run <- !identical(code,attr(val,"code"))
+  }
+  if (run) {
     seed <- as.integer(seed)
-    rng.control <- length(seed) > 0
+    rng.control <- (length(seed) > 0)
     if (rng.control) {
       if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
       save.seed <- get(".Random.seed",envir=.GlobalEnv)
@@ -80,10 +99,12 @@ bake <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
       attr(val,"kind") <- kind
       attr(val,"normal.kind") <- normal.kind
     }
+    attr(val,"code") <- code
+    attr(val,"result") <- digest(val)
     attr(val,"system.time") <- tmg
     saveRDS(val,file=file)
-    val
   }
+  val
 }
 
 ##' @rdname bake
@@ -95,7 +116,7 @@ stew <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
       assign(obj,get(obj),envir=parent.frame())
   } else {
     seed <- as.integer(seed)
-    rng.control <- length(seed) > 0
+    rng.control <- (length(seed) > 0)
     expr <- substitute(expr)
     e <- new.env()
     if (rng.control) {
@@ -124,7 +145,7 @@ stew <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
 ##' @export
 freeze <- function (expr, seed = NULL, kind = NULL, normal.kind = NULL) {
   seed <- as.integer(seed)
-  rng.control <- length(seed) > 0
+  rng.control <- (length(seed) > 0)
   if (rng.control) {
     if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
     save.seed <- get(".Random.seed",envir=.GlobalEnv)
