@@ -6,7 +6,14 @@
 \alias{freeze}
 \title{Bake, stew, and freeze}
 \usage{
-bake(file, expr, seed = NULL, kind = NULL, normal.kind = NULL)
+bake(
+  file,
+  expr,
+  seed = NULL,
+  kind = NULL,
+  normal.kind = NULL,
+  dependson = NULL
+)
 
 stew(file, expr, seed = NULL, kind = NULL, normal.kind = NULL)
 
@@ -32,6 +39,13 @@ See \code{\link{set.seed}}.
 The default, \code{seed = NULL}, will not change the RNG state.
 \code{seed} should be a single integer.
 See \code{\link{set.seed}}.}
+
+\item{dependson}{optional.
+Variables on which the computation in \code{expr} depends.
+Hashes of these objects will be stored in \code{file}, along with the results of evaluation \code{expr}.
+When \code{file} exists, hashes of these objects will be compared against the stored values;
+recomputation is forced when these do not match.
+These objects should be specified as unquoted symbols, using \code{c} or \code{list} if there are more than one.}
 
 \item{envir}{the \code{\link[base]{environment}} in which \code{expr} is to
     be evaluated.  May also be \code{NULL}, a list, a data frame,

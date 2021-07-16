@@ -19,15 +19,38 @@ set.seed(32765883)
 x1 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
 x2 <- bake({runif(4)},file=file.path(tempdir(),"bake2.rds"),seed=32765883)
 x3 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
+x3a <- bake({  runif(4)},file=file.path(tempdir(),"bake1.rds"))
 rm(.Random.seed)
 x4 <- bake({runif(4)},file=file.path(tempdir(),"bake3.rds"),seed=59566)
 x5 <- bake({runif(5)},file=file.path(tempdir(),"bake1.rds"))
 x6 <- bake({runif(5)},file=file.path(tempdir(),"bake1.rds"))
+x7 <- bake({x1+runif(1)},file=file.path(tempdir(),"bake4.rds"))
+x8 <- bake({x1+runif(1)},
+  file=file.path(tempdir(),"bake4.rds"),
+  dependson=x1)
+x9 <- bake({x1+runif(1)},
+  file=file.path(tempdir(),"bake4.rds"),
+  dependson=x1)
+x10 <- bake({x1+runif(1)},
+  file=file.path(tempdir(),"bake4.rds"),
+  dependson=c(x1,x6))
+c <- function(x) x+5
+x11 <- bake({x1+runif(1)},
+  file=file.path(tempdir(),"bake4.rds"),
+  dependson=c(x1,c))
+x12 <- bake({x1+runif(1)},
+  file=file.path(tempdir(),"bake4.rds"),
+  dependson=list(c,x1,x13))
 stopifnot(
   all.equal(as.numeric(x1),as.numeric(x2)),
-  all.equal(as.numeric(x1),as.numeric(x3)),
+  identical(x1,x3),
+  identical(x3,x3a),
   identical(x5,x6),
-  !identical(x3,x5)
+  !identical(x3,x5),
+  !identical(x7,x8),
+  identical(x8,x9),
+  !identical(x9,x10),
+  identical(x11,x12)
 )
 
 set.seed(113848)

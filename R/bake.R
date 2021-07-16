@@ -36,6 +36,12 @@
 ##' The default, \code{seed = NULL}, will not change the RNG state.
 ##' \code{seed} should be a single integer.
 ##' See \code{\link{set.seed}}.
+##' @param dependson optional.
+##' Variables on which the computation in \code{expr} depends.
+##' Hashes of these objects will be stored in \code{file}, along with the results of evaluation \code{expr}.
+##' When \code{file} exists, hashes of these objects will be compared against the stored values;
+##' recomputation is forced when these do not match.
+##' These objects should be specified as unquoted symbols, using \code{c} or \code{list} if there are more than one.
 ##'
 ##' @inheritParams base::eval
 ##'
@@ -75,16 +81,59 @@ check_digest <- function (x, dig, code, ...) {
 ##' @importFrom digest digest    
 ##' @export
 bake <- function (
-  file, expr, seed = NULL, kind = NULL, normal.kind = NULL
+  file, expr,
+  seed = NULL, kind = NULL, normal.kind = NULL,
+  dependson = NULL
 ) {
   expr <- substitute(expr)
+  reload <- file.exists(file)
   code <- digest(deparse(expr))
-  run <- TRUE
-  if (file.exists(file)) {
-    val <- readRDS(file)
-    run <- !identical(code,attr(val,"code"))
+  dependson <- as.list(substitute(dependson))
+  if (length(dependson)>1) dependson <- dependson[-1L]
+  dependson <- lapply(
+    dependson,
+    all.names,
+    functions=TRUE,
+    unique=TRUE
+  )
+  dependson <- unique(c(dependson,recursive=TRUE))
+  found <- vapply(
+    dependson,
+    FUN=exists,
+    FUN.VALUE=logical(1),
+    envir=parent.frame(),
+    inherits=FALSE
+  )
+  deps <- character(sum(found))
+  names(deps) <- sort(dependson[found])
+  if (!all(found)) {
+    unfound <- dependson[!found]
+    pWarn("bake",
+      ngettext(length(unfound),"dependency ","dependencies "),
+      paste(sQuote(unfound),collapse=","),
+      " not found."
+    )
   }
-  if (run) {
+  for (n in names(deps)) {
+    deps[n] <- eval(
+      parse(text=sprintf("digest::digest(%s)",n)),
+      envir=parent.frame()
+    )
+  }
+  if (reload) {
+    val <- readRDS(file)
+    reload <- identical(code,attr(val,"code"))
+  }
+  if (reload) {
+    nn <- names(attr(val,"dependencies"))
+    reload <- (length(setdiff(names(deps),nn))==0)
+  }
+  if (reload) {
+    for (n in nn) {
+      reload <- reload && identical(deps[n],attr(val,"dependencies")[n])
+    }
+  }
+  if (!reload) {
     tmg <- system.time(
       val <- freeze(
         expr,
@@ -100,7 +149,7 @@ bake <- function (
       val <- paste0("NULL result returned by ",sQuote("bake"))
     }
     attr(val,"code") <- code
-    attr(val,"result") <- digest(val)
+    attr(val,"dependencies") <- deps
     attr(val,"system.time") <- tmg
     saveRDS(val,file=file)
   }
