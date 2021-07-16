@@ -10,7 +10,14 @@ bake(file, expr, seed = NULL, kind = NULL, normal.kind = NULL)
 
 stew(file, expr, seed = NULL, kind = NULL, normal.kind = NULL)
 
-freeze(expr, seed = NULL, kind = NULL, normal.kind = NULL)
+freeze(
+  expr,
+  seed = NULL,
+  kind = NULL,
+  normal.kind = NULL,
+  envir = parent.frame(),
+  enclos = if (is.list(envir) || is.pairlist(envir)) parent.frame() else baseenv()
+)
 }
 \arguments{
 \item{file}{Name of the binary data file in which the result will be stored or retrieved, as appropriate.
@@ -25,6 +32,15 @@ See \code{\link{set.seed}}.
 The default, \code{seed = NULL}, will not change the RNG state.
 \code{seed} should be a single integer.
 See \code{\link{set.seed}}.}
+
+\item{envir}{the \code{\link[base]{environment}} in which \code{expr} is to
+    be evaluated.  May also be \code{NULL}, a list, a data frame,
+    a pairlist or an integer as specified to \code{\link[base]{sys.call}}.}
+
+\item{enclos}{Relevant when \code{envir} is a (pair)list or a data frame.
+    Specifies the enclosure, i.e., where \R looks for objects not found
+    in \code{envir}.  This can be \code{NULL} (interpreted as the base
+    package environment, \code{\link[base]{baseenv}()}) or an environment.}
 }
 \value{
 \code{bake} returns the value of the evaluated expression \code{expr}.

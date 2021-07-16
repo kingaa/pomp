@@ -4,6 +4,7 @@
 ##'
 ##' @name bake
 ##' @rdname bake
+##' @include package.R
 ##'
 ##' @details
 ##' On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.
@@ -35,6 +36,8 @@
 ##' The default, \code{seed = NULL}, will not change the RNG state.
 ##' \code{seed} should be a single integer.
 ##' See \code{\link{set.seed}}.
+##'
+##' @inheritParams base::eval
 ##'
 ##' @return \code{bake} returns the value of the evaluated expression \code{expr}.
 ##' Other objects created in the evaluation of \code{expr} are discarded along with the temporary, local environment created for the evaluation.
@@ -71,7 +74,9 @@ check_digest <- function (x, dig, code, ...) {
 ##' @rdname bake
 ##' @importFrom digest digest    
 ##' @export
-bake <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
+bake <- function (
+  file, expr, seed = NULL, kind = NULL, normal.kind = NULL
+) {
   expr <- substitute(expr)
   code <- digest(deparse(expr))
   run <- TRUE
@@ -80,24 +85,19 @@ bake <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
     run <- !identical(code,attr(val,"code"))
   }
   if (run) {
-    seed <- as.integer(seed)
-    rng.control <- (length(seed) > 0)
-    if (rng.control) {
-      if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
-      save.seed <- get(".Random.seed",envir=.GlobalEnv)
-      set.seed(seed,kind=kind,normal.kind=normal.kind)
-    }
-    tmg <- system.time(val <- eval(expr))
-    if (rng.control)
-      assign(".Random.seed",save.seed,envir=.GlobalEnv)
+    tmg <- system.time(
+      val <- freeze(
+        expr,
+        seed=seed,
+        kind=kind,
+        normal.kind=normal.kind,
+        envir=parent.frame(1),
+        enclos=parent.frame(2)
+      )
+    )
     if (is.null(val)) {
       pWarn("bake","expression evaluates to NULL")
       val <- paste0("NULL result returned by ",sQuote("bake"))
-    }
-    if (rng.control) {
-      attr(val,"seed") <- seed
-      attr(val,"kind") <- kind
-      attr(val,"normal.kind") <- normal.kind
     }
     attr(val,"code") <- code
     attr(val,"result") <- digest(val)
@@ -109,33 +109,30 @@ bake <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
 
 ##' @rdname bake
 ##' @export
-stew <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
+stew <- function (
+  file, expr, seed = NULL, kind = NULL, normal.kind = NULL
+) {
+  expr <- substitute(expr)
   if (file.exists(file)) {
     objlist <- load(file)
     for (obj in objlist)
       assign(obj,get(obj),envir=parent.frame())
   } else {
-    seed <- as.integer(seed)
-    rng.control <- (length(seed) > 0)
-    expr <- substitute(expr)
     e <- new.env()
-    if (rng.control) {
-      if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
-      save.seed <- get(".Random.seed",envir=.GlobalEnv)
-      set.seed(seed,kind=kind,normal.kind=normal.kind)
-    }
-    tmg <- system.time(eval(expr,envir=e))
-    if (rng.control)
-      assign(".Random.seed",save.seed,envir=.GlobalEnv)
+    tmg <- system.time(
+      freeze(
+        expr,
+        envir=e,
+        enclos=parent.frame(),
+        seed=seed,
+        kind=kind,
+        normal.kind=normal.kind
+      )
+    )
     objlist <- objects(envir=e)
     save(list=objlist,file=file,envir=e)
     for (obj in objlist)
       assign(obj,get(obj,envir=e),envir=parent.frame())
-    if (rng.control) {
-      attr(objlist,"seed") <- seed
-      attr(objlist,"kind") <- kind
-      attr(objlist,"normal.kind") <- normal.kind
-    }
     attr(objlist,"system.time") <- tmg
   }
   invisible(objlist)
@@ -143,7 +140,11 @@ stew <- function (file, expr, seed = NULL, kind = NULL, normal.kind = NULL) {
 
 ##' @rdname bake
 ##' @export
-freeze <- function (expr, seed = NULL, kind = NULL, normal.kind = NULL) {
+freeze <- function (expr, seed = NULL, kind = NULL, normal.kind = NULL,
+  envir = parent.frame(),
+  enclos =  if(is.list(envir) || is.pairlist(envir))
+              parent.frame() else baseenv()
+) {
   seed <- as.integer(seed)
   rng.control <- (length(seed) > 0)
   if (rng.control) {
@@ -151,7 +152,7 @@ freeze <- function (expr, seed = NULL, kind = NULL, normal.kind = NULL) {
     save.seed <- get(".Random.seed",envir=.GlobalEnv)
     set.seed(seed,kind=kind,normal.kind=normal.kind)
   }
-  val <- eval(expr)
+  val <- eval(expr,envir=envir,enclos=enclos)
   if (rng.control) {
     assign(".Random.seed",save.seed,envir=.GlobalEnv)
     if (!is.null(val)) {

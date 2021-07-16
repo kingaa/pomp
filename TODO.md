@@ -2,7 +2,6 @@
 
 ## For pomp:
 
-- streamline `bake` and `stew` using `freeze`
 - include `depends_on` argument to `bake` and `stew` (and `freeze`?)
 - include `mcap` function
 - more/better examples

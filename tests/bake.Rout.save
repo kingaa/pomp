@@ -85,5 +85,3 @@ in 'bake': expression evaluates to NULL
 > invisible(freeze({runif(4)},seed=32765883))
 > invisible(freeze({runif(4)}))
 > 
-> detach("package:pomp", unload=TRUE)
-> 

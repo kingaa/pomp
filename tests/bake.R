@@ -62,5 +62,3 @@ invisible(stew({runif(4)},file=file.path(tempdir(),"s99.rda"),seed=32765883))
 rm(.Random.seed)
 invisible(freeze({runif(4)},seed=32765883))
 invisible(freeze({runif(4)}))
-
-detach("package:pomp", unload=TRUE)
