@@ -64,19 +64,6 @@
 ##'
 NULL
 
-##' @importFrom digest digest    
-check_digest <- function (x, dig, code, ...) {
-  code2 <- attr(x,"code")
-  attr(x,"system.time") <- NULL
-  attr(x,"code") <- NULL
-  attr(x,"result") <- NULL
-  attr(x,"normal.kind") <- NULL
-  attr(x,"kind") <- NULL
-  attr(x,"seed") <- NULL
-  identical(digest(x,...),dig) &&
-    identical(code,code2)
-}
-
 ##' @rdname bake
 ##' @importFrom digest digest    
 ##' @export
@@ -159,14 +146,68 @@ bake <- function (
 ##' @rdname bake
 ##' @export
 stew <- function (
-  file, expr, seed = NULL, kind = NULL, normal.kind = NULL
+  file, expr,
+  seed = NULL, kind = NULL, normal.kind = NULL,
+  dependson = NULL
 ) {
   expr <- substitute(expr)
-  if (file.exists(file)) {
-    objlist <- load(file)
-    for (obj in objlist)
-      assign(obj,get(obj),envir=parent.frame())
-  } else {
+  reload <- file.exists(file)
+  code <- digest(deparse(expr))
+  dependson <- as.list(substitute(dependson))
+  if (length(dependson)>1) dependson <- dependson[-1L]
+  dependson <- lapply(
+    dependson,
+    all.names,
+    functions=TRUE,
+    unique=TRUE
+  )
+  dependson <- unique(c(dependson,recursive=TRUE))
+  found <- vapply(
+    dependson,
+    FUN=exists,
+    FUN.VALUE=logical(1),
+    envir=parent.frame(),
+    inherits=FALSE
+  )
+  deps <- character(sum(found))
+  names(deps) <- sort(dependson[found])
+  if (!all(found)) {
+    unfound <- dependson[!found]
+    pWarn("stew",
+      ngettext(length(unfound),"dependency ","dependencies "),
+      paste(sQuote(unfound),collapse=","),
+      " not found."
+    )
+  }
+  for (n in names(deps)) {
+    deps[n] <- eval(
+      parse(text=sprintf("digest::digest(%s)",n)),
+      envir=parent.frame()
+    )
+  }
+  e <- new.env()
+  if (reload) {
+    objlist <- load(file,envir=e)
+    if (is.null(e$.code)) {
+      pStop("stew",sQuote(file)," is not a stew.")
+    } else {
+      reload <- identical(code,e$.code)
+    }
+  }
+  if (reload) {
+    if (is.null(e$.dependencies)) {
+      pStop("stew",sQuote(file)," is not a stew.")
+    } else {
+      nn <- names(e$.dependencies)
+      reload <- identical(names(deps),nn)
+    }
+  }
+  if (reload) {
+    for (n in nn) {
+      reload <- reload && identical(deps[n],e$.dependencies[n])
+    }
+  }
+  if (!reload) {
     e <- new.env()
     tmg <- system.time(
       freeze(
@@ -178,11 +219,17 @@ stew <- function (
         normal.kind=normal.kind
       )
     )
-    objlist <- objects(envir=e)
-    save(list=objlist,file=file,envir=e)
-    for (obj in objlist)
-      assign(obj,get(obj,envir=e),envir=parent.frame())
-    attr(objlist,"system.time") <- tmg
+    e$.system.time <- tmg
+    e$.dependencies <- deps
+    e$.code <- code
+    ## e$.seed <- attr(val,"seed")
+    ## e$.kind <- attr(val,"kind")
+    ## e$.normal.kind <- attr(val,"normal.kind")
+    save(list=objects(envir=e,all.names=TRUE),file=file,envir=e)
+  }
+  objlist <- objects(envir=e,all.names=FALSE)
+  for (obj in objlist) {
+    assign(obj,get(obj,envir=e),envir=parent.frame())
   }
   invisible(objlist)
 }

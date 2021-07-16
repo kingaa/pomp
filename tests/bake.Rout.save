@@ -77,14 +77,21 @@ in 'bake': dependency 'x13' not found.
 > set.seed(113848)
 > stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rda"))
 > stew({y2 <- runif(4)},file=file.path(tempdir(),"stew2.rda"),seed=113848)
-> print(stew({y3 <- runif(4)},file=file.path(tempdir(),"stew1.rda")))
+> y3 <- y1
+> print(stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rda")))
 [1] "y1"
-> stopifnot(
-+   all.equal(y1,y2),
-+   !exists("y3")
-+ )
 > rm(.Random.seed)
 > stew({y4 <- runif(4)},file=file.path(tempdir(),"stew3.rda"),seed=59566)
+> y5 <- y1+y2 
+> stew({y6 <- y1+y2},dependson=c(y1,y2),file=file.path(tempdir(),"stew3.rda"))
+> stopifnot(
++   identical(y1,y2),
++   identical(y1,y3),
++   identical(y5,y6)
++ )
+> y1 <- 0
+> stew({y6 <- y1+y2},dependson=c(y1,y2),file=file.path(tempdir(),"stew3.rda"))
+> stopifnot(identical(y2,y6))
 > 
 > window(sir2(),end=0.5) -> po
 > simulate(po,seed=1347484107L) -> x
