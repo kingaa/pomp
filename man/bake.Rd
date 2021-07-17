@@ -12,7 +12,8 @@ bake(
   seed = NULL,
   kind = NULL,
   normal.kind = NULL,
-  dependson = NULL
+  dependson = NULL,
+  info = FALSE
 )
 
 stew(
@@ -21,7 +22,8 @@ stew(
   seed = NULL,
   kind = NULL,
   normal.kind = NULL,
-  dependson = NULL
+  dependson = NULL,
+  info = FALSE
 )
 
 freeze(
@@ -47,12 +49,18 @@ The default, \code{seed = NULL}, will not change the RNG state.
 \code{seed} should be a single integer.
 See \code{\link{set.seed}}.}
 
-\item{dependson}{optional.
+\item{dependson}{arbitrary \R object (optional).
 Variables on which the computation in \code{expr} depends.
-Hashes of these objects will be stored in \code{file}, along with the results of evaluation \code{expr}.
-When \code{file} exists, hashes of these objects will be compared against the stored values;
+A hash of these objects will be archived in \code{file}, along with the results of evaluation \code{expr}.
+When \code{bake} or \code{stew} are called and \code{file} exists, the hash of these objects will be compared against the archived hash;
 recomputation is forced when these do not match.
-These objects should be specified as unquoted symbols, using \code{c} or \code{list} if there are more than one.}
+The dependencies should be specified as unquoted symbols:
+use a list if there are multiple dependencies.}
+
+\item{info}{logical.
+If \code{TRUE}, the \dQuote{ingredients} of the calculation are returned as a list.
+In the case of \code{bake}, this list is the \dQuote{ingredients} attribute of the returned object.
+In the case of \code{stew}, this list is a hidden object named \dQuote{.ingredients}, located in the environment within which \code{stew} was called.}
 
 \item{envir}{the \code{\link[base]{environment}} in which \code{expr} is to
     be evaluated.  May also be \code{NULL}, a list, a data frame,
@@ -68,14 +76,15 @@ These objects should be specified as unquoted symbols, using \code{c} or \code{l
 Other objects created in the evaluation of \code{expr} are discarded along with the temporary, local environment created for the evaluation.
 
 The latter behavior differs from that of \code{stew}, which returns the names of the objects created during the evaluation of \code{expr}.
-After \code{stew} completes, these objects exist in the parent environment (that from which \code{stew} was called).
+After \code{stew} completes, these objects are copied into the environment in which \code{stew} was called.
 
 \code{freeze} returns the value of evaluated expression \code{expr}.
 However, \code{freeze} evaluates \code{expr} within the parent environment, so other objects created in the evaluation of \code{expr} will therefore exist after \code{freeze} completes.
 
-\code{bake} and \code{stew} return information about the time used in evaluating the expression.
-This is recorded in the \code{system.time} attribute of the return value.
-In addition, if \code{seed} is specified, information about the seed (and the kind of random-number generator used) are stored as attributes of the return value.
+\code{bake} and \code{stew} store information about the time used in evaluating the expression, the state of the random-number generator, and other information, in the archive file.
+In the case of \code{bake}, this is recorded in the \dQuote{ingredients} attribute (\code{attr(.,"ingredients")});
+in the \code{stew} case, this is recorded in an object, \dQuote{.ingredients}, in the archive.
+This information is returned only if \code{info=TRUE}.
 }
 \description{
 Tools for reproducible computations.
@@ -83,9 +92,9 @@ Tools for reproducible computations.
 \details{
 On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.
 The \code{bake} and \code{stew} functions perform analogously:
-an computation is performed and stored in a named file.
+an computation is performed and archived in a named file.
 If the function is called again and the file is present, the computation is not executed.
-Instead, the results are loaded from the file in which they were previously stored.
+Instead, the results are loaded from the archive.
 Moreover, via their optional \code{seed} argument, \code{bake} and \code{stew} can control the pseudorandom-number generator (RNG) for greater reproducibility.
 After the computation is finished, these functions restore the pre-existing RNG state to avoid side effects.
 
@@ -95,7 +104,8 @@ Both \code{bake} and \code{stew} first test to see whether \code{file} exists.
 If it does, \code{bake} reads it using \code{\link{readRDS}} and returns the resulting object.
 By contrast, \code{stew} loads the file using \code{\link{load}} and copies the objects it contains into the user's workspace (or the environment of the call to \code{stew}).
 
-If \code{file} does not exist, then both \code{bake} and \code{stew} evaluate the expression \code{expr}; they differ in the results that they save.
+If \code{file} does not exist, then both \code{bake} and \code{stew} evaluate the expression \code{expr};
+they differ in the results that they save.
 \code{bake} saves the value of the evaluated expression to \code{file} as a single object.
 The name of that object is not saved.
 By contrast, \code{stew} creates a local environment within which \code{expr} is evaluated; all objects in that environment are saved (by name) in \code{file}.

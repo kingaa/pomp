@@ -9,9 +9,9 @@
 ##' @details
 ##' On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.
 ##' The \code{bake} and \code{stew} functions perform analogously:
-##' an computation is performed and stored in a named file.
+##' an computation is performed and archived in a named file.
 ##' If the function is called again and the file is present, the computation is not executed.
-##' Instead, the results are loaded from the file in which they were previously stored.
+##' Instead, the results are loaded from the archive.
 ##' Moreover, via their optional \code{seed} argument, \code{bake} and \code{stew} can control the pseudorandom-number generator (RNG) for greater reproducibility.
 ##' After the computation is finished, these functions restore the pre-existing RNG state to avoid side effects.
 ##'
@@ -21,7 +21,8 @@
 ##' If it does, \code{bake} reads it using \code{\link{readRDS}} and returns the resulting object.
 ##' By contrast, \code{stew} loads the file using \code{\link{load}} and copies the objects it contains into the user's workspace (or the environment of the call to \code{stew}).
 ##'
-##' If \code{file} does not exist, then both \code{bake} and \code{stew} evaluate the expression \code{expr}; they differ in the results that they save.
+##' If \code{file} does not exist, then both \code{bake} and \code{stew} evaluate the expression \code{expr};
+##' they differ in the results that they save.
 ##' \code{bake} saves the value of the evaluated expression to \code{file} as a single object.
 ##' The name of that object is not saved.
 ##' By contrast, \code{stew} creates a local environment within which \code{expr} is evaluated; all objects in that environment are saved (by name) in \code{file}.
@@ -36,12 +37,17 @@
 ##' The default, \code{seed = NULL}, will not change the RNG state.
 ##' \code{seed} should be a single integer.
 ##' See \code{\link{set.seed}}.
-##' @param dependson optional.
+##' @param dependson arbitrary \R object (optional).
 ##' Variables on which the computation in \code{expr} depends.
-##' Hashes of these objects will be stored in \code{file}, along with the results of evaluation \code{expr}.
-##' When \code{file} exists, hashes of these objects will be compared against the stored values;
+##' A hash of these objects will be archived in \code{file}, along with the results of evaluation \code{expr}.
+##' When \code{bake} or \code{stew} are called and \code{file} exists, the hash of these objects will be compared against the archived hash;
 ##' recomputation is forced when these do not match.
-##' These objects should be specified as unquoted symbols, using \code{c} or \code{list} if there are more than one.
+##' The dependencies should be specified as unquoted symbols:
+##' use a list if there are multiple dependencies.
+##' @param info logical.
+##' If \code{TRUE}, the \dQuote{ingredients} of the calculation are returned as a list.
+##' In the case of \code{bake}, this list is the \dQuote{ingredients} attribute of the returned object.
+##' In the case of \code{stew}, this list is a hidden object named \dQuote{.ingredients}, located in the environment within which \code{stew} was called.
 ##'
 ##' @inheritParams base::eval
 ##'
@@ -49,14 +55,15 @@
 ##' Other objects created in the evaluation of \code{expr} are discarded along with the temporary, local environment created for the evaluation.
 ##'
 ##' The latter behavior differs from that of \code{stew}, which returns the names of the objects created during the evaluation of \code{expr}.
-##' After \code{stew} completes, these objects exist in the parent environment (that from which \code{stew} was called).
+##' After \code{stew} completes, these objects are copied into the environment in which \code{stew} was called.
 ##'
 ##' \code{freeze} returns the value of evaluated expression \code{expr}.
 ##' However, \code{freeze} evaluates \code{expr} within the parent environment, so other objects created in the evaluation of \code{expr} will therefore exist after \code{freeze} completes.
 ##'
-##' \code{bake} and \code{stew} return information about the time used in evaluating the expression.
-##' This is recorded in the \code{system.time} attribute of the return value.
-##' In addition, if \code{seed} is specified, information about the seed (and the kind of random-number generator used) are stored as attributes of the return value.
+##' \code{bake} and \code{stew} store information about the time used in evaluating the expression, the state of the random-number generator, and other information, in the archive file.
+##' In the case of \code{bake}, this is recorded in the \dQuote{ingredients} attribute (\code{attr(.,"ingredients")});
+##' in the \code{stew} case, this is recorded in an object, \dQuote{.ingredients}, in the archive.
+##' This information is returned only if \code{info=TRUE}.
 ##'
 ##' @author Aaron A. King
 ##'
@@ -64,68 +71,29 @@
 ##'
 NULL
 
-process_dependencies <- function (dependson, envir, prefix)
+process_dependencies <- function (dependson, envir, ep)
 {
-  dependson <- as.list(dependson)
-  if (length(dependson)==0) return(list())
-  if (length(dependson)>1) dependson <- dependson[-1L]
-  dependson <- lapply(
-    dependson,
-    all.names,
-    functions=TRUE,
-    unique=TRUE
+  tryCatch(
+    digest(eval(dependson,envir=envir)),
+    error = function (e) {
+      pStop(ep,"cannot compute hash of dependencies: ",
+        conditionMessage(e))
+    }
   )
-  dependson <- unique(c(dependson,recursive=TRUE))
-  found <- vapply(
-    dependson,
-    FUN=exists,
-    FUN.VALUE=logical(1L),
-    envir=envir,
-    inherits=FALSE
-  )
-  deps <- character(sum(found))
-  names(deps) <- sort(dependson[found])
-  if (!all(found)) {
-    unfound <- dependson[!found]
-    pStop(prefix,
-      ngettext(length(unfound),"dependency ","dependencies "),
-      paste(sQuote(unfound),collapse=","),
-      " not found."
-    )
-  }
-  for (n in names(deps)) {
-    deps[n] <- eval(
-      parse(text=sprintf("digest::digest(%s)",n)),
-      envir=parent.frame()
-    )
-  }
-  deps
 }
 
 reload_check <- function (ingredients, code, deps,
-  seed, kind, normal.kind, file, prefix)
+  seed, kind, normal.kind, file, ep)
 {
-  reload <- TRUE
   if (is.null(ingredients)) {
-    pStop(prefix,sQuote(file)," lacks ingredients.")
+    pStop(ep,sQuote(file)," lacks ingredients.")
   }
-  reload <- identical(code,ingredients$code) &&
+  identical(code,ingredients$code) &&
+    identical(deps,ingredients$dependencies) &&
     identical(seed,ingredients$seed) &&
-    identical(seed,ingredients$kind) &&
-    identical(seed,ingredients$normal.kind)
-  if (reload) {
-    nn <- names(ingredients$dependencies)
-    reload <- (length(setdiff(names(deps),nn))==0)
-  }
-  if (reload) {
-    for (n in nn) {
-      reload <- reload &&
-        identical(deps[n],ingredients$dependencies[n])
-    }
-  }
-  reload
+    identical(kind,ingredients$kind) &&
+    identical(normal.kind,ingredients$normal.kind)
 }
-
 
 ##' @rdname bake
 ##' @importFrom digest digest    
@@ -133,26 +101,28 @@ reload_check <- function (ingredients, code, deps,
 bake <- function (
   file, expr,
   seed = NULL, kind = NULL, normal.kind = NULL,
-  dependson = NULL
+  dependson = NULL, info = FALSE
 ) {
   expr <- substitute(expr)
   code <- digest(deparse(expr))
   deps <- process_dependencies(
     dependson=substitute(dependson),
     envir=parent.frame(),
-    prefix="bake"
+    ep="bake"
   )
+  info <- as.logical(info)
   reload <- file.exists(file)
   if (reload) {
     val <- readRDS(file)
     reload <- reload_check(
       ingredients=attr(val,"ingredients"),
-      code=code,
-      deps=deps,
+      code=code,deps=deps,
       seed=seed,kind=kind,normal.kind=normal.kind,
-      file=file,
-      prefix="bake"
+      file=file,ep="bake"
     )
+    if (!reload) {
+      pWarn("bake","recomputing archive ",file,".")
+    }
   }
   if (!reload) {
     tmg <- system.time(
@@ -166,8 +136,8 @@ bake <- function (
       )
     )
     if (is.null(val)) {
-      pWarn("bake","expression evaluates to NULL, ",
-        "an empty list will be returned.")
+      pWarn("bake","expression evaluates to NULL,",
+        " an empty list will be returned.")
       val <- list()
     }
     attr(val,"ingredients") <- list(
@@ -180,7 +150,9 @@ bake <- function (
     )
     saveRDS(val,file=file)
   }
-  attr(val,"ingredients") <- NULL
+  if (!info) {
+    attr(val,"ingredients") <- NULL
+  }
   val
 }
 
@@ -189,27 +161,29 @@ bake <- function (
 stew <- function (
   file, expr,
   seed = NULL, kind = NULL, normal.kind = NULL,
-  dependson = NULL
+  dependson = NULL, info = FALSE
 ) {
   expr <- substitute(expr)
   code <- digest(deparse(expr))
   deps <- process_dependencies(
     dependson=substitute(dependson),
     envir=parent.frame(),
-    "stew"
+    ep="stew"
   )
+  info <- as.logical(info)
   reload <- file.exists(file)
   e <- new.env()
   if (reload) {
     objlist <- load(file,envir=e)
     reload <- reload_check(
       ingredients=e$.ingredients,
-      code=code,
-      deps=deps,
+      code=code,deps=deps,
       seed=seed,kind=kind,normal.kind=normal.kind,
-      file=file,
-      prefix="stew"
+      file=file,ep="stew"
     )
+    if (!reload) {
+      pWarn("stew","recomputing archive ",file,".")
+    }
   }
   if (!reload) {
     e <- new.env()
@@ -233,7 +207,7 @@ stew <- function (
     )
     save(list=objects(envir=e,all.names=TRUE),file=file,envir=e)
   }
-  objlist <- objects(envir=e,all.names=FALSE)
+  objlist <- objects(envir=e,all.names=info)
   for (obj in objlist) {
     assign(obj,get(obj,envir=e),envir=parent.frame())
   }

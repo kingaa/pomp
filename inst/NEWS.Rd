@@ -11,9 +11,10 @@
     Digests of these objects will be archived and checked against current values on subsequent calls.
     Thus, changing any dependency will automatically trigger recomputation.
     \item \code{bake} now archives the information pertinent to the \code{bake} call;
-    this information is no longer returned along with the result of the computation.
+    this information is no longer returned along with the result of the computation (unless \code{info=TRUE}).
     Similarly, \code{stew} stores a list, \dQuote{.ingredients}, in the file it creates.
-    In the \code{stew} case, unlike all the other objects that are created by \code{expr}, this list is \emph{not} loaded into the calling environment (e.g., the user's workspace).
+    In the \code{stew} case, unlike all the other objects that are created by \code{expr}, this list is \emph{not} by default loaded into the calling environment (e.g., the user's workspace).
+    It will be loaded if the \code{info} flag is set to \code{TRUE}.
     \item \code{freeze} no longer stores the details of the RNG seed and kind as an attribute of the returned object.
   }
 }

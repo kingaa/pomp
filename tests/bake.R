@@ -11,8 +11,8 @@ w5 <- freeze(runif(5),seed=499586)
 set.seed(5499)
 w3 <- runif(4)
 stopifnot(
-  all.equal(c(w1,w2),w3),
-  all(w4==w5)
+  identical(c(w1,w2),w3),
+  identical(w4,w5)
 )
 
 set.seed(32765883)
@@ -33,11 +33,11 @@ x9 <- bake({x1+runif(1)},
   dependson=x1)
 x10 <- bake({x1+runif(1)},
   file=file.path(tempdir(),"bake4.rds"),
-  dependson=c(x1,x6))
+  dependson=list(x1,x6))
 c <- function(x) x+5
 x11 <- bake({x1+runif(1)},
   file=file.path(tempdir(),"bake4.rds"),
-  dependson=c(x1,c))
+  dependson=list(x1,c))
 try(
   x12 <- bake({x1+runif(1)},
     file=file.path(tempdir(),"bake4.rds"),
@@ -48,6 +48,9 @@ try(
     file=file.path(tempdir(),"bake4.rds"),
     dependson=list(c,x1,x13,x14))
 )
+x13 <- bake({x1+runif(1)},seed=233,
+  file=file.path(tempdir(),"bake4.rds"),
+  dependson=x1,info=TRUE)
 stopifnot(
   identical(x1,x2),
   identical(x1,x3),
@@ -57,11 +60,12 @@ stopifnot(
   !identical(x7,x8),
   identical(x8,x9),
   !identical(x9,x10),
-  !exists("x12")
+  !exists("x12"),
+  length(attr(x13,"ingredients"))==6,
+  attr(x13,"ingredients")$seed==233
 )
 saveRDS(x1,file=file.path(tempdir(),"tmp.rds"))
 try(x1 <- bake({runif(4)},file=file.path(tempdir(),"tmp.rds")))
-
 
 set.seed(113848)
 stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rda"))
@@ -71,15 +75,24 @@ print(stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rda")))
 rm(.Random.seed)
 stew({y4 <- runif(4)},file=file.path(tempdir(),"stew3.rda"),seed=59566)
 y5 <- y1+y2 
-stew({y6 <- y1+y2},dependson=c(y1,y2),file=file.path(tempdir(),"stew3.rda"))
+stew({y6 <- y1+y2},dependson=list(y1,y2),file=file.path(tempdir(),"stew3.rda"))
 stopifnot(
   identical(y1,y2),
   identical(y1,y3),
   identical(y5,y6)
 )
 y1 <- 0
-stew({y6 <- y1+y2},dependson=c(y1,y2),file=file.path(tempdir(),"stew3.rda"))
-stopifnot(identical(y2,y6))
+stew({y6 <- y1+y2},dependson=list(y1,y2),file=file.path(tempdir(),"stew3.rda"))
+stopifnot(
+  identical(y2,y6),
+  !exists(".ingredients")
+)
+stew({y6 <- y1+y2},info=TRUE,file=file.path(tempdir(),"stew3.rda"))
+stopifnot(
+  identical(y2,y6),
+  is.list(.ingredients),
+  length(.ingredients)==6
+)
 
 window(sir2(),end=0.5) -> po
 simulate(po,seed=1347484107L) -> x
@@ -95,7 +108,7 @@ stopifnot(
 rm(.Random.seed)
 invisible(bake({runif(4)},file=file.path(tempdir(),"b99.rds"),seed=32765883))
 rm(.Random.seed)
-invisible(stew({runif(4)},file=file.path(tempdir(),"s99.rda"),seed=32765883))
+print(stew({runif(4)},file=file.path(tempdir(),"s99.rda"),seed=32765883))
 rm(.Random.seed)
 invisible(freeze({runif(4)},seed=32765883))
 invisible(freeze({runif(4)}))

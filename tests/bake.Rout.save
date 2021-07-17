@@ -30,8 +30,8 @@ Type 'q()' to quit R.
 > set.seed(5499)
 > w3 <- runif(4)
 > stopifnot(
-+   all.equal(c(w1,w2),w3),
-+   all(w4==w5)
++   identical(c(w1,w2),w3),
++   identical(w4,w5)
 + )
 > 
 > set.seed(32765883)
@@ -42,33 +42,46 @@ Type 'q()' to quit R.
 > rm(.Random.seed)
 > x4 <- bake({runif(4)},file=file.path(tempdir(),"bake3.rds"),seed=59566)
 > x5 <- bake({runif(5)},file=file.path(tempdir(),"bake1.rds"))
+Warning message:
+in 'bake': recomputing archive /tmp/RtmpyziMEr/bake1.rds. 
 > x6 <- bake({runif(5)},file=file.path(tempdir(),"bake1.rds"))
 > x7 <- bake({x1+runif(1)},file=file.path(tempdir(),"bake4.rds"))
 > x8 <- bake({x1+runif(1)},
 +   file=file.path(tempdir(),"bake4.rds"),
 +   dependson=x1)
+Warning message:
+in 'bake': recomputing archive /tmp/RtmpyziMEr/bake4.rds. 
 > x9 <- bake({x1+runif(1)},
 +   file=file.path(tempdir(),"bake4.rds"),
 +   dependson=x1)
 > x10 <- bake({x1+runif(1)},
 +   file=file.path(tempdir(),"bake4.rds"),
-+   dependson=c(x1,x6))
++   dependson=list(x1,x6))
+Warning message:
+in 'bake': recomputing archive /tmp/RtmpyziMEr/bake4.rds. 
 > c <- function(x) x+5
 > x11 <- bake({x1+runif(1)},
 +   file=file.path(tempdir(),"bake4.rds"),
-+   dependson=c(x1,c))
++   dependson=list(x1,c))
+Warning message:
+in 'bake': recomputing archive /tmp/RtmpyziMEr/bake4.rds. 
 > try(
 +   x12 <- bake({x1+runif(1)},
 +     file=file.path(tempdir(),"bake4.rds"),
 +     dependson=list(c,x1,x13))
 + )
-Error : in 'bake': dependency 'x13' not found.
+Error : in 'bake': cannot compute hash of dependencies: object 'x13' not found
 > try(
 +   x12 <- bake({x1+runif(1)},
 +     file=file.path(tempdir(),"bake4.rds"),
 +     dependson=list(c,x1,x13,x14))
 + )
-Error : in 'bake': dependencies 'x13','x14' not found.
+Error : in 'bake': cannot compute hash of dependencies: object 'x13' not found
+> x13 <- bake({x1+runif(1)},seed=233,
++   file=file.path(tempdir(),"bake4.rds"),
++   dependson=x1,info=TRUE)
+Warning message:
+in 'bake': recomputing archive /tmp/RtmpyziMEr/bake4.rds. 
 > stopifnot(
 +   identical(x1,x2),
 +   identical(x1,x3),
@@ -78,12 +91,13 @@ Error : in 'bake': dependencies 'x13','x14' not found.
 +   !identical(x7,x8),
 +   identical(x8,x9),
 +   !identical(x9,x10),
-+   !exists("x12")
++   !exists("x12"),
++   length(attr(x13,"ingredients"))==6,
++   attr(x13,"ingredients")$seed==233
 + )
 > saveRDS(x1,file=file.path(tempdir(),"tmp.rds"))
 > try(x1 <- bake({runif(4)},file=file.path(tempdir(),"tmp.rds")))
-Error : in 'bake': '/tmp/RtmpAU4hYm/tmp.rds' lacks ingredients.
-> 
+Error : in 'bake': '/tmp/RtmpyziMEr/tmp.rds' lacks ingredients.
 > 
 > set.seed(113848)
 > stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rda"))
@@ -94,15 +108,30 @@ Error : in 'bake': '/tmp/RtmpAU4hYm/tmp.rds' lacks ingredients.
 > rm(.Random.seed)
 > stew({y4 <- runif(4)},file=file.path(tempdir(),"stew3.rda"),seed=59566)
 > y5 <- y1+y2 
-> stew({y6 <- y1+y2},dependson=c(y1,y2),file=file.path(tempdir(),"stew3.rda"))
+> stew({y6 <- y1+y2},dependson=list(y1,y2),file=file.path(tempdir(),"stew3.rda"))
+Warning message:
+in 'stew': recomputing archive /tmp/RtmpyziMEr/stew3.rda. 
 > stopifnot(
 +   identical(y1,y2),
 +   identical(y1,y3),
 +   identical(y5,y6)
 + )
 > y1 <- 0
-> stew({y6 <- y1+y2},dependson=c(y1,y2),file=file.path(tempdir(),"stew3.rda"))
-> stopifnot(identical(y2,y6))
+> stew({y6 <- y1+y2},dependson=list(y1,y2),file=file.path(tempdir(),"stew3.rda"))
+Warning message:
+in 'stew': recomputing archive /tmp/RtmpyziMEr/stew3.rda. 
+> stopifnot(
++   identical(y2,y6),
++   !exists(".ingredients")
++ )
+> stew({y6 <- y1+y2},info=TRUE,file=file.path(tempdir(),"stew3.rda"))
+Warning message:
+in 'stew': recomputing archive /tmp/RtmpyziMEr/stew3.rda. 
+> stopifnot(
++   identical(y2,y6),
++   is.list(.ingredients),
++   length(.ingredients)==6
++ )
 > 
 > window(sir2(),end=0.5) -> po
 > simulate(po,seed=1347484107L) -> x
@@ -114,13 +143,15 @@ Error : in 'bake': '/tmp/RtmpAU4hYm/tmp.rds' lacks ingredients.
 +   is.list(bake({rnorm(5); NULL},seed=3494995,
 +     file=file.path(tempdir(),"bake4.rds")))
 + )
-Warning message:
-in 'bake': expression evaluates to NULL, an empty list will be returned. 
+Warning messages:
+1: in 'bake': recomputing archive /tmp/RtmpyziMEr/bake4.rds. 
+2: in 'bake': expression evaluates to NULL, an empty list will be returned. 
 > 
 > rm(.Random.seed)
 > invisible(bake({runif(4)},file=file.path(tempdir(),"b99.rds"),seed=32765883))
 > rm(.Random.seed)
-> invisible(stew({runif(4)},file=file.path(tempdir(),"s99.rda"),seed=32765883))
+> print(stew({runif(4)},file=file.path(tempdir(),"s99.rda"),seed=32765883))
+character(0)
 > rm(.Random.seed)
 > invisible(freeze({runif(4)},seed=32765883))
 > invisible(freeze({runif(4)}))

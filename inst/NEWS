@@ -18,11 +18,12 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._4._4:
 
         • ‘bake’ now archives the information pertinent to the ‘bake’
           call; this information is no longer returned along with the
-          result of the computation.  Similarly, ‘stew’ stores a list,
-          “.ingredients”, in the file it creates.  In the ‘stew’ case,
-          unlike all the other objects that are created by ‘expr’, this
-          list is _not_ loaded into the calling environment (e.g., the
-          user's workspace).
+          result of the computation (unless ‘info=TRUE’).  Similarly,
+          ‘stew’ stores a list, “.ingredients”, in the file it creates.
+          In the ‘stew’ case, unlike all the other objects that are
+          created by ‘expr’, this list is _not_ by default loaded into
+          the calling environment (e.g., the user's workspace).  It
+          will be loaded if the ‘info’ flag is set to ‘TRUE’.
 
         • ‘freeze’ no longer stores the details of the RNG seed and
           kind as an attribute of the returned object.
