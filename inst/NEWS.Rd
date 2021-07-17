@@ -1,5 +1,22 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.4.4}{
+  \itemize{
+    \item \code{bake} and \code{stew} now archive a digest of the code in \code{expr} and on subsequent calls check to see if the archived version matches the current version.
+    Thus, changes to the code automatically trigger recomputation.
+    \item \code{bake} and \code{stew} take the new argument \code{dependson}.
+    Using this argument, the user can specify objects upon which the computation depends.
+    These should be passed as unquoted variables;
+    if there are multiple dependencies, they can be passed using \code{c} or \code{list}.
+    Digests of these objects will be archived and checked against current values on subsequent calls.
+    Thus, changing any dependency will automatically trigger recomputation.
+    \item \code{bake} now archives the information pertinent to the \code{bake} call;
+    this information is no longer returned along with the result of the computation.
+    Similarly, \code{stew} stores a list, \dQuote{.ingredients}, in the file it creates.
+    In the \code{stew} case, unlike all the other objects that are created by \code{expr}, this list is \emph{not} loaded into the calling environment (e.g., the user's workspace).
+    \item \code{freeze} no longer stores the details of the RNG seed and kind as an attribute of the returned object.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.4.2}{
   \itemize{
     \item Fix bug in \code{bsmc2} arising when some particles have zero likelihood.

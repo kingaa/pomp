@@ -64,18 +64,10 @@
 ##'
 NULL
 
-##' @rdname bake
-##' @importFrom digest digest    
-##' @export
-bake <- function (
-  file, expr,
-  seed = NULL, kind = NULL, normal.kind = NULL,
-  dependson = NULL
-) {
-  expr <- substitute(expr)
-  reload <- file.exists(file)
-  code <- digest(deparse(expr))
-  dependson <- as.list(substitute(dependson))
+process_dependencies <- function (dependson, envir, prefix)
+{
+  dependson <- as.list(dependson)
+  if (length(dependson)==0) return(list())
   if (length(dependson)>1) dependson <- dependson[-1L]
   dependson <- lapply(
     dependson,
@@ -87,15 +79,15 @@ bake <- function (
   found <- vapply(
     dependson,
     FUN=exists,
-    FUN.VALUE=logical(1),
-    envir=parent.frame(),
+    FUN.VALUE=logical(1L),
+    envir=envir,
     inherits=FALSE
   )
   deps <- character(sum(found))
   names(deps) <- sort(dependson[found])
   if (!all(found)) {
     unfound <- dependson[!found]
-    pWarn("bake",
+    pStop(prefix,
       ngettext(length(unfound),"dependency ","dependencies "),
       paste(sQuote(unfound),collapse=","),
       " not found."
@@ -107,18 +99,60 @@ bake <- function (
       envir=parent.frame()
     )
   }
-  if (reload) {
-    val <- readRDS(file)
-    reload <- identical(code,attr(val,"code"))
+  deps
+}
+
+reload_check <- function (ingredients, code, deps,
+  seed, kind, normal.kind, file, prefix)
+{
+  reload <- TRUE
+  if (is.null(ingredients)) {
+    pStop(prefix,sQuote(file)," lacks ingredients.")
   }
+  reload <- identical(code,ingredients$code) &&
+    identical(seed,ingredients$seed) &&
+    identical(seed,ingredients$kind) &&
+    identical(seed,ingredients$normal.kind)
   if (reload) {
-    nn <- names(attr(val,"dependencies"))
+    nn <- names(ingredients$dependencies)
     reload <- (length(setdiff(names(deps),nn))==0)
   }
   if (reload) {
     for (n in nn) {
-      reload <- reload && identical(deps[n],attr(val,"dependencies")[n])
+      reload <- reload &&
+        identical(deps[n],ingredients$dependencies[n])
     }
+  }
+  reload
+}
+
+
+##' @rdname bake
+##' @importFrom digest digest    
+##' @export
+bake <- function (
+  file, expr,
+  seed = NULL, kind = NULL, normal.kind = NULL,
+  dependson = NULL
+) {
+  expr <- substitute(expr)
+  code <- digest(deparse(expr))
+  deps <- process_dependencies(
+    dependson=substitute(dependson),
+    envir=parent.frame(),
+    prefix="bake"
+  )
+  reload <- file.exists(file)
+  if (reload) {
+    val <- readRDS(file)
+    reload <- reload_check(
+      ingredients=attr(val,"ingredients"),
+      code=code,
+      deps=deps,
+      seed=seed,kind=kind,normal.kind=normal.kind,
+      file=file,
+      prefix="bake"
+    )
   }
   if (!reload) {
     tmg <- system.time(
@@ -127,19 +161,26 @@ bake <- function (
         seed=seed,
         kind=kind,
         normal.kind=normal.kind,
-        envir=parent.frame(1),
-        enclos=parent.frame(2)
+        envir=parent.frame(1L),
+        enclos=parent.frame(2L)
       )
     )
     if (is.null(val)) {
-      pWarn("bake","expression evaluates to NULL")
-      val <- paste0("NULL result returned by ",sQuote("bake"))
+      pWarn("bake","expression evaluates to NULL, ",
+        "an empty list will be returned.")
+      val <- list()
     }
-    attr(val,"code") <- code
-    attr(val,"dependencies") <- deps
-    attr(val,"system.time") <- tmg
+    attr(val,"ingredients") <- list(
+      code=code,
+      dependencies=deps,
+      system.time=tmg,
+      seed=seed,
+      kind=kind,
+      normal.kind=normal.kind
+    )
     saveRDS(val,file=file)
   }
+  attr(val,"ingredients") <- NULL
   val
 }
 
@@ -151,61 +192,24 @@ stew <- function (
   dependson = NULL
 ) {
   expr <- substitute(expr)
-  reload <- file.exists(file)
   code <- digest(deparse(expr))
-  dependson <- as.list(substitute(dependson))
-  if (length(dependson)>1) dependson <- dependson[-1L]
-  dependson <- lapply(
-    dependson,
-    all.names,
-    functions=TRUE,
-    unique=TRUE
-  )
-  dependson <- unique(c(dependson,recursive=TRUE))
-  found <- vapply(
-    dependson,
-    FUN=exists,
-    FUN.VALUE=logical(1),
+  deps <- process_dependencies(
+    dependson=substitute(dependson),
     envir=parent.frame(),
-    inherits=FALSE
+    "stew"
   )
-  deps <- character(sum(found))
-  names(deps) <- sort(dependson[found])
-  if (!all(found)) {
-    unfound <- dependson[!found]
-    pWarn("stew",
-      ngettext(length(unfound),"dependency ","dependencies "),
-      paste(sQuote(unfound),collapse=","),
-      " not found."
-    )
-  }
-  for (n in names(deps)) {
-    deps[n] <- eval(
-      parse(text=sprintf("digest::digest(%s)",n)),
-      envir=parent.frame()
-    )
-  }
+  reload <- file.exists(file)
   e <- new.env()
   if (reload) {
     objlist <- load(file,envir=e)
-    if (is.null(e$.code)) {
-      pStop("stew",sQuote(file)," is not a stew.")
-    } else {
-      reload <- identical(code,e$.code)
-    }
-  }
-  if (reload) {
-    if (is.null(e$.dependencies)) {
-      pStop("stew",sQuote(file)," is not a stew.")
-    } else {
-      nn <- names(e$.dependencies)
-      reload <- identical(names(deps),nn)
-    }
-  }
-  if (reload) {
-    for (n in nn) {
-      reload <- reload && identical(deps[n],e$.dependencies[n])
-    }
+    reload <- reload_check(
+      ingredients=e$.ingredients,
+      code=code,
+      deps=deps,
+      seed=seed,kind=kind,normal.kind=normal.kind,
+      file=file,
+      prefix="stew"
+    )
   }
   if (!reload) {
     e <- new.env()
@@ -219,12 +223,14 @@ stew <- function (
         normal.kind=normal.kind
       )
     )
-    e$.system.time <- tmg
-    e$.dependencies <- deps
-    e$.code <- code
-    ## e$.seed <- attr(val,"seed")
-    ## e$.kind <- attr(val,"kind")
-    ## e$.normal.kind <- attr(val,"normal.kind")
+    e$.ingredients <- list(
+      code=code,
+      dependencies=deps,
+      system.time=tmg,
+      seed=seed,
+      kind=kind,
+      normal.kind=normal.kind
+    )
     save(list=objects(envir=e,all.names=TRUE),file=file,envir=e)
   }
   objlist <- objects(envir=e,all.names=FALSE)
@@ -251,11 +257,6 @@ freeze <- function (expr, seed = NULL, kind = NULL, normal.kind = NULL,
   val <- eval(expr,envir=envir,enclos=enclos)
   if (rng.control) {
     assign(".Random.seed",save.seed,envir=.GlobalEnv)
-    if (!is.null(val)) {
-      attr(val,"seed") <- seed
-      attr(val,"kind") <- kind
-      attr(val,"normal.kind") <- normal.kind
-    }
   }
   val
 }

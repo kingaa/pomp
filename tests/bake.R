@@ -38,11 +38,18 @@ c <- function(x) x+5
 x11 <- bake({x1+runif(1)},
   file=file.path(tempdir(),"bake4.rds"),
   dependson=c(x1,c))
-x12 <- bake({x1+runif(1)},
-  file=file.path(tempdir(),"bake4.rds"),
-  dependson=list(c,x1,x13))
+try(
+  x12 <- bake({x1+runif(1)},
+    file=file.path(tempdir(),"bake4.rds"),
+    dependson=list(c,x1,x13))
+)
+try(
+  x12 <- bake({x1+runif(1)},
+    file=file.path(tempdir(),"bake4.rds"),
+    dependson=list(c,x1,x13,x14))
+)
 stopifnot(
-  all.equal(as.numeric(x1),as.numeric(x2)),
+  identical(x1,x2),
   identical(x1,x3),
   identical(x3,x3a),
   identical(x5,x6),
@@ -50,8 +57,11 @@ stopifnot(
   !identical(x7,x8),
   identical(x8,x9),
   !identical(x9,x10),
-  identical(x11,x12)
+  !exists("x12")
 )
+saveRDS(x1,file=file.path(tempdir(),"tmp.rds"))
+try(x1 <- bake({runif(4)},file=file.path(tempdir(),"tmp.rds")))
+
 
 set.seed(113848)
 stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rda"))
@@ -74,14 +84,11 @@ stopifnot(identical(y2,y6))
 window(sir2(),end=0.5) -> po
 simulate(po,seed=1347484107L) -> x
 freeze(simulate(po),seed=1347484107L) -> y
-attr(y,"seed") <- NULL
-attr(y,"kind") <- NULL
-attr(y,"normal.kind") <- NULL
 stopifnot(identical(x,y))
 
 stopifnot(
   is.null(freeze({rnorm(5); NULL},seed=3494995)),
-  is.character(bake({rnorm(5); NULL},seed=3494995,
+  is.list(bake({rnorm(5); NULL},seed=3494995,
     file=file.path(tempdir(),"bake4.rds")))
 )
 

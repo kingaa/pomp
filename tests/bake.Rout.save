@@ -57,13 +57,20 @@ Type 'q()' to quit R.
 > x11 <- bake({x1+runif(1)},
 +   file=file.path(tempdir(),"bake4.rds"),
 +   dependson=c(x1,c))
-> x12 <- bake({x1+runif(1)},
-+   file=file.path(tempdir(),"bake4.rds"),
-+   dependson=list(c,x1,x13))
-Warning message:
-in 'bake': dependency 'x13' not found. 
+> try(
++   x12 <- bake({x1+runif(1)},
++     file=file.path(tempdir(),"bake4.rds"),
++     dependson=list(c,x1,x13))
++ )
+Error : in 'bake': dependency 'x13' not found.
+> try(
++   x12 <- bake({x1+runif(1)},
++     file=file.path(tempdir(),"bake4.rds"),
++     dependson=list(c,x1,x13,x14))
++ )
+Error : in 'bake': dependencies 'x13','x14' not found.
 > stopifnot(
-+   all.equal(as.numeric(x1),as.numeric(x2)),
++   identical(x1,x2),
 +   identical(x1,x3),
 +   identical(x3,x3a),
 +   identical(x5,x6),
@@ -71,8 +78,12 @@ in 'bake': dependency 'x13' not found.
 +   !identical(x7,x8),
 +   identical(x8,x9),
 +   !identical(x9,x10),
-+   identical(x11,x12)
++   !exists("x12")
 + )
+> saveRDS(x1,file=file.path(tempdir(),"tmp.rds"))
+> try(x1 <- bake({runif(4)},file=file.path(tempdir(),"tmp.rds")))
+Error : in 'bake': '/tmp/RtmpAU4hYm/tmp.rds' lacks ingredients.
+> 
 > 
 > set.seed(113848)
 > stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rda"))
@@ -96,18 +107,15 @@ in 'bake': dependency 'x13' not found.
 > window(sir2(),end=0.5) -> po
 > simulate(po,seed=1347484107L) -> x
 > freeze(simulate(po),seed=1347484107L) -> y
-> attr(y,"seed") <- NULL
-> attr(y,"kind") <- NULL
-> attr(y,"normal.kind") <- NULL
 > stopifnot(identical(x,y))
 > 
 > stopifnot(
 +   is.null(freeze({rnorm(5); NULL},seed=3494995)),
-+   is.character(bake({rnorm(5); NULL},seed=3494995,
++   is.list(bake({rnorm(5); NULL},seed=3494995,
 +     file=file.path(tempdir(),"bake4.rds")))
 + )
 Warning message:
-in 'bake': expression evaluates to NULL 
+in 'bake': expression evaluates to NULL, an empty list will be returned. 
 > 
 > rm(.Random.seed)
 > invisible(bake({runif(4)},file=file.path(tempdir(),"b99.rds"),seed=32765883))
