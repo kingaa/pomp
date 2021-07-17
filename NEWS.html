@@ -7,6 +7,35 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
+<h3>Changes in <span class="pkg">pomp</span> version 3.4.4</h3>
+
+
+<ul>
+<li> <p><code>bake</code> and <code>stew</code> now archive a digest of the code in <code>expr</code> and on subsequent calls check to see if the archived version matches the current version.
+Thus, changes to the code automatically trigger recomputation.
+</p>
+</li>
+<li> <p><code>bake</code> and <code>stew</code> take the new argument <code>dependson</code>.
+Using this argument, the user can specify objects upon which the computation depends.
+These should be passed as unquoted variables;
+if there are multiple dependencies, they can be passed using <code>c</code> or <code>list</code>.
+Digests of these objects will be archived and checked against current values on subsequent calls.
+Thus, changing any dependency will automatically trigger recomputation.
+</p>
+</li>
+<li> <p><code>bake</code> now archives the information pertinent to the <code>bake</code> call;
+this information is no longer returned along with the result of the computation (unless <code>info=TRUE</code>).
+Similarly, <code>stew</code> stores a list, &ldquo;.ingredients&rdquo;, in the file it creates.
+In the <code>stew</code> case, unlike all the other objects that are created by <code>expr</code>, this list is <em>not</em> by default loaded into the calling environment (e.g., the user's workspace).
+It will be loaded if the <code>info</code> flag is set to <code>TRUE</code>.
+</p>
+</li>
+<li> <p><code>freeze</code> no longer stores the details of the RNG seed and kind as an attribute of the returned object.
+</p>
+</li></ul>
+
+
+
 <h3>Changes in <span class="pkg">pomp</span> version 3.4.2</h3>
 
 

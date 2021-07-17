@@ -16,11 +16,34 @@
 <h3>Usage</h3>
 
 <pre>
-bake(file, expr, seed = NULL, kind = NULL, normal.kind = NULL)
+bake(
+  file,
+  expr,
+  seed = NULL,
+  kind = NULL,
+  normal.kind = NULL,
+  dependson = NULL,
+  info = FALSE
+)
 
-stew(file, expr, seed = NULL, kind = NULL, normal.kind = NULL)
+stew(
+  file,
+  expr,
+  seed = NULL,
+  kind = NULL,
+  normal.kind = NULL,
+  dependson = NULL,
+  info = FALSE
+)
 
-freeze(expr, seed = NULL, kind = NULL, normal.kind = NULL)
+freeze(
+  expr,
+  seed = NULL,
+  kind = NULL,
+  normal.kind = NULL,
+  envir = parent.frame(),
+  enclos = if (is.list(envir) || is.pairlist(envir)) parent.frame() else baseenv()
+)
 </pre>
 
 
@@ -46,6 +69,36 @@ The default, <code>seed = NULL</code>, will not change the RNG state.
 <code>seed</code> should be a single integer.
 See <code><a href="../../base/html/Random.html">set.seed</a></code>.</p>
 </td></tr>
+<tr valign="top"><td><code>dependson</code></td>
+<td>
+<p>arbitrary <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object (optional).
+Variables on which the computation in <code>expr</code> depends.
+A hash of these objects will be archived in <code>file</code>, along with the results of evaluation <code>expr</code>.
+When <code>bake</code> or <code>stew</code> are called and <code>file</code> exists, the hash of these objects will be compared against the archived hash;
+recomputation is forced when these do not match.
+The dependencies should be specified as unquoted symbols:
+use a list if there are multiple dependencies.</p>
+</td></tr>
+<tr valign="top"><td><code>info</code></td>
+<td>
+<p>logical.
+If <code>TRUE</code>, the &ldquo;ingredients&rdquo; of the calculation are returned as a list.
+In the case of <code>bake</code>, this list is the &ldquo;ingredients&rdquo; attribute of the returned object.
+In the case of <code>stew</code>, this list is a hidden object named &ldquo;.ingredients&rdquo;, located in the environment within which <code>stew</code> was called.</p>
+</td></tr>
+<tr valign="top"><td><code>envir</code></td>
+<td>
+<p>the <code><a href="../../base/help/environment.html">environment</a></code> in which <code>expr</code> is to
+be evaluated.  May also be <code>NULL</code>, a list, a data frame,
+a pairlist or an integer as specified to <code><a href="../../base/help/sys.call.html">sys.call</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>enclos</code></td>
+<td>
+<p>Relevant when <code>envir</code> is a (pair)list or a data frame.
+Specifies the enclosure, i.e., where <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> looks for objects not found
+in <code>envir</code>.  This can be <code>NULL</code> (interpreted as the base
+package environment, <code><a href="../../base/help/baseenv.html">baseenv</a>()</code>) or an environment.</p>
+</td></tr>
 </table>
 
 
@@ -53,9 +106,9 @@ See <code><a href="../../base/html/Random.html">set.seed</a></code>.</p>
 
 <p>On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.
 The <code>bake</code> and <code>stew</code> functions perform analogously:
-an computation is performed and stored in a named file.
+an computation is performed and archived in a named file.
 If the function is called again and the file is present, the computation is not executed.
-Instead, the results are loaded from the file in which they were previously stored.
+Instead, the results are loaded from the archive.
 Moreover, via their optional <code>seed</code> argument, <code>bake</code> and <code>stew</code> can control the pseudorandom-number generator (RNG) for greater reproducibility.
 After the computation is finished, these functions restore the pre-existing RNG state to avoid side effects.
 </p>
@@ -65,7 +118,8 @@ After the computation is finished, these functions restore the pre-existing RNG 
 If it does, <code>bake</code> reads it using <code><a href="../../base/html/readRDS.html">readRDS</a></code> and returns the resulting object.
 By contrast, <code>stew</code> loads the file using <code><a href="../../pomp/help/load.html">load</a></code> and copies the objects it contains into the user's workspace (or the environment of the call to <code>stew</code>).
 </p>
-<p>If <code>file</code> does not exist, then both <code>bake</code> and <code>stew</code> evaluate the expression <code>expr</code>; they differ in the results that they save.
+<p>If <code>file</code> does not exist, then both <code>bake</code> and <code>stew</code> evaluate the expression <code>expr</code>;
+they differ in the results that they save.
 <code>bake</code> saves the value of the evaluated expression to <code>file</code> as a single object.
 The name of that object is not saved.
 By contrast, <code>stew</code> creates a local environment within which <code>expr</code> is evaluated; all objects in that environment are saved (by name) in <code>file</code>.
@@ -78,14 +132,15 @@ By contrast, <code>stew</code> creates a local environment within which <code>ex
 Other objects created in the evaluation of <code>expr</code> are discarded along with the temporary, local environment created for the evaluation.
 </p>
 <p>The latter behavior differs from that of <code>stew</code>, which returns the names of the objects created during the evaluation of <code>expr</code>.
-After <code>stew</code> completes, these objects exist in the parent environment (that from which <code>stew</code> was called).
+After <code>stew</code> completes, these objects are copied into the environment in which <code>stew</code> was called.
 </p>
 <p><code>freeze</code> returns the value of evaluated expression <code>expr</code>.
 However, <code>freeze</code> evaluates <code>expr</code> within the parent environment, so other objects created in the evaluation of <code>expr</code> will therefore exist after <code>freeze</code> completes.
 </p>
-<p><code>bake</code> and <code>stew</code> return information about the time used in evaluating the expression.
-This is recorded in the <code>system.time</code> attribute of the return value.
-In addition, if <code>seed</code> is specified, information about the seed (and the kind of random-number generator used) are stored as attributes of the return value.
+<p><code>bake</code> and <code>stew</code> store information about the time used in evaluating the expression, the state of the random-number generator, and other information, in the archive file.
+In the case of <code>bake</code>, this is recorded in the &ldquo;ingredients&rdquo; attribute (<code>attr(.,"ingredients")</code>);
+in the <code>stew</code> case, this is recorded in an object, &ldquo;.ingredients&rdquo;, in the archive.
+This information is returned only if <code>info=TRUE</code>.
 </p>
 
 
@@ -104,18 +159,43 @@ In addition, if <code>seed</code> is specified, information about the seed (and 
     mean(x)
   })
 
-  stew(file="example2.rda",{
-    x &lt;- runif(10)
-    y &lt;- rnorm(n=10,mean=3*x+5,sd=2)
+  bake(file="example1.rds",{
+    x &lt;- runif(1000)
+    mean(x)
   })
+
+  bake(file="example1.rds",{
+    a &lt;- 3
+    x &lt;- runif(1000)
+    mean(x)
+  })
+
+  a &lt;- 5
+  b &lt;- 2
+
+  stew(file="example2.rda",
+    dependson=c(a,b),{
+      x &lt;- runif(10)
+      y &lt;- rnorm(n=10,mean=a*x+b,sd=2)
+    })
 
   plot(x,y)
 
+  set.seed(11)
+  runif(2)
   freeze(runif(3),seed=5886730)
+  runif(2)
   freeze(runif(3),seed=5886730)
+  runif(2)
+
+  set.seed(11)
+  runif(2)
+  runif(2)
+  runif(2)
+
 
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.2.1 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.4.2 <a href="00Index.html">Index</a>]</div>
 </body></html>
