@@ -203,6 +203,7 @@ update_stew_archive <- function (
       kind=kind,
       normal.kind=normal.kind
     )
+    e$.system.time <- NULL
     save(list=objects(envir=e,all.names=TRUE),file=file,envir=e)
   }
   e
@@ -262,8 +263,11 @@ stew <- function (
     save(list=objects(envir=e,all.names=TRUE),file=file,envir=e)
   }
   objlist <- objects(envir=e,all.names=info)
-  for (obj in c(objlist,".system.time")) {
+  for (obj in objlist) {
     assign(obj,get(obj,envir=e),envir=parent.frame())
+  }
+  if (!info) {
+    assign(".system.time",e$.systemtime,envir=parent.frame())
   }
   invisible(objlist)
 }
