@@ -52,7 +52,7 @@ x13 <- bake({x1+runif(1)},seed=233,
   file=file.path(tempdir(),"bake4.rds"),
   dependson=x1,info=TRUE)
 stopifnot(
-  identical(x1,x2),
+  identical(as.numeric(x1),as.numeric(x2)),
   identical(x1,x3),
   identical(x3,x3a),
   identical(x5,x6),

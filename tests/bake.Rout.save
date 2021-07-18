@@ -83,7 +83,7 @@ Error : in 'bake': cannot compute hash of dependencies: object 'x13' not found
 Warning message:
 in 'bake': recomputing archive bake4.rds. 
 > stopifnot(
-+   identical(x1,x2),
++   identical(as.numeric(x1),as.numeric(x2)),
 +   identical(x1,x3),
 +   identical(x3,x3a),
 +   identical(x5,x6),
