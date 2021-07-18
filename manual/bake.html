@@ -137,10 +137,25 @@ After <code>stew</code> completes, these objects are copied into the environment
 <p><code>freeze</code> returns the value of evaluated expression <code>expr</code>.
 However, <code>freeze</code> evaluates <code>expr</code> within the parent environment, so other objects created in the evaluation of <code>expr</code> will therefore exist after <code>freeze</code> completes.
 </p>
-<p><code>bake</code> and <code>stew</code> store information about the time used in evaluating the expression, the state of the random-number generator, and other information, in the archive file.
+<p><code>bake</code> and <code>stew</code> store information about the code executed, the dependencies, and the state of the random-number generator in the archive file.
 In the case of <code>bake</code>, this is recorded in the &ldquo;ingredients&rdquo; attribute (<code>attr(.,"ingredients")</code>);
 in the <code>stew</code> case, this is recorded in an object, &ldquo;.ingredients&rdquo;, in the archive.
 This information is returned only if <code>info=TRUE</code>.
+</p>
+<p>The time required for execution is also recorded.
+<code>bake</code> stores this in the &ldquo;system.time&rdquo; attribute of the return value;
+<code>stew</code> does so in a hidden variable named <code>.system.time</code>.
+</p>
+
+
+<h3>Compatibility with older versions</h3>
+
+<p>With <span class="pkg">pomp</span> version 3.4.4.2, the behavior of <code>bake</code> and <code>stew</code> changed.
+In particular, older versions did no dependency checking, and did not check to see whether <code>expr</code> had changed.
+Accordingly, the archive files written by older versions have a format that is not compatible with the newer ones.
+When an archive file in the old format is encountered, it will be updated to the new format, with a warning.
+<strong>Note that this will overwrite existing archive files!</strong>
+However, there will be no loss of information.
 </p>
 
 
@@ -174,7 +189,7 @@ This information is returned only if <code>info=TRUE</code>.
   b &lt;- 2
 
   stew(file="example2.rda",
-    dependson=c(a,b),{
+    dependson=list(a,b),{
       x &lt;- runif(10)
       y &lt;- rnorm(n=10,mean=a*x+b,sd=2)
     })
@@ -197,5 +212,5 @@ This information is returned only if <code>info=TRUE</code>.
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.4.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.5.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
