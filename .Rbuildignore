@@ -28,3 +28,4 @@ www
 ^(.+?)\.zip
 hub_cov\.R
 covr.html
+covr.rds

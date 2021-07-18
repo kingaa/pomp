@@ -97,10 +97,10 @@ rhub:
 	$(REXE) -e 'library(rhub); check_with_sanitizers(); check_on_windows(); check(platform="macos-highsierra-release-cran");'
 
 covr:
-	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; report(cov,file="covr.html",browse=TRUE);'
+	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; report(cov,file="covr.html",browse=TRUE); saveRDS(cov,file="covr.rds")'
 
 xcovr:
-	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; report(cov,file="covr.html",browse=TRUE); codecov(coverage=cov,token="cbbc302d-fff3-4530-8474-0f3f48db6776",quiet=FALSE)'
+	$(REXE) -e 'library(covr); readRDS("covr.rds") -> cov; codecov(coverage=cov,token="cbbc302d-fff3-4530-8474-0f3f48db6776",quiet=FALSE)'
 
 win: dist
 	curl -T $(PKGVERS).tar.gz ftp://win-builder.r-project.org/R-release/

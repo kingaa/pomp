@@ -19,7 +19,7 @@
   b <- 2
 
   stew(file="example2.rda",
-    dependson=c(a,b),{
+    dependson=list(a,b),{
       x <- runif(10)
       y <- rnorm(n=10,mean=a*x+b,sd=2)
     })

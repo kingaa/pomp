@@ -61,7 +61,7 @@ stopifnot(
   identical(x8,x9),
   !identical(x9,x10),
   !exists("x12"),
-  length(attr(x13,"ingredients"))==6,
+  length(attr(x13,"ingredients"))==5,
   attr(x13,"ingredients")$seed==233
 )
 saveRDS(x1,file=file.path(tempdir(),"tmp.rds"))
@@ -85,13 +85,14 @@ y1 <- 0
 stew({y6 <- y1+y2},dependson=list(y1,y2),file=file.path(tempdir(),"stew3.rda"))
 stopifnot(
   identical(y2,y6),
-  !exists(".ingredients")
+  !exists(".ingredients"),
+  exists(".system.time")
 )
 stew({y6 <- y1+y2},info=TRUE,file=file.path(tempdir(),"stew3.rda"))
 stopifnot(
   identical(y2,y6),
   is.list(.ingredients),
-  length(.ingredients)==6
+  length(.ingredients)==5
 )
 
 window(sir2(),end=0.5) -> po
@@ -112,3 +113,36 @@ print(stew({runif(4)},file=file.path(tempdir(),"s99.rda"),seed=32765883))
 rm(.Random.seed)
 invisible(freeze({runif(4)},seed=32765883))
 invisible(freeze({runif(4)}))
+
+bake({runif(5)},file=file.path(tempdir(),"tmp1.rds"),info=TRUE) -> x
+attr(x,"ingredients") <- NULL
+saveRDS(x,file=file.path(tempdir(),"tmp1.rds"))
+bake({runif(5)},file=file.path(tempdir(),"tmp1.rds")) -> y
+bake({runif(5)},file=file.path(tempdir(),"tmp1.rds")) -> y
+stopifnot(identical(x,y))
+
+stew({x <- 33; y <- runif(5)},
+  file=file.path(tempdir(),"tmp1.rda"))
+xx <- x; yy <- y
+save(x,y,file=file.path(tempdir(),"tmp1.rda"))
+stew({x <- 33; y <- runif(5)},
+  file=file.path(tempdir(),"tmp1.rda"))
+stew({x <- 33; y <- runif(5)},
+  file=file.path(tempdir(),"tmp1.rda"))
+stopifnot(
+  identical(x,xx),
+  identical(y,yy)
+)
+
+stew({x <- 33; y <- runif(5)},seed=99,
+  file=file.path(tempdir(),"tmp2.rda"))
+xx <- x; yy <- y
+save(x,y,file=file.path(tempdir(),"tmp2.rda"))
+stew({x <- 33; y <- runif(5)},
+  file=file.path(tempdir(),"tmp2.rda"))
+stew({x <- 33; y <- runif(5)},seed=99,
+  file=file.path(tempdir(),"tmp2.rda"))
+stopifnot(
+  identical(x,xx),
+  identical(y,yy)
+)

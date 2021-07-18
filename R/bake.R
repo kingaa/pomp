@@ -51,6 +51,14 @@
 ##'
 ##' @inheritParams base::eval
 ##'
+##' @section Compatibility with older versions:
+##' With \pkg{pomp} version 3.4.4.2, the behavior of \code{bake} and \code{stew} changed.
+##' In particular, older versions did no dependency checking, and did not check to see whether \code{expr} had changed.
+##' Accordingly, the archive files written by older versions have a format that is not compatible with the newer ones.
+##' When an archive file in the old format is encountered, it will be updated to the new format, with a warning.
+##' \strong{Note that this will overwrite existing archive files!}
+##' However, there will be no loss of information.
+##' 
 ##' @return \code{bake} returns the value of the evaluated expression \code{expr}.
 ##' Other objects created in the evaluation of \code{expr} are discarded along with the temporary, local environment created for the evaluation.
 ##'
@@ -60,11 +68,15 @@
 ##' \code{freeze} returns the value of evaluated expression \code{expr}.
 ##' However, \code{freeze} evaluates \code{expr} within the parent environment, so other objects created in the evaluation of \code{expr} will therefore exist after \code{freeze} completes.
 ##'
-##' \code{bake} and \code{stew} store information about the time used in evaluating the expression, the state of the random-number generator, and other information, in the archive file.
+##' \code{bake} and \code{stew} store information about the code executed, the dependencies, and the state of the random-number generator in the archive file.
 ##' In the case of \code{bake}, this is recorded in the \dQuote{ingredients} attribute (\code{attr(.,"ingredients")});
 ##' in the \code{stew} case, this is recorded in an object, \dQuote{.ingredients}, in the archive.
 ##' This information is returned only if \code{info=TRUE}.
 ##'
+##' The time required for execution is also recorded.
+##' \code{bake} stores this in the \dQuote{system.time} attribute of the return value;
+##' \code{stew} does so in a hidden variable named \code{.system.time}.
+##' 
 ##' @author Aaron A. King
 ##'
 ##' @example examples/bake.R
@@ -86,13 +98,33 @@ reload_check <- function (ingredients, code, deps,
   seed, kind, normal.kind, file, ep)
 {
   if (is.null(ingredients)) {
-    pStop(ep,sQuote(file)," lacks ingredients.")
+    pStop(ep,sQuote(basename(file))," lacks ingredients.")
   }
   identical(code,ingredients$code) &&
     identical(deps,ingredients$dependencies) &&
     identical(seed,ingredients$seed) &&
     identical(kind,ingredients$kind) &&
     identical(normal.kind,ingredients$normal.kind)
+}
+
+update_bake_archive <- function (val, code, deps, file) {
+  if (is.null(attr(val,"ingredients")) &&
+        !is.null(attr(val,"system.time"))
+  ) {
+    pWarn("bake","archive in old format detected. Updating....")
+    attr(val,"ingredients") <- list(
+      code=code,
+      dependencies=deps,
+      seed=attr(val,"seed"),
+      kind=attr(val,"kind"),
+      normal.kind=attr(val,"normal.kind")
+    )
+    attr(val,"seed") <- NULL
+    attr(val,"kind") <- NULL
+    attr(val,"normal.kind") <- NULL
+    saveRDS(val,file=file)
+  }
+  val
 }
 
 ##' @rdname bake
@@ -114,6 +146,7 @@ bake <- function (
   reload <- file.exists(file)
   if (reload) {
     val <- readRDS(file)
+    val <- update_bake_archive(val,code=code,deps=deps,file=file)
     reload <- reload_check(
       ingredients=attr(val,"ingredients"),
       code=code,deps=deps,
@@ -121,7 +154,7 @@ bake <- function (
       file=file,ep="bake"
     )
     if (!reload) {
-      pWarn("bake","recomputing archive ",file,".")
+      pWarn("bake","recomputing archive ",basename(file),".")
     }
   }
   if (!reload) {
@@ -143,17 +176,36 @@ bake <- function (
     attr(val,"ingredients") <- list(
       code=code,
       dependencies=deps,
-      system.time=tmg,
       seed=seed,
       kind=kind,
       normal.kind=normal.kind
     )
+    attr(val,"system.time") <- tmg
     saveRDS(val,file=file)
   }
   if (!info) {
     attr(val,"ingredients") <- NULL
   }
   val
+}
+
+update_stew_archive <- function (
+  e, code, deps,
+  seed, kind, normal.kind,
+  file
+) {
+  if (is.null(e$.ingredients)) {
+    pWarn("stew","archive in old format detected. Updating....")
+    e$.ingredients <- list(
+      code=code,
+      dependencies=deps,
+      seed=seed,
+      kind=kind,
+      normal.kind=normal.kind
+    )
+    save(list=objects(envir=e,all.names=TRUE),file=file,envir=e)
+  }
+  e
 }
 
 ##' @rdname bake
@@ -175,6 +227,8 @@ stew <- function (
   e <- new.env()
   if (reload) {
     objlist <- load(file,envir=e)
+    e <- update_stew_archive(e,code=code,deps=deps,
+      seed=seed,kind=kind,normal.kind=normal.kind,file=file)
     reload <- reload_check(
       ingredients=e$.ingredients,
       code=code,deps=deps,
@@ -182,7 +236,7 @@ stew <- function (
       file=file,ep="stew"
     )
     if (!reload) {
-      pWarn("stew","recomputing archive ",file,".")
+      pWarn("stew","recomputing archive ",basename(file),".")
     }
   }
   if (!reload) {
@@ -200,15 +254,15 @@ stew <- function (
     e$.ingredients <- list(
       code=code,
       dependencies=deps,
-      system.time=tmg,
       seed=seed,
       kind=kind,
       normal.kind=normal.kind
     )
+    e$.system.time <- tmg
     save(list=objects(envir=e,all.names=TRUE),file=file,envir=e)
   }
   objlist <- objects(envir=e,all.names=info)
-  for (obj in objlist) {
+  for (obj in c(objlist,".system.time")) {
     assign(obj,get(obj,envir=e),envir=parent.frame())
   }
   invisible(objlist)

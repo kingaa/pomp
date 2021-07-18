@@ -1,5 +1,12 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._4._5:
+
+        • When they encounter an archive produced by an older version,
+          ‘bake’ and ‘stew’ now update the archive in the new format.
+          Recomputation should never be triggered in this case: If
+          recomputation is desired, delete the archive file.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._4._4:
 
         • ‘bake’ and ‘stew’ now archive a digest of the code in ‘expr’

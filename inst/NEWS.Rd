@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.4.5}{
+  \itemize{
+    \item When they encounter an archive produced by an older version, \code{bake} and \code{stew} now update the archive in the new format.
+    Recomputation should never be triggered in this case:
+    If recomputation is desired, delete the archive file.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.4.4}{
   \itemize{
     \item \code{bake} and \code{stew} now archive a digest of the code in \code{expr} and on subsequent calls check to see if the archived version matches the current version.

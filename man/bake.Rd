@@ -81,10 +81,14 @@ After \code{stew} completes, these objects are copied into the environment in wh
 \code{freeze} returns the value of evaluated expression \code{expr}.
 However, \code{freeze} evaluates \code{expr} within the parent environment, so other objects created in the evaluation of \code{expr} will therefore exist after \code{freeze} completes.
 
-\code{bake} and \code{stew} store information about the time used in evaluating the expression, the state of the random-number generator, and other information, in the archive file.
+\code{bake} and \code{stew} store information about the code executed, the dependencies, and the state of the random-number generator in the archive file.
 In the case of \code{bake}, this is recorded in the \dQuote{ingredients} attribute (\code{attr(.,"ingredients")});
 in the \code{stew} case, this is recorded in an object, \dQuote{.ingredients}, in the archive.
 This information is returned only if \code{info=TRUE}.
+
+The time required for execution is also recorded.
+\code{bake} stores this in the \dQuote{system.time} attribute of the return value;
+\code{stew} does so in a hidden variable named \code{.system.time}.
 }
 \description{
 Tools for reproducible computations.
@@ -110,6 +114,16 @@ they differ in the results that they save.
 The name of that object is not saved.
 By contrast, \code{stew} creates a local environment within which \code{expr} is evaluated; all objects in that environment are saved (by name) in \code{file}.
 }
+\section{Compatibility with older versions}{
+
+With \pkg{pomp} version 3.4.4.2, the behavior of \code{bake} and \code{stew} changed.
+In particular, older versions did no dependency checking, and did not check to see whether \code{expr} had changed.
+Accordingly, the archive files written by older versions have a format that is not compatible with the newer ones.
+When an archive file in the old format is encountered, it will be updated to the new format, with a warning.
+\strong{Note that this will overwrite existing archive files!}
+However, there will be no loss of information.
+}
+
 \examples{
 \dontrun{
   bake(file="example1.rds",{
@@ -132,7 +146,7 @@ By contrast, \code{stew} creates a local environment within which \code{expr} is
   b <- 2
 
   stew(file="example2.rda",
-    dependson=c(a,b),{
+    dependson=list(a,b),{
       x <- runif(10)
       y <- rnorm(n=10,mean=a*x+b,sd=2)
     })
