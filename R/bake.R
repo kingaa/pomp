@@ -26,6 +26,8 @@
 ##' \code{bake} saves the value of the evaluated expression to \code{file} as a single object.
 ##' The name of that object is not saved.
 ##' By contrast, \code{stew} creates a local environment within which \code{expr} is evaluated; all objects in that environment are saved (by name) in \code{file}.
+##' \code{bake} and \code{stew} also store information about the code executed, the dependencies, and the state of the random-number generator (if the latter is controlled) in the archive file.
+##' Re-computation is triggered if any of these things change.
 ##'
 ##' @param file Name of the binary data file in which the result will be stored or retrieved, as appropriate.
 ##' For \code{bake}, this will contain a single object and hence be an RDS file (extension \sQuote{rds});
