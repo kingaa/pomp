@@ -23,7 +23,8 @@ bake(
   kind = NULL,
   normal.kind = NULL,
   dependson = NULL,
-  info = FALSE
+  info = FALSE,
+  timing = TRUE
 )
 
 stew(
@@ -86,6 +87,12 @@ If <code>TRUE</code>, the &ldquo;ingredients&rdquo; of the calculation are retur
 In the case of <code>bake</code>, this list is the &ldquo;ingredients&rdquo; attribute of the returned object.
 In the case of <code>stew</code>, this list is a hidden object named &ldquo;.ingredients&rdquo;, located in the environment within which <code>stew</code> was called.</p>
 </td></tr>
+<tr valign="top"><td><code>timing</code></td>
+<td>
+<p>logical.
+If <code>TRUE</code>, the time required for the computation is returned.
+This is returned as the &ldquo;system.time&rdquo; attribute of the returned object.</p>
+</td></tr>
 <tr valign="top"><td><code>envir</code></td>
 <td>
 <p>the <code><a href="../../base/help/environment.html">environment</a></code> in which <code>expr</code> is to
@@ -123,6 +130,8 @@ they differ in the results that they save.
 <code>bake</code> saves the value of the evaluated expression to <code>file</code> as a single object.
 The name of that object is not saved.
 By contrast, <code>stew</code> creates a local environment within which <code>expr</code> is evaluated; all objects in that environment are saved (by name) in <code>file</code>.
+<code>bake</code> and <code>stew</code> also store information about the code executed, the dependencies, and the state of the random-number generator (if the latter is controlled) in the archive file.
+Re-computation is triggered if any of these things change.
 </p>
 
 
@@ -143,8 +152,9 @@ in the <code>stew</code> case, this is recorded in an object, &ldquo;.ingredient
 This information is returned only if <code>info=TRUE</code>.
 </p>
 <p>The time required for execution is also recorded.
-<code>bake</code> stores this in the &ldquo;system.time&rdquo; attribute of the return value;
+<code>bake</code> stores this in the &ldquo;system.time&rdquo; attribute of the archived <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> object;
 <code>stew</code> does so in a hidden variable named <code>.system.time</code>.
+The timing is obtained using <code><a href="../../base/html/system.time.html">system.time</a></code>.
 </p>
 
 
@@ -212,5 +222,5 @@ However, there will be no loss of information.
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.4.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
