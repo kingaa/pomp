@@ -13,7 +13,8 @@ bake(
   kind = NULL,
   normal.kind = NULL,
   dependson = NULL,
-  info = FALSE
+  info = FALSE,
+  timing = TRUE
 )
 
 stew(
@@ -62,6 +63,10 @@ If \code{TRUE}, the \dQuote{ingredients} of the calculation are returned as a li
 In the case of \code{bake}, this list is the \dQuote{ingredients} attribute of the returned object.
 In the case of \code{stew}, this list is a hidden object named \dQuote{.ingredients}, located in the environment within which \code{stew} was called.}
 
+\item{timing}{logical.
+If \code{TRUE}, the time required for the computation is returned.
+This is returned as the \dQuote{system.time} attribute of the returned object.}
+
 \item{envir}{the \code{\link[base]{environment}} in which \code{expr} is to
     be evaluated.  May also be \code{NULL}, a list, a data frame,
     a pairlist or an integer as specified to \code{\link[base]{sys.call}}.}
@@ -87,8 +92,9 @@ in the \code{stew} case, this is recorded in an object, \dQuote{.ingredients}, i
 This information is returned only if \code{info=TRUE}.
 
 The time required for execution is also recorded.
-\code{bake} stores this in the \dQuote{system.time} attribute of the return value;
+\code{bake} stores this in the \dQuote{system.time} attribute of the archived \R object;
 \code{stew} does so in a hidden variable named \code{.system.time}.
+The timing is obtained using \code{\link{system.time}}.
 }
 \description{
 Tools for reproducible computations.

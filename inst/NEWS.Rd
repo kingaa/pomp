@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.4.6}{
+  \itemize{
+    \item \code{bake} takes a new option, \code{timing}, that controls whether information on the timing is returned or merely stored.
+    By default, this is set to \code{TRUE}, though this default behavior may change in future.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.4.5}{
   \itemize{
     \item When they encounter an archive produced by an older version, \code{bake} and \code{stew} now update the archive in the new format.

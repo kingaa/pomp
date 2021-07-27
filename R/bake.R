@@ -46,6 +46,9 @@
 ##' recomputation is forced when these do not match.
 ##' The dependencies should be specified as unquoted symbols:
 ##' use a list if there are multiple dependencies.
+##' @param timing logical.
+##' If \code{TRUE}, the time required for the computation is returned.
+##' This is returned as the \dQuote{system.time} attribute of the returned object.
 ##' @param info logical.
 ##' If \code{TRUE}, the \dQuote{ingredients} of the calculation are returned as a list.
 ##' In the case of \code{bake}, this list is the \dQuote{ingredients} attribute of the returned object.
@@ -76,8 +79,9 @@
 ##' This information is returned only if \code{info=TRUE}.
 ##'
 ##' The time required for execution is also recorded.
-##' \code{bake} stores this in the \dQuote{system.time} attribute of the return value;
+##' \code{bake} stores this in the \dQuote{system.time} attribute of the archived \R object;
 ##' \code{stew} does so in a hidden variable named \code{.system.time}.
+##' The timing is obtained using \code{\link{system.time}}.
 ##' 
 ##' @author Aaron A. King
 ##'
@@ -135,7 +139,7 @@ update_bake_archive <- function (val, code, deps, file) {
 bake <- function (
   file, expr,
   seed = NULL, kind = NULL, normal.kind = NULL,
-  dependson = NULL, info = FALSE
+  dependson = NULL, info = FALSE, timing = TRUE
 ) {
   expr <- substitute(expr)
   code <- digest(deparse(expr))
@@ -145,6 +149,7 @@ bake <- function (
     ep="bake"
   )
   info <- as.logical(info)
+  timing <- as.logical(timing)
   reload <- file.exists(file)
   if (reload) {
     val <- readRDS(file)
@@ -187,6 +192,9 @@ bake <- function (
   }
   if (!info) {
     attr(val,"ingredients") <- NULL
+  }
+  if (!timing) {
+    attr(val,"system.time") <- NULL
   }
   val
 }

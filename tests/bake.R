@@ -16,10 +16,10 @@ stopifnot(
 )
 
 set.seed(32765883)
-x1 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
-x2 <- bake({runif(4)},file=file.path(tempdir(),"bake2.rds"),seed=32765883)
-x3 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
-x3a <- bake({  runif(4)},file=file.path(tempdir(),"bake1.rds"))
+x1 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"),timing=FALSE)
+x2 <- bake({runif(4)},file=file.path(tempdir(),"bake2.rds"),seed=32765883,timing=FALSE)
+x3 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"),timing=FALSE)
+x3a <- bake({  runif(4)},file=file.path(tempdir(),"bake1.rds"),timing=FALSE)
 rm(.Random.seed)
 x4 <- bake({runif(4)},file=file.path(tempdir(),"bake3.rds"),seed=59566)
 x5 <- bake({runif(5)},file=file.path(tempdir(),"bake1.rds"))
@@ -52,7 +52,7 @@ x13 <- bake({x1+runif(1)},seed=233,
   file=file.path(tempdir(),"bake4.rds"),
   dependson=x1,info=TRUE)
 stopifnot(
-  identical(as.numeric(x1),as.numeric(x2)),
+  identical(x1,x2),
   identical(x1,x3),
   identical(x3,x3a),
   identical(x5,x6),
@@ -64,8 +64,11 @@ stopifnot(
   length(attr(x13,"ingredients"))==5,
   attr(x13,"ingredients")$seed==233
 )
+
 saveRDS(x1,file=file.path(tempdir(),"tmp.rds"))
 try(x1 <- bake({runif(4)},file=file.path(tempdir(),"tmp.rds")))
+saveRDS(x6,file=file.path(tempdir(),"tmp.rds"))
+invisible(bake({runif(4)},file=file.path(tempdir(),"tmp.rds")))
 
 set.seed(113848)
 stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rda"))
