@@ -19,7 +19,7 @@ PKGVERS = $(PKG)_$(VERSION)
 SOURCE=$(shell ls R/*R src/*.c src/*.h data/*)
 CSOURCE=$(shell ls src/*.c)
 TESTS=$(shell ls tests/*R)
-REVDEPS=spaero epimdr CollocInfer spatPomp
+REVDEPS=spaero epimdr CollocInfer spatPomp DTAT
 
 default:
 	@echo $(PKGVERS)
@@ -94,12 +94,14 @@ publish: dist manual news htmlhelp
 	$(CP) $(PKG).pdf ../www/manuals
 
 rhub:
-	$(REXE) -e 'library(rhub); check_with_sanitizers(); check_on_windows(); check(platform="macos-highsierra-release-cran");'
+	$(REXE) -e 'library(rhub); check_for_cran(); check(platform="macos-highsierra-release-cran");'
 
-covr:
+covr: covr.rds
+
+covr.rds: DESCRIPTION
 	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; report(cov,file="covr.html",browse=TRUE); saveRDS(cov,file="covr.rds")'
 
-xcovr:
+xcovr: covr
 	$(REXE) -e 'library(covr); readRDS("covr.rds") -> cov; codecov(coverage=cov,token="cbbc302d-fff3-4530-8474-0f3f48db6776",quiet=FALSE)'
 
 win: dist
