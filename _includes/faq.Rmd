@@ -43,13 +43,12 @@ source("https://kingaa.github.io/scripts/diagnostics.R")
 
 ## What's the proper way to cite **pomp**? {#cite-pomp}
 
-To cite the package, please be so kind as to follow the instructions given by executing 
-```
+```{r echo=FALSE,results="asis"}
 citation("pomp")
 ```
-in an **R** session.
+You can get this information by executing `citation("pomp")` in an **R** session.
 
-If you use **pomp** in a publication, let us know!
+If you use **pomp** in a publication, please let us know!
 Send an email with the citation, and we'll include it in [the bibliography](https://kingaa.github.io/pomp/biblio.html).
 
 ## I have an error message that I don't understand, and my question isn't answered below. How can I get help? {#help-with-error-message}

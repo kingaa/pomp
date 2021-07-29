@@ -26,11 +26,13 @@ Currently, **pomp** provides support for
 **pomp** is also a platform upon which general inference algorithms for partially observed Markov processes can be implemented.
 We welcome contributions in the form of codes, examples, improvements to the documentation, bug reports, feature requests, and requests for help!
 
-This website contains [installation instructions](/install.html), a wide range of [tutorials and examples](/docs.html), access to the [source code](https://github.com/kingaa/pomp/), a facility for [reporting issues with the package](https://github.com/kingaa/pomp/issues), and an extensive but incomplete [bibliography](/biblio.html) of publications describing **pomp** methods and **pomp** applications.
+This website contains [installation instructions](install.html), a wide range of [tutorials and examples](docs.html), access to the [source code](https://github.com/kingaa/pomp/), a facility for [reporting issues with the package](https://github.com/kingaa/pomp/issues), a place for [discussions with **pomp** users and developers](https://github.com/kingaa/pomp/discussions), and a [wiki](https://github.com/kingaa/pomp/wiki/pimp-my-pomp){:target="_blank"}:
+where you can contribute snippets of code, interesting results, references to papers, and so on.
 
-Please let the developers know if you find **pomp** useful, if you publish results obtained using it, [if you come up with improvements, find bugs, or have suggestions or feature requests!](https://github.com/kingaa/pomp/issues){:target="_blank"}
-There is also a [wiki](https://github.com/kingaa/pomp/wiki/pimp-my-pomp){:target="_blank"}:
-you are invited to contribute snippets of code, interesting results, references to papers, and so on.
+Finally, there is an extensive but incomplete [bibliography](biblio.html) of publications describing **pomp** methods and **pomp** applications.
+Please let the developers know if you find **pomp** useful, if you publish results obtained using it!
 
 Although **pomp** is a mature package, it is being actively maintained and new features are under development.
-To keep abreast of **pomp** news, view the [**pomp** news blog](https://kingaa.github.io/pomp/blog.html) and/or subscribe to the [**pomp** RSS feed](./pomp.atom).
+If you come up with improvements, find bugs, or have suggestions or feature requests, please tell us about them using the [package issues page](https://github.com/kingaa/pomp/issues){:target="_blank"}.
+
+To keep abreast of **pomp** news, view the [**pomp** news blog](blog.html) and/or subscribe to the [**pomp** RSS feed](pomp.atom).
