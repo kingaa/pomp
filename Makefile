@@ -45,9 +45,10 @@ inst/include/%.h: src/%.h
 htmldocs: inst/doc/*.html
 
 htmlhelp: install
-	rsync -avz library/pomp/html/ www/manual
-	(cd www/manual;	(cat links.ed && echo w ) | ed - 00Index.html)
-	$(CP) www/_includes/pompstyle.css www/manual/R.css
+	rsync --delete -a library/pomp/html/ www/manual/pomp/html
+	rsync --delete --exclude=aliases.rds --exclude=paths.rds --exclude=pomp.rdb --exclude=pomp.rdx --exclude=macros -a library/pomp/help/ www/manual/pomp/help
+	(cd www/manual/pomp/html; (cat ../links.ed && echo w ) | ed - 00Index.html)
+	$(CP) www/_includes/pompstyle.css www/manual/pomp/html/R.css
 
 vignettes: manual install
 	$(MAKE)	-C www/vignettes
@@ -137,7 +138,7 @@ ycheck: dist install
 manual: install $(PKG).pdf
 
 $(PKG).pdf: $(SOURCE)
-	$(RCMD) Rd2pdf --no-preview --pdf --force -o $(PKG).pdf .
+	$(RCMD) Rd2pdf --internals --no-description --no-preview --pdf --force -o $(PKG).pdf .
 	$(RSCRIPT) -e "tools::compactPDF(\"$(PKG).pdf\")";
 
 tests: install $(TESTS)

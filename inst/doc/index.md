@@ -98,7 +98,9 @@ dt {
 
 - [Package NEWS](https://kingaa.github.io/pomp/NEWS.html)
 
-- [Package manual](https://kingaa.github.io/manuals/pomp.pdf)
+- [Package manual (PDF)](https://kingaa.github.io/manuals/pomp.pdf)
+
+- [Package manual (HTML)](https://kingaa.github.io/manual/pomp/html/00Index.html)
 
 - [Guide to the **pomp** C API](https://kingaa.github.io/pomp/vignettes/C_API.html)
 
