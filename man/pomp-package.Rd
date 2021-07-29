@@ -96,6 +96,19 @@ More on implementing POMP models:
 \code{\link{transformations}},
 \code{\link{userdata}}
 
+More on \pkg{pomp} workhorse functions: 
+\code{\link{dmeasure}()},
+\code{\link{dprior}()},
+\code{\link{dprocess}()},
+\code{\link{flow}()},
+\code{\link{partrans}()},
+\code{\link{rinit}()},
+\code{\link{rmeasure}()},
+\code{\link{rprior}()},
+\code{\link{rprocess}()},
+\code{\link{skeleton}()},
+\code{\link{workhorses}}
+
 More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
@@ -122,6 +135,7 @@ Aaron A. King
 \concept{elementary_algorithms}
 \concept{estimation_methods}
 \concept{implementation_info}
+\concept{pomp_workhorses}
 \keyword{models}
 \keyword{multivariate}
 \keyword{ts}

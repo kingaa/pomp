@@ -46,6 +46,7 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{dprior}()},
 \code{\link{flow}()},
 \code{\link{partrans}()},
+\code{\link{pomp-package}},
 \code{\link{rinit}()},
 \code{\link{rmeasure}()},
 \code{\link{rprior}()},

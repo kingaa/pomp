@@ -13,6 +13,7 @@
 ##' @docType package
 ##' @author Aaron A. King
 ##' @family implementation_info
+##' @family pomp_workhorses
 ##' @family estimation_methods
 ##' @family elementary_algorithms
 ##' @keywords ts models multivariate

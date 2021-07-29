@@ -34,6 +34,7 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{dprocess}()},
 \code{\link{flow}()},
 \code{\link{partrans}()},
+\code{\link{pomp-package}},
 \code{\link{rinit}()},
 \code{\link{rmeasure}()},
 \code{\link{rprocess}()},
