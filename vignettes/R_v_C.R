@@ -24,23 +24,23 @@ list(prefix = "R_v_C", min.pomp.version = "2.0.3")
 ## }
 
 
-## ----precheck,include=FALSE----------------------------------------------
+## ----precheck,include=FALSE---------------------------------------------------
 stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 
 
 
 
-## ----packages------------------------------------------------------------
+## ----packages-----------------------------------------------------------------
 library(pomp)
 library(ggplot2)
 library(magrittr)
 
 
-## ----seed,echo=FALSE-----------------------------------------------------
+## ----seed,echo=FALSE----------------------------------------------------------
 set.seed(56300069)
 
 
-## ----R1------------------------------------------------------------------
+## ----R1-----------------------------------------------------------------------
 simulate(times=1:100,t0=0,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
   rprocess=discrete_time(
@@ -60,7 +60,7 @@ simulate(times=1:100,t0=0,
 ) -> gompertz
 
 
-## ----R2------------------------------------------------------------------
+## ----R2-----------------------------------------------------------------------
 gompertz %>%
   as.data.frame() %>%
   melt(id="time") %>%
@@ -70,7 +70,7 @@ gompertz %>%
   theme_bw()
 
 
-## ----C1------------------------------------------------------------------
+## ----C1-----------------------------------------------------------------------
 simulate(times=0:100,t0=0,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
   dmeasure=Csnippet("
@@ -93,12 +93,12 @@ simulate(times=0:100,t0=0,
 ) -> Gompertz
 
 
-## ----params--------------------------------------------------------------
+## ----params-------------------------------------------------------------------
 p <- parmat(coef(Gompertz),4)
 p["X.0",] <- c(0.5,0.9,1.1,1.5)
 
 
-## ----sim1----------------------------------------------------------------
+## ----sim1---------------------------------------------------------------------
 simulate(Gompertz,params=p,format="data.frame") %>%
   ggplot(aes(x=time,y=X,group=.id,color=.id))+
   geom_line()+
@@ -107,13 +107,13 @@ simulate(Gompertz,params=p,format="data.frame") %>%
   labs(title="Gompertz model",subtitle="stochastic simulations")
 
 
-## ----pf1-----------------------------------------------------------------
+## ----pf1----------------------------------------------------------------------
 pf <- replicate(n=10,pfilter(Gompertz,Np=500))
 
 logmeanexp(sapply(pf,logLik),se=TRUE)
 
 
-## ----comparison,cache=TRUE-----------------------------------------------
+## ----comparison,cache=TRUE----------------------------------------------------
 system.time(simulate(gompertz,nsim=10000,format="arrays"))
 system.time(simulate(Gompertz,nsim=10000,format="arrays"))
 system.time(pfilter(gompertz,Np=10000))
