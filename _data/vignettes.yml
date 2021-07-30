@@ -1,19 +1,15 @@
-- title: Simulation-based Inference for Epidemiological Dynamics<br/> (a short course)
-  html: https://kingaa.github.io/sbied/
-
 - title: Getting started with <strong>pomp</strong>
   html: vignettes/getting_started.html
   R: vignettes/getting_started.R
 
-- title: <strong>pomp</strong> package manual
-  html: manual/pomp/html/00Index.html
-  pdf: https://kingaa.github.io/manuals/pomp.pdf
-
-- title: <strong>pomp</strong> C API
-  html: vignettes/C_API.html
+- title: Simulation-based Inference for Epidemiological Dynamics<br/> (a short course)
+  html: https://kingaa.github.io/sbied/
 
 - title: Frequently Asked Questions
   html: FAQ.html
+
+- title: Package NEWS
+  html: NEWS.html
 
 - title: <strong>pomp</strong> discussions
   html: https://github.com/kingaa/pomp/discussions
@@ -21,8 +17,8 @@
 - title: Pimp my pomp, a community wiki
   html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp
 
-- title: Package NEWS
-  html: NEWS.html
+- title: <strong>pomp</strong> C API
+  html: vignettes/C_API.html
 
 - title: Two perspectives on the <strong>pomp</strong> project
   html: vignettes/oaxaca.html
@@ -50,3 +46,7 @@
 
 - title: Model-based Inference in Ecology and Epidemiology (a short course)
   html: https://kingaa.github.io/short-course/
+
+- title: <strong>pomp</strong> package manual
+  html: manual/pomp/html/00Index.html
+  pdf: https://kingaa.github.io/manuals/pomp.pdf
