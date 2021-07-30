@@ -273,7 +273,7 @@ sir_na %>%
   ) %>%
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
-  guides(color=FALSE)+
+  guides(color="none")+
   theme_bw()
 ```
 
@@ -285,7 +285,7 @@ sir_na %>%
   as.data.frame() %>%
   melt(id="day") %>%
   ggplot(aes(x=day,y=value,color=variable))+
-  guides(color=FALSE)+
+  guides(color="none")+
   geom_line()+
   facet_wrap(~variable,ncol=1,scales='free_y')+
   theme_bw()
@@ -381,7 +381,7 @@ bsflu %>%
            nsim=10,format="d",include.data=TRUE) %>%
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
-  guides(color=FALSE)+
+  guides(color="none")+
   theme_bw()
 ```
 
@@ -393,10 +393,10 @@ But our first observation is not the number of new cases to have occurred in the
 We can fix this by introducing a fictitious "observation" at `t=0`, with missing data, i.e., by assuming we observed nothing at `t=0`:
 
 ```{r}
-library(plyr)
+library(dplyr)
 
 dat %>%
-  rbind(data.frame(day=0,B=NA)) %>%
+  bind_rows(c(day=0,B=NA)) %>%
   arrange(day) %>%
   pomp(time="day",t0=-8,
        rprocess=euler(sir_step,delta.t=1/12),
@@ -413,7 +413,7 @@ bsflu %>%
            nsim=10,format="d",include.data=TRUE) %>%
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
-  guides(color=FALSE)+
+  guides(color="none")+
   theme_bw()
 ```
 

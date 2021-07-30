@@ -790,7 +790,7 @@ plot(pfrick)
 as(pfrick,"data.frame")
 ```
 
-Both of these reveal that `pfrick` contains information about the *effective sample size* of the particle filter (`ess`) and the *conditional log likelihood*, `cond.loglik`, which in the notation of the [introduction](#partially-observed-markov-process-pomp-models), is
+Both of these reveal that `pfrick` contains information about the *effective sample size* of the particle filter (`ess`) and the *conditional log likelihood*, `cond.logLik`, which in the notation of the [introduction](#partially-observed-markov-process-pomp-models), is
 $$\log f_{Y_n|Y_{1:n-1}}(y_n^*|y_{1:n-1}^*).$$
 
 The particle filter is a Monte Carlo algorithm.
@@ -889,7 +889,7 @@ p["N_0",] <- seq(10,3000,length=10)
 vpC %>%
   trajectory(params=p,format="data.frame") %>%
   ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
-  guides(color=FALSE)+
+  guides(color="none")+
   geom_line()+
   theme_bw()
 ```
@@ -965,7 +965,7 @@ Then we can, for example, extract the fitted trajectory thus:
 ofun %>%
   trajectory(format="data.frame") %>%
   ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
-  guides(color=FALSE)+
+  guides(color="none")+
   geom_line()+
   theme_bw()
 ```
@@ -1205,7 +1205,7 @@ mifs %>%
   ggplot(aes(x=iteration,y=value,group=L1,color=L1))+
   geom_line()+
   facet_wrap(~variable,scales="free_y")+
-  guides(color=FALSE)
+  guides(color="none")
 
 ```
 
@@ -1218,7 +1218,7 @@ mifs %>%
   ggplot(aes(x=year,y=value,group=.id,color=.id))+
   geom_line()+
   facet_wrap(~variable,scales="free_y",ncol=1)+
-  guides(color=FALSE)
+  guides(color="none")
 ```
 
 As we've discussed, to properly evaluate the likelihood at these estimates, we must perform several independent particle filter operations at each one:

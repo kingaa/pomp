@@ -303,7 +303,7 @@ p["N_0",] <- seq(10,3000,length=10)
 vpC %>%
   trajectory(params=p,format="data.frame") %>%
   ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
-  guides(color=FALSE)+
+  guides(color="none")+
   geom_line()+
   theme_bw()
 
@@ -342,7 +342,7 @@ logLik(ofun)
 ofun %>%
   trajectory(format="data.frame") %>%
   ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
-  guides(color=FALSE)+
+  guides(color="none")+
   geom_line()+
   theme_bw()
 
@@ -454,7 +454,7 @@ mifs %>%
   ggplot(aes(x=iteration,y=value,group=L1,color=L1))+
   geom_line()+
   facet_wrap(~variable,scales="free_y")+
-  guides(color=FALSE)
+  guides(color="none")
 
 
 
@@ -465,7 +465,7 @@ mifs %>%
   ggplot(aes(x=year,y=value,group=.id,color=.id))+
   geom_line()+
   facet_wrap(~variable,scales="free_y",ncol=1)+
-  guides(color=FALSE)
+  guides(color="none")
 
 
 
