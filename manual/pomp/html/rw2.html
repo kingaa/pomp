@@ -88,10 +88,10 @@ rw2(s1=1,s2=1,tau=0.1) %&gt;%
   simulate(nsim=10,format="d") %&gt;%
   ggplot(aes(x=y1,y=y2,group=.id,color=.id))+
   geom_path()+
-  guides(color=FALSE)+
+  guides(color="none")+
   theme_bw()
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.5.0.3 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>pomp</em> version 3.5.1.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
