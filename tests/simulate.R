@@ -166,4 +166,17 @@ stopifnot(with(x,c(x1[6:7]==x1[5],x2[6:7]==x2[5],time[6:7]==time[5],
 
 simulate(rw2,rinit=function(...) c(x1=0,x2=0)) -> x
 
+library(tidyr)
+dacca() %>%
+  simulate(nsim=1,include.data=TRUE,format="data.frame") %>%
+  gather(var,val,-.id) %>%
+  group_by(.id,var) %>%
+  summarize(n=sum(is.na(val)),.groups="drop") %>%
+  filter(n>0) -> d1
+stopifnot(
+  `na in sim`=all(d1$.id=="data"),
+  full=all(d1$n==600)
+)
+  
+
 dev.off()

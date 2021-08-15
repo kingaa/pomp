@@ -102,7 +102,7 @@ Here, \code{nobs} is the number of observables.
 the time, states, and observations.
 An ordered factor variable, \sQuote{.id}, distinguishes one simulation from another.}
 
-\item{include.data}{if \code{TRUE}, the original data are included (with \code{.id = "rep"}).
+\item{include.data}{if \code{TRUE}, the original data and covariates (if any) are included (with \code{.id = "data"}).
 This option is ignored unless \code{format = "data.frame"}.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.

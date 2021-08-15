@@ -38,7 +38,7 @@
 ##' the time, states, and observations.
 ##' An ordered factor variable, \sQuote{.id}, distinguishes one simulation from another.
 ##'
-##' @param include.data if \code{TRUE}, the original data are included (with \code{.id = "rep"}).
+##' @param include.data if \code{TRUE}, the original data and covariates (if any) are included (with \code{.id = "data"}).
 ##' This option is ignored unless \code{format = "data.frame"}.
 ##'
 ##' @return
@@ -160,8 +160,17 @@ setMethod(
   }
 )
 
-simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
-  format, include.data = FALSE, ..., .gnsi = TRUE, verbose) {
+simulate.internal <- function (
+  object,
+  nsim = 1L,
+  seed = NULL,
+  params,
+  format,
+  include.data = FALSE,
+  ...,
+  .gnsi = TRUE,
+  verbose
+) {
 
   object <- pomp(object,...,verbose=verbose)
 
@@ -224,14 +233,13 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
       dat$.id <- "data"
       allnm <- union(names(dat),names(sims))
       for (n in setdiff(allnm,names(dat))) dat[[n]] <- NA
-      for (n in setdiff(allnm,names(sims))) sims[[n]] <- NA
+      for (n in setdiff(allnm,names(sims))) sims[[n]] <- dat[[n]]
       sims <- rbind(dat,sims)
       sims$.id <- ordered(sims$.id,levels=c("data",simnames))
     } else {
       sims$.id <- ordered(sims$.id,levels=simnames)
     }
     othernm <- setdiff(names(sims),c(object@timename,".id"))
-
     sims <- sims[,c(object@timename,".id",othernm)]
 
   } else if (format == "pomps") {

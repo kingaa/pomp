@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.5.1}{
+  \itemize{
+    \item When \code{simulate} is called with \code{format="data.frame"} and \code{include.data=TRUE}, the interpolated covariates are now included in the data frame that is returned.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.4.6}{
   \itemize{
     \item \code{bake} takes a new option, \code{timing}, that controls whether information on the timing is returned or merely stored.
