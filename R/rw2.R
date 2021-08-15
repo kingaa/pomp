@@ -22,7 +22,7 @@
 ##'   simulate(nsim=10,format="d") %>%
 ##'   ggplot(aes(x=y1,y=y2,group=.id,color=.id))+
 ##'   geom_path()+
-##'   guides(color=FALSE)+
+##'   guides(color="none")+
 ##'   theme_bw()
 ##'
 NULL
