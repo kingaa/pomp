@@ -3,6 +3,7 @@ RCMD = $(REXE) CMD
 RCMD_ALT = R --no-save --no-restore CMD
 RSCRIPT = Rscript --vanilla
 REPODIR = ../www
+MANUALDIR = ../www/manuals/pomp
 
 PDFLATEX = pdflatex
 BIBTEX = bibtex
@@ -45,10 +46,10 @@ inst/include/%.h: src/%.h
 htmldocs: inst/doc/*.html
 
 htmlhelp: install
-	rsync --delete -a library/pomp/html/ www/manual/pomp/html
-	rsync --delete --exclude=aliases.rds --exclude=paths.rds --exclude=pomp.rdb --exclude=pomp.rdx --exclude=macros -a library/pomp/help/ www/manual/pomp/help
-	(cd www/manual/pomp/html; (cat ../links.ed && echo w ) | ed - 00Index.html)
-	$(CP) www/_includes/pompstyle.css www/manual/pomp/html/R.css
+	rsync --delete -a library/pomp/html/ $(MANUALDIR)/html
+	rsync --delete --exclude=aliases.rds --exclude=paths.rds --exclude=pomp.rdb --exclude=pomp.rdx --exclude=macros -a library/pomp/help/ $(MANUALDIR)/help
+	(cd $(MANUALDIR)/html; (cat ../links.ed && echo w ) | ed - 00Index.html)
+	$(CP) www/_includes/pompstyle.css $(MANUALDIR)/html/R.css
 
 vignettes: manual install
 	$(MAKE)	-C www/vignettes
@@ -92,7 +93,7 @@ publish: dist manual news htmlhelp
 	$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).tar.gz",repodir="$(REPODIR)",action="prune")'
 	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).tgz",repodir="$(REPODIR)",action="prune")'
 	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).zip",repodir="$(REPODIR)",action="prune")'
-	$(CP) $(PKG).pdf ../www/manuals
+	$(CP) $(PKG).pdf $(MANUALDIR)
 
 rhub:
 	$(REXE) -e 'library(rhub); check_for_cran(); check(platform="macos-highsierra-release-cran");'
@@ -198,5 +199,6 @@ clean:
 	$(RM) -r check
 	$(RM) src/*.o src/*.so src/symbols.rds www/vignettes/Rplots.*
 	$(RM) -r inst/doc/figure inst/doc/cache
+	$(RM) -r libs
 	$(RM) -r *-Ex.Rout *-Ex.timings *-Ex.pdf
 	$(RM) *.tar.gz $(PKGVERS).zip $(PKGVERS).tgz $(PKG).pdf
