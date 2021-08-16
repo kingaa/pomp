@@ -1,8 +1,0 @@
-16,18c
-<li><a href="../../../index.html"><strong>pomp</strong> homepage</a></li>
-<li><a href="../../../docs.html">User guides, package vignettes and other documentation</a></li>
-<li><a href="../../../FAQ.html">Frequently asked questions</a></li>
-<li><a href="../../../NEWS.html">Package NEWS</a></li>
-.
-12,13d
-8d
