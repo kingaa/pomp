@@ -215,5 +215,13 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{pmcmc}()},
 \code{\link{pomp-package}},
 \code{\link{probe_matching}}
+
+More on \pkg{pomp} methods based on summary statistics: 
+\code{\link{abc}()},
+\code{\link{basic_probes}},
+\code{\link{probe_matching}},
+\code{\link{probe}()},
+\code{\link{spect}()}
 }
 \concept{estimation methods}
+\concept{summary statistic-based methods}

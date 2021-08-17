@@ -153,7 +153,8 @@ More on \pkg{pomp} methods based on summary statistics:
 \code{\link{abc}()},
 \code{\link{basic_probes}},
 \code{\link{probe_matching}},
-\code{\link{probe}()}
+\code{\link{probe}()},
+\code{\link{spectrum_matching}}
 
 More on \pkg{pomp} elementary algorithms: 
 \code{\link{elementary_algorithms}},

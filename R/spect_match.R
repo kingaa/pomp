@@ -11,6 +11,7 @@
 ##' @docType methods
 ##' @rdname spect_match
 ##' @family estimation methods
+##' @family summary statistic-based methods
 ##' @aliases spect_objfun spect_objfun,missing-method spect_objfun,ANY-method
 ##' 
 ##' @example examples/spect_match.R

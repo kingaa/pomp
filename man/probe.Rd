@@ -159,6 +159,7 @@ More on \pkg{pomp} methods based on summary statistics:
 \code{\link{abc}()},
 \code{\link{basic_probes}},
 \code{\link{probe_matching}},
+\code{\link{spectrum_matching}},
 \code{\link{spect}()}
 }
 \author{
