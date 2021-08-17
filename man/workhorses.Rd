@@ -44,4 +44,4 @@ Aaron A. King
 }
 \concept{extending the pomp package}
 \concept{low-level interface}
-\concept{pomp_workhorses}
+\concept{pomp workhorses}

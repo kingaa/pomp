@@ -48,7 +48,7 @@
 ##'
 ##' @name distributions
 ##' @rdname distributions
-##' @family implementation_info
+##' @family implementation information
 ##' @concept probability distributions
 ##'
 ##' @param n integer; number of random variates to generate.

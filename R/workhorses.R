@@ -18,7 +18,7 @@
 ##' @name workhorses
 ##' @include pomp_class.R pomp_fun.R load.R pstop.R
 ##' @docType methods
-##' @family pomp_workhorses
+##' @family pomp workhorses
 ##' @seealso \link[=basic_components]{basic model components},
 ##' \link[=elementary_algorithms]{elementary algorithms},
 ##' \link[=estimation_algorithms]{estimation algorithms}
@@ -36,7 +36,7 @@ NULL
 ##' @name dmeasure
 ##' @docType methods
 ##' @aliases dmeasure,ANY-method dmeasure,missing-method
-##' @family pomp_workhorses
+##' @family pomp workhorses
 ##' @seealso Specification of the measurement density evaluator: \code{\link{dmeasure_spec}}
 ##'
 ##' @param object an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
@@ -122,7 +122,7 @@ dmeasure.internal <- function (object, y, x, times, params, ..., log = FALSE,
 ##' @name dprior
 ##' @docType methods
 ##' @aliases dprior,ANY-method dprior,missing-method
-##' @family pomp_workhorses
+##' @family pomp workhorses
 ##' @seealso Specification of the prior density evaluator: \code{\link{prior_spec}}
 ##'
 ##' @inheritParams dmeasure
@@ -182,7 +182,7 @@ dprior.internal <- function (object, params, log = FALSE,
 ##' @name dprocess
 ##' @docType methods
 ##' @aliases dprocess,ANY-method dprocess,missing-method
-##' @family pomp_workhorses
+##' @family pomp workhorses
 ##' @seealso Specification of the process-model density evaluator: \code{\link{dprocess_spec}}
 ##'
 ##' @inheritParams dmeasure
@@ -243,7 +243,7 @@ dprocess.internal <- function (object, x, times, params, log = FALSE, .gnsi = TR
 ##' @name partrans
 ##' @docType methods
 ##' @aliases partrans,ANY-method partrans,missing-method
-##' @family pomp_workhorses
+##' @family pomp workhorses
 ##' @seealso Specification of parameter transformations: \code{\link{parameter_trans}}
 ##'
 ##' @inheritParams dmeasure
@@ -310,7 +310,7 @@ partrans.internal <- function (object, params, dir = c("fromEst", "toEst"),
 ##' @name rinit
 ##' @docType methods
 ##' @aliases rinit,ANY-method rinit,missing-method
-##' @family pomp_workhorses
+##' @family pomp workhorses
 ##' @seealso Specification of the initial-state distribution: \code{\link{rinit_spec}}
 ##'
 ##' @inheritParams dmeasure
@@ -375,7 +375,7 @@ rinit.internal <- function (object, params, t0, nsim = 1,
 ##' @name rmeasure
 ##' @docType methods
 ##' @aliases rmeasure,ANY-method rmeasure,missing-method
-##' @family pomp_workhorses
+##' @family pomp workhorses
 ##' @seealso Specification of the measurement-model simulator: \code{\link{rmeasure_spec}}
 ##'
 ##' @inheritParams dmeasure
@@ -438,7 +438,7 @@ rmeasure.internal <- function (object, x, times, params,
 ##' @name rprior
 ##' @docType methods
 ##' @aliases rprior,ANY-method rprior,missing-method
-##' @family pomp_workhorses
+##' @family pomp workhorses
 ##' @seealso Specification of the prior distribution simulator: \code{\link{prior_spec}}
 ##'
 ##' @inheritParams dmeasure
@@ -499,7 +499,7 @@ rprior.internal <- function (object, params, .gnsi = TRUE, ...) {
 ##' @name rprocess
 ##' @docType methods
 ##' @aliases rprocess,ANY-method rprocess,missing-method
-##' @family pomp_workhorses
+##' @family pomp workhorses
 ##' @seealso Specification of the process-model simulator: \code{\link{rprocess_spec}}
 ##'
 ##' @inheritParams dmeasure
@@ -582,7 +582,7 @@ rprocess.internal <- function (object, x0, t0, times, params, ...,
 ##' @name skeleton
 ##' @docType methods
 ##' @aliases skeleton,ANY-method skeleton,missing-method
-##' @family pomp_workhorses
+##' @family pomp workhorses
 ##' @seealso Specification of the deterministic skeleton: \code{\link{skeleton_spec}}
 ##'
 ##' @inheritParams dmeasure

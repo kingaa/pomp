@@ -111,4 +111,4 @@ More on \pkg{pomp} methods based on summary statistics:
 Daniel C. Reuman, Aaron A. King
 }
 \concept{diagnostics}
-\concept{summary_stats_methods}
+\concept{summary statistic-based methods}

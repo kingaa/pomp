@@ -65,7 +65,7 @@
 ##'
 ##' @author Daniel Reuman, Aaron A. King
 ##'
-##' @seealso \link{trajectory_matching}, \link{probe_matching}.
+##' @seealso \link[=trajectory_matching]{trajectory matching}, \link[=probe_matching]{probe matching}.
 ##'
 ##' @keywords optimize
 NULL

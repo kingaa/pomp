@@ -17,7 +17,7 @@
 ##'
 ##' @name elementary_algorithms
 ##' @rdname elementary_algorithms
-##' @family elementary_algorithms
+##' @family elementary algorithms
 ##' @seealso \link[=basic_components]{basic model components},
 ##' \link[=workhorses]{workhorse functions},
 ##' \link[=estimation_algorithms]{estimation algorithms}.

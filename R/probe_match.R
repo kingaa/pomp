@@ -10,8 +10,8 @@
 ##' @aliases probe_objfun probe_objfun,missing-method probe_objfun,ANY-method
 ##' @include probe.R plot.R
 ##' @author Aaron A. King
-##' @family summary_stats_methods
-##' @family estimation_methods
+##' @family summary statistic-based methods
+##' @family estimation methods
 ##' @seealso \code{\link{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##'
 ##' @param est character vector; the names of parameters to be estimated.

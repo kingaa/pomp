@@ -58,4 +58,4 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{skeleton}()},
 \code{\link{workhorses}}
 }
-\concept{pomp_workhorses}
+\concept{pomp workhorses}

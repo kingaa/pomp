@@ -54,5 +54,10 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{rprocess}()},
 \code{\link{skeleton}()},
 \code{\link{workhorses}}
+
+More on \pkg{pomp} methods for deterministic process models: 
+\code{\link{trajectory_matching}},
+\code{\link{trajectory}()}
 }
-\concept{pomp_workhorses}
+\concept{deterministic methods}
+\concept{pomp workhorses}

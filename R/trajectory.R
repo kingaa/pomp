@@ -13,7 +13,8 @@
 ##' @rdname trajectory
 ##' @include workhorses.R pomp_class.R flow.R
 ##' @aliases trajectory,missing-method trajectory,ANY-method
-##' @family elementary_algorithms
+##' @family elementary algorithms
+##' @family deterministic methods
 ##'
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames

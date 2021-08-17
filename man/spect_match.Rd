@@ -216,4 +216,4 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{pomp-package}},
 \code{\link{probe_matching}}
 }
-\concept{estimation_methods}
+\concept{estimation methods}

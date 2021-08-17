@@ -9,7 +9,7 @@
 ##' @name Csnippet
 ##' @rdname csnippet
 ##' @include package.R
-##' @family implementation_info
+##' @family implementation information
 ##'
 ##' @section Note to Windows and Mac users:
 ##'

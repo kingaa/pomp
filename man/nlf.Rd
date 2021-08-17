@@ -225,4 +225,4 @@ More on \pkg{pomp} estimation algorithms:
 \author{
 Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
 }
-\concept{estimation_methods}
+\concept{estimation methods}

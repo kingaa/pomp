@@ -18,7 +18,7 @@
 ##' @docType data
 ##' @keywords models pomp_datasets
 ##' @include simulate.R
-##' @family pomp_examples
+##' @family pomp examples
 ##'
 ##' @return
 ##' A \sQuote{pomp} object with simulated data.

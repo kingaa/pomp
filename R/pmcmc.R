@@ -11,8 +11,8 @@
 ##' @aliases pmcmc,ANY-method pmcmc,missing-method
 ##' @author Edward L. Ionides, Aaron A. King, Sebastian Funk
 ##' @seealso \link[=proposals]{MCMC proposals}
-##' @family particle_filter_methods
-##' @family estimation_methods
+##' @family particle filter methods
+##' @family estimation methods
 ##'
 ##' @importFrom stats runif
 ##' @inheritParams pomp

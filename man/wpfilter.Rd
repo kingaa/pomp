@@ -139,5 +139,5 @@ More on particle-filter based methods in \pkg{pomp}:
 \author{
 Aaron A. King
 }
-\concept{elementary_algorithms}
-\concept{particle_filter_methods}
+\concept{elementary algorithms}
+\concept{particle filter methods}

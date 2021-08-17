@@ -27,17 +27,17 @@ sampling); see \code{\link{pfilter}} and \code{\link{wpfilter}}.
 of Ionides et al. (2006, 2011, 2015); see \code{\link{mif2}}.
 \item The
 nonlinear forecasting algorithm of Kendall et al. (2005); see
-\link{nonlinear_forecasting}.
+\link[=nonlinear_forecasting]{nonlinear forecasting}.
 \item The particle MCMC approach of Andrieu et al. (2010); see \code{\link{pmcmc}}.
-\item The probe-matching method of Kendall et al. (1999, 2005); see \link{probe_matching}.
+\item The probe-matching method of Kendall et al. (1999, 2005); see \link[=probe_matching]{probe matching}.
 \item A spectral probe-matching method (Reuman et al. 2006, 2008); see
-\link{spectrum_matching}.
+\link[=spectrum_matching]{spectrum matching}.
 \item Synthetic likelihood a la Wood (2010); see \code{\link{probe}}.
 \item Approximate Bayesian computation (Toni et al. 2009); see \code{\link{abc}}.
 \item The approximate Bayesian sequential
 Monte Carlo scheme of Liu & West (2001); see \code{\link{bsmc2}}.
 \item Ensemble and ensemble adjusted Kalman filters; see \code{\link{kalman}}.
-\item Simple trajectory matching; see \link{trajectory_matching}.
+\item Simple trajectory matching; see \link[=trajectory_matching]{trajectory matching}.
 }
 The package also provides various tools for plotting and extracting information on models and data.
 }
@@ -132,10 +132,10 @@ More on \pkg{pomp} elementary algorithms:
 \author{
 Aaron A. King
 }
-\concept{elementary_algorithms}
-\concept{estimation_methods}
-\concept{implementation_info}
-\concept{pomp_workhorses}
+\concept{elementary algorithms}
+\concept{estimation methods}
+\concept{implementation information}
+\concept{pomp workhorses}
 \keyword{models}
 \keyword{multivariate}
 \keyword{ts}

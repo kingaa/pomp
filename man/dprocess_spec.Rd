@@ -72,4 +72,4 @@ More on implementing POMP models:
 \code{\link{transformations}},
 \code{\link{userdata}}
 }
-\concept{implementation_info}
+\concept{implementation information}

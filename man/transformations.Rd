@@ -66,5 +66,5 @@ More on implementing POMP models:
 \code{\link{skeleton_spec}},
 \code{\link{userdata}}
 }
-\concept{implementation_info}
+\concept{implementation information}
 \concept{parameter transformations}

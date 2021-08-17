@@ -41,6 +41,6 @@
 ##' 
 ##' @name dprocess_spec
 ##' @rdname dprocess_spec
-##' @family implementation_info
+##' @family implementation information
 ##'
 NULL

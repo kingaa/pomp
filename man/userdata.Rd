@@ -166,4 +166,4 @@ More on implementing POMP models:
 \code{\link{skeleton_spec}},
 \code{\link{transformations}}
 }
-\concept{implementation_info}
+\concept{implementation information}

@@ -6,7 +6,7 @@
 ##'
 ##' @name rmeasure_spec
 ##' @rdname rmeasure_spec
-##' @family implementation_info
+##' @family implementation information
 ##'
 ##' @details
 ##' The measurement model is the link between the data and the unobserved state process.

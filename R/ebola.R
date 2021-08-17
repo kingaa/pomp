@@ -12,8 +12,8 @@
 ##' @aliases ebolaWA2014
 ##' @docType data
 ##' @include pomp.R
-##' @family pomp_datasets
-##' @family pomp_examples
+##' @family pomp datasets
+##' @family pomp examples
 ##'
 ##' @references
 ##'

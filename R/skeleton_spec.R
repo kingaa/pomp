@@ -6,7 +6,7 @@
 ##' @rdname skeleton_spec
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R
-##' @family implementation_info
+##' @family implementation information
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##'

@@ -12,8 +12,8 @@
 ##' @rdname wpfilter
 ##' @aliases wpfilter,ANY-method wpfilter,missing-method
 ##' @author Aaron A. King
-##' @family elementary_algorithms
-##' @family particle_filter_methods
+##' @family elementary algorithms
+##' @family particle filter methods
 ##' @inheritSection pomp Note for Windows users
 ##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R pfilter.R
 ##' @importFrom stats setNames

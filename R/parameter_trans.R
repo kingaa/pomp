@@ -9,7 +9,7 @@
 ##' @aliases parameter_trans,missing,missing-method
 ##' parameter_trans,ANY,ANY-method parameter_trans,ANY,missing-method
 ##' parameter_trans,NULL,NULL-method parameter_trans,missing,ANY-method
-##' @family implementation_info
+##' @family implementation information
 ##' @param toEst,fromEst procedures that perform transformation of model parameters to and from the estimation scale, respectively.
 ##' These can be furnished using C snippets, \R functions, or via procedures in an external, dynamically loaded library.
 ##' @param log names of parameters to be log transformed.

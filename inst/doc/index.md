@@ -98,7 +98,7 @@ dt {
 
 - [Package NEWS](https://kingaa.github.io/pomp/NEWS.html)
 
-- [Package manual (PDF)](https://kingaa.github.io/manuals/pomp.pdf)
+- [Package manual (PDF)](https://kingaa.github.io/manuals/pomp/pomp.pdf)
 
 - [Package manual (HTML)](https://kingaa.github.io/pomp/manual.html)
 

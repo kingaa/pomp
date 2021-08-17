@@ -128,5 +128,5 @@ More on \pkg{pomp} estimation algorithms:
 \author{
 Aaron A. King
 }
-\concept{estimation_methods}
-\concept{particle_filter_methods}
+\concept{estimation methods}
+\concept{particle filter methods}

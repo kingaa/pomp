@@ -14,7 +14,7 @@
 ##' @rdname covariate_table
 ##' @aliases covariate_table,missing-method covariate_table,ANY-method
 ##' @include pomp_class.R pstop.R
-##' @family implementation_info
+##' @family implementation information
 ##' @seealso \code{\link{lookup}}
 ##'
 ##' @param times the times corresponding to the covariates.

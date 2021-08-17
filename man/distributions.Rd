@@ -133,6 +133,6 @@ More on implementing POMP models:
 \author{
 Aaron A. King
 }
-\concept{implementation_info}
+\concept{implementation information}
 \concept{probability distributions}
 \keyword{distribution}

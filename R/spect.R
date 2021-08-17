@@ -17,8 +17,8 @@
 ##' @docType methods
 ##' @rdname spect
 ##' @aliases spect,missing-method spect,ANY-method
-##' @family summary_stats_methods
-##' @family elementary_algorithms
+##' @family summary statistic-based methods
+##' @family elementary algorithms
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 

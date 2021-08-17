@@ -34,4 +34,4 @@ More on \pkg{pomp} elementary algorithms:
 \code{\link{trajectory}()},
 \code{\link{wpfilter}()}
 }
-\concept{elementary_algorithms}
+\concept{elementary algorithms}

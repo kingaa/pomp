@@ -20,8 +20,8 @@
 ##' @rdname probe
 ##' @aliases probe,missing-method probe,ANY-method synthetic_likelihood
 ##' @author Daniel C. Reuman, Aaron A. King
-##' @family elementary_algorithms
-##' @family summary_stats_methods
+##' @family elementary algorithms
+##' @family summary statistic-based methods
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 

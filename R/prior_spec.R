@@ -4,7 +4,7 @@
 ##'
 ##' @name prior_spec
 ##' @rdname prior_spec
-##' @family implementation_info
+##' @family implementation information
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 

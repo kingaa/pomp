@@ -71,6 +71,6 @@ More examples provided with \pkg{pomp}:
 \code{\link{sir_models}},
 \code{\link{verhulst}()}
 }
-\concept{pomp_datasets}
-\concept{pomp_examples}
+\concept{pomp datasets}
+\concept{pomp examples}
 \keyword{pomp_datasets}

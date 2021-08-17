@@ -35,4 +35,4 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{probe_matching}},
 \code{\link{spectrum_matching}}
 }
-\concept{estimation_methods}
+\concept{estimation methods}

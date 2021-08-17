@@ -214,5 +214,5 @@ More on \pkg{pomp} estimation algorithms:
 \author{
 Aaron A. King
 }
-\concept{estimation_methods}
-\concept{summary_stats_methods}
+\concept{estimation methods}
+\concept{summary statistic-based methods}

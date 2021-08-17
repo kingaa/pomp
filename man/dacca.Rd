@@ -107,7 +107,7 @@ More data sets provided with \pkg{pomp}:
 \code{\link{measles}},
 \code{\link{parus}}
 }
-\concept{pomp_datasets}
-\concept{pomp_examples}
+\concept{pomp datasets}
+\concept{pomp examples}
 \keyword{models}
 \keyword{pomp_datasets}

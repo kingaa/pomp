@@ -160,4 +160,4 @@ More on \pkg{pomp} elementary algorithms:
 \author{
 Aaron A. King
 }
-\concept{elementary_algorithms}
+\concept{elementary algorithms}

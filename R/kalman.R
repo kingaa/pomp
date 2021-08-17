@@ -9,8 +9,8 @@
 ##' @aliases enkf,ANY-method enkf,missing-method
 ##' eakf,ANY-method eakf,missing-method
 ##' @author Aaron A. King
-##' @family particle_filter_methods
-##' @family estimation_methods
+##' @family particle filter methods
+##' @family estimation methods
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 

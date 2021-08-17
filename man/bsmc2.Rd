@@ -144,5 +144,5 @@ More on \pkg{pomp} estimation algorithms:
 \author{
 Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
 }
-\concept{estimation_methods}
-\concept{particle_filter_methods}
+\concept{estimation methods}
+\concept{particle filter methods}

@@ -74,5 +74,10 @@ More on \pkg{pomp} elementary algorithms:
 \code{\link{simulate}()},
 \code{\link{spect}()},
 \code{\link{wpfilter}()}
+
+More on \pkg{pomp} methods for deterministic process models: 
+\code{\link{flow}()},
+\code{\link{trajectory_matching}}
 }
-\concept{elementary_algorithms}
+\concept{deterministic methods}
+\concept{elementary algorithms}

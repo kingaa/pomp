@@ -37,7 +37,7 @@
 ##'
 ##' @name rinit_spec
 ##' @rdname rinit_spec
-##' @family implementation_info
+##' @family implementation information
 ##'
 ##' @example examples/rinit_spec.R
 ##' 

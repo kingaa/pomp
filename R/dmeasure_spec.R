@@ -4,7 +4,7 @@
 ##'
 ##' @name dmeasure_spec
 ##' @rdname dmeasure_spec
-##' @family implementation_info
+##' @family implementation information
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 

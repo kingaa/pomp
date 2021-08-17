@@ -43,4 +43,4 @@ More on particle-filter based methods in \pkg{pomp}:
 \code{\link{pred.var}()},
 \code{\link{wpfilter}()}
 }
-\concept{particle_filter_methods}
+\concept{particle filter methods}

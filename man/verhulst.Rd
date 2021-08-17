@@ -60,4 +60,4 @@ More examples provided with \pkg{pomp}:
 \code{\link{rw2}()},
 \code{\link{sir_models}}
 }
-\concept{pomp_examples}
+\concept{pomp examples}

@@ -9,7 +9,8 @@
 ##' @rdname flow
 ##' @include pomp_class.R skeleton_spec.R workhorses.R
 ##' @aliases flow,missing-method flow,ANY-method
-##' @family pomp_workhorses
+##' @family pomp workhorses
+##' @family deterministic methods
 ##' 
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames

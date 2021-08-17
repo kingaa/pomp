@@ -9,8 +9,8 @@
 ##' @include pomp_class.R probe.R continue.R workhorses.R
 ##' @importFrom stats runif
 ##' @author Edward L. Ionides, Aaron A. King
-##' @family summary_stats_methods
-##' @family estimation_methods
+##' @family summary statistic-based methods
+##' @family estimation methods
 ##' @seealso \link[=proposals]{MCMC proposals}
 ##'
 ##' @inheritParams pomp

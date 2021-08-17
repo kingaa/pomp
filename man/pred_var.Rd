@@ -42,4 +42,4 @@ More on particle-filter based methods in \pkg{pomp}:
 \code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 }
-\concept{particle_filter_methods}
+\concept{particle filter methods}

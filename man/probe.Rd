@@ -164,5 +164,5 @@ More on \pkg{pomp} methods based on summary statistics:
 \author{
 Daniel C. Reuman, Aaron A. King
 }
-\concept{elementary_algorithms}
-\concept{summary_stats_methods}
+\concept{elementary algorithms}
+\concept{summary statistic-based methods}

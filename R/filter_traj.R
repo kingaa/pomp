@@ -17,7 +17,7 @@
 ##' @aliases filter.traj,ANY-method filter.traj,missing-method
 ##' @include pfilter.R pmcmc.R
 ##' @rdname filter_traj
-##' @family particle_filter_methods
+##' @family particle filter methods
 ##' @inheritParams filter.mean
 NULL
 

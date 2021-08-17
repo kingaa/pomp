@@ -56,4 +56,4 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{rprocess}()},
 \code{\link{workhorses}}
 }
-\concept{pomp_workhorses}
+\concept{pomp workhorses}

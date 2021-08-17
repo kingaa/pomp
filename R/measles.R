@@ -20,8 +20,8 @@
 ##' \London1973
 ##' 
 ##' @keywords pomp_datasets
-##' @family pomp_datasets
-##' @family pomp_examples
+##' @family pomp datasets
+##' @family pomp examples
 ##'
 ##' @examples
 ##'

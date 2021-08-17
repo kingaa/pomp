@@ -12,8 +12,8 @@
 ##' @include pfilter.R workhorses.R pomp_class.R safecall.R continue.R
 ##' @aliases mif2,missing-method mif2,ANY-method
 ##' @author Aaron A. King, Edward L. Ionides, Dao Nguyen
-##' @family particle_filter_methods
-##' @family estimation_methods
+##' @family particle filter methods
+##' @family estimation methods
 ##' @importFrom utils head
 ##' @inheritParams pomp
 ##' @inheritParams pfilter

@@ -213,5 +213,5 @@ More on \pkg{pomp} estimation algorithms:
 \author{
 Aaron A. King, Edward L. Ionides, Dao Nguyen
 }
-\concept{estimation_methods}
-\concept{particle_filter_methods}
+\concept{estimation methods}
+\concept{particle filter methods}

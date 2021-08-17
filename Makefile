@@ -3,7 +3,7 @@ RCMD = $(REXE) CMD
 RCMD_ALT = R --no-save --no-restore CMD
 RSCRIPT = Rscript --vanilla
 REPODIR = ../www
-MANUALDIR = ../www/manuals/pomp
+MANUALDIR = ../www/manuals/$(PKG)
 
 PDFLATEX = pdflatex
 BIBTEX = bibtex
@@ -34,11 +34,15 @@ check xcheck xxcheck: export FULL_TESTS=yes
 dist revdeps session tests check xcheck xxcheck: export R_KEEP_PKG_SOURCE=yes
 revdeps xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
 revdeps session xxcheck htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
-session: export R_DEFAULT_PACKAGES=datasets,utils,grDevices,graphics,stats,methods,tidyverse,pomp
+session: export R_DEFAULT_PACKAGES=datasets,utils,grDevices,graphics,stats,methods,tidyverse,$(PKG)
 
 includes: inst/include/pomp.h inst/include/pomp_defines.h
 
 headers: src/pomp_decls.h
+
+src/pomp_decls.h: $(CSOURCE)
+	cproto -I $(R_HOME)/include -e $(CSOURCE) > tmp.h
+	mv tmp.h $@
 
 inst/include/%.h: src/%.h
 	$(CP) $^ $@
@@ -46,10 +50,10 @@ inst/include/%.h: src/%.h
 htmldocs: inst/doc/*.html
 
 htmlhelp: install
-	rsync --delete -a library/pomp/html/ $(MANUALDIR)/html
-	rsync --delete --exclude=aliases.rds --exclude=paths.rds --exclude=pomp.rdb --exclude=pomp.rdx --exclude=macros -a library/pomp/help/ $(MANUALDIR)/help
+	rsync --delete -a library/$(PKG)/html/ $(MANUALDIR)/html
+	rsync --delete --exclude=aliases.rds --exclude=paths.rds --exclude=$(PKG).rdb --exclude=$(PKG).rdx --exclude=macros -a library/$(PKG)/help/ $(MANUALDIR)/help
 	(cd $(MANUALDIR)/html; (cat ../links.ed && echo w ) | ed - 00Index.html)
-	$(CP) www/_includes/pompstyle.css $(MANUALDIR)/html/R.css
+	$(CP) ../www/_includes/pompstyle.css $(MANUALDIR)/html/R.css
 
 vignettes: manual install
 	$(MAKE)	-C www/vignettes
@@ -79,10 +83,6 @@ dist: NEWS $(PKGVERS).tar.gz
 
 $(PKGVERS).tar.gz: $(SOURCE) $(TESTS) includes headers
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both --md5 .
-
-src/pomp_decls.h: $(CSOURCE)
-	cproto -I $(R_HOME)/include -e $(CSOURCE) > tmp.h
-	mv tmp.h $@
 
 binary: dist
 	mkdir -p plib
