@@ -12,7 +12,6 @@
 ##' @family summary statistic-based methods
 ##' @family estimation methods
 ##' @family MCMC methods
-##' @seealso \link[=proposals]{MCMC proposals}
 ##'
 ##' @inheritParams pomp
 ##' @inheritParams probe

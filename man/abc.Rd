@@ -158,8 +158,6 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Toni2009
 }
 \seealso{
-\link[=proposals]{MCMC proposals}
-
 More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{basic_probes}},
 \code{\link{probe_matching}},

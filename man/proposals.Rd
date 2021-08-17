@@ -55,8 +55,6 @@ Functions to construct proposal distributions for use with MCMC methods.
 \Roberts2009
 }
 \seealso{
-\code{\link{pmcmc}}, \code{\link{abc}}
-
 More on \pkg{pomp} methods based on Markov chain Monte Carlo:
 \code{\link{abc}()},
 \code{\link{pmcmc}()}

@@ -33,8 +33,6 @@
 ##'
 ##' @author Aaron A. King, Sebastian Funk
 ##'
-##' @seealso \code{\link{pmcmc}}, \code{\link{abc}}
-##'
 ##' @references
 ##'
 ##' \Roberts2009

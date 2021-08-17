@@ -136,8 +136,6 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Andrieu2010
 }
 \seealso{
-\link[=proposals]{MCMC proposals}
-
 More on particle-filter based methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
