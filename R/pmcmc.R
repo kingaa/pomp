@@ -13,7 +13,7 @@
 ##' @seealso \link[=proposals]{MCMC proposals}
 ##' @family particle filter methods
 ##' @family estimation methods
-##'
+##' @family MCMC methods
 ##' @importFrom stats runif
 ##' @inheritParams pomp
 ##' @inheritParams pfilter
@@ -23,6 +23,15 @@
 ##' proper inference: it is the user's responsibility to ensure that it is.
 ##' Several functions that construct appropriate proposal function are
 ##' provided: see \link[=proposals]{MCMC proposals} for more information.
+##'
+##' @section Methods:
+##' The following can be applied to the output of a \code{pmcmc} operation:
+##' \describe{
+##' \item{pmcmc}{repeats the calculation, beginning with the last state}
+##' \item{continue}{continues the \code{pmcmc} calculation}
+##' \item{plot}{produces a series of diagnostic plots}
+##' \item{traces}{produces an \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
+##' }
 ##'
 ##' @return An object of class \sQuote{pmcmcd_pomp}.
 ##'

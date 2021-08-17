@@ -135,8 +135,10 @@ Additional arguments will override the defaults.
 
 The following can be applied to the output of an \code{abc} operation:
 \describe{
+\item{abc}{repeats the calculation, beginning with the last state}
+\item{continue}{continues the \code{abc} calculation}
 \item{plot}{produces a series of diagnostic plots}
-\item{traces}{produces a \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
+\item{traces}{produces an \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
 }
 }
 
@@ -174,9 +176,14 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{pomp-package}},
 \code{\link{probe_matching}},
 \code{\link{spectrum_matching}}
+
+More on \pkg{pomp} methods based on Markov chain Monte Carlo:
+\code{\link{pmcmc}()},
+\code{\link{proposals}}
 }
 \author{
 Edward L. Ionides, Aaron A. King
 }
+\concept{MCMC methods}
 \concept{estimation methods}
 \concept{summary statistic-based methods}

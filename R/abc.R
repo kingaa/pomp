@@ -11,6 +11,7 @@
 ##' @author Edward L. Ionides, Aaron A. King
 ##' @family summary statistic-based methods
 ##' @family estimation methods
+##' @family MCMC methods
 ##' @seealso \link[=proposals]{MCMC proposals}
 ##'
 ##' @inheritParams pomp
@@ -43,8 +44,10 @@
 ##' @section Methods:
 ##' The following can be applied to the output of an \code{abc} operation:
 ##' \describe{
+##' \item{abc}{repeats the calculation, beginning with the last state}
+##' \item{continue}{continues the \code{abc} calculation}
 ##' \item{plot}{produces a series of diagnostic plots}
-##' \item{traces}{produces a \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
+##' \item{traces}{produces an \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
 ##' }
 ##'
 ##' @references

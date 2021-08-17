@@ -104,6 +104,17 @@ partially-observed Markov process.  Running \code{pmcmc} causes a particle
 random-walk Metropolis-Hastings Markov chain algorithm to run for the
 specified number of proposals.
 }
+\section{Methods}{
+
+The following can be applied to the output of a \code{pmcmc} operation:
+\describe{
+\item{pmcmc}{repeats the calculation, beginning with the last state}
+\item{continue}{continues the \code{pmcmc} calculation}
+\item{plot}{produces a series of diagnostic plots}
+\item{traces}{produces an \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
+}
+}
+
 \section{Re-running PMCMC Iterations}{
 
 To re-run a sequence of PMCMC
@@ -151,9 +162,14 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{pomp-package}},
 \code{\link{probe_matching}},
 \code{\link{spectrum_matching}}
+
+More on \pkg{pomp} methods based on Markov chain Monte Carlo:
+\code{\link{abc}()},
+\code{\link{proposals}}
 }
 \author{
 Edward L. Ionides, Aaron A. King, Sebastian Funk
 }
+\concept{MCMC methods}
 \concept{estimation methods}
 \concept{particle filter methods}

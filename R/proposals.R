@@ -6,6 +6,7 @@
 ##' @name proposals
 ##' @rdname proposals
 ##' @importFrom stats rnorm
+##' @family MCMC methods
 ##'
 ##' @param rw.var square numeric matrix with row- and column-names.  Specifies
 ##' the variance-covariance matrix for a multivariate normal random-walk
