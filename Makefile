@@ -49,24 +49,24 @@ inst/include/%.h: src/%.h
 
 htmldocs: inst/doc/*.html
 
-htmlhelp: install
+htmlhelp: install news
 	rsync --delete -a library/$(PKG)/html/ $(MANUALDIR)/html
 	rsync --delete --exclude=aliases.rds --exclude=paths.rds --exclude=$(PKG).rdb --exclude=$(PKG).rdx --exclude=macros -a library/$(PKG)/help/ $(MANUALDIR)/help
-	(cd $(MANUALDIR)/html; (cat ../links.ed && echo w ) | ed - 00Index.html)
+	(cd $(MANUALDIR); (cat links.ed && echo w ) | ed - html/00Index.html)
 	$(CP) ../www/_includes/pompstyle.css $(MANUALDIR)/html/R.css
 
 vignettes: manual install
 	$(MAKE)	-C www/vignettes
 
-news: www/NEWS.html
+news: library/$(PKG)/html/NEWS.html
 
 NEWS: inst/NEWS
 
 inst/NEWS: inst/NEWS.Rd
 	$(RCMD) Rdconv -t txt $^ -o $@
 
-www/NEWS.html: inst/NEWS.Rd
-	$(RCMD) Rdconv -t html inst/NEWS.Rd -o www/NEWS.html
+library/$(PKG)/html/NEWS.html: inst/NEWS.Rd
+	$(RCMD) Rdconv -t html $^ -o $@
 
 session: install
 	exec $(REXE)
@@ -89,7 +89,7 @@ binary: dist
 	$(RCMD) INSTALL --build --library=plib --preclean --clean $(PKGVERS).tar.gz
 	rm -rf plib
 
-publish: dist manual news htmlhelp
+publish: dist manual htmlhelp
 	$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).tar.gz",repodir="$(REPODIR)",action="prune")'
 	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).tgz",repodir="$(REPODIR)",action="prune")'
 	-$(RSCRIPT) -e 'drat::insertPackage("$(PKGVERS).zip",repodir="$(REPODIR)",action="prune")'
