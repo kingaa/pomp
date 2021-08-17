@@ -164,10 +164,17 @@ More on \pkg{pomp} estimation algorithms:
 More on \pkg{pomp} methods based on Markov chain Monte Carlo:
 \code{\link{abc}()},
 \code{\link{proposals}}
+
+More on Bayesian methods in \pkg{pomp}:
+\code{\link{abc}()},
+\code{\link{dprior}()},
+\code{\link{prior_spec}},
+\code{\link{rprior}()}
 }
 \author{
 Edward L. Ionides, Aaron A. King, Sebastian Funk
 }
+\concept{Bayesian methods}
 \concept{MCMC methods}
 \concept{estimation methods}
 \concept{particle filter methods}

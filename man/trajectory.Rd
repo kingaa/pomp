@@ -77,6 +77,8 @@ More on \pkg{pomp} elementary algorithms:
 
 More on \pkg{pomp} methods for deterministic process models: 
 \code{\link{flow}()},
+\code{\link{skeleton_spec}},
+\code{\link{skeleton}()},
 \code{\link{trajectory_matching}}
 }
 \concept{deterministic methods}

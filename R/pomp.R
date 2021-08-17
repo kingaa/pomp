@@ -25,6 +25,7 @@
 ##'
 ##' @name pomp
 ##' @rdname pomp
+##' @family implementation information
 ##' @include pomp_class.R pomp_fun.R csnippet.R safecall.R builder.R
 ##' @include rinit_spec.R rprocess_spec.R rmeasure_spec.R
 ##' @include dprocess_spec.R dmeasure_spec.R prior_spec.R

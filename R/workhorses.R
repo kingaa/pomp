@@ -123,6 +123,7 @@ dmeasure.internal <- function (object, y, x, times, params, ..., log = FALSE,
 ##' @docType methods
 ##' @aliases dprior,ANY-method dprior,missing-method
 ##' @family pomp workhorses
+##' @family Bayesian methods
 ##' @seealso Specification of the prior density evaluator: \code{\link{prior_spec}}
 ##'
 ##' @inheritParams dmeasure
@@ -439,6 +440,7 @@ rmeasure.internal <- function (object, x, times, params,
 ##' @docType methods
 ##' @aliases rprior,ANY-method rprior,missing-method
 ##' @family pomp workhorses
+##' @family Bayesian methods
 ##' @seealso Specification of the prior distribution simulator: \code{\link{prior_spec}}
 ##'
 ##' @inheritParams dmeasure
@@ -583,6 +585,7 @@ rprocess.internal <- function (object, x0, t0, times, params, ...,
 ##' @docType methods
 ##' @aliases skeleton,ANY-method skeleton,missing-method
 ##' @family pomp workhorses
+##' @family deterministic methods
 ##' @seealso Specification of the deterministic skeleton: \code{\link{skeleton_spec}}
 ##'
 ##' @inheritParams dmeasure

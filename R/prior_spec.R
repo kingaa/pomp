@@ -5,6 +5,7 @@
 ##' @name prior_spec
 ##' @rdname prior_spec
 ##' @family implementation information
+##' @family Bayesian methods
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 

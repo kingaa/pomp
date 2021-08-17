@@ -7,6 +7,8 @@
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R
 ##' @family implementation information
+##' @family deterministic methods
+##' @seealso skeleton
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##'

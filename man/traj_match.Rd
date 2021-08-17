@@ -152,6 +152,8 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 
 More on \pkg{pomp} methods for deterministic process models: 
 \code{\link{flow}()},
+\code{\link{skeleton_spec}},
+\code{\link{skeleton}()},
 \code{\link{trajectory}()}
 }
 \concept{deterministic methods}

@@ -13,6 +13,8 @@
 ##' @family particle filter methods
 ##' @family estimation methods
 ##' @family MCMC methods
+##' @family Bayesian methods
+##' 
 ##' @importFrom stats runif
 ##' @inheritParams pomp
 ##' @inheritParams pfilter

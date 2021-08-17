@@ -12,6 +12,7 @@
 ##' @family summary statistic-based methods
 ##' @family estimation methods
 ##' @family MCMC methods
+##' @family Bayesian methods
 ##'
 ##' @inheritParams pomp
 ##' @inheritParams probe

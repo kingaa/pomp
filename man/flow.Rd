@@ -56,6 +56,8 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{workhorses}}
 
 More on \pkg{pomp} methods for deterministic process models: 
+\code{\link{skeleton_spec}},
+\code{\link{skeleton}()},
 \code{\link{trajectory_matching}},
 \code{\link{trajectory}()}
 }

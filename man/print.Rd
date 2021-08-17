@@ -21,4 +21,4 @@
 \description{
 These methods print their argument and return it *invisibly*.
 }
-\keyword{internals}
+\keyword{internal}

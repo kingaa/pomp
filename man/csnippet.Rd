@@ -73,6 +73,7 @@ More on implementing POMP models:
 \code{\link{dprocess_spec}},
 \code{\link{parameter_trans}()},
 \code{\link{pomp-package}},
+\code{\link{pomp}},
 \code{\link{prior_spec}},
 \code{\link{rinit_spec}},
 \code{\link{rmeasure_spec}},

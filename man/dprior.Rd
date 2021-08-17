@@ -42,5 +42,12 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{rprocess}()},
 \code{\link{skeleton}()},
 \code{\link{workhorses}}
+
+More on Bayesian methods in \pkg{pomp}:
+\code{\link{abc}()},
+\code{\link{pmcmc}()},
+\code{\link{prior_spec}},
+\code{\link{rprior}()}
 }
+\concept{Bayesian methods}
 \concept{pomp workhorses}

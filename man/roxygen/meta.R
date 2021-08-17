@@ -1,5 +1,6 @@
 list(
   rd_family_title = list(
+    `Bayesian methods`="More on Bayesian methods in \\pkg{pomp}:",
     `MCMC methods`="More on \\pkg{pomp} methods based on Markov chain Monte Carlo:",
     `estimation methods`="More on \\pkg{pomp} estimation algorithms:",
     `elementary algorithms`="More on \\pkg{pomp} elementary algorithms: ",

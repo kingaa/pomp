@@ -60,11 +60,19 @@ More on implementing POMP models:
 \code{\link{dprocess_spec}},
 \code{\link{parameter_trans}()},
 \code{\link{pomp-package}},
+\code{\link{pomp}},
 \code{\link{rinit_spec}},
 \code{\link{rmeasure_spec}},
 \code{\link{rprocess_spec}},
 \code{\link{skeleton_spec}},
 \code{\link{transformations}},
 \code{\link{userdata}}
+
+More on Bayesian methods in \pkg{pomp}:
+\code{\link{abc}()},
+\code{\link{dprior}()},
+\code{\link{pmcmc}()},
+\code{\link{rprior}()}
 }
+\concept{Bayesian methods}
 \concept{implementation information}

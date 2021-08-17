@@ -4,7 +4,7 @@
 ##'
 ##' @name print
 ##' @rdname print
-##' @keywords internals
+##' @keywords internal
 ##' @param x object to print
 ##' @param ... ignored
 ##' @include show.R
