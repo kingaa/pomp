@@ -9,7 +9,7 @@
   html: FAQ.html
 
 - title: Package NEWS
-  html: NEWS.html
+  html: NEWS/
 
 - title: <strong>pomp</strong> discussions
   html: https://github.com/kingaa/pomp/discussions
@@ -48,5 +48,5 @@
   html: https://kingaa.github.io/short-course/
 
 - title: <strong>pomp</strong> package manual
-  html: https://kingaa.github.io/manuals/pomp/html/00Index.html
-  pdf: https://kingaa.github.io/manuals/pomp/pomp.pdf
+  html: https://kingaa.github.io/pomp/manual/
+  pdf: https://kingaa.github.io/pomp/manual/pdf/
