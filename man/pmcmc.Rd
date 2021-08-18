@@ -136,6 +136,17 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Andrieu2010
 }
 \seealso{
+More on \pkg{pomp} estimation algorithms:
+\code{\link{abc}()},
+\code{\link{bsmc2}()},
+\code{\link{estimation_algorithms}},
+\code{\link{kalman}},
+\code{\link{mif2}()},
+\code{\link{nonlinear_forecasting}},
+\code{\link{pomp-package}},
+\code{\link{probe_matching}},
+\code{\link{spectrum_matching}}
+
 More on particle-filter based methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
@@ -150,16 +161,10 @@ More on particle-filter based methods in \pkg{pomp}:
 \code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 
-More on \pkg{pomp} estimation algorithms:
-\code{\link{abc}()},
-\code{\link{bsmc2}()},
-\code{\link{estimation_algorithms}},
-\code{\link{kalman}},
+Other full-information methods: 
 \code{\link{mif2}()},
-\code{\link{nonlinear_forecasting}},
-\code{\link{pomp-package}},
-\code{\link{probe_matching}},
-\code{\link{spectrum_matching}}
+\code{\link{pfilter}()},
+\code{\link{wpfilter}()}
 
 More on \pkg{pomp} methods based on Markov chain Monte Carlo:
 \code{\link{abc}()},
@@ -177,4 +182,5 @@ Edward L. Ionides, Aaron A. King, Sebastian Funk
 \concept{Bayesian methods}
 \concept{MCMC methods}
 \concept{estimation methods}
+\concept{full-information methods}
 \concept{particle filter methods}

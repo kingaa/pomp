@@ -10,8 +10,9 @@
 ##' @include pfilter.R proposals.R load.R continue.R
 ##' @aliases pmcmc,ANY-method pmcmc,missing-method
 ##' @author Edward L. Ionides, Aaron A. King, Sebastian Funk
-##' @family particle filter methods
 ##' @family estimation methods
+##' @family particle filter methods
+##' @family full-information methods
 ##' @family MCMC methods
 ##' @family Bayesian methods
 ##' 

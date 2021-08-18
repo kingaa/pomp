@@ -9,6 +9,7 @@
 ##' @author Aaron A. King
 ##' @family elementary algorithms
 ##' @family particle filter methods
+##' @family full-information methods
 ##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R
 ##' @importFrom stats setNames
 ##' @inheritSection pomp Note for Windows users

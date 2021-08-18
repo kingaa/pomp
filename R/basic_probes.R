@@ -16,7 +16,7 @@
 ##' @param na.rm if \code{TRUE}, remove all NA observations prior to computing the probe.
 ##'
 ##' @param kernel.width width of modified Daniell smoothing kernel to be used
-##' in power-spectrum computation: see \code{\link{kernel}}.
+##' in power-spectrum computation: see \code{\link[stats]{kernel}}.
 ##'
 ##' @param lags In \code{probe.ccf}, a vector of lags between time series.
 ##' Positive lags correspond to \code{x} advanced relative to \code{y};

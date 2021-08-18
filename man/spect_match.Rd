@@ -146,7 +146,7 @@ See \link[=userdata]{?userdata} for information on how to use this facility.}
 }
 \value{
 \code{spect_objfun} constructs a stateful objective function for spectrum matching.
-Specifically, \code{spect_objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+Specifically, \code{spect_objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link[stats]{optim}}-like optimizer.
 This function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 When called, it will return the (optionally weighted) \eqn{L^2}{L2} distance between the data spectrum and simulated spectra.
 It is a stateful function:
@@ -202,7 +202,7 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 }
 }
 \seealso{
-\code{\link{spect}} \code{\link{optim}}
+\code{\link{spect}} \code{\link[stats]{optim}}
 \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 
 More on \pkg{pomp} estimation algorithms:

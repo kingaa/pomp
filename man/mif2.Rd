@@ -185,6 +185,11 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Ionides2015
 }
 \seealso{
+Other full-information methods: 
+\code{\link{pfilter}()},
+\code{\link{pmcmc}()},
+\code{\link{wpfilter}()}
+
 More on particle-filter based methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
@@ -214,4 +219,5 @@ More on \pkg{pomp} estimation algorithms:
 Aaron A. King, Edward L. Ionides, Dao Nguyen
 }
 \concept{estimation methods}
+\concept{full-information methods}
 \concept{particle filter methods}

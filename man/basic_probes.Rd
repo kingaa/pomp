@@ -54,7 +54,7 @@ probe.nlar(var, lags, powers, transform = identity)
 \item{na.rm}{if \code{TRUE}, remove all NA observations prior to computing the probe.}
 
 \item{kernel.width}{width of modified Daniell smoothing kernel to be used
-in power-spectrum computation: see \code{\link{kernel}}.}
+in power-spectrum computation: see \code{\link[stats]{kernel}}.}
 
 \item{probs}{the quantile or quantiles to compute: see \code{\link{quantile}}.}
 

@@ -135,9 +135,15 @@ More on particle-filter based methods in \pkg{pomp}:
 \code{\link{pred.mean}()},
 \code{\link{pred.var}()},
 \code{\link{saved.states}()}
+
+Other full-information methods: 
+\code{\link{mif2}()},
+\code{\link{pfilter}()},
+\code{\link{pmcmc}()}
 }
 \author{
 Aaron A. King
 }
 \concept{elementary algorithms}
+\concept{full-information methods}
 \concept{particle filter methods}

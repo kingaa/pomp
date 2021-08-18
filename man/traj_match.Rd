@@ -89,7 +89,7 @@ Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets t
 }
 \value{
 \code{traj_objfun} constructs a stateful objective function for spectrum matching.
-Specifically, \code{traj_objfun} returns an object of class \sQuote{traj_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+Specifically, \code{traj_objfun} returns an object of class \sQuote{traj_match_objfun}, which is a function suitable for use in an \code{\link[stats]{optim}}-like optimizer.
 In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 When called, it will return the negative log likelihood.
 It is a stateful function:

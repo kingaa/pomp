@@ -138,7 +138,7 @@ See \link[=userdata]{?userdata} for information on how to use this facility.}
 }
 \value{
 \code{nlf_objfun} constructs a stateful objective function for NLF estimation.
-Specfically, \code{nlf_objfun} returns an object of class \sQuote{nlf_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+Specfically, \code{nlf_objfun} returns an object of class \sQuote{nlf_objfun}, which is a function suitable for use in an \code{\link[stats]{optim}}-like optimizer.
 In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 When called, it will return the negative log quasilikelihood.
 It is a stateful function:
