@@ -96,11 +96,11 @@ dt {
 
 - [**pomp** FAQ](https://kingaa.github.io/pomp/FAQ.html)
 
-- [Package NEWS](https://kingaa.github.io/pomp/NEWS.html)
+- [Package NEWS](https://kingaa.github.io/pomp/NEWS/)
 
-- [Package manual (PDF)](https://kingaa.github.io/manuals/pomp/pomp.pdf)
+- [Package manual (PDF)](https://kingaa.github.io/pomp/manual/pdf/)
 
-- [Package manual (HTML)](https://kingaa.github.io/pomp/manual.html)
+- [Package manual (HTML)](https://kingaa.github.io/pomp/manual/)
 
 - [Guide to the **pomp** C API](https://kingaa.github.io/pomp/vignettes/C_API.html)
 

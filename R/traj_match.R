@@ -37,8 +37,7 @@
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the log likelihood.
 ##'
 ##' @inheritSection objfun Important Note
-##' @seealso \code{\link{trajectory}}, \code{\link{optim}},
-##' \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
+##' @seealso \code{\link[stats]{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 ##' 
 ##' @example examples/traj_match.R
 ##' 

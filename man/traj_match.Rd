@@ -147,8 +147,7 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 }
 }
 \seealso{
-\code{\link{trajectory}}, \code{\link{optim}},
-\code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
+\code{\link[stats]{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 
 More on \pkg{pomp} methods for deterministic process models: 
 \code{\link{flow}()},

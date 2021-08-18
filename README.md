@@ -9,6 +9,8 @@
 
 For installation instructions and user guides, see [the package website](https://kingaa.github.io/pomp/).
 
+Manual: [(HTML)](https://kingaa.github.io/pomp/manual/) [(PDF)](https://kingaa.github.io/pomp/manual/pdf/)
+
 Related packages:
 
 - [**spatPomp**](https://github.com/kidusasfaw/spatPomp)
