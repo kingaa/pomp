@@ -91,40 +91,47 @@ dt {
 
 #main {
     position: absolute;
-    top: 10px;
-    left: 52px;
+    top: 20px;
 }
 
 #content {
     text-align: left;
+    top: 0px;
+    left: 0px;
     position: relative;
-    width: 80%;
     padding-top: 10px;
-    padding-bottom: 30px;
-    padding-left: 20px;
-    padding-right: 40px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #header {
     text-align: left;
     position: relative;
-    width: 70%;
+    top: 0px;
+    left: 0px;
     padding-top: 10px;
     padding-bottom: 10px;
-    padding-left: 50px;
-    padding-right: 50px;
-    white-space: nowrap;
-}
-
-#header h1 {
-    margin-top: 0px;
-    margin-bottom: 0px;
+    padding-left: 10px;
+    padding-right: 40px;
+    font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
+    font-weight: bold;
+    font-variant: normal;
+    font-size: 1.5em;
 }
 
 #toplink {
     text-align: right;
     padding-right: 40px;
     display: none;
+}
+
+#content {
+    width: 100%;
+}
+
+#header {
+    width: min(90%, 700px);
 }
 
 .header-section-number:after, .toc-section-number:after {
@@ -135,30 +142,38 @@ dt {
     #nav, #menu-icon, #menu {
 	display: none;
     }
+    #main {
+	left: 180px;
+	width: calc(90% - 180px)
+    }
 }
 
 @media screen {
 
     #menu-icon {
 	position: fixed;
-	top: 20px;
-	right: 40px;
+	top: 50px;
+	left: 20px;
 	z-index: 10;
 	display: none;
     }
 
+    #main {
+	left: 180px;
+	width: min(1200px, calc(80% - 180px));
+    }
+    
     #menu {
 	position: fixed;
-	width: 180px;
-	top: 0px;
-	right: 0px;
+	top: 30px;
+	left: 10px;
 	z-index: 20;
 	text-align: left;
 	padding-top: 10px;
-	padding-bottom: 20px;
+	padding-bottom: 10px;
 	padding-left: 10px;
-	padding-right: 20px;
-	background-color: #ffffff;
+	padding-right: 10px;
+  	background-color: #ffffff;
 	display: block;
     }
 
@@ -166,20 +181,11 @@ dt {
 	font-weight: bold;
 	list-style: none;
 	margin: 0px;
-	padding: 20px;
+	padding: 0px;
     }
-
-    #header {
-	width: calc(80% - 200px);
-    }
-
-    #content {
-	width: calc(90% - 200px);
-    }
-
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 500px) {
 
     #menu-icon {
 	display: block;
@@ -191,8 +197,16 @@ dt {
 
     #nav:hover #menu {
 	display: block;
+        border-style: solid;
+	border-radius: 10px;
+        border-width: 2px;
+        border-color: #3333ff;
     }
 
+    #main {
+	left: 80px;
+	width: calc(90% - 80px);
+    }
 }
 
 .emph {
