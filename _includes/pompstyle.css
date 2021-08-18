@@ -6,7 +6,7 @@ body {
     color: #000000;
     background: #ffffff;
     font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
-    width: calc(80% - 50px);
+    width: 100%;
     padding-top: 20px;
     padding-bottom: 30px;
     padding-left: 30px;
@@ -107,9 +107,9 @@ dt {
 
 #header {
     text-align: left;
-    position: relative;
     top: 0px;
     left: 0px;
+    position: relative;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
@@ -139,12 +139,12 @@ dt {
 }
 
 @media print {
-    #nav, #menu-icon, #menu {
+    #nav {
 	display: none;
     }
     #main {
-	left: 180px;
-	width: calc(90% - 180px)
+	left: 5em;
+	width: calc(90% - 5em);
     }
 }
 
@@ -167,6 +167,7 @@ dt {
 	position: fixed;
 	top: 30px;
 	left: 10px;
+	width: 150px;
 	z-index: 20;
 	text-align: left;
 	padding-top: 10px;
@@ -185,7 +186,7 @@ dt {
     }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
 
     #menu-icon {
 	display: block;
@@ -204,8 +205,8 @@ dt {
     }
 
     #main {
-	left: 80px;
-	width: calc(90% - 80px);
+	left: 72px;
+	width: max(50%, 180px);
     }
 }
 
