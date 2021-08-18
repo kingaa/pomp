@@ -131,7 +131,7 @@ dt {
 }
 
 #header {
-    width: min(90%, 700px);
+    width: min(90%, 22em);
 }
 
 .header-section-number:after, .toc-section-number:after {
@@ -160,7 +160,7 @@ dt {
 
     #main {
 	left: 180px;
-	width: min(1200px, calc(80% - 180px));
+	width: min(50em, calc(80% - 180px));
     }
     
     #menu {
