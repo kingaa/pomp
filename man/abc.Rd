@@ -181,6 +181,7 @@ More on \pkg{pomp} methods based on Markov chain Monte Carlo:
 \code{\link{proposals}}
 
 More on Bayesian methods in \pkg{pomp}:
+\code{\link{bsmc2}()},
 \code{\link{dprior}()},
 \code{\link{pmcmc}()},
 \code{\link{prior_spec}},

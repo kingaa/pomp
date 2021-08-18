@@ -161,7 +161,8 @@ More on particle-filter based methods in \pkg{pomp}:
 \code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 
-Other full-information methods: 
+More on likelihood-based methods in \pkg{pomp}:
+\code{\link{bsmc2}()},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{wpfilter}()}
@@ -172,6 +173,7 @@ More on \pkg{pomp} methods based on Markov chain Monte Carlo:
 
 More on Bayesian methods in \pkg{pomp}:
 \code{\link{abc}()},
+\code{\link{bsmc2}()},
 \code{\link{dprior}()},
 \code{\link{prior_spec}},
 \code{\link{rprior}()}

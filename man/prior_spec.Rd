@@ -70,6 +70,7 @@ More on implementing POMP models:
 
 More on Bayesian methods in \pkg{pomp}:
 \code{\link{abc}()},
+\code{\link{bsmc2}()},
 \code{\link{dprior}()},
 \code{\link{pmcmc}()},
 \code{\link{rprior}()}

@@ -174,7 +174,8 @@ More on particle-filter based methods in \pkg{pomp}:
 \code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 
-Other full-information methods: 
+More on likelihood-based methods in \pkg{pomp}:
+\code{\link{bsmc2}()},
 \code{\link{mif2}()},
 \code{\link{pmcmc}()},
 \code{\link{wpfilter}()}

@@ -14,6 +14,8 @@
 ##' @rdname bsmc2
 ##' @aliases bsmc2,missing-method bsmc2,ANY-method
 ##' @include pomp_class.R workhorses.R pomp.R plot.R
+##' @family Bayesian methods
+##' @family full-information methods
 ##' @family particle filter methods
 ##' @family estimation methods
 ##'

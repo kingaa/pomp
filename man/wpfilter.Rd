@@ -136,7 +136,8 @@ More on particle-filter based methods in \pkg{pomp}:
 \code{\link{pred.var}()},
 \code{\link{saved.states}()}
 
-Other full-information methods: 
+More on likelihood-based methods in \pkg{pomp}:
+\code{\link{bsmc2}()},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()}

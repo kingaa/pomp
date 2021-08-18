@@ -116,6 +116,19 @@ Sequential Monte Carlo Methods in Practice, pages 197-224.
 Springer, New York, 2001.
 }
 \seealso{
+More on Bayesian methods in \pkg{pomp}:
+\code{\link{abc}()},
+\code{\link{dprior}()},
+\code{\link{pmcmc}()},
+\code{\link{prior_spec}},
+\code{\link{rprior}()}
+
+More on likelihood-based methods in \pkg{pomp}:
+\code{\link{mif2}()},
+\code{\link{pfilter}()},
+\code{\link{pmcmc}()},
+\code{\link{wpfilter}()}
+
 More on particle-filter based methods in \pkg{pomp}: 
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},
@@ -144,5 +157,7 @@ More on \pkg{pomp} estimation algorithms:
 \author{
 Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
 }
+\concept{Bayesian methods}
 \concept{estimation methods}
+\concept{full-information methods}
 \concept{particle filter methods}

@@ -185,7 +185,8 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Ionides2015
 }
 \seealso{
-Other full-information methods: 
+More on likelihood-based methods in \pkg{pomp}:
+\code{\link{bsmc2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
 \code{\link{wpfilter}()}
