@@ -31,12 +31,6 @@ Install **pomp** from CRAN just like any other **R** package:
 install.packages("pomp")
 ```
 
-## Changes from version 1:
-
-**pomp** version 2 introduced a number of changes that were not compatible with earlier versions.
-This means that code that ran under versions &lt;2 may break under up-to-date versions of **pomp**.
-An [upgrade guide](https://kingaa.github.io/pomp/vignettes/upgrade_guide.html){:target="_blank"} is available to help you transition your codes to the new version.
-
 ## Important note for Windows users
 
 To make use of **pomp**'s facilities for accelerated computation using compiled C code, and to compile the package from source, you will need the ability to compile C code and dynamically link it into an **R** session.
@@ -58,7 +52,7 @@ If you have this problem, see [these instructions](https://mac.r-project.org/too
 
 ## Important note for Linux users
 
-You may need to install the `gfortran` FORTRAN compiler on your machine, if it is not already there.
+You may need to install the `gfortran` compiler on your machine, if it is not already there.
 For example, on a Debian-based system (e.g., Ubuntu):
 ```
 sudo apt install gfortran
@@ -67,3 +61,10 @@ On an RPM-based system:
 ```
 sudo yum install gcc-gfortran
 ```
+
+## Changes from version 1:
+
+**pomp** version 2 introduced a number of changes that were not compatible with earlier versions.
+This means that code that ran under versions &lt;2 may break under up-to-date versions of **pomp**.
+An [upgrade guide](https://kingaa.github.io/pomp/vignettes/upgrade_guide.html){:target="_blank"} is available to help you transition your codes to the new version.
+

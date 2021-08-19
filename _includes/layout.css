@@ -1,0 +1,111 @@
+#main {
+    position: absolute;
+    top: 20px;
+}
+
+#header {
+    text-align: left;
+    top: 0px;
+    left: 0px;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 40px;
+    font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
+    font-weight: bold;
+    font-variant: normal;
+    font-size: 1.5em;
+    width: min(90%, 22em);
+}
+
+#content {
+    text-align: left;
+    top: 0px;
+    left: 0px;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+}
+
+#toplink {
+    text-align: right;
+    padding-right: 40px;
+    display: none;
+}
+
+#menu-icon {
+    position: fixed;
+    top: 50px;
+    left: 20px;
+    z-index: 10;
+    display: none;
+}
+
+@media print {
+    #nav {
+        display: none;
+    }
+    #main {
+        left: 1in;
+        width: calc(100% - 2in);
+    }
+}
+
+@media screen {
+
+    #menu {
+        position: fixed;
+        top: 30px;
+        left: 10px;
+        width: 150px;
+        z-index: 20;
+        text-align: left;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color: #ffffff;
+        display: block;
+    }
+
+    #main {
+        left: 180px;
+        width: min(50em, calc(90% - 180px));
+    }
+    
+    #menu ul {
+        font-weight: bold;
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+    #menu-icon {
+        display: block;
+    }
+
+    #menu {
+        display: none;
+    }
+
+    #nav:hover #menu {
+        display: block;
+        padding-top: 50px;
+        border-style: solid;
+        border-radius: 10px;
+        border-width: 2px;
+        border-color: #3333ff;
+    }
+
+    #main {
+        left: 62px;
+        width: 270px;
+    }
+}

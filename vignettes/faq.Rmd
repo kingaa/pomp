@@ -1,4 +1,5 @@
 ---
+pagetitle: FAQ
 title: ""
 output:
   html_document:
@@ -7,7 +8,7 @@ output:
     toc_depth: 4
     number_sections: true
 bibliography: ../vignettes/pomp.bib
-csl: ../vignettes/jss.csl    
+csl: ../vignettes/jss.csl
 ---
 
 ```{r options,include=FALSE,cache=FALSE}
@@ -18,6 +19,15 @@ knitr::opts_chunk$set(cache=FALSE,results="hide",echo=TRUE,fig.show="asis",
 require(ggplot2)
 theme_set(theme_bw())
 set.seed(1810027260)
+```
+
+```{css echo=FALSE}
+#TOC ul li {
+    list-style: none;
+}
+.header-section-number:after, .toc-section-number:after {
+    content: ".";
+}
 ```
 
 # General.
@@ -44,8 +54,9 @@ source("https://kingaa.github.io/scripts/diagnostics.R")
 ## What's the proper way to cite **pomp**? {#cite-pomp}
 
 ```{r echo=FALSE,results="asis"}
-citation("pomp")
+print(citation("pomp"),bibtex=FALSE)
 ```
+
 You can get this information by executing `citation("pomp")` in an **R** session.
 
 If you use **pomp** in a publication, please let us know!

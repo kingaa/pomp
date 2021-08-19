@@ -8,24 +8,12 @@
 - title: Frequently Asked Questions
   html: FAQ.html
 
+- title: <strong>pomp</strong> package manual
+  html: https://kingaa.github.io/pomp/manual/
+  pdf: https://kingaa.github.io/pomp/manual/pdf/
+
 - title: Package NEWS
   html: NEWS/
-
-- title: <strong>pomp</strong> discussions
-  html: https://github.com/kingaa/pomp/discussions
-
-- title: Pimp my pomp, a community wiki
-  html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp
-
-- title: <strong>pomp</strong> C API
-  html: vignettes/C_API.html
-
-- title: Two perspectives on the <strong>pomp</strong> project
-  html: vignettes/oaxaca.html
-  video: https://www.youtube.com/playlist?list=PLluGwj6FGt2SufYmENYAngy8dEMtfFEU8
-
-- title: <strong>pomp</strong> version 2 upgrade guide
-  html: vignettes/upgrade_guide.html
 
 - title: "Coding POMP models: R vs C snippets"
   html: vignettes/R_v_C.html
@@ -44,9 +32,21 @@
   pdf: vignettes/pompjss.pdf
   R: vignettes/pompjss.R
 
+- title: <strong>pomp</strong> discussions
+  html: https://github.com/kingaa/pomp/discussions
+
+- title: Pimp my pomp, a community wiki
+  html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp
+
+- title: <strong>pomp</strong> C API
+  html: vignettes/C_API.html
+
+- title: Two perspectives on the <strong>pomp</strong> project
+  html: vignettes/oaxaca.html
+  video: https://www.youtube.com/playlist?list=PLluGwj6FGt2SufYmENYAngy8dEMtfFEU8
+
+- title: <strong>pomp</strong> version 2 upgrade guide
+  html: vignettes/upgrade_guide.html
+
 - title: Model-based Inference in Ecology and Epidemiology (a short course)
   html: https://kingaa.github.io/short-course/
-
-- title: <strong>pomp</strong> package manual
-  html: https://kingaa.github.io/pomp/manual/
-  pdf: https://kingaa.github.io/pomp/manual/pdf/

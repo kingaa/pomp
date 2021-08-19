@@ -6,11 +6,6 @@ body {
     color: #000000;
     background: #ffffff;
     font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
-    width: 100%;
-    padding-top: 20px;
-    padding-bottom: 30px;
-    padding-left: 30px;
-    padding-right: 30px;
 }
 
 code {
@@ -85,132 +80,6 @@ dt {
     font-weight: bold;
 }
 
-#TOC ul li {
-    list-style: none;
-}
-
-#main {
-    position: absolute;
-    top: 20px;
-}
-
-#content {
-    text-align: left;
-    top: 0px;
-    left: 0px;
-    position: relative;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-#header {
-    text-align: left;
-    top: 0px;
-    left: 0px;
-    position: relative;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 40px;
-    font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
-    font-weight: bold;
-    font-variant: normal;
-    font-size: 1.5em;
-}
-
-#toplink {
-    text-align: right;
-    padding-right: 40px;
-    display: none;
-}
-
-#content {
-    width: 100%;
-}
-
-#header {
-    width: min(90%, 22em);
-}
-
-.header-section-number:after, .toc-section-number:after {
-    content: ".";
-}
-
-@media print {
-    #nav {
-	display: none;
-    }
-    #main {
-	left: 5em;
-	width: calc(90% - 5em);
-    }
-}
-
-@media screen {
-
-    #menu-icon {
-	position: fixed;
-	top: 50px;
-	left: 20px;
-	z-index: 10;
-	display: none;
-    }
-
-    #main {
-	left: 180px;
-	width: min(50em, calc(80% - 180px));
-    }
-    
-    #menu {
-	position: fixed;
-	top: 30px;
-	left: 10px;
-	width: 150px;
-	z-index: 20;
-	text-align: left;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	padding-left: 10px;
-	padding-right: 10px;
-  	background-color: #ffffff;
-	display: block;
-    }
-
-    #menu ul {
-	font-weight: bold;
-	list-style: none;
-	margin: 0px;
-	padding: 0px;
-    }
-}
-
-@media screen and (max-width: 600px) {
-
-    #menu-icon {
-	display: block;
-    }
-
-    #menu {
-	display: none;
-    }
-
-    #nav:hover #menu {
-	display: block;
-	padding-top: 50px;
-        border-style: solid;
-	border-radius: 10px;
-        border-width: 2px;
-        border-color: #3333ff;
-    }
-
-    #main {
-	left: 72px;
-	width: max(50%, 180px);
-    }
-}
-
 .emph {
     color: #cc3333; 
     font-weight: bold;
@@ -224,8 +93,8 @@ dt {
 .firstcharacter { 
     float: left; 
     color: #3333ff; 
-    font-size: 40px;
-    line-height: 30px;
+    font-size: 2.5em;
+    line-height: 0.8em;
     vertical-align: top;
     padding-right: 5px;
 }
