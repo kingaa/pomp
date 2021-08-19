@@ -12,6 +12,7 @@
 ##' @author Aaron A. King
 ##' @family summary statistic-based methods
 ##' @family estimation methods
+##' @family methods based on maximization
 ##' @seealso \code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##'
 ##' @param est character vector; the names of parameters to be estimated.

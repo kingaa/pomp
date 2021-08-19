@@ -197,6 +197,7 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{abc}()},
 \code{\link{basic_probes}},
+\code{\link{nonlinear_forecasting}},
 \code{\link{probe}()},
 \code{\link{spectrum_matching}},
 \code{\link{spect}()}
@@ -205,15 +206,21 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{estimation_algorithms}},
-\code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{nonlinear_forecasting}},
 \code{\link{pmcmc}()},
 \code{\link{pomp-package}},
 \code{\link{spectrum_matching}}
+
+More on estimation methods based on maximization:
+\code{\link{mif2}()},
+\code{\link{nonlinear_forecasting}},
+\code{\link{spectrum_matching}},
+\code{\link{trajectory_matching}}
 }
 \author{
 Aaron A. King
 }
 \concept{estimation methods}
+\concept{methods based on maximization}
 \concept{summary statistic-based methods}

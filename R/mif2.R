@@ -15,6 +15,7 @@
 ##' @family full-information methods
 ##' @family particle filter methods
 ##' @family estimation methods
+##' @family methods based on maximization
 ##' @importFrom utils head
 ##' @inheritParams pomp
 ##' @inheritParams pfilter

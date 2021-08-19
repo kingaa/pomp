@@ -114,7 +114,6 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{estimation_algorithms}},
-\code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{nonlinear_forecasting}},
 \code{\link{pmcmc}()},
@@ -123,6 +122,7 @@ More on \pkg{pomp} estimation algorithms:
 
 More on \pkg{pomp} elementary algorithms: 
 \code{\link{elementary_algorithms}},
+\code{\link{kalman}},
 \code{\link{pfilter}()},
 \code{\link{probe}()},
 \code{\link{simulate}()},

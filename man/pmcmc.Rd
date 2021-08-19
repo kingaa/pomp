@@ -140,7 +140,6 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{estimation_algorithms}},
-\code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{nonlinear_forecasting}},
 \code{\link{pomp-package}},

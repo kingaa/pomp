@@ -169,9 +169,9 @@ simulate(rw2,rinit=function(...) c(x1=0,x2=0)) -> x
 library(tidyr)
 dacca() %>%
   simulate(nsim=1,include.data=TRUE,format="data.frame") %>%
-  gather(var,val,-.id) %>%
-  group_by(.id,var) %>%
-  summarize(n=sum(is.na(val)),.groups="drop") %>%
+  pivot_longer(-.id) %>%
+  group_by(.id,name) %>%
+  summarize(n=sum(is.na(value)),.groups="drop") %>%
   filter(n>0) -> d1
 stopifnot(
   `na in sim`=all(d1$.id=="data"),

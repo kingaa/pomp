@@ -1,5 +1,6 @@
 list(
   rd_family_title = list(
+    `methods based on maximization`="More on estimation methods based on maximization:",
     `full-information methods`="More on likelihood-based methods in \\pkg{pomp}:",
     `Bayesian methods`="More on Bayesian methods in \\pkg{pomp}:",
     `MCMC methods`="More on \\pkg{pomp} methods based on Markov chain Monte Carlo:",

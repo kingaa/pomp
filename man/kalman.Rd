@@ -114,19 +114,18 @@ More on particle-filter based methods in \pkg{pomp}:
 \code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 
-More on \pkg{pomp} estimation algorithms:
-\code{\link{abc}()},
-\code{\link{bsmc2}()},
-\code{\link{estimation_algorithms}},
-\code{\link{mif2}()},
-\code{\link{nonlinear_forecasting}},
-\code{\link{pmcmc}()},
+More on \pkg{pomp} elementary algorithms: 
+\code{\link{elementary_algorithms}},
+\code{\link{pfilter}()},
 \code{\link{pomp-package}},
-\code{\link{probe_matching}},
-\code{\link{spectrum_matching}}
+\code{\link{probe}()},
+\code{\link{simulate}()},
+\code{\link{spect}()},
+\code{\link{trajectory}()},
+\code{\link{wpfilter}()}
 }
 \author{
 Aaron A. King
 }
-\concept{estimation methods}
+\concept{elementary algorithms}
 \concept{particle filter methods}

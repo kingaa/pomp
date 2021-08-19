@@ -10,7 +10,7 @@
 ##' eakf,ANY-method eakf,missing-method
 ##' @author Aaron A. King
 ##' @family particle filter methods
-##' @family estimation methods
+##' @family elementary algorithms
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 

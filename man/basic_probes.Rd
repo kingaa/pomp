@@ -103,6 +103,7 @@ These can be used directly and as templates for custom probes.
 \seealso{
 More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{abc}()},
+\code{\link{nonlinear_forecasting}},
 \code{\link{probe_matching}},
 \code{\link{probe}()},
 \code{\link{spectrum_matching}},

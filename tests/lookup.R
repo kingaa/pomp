@@ -43,8 +43,8 @@ covariate_table(
   times=seq(0,10,by=0.1)
 ) %>%
   lookup(t=seq(0,10,by=0.01)) %>%
-  gather(variable,value,-t) %>%
-  separate(variable,into=c("variable","n")) %>%
+  pivot_longer(-t) %>%
+  separate(name,into=c("variable","n")) %>%
   ggplot(aes(x=t,y=value,color=factor(n)))+
   labs(color="element",y="",x="")+
   geom_line()+

@@ -209,16 +209,22 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{estimation_algorithms}},
-\code{\link{kalman}},
 \code{\link{nonlinear_forecasting}},
 \code{\link{pmcmc}()},
 \code{\link{pomp-package}},
 \code{\link{probe_matching}},
 \code{\link{spectrum_matching}}
+
+More on estimation methods based on maximization:
+\code{\link{nonlinear_forecasting}},
+\code{\link{probe_matching}},
+\code{\link{spectrum_matching}},
+\code{\link{trajectory_matching}}
 }
 \author{
 Aaron A. King, Edward L. Ionides, Dao Nguyen
 }
 \concept{estimation methods}
 \concept{full-information methods}
+\concept{methods based on maximization}
 \concept{particle filter methods}

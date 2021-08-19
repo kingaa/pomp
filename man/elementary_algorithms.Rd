@@ -26,6 +26,7 @@ Help pages detailing each elementary algorithm component are provided.
 \link[=estimation_algorithms]{estimation algorithms}.
 
 More on \pkg{pomp} elementary algorithms: 
+\code{\link{kalman}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{probe}()},

@@ -209,7 +209,6 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{estimation_algorithms}},
-\code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{nonlinear_forecasting}},
 \code{\link{pmcmc}()},
@@ -219,9 +218,17 @@ More on \pkg{pomp} estimation algorithms:
 More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{abc}()},
 \code{\link{basic_probes}},
+\code{\link{nonlinear_forecasting}},
 \code{\link{probe_matching}},
 \code{\link{probe}()},
 \code{\link{spect}()}
+
+More on estimation methods based on maximization:
+\code{\link{mif2}()},
+\code{\link{nonlinear_forecasting}},
+\code{\link{probe_matching}},
+\code{\link{trajectory_matching}}
 }
 \concept{estimation methods}
+\concept{methods based on maximization}
 \concept{summary statistic-based methods}

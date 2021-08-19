@@ -153,6 +153,7 @@ as(pf,"data.frame") \%>\% head()
 \seealso{
 More on \pkg{pomp} elementary algorithms: 
 \code{\link{elementary_algorithms}},
+\code{\link{kalman}},
 \code{\link{pomp-package}},
 \code{\link{probe}()},
 \code{\link{simulate}()},

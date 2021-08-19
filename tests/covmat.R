@@ -18,11 +18,11 @@ gompertz %>%
   as.data.frame() %>%
   filter(.id=="sim") %>%
   select(-.id) %>%
-  gather(variable,value) %>%
-  group_by(variable) %>%
+  pivot_longer(everything()) %>%
+  group_by(name) %>%
   summarize(value=(sd(value))) %>%
   ungroup() %>%
-  spread(variable,value) %>%
+  pivot_wider(name) %>%
   unlist() -> scale.dat
 
 abc(

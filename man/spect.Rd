@@ -152,12 +152,14 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{abc}()},
 \code{\link{basic_probes}},
+\code{\link{nonlinear_forecasting}},
 \code{\link{probe_matching}},
 \code{\link{probe}()},
 \code{\link{spectrum_matching}}
 
 More on \pkg{pomp} elementary algorithms: 
 \code{\link{elementary_algorithms}},
+\code{\link{kalman}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{probe}()},

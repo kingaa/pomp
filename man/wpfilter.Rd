@@ -115,6 +115,7 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \seealso{
 More on \pkg{pomp} elementary algorithms: 
 \code{\link{elementary_algorithms}},
+\code{\link{kalman}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{probe}()},

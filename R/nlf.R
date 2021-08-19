@@ -27,6 +27,8 @@
 ##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
 ##'
 ##' @family estimation methods
+##' @family summary statistic-based methods
+##' @family methods based on maximization
 ##'
 ##' @return
 ##' \code{nlf_objfun} constructs a stateful objective function for NLF estimation.

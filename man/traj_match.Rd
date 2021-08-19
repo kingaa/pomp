@@ -154,5 +154,12 @@ More on \pkg{pomp} methods for deterministic process models:
 \code{\link{skeleton_spec}},
 \code{\link{skeleton}()},
 \code{\link{trajectory}()}
+
+More on estimation methods based on maximization:
+\code{\link{mif2}()},
+\code{\link{nonlinear_forecasting}},
+\code{\link{probe_matching}},
+\code{\link{spectrum_matching}}
 }
 \concept{deterministic methods}
+\concept{methods based on maximization}

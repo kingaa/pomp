@@ -68,6 +68,7 @@ In particular, it is not possible to modify the model structure in a call to \co
 
 More on \pkg{pomp} elementary algorithms: 
 \code{\link{elementary_algorithms}},
+\code{\link{kalman}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
 \code{\link{probe}()},
