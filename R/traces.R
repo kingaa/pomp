@@ -35,7 +35,7 @@ setMethod(
 ##' @param object an object of class extending \sQuote{pomp}, the result of the application of a parameter estimation algorithm
 ##' @param pars names of parameters
 ##' @param transform logical; should the traces be transformed back onto the natural scale?
-##' @param \dots ignored or (in the case of the listie, passed to the more primitive function)
+##' @param \dots ignored or passed to the more primitive function
 ##'
 ##' @return
 ##' When \code{object} is the result of a \code{\link{mif2}} calculation,

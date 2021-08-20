@@ -17,7 +17,7 @@
 
 \item{t0}{logical; should the zero time be included?}
 
-\item{\dots}{ignored}
+\item{\dots}{ignored or passed to the more primitive function}
 
 \item{object}{a \sQuote{pomp} object}
 

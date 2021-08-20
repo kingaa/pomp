@@ -26,6 +26,7 @@ c(
     )
   ),
   bibentry(
+    header="Additionally, consider citing the package itself:",
     bibtype="Manual",
     title="{pomp}: {Statistical} Inference for Partially Observed {Markov} Processes",
     author=personList(

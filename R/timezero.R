@@ -26,7 +26,7 @@ setGeneric(
 
 ##' @rdname timezero
 ##' @param object an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}
-##' @param \dots ignored
+##' @param \dots ignored or passed to the more primitive function
 ##' @export
 setMethod(
   "timezero",

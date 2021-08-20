@@ -19,7 +19,7 @@
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}}
 
-\item{\dots}{ignored}
+\item{\dots}{ignored or passed to the more primitive function}
 
 \item{value}{numeric; the new zero-time value}
 }

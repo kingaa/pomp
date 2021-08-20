@@ -31,7 +31,7 @@
 
 \item{transform}{logical; should the traces be transformed back onto the natural scale?}
 
-\item{\dots}{ignored or (in the case of the listie, passed to the more primitive function)}
+\item{\dots}{ignored or passed to the more primitive function}
 }
 \value{
 When \code{object} is the result of a \code{\link{mif2}} calculation,

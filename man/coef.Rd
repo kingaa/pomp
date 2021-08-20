@@ -22,7 +22,7 @@
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}}
 
-\item{\dots}{ignored}
+\item{\dots}{ignored or passed to the more primitive function}
 
 \item{pars}{optional character; names of parameters to be retrieved or set.}
 

@@ -78,7 +78,7 @@ default, \code{lower=-Inf} and \code{upper=Inf}, i.e., there are no
 constraints.} }
 }
 \seealso{
-\link[=trajectory_matching]{trajectory matching}, \link[=probe_matching]{probe matching}.
+\link[=trajectory_matching]{trajectory matching}, \link[=probe_matching]{probe matching}, \link[=spectrum_matching]{spectrum matching}, \link[=nonlinear_forecasting]{nonlinear forecasting}.
 }
 \author{
 Daniel Reuman, Aaron A. King

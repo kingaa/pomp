@@ -16,7 +16,7 @@
 \arguments{
 \item{object}{a fitted model object}
 
-\item{\dots}{ignored}
+\item{\dots}{ignored or passed to the more primitive function}
 }
 \description{
 Display a summary of a fitted model object.
