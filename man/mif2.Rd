@@ -185,13 +185,13 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Ionides2015
 }
 \seealso{
-More on likelihood-based methods in \pkg{pomp}:
+More on full-information (i.e., likelihood-based) methods in \pkg{pomp}:
 \code{\link{bsmc2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
 \code{\link{wpfilter}()}
 
-More on particle-filter based methods in \pkg{pomp}: 
+More on sequential Monte Carlo methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},

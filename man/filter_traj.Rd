@@ -41,7 +41,7 @@ One accomplishes this by setting \code{filter.traj = TRUE} in each \code{\link{p
 In particle MCMC (\code{\link{pmcmc}}), the tracking of an individual trajectory is performed automatically.
 }
 \seealso{
-More on particle-filter based methods in \pkg{pomp}: 
+More on sequential Monte Carlo methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},

@@ -123,7 +123,7 @@ More on \pkg{pomp} elementary algorithms:
 \code{\link{spect}()},
 \code{\link{trajectory}()}
 
-More on particle-filter based methods in \pkg{pomp}: 
+More on sequential Monte Carlo methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},
@@ -137,7 +137,7 @@ More on particle-filter based methods in \pkg{pomp}:
 \code{\link{pred.var}()},
 \code{\link{saved.states}()}
 
-More on likelihood-based methods in \pkg{pomp}:
+More on full-information (i.e., likelihood-based) methods in \pkg{pomp}:
 \code{\link{bsmc2}()},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},

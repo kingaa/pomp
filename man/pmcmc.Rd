@@ -146,7 +146,7 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{probe_matching}},
 \code{\link{spectrum_matching}}
 
-More on particle-filter based methods in \pkg{pomp}: 
+More on sequential Monte Carlo methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},
@@ -160,7 +160,7 @@ More on particle-filter based methods in \pkg{pomp}:
 \code{\link{saved.states}()},
 \code{\link{wpfilter}()}
 
-More on likelihood-based methods in \pkg{pomp}:
+More on full-information (i.e., likelihood-based) methods in \pkg{pomp}:
 \code{\link{bsmc2}()},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},

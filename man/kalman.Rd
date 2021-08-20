@@ -100,7 +100,7 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 \Evensen2009
 }
 \seealso{
-More on particle-filter based methods in \pkg{pomp}: 
+More on sequential Monte Carlo methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},

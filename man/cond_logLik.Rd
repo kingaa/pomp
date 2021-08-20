@@ -44,7 +44,7 @@ Thus the conditional log likelihood at time \eqn{t_k} is
 where \eqn{f} is the probability density above.
 }
 \seealso{
-More on particle-filter based methods in \pkg{pomp}: 
+More on sequential Monte Carlo methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{eff.sample.size}()},
 \code{\link{filter.mean}()},

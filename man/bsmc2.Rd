@@ -123,13 +123,13 @@ More on Bayesian methods in \pkg{pomp}:
 \code{\link{prior_spec}},
 \code{\link{rprior}()}
 
-More on likelihood-based methods in \pkg{pomp}:
+More on full-information (i.e., likelihood-based) methods in \pkg{pomp}:
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
 \code{\link{wpfilter}()}
 
-More on particle-filter based methods in \pkg{pomp}: 
+More on sequential Monte Carlo methods in \pkg{pomp}: 
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},
 \code{\link{filter.mean}()},

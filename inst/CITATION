@@ -1,57 +1,56 @@
 year <- sub("-.*", "", meta$Date)
-note1 <- sprintf("R~package, version~%s", meta$Version)
+note1 <- sprintf("{R}~package, version~%s", meta$Version)
 note2 <- sprintf("(R package, version %s)", meta$Version)
 
 c(
-    bibentry(
-        header=paste("To cite the",sQuote("pomp"),
-                     "package in publications, please use:"),
-        bibtype = "Article",
-        title = "Statistical Inference for Partially Observed {Markov} Processes via the {R} Package {pomp}",
-        author       = c(person(given = c("Aaron", "A."),
-                                family = "King",
-                                email = "kingaa@unich.edu"),
-                         person(given = "Dao",
-                                family = "Nguyen",
-                                email = "nguyenxd@unich.edu"),
-                         person(given = c("Edward", "L."),
-                                family = "Ionides")),
-        journal      = "Journal of Statistical Software",
-        year         = "2016",
-        volume       = "69",
-        number       = "12",
-        pages        = "1--43",
-        doi          = "10.18637/jss.v069.i12",
-        textVersion  =
-            paste("Aaron A. King, Dao Nguyen, Edward L. Ionides (2016).",
-                  "Statistical Inference for Partially Observed Markov Processes via the R Package pomp.",
-                  "Journal of Statistical Software, 69(12), 1-43.",
-                  "doi:10.18637/jss.v069.i12")
+  bibentry(
+    header=paste("To cite the",sQuote("pomp"),"package in publications, use:"),
+    bibtype = "Article",
+    title = "Statistical Inference for Partially Observed {Markov} Processes via the {R} Package {pomp}",
+    author=personList(
+      as.person("Aaron A. King"),
+      as.person("Dao Nguyen"),
+      as.person("Edward L. Ionides")
     ),
-    bibentry(
-        header="Additionally, consider citing the package itself:",
-        bibtype="Manual",
-        title="{pomp}: {Statistical} Inference for Partially Observed {Markov} Processes",
-        author=personList(
-            as.person("Aaron A. King"),
-            as.person("Edward L. Ionides"),
-            as.person("Carles Martinez Bret\\'o"),
-            as.person("Stephen P. Ellner"), 
-            as.person("Matthew J. Ferrari"),
-            as.person("Bruce E. Kendall"),
-            as.person("Michael Lavine"),
-            as.person("Dao Nguyen"),
-            as.person("Daniel C. Reuman"),
-            as.person("Helen Wearing"),
-            as.person("Simon N. Wood")
-        ),	   
-        year=year,
-        note=note1,
-        url=meta$URL,
-        textVersion=paste0(
-            "A. A. King, E. L. Ionides, C. M. Breto, S. P. Ellner, M. J. Ferrari, B. E. Kendall, M. Lavine, D. Nguyen, D. C. Reuman, H. Wearing, and S. N. Wood"," (",year,") ",
-            "pomp: Statistical Inference for Partially Observed Markov Processes ",
-            note2,". ",meta$URL
-        )	   
-    )		 
+    journal="Journal of Statistical Software",
+    year="2016",
+    volume="69",
+    number="12",
+    pages="1--43",
+    doi="10.18637/jss.v069.i12",
+    textVersion=paste(
+      "A. A. King, D. Nguyen, E. L. Ionides (2016).",
+      "Statistical Inference for Partially Observed Markov Processes via the R Package pomp.",
+      "Journal of Statistical Software 69(12): 1–43.",
+      "DOI:10.18637/jss.v069.i12."
+    )
+  ),
+  bibentry(
+    bibtype="Manual",
+    title="{pomp}: {Statistical} Inference for Partially Observed {Markov} Processes",
+    author=personList(
+      as.person("Aaron A. King"),
+      as.person("Edward L. Ionides"),
+      as.person("Carles Martinez Bret\\'o"),
+      as.person("Stephen P. Ellner"), 
+      as.person("Matthew J. Ferrari"),
+      as.person("Sebastian Funk"),
+      as.person("Steven G. Johnson"),
+      as.person("Bruce E. Kendall"),
+      as.person("Michael Lavine"),
+      as.person("Dao Nguyen"),
+      as.person("Eamon B. O'Dea"),
+      as.person("Daniel C. Reuman"),
+      as.person("Helen Wearing"),
+      as.person("Simon N. Wood")
+    ),     
+    year=year,
+    note=note1,
+    url=meta$URL,
+    textVersion=paste0(
+      "A. A. King, E. L. Ionides, C. M. Breto, S. P. Ellner, M. J. Ferrari, S. Funk, S. G. Johnson, B. E. Kendall, M. Lavine, D. Nguyen, E. B. O'Dea, D. C. Reuman, H. Wearing, and S. N. Wood"," (",year,"). ",
+      "pomp: Statistical Inference for Partially Observed Markov Processes. ",
+      note2,". ",meta$URL
+    )      
+  )
 )

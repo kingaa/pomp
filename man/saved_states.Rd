@@ -29,7 +29,7 @@ When one calls \code{\link{pfilter}} with \code{save.states=TRUE}, the latent st
 This can be extracted by calling \code{saved.states} on the \sQuote{pfilterd.pomp} object.
 }
 \seealso{
-More on particle-filter based methods in \pkg{pomp}: 
+More on sequential Monte Carlo methods in \pkg{pomp}: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},
