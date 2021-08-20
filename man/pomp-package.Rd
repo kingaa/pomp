@@ -47,7 +47,7 @@ The package also provides various tools for plotting and extracting information 
 
 \pkg{pomp} algorithms are arranged on several levels.
 At the top level, \link[=estimation_algorithms]{estimation algorithms} estimate model parameters and return information needed for other aspects of inference.
-\link[=elementary_algorithms]{Elementary algorithms} perform common operations on POMP models, including simulation, filtering, and application of diagnostic probes;
+\link[=elementary_algorithms]{Elementary algorithms} perform common operations on \acronym{POMP} models, including simulation, filtering, and application of diagnostic probes;
 these functions may be useful in inference, but they do not themselves perform estimation.
 At the lowest level, \link[=workhorses]{workhorse functions} provide the interface to \link[=basic_components]{basic POMP model components}.
 Beyond these, \pkg{pomp} provides a variety of auxiliary functions for manipulating and extracting information from \sQuote{pomp} objects, producing diagnostic plots, \link[=bake]{facilitating reproducible computations}, and so on.
@@ -70,6 +70,14 @@ The package contains a number of examples.
 Some of these are included in the help pages.
 In addition, \link[=pomp_examples]{several pre-built POMP models} are included with the package.
 Tutorials and other documentation, including a \href{https://kingaa.github.io/pomp/FAQ.html}{package FAQ}, are available from the \href{https://kingaa.github.io/pomp/}{package website}.
+}
+
+\section{Citing \pkg{pomp}}{
+
+\Sexpr[stage=build,echo=FALSE,eval=TRUE,results=verbatim]{print(citation("pomp"),bibtex=FALSE)}
+
+LaTeX users can obtain BibTeX entries for the above by executing
+`toBibtex(citation("pomp"))`.
 }
 
 \references{

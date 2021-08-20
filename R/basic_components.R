@@ -1,6 +1,6 @@
 ##' Basic POMP model components.
 ##'
-##' Mathematically, the parts of a POMP model include the latent-state process transition distribution, the measurement-process distribution, the initial-state distribution, and possibly a prior parameter distribution.
+##' Mathematically, the parts of a \acronym{POMP} model include the latent-state process transition distribution, the measurement-process distribution, the initial-state distribution, and possibly a prior parameter distribution.
 ##' Algorithmically, each of these corresponds to at least two distinct operations.
 ##' In particular, for each of the above parts, one sometimes needs to make a random draw from the distribution and sometimes to evaluate the density function.
 ##' Accordingly, for each such component, there are two basic model components, one prefixed by a \sQuote{r}, the other by a \sQuote{d}, following the usual \R convention.
