@@ -45,7 +45,7 @@ htmlhelp: install news manual
 	rsync --delete --exclude=aliases.rds --exclude=paths.rds --exclude=$(PKG).rdb --exclude=$(PKG).rdx --exclude=macros -a library/$(PKG)/help/ $(MANUALDIR)/help
 	(cd $(MANUALDIR); (cat links.ed && echo w ) | ed - html/00Index.html)
 	$(CP) $(PKG).pdf $(MANUALDIR)
-	$(CP) ../www/_includes/pompstyle.css $(MANUALDIR)/html/R.css
+	$(CP) ../www/assets/R.css $(MANUALDIR)/html
 
 vignettes: manual install
 	$(MAKE)	-C www/vignettes
