@@ -192,7 +192,7 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 }
 }
 \seealso{
-\code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
+\code{\link{probe}}, \code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 
 More on \pkg{pomp} methods based on summary statistics: 
 \code{\link{abc}()},

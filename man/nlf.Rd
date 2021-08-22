@@ -211,6 +211,8 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 \Kendall2005
 }
 \seealso{
+\code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
+
 More on \pkg{pomp} estimation algorithms:
 \code{\link{abc}()},
 \code{\link{bsmc2}()},
