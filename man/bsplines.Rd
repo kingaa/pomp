@@ -71,7 +71,7 @@ matplot(x,y,type='l')
 
 }
 \seealso{
-Other interpolation: 
+More on interpolation:
 \code{\link{covariate_table}()},
 \code{\link{lookup}()}
 }

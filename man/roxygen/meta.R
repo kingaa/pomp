@@ -1,5 +1,6 @@
 list(
   rd_family_title = list(
+    `interpolation`="More on interpolation:",
     `methods based on maximization`="More on estimation methods based on maximization:",
     `full-information methods`="More on full-information (i.e., likelihood-based) methods in \\pkg{pomp}:",
     `Bayesian methods`="More on Bayesian methods in \\pkg{pomp}:",

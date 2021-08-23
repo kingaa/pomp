@@ -21,7 +21,7 @@ Interpolate values from a lookup table
 A warning will be generated if extrapolation is performed.
 }
 \seealso{
-Other interpolation: 
+More on interpolation:
 \code{\link{bsplines}},
 \code{\link{covariate_table}()}
 }

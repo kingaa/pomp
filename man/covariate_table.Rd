@@ -56,7 +56,7 @@ More on implementing POMP models:
 \code{\link{transformations}},
 \code{\link{userdata}}
 
-Other interpolation: 
+More on interpolation:
 \code{\link{bsplines}},
 \code{\link{lookup}()}
 }
