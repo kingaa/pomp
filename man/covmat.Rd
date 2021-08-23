@@ -47,4 +47,24 @@ A helper function to extract a covariance matrix.
 }
 \seealso{
 \link[=proposals]{MCMC proposals}.
+
+Other extraction methods: 
+\code{\link{coef}()},
+\code{\link{cond.logLik}()},
+\code{\link{eff.sample.size}()},
+\code{\link{filter.mean}()},
+\code{\link{filter.traj}()},
+\code{\link{forecast}()},
+\code{\link{logLik}},
+\code{\link{obs}()},
+\code{\link{pred.mean}()},
+\code{\link{pred.var}()},
+\code{\link{saved.states}()},
+\code{\link{spy}()},
+\code{\link{states}()},
+\code{\link{summary}()},
+\code{\link{timezero}()},
+\code{\link{time}()},
+\code{\link{traces}()}
 }
+\concept{extraction methods}

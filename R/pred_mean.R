@@ -14,6 +14,7 @@
 ##' @include pfilter.R kalman.R
 ##' @rdname pred_mean
 ##' @family particle filter methods
+##' @family extraction methods
 ##' @inheritParams filter.mean
 ##'
 NULL

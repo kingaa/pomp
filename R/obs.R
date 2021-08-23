@@ -7,6 +7,7 @@
 ##' @rdname obs
 ##' @include pomp_class.R
 ##' @importFrom stats setNames
+##' @family extraction methods
 ##'
 NULL
 

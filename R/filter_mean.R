@@ -15,6 +15,7 @@
 ##' @include pfilter.R kalman.R
 ##' @rdname filter_mean
 ##' @family particle filter methods
+##' @family extraction methods
 ##'
 ##' @param object result of a filtering computation
 ##' @param vars optional character; names of variables

@@ -36,3 +36,24 @@ times with the zero-time \code{t0} prepended.
 The second and subsequent elements of \code{value} are taken to be the observation times.
 Those data and states (if they exist) corresponding to the new times are retained.
 }
+\seealso{
+Other extraction methods: 
+\code{\link{coef}()},
+\code{\link{cond.logLik}()},
+\code{\link{covmat}()},
+\code{\link{eff.sample.size}()},
+\code{\link{filter.mean}()},
+\code{\link{filter.traj}()},
+\code{\link{forecast}()},
+\code{\link{logLik}},
+\code{\link{obs}()},
+\code{\link{pred.mean}()},
+\code{\link{pred.var}()},
+\code{\link{saved.states}()},
+\code{\link{spy}()},
+\code{\link{states}()},
+\code{\link{summary}()},
+\code{\link{timezero}()},
+\code{\link{traces}()}
+}
+\concept{extraction methods}

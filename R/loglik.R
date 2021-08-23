@@ -7,6 +7,7 @@
 ##' @aliases logLik,ANY-method logLik,missing-method
 ##' @include pfilter.R wpfilter.R mif2.R pmcmc.R probe.R kalman.R nlf.R listie.R
 ##' @include objfun.R spect_match.R nlf.R
+##' @family extraction methods
 ##'
 ##' @param object fitted model object
 ##' @param \dots ignored

@@ -8,6 +8,7 @@
 ##' @rdname resample
 ##' @name resample
 ##' @keywords internal
+##' @concept sampling
 ##'
 ##' @param weights numeric; vector of weights.
 ##' @param np integer scalar; number of samples to draw.

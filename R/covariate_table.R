@@ -15,7 +15,7 @@
 ##' @aliases covariate_table,missing-method covariate_table,ANY-method
 ##' @include pomp_class.R pstop.R
 ##' @family implementation information
-##' @seealso \code{\link{lookup}}
+##' @family interpolation
 ##'
 ##' @param times the times corresponding to the covariates.
 ##' This may be given as a vector of (non-decreasing, finite) numerical values.

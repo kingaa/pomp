@@ -4,9 +4,7 @@
 ##'
 ##' @rdname lookup
 ##' @name lookup
-##' @keywords internal
-##' @concept interpolation
-##' @seealso \code{\link{covariate_table}}
+##' @family interpolation
 ##'
 ##' @param table a \sQuote{covartable} object created by a call to \code{\link{covariate_table}}
 ##' @param t numeric vector; times at which interpolated values of the covariates in \code{table} are required.

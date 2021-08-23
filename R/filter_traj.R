@@ -18,6 +18,7 @@
 ##' @include pfilter.R pmcmc.R
 ##' @rdname filter_traj
 ##' @family particle filter methods
+##' @family extraction methods
 ##' @inheritParams filter.mean
 NULL
 

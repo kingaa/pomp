@@ -4,7 +4,7 @@
 \alias{bake}
 \alias{stew}
 \alias{freeze}
-\title{Bake, stew, and freeze}
+\title{Tools for reproducible computations.}
 \usage{
 bake(
   file,
@@ -45,10 +45,9 @@ for \code{stew}, this will contain one or more named objects and hence be an RDA
 
 \item{seed, kind, normal.kind}{optional.
 To set the state and of the RNG.
-See \code{\link{set.seed}}.
 The default, \code{seed = NULL}, will not change the RNG state.
 \code{seed} should be a single integer.
-See \code{\link{set.seed}}.}
+See \code{\link{set.seed}} for more information.}
 
 \item{dependson}{arbitrary \R object (optional).
 Variables on which the computation in \code{expr} depends.
@@ -97,7 +96,7 @@ The time required for execution is also recorded.
 The timing is obtained using \code{\link{system.time}}.
 }
 \description{
-Tools for reproducible computations.
+Bake, stew, and freeze assist in the construction of reproducible computations.
 }
 \details{
 On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.
@@ -178,3 +177,4 @@ However, there will be no loss of information.
 \author{
 Aaron A. King
 }
+\concept{reproducibility}

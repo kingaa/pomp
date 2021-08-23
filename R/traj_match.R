@@ -1,6 +1,6 @@
 ##' Trajectory matching
 ##'
-##' Estimation of parameters for deterministic \acronym{POMP} models
+##' Estimation of parameters for deterministic \acronym{POMP} models via trajectory matching.
 ##'
 ##' In trajectory matching, one attempts to minimize the discrepancy between a \acronym{POMP} model's predictions and data under the assumption that the latent state process is deterministic and all discrepancies between model and data are due to measurement error.
 ##' The measurement model likelihood (\code{dmeasure}), or rather its negative, is the natural measure of the discrepancy.

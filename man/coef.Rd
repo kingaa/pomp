@@ -48,3 +48,24 @@ the estimation scale, and applies the \dQuote{from estimation scale}
 parameter transformation from \code{object} before altering the
 coefficients.
 }
+\seealso{
+Other extraction methods: 
+\code{\link{cond.logLik}()},
+\code{\link{covmat}()},
+\code{\link{eff.sample.size}()},
+\code{\link{filter.mean}()},
+\code{\link{filter.traj}()},
+\code{\link{forecast}()},
+\code{\link{logLik}},
+\code{\link{obs}()},
+\code{\link{pred.mean}()},
+\code{\link{pred.var}()},
+\code{\link{saved.states}()},
+\code{\link{spy}()},
+\code{\link{states}()},
+\code{\link{summary}()},
+\code{\link{timezero}()},
+\code{\link{time}()},
+\code{\link{traces}()}
+}
+\concept{extraction methods}

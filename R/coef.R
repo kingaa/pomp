@@ -8,6 +8,7 @@
 ##' @docType methods
 ##' @include pomp_class.R listie.R
 ##' @importFrom stats coef
+##' @family extraction methods
 NULL
 
 setGeneric("coef")

@@ -70,7 +70,14 @@ y <- periodic.bspline.basis(x,nbasis=5,names="spline\%d")
 matplot(x,y,type='l')
 
 }
+\seealso{
+Other interpolation: 
+\code{\link{covariate_table}()},
+\code{\link{lookup}()}
+}
 \author{
 Aaron A. King
 }
+\concept{interpolation}
+\concept{splines}
 \keyword{smooth}

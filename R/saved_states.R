@@ -10,6 +10,7 @@
 ##' @include pfilter.R pmcmc.R
 ##' @rdname saved_states
 ##' @family particle filter methods
+##' @family extraction methods
 ##' @inheritParams filter.mean
 ##'
 ##' @return The saved states are returned in the form of a list, with one element per time-point.

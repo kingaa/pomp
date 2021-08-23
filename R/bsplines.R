@@ -6,6 +6,8 @@
 ##'
 ##' @name bsplines
 ##' @rdname bsplines
+##' @concept splines
+##' @family interpolation
 ##'
 ##' @param x Vector at which the spline functions are to be evaluated.
 ##' @param nbasis The number of basis functions to return.

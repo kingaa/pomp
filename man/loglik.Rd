@@ -68,3 +68,24 @@ When \code{object} is an NLF objective function, i.e., the result of a call to \
 \description{
 Extract the estimated log likelihood (or related quantity) from a fitted model.
 }
+\seealso{
+Other extraction methods: 
+\code{\link{coef}()},
+\code{\link{cond.logLik}()},
+\code{\link{covmat}()},
+\code{\link{eff.sample.size}()},
+\code{\link{filter.mean}()},
+\code{\link{filter.traj}()},
+\code{\link{forecast}()},
+\code{\link{obs}()},
+\code{\link{pred.mean}()},
+\code{\link{pred.var}()},
+\code{\link{saved.states}()},
+\code{\link{spy}()},
+\code{\link{states}()},
+\code{\link{summary}()},
+\code{\link{timezero}()},
+\code{\link{time}()},
+\code{\link{traces}()}
+}
+\concept{extraction methods}

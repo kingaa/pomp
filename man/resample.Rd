@@ -18,4 +18,5 @@ A vector of integers containing the indices of the resample.
 \description{
 Systematic resampling.
 }
+\concept{sampling}
 \keyword{internal}

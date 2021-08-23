@@ -38,8 +38,6 @@ covariate-dependent priors are not allowed.
 Nor are parameter transformations permitted to depend upon covariates.
 }
 \seealso{
-\code{\link{lookup}}
-
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
@@ -57,5 +55,10 @@ More on implementing POMP models:
 \code{\link{skeleton_spec}},
 \code{\link{transformations}},
 \code{\link{userdata}}
+
+Other interpolation: 
+\code{\link{bsplines}},
+\code{\link{lookup}()}
 }
 \concept{implementation information}
+\concept{interpolation}

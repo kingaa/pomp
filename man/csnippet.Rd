@@ -64,6 +64,8 @@ To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=
 }
 
 \seealso{
+spy
+
 More on implementing POMP models: 
 \code{\link{accumulators}},
 \code{\link{basic_components}},

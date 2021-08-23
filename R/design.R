@@ -4,6 +4,7 @@
 ##'
 ##' @name design
 ##' @rdname design
+##' @concept search design
 ##'
 ##' @author Aaron A. King
 ##'

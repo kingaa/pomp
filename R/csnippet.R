@@ -10,6 +10,7 @@
 ##' @rdname csnippet
 ##' @include package.R
 ##' @family implementation information
+##' @seealso spy
 ##'
 ##' @section Note to Windows and Mac users:
 ##'

@@ -11,6 +11,7 @@
 ##' @include pfilter.R wpfilter.R bsmc2.R
 ##' @aliases eff.sample.size,missing-method eff.sample.size,ANY-method
 ##' @family particle filter methods
+##' @family extraction methods
 ##' @inheritParams filter.mean
 ##'
 NULL

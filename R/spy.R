@@ -7,6 +7,8 @@
 ##' @include pomp_class.R
 ##' @aliases spy,missing-method spy,ANY-method
 ##' @param object the object whose structure we wish to examine
+##' @seealso Csnippet
+##' @family extraction methods
 ##'
 NULL
 

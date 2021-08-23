@@ -5,6 +5,7 @@
 ##' @name traces
 ##' @rdname traces
 ##' @aliases traces traces,missing-method traces,ANY-method
+##' @family extraction methods
 ##' @include pmcmc.R mif2.R abc.R
 NULL
 

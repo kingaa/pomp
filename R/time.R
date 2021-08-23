@@ -5,6 +5,7 @@
 ##' @name time
 ##' @rdname time
 ##' @aliases time<- time,missing-method
+##' @family extraction methods
 ##'
 ##' @importFrom stats time
 NULL

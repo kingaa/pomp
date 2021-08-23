@@ -5,6 +5,7 @@
 ##' @name forecast
 ##' @rdname forecast
 ##' @aliases forecast,missing-method forecast,ANY-method
+##' @family extraction methods
 ##' @include kalman.R
 
 setGeneric(

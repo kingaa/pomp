@@ -6,6 +6,7 @@
 ##' @aliases covmat,missing-method covmat,ANY-method
 ##' @include pmcmc.R abc.R probe.R
 ##' @rdname covmat
+##' @family extraction methods
 ##'
 ##' @seealso \link[=proposals]{MCMC proposals}.
 NULL

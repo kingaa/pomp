@@ -1,10 +1,11 @@
-##' Bake, stew, and freeze
-##'
 ##' Tools for reproducible computations.
+##'
+##' Bake, stew, and freeze assist in the construction of reproducible computations.
 ##'
 ##' @name bake
 ##' @rdname bake
 ##' @include package.R
+##' @concept reproducibility
 ##'
 ##' @details
 ##' On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.
@@ -35,10 +36,9 @@
 ##' @param expr Expression to be evaluated.
 ##' @param seed,kind,normal.kind optional.
 ##' To set the state and of the RNG.
-##' See \code{\link{set.seed}}.
 ##' The default, \code{seed = NULL}, will not change the RNG state.
 ##' \code{seed} should be a single integer.
-##' See \code{\link{set.seed}}.
+##' See \code{\link{set.seed}} for more information.
 ##' @param dependson arbitrary \R object (optional).
 ##' Variables on which the computation in \code{expr} depends.
 ##' A hash of these objects will be archived in \code{file}, along with the results of evaluation \code{expr}.
