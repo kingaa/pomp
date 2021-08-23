@@ -114,4 +114,3 @@ plot(x)
 Aaron A. King
 }
 \concept{search design}
-\keyword{design}
