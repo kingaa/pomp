@@ -12,7 +12,6 @@
 ##' In \code{profile_design}, additional arguments specify the parameters over which to profile and the values of these parameters.
 ##' In \code{slice_design}, additional numeric vector arguments specify the locations of points along the slices.
 ##' 
-##' @keywords design
 ##' @example examples/design.R
 ##' 
 NULL

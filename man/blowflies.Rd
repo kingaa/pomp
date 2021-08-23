@@ -111,4 +111,3 @@ More data sets provided with \pkg{pomp}:
 \concept{pomp datasets}
 \concept{pomp examples}
 \keyword{models}
-\keyword{pomp_datasets}

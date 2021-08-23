@@ -25,7 +25,7 @@
 ##'
 ##' \King2008
 ##'
-##' @keywords models pomp_datasets
+##' @keywords models
 ##' @example examples/dacca.R
 ##'
 NULL

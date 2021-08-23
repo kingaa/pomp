@@ -19,7 +19,6 @@
 ##'
 ##' \London1973
 ##' 
-##' @keywords pomp_datasets
 ##' @family pomp datasets
 ##' @family pomp examples
 ##'

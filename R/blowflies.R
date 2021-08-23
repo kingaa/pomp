@@ -49,7 +49,7 @@
 ##'
 ##' \Brillinger1980
 ##'
-##' @keywords models pomp_datasets
+##' @keywords models
 ##' @examples
 ##'
 ##' plot(blowflies1())

@@ -73,4 +73,3 @@ More examples provided with \pkg{pomp}:
 }
 \concept{pomp datasets}
 \concept{pomp examples}
-\keyword{pomp_datasets}

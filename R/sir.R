@@ -14,7 +14,7 @@
 ##' @rdname sir
 ##' @aliases sir sir2
 ##' @docType data
-##' @keywords pomp_datasets models
+##' @keywords models
 ##' @family pomp examples
 ##'
 ##' @return

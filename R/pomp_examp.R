@@ -6,7 +6,7 @@
 ##' @rdname pomp_examp
 ##' @aliases pomp_example pompExample pompExamples
 ##' @docType data
-##' @keywords pomp_datasets models
+##' @keywords models
 ##' @family pomp examples
 ##'
 ##' @details

@@ -16,7 +16,7 @@
 ##'
 ##' @name gompertz
 ##' @docType data
-##' @keywords models pomp_datasets
+##' @keywords models
 ##' @include simulate.R
 ##' @family pomp examples
 ##'
