@@ -1,8 +1,8 @@
 ##' The deterministic skeleton of a model
 ##'
-##' Specification of \dfn{skeleton}.
+##' Specification of skeleton.
 ##'
-##' @name skeleton_spec
+##' @name skeleton specification
 ##' @rdname skeleton_spec
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R

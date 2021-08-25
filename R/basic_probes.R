@@ -3,21 +3,20 @@
 ##' Several simple and configurable probes are provided with in the package.
 ##' These can be used directly and as templates for custom probes.
 ##'
-##' @name basic_probes
+##' @name basic probes
+##' @aliases basic_probes
 ##' @rdname basic_probes
+##' @family summary statistic-based methods
+##' @concept diagnostics
+##' 
 ##' @importFrom stats median spec.pgram kernel quantile sd var
 ##'
 ##' @param var,vars character; the name(s) of the observed variable(s).
-##'
 ##' @param trim the fraction of observations to be trimmed (see \code{\link{mean}}).
-##'
 ##' @param transform transformation to be applied to the data before the probe is computed.
-##'
 ##' @param na.rm if \code{TRUE}, remove all NA observations prior to computing the probe.
-##'
 ##' @param kernel.width width of modified Daniell smoothing kernel to be used
 ##' in power-spectrum computation: see \code{\link[stats]{kernel}}.
-##'
 ##' @param lags In \code{probe.ccf}, a vector of lags between time series.
 ##' Positive lags correspond to \code{x} advanced relative to \code{y};
 ##' negative lags, to the reverse.
@@ -25,26 +24,18 @@
 ##' In \code{probe.nlar}, a vector of lags present in the nonlinear
 ##' autoregressive model that will be fit to the actual and simulated data.
 ##' See Details, below, for a precise description.
-##'
 ##' @param powers the powers of each term (corresponding to \code{lags}) in the
 ##' the nonlinear autoregressive model that will be fit to the actual and
 ##' simulated data.  See Details, below, for a precise description.
-##'
 ##' @param type Compute autocorrelation or autocovariance?
-##'
 ##' @param ... additional arguments passed to the underlying algorithms.
-##'
 ##' @return
 ##' A call to any one of these functions returns a probe function,
 ##' suitable for use in \code{\link{probe}} or \code{\link{probe_objfun}}.  That
 ##' is, the function returned by each of these takes a data array (such as
 ##' comes from a call to \code{\link{obs}}) as input and returns a single
 ##' numerical value.
-##'
 ##' @author Daniel C. Reuman, Aaron A. King
-##' @family summary statistic-based methods
-##' @concept diagnostics
-##'
 ##' @references
 ##'
 ##' \Kendall1999
@@ -53,7 +44,7 @@
 ##'
 NULL
 
-##'@rdname basic_probes
+##' @rdname basic_probes
 ##' @export
 probe.mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
   if (length(var)>1)
@@ -62,14 +53,14 @@ probe.mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
   function(y) mean(x=transform(y[var,]),trim=trim,na.rm=na.rm)
 }
 
-##'@rdname basic_probes
+##' @rdname basic_probes
 ##' @export
 probe.median <- function (var, na.rm = TRUE) {
   if (length(var)>1) pStop_(sQuote("probe.median")," is a univariate probe.")
   function(y) median(x=as.numeric(y[var,]),na.rm=na.rm)
 }
 
-##'@rdname basic_probes
+##' @rdname basic_probes
 ##' @export
 probe.var <- function (var, transform = identity, na.rm = TRUE) {
   if (length(var)>1) pStop_(sQuote("probe.var")," is a univariate probe.")
@@ -77,7 +68,7 @@ probe.var <- function (var, transform = identity, na.rm = TRUE) {
   function(y) var(x=transform(y[var,]),na.rm=na.rm)
 }
 
-##'@rdname basic_probes
+##' @rdname basic_probes
 ##' @export
 probe.sd <- function (var, transform = identity, na.rm = TRUE) {
   if (length(var)>1) pStop_(sQuote("probe.sd")," is a univariate probe.")
@@ -85,7 +76,7 @@ probe.sd <- function (var, transform = identity, na.rm = TRUE) {
   function(y) sd(x=transform(y[var,]),na.rm=na.rm)
 }
 
-##'@rdname basic_probes
+##' @rdname basic_probes
 ##' @export
 probe.period <- function (var, kernel.width, transform = identity) {
   if (length(var)>1) pStop_(sQuote("probe.period")," is a univariate probe.")
@@ -107,7 +98,6 @@ probe.period <- function (var, kernel.width, transform = identity) {
 ##' @rdname basic_probes
 ##' @param probs the quantile or quantiles to compute: see \code{\link{quantile}}.
 ##' @export
-##'
 probe.quantile <- function (var, probs, ...) {
   if (length(var)>1) pStop_(sQuote("probe.quantile")," is a univariate probe.")
   function (y) quantile(y[var,],probs=probs, ...)
@@ -152,11 +142,8 @@ probe.ccf <- function (vars, lags, type = c("covariance", "correlation"),
 ##' differenced.  The resulting regression coefficients capture information
 ##' about the shape of the marginal distribution.  A good choice for \code{ref}
 ##' is the data itself.
-##'
 ##' @param order order of polynomial regression.
-##'
 ##' @param diff order of differencing to perform.
-##'
 ##' @export
 probe.marginal <- function (var, ref, order = 3, diff = 1,
   transform = identity) {
@@ -171,7 +158,6 @@ probe.marginal <- function (var, ref, order = 3, diff = 1,
 
 ##' @rdname basic_probes
 ##' @export
-##'
 probe.nlar <- function (var, lags, powers, transform = identity) {
   ep <- "probe.nlar"
   if (length(var)>1) pStop_(sQuote(ep)," is a univariate probe.")

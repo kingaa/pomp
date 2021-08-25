@@ -51,7 +51,7 @@ More examples provided with \pkg{pomp}:
 \code{\link{measles}},
 \code{\link{ou2}()},
 \code{\link{parus}},
-\code{\link{pomp_examples}},
+\code{\link{pomp examples}},
 \code{\link{ricker}()},
 \code{\link{sir_models}},
 \code{\link{verhulst}()}

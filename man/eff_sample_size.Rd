@@ -29,7 +29,7 @@ Effective sample size is computed as
 where \eqn{w_{it}}{w_it} is the normalized weight of particle \eqn{i} at time \eqn{t}.
 }
 \seealso{
-More on sequential Monte Carlo methods in \pkg{pomp}: 
+More on sequential Monte Carlo methods: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},
 \code{\link{filter.mean}()},

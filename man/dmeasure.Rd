@@ -43,7 +43,7 @@ If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or log like
 \code{dmeasure} evaluates the probability density of observations given states.
 }
 \seealso{
-Specification of the measurement density evaluator: \code{\link{dmeasure_spec}}
+Specification of the measurement density evaluator: \link{dmeasure specification}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dprior}()},

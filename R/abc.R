@@ -2,9 +2,9 @@
 ##'
 ##' The approximate Bayesian computation (ABC) algorithm for estimating the parameters of a partially-observed Markov process.
 ##'
-##' @name abc
+##' @name approximate Bayesian computation
 ##' @rdname abc
-##' @aliases approximate_Bayesian_computation abc,missing-method abc,ANY-method
+##' @aliases abc abc,missing-method abc,ANY-method
 ##' @docType methods
 ##' @include pomp_class.R probe.R continue.R workhorses.R
 ##' @importFrom stats runif
@@ -13,6 +13,7 @@
 ##' @family estimation methods
 ##' @family MCMC methods
 ##' @family Bayesian methods
+##' @concept approximate Bayesian computation
 ##'
 ##' @inheritParams pomp
 ##' @inheritParams probe

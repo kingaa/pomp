@@ -31,7 +31,7 @@ By default, \code{t0} is the initial time defined when the \sQuote{pomp} object 
 Samples from the initial-state distribution.
 }
 \seealso{
-Specification of the initial-state distribution: \code{\link{rinit_spec}}
+Specification of the initial-state distribution: \link{rinit specification}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},

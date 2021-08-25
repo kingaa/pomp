@@ -13,19 +13,21 @@
 ##'
 ##' NLF assumes that the observation frequency (equivalently the time between successive observations) is uniform.
 ##'
-##' @name nonlinear_forecasting
+##' @name nonlinear forecasting
 ##' @rdname nlf
 ##' @include pomp.R simulate.R probe_match.R
 ##'
 ##' @importFrom stats .lm.fit optim setNames dnorm .lm.fit sd cov
 ##' @importFrom mvtnorm dmvnorm
 ##'
+##' @aliases nonlinear_forecasting nlf
 ##' @aliases nlf_objfun nlf_objfun,missing-method nlf_objfun,ANY-method
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' 
 ##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
 ##'
+##' @concept nonlinear forecasting
 ##' @family estimation methods
 ##' @family summary statistic-based methods
 ##' @family methods based on maximization
@@ -94,7 +96,7 @@
 ##'
 ##' @example examples/nlf.R
 ##'
-##' @inheritParams probe_matching
+##' @inheritParams probe matching
 ##' @inheritParams pomp
 ##'
 NULL

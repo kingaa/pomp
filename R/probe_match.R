@@ -5,27 +5,29 @@
 ##' In probe-matching, one attempts to minimize the discrepancy between simulated and actual data, as measured by a set of summary statistics called \emph{probes}.
 ##' In \pkg{pomp}, this discrepancy is measured using the \dQuote{synthetic likelihood} as defined by Wood (2010).
 ##'
-##' @name probe_matching
+##' @docType methods
+##' @name probe matching
 ##' @rdname probe_match
 ##' @aliases probe_objfun probe_objfun,missing-method probe_objfun,ANY-method
+##' @aliases probe_match
 ##' @include probe.R plot.R
 ##' @author Aaron A. King
+##' @concept probe matching
+##' @concept synthetic likelihood
 ##' @family summary statistic-based methods
 ##' @family estimation methods
 ##' @family methods based on maximization
-##' @seealso \code{\link{probe}}, \code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
+##' @seealso \code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##'
 ##' @param est character vector; the names of parameters to be estimated.
-##'
 ##' @param fail.value optional numeric scalar;
 ##' if non-\code{NA}, this value is substituted for non-finite values of the objective function.
 ##' It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).
-##'
 ##' @param seed  integer.
 ##' When fitting, it is often best to fix the seed of the random-number generator (RNG).
 ##' This is accomplished by setting \code{seed} to an integer.
 ##' By default, \code{seed = NULL}, which does not alter the RNG state.
-##'
+##' 
 ##' @inheritParams probe
 ##' @inheritParams pomp
 ##'

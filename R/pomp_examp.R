@@ -2,9 +2,9 @@
 ##'
 ##' Pre-built POMP examples 
 ##'
-##' @name pomp_examples
+##' @name pomp examples
 ##' @rdname pomp_examp
-##' @aliases pomp_example pompExample pompExamples
+##' @aliases pomp_examples
 ##' @docType data
 ##' @keywords models
 ##' @family pomp examples

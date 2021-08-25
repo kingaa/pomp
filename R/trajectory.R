@@ -38,7 +38,6 @@
 ##' \code{trajectory} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
 ##' If \code{x} is the returned matrix, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k]} given parameters \code{params[,j]}.
 ##'
-##' @seealso \code{\link{skeleton}}, \code{\link{flow}}
 NULL
 
 setGeneric(

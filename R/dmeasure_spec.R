@@ -2,12 +2,10 @@
 ##'
 ##' Specification of dmeasure.
 ##'
-##' @name dmeasure_spec
+##' @name dmeasure specification
 ##' @rdname dmeasure_spec
 ##' @family implementation information
 ##'
-##' @inheritSection pomp Note for Windows users
-##' 
 ##' @details
 ##' The measurement model is the link between the data and the unobserved state process.
 ##' It can be specified either by using one or both of the \code{rmeasure} and \code{dmeasure} arguments.
@@ -43,5 +41,7 @@
 ##'
 ##' @section Default behavior:
 ##' If \code{dmeasure} is left unspecified, calls to \code{\link{dmeasure}} will return missing values (\code{NA}).
-##'
+##' 
+##' @inheritSection pomp Note for Windows users
+##' 
 NULL

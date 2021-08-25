@@ -2,6 +2,11 @@
 ##'
 ##' Specification of rinit
 ##'
+##' @name rinit specification
+##' @rdname rinit_spec
+##' @family implementation information
+##'
+##' @details
 ##' To fully specify the unobserved Markov state process, one must give its distribution at the zero-time (\code{t0}).
 ##' One does this by furnishing a value for the \code{rinit} argument.
 ##' As usual, this can be provided either as a C snippet or as an \R function.
@@ -34,10 +39,6 @@
 ##' The names of the resulting state variables are obtained by dropping the suffix.
 ##'
 ##' @inheritSection pomp Note for Windows users
-##'
-##' @name rinit_spec
-##' @rdname rinit_spec
-##' @family implementation information
 ##'
 ##' @example examples/rinit_spec.R
 ##' 

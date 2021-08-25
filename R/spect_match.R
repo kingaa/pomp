@@ -7,13 +7,15 @@
 ##' \code{spect_objfun} constructs an objective function that measures the discrepancy.
 ##' It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 ##'
-##' @name spectrum_matching
 ##' @docType methods
+##' @name spectrum matching
 ##' @rdname spect_match
+##' @aliases spect_objfun spect_objfun,missing-method spect_objfun,ANY-method
+##' @aliases spect_match
+##' @concept power-spectrum matching
 ##' @family estimation methods
 ##' @family summary statistic-based methods
 ##' @family methods based on maximization
-##' @aliases spect_objfun spect_objfun,missing-method spect_objfun,ANY-method
 ##' 
 ##' @example examples/spect_match.R
 ##'
@@ -25,7 +27,7 @@
 ##' \code{weights} can be specified either as a vector (which must have length equal to the number of frequencies) or as a function of frequency.
 ##' If the latter, \code{weights(freq)} must return a nonnegative weight for each frequency.
 ##'
-##' @inheritParams probe_matching
+##' @inheritParams probe matching
 ##' @inheritParams spect
 ##' @inheritParams pomp
 ##'

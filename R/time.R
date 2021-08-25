@@ -1,4 +1,4 @@
-##' Methods to manipulate the obseration times
+##' Methods to extract and manipulate the obseration times
 ##'
 ##' Get and set the vector of observation times.
 ##'

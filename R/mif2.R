@@ -56,7 +56,8 @@
 ##'
 ##' @section Specifying the perturbations:
 ##' The \code{rw.sd} function simply returns a list containing its arguments as unevaluated expressions.
-##' These are then evaluated in a context containing the model \code{time} variable.  This allows for easy specification of the structure of the perturbations that are to be applied.
+##' These are then evaluated in a context containing the model \code{time} variable.
+##' This allows for easy specification of the structure of the perturbations that are to be applied.
 ##' For example,
 ##' \preformatted{
 ##'     rw.sd(a=0.05, b=ifelse(time==time[1],0.2,0),

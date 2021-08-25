@@ -6,7 +6,7 @@
 \alias{time,missing-method}
 \alias{time,pomp-method}
 \alias{time<-,pomp-method}
-\title{Methods to manipulate the obseration times}
+\title{Methods to extract and manipulate the obseration times}
 \usage{
 \S4method{time}{pomp}(x, t0 = FALSE, ...)
 

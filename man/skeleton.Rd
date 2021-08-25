@@ -41,7 +41,7 @@ NB: \code{skeleton} just evaluates the deterministic skeleton;
 it does not iterate or integrate (see \code{\link{trajectory}} for this).
 }
 \seealso{
-Specification of the deterministic skeleton: \code{\link{skeleton_spec}}
+Specification of the deterministic skeleton: \link{skeleton specification}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
@@ -56,10 +56,10 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{rprocess}()},
 \code{\link{workhorses}}
 
-More on \pkg{pomp} methods for deterministic process models: 
+More on methods for deterministic process models: 
 \code{\link{flow}()},
-\code{\link{skeleton_spec}},
-\code{\link{trajectory_matching}},
+\code{\link{skeleton specification}},
+\code{\link{trajectory matching}},
 \code{\link{trajectory}()}
 }
 \concept{deterministic methods}

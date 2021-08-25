@@ -48,28 +48,28 @@ The general recommendation is that the value of \code{smooth} should be chosen c
 This will be coerced internally to storage mode \code{double}.}
 
 \item{rprior}{optional; prior distribution sampler, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information, see \link[=prior_spec]{?prior_spec}.
+For more information, see \link[=prior specification]{prior specification}.
 Setting \code{rprior=NULL} removes the prior distribution sampler.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit_spec]{?rinit_spec}.}
+For more information, see \link[=rinit specification]{rinit specification}.}
 
-\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess specification]{rprocess plugins}.
 Setting \code{rprocess=NULL} removes the latent-state simulator.
-For more information, \link[=rprocess_spec]{see ?rprocess_spec for the documentation on these plugins}.}
+For more information, see \link[=rprocess specification]{rprocess specification for the documentation on these plugins}.}
 
 \item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{dmeasure=NULL} removes the measurement density evaluator.
-For more information, see \link[=dmeasure_spec]{?dmeasure_spec}.}
+For more information, see \link[=dmeasure specification]{dmeasure specification}.}
 
 \item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
 
 Many algorithms for parameter estimation search an unconstrained space of parameters.
 When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
-For more information, see \link[=parameter_trans]{?parameter_trans}.
+For more information, see \link[=parameter_trans]{parameter_trans}.
 Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
@@ -77,7 +77,7 @@ See \code{\link{pomp}} for a full list of recognized arguments.
 
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
 This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
-See \link[=userdata]{?userdata} for information on how to use this facility.}
+See \link[=userdata]{userdata} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
@@ -105,7 +105,7 @@ This is allowed to depend on elements of \code{params}, i.e., some of the elemen
 
 Some Windows users report problems when using C snippets in parallel computations.
 These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
-To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=pomp]{(described here)} to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=pomp]{cfile}} options to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
 }
 
 \references{
@@ -116,20 +116,20 @@ Sequential Monte Carlo Methods in Practice, pages 197-224.
 Springer, New York, 2001.
 }
 \seealso{
-More on Bayesian methods in \pkg{pomp}:
-\code{\link{abc}()},
+More on Bayesian methods:
+\code{\link{approximate Bayesian computation}},
 \code{\link{dprior}()},
 \code{\link{pmcmc}()},
-\code{\link{prior_spec}},
+\code{\link{prior specification}},
 \code{\link{rprior}()}
 
-More on full-information (i.e., likelihood-based) methods in \pkg{pomp}:
+More on full-information (i.e., likelihood-based) methods:
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
 \code{\link{wpfilter}()}
 
-More on sequential Monte Carlo methods in \pkg{pomp}: 
+More on sequential Monte Carlo methods: 
 \code{\link{cond.logLik}()},
 \code{\link{eff.sample.size}()},
 \code{\link{filter.mean}()},
@@ -144,14 +144,14 @@ More on sequential Monte Carlo methods in \pkg{pomp}:
 \code{\link{wpfilter}()}
 
 More on \pkg{pomp} estimation algorithms:
-\code{\link{abc}()},
-\code{\link{estimation_algorithms}},
+\code{\link{approximate Bayesian computation}},
+\code{\link{estimation algorithms}},
 \code{\link{mif2}()},
-\code{\link{nonlinear_forecasting}},
+\code{\link{nonlinear forecasting}},
 \code{\link{pmcmc}()},
 \code{\link{pomp-package}},
-\code{\link{probe_matching}},
-\code{\link{spectrum_matching}}
+\code{\link{probe matching}},
+\code{\link{spectrum matching}}
 }
 \author{
 Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides

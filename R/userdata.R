@@ -6,7 +6,7 @@
 ##' \pkg{pomp} provides facilities for this purpose.
 ##' We refer to the objects one wishes to pass in this way as \dfn{user data}.
 ##'
-##' The following will apply to every \link[=basic_components]{basic model component}.
+##' The following will apply to every \link[=basic components]{basic model component}.
 ##' For the sake of definiteness, however, we'll use the \code{rmeasure} component as an example.
 ##' To be even more specific, the measurement model we wish to implement is
 ##' \preformatted{

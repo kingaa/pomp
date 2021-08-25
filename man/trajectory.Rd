@@ -64,10 +64,8 @@ Note that the handling of \code{\dots} in \code{trajectory} differs from that of
 In particular, it is not possible to modify the model structure in a call to \code{trajectory}.
 }
 \seealso{
-\code{\link{skeleton}}, \code{\link{flow}}
-
 More on \pkg{pomp} elementary algorithms: 
-\code{\link{elementary_algorithms}},
+\code{\link{elementary algorithms}},
 \code{\link{kalman}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
@@ -76,11 +74,11 @@ More on \pkg{pomp} elementary algorithms:
 \code{\link{spect}()},
 \code{\link{wpfilter}()}
 
-More on \pkg{pomp} methods for deterministic process models: 
+More on methods for deterministic process models: 
 \code{\link{flow}()},
-\code{\link{skeleton_spec}},
+\code{\link{skeleton specification}},
 \code{\link{skeleton}()},
-\code{\link{trajectory_matching}}
+\code{\link{trajectory matching}}
 }
 \concept{deterministic methods}
 \concept{elementary algorithms}

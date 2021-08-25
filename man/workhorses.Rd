@@ -22,9 +22,9 @@ They include \describe{
 }
 }
 \seealso{
-\link[=basic_components]{basic model components},
-\link[=elementary_algorithms]{elementary algorithms},
-\link[=estimation_algorithms]{estimation algorithms}
+\link[=basic components]{basic model components},
+\link[=elementary algorithms]{elementary algorithms},
+\link[=estimation algorithms]{estimation algorithms}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},

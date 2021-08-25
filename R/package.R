@@ -21,44 +21,48 @@
 ##' @section Data analysis using \pkg{pomp}:
 ##' \pkg{pomp} provides algorithms for:
 ##' \enumerate{
-##' \item Simulation of stochastic
-##' dynamical systems; see \code{\link{simulate}}.
-##' \item
-##' Particle filtering (AKA sequential Monte Carlo or sequential importance
-##' sampling); see \code{\link{pfilter}} and \code{\link{wpfilter}}.
-##' \item The iterated filtering methods
-##' of Ionides et al. (2006, 2011, 2015); see \code{\link{mif2}}.
-##' \item The
-##' nonlinear forecasting algorithm of Kendall et al. (2005); see
-##' \link[=nonlinear_forecasting]{nonlinear forecasting}.
-##' \item The particle MCMC approach of Andrieu et al. (2010); see \code{\link{pmcmc}}.
-##' \item The probe-matching method of Kendall et al. (1999, 2005); see \link[=probe_matching]{probe matching}.
-##' \item A spectral probe-matching method (Reuman et al. 2006, 2008); see
-##' \link[=spectrum_matching]{spectrum matching}.
-##' \item Synthetic likelihood a la Wood (2010); see \code{\link{probe}}.
-##' \item Approximate Bayesian computation (Toni et al. 2009); see \code{\link{abc}}.
-##' \item The approximate Bayesian sequential
-##' Monte Carlo scheme of Liu & West (2001); see \code{\link{bsmc2}}.
-##' \item Ensemble and ensemble adjusted Kalman filters; see \code{\link{kalman}}.
-##' \item Simple trajectory matching; see \link[=trajectory_matching]{trajectory matching}.
+##' \item Simulation of stochastic dynamical systems;
+##' see \code{\link{simulate}}.
+##' \item Particle filtering (AKA sequential Monte Carlo or sequential importance sampling);
+##' see \code{\link{pfilter}} and \code{\link{wpfilter}}.
+##' \item The iterated filtering methods of Ionides et al. (2006, 2011, 2015);
+##' see \code{\link{mif2}}.
+##' \item The nonlinear forecasting algorithm of Kendall et al. (2005);
+##' see \link{nonlinear forecasting}.
+##' \item The particle MCMC approach of Andrieu et al. (2010);
+##' see \code{\link{pmcmc}}.
+##' \item The probe-matching method of Kendall et al. (1999, 2005);
+##' see \link{probe matching}.
+##' \item Synthetic likelihood a la Wood (2010);
+##' see \code{\link{probe}}.
+##' \item A spectral probe-matching method (Reuman et al. 2006, 2008);
+##' see \link{spectrum matching}.
+##' \item Approximate Bayesian computation (Toni et al. 2009);
+##' see \code{\link{abc}}.
+##' \item The approximate Bayesian sequential Monte Carlo scheme of Liu & West (2001);
+##' see \code{\link{bsmc2}}.
+##' \item Ensemble and ensemble adjusted Kalman filters;
+##' see \code{\link{kalman}}.
+##' \item Simple trajectory matching;
+##' see \link{trajectory matching}.
 ##' }
 ##' The package also provides various tools for plotting and extracting information on models and data.
 ##'
 ##' @section Structure of the package:
 ##'
 ##' \pkg{pomp} algorithms are arranged on several levels.
-##' At the top level, \link[=estimation_algorithms]{estimation algorithms} estimate model parameters and return information needed for other aspects of inference.
-##' \link[=elementary_algorithms]{Elementary algorithms} perform common operations on \acronym{POMP} models, including simulation, filtering, and application of diagnostic probes;
+##' At the top level, \link[=estimation algorithms]{estimation algorithms} estimate model parameters and return information needed for other aspects of inference.
+##' \link[=elementary algorithms]{Elementary algorithms} perform common operations on \acronym{POMP} models, including simulation, filtering, and application of diagnostic probes;
 ##' these functions may be useful in inference, but they do not themselves perform estimation.
-##' At the lowest level, \link[=workhorses]{workhorse functions} provide the interface to \link[=basic_components]{basic POMP model components}.
+##' At the lowest level, \link[=workhorses]{workhorse functions} provide the interface to \link[=basic components]{basic POMP model components}.
 ##' Beyond these, \pkg{pomp} provides a variety of auxiliary functions for manipulating and extracting information from \sQuote{pomp} objects, producing diagnostic plots, \link[=bake]{facilitating reproducible computations}, and so on.
 ##'
 ##' @section Implementing a model:
 ##'
 ##' The basic structure at the heart of the package is the \sQuote{pomp object}.
 ##' This is a container holding a time series of data (possibly multivariate) and a model.
-##' The model is specified by specifying some or all of its \link[=basic_components]{basic model components}.
-##' One does this using the \link[=basic_components]{basic component arguments} to the \code{\link{pomp}} constructor.
+##' The model is specified by specifying some or all of its \link[=basic components]{basic model components}.
+##' One does this using the \link[=basic components]{basic component arguments} to the \code{\link{pomp}} constructor.
 ##' One can also add, modify, or delete basic model components \dQuote{on the fly} in any \pkg{pomp} function that accepts them.
 ##'
 ##' @section Documentation and examples:
@@ -68,18 +72,26 @@
 ##' In addition, \link[=pomp_examples]{several pre-built POMP models} are included with the package.
 ##' Tutorials and other documentation, including a \href{https://kingaa.github.io/pomp/FAQ.html}{package FAQ}, are available from the \href{https://kingaa.github.io/pomp/}{package website}.
 ##' 
-#' @section Citing \pkg{pomp}:
-#' \Sexpr[stage=build,echo=FALSE,eval=TRUE,results=verbatim]{print(citation("pomp"),bibtex=FALSE)}
-#' 
-#' LaTeX users can obtain BibTeX entries for the above by executing
-#' `toBibtex(citation("pomp"))`.
-#' 
+##' @section Useful links:
+##' \itemize{
+##'  \item{\pkg{pomp} homepage: \url{https://kingaa.github.io/pomp/}}
+##'  \item{Report bugs to: \url{https://github.com/kingaa/pomp/issues}}
+##'  \item{Frequently asked questions: \url{https://kingaa.github.io/pomp/FAQ.html}}
+##'  \item{User guides and tutorials: \url{https://kingaa.github.io/pomp/docs.html}}
+##'  \item{\pkg{pomp} news: \url{https://kingaa.github.io/pomp/blog.html}}
+##' }
+##' 
+##' @section Citing \pkg{pomp}:
+##' \Sexpr[stage=build,echo=FALSE,eval=TRUE,results=verbatim]{print(citation("pomp"),bibtex=FALSE)}
+##' 
+##' LaTeX users can obtain BibTeX entries for the above by executing
+##' \code{toBibtex(citation("pomp"))}.
+##'
 ##' @references
 ##'
 ##' \King2016
 ##'
-##' See the package website, \url{https://kingaa.github.io/pomp/}, for more
-##' references.
+##' See \href{https://kingaa.github.io/pomp/biblio.html}{the package website for more references}.
 ##'
 ##' @useDynLib pomp, .registration = TRUE, .fixes="P_"
 ##' @import methods

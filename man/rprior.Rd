@@ -26,7 +26,7 @@ A numeric matrix containing the required samples.
 Sample from the prior probability distribution.
 }
 \seealso{
-Specification of the prior distribution simulator: \code{\link{prior_spec}}
+Specification of the prior distribution simulator: \link{prior specification}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
@@ -41,12 +41,12 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{skeleton}()},
 \code{\link{workhorses}}
 
-More on Bayesian methods in \pkg{pomp}:
-\code{\link{abc}()},
+More on Bayesian methods:
+\code{\link{approximate Bayesian computation}},
 \code{\link{bsmc2}()},
 \code{\link{dprior}()},
 \code{\link{pmcmc}()},
-\code{\link{prior_spec}}
+\code{\link{prior specification}}
 }
 \concept{Bayesian methods}
 \concept{pomp workhorses}

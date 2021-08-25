@@ -39,7 +39,7 @@ If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or the log 
 Evaluates the probability density of a sequence of consecutive state transitions.
 }
 \seealso{
-Specification of the process-model density evaluator: \code{\link{dprocess_spec}}
+Specification of the process-model density evaluator: \link{dprocess specification}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},

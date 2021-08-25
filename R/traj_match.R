@@ -11,15 +11,17 @@
 ##' \code{traj_objfun} constructs an objective function that evaluates the likelihood function.
 ##' It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 ##'
-##' @name trajectory_matching
-##' @docType methods
+##' @name trajectory matching
 ##' @rdname traj_match
+##' @docType methods
 ##' @include trajectory.R pomp_class.R workhorses.R
 ##' @aliases traj_objfun traj_objfun,missing-method traj_objfun,ANY-method
+##' @aliases traj_match
+##' @concept trajectory matching
 ##' @family deterministic methods
 ##' @family methods based on maximization
 ##'
-##' @inheritParams probe_matching
+##' @inheritParams probe matching
 ##' @inheritParams trajectory
 ##' @inheritParams pomp
 ##'

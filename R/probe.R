@@ -15,11 +15,12 @@
 ##' computations on real and simulated data are stored in an object of class
 ##' \sQuote{probed_pomp}.
 ##'
-##' @name probe
 ##' @docType methods
+##' @name probe
 ##' @rdname probe
-##' @aliases probe,missing-method probe,ANY-method synthetic_likelihood
+##' @aliases probe,missing-method probe,ANY-method
 ##' @author Daniel C. Reuman, Aaron A. King
+##' @concept synthetic likelihood
 ##' @family elementary algorithms
 ##' @family summary statistic-based methods
 ##'

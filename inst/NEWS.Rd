@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.5.2}{
+  \itemize{
+    \item Major improvements to the package manual, including richer cross-linking and better organization.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.5.1}{
   \itemize{
     \item When \code{simulate} is called with \code{format="data.frame"} and \code{include.data=TRUE}, the interpolated covariates are now included in the data frame that is returned.

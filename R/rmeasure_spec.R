@@ -2,9 +2,7 @@
 ##'
 ##' Specification of rmeasure
 ##'
-##' @inheritSection pomp Note for Windows users
-##'
-##' @name rmeasure_spec
+##' @name rmeasure specification
 ##' @rdname rmeasure_spec
 ##' @family implementation information
 ##'
@@ -41,4 +39,7 @@
 ##' @section Default behavior:
 ##' The default \code{rmeasure} is undefined.
 ##' It will yield missing values (\code{NA}).
+##' 
+##' @inheritSection pomp Note for Windows users
+##'
 NULL

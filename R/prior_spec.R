@@ -1,8 +1,8 @@
-##' prior specification
+##' prior distribution
 ##'
-##' Specify the prior distribution
+##' Specifying prior distributions
 ##'
-##' @name prior_spec
+##' @name prior specification
 ##' @rdname prior_spec
 ##' @family implementation information
 ##' @family Bayesian methods
@@ -11,7 +11,7 @@
 ##' 
 ##' @details
 ##' A prior distribution on parameters is specified by means of the \code{rprior} and/or \code{dprior} arguments to \code{pomp}.
-##' As with the other \link[=basic_components]{basic model components}, it is preferable to specify these using C snippets.
+##' As with the other \link[=basic components]{basic model components}, it is preferable to specify these using C snippets.
 ##' In writing a C snippet for the prior sampler (\code{rprior}), keep in mind that:
 ##' \enumerate{
 ##'   \item Within the context in which the snippet will be evaluated, only the parameters will be defined.

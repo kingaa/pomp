@@ -1,4 +1,4 @@
-##' Elementary algorithms.
+##' Elementary computations on POMP models.
 ##'
 ##' In \pkg{pomp}, elementary algorithms perform POMP model operations.
 ##' These operations do not themselves estimate parameters, though they may be instrumental in inference methods.
@@ -15,11 +15,11 @@
 ##'
 ##' Help pages detailing each elementary algorithm component are provided.
 ##'
-##' @name elementary_algorithms
+##' @name elementary algorithms
 ##' @rdname elementary_algorithms
 ##' @family elementary algorithms
-##' @seealso \link[=basic_components]{basic model components},
+##' @seealso \link[=basic components]{basic model components},
 ##' \link[=workhorses]{workhorse functions},
-##' \link[=estimation_algorithms]{estimation algorithms}.
+##' \link[=estimation algorithms]{estimation algorithms}.
 ##' 
 NULL

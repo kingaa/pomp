@@ -28,7 +28,7 @@ The required density (or log density), as a numeric vector.
 Evaluates the prior probability density.
 }
 \seealso{
-Specification of the prior density evaluator: \code{\link{prior_spec}}
+Specification of the prior density evaluator: \link{prior specification}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
@@ -43,11 +43,11 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{skeleton}()},
 \code{\link{workhorses}}
 
-More on Bayesian methods in \pkg{pomp}:
-\code{\link{abc}()},
+More on Bayesian methods:
+\code{\link{approximate Bayesian computation}},
 \code{\link{bsmc2}()},
 \code{\link{pmcmc}()},
-\code{\link{prior_spec}},
+\code{\link{prior specification}},
 \code{\link{rprior}()}
 }
 \concept{Bayesian methods}

@@ -49,37 +49,37 @@
 ##' @param rinit simulator of the initial-state distribution.
 ##' This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 ##' Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-##' For more information, see \link[=rinit_spec]{?rinit_spec}.
+##' For more information, see \link[=rinit specification]{rinit specification}.
 ##'
-##' @param rprocess simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
+##' @param rprocess simulator of the latent state process, specified using one of the \link[=rprocess specification]{rprocess plugins}.
 ##' Setting \code{rprocess=NULL} removes the latent-state simulator.
-##' For more information, \link[=rprocess_spec]{see ?rprocess_spec for the documentation on these plugins}.
+##' For more information, see \link[=rprocess specification]{rprocess specification for the documentation on these plugins}.
 ##'
 ##' @param dprocess optional;
 ##' specification of the probability density evaluation function of the unobserved state process.
 ##' Setting \code{dprocess=NULL} removes the latent-state density evaluator.
-##' For more information, see \link[=dprocess_spec]{?dprocess_spec}.
+##' For more information, see \link[=dprocess specification]{dprocess specification}.
 ##'
 ##' @param rmeasure simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 ##' Setting \code{rmeasure=NULL} removes the measurement model simulator.
-##' For more information, see \link[=rmeasure_spec]{?rmeasure_spec}.
+##' For more information, see \link[=rmeasure specification]{rmeasure specification}.
 ##'
 ##' @param dmeasure evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 ##' Setting \code{dmeasure=NULL} removes the measurement density evaluator.
-##' For more information, see \link[=dmeasure_spec]{?dmeasure_spec}.
+##' For more information, see \link[=dmeasure specification]{dmeasure specification}.
 ##'
 ##' @param skeleton optional; the deterministic skeleton of the unobserved state process.
 ##' Depending on whether the model operates in continuous or discrete time, this is either a vectorfield or a map.
-##' Accordingly, this is supplied using either the \code{\link[=skeleton_spec]{vectorfield}} or \code{\link[=skeleton_spec]{map}} fnctions.
-##' For more information, see \link[=skeleton_spec]{?skeleton_spec}.
+##' Accordingly, this is supplied using either the \code{\link[=skeleton specification]{vectorfield}} or \code{\link[=skeleton specification]{map}} fnctions.
+##' For more information, see \link[=skeleton specification]{skeleton specification}.
 ##' Setting \code{skeleton=NULL} removes the deterministic skeleton.
 ##'
 ##' @param rprior optional; prior distribution sampler, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-##' For more information, see \link[=prior_spec]{?prior_spec}.
+##' For more information, see \link[=prior specification]{prior specification}.
 ##' Setting \code{rprior=NULL} removes the prior distribution sampler.
 ##'
 ##' @param dprior optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-##' For more information, see \link[=prior_spec]{?prior_spec}.
+##' For more information, see \link[=prior specification]{prior specification}.
 ##' Setting \code{dprior=NULL} resets the prior distribution to its default, which is a flat improper prior.
 ##'
 ##' @param partrans optional parameter transformations, constructed using \code{\link{parameter_trans}}.
@@ -87,7 +87,7 @@
 ##' Many algorithms for parameter estimation search an unconstrained space of parameters.
 ##' When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
 ##' One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
-##' For more information, see \link[=parameter_trans]{?parameter_trans}.
+##' For more information, see \link[=parameter_trans]{parameter_trans}.
 ##' Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.
 ##'
 ##' @param covar optional covariate table, constructed using \code{\link{covariate_table}}.
@@ -119,14 +119,14 @@
 ##'
 ##' @param accumvars optional character vector;
 ##' contains the names of accumulator variables.
-##' See \link[=accumulators]{?accumulators} for a definition and discussion of accumulator variables.
+##' See \link[=accumulators]{accumulators} for a definition and discussion of accumulator variables.
 ##'
 ##' @param \dots additional arguments supply new or modify existing model characteristics or components.
 ##' See \code{\link{pomp}} for a full list of recognized arguments.
 ##'
 ##' When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
 ##' This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
-##' See \link[=userdata]{?userdata} for information on how to use this facility.
+##' See \link[=userdata]{userdata} for information on how to use this facility.
 ##'
 ##' @param verbose logical; if \code{TRUE}, diagnostic messages will be printed to the console.
 ##'
@@ -146,7 +146,7 @@
 ##' 
 ##' Some Windows users report problems when using C snippets in parallel computations.
 ##' These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
-##' To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=pomp]{(described here)} to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether. 
+##' To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=pomp]{cfile}} options to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether. 
 ##'
 ##' @author Aaron A. King
 ##'

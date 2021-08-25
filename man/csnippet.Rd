@@ -60,7 +60,7 @@ This can be used to declare global variables, define useful functions, and inclu
 
 Some Windows users report problems when using C snippets in parallel computations.
 These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
-To circumvent this problem, use the \code{cdir} and \code{cfile} options \link[=pomp]{(described here)} to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
+To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=pomp]{cfile}} options to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
 }
 
 \seealso{
@@ -68,19 +68,19 @@ spy
 
 More on implementing POMP models: 
 \code{\link{accumulators}},
-\code{\link{basic_components}},
+\code{\link{basic components}},
 \code{\link{covariate_table}()},
 \code{\link{distributions}},
-\code{\link{dmeasure_spec}},
-\code{\link{dprocess_spec}},
-\code{\link{parameter_trans}()},
+\code{\link{dmeasure specification}},
+\code{\link{dprocess specification}},
+\code{\link{parameter transformations}},
 \code{\link{pomp-package}},
 \code{\link{pomp}},
-\code{\link{prior_spec}},
-\code{\link{rinit_spec}},
-\code{\link{rmeasure_spec}},
-\code{\link{rprocess_spec}},
-\code{\link{skeleton_spec}},
+\code{\link{prior specification}},
+\code{\link{rinit specification}},
+\code{\link{rmeasure specification}},
+\code{\link{rprocess specification}},
+\code{\link{skeleton specification}},
 \code{\link{transformations}},
 \code{\link{userdata}}
 }

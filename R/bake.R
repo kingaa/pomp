@@ -2,7 +2,7 @@
 ##'
 ##' Bake, stew, and freeze assist in the construction of reproducible computations.
 ##'
-##' @name bake
+##' @name reproducibility tools
 ##' @rdname bake
 ##' @include package.R
 ##' @concept reproducibility

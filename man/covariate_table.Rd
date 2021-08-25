@@ -26,7 +26,7 @@ This may be given as a vector of (non-decreasing, finite) numerical values.
 Alternatively, one can specify by name which of the given variables is the time variable.}
 }
 \description{
-Constructing lookup tables for time-varying covariates.
+Lookup tables for time-varying covariates.
 }
 \details{
 If the \sQuote{pomp} object contains covariates (specified via the \code{covar} argument), then interpolated values of the covariates will be available to each of the model components whenever it is called.
@@ -41,18 +41,18 @@ Nor are parameter transformations permitted to depend upon covariates.
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
-\code{\link{basic_components}},
+\code{\link{basic components}},
 \code{\link{distributions}},
-\code{\link{dmeasure_spec}},
-\code{\link{dprocess_spec}},
-\code{\link{parameter_trans}()},
+\code{\link{dmeasure specification}},
+\code{\link{dprocess specification}},
+\code{\link{parameter transformations}},
 \code{\link{pomp-package}},
 \code{\link{pomp}},
-\code{\link{prior_spec}},
-\code{\link{rinit_spec}},
-\code{\link{rmeasure_spec}},
-\code{\link{rprocess_spec}},
-\code{\link{skeleton_spec}},
+\code{\link{prior specification}},
+\code{\link{rinit specification}},
+\code{\link{rmeasure specification}},
+\code{\link{rprocess specification}},
+\code{\link{skeleton specification}},
 \code{\link{transformations}},
 \code{\link{userdata}}
 
