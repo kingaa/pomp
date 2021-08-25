@@ -4,7 +4,7 @@
 \alias{rinit specification}
 \title{The initial-state distribution}
 \description{
-Specification of rinit
+Specification of the initial-state distribution simulator, rinit.
 }
 \details{
 To fully specify the unobserved Markov state process, one must give its distribution at the zero-time (\code{t0}).
@@ -78,11 +78,13 @@ plot(simulate(times=1:5,t0=0,params=c(X0=3,Y0=-7),
   rinit=g,rprocess=onestep(trivial)))
 }
 \seealso{
+\code{\link{rinit}}
+
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic components}},
-\code{\link{covariate_table}()},
+\code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},

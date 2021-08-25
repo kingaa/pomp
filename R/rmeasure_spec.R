@@ -1,11 +1,12 @@
 ##' The measurement-model simulator
 ##'
-##' Specification of rmeasure
+##' Specification of the measurement-model simulator, rmeasure.
 ##'
 ##' @name rmeasure specification
 ##' @rdname rmeasure_spec
 ##' @family implementation information
-##'
+##' @seealso \code{\link{rmeasure}}
+##' 
 ##' @details
 ##' The measurement model is the link between the data and the unobserved state process.
 ##' It can be specified either by using one or both of the \code{rmeasure} and \code{dmeasure} arguments.

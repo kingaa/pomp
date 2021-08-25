@@ -9,7 +9,6 @@
 ##' @name probe matching
 ##' @rdname probe_match
 ##' @aliases probe_objfun probe_objfun,missing-method probe_objfun,ANY-method
-##' @aliases probe_match
 ##' @include probe.R plot.R
 ##' @author Aaron A. King
 ##' @concept probe matching

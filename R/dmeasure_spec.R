@@ -1,11 +1,11 @@
 ##' The measurement model density
 ##'
-##' Specification of dmeasure.
+##' Specification of the measurement model density function, dmeasure.
 ##'
 ##' @name dmeasure specification
 ##' @rdname dmeasure_spec
 ##' @family implementation information
-##'
+##' @seealso \code{\link{dmeasure}}
 ##' @details
 ##' The measurement model is the link between the data and the unobserved state process.
 ##' It can be specified either by using one or both of the \code{rmeasure} and \code{dmeasure} arguments.

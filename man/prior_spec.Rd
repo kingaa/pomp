@@ -4,7 +4,7 @@
 \alias{prior specification}
 \title{prior distribution}
 \description{
-Specifying prior distributions
+Specification of prior distributions.
 }
 \details{
 A prior distribution on parameters is specified by means of the \code{rprior} and/or \code{dprior} arguments to \code{pomp}.
@@ -50,11 +50,13 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 
 \seealso{
+\code{\link{dprior}} \code{\link{rprior}}
+
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic components}},
-\code{\link{covariate_table}()},
+\code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},

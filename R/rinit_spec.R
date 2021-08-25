@@ -1,11 +1,11 @@
 ##' The initial-state distribution
 ##'
-##' Specification of rinit
+##' Specification of the initial-state distribution simulator, rinit.
 ##'
 ##' @name rinit specification
 ##' @rdname rinit_spec
 ##' @family implementation information
-##'
+##' @seealso \code{\link{rinit}}
 ##' @details
 ##' To fully specify the unobserved Markov state process, one must give its distribution at the zero-time (\code{t0}).
 ##' One does this by furnishing a value for the \code{rinit} argument.

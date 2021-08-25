@@ -69,7 +69,7 @@
 ##'
 ##' The package contains a number of examples.
 ##' Some of these are included in the help pages.
-##' In addition, \link[=pomp_examples]{several pre-built POMP models} are included with the package.
+##' In addition, \link[=pomp examples]{several pre-built POMP models} are included with the package.
 ##' Tutorials and other documentation, including a \href{https://kingaa.github.io/pomp/FAQ.html}{package FAQ}, are available from the \href{https://kingaa.github.io/pomp/}{package website}.
 ##' 
 ##' @section Useful links:

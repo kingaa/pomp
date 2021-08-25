@@ -6,7 +6,6 @@
 \alias{traj_objfun}
 \alias{traj_objfun,missing-method}
 \alias{traj_objfun,ANY-method}
-\alias{traj_match}
 \alias{traj_objfun,data.frame-method}
 \alias{traj_objfun,pomp-method}
 \alias{traj_objfun,traj_match_objfun-method}

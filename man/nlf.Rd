@@ -2,7 +2,6 @@
 % Please edit documentation in R/nlf.R
 \name{nonlinear forecasting}
 \alias{nonlinear forecasting}
-\alias{nonlinear_forecasting}
 \alias{nlf}
 \alias{nlf_objfun}
 \alias{nlf_objfun,missing-method}

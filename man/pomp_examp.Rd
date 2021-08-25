@@ -3,7 +3,6 @@
 \docType{data}
 \name{pomp examples}
 \alias{pomp examples}
-\alias{pomp_examples}
 \title{pomp_examples}
 \description{
 Pre-built POMP examples

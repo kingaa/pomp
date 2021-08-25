@@ -4,7 +4,7 @@
 \alias{dprocess specification}
 \title{The latent state process density}
 \description{
-Specification of dprocess.
+Specification of the latent state process density function, dprocess.
 }
 \details{
 Suppose you have a procedure that allows you to compute the probability density
@@ -55,11 +55,13 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 
 \seealso{
+\code{\link{dprocess}}
+
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic components}},
-\code{\link{covariate_table}()},
+\code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{parameter transformations}},

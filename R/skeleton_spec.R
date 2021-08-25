@@ -1,6 +1,6 @@
 ##' The deterministic skeleton of a model
 ##'
-##' Specification of skeleton.
+##' Specification of the deterministic skeleton.
 ##'
 ##' @name skeleton specification
 ##' @rdname skeleton_spec
@@ -8,7 +8,7 @@
 ##' @include pomp_fun.R csnippet.R
 ##' @family implementation information
 ##' @family deterministic methods
-##' @seealso skeleton
+##' @seealso \code{\link{skeleton}}
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##'

@@ -4,7 +4,7 @@
 \alias{rmeasure specification}
 \title{The measurement-model simulator}
 \description{
-Specification of rmeasure
+Specification of the measurement-model simulator, rmeasure.
 }
 \details{
 The measurement model is the link between the data and the unobserved state process.
@@ -51,11 +51,13 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 
 \seealso{
+\code{\link{rmeasure}}
+
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic components}},
-\code{\link{covariate_table}()},
+\code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},

@@ -1,6 +1,6 @@
 ##' Covariates
 ##'
-##' Lookup tables for time-varying covariates.
+##' Incorporating time-varying covariates using lookup tables.
 ##'
 ##' If the \sQuote{pomp} object contains covariates (specified via the \code{covar} argument), then interpolated values of the covariates will be available to each of the model components whenever it is called.
 ##' In particular, variables with names as they appear in the \code{covar} covariate table will be available to any C snippet.
@@ -10,10 +10,11 @@
 ##' covariate-dependent priors are not allowed.
 ##' Nor are parameter transformations permitted to depend upon covariates.
 ##'
-##' @name covariate_table
+##' @name covariates
 ##' @rdname covariate_table
-##' @aliases covariate_table,missing-method covariate_table,ANY-method
+##' @aliases covariate_table covariate_table,missing-method covariate_table,ANY-method
 ##' @include pomp_class.R pstop.R
+##' @concept covariates
 ##' @family implementation information
 ##' @family interpolation
 ##'

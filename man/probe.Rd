@@ -56,7 +56,7 @@ i.e., the output of another \pkg{pomp} calculation.}
 A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
 A vector-valued probe must always return a vector of the same size.
 A number of useful probes are provided with the package:
-see \link[=basic_probes]{basic probes}.}
+see \link[=basic probes]{basic probes}.}
 
 \item{nsim}{the number of model simulations to be computed.}
 

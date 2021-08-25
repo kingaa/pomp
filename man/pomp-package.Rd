@@ -72,7 +72,7 @@ One can also add, modify, or delete basic model components \dQuote{on the fly} i
 
 The package contains a number of examples.
 Some of these are included in the help pages.
-In addition, \link[=pomp_examples]{several pre-built POMP models} are included with the package.
+In addition, \link[=pomp examples]{several pre-built POMP models} are included with the package.
 Tutorials and other documentation, including a \href{https://kingaa.github.io/pomp/FAQ.html}{package FAQ}, are available from the \href{https://kingaa.github.io/pomp/}{package website}.
 }
 
@@ -105,7 +105,7 @@ More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic components}},
-\code{\link{covariate_table}()},
+\code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},

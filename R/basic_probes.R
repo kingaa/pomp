@@ -4,7 +4,6 @@
 ##' These can be used directly and as templates for custom probes.
 ##'
 ##' @name basic probes
-##' @aliases basic_probes
 ##' @rdname basic_probes
 ##' @family summary statistic-based methods
 ##' @concept diagnostics

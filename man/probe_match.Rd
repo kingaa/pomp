@@ -6,7 +6,6 @@
 \alias{probe_objfun}
 \alias{probe_objfun,missing-method}
 \alias{probe_objfun,ANY-method}
-\alias{probe_match}
 \alias{probe_objfun,data.frame-method}
 \alias{probe_objfun,pomp-method}
 \alias{probe_objfun,probed_pomp-method}
@@ -75,7 +74,7 @@ It should be a large number (i.e., bigger than any legitimate values the objecti
 A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
 A vector-valued probe must always return a vector of the same size.
 A number of useful probes are provided with the package:
-see \link[=basic_probes]{basic probes}.}
+see \link[=basic probes]{basic probes}.}
 
 \item{nsim}{the number of model simulations to be computed.}
 

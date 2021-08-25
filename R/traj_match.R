@@ -16,7 +16,6 @@
 ##' @docType methods
 ##' @include trajectory.R pomp_class.R workhorses.R
 ##' @aliases traj_objfun traj_objfun,missing-method traj_objfun,ANY-method
-##' @aliases traj_match
 ##' @concept trajectory matching
 ##' @family deterministic methods
 ##' @family methods based on maximization

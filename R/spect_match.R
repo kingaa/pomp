@@ -11,7 +11,6 @@
 ##' @name spectrum matching
 ##' @rdname spect_match
 ##' @aliases spect_objfun spect_objfun,missing-method spect_objfun,ANY-method
-##' @aliases spect_match
 ##' @concept power-spectrum matching
 ##' @family estimation methods
 ##' @family summary statistic-based methods

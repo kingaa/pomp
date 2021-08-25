@@ -23,6 +23,6 @@ A warning will be generated if extrapolation is performed.
 \seealso{
 More on interpolation:
 \code{\link{bsplines}},
-\code{\link{covariate_table}()}
+\code{\link{covariates}}
 }
 \concept{interpolation}

@@ -2,7 +2,6 @@
 % Please edit documentation in R/basic_probes.R
 \name{basic probes}
 \alias{basic probes}
-\alias{basic_probes}
 \alias{probe.mean}
 \alias{probe.median}
 \alias{probe.var}

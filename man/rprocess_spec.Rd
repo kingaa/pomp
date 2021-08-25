@@ -49,7 +49,7 @@ If any of the row names of \code{v} cannot be found among the state variables or
 \item{.pre, .post}{C snippets (see Details)}
 }
 \description{
-Specification of rprocess using \dQuote{plugins}.
+Specification of the latent state process simulator, rprocess.
 }
 \section{Discrete-time processes}{
 
@@ -194,11 +194,13 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 
 \seealso{
+\code{\link{rprocess}}
+
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic components}},
-\code{\link{covariate_table}()},
+\code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},

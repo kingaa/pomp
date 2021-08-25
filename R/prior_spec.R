@@ -1,12 +1,12 @@
 ##' prior distribution
 ##'
-##' Specifying prior distributions
+##' Specification of prior distributions.
 ##'
 ##' @name prior specification
 ##' @rdname prior_spec
 ##' @family implementation information
 ##' @family Bayesian methods
-##'
+##' @seealso \code{\link{dprior}} \code{\link{rprior}}
 ##' @inheritSection pomp Note for Windows users
 ##' 
 ##' @details

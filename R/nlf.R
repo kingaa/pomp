@@ -20,7 +20,7 @@
 ##' @importFrom stats .lm.fit optim setNames dnorm .lm.fit sd cov
 ##' @importFrom mvtnorm dmvnorm
 ##'
-##' @aliases nonlinear_forecasting nlf
+##' @aliases nlf
 ##' @aliases nlf_objfun nlf_objfun,missing-method nlf_objfun,ANY-method
 ##'
 ##' @inheritSection pomp Note for Windows users

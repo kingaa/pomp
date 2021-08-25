@@ -4,7 +4,7 @@
 \alias{dmeasure specification}
 \title{The measurement model density}
 \description{
-Specification of dmeasure.
+Specification of the measurement model density function, dmeasure.
 }
 \details{
 The measurement model is the link between the data and the unobserved state process.
@@ -55,11 +55,13 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 
 \seealso{
+\code{\link{dmeasure}}
+
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulators}},
 \code{\link{basic components}},
-\code{\link{covariate_table}()},
+\code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dprocess specification}},
 \code{\link{parameter transformations}},

@@ -1,10 +1,11 @@
 ##' The latent state process density
 ##'
-##' Specification of dprocess.
+##' Specification of the latent state process density function, dprocess.
 ##'
 ##' @name dprocess specification
 ##' @rdname dprocess_spec
 ##' @family implementation information
+##' @seealso \code{\link{dprocess}}
 ##' 
 ##' @details
 ##' Suppose you have a procedure that allows you to compute the probability density

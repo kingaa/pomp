@@ -1,15 +1,14 @@
 ##' The latent state process simulator
 ##'
-##' Specification of rprocess using \dQuote{plugins}.
+##' Specification of the latent state process simulator, rprocess.
 ##'
 ##' @name rprocess specification
 ##' @rdname rprocess_spec
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R
 ##' @family implementation information
-##'
-##' @inheritSection pomp Note for Windows users
-##'
+##' @seealso \code{\link{rprocess}}
+##' 
 ##' @section Discrete-time processes:
 ##' If the state process evolves in discrete time, specify \code{rprocess} using the \code{discrete_time} plug-in.
 ##' Specifically, provide
@@ -153,6 +152,9 @@
 ##' @param .pre,.post C snippets (see Details)
 ##' @param \dots individual C snippets corresponding to elementary events
 ##' @param hmax maximum time step allowed (see below)
+##'
+##' @inheritSection pomp Note for Windows users
+##'
 NULL
 
 ## also defined in 'pomp_internal.h'
