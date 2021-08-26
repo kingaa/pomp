@@ -70,8 +70,6 @@ Type 'q()' to quit R.
 +   y[,k] <- C %*% xx + sqrtR %*% rnorm(n=dimY)
 + }
 > 
-> kf <- pomp:::kalmanFilter(t,y,X0,A,Q,C,R)
-> 
 > y %>%
 +   melt() %>%
 +   dcast(time~variable) %>%
@@ -113,6 +111,7 @@ in 'pomp': the unrecognized arguments 'C','R','sqrtR','X0' are available for use
 > 
 > enkf <- enkf(pf,Np=1000)
 > eakf <- eakf(pf,C=C,R=R,Np=1000)
+> kf <- kalmanFilter(pf,X0=rinit(pf),A=A,Q=Q,C=C,R=R)
 > 
 > try(enkf(pf))
 Error : in 'enkf': argument "Np" is missing, with no default
@@ -152,7 +151,7 @@ Error : in 'eakf': argument "C" is missing, with no default
 > invisible(enkf(pf,Np=1000,params=as.list(coef(pf))))
 > invisible(eakf(pf,C=C,R=R,Np=1000,params=as.list(coef(pf))))
 > 
-> stopifnot(max(abs(c(kf$loglik,logLik(pf),logLik(enkf),logLik(eakf))-c(-67.0,-67.1,-66.9,-66.9)))<1)
+> stopifnot(max(abs(c(kf$logLik,logLik(pf),logLik(enkf),logLik(eakf))-c(-67.0,-67.1,-66.9,-66.9)))<1)
 > 
 > enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
 +   ddply(~variable,summarize,n=length(value))

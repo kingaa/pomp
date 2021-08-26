@@ -51,8 +51,6 @@ for (k in seq_along(t)) {
   y[,k] <- C %*% xx + sqrtR %*% rnorm(n=dimY)
 }
 
-kf <- pomp:::kalmanFilter(t,y,X0,A,Q,C,R)
-
 y %>%
   melt() %>%
   dcast(time~variable) %>%
@@ -93,6 +91,7 @@ y %>%
 
 enkf <- enkf(pf,Np=1000)
 eakf <- eakf(pf,C=C,R=R,Np=1000)
+kf <- kalmanFilter(pf,X0=rinit(pf),A=A,Q=Q,C=C,R=R)
 
 try(enkf(pf))
 try(enkf(pf,Np=c(100,200)))
@@ -112,7 +111,7 @@ try(eakf(enkf,R=R,Np=100,emeasure=NULL))
 invisible(enkf(pf,Np=1000,params=as.list(coef(pf))))
 invisible(eakf(pf,C=C,R=R,Np=1000,params=as.list(coef(pf))))
 
-stopifnot(max(abs(c(kf$loglik,logLik(pf),logLik(enkf),logLik(eakf))-c(-67.0,-67.1,-66.9,-66.9)))<1)
+stopifnot(max(abs(c(kf$logLik,logLik(pf),logLik(enkf),logLik(eakf))-c(-67.0,-67.1,-66.9,-66.9)))<1)
 
 enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
   ddply(~variable,summarize,n=length(value))

@@ -1,5 +1,17 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.3}{
+  \itemize{
+    \item Two new basic model components have been introduced.
+    These are:
+    \describe{
+      \item{emeasure,}{which computes the expectation of the observable variables conditional on the latent state;}
+      \item{vmeasure,}{which computes the covariance matrix of the observables given the latent state.}
+    }
+    These are used by the newly refactored ensemble Kalman filter, \code{enkf}.
+    \item The basic (linear, Gaussian) Kalman filter is now available as \code{kalmanFilter}.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.2}{
   \itemize{
     \item Computation of Monte Carlo-adjusted profile likelihood is now facilitated by the new \code{mcap} function.

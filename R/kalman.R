@@ -10,6 +10,7 @@
 ##' eakf,ANY-method eakf,missing-method
 ##' @author Aaron A. King
 ##' @concept Kalman filter
+##' @seealso \code{\link{kalmanFilter}}
 ##' @family particle filter methods
 ##' @family elementary algorithms
 ##'

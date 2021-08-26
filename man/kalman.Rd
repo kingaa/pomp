@@ -110,6 +110,8 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 \Evensen2009
 }
 \seealso{
+\code{\link{kalmanFilter}}
+
 More on sequential Monte Carlo methods: 
 \code{\link{bsmc2}()},
 \code{\link{cond.logLik}()},

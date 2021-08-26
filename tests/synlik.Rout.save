@@ -39,7 +39,7 @@ Type 'q()' to quit R.
 +   Q[1,2] <- 0
 +   Q <- tcrossprod(Q)
 +   R <- diag(p['tau']^2,2,2)
-+   pomp:::kalmanFilter(t=time(object),y=y,X0=x0,A=A,C=C,Q=Q,R=R)$loglik
++   kalmanFilter(object,X0=x0,A=A,C=C,Q=Q,R=R)$logLik
 + }
 > 
 > # exact likelihood

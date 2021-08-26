@@ -21,6 +21,18 @@ Type 'q()' to quit R.
 > 
 > library(pomp)
 > library(magrittr)
+> library(dplyr)
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
 > 
 > set.seed(376098756)
 > 
@@ -37,6 +49,12 @@ Type 'q()' to quit R.
 +   sapply(logLik) %>%
 +   logmeanexp(se=TRUE) -> pf.ll.truth
 > 
+> po %>%
++   as.data.frame() %>%
++   mutate(logY=log(Y)) %>%
++   select(time,logY) %>%
++   pomp(t0=0,times="time") -> logpo
+>   
 > po %>% rinit(params=coef(po)) %>% as.numeric() -> x0
 > po %>% coef() %>% as.list() %$% {c(x=log(x0/K))} -> X0
 > po %>% obs() %>% log() -> y
@@ -44,8 +62,7 @@ Type 'q()' to quit R.
 > po %>% coef() %>% as.list() %$% {matrix(c(sigma*sigma),1,1)} -> Q
 > po %>% coef() %>% as.list() %$% {matrix(1,1,1)} -> C
 > po %>% coef() %>% as.list() %$% {tau*tau} -> R
-> po %>% time() -> t
-> pomp:::kalmanFilter(t,y,X0,A,Q,C,R) -> kf.truth
+> kalmanFilter(logpo,X0=X0,A=A,Q=Q,C=C,R=R) -> kf.truth
 > 
 > mf %>% rinit(params=coef(mf)) %>% as.numeric() -> x0
 > mf %>% coef() %>% as.list() %$% {c(x=log(x0/K))} -> X0
@@ -54,14 +71,13 @@ Type 'q()' to quit R.
 > mf %>% coef() %>% as.list() %$% {matrix(c(sigma*sigma),1,1)} -> Q
 > mf %>% coef() %>% as.list() %$% {matrix(1,1,1)} -> C
 > mf %>% coef() %>% as.list() %$% {tau*tau} -> R
-> mf %>% time() -> t
-> pomp:::kalmanFilter(t,y,X0,A,Q,C,R) -> kf.mle
+> kalmanFilter(logpo,X0=X0,A=A,Q=Q,C=C,R=R) -> kf.mle
 > 
-> cat("likelihood at truth:",kf.truth$loglik-sum(y),"\n")
+> cat("likelihood at truth:",kf.truth$logLik-sum(y),"\n")
 likelihood at truth: 6.74 
 > cat("pfilter likelihood at truth:",pf.ll.truth,"\n")
 pfilter likelihood at truth: 6.74 0.0158 
-> cat("likelihood at IF2 mle:",kf.mle$loglik-sum(y),"\n")
+> cat("likelihood at IF2 mle:",kf.mle$logLik-sum(y),"\n")
 likelihood at IF2 mle: 8.03 
 > cat("pfilter likelihood at IF2 mle:",pf.ll.mle,"\n")
 pfilter likelihood at IF2 mle: 8.02 0.0172 

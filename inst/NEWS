@@ -1,5 +1,22 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._3:
+
+        • Two new basic model components have been introduced.  These
+          are:
+
+          emeasure, which computes the expectation of the observable
+              variables conditional on the latent state;
+
+          vmeasure, which computes the covariance matrix of the
+              observables given the latent state.
+
+          These are used by the newly refactored ensemble Kalman
+          filter, ‘enkf’.
+
+        • The basic (linear, Gaussian) Kalman filter is now available
+          as ‘kalmanFilter’.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._2:
 
         • Computation of Monte Carlo-adjusted profile likelihood is now
