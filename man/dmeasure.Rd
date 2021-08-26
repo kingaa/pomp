@@ -48,6 +48,7 @@ Specification of the measurement density evaluator: \link{dmeasure specification
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dprior}()},
 \code{\link{dprocess}()},
+\code{\link{emeasure}()},
 \code{\link{flow}()},
 \code{\link{partrans}()},
 \code{\link{pomp-package}},

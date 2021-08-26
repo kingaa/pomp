@@ -88,6 +88,7 @@ Collate:
     'ebola.R'
     'eff_sample_size.R'
     'elementary_algorithms.R'
+    'emeasure_spec.R'
     'estimation_algorithms.R'
     'extract.R'
     'filter_mean.R'

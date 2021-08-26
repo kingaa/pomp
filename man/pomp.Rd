@@ -14,6 +14,7 @@ pomp(
   dprocess,
   rmeasure,
   dmeasure,
+  emeasure,
   skeleton,
   rprior,
   dprior,
@@ -75,6 +76,11 @@ For more information, see \link[=rmeasure specification]{rmeasure specification}
 \item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{dmeasure=NULL} removes the measurement density evaluator.
 For more information, see \link[=dmeasure specification]{dmeasure specification}.}
+
+\item{emeasure}{the expectation of the measurement variables, conditional on the latent state.
+This can be specified as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{emeasure=NULL} removes the emeasure component.
+For more information, see \link[=emeasure specification]{emeasure specification}.}
 
 \item{skeleton}{optional; the deterministic skeleton of the unobserved state process.
 Depending on whether the model operates in continuous or discrete time, this is either a vectorfield or a map.
@@ -174,6 +180,7 @@ These comprise:
 \item{dprocess,}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
 \item{rmeasure,}{the simulator of the observed process, conditional on the unobserved state;}
 \item{dmeasure,}{the evaluator of the measurement model probability density function;}
+\item{emeasure,}{the expectation of the measurement model probability density function, conditional on the latent state;}
 \item{rprior,}{which samples from a prior probability distribution on the parameters;}
 \item{dprior,}{which evaluates the prior probability density function;}
 \item{skeleton,}{which computes the deterministic skeleton of the unobserved state process;}
@@ -216,6 +223,7 @@ More on implementing POMP models:
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},
+\code{\link{emeasure specification}},
 \code{\link{parameter transformations}},
 \code{\link{pomp-package}},
 \code{\link{prior specification}},

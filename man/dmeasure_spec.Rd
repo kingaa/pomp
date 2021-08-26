@@ -95,6 +95,7 @@ More on implementing POMP models:
 \code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dprocess specification}},
+\code{\link{emeasure specification}},
 \code{\link{parameter transformations}},
 \code{\link{pomp-package}},
 \code{\link{pomp}},

@@ -47,6 +47,7 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},
+\code{\link{emeasure}()},
 \code{\link{partrans}()},
 \code{\link{pomp-package}},
 \code{\link{rinit}()},

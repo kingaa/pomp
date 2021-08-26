@@ -23,4 +23,8 @@ plot(d[,],ylab="log prob")
 
 try(dprocess(s,x=states(s)[,c(1:9,15)],params=coef(s),times=time(s)[c(1:9,15)]))
 
+e <- emeasure(s,x=states(s),params=coef(s),times=time(s))
+matplot(time(s),t(obs(s)),xlab="",ylab="",col=1:2)
+matlines(time(s),t(apply(e,c(1,3),mean)),col=1:2)
+
 dev.off()

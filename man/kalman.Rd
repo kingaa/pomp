@@ -9,6 +9,7 @@
 \alias{enkf,data.frame-method}
 \alias{enkf}
 \alias{enkf,pomp-method}
+\alias{enkf,kalmand_pomp-method}
 \alias{eakf,data.frame-method}
 \alias{eakf}
 \alias{eakf,pomp-method}
@@ -17,16 +18,18 @@
 \S4method{enkf}{data.frame}(
   data,
   Np,
-  h,
   R,
   params,
   rinit,
   rprocess,
+  emeasure,
   ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{enkf}{pomp}(data, Np, h, R, ..., verbose = getOption("verbose", FALSE))
+\S4method{enkf}{pomp}(data, Np, R, ..., verbose = getOption("verbose", FALSE))
+
+\S4method{enkf}{kalmand_pomp}(data, Np, R, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{eakf}{data.frame}(
   data,
@@ -48,12 +51,9 @@ or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.}
 
-\item{Np}{the number of particles to use.}
+\item{Np}{integer; the number of particles to use, i.e., the size of the ensemble.}
 
-\item{h}{function returning the expected value of the observation given the
-state.}
-
-\item{R}{matrix; variance of the measurement noise.}
+\item{R}{numeric matrix; variance of the measurement noise.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -67,6 +67,11 @@ For more information, see \link[=rinit specification]{rinit specification}.}
 Setting \code{rprocess=NULL} removes the latent-state simulator.
 For more information, see \link[=rprocess specification]{rprocess specification for the documentation on these plugins}.}
 
+\item{emeasure}{the expectation of the measurement variables, conditional on the latent state.
+This can be specified as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{emeasure=NULL} removes the emeasure component.
+For more information, see \link[=emeasure specification]{emeasure specification}.}
+
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
 
@@ -76,8 +81,7 @@ See \link[=userdata]{userdata} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 
-\item{C}{matrix converting state vector into expected value of the
-observation.}
+\item{C}{numeric matrix that converts a state vector into the expected value of the observation given that state.}
 }
 \value{
 An object of class \sQuote{kalmand_pomp}.

@@ -53,7 +53,8 @@ for (k in seq_along(t)) {
 
 kf <- pomp:::kalmanFilter(t,y,X0,A,Q,C,R)
 
-y %>% melt() %>%
+y %>%
+  melt() %>%
   dcast(time~variable) %>%
   pomp(times='time',t0=0,
     rprocess=discrete_time(
@@ -63,6 +64,11 @@ y %>% melt() %>%
         setNames(x,c("x1","x2","x3","x4"))
       },
       delta.t=1),
+    emeasure=function(x1,x2,x3,x4,...){
+      ex <- C%*%c(x1,x2,x3,x4)
+      dim(ex) <- NULL
+      setNames(ex,rownames(C))
+    },
     rmeasure=function(x1,x2,x3,x4,...){
       x <- c(x1,x2,x3,x4)
       C%*%x+sqrtR%*%rnorm(n=nrow(C))
@@ -78,10 +84,23 @@ y %>% melt() %>%
     params=c()) %>%
   pfilter(Np=1000,filter.mean=TRUE) -> pf
 
-enkf <- enkf(pf,h=function(x)C%*%x,R=R,Np=1000)
+enkf <- enkf(pf,R=R,Np=1000)
 eakf <- eakf(pf,C=C,R=R,Np=1000)
 
-invisible(enkf(pf,h=function(x)C%*%x,R=R,Np=1000,params=as.list(coef(pf))))
+try(enkf(pf))
+try(enkf(pf,Np=c(100,200)))
+try(enkf(pf,Np=-10))
+try(enkf(pf,Np="10b"))
+try(enkf(pf,Np=100))
+try(enkf(pf,Np=100,R=R,emeasure=NULL))
+try(enkf(enkf))
+try(enkf(enkf,Np=c(100,200)))
+try(enkf(enkf,Np=-10))
+try(enkf(enkf,Np="10b"))
+try(enkf(enkf,Np=100))
+try(enkf(enkf,Np=100,R=R,emeasure=NULL))
+
+invisible(enkf(pf,R=R,Np=1000,params=as.list(coef(pf))))
 invisible(eakf(pf,C=C,R=R,Np=1000,params=as.list(coef(pf))))
 
 stopifnot(max(abs(c(kf$loglik,logLik(pf),logLik(enkf),logLik(eakf))-c(-67.0,-67.1,-66.9,-66.9)))<1)
@@ -98,7 +117,7 @@ enkf %>% forecast() %>% melt() %>%
 
 try({
   R <- matrix(c(1,0,1,0),2,2)
-  enkf(pf,h=function(x)C%*%x,Np=1000,R=R)
+  enkf(pf,Np=1000,R=R)
 })
 
 try({

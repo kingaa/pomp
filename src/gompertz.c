@@ -28,6 +28,13 @@ void _gompertz_normal_rmeasure (double *y, double *x, double *p,
   Y = rlnorm(log(X),TAU);
 }
 
+// measurement model expectation
+void _gompertz_normal_emeasure (double *y, double *x, double *p,
+  int *obsindex, int *stateindex, int *parindex, int *covindex,
+  double *covars, double t) {
+  Y = X*exp(-TAU*TAU/2);
+}
+
 // stochastic Gompertz model with log-normal process noise
 void _gompertz_simulator (double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,

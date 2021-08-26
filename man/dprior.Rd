@@ -33,6 +33,7 @@ Specification of the prior density evaluator: \link{prior specification}
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
 \code{\link{dprocess}()},
+\code{\link{emeasure}()},
 \code{\link{flow}()},
 \code{\link{partrans}()},
 \code{\link{pomp-package}},

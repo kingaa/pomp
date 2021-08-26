@@ -28,7 +28,7 @@ dat %>%
       }
     ),
     R=2,
-    h=function(x) 0.01*x
+    emeasure=function(x,...) c(Y=0.01*x)
   ) %>% plot()
 
 try(dat %>% eakf())

@@ -6,6 +6,7 @@
 ##' They include \describe{
 ##' \item{\code{\link{dmeasure}}}{which evaluates the measurement model density,}
 ##' \item{\code{\link{rmeasure}}}{which samples from the measurement model distribution,}
+##' \item{\code{\link{emeasure}}}{which computes the expectation of the observed variables conditional on the latent state,}
 ##' \item{\code{\link{dprocess}}}{which evaluates the process model density,}
 ##' \item{\code{\link{rprocess}}}{which samples from the process model distribution,}
 ##' \item{\code{\link{dprior}}}{which evaluates the prior probability density,}
@@ -444,6 +445,69 @@ rmeasure.internal <- function (object, x, times, params,
   pompLoad(object)
   on.exit(pompUnload(object))
   .Call(P_do_rmeasure,object,x,times,params,.gnsi)
+}
+
+##' emeasure
+##'
+##' Return the expected value of the observed variables, given values of the latent states and the parameters.
+##'
+##' @name emeasure
+##' @docType methods
+##' @aliases emeasure,ANY-method emeasure,missing-method
+##' @family pomp workhorses
+##' @seealso Specification of the measurement-model expectation: \link{emeasure specification}
+##'
+##' @inheritParams dmeasure
+##'
+##' @return
+##' \code{emeasure} returns a rank-3 array of dimensions
+##' \code{nobs} x \code{nrep} x \code{ntimes},
+##' where \code{nobs} is the number of observed variables.
+##'
+NULL
+
+setGeneric(
+  "emeasure",
+  function (object, ...)
+    standardGeneric("emeasure")
+)
+
+setMethod(
+  "emeasure",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    reqd_arg("emeasure","object")
+  }
+)
+
+setMethod(
+  "emeasure",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    undef_method("emeasure",object)
+  }
+)
+
+##' @export
+##' @rdname emeasure
+setMethod(
+  "emeasure",
+  signature=signature(object="pomp"),
+  definition=function (object, x, times, params, ...) {
+    tryCatch(
+      emeasure.internal(object=object,x=x,times=times,params=params,...),
+      error = function (e) pStop("emeasure",conditionMessage(e))
+    )
+  }
+)
+
+emeasure.internal <- function (object, x, times, params,
+  .gnsi = TRUE, ...) {
+  storage.mode(x) <- "double"
+  storage.mode(params) <- "double"
+  pompLoad(object)
+  on.exit(pompUnload(object))
+  .Call(P_do_emeasure,object,x,times,params,.gnsi)
 }
 
 ##' rprior

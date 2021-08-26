@@ -155,6 +155,9 @@ sir <- function (
       DW = 0;			// no noise, so no noise accumulation"
       )
     ),
+    emeasure=Csnippet("
+      E_reports = cases*rho;"
+    ),
     rmeasure=Csnippet("
       double mean, sd;
       double rep;
@@ -291,6 +294,9 @@ sir2 <- function (
         DN = term[0]-term[2]-term[4]-term[5];
         Dcases = term[3];"
       )
+    ),
+    emeasure=Csnippet("
+      E_reports = cases*rho;"
     ),
     rmeasure=Csnippet("
       reports = rbinom(cases,rho);"

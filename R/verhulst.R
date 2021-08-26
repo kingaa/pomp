@@ -49,6 +49,7 @@ verhulst <- function (
       ),
       delta.t=dt
     ),
+    emeasure=Csnippet("E_N = n*exp(-tau*tau/2);"),
     rmeasure=Csnippet("N = rlnorm(log(n),tau);"),
     dmeasure=Csnippet("lik = dlnorm(N,log(n),tau,give_log);"),
     skeleton=vectorfield(Csnippet("Dn = r*n*(1-n/K);")),

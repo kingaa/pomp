@@ -13,6 +13,8 @@ extern SEXP do_dmeasure(SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SE
 extern SEXP do_dprior(SEXP object, SEXP params, SEXP log, SEXP gnsi);
 /* src/dprocess.c */
 extern SEXP do_dprocess(SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi);
+/* src/emeasure.c */
+extern SEXP do_emeasure(SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi);
 /* src/euler.c */
 extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params, double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi);
 extern int num_euler_steps(double t1, double t2, double *Rf_dt);
@@ -20,6 +22,7 @@ extern int num_map_steps(double t1, double t2, double Rf_dt);
 /* src/gompertz.c */
 extern void _gompertz_normal_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_normal_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
+extern void _gompertz_normal_emeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_simulator(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t, double Rf_dt);
 extern void _gompertz_skeleton(double *f, double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, const double *covar, double t);
 extern void _gompertz_to_trans(double *__pt, const double *__p, const int *__parindex);
@@ -39,6 +42,7 @@ extern void _ou2_pdf(double *f, double *x, double *z, double t1, double t2, cons
 extern void _ou2_skel(double *f, double *x, double *p, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _ou2_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
 extern void _ou2_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
+extern void _ou2_emeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
 /* src/partrans.c */
 extern SEXP do_partrans(SEXP object, SEXP params, SEXP dir, SEXP gnsi);
 /* src/pfilter.c */

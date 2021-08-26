@@ -102,6 +102,8 @@ ricker <- function (r = exp(3.8), sigma = 0.3, phi = 10, c = 1,
       N = exp(log(r)+log(N)-c*N+e);"),
       delta.t=1
     ),
+    emeasure=Csnippet("
+    E_y = phi*N;"),
     rmeasure=Csnippet("
     y = rpois(phi*N);"),
     dmeasure=Csnippet("

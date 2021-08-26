@@ -100,6 +100,7 @@ More on implementing POMP models:
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},
+\code{\link{emeasure specification}},
 \code{\link{pomp-package}},
 \code{\link{pomp}},
 \code{\link{prior specification}},

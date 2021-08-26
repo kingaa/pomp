@@ -78,6 +78,9 @@ setMethod(
     cat("- measurement model density, dmeasure: ")
     show(object@dmeasure)
 
+    cat("- measurement model expectation, emeasure: ")
+    show(object@emeasure)
+
     cat("- prior simulator, rprior: ")
     show(object@rprior)
 

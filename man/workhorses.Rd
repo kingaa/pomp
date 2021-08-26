@@ -12,6 +12,7 @@ They are low-level functions that do the work needed by the package's inference 
 They include \describe{
 \item{\code{\link{dmeasure}}}{which evaluates the measurement model density,}
 \item{\code{\link{rmeasure}}}{which samples from the measurement model distribution,}
+\item{\code{\link{emeasure}}}{which computes the expectation of the observed variables conditional on the latent state,}
 \item{\code{\link{dprocess}}}{which evaluates the process model density,}
 \item{\code{\link{rprocess}}}{which samples from the process model distribution,}
 \item{\code{\link{dprior}}}{which evaluates the prior probability density,}
@@ -30,6 +31,7 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},
+\code{\link{emeasure}()},
 \code{\link{flow}()},
 \code{\link{partrans}()},
 \code{\link{pomp-package}},

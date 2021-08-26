@@ -109,6 +109,15 @@ void _ou2_rmeasure (double *y, double *x, double *p,
   Y2 = rnorm(x[X2],sd);
 }
 
+// bivariate normal measurement error expectation
+void _ou2_emeasure (double *y, double *x, double *p,
+  int *obsindex, int *stateindex, int *parindex, int *covindex,
+  double *covar, double t)
+{
+  Y1 = x[X1];
+  Y2 = x[X2];
+}
+
 #undef ALPHA1
 #undef ALPHA2
 #undef ALPHA3
