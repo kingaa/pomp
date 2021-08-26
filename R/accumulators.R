@@ -1,8 +1,8 @@
-##' accumulators
+##' accumulator variables
 ##'
-##' Accumulator variables
+##' Latent state variables that accumulate quantities through time.
 ##'
-##' @name accumulators
+##' @name accumulator variables
 ##' @rdname accumulators
 ##' @aliases accumvars
 ##' @family implementation information

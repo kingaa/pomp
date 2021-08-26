@@ -82,16 +82,13 @@
 ##' }
 ##' 
 ##' @section Citing \pkg{pomp}:
-##' \Sexpr[stage=build,echo=FALSE,eval=TRUE,results=verbatim]{print(citation("pomp"),bibtex=FALSE)}
-##' 
-##' LaTeX users can obtain BibTeX entries for the above by executing
-##' \code{toBibtex(citation("pomp"))}.
+##' Execute \code{citation("pomp")} to view the correct citation for publications.
 ##'
 ##' @references
 ##'
 ##' \King2016
 ##'
-##' See \href{https://kingaa.github.io/pomp/biblio.html}{the package website for more references}.
+##' See \href{https://kingaa.github.io/pomp/biblio.html}{the package website for more references}, including many publications that use \pkg{pomp}.
 ##'
 ##' @useDynLib pomp, .registration = TRUE, .fixes="P_"
 ##' @import methods

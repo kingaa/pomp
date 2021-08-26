@@ -11,8 +11,8 @@
 ##' \dQuote{Most of these data have been manually entered from published records by various people, and are prone to errors at several levels.
 ##' All data are provided as is; use at your own risk.}
 ##'
-##' @name measles
-##' @rdname measles
+##' @name childhood disease data
+##' @rdname childhood
 ##' @aliases LondonYorke ewmeas ewcitmeas
 ##' @docType data
 ##' @references

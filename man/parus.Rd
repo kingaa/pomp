@@ -48,17 +48,17 @@ pf \%>\% simulate() \%>\% plot()
 More data sets provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
+\code{\link{childhood disease data}},
 \code{\link{dacca}()},
-\code{\link{ebola}},
-\code{\link{measles}}
+\code{\link{ebola}}
 
 More examples provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
+\code{\link{childhood disease data}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{gompertz}()},
-\code{\link{measles}},
 \code{\link{ou2}()},
 \code{\link{pomp examples}},
 \code{\link{ricker}()},

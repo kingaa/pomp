@@ -119,7 +119,7 @@
 ##'
 ##' @param accumvars optional character vector;
 ##' contains the names of accumulator variables.
-##' See \link[=accumulators]{accumulators} for a definition and discussion of accumulator variables.
+##' See \link[=accumulator variables]{accumulators} for a definition and discussion of accumulator variables.
 ##'
 ##' @param \dots additional arguments supply new or modify existing model characteristics or components.
 ##' See \code{\link{pomp}} for a full list of recognized arguments.

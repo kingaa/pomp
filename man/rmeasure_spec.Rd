@@ -50,12 +50,42 @@ These appear to arise when the temporary files created during the C snippet comp
 To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=pomp]{cfile}} options to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
 }
 
+\examples{
+\dontrun{
+  ## We start with the pre-built Ricker example:
+  
+  ricker() -> po
+
+  ## To change the measurement model simulator, rmeasure,
+  ## we use the 'rmeasure' argument in any 'pomp'
+  ## elementary or estimation function.
+  ## Here, we pass the rmeasure specification to 'simulate'
+  ## as an R function.
+
+  po \%>\%
+    simulate(
+      rmeasure=function (N, phi, ...) {
+        c(y=rpois(n=1,lambda=phi*N))
+      }
+    ) -> sim
+
+  ## We can also pass it as a C snippet:
+
+  po \%>\%
+    simulate(
+      rmeasure=Csnippet("y = rpois(phi*N);"),
+      paramnames="phi",
+      statenames="N"
+    ) -> sim
+
+}
+}
 \seealso{
 \code{\link{rmeasure}}
 
 More on implementing POMP models: 
 \code{\link{Csnippet}},
-\code{\link{accumulators}},
+\code{\link{accumulator variables}},
 \code{\link{basic components}},
 \code{\link{covariates}},
 \code{\link{distributions}},

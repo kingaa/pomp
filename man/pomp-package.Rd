@@ -89,21 +89,18 @@ Tutorials and other documentation, including a \href{https://kingaa.github.io/po
 
 \section{Citing \pkg{pomp}}{
 
-\Sexpr[stage=build,echo=FALSE,eval=TRUE,results=verbatim]{print(citation("pomp"),bibtex=FALSE)}
-
-LaTeX users can obtain BibTeX entries for the above by executing
-\code{toBibtex(citation("pomp"))}.
+Execute \code{citation("pomp")} to view the correct citation for publications.
 }
 
 \references{
 \King2016
 
-See \href{https://kingaa.github.io/pomp/biblio.html}{the package website for more references}.
+See \href{https://kingaa.github.io/pomp/biblio.html}{the package website for more references}, including many publications that use \pkg{pomp}.
 }
 \seealso{
 More on implementing POMP models: 
 \code{\link{Csnippet}},
-\code{\link{accumulators}},
+\code{\link{accumulator variables}},
 \code{\link{basic components}},
 \code{\link{covariates}},
 \code{\link{distributions}},

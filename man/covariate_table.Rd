@@ -41,7 +41,7 @@ Nor are parameter transformations permitted to depend upon covariates.
 \seealso{
 More on implementing POMP models: 
 \code{\link{Csnippet}},
-\code{\link{accumulators}},
+\code{\link{accumulator variables}},
 \code{\link{basic components}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},

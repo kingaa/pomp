@@ -67,7 +67,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 spy
 
 More on implementing POMP models: 
-\code{\link{accumulators}},
+\code{\link{accumulator variables}},
 \code{\link{basic components}},
 \code{\link{covariates}},
 \code{\link{distributions}},

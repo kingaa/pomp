@@ -115,7 +115,7 @@ print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=dW))
 \seealso{
 More on implementing POMP models: 
 \code{\link{Csnippet}},
-\code{\link{accumulators}},
+\code{\link{accumulator variables}},
 \code{\link{basic components}},
 \code{\link{covariates}},
 \code{\link{dmeasure specification}},

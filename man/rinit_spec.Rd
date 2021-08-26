@@ -82,7 +82,7 @@ plot(simulate(times=1:5,t0=0,params=c(X0=3,Y0=-7),
 
 More on implementing POMP models: 
 \code{\link{Csnippet}},
-\code{\link{accumulators}},
+\code{\link{accumulator variables}},
 \code{\link{basic components}},
 \code{\link{covariates}},
 \code{\link{distributions}},

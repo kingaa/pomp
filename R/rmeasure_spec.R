@@ -43,4 +43,6 @@
 ##' 
 ##' @inheritSection pomp Note for Windows users
 ##'
+##' @example examples/rmeasure_spec.R
+##'
 NULL

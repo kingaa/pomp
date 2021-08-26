@@ -36,6 +36,8 @@
 ##' It can take additional arguments via the \link[=userdata]{userdata facility}.
 ##' \code{f} must return a single numeric value, the probability density (or log probability density if \code{log = TRUE}) of \code{y} given \code{x} at time \code{t}.
 ##'
+##' @example examples/dmeasure_spec.R
+##'
 ##' @section Important note:
 ##' \strong{It is a common error to fail to account for both \code{log = TRUE} and \code{log = FALSE} when writing the \code{dmeasure} C snippet or function.}
 ##'

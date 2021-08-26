@@ -109,7 +109,7 @@ This will be coerced internally to storage mode \code{double}.}
 
 \item{accumvars}{optional character vector;
 contains the names of accumulator variables.
-See \link[=accumulators]{accumulators} for a definition and discussion of accumulator variables.}
+See \link[=accumulator variables]{accumulators} for a definition and discussion of accumulator variables.}
 
 \item{obsnames}{optional character vector;
 names of the observables.
@@ -210,7 +210,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 \seealso{
 More on implementing POMP models: 
 \code{\link{Csnippet}},
-\code{\link{accumulators}},
+\code{\link{accumulator variables}},
 \code{\link{basic components}},
 \code{\link{covariates}},
 \code{\link{distributions}},

@@ -89,9 +89,9 @@ plot(simulate(po))
 More examples provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
+\code{\link{childhood disease data}},
 \code{\link{ebola}},
 \code{\link{gompertz}()},
-\code{\link{measles}},
 \code{\link{ou2}()},
 \code{\link{parus}},
 \code{\link{pomp examples}},
@@ -103,8 +103,8 @@ More examples provided with \pkg{pomp}:
 More data sets provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
+\code{\link{childhood disease data}},
 \code{\link{ebola}},
-\code{\link{measles}},
 \code{\link{parus}}
 }
 \concept{pomp datasets}

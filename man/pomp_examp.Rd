@@ -47,10 +47,10 @@ See also the tutorials on the \href{https://kingaa.github.io/pomp/}{package webs
 More examples provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
+\code{\link{childhood disease data}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{gompertz}()},
-\code{\link{measles}},
 \code{\link{ou2}()},
 \code{\link{parus}},
 \code{\link{ricker}()},
