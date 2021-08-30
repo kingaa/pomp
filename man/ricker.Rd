@@ -40,6 +40,7 @@ simulate(po) \%>\% plot()
 }
 \seealso{
 More examples provided with \pkg{pomp}: 
+\code{\link{SIR models}},
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{childhood disease data}},
@@ -50,7 +51,6 @@ More examples provided with \pkg{pomp}:
 \code{\link{parus}},
 \code{\link{pomp examples}},
 \code{\link{rw2}()},
-\code{\link{sir_models}},
 \code{\link{verhulst}()}
 }
 \concept{pomp examples}

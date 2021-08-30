@@ -45,6 +45,7 @@ See also the tutorials on the \href{https://kingaa.github.io/pomp/}{package webs
 }
 \seealso{
 More examples provided with \pkg{pomp}: 
+\code{\link{SIR models}},
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{childhood disease data}},
@@ -55,7 +56,6 @@ More examples provided with \pkg{pomp}:
 \code{\link{parus}},
 \code{\link{ricker}()},
 \code{\link{rw2}()},
-\code{\link{sir_models}},
 \code{\link{verhulst}()}
 }
 \concept{pomp examples}

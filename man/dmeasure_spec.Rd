@@ -55,7 +55,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 
 \examples{
-\dontrun{
+\donttest{
   ## We start with the pre-built Ricker example:
   ricker() -> po
 

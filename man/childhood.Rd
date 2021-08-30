@@ -50,6 +50,8 @@ plot(reports~date,data=ewcitmeas,subset=city=="Liverpool",type='l')
 \London1973
 }
 \seealso{
+\link{SIR models}, \code{\link{bsflu}}
+
 More data sets provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
@@ -58,6 +60,7 @@ More data sets provided with \pkg{pomp}:
 \code{\link{parus}}
 
 More examples provided with \pkg{pomp}: 
+\code{\link{SIR models}},
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{dacca}()},
@@ -68,7 +71,6 @@ More examples provided with \pkg{pomp}:
 \code{\link{pomp examples}},
 \code{\link{ricker}()},
 \code{\link{rw2}()},
-\code{\link{sir_models}},
 \code{\link{verhulst}()}
 }
 \concept{pomp datasets}

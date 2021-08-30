@@ -1,4 +1,4 @@
-\dontrun{
+\donttest{
   ## We start with the pre-built Ricker example:
   
   ricker() -> po

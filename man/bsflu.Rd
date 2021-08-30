@@ -28,7 +28,7 @@ bsflu \%>\%
 \Anonymous1978
 }
 \seealso{
-\link{sir_models}
+\link{SIR models}
 
 More data sets provided with \pkg{pomp}: 
 \code{\link{blowflies}},
@@ -38,6 +38,7 @@ More data sets provided with \pkg{pomp}:
 \code{\link{parus}}
 
 More examples provided with \pkg{pomp}: 
+\code{\link{SIR models}},
 \code{\link{blowflies}},
 \code{\link{childhood disease data}},
 \code{\link{dacca}()},
@@ -48,7 +49,6 @@ More examples provided with \pkg{pomp}:
 \code{\link{pomp examples}},
 \code{\link{ricker}()},
 \code{\link{rw2}()},
-\code{\link{sir_models}},
 \code{\link{verhulst}()}
 }
 \concept{pomp datasets}

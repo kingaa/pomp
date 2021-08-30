@@ -15,6 +15,7 @@
 ##' @rdname childhood
 ##' @aliases LondonYorke ewmeas ewcitmeas
 ##' @docType data
+##' @seealso \link{SIR models}, \code{\link{bsflu}}
 ##' @references
 ##'
 ##' \London1973

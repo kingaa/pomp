@@ -47,6 +47,7 @@ spy(po)
 }
 \seealso{
 More examples provided with \pkg{pomp}: 
+\code{\link{SIR models}},
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{childhood disease data}},
@@ -57,7 +58,6 @@ More examples provided with \pkg{pomp}:
 \code{\link{parus}},
 \code{\link{pomp examples}},
 \code{\link{ricker}()},
-\code{\link{rw2}()},
-\code{\link{sir_models}}
+\code{\link{rw2}()}
 }
 \concept{pomp examples}

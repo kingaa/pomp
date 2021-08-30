@@ -24,7 +24,10 @@ TESTS=$(shell ls tests/*R)
 default:
 	@echo $(PKGVERS)
 
-.PHONY: clean win wind tests check
+.PHONY: binary check clean covr default dist fresh headers htmldocs \
+htmlhelp includes install manual news NEWS publish qcheck qqcheck \
+remove revdeps rhub roxy session tests vignettes win wind xcheck \
+xcovr xxcheck ycheck
 
 dist manual vignettes: export R_QPDF=qpdf
 headers: export LC_COLLATE=C
