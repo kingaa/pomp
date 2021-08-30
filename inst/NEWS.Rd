@@ -3,6 +3,7 @@
 \section{Changes in \pkg{pomp} version 3.5.2}{
   \itemize{
     \item Major improvements to the package manual, including richer cross-linking and better organization.
+    \item Fixed bug in \code{rprior} arising with integer-valued return vectors.
   }
 }
 \section{Changes in \pkg{pomp} version 3.5.1}{
