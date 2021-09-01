@@ -1,7 +1,7 @@
 REXE = R
 RCMD = $(REXE) CMD
 
-SAVED = $(shell ls *.Rout.save *.Rout)
+SAVED = $(wildcard *.Rout.save *.Rout)
 
 default: $(SAVED) clean
 

@@ -23,6 +23,7 @@ dat %>%
 
 plot(f)
 
+f()
 stopifnot(f(0)==f(1))
 stopifnot(logLik(f)==-f(0))
 

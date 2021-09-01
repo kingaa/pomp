@@ -350,7 +350,7 @@ nlfof.internal <- function (object,
     period=period,tensor=tensor,seed=seed,transform.data=transform.data,
     verbose=verbose)
 
-  ofun <- function (par) {
+  ofun <- function (par = numeric(0)) {
     params[idx] <- par
     coef(object,transform=TRUE) <<- params
     logql <<- nlf.lql(object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,

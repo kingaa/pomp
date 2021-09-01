@@ -262,7 +262,7 @@ smof.internal <- function (object,
   ker <- reuman.kernel(kernel.width)
   discrep <- spect.discrep(object,ker=ker,weights=weights)
 
-  ofun <- function (par) {
+  ofun <- function (par = numeric(0)) {
     params[idx] <- par
     coef(object,transform=TRUE) <<- params
     object@simspec <- compute.spect.sim(

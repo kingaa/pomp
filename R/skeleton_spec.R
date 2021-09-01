@@ -48,6 +48,8 @@
 ##' The default \code{skeleton} is undefined.
 ##' It will yield missing values (\code{NA}) for all state variables.
 ##'
+##' @example examples/skeleton_spec.R
+##'
 NULL
 
 skeletontype <- list(undef=0L,vectorfield=1L,map=2L)

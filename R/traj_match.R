@@ -184,7 +184,7 @@ tmof.internal <- function (object,
 
   loglik <- traj.match.loglik(object,ode_control=ode_control)
 
-  ofun <- function (par) {
+  ofun <- function (par = numeric(0)) {
     params[idx] <- par
     coef(object,transform=TRUE) <<- params
     loglik <<- traj.match.loglik(object,ode_control=ode_control)

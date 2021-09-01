@@ -1,9 +1,20 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.5.4}{
+  \itemize{
+    \item Stateful objective functions created by \code{traj_objfun}, \code{nlf_objfun}, \code{probe_objfun}, and \code{spect_objfun} now have default arguments.
+    In particular, the default is argument is a zero-length numeric vector.
+    Calling such a function with no arguments is valid if and only if the objective function was created with no variables to estimate (empty \code{est}).
+  }
+}
+\section{Changes in \pkg{pomp} version 3.5.3}{
+  \itemize{
+    \item Fixed bug in \code{rprior} arising with integer-valued return vectors.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.5.2}{
   \itemize{
     \item Major improvements to the package manual, including richer cross-linking and better organization.
-    \item Fixed bug in \code{rprior} arising with integer-valued return vectors.
   }
 }
 \section{Changes in \pkg{pomp} version 3.5.1}{

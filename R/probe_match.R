@@ -214,7 +214,7 @@ pmof.internal <- function (object,
 
   pompLoad(object,verbose=verbose)
 
-  ofun <- function (par) {
+  ofun <- function (par = numeric(0)) {
     params[idx] <- par
     coef(object,transform=TRUE) <<- params
     loglik <<- probe.eval(object)

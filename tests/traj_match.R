@@ -20,7 +20,9 @@ ou2 %>%
     params=coef(ou2)
   ) -> f
 
+f()
 stopifnot(f(0)==f(1))
+stopifnot(logLik(f)!=f(0))
 
 f %>% traj_objfun(est=c("alpha_1")) -> f1
 plot(sapply(seq(0.1,0.9,by=0.1),f1),xlab="",ylab="")

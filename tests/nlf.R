@@ -19,7 +19,9 @@ dat %>%
     lags=c(4,6),ti=100,tf=2000,seed=426094906L,
     rprocess=ou2@rprocess,rmeasure=ou2@rmeasure,rinit=ou2@rinit) -> m0
 
+m0()
 stopifnot(m0(0)==m0(1))
+stopifnot(logLik(m0)==-m0(0))
 
 m2 <- nlf_objfun(m0,est=estnames,seed=426094906L)
 plot(sapply(seq(-1,1,by=0.1),function(x)m2(c(x,0))))
