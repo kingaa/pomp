@@ -60,10 +60,9 @@ Note that the number of replicates will be \code{nsim} times \code{ncol(params)}
 if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.  the random seed to use.
 The RNG will be restored to its original state afterward.}
 
-\item{times}{the times at which observations are made.
+\item{times}{the sequence of observation times.
 \code{times} must indicate the column of observation times by name or index.
-The time vector must be numeric and non-decreasing.
-Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.}
+The time vector must be numeric and non-decreasing.}
 
 \item{t0}{The zero-time, i.e., the time of the initial state.
 This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}

@@ -37,12 +37,12 @@ pomp(
 \arguments{
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
-i.e., the output of another \pkg{pomp} calculation.}
-
-\item{times}{the times at which observations are made.
-\code{times} must indicate the column of observation times by name or index.
-The time vector must be numeric and non-decreasing.
+i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.}
+
+\item{times}{the sequence of observation times.
+\code{times} must indicate the column of observation times by name or index.
+The time vector must be numeric and non-decreasing.}
 
 \item{t0}{The zero-time, i.e., the time of the initial state.
 This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
