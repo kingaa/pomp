@@ -481,6 +481,14 @@
   pages: "20170126"
   doi: "https://doi.org/10.1098/rsif.2017.0126"
 
+- key: Ionides2021
+  author: "E. L. Ionides, K. Asfaw, J. Park, and A. A. King"
+  year: "2021"
+  title: "Bagged filters for partially observed interacting systems"
+  journal: "Journal of the American Statistical Association"
+  pages: "1&#x2013;33"
+  doi: "https://doi.org/10.1080/01621459.2021.1974867"
+
 - key: Kain2021
   author: "M. P. Kain, M. L. Childs, A. D. Becker, and E. A. Mordecai"
   year: "2021"
