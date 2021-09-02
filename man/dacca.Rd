@@ -76,11 +76,13 @@ Data are provided courtesy of Dr. Menno J. Bouma, London School of Tropical
 Medicine and Hygiene.
 }
 \examples{
-po <- dacca()
-plot(po)
-## MLE:
-coef(po)
-plot(simulate(po))
+\dontrun{
+  po <- dacca()
+  plot(po)
+  ## MLE:
+  coef(po)
+  plot(simulate(po))
+}
 }
 \references{
 \King2008

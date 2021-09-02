@@ -20,7 +20,7 @@
 ##' @family estimation methods
 ##'
 ##' @importFrom mvtnorm rmvnorm
-##' @importFrom stats median cov setNames
+##' @importFrom stats median cov
 ##'
 ##' @inheritParams pomp
 ##' @inheritParams pfilter

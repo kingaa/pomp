@@ -12,7 +12,8 @@
 ##' @family elementary algorithms
 ##' @inheritSection pomp Note for Windows users
 ##' @inheritParams pomp
-##' @param object optional; if present, it should be the output of one of \pkg{pomp}'s methods
+##' @param object optional;
+##' if present, it should be a data frame or a \sQuote{pomp} object.
 ##' @param params a named numeric vector or a matrix with rownames
 ##' containing the parameters at which the simulations are to be performed.
 ##' @param nsim The number of simulations to perform.

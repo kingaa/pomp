@@ -56,8 +56,13 @@ setMethod(
 )
 
 time.repl.internal <- function (object, t0 = FALSE, ..., value) {
-  if (!is.numeric(value)) pStop_(sQuote("value")," must be a numeric vector.")
-  storage.mode(value) <- "double"
+  value <- tryCatch(
+    as.double(value),
+    warning = function (e) NULL,
+    error = function (e) pStop_(conditionMessage(e))
+  )
+  if (length(value)<1L || !all(is.finite(value)))
+    pStop_(" times must be numeric and finite.")
   tt <- object@times
   dd <- object@data
   ss <- object@states
@@ -69,7 +74,7 @@ time.repl.internal <- function (object, t0 = FALSE, ..., value) {
   }
   if (!all(diff(object@times)>=0))
     pStop_("times must be a non-decreasing numeric sequence.")
-  if (object@t0>object@times[1])
+  if (object@t0>object@times[1L])
     pStop_("the zero-time ",sQuote("t0"),
       " must occur no later than the first observation.")
   object@data <- array(

@@ -113,7 +113,8 @@ See \link[=userdata]{userdata} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 
-\item{object}{optional; if present, it should be the output of one of \pkg{pomp}'s methods}
+\item{object}{optional;
+if present, it should be a data frame or a \sQuote{pomp} object.}
 }
 \value{
 A single \dQuote{pomp} object,

@@ -477,7 +477,11 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (is.null(obsnames)) obsnames <- rownames(data)
 
   ## check the parameters and force them to be double-precision
-  params <- setNames(as.double(params),names(params))
+  params <- tryCatch(
+    setNames(as.double(params),names(params)),
+    warning = function (e) pWarn_(conditionMessage(e)),
+    error = function (e) pStop_(conditionMessage(e))
+  )
   if (length(params) > 0) {
     if (is.null(names(params)) || !is.numeric(params) ||
         !all(nzchar(names(params))))

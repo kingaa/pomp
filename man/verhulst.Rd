@@ -38,12 +38,14 @@ Numerically, we simulate the stochastic dynamics using an Euler approximation.
 The measurements are assumed to be log-normally distributed.
 }
 \examples{
-verhulst() -> po
-plot(po)
-plot(simulate(po))
-pfilter(po,Np=1000) -> pf
-logLik(pf)
-spy(po)
+\dontrun{
+  verhulst() -> po
+  plot(po)
+  plot(simulate(po))
+  pfilter(po,Np=1000) -> pf
+  logLik(pf)
+  spy(po)
+}
 }
 \seealso{
 More examples provided with \pkg{pomp}: 

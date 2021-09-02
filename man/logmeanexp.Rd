@@ -26,12 +26,14 @@ When \code{se = TRUE}, \code{logmeanexp} uses a jackknife estimate of the
 variance in \eqn{log(x)}.
 }
 \examples{
-## an estimate of the log likelihood:
-po <- ricker()
-ll <- replicate(n=5,logLik(pfilter(po,Np=1000)))
-logmeanexp(ll)
-## with standard error:
-logmeanexp(ll,se=TRUE)
+\dontrun{
+  ## an estimate of the log likelihood:
+  po <- ricker()
+  ll <- replicate(n=5,logLik(pfilter(po,Np=1000)))
+  logmeanexp(ll)
+  ## with standard error:
+  logmeanexp(ll,se=TRUE)
+}
 }
 \author{
 Aaron A. King
