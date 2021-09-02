@@ -1,5 +1,14 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._5._5:
+
+        • The workhorse function ‘flow’ now has default arguments.
+
+        • The stateful objective function created by ‘traj_objfun’ has
+          been refactored so that it is independent of ‘trajectory’.
+          This change is invisible to the user, but lays the groundwork
+          for future changes in ‘trajectory’.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _3._5._4:
 
         • Stateful objective functions created by ‘traj_objfun’,

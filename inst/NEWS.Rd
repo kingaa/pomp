@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.5.5}{
+  \itemize{
+    \item The workhorse function \code{flow} now has default arguments.
+    \item The stateful objective function created by \code{traj_objfun} has been refactored so that it is independent of \code{trajectory}.
+    This change is invisible to the user, but lays the groundwork for future changes in \code{trajectory}.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.5.4}{
   \itemize{
     \item Stateful objective functions created by \code{traj_objfun}, \code{nlf_objfun}, \code{probe_objfun}, and \code{spect_objfun} now have default arguments.
