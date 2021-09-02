@@ -1,5 +1,5 @@
 
-R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+R version 4.1.1 (2021-08-10) -- "Kick Things"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -139,7 +139,7 @@ in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rini
 > try(probe(pb,params="I think so"))
 Error : in 'probe': 'params' must be a named numeric vector.
 In addition: Warning message:
-In setNames(as.double(params), names(params)) : NAs introduced by coercion
+NAs introduced by coercion 
 > try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
 Error : in 'probe': applying probes to simulated data: variable 'X' not found among the state variables.
 In addition: Warning message:

@@ -1,5 +1,5 @@
 
-R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+R version 4.1.1 (2021-08-10) -- "Kick Things"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -66,7 +66,7 @@ Error : in 'bsmc2': 'Np' must be specified.
 > try(bsmc2(po,params="yes"))
 Error : in 'bsmc2': 'params' must be a named numeric vector.
 In addition: Warning message:
-In setNames(as.double(params), names(params)) : NAs introduced by coercion
+NAs introduced by coercion 
 > try(bsmc2(po,params=list()))
 Error : in 'bsmc2': 'Np' must be specified.
 > try(bsmc2(po,params=c(1,2,3)))

@@ -1,5 +1,5 @@
 
-R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+R version 4.1.1 (2021-08-10) -- "Kick Things"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -180,7 +180,7 @@ variable [,1] [,2] [,3]
 > 
 > time(po) <- 1:10
 > try(time(po) <- c("bob","nancy"))
-Error : in 'time<-': 'value' must be a numeric vector.
+Error : in 'time<-':  times must be numeric and finite.
 > time(po1,t0=TRUE) <- 0:10
 > try(time(po) <- 10:0)
 Error : in 'time<-': times must be a non-decreasing numeric sequence.

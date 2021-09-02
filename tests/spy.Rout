@@ -1,5 +1,5 @@
 
-R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+R version 4.1.1 (2021-08-10) -- "Kick Things"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -153,8 +153,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2021-07-15 22:55:08.291 -0400 */
-/* Salt: 861EF21828715A96E898106F */
+/* Time: 2021-09-02 11:59:39.850 -0400 */
+/* Salt: 57D58A3ABDF1819EBAFF3F6B */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -271,8 +271,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2021-07-15 22:55:08.431 -0400 */
-/* Salt: 7E9EFD53FAB2AC9399813E38 */
+/* Time: 2021-09-02 11:59:39.990 -0400 */
+/* Salt: 9F2BC21A03B9E34E25138F30 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -793,8 +793,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2021-07-15 22:55:09.101 -0400 */
-/* Salt: 1C9E152C007375FCA4DD0D86 */
+/* Time: 2021-09-02 11:59:40.671 -0400 */
+/* Salt: 649A7AB0A4FC8560E6F2BAB6 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -989,8 +989,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2021-07-15 22:55:09.704 -0400 */
-/* Salt: 6DC49EDD61FD9014A1B06B70 */
+/* Time: 2021-09-02 11:59:41.252 -0400 */
+/* Salt: C3BD84EF9493A4B05DE85716 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
