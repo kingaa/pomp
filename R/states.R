@@ -39,3 +39,14 @@ setMethod(
     x
   }
 )
+
+##' @rdname states
+##' @inheritParams obs
+##' @export
+setMethod(
+  "states",
+  signature=signature(object="listie"),
+  definition=function (object, vars, ...) {
+    lapply(object,states)
+  }
+)

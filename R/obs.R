@@ -37,3 +37,13 @@ setMethod(
     y
   }
 )
+
+##' @rdname obs
+##' @export
+setMethod(
+  "obs",
+  signature=signature(object="listie"),
+  definition=function (object, vars, ...) {
+    lapply(object,obs)
+  }
+)

@@ -239,6 +239,15 @@ numeric(0)
 > gompertz() -> gompertz
 > gompertz -> po
 > 
+> pos <- c(po,po,po)
+> stopifnot(
++   dim(coef(pos))==c(5,3),
++   length(obs(pos))==3,
++   all(sapply(obs(pos),length)==100),
++   length(states(pos))==3,
++   all(sapply(states(pos),length)==100)
++ )
+> 
 > coef(po)
     K     r sigma   tau   X_0 
   1.0   0.1   0.1   0.1   1.0 

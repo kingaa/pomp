@@ -4,9 +4,12 @@
 \name{obs}
 \alias{obs}
 \alias{obs,pomp-method}
+\alias{obs,listie-method}
 \title{obs}
 \usage{
 \S4method{obs}{pomp}(object, vars, ...)
+
+\S4method{obs}{listie}(object, vars, ...)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}}

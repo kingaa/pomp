@@ -84,6 +84,15 @@ coef(po) <- list(a=3,b=12)
 gompertz() -> gompertz
 gompertz -> po
 
+pos <- c(po,po,po)
+stopifnot(
+  dim(coef(pos))==c(5,3),
+  length(obs(pos))==3,
+  all(sapply(obs(pos),length)==100),
+  length(states(pos))==3,
+  all(sapply(states(pos),length)==100)
+)
+
 coef(po)
 coef(po,transform=TRUE,pars=c("r","K"))
 coef(po,"sigma",transform=TRUE) <- 0

@@ -4,9 +4,12 @@
 \name{states}
 \alias{states}
 \alias{states,pomp-method}
+\alias{states,listie-method}
 \title{Latent states}
 \usage{
 \S4method{states}{pomp}(object, vars, ...)
+
+\S4method{states}{listie}(object, vars, ...)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}}

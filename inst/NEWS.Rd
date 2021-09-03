@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 3.5.6}{
+  \itemize{
+    \item The \code{states} and \code{obs} methods now work for lists of \sQuote{pomp} objects (\sQuote{listies}).
+  }
+}
 \section{Changes in \pkg{pomp} version 3.5.5}{
   \itemize{
     \item The workhorse function \code{flow} now has default arguments.
