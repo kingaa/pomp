@@ -17,9 +17,9 @@ INSTALL = install
 PKG = $(shell perl -ne 'print $$1 if /Package:\s+((\w+[-\.]?)+)/;' DESCRIPTION)
 VERSION = $(shell perl -ne 'print $$1 if /Version:\s+((\d+[-\.]?)+)/;' DESCRIPTION)
 PKGVERS = $(PKG)_$(VERSION)
-SOURCE=$(wildcard R/*R src/*.c src/*.h data/*)
-CSOURCE=$(wildcard src/*.c)
-TESTS=$(wildcard tests/*R)
+SOURCE=$(sort $(wildcard R/*R src/*.c src/*.h data/*))
+CSOURCE=$(sort $(wildcard src/*.c))
+TESTS=$(sort $(wildcard tests/*R))
 
 default:
 	@echo $(PKGVERS)
