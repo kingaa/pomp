@@ -17,7 +17,7 @@
   rinit,
   ...,
   ode_control = list(),
-  format = c("array", "data.frame"),
+  format = c("array", "data.frame", "pomps"),
   verbose = getOption("verbose", FALSE)
 )
 
@@ -30,7 +30,7 @@
   skeleton,
   rinit,
   ode_control = list(),
-  format = c("array", "data.frame"),
+  format = c("array", "data.frame", "pomps"),
   verbose = getOption("verbose", FALSE)
 )
 
@@ -41,7 +41,7 @@
   skeleton,
   rinit,
   ode_control = list(),
-  format = c("array", "data.frame"),
+  format = c("array", "data.frame", "pomps"),
   verbose = getOption("verbose", FALSE)
 )
 
@@ -85,10 +85,14 @@ the elements of this list will be passed to \code{\link[=deSolve]{ode}} if the s
 in a rank-3 array with dimensions
 \code{nvar} x \code{ncol(params)} x \code{ntimes}.
 Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
+Thus if \code{x} is the returned array, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k]} given parameters \code{params[,j]}.
 
-\code{format = "data.frame"} causes the results to be returned as a single data frame containing
-the time and states.
-An ordered factor variable, \sQuote{.id}, distinguishes the trajectories from one another.}
+\code{format = "data.frame"} causes the results to be returned as a single data frame containing the time and states.
+An ordered factor variable, \sQuote{.id}, distinguishes the trajectories from one another.
+
+\code{format = "pomps"} causes the trajectories to be returned as a single \sQuote{pomp} object (if a single parameter vector have been furnished to \code{trajectory}) or as a \sQuote{pompList} object (if multiple parameters have been furnished).
+In each of these, the \code{states} slot will have been replaced by the computed trajectory.
+Use \code{\link{states}} to view these.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 
@@ -96,8 +100,8 @@ An ordered factor variable, \sQuote{.id}, distinguishes the trajectories from on
 if present, it should be a data frame or a \sQuote{pomp} object.}
 }
 \value{
-\code{trajectory} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
-If \code{x} is the returned matrix, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k]} given parameters \code{params[,j]}.
+The \code{format} option controls the nature of the return value of \code{trajectory}.
+See above for details.
 }
 \description{
 Compute trajectories of the deterministic skeleton of a Markov process.

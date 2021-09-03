@@ -28,14 +28,18 @@
 ##' in a rank-3 array with dimensions
 ##' \code{nvar} x \code{ncol(params)} x \code{ntimes}.
 ##' Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
+##' Thus if \code{x} is the returned array, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k]} given parameters \code{params[,j]}.
 ##'
-##' \code{format = "data.frame"} causes the results to be returned as a single data frame containing
-##' the time and states.
+##' \code{format = "data.frame"} causes the results to be returned as a single data frame containing the time and states.
 ##' An ordered factor variable, \sQuote{.id}, distinguishes the trajectories from one another.
 ##'
+##' \code{format = "pomps"} causes the trajectories to be returned as a single \sQuote{pomp} object (if a single parameter vector have been furnished to \code{trajectory}) or as a \sQuote{pompList} object (if multiple parameters have been furnished).
+##' In each of these, the \code{states} slot will have been replaced by the computed trajectory.
+##' Use \code{\link{states}} to view these.
+##'
 ##' @return
-##' \code{trajectory} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
-##' If \code{x} is the returned matrix, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k]} given parameters \code{params[,j]}.
+##' The \code{format} option controls the nature of the return value of \code{trajectory}.
+##' See above for details.
 ##'
 NULL
 
@@ -71,7 +75,7 @@ setMethod(
     skeleton, rinit,
     ...,
     ode_control = list(),
-    format = c("array", "data.frame"),
+    format = c("array", "data.frame", "pomps"),
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -104,7 +108,7 @@ setMethod(
     times, t0, params,
     skeleton, rinit,
     ode_control = list(),
-    format = c("array", "data.frame"),
+    format = c("array", "data.frame", "pomps"),
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -137,7 +141,7 @@ setMethod(
     ...,
     skeleton, rinit,
     ode_control = list(),
-    format = c("array", "data.frame"),
+    format = c("array", "data.frame", "pomps"),
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -160,7 +164,7 @@ setMethod(
 trajectory.internal <- function (
   object, params,
   ...,
-  format = c("array", "data.frame"),
+  format = c("array", "data.frame", "pomps"),
   ode_control = list(),
   .gnsi = TRUE,
   verbose
@@ -211,6 +215,23 @@ trajectory.internal <- function (
     )
     x <- do.call(rbind,x)
     x$.id <- ordered(x$.id)
+  } else if (format == "pomps") {
+    rv <- rep(list(object),ncol(x))
+    dy <- dim(x)[c(1L,3L)]
+    ny <- dimnames(x)[c(1L,3L)]
+    for (k in seq_len(ncol(x))) {
+      y <- x[,k,,drop=FALSE]
+      dim(y) <- dy
+      dimnames(y) <- ny
+      rv[[k]]@states <- y
+      rv[[k]]@params <- params[,k]
+    }
+    if (length(rv)>1) {
+      names(rv) <- colnames(x)
+      x <- do.call(c,rv)
+    } else {
+      x <- rv[[1]]
+    }
   }
 
   x

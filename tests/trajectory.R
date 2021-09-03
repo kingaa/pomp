@@ -2,6 +2,7 @@ options(digits=3)
 png(filename="trajectory-%02d.png",res=100)
 
 library(pomp)
+library(ggplot2)
 
 pomp(
   data=NULL,
@@ -133,5 +134,27 @@ dat1 %>%
     format="d"
   ) -> dat2
 stopifnot(all.equal(dat,dat2))
+
+ricker() -> po
+try(trajectory(po,params=c("A","B")))
+p <- parmat(coef(po),3)
+colnames(p) <- LETTERS[1:3]
+p["r",] <- c(5,10,45)
+po %>%
+  trajectory(format="pomps") %>%
+  trajectory(params=p,times=1:50,format="pomps") -> pos
+states(pos) -> x
+obs(pos) -> y
+stopifnot(
+  all(names(pos)==LETTERS[1:3]),
+  length(x)==3,
+  length(y)==3
+)
+pos %>%
+  as.data.frame() %>%
+  ggplot(aes(x=time,y=N,group=.id,color=.id))+
+  geom_line()+
+  facet_wrap(~.id,ncol=1)+
+  theme_bw()
 
 dev.off()

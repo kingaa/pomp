@@ -6,13 +6,14 @@
 
 #include "pomp_internal.h"
 
-static R_INLINE SEXP ret_array (int nvars, int nreps, int ntimes, SEXP Snames)
+static R_INLINE SEXP ret_array (int nvars, int nreps, int ntimes, SEXP Snames, SEXP repnames)
 {
   SEXP X;
   int dim[3] = {nvars, nreps, ntimes};
   const char *dimnms[3] = {"variable",".id","time"};
   PROTECT(X = makearray(3,dim));
   setrownames(X,Snames,3);
+  setcolnames(X,repnames);
   fixdimnames(X,dimnms,3);
   UNPROTECT(1);
   return X;
@@ -27,6 +28,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   SEXP Snames, Pnames, Cnames;
   SEXP skel, pompfun;
   SEXP accumvars;
+  SEXP repnames;
   int *zidx = 0;
   int nvars, npars, nreps, nrepp, ntimes, ncovars, nzeros;
   int *dim;
@@ -45,6 +47,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   PROTECT(params = as_matrix(params));
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nrepp = dim[1];
+  PROTECT(repnames = GET_COLNAMES(GET_DIMNAMES(params)));
 
   PROTECT(times = AS_NUMERIC(times));
   ntimes = LENGTH(times);
@@ -65,13 +68,13 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
 
   // create array to store results
-  PROTECT(X = ret_array(nvars,nreps,ntimes,Snames));
+  PROTECT(X = ret_array(nvars,nreps,ntimes,Snames,repnames));
 
   // get names and indices of accumulator variables
   PROTECT(accumvars = GET_SLOT(object,install("accumvars")));
   nzeros = LENGTH(accumvars);
 
-  int nprotect = 14;
+  int nprotect = 15;
   
   if (nzeros > 0) {
     zidx = INTEGER(PROTECT(matchnames(Snames,accumvars,"state variables"))); nprotect++;
