@@ -69,7 +69,7 @@ session: install
 revdeps: install
 	mkdir -p library check
 	$(REXE) -e "pkgs <- strsplit('$(REVDEPS)',' ')[[1]]; download.packages(pkgs,destdir='library',repos='https://mirrors.nics.utk.edu/cran/')"
-	$(RCMD) check --library=library -o check library/*.tar.gz
+	$(RCMD) check --as-cran --library=library -o check library/*.tar.gz
 
 roxy: $(SOURCE) headers
 	$(REXE) -e "pkgbuild::compile_dll(); devtools::document(roclets=c('rd','collate','namespace'))"
