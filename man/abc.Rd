@@ -136,10 +136,10 @@ Additional arguments will override the defaults.
 
 The following can be applied to the output of an \code{abc} operation:
 \describe{
-\item{abc}{repeats the calculation, beginning with the last state}
-\item{continue}{continues the \code{abc} calculation}
-\item{plot}{produces a series of diagnostic plots}
-\item{traces}{produces an \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
+\item{\code{abc}}{repeats the calculation, beginning with the last state}
+\item{\code{\link{continue}}}{continues the \code{abc} calculation}
+\item{\code{plot}}{produces a series of diagnostic plots}
+\item{\code{\link{traces}}}{produces an \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
 }
 }
 

@@ -1,5 +1,22 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.0}{
+  Version 4 contains a few changes that are not backward compatible.
+  These are all to do with the elementary function \code{trajectory}, which computes trajectories of the deterministic dynamical skeleton.
+  See below for details.
+  \itemize{
+    \item The behavior of \code{trajectory} now fully conforms to the behavior of other \pkg{pomp} elementary functions.
+    In particular, one can now add, remove, or modify basic model components in a call to \code{trajectory} just as one can with \code{simulate}, \code{pfilter}, \code{probe}, etc.
+    Before version 4, additional arguments to \code{trajectory} (i.e., those passed via \code{...}) were passed on to the ODE integrator in the case of continuous-time deterministic skeletons (i.e., vectorfields) and ignored in the case of discrete-time skeletons (i.e., maps).
+    As of version 4, in order to adjust ODE integrator settings it is necessary to use the \code{ode_control} argument of \code{trajectory}.
+    This behavior matches that of \code{traj_objfun}.
+    \item It is now possible to create a \sQuote{pomp} object from scratch using \code{trajectory}, together with a specification of the rinit and skeleton components.
+    Prior to version 4, in order to do so, it was necessary to first create a dummy data set, then call \code{pomp}, and then pass the resulting \sQuote{pomp} object to \code{trajectory}.
+    This can now be achieved in one call.
+    \item The user now has the option, in a call to \code{trajectory}, to have the results returned as one or \sQuote{pomp} objects.
+    In this regard, its behavior matches that of \code{simulate}.
+  }
+}
 \section{Changes in \pkg{pomp} version 3.5.6}{
   \itemize{
     \item The \code{states} and \code{obs} methods now work for lists of \sQuote{pomp} objects (\sQuote{listies}).

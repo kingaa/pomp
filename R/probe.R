@@ -46,14 +46,14 @@
 ##' @section Methods:
 ##' The following methods are available.
 ##' \describe{
-##' \item{plot}{ displays diagnostic plots.  }
-##' \item{summary}{ displays summary information.
+##' \item{\code{plot}}{ displays diagnostic plots.  }
+##' \item{\code{summary}}{ displays summary information.
 ##' The summary includes quantiles (fractions of simulations with probe values less than those realized on the data) and the corresponding two-sided p-values.
 ##' In addition, the \dQuote{synthetic likelihood} (Wood 2010) is computed,
 ##' under the assumption that the probe values are multivariate-normally distributed.  }
-##' \item{logLik}{ returns the synthetic likelihood for the probes.
+##' \item{\code{logLik}}{ returns the synthetic likelihood for the probes.
 ##' NB: in general, this is not the same as the likelihood.  }
-##' \item{as.data.frame}{
+##' \item{\code{as.data.frame}}{
 ##'  coerces a \sQuote{probed_pomp} to a \sQuote{data.frame}.
 ##'  The latter contains the realized values of the probes on the data and on the simulations.
 ##' The variable \code{.id} indicates whether the probes are from the data or simulations.  }
