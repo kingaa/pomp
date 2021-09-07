@@ -2,18 +2,19 @@
 
 ## For pomp:
 
-- include `depends_on` argument to `bake` and `stew` (and `freeze`?)
-- include `mcap` function
+- in EnKF and EAKF, allow matrices to depend on parameters
+
 - more/better examples
 	- need examples of objective function methods
 	- `pmcmc` examples
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - `spy` methods for derived objects
+- include `mcap` function
 - Kalman filter?
 - iterated EnKF
 - for log-barycentric transformations, check that parameters are contiguous
 - more toy models
-- get the metaphors straight! "horses" vs "hitches" vs "workhorses" ("wagons"?)
+- ~~get the metaphors straight! "horses" vs "hitches" vs "workhorses" ("wagons"?)~~
 - manual pages on the organization of the package
     - diagnostic tools
     - auxiliary functions
@@ -25,9 +26,7 @@
 	- BetaNegBinom
 - remove need to specify paramnames when log,logit,barycentric partrans is given? HOW?
 - better scheme for indicating derivatives and maps in C snippets
-- should the default process model be persistence?
-	- what would the corresponding `dprocess` be?
-
+- accommodating matrices in `hitch`
 - `coef` returns data frame in some circumstances?
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
@@ -44,8 +43,6 @@
 
 - should parameter transformations allow renaming of variables?
 	- would require attention to `rw.sd`, e.g.
-
-- in EnKF and EAKF, allow matrices to depend on parameters
 
 - streamline the R snippets so that ... is unnecessary?
 	- probably not worth the trouble, since C snippets are so much faster
