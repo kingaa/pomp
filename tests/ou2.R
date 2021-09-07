@@ -15,7 +15,7 @@ stopifnot(all.equal(coef(ou2),partrans(ou2,coef(ou2,transform=TRUE),dir="from"))
 plot(s <- simulate(ou2,seed=1438408329L))
 pf <- freeze(pfilter(ou2,Np=1000),seed=1438408329L)
 plot(pf)
-tj <- trajectory(ou2)
+tj <- trajectory(ou2,format="a")
 matplot(time(ou2),t(tj[,1,]),type="l",ylab="")
 
 d <- dprocess(s,x=states(s),params=coef(s),times=time(s),log=TRUE)

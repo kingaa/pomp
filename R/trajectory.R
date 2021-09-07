@@ -24,7 +24,11 @@
 ##' the elements of this list will be passed to \code{\link[=deSolve]{ode}} if the skeleton is a vectorfield, and ignored if it is a map.
 ##' @param format the format in which to return the results.
 ##'
-##' \code{format = "array"} causes the trajectories to be returned
+##' \code{format = "pomps"} causes the trajectories to be returned as a single \sQuote{pomp} object (if a single parameter vector have been furnished to \code{trajectory}) or as a \sQuote{pompList} object (if multiple parameters have been furnished).
+##' In each of these, the \code{states} slot will have been replaced by the computed trajectory.
+##' Use \code{\link{states}} to view these.
+##' 
+##' \code{format = "arrays"} causes the trajectories to be returned
 ##' in a rank-3 array with dimensions
 ##' \code{nvar} x \code{ncol(params)} x \code{ntimes}.
 ##' Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
@@ -32,10 +36,6 @@
 ##'
 ##' \code{format = "data.frame"} causes the results to be returned as a single data frame containing the time and states.
 ##' An ordered factor variable, \sQuote{.id}, distinguishes the trajectories from one another.
-##'
-##' \code{format = "pomps"} causes the trajectories to be returned as a single \sQuote{pomp} object (if a single parameter vector have been furnished to \code{trajectory}) or as a \sQuote{pompList} object (if multiple parameters have been furnished).
-##' In each of these, the \code{states} slot will have been replaced by the computed trajectory.
-##' Use \code{\link{states}} to view these.
 ##'
 ##' @return
 ##' The \code{format} option controls the nature of the return value of \code{trajectory}.
@@ -75,7 +75,7 @@ setMethod(
     skeleton, rinit,
     ...,
     ode_control = list(),
-    format = c("array", "data.frame", "pomps"),
+    format = c("pomps", "arrays", "data.frame"),
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -108,7 +108,7 @@ setMethod(
     times, t0, params,
     skeleton, rinit,
     ode_control = list(),
-    format = c("array", "data.frame", "pomps"),
+    format = c("pomps", "arrays", "data.frame"),
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -141,7 +141,7 @@ setMethod(
     ...,
     skeleton, rinit,
     ode_control = list(),
-    format = c("array", "data.frame", "pomps"),
+    format = c("pomps", "arrays", "data.frame"),
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -164,7 +164,7 @@ setMethod(
 trajectory.internal <- function (
   object, params,
   ...,
-  format = c("array", "data.frame", "pomps"),
+  format = c("pomps", "arrays", "data.frame"),
   ode_control = list(),
   .gnsi = TRUE,
   verbose

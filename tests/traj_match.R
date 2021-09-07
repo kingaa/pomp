@@ -28,7 +28,7 @@ f %>% traj_objfun(est=c("alpha_1")) -> f1
 plot(sapply(seq(0.1,0.9,by=0.1),f1),xlab="",ylab="")
 
 f1(1.1)
-matplot(t(trajectory(f1)[,1,]),type="l",ylab="y")
+matplot(t(trajectory(f1,format="a")[,1,]),type="l",ylab="y")
 library(subplex)
 subplex(fn=f1,par=0.4,control=list(reltol=1e-3)) -> out
 f1(out$par)

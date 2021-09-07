@@ -14,7 +14,7 @@ stopifnot(all.equal(coef(rw2),partrans(rw2,coef(rw2,transform=TRUE),dir="from"))
 plot(simulate(rw2,seed=1438408329L))
 pf <- freeze(pfilter(rw2,Np=1000),seed=1438408329L)
 plot(pf)
-tj <- trajectory(rw2)
+tj <- trajectory(rw2,format="array")
 try(matplot(time(rw2),t(tj[,1,]),type="l",ylab=""))
 
 dev.off()

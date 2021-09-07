@@ -53,7 +53,7 @@ Error : in 'traj_objfun': 'skeleton', 'dmeasure' are needed basic components.
 > 
 > f1(1.1)
 [1] 40889714
-> matplot(t(trajectory(f1)[,1,]),type="l",ylab="y")
+> matplot(t(trajectory(f1,format="a")[,1,]),type="l",ylab="y")
 > library(subplex)
 > subplex(fn=f1,par=0.4,control=list(reltol=1e-3)) -> out
 > f1(out$par)

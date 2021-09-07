@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.1}{
+  \itemize{
+    \item The default return-value format for \code{trajectory} now matches that of \code{simulate}.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.0}{
   Version 4 contains a few changes that are not backward compatible.
   These are all to do with the elementary function \code{trajectory}, which computes trajectories of the deterministic dynamical skeleton.

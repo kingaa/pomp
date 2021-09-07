@@ -52,7 +52,7 @@ variable     [,1]
 > plot(simulate(eb,seed=48832734L))
 > pf <- freeze(pfilter(window(eb,end=200),Np=1000),seed=48832734L)
 > plot(pf)
-> tj <- trajectory(eb,ode_control=list(maxsteps=10000))
+> tj <- trajectory(eb,ode_control=list(maxsteps=10000),format="a")
 > matplot(time(eb),t(tj[c("I","N_EI","N_IR"),1,]),type="l",ylab="")
 > 
 > dev.off()

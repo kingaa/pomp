@@ -17,7 +17,7 @@ stopifnot(all.equal(coef(sir),
 plot(simulate(sir,seed=48832734L))
 pf <- freeze(pfilter(window(sir,end=0.5),Np=1000),seed=48832734L)
 plot(pf)
-tj <- trajectory(sir,ode_control=list(maxsteps=10000))
+tj <- trajectory(sir,ode_control=list(maxsteps=10000),format="array")
 matplot(time(sir),t(tj[c("I","cases"),1,]),type="l",ylab="")
 
 dev.off()

@@ -11,7 +11,7 @@ set.seed(54588699L)
 po <- ricker
 coef(po,"sigma") <- 0
 tm <- sort(runif(n=20,max=3))
-x <- trajectory(po,times=tm)["N",,]
+x <- trajectory(po,times=tm,format="array")["N",,]
 y <- simulate(po,times=tm,format="arrays")$states["N",,]
 stopifnot(identical(x,y))
 

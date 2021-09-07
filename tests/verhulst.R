@@ -16,6 +16,6 @@ plot(simulate(po,seed=1438408329L))
 pf <- freeze(pfilter(po,Np=1000),seed=1438408329L)
 plot(pf)
 tj <- trajectory(po)
-plot(time(po),tj["n",1,],type="l",ylab="n")
+plot(tj)
 
 dev.off()

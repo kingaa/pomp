@@ -15,7 +15,7 @@ stopifnot(all.equal(coef(ricker),partrans(ricker,coef(ricker,transform=TRUE),dir
 plot(simulate(ricker,seed=1438408329L))
 pf <- freeze(pfilter(ricker,Np=1000),seed=1438408329L)
 plot(pf)
-tj <- trajectory(ricker)
-plot(time(ricker),tj["N",1,],type="l",ylab="N")
+tj <- trajectory(ricker,format="d")
+plot(N~time,data=tj,type='l',ylab="N")
 
 dev.off()
