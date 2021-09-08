@@ -36,20 +36,5 @@ More data sets provided with \pkg{pomp}:
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{parus}}
-
-More examples provided with \pkg{pomp}: 
-\code{\link{SIR models}},
-\code{\link{blowflies}},
-\code{\link{childhood disease data}},
-\code{\link{dacca}()},
-\code{\link{ebola}},
-\code{\link{gompertz}()},
-\code{\link{ou2}()},
-\code{\link{parus}},
-\code{\link{pomp examples}},
-\code{\link{ricker}()},
-\code{\link{rw2}()},
-\code{\link{verhulst}()}
 }
 \concept{pomp datasets}
-\concept{pomp examples}

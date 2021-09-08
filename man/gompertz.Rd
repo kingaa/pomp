@@ -37,12 +37,12 @@ A \sQuote{pomp} object with simulated data.
 \code{gompertz()} constructs a \sQuote{pomp} object encoding a stochastic Gompertz population model with log-normal measurement error.
 }
 \details{
-The state process is \eqn{X_{t+1} = K^{1-S} X_{t}^S
-\epsilon_{t}}{X[t+1]=K^(1-S) X[t]^S eps[t]}, where \eqn{S=e^{-r}}{S=e^{-r}}
+The state process is
+\deqn{X_{t+1} = K^{1-S} X_{t}^S \epsilon_{t},}{X[t+1]=K^(1-S) X[t]^S eps[t],} where \eqn{S=e^{-r}}{S=e^{-r}}
 and the \eqn{\epsilon_t}{eps[t]} are i.i.d. lognormal random deviates with
-variance \eqn{\sigma^2}{sigma^2}.  The observed variables \eqn{Y_t} are
-distributed as
-\eqn{\mathrm{lognormal}(\log{X_t},\tau)}{lognormal(log(X[t]),tau)}.
+variance \eqn{\sigma^2}{sigma^2}.
+The observed variables \eqn{Y_t} are distributed as
+\deqn{Y_t\sim\mathrm{lognormal}(\log{X_t},\tau).}{Y[t]~lognormal(log(X[t]),tau).}
 Parameters include the per-capita growth rate \eqn{r}, the carrying
 capacity \eqn{K}, the process noise s.d. \eqn{\sigma}{sigma}, the
 measurement error s.d. \eqn{\tau}{tau}, and the initial condition
@@ -59,12 +59,10 @@ plot(gompertz(K=2,r=0.01))
 More examples provided with \pkg{pomp}: 
 \code{\link{SIR models}},
 \code{\link{blowflies}},
-\code{\link{bsflu}},
 \code{\link{childhood disease data}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{ou2}()},
-\code{\link{parus}},
 \code{\link{pomp examples}},
 \code{\link{ricker}()},
 \code{\link{rw2}()},

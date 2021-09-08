@@ -51,13 +51,11 @@ The measurements are assumed to be log-normally distributed.
 More examples provided with \pkg{pomp}: 
 \code{\link{SIR models}},
 \code{\link{blowflies}},
-\code{\link{bsflu}},
 \code{\link{childhood disease data}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{gompertz}()},
 \code{\link{ou2}()},
-\code{\link{parus}},
 \code{\link{pomp examples}},
 \code{\link{ricker}()},
 \code{\link{rw2}()}

@@ -100,13 +100,11 @@ available on the \href{https://kingaa.github.io/pomp/}{package website}.
 \seealso{
 More examples provided with \pkg{pomp}: 
 \code{\link{blowflies}},
-\code{\link{bsflu}},
 \code{\link{childhood disease data}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{gompertz}()},
 \code{\link{ou2}()},
-\code{\link{parus}},
 \code{\link{pomp examples}},
 \code{\link{ricker}()},
 \code{\link{rw2}()},
