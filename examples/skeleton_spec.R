@@ -6,8 +6,8 @@
   
   ## we add or change the deterministic skeleton
   ## using the 'skeleton' argument in any 'pomp'
-  ## elementary or estimation function, or in the
-  ## 'pomp' constructor itself).
+  ## elementary or estimation function
+  ## (or in the 'pomp' constructor itself).
   ## Here, we pass the skeleton specification
   ## to 'trajectory' as an R function.
   ## Since this is a continuous-time POMP, the

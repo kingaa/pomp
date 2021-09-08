@@ -26,6 +26,7 @@
 ##' @param N_0 initial condition
 ##'
 ##' @example examples/ricker.R
+##' @example examples/ricker-bifdiag.R
 ##'
 NULL
 

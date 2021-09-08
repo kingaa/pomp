@@ -28,7 +28,7 @@
 ##' In each of these, the \code{states} slot will have been replaced by the computed trajectory.
 ##' Use \code{\link{states}} to view these.
 ##' 
-##' \code{format = "arrays"} causes the trajectories to be returned
+##' \code{format = "array"} causes the trajectories to be returned
 ##' in a rank-3 array with dimensions
 ##' \code{nvar} x \code{ncol(params)} x \code{ntimes}.
 ##' Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
@@ -40,6 +40,9 @@
 ##' @return
 ##' The \code{format} option controls the nature of the return value of \code{trajectory}.
 ##' See above for details.
+##'
+##' @example examples/trajectory.R
+##' @example examples/ricker-bifdiag.R
 ##'
 NULL
 
@@ -71,18 +74,18 @@ setMethod(
   "trajectory",
   signature=signature(object="missing"),
   definition=function (
-    times, t0, params,
+    t0, times, params,
     skeleton, rinit,
     ...,
     ode_control = list(),
-    format = c("pomps", "arrays", "data.frame"),
+    format = c("pomps", "array", "data.frame"),
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
       trajectory.internal(
         object=NULL,
-        times=times,
         t0=t0,
+        times=times,
         params=params,
         skeleton=skeleton,
         rinit=rinit,
@@ -105,18 +108,18 @@ setMethod(
   definition=function (
     object,
     ...,
-    times, t0, params,
+    t0, times, params,
     skeleton, rinit,
     ode_control = list(),
-    format = c("pomps", "arrays", "data.frame"),
+    format = c("pomps", "array", "data.frame"),
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
       trajectory.internal(
         object=object,
-        params=params,
-        times=times,
         t0=t0,
+        times=times,
+        params=params,
         skeleton=skeleton,
         rinit=rinit,
         ...,
@@ -141,7 +144,7 @@ setMethod(
     ...,
     skeleton, rinit,
     ode_control = list(),
-    format = c("pomps", "arrays", "data.frame"),
+    format = c("pomps", "array", "data.frame"),
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -164,7 +167,7 @@ setMethod(
 trajectory.internal <- function (
   object, params,
   ...,
-  format = c("pomps", "arrays", "data.frame"),
+  format = c("pomps", "array", "data.frame"),
   ode_control = list(),
   .gnsi = TRUE,
   verbose

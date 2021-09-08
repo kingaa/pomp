@@ -10,27 +10,27 @@
 \title{Trajectory of a deterministic model}
 \usage{
 \S4method{trajectory}{missing}(
-  times,
   t0,
+  times,
   params,
   skeleton,
   rinit,
   ...,
   ode_control = list(),
-  format = c("pomps", "arrays", "data.frame"),
+  format = c("pomps", "array", "data.frame"),
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{trajectory}{data.frame}(
   object,
   ...,
-  times,
   t0,
+  times,
   params,
   skeleton,
   rinit,
   ode_control = list(),
-  format = c("pomps", "arrays", "data.frame"),
+  format = c("pomps", "array", "data.frame"),
   verbose = getOption("verbose", FALSE)
 )
 
@@ -41,19 +41,19 @@
   skeleton,
   rinit,
   ode_control = list(),
-  format = c("pomps", "arrays", "data.frame"),
+  format = c("pomps", "array", "data.frame"),
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{trajectory}{traj_match_objfun}(object, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
+\item{t0}{The zero-time, i.e., the time of the initial state.
+This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
+
 \item{times}{the sequence of observation times.
 \code{times} must indicate the column of observation times by name or index.
 The time vector must be numeric and non-decreasing.}
-
-\item{t0}{The zero-time, i.e., the time of the initial state.
-This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -85,7 +85,7 @@ the elements of this list will be passed to \code{\link[=deSolve]{ode}} if the s
 In each of these, the \code{states} slot will have been replaced by the computed trajectory.
 Use \code{\link{states}} to view these.
 
-\code{format = "arrays"} causes the trajectories to be returned
+\code{format = "array"} causes the trajectories to be returned
 in a rank-3 array with dimensions
 \code{nvar} x \code{ncol(params)} x \code{ntimes}.
 Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
@@ -110,6 +110,67 @@ Compute trajectories of the deterministic skeleton of a Markov process.
 In the case of a discrete-time system, the deterministic skeleton is a map and a trajectory is obtained by iterating the map.
 In the case of a continuous-time system, the deterministic skeleton is a vector-field;
 \code{trajectory} uses the numerical solvers in \pkg{\link[deSolve]{deSolve}} to integrate the vectorfield.
+}
+\examples{
+\donttest{
+  ## The basic components needed to compute trajectories
+  ## of a deterministic dynamical system are
+  ## rinit and skeleton.
+
+  ## The following specifies these for a simple continuous-time
+  ## model: dx/dt = r (1+e cos(t)) x
+
+  trajectory(
+    t0 = 0, times = seq(1,30,by=0.1),
+    rinit = function (x0, ...) {
+      c(x = x0)
+    },
+    skeleton = vectorfield(
+      function (r, e, t, x, ...) {
+        c(x=r*(1+e*cos(t))*x)
+      }
+    ),
+    params = c(r=1,e=3,x0=1)
+  ) -> po
+
+  plot(po,log='y')
+
+  ## In the case of a discrete-time skeleton,
+  ## we use the 'map' function.  For example,
+  ## the following computes a trajectory from
+  ## the dynamical system with skeleton
+  ## x -> x exp(r sin(omega t)).
+
+  trajectory(
+    t0 = 0, times=seq(1,100),
+    rinit = function (x0, ...) {
+      c(x = x0)
+    },
+    skeleton = map(
+      function (r, t, x, omega, ...) {
+        c(x=x*exp(r*sin(omega*t)))
+      },
+      delta.t=1
+    ),
+    params = c(r=1,x0=1,omega=4)
+  ) -> po
+
+  plot(po)
+
+}
+\donttest{
+  ## generate a bifurcation diagram for the Ricker map
+  p <- parmat(coef(ricker()),nrep=500)
+  p["r",] <- exp(seq(from=1.5,to=4,length=500))
+  trajectory(
+    ricker(),
+    times=seq(from=1000,to=2000,by=1),
+    params=p,
+    format="array"
+  ) -> x
+  matplot(p["r",],x["N",,],pch='.',col='black',
+    xlab=expression(log(r)),ylab="N",log='x')
+}
 }
 \seealso{
 More on \pkg{pomp} elementary algorithms: 
