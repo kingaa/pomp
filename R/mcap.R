@@ -22,9 +22,10 @@
 ##' 
 ##' @author Edward L. Ionides
 ##' @concept profile likelihood
-##' @rdname mcap
 ##' @importFrom stats loess predict lm vcov qchisq
 ##' @include package.R design.R
+##' 
+##' @rdname mcap
 ##' @export
 mcap <- function (
   logLik, parameter,
