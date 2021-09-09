@@ -1,0 +1,66 @@
+
+R version 4.1.1 (2021-08-10) -- "Kick Things"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> png(filename="mcap-%02d.png",res=100)
+> 
+> library(pomp)
+> library(dplyr)
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+> set.seed(722855899)
+> 
+> profile_design(
++   theta=seq(-2,2,length=100),
++   lower=c(a=0,b=0),
++   upper=c(a=1,b=2),
++   nprof=10
++ ) %>%
++   mutate(
++     logLik=rnorm(
++       n=length(theta),
++       mean=-theta^2-0.1*(theta+0.5)^4-300,
++       sd=0.3*(a+b)
++     )
++   ) -> x
+> 
+> mcp <- mcap(x$logLik,x$theta)
+> 
+> plot(logLik~theta,data=x,pch=16)
+> lines(smoothed~parameter,data=mcp$fit,col=4,lwd=3)
+> lines(quadratic~parameter,data=mcp$fit,col=7,lwd=3)
+> abline(v=mcp$ci,lwd=3,lty=2,col=1)
+> abline(v=mcp$mle,lwd=3,lty=3,col=1)
+> text(x=-0.5,y=-305,labels=bquote(MLE==.(signif(mcp$mle,2))))
+> text(x=-0.5,y=-306,labels=bquote(se[stat]==.(signif(mcp$se_stat,3))))
+> text(x=-0.5,y=-306.5,labels=bquote(se[mc]==.(signif(mcp$se_mc,3))))
+> text(x=-0.5,y=-307,labels=bquote(se[total]==.(signif(mcp$se,3))))
+> 
+> dev.off()
+null device 
+          1 
+> 

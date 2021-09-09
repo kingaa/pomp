@@ -1,5 +1,6 @@
 ##' @description
 ##' \code{profile_design} generates a data-frame where each row can be used as the starting point for a profile likelihood calculation.
+##' @concept profile likelihood
 ##' 
 ##' @rdname design
 ##' @return 

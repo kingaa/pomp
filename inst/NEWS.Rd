@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.2}{
+  \itemize{
+    \item Computation of Monte Carlo-adjusted profile likelihood is now facilitated by the new \code{mcap} function.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.1}{
   \itemize{
     \item The default return-value format for \code{trajectory} now matches that of \code{simulate}.

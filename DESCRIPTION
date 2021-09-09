@@ -2,7 +2,7 @@ Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
 Version: 4.0.2.0
-Date: 2021-09-08
+Date: 2021-09-09
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -104,6 +104,7 @@ Collate:
     'loglik.R'
     'logmeanexp.R'
     'lookup.R'
+    'mcap.R'
     'melt.R'
     'obs.R'
     'ou2.R'

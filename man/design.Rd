@@ -113,4 +113,5 @@ plot(x)
 \author{
 Aaron A. King
 }
+\concept{profile likelihood}
 \concept{search design}

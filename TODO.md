@@ -9,8 +9,6 @@
 	- `pmcmc` examples
 - do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - `spy` methods for derived objects
-- include `mcap` function
-- Kalman filter?
 - iterated EnKF
 - for log-barycentric transformations, check that parameters are contiguous
 - more toy models

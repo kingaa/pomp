@@ -32,6 +32,8 @@
 
 \newcommand{\Ionides2015}{E.L. Ionides, D. Nguyen, Y. \ifelse{latex}{\out{Atchad\'e}}{\ifelse{html}{\out{Atchad&eacute;}}{Atchade}}, S. Stoev, and A.A. King. Inference for dynamic and latent variable models via iterated, perturbed Bayes maps. \emph{Proceedings of the National Academy of Sciences} \bold{112}, 719--724, 2015.}
 
+\newcommand{\Ionides2017}{E. L. Ionides, C. Breto, J. Park, R. A. Smith, and A. A. King. Monte Carlo profile confidence intervals for dynamic systems. \emph{Journal of the Royal Society, Interface} \bold{14}, 20170126, 2017.}
+
 \newcommand{\Joe2003}{S. Joe and F.Y. Kuo. Remark on algorithm 659: Implementing Sobol' quasirandom sequence generator. \emph{ACM Transactions on Mathematical Software} \bold{29}, 49--57, 2003.}
 
 \newcommand{\Kendall1999}{B.E. Kendall, C.J. Briggs, W.W. Murdoch, P. Turchin, S.P. Ellner, E. McCauley, R.M. Nisbet, and S.N. Wood. Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches. \emph{Ecology} \bold{80}, 1789--1805, 1999.}
