@@ -3,7 +3,16 @@
 ## For pomp:
 
 - in EnKF and EAKF, allow matrices to depend on parameters
+- better scheme for indicating derivatives and maps in C snippets
+- accommodating matrices in `hitch`
+- make `mcap` into a generic, provide a method for data frames and a plotting method
+- vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`
+- perhaps `dinit`?
+- put basic true Kalman filter into **pomp**
+- put Kalman check in 'ou2' test
+- more toy models
 
+- support for asymmetric MCMC proposals
 - more/better examples
 	- need examples of objective function methods
 	- `pmcmc` examples
@@ -11,7 +20,6 @@
 - `spy` methods for derived objects
 - iterated EnKF
 - for log-barycentric transformations, check that parameters are contiguous
-- more toy models
 - ~~get the metaphors straight! "horses" vs "hitches" vs "workhorses" ("wagons"?)~~
 - manual pages on the organization of the package
     - diagnostic tools
@@ -23,18 +31,15 @@
 	- BetaBinom
 	- BetaNegBinom
 - remove need to specify paramnames when log,logit,barycentric partrans is given? HOW?
-- better scheme for indicating derivatives and maps in C snippets
-- accommodating matrices in `hitch`
+
 - `coef` returns data frame in some circumstances?
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
 
-- perhaps `dinit`?
 - easier interface for lists of probes in `probe`
 - documentation on `mifList`, `pmcmcList`, etc.?
 - methods to change data (`obs<-`)?
 	- perhaps recognized data variables, states, covariates in calls to `pomp` are replaced?
-- put Kalman check in 'ou2' test
 - MCMC proposals as pomp slots?
 - probes as pomp slots?
 - what does a generic `pomp.fun` interface look like?
@@ -47,16 +52,20 @@
 - add `include` argument to `pomp`?
 - graceful stopping for optimizers (at least for `nloptr`)
 - trap errors for LAPACK
-- support for asymmetric MCMC proposals
+
 - one-point SCQL function for possible use in fitting initial conditions
 - partial rejection control for `pfilter`?
 - adaptive particle numbers in pfilter (?)
+
 - plugin for adaptive tau leaping algorithm.
 - plugin for compartmental models
 
 ## Documentation
 
-- FAQ needs update with new issues from @MarieAugerMethe
+- FAQ needs update with new issues from @MarieAugerMethe:
+	- guidelines for choosing `rw.sd`
+	- linking to standalone C libraries
+	- prediction vs smoothing 
 - documentation for existing issues with "todo" label
 
 ## Helper packages
@@ -64,11 +73,11 @@
 - parallel mif-farm and multi-start optimization helpers
 - parallel `pfilter` algorithm (in **circumstance**)
 - number of processors stored in `bake`, `stew`, `freeze` outputs
-- parallel likelihood profiling tool
+- parallel likelihood profiling tool (with MCAP)
 
 ## Examples
 
 - SDE examples
 - LPA beetle examples
 - budmoth examples
-- variants on SIR
+- variants on SIR: SEIR, SIRS, ...
