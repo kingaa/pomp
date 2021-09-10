@@ -63,4 +63,6 @@ More on methods for deterministic process models:
 \code{\link{trajectory}()}
 }
 \concept{deterministic methods}
+\concept{extending the pomp package}
+\concept{low-level interface}
 \concept{pomp workhorses}

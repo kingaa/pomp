@@ -19,6 +19,8 @@
 ##' @include pomp_class.R pomp_fun.R load.R pstop.R
 ##' @docType methods
 ##' @family pomp workhorses
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' @seealso \link[=basic components]{basic model components},
 ##' \link[=elementary algorithms]{elementary algorithms},
 ##' \link[=estimation algorithms]{estimation algorithms}
@@ -37,6 +39,8 @@ NULL
 ##' @docType methods
 ##' @aliases dmeasure,ANY-method dmeasure,missing-method
 ##' @family pomp workhorses
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' @seealso Specification of the measurement density evaluator: \link{dmeasure specification}
 ##'
 ##' @param object an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
@@ -124,6 +128,8 @@ dmeasure.internal <- function (object, y, x, times, params, ..., log = FALSE,
 ##' @aliases dprior,ANY-method dprior,missing-method
 ##' @family pomp workhorses
 ##' @family Bayesian methods
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' @seealso Specification of the prior density evaluator: \link{prior specification}
 ##'
 ##' @inheritParams dmeasure
@@ -184,6 +190,8 @@ dprior.internal <- function (object, params, log = FALSE,
 ##' @docType methods
 ##' @aliases dprocess,ANY-method dprocess,missing-method
 ##' @family pomp workhorses
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' @seealso Specification of the process-model density evaluator: \link{dprocess specification}
 ##'
 ##' @inheritParams dmeasure
@@ -245,6 +253,8 @@ dprocess.internal <- function (object, x, times, params, log = FALSE, .gnsi = TR
 ##' @docType methods
 ##' @aliases partrans,ANY-method partrans,missing-method
 ##' @family pomp workhorses
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' @seealso Specification of parameter transformations: \code{\link{parameter_trans}}
 ##'
 ##' @inheritParams dmeasure
@@ -312,6 +322,8 @@ partrans.internal <- function (object, params, dir = c("fromEst", "toEst"),
 ##' @docType methods
 ##' @aliases rinit,ANY-method rinit,missing-method
 ##' @family pomp workhorses
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' @seealso Specification of the initial-state distribution: \link{rinit specification}
 ##'
 ##' @inheritParams dmeasure
@@ -377,6 +389,8 @@ rinit.internal <- function (object, params, t0, nsim = 1,
 ##' @docType methods
 ##' @aliases rmeasure,ANY-method rmeasure,missing-method
 ##' @family pomp workhorses
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' @seealso Specification of the measurement-model simulator: \link{rmeasure specification}
 ##'
 ##' @inheritParams dmeasure
@@ -441,6 +455,8 @@ rmeasure.internal <- function (object, x, times, params,
 ##' @aliases rprior,ANY-method rprior,missing-method
 ##' @family pomp workhorses
 ##' @family Bayesian methods
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' @seealso Specification of the prior distribution simulator: \link{prior specification}
 ##'
 ##' @inheritParams dmeasure
@@ -502,6 +518,8 @@ rprior.internal <- function (object, params, .gnsi = TRUE, ...) {
 ##' @docType methods
 ##' @aliases rprocess,ANY-method rprocess,missing-method
 ##' @family pomp workhorses
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' @seealso Specification of the process-model simulator: \link{rprocess specification}
 ##'
 ##' @inheritParams dmeasure
@@ -586,6 +604,8 @@ rprocess.internal <- function (object, x0, t0, times, params, ...,
 ##' @aliases skeleton,ANY-method skeleton,missing-method
 ##' @family pomp workhorses
 ##' @family deterministic methods
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' @seealso Specification of the deterministic skeleton: \link{skeleton specification}
 ##'
 ##' @inheritParams dmeasure

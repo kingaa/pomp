@@ -51,4 +51,6 @@ More on Bayesian methods:
 \code{\link{rprior}()}
 }
 \concept{Bayesian methods}
+\concept{extending the pomp package}
+\concept{low-level interface}
 \concept{pomp workhorses}

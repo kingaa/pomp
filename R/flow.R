@@ -11,6 +11,8 @@
 ##' @aliases flow,missing-method flow,ANY-method
 ##' @family pomp workhorses
 ##' @family deterministic methods
+##' @concept extending the pomp package
+##' @concept low-level interface
 ##' 
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames

@@ -46,4 +46,6 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{skeleton}()},
 \code{\link{workhorses}}
 }
+\concept{extending the pomp package}
+\concept{low-level interface}
 \concept{pomp workhorses}

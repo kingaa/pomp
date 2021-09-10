@@ -49,4 +49,6 @@ More on Bayesian methods:
 \code{\link{prior specification}}
 }
 \concept{Bayesian methods}
+\concept{extending the pomp package}
+\concept{low-level interface}
 \concept{pomp workhorses}
