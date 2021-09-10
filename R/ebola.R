@@ -29,7 +29,7 @@ NULL
 
 ##' @rdname ebola
 ##' @param country ISO symbol for the country (GIN=Guinea, LBR=Liberia, SLE=Sierra Leone).
-##' @param data if NULL, the situation report data (see \code{ebolaWHO}) for the appropriate country or region will be used.
+##' @param data if NULL, the situation report data (WHO Ebola Response Team 2014) for the appropriate country or region will be used.
 ##' Providing a dataset here will override this behavior.
 ##' @param nstageE integer; number of incubation stages.
 ##' @param incubation_period,infectious_period mean duration (in days) of the incubation and infectious periods.

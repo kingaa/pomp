@@ -55,7 +55,22 @@ variable     [,1]
 > tj <- trajectory(eb,ode_control=list(maxsteps=10000),format="a")
 > matplot(time(eb),t(tj[c("I","N_EI","N_IR"),1,]),type="l",ylab="")
 > 
-> dev.off()
-null device 
-          1 
+> library(dplyr)
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+> 
+> ebolaWA2014 %>%
++   filter(country=="GIN") %>%
++   mutate(day=as.numeric(date-as.Date("2014-04-30"))) %>%
++   select(-date,-country) -> dat
+> ebolaModel(data=dat) -> eb
 > 

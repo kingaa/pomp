@@ -24,7 +24,7 @@ ebolaModel(
 \arguments{
 \item{country}{ISO symbol for the country (GIN=Guinea, LBR=Liberia, SLE=Sierra Leone).}
 
-\item{data}{if NULL, the situation report data (see \code{ebolaWHO}) for the appropriate country or region will be used.
+\item{data}{if NULL, the situation report data (WHO Ebola Response Team 2014) for the appropriate country or region will be used.
 Providing a dataset here will override this behavior.}
 
 \item{timestep}{duration (in days) of Euler time-step for the simulations.}

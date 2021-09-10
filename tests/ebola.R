@@ -22,4 +22,10 @@ plot(pf)
 tj <- trajectory(eb,ode_control=list(maxsteps=10000),format="a")
 matplot(time(eb),t(tj[c("I","N_EI","N_IR"),1,]),type="l",ylab="")
 
-dev.off()
+library(dplyr)
+
+ebolaWA2014 %>%
+  filter(country=="GIN") %>%
+  mutate(day=as.numeric(date-as.Date("2014-04-30"))) %>%
+  select(-date,-country) -> dat
+ebolaModel(data=dat) -> eb

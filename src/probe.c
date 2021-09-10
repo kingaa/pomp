@@ -104,7 +104,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
 
   }
   if (k != nvals)
-    err("probes return different number of values on different datasets.");
+    err("probes return different number of values on different datasets."); // #nocov
 
   UNPROTECT(9);
   return retval;
