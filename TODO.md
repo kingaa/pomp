@@ -2,6 +2,8 @@
 
 ## For pomp:
 
+- banish the binomial model from the SIR examples
+
 - in EnKF and EAKF, allow matrices to depend on parameters
 - better scheme for indicating derivatives and maps in C snippets
 - accommodating matrices in `hitch`
@@ -16,7 +18,6 @@
 - more/better examples
 	- need examples of objective function methods
 	- `pmcmc` examples
-- do we need basic-component arguments at higher levels of the calling hierarchy for documentation purposes?  PROBABLY YES.
 - `spy` methods for derived objects
 - iterated EnKF
 - for log-barycentric transformations, check that parameters are contiguous

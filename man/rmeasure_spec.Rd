@@ -23,10 +23,10 @@ In writing an \code{rmeasure} C snippet, bear in mind that:
   \enumerate{
     \item The goal of such a snippet is to fill the observables with random values drawn from the measurement model distribution.
     Accordingly, each observable should be assigned a new value.
-    \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
+    \item In addition to the states, parameters, and covariates (if any), the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
   }
 
-The demos and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website} give examples as well.
+The demos and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website} give examples.
 
 It is also possible, though far less efficient, to specify \code{rmeasure} using an \R function.
 In this case, specify the measurement model simulator by furnishing \preformatted{
