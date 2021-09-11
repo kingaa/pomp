@@ -51,7 +51,10 @@ Error : in 'emeasure': 'emeasure' returns variable-length results.
 > e <- emeasure(po1,x=states(po1),params=coef(po1),times=time(po1))
 Warning message:
 'emeasure' unspecified: NAs generated. 
-> stopifnot(sum(is.na(e))==200)
+> stopifnot(
++   dim(e)==c(2,1,100),
++   sum(is.na(e))==200
++ )
 > 
 > sir() %>%
 +   simulate(

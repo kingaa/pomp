@@ -37,7 +37,6 @@ setClass(
   contains="pomp",
   slots=c(
     Np="integer",
-    R="array",
     pred.mean="array",
     filter.mean="array",
     forecast="array",
@@ -52,6 +51,19 @@ setClass(
     forecast=array(data=numeric(0L),dim=c(0L,0L)),
     cond.logLik=numeric(0L),
     loglik=as.double(NA)
+  )
+)
+
+setClass(
+  "eakfd_pomp",
+  contains="kalmand_pomp",
+  slots=c(
+    Cmatrix="array",
+    Rmatrix="array"
+  ),
+  prototype=prototype(
+    Cmatrix=array(data=numeric(0L),dim=c(0L,0L)),
+    Rmatrix=array(data=numeric(0L),dim=c(0L,0L))
   )
 )
 
@@ -97,19 +109,19 @@ setMethod(
 setMethod(
   "enkf",
   signature=signature(data="data.frame"),
-  function (data, Np, R,
-    params, rinit, rprocess, emeasure,
+  function (data, Np,
+    params, rinit, rprocess, emeasure, vmeasure,
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
       enkf.internal(
         data,
         Np=Np,
-        R=R,
         params=params,
         rinit=rinit,
         rprocess=rprocess,
         emeasure=emeasure,
+        vmeasure=vmeasure,
         ...,
         verbose=verbose
       ),
@@ -124,14 +136,13 @@ setMethod(
 setMethod(
   "enkf",
   signature=signature(data="pomp"),
-  function (data, Np, R,
+  function (data, Np,
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
       enkf.internal(
         data,
         Np=Np,
-        R=R,
         ...,
         verbose=verbose
       ),
@@ -146,15 +157,13 @@ setMethod(
 setMethod(
   "enkf",
   signature=signature(data="kalmand_pomp"),
-  function (data, Np, R,
+  function (data, Np,
     ..., verbose = getOption("verbose", FALSE)) {
     if (missing(Np)) Np <- data@Np
-    if (missing(R)) R <- data@R
     tryCatch(
       enkf.internal(
         as(data,"pomp"),
         Np=Np,
-        R=R,
         ...,
         verbose=verbose
       ),
@@ -251,7 +260,7 @@ setMethod(
   }
 )
 
-enkf.internal <- function (object, Np, R, ..., verbose) {
+enkf.internal <- function (object, Np, ..., verbose) {
 
   verbose <- as.logical(verbose)
 
@@ -263,10 +272,12 @@ enkf.internal <- function (object, Np, R, ..., verbose) {
   if (undefined(object@emeasure))
     pStop_(paste(sQuote(c("emeasure")),collapse=", ")," is a needed basic component.")
 
+  if (undefined(object@vmeasure))
+    pStop_(paste(sQuote(c("vmeasure")),collapse=", ")," is a needed basic component.")
+
   Np <- as.integer(Np)
   if (length(Np)>1 || !is.finite(Np) || isTRUE(Np<=0))
     pStop_(sQuote("Np")," should be a single positive integer.")
-  R <- as.matrix(R)
   params <- coef(object)
 
   t <- time(object)
@@ -275,6 +286,7 @@ enkf.internal <- function (object, Np, R, ..., verbose) {
 
   y <- obs(object)
   nobs <- nrow(y)
+  on <- rownames(y)
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
@@ -287,21 +299,25 @@ enkf.internal <- function (object, Np, R, ..., verbose) {
   forecast <- array(dim=c(nobs,ntimes),dimnames=dimnames(y))
   condlogLik <- numeric(ntimes)
 
-  sqrtR <- tryCatch(
-    t(chol(R)),                     # t(sqrtR)%*%sqrtR == R
-    error = function (e) {
-      pStop_("degenerate ",sQuote("R"),": ",conditionMessage(e))
-    }
-  )
-
   for (k in seq_len(ntimes)) {
     ## advance ensemble according to state process
     X <- rprocess(object,x0=X,t0=tt[k],times=tt[k+1],params=params)
     rn <- rownames(X)
     
     predMeans[,k] <- pm <- rowMeans(X) # prediction mean
-    Y <- emeasure(object,x=X,params=params,times=tt[k+1])
+    Y <- emeasure(object,x=X,times=tt[k+1],params=params)
     ym <- rowMeans(Y)                  # forecast mean
+
+    R <- vmeasure(object,x=pm,params=params,times=tt[k+1])
+    dn <- dim(R)[c(1L,2L)]
+    R <- R[on,on,,]
+    dim(R) <- dn
+    sqrtR <- tryCatch(
+      t(chol(R)), ## t(sqrtR)%*%sqrtR == R
+      error = function (e) {
+        pStop_("degenerate ",sQuote("vmeasure"),": ",conditionMessage(e))
+      }
+    )
 
     X <- X-pm
     Y <- Y-ym
@@ -326,7 +342,7 @@ enkf.internal <- function (object, Np, R, ..., verbose) {
   }
 
   new("kalmand_pomp",object,
-    Np=Np,R=R,
+    Np=Np,
     filter.mean=filterMeans,
     pred.mean=predMeans,
     forecast=forecast,
@@ -335,9 +351,7 @@ enkf.internal <- function (object, Np, R, ..., verbose) {
 
 }
 
-eakf.internal <- function (object,
-  Np, C, R,
-  ..., verbose) {
+eakf.internal <- function (object, Np, C, R, ..., verbose) {
 
   verbose <- as.logical(verbose)
 
@@ -415,7 +429,12 @@ eakf.internal <- function (object,
     X[,] <- b%*%X+fm[,]
   }
 
-  new("kalmand_pomp",object,Np=Np,
+  new(
+    "eakfd_pomp",
+    object,
+    Np=Np,
+    Cmatrix=as.matrix(C),
+    Rmatrix=as.matrix(R),
     filter.mean=filterMeans,
     pred.mean=predMeans,
     forecast=forecast,

@@ -219,8 +219,12 @@ typedef void pomp_measure_model_simulator (double *y, const double *x, const dou
   const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 
-typedef void pomp_measure_model_expectation (double *y, const double *x, const double *p,
+typedef void pomp_measure_model_expectation (double *f, const double *x, const double *p,
   const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t);
+
+typedef void pomp_measure_model_covariance (double *f, const double *x, const double *p,
+  const int *vmatindex, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 
 typedef void pomp_measure_model_density (double *lik, const double *y, const double *x, const double *p, int give_log,

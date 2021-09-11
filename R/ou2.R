@@ -47,6 +47,7 @@ ou2 <- function (
     rprocess=discrete_time("_ou2_step"),
     dprocess="_ou2_pdf",
     emeasure = "_ou2_emeasure",
+    vmeasure = "_ou2_vmeasure",
     dmeasure = "_ou2_dmeasure",
     rmeasure = "_ou2_rmeasure",
     skeleton = map("_ou2_skel",delta.t=1),

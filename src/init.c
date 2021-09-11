@@ -35,6 +35,7 @@ static const R_CallMethodDef callMethods[] = {
   {"do_rmeasure", (DL_FUNC) &do_rmeasure, 5},
   {"do_dmeasure", (DL_FUNC) &do_dmeasure, 7},
   {"do_emeasure", (DL_FUNC) &do_emeasure, 5},
+  {"do_vmeasure", (DL_FUNC) &do_vmeasure, 5},
   {"do_rprior", (DL_FUNC) &do_rprior, 3},
   {"do_dprior", (DL_FUNC) &do_dprior, 4},
   {"do_skeleton", (DL_FUNC) &do_skeleton, 5},

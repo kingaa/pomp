@@ -115,7 +115,8 @@ More on implementing POMP models:
 \code{\link{rprocess specification}},
 \code{\link{skeleton specification}},
 \code{\link{transformations}},
-\code{\link{userdata}}
+\code{\link{userdata}},
+\code{\link{vmeasure specification}}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},
@@ -129,6 +130,7 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{rprior}()},
 \code{\link{rprocess}()},
 \code{\link{skeleton}()},
+\code{\link{vmeasure}()},
 \code{\link{workhorses}}
 
 More on \pkg{pomp} estimation algorithms:

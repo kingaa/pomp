@@ -10,7 +10,7 @@
 ##' @details
 ##' The measurement model is the link between the data and the unobserved state process.
 ##' Some algorithms require the conditional expectation of the measurement model, given the latent state and parameters.
-##' This is supplied using hte \code{emeasure} argument.
+##' This is supplied using the \code{emeasure} argument.
 ##'
 ##' Suppose you have a procedure to compute this conditional expectation, given the value of the latent state variables.
 ##' Then you can furnish \preformatted{
@@ -23,9 +23,9 @@
 ##'
 ##' In writing an \code{emeasure} C snippet, bear in mind that:
 ##'   \enumerate{
-##'     \item The goal of such a snippet is to variables named \code{E_y} with the conditional expectations of observables \code{y}.
+##'     \item The goal of such a snippet is to fill variables named \code{E_y} with the conditional expectations of observables \code{y}.
 ##'     Accordingly, there should be one assignment of \code{E_y} for each observable \code{y}.
-##'     \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
+##'     \item In addition to the states, parameters, and covariates (if any), the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
 ##'   }
 ##'
 ##' The demos and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website} give examples.
@@ -37,7 +37,7 @@
 ##' The arguments of \code{f} should be chosen from among the state variables, parameters, covariates, and time.
 ##' It must also have the argument \code{...}.
 ##' \code{f} must return a named numeric vector of length equal to the number of observable variables.
-##' The names should match the observable names.
+##' The names should match those of the observable variables.
 ##'
 ##' @section Default behavior:
 ##' The default \code{emeasure} is undefined.

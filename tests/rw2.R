@@ -15,6 +15,16 @@ plot(simulate(rw2,seed=1438408329L))
 pf <- freeze(pfilter(rw2,Np=1000),seed=1438408329L)
 plot(pf)
 tj <- trajectory(rw2,format="array")
-try(matplot(time(rw2),t(tj[,1,]),type="l",ylab=""))
+stopifnot(
+  is.na(tj)
+)
+
+v <- vmeasure(rw2,params=coef(rw2),x=states(rw2),times=time(rw2))
+stopifnot(
+  v[1,1,,]==1,
+  v[2,2,,]==1,
+  v[1,2,,]==0,
+  v[2,1,,]==0
+)
 
 dev.off()

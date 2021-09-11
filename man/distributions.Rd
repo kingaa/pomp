@@ -130,7 +130,8 @@ More on implementing POMP models:
 \code{\link{rprocess specification}},
 \code{\link{skeleton specification}},
 \code{\link{transformations}},
-\code{\link{userdata}}
+\code{\link{userdata}},
+\code{\link{vmeasure specification}}
 }
 \author{
 Aaron A. King

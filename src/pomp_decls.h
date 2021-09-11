@@ -22,7 +22,8 @@ extern int num_map_steps(double t1, double t2, double Rf_dt);
 /* src/gompertz.c */
 extern void _gompertz_normal_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_normal_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
-extern void _gompertz_normal_emeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
+extern void _gompertz_normal_emeasure(double *f, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
+extern void _gompertz_normal_vmeasure(double *f, double *x, double *p, int *vmatindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_simulator(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t, double Rf_dt);
 extern void _gompertz_skeleton(double *f, double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, const double *covar, double t);
 extern void _gompertz_to_trans(double *__pt, const double *__p, const int *__parindex);
@@ -43,6 +44,7 @@ extern void _ou2_skel(double *f, double *x, double *p, int *stateindex, int *par
 extern void _ou2_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
 extern void _ou2_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
 extern void _ou2_emeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
+extern void _ou2_vmeasure(double *f, double *x, double *p, int *vmatindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);
 /* src/partrans.c */
 extern SEXP do_partrans(SEXP object, SEXP params, SEXP dir, SEXP gnsi);
 /* src/pfilter.c */
@@ -104,5 +106,7 @@ extern const SEXP get_userdata(const char *name);
 extern const int *get_userdata_int(const char *name);
 extern const double *get_userdata_double(const char *name);
 extern void unset_pomp_userdata(void);
+/* src/vmeasure.c */
+extern SEXP do_vmeasure(SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi);
 /* src/wpfilter.c */
 extern SEXP wpfilter(SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Target, SEXP Np);

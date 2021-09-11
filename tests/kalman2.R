@@ -27,8 +27,8 @@ dat %>%
         c(x=x*exp(r*(1-x/K))+e)
       }
     ),
-    R=2,
-    emeasure=function(x,...) c(Y=0.01*x)
+    emeasure=function(x,...) c(Y=0.01*x),
+    vmeasure=function(...) matrix(2,1,1,dimnames=list("Y","Y"))
   ) %>% plot()
 
 try(dat %>% eakf())

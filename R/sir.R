@@ -158,6 +158,9 @@ sir <- function (
     emeasure=Csnippet("
       E_reports = cases*rho;"
     ),
+    vmeasure=Csnippet("
+      V_reports_reports = cases*rho*(1-rho);"
+    ),
     rmeasure=Csnippet("
       double mean, sd;
       double rep;
@@ -297,6 +300,9 @@ sir2 <- function (
     ),
     emeasure=Csnippet("
       E_reports = cases*rho;"
+    ),
+    vmeasure=Csnippet("
+      V_reports_reports = cases*rho*(1-rho);"
     ),
     rmeasure=Csnippet("
       reports = rbinom(cases,rho);"

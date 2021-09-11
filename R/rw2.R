@@ -48,6 +48,10 @@ rw2 <- function (x1_0 = 0, x2_0 = 0, s1 = 1, s2 = 3, tau = 1,
         E_y1 = x1;
         E_y2 = x2;"
     ),
+    vmeasure=Csnippet("
+        V_y1_y1 = V_y2_y2 = tau*tau;
+        V_y1_y2 = V_y2_y1 = 0;"
+    ),
     rmeasure=Csnippet("
         y1 = rnorm(x1,tau);
         y2 = rnorm(x2,tau);"

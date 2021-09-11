@@ -135,5 +135,6 @@ Collate:
     'transformations.R'
     'userdata.R'
     'verhulst.R'
+    'vmeasure_spec.R'
     'window.R'
 RoxygenNote: 7.1.2

@@ -170,6 +170,7 @@ More on implementing POMP models:
 \code{\link{rmeasure specification}},
 \code{\link{rprocess specification}},
 \code{\link{skeleton specification}},
-\code{\link{transformations}}
+\code{\link{transformations}},
+\code{\link{vmeasure specification}}
 }
 \concept{implementation information}

@@ -106,14 +106,14 @@ static R_INLINE void setcolnames (SEXP x, SEXP names) {
 }
 
 static R_INLINE void fixdimnames (SEXP x, const char **names, int n) {
-  int nprotect = 0;
+  int nprotect = 2;
   int i;
   SEXP dimnames, nm;
-  PROTECT(dimnames = GET_DIMNAMES(x)); nprotect++;
+  PROTECT(dimnames = GET_DIMNAMES(x));
   if (isNull(dimnames)) {
     PROTECT(dimnames = allocVector(VECSXP,n)); nprotect++;
   }
-  PROTECT(nm = allocVector(VECSXP,n)); nprotect++;
+  PROTECT(nm = allocVector(VECSXP,n));
   for (i = 0; i < n; i++)
     SET_ELEMENT(nm,i,mkChar(names[i]));
   SET_NAMES(dimnames,nm);

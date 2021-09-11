@@ -40,11 +40,17 @@ x1_0 x2_0   s1   s2  tau
 > pf <- freeze(pfilter(rw2,Np=1000),seed=1438408329L)
 > plot(pf)
 > tj <- trajectory(rw2,format="array")
-> try(matplot(time(rw2),t(tj[,1,]),type="l",ylab=""))
-Error in plot.window(...) : need finite 'ylim' values
-In addition: Warning messages:
-1: In min(x) : no non-missing arguments to min; returning Inf
-2: In max(x) : no non-missing arguments to max; returning -Inf
+> stopifnot(
++   is.na(tj)
++ )
+> 
+> v <- vmeasure(rw2,params=coef(rw2),x=states(rw2),times=time(rw2))
+> stopifnot(
++   v[1,1,,]==1,
++   v[2,2,,]==1,
++   v[1,2,,]==0,
++   v[2,1,,]==0
++ )
 > 
 > dev.off()
 null device 

@@ -52,6 +52,7 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{rprior}()},
 \code{\link{rprocess}()},
 \code{\link{skeleton}()},
+\code{\link{vmeasure}()},
 \code{\link{workhorses}}
 }
 \concept{extending the pomp package}

@@ -19,7 +19,10 @@ po %>% simulate(emeasure=function(x1, x2, t, ...)
 try(emeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
 po %>% simulate(emeasure=NULL) -> po1
 e <- emeasure(po1,x=states(po1),params=coef(po1),times=time(po1))
-stopifnot(sum(is.na(e))==200)
+stopifnot(
+  dim(e)==c(2,1,100),
+  sum(is.na(e))==200
+)
 
 sir() %>%
   simulate(

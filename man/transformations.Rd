@@ -66,7 +66,8 @@ More on implementing POMP models:
 \code{\link{rmeasure specification}},
 \code{\link{rprocess specification}},
 \code{\link{skeleton specification}},
-\code{\link{userdata}}
+\code{\link{userdata}},
+\code{\link{vmeasure specification}}
 }
 \concept{implementation information}
 \concept{parameter transformations}

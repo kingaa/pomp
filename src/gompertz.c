@@ -12,7 +12,9 @@
 
 #define Y           (y[obsindex[0]])   // observed population size
 #define X           (x[stateindex[0]]) // actual population size
-#define XPRIME      (f[stateindex[0]]) // new population size (for skeleton function only)
+#define XPRIME      (f[stateindex[0]]) // new population size
+#define EY          (f[obsindex[0]])   // expectation
+#define VY          (f[vmatindex[0]])  // variance
 
 // normal measurement model density
 void _gompertz_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
@@ -29,10 +31,18 @@ void _gompertz_normal_rmeasure (double *y, double *x, double *p,
 }
 
 // measurement model expectation
-void _gompertz_normal_emeasure (double *y, double *x, double *p,
+void _gompertz_normal_emeasure (double *f, double *x, double *p,
   int *obsindex, int *stateindex, int *parindex, int *covindex,
   double *covars, double t) {
-  Y = X*exp(-TAU*TAU/2);
+  EY = X*exp(TAU*TAU/2);
+}
+
+// measurement model variance
+void _gompertz_normal_vmeasure (double *f, double *x, double *p,
+  int *vmatindex, int *stateindex, int *parindex, int *covindex,
+  double *covars, double t) {
+  double et = exp(TAU*TAU);
+  VY = X*X*et*(et-1);
 }
 
 // stochastic Gompertz model with log-normal process noise
@@ -62,6 +72,8 @@ void _gompertz_skeleton (double *f, double *x, const double *p,
 #undef Y
 #undef X
 #undef XPRIME
+#undef EY
+#undef VY
 
 #define r		(__p[__parindex[0]])
 #define K		(__p[__parindex[1]])

@@ -213,6 +213,7 @@ More on implementing POMP models:
 \code{\link{rmeasure specification}},
 \code{\link{skeleton specification}},
 \code{\link{transformations}},
-\code{\link{userdata}}
+\code{\link{userdata}},
+\code{\link{vmeasure specification}}
 }
 \concept{implementation information}

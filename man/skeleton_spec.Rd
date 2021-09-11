@@ -145,7 +145,8 @@ More on implementing POMP models:
 \code{\link{rmeasure specification}},
 \code{\link{rprocess specification}},
 \code{\link{transformations}},
-\code{\link{userdata}}
+\code{\link{userdata}},
+\code{\link{vmeasure specification}}
 
 More on methods for deterministic process models: 
 \code{\link{flow}()},

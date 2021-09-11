@@ -58,6 +58,11 @@ static double dens_ou2 (double x1, double x2, double z1, double z2,
 #define Y1    (y[obsindex[0]])
 #define Y2    (y[obsindex[1]])
 
+#define V11   (f[vmatindex[0]])
+#define V21   (f[vmatindex[1]])
+#define V12   (f[vmatindex[2]])
+#define V22   (f[vmatindex[3]])
+
 // onestep simulator for use in 'discrete.time.sim' plug-in
 void _ou2_step (double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
@@ -118,6 +123,16 @@ void _ou2_emeasure (double *y, double *x, double *p,
   Y2 = x[X2];
 }
 
+// bivariate normal measurement variance
+void _ou2_vmeasure (double *f, double *x, double *p,
+  int *vmatindex, int *stateindex, int *parindex, int *covindex,
+  double *covar, double t)
+{
+  double sd = fabs(TAU);
+  V11 = V22 = sd*sd;
+  V12 = V21 = 0;
+}
+
 #undef ALPHA1
 #undef ALPHA2
 #undef ALPHA3
@@ -131,3 +146,8 @@ void _ou2_emeasure (double *y, double *x, double *p,
 #undef X2
 #undef Y1
 #undef Y2
+
+#undef V11
+#undef V21
+#undef V12
+#undef V22

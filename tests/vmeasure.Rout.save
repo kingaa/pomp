@@ -1,0 +1,109 @@
+
+R version 4.1.1 (2021-08-10) -- "Kick Things"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> try(vmeasure())
+Error : in 'vmeasure': 'object' is a required argument.
+> try(vmeasure("does this work?"))
+Error : 'vmeasure' is undefined for 'object' of class 'character'.
+> try(simulate(t0=0,times=1:10,vmeasure=Csnippet("V_B_B=rho*(1-rho)*inc;")))
+Error : in 'simulate': when 'vmeasure' is provided as a C snippet, you must also provide 'obsnames'.
+> 
+> ou2() -> po
+> try(vmeasure(po))
+Error : in 'vmeasure': argument "x" is missing, with no default
+> try(vmeasure(po,x=states(po)))
+Error : in 'vmeasure': argument "params" is missing, with no default
+> try(vmeasure(po,x=states(po),params=coef(po)))
+Error : in 'vmeasure': argument "times" is missing, with no default
+> try(vmeasure(po,x=states(po),params=coef(po),times=numeric(0)))
+Error : in 'vmeasure': length('times') = 0, no work to do.
+> try(vmeasure(po,x=states(po),params=coef(po),times=c(1,2,3)))
+Error : in 'vmeasure': length of 'times' and 3rd dimension of 'x' do not agree.
+> simulate(po,nsim=3,format="arrays") %>% getElement("states") -> X
+> try(vmeasure(po,x=X,params=parmat(coef(po),2),times=time(po)))
+Error : in 'vmeasure': larger number of replicates is not a multiple of smaller.
+> po %>%
++   simulate(
++     vmeasure=function(x1, x2, ...) {
++       matrix(c(x1+x2,1,1,x1+x2,1,1),nrow=2)
++     }
++   ) -> po1
+> try(vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
+Error : in 'vmeasure': 'vmeasure' must return a symmetric square matrix.
+> po %>%
++   simulate(
++     vmeasure=function(x1, x2, ...) {
++       matrix(c(x1+x2,1,1,x1+x2),nrow=2)
++     }
++   ) -> po1
+> try(vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
+Error : in 'vmeasure': 'vmeasure' must return a matrix with row-names.
+> po %>%
++   simulate(
++     vmeasure=function(x1, x2, t, ...) {
++       v <- matrix(rep(x1+x2,ceiling(t)^2),nrow=ceiling(t))
++       nm <- head(letters,ceiling(t))
++       dimnames(v) <- list(nm,nm)
++       v
++     }
++   ) -> po1
+> try(vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
+Error : in 'vmeasure': 'vmeasure' returns variable-length results.
+> po %>%
++   simulate(
++     vmeasure=function(x1, x2, t, ...) {
++       v <- matrix(c(x1+x2,1,1,x1+x2),nrow=2)
++       nm <- c("a","b")
++       dimnames(v) <- list(nm,NULL)
++       v
++     }
++   ) -> po1
+> v <- vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1))
+> stopifnot(
++   dim(v)==c(2,2,1,100),
++   v[1,1,,]==v[2,2,,],
++   v[1,2,,]==v[2,1,,],
++   rownames(v)==c("a","b"),
++   colnames(v)==c("a","b"),
++   sum(is.na(v))==0
++ )
+> po %>% simulate(vmeasure=NULL) -> po1
+> v <- vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1))
+Warning message:
+'vmeasure' unspecified: NAs generated. 
+> stopifnot(
++   dim(v)==c(2,2,1,100),
++   rownames(v)==c("y1","y2"),
++   colnames(v)==c("y1","y2"),
++   sum(is.na(v))==400
++ )
+> 
+> sir() %>%
++   simulate(
++     times=(1:10)/52,
++     vmeasure=function(cases, rho, seas_1, seas_2, seas_3, ...) {
++       v <- array(dim=c(1,1),dimnames=list("reports","reports"))
++       v[,] <- cases*rho*(1-rho)
++       v
++     }
++   ) -> po
+> v <- vmeasure(po,x=states(po)[,10],params=coef(po),times=time(po)[10])
+> 

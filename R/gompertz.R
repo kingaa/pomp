@@ -56,6 +56,7 @@ gompertz <- function (K = 1, r = 0.1, sigma = 0.1, tau = 0.1, X_0 = 1,
       step.fun="_gompertz_simulator"
     ),
     emeasure="_gompertz_normal_emeasure",
+    vmeasure="_gompertz_normal_vmeasure",
     rmeasure="_gompertz_normal_rmeasure",
     dmeasure="_gompertz_normal_dmeasure",
     skeleton=map("_gompertz_skeleton",delta.t=1),

@@ -19,5 +19,11 @@ plot(time(po),tj[,,],type="l")
 e <- emeasure(po,x=states(po),params=coef(po),times=time(po))
 plot(time(po),obs(po),xlab="",ylab="")
 lines(time(po),t(apply(e,c(1,3),mean)))
+v <- vmeasure(po,x=states(po),params=coef(po),times=time(po))
+stopifnot(
+  all(dim(v)==c(1,1,1,100)),
+  all(v>0)
+)
+plot(e[1,1,],v[1,1,1,],xlab="mean",ylab="variance")
 
 dev.off()

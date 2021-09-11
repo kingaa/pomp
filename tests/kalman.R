@@ -56,7 +56,9 @@ kf <- pomp:::kalmanFilter(t,y,X0,A,Q,C,R)
 y %>%
   melt() %>%
   dcast(time~variable) %>%
-  pomp(times='time',t0=0,
+  pfilter(
+    times='time',t0=0,
+    C=C,R=R,sqrtR=sqrtR,X0=X0,
     rprocess=discrete_time(
       step.fun=function(x1,x2,x3,x4,delta.t,...){
         x <- c(x1,x2,x3,x4)
@@ -64,27 +66,32 @@ y %>%
         setNames(x,c("x1","x2","x3","x4"))
       },
       delta.t=1),
-    emeasure=function(x1,x2,x3,x4,...){
+    emeasure=function(x1,x2,x3,x4,C,...){
       ex <- C%*%c(x1,x2,x3,x4)
       dim(ex) <- NULL
       setNames(ex,rownames(C))
     },
-    rmeasure=function(x1,x2,x3,x4,...){
+    vmeasure=function(R, ...){
+      R
+    },
+    rmeasure=function(x1,x2,x3,x4,C,sqrtR,...){
       x <- c(x1,x2,x3,x4)
       C%*%x+sqrtR%*%rnorm(n=nrow(C))
     },
-    dmeasure=function(x1,x2,x3,x4,y1,y2,log,...){
+    dmeasure=function(x1,x2,x3,x4,y1,y2,log,C,R,...){
       x <- c(x1,x2,x3,x4)
       y <- c(y1,y2)
       dmvnorm(x=t(y-C%*%x),sigma=R,log=log)
     },
-    rinit=function(params,t0,...){
+    rinit=function(params,t0,X0,...){
       X0
     },
-    params=c()) %>%
-  pfilter(Np=1000,filter.mean=TRUE) -> pf
+    params=c(),
+    Np=1000,
+    filter.mean=TRUE
+  ) -> pf
 
-enkf <- enkf(pf,R=R,Np=1000)
+enkf <- enkf(pf,Np=1000)
 eakf <- eakf(pf,C=C,R=R,Np=1000)
 
 try(enkf(pf))
@@ -92,15 +99,17 @@ try(enkf(pf,Np=c(100,200)))
 try(enkf(pf,Np=-10))
 try(enkf(pf,Np="10b"))
 try(enkf(pf,Np=100))
-try(enkf(pf,Np=100,R=R,emeasure=NULL))
-try(enkf(enkf))
-try(enkf(enkf,Np=c(100,200)))
-try(enkf(enkf,Np=-10))
-try(enkf(enkf,Np="10b"))
-try(enkf(enkf,Np=100))
-try(enkf(enkf,Np=100,R=R,emeasure=NULL))
+try(enkf(pf,Np=100,emeasure=NULL))
+try(enkf(enkf,Np=100,vmeasure=NULL))
+enkf(enkf)
+enkf(enkf,Np=100)
+try(eakf(enkf,Np=c(100,200)))
+try(eakf(enkf,R=R,Np=c(100,200)))
+try(eakf(enkf,R=R,Np=-10))
+try(eakf(enkf,R=R,Np="10b"))
+try(eakf(enkf,R=R,Np=100,emeasure=NULL))
 
-invisible(enkf(pf,R=R,Np=1000,params=as.list(coef(pf))))
+invisible(enkf(pf,Np=1000,params=as.list(coef(pf))))
 invisible(eakf(pf,C=C,R=R,Np=1000,params=as.list(coef(pf))))
 
 stopifnot(max(abs(c(kf$loglik,logLik(pf),logLik(enkf),logLik(eakf))-c(-67.0,-67.1,-66.9,-66.9)))<1)
@@ -117,6 +126,7 @@ enkf %>% forecast() %>% melt() %>%
 
 try({
   R <- matrix(c(1,0,1,0),2,2)
+  rownames(R) <- rownames(C)
   enkf(pf,Np=1000,R=R)
 })
 

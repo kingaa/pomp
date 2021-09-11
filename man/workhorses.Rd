@@ -13,6 +13,7 @@ They include \describe{
 \item{\code{\link{dmeasure}}}{which evaluates the measurement model density,}
 \item{\code{\link{rmeasure}}}{which samples from the measurement model distribution,}
 \item{\code{\link{emeasure}}}{which computes the expectation of the observed variables conditional on the latent state,}
+\item{\code{\link{vmeasure}}}{which computes the covariance matrix of the observed variables conditional on the latent state,}
 \item{\code{\link{dprocess}}}{which evaluates the process model density,}
 \item{\code{\link{rprocess}}}{which samples from the process model distribution,}
 \item{\code{\link{dprior}}}{which evaluates the prior probability density,}
@@ -39,7 +40,8 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{rmeasure}()},
 \code{\link{rprior}()},
 \code{\link{rprocess}()},
-\code{\link{skeleton}()}
+\code{\link{skeleton}()},
+\code{\link{vmeasure}()}
 }
 \author{
 Aaron A. King

@@ -73,6 +73,31 @@ workhorse_templates <- list(
       )
     )
   ),
+  vmeasure=list(
+    slotname="vmeasure",
+    Cname="__pomp_vmeasure",
+    proto=quote(vmeasure(...)),
+    header="\nvoid __pomp_vmeasure (double *__f, const double *__x, const double *__p, const int *__vmatindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, int nobs, double t)\n{\n",
+    footer="\n}\n\n",
+    vars=list(
+      params=list(
+        names=quote(paramnames),
+        cref="__p[__parindex[{%v%}]]"
+      ),
+      covars=list(
+        names=quote(covarnames),
+        cref="__covars[__covindex[{%v%}]]"
+      ),
+      states=list(
+        names=quote(statenames),
+        cref="__x[__stateindex[{%v%}]]"
+      ),
+      variance_matrix=list(
+        names=quote(paste0("V_",outer(obsnames,obsnames,paste,sep="_"))),
+        cref="__f[__vmatindex[{%v%}]]"
+      )
+    )
+  ),
   dmeasure=list(
     slotname="dmeasure",
     Cname= "__pomp_dmeasure",

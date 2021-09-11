@@ -72,6 +72,9 @@ pomp object 'po1':
 - measurement model expectation, emeasure: native function
   - name: '_gompertz_normal_emeasure'
   - dynamically loaded from: 'pomp'
+- measurement model covariance, vmeasure: native function
+  - name: '_gompertz_normal_vmeasure'
+  - dynamically loaded from: 'pomp'
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: map:
@@ -139,6 +142,9 @@ params
 - measurement model expectation, emeasure: native function
   - name: '_gompertz_normal_emeasure'
   - dynamically loaded from: 'pomp'
+- measurement model covariance, vmeasure: native function
+  - name: '_gompertz_normal_vmeasure'
+  - dynamically loaded from: 'pomp'
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: map:
@@ -159,8 +165,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2021-09-02 12:33:22.534 -0400 */
-/* Salt: 697B52A0C1A86E088B01D35D */
+/* Time: 2021-09-11 11:37:11.774 -0400 */
+/* Salt: 8ABF0B2F5D26A00DD3BC4D0D */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -258,6 +264,9 @@ pomp object 'sir':
 - measurement model expectation, emeasure: native function
   - name: '__pomp_emeasure'
   - defined by a C snippet in library 'sir_source'
+- measurement model covariance, vmeasure: native function
+  - name: '__pomp_vmeasure'
+  - defined by a C snippet in library 'sir_source'
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: vectorfield:
@@ -280,8 +289,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2021-09-02 12:33:22.674 -0400 */
-/* Salt: 1C93B735E9FADB4980285C0C */
+/* Time: 2021-09-11 11:37:11.918 -0400 */
+/* Salt: F9773449B52005FA97CAB26B */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -572,6 +581,53 @@ void __pomp_emeasure (double *__f, const double *__x, const double *__p, const i
 #undef W
 #undef E_reports
 
+/* C snippet: 'vmeasure' */
+#define gamma		(__p[__parindex[0]])
+#define mu		(__p[__parindex[1]])
+#define iota		(__p[__parindex[2]])
+#define beta1		(__p[__parindex[3]])
+#define beta_sd		(__p[__parindex[4]])
+#define pop		(__p[__parindex[5]])
+#define rho		(__p[__parindex[6]])
+#define S_0		(__p[__parindex[7]])
+#define I_0		(__p[__parindex[8]])
+#define R_0		(__p[__parindex[9]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define R		(__x[__stateindex[2]])
+#define cases		(__x[__stateindex[3]])
+#define W		(__x[__stateindex[4]])
+#define V_reports_reports		(__f[__vmatindex[0]])
+
+void __pomp_vmeasure (double *__f, const double *__x, const double *__p, const int *__vmatindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, int nobs, double t)
+{
+ 
+      V_reports_reports = cases*rho*(1-rho); 
+}
+
+#undef gamma
+#undef mu
+#undef iota
+#undef beta1
+#undef beta_sd
+#undef pop
+#undef rho
+#undef S_0
+#undef I_0
+#undef R_0
+#undef seas_1
+#undef seas_2
+#undef seas_3
+#undef S
+#undef I
+#undef R
+#undef cases
+#undef W
+#undef V_reports_reports
+
 /* C snippet: 'toEst' */
 #define seas_1		(__covars[__covindex[0]])
 #define seas_2		(__covars[__covindex[1]])
@@ -799,6 +855,7 @@ R_RegisterCCallable("sir_source", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
 R_RegisterCCallable("sir_source", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
 R_RegisterCCallable("sir_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
 R_RegisterCCallable("sir_source", "__pomp_emeasure", (DL_FUNC) __pomp_emeasure);
+R_RegisterCCallable("sir_source", "__pomp_vmeasure", (DL_FUNC) __pomp_vmeasure);
 R_RegisterCCallable("sir_source", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
 R_RegisterCCallable("sir_source", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
 R_RegisterCCallable("sir_source", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
@@ -842,6 +899,9 @@ pomp object 'rw2':
 - measurement model expectation, emeasure: native function
   - name: '__pomp_emeasure'
   - defined by a C snippet in library 'rw2_source'
+- measurement model covariance, vmeasure: native function
+  - name: '__pomp_vmeasure'
+  - defined by a C snippet in library 'rw2_source'
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: <default>
@@ -853,8 +913,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2021-09-02 12:33:23.371 -0400 */
-/* Salt: 5670ABBFD462231CF4F44D0D */
+/* Time: 2021-09-11 11:37:12.601 -0400 */
+/* Salt: 5619C4BEA679D17BF4F91919 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -983,6 +1043,34 @@ void __pomp_emeasure (double *__f, const double *__x, const double *__p, const i
 #undef E_y1
 #undef E_y2
 
+/* C snippet: 'vmeasure' */
+#define s1		(__p[__parindex[0]])
+#define s2		(__p[__parindex[1]])
+#define tau		(__p[__parindex[2]])
+#define x1		(__x[__stateindex[0]])
+#define x2		(__x[__stateindex[1]])
+#define V_y1_y1		(__f[__vmatindex[0]])
+#define V_y2_y1		(__f[__vmatindex[1]])
+#define V_y1_y2		(__f[__vmatindex[2]])
+#define V_y2_y2		(__f[__vmatindex[3]])
+
+void __pomp_vmeasure (double *__f, const double *__x, const double *__p, const int *__vmatindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, int nobs, double t)
+{
+ 
+        V_y1_y1 = V_y2_y2 = tau*tau;
+        V_y1_y2 = V_y2_y1 = 0; 
+}
+
+#undef s1
+#undef s2
+#undef tau
+#undef x1
+#undef x2
+#undef V_y1_y1
+#undef V_y2_y1
+#undef V_y1_y2
+#undef V_y2_y2
+
 static int __pomp_load_stack = 0;
 
 void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
@@ -998,6 +1086,7 @@ R_RegisterCCallable("rw2_source", "__pomp_dproc", (DL_FUNC) __pomp_dproc);
 R_RegisterCCallable("rw2_source", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
 R_RegisterCCallable("rw2_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
 R_RegisterCCallable("rw2_source", "__pomp_emeasure", (DL_FUNC) __pomp_emeasure);
+R_RegisterCCallable("rw2_source", "__pomp_vmeasure", (DL_FUNC) __pomp_vmeasure);
 }
 
 > 
@@ -1055,6 +1144,9 @@ variable birth susc.death infection inf.death recovery recov.death
 - measurement model expectation, emeasure: native function
   - name: '__pomp_emeasure'
   - defined by a C snippet in library 'sir2_source'
+- measurement model covariance, vmeasure: native function
+  - name: '__pomp_vmeasure'
+  - defined by a C snippet in library 'sir2_source'
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: vectorfield:
@@ -1077,8 +1169,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2021-09-02 12:33:23.952 -0400 */
-/* Salt: 6E26BAFEE5C45279564108CE */
+/* Time: 2021-09-11 11:37:13.215 -0400 */
+/* Salt: B845F13099A32B490A68DB19 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1379,6 +1471,55 @@ void __pomp_emeasure (double *__f, const double *__x, const double *__p, const i
 #undef cases
 #undef E_reports
 
+/* C snippet: 'vmeasure' */
+#define gamma		(__p[__parindex[0]])
+#define mu		(__p[__parindex[1]])
+#define iota		(__p[__parindex[2]])
+#define pop		(__p[__parindex[3]])
+#define rho		(__p[__parindex[4]])
+#define beta1		(__p[__parindex[5]])
+#define beta2		(__p[__parindex[6]])
+#define beta3		(__p[__parindex[7]])
+#define S_0		(__p[__parindex[8]])
+#define I_0		(__p[__parindex[9]])
+#define R_0		(__p[__parindex[10]])
+#define seas_1		(__covars[__covindex[0]])
+#define seas_2		(__covars[__covindex[1]])
+#define seas_3		(__covars[__covindex[2]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define R		(__x[__stateindex[2]])
+#define N		(__x[__stateindex[3]])
+#define cases		(__x[__stateindex[4]])
+#define V_reports_reports		(__f[__vmatindex[0]])
+
+void __pomp_vmeasure (double *__f, const double *__x, const double *__p, const int *__vmatindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, int nobs, double t)
+{
+ 
+      V_reports_reports = cases*rho*(1-rho); 
+}
+
+#undef gamma
+#undef mu
+#undef iota
+#undef pop
+#undef rho
+#undef beta1
+#undef beta2
+#undef beta3
+#undef S_0
+#undef I_0
+#undef R_0
+#undef seas_1
+#undef seas_2
+#undef seas_3
+#undef S
+#undef I
+#undef R
+#undef N
+#undef cases
+#undef V_reports_reports
+
 /* C snippet: 'toEst' */
 #define seas_1		(__covars[__covindex[0]])
 #define seas_2		(__covars[__covindex[1]])
@@ -1606,6 +1747,7 @@ R_RegisterCCallable("sir2_source", "__pomp_ratefn", (DL_FUNC) __pomp_ratefn);
 R_RegisterCCallable("sir2_source", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
 R_RegisterCCallable("sir2_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
 R_RegisterCCallable("sir2_source", "__pomp_emeasure", (DL_FUNC) __pomp_emeasure);
+R_RegisterCCallable("sir2_source", "__pomp_vmeasure", (DL_FUNC) __pomp_vmeasure);
 R_RegisterCCallable("sir2_source", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
 R_RegisterCCallable("sir2_source", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
 R_RegisterCCallable("sir2_source", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);

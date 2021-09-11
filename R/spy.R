@@ -81,6 +81,9 @@ setMethod(
     cat("- measurement model expectation, emeasure: ")
     show(object@emeasure)
 
+    cat("- measurement model covariance, vmeasure: ")
+    show(object@vmeasure)
+
     cat("- prior simulator, rprior: ")
     show(object@rprior)
 

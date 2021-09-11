@@ -7,6 +7,7 @@
 ##' \item{\code{\link{dmeasure}}}{which evaluates the measurement model density,}
 ##' \item{\code{\link{rmeasure}}}{which samples from the measurement model distribution,}
 ##' \item{\code{\link{emeasure}}}{which computes the expectation of the observed variables conditional on the latent state,}
+##' \item{\code{\link{vmeasure}}}{which computes the covariance matrix of the observed variables conditional on the latent state,}
 ##' \item{\code{\link{dprocess}}}{which evaluates the process model density,}
 ##' \item{\code{\link{rprocess}}}{which samples from the process model distribution,}
 ##' \item{\code{\link{dprior}}}{which evaluates the prior probability density,}
@@ -508,6 +509,71 @@ emeasure.internal <- function (object, x, times, params,
   pompLoad(object)
   on.exit(pompUnload(object))
   .Call(P_do_emeasure,object,x,times,params,.gnsi)
+}
+
+##' vmeasure
+##'
+##' Return the covariance matrix of the observed variables, given values of the latent states and the parameters.
+##'
+##' @name vmeasure
+##' @docType methods
+##' @aliases vmeasure,ANY-method vmeasure,missing-method
+##' @family pomp workhorses
+##' @seealso Specification of the measurement-model covariance matrix: \link{vmeasure specification}
+##'
+##' @inheritParams dmeasure
+##'
+##' @return
+##' \code{vmeasure} returns a rank-4 array of dimensions
+##' \code{nobs} x \code{nobs} x \code{nrep} x \code{ntimes},
+##' where \code{nobs} is the number of observed variables.
+##' If \code{v} is the returned array, \code{v[,,j,k]} contains the
+##' covariance matrix at time \code{times[k]} given the state \code{x[,j,k]}.
+##'
+NULL
+
+setGeneric(
+  "vmeasure",
+  function (object, ...)
+    standardGeneric("vmeasure")
+)
+
+setMethod(
+  "vmeasure",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    reqd_arg("vmeasure","object")
+  }
+)
+
+setMethod(
+  "vmeasure",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    undef_method("vmeasure",object)
+  }
+)
+
+##' @export
+##' @rdname vmeasure
+setMethod(
+  "vmeasure",
+  signature=signature(object="pomp"),
+  definition=function (object, x, times, params, ...) {
+    tryCatch(
+      vmeasure.internal(object=object,x=x,times=times,params=params,...),
+      error = function (e) pStop("vmeasure",conditionMessage(e))
+    )
+  }
+)
+
+vmeasure.internal <- function (object, x, times, params,
+  .gnsi = TRUE, ...) {
+  storage.mode(x) <- "double"
+  storage.mode(params) <- "double"
+  pompLoad(object)
+  on.exit(pompUnload(object))
+  .Call(P_do_vmeasure,object,x,times,params,.gnsi)
 }
 
 ##' rprior
