@@ -132,7 +132,7 @@ Type 'q()' to quit R.
 +     paramnames=c("gamma","mu","iota","beta1","beta2","beta3","pop","rho"),
 +     statenames=c("S","I","R","N","cases")
 +   ) -> gsir1
-in 'pomp': the unrecognized argument 'nbasis' is available for use by the POMP basic components.
+The provided object 'nbasis' is available for use by POMP basic components.
 > 
 > gsir1 %>%
 +   plot(main="Gillespie SIR, with zeroing")

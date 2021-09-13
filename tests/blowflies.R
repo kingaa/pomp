@@ -7,7 +7,7 @@ capture.output(
   list(blowflies1(),blowflies2()) -> flies,
   type="message") -> out
 stopifnot(
-  sum(grepl("unrecognized argument",out))==2,
+  sum(grepl("provided object",out))==2,
   sum(grepl("y.init",out))==2
 )
 

@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.4}{
+  \itemize{
+    \item The ensemble adjusted Kalman filter (\code{eakf}) has been refactored.
+    It now makes use of the \code{emeasure} and \code{vmeasure} basic components to compute an approximation of the linear relationship between the latent state and the observed variables.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.3}{
   \itemize{
     \item Two new basic model components have been introduced.

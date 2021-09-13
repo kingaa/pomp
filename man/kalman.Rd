@@ -34,16 +34,16 @@
 \S4method{eakf}{data.frame}(
   data,
   Np,
-  C,
-  R,
   params,
   rinit,
   rprocess,
+  emeasure,
+  vmeasure,
   ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{eakf}{pomp}(data, Np, C, R, ..., verbose = getOption("verbose", FALSE))
+\S4method{eakf}{pomp}(data, Np, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -83,10 +83,6 @@ This allows the user to pass information to the basic components outside of the 
 See \link[=userdata]{userdata} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
-
-\item{C}{numeric matrix that converts a state vector into the expected value of the observation given that state.}
-
-\item{R}{numeric matrix; variance of the measurement noise.}
 }
 \value{
 An object of class \sQuote{kalmand_pomp}.

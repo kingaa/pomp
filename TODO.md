@@ -4,20 +4,21 @@
 
 - banish the binomial model from the SIR examples
 
-- in EnKF and EAKF, allow matrices to depend on parameters
-- better scheme for indicating derivatives and maps in C snippets
-- accommodating matrices in `hitch`
 - make `mcap` into a generic, provide a method for data frames and a plotting method
+- more demanding tests of `enkf` and `eakf`
+- ~~in EnKF and EAKF, allow matrices to depend on parameters~~
+- ~~accommodating matrices in~~ `hitch`
 - vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`
 - perhaps `dinit`?
-- put basic true Kalman filter into **pomp**
+- ~~put basic true Kalman filter into~~ **pomp**
 - put Kalman check in 'ou2' test
+- better scheme for indicating derivatives and maps in C snippets
 - more toy models
-
-- support for asymmetric MCMC proposals
 - more/better examples
 	- need examples of objective function methods
 	- `pmcmc` examples
+
+- support for asymmetric MCMC proposals
 - `spy` methods for derived objects
 - iterated EnKF
 - for log-barycentric transformations, check that parameters are contiguous

@@ -22,8 +22,8 @@ Type 'q()' to quit R.
 > 
 > library(pomp)
 > suppressPackageStartupMessages({
-+   library(reshape2)
-+   library(plyr)
++   library(dplyr)
++   library(tidyr)
 +   library(ggplot2)
 +   library(mvtnorm)
 + })
@@ -72,10 +72,10 @@ Type 'q()' to quit R.
 > 
 > y %>%
 +   melt() %>%
-+   dcast(time~variable) %>%
++   pivot_wider(time,variable) %>%
 +   pfilter(
 +     times='time',t0=0,
-+     C=C,R=R,sqrtR=sqrtR,X0=X0,
++     A=A,C=C,R=R,sqrtQ=sqrtQ,sqrtR=sqrtR,X0=X0,
 +     rprocess=discrete_time(
 +       step.fun=function(x1,x2,x3,x4,delta.t,...){
 +         x <- c(x1,x2,x3,x4)
@@ -107,11 +107,14 @@ Type 'q()' to quit R.
 +     Np=1000,
 +     filter.mean=TRUE
 +   ) -> pf
-in 'pomp': the unrecognized arguments 'C','R','sqrtR','X0' are available for use by the POMP basic components.
+The provided objects 'A','C','R','sqrtQ','sqrtR','X0' are available for use by POMP basic components.
 > 
 > enkf <- enkf(pf,Np=1000)
-> eakf <- eakf(pf,C=C,R=R,Np=1000)
+> eakf <- eakf(pf,Np=1000)
 > kf <- kalmanFilter(pf,X0=rinit(pf),A=A,Q=Q,C=C,R=R)
+> stopifnot(
++   max(abs(c(kf$logLik,logLik(pf),logLik(enkf),logLik(eakf))-c(-67.0,-67.1,-66.9,-66.9)))<1
++ )
 > 
 > try(enkf(pf))
 Error : in 'enkf': argument "Np" is missing, with no default
@@ -124,86 +127,138 @@ Error : in 'enkf': 'Np' should be a single positive integer.
 In addition: Warning message:
 In enkf.internal(data, Np = Np, ..., verbose = verbose) :
   NAs introduced by coercion
-> try(enkf(pf,Np=100))
-<object of class 'kalmand_pomp'>
 > try(enkf(pf,Np=100,emeasure=NULL))
 Error : in 'enkf': 'emeasure' is a needed basic component.
 > try(enkf(enkf,Np=100,vmeasure=NULL))
 Error : in 'enkf': 'vmeasure' is a needed basic component.
+> try(enkf(enkf,C=matrix(1,2,4,dimnames=list(c("y2","y1"),NULL)),Np=100))
+The provided object 'C' is available for use by POMP basic components.
+Error : in 'enkf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
+> try(enkf(enkf,C=matrix(1,3,4,dimnames=list(c("a","b","c"),NULL)),Np=100))
+The provided object 'C' is available for use by POMP basic components.
+Error : in 'enkf': number of observables returned by 'emeasure' does not match data.
+> try(enkf(enkf,R=matrix(1,1,1,dimnames=list(c("y1"),NULL)),Np=100))
+The provided object 'R' is available for use by POMP basic components.
+Error : in 'enkf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
+> try(enkf(enkf,R=matrix(1,2,2,dimnames=list(c("y2","y1"),NULL)),Np=100))
+The provided object 'R' is available for use by POMP basic components.
+Error : in 'enkf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
+> try(enkf(enkf,R=matrix(1,2,2,dimnames=list(c("a","b"),NULL)),Np=100))
+The provided object 'R' is available for use by POMP basic components.
+Error : in 'enkf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
+> try(enkf(enkf,R=matrix(1,3,3,dimnames=list(c("a","b","c"),NULL)),Np=100))
+The provided object 'R' is available for use by POMP basic components.
+Error : in 'enkf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
 > enkf(enkf)
 <object of class 'kalmand_pomp'>
 > enkf(enkf,Np=100)
 <object of class 'kalmand_pomp'>
+> 
 > try(eakf(enkf,Np=c(100,200)))
-Error : in 'eakf': argument "R" is missing, with no default
-> try(eakf(enkf,R=R,Np=c(100,200)))
-Error : in 'eakf': argument "C" is missing, with no default
-> try(eakf(enkf,R=R,Np=-10))
-Error : in 'eakf': in 'rinit': negative length vectors are not allowed
-> try(eakf(enkf,R=R,Np="10b"))
-Error : in 'eakf': in 'rinit': negative length vectors are not allowed
+Error : in 'eakf': 'Np' should be a single positive integer.
+> try(eakf(enkf,Np=-10))
+Error : in 'eakf': 'Np' should be a single positive integer.
+> try(eakf(enkf,Np="10b"))
+Error : in 'eakf': 'Np' should be a single positive integer.
 In addition: Warning message:
-In eakf.internal(data, Np = Np, C = C, R = R, ..., verbose = verbose) :
+In eakf.internal(data, Np = Np, ..., verbose = verbose) :
   NAs introduced by coercion
-> try(eakf(enkf,R=R,Np=100,emeasure=NULL))
-Error : in 'eakf': argument "C" is missing, with no default
+> try(eakf(enkf,Np=100,emeasure=NULL))
+Error : in 'eakf': 'emeasure' is a needed basic component.
+> try(eakf(enkf,Np=100,vmeasure=NULL))
+Error : in 'eakf': 'vmeasure' is a needed basic component.
+> try(eakf(enkf,C=matrix(1,2,4,dimnames=list(c("y2","y1"),NULL)),Np=100))
+The provided object 'C' is available for use by POMP basic components.
+Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
+> try(eakf(enkf,C=matrix(1,3,4,dimnames=list(c("a","b","c"),NULL)),Np=100))
+The provided object 'C' is available for use by POMP basic components.
+Error : in 'eakf': number of observables returned by 'emeasure' does not match data.
+> try(eakf(enkf,R=matrix(1,1,1,dimnames=list(c("y1"),NULL)),Np=100))
+The provided object 'R' is available for use by POMP basic components.
+Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
+> try(eakf(enkf,R=matrix(1,2,2,dimnames=list(c("y2","y1"),NULL)),Np=100))
+The provided object 'R' is available for use by POMP basic components.
+Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
+> try(eakf(enkf,R=matrix(1,2,2,dimnames=list(c("a","b"),NULL)),Np=100))
+The provided object 'R' is available for use by POMP basic components.
+Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
+> try(eakf(enkf,R=matrix(1,3,3,dimnames=list(c("a","b","c"),NULL)),Np=100))
+The provided object 'R' is available for use by POMP basic components.
+Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
 > 
 > invisible(enkf(pf,Np=1000,params=as.list(coef(pf))))
-> invisible(eakf(pf,C=C,R=R,Np=1000,params=as.list(coef(pf))))
+> invisible(eakf(pf,Np=1000,params=as.list(coef(pf))))
 > 
-> stopifnot(max(abs(c(kf$logLik,logLik(pf),logLik(enkf),logLik(eakf))-c(-67.0,-67.1,-66.9,-66.9)))<1)
+> enkf %>%
++   as.data.frame() %>%
++   melt(id.vars="time") %>%
++   group_by(variable) %>%
++   summarize(n=length(value))
+# A tibble: 13 × 2
+   variable           n
+   <fct>          <int>
+ 1 y1                20
+ 2 y2                20
+ 3 cond.logLik       20
+ 4 pred.mean.x1      20
+ 5 pred.mean.x2      20
+ 6 pred.mean.x3      20
+ 7 pred.mean.x4      20
+ 8 filter.mean.x1    20
+ 9 filter.mean.x2    20
+10 filter.mean.x3    20
+11 filter.mean.x4    20
+12 forecast.y1       20
+13 forecast.y2       20
+> eakf %>%
++   as.data.frame() %>%
++   melt(id.vars="time") %>%
++   group_by(variable) %>%
++   summarize(n=length(value))
+# A tibble: 13 × 2
+   variable           n
+   <fct>          <int>
+ 1 y1                20
+ 2 y2                20
+ 3 cond.logLik       20
+ 4 pred.mean.x1      20
+ 5 pred.mean.x2      20
+ 6 pred.mean.x3      20
+ 7 pred.mean.x4      20
+ 8 filter.mean.x1    20
+ 9 filter.mean.x2    20
+10 filter.mean.x3    20
+11 filter.mean.x4    20
+12 forecast.y1       20
+13 forecast.y2       20
 > 
-> enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
-+   ddply(~variable,summarize,n=length(value))
-         variable  n
-1              y1 20
-2              y2 20
-3     cond.logLik 20
-4    pred.mean.x1 20
-5    pred.mean.x2 20
-6    pred.mean.x3 20
-7    pred.mean.x4 20
-8  filter.mean.x1 20
-9  filter.mean.x2 20
-10 filter.mean.x3 20
-11 filter.mean.x4 20
-12    forecast.y1 20
-13    forecast.y2 20
-> eakf %>% as.data.frame() %>% melt(id.vars="time") %>%
-+   ddply(~variable,summarize,n=length(value))
-         variable  n
-1              y1 20
-2              y2 20
-3     cond.logLik 20
-4    pred.mean.x1 20
-5    pred.mean.x2 20
-6    pred.mean.x3 20
-7    pred.mean.x4 20
-8  filter.mean.x1 20
-9  filter.mean.x2 20
-10 filter.mean.x3 20
-11 filter.mean.x4 20
-12    forecast.y1 20
-13    forecast.y2 20
-> 
-> enkf %>% forecast() %>% melt() %>%
+> enkf %>%
++   forecast() %>%
++   melt() %>%
 +   ggplot(aes(x=time,y=value,group=variable,color=variable))+
 +   geom_line()+theme_bw()+
 +   labs(title="EnKF forecasts")
+> 
+> eakf %>%
++   forecast() %>%
++   melt() %>%
++   ggplot(aes(x=time,y=value,group=variable,color=variable))+
++   geom_line()+theme_bw()+
++   labs(title="EAKF forecasts")
 > 
 > try({
 +   R <- matrix(c(1,0,1,0),2,2)
 +   rownames(R) <- rownames(C)
 +   enkf(pf,Np=1000,R=R)
 + })
-in 'pomp': the unrecognized argument 'R' is available for use by the POMP basic components.
+The provided object 'R' is available for use by POMP basic components.
 Error : in 'enkf': degenerate 'vmeasure': the leading minor of order 2 is not positive definite
 > 
 > try({
-+   ev <- eigen(R)
-+   eakf(pf,C=C,Np=1000,R=R)
++   eakf(pf,Np=1000,R=R)
 + })
-Error : in 'eakf': degenerate 'R': Lapack routine dgesv: system is exactly singular: U[2,2] = 0
+The provided object 'R' is available for use by POMP basic components.
+Error : in 'eakf': degenerate 'vmeasure': Lapack routine dgesv: system is exactly singular: U[2,2] = 0
 > 
 > try(enkf())
 Error : in 'enkf': 'data' is a required argument.

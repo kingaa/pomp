@@ -1,5 +1,13 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._4:
+
+        • The ensemble adjusted Kalman filter (‘eakf’) has been
+          refactored.  It now makes use of the ‘emeasure’ and
+          ‘vmeasure’ basic components to compute an approximation of
+          the linear relationship between the latent state and the
+          observed variables.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._3:
 
         • Two new basic model components have been introduced.  These

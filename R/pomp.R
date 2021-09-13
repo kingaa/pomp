@@ -469,11 +469,11 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (missing(.userdata)) .userdata <- list()
   added.userdata <- list(...)
   if (length(added.userdata)>0) {
-    message("in ",sQuote("pomp"),": the unrecognized ",
-      ngettext(length(added.userdata),"argument","arguments")," ",
+    message("The provided ",
+      ngettext(length(added.userdata),"object","objects")," ",
       paste(sQuote(names(added.userdata)),collapse=","),
       ngettext(length(added.userdata)," is"," are"),
-      " available for use by the POMP basic components."
+      " available for use by POMP basic components."
     )
     .userdata[names(added.userdata)] <- added.userdata
   }

@@ -25,7 +25,7 @@ Type 'q()' to quit R.
 > 
 > pomp(po,partrans=NULL,bob=3,
 +   covar=covariate_table(a=0:20,b=0:20,times="a")) -> po1
-in 'pomp': the unrecognized argument 'bob' is available for use by the POMP basic components.
+The provided object 'bob' is available for use by POMP basic components.
 Warning message:
 in 'pomp': the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > spy(po1)
@@ -165,8 +165,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2021-09-11 11:37:11.774 -0400 */
-/* Salt: 8ABF0B2F5D26A00DD3BC4D0D */
+/* Time: 2021-09-15 20:23:43.885 -0400 */
+/* Salt: CF4B5456A7619831ADFDD71B */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -289,8 +289,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2021-09-11 11:37:11.918 -0400 */
-/* Salt: F9773449B52005FA97CAB26B */
+/* Time: 2021-09-15 20:23:44.050 -0400 */
+/* Salt: E578356ABF1144E04A86399B */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -913,8 +913,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2021-09-11 11:37:12.601 -0400 */
-/* Salt: 5619C4BEA679D17BF4F91919 */
+/* Time: 2021-09-15 20:23:44.828 -0400 */
+/* Salt: E5CC925D73DD1016A9172988 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1169,8 +1169,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2021-09-11 11:37:13.215 -0400 */
-/* Salt: B845F13099A32B490A68DB19 */
+/* Time: 2021-09-15 20:23:45.465 -0400 */
+/* Salt: 0A5789892F8B0AAE87750A2E */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

@@ -45,8 +45,9 @@ dat %>%
         c(x=x*exp(r*(1-x/K)))
       }
     ),
-    R=0.01,
-    C=0.01
+    vmeasure=function(R, ...) R,
+    emeasure=function(x,...) c(Y=0.01*x),
+    R=matrix(0.01,1,1,dimnames=list("Y","Y"))
   ) -> kf
 
 kf %>% plot()
