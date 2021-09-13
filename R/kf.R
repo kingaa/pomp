@@ -24,6 +24,9 @@
 ##' \eqn{E[Y(t) | X(t)] = C.X(t)}.
 ##' @param R \eqn{n\times n}{n x n} observation process covariance matrix.
 ##' \eqn{Var[Y(t) | X(t)] = R}
+##' @param tol numeric;
+##' the tolerance to be used in computing matrix pseudoinverses via singular-value decomposition.
+##' Singular values smaller than \code{tol} are set to zero.
 ##'
 ##' @example examples/kf.R
 ##'

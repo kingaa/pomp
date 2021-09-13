@@ -23,6 +23,10 @@ This is assumed known without uncertainty.}
 
 \item{R}{\eqn{n\times n}{n x n} observation process covariance matrix.
 \eqn{Var[Y(t) | X(t)] = R}}
+
+\item{tol}{numeric;
+the tolerance to be used in computing matrix pseudoinverses via singular-value decomposition.
+Singular values smaller than \code{tol} are set to zero.}
 }
 \value{
 A named list containing the following elements:
