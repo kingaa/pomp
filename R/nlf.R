@@ -356,7 +356,7 @@ nlfof.internal <- function (object,
     logql <<- nlf.lql(object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
       period=period,tensor=tensor,seed=seed,transform.data=transform.data,
       verbose=verbose)
-    if (is.finite(logql) || is.na(fail.value)) -logql else fail.value
+    if (is.finite(logql) || is.na(fail.value)) -logql else fail.value #nocov
   }
 
   environment(ofun) <- list2env(

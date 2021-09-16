@@ -56,7 +56,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
       nprotect += 2;
       
       if (LENGTH(pack) < 1) {
-        PROTECT(pack = mkString("")); nprotect++;
+        PROTECT(pack = mkString("")); nprotect++; // #nocov
       }
 
       switch (*mode) {

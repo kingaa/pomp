@@ -276,7 +276,7 @@ smof.internal <- function (object,
       ker=ker
     )
     discrep <<- spect.discrep(object,ker=ker,weights=weights)
-    if (is.finite(discrep) || is.na(fail.value)) discrep else fail.value
+    if (is.finite(discrep) || is.na(fail.value)) discrep else fail.value #nocov
   }
 
   environment(ofun) <- list2env(
