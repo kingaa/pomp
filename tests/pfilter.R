@@ -111,3 +111,11 @@ ou2 %>%
     }
   )
 
+try(ou2 %>% pfilter(Np=1000) %>% forecast())
+try(ou2 %>% pfilter(Np=1000,emeasure=NULL) %>% forecast())
+ou2 %>% pfilter(Np=1000,pred.mean=TRUE) %>% forecast() -> y
+ou2 %>% pfilter(Np=1000,pred.mean=TRUE) %>% forecast(vars="y1") -> y1
+stopifnot(
+  dim(y)==c(2,100),
+  dim(y1)==c(1,100)
+)

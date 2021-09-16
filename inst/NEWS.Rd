@@ -4,6 +4,7 @@
   \itemize{
     \item The ensemble adjusted Kalman filter (\code{eakf}) has been refactored.
     It now makes use of the \code{emeasure} and \code{vmeasure} basic components to compute an approximation of the linear relationship between the latent state and the observed variables.
+    \item The \code{forecast} method now works for \code{pfiterd_pomp} objects (i.e., results of \code{pfilter}, \code{pmcmc}, or \code{mif2} computations).
   }
 }
 \section{Changes in \pkg{pomp} version 4.0.3}{

@@ -454,8 +454,8 @@ eakf.internal <- function (object, Np, ..., verbose) {
     )
 
     ww <- crossprod(svdV$u,Ct)
-    w <- crossprod(ww,svdV$d*ww)+R  # forecast variance
-    svdW <- svd(w,nv=0)             # SVD 2:  needed for log likelihood
+    w <- crossprod(ww,svdV$d*ww)+R # forecast variance
+    svdW <- svd(w,nv=0) # SVD 2:  needed for log likelihood
 
     condlogLik[k] <- sum(dnorm(x=crossprod(svdW$u,resid),mean=0,
       sd=sqrt(svdW$d),log=TRUE))
@@ -468,9 +468,9 @@ eakf.internal <- function (object, Np, ..., verbose) {
     b <- svdV$u%*%(sqrt(svdV$d)*svdU$u)%*%
       (1/sqrt(1+svdU$d)/sqrt(svdV$d)*t(svdV$u))
 
-    K <- tcrossprod(b%*%pv,b)%*%Ct%*%Ri   # Kalman gain
+    K <- tcrossprod(b%*%pv,b)%*%Ct%*%Ri # Kalman gain
 
-    filterMeans[,k] <- fm <- pm+K%*%resid         # filter mean
+    filterMeans[,k] <- fm <- pm+K%*%resid # filter mean
 
     X[,] <- b%*%X+fm[,]
   }

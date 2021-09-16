@@ -8,6 +8,10 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._4:
           the linear relationship between the latent state and the
           observed variables.
 
+        • The ‘forecast’ method now works for ‘pfiterd_pomp’ objects
+          (i.e., results of ‘pfilter’, ‘pmcmc’, or ‘mif2’
+          computations).
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._3:
 
         • Two new basic model components have been introduced.  These

@@ -5,11 +5,14 @@
 \alias{forecast,missing-method}
 \alias{forecast,ANY-method}
 \alias{forecast,kalmand_pomp-method}
+\alias{forecast,pfilterd_pomp-method}
 \title{Forecast mean}
 \usage{
 forecast(object, ...)
 
 \S4method{forecast}{kalmand_pomp}(object, vars, ...)
+
+\S4method{forecast}{pfilterd_pomp}(object, vars, ...)
 }
 \arguments{
 \item{object}{result of a filtering computation}

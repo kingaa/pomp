@@ -145,7 +145,7 @@ enkf %>%
   labs(title="EnKF forecasts")
 
 eakf %>%
-  forecast() %>%
+  forecast(vars=c("y1","y2")) %>%
   melt() %>%
   ggplot(aes(x=time,y=value,group=variable,color=variable))+
   geom_line()+theme_bw()+

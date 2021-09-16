@@ -240,4 +240,14 @@ Error : in 'pfilter': 'times' should either be a numeric vector of observation t
 +   )
 <object of class 'pfilterd_pomp'>
 > 
+> try(ou2 %>% pfilter(Np=1000) %>% forecast())
+Error : in 'forecast': no prediction mean. Rerun 'pfilter' with 'pred.mean=TRUE'.
+> try(ou2 %>% pfilter(Np=1000,emeasure=NULL) %>% forecast())
+Error : in 'forecast': 'emeasure' is a needed basic component.
+> ou2 %>% pfilter(Np=1000,pred.mean=TRUE) %>% forecast() -> y
+> ou2 %>% pfilter(Np=1000,pred.mean=TRUE) %>% forecast(vars="y1") -> y1
+> stopifnot(
++   dim(y)==c(2,100),
++   dim(y1)==c(1,100)
++ )
 > 
