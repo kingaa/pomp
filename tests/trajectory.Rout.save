@@ -92,21 +92,21 @@ variable  [,1] [,2]
 , , 1
 
         rep
-variable   [,1]   [,2]
+variable      1      2
        V -0.133 -0.538
        R  1.184  0.632
 
 , , 2
 
         rep
-variable   [,1]   [,2]
+variable      1      2
        V -0.161 -0.600
        R  1.182  0.632
 
 , , 3
 
         rep
-variable   [,1]   [,2]
+variable      1      2
        V -0.189 -0.660
        R  1.180  0.631
 
@@ -260,12 +260,25 @@ Error : in 'trajectory': 'params' must be named and numeric.
 > colnames(p) <- LETTERS[1:3]
 > p["r",] <- c(5,10,45)
 > po %>%
++   trajectory(params=p,times=1:5,format="array") %>%
++   dimnames() -> dn
+> stopifnot(
++   names(dn)==c("variable","rep","time"),
++   dn$rep==LETTERS[1:3],
++   is.null(dn$time)
++ )
+> po %>%
++   trajectory(params=p,times=1:5,format="data.frame") -> x
+> unique(x$.id)
+[1] A B C
+Levels: A < B < C
+> po %>%
 +   trajectory(format="pomps") %>%
 +   trajectory(params=p,times=1:50,format="pomps") -> pos
 > states(pos) -> x
 > obs(pos) -> y
 > stopifnot(
-+   all(names(pos)==LETTERS[1:3]),
++   names(pos)==LETTERS[1:3],
 +   length(x)==3,
 +   length(y)==3
 + )

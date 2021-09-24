@@ -142,12 +142,23 @@ p <- parmat(coef(po),3)
 colnames(p) <- LETTERS[1:3]
 p["r",] <- c(5,10,45)
 po %>%
+  trajectory(params=p,times=1:5,format="array") %>%
+  dimnames() -> dn
+stopifnot(
+  names(dn)==c("variable","rep","time"),
+  dn$rep==LETTERS[1:3],
+  is.null(dn$time)
+)
+po %>%
+  trajectory(params=p,times=1:5,format="data.frame") -> x
+unique(x$.id)
+po %>%
   trajectory(format="pomps") %>%
   trajectory(params=p,times=1:50,format="pomps") -> pos
 states(pos) -> x
 obs(pos) -> y
 stopifnot(
-  all(names(pos)==LETTERS[1:3]),
+  names(pos)==LETTERS[1:3],
   length(x)==3,
   length(y)==3
 )

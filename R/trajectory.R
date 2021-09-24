@@ -202,6 +202,8 @@ trajectory.internal <- function (
     )
   )
 
+  repnames <- colnames(x)
+
   if (format == "data.frame") {
     x <- lapply(
       seq_len(ncol(x)),
@@ -218,6 +220,10 @@ trajectory.internal <- function (
     )
     x <- do.call(rbind,x)
     x$.id <- ordered(x$.id)
+    if (!is.null(repnames)) {
+      levels(x$.id) <- repnames
+    }
+
   } else if (format == "pomps") {
     rv <- rep(list(object),ncol(x))
     dy <- dim(x)[c(1L,3L)]

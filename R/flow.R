@@ -114,8 +114,9 @@ flow.internal <- function (object, x0, t0, times, params, ...,
   storage.mode(x0) <- "double"
 
   statenames <- rownames(x0)
+  repnames <- colnames(x0)
   dim(x0) <- c(nvar,nrep,1)
-  dimnames(x0) <- list(statenames,NULL,NULL)
+  dimnames(x0) <- list(statenames,repnames,NULL)
 
   ntimes <- length(times)
 
@@ -167,7 +168,7 @@ flow.internal <- function (object, x0, t0, times, params, ...,
     if (verbose) diagnostics(X)
 
     x <- array(data=t(X[-1L,-1L]),dim=c(nvar,nrep,ntimes),
-      dimnames=list(statenames,NULL,NULL))
+      dimnames=list(statenames,repnames,NULL))
 
     for (z in znames)
       for (r in seq_len(ncol(x)))
@@ -176,7 +177,7 @@ flow.internal <- function (object, x0, t0, times, params, ...,
   } else {                  ## DEFAULT SKELETON
 
     x <- array(data=NA_real_,dim=c(nrow(x0),ncol(x0),length(times)),
-      dimnames=list(rownames(x0),NULL,NULL))
+      dimnames=list(rownames(x0),colnames(x0),NULL))
 
   }
 
