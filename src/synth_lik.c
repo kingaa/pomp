@@ -45,9 +45,9 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
   // do first QR decomposition & backsolve
   memcpy(y2,y1,nrow*ncol*sizeof(double));
   // LAPACK QR decomposition without pivoting DGEQR2(M,N,A,LDA,TAU,WORK,INFO)
-  F77_NAME(dgeqr2)(&nrow,&ncol,y2,&nrow,tau,work,&info);
+  F77_CALL(dgeqr2)(&nrow,&ncol,y2,&nrow,tau,work,&info);
   // Level-3 BLAS triangular matrix solver DTRSM(SIDE,UPLO,TRANS,DIAG,M,N,ALPHA,A,LDA,B,LDB)
-  F77_NAME(dtrsm)("right","upper","no transpose","non-unit",&nrow,&ncol,&one,y2,&nrow,y1,&nrow);
+  F77_CALL(dtrsm)("right","upper","no transpose","non-unit",&nrow,&ncol,&one,y2,&nrow,y1,&nrow FCONE);
 
   // create Campbell weight vector
   d0 = sqrt(ncol)+alpha/sqrt(2.0);
@@ -90,7 +90,7 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
 
   // do second QR decomposition & backsolve
   // LAPACK QR decomposition without pivoting DGEQR2(M,N,A,LDA,TAU,WORK,INFO)
-  F77_NAME(dgeqr2)(&nrow,&ncol,y1,&nrow,tau,work,&info);
+  F77_CALL(dgeqr2)(&nrow,&ncol,y1,&nrow,tau,work,&info);
   pomp_backsolve(y1,nrow,ncol,ydat,1,"upper","transpose","non-unit");
 
   // compute residual sum of squares and add up logs of diag(R)

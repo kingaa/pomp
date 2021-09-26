@@ -1,8 +1,13 @@
 #ifndef _POMP_MAT_H_
 #define _POMP_MAT_H_
 
-#include "pomp_internal.h"
+#define USE_FC_LEN_T
+#include <Rconfig.h>
 #include <R_ext/Lapack.h>
+#ifndef FCONE
+# define FCONE
+#endif
+#include "pomp_internal.h"
 
 static R_INLINE void pomp_backsolve (double *a, int lda, int n, double *x, int incx,
 				     char *uplo, char *transpose, char *unit) {
@@ -14,7 +19,7 @@ static R_INLINE void pomp_backsolve (double *a, int lda, int n, double *x, int i
   // UPLO is "U" or "L" depending on whether A is upper or lower triangular
   // TRANSPOSE is "T" or "N" depending on whether the transpose is desired
   // DIAG is "U" or "N" depending on whether A is unit triangular or not
-  F77_NAME(dtrsv)(uplo,transpose,unit,&n,a,&lda,x,&incx);
+  F77_CALL(dtrsv)(uplo,transpose,unit,&n,a,&lda,x,&incx FCONE);
 }
 
 static R_INLINE void pomp_qr (double *a, int m, int n, int *pivot, double *tau) {
@@ -23,11 +28,11 @@ static R_INLINE void pomp_qr (double *a, int m, int n, int *pivot, double *tau) 
   for (j = 0; j < n; j++) pivot[j] = 0; // zero out the pivots (assumed by DGEQP3)
   // LAPACK QR decomposition routine
   // DGEQP3(M,N,A,LDA,JPVT,TAU,WORK,LWORK,INFO)
-  F77_NAME(dgeqp3)(&m,&n,a,&m,pivot,tau,&work1,&lwork,&info); // workspace query
+  F77_CALL(dgeqp3)(&m,&n,a,&m,pivot,tau,&work1,&lwork,&info); // workspace query
   lwork = (int) ceil(work1);
   {
     double work[lwork];
-    F77_NAME(dgeqp3)(&m,&n,a,&m,pivot,tau,work,&lwork,&info); // actual call
+    F77_CALL(dgeqp3)(&m,&n,a,&m,pivot,tau,work,&lwork,&info); // actual call
   }
   for (j = 0; j < n; j++) pivot[j]--;
 }
@@ -38,11 +43,11 @@ static R_INLINE void pomp_qrqy (double *c, double *a, int lda, double *tau, int 
  
   // workspace query
   // DORMQR(SIDE,TRANS,M,N,K,A,LDA,TAU,C,LDC,WORK,LWORK,INFO)
-  F77_NAME(dormqr)(side,transpose,&m,&n,&k,a,&lda,tau,c,&m,&work1,&lwork,&info);
+  F77_CALL(dormqr)(side,transpose,&m,&n,&k,a,&lda,tau,c,&m,&work1,&lwork,&info FCONE);
   lwork = (int) ceil(work1);
   {				// actual call
     double work[lwork];
-    F77_NAME(dormqr)(side,transpose,&m,&n,&k,a,&lda,tau,c,&m,work,&lwork,&info);
+    F77_CALL(dormqr)(side,transpose,&m,&n,&k,a,&lda,tau,c,&m,work,&lwork,&info FCONE);
   }
 }
 
