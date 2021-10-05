@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.5}{
+  \itemize{
+    \item \code{parmat} now takes an optional argument, \code{names}, which allows the user to name the parameter sets.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.4}{
   \itemize{
     \item The ensemble adjusted Kalman filter (\code{eakf}) has been refactored.

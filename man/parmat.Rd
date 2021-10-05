@@ -4,12 +4,14 @@
 \alias{parmat}
 \title{Create a matrix of parameters}
 \usage{
-parmat(params, nrep = 1)
+parmat(params, nrep = 1, names = NULL)
 }
 \arguments{
 \item{params}{named numeric vector or matrix of parameters.}
 
 \item{nrep}{number of replicates (columns) desired.}
+
+\item{names}{optional character; column names.}
 }
 \value{
 \code{parmat} returns a matrix consisting of \code{nrep} copies of
