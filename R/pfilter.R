@@ -331,7 +331,7 @@ pfilter.internal <- function (object, Np,
     if (save.states || filter.traj) {
       xparticles[[nt]] <- x
       dimnames(xparticles[[nt]]) <- setNames(dimnames(xparticles[[nt]]),
-        c("variable","rep"))
+        c("variable",".id"))
     }
 
     if (verbose && (nt%%5 == 0))

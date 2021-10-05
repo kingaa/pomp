@@ -153,13 +153,13 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 +   filter.traj=TRUE)
 > pf1 %>% saved.states() %>% melt() %>% names()
-[1] "variable" "rep"      "value"    "L1"      
+[1] "variable" ".id"      "value"    "L1"      
 > pf1 %>% saved.states() %>% melt() %>% dim()
 [1] 20000     4
 > c(A=pf1,B=pf2) %>% saved.states() %>% melt() %>% names()
-[1] "variable" "rep"      "value"    "L2"       "L1"      
+[1] "variable" ".id"      "value"    "L2"       "L1"      
 > c(A=pf1,B=pf2) %>% saved.states() %>% melt() %>% sapply(class)
-   variable         rep       value          L2          L1 
+   variable         .id       value          L2          L1 
    "factor"   "integer"   "numeric" "character" "character" 
 > c(A=pf1,B=pf2) %>% as.data.frame() %>% sapply(class)
           time             y1             y2            ess    cond.logLik 

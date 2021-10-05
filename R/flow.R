@@ -181,7 +181,7 @@ flow.internal <- function (object, x0, t0, times, params, ...,
 
   }
 
-  dimnames(x) <- setNames(dimnames(x),c("variable","rep",object@timename))
+  dimnames(x) <- setNames(dimnames(x),c("variable",".id",object@timename))
 
   x
 }

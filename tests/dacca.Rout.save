@@ -28,7 +28,7 @@ Type 'q()' to quit R.
 > 
 > plot(po)
 > rinit(po)
-        rep
+        .id
 variable    [,1]
   S      1502003
   I       914263

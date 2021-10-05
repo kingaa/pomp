@@ -30,7 +30,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params
   int *xdim, type, nvars, npars, nreps, nrepsx, ntimes;
   SEXP X, copy, rproc, args, accumvars, covar;
   SEXP dimXstart, dimP;
-  const char *dimnm[3] = {"variable","rep","time"};
+  const char *dimnm[3] = {"variable",".id","time"};
 
   PROTECT(gnsi = duplicate(gnsi));
 

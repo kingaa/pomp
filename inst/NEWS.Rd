@@ -3,6 +3,8 @@
 \section{Changes in \pkg{pomp} version 4.0.5}{
   \itemize{
     \item \code{parmat} now takes an optional argument, \code{names}, which allows the user to name the parameter sets.
+    \item Independent realizations of the stochastic processes modeled in \pkg{pomp} are now distinguished by different values of \code{.id}.
+    This behavior is now uniform throughout.
   }
 }
 \section{Changes in \pkg{pomp} version 4.0.4}{

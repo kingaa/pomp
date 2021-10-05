@@ -86,7 +86,7 @@ static R_INLINE SEXP eval_call (
 
 static R_INLINE SEXP ret_array (int n, int nreps, int ntimes, SEXP names) {
   int dim[4] = {n, n, nreps, ntimes};
-  const char *dimnm[4] = {"var1", "var2", "rep", "time"};
+  const char *dimnm[4] = {"var1", "var2", ".id", "time"};
   SEXP Y;
 
   PROTECT(Y = makearray(4,dim));
@@ -297,7 +297,7 @@ SEXP do_vmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   default: {
     nobs = LENGTH(Onames);
     int dim[4] = {nobs, nobs, nreps, ntimes};
-    const char *dimnm[4] = {"var1","var2","rep","time"};
+    const char *dimnm[4] = {"var1","var2",".id","time"};
     double *yt = 0;
     int i, n = nobs*nobs*nreps*ntimes;
 

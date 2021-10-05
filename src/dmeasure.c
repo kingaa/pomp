@@ -98,7 +98,7 @@ static R_INLINE SEXP eval_call (
 
 static R_INLINE SEXP ret_array (int nreps, int ntimes) {
   int dim[2] = {nreps, ntimes};
-  const char *dimnm[2] = {"rep","time"};
+  const char *dimnm[2] = {".id","time"};
   SEXP F;
   PROTECT(F = makearray(2,dim));
   fixdimnames(F,dimnm,2);

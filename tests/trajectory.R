@@ -145,8 +145,8 @@ po %>%
   trajectory(params=p,times=1:5,format="array") %>%
   dimnames() -> dn
 stopifnot(
-  names(dn)==c("variable","rep","time"),
-  dn$rep==LETTERS[1:3],
+  names(dn)==c("variable",".id","time"),
+  dn$.id==LETTERS[1:3],
   is.null(dn$time)
 )
 po %>%

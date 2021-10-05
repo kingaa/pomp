@@ -17,7 +17,7 @@ p["r",] <- exp(c(1,2,4))
 f <- skeleton(ricker,x=x,params=p,t=time(ricker))
 f %>% melt() %>%
   subset(variable=="N",select=-variable) %>%
-  dcast(time~rep) %>%
+  dcast(time~.id) %>%
   join(x %>% melt(value.name="x") %>% subset(variable=="N",select=-variable),
        by="time") %>%
   melt(id.vars=c("time","x")) %>%
@@ -37,12 +37,12 @@ trajectory(sir,params=p,times=seq(0,1,length=1000),format="a") -> tj
 skeleton(sir,x=tj,params=p,t=seq(0,1,length=1000)) -> f
 tj %>% apply(c(1,2),diff) %>% melt(value.name="diff") -> dtj
 f %>% melt(value.name="deriv") -> f
-join(f,dtj,by=c("time","variable","rep")) %>%
+join(f,dtj,by=c("time","variable",".id")) %>%
   subset(variable %in% c("S","I","R")) %>%
-  ggplot(aes(x=deriv,y=diff/0.001,color=factor(rep)))+
+  ggplot(aes(x=deriv,y=diff/0.001,color=factor(.id)))+
   geom_point()+
   geom_abline(intercept=0,slope=1,color='black')+
-  facet_grid(rep~variable,labeller=labeller(rep=label_both))+
+  facet_grid(.id~variable,labeller=labeller(.id=label_both))+
   guides(color="none")+
   labs(x="derivative",y="finite difference")+
   theme_bw()

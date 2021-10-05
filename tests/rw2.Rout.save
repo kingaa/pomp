@@ -27,7 +27,7 @@ Type 'q()' to quit R.
 > set.seed(1438408329L)
 > 
 > rinit(rw2)
-        rep
+        .id
 variable [,1]
       x1    0
       x2    0

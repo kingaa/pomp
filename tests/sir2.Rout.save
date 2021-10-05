@@ -33,7 +33,7 @@ Type 'q()' to quit R.
      I_0      R_0      pop 
 1.00e-04 9.50e-01 1.00e+06 
 > rinit(sir2)
-        rep
+        .id
 variable    [,1]
    S       50000
    I         100

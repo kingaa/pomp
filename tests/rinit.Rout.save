@@ -22,17 +22,17 @@ Type 'q()' to quit R.
 > 
 > gompertz() -> gompertz
 > rinit(gompertz)
-        rep
+        .id
 variable [,1]
        X    1
 > rinit(gompertz,params=coef(gompertz))
-        rep
+        .id
 variable [,1]
        X    1
 > 
 > p <- coef(gompertz)[-5]
 > try(rinit(gompertz,params=p))
-        rep
+        .id
 variable [,1]
 Warning message:
 in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
@@ -57,7 +57,7 @@ Error : in 'rinit': 'object' is a required argument.
 $variable
 [1] "X"
 
-$rep
+$.id
 [1] "1_1" "2_1" "3_1" "1_2" "2_2" "3_2"
 
 > colnames(pp) <- head(LETTERS,10)
@@ -67,7 +67,7 @@ $rep
 $variable
 [1] "X"
 
-$rep
+$.id
  [1] "A_1" "B_1" "C_1" "D_1" "E_1" "A_2" "B_2" "C_2" "D_2" "E_2"
 
 > rinit(gompertz,params=pp[,1:5],nsim=1) -> x0
@@ -95,7 +95,7 @@ Error : in 'simulate': variable 'cases' not found among the state variables.
 +   pomp(rinit=function(seas_1,...)
 +     c(S=seas_1)) %>%
 +   rinit()
-        rep
+        .id
 variable      [,1]
        S 0.6666667
 > 

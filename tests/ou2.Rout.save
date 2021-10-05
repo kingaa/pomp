@@ -28,7 +28,7 @@ Type 'q()' to quit R.
 > 
 > plot(ou2)
 > rinit(ou2)
-        rep
+        .id
 variable [,1]
       x1   -3
       x2    4

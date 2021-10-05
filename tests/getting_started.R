@@ -76,7 +76,7 @@ library(tidyr)
 simStates %>%
   melt() %>%
   spread(variable,value) %>%
-  ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
+  ggplot(mapping=aes(x=time,y=N,group=.id,color=factor(.id)))+
   geom_line()+
   guides(color="none")+
   theme_bw()
@@ -96,7 +96,7 @@ sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),nsim=10,
 ## ----logistic-plot2,echo=FALSE-------------------------------------------
 sim %>%
   melt() %>%
-  ggplot(mapping=aes(x=time,y=value,group=rep,color=factor(rep)))+
+  ggplot(mapping=aes(x=time,y=value,group=.id,color=factor(.id)))+
   geom_line()+
   guides(color="none")+
   scale_y_sqrt()+
@@ -109,7 +109,7 @@ sim %>%
   melt() %>%
   select(-L1) %>%
   spread(variable,value) %>%
-  ggplot(mapping=aes(x=N,y=P,color=factor(rep)))+
+  ggplot(mapping=aes(x=N,y=P,color=factor(.id)))+
   geom_point()+scale_x_sqrt()+scale_y_sqrt()+
   coord_equal()+
   guides(color="none")+

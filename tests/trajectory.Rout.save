@@ -45,14 +45,14 @@ Type 'q()' to quit R.
 > skeleton(fhn,x,t=c(0,3),params=params)
 , , 1
 
-        rep
+        .id
 variable  [,1]  [,2]
        V -0.40 -6.67
        R -0.05  0.10
 
 , , 2
 
-        rep
+        .id
 variable  [,1] [,2]
        V 0.933  5.0
        R 0.450  0.2
@@ -91,21 +91,21 @@ variable  [,1] [,2]
 > y[,,199:201]
 , , 1
 
-        rep
+        .id
 variable      1      2
        V -0.133 -0.538
        R  1.184  0.632
 
 , , 2
 
-        rep
+        .id
 variable      1      2
        V -0.161 -0.600
        R  1.182  0.632
 
 , , 3
 
-        rep
+        .id
 variable      1      2
        V -0.189 -0.660
        R  1.180  0.631
@@ -263,8 +263,8 @@ Error : in 'trajectory': 'params' must be named and numeric.
 +   trajectory(params=p,times=1:5,format="array") %>%
 +   dimnames() -> dn
 > stopifnot(
-+   names(dn)==c("variable","rep","time"),
-+   dn$rep==LETTERS[1:3],
++   names(dn)==c("variable",".id","time"),
++   dn$.id==LETTERS[1:3],
 +   is.null(dn$time)
 + )
 > po %>%

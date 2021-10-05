@@ -16,7 +16,7 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
   //  int npars;
   //  int do_pr = 0;  // do parameter resampling?  at the moment, we do not
   int *dim, k;
-  const char *dimnm[] = {"variable","rep"};
+  const char *dimnm[] = {"variable",".id"};
 
   PROTECT(dimX = GET_DIM(X));
   dim = INTEGER(dimX);

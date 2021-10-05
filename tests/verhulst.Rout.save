@@ -27,7 +27,7 @@ Type 'q()' to quit R.
 > set.seed(1438408329L)
 > 
 > rinit(po)
-        rep
+        .id
 variable [,1]
        n  100
 > coef(po)

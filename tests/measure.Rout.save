@@ -90,12 +90,15 @@ Error : in 'dmeasure': variable 'tau' not found among the parameters.
 > try(dmeasure(po,x=x,y=y,times=t,params=pp[,1:3]))
 Error : in 'dmeasure': larger number of replicates is not a multiple of smaller.
 > dmeasure(po,x=x,y=y,times=t,params=pp) -> d
-> stopifnot(dim(d)==c(5,10),names(dimnames(d))==c("rep","time"))
+> stopifnot(
++   dim(d)==c(5,10),
++   names(dimnames(d))==c(".id","time")
++ )
 > 
 > rmeasure(po,x=x,times=t,params=p) -> y
 > stopifnot(
 +   dim(y)==c(2,5,10),
-+   names(dimnames(y))==c("variable","rep","time")
++   names(dimnames(y))==c("variable",".id","time")
 + )
 > 
 > try(rmeasure("ou2",x=x,times=t,params=p))
@@ -125,7 +128,7 @@ Error : in 'rmeasure': variable 'tau' not found among the parameters.
 > try(rmeasure(po,x=x,times=t,params=pp[,1:3]))
 Error : in 'rmeasure': larger number of replicates is not a multiple of smaller.
 > rmeasure(po,x=x,times=t,params=pp) -> y
-> stopifnot(dim(y)==c(2,5,10),names(dimnames(y))==c("variable","rep","time"))
+> stopifnot(dim(y)==c(2,5,10),names(dimnames(y))==c("variable",".id","time"))
 > 
 > po %>% pomp(
 +   rmeasure=function(...)c(1,2,3),

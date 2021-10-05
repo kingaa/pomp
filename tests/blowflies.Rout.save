@@ -34,7 +34,7 @@ Type 'q()' to quit R.
 > 
 > plot(flies[[1]])
 > rinit(flies[[1]])
-        rep
+        .id
 variable [,1]
      N1   397
      N2   450
@@ -75,7 +75,7 @@ variable [,1]
 > set.seed(1598688L)
 > plot(flies[[2]])
 > rinit(flies[[2]])
-        rep
+        .id
 variable [,1]
      N1   397
      N2   504

@@ -56,12 +56,15 @@ try(dmeasure(po,x=x,y=y,times=t,params=p[-k]))
 pp <- parmat(p,5)
 try(dmeasure(po,x=x,y=y,times=t,params=pp[,1:3]))
 dmeasure(po,x=x,y=y,times=t,params=pp) -> d
-stopifnot(dim(d)==c(5,10),names(dimnames(d))==c("rep","time"))
+stopifnot(
+  dim(d)==c(5,10),
+  names(dimnames(d))==c(".id","time")
+)
 
 rmeasure(po,x=x,times=t,params=p) -> y
 stopifnot(
   dim(y)==c(2,5,10),
-  names(dimnames(y))==c("variable","rep","time")
+  names(dimnames(y))==c("variable",".id","time")
 )
 
 try(rmeasure("ou2",x=x,times=t,params=p))
@@ -80,7 +83,7 @@ try(rmeasure(po,x=x,y=y,times=t,params=p[-k]))
 pp <- parmat(p,5)
 try(rmeasure(po,x=x,times=t,params=pp[,1:3]))
 rmeasure(po,x=x,times=t,params=pp) -> y
-stopifnot(dim(y)==c(2,5,10),names(dimnames(y))==c("variable","rep","time"))
+stopifnot(dim(y)==c(2,5,10),names(dimnames(y))==c("variable",".id","time"))
 
 po %>% pomp(
   rmeasure=function(...)c(1,2,3),

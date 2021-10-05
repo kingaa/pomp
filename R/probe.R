@@ -236,7 +236,7 @@ probe.internal <- function (object, probes, nsim, seed, ...,
       pStop_("in synthetic likelihood computation: ",conditionMessage(e))
   )
 
-  names(dimnames(simval)) <- c("rep","probe")
+  names(dimnames(simval)) <- c(".id","probe")
 
   new(
     "probed_pomp",

@@ -53,6 +53,6 @@ try(po %>% pomp(rprior=function(...)c(1,3,3)) %>% rprior(params=theta))
 po %>% rprior(params=parmat(theta,3)) -> p
 stopifnot(
   dim(p)==c(11,15),
-  names(dimnames(p))==c("variable","rep"),
+  names(dimnames(p))==c("variable",".id"),
   rownames(p)==names(coef(po))
 )
