@@ -127,7 +127,7 @@ Re-computation is triggered if any of these things change.
 With \pkg{pomp} version 3.4.4.2, the behavior of \code{bake} and \code{stew} changed.
 In particular, older versions did no dependency checking, and did not check to see whether \code{expr} had changed.
 Accordingly, the archive files written by older versions have a format that is not compatible with the newer ones.
-When an archive file in the old format is encountered, it will be updated to the new format, with a warning.
+When an archive file in the old format is encountered, it will be updated to the new format, with a warning message.
 \strong{Note that this will overwrite existing archive files!}
 However, there will be no loss of information.
 }

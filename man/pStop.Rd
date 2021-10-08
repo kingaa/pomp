@@ -5,6 +5,8 @@
 \alias{pStop_}
 \alias{pWarn}
 \alias{pWarn_}
+\alias{pMess}
+\alias{pMess_}
 \title{pStop}
 \usage{
 pStop(fn, ...)
@@ -14,6 +16,10 @@ pStop_(...)
 pWarn(fn, ...)
 
 pWarn_(...)
+
+pMess(fn, ...)
+
+pMess_(...)
 }
 \arguments{
 \item{fn}{name of function (will be enclosed in single quotes)}

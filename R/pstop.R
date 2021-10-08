@@ -28,6 +28,17 @@ pWarn_ <- function (...) {
   warning(...,call.=FALSE)
 }
 
+##' @rdname pStop
+pMess <- function (fn, ...) {
+  fn <- as.character(fn)
+  message("NOTE: in ",sQuote(fn[1L]),": ",...)
+}
+
+##' @rdname pStop
+pMess_ <- function (...) {
+  message("NOTE: ",...)
+}
+
 undef_method <- function (method, object) {
   o <- deparse(substitute(object))
   pStop_(sQuote(method)," is undefined for ",sQuote(o)," of class ",

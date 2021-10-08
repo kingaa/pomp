@@ -42,29 +42,25 @@ Type 'q()' to quit R.
 > rm(.Random.seed)
 > x4 <- bake({runif(4)},file=file.path(tempdir(),"bake3.rds"),seed=59566)
 > x5 <- bake({runif(5)},file=file.path(tempdir(),"bake1.rds"))
-Warning message:
-in 'bake': recomputing archive bake1.rds. 
+NOTE: in 'bake': recomputing archive bake1.rds.
 > x6 <- bake({runif(5)},file=file.path(tempdir(),"bake1.rds"))
 > x7 <- bake({x1+runif(1)},file=file.path(tempdir(),"bake4.rds"))
 > x8 <- bake({x1+runif(1)},
 +   file=file.path(tempdir(),"bake4.rds"),
 +   dependson=x1)
-Warning message:
-in 'bake': recomputing archive bake4.rds. 
+NOTE: in 'bake': recomputing archive bake4.rds.
 > x9 <- bake({x1+runif(1)},
 +   file=file.path(tempdir(),"bake4.rds"),
 +   dependson=x1)
 > x10 <- bake({x1+runif(1)},
 +   file=file.path(tempdir(),"bake4.rds"),
 +   dependson=list(x1,x6))
-Warning message:
-in 'bake': recomputing archive bake4.rds. 
+NOTE: in 'bake': recomputing archive bake4.rds.
 > c <- function(x) x+5
 > x11 <- bake({x1+runif(1)},
 +   file=file.path(tempdir(),"bake4.rds"),
 +   dependson=list(x1,c))
-Warning message:
-in 'bake': recomputing archive bake4.rds. 
+NOTE: in 'bake': recomputing archive bake4.rds.
 > try(
 +   x12 <- bake({x1+runif(1)},
 +     file=file.path(tempdir(),"bake4.rds"),
@@ -80,8 +76,7 @@ Error : in 'bake': cannot compute hash of dependencies: object 'x13' not found
 > x13 <- bake({x1+runif(1)},seed=233,
 +   file=file.path(tempdir(),"bake4.rds"),
 +   dependson=x1,info=TRUE)
-Warning message:
-in 'bake': recomputing archive bake4.rds. 
+NOTE: in 'bake': recomputing archive bake4.rds.
 > stopifnot(
 +   identical(x1,x2),
 +   identical(x1,x3),
@@ -101,8 +96,7 @@ in 'bake': recomputing archive bake4.rds.
 Error : in 'bake': 'tmp.rds' lacks ingredients.
 > saveRDS(x6,file=file.path(tempdir(),"tmp.rds"))
 > invisible(bake({runif(4)},file=file.path(tempdir(),"tmp.rds")))
-Warning message:
-in 'bake': archive in old format detected. Updating.... 
+NOTE: in 'bake': archive in old format detected. Updating....
 > 
 > set.seed(113848)
 > stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rda"))
@@ -114,8 +108,7 @@ in 'bake': archive in old format detected. Updating....
 > stew({y4 <- runif(4)},file=file.path(tempdir(),"stew3.rda"),seed=59566)
 > y5 <- y1+y2 
 > stew({y6 <- y1+y2},dependson=list(y1,y2),file=file.path(tempdir(),"stew3.rda"))
-Warning message:
-in 'stew': recomputing archive stew3.rda. 
+NOTE: in 'stew': recomputing archive stew3.rda.
 > stopifnot(
 +   identical(y1,y2),
 +   identical(y1,y3),
@@ -123,16 +116,14 @@ in 'stew': recomputing archive stew3.rda.
 + )
 > y1 <- 0
 > stew({y6 <- y1+y2},dependson=list(y1,y2),file=file.path(tempdir(),"stew3.rda"))
-Warning message:
-in 'stew': recomputing archive stew3.rda. 
+NOTE: in 'stew': recomputing archive stew3.rda.
 > stopifnot(
 +   identical(y2,y6),
 +   !exists(".ingredients"),
 +   exists(".system.time")
 + )
 > stew({y6 <- y1+y2},info=TRUE,file=file.path(tempdir(),"stew3.rda"))
-Warning message:
-in 'stew': recomputing archive stew3.rda. 
+NOTE: in 'stew': recomputing archive stew3.rda.
 > stopifnot(
 +   identical(y2,y6),
 +   is.list(.ingredients),
@@ -149,9 +140,9 @@ in 'stew': recomputing archive stew3.rda.
 +   is.list(bake({rnorm(5); NULL},seed=3494995,
 +     file=file.path(tempdir(),"bake4.rds")))
 + )
-Warning messages:
-1: in 'bake': recomputing archive bake4.rds. 
-2: in 'bake': expression evaluates to NULL, an empty list will be returned. 
+NOTE: in 'bake': recomputing archive bake4.rds.
+Warning message:
+in 'bake': expression evaluates to NULL, an empty list will be returned. 
 > 
 > rm(.Random.seed)
 > invisible(bake({runif(4)},file=file.path(tempdir(),"b99.rds"),seed=32765883))
@@ -166,8 +157,7 @@ character(0)
 > attr(x,"ingredients") <- NULL
 > saveRDS(x,file=file.path(tempdir(),"tmp1.rds"))
 > bake({runif(5)},file=file.path(tempdir(),"tmp1.rds")) -> y
-Warning message:
-in 'bake': archive in old format detected. Updating.... 
+NOTE: in 'bake': archive in old format detected. Updating....
 > bake({runif(5)},file=file.path(tempdir(),"tmp1.rds")) -> y
 > stopifnot(identical(x,y))
 > 
@@ -177,8 +167,7 @@ in 'bake': archive in old format detected. Updating....
 > save(x,y,file=file.path(tempdir(),"tmp1.rda"))
 > stew({x <- 33; y <- runif(5)},
 +   file=file.path(tempdir(),"tmp1.rda"))
-Warning message:
-in 'stew': archive in old format detected. Updating.... 
+NOTE: in 'stew': archive in old format detected. Updating....
 > stew({x <- 33; y <- runif(5)},
 +   file=file.path(tempdir(),"tmp1.rda"))
 > stopifnot(
@@ -192,12 +181,10 @@ in 'stew': archive in old format detected. Updating....
 > save(x,y,file=file.path(tempdir(),"tmp2.rda"))
 > stew({x <- 33; y <- runif(5)},
 +   file=file.path(tempdir(),"tmp2.rda"))
-Warning message:
-in 'stew': archive in old format detected. Updating.... 
+NOTE: in 'stew': archive in old format detected. Updating....
 > stew({x <- 33; y <- runif(5)},seed=99,
 +   file=file.path(tempdir(),"tmp2.rda"))
-Warning message:
-in 'stew': recomputing archive tmp2.rda. 
+NOTE: in 'stew': recomputing archive tmp2.rda.
 > stopifnot(
 +   identical(x,xx),
 +   identical(y,yy)

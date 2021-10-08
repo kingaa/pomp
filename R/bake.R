@@ -60,7 +60,7 @@
 ##' With \pkg{pomp} version 3.4.4.2, the behavior of \code{bake} and \code{stew} changed.
 ##' In particular, older versions did no dependency checking, and did not check to see whether \code{expr} had changed.
 ##' Accordingly, the archive files written by older versions have a format that is not compatible with the newer ones.
-##' When an archive file in the old format is encountered, it will be updated to the new format, with a warning.
+##' When an archive file in the old format is encountered, it will be updated to the new format, with a warning message.
 ##' \strong{Note that this will overwrite existing archive files!}
 ##' However, there will be no loss of information.
 ##' 
@@ -117,7 +117,7 @@ update_bake_archive <- function (val, code, deps, file) {
   if (is.null(attr(val,"ingredients")) &&
         !is.null(attr(val,"system.time"))
   ) {
-    pWarn("bake","archive in old format detected. Updating....")
+    pMess("bake","archive in old format detected. Updating....")
     attr(val,"ingredients") <- list(
       code=code,
       dependencies=deps,
@@ -161,7 +161,7 @@ bake <- function (
       file=file,ep="bake"
     )
     if (!reload) {
-      pWarn("bake","recomputing archive ",basename(file),".")
+      pMess("bake","recomputing archive ",basename(file),".")
     }
   }
   if (!reload) {
@@ -205,7 +205,7 @@ update_stew_archive <- function (
   file
 ) {
   if (is.null(e$.ingredients)) {
-    pWarn("stew","archive in old format detected. Updating....")
+    pMess("stew","archive in old format detected. Updating....")
     e$.ingredients <- list(
       code=code,
       dependencies=deps,
@@ -247,7 +247,7 @@ stew <- function (
       file=file,ep="stew"
     )
     if (!reload) {
-      pWarn("stew","recomputing archive ",basename(file),".")
+      pMess("stew","recomputing archive ",basename(file),".")
     }
   }
   if (!reload) {

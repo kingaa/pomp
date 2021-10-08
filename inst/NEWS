@@ -9,6 +9,10 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._5:
           in ‘pomp’ are now distinguished by different values of ‘.id’.
           This behavior is now uniform throughout.
 
+        • ‘bake’ and ‘stew’ now send messages instead of warnings when
+          they recompute an archive due to a change in code or
+          dependencies.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._4:
 
         • The ensemble adjusted Kalman filter (‘eakf’) has been

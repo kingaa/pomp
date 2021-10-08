@@ -5,6 +5,7 @@
     \item \code{parmat} now takes an optional argument, \code{names}, which allows the user to name the parameter sets.
     \item Independent realizations of the stochastic processes modeled in \pkg{pomp} are now distinguished by different values of \code{.id}.
     This behavior is now uniform throughout.
+    \item \code{bake} and \code{stew} now send messages instead of warnings when they recompute an archive due to a change in code or dependencies.
   }
 }
 \section{Changes in \pkg{pomp} version 4.0.4}{
