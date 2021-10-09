@@ -45,8 +45,10 @@ Error : in 'traj_objfun': 'skeleton', 'dmeasure' are needed basic components.
 > 
 > f()
 [1] 4854
-> stopifnot(f(0)==f(1))
-> stopifnot(logLik(f)!=f(0))
+> stopifnot(
++   f(0)==f(1),
++   logLik(f)!=f(0)
++ )
 > 
 > f %>% traj_objfun(est=c("alpha_1")) -> f1
 > plot(sapply(seq(0.1,0.9,by=0.1),f1),xlab="",ylab="")
@@ -94,6 +96,18 @@ Error : in 'traj_objfun': parameter 'harry' not found in 'params'
 +   ) -> ofun
 > 
 > theta <- c(gamma=10,iota=1,rho=0.2,k=1)
+> coef(ofun,c("gamma","iota","rho","k")) <- theta
+Warning message:
+in 'coef<-': names of 'value' are being discarded. 
+> coef(ofun)
+   gamma       mu     iota    beta1    beta2    beta3  beta_sd      rho 
+1.00e+01 2.00e-02 1.00e+00 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.00e-01 
+     pop      S_0      I_0      R_0        k 
+2.10e+06 6.50e-02 1.00e-03 9.34e-01 1.00e+00 
+> stopifnot(
++   coef(ofun,names(theta))==theta,
++   ofun@env$params==coef(ofun,transform=TRUE)
++ )
 > 
 > subplex(
 +   fn=ofun,

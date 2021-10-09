@@ -9,6 +9,7 @@
 \alias{coef,pomp-method}
 \alias{coef<-,pomp-method}
 \alias{coef,objfun-method}
+\alias{coef<-,objfun-method}
 \title{Extract, set, or alter coefficients}
 \usage{
 \S4method{coef}{listie}(object, ...)
@@ -18,6 +19,8 @@
 \S4method{coef}{pomp}(object, pars, transform = FALSE, ...) <- value
 
 \S4method{coef}{objfun}(object, ...)
+
+\S4method{coef}{objfun}(object, pars, transform = FALSE, ...) <- value
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}}

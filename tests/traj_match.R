@@ -21,8 +21,10 @@ ou2 %>%
   ) -> f
 
 f()
-stopifnot(f(0)==f(1))
-stopifnot(logLik(f)!=f(0))
+stopifnot(
+  f(0)==f(1),
+  logLik(f)!=f(0)
+)
 
 f %>% traj_objfun(est=c("alpha_1")) -> f1
 plot(sapply(seq(0.1,0.9,by=0.1),f1),xlab="",ylab="")
@@ -64,6 +66,12 @@ sir() |>
   ) -> ofun
 
 theta <- c(gamma=10,iota=1,rho=0.2,k=1)
+coef(ofun,c("gamma","iota","rho","k")) <- theta
+coef(ofun)
+stopifnot(
+  coef(ofun,names(theta))==theta,
+  ofun@env$params==coef(ofun,transform=TRUE)
+)
 
 subplex(
   fn=ofun,

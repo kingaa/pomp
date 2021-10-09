@@ -34,6 +34,18 @@ setMethod(
   }
 )
 
+##' @rdname coef
+##' @export
+setMethod(
+  "coef<-",
+  signature=signature(object="objfun"),
+  definition=function (object, pars, transform = FALSE, ..., value) {
+    coef(object@env$object,pars=pars,transform=transform,...) <- value
+    object@env$params <- coef(object@env$object,transform=TRUE)
+    object
+  }
+)
+
 ##' @rdname summary
 ##' @export
 setMethod(
