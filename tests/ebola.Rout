@@ -33,7 +33,7 @@ Type 'q()' to quit R.
      E_0      I_0      R_0 
 4.65e-07 4.65e-07 1.00e-08 
 > rinit(eb)
-        rep
+        .id
 variable     [,1]
     S    10628962
     E1          2

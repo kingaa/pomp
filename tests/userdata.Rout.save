@@ -48,7 +48,7 @@ Type 'q()' to quit R.
 +   rinit=Csnippet("x = 0;"),
 +   statenames="x",obsnames="y",paramnames=c("beta1","beta2","beta3")
 + ) -> po
-The provided objects 'nbasis','period','msg' are available for use by POMP basic components.
+NOTE: The provided objects 'nbasis','period','msg' are available for use by POMP basic components.
 hello!
 > 
 > try(po %>%
@@ -78,11 +78,11 @@ Error : in 'simulate': no user-data element 'bob' is found.
 +     simulate(rprocess=onestep(
 +       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));")),
 +       bob=3))
-The provided object 'bob' is available for use by POMP basic components.
+NOTE: The provided object 'bob' is available for use by POMP basic components.
 Error : in 'simulate': user-data element 'bob' is not an integer.
 > stopifnot(po %>%
 +     simulate(rprocess=onestep(
 +       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));")),
 +       bob=3L) %>% class() %>% magrittr::equals("pomp"))
-The provided object 'bob' is available for use by POMP basic components.
+NOTE: The provided object 'bob' is available for use by POMP basic components.
 > 

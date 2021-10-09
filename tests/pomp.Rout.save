@@ -68,7 +68,7 @@ Error : 't0' must be a single number not greater than 'times[1]'.
 +     pomp(covar=covariate_table(c=0:10,d=0:10,times="c"),
 +       covarnames="d",times="a",t0=0,bob=3) %>% class() %>%
 +     equals("pomp"))
-The provided object 'bob' is available for use by POMP basic components.
+NOTE: The provided object 'bob' is available for use by POMP basic components.
 > try(data.frame(a=1:10,b=1:10) %>%
 +     pomp(covar=covariate_table(c=1:10,d=1:10,d=1:10,times="c"),
 +       times="a",t0=0))

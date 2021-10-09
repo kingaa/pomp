@@ -469,7 +469,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (missing(.userdata)) .userdata <- list()
   added.userdata <- list(...)
   if (length(added.userdata)>0) {
-    message("The provided ",
+    pMess_("The provided ",
       ngettext(length(added.userdata),"object","objects")," ",
       paste(sQuote(names(added.userdata)),collapse=","),
       ngettext(length(added.userdata)," is"," are"),
