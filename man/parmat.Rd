@@ -2,12 +2,25 @@
 % Please edit documentation in R/parmat.R
 \name{parmat}
 \alias{parmat}
+\alias{parmat,missing-method}
+\alias{parmat,ANY-method}
+\alias{parmat,numeric-method}
+\alias{parmat,array-method}
+\alias{parmat,data.frame-method}
 \title{Create a matrix of parameters}
 \usage{
-parmat(params, nrep = 1, names = NULL)
+parmat(params, ...)
+
+\S4method{parmat}{numeric}(params, nrep = 1, ..., names = NULL)
+
+\S4method{parmat}{array}(params, nrep = 1, ..., names = NULL)
+
+\S4method{parmat}{data.frame}(params, nrep = 1, ...)
 }
 \arguments{
 \item{params}{named numeric vector or matrix of parameters.}
+
+\item{...}{additional arguments, currently ignored.}
 
 \item{nrep}{number of replicates (columns) desired.}
 

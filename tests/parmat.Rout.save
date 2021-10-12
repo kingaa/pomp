@@ -62,3 +62,48 @@ variable [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]
 +   p==q
 + )
 > 
+> try(parmat())
+Error : in 'parmat': 'params' is a required argument.
+> try(parmat("bob"))
+Error : 'parmat' is undefined for 'params' of class 'character'.
+> 
+> theta <- c(a=1,b=3,c=4,d=5)
+> Theta <- array(theta,dim=length(theta),dimnames=list(names(theta)))
+> p1 <- parmat(Theta,nrep=2,names=c("A","B"))
+> Theta <- array(theta,dim=c(length(theta),1),
++   dimnames=list(names(theta),NULL))
+> p2 <- parmat(Theta,nrep=2,names=c("A","B"))
+> Theta <- array(theta,dim=c(length(theta),1,1,1),
++   dimnames=list(names(theta),NULL,NULL,NULL))
+> p3 <- parmat(Theta,nrep=2,names=c("A","B"))
+> stopifnot(
++   identical(p1,p2),
++   identical(p1,p3)
++ )
+> 
+> try({
++   theta <- c(a="tom",b=3,c=4,d=5)
++   Theta <- array(theta,dim=length(theta),dimnames=list(names(theta)))
++   parmat(Theta,nrep=2,names=c("A","B"))
++ })
+Error : in 'parmat': in 'parmat': NAs introduced by coercion
+> 
+> try(
++   expand.grid(a=1:3,c="hello",stringsAsFactors=FALSE) %>% parmat()
++ )
+Error : in 'parmat': 'params' must contain numeric variables only.
+> try(
++   expand.grid(a=1:3,c="hello",stringsAsFactors=TRUE) %>% parmat()
++ )
+Error : in 'parmat': 'params' must contain numeric variables only.
+> expand.grid(a=1:3,b=1:2) %>% parmat()
+        .id
+variable 1 2 3 4 5 6
+       a 1 2 3 1 2 3
+       b 1 1 1 2 2 2
+> expand.grid(a=1:3,b=1:2) %>% parmat(nrep=2)
+        .id
+variable 1_1 2_1 3_1 4_1 5_1 6_1 1_2 2_2 3_2 4_2 5_2 6_2
+       a   1   2   3   1   2   3   1   2   3   1   2   3
+       b   1   1   1   2   2   2   1   1   1   2   2   2
+> 
