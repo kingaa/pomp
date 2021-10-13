@@ -86,7 +86,7 @@ Error : 'parmat' is undefined for 'params' of class 'character'.
 +   Theta <- array(theta,dim=length(theta),dimnames=list(names(theta)))
 +   parmat(Theta,nrep=2,names=c("A","B"))
 + })
-Error : in 'parmat': in 'parmat': NAs introduced by coercion
+Error : in 'parmat': NAs introduced by coercion
 > 
 > try(
 +   expand.grid(a=1:3,c="hello",stringsAsFactors=FALSE) %>% parmat()
