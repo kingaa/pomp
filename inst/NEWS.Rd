@@ -1,12 +1,21 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.7}{
+  \itemize{
+    \item \code{parmat} can now take a data frame of parameters and convert it into a matrix suitable for furnishing to the \code{params} argument of any \pkg{pomp} function.
+  }
+}
+\section{Changes in \pkg{pomp} version 4.0.6}{
+  \itemize{
+    \item It is now possible to change the parameters in an \sQuote{objfun} (objective function) object using \code{coef(object)<-value}.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.5}{
   \itemize{
     \item \code{parmat} now takes an optional argument, \code{names}, which allows the user to name the parameter sets.
     \item Independent realizations of the stochastic processes modeled in \pkg{pomp} are now distinguished by different values of \code{.id}.
     This behavior is now uniform throughout.
     \item \code{bake} and \code{stew} now send messages instead of warnings when they recompute an archive due to a change in code or dependencies.
-    \item It is now possible to change the parameters in an \sQuote{objfun} (objective function) object using \code{coef(object)<-value}.
   }
 }
 \section{Changes in \pkg{pomp} version 4.0.4}{

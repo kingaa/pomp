@@ -1,5 +1,16 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._7:
+
+        • ‘parmat’ can now take a data frame of parameters and convert
+          it into a matrix suitable for furnishing to the ‘params’
+          argument of any ‘pomp’ function.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._6:
+
+        • It is now possible to change the parameters in an ‘objfun’
+          (objective function) object using ‘coef(object)<-value’.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._5:
 
         • ‘parmat’ now takes an optional argument, ‘names’, which
@@ -12,9 +23,6 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._5:
         • ‘bake’ and ‘stew’ now send messages instead of warnings when
           they recompute an archive due to a change in code or
           dependencies.
-
-        • It is now possible to change the parameters in an ‘objfun’
-          (objective function) object using ‘coef(object)<-value’.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._4:
 
