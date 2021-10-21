@@ -1,3 +1,11 @@
+- key: AugerMethe2021
+  author: "M. Auger-M&eacute;th&eacute;, K. Newman, D. Cole, F. Empacher, R. Gryba, A. A. King, V. Leos-Barajas, J. Mills Flemming, A. Nielsen, G. Petris, and L. Thomas"
+  year: "2021"
+  title: "A guide to state-space modeling of ecological time series"
+  journal: "Ecological Monographs"
+  pages: "e01470"
+  doi: "https://doi.org/10.1002/ecm.1470"
+
 - key: Ionides2021
   author: "E. L. Ionides, K. Asfaw, J. Park, and A. A. King"
   year: "2021"
@@ -5,13 +13,6 @@
   journal: "Journal of the American Statistical Association"
   pages: "1&#x2013;12"
   doi: "https://doi.org/10.1080/01621459.2021.1974867"
-
-- key: AugerMethe2021
-  author: "M. Auger-M&eacute;th&eacute;, K. Newman, D. Cole, F. Empacher, R. Gryba, A. A. King, V. Leos-Barajas, J. M. Flemming, A. Nielsen, G. Petris, and L. Thomas"
-  year: "2021"
-  title: "A guide to state-space modeling of ecological time series"
-  journal: "Ecological Monographs"
-  doi: "https://doi.org/10.1002/ecm.1470"
 
 - key: Pasetto2021
   author: "D. Pasetto, J. C. Lemaitre, E. Bertuzzo, M. Gatto, and A. Rinaldo"
