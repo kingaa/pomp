@@ -7,6 +7,9 @@
 ##'
 ##' \code{sir2()} has the same model implemented using Gillespie's algorithm.
 ##'
+##' In both cases the measurement model is negative binomial:
+##' \code{reports} is distributed as a negative binomial random variable with mean equal to \code{rho*cases} and size equal to \code{1/k}.
+##'
 ##' This and similar examples are discussed and constructed in tutorials
 ##' available on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
@@ -30,6 +33,7 @@ NULL
 ##' @param mu death rate (assumed equal to the birth rate)
 ##' @param iota infection import rate
 ##' @param rho reporting efficiency
+##' @param k reporting overdispersion parameter (reciprocal of the negative-binomial \emph{size} parameter)
 ##' @param pop overall host population size
 ##' @param S_0,I_0,R_0 the fractions of the host population that are susceptible, infectious, and recovered, respectively, at time zero.
 ##' @param beta1,beta2,beta3 seasonal contact rates
@@ -43,7 +47,7 @@ NULL
 sir <- function (
   gamma = 26, mu = 0.02, iota = 0.01,
   beta1 = 400, beta2 = 480, beta3 = 320,
-  beta_sd = 1e-3, rho = 0.6,
+  beta_sd = 1e-3, rho = 0.6, k = 0.1,
   pop = 2.1e6,
   S_0 = 26/400, I_0 = 0.001, R_0 = 1-S_0-I_0,
   t0 = 0,
@@ -60,7 +64,7 @@ sir <- function (
     params=c(
       gamma=gamma,mu=mu,iota=iota,
       beta1=beta1,beta2=beta2,beta3=beta3,
-      beta_sd=beta_sd,rho=rho,
+      beta_sd=beta_sd,rho=rho,k=k,
       pop=pop,
       S_0=S_0,I_0=I_0,R_0=R_0
     ),
@@ -159,42 +163,29 @@ sir <- function (
       E_reports = cases*rho;"
     ),
     vmeasure=Csnippet("
-      V_reports_reports = cases*rho*(1-rho);"
+      double mean = cases*rho;
+      V_reports_reports = mean*(1+k*mean);"
     ),
     rmeasure=Csnippet("
-      double mean, sd;
-      double rep;
-      mean = cases*rho;
-      sd = sqrt(cases*rho*(1-rho));
-      rep = nearbyint(rnorm(mean,sd));
-      reports = (rep > 0) ? rep : 0;"
+      reports = rnbinom_mu(1.0/k,cases*rho);"
     ),
     dmeasure=Csnippet("
-      double mean, sd;
-      double f;
-      mean = cases*rho;
-      sd = sqrt(cases*rho*(1-rho));
-      if (reports > 0) {
-      f = pnorm(reports+0.5,mean,sd,1,0)-pnorm(reports-0.5,mean,sd,1,0);
-      } else {
-      f = pnorm(reports+0.5,mean,sd,1,0);
-      }
-      lik = (give_log) ? log(f) : f;"
+      lik = dnbinom_mu(nearbyint(reports),1.0/k,cases*rho,give_log);"
     ),
     partrans=parameter_trans(
       fromEst=Csnippet("
-        int k;
+        int j;
         const double *TBETA = &T_beta1;
         double *BETA = &beta1;
-        for (k = 0; k < nbasis; k++) BETA[k] = exp(TBETA[k]);"
+        for (j = 0; j < nbasis; j++) BETA[j] = exp(TBETA[j]);"
       ),
       toEst=Csnippet("
-        int k;
+        int j;
         const double *BETA = &beta1;
         double *TBETA = &T_beta1;
-        for (k = 0; k < nbasis; k++) TBETA[k] = log(BETA[k]);"
+        for (j = 0; j < nbasis; j++) TBETA[j] = log(BETA[j]);"
       ),
-      log=c("gamma","mu","iota","beta_sd"),
+      log=c("gamma","mu","iota","beta_sd","k"),
       logit="rho",
       barycentric=c("S_0","I_0","R_0")
     ),
@@ -202,7 +193,7 @@ sir <- function (
     obsnames="reports",
     paramnames=c(
       "gamma","mu","iota",
-      "beta1","beta_sd","pop","rho",
+      "beta1","beta_sd","pop","rho","k",
       "S_0","I_0","R_0"
     ),
     accumvars=c("cases")
@@ -215,7 +206,7 @@ sir <- function (
 sir2 <- function (
   gamma = 24, mu = 1/70, iota = 0.1,
   beta1 = 330, beta2 = 410, beta3 = 490,
-  rho = 0.1, pop = 1e6,
+  rho = 0.1, k = 0.1, pop = 1e6,
   S_0 = 0.05, I_0 = 0.0001, R_0 = 1 - S_0 - I_0,
   t0 = 0,
   times = seq(from = t0 + 1/12, to = t0 + 10, by=1/12),
@@ -229,7 +220,7 @@ sir2 <- function (
     times=tt,t0=tt0,
     seed=seed,
     params=c(
-      gamma=gamma,mu=mu,iota=iota,rho=rho,
+      gamma=gamma,mu=mu,iota=iota,rho=rho,k=k,
       beta1=beta1,beta2=beta2,beta3=beta3,
       S_0=S_0,I_0=I_0,R_0=R_0,
       pop=pop
@@ -302,24 +293,25 @@ sir2 <- function (
       E_reports = cases*rho;"
     ),
     vmeasure=Csnippet("
-      V_reports_reports = cases*rho*(1-rho);"
+      double mean = cases*rho;
+      V_reports_reports = mean*(1+k*mean);"
     ),
     rmeasure=Csnippet("
-      reports = rbinom(cases,rho);"
+      reports = rnbinom_mu(1.0/k,cases*rho);"
     ),
     dmeasure=Csnippet("
-      lik = dbinom(reports,cases,rho,give_log);"
+      lik = dnbinom_mu(nearbyint(reports),1.0/k,cases*rho,give_log);"
     ),
     statenames=c("S","I","R","N","cases"),
     obsnames="reports",
     paramnames=c(
-      "gamma","mu","iota","pop","rho",
+      "gamma","mu","iota","pop","rho","k",
       "beta1","beta2","beta3",
       "S_0","I_0","R_0"
     ),
     accumvars=c("cases"),
     partrans=parameter_trans(
-      log=c("gamma","mu","iota",sprintf("beta%d",1:3)),
+      log=c("gamma","mu","iota","k",sprintf("beta%d",1:3)),
       logit="rho",
       barycentric=c("S_0","I_0","R_0")
     ),

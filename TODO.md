@@ -3,7 +3,7 @@
 ## For pomp:
 
 - byte-compile basic components when furnished as **R** functions
-- banish the binomial model from the SIR examples
+- ~~banish the binomial model from the SIR examples~~
 
 - make `mcap` into a generic, provide a method for data frames and a plotting method
 - more demanding tests of `enkf` and `eakf`

@@ -16,6 +16,7 @@ sir(
   beta3 = 320,
   beta_sd = 0.001,
   rho = 0.6,
+  k = 0.1,
   pop = 2100000,
   S_0 = 26/400,
   I_0 = 0.001,
@@ -34,6 +35,7 @@ sir2(
   beta2 = 410,
   beta3 = 490,
   rho = 0.1,
+  k = 0.1,
   pop = 1e+06,
   S_0 = 0.05,
   I_0 = 1e-04,
@@ -55,6 +57,8 @@ sir2(
 \item{beta_sd}{environmental noise intensity}
 
 \item{rho}{reporting efficiency}
+
+\item{k}{reporting overdispersion parameter (reciprocal of the negative-binomial \emph{size} parameter)}
 
 \item{pop}{overall host population size}
 
@@ -79,6 +83,9 @@ Simple SIR-type models implemented in various ways.
 Simulation is performed using an Euler multinomial approximation.
 
 \code{sir2()} has the same model implemented using Gillespie's algorithm.
+
+In both cases the measurement model is negative binomial:
+\code{reports} is distributed as a negative binomial random variable with mean equal to \code{rho*cases} and size equal to \code{1/k}.
 
 This and similar examples are discussed and constructed in tutorials
 available on the \href{https://kingaa.github.io/pomp/}{package website}.

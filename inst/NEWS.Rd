@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.8}{
+  \itemize{
+    \item The SIR examples \code{sir()} and \code{sir2()} now use a negative binomial measurement model.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.7}{
   \itemize{
     \item \code{parmat} can now take a data frame of parameters and convert it into a matrix suitable for furnishing to the \code{params} argument of any \pkg{pomp} function.

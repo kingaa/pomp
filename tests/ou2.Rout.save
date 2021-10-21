@@ -22,26 +22,39 @@ Type 'q()' to quit R.
 > 
 > library(pomp)
 > 
-> ou2() -> ou2
+> ou2() -> ou
 > 
 > set.seed(1438408329L)
 > 
-> plot(ou2)
-> rinit(ou2)
+> plot(ou)
+> rinit(ou)
         .id
 variable [,1]
       x1   -3
       x2    4
-> coef(ou2)
+> coef(ou)
 alpha_1 alpha_2 alpha_3 alpha_4 sigma_1 sigma_2 sigma_3     tau    x1_0    x2_0 
     0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
 > 
-> stopifnot(all.equal(coef(ou2),partrans(ou2,coef(ou2,transform=TRUE),dir="from")))
-> plot(s <- simulate(ou2,seed=1438408329L))
-> pf <- freeze(pfilter(ou2,Np=1000),seed=1438408329L)
+> stopifnot(all.equal(coef(ou),partrans(ou,coef(ou,transform=TRUE),dir="from")))
+> plot(s <- simulate(ou,seed=1438408329L))
+> pf <- freeze(pfilter(ou,Np=1000),seed=1438408329L)
 > plot(pf)
-> tj <- trajectory(ou2,format="a")
-> matplot(time(ou2),t(tj[,1,]),type="l",ylab="")
+> kf <- freeze(enkf(ou,Np=1000),seed=1438408329L)
+> plot(kf)
+> Kf <- kalmanFilter(
++   ou,
++   X0=rinit(ou),
++   A=matrix(coef(ou,c("alpha_1","alpha_2","alpha_3","alpha_4")),2,2),
++   Q={
++     q <- matrix(c(coef(ou,c("sigma_1","sigma_2")),0,coef(ou,"sigma_3")),2,2)
++     tcrossprod(q)
++   },
++   C=diag(2),
++   R=diag(coef(ou,"tau")^2,2)
++ )
+> tj <- trajectory(ou,format="a")
+> matplot(time(ou),t(tj[,1,]),type="l",ylab="")
 > 
 > d <- dprocess(s,x=states(s),params=coef(s),times=time(s),log=TRUE)
 > plot(d[,],ylab="log prob")

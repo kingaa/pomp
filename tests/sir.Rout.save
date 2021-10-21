@@ -30,8 +30,8 @@ Type 'q()' to quit R.
 > coef(sir)
    gamma       mu     iota    beta1    beta2    beta3  beta_sd      rho 
 2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 6.00e-01 
-     pop      S_0      I_0      R_0 
-2.10e+06 6.50e-02 1.00e-03 9.34e-01 
+       k      pop      S_0      I_0      R_0 
+1.00e-01 2.10e+06 6.50e-02 1.00e-03 9.34e-01 
 > rinit(sir)
         .id
 variable    [,1]

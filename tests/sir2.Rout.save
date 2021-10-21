@@ -28,10 +28,10 @@ Type 'q()' to quit R.
 > 
 > plot(sir2)
 > coef(sir2)
-   gamma       mu     iota      rho    beta1    beta2    beta3      S_0 
-2.40e+01 1.43e-02 1.00e-01 1.00e-01 3.30e+02 4.10e+02 4.90e+02 5.00e-02 
-     I_0      R_0      pop 
-1.00e-04 9.50e-01 1.00e+06 
+   gamma       mu     iota      rho        k    beta1    beta2    beta3 
+2.40e+01 1.43e-02 1.00e-01 1.00e-01 1.00e-01 3.30e+02 4.10e+02 4.90e+02 
+     S_0      I_0      R_0      pop 
+5.00e-02 1.00e-04 9.50e-01 1.00e+06 
 > rinit(sir2)
         .id
 variable    [,1]

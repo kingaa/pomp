@@ -102,8 +102,8 @@ in 'coef<-': names of 'value' are being discarded.
 > coef(ofun)
    gamma       mu     iota    beta1    beta2    beta3  beta_sd      rho 
 1.00e+01 2.00e-02 1.00e+00 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.00e-01 
-     pop      S_0      I_0      R_0        k 
-2.10e+06 6.50e-02 1.00e-03 9.34e-01 1.00e+00 
+       k      pop      S_0      I_0      R_0        k 
+1.00e+00 2.10e+06 6.50e-02 1.00e-03 9.34e-01 1.00e+00 
 > stopifnot(
 +   coef(ofun,names(theta))==theta,
 +   ofun@env$params==coef(ofun,transform=TRUE)

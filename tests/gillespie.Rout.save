@@ -23,7 +23,6 @@ Type 'q()' to quit R.
 > library(pomp)
 > suppressPackageStartupMessages({
 +   library(ggplot2)
-+   library(magrittr)
 + })
 > 
 > set.seed(754646834L)
@@ -138,12 +137,14 @@ NOTE: The provided object 'nbasis' is available for use by POMP basic components
 +   plot(main="Gillespie SIR, with zeroing")
 > 
 > sir2() -> sir2
-> gsir2 <- simulate(sir2,params=coef(gsir),
+> gsir2 <- simulate(sir2,params=c(coef(gsir),k=0.01),
 +   times=time(gsir),t0=timezero(gsir),seed=806867104L)
 > 
-> list(R=as.data.frame(gsir),
+> list(
++   R=as.data.frame(gsir),
 +   Csnippet=as.data.frame(gsir1),
-+   sir2=as.data.frame(gsir2)) %>%
++   sir2=as.data.frame(gsir2)
++ ) %>%
 +   melt(id="time") %>%
 +   subset(variable=="reports") %>%
 +   ggplot(aes(x=time,y=value,color=L1))+
@@ -193,7 +194,8 @@ variable A B
 +   gsir %>%
 +     simulate(params=c(gamma=0,mu=0,iota=0,beta1=0,beta2=0,beta3=0,
 +       rho=0.1,S_0=0.07,I_0=1e-4,R_0=0.93,pop=1e6)) %>%
-+     states() %>% apply(1,diff) %>% equals(0) %>% all())
++     states() %>% apply(1,diff) == 0
++ )
 > 
 > try(gsir %>% simulate(rprocess=gillespie(rate.fun=function(j,...)1,v=Vmatrix[1:4,])))
 Error : in 'simulate': number of state variables must equal the number of rows in 'v'.
