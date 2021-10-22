@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.9}{
+  \itemize{
+    \item The \code{rbetabinom} and \code{dbetabinom} functions, long present as part of the \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{C API}, are now available as \R functions.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.8}{
   \itemize{
     \item The SIR examples \code{sir()} and \code{sir2()} now use a negative binomial measurement model.

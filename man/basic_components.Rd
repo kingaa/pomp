@@ -40,6 +40,7 @@ Help pages detailing each basic model component are provided.
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumulator variables}},
+\code{\link{betabinomial}},
 \code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},

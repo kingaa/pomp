@@ -146,6 +146,7 @@ See \code{\link{sir}} and the tutorials on the \href{https://kingaa.github.io/po
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{basic components}},
+\code{\link{betabinomial}},
 \code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},

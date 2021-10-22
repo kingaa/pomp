@@ -7,12 +7,13 @@
 
 - make `mcap` into a generic, provide a method for data frames and a plotting method
 - more demanding tests of `enkf` and `eakf`
+- iterated EnKF
 - ~~in EnKF and EAKF, allow matrices to depend on parameters~~
 - ~~accommodating matrices in~~ `hitch`
 - vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`
 - perhaps `dinit`?
 - ~~put basic true Kalman filter into~~ **pomp**
-- put Kalman check in 'ou2' test
+- ~~put Kalman check in 'ou2' test~~
 - better scheme for indicating derivatives and maps in C snippets
 - more toy models
 - more/better examples
@@ -21,7 +22,6 @@
 
 - support for asymmetric MCMC proposals
 - `spy` methods for derived objects
-- iterated EnKF
 - for log-barycentric transformations, check that parameters are contiguous
 - ~~get the metaphors straight! "horses" vs "hitches" vs "workhorses" ("wagons"?)~~
 - manual pages on the organization of the package

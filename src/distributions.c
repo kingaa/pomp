@@ -89,3 +89,44 @@ SEXP R_GammaWN (SEXP n, SEXP sigma, SEXP deltat) {
   UNPROTECT(4);
   return ans;
 }
+
+// This function draws a random variate from a beta-binomial distribution.
+// The binomial has size n and probability P ~ Beta(mu,theta).
+// That is, E[P] = mu and Var[P] = 
+SEXP R_BetaBinom (SEXP n, SEXP size, SEXP prob, SEXP theta) {
+  int k, nval, ns, np, nt;
+  double *X, *S, *P, *T;
+  SEXP ans;
+  PROTECT(n = AS_INTEGER(n)); nval = INTEGER(n)[0];
+  PROTECT(size = AS_NUMERIC(size)); ns = LENGTH(size); S = REAL(size);
+  PROTECT(prob = AS_NUMERIC(prob)); np = LENGTH(prob); P = REAL(prob);
+  PROTECT(theta = AS_NUMERIC(theta)); nt = LENGTH(theta); T = REAL(theta);
+  PROTECT(ans = NEW_NUMERIC(nval)); X = REAL(ans);
+  GetRNGstate();
+  for (k = 0; k < nval; k++) {
+    X[k] = rbetabinom(S[k%ns],P[k%np],T[k%nt]);
+  }
+  PutRNGstate();
+  UNPROTECT(5);
+  return ans;
+}
+
+SEXP D_BetaBinom (SEXP x, SEXP size, SEXP prob, SEXP theta, SEXP log) {
+  int k, n, nx, ns, np, nt;
+  double *F, *X, *S, *P, *T;
+  SEXP f;
+  PROTECT(x = AS_NUMERIC(x)); nx = LENGTH(x); X = REAL(x);
+  PROTECT(size = AS_NUMERIC(size)); ns = LENGTH(size); S = REAL(size);
+  PROTECT(prob = AS_NUMERIC(prob)); np = LENGTH(prob); P = REAL(prob);
+  PROTECT(theta = AS_NUMERIC(theta)); nt = LENGTH(theta); T = REAL(theta);
+  PROTECT(log = AS_INTEGER(log));
+  n = (nx > ns) ? nx : ns;
+  n = (n > np) ? n : np;
+  n = (n > nt) ? n : nt;
+  PROTECT(f = NEW_NUMERIC(n)); F = REAL(f);
+  for (k = 0; k < n; k++) {
+    F[k] = dbetabinom(X[k%nx],S[k%ns],P[k%np],T[k%nt],INTEGER(log)[0]);
+  }
+  UNPROTECT(6);
+  return f;
+}

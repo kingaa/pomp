@@ -13,6 +13,8 @@ static const R_CallMethodDef callMethods[] = {
   {"R_Euler_Multinom", (DL_FUNC) &R_Euler_Multinom, 4},
   {"D_Euler_Multinom", (DL_FUNC) &D_Euler_Multinom, 5},
   {"R_GammaWN", (DL_FUNC) &R_GammaWN, 3},
+  {"R_BetaBinom", (DL_FUNC) &R_BetaBinom, 4},
+  {"D_BetaBinom", (DL_FUNC) &D_BetaBinom, 5},
   {"pfilter_computations", (DL_FUNC) &pfilter, 10},
   {"wpfilter_comps", (DL_FUNC) &wpfilter, 7},
   {"randwalk_perturbation", (DL_FUNC) &randwalk_perturbation, 2},

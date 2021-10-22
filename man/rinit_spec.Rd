@@ -86,6 +86,7 @@ More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumulator variables}},
 \code{\link{basic components}},
+\code{\link{betabinomial}},
 \code{\link{covariates}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},

@@ -7,6 +7,8 @@ extern void periodic_bspline_basis_eval_deriv(double x, double period, int degre
 extern SEXP R_Euler_Multinom(SEXP n, SEXP size, SEXP rate, SEXP Rf_dt);
 extern SEXP D_Euler_Multinom(SEXP x, SEXP size, SEXP rate, SEXP Rf_dt, SEXP log);
 extern SEXP R_GammaWN(SEXP n, SEXP sigma, SEXP deltat);
+extern SEXP R_BetaBinom(SEXP n, SEXP size, SEXP prob, SEXP theta);
+extern SEXP D_BetaBinom(SEXP x, SEXP size, SEXP prob, SEXP theta, SEXP log);
 /* src/dmeasure.c */
 extern SEXP do_dmeasure(SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi);
 /* src/dprior.c */

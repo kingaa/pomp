@@ -43,6 +43,7 @@ More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumulator variables}},
 \code{\link{basic components}},
+\code{\link{betabinomial}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},
