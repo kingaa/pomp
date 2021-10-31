@@ -109,7 +109,9 @@ setClass(
   contains="list",
   validity=function (object) {
     if (length(object) > 0) {
-      if (!all(vapply(object,is,logical(1),"pfilterd_pomp"))) {
+      pftypes <- vapply(object,is,logical(1L),"pfilterd_pomp")
+      wftypes <- vapply(object,is,logical(1L),"wpfilterd_pomp")
+      if (!all(pftypes | wftypes)) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": dissimilar objects cannot be combined"
@@ -123,7 +125,9 @@ setClass(
 
 setClassUnion("Pomp",c("pomp","pompList"))
 
-setClassUnion("Pfilter",c("pfilterd_pomp","pfilterList"))
+setClassUnion("Pfilter",
+  c("pfilterd_pomp","wpfilterd_pomp","pfilterList")
+)
 
 setClassUnion("Abc",c("abcd_pomp","abcList"))
 

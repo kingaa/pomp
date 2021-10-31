@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.10}{
+  \itemize{
+    \item It is now possible to plot lists of \sQuote{pomp} and \sQuote{pomp}-derived objects using a single call to \code{plot}.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.9}{
   \itemize{
     \item The \code{rbetabinom} and \code{dbetabinom} functions, long present as part of the \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{C API}, are now available as \R functions.

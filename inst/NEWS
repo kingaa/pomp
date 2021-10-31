@@ -1,5 +1,10 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._1_0:
+
+        • It is now possible to plot lists of ‘pomp’ and ‘pomp’-derived
+          objects using a single call to ‘plot’.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._0._9:
 
         • The ‘rbetabinom’ and ‘dbetabinom’ functions, long present as

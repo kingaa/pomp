@@ -16,7 +16,13 @@ NULL
 
 setGeneric("plot")
 
-setClassUnion("pomp_plottable",c("pomp","pfilterd_pomp","wpfilterd_pomp"))
+setClassUnion(
+  "pomp_plottable",
+  c(
+    "pomp","pfilterd_pomp","wpfilterd_pomp",
+    "pompList","pfilterList"
+  )
+)
 
 ##' @rdname plot
 ##' @param x the object to plot
@@ -121,22 +127,36 @@ plotpomp.internal <- function (x, variables,
   mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
   oma = c(6, 0, 5, 0), axes = TRUE, ...) {
 
-  X <- as(x,"data.frame")
-  vars <- names(X)
-  tpos <- match(x@timename,vars)
+  if (!is.list(x)) x <- list(x)
+  xx <- lapply(x,as,"data.frame")
+  vars <- unique(c(lapply(xx,names),recursive=TRUE))
+  tname <- x[[1]]@timename
+  tpos <- match(tname,vars)
   if (missing(variables)) {
     vars <- vars[-tpos]
-    vars <- setdiff(vars,get_covariate_names(x@covar))
+    covnames <- unique(
+      c(
+        lapply(x,function(p)get_covariate_names(p@covar)),
+        recursive=TRUE
+      )
+    )
+    vars <- setdiff(vars,covnames)
     ylabels <- NULL
   } else {
     vars <- variables
     ylabels <- names(variables)
   }
+  time <- xx[[1]][[tname]]
+  X <- vector(mode="list",length=length(vars))
+  names(X) <- vars
+  for (v in vars) {
+    X[[v]] <- as.matrix(sapply(xx,"[",,v))
+  }
 
   plotpomp <- function (x, time,
     xy.labels, xy.lines, panel = lines, nc,
     type = "l", xlim = NULL, ylim = NULL, xlab = "time",
-    ylab, log = "", col = par("col"), bg = NA,
+    ylab, log = "", col = NULL, bg = NA,
     pch = par("pch"),
     cex = par("cex"), lty = par("lty"), lwd = par("lwd"),
     axes = TRUE, frame.plot = axes, ann = par("ann"),
@@ -150,19 +170,33 @@ plotpomp.internal <- function (x, variables,
       ...) {
       mtext(main,side=3,line=3,cex=cex.main,font=font.main,col=col.main,...)
     }
-    nser <- NCOL(x)
+    nser <- length(x)
     nm <- ylab
-    if (is.null(nm)) nm <- colnames(x)
+    if (is.null(nm)) nm <- names(x)
     if (is.null(nc)) nc <- if(nser>4){2}else{1}
     nr <- ceiling(nser/nc)
     oldpar <- par(mar=mar,oma=oma,mfcol=c(nr,nc))
     on.exit(par(oldpar))
     for (i in seq_len(nser)) {
-      plot.default(y=x[[i]],x=time,axes=FALSE,xlab="",ylab="",log=log,
-        col=col,bg=bg,pch=pch,ann=ann,type="n",...)
-      panel(y=x[[i]],x=time,col=col,bg=bg,pch=pch,type=type,...)
-      if (frame.plot)
-        box(...)
+      plot.default(
+        x=range(time),y=range(x[[i]]),
+        axes=FALSE,xlab="",ylab="",log=log,
+        col=col,bg=bg,pch=pch,ann=ann,type="n",...
+      )
+      if (is.null(col)) {
+        ncolor <- NCOL(x[[i]])
+        col <- seq_len(ncolor)
+      } else {
+        ncolor <- length(col)
+      }
+      for (j in seq_len(NCOL(x[[i]]))) {
+        panel(
+          x=time,y=x[[i]][,j],
+          col=col[(j-1L)%%ncolor+1L],
+          bg=bg,pch=pch,type=type,...
+        )
+      }
+      if (frame.plot) box(...)
       y.side <- if(i%%2||!yax.flip){2}else{4}
       do.xax <- (i%%nr==0)||(i==nser)
       if (axes) {
@@ -177,25 +211,25 @@ plotpomp.internal <- function (x, variables,
       }
     }
     if (ann && !is.null(main)) {
-      par(mfcol=c(1,1))
+      par(mfcol=c(1L,1L))
       addmain(main,...)
     }
     invisible(NULL)
   }
-  n.page <- ceiling(length(vars)/10)
+  n.page <- ceiling(length(vars)/10L)
   plots.per.page <- ceiling(length(vars)/n.page)
-  if (n.page > 1) {
+  if (n.page > 1L) {
     op <- par(ask=dev.interactive(orNone=TRUE))
     on.exit(par(op))
   }
-  v1 <- 1
-  v2 <- min(v1+plots.per.page-1,length(vars))
+  v1 <- 1L
+  v2 <- min(v1+plots.per.page-1L,length(vars))
   for (page in seq_len(n.page)) {
-    vv <- vars[seq(from=v1,to=v2)]
+    vv <- vars[seq.int(from=v1,to=v2)]
     plotpomp(
       x=X[vv],
-      time=X[[tpos]],
-      xlab=x@timename,
+      time=time,
+      xlab=tname,
       ylab=ylabels,
       xy.labels=FALSE,
       panel=panel,
@@ -203,8 +237,8 @@ plotpomp.internal <- function (x, variables,
       axes=axes,
       ...
     )
-    v1 <- v2+1
-    v2 <- min(v1+plots.per.page-1,length(vars))
+    v1 <- v2+1L
+    v2 <- min(v1+plots.per.page-1L,length(vars))
   }
   invisible(NULL)
 }
