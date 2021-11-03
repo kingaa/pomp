@@ -168,7 +168,12 @@ simulate(rw2,rinit=function(...) c(x1=0,x2=0)) -> x
 
 library(tidyr)
 dacca() %>%
-  simulate(nsim=1,include.data=TRUE,format="data.frame") %>%
+  simulate(nsim=2,include.data=TRUE,format="data.frame") -> dat
+dat %>%
+  select(time,.id,seas_1,seas_2) %>%
+  arrange(time,.id) %>%
+  head(6)
+dat %>%
   pivot_longer(-.id) %>%
   group_by(.id,name) %>%
   summarize(n=sum(is.na(value)),.groups="drop") %>%
@@ -177,6 +182,5 @@ stopifnot(
   `na in sim`=all(d1$.id=="data"),
   full=all(d1$n==600)
 )
-  
 
 dev.off()

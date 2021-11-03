@@ -252,7 +252,19 @@ Error : in 'simulate': 'params' must be named and numeric.
 > 
 > library(tidyr)
 > dacca() %>%
-+   simulate(nsim=1,include.data=TRUE,format="data.frame") %>%
++   simulate(nsim=2,include.data=TRUE,format="data.frame") -> dat
+> dat %>%
++   select(time,.id,seas_1,seas_2) %>%
++   arrange(time,.id) %>%
++   head(6)
+  time  .id seas_1 seas_2
+1 1891 data  0.666  0.167
+2 1891    1  0.666  0.167
+3 1891    2  0.666  0.167
+4 1891 data  0.479  0.479
+5 1891    1  0.479  0.479
+6 1891    2  0.479  0.479
+> dat %>%
 +   pivot_longer(-.id) %>%
 +   group_by(.id,name) %>%
 +   summarize(n=sum(is.na(value)),.groups="drop") %>%
@@ -261,7 +273,6 @@ Error : in 'simulate': 'params' must be named and numeric.
 +   `na in sim`=all(d1$.id=="data"),
 +   full=all(d1$n==600)
 + )
->   
 > 
 > dev.off()
 null device 

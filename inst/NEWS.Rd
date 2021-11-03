@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.0.11}{
+  \itemize{
+    \item Fixed bug found by Jesse Wheeler and Ed Ionides, to do with `simulate()` with `include.data=TRUE`.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.10}{
   \itemize{
     \item It is now possible to plot lists of \sQuote{pomp} and \sQuote{pomp}-derived objects using a single call to \code{plot}.

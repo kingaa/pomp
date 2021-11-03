@@ -22,7 +22,7 @@
 ##' if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.  the random seed to use.
 ##' The RNG will be restored to its original state afterward.
 ##' @param format the format in which to return the results.
-##' 
+##'
 ##' \code{format = "pomps"} causes the results to be returned as a single \dQuote{pomp} object,
 ##' identical to \code{object} except for the latent states and observations,
 ##' which have been replaced by the simulated values.
@@ -234,7 +234,7 @@ simulate.internal <- function (
       dat$.id <- "data"
       allnm <- union(names(dat),names(sims))
       for (n in setdiff(allnm,names(dat))) dat[[n]] <- NA
-      for (n in setdiff(allnm,names(sims))) sims[[n]] <- dat[[n]]
+      for (n in setdiff(allnm,names(sims))) sims[[n]] <- rep(dat[[n]],each=nsim)
       sims <- rbind(dat,sims)
       sims$.id <- ordered(sims$.id,levels=c("data",simnames))
     } else {
