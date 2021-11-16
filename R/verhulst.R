@@ -20,7 +20,7 @@
 ##' @param sigma environmental process noise s.d.
 ##' @param tau measurement error s.d.
 ##' @param n_0 initial condition
-##' @param dt Euler time-step
+##' @param dt Euler timestep
 ##'
 ##' @return
 ##' A \sQuote{pomp} object containing the model and simulated data.

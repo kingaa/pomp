@@ -68,7 +68,7 @@ setMethod(
   signature=signature(object="discreteRprocPlugin"),
   definition=function (object) {
     cat("discrete-time process-model simulator\n")
-    cat("  - time-step =",object@delta.t,"\n")
+    cat("  - timestep =",object@delta.t,"\n")
     cat("  - step.fun: ")
     show(object@step.fn)
   }
@@ -81,7 +81,7 @@ setMethod(
   signature=signature(object="eulerRprocPlugin"),
   definition=function (object) {
     cat("Euler-method process-model simulator\n")
-    cat("  - time-step =",object@delta.t,"\n")
+    cat("  - timestep =",object@delta.t,"\n")
     cat("  - step.fun: ")
     show(object@step.fn)
   }

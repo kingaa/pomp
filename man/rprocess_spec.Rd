@@ -68,7 +68,7 @@ Examples are to be found in the tutorials on the \href{https://kingaa.github.io/
 
 If \code{f} is given as an \R function, its arguments should come from the state variables, parameters, covariates, and time.
 It may also take the argument \sQuote{\code{delta.t}};
-when called, the latter will be the time-step.
+when called, the latter will be the timestep.
 It must also have the argument \sQuote{\code{...}}.
 It should return a named vector of length equal to the number of state variables, representing a draw from the distribution of the state process at time \code{t+delta.t} conditional on its value at time \code{t}.
 }

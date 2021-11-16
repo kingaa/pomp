@@ -38,7 +38,7 @@ NULL
 ##' @param rho case reporting efficiency
 ##' @param k dispersion parameter (negative binomial \code{size} parameter)
 ##' @param index_case number of cases on day 0 (2014-04-01)
-##' @param timestep duration (in days) of Euler time-step for the simulations.
+##' @param timestep duration (in days) of Euler timestep for the simulations.
 ##'
 ##' @section Model structure:
 ##' The default incubation period is supposed to be Gamma distributed with shape parameter \code{nstageE} and mean 11.4 days and the case-fatality ratio (`cfr`) is taken to be 0.7 (cf. WHO Ebola Response Team 2014).

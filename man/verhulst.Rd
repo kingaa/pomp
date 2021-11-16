@@ -18,7 +18,7 @@ verhulst(n_0 = 10000, K = 10000, r = 0.9, sigma = 0.4, tau = 0.1, dt = 0.01)
 
 \item{tau}{measurement error s.d.}
 
-\item{dt}{Euler time-step}
+\item{dt}{Euler timestep}
 }
 \value{
 A \sQuote{pomp} object containing the model and simulated data.

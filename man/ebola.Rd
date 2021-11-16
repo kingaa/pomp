@@ -27,7 +27,7 @@ ebolaModel(
 \item{data}{if NULL, the situation report data (WHO Ebola Response Team 2014) for the appropriate country or region will be used.
 Providing a dataset here will override this behavior.}
 
-\item{timestep}{duration (in days) of Euler time-step for the simulations.}
+\item{timestep}{duration (in days) of Euler timestep for the simulations.}
 
 \item{nstageE}{integer; number of incubation stages.}
 

@@ -44,6 +44,9 @@ In writing a \code{skeleton} C snippet, be aware that:
   \item When the skeleton is a map, the component corresponding to state variable \code{x} is named \code{Dx} and is the new value of \code{x} after one iteration of the map.
   \item When the skeleton is a vectorfield, the component corresponding to state variable \code{x} is named \code{Dx} and is the value of \eqn{dx/dt}.
   \item As with the other C snippets, all states, parameters and covariates, as well as the current time, \code{t}, will be defined in the context within which the snippet is executed.
+  \item \bold{NB:} When the skeleton is a map, the duration of the timestep will \bold{not} be defined in the context within which the snippet is executed.
+  When the skeleton is a vectorfield, of course, no timestep is defined.
+  In this regard, C snippets for the skeleton and rprocess components differ.
 }
 The tutorials on the \href{https://kingaa.github.io/pomp/}{package website} give some examples.
 
