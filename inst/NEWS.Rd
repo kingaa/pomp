@@ -2,6 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 4.0.11}{
   \itemize{
+    \item Change in the names of the variables returned by \code{as.data.frame} applied to a \sQuote{pfilterd.pomp} object.
     \item Fixed bug found by Jesse Wheeler and Ed Ionides, to do with `simulate()` with `include.data=TRUE`.
   }
 }

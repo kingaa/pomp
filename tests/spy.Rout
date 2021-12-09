@@ -1,5 +1,5 @@
 
-R version 4.1.1 (2021-08-10) -- "Kick Things"
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -58,7 +58,7 @@ pomp object 'po1':
 
 - initial state simulator, rinit: <default>
 - process-model simulator, rprocess: discrete-time process-model simulator
-  - time-step = 1 
+  - timestep = 1 
   - step.fun: native function
   - name: '_gompertz_simulator'
   - dynamically loaded from: 'pomp'
@@ -78,7 +78,7 @@ pomp object 'po1':
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: map:
-  - time-step = 1 
+  - timestep = 1 
   - native function
   - name: '_gompertz_skeleton'
   - dynamically loaded from: 'pomp'
@@ -128,7 +128,7 @@ pomp object 'po2':
 params
 
 - process-model simulator, rprocess: discrete-time process-model simulator
-  - time-step = 1 
+  - timestep = 1 
   - step.fun: native function
   - name: '_gompertz_simulator'
   - dynamically loaded from: 'pomp'
@@ -148,7 +148,7 @@ params
 - prior simulator, rprior: <default>
 - prior density, dprior: <default>
 - deterministic skeleton: map:
-  - time-step = 1 
+  - timestep = 1 
   - native function
   - name: '_gompertz_skeleton'
   - dynamically loaded from: 'pomp'
@@ -165,8 +165,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2021-10-31 14:01:10.038 -0400 */
-/* Salt: 7F220AB2976ADACE093B9C96 */
+/* Time: 2021-12-09 07:55:23.427 -0500 */
+/* Salt: 293C505D85EF3EC9D353F695 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -250,7 +250,7 @@ pomp object 'sir':
   - name: '__pomp_rinit'
   - defined by a C snippet in library 'sir_source'
 - process-model simulator, rprocess: Euler-method process-model simulator
-  - time-step = 0.000962 
+  - timestep = 0.000962 
   - step.fun: native function
   - name: '__pomp_stepfn'
   - defined by a C snippet in library 'sir_source'
@@ -289,8 +289,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2021-10-31 14:01:10.156 -0400 */
-/* Salt: 5EEAB0B1D09DAEB2E1097036 */
+/* Time: 2021-12-09 07:55:23.555 -0500 */
+/* Salt: E5225463A052EAA077756CA6 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -924,8 +924,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2021-10-31 14:01:10.715 -0400 */
-/* Salt: B5AE17E83D7B7C767F83282A */
+/* Time: 2021-12-09 07:55:24.111 -0500 */
+/* Salt: D7AF7926CA40398C29EED45F */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1180,8 +1180,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2021-10-31 14:01:11.222 -0400 */
-/* Salt: 27235006B70196D21C137270 */
+/* Time: 2021-12-09 07:55:24.613 -0500 */
+/* Salt: 1993ECD761C9D5CDEA51DD68 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

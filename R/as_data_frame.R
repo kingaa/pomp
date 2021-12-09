@@ -223,7 +223,7 @@ setAs(
   def = function (from) {
     cbind(
       as(as(from,"pomp"),"data.frame"),
-      ess=eff.sample.size(from),
+      eff.sample.size=eff.sample.size(from),
       cond.logLik=cond.logLik(from)
     )
   }

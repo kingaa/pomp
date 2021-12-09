@@ -1,5 +1,5 @@
 
-R version 4.1.1 (2021-08-10) -- "Kick Things"
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -79,7 +79,7 @@ Error : 'wpfilter' is undefined for 'data' of class 'list'.
 > pf %>% as.data.frame() %>% nrow()
 [1] 51
 > pf %>% as("data.frame") %>% names()
-[1] "time"        "y"           "ess"         "cond.logLik"
+[1] "time"            "y"               "eff.sample.size" "cond.logLik"    
 > try(wpfilter(po,dmeasure=NULL))
 Error : in 'wpfilter': 'rprocess', 'dmeasure' are needed basic components.
 > try(wpfilter(po,rprocess=NULL))

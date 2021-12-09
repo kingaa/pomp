@@ -316,22 +316,15 @@ mif2.diagnostics <- function (z, pars, transform) {
 
   time <- time(xx)
   dat <- sapply(z,eff.sample.size)
-  matplot(y=dat,x=time,axes = FALSE,xlab = "",log="y",
-    ylab = "eff. sample size",type = "l")
+  matplot(y=dat,x=time,axes=FALSE,xlab="",log="y",
+    ylab="eff.sample.size",type="l")
   box()
   axis(2, xpd = NA)
   mtext("Filter diagnostics (last iteration)",side=3,line=2,outer=TRUE)
 
   dat <- sapply(z,cond.logLik)
-  matplot(
-    y=dat,
-    x=time,
-    axes = FALSE,
-    xlab = "",
-    log='',
-    ylab = "cond. logLik",
-    type = "l"
-  )
+  matplot(y=dat,x=time,axes=FALSE,xlab="",log='',
+    ylab="cond.logLik",type="l")
   box()
   axis(2, xpd = NA)
 

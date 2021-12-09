@@ -1,5 +1,5 @@
 
-R version 4.1.1 (2021-08-10) -- "Kick Things"
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -108,16 +108,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  6.555   0.007   6.562 
+  6.864   0.004   6.867 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
   0.248   0.004   0.252 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.611   0.000   0.610 
+  0.627   0.000   0.626 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.036   0.000   0.037 
+  0.037   0.000   0.036 
 > 
 > dev.off()
 null device 
