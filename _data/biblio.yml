@@ -563,13 +563,14 @@
   pages: "1&#x2013;43"
   doi: "https://doi.org/10.18637/jss.v069.i12"
 
-- key: King2021
+- key: King2022
   author: "A. A. King, Q. Lin, and E. L. Ionides"
-  year: "2021"
+  year: "2022"
   title: "Markov genealogy processes"
   journal: "Theoretical Population Biology"
-  pages: "(in press)"
-  url: "https://arxiv.org/abs/2105.12730"
+  volume: "143"
+  pages: "77&#x2013;91"
+  doi: "https://doi.org/10.1016/j.tpb.2021.11.003"
 
 - key: Knape2011
   author: "J. Knape and P. de Valpine"
