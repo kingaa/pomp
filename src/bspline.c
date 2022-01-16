@@ -20,7 +20,7 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
   if (deg < 0) err("must have degree > 0");
   if (nb <= deg) err("must have nbasis > degree");
   if (d < 0) err("must have deriv >= 0");
-  knots = (double *) Calloc(nk,double);
+  knots = (double *) R_Calloc(nk,double);
   PROTECT(xr = AS_NUMERIC(x));
   PROTECT(y = allocMatrix(REALSXP,nx,nb));
   xdata = REAL(xr);
@@ -36,7 +36,7 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
     bspline_internal(ydata,xdata,nx,i,deg,d,&knots[0]);
     ydata += nx;
   }
-  Free(knots);
+  R_Free(knots);
   UNPROTECT(2);
   return(y);
 }
@@ -85,8 +85,8 @@ void periodic_bspline_basis_eval_deriv (double x, double period, int degree,
   if (nbasis < degree) err("must have nbasis >= degree");
   if (deriv < 0) err("must have deriv >= 0");
 
-  knots = (double *) Calloc(nknots+degree+1,double);
-  yy = (double *) Calloc(nknots,double);
+  knots = (double *) R_Calloc(nknots+degree+1,double);
+  yy = (double *) R_Calloc(nknots,double);
 
   dx = period/((double) nbasis);
   for (k = -degree; k <= nbasis+degree; k++) {
@@ -102,7 +102,7 @@ void periodic_bspline_basis_eval_deriv (double x, double period, int degree,
     j = (shift+k)%nbasis;
     y[k] = yy[j];
   }
-  Free(yy); Free(knots);
+  R_Free(yy); R_Free(knots);
 }
 
 // The following function computes the derivative of order d of the i-th
@@ -116,8 +116,8 @@ static void bspline_internal (double *y, const double *x, int nx,
     for (j = 0; j < nx; j++) y[j] = 0.0;
   } else if (d > 0) {
     int i2 = i+1, p2 = p-1, d2 = d-1;
-    double *y1 = (double *) Calloc(nx,double);
-    double *y2 = (double *) Calloc(nx,double);
+    double *y1 = (double *) R_Calloc(nx,double);
+    double *y2 = (double *) R_Calloc(nx,double);
     double a, b;
     bspline_internal(y1,x,nx,i,p2,d2,knots);
     bspline_internal(y2,x,nx,i2,p2,d2,knots);
@@ -126,12 +126,12 @@ static void bspline_internal (double *y, const double *x, int nx,
       b = p / (knots[i2+p]-knots[i2]);
       y[j] = a * y1[j] - b * y2[j];
     }
-    Free(y1); Free(y2);
+    R_Free(y1); R_Free(y2);
   } else { // d == 0
     int i2 = i+1, p2 = p-1;
     if (p > 0) {  // case d < p
-      double *y1 = (double *) Calloc(nx,double);
-      double *y2 = (double *) Calloc(nx,double);
+      double *y1 = (double *) R_Calloc(nx,double);
+      double *y2 = (double *) R_Calloc(nx,double);
       double a, b;
       bspline_internal(y1,x,nx,i,p2,d,knots);
       bspline_internal(y2,x,nx,i2,p2,d,knots);
@@ -140,7 +140,7 @@ static void bspline_internal (double *y, const double *x, int nx,
         b = (knots[i2+p]-x[j]) / (knots[i2+p]-knots[i2]);
         y[j] = a * y1[j] + b * y2[j];
       }
-      Free(y1); Free(y2);
+      R_Free(y1); R_Free(y2);
     } else if (p == 0) { // case d == p
       for (j = 0; j < nx; j++)
         y[j] = (double) ((knots[i] <= x[j]) && (x[j] < knots[i2]));

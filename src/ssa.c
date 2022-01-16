@@ -134,8 +134,8 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
   double y[nvar];
   int i, j;
 
-  if (mcov > 0) covars = (double *) Calloc(mcov,double);
-  if (nevent > 0) f = (double *) Calloc(nevent,double);
+  if (mcov > 0) covars = (double *) R_Calloc(mcov,double);
+  if (nevent > 0) f = (double *) R_Calloc(nevent,double);
 
   par = params+npar*irep;
   // Copy state variables
@@ -177,8 +177,8 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 
   }
 
-  if (mcov > 0) Free(covars);
-  if (nevent > 0) Free(f);
+  if (mcov > 0) R_Free(covars);
+  if (nevent > 0) R_Free(f);
 
 }
 

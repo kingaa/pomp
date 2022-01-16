@@ -125,7 +125,7 @@ static int sobol_init (soboldata *sd, unsigned sdim)
 
   if (!sdim || sdim > MAXDIM) return 0;
 
-  sd->mdata = (uint32_t *) Calloc(sdim*32,uint32_t);
+  sd->mdata = (uint32_t *) R_Calloc(sdim*32,uint32_t);
   if (!sd->mdata) return 0;
 
   for (j = 0; j < 32; ++j) {
@@ -157,11 +157,11 @@ static int sobol_init (soboldata *sd, unsigned sdim)
     }
   }
 
-  sd->x = (uint32_t *) Calloc(sdim,uint32_t);
-  if (!sd->x) { Free(sd->mdata); return 0; }
+  sd->x = (uint32_t *) R_Calloc(sdim,uint32_t);
+  if (!sd->x) { R_Free(sd->mdata); return 0; }
 
-  sd->b = (unsigned *) Calloc(sdim,unsigned);
-  if (!sd->b) { Free(sd->x); Free(sd->mdata); return 0; }
+  sd->b = (unsigned *) R_Calloc(sdim,unsigned);
+  if (!sd->b) { R_Free(sd->x); R_Free(sd->mdata); return 0; }
 
   for (i = 0; i < sdim; ++i) {
     sd->x[i] = 0;
@@ -176,9 +176,9 @@ static int sobol_init (soboldata *sd, unsigned sdim)
 
 static void sobol_destroy (soboldata *sd)
 {
-  Free(sd->mdata);
-  Free(sd->x);
-  Free(sd->b);
+  R_Free(sd->mdata);
+  R_Free(sd->x);
+  R_Free(sd->b);
 }
 
 /************************************************************************/
@@ -187,9 +187,9 @@ static void sobol_destroy (soboldata *sd)
 
 static nlopt_sobol nlopt_sobol_create (unsigned sdim)
 {
-  nlopt_sobol s = (nlopt_sobol) Calloc(1,soboldata);
+  nlopt_sobol s = (nlopt_sobol) R_Calloc(1,soboldata);
   if (!s) return 0;
-  if (!sobol_init(s, sdim)) { Free(s); return NULL; }
+  if (!sobol_init(s, sdim)) { R_Free(s); return NULL; }
   return s;
 }
 
@@ -197,7 +197,7 @@ static void nlopt_sobol_destroy (nlopt_sobol s)
 {
   if (s) {
     sobol_destroy(s);
-    Free(s);
+    R_Free(s);
   }
 }
 
