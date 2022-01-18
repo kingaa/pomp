@@ -42,48 +42,48 @@ bigtick <- Sys.time()
 
 
 
-
 ## ----gomp1-comment,include=F---------------------------------------------
 ##' ## Constructing a pomp object.
 ##' The following codes construct the basic elements of the Gompertz model
 ##' and construct the 'gompertz' pomp object.
 
 ## ----gomp1---------------------------------------------------------------
-gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
-   eps <- exp(rnorm(n=1,mean=0,sd=params["sigma"]))
-   S <- exp(-params["r"]*delta.t)
-   setNames(params["K"]^(1-S)*x["X"]^S*eps,"X")
- }
+gompertz.proc.sim <- function (X,r,K,sigma,...,delta.t) {
+  eps <- exp(rnorm(n=1,mean=0,sd=sigma))
+  S <- exp(-r*delta.t)
+  c(X=K^(1-S)*X^S*eps)
+}
 
 
 ## ----gomp2,tidy.opts=list(width.cutoff=72)-------------------------------
-gompertz.meas.sim <- function (x, t, params, ...) {
-   setNames(rlnorm(n=1,meanlog=log(x["X"]),sd=params["tau"]),"Y")
- }
+gompertz.meas.sim <- function (X, tau, ...) {
+  c(Y=rlnorm(n=1,meanlog=log(X),sdlog=tau))
+}
 
 
 ## ----gomp3,tidy.opts=list(width.cutoff=65)-------------------------------
-gompertz.meas.dens <- function (y, x, t, params, log, ...) {
-   dlnorm(x=y["Y"],meanlog=log(x["X"]),sdlog=params["tau"],log=log)
- }
+gompertz.meas.dens <- function (tau, X, Y, ..., log) {
+  dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
+}
 
 
 ## ----gomp5---------------------------------------------------------------
-gompertz <- pomp(data=data.frame(time=1:100, Y=NA), times="time",
-                 rprocess=discrete.time.sim(step.fun=gompertz.proc.sim,
-                   delta.t=1), rmeasure=gompertz.meas.sim, t0=0)
+gompertz <- pomp(data=data.frame(time=1:100, Y=NA), times="time", t0=0,
+                 rprocess=discrete_time(step.fun=gompertz.proc.sim, delta.t=1),
+                 rmeasure=gompertz.meas.sim,
+                 paramnames=c("r", "K", "sigma", "tau", "X_0"), statenames = c("X"),
+                 obsnames = c("Y"))
 
 
 ## ----gomp6---------------------------------------------------------------
-theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1,X.0=1)
+theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1, X_0=1)
 
 
 ## ----gomp7-setup,echo=F,results="hide"-----------------------------------
 set.seed(340398091L)
 
 ## ----gomp7---------------------------------------------------------------
-gompertz <- simulate(gompertz,params=theta)
-
+gompertz <- simulate(gompertz, params=theta, rinit=function(X_0, ...){c(X=X_0)})
 
 
 
@@ -182,13 +182,12 @@ loglik.guess
 ##' Include some parameter transformations.
 
 ## ----gomp4---------------------------------------------------------------
-gompertz.log.tf <- function (params, ...) log(params)
-gompertz.exp.tf <- function (params, ...) exp(params)
+gompertz.log.tf <- function (X_0,r,K,sigma,tau, ...) c(X_0=log(X_0), r=log(r), K=log(K), sigma=log(sigma), tau=log(tau))
+gompertz.exp.tf <- function (X_0,r,K,sigma,tau, ...) c(X_0=exp(X_0), r=exp(r), K=exp(K), sigma=exp(sigma), tau=exp(tau))
 
 
 ## ----gompertz-transforms,tidy=F------------------------------------------
-gompertz <- pomp(gompertz, toEstimationScale = gompertz.log.tf,
-                 fromEstimationScale = gompertz.exp.tf)
+gompertz <- pomp(gompertz, partrans = parameter_trans(toEst = gompertz.log.tf, fromEst = gompertz.exp.tf))
 
 
 ## ----gompertz-mif-setup,echo=F,results="hide"----------------------------
@@ -197,11 +196,11 @@ gompertz <- pomp(gompertz, toEstimationScale = gompertz.log.tf,
 ##' the one just constructed.
 ##' Simulate data to match the ones created before.
 dat1 <- as.data.frame(gompertz)
-pompExample(gompertz)
-gompertz <- simulate(window(gompertz,start=1),seed=340398091L)
-dat2 <- as.data.frame(gompertz)
+loaded_gomp <- gompertz()
+loaded_gomp <- simulate(window(loaded_gomp,start=1),seed=340398091L)
+dat2 <- as.data.frame(loaded_gomp)
 stopifnot(all.equal(dat1[c("time","Y")],dat2[c("time","Y")]))
-theta <- coef(gompertz)
+theta <- coef(loaded_gomp)
 theta.true <- theta
 
 
@@ -229,9 +228,9 @@ stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
     theta.guess <- theta.true
     theta.guess[estpars] <- rlnorm(n = length(estpars),
         meanlog = log(theta.guess[estpars]), sdlog = 1)
-    mif(gompertz, Nmif = 100, start = theta.guess, transform = TRUE,
-        Np = 2000, var.factor = 2, cooling.fraction = 0.7,
-        rw.sd = c(r = 0.02, sigma = 0.02, tau = 0.02))
+    mif2(gompertz, Nmif = 100, params = theta.guess,
+         Np = 2000, cooling.fraction = 0.7,
+         rw.sd = rw.sd(r=0.02, sigma=0.02,tau=0.02))
   }
 
   pf1 <- foreach(mf=mif1,
