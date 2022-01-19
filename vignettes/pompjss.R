@@ -228,7 +228,7 @@ stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
     theta.guess <- theta.true
     theta.guess[estpars] <- rlnorm(n = length(estpars),
         meanlog = log(theta.guess[estpars]), sdlog = 1)
-    mif2(gompertz, Nmif = 100, params = theta.guess,
+    mif2(gompertz, Nmif = 10, params = theta.guess,
          Np = 2000, cooling.fraction = 0.7,
          rw.sd = rw.sd(r=0.02, sigma=0.02,tau=0.02))
   }
@@ -314,8 +314,8 @@ print(xtable(results.table,align="r|cccccc",digits=c(0,4,4,4,2,2,2)))
 hyperparams <- list(min = coef(gompertz)/10, max = coef(gompertz) * 10)
 
 ## ----gompertz-dprior2,tidy=FALSE-----------------------------------------
-gompertz.dprior <- function (params, ..., log) {
-  f <- sum(dunif(params, min = hyperparams$min, max = hyperparams$max,
+gompertz.dprior <- function (r, K, sigma, tau, X_0, ..., log) {
+  f <- sum(dunif(c(r, K, sigma, tau, X_0), min = hyperparams$min, max = hyperparams$max,
                  log = TRUE))
   if (log) f else exp(f)
 }
@@ -333,7 +333,7 @@ library(coda)
 
 stew(file="pmcmc.rda",seed=334388458L,kind="L'Ecuyer",{
 
-  pompExample(gompertz)
+  gompertz <- gompertz()
 
   tic <- Sys.time()
   library(doMC)
@@ -388,7 +388,7 @@ par(op)
 ## ----ricker-map-defn,tidy=F----------------------------------------------
 ricker.sim <- "
    e = rnorm(0, sigma);
-   N = r * N * exp(-N + e);
+   N = r * N * exp(-c * N + e);
 "
 ricker.rmeas <- "
    y = rpois(phi * N);
@@ -400,35 +400,36 @@ ricker.dmeas <- "
 
 ## ----ricker-trans,tidy=F-------------------------------------------------
 log.trans <- "
-   Tr = log(r);
-   Tsigma = log(sigma);
-   Tphi = log(phi);
-   TN_0 = log(N_0);"
+   double Tc = log(c);
+   double Tr = log(r);
+   double Tsigma = log(sigma);
+   double Tphi = log(phi);
+   double TN_0 = log(N_0);"
 exp.trans <- "
-   Tr = exp(r);
-   Tsigma = exp(sigma);
-   Tphi = exp(phi);
-   TN_0 = exp(N_0);"
+   double Tc = exp(c);
+   double Tr = exp(r);
+   double Tsigma = exp(sigma);
+   double Tphi = exp(phi);
+   double TN_0 = exp(N_0);"
 
 
 ## ----ricker-pomp,tidy=F--------------------------------------------------
 ricker <- pomp(data = data.frame(time = seq(0, 50, by = 1), y = NA),
-     rprocess = discrete.time.sim(step.fun = Csnippet(ricker.sim),
+     rprocess = discrete_time(step.fun = Csnippet(ricker.sim),
        delta.t = 1), rmeasure = Csnippet(ricker.rmeas),
      dmeasure = Csnippet(ricker.dmeas),
-     toEstimationScale = Csnippet(log.trans),
-     fromEstimationScale = Csnippet(exp.trans),
-     paramnames = c("r", "sigma", "phi", "N.0", "e.0"),
+     partrans = parameter_trans(toEst = Csnippet(log.trans), fromEst = Csnippet(exp.trans)),
+     paramnames = c("r", "c", "sigma", "phi", "N.0", "e.0"),
      statenames = c("N", "e"), times = "time", t0 = 0,
-     params = c(r = exp(3.8), sigma = 0.3, phi = 10, N.0 = 7, e.0 = 0))
+     params = c(r = exp(3.8), sigma = 0.3, phi = 10, c=1, N.0 = 7, e.0 = 0))
 ricker <- simulate(ricker, seed = 73691676L)
 
 ## ----get-ricker,echo=F,eval=T,results="hide"-----------------------------
 ##' Again, retrieve a precompiled version, checking to make sure data
 ##' are the same as in the paper.
 dat1 <- as.data.frame(ricker)
-pompExample(ricker)
-dat2 <- as.data.frame(ricker)
+ex_ricker <- simulate(ricker(), seed = 73691676L)
+dat2 <- as.data.frame(ex_ricker)
 stopifnot(all.equal(dat1[c("time","y")],dat2[c("time","y")]))
 
 
