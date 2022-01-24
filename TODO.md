@@ -2,6 +2,7 @@
 
 ## For pomp:
 
+- rewrite to use `rmultinom`, which is now part of the API (?)
 - byte-compile basic components when furnished as **R** functions
 - ~~banish the binomial model from the SIR examples~~
 
