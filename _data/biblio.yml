@@ -275,6 +275,15 @@
   pages: "1366&#x2013;1371"
   doi: "https://doi.org/10.1016/j.cell.2020.08.042"
 
+- key: Colubri2020
+  author: "A. Colubri, M. Kemball, K. Sani, C. Boehm, K. Mutch-Jones, B. Fry, T. Brown, and P. C. Sabeti"
+  year: "2020"
+  title: "Preventing outbreaks through interactive, experiential real-life simulations"
+  journal: "Cell"
+  volume: "182"
+  pages: "1366&#x2013;1371"
+  doi: "https://doi.org/10.1016/j.cell.2020.08.042"
+
 - key: Cotterill2020
   author: "G. G. Cotterill, P. C. Cross, J. A. Merkle, J. D. Rogerson, B. M. Scurlock, and J. T. du Toit"
   year: "2020"
@@ -847,6 +856,15 @@
   volume: "7"
   pages: "e1979"
   doi: "https://doi.org/10.1371/journal.pntd.0001979"
+
+- key: Shah2022
+  author: "M. Shah, G. Ferra, S. Fitzgerald, P. J. Barreira, P. C. Sabeti, and A. Colubri"
+  year: "2022"
+  title: "Containing the spread of mumps on college campuses"
+  journal: "Royal Society Open Science"
+  volume: "9"
+  pages: "210948"
+  doi: "https://doi.org/10.1098/rsos.210948"
 
 - key: Shrestha2011
   author: "S. Shrestha, A. A. King, and P. Rohani"
