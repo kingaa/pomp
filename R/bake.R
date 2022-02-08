@@ -142,7 +142,7 @@ bake <- function (
   dependson = NULL, info = FALSE, timing = TRUE
 ) {
   expr <- substitute(expr)
-  code <- digest(deparse(expr))
+  code <- digest(deparse(expr,control="all"))
   deps <- process_dependencies(
     dependson=substitute(dependson),
     envir=parent.frame(),
@@ -227,7 +227,7 @@ stew <- function (
   dependson = NULL, info = FALSE
 ) {
   expr <- substitute(expr)
-  code <- digest(deparse(expr))
+  code <- digest(deparse(expr,control="all"))
   deps <- process_dependencies(
     dependson=substitute(dependson),
     envir=parent.frame(),
