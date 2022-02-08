@@ -1318,8 +1318,8 @@ When Bayesian inference is the goal, it is therefore advisable to first locate a
 PMCMC can then be initialized in this neighborhood to sample from the posterior distribution.
 The following adopts this approach, running 5 independent PMCMC chains using a multivariate normal random walk proposal (with diagonal variance-covariance matrix, see \code{?mvn.diag.rw}).
 <<pmcmc-inner,eval=F,purl=F,echo=F>>=
-pmcmc(pomp(self_defined_gompertz, dprior = gompertz.dprior), start = theta.mif,
-      Nmcmc = 40000, Np = 100, max.fail = Inf,
+pmcmc(self_defined_gompertz, dprior = gompertz.dprior, params = theta.mif,
+      Nmcmc = 40000, Np = 100,
       proposal = mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
 <<pmcmc-demo,eval=F,purl=F,echo=T,tidy=F>>=
 pmcmc1 <- foreach(i = 1:5, .combine = c) %dopar% {

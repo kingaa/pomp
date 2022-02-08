@@ -275,6 +275,15 @@
   pages: "1366&#x2013;1371"
   doi: "https://doi.org/10.1016/j.cell.2020.08.042"
 
+- key: Colubri2020
+  author: "A. Colubri, M. Kemball, K. Sani, C. Boehm, K. Mutch-Jones, B. Fry, T. Brown, and P. C. Sabeti"
+  year: "2020"
+  title: "Preventing outbreaks through interactive, experiential real-life simulations"
+  journal: "Cell"
+  volume: "182"
+  pages: "1366&#x2013;1371"
+  doi: "https://doi.org/10.1016/j.cell.2020.08.042"
+
 - key: Cotterill2020
   author: "G. G. Cotterill, P. C. Cross, J. A. Merkle, J. D. Rogerson, B. M. Scurlock, and J. T. du Toit"
   year: "2020"
@@ -361,6 +370,15 @@
   volume: "31"
   pages: "96&#x2013;118"
   doi: "https://doi.org/10.1214/15-sts534"
+
+- key: Fox2022
+  author: "S. J. Fox, M. Lachmann, M. Tec, R. Pasco, S. Woody, Z. Du, X. Wang, T. A. Ingle, E. Javan, M. Dahan, K. Gaither, M. E. Escott, S. I. Adler, S. C. Johnston, J. G. Scott, and L. A. Meyers"
+  year: "2022"
+  title: "Real-time pandemic surveillance using hospital admissions and mobility data"
+  journal: "Proceedings of the National Academy of Sciences"
+  volume: "119"
+  pages: "e2111870119"
+  doi: "https://doi.org/10.1073/pnas.2111870119"
 
 - key: Funk2020
   author: "S. Funk and A. A. King"
@@ -847,6 +865,15 @@
   volume: "7"
   pages: "e1979"
   doi: "https://doi.org/10.1371/journal.pntd.0001979"
+
+- key: Shah2022
+  author: "M. Shah, G. Ferra, S. Fitzgerald, P. J. Barreira, P. C. Sabeti, and A. Colubri"
+  year: "2022"
+  title: "Containing the spread of mumps on college campuses"
+  journal: "Royal Society Open Science"
+  volume: "9"
+  pages: "210948"
+  doi: "https://doi.org/10.1098/rsos.210948"
 
 - key: Shrestha2011
   author: "S. Shrestha, A. A. King, and P. Rohani"
