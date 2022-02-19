@@ -1146,7 +1146,7 @@ mif2(self_defined_gompertz, Nmif = 100, params = theta.guess,
     Np = 2000, cooling.fraction = 0.7,
     rw.sd = rw.sd(r=0.02, sigma=0.02,tau=0.02))
 <<gompertz-mif-inner3,echo=F,eval=F,purl=F>>=
-pf <- replicate(n = 10, logLik(pfilter(mf, Np = 1000)))
+pf <- replicate(n = 10, logLik(pfilter(mf, Np = 10000)))
 logmeanexp(pf)
 <<gompertz-mif-estpar,eval=F,purl=F,echo=F>>=
 estpars <- c("r", "sigma", "tau")
@@ -1533,7 +1533,7 @@ plot(pb.guess)
 ##' An example of 'plot' applied to a 'probed.pomp' object.
   pb <- probe(self_defined_ricker,
               probes=list(
-                probe.marginal("y",ref=obs(ricker),transform=sqrt,order=2),
+                probe.marginal("y",ref=obs(self_defined_ricker),transform=sqrt,order=2),
                 probe.acf("y",lags=c(0,3),transform=sqrt),
                 mean=probe.mean("y",transform=sqrt)
                 ),
@@ -1561,15 +1561,11 @@ Let us now attempt to fit the Ricker model to the data using probe-matching.
 <<ricker-probe-match-calc,eval=F,purl=F,results="markup">>=
 pobj <- probe_objfun(pb.guess,
                   est=c("r","sigma","phi"),
-                  transform=TRUE,
-                  method="Nelder-Mead",
-                  maxit=2000,
-                  seed=1066L,
-                  reltol=1e-8)
+                  seed=1066L)
 
 library(subplex)
 
-subplex(fn=pobj, par = guess,  control=list(reltol=1e-8)) -> pm
+subplex(fn=pobj, par = coef(pb.guess, c("r","sigma","phi"),transform=TRUE),  control=list(reltol=1e-8)) -> pm
 
 <<ricker-probe.match-eval,echo=F,eval=T,results="hide",cache=F>>=
 ##' Now we'll do some probe-matching.
@@ -1589,7 +1585,7 @@ The following code runs 600 IF iterations starting at \code{guess}:
 mf <- mif2(self_defined_ricker, start = guess, Nmif = 100, Np = 1000, transform = TRUE,
           cooling.fraction = 0.95^50, 
           rw.sd = rw.sd(r = 0.1, sigma = 0.1, phi = 0.1))
-mf <- continue(mf, Nmif = 50)
+mf <- continue(mf, Nmif = 500)
 <<ricker-mif-eval,echo=F,eval=T,cache=F,results="hide">>=
 ##' Now, for comparison, run 600 'mif' iterations.
 ##' These serial calculations took about 3 minutes.
@@ -1620,7 +1616,7 @@ stew(file="ricker-comparison.rda",seed=1182206495L,kind="L'Ecuyer",{
   rbind(Guess=guess,
         Truth=coef(self_defined_ricker),
         MLE=coef(mf),
-        MSLE=pm$par) -> comp
+        MSLE=coef(pobj)) -> comp
 
   foreach (theta=iter(comp,"row"),.combine=rbind) %do% {
 
@@ -1721,7 +1717,7 @@ toc <- Sys.time()
 abcTime <- toc-tic
 
 abc.traces <- traces(abc1,c("r","sigma","tau"))
-abc.traces <- window(abc.traces,start=200001,thin=400)
+abc.traces <- window(abc.traces,start=2000001,thin=400)
 ess.abc <- effectiveSize(abc.traces)
 rm(abc1,tic,toc)
 })
@@ -1845,7 +1841,7 @@ stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   theta.guess <- coef(gomp)
 
   tic <- Sys.time()
-  mif1 <- mif2(gomp,Nmif=100,start=theta.guess,transform=TRUE,
+  mif1 <- mif2(gomp,Nmif=100,start=theta.guess,
     rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),Np=1000,
     cooling.type="geometric",cooling.fraction=0.5)
   mif.lik <- pfilter(mif1,Np=10000)
@@ -1857,23 +1853,23 @@ stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   mif.sql <- mif.nlf(coef(mif1))
 
   tic <- Sys.time()
-  nlfobj <- nlf_objfun(gomp, 
+  nlfobj <- nlf_objfun(gomp,
       ti=100, tf=4000,
       lags=c(2,3))
-  nlf_out <- subplex(par = theta.guess, fn=nlfobj, control=list(reltol=1e-8))
+  nlf_out <- subplex(par = coef(gomp, estpars, transform=TRUE), fn=nlfobj, control=list(reltol=1e-8))
   toc <- Sys.time()
   nlf.time <- toc-tic
   units(nlf.time) <- "secs"
-  nlf.lik <- pfilter(pomp(gomp, params=nlf_out$par),Np=1000)
-  nlf.sql <- nlfobj(nlf_out$par)
+  nlf.lik <- pfilter(pomp(gomp, params=coef(nlfobj)),Np=1000)
+  nlf.sql <- nlfobj(coef(nlfobj))
 
   c(
     trueLik=logLik(true.lik),
-    trueSQL=true.sql,
+    trueSQL=-true.sql,
     mifLik=logLik(mif.lik),
-    mifSQL=mif.sql,
+    mifSQL=-mif.sql,
     nlfLik=logLik(nlf.lik),
-    nlfSQL=nlf.sql,
+    nlfSQL=-nlf.sql,
     mifTime=mif.time,
     nlfTime=nlf.time
   )
