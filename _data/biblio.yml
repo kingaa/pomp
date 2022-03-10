@@ -371,6 +371,15 @@
   pages: "96&#x2013;118"
   doi: "https://doi.org/10.1214/15-sts534"
 
+- key: Fox2022
+  author: "S. J. Fox, M. Lachmann, M. Tec, R. Pasco, S. Woody, Z. Du, X. Wang, T. A. Ingle, E. Javan, M. Dahan, K. Gaither, M. E. Escott, S. I. Adler, S. C. Johnston, J. G. Scott, and L. A. Meyers"
+  year: "2022"
+  title: "Real-time pandemic surveillance using hospital admissions and mobility data"
+  journal: "Proceedings of the National Academy of Sciences"
+  volume: "119"
+  pages: "e2111870119"
+  doi: "https://doi.org/10.1073/pnas.2111870119"
+
 - key: Funk2020
   author: "S. Funk and A. A. King"
   year: "2020"
