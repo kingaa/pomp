@@ -1,6 +1,6 @@
 
-R version 4.1.2 (2021-11-01) -- "Bird Hippie"
-Copyright (C) 2021 The R Foundation for Statistical Computing
+R version 4.1.3 (2022-03-10) -- "One Push-Up"
+Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -96,7 +96,7 @@ Warning message:
 > 
 > simStates %>%
 +   melt() %>%
-+   spread(variable,value) %>%
++   pivot_wider(names_from=variable) %>%
 +   ggplot(mapping=aes(x=time,y=N,group=.id,color=factor(.id)))+
 +   geom_line()+
 +   guides(color="none")+
@@ -129,7 +129,7 @@ Warning message:
 > sim %>%
 +   melt() %>%
 +   select(-L1) %>%
-+   spread(variable,value) %>%
++   pivot_wider(names_from=variable) %>%
 +   ggplot(mapping=aes(x=N,y=P,color=factor(.id)))+
 +   geom_point()+scale_x_sqrt()+scale_y_sqrt()+
 +   coord_equal()+

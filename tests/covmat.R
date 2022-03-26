@@ -22,7 +22,7 @@ gompertz %>%
   group_by(name) %>%
   summarize(value=(sd(value))) %>%
   ungroup() %>%
-  pivot_wider(name) %>%
+  pivot_wider(names_from=name) %>%
   unlist() -> scale.dat
 
 abc(

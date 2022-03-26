@@ -42,7 +42,7 @@ create_example(simulator="gillespie",times=c(0,1,10,100,1000)) %>%
   mutate(freq=n/sum(n)) %>%
   ungroup() %>%
   select(-n) %>%
-  spread(N,freq) %>%
+  pivot_wider(names_from=N,values_from=freq) %>%
   as.data.frame()
 create_example(times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%
   simulate(nsim=100,format="data.frame") -> sims
@@ -68,7 +68,7 @@ create_example(simulator="onestep",times=c(0,1,10,100,1000)) %>%
   mutate(freq=n/sum(n)) %>%
   ungroup() %>%
   select(-n) %>%
-  spread(N,freq) %>%
+  pivot_wider(names_from=N,values_from=freq) %>%
   as.data.frame()
 create_example(simulator="onestep",
   times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%
@@ -95,7 +95,7 @@ create_example(simulator="euler",times=c(0,1,10,100,1000)) %>%
   mutate(freq=n/sum(n)) %>%
   ungroup() %>%
   select(-n) %>%
-  spread(N,freq) %>%
+  pivot_wider(names_from=N,values_from=freq) %>%
   as.data.frame()
 create_example(simulator="euler",
   times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%

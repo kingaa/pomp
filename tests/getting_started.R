@@ -75,7 +75,7 @@ library(tidyr)
 
 simStates %>%
   melt() %>%
-  spread(variable,value) %>%
+  pivot_wider(names_from=variable) %>%
   ggplot(mapping=aes(x=time,y=N,group=.id,color=factor(.id)))+
   geom_line()+
   guides(color="none")+
@@ -108,7 +108,7 @@ library(dplyr)
 sim %>%
   melt() %>%
   select(-L1) %>%
-  spread(variable,value) %>%
+  pivot_wider(names_from=variable) %>%
   ggplot(mapping=aes(x=N,y=P,color=factor(.id)))+
   geom_point()+scale_x_sqrt()+scale_y_sqrt()+
   coord_equal()+

@@ -53,7 +53,7 @@ for (k in seq_along(t)) {
 
 y %>%
   melt() %>%
-  pivot_wider(time,variable) %>%
+  pivot_wider(time,names_from=variable) %>%
   pfilter(
     times='time',t0=0,
     A=A,C=C,R=R,sqrtQ=sqrtQ,sqrtR=sqrtR,X0=X0,
