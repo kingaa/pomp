@@ -329,7 +329,7 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
 }
 
 int num_euler_steps (double t1, double t2, double *dt) {
-  double tol = sqrt(DOUBLE_EPS);
+  double tol = sqrt(DBL_EPSILON);
   int nstep;
   // nstep will be the number of Euler steps to take in going from t1 to t2.
   // note also that the stepsize changes.
@@ -354,7 +354,7 @@ int num_euler_steps (double t1, double t2, double *dt) {
 }
 
 int num_map_steps (double t1, double t2, double dt) {
-  double tol = sqrt(DOUBLE_EPS);
+  double tol = sqrt(DBL_EPSILON);
   int nstep;
   // nstep will be the number of discrete-time steps to take in going from t1 to t2.
   nstep = (int) floor((t2-t1)/dt/(1-tol));

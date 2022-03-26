@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.1.0}{
+  \itemize{
+    \item Minor changes to the C codes to keep up with R-devel.
+    \item Minor changes in the implementation of \code{bake} and \code{stew}.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.0.11}{
   \itemize{
     \item Change in the names of the variables returned by \code{as.data.frame} applied to a \sQuote{pfilterd.pomp} object.
