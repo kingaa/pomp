@@ -383,7 +383,7 @@ probeplot.internal <- function (x, ...) {
   diag.panel.hist <- function(x, ...) {
     ##plot a histogram for the simulations
     usr <- par("usr")
-    on.exit(par(usr))
+    on.exit(par(usr=usr))
     par(usr=c(usr[c(1L,2L)],0,1.5))
     h <- hist(x[-1L],plot=FALSE)
     breaks <- h$breaks
