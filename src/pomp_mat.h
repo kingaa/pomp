@@ -1,7 +1,6 @@
 #ifndef _POMP_MAT_H_
 #define _POMP_MAT_H_
 
-#define USE_FC_LEN_T
 #include <Rconfig.h>
 #include <R_ext/Lapack.h>
 #ifndef FCONE
@@ -19,7 +18,7 @@ static R_INLINE void pomp_backsolve (double *a, int lda, int n, double *x, int i
   // UPLO is "U" or "L" depending on whether A is upper or lower triangular
   // TRANSPOSE is "T" or "N" depending on whether the transpose is desired
   // DIAG is "U" or "N" depending on whether A is unit triangular or not
-  F77_CALL(dtrsv)(uplo,transpose,unit,&n,a,&lda,x,&incx FCONE);
+  F77_CALL(dtrsv)(uplo,transpose,unit,&n,a,&lda,x,&incx FCONE FCONE FCONE);
 }
 
 static R_INLINE void pomp_qr (double *a, int m, int n, int *pivot, double *tau) {
@@ -43,11 +42,11 @@ static R_INLINE void pomp_qrqy (double *c, double *a, int lda, double *tau, int 
  
   // workspace query
   // DORMQR(SIDE,TRANS,M,N,K,A,LDA,TAU,C,LDC,WORK,LWORK,INFO)
-  F77_CALL(dormqr)(side,transpose,&m,&n,&k,a,&lda,tau,c,&m,&work1,&lwork,&info FCONE);
+  F77_CALL(dormqr)(side,transpose,&m,&n,&k,a,&lda,tau,c,&m,&work1,&lwork,&info FCONE FCONE);
   lwork = (int) ceil(work1);
   {				// actual call
     double work[lwork];
-    F77_CALL(dormqr)(side,transpose,&m,&n,&k,a,&lda,tau,c,&m,work,&lwork,&info FCONE);
+    F77_CALL(dormqr)(side,transpose,&m,&n,&k,a,&lda,tau,c,&m,work,&lwork,&info FCONE FCONE);
   }
 }
 

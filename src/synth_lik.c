@@ -47,7 +47,7 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
   // LAPACK QR decomposition without pivoting DGEQR2(M,N,A,LDA,TAU,WORK,INFO)
   F77_CALL(dgeqr2)(&nrow,&ncol,y2,&nrow,tau,work,&info);
   // Level-3 BLAS triangular matrix solver DTRSM(SIDE,UPLO,TRANS,DIAG,M,N,ALPHA,A,LDA,B,LDB)
-  F77_CALL(dtrsm)("right","upper","no transpose","non-unit",&nrow,&ncol,&one,y2,&nrow,y1,&nrow FCONE);
+  F77_CALL(dtrsm)("right","upper","no transpose","non-unit",&nrow,&ncol,&one,y2,&nrow,y1,&nrow FCONE FCONE FCONE FCONE);
 
   // create Campbell weight vector
   d0 = sqrt(ncol)+alpha/sqrt(2.0);
