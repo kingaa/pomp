@@ -158,6 +158,15 @@
   pages: "e2012327118"
   doi: "https://doi.org/10.1073/pnas.2012327118"
 
+- key: BravoVega2022
+  author: "C. Bravo-Vega, M. Santos-Vega, and J. M. Cordovez"
+  year: "2022"
+  title: "Disentangling snakebite dynamics in Colombia: How does rainfall and temperature drive snakebite temporal patterns?"
+  journal: "PLOS Neglected Tropical Diseases"
+  volume: "16"
+  pages: "e0010270"
+  doi: "https://doi.org/10.1371/journal.pntd.0010270"
+
 - key: Breto2009
   author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
   year: "2009"
@@ -293,6 +302,15 @@
   pages: "379&#x2013;389"
   doi: "https://doi.org/10.1111/1365-2664.13553"
 
+- key: Dablander2022
+  author: "F. Dablander, H. Heesterbeek, D. Borsboom, and J. M. Drake"
+  year: "2022"
+  title: "Overlapping timescales obscure early warning signals of the second COVID-19 wave"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "289"
+  pages: "20211809"
+  doi: "https://doi.org/10.1098/rspb.2021.1809"
+
 - key: DomenechdeCelles2018
   author: "M. Domenech de Cell&egrave;s, F. M. G. Magpantay, A. A. King, and P. Rohani"
   year: "2018"
@@ -319,6 +337,15 @@
   volume: "18"
   pages: "1&#x2013;12"
   doi: "https://doi.org/10.1186/s12916-020-01552-7"
+
+- key: DomenechdeCelles2022
+  author: "M. Domenech de Cell&egrave;s, E. Goult, J.-S. Casalegno, and S. C. Kramer"
+  year: "2022"
+  title: "The pitfalls of inferring virus-virus interactions from co-detection prevalence data: application to influenza and SARS-CoV-2"
+  journal: "Proceedings of the Royal Society B: Biological Sciences"
+  volume: "289"
+  pages: "20212358"
+  doi: "https://doi.org/10.1098/rspb.2021.2358"
 
 - key: Doucet2015
   author: "A. Doucet, M. K. Pitt, G. Deligiannidis, and R. Kohn"
@@ -776,6 +803,14 @@
   pages: "89&#x2013;98"
   doi: "https://doi.org/10.1007/s12080-018-0390-3"
 
+- key: Pak2022
+  author: "D. Pak, S. Carran, D. Biddinger, B. Nelson, and O. N. Bj&oslash;rnstad"
+  year: "2022"
+  title: "Incorporating diapause to predict the interannual dynamics of an important agricultural pest"
+  journal: "Population Ecology"
+  volume: "n/a"
+  doi: "https://doi.org/10.1002/1438-390X.12117"
+
 - key: Park2020
   author: "J. Park and E. L. Ionides"
   year: "2020"
@@ -865,6 +900,15 @@
   volume: "7"
   pages: "e1979"
   doi: "https://doi.org/10.1371/journal.pntd.0001979"
+
+- key: SantosVega2022
+  author: "M. Santos-Vega, P. P. Martinez, K. G. Vaishnav, V. Kohli, V. Desai, M. J. Bouma, and M. Pascual"
+  year: "2022"
+  title: "The neglected role of relative humidity in the interannual variability of urban malaria in Indian cities"
+  journal: "Nature Communications"
+  volume: "13"
+  pages: "533"
+  doi: "https://doi.org/10.1038/s41467-022-28145-7"
 
 - key: Shah2022
   author: "M. Shah, G. Ferra, S. Fitzgerald, P. J. Barreira, P. C. Sabeti, and A. Colubri"
