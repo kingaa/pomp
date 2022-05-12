@@ -10,9 +10,13 @@ BIBTEX = bibtex
 PDFLATEX = pdflatex
 RM = rm -f
 
-default: vignettes clean
+default: vignettes fresh
 
-vignettes: pompjss.pdf getting_started.html getting_started.R faq.html mif2.html mif2.R He2010.html He2010.R oaxaca.html oaxaca.R R_v_C.html R_v_C.R upgrade_guide.html C_API.html
+vignettes: faq.html mif2.html mif2.R He2010.html He2010.R oaxaca.html oaxaca.R R_v_C.html R_v_C.R upgrade_guide.html C_API.html \
+pompjss.pdf getting_started.html getting_started.R
+
+%.Rout: %.R
+	R < $*.R > $*.Rout
 
 %.html: %.Rmd
 	PATH=/usr/lib/rstudio/bin/pandoc:$$PATH \
@@ -32,12 +36,11 @@ vignettes: pompjss.pdf getting_started.html getting_started.R faq.html mif2.html
 	-$(BIBTEX) $*
 	$(PDFLATEX) $*
 	$(PDFLATEX) $*
-#	$(RSCRIPT) -e "tools::compactPDF(\"$*.pdf\")";
 
 clean:
-	$(RM) *.tex *.log *.aux *.blg *.bbl *.out *.Rout *.toc *.lof *.lot *.brf
-	$(RM) -r cache figure
+	$(RM) *.tex *.log *.aux *.blg *.bbl *.out *.toc *.lof *.lot *.brf
 	$(RM) *.c *.o *.so *.bak
 	$(RM) Rplots.pdf
 
 fresh: clean
+	$(RM) -r cache figure *.Rout
