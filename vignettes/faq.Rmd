@@ -7,8 +7,8 @@ output:
     toc: yes
     toc_depth: 4
     number_sections: true
-bibliography: ../vignettes/pomp.bib
-csl: ../vignettes/jss.csl
+bibliography: pomp.bib
+csl: jss.csl
 ---
 
 ```{r options,include=FALSE,cache=FALSE}
@@ -666,7 +666,7 @@ The plot below illustrates what she found.
 
 -----------------------
 
-![**FAQ 5.2:** Iterated filtering is supposed to maximize the likelihood, but it appears to be declining!](../_assets/faq_5-2.png)
+![**FAQ 5.2:** Iterated filtering is supposed to maximize the likelihood, but it appears to be declining!](faq_5-2.png)
 
 -----------------------
 
