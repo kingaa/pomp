@@ -76,6 +76,7 @@ set.seed(594709947L)
 library(tidyverse)
 library(ggplot2)
 theme_set(theme_bw())
+bigtick <- Sys.time()
 ```
 
 ```{r parallel_setup,include=FALSE,purl=TRUE,cache=FALSE}
@@ -1608,6 +1609,27 @@ the main goal of the package is to facilitate effective inference by bringing a 
 
 Although the goal of this document has been to introduce the beginner to the package through a display of the **pomp** toolbox in the context of a rudimentary and incomplete data analysis of a short time series with toy models, it is important to realize that these tools have proven their utility on some extremely challenging problems, including some for which other existing methods are either less efficient or entirely infeasible.
 The [bibliography](https://kingaa.github.io/pomp/biblio.html) has links to peer-reviewed publications that have used these methods.
+
+<!--
+
+```{r sessinfo}
+bigtock <- Sys.time()
+totalSweaveTime <- bigtock-bigtick
+sysi <- Sys.info()
+sess <- sessionInfo()
+tfile <- file.path(resdir,"timing.rda")
+
+if (file.exists(tfile)) {
+  load(tfile)
+} else {
+  save(totalSweaveTime,sysi,sess,file=tfile,compress='xz')
+}
+
+print(sysi)
+print(sess)
+print(totalSweaveTime)
+```
+-->
 
 
 ---------------------------------------

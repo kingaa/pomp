@@ -15,6 +15,7 @@ set.seed(594709947L)
 library(tidyverse)
 library(ggplot2)
 theme_set(theme_bw())
+bigtick <- Sys.time()
 
 
 ## ----parallel_setup,include=FALSE,purl=TRUE,cache=FALSE-----------------------
@@ -706,4 +707,22 @@ summary(vp_probe)
 
 ## ----probe1_plot,fig.width=6.8,fig.height=6.8---------------------------------
 plot(vp_probe)
+
+
+## ----sessinfo-----------------------------------------------------------------
+bigtock <- Sys.time()
+totalSweaveTime <- bigtock-bigtick
+sysi <- Sys.info()
+sess <- sessionInfo()
+tfile <- file.path(resdir,"timing.rda")
+
+if (file.exists(tfile)) {
+  load(tfile)
+} else {
+  save(totalSweaveTime,sysi,sess,file=tfile,compress='xz')
+}
+
+print(sysi)
+print(sess)
+print(totalSweaveTime)
 
