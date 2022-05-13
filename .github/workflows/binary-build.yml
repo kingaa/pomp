@@ -1,0 +1,54 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+on:
+  workflow_dispatch:
+    branches: [master]
+
+name: binary-build
+
+jobs:
+  binary-build:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: ubuntu-latest,  r: 'release'}
+          - {os: macOS-latest,   r: 'release'}
+          - {os: windows-latest, r: 'release'}
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-pandoc@v1
+
+      - uses: r-lib/actions/setup-r@v1
+        with:
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v1
+        with:
+          extra-packages: rcmdcheck 
+          
+      - name: Build binary
+        run: pkgbuild::build(binary=TRUE,manual=TRUE)
+        shell: Rscript {0}
+      
+      - name: Copying tarball
+        run: |
+          mkdir -p ${{ github.workspace }}/artifacts
+          cp ../pomp_* ${{ github.workspace }}/artifacts
+          
+      - uses: actions/upload-artifact@v3
+        with:
+          name: binary-${{ matrix.config.os }}-${{ matrix.config.r }}
+          path: ${{ github.workspace }}/artifacts

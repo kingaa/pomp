@@ -79,7 +79,7 @@ Error : in 'traj_objfun': parameter 'harry' not found in 'params'
 > 
 > enames <- c("gamma","iota","rho","k")
 > 
-> sir() |>
+> sir() %>%
 +   traj_objfun(
 +     dmeasure=Csnippet("
 +       lik = dnbinom_mu(nearbyint(reports),1/k,rho*cases,give_log);
