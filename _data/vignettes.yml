@@ -1,3 +1,7 @@
+- title: Statistical Inference for Partially Observed Markov Processes via the R Package <strong>pomp</strong> (a <i>Journal of Statistical Software</i> paper)
+  pdf: vignettes/pompjss.pdf
+  R: vignettes/pompjss.R
+
 - title: Getting started with <strong>pomp</strong>
   html: vignettes/getting_started.html
   R: vignettes/getting_started.R
@@ -15,6 +19,9 @@
 - title: Package NEWS
   html: NEWS/
 
+- title: <strong>pomp</strong> C API
+  html: vignettes/C_API.html
+
 - title: "Coding POMP models: R vs C snippets"
   html: vignettes/R_v_C.html
   R: vignettes/R_v_C.R
@@ -28,19 +35,6 @@
   R: vignettes/He2010.R
   data: vignettes/twentycities.rda
 
-- title: Statistical Inference for Partially Observed Markov Processes via the R Package <strong>pomp</strong> (a <i>Journal of Statistical Software</i> paper)
-  pdf: vignettes/pompjss.pdf
-  R: vignettes/pompjss.R
-
-- title: <strong>pomp</strong> discussions
-  html: https://github.com/kingaa/pomp/discussions
-
-- title: Pimp my pomp, a community wiki
-  html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp
-
-- title: <strong>pomp</strong> C API
-  html: vignettes/C_API.html
-
 - title: Two perspectives on the <strong>pomp</strong> project
   html: vignettes/oaxaca.html
   video: https://www.youtube.com/playlist?list=PLluGwj6FGt2SufYmENYAngy8dEMtfFEU8
@@ -50,3 +44,9 @@
 
 - title: Model-based Inference in Ecology and Epidemiology (a short course)
   html: https://kingaa.github.io/short-course/
+
+- title: <strong>pomp</strong> discussions
+  html: https://github.com/kingaa/pomp/discussions
+
+- title: Pimp my pomp, a community wiki
+  html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp

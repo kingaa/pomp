@@ -1,5 +1,5 @@
 params <-
-list(prefix = "getting-started", min.pomp.version = "3.1", show_solns = TRUE)
+list(prefix = "getting_started", min.pomp.version = "4.2", show_solns = TRUE)
 
 ## ----prelims,echo=FALSE,cache=FALSE-------------------------------------------
 stopifnot(packageVersion("pomp") >= params$min.pomp.version)
@@ -9,10 +9,20 @@ options(
   encoding="UTF-8",
   scipen=5
 )
+resdir <- file.path("results",params$prefix)
+dir.create(resdir,recursive=TRUE)
 set.seed(594709947L)
 library(tidyverse)
 library(ggplot2)
 theme_set(theme_bw())
+
+
+## ----parallel_setup,include=FALSE,purl=TRUE,cache=FALSE-----------------------
+if (file.exists("CLUSTE.R")) {
+  source("CLUSTE.R")
+}
+library(doRNG)
+registerDoRNG(348885445L)
 
 
 
@@ -137,7 +147,7 @@ ggplot(data=separate(sims,.id,c("parset","rep")),
 
 
 ## ----parus-plot---------------------------------------------------------------
-parus %>%
+parus |>
   ggplot(aes(x=year,y=pop))+
   geom_line()+geom_point()+
   expand_limits(y=0)
@@ -145,7 +155,7 @@ parus
 
 
 ## ----rick---------------------------------------------------------------------
-parus %>%
+parus |>
   pomp(
     times="year", t0=1960,
     rinit=function (N_0, ...) {
@@ -173,15 +183,15 @@ vpstep <- function (N, r, K, sigma, delta.t, ...) {
 
 
 ## ----vp-----------------------------------------------------------------------
-rick %>% pomp(rprocess=euler(vpstep,delta.t=1/365)) -> vp
+rick |> pomp(rprocess=euler(vpstep,delta.t=1/365)) -> vp
 
 
 ## ----vp_sim1------------------------------------------------------------------
-vp %>%
+vp |>
   simulate(
     params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
-    format="data.frame", include.data=TRUE, nsim=5) %>%
-  mutate(ds=case_when(.id=="data"~"data",TRUE~"simulation")) %>%
+    format="data.frame", include.data=TRUE, nsim=5) |>
+  mutate(ds=case_when(.id=="data"~"data",TRUE~"simulation")) |>
   ggplot(aes(x=year,y=pop,group=.id,color=ds))+
   geom_line()+
   labs(color="")
@@ -210,7 +220,7 @@ Csnippet("
 
 
 ## ----rickC--------------------------------------------------------------------
-parus %>%
+parus |>
   pomp(
     times="year", t0=1960,
     rinit=rinit,
@@ -222,7 +232,7 @@ parus %>%
 
 
 ## ----vpC----------------------------------------------------------------------
-parus %>%
+parus |>
   pomp(
     times="year", t0=1960,
     rinit=rinit,
@@ -240,7 +250,7 @@ Csnippet("
 
 
 ## ----pfilter1-----------------------------------------------------------------
-rickC %>%
+rickC |>
   pfilter(Np=1000,
     params=c(r=1.2,K=2000,sigma=0.3,N_0=1600,b=0.1),
     dmeasure=dmeas,
@@ -261,25 +271,29 @@ as(pfrick,"data.frame")
 
 
 ## ----rick_loglik--------------------------------------------------------------
-replicate(10, pfrick %>% pfilter() %>% logLik()) -> lls
+replicate(10, pfrick |> pfilter() |> logLik()) -> lls
 lls
 logmeanexp(lls,se=TRUE) -> ll_rick1
 ll_rick1
 
 
-## ----vp_loglik----------------------------------------------------------------
-replicate(10,
-  vpC %>%
-    pfilter(Np=1000,dmeasure=dmeas,
-      params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
-      paramnames="b",statenames="N") %>%
-    logLik()) %>%
-  logmeanexp(se=TRUE) -> ll_vp1
+
+## ----vp_loglik_eval,include=FALSE,purl=TRUE-----------------------------------
+bake(file.path(resdir,"vp_loglik.rds"),{
+  replicate(10,
+    vpC |>
+      pfilter(Np=1000,dmeasure=dmeas,
+        params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
+        paramnames="b",statenames="N") |>
+      logLik()) |>
+    logmeanexp(se=TRUE) -> ll_vp1
+  ll_vp1
+}) -> ll_vp1
 ll_vp1
 
 
 ## ----rick_skel----------------------------------------------------------------
-rickC %>%
+rickC |>
   pomp(
     skeleton=map(
       Csnippet("DN = r*N*exp(1-N/K);"),
@@ -290,7 +304,7 @@ rickC %>%
 
 
 ## ----vp_skel------------------------------------------------------------------
-vpC %>%
+vpC |>
   pomp(
     skeleton=vectorfield(Csnippet("DN = r*N*(1-N/K);")),
     paramnames=c("r","K"), statenames="N"
@@ -300,8 +314,8 @@ vpC %>%
 ## ----vp_traj1-----------------------------------------------------------------
 p <- parmat(c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),10)
 p["N_0",] <- seq(10,3000,length=10)
-vpC %>%
-  trajectory(params=p,format="data.frame") %>%
+vpC |>
+  trajectory(params=p,format="data.frame") |>
   ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
   guides(color="none")+
   geom_line()+
@@ -309,7 +323,7 @@ vpC %>%
 
 
 ## ----vp_traj_objfun-----------------------------------------------------------
-vpC %>%
+vpC |>
   traj_objfun(
     est=c("K","N_0"),
     params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
@@ -339,8 +353,8 @@ logLik(ofun)
 
 
 ## ----traj_match_traj----------------------------------------------------------
-ofun %>%
-  trajectory(format="data.frame") %>%
+ofun |>
+  trajectory(format="data.frame") |>
   ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
   guides(color="none")+
   geom_line()+
@@ -348,21 +362,21 @@ ofun %>%
 
 
 ## ----traj_match_plot----------------------------------------------------------
-ofun %>%
-  trajectory(format="data.frame") %>%
+ofun |>
+  trajectory(format="data.frame") |>
   mutate(
     pop=coef(ofun,"b")*N,
     .id="prediction"
-  ) %>%
-  select(-N) %>%
+  ) |>
+  select(-N) |>
   rbind(
-    parus %>%
+    parus |>
       mutate(
         .id="data",
         pop=as.double(pop)
       )
-  ) %>%
-  spread(.id,pop) %>%
+  ) |>
+  spread(.id,pop) |>
   ggplot(aes(x=year))+
   geom_line(aes(y=prediction))+
   geom_point(aes(y=data))+
@@ -375,7 +389,7 @@ vpr_partrans <- parameter_trans(log=c("r","K","sigma","b","N_0"))
 
 
 ## ----ofun2--------------------------------------------------------------------
-vpC %>%
+vpC |>
   traj_objfun(
     est=c("b","K","N_0"),
     params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
@@ -398,19 +412,22 @@ guesses
 plot(guesses,pch=16)
 
 
-## ----vp_mif1------------------------------------------------------------------
-vpC %>%
-  mif2(
-    params=guesses[1,],
-    Np=1000,
-    Nmif=20,
-    dmeasure=dmeas,
-    partrans=parameter_trans(log=c("r","K","sigma","N_0")),
-    rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02,N_0=ivp(0.02)),
-    cooling.fraction.50=0.5,
-    paramnames=c("r","K","sigma","N_0","b"),
-    statenames=c("N")
-  ) -> mf1
+
+## ----vp_mif1_eval,include=FALSE,purl=TRUE-------------------------------------
+bake(file.path(resdir,"vp_mif1.rds"),{
+  vpC |>
+    mif2(
+      params=guesses[1,],
+      Np=1000,
+      Nmif=20,
+      dmeasure=dmeas,
+      partrans=parameter_trans(log=c("r","K","sigma","N_0")),
+      rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02,N_0=ivp(0.02)),
+      cooling.fraction.50=0.5,
+      paramnames=c("r","K","sigma","N_0","b"),
+      statenames=c("N")
+    ) -> mf1
+}) -> mf1
 
 
 ## ----mf1_display--------------------------------------------------------------
@@ -422,7 +439,7 @@ plot(mf1)
 
 
 ## ----mf_pfilter1--------------------------------------------------------------
-replicate(5, mf1 %>% pfilter() %>% logLik()) %>% logmeanexp(se=TRUE)
+replicate(5, mf1 |> pfilter() |> logLik()) |> logmeanexp(se=TRUE)
 
 
 ## ----cluster_setup,purl=TRUE,include=FALSE------------------------------------
@@ -433,24 +450,24 @@ if (file.exists("CLUSTE.R")) {
 
 
 ## ----parus_mif1_eval,include=FALSE,eval=TRUE,purl=TRUE------------------------
-bake(file="parus_mif1.rds",{
+bake(file=file.path(resdir,"parus_mif1.rds"),{
   library(foreach)
   
   foreach (guess=iter(guesses,"row"),
     .combine=c, .packages=c("pomp"),
     .errorhandling="remove", .inorder=FALSE) %dopar% {
       
-      mf1 %>% mif2(params=guess)
+      mf1 |> mif2(params=guess)
       
     } -> mifs
 }) -> mifs
 
 
 ## ----mif_plot2----------------------------------------------------------------
-mifs %>%
-  traces() %>%
-  melt() %>%
-  filter(variable!="b") %>%
+mifs |>
+  traces() |>
+  melt() |>
+  filter(variable!="b") |>
   ggplot(aes(x=iteration,y=value,group=L1,color=L1))+
   geom_line()+
   facet_wrap(~variable,scales="free_y")+
@@ -459,9 +476,9 @@ mifs %>%
 
 
 ## ----mif_plot3----------------------------------------------------------------
-mifs %>% 
-  as("data.frame") %>% 
-  gather(variable,value,-year,-.id) %>%
+mifs |> 
+  as("data.frame") |> 
+  gather(variable,value,-year,-.id) |>
   ggplot(aes(x=year,y=value,group=.id,color=.id))+
   geom_line()+
   facet_wrap(~variable,scales="free_y",ncol=1)+
@@ -470,14 +487,14 @@ mifs %>%
 
 
 ## ----parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE-------------------------
-bake(file="parus_pf1.rds",{
+bake(file=file.path(resdir,"parus_pf1.rds"),{
   foreach (mf=mifs,
     .combine=rbind, .packages=c("pomp"), 
     .errorhandling="remove", .inorder=FALSE) %dopar% {
       
       replicate(5, 
-        mf %>% pfilter() %>% logLik()
-      ) %>%
+        mf |> pfilter() |> logLik()
+      ) |>
         logmeanexp(se=TRUE) -> ll
       
       data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
@@ -487,15 +504,15 @@ bake(file="parus_pf1.rds",{
 
 
 ## ----mif_plot4,warning=FALSE,fig.width=4,fig.height=4-------------------------
-estimates %>%
-  full_join(guesses) %>%
-  filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) %>%
+estimates |>
+  full_join(guesses) |>
+  filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) |>
   do({
     pairs(~loglik+r+K+sigma+N_0,data=.,
       pch=16,
       col=if_else(is.na(.$loglik),"#99999955","#ff0000ff"))
     .
-  }) %>% 
+  }) |> 
   invisible()
 
 
@@ -503,23 +520,23 @@ estimates %>%
 
 
 ## ----parus_mif2_eval,include=FALSE,eval=TRUE,purl=TRUE------------------------
-bake(file="parus_mif2.rds",{
-  estimates %>%
-    filter(!is.na(loglik)) %>%
-    filter(loglik > max(loglik)-30) %>%
+bake(file=file.path(resdir,"parus_mif2.rds"),{
+  estimates |>
+    filter(!is.na(loglik)) |>
+    filter(loglik > max(loglik)-30) |>
     select(-loglik,-loglik.se) -> starts
   
   foreach (start=iter(starts,"row"),
     .combine=rbind, .packages=c("pomp"), 
     .errorhandling="remove", .inorder=FALSE) %dopar% {
       
-      mf1 %>% 
-        mif2(params=start) %>%
+      mf1 |> 
+        mif2(params=start) |>
         mif2() -> mf
       
       replicate(5, 
-        mf %>% pfilter() %>% logLik()
-      ) %>%
+        mf |> pfilter() |> logLik()
+      ) |>
         logmeanexp(se=TRUE) -> ll
       
       data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
@@ -529,29 +546,29 @@ bake(file="parus_mif2.rds",{
 
 
 ## ----db1----------------------------------------------------------------------
-estimates %>%
+estimates |>
   rbind(ests1) -> estimates
 
-estimates%>%
+estimates |>
   arrange(-loglik)
 
 
 ## ----mif2_plot1,fig.width=4,fig.height=4--------------------------------------
-estimates %>%
-  filter(loglik>max(loglik,na.rm=TRUE)-4) %>%
+estimates |>
+  filter(loglik>max(loglik,na.rm=TRUE)-4) |>
   do({
     pairs(~loglik+r+K+sigma+N_0,data=.,
       pch=16,
       col=if_else(is.na(.$loglik),"#99999955","#ff0000ff"))
     .
-  }) %>% 
+  }) |> 
   invisible()
 
 
 ## ----parus_pd,fig.width=4,fig.height=4----------------------------------------
-estimates %>%
-  filter(loglik>max(loglik)-10) %>%
-  select(r,K,sigma,N_0,b) %>%
+estimates |>
+  filter(loglik>max(loglik)-10) |>
+  select(r,K,sigma,N_0,b) |>
   apply(2,range) -> ranges
 ranges
 
@@ -572,23 +589,23 @@ pairs(~r+K+sigma+N_0+b,data=starts)
 
 
 ## ----parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE---------------------
-bake("parus_profile.rds",{
+bake(file.path(resdir,"parus_profile.rds"),{
   foreach (start=iter(starts,"row"),
     .combine=rbind, .packages=c("pomp"),
     .errorhandling="remove", .inorder=FALSE) %dopar% {
     
-    mf1 %>%
+    mf1 |>
       mif2(
         params=start,
         partrans=parameter_trans(log=c("K","sigma","N_0")),
         rw.sd=rw.sd(K=0.02,sigma=0.02,N_0=ivp(0.02)),
         paramnames=c("K","sigma","N_0","b")
-      ) %>%
+      ) |>
       mif2() -> mf
     
     replicate(5, 
-      mf %>% pfilter() %>% logLik()
-    ) %>%
+      mf |> pfilter() |> logLik()
+    ) |>
       logmeanexp(se=TRUE) -> ll
     
     data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
@@ -597,15 +614,15 @@ bake("parus_profile.rds",{
 
 
 ## ----db2----------------------------------------------------------------------
-estimates %>%
+estimates |>
   rbind(r_prof) -> estimates
 
 
 ## ----prof_plot1---------------------------------------------------------------
-r_prof %>%
-  group_by(r) %>%
-  filter(rank(-loglik)<=2) %>%
-  ungroup() %>%
+r_prof |>
+  group_by(r) |>
+  filter(rank(-loglik)<=2) |>
+  ungroup() |>
   ggplot(aes(x=r,y=loglik,
     ymin=loglik-2*loglik.se,ymax=loglik+2*loglik.se))+
   geom_point()+
@@ -615,10 +632,10 @@ r_prof %>%
 
 
 ## ----r_prof_lrt,echo=FALSE----------------------------------------------------
-r_prof %>%
-  group_by(r) %>%
-  filter(rank(-loglik)<=2) %>%
-  ungroup() %>%
+r_prof |>
+  group_by(r) |>
+  filter(rank(-loglik)<=2) |>
+  ungroup() |>
   do({
     loess(loglik~log(r),data=.,span=0.25) -> fit
     rr <- range(.$r)
@@ -632,10 +649,10 @@ ci <- range(prof$r[prof$loglik>cutoff])
 
 
 ## ----prof_plot2---------------------------------------------------------------
-r_prof %>%
-  group_by(r) %>%
-  filter(rank(-loglik)<=2) %>%
-  ungroup() %>%
+r_prof |>
+  group_by(r) |>
+  filter(rank(-loglik)<=2) |>
+  ungroup() |>
   ggplot(aes(x=r,y=sigma))+
   geom_point()+
   geom_smooth(method="loess",span=0.2)+
@@ -644,14 +661,14 @@ r_prof %>%
 
 
 ## ----mle_sim_plot1------------------------------------------------------------
-r_prof %>% 
+r_prof |> 
   filter(loglik==max(loglik)) -> mle
 
 mlepomp <- as(mifs[[1]],"pomp")
 coef(mlepomp) <- mle
 
-mlepomp %>%
-  simulate(nsim=8,format="data.frame",include.data=TRUE) %>%
+mlepomp |>
+  simulate(nsim=8,format="data.frame",include.data=TRUE) |>
   ggplot(mapping=aes(x=year,y=pop,group=.id,alpha=(.id=="data")))+
   scale_alpha_manual(values=c(`TRUE`=1,`FALSE`=0.2),
     labels=c(`FALSE`="simulation",`TRUE`="data"))+
@@ -661,8 +678,8 @@ mlepomp %>%
 
 
 ## ----mle_sim_plot2------------------------------------------------------------
-mlepomp %>%
-  simulate(nsim=11,format="data.frame",include.data=TRUE) %>%
+mlepomp |>
+  simulate(nsim=11,format="data.frame",include.data=TRUE) |>
   ggplot(mapping=aes(x=year,y=pop,group=.id,color=(.id=="data")))+
   scale_color_manual(values=c(`TRUE`="black",`FALSE`="grey50"),
     labels=c(`FALSE`="simulation",`TRUE`="data"))+
@@ -673,7 +690,7 @@ mlepomp %>%
 
 
 ## ----probe1-------------------------------------------------------------------
-mlepomp %>%
+mlepomp |>
   probe(nsim=200,probes=list(
     mean=probe.mean("pop"),
     q=probe.quantile("pop",probs=c(0.05,0.25,0.5,0.75,0.95)),

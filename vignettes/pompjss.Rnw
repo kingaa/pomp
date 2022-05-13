@@ -14,6 +14,32 @@
 \SetKwBlock{Begin}{procedure}{}
 \DontPrintSemicolon
 
+\newcommand\featureFunc{\mathbb{S}}
+\newcommand\loglik{\ell}
+\newcommand\loglikMC{\hat\ell}
+\newcommand\synloglik{\loglik_{\featureFunc}}
+\newcommand\synloglikMC{\loglikMC_{\featureFunc}}
+\newcommand\R{\mathbb{R}}
+\newcommand\slot[1]{\code{#1}}
+\newcommand\class[1]{class-`\code{#1}'}
+\newcommand\prob[1]{\mathbb{P}\left[{#1}\right]}
+\def\dd{\mathrm{d}}
+\newcommand\given{{\,\vert\,}}
+\newcommand\equals{{{\,}={\,}}}
+\newcommand\myequals{\hspace{0.5mm}{=}\hspace{0.5mm}}
+\newcommand\myto{{\;:\;}}
+\newcommand\seq[2]{{#1}\!:\!{#2}}
+\newcommand\mydot{{\,\cdot\,}}
+\newcommand\cp[2]{N_{\mathrm{#1}\mathrm{#2}}}
+\newcommand\BirthDeath{\raisebox{-0.3ex}{\scalebox{1.5}{$\cdot$}}}
+\newcommand\giventh{{\hspace{0.5mm};\hspace{0.5mm}}}
+\newcommand\normal{{\mathrm{Normal}}}
+\newcommand\argequals{{\,=\,}}
+\newcommand\lags{c}
+\newcommand\maxlag{\overline{c}}
+\newcommand\nlfList{C}
+\newcommand\bigO[1]{\mathcal{O}\!\left({#1}\right)}
+
 \usepackage[sort&compress]{cleveref}
 \newcommand{\crefrangeconjunction}{--}
 \crefname{figure}{Figure}{Figures}
@@ -32,36 +58,9 @@
 \crefname{AlgoLine}{line}{lines}
 \Crefname{AlgoLine}{Line}{Lines}
 
-\newcommand\featureFunc{\mathbb{S}}
-\newcommand\loglik{\ell}
-\newcommand\loglikMC{\hat\ell}
-\newcommand\synloglik{\loglik_{\featureFunc}}
-\newcommand\synloglikMC{\loglikMC_{\featureFunc}}
-\newcommand\R{\mathbb{R}}
-\newcommand\slot[1]{\code{#1}}
-\newcommand\class[1]{class `\code{#1}'}
-\newcommand\prob[1]{\mathbb{P}\left[{#1}\right]}
-\newcommand\dd[1]{\mathrm{d}{#1}}
-\newcommand\given{{\,\vert\,}}
-\newcommand\equals{{{\,}={\,}}}
-\newcommand\myequals{\hspace{0.5mm}{=}\hspace{0.5mm}}
-\newcommand\myto{{\;:\;}}
-\newcommand\seq[2]{{#1}\!:\!{#2}}
-\newcommand\mydot{{\,\cdot\,}}
-\newcommand\cp[2]{N_{\mathrm{#1}\mathrm{#2}}}
-\newcommand\BirthDeath{\raisebox{-0.3ex}{\scalebox{1.5}{$\cdot$}}}
-\newcommand\dlta[1]{\Delta{#1}}
-\newcommand\giventh{{\hspace{0.5mm};\hspace{0.5mm}}}
-\newcommand\normal{{\mathrm{Normal}}}
-\newcommand\argequals{{\,=\,}}
-\newcommand\lags{c}
-\newcommand\maxlag{\overline{c}}
-\newcommand\nlfList{C}
-\newcommand\bigO[1]{\mathcal{O}\!\left({#1}\right)}
-
 \author{Aaron A. King\\University of Michigan \And
-        Dao Nguyen\\University of Michigan \And
-        Edward L. Ionides\\University of Michigan}
+  Dao Nguyen\\University of Michigan \And
+  Edward L. Ionides\\University of Michigan}
 \Plainauthor{Aaron A. King, Dao Nguyen, Edward L. Ionides}
 
 \title{Statistical Inference for Partially Observed Markov Processes via the \proglang{R} Package \pkg{pomp}}
@@ -77,8 +76,9 @@
   We discuss the specification of user-defined models and the development of additional methods within the programming environment provided by \pkg{pomp}.
 
   \noindent
-  *This document is an updated version of \href{http://dx.doi.org/10.18637/jss.v069.i12}{\emph{Journal of Statistical Software} \textbf{69}(12): 1--43}.
-  It is provided under the \href{http://creativecommons.org/licenses/by/3.0/}{Creative Commons Attribution License}.
+  *This document is an updated version of \href{https://dx.doi.org/10.18637/jss.v069.i12}{\emph{Journal of Statistical Software} \textbf{69}(12): 1--43}.
+  It has been revised substantially to reflect changes in \pkg{pomp} subsequent to the original publication.
+  It is provided under the \href{https://creativecommons.org/licenses/by/3.0/}{Creative Commons Attribution License}.
 }
 
 \Keywords{Markov processes, hidden Markov model, state space model, stochastic dynamical system, maximum likelihood, plug-and-play, time series, mechanistic model, sequential Monte Carlo, \proglang{R}}
@@ -91,82 +91,79 @@
   University of Michigan\\
   48109 Michigan, United States of America\\
   E-mail: \email{kingaa@umich.edu}\\
-  URL: \url{http://kinglab.eeb.lsa.umich.edu/}\\
+  URL: \url{https://kinglab.eeb.lsa.umich.edu/}\\
 
-  Dao Nguyen,   Edward Ionides\\
+  Dao Nguyen, Edward Ionides\\
   Department of Statistics\\
   University of Michigan\\
   48109 Michigan, United States of America\\
   E-mail: \email{nguyenxd@umich.edu}, \email{ionides@umich.edu}\\
-  URL: \url{http://www.stat.lsa.umich.edu/~ionides/}\\
+  URL: \url{https://www.stat.lsa.umich.edu/~ionides/}\\
 
 }
 
-<<packages,include=F,cache=F>>=
+<<packages,include=FALSE,cache=F>>=
 library("pomp")
 library("coda")
 library("foreach")
-library("doMC")
-library("ggplot2")
+library("doParallel")
+library("tidyverse")
 library("grid")
-library("magrittr")
-library("plyr")
-library("reshape2")
 library("xtable")
 
-stopifnot(packageVersion("pomp")>="1.3.3.3")
+stopifnot(packageVersion("pomp")>="4.2")
 
-<<set-opts,include=F,cache=F>>=
+<<set-opts,include=FALSE,cache=F>>=
 options(
-        scipen=2,
-        help_type="html",
-        stringsAsFactors=FALSE,
-        prompt="R> ",
-        continue="+  ",
-        width=70,
-        useFancyQuotes=FALSE,
-        reindent.spaces=2,
-        xtable.comment=FALSE
-        )
+  scipen=2,
+  help_type="html",
+  stringsAsFactors=FALSE,
+  prompt="R> ",
+  continue="+  ",
+  width=60,
+  formatR.blank=FALSE,
+  formatR.indent=2,
+  useFancyQuotes=FALSE,
+  xtable.comment=FALSE
+)
+resdir <- file.path("results","pompjss")
+dir.create(resdir,recursive=TRUE)
+@
 
-##' Edit the following line to obtain better results using package 'doMC'.
-options(cores=10)
-
-<<knitr-opts,include=F,cache=F,purl=F>>=
+<<knitr-opts,include=FALSE,cache=FALSE,purl=F>>=
 library("knitr")
 opts_knit$set(concordance=TRUE)
 opts_chunk$set(
-    progress=TRUE,prompt=TRUE,highlight=FALSE,
-    tidy=TRUE,
-    tidy.opts=list(
-        keep.blank.line=FALSE
-    ),
-    comment="",
-    warning=FALSE,message=FALSE,error=TRUE,
-    echo=TRUE,
-    strip.white=TRUE,
-    results="markup",
-    background="#FFFFFF00",
-    size="normalsize",
-    fig.path="figure/pompjss-",
-    fig.lp="fig:",
-    fig.align="left",
-    fig.show="asis",
-    fig.height=5,fig.width=8,
-    out.width="\\textwidth",
-    dpi=300,
-    dev="png",
-    dev.args=list(
-        bg="transparent",
-        pointsize=12
-    )
-)
+             progress=TRUE,prompt=TRUE,highlight=FALSE,
+             tidy=TRUE,
+             comment="",
+             warning=TRUE,
+             message=TRUE,
+             error=TRUE,
+             echo=TRUE,
+             strip.white=TRUE,
+             results="markup",
+             background="#FFFFFF00",
+             size="normalsize",
+             fig.path="figure/pompjss/",
+             fig.lp="fig:",
+             fig.align="left",
+             fig.show="asis",
+             fig.height=5,fig.width=8,
+             out.width="\\textwidth",
+             dpi=300,
+             dev="png",
+             dev.args=list(
+               bg="transparent",
+               pointsize=12
+             )
+           )
 
-<<set-seed,cache=F,include=F>>=
+<<set-seed,cache=FALSE,include=FALSE>>=
 set.seed(5384959L)
 @
 
-<<timing1,echo=F,cache=F>>=
+<<timing1,echo=FALSE,cache=FALSE>>=
 bigtick <- Sys.time()
 @
 
@@ -185,7 +182,7 @@ In particular, when linear, Gaussian approximations are adequate for one's purpo
 It is the class of nonlinear, non-Gaussian POMP models with large state spaces upon which \pkg{pomp} is focused.
 
 A POMP model may be characterized by the transition density for the Markov process and the measurement density\footnote{We use the term ``density'' in this article to encompass both the continuous and discrete cases.
-Thus, in the latter case, i.e., when state variables and/or measured quantities are discrete, one could replace ``probability density function'' with ``probability mass function''.}.
+  Thus, in the latter case, i.e., when state variables and/or measured quantities are discrete, one could replace ``probability density function'' with ``probability mass function''.}.
 However, some methods require only simulation from the transition density whereas others require evaluation of this density.
 Still other methods may not work with the model itself but with an approximation, such as a linearization.
 Algorithms for which the dynamic model is specified only via a simulator are said to be {\it plug-and-play} \citep{breto09,he10}.
@@ -262,7 +259,7 @@ Methods for the \class{pomp} class use these components to carry out computation
       \code{dmeasure} &\code{dmeasure} &Evaluate $f_{Y_n|X_n}( y_n \given x_n\giventh \theta)$\\
       \code{rprior} &\code{rprior} &Simulate from the prior distribution $\pi(\theta)$\\
       \code{dprior} &\code{dprior} &Evaluate the prior density $\pi(\theta)$\\
-      \code{init.state} &\code{initializer} &Simulate from $f_{X_0}( x_0 \giventh \theta)$\\
+      \code{rinit} &\code{rinit} &Simulate from $f_{X_0}( x_0 \giventh \theta)$\\
       \code{timezero} &\code{t0} &$t_0$\\
       \code{time} &\code{times} &$t_{1:N}$\\
       \code{obs} &\code{data} &$y^*_{1:N}$\\
@@ -288,24 +285,22 @@ Applying the \code{simulate} function to an object of \class{pomp} returns anoth
 
 To illustrate the specification of models in \pkg{pomp} and the use of the package's inference algorithms, we will use a simple example.
 The \citet{Gompertz1825} model can be constructed via
-<<eval=F,purl=F>>=
+<<eval=FALSE,purl=FALSE>>=
 library("pomp")
-pompExample(gompertz)
+gomp <- gompertz()
 @
 which results in the creation of an object of \class{pomp}, named \code{gompertz}, in the workspace.
 The structure of this model and its implementation in \pkg{pomp} is described below, in \cref{sec:examples}.
 One can view the components of \code{gompertz} listed in \cref{tab:notation} by executing
-<<eval=F,purl=F>>=
-obs(gompertz)
-states(gompertz)
-as.data.frame(gompertz)
-plot(gompertz)
-timezero(gompertz)
-time(gompertz)
-coef(gompertz)
-init.state(gompertz)
+<<eval=FALSE,purl=FALSE>>=
+obs(gomp)
+states(gomp)
+as.data.frame(gomp)
+plot(gomp)
+timezero(gomp)
+time(gomp)
+coef(gomp)
 @
-Executing \code{pompExample()} lists other examples provided with the package.
 
 \subsection{Initial conditions}
 
@@ -319,7 +314,7 @@ In this case, $f_{X_0}(x_0\giventh\theta)$ concentrates at a point, the location
 Scientifically, one may be interested in the role of a vector-valued covariate process $\{Z(t)\}$ in explaining the data.
 Modeling and inference conditional on $\{Z(t)\}$ can be carried out within the general framework for nonhomogeneous POMP models, since the arbitrary densities $f_{X_n|X_{n-1}}$, $f_{X_0}$ and $f_{Y_n|X_n}$ can depend on the observed process $\{Z(t)\}$.
 For example, it may be the case that $f_{X_n|X_{n-1}}(x_n\given x_{n-1}\giventh\theta)$ depends on $n$ only through $Z(t)$ for $t_{n-1}\le t\le t_{n}$.
-The \code{covar} argument in the \pkg{pomp} constructor allows for time-varying covariates measured at times specified in the \code{tcovar} argument.
+The \code{covariate\_table} argument in the \pkg{pomp} constructor allows for time-varying covariates measured at arbitrary times.
 An example using covariates is given in \cref{sec:EpidemicModel}.
 
 \section{Methodology for POMP models}
@@ -398,7 +393,7 @@ In the remainder of this section, we describe and discuss several inference meth
 %%%%  PFILTER PSEUDOCODE
 \begin{algorithm}[t!]
   \caption{\textbf{Sequential Monte Carlo (SMC, or particle filter)}:
-    \code{pfilter(\,P,\,Np{\argequals}$J$)}, using notation from \cref{tab:notation} where \code{P} is a \class{pomp} object with definitions for \code{rprocess}, \code{dmeasure}, \code{init.state}, \code{coef}, and \code{obs}.
+    \code{pfilter(\,P,\,Np{\argequals}$J$)}, using notation from \cref{tab:notation} where \code{P} is a \class{pomp} object with definitions for \code{rprocess}, \code{dmeasure}, \code{rinit}, \code{coef}, and \code{obs}.
     \label{alg:pfilter}
   }
   \KwIn{
@@ -433,18 +428,18 @@ In the remainder of this section, we describe and discuss several inference meth
 
 The log likelihood for a POMP model is $\loglik(\theta)=\log{f_{Y_{1:N}}(y^*_{1:N}\giventh\theta)}$, which can be written as a sum of conditional log likelihoods,
 \begin{equation}\label{eq:loglik:factorization}
-\loglik(\theta)=\sum_{n=1}^N\!\loglik_{n|1:n-1}(\theta),
+  \loglik(\theta)=\sum_{n=1}^N\!\loglik_{n|1:n-1}(\theta),
 \end{equation}
 where
 \begin{equation}
-\loglik_{n|1:n-1}(\theta)=\log f_{Y_n|Y_{1:n-1}}(y^*_n\given y^*_{1:n-1}\giventh\theta),
+  \loglik_{n|1:n-1}(\theta)=\log f_{Y_n|Y_{1:n-1}}(y^*_n\given y^*_{1:n-1}\giventh\theta),
 \end{equation}
 and we use the convention that $y^*_{1:0}$ is an empty vector.
 The structure of a POMP model implies the representation
 \begin{equation}\label{eq:condLoglik}
-\loglik_{n|1:n-1}(\theta)=\log\int \!
-f_{Y_{n}|X_{n}}(y_{n}^{*}|x_{n}\giventh\theta) f_{X_n|Y_{1:n-1}}(x_n\given y^*_{1:n-1}\giventh\theta)\,
-dx_{n}
+  \loglik_{n|1:n-1}(\theta)=\log\int \!
+  f_{Y_{n}|X_{n}}(y_{n}^{*}|x_{n}\giventh\theta) f_{X_n|Y_{1:n-1}}(x_n\given y^*_{1:n-1}\giventh\theta)\,
+  dx_{n}
 \end{equation}
 (cf.~\cref{eq:joint-dens}).
 Although $\loglik(\theta)$ typically has no closed form, it can frequently be computed by Monte Carlo methods.
@@ -507,62 +502,40 @@ As pointed out by \citet{douc05}, stratified resampling performs better than mul
 \begin{algorithm}[t!]
   \caption{
     \textbf{Iterated filtering}:
-    \texttt{mif(P, start{\argequals}$\theta_0$, Nmif{\argequals}$M$, Np{\argequals}$J$, rw.sd{\argequals}$\sigma_{1:p}$, ic.lag{\argequals}$L$, var.factor{\argequals}$C$, cooling.factor{\argequals}$a$)},
+    \texttt{mif2(P, params{\argequals}$\theta_0$, Nmif{\argequals}$M$, Np{\argequals}$J$, rw.sd{\argequals}$\sigma_{1:p}$, cooling.fraction.50{\argequals}$f$)},
     using notation from \cref{tab:notation}
-    where \code{P} is a \class{pomp} object with defined \code{rprocess}, \code{dmeasure}, \code{init.state}, and \code{obs} components.
+    where \code{P} is a \class{pomp} object with defined \code{rprocess}, \code{dmeasure}, \code{rinit}, and \code{obs} components.
     \label{alg:mif}
-    }
+  }
   \KwIn{
-    Starting parameter, $\theta_0$;
-    simulator for $f_{X_0}(x_0\giventh\theta)$;
-    simulator for $f_{X_n|X_{n-1}}(x_n\given x_{n-1}\giventh\theta)$;
-    evaluator for $f_{Y_n|X_n}(y_n\given x_{n}\giventh\theta)$;
+    Simulators for $f_{X_0}(x_0;\theta)$ and $f_{X_n|X_{n-1}}(x_n| x_{n-1}; \theta)$;
+    evaluator for $f_{Y_n|X_n}(y_n| x_n;\theta)$;
     data, $y^*_{1:N}$;
-    labels, $I\subset\{1,\dots,p\}$, designating IVPs;
-    fixed lag, $L$, for estimating IVPs;
-    number of particles, $J$,
-    number of iterations, $M$;
-    cooling rate, $0<a<1$;
-    perturbation scales, $\sigma_{1:p}$;
-    initial scale multiplier, $C>0$.
+    Number of iterations, $M$;
+    number of particles, $J$;
+    initial parameter swarm, $\{\Theta^0_j, j=1,\dots,J\}$;
+    perturbation density, $h_n(\theta|\varphi;\sigma)$;
+    perturbation scale, $\sigma_{1{:}M}$ 
   }
   \BlankLine
-  \For {$m$ in $\seq{1}{M}$}{
-    Initialize parameters: \nllabel{alg:mif:init:perturb}
-    $[\Theta^F_{0,j}]_i \sim \normal\left([\theta_{m-1}]_i, (C a^{m-1} \sigma_i)^2\right)$ for $i$ in $\seq{1}{p}$, $j$ in $1\myto J$.\;
-    Initialize states: \nllabel{alg:mif:initstates}
-    simulate $X_{0,j}^F \sim f_{X_0}\big(\mydot;{\Theta^F_{0,j}}\big)$ for $j$ \textrm{in} $\seq{1}{J}$.\;
-    Initialize filter mean for parameters:
-    $\bar \theta_0=\theta_{m-1}$.\;
-    Define $[V_1]_i=(C^2+1)(a^{m-1}\sigma_i)^2$.\;
-    \For {$n$ \textrm{in} $1\myto N$}{
-      Perturb parameters: \nllabel{alg:mif:perturb}
-      $\big[\Theta^P_{n,j}\big]_i\sim\normal\left(\big[\Theta^F_{n-1,j}\big]_i,(a^{m-1} \sigma_i)^2\right)$ for $i \not\in I$, $j$ in $1\myto J$.\;
-      Simulate prediction particles: \nllabel{alg:mif:sim}
-      ${X}_{n,j}^{P}\sim {f}_{{X}_{n}|{X}_{n-1}}\big(\mydot|{X}_{n-1,j}^{F}\giventh{\Theta^P_{n,j}}\big)$ for $j$ in $1\myto J$.\;
-      Evaluate weights: \nllabel{alg:mif:weights}
-      $w(n,j)=f_{Y_{n}|X_{n}}(y_{n}^{*}|X_{n,j}^{P}\giventh\Theta^P_{n,j})$ for $j$ in $1\myto J$.\;
-      Normalize weights: \nllabel{alg:mif:normalize}
-      $\tilde{w}(n,j)= w(n,j)/\sum_{u=1}^{J}w(n,u)$.\;
-      Apply \cref{alg:systematic} to select indices $k_{1:J}$ with $\prob{k_{u}=j} =\tilde{w}\left(n,j\right)$.\nllabel{alg:mif:syst}\;
-      Resample particles: \nllabel{alg:mif:resample}
-      $X_{n,j}^{F}=X_{n,k_{j}}^{P}$ and $\Theta_{n,j}^{F}=\Theta^P_{n,k_{j}}$ for $j$ in $1\myto J$.\;
-      Filter mean: \nllabel{alg:mif:filtermean}
-      $\big[\bar{\theta}_{n}\big]_i=\sum_{j=1}^J\tilde{w}(n,j)\big[\Theta^P_{n,j}\big]_i$ for $i \not\in I$.\;
-      Prediction variance: \nllabel{alg:mif:predvar}
-      $[V_{n+1}]_i=(a^{m-1}\sigma_i)^2 + \sum_{j}\tilde{w}(n,j)\big([\Theta^P_{n,j}]_i - [\bar{\theta}_{n}]_i\big)^2$ for $i \not\in I$.\;
+  \For {$m$ in $1{:} M$}{
+    $\Theta^{F,m}_{0,j}\sim h_0(\theta|\Theta^{m-1}_{j}; \sigma_m)$ for $j$ in $1{:} J$\label{alg:mif:init:perturb}\;
+    $X_{0,j}^{F,m}\sim f_{X_0}(x_0 ; \Theta^{F,m}_{0,j})$ for $j$ in $1{:} J$\;
+    \For {$n$ in $1{:} N$}{
+      $\Theta^{P,m}_{n,j}\sim h_n(\theta|\Theta^{F,m}_{n-1,j},\sigma_m)$ for $j$ in $1{:} J$\label{alg:mif:perturb}\;
+      $X_{n,j}^{P,m}\sim f_{X_n|X_{n-1}}(x_n | X^{F,m}_{n-1,j}; \Theta^{P,m}_{n,j})$ for $j$ in $1{:} J$\label{alg:mif:sim}\;
+      $w_{n,j}^m = f_{Y_n|X_n}(y^*_n| X_{n,j}^{P,m} ; \Theta^{P,m}_{n,j})$ for $j$ in $1{:} J$\label{alg:mif:weights}\;
+      Apply \cref{alg:systematic} to draw $k_{1{:}J}$ with $P[k_j=i]=  w_{n,i}^m\Big/\sum_{u=1}^J w_{n,u}^m$\label{alg:mif:syst}\;
+      $\Theta^{F,m}_{n,j}=\Theta^{P,m}_{n,k_j}$ and $X^{F,m}_{n,j}=X^{P,m}_{n,k_j}$ for $j$ in $1{:} J$\label{alg:mif:resample}\;
     }
-    Update non-IVPs: \nllabel{alg:mif:update}
-    $[\theta_m]_i=[\theta_{m-1}]_i+ [V_1]_i \sum_{n=1}^{N} [V_{n}]_i^{-1}\left([\bar{\theta}_{n}]_{i}-[\bar{\theta}_{n-1}]_{i}\right)$ for $i \not\in I$.\;
-    Update IVPs: \nllabel{alg:mif:updateivps}
-    $[\theta_m]_i=\frac{1}{J}\sum_{j}\big[\Theta_{L,j}^F\big]_i$ for $i \in I$.\;
+    Set $\Theta^{m}_{j}=\Theta^{F,m}_{N,j}$ for $j$ in $1{:} J$\;
   }
-  \KwOut{Monte~Carlo maximum likelihood estimate, $\theta_M$.}
+  \KwOut{Final parameter swarm, $\{\Theta^M_j, j=1,\dots,J\}$}
   \KwCplx{$\bigO{J M}$}
 \end{algorithm}
 
 Iterated filtering techniques maximize the likelihood obtained by SMC \citep{ionides06,ionides11,ionides15}.
-The key idea of iterated filtering is to replace the model we are interested in fitting -- which has time-invariant parameters -- with a model that is just the same except that its parameters take a random walk in time.
+The key idea of iterated filtering is to replace the model we are interested in fitting---which has time-invariant parameters---with a model that is just the same except that its parameters take a random walk in time.
 Over multiple repetitions of the filtering procedure, the intensity of this random walk approaches zero and the modified model approaches the original one.
 Adding additional variability in this way has four positive effects:
 \begin{enumerate}[{A}1.]
@@ -571,12 +544,8 @@ Adding additional variability in this way has four positive effects:
 \item The additional variability can be exploited to explore the likelihood surface and estimate the gradient of the (smoothed) likelihood, based on the same filtering procedure that is required to estimate the value of the likelihood \citep{ionides06,ionides11}.
 \item It preserves the plug-and-play property, inherited from the particle filter.
 \end{enumerate}
-Iterated filtering is implemented in the \code{mif} function.
-By default, \code{mif} carries out the procedure of \citet{ionides06}.
-The improved iterated filtering algorithm (IF2) of \citet{ionides15} has shown promise.
-A limited version of IF2 is available via the \code{method = "mif2"} option;
-a full version of this algorithm will be released soon.
-In all iterated filtering methods, by analogy with annealing, the random walk intensity can be called a temperature, which is decreased according to a prescribed cooling schedule.
+Iterated filtering is implemented in the \code{mif2} function.
+By analogy with annealing, the random walk intensity can be called a temperature, which is decreased according to a prescribed cooling schedule.
 One strives to ensure that the algorithm will freeze at the maximum of the likelihood as the temperature approaches zero.
 
 The perturbations on the parameters in \cref{alg:mif:init:perturb,alg:mif:perturb} of \cref{alg:mif} follow a normal distribution, with each component, $[\theta]_i$, of the parameter vector perturbed independently.
@@ -586,7 +555,7 @@ Neither normality nor independence are necessary for iterated filtering, but, ra
 These IVPs will typically be inconsistently estimable as the length of the time series increases, since for a stochastic process one expects only early time points to contain information about the initial state.
 Searching the parameter space using time-varying parameters is inefficient in this situation, and so \cref{alg:mif} perturbs these parameters only at time zero.
 
-\Cref{alg:mif:perturb,alg:mif:sim,alg:mif:weights,alg:mif:normalize,alg:mif:syst,alg:mif:resample} of \cref{alg:mif} are exactly an application of SMC (\cref{alg:pfilter}) to a modified POMP model in which the parameters are added to the state space.
+\Cref{alg:mif:perturb,alg:mif:sim,alg:mif:weights,alg:mif:syst,alg:mif:resample} of \cref{alg:mif} are exactly an application of SMC (\cref{alg:pfilter}) to a modified POMP model in which the parameters are added to the state space.
 This approach has been used in a variety of previously proposed POMP methodologies \citep{kitagawa98,janeliu01,wan00} but iterated filtering is distinguished by having theoretical justification for convergence to the maximum likelihood estimate \citep{ionides11}.
 
 \clearpage
@@ -596,42 +565,43 @@ This approach has been used in a variety of previously proposed POMP methodologi
 
 %% PMCMC PSEUDOCODE
 \begin{algorithm}[t!]
-\caption{
-  \textbf{Particle Markov chain Monte Carlo}:
-  \texttt{pmcmc(P, start{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, Np{\argequals}$J$, proposal{\argequals}$q$)},
-  using notation from \cref{tab:notation}
-  where \code{P} is a \class{pomp} object with defined methods for
-  \code{rprocess}, \code{dmeasure}, \code{init.state}, \code{dprior}, and \code{obs}.  The supplied \code{proposal} samples from a symmetric, but otherwise arbitrary, MCMC proposal distribution, $q(\theta^P\given\theta)$.
-  \label{alg:pmcmc}
-}
-\KwIn{
-  Starting parameter, $\theta_0$;
-  simulator for $f_{X_0}(x_0\given\theta)$;
-  simulator for $f_{X_n|X_{n-1}}(x_n\given x_{n-1}\giventh\theta)$;
-  evaluator for $f_{Y_n|X_n}(y_n\given x_{n}\giventh\theta)$;
-  simulator for $q(\theta^P\given\theta)$;
-  data, $y^*_{1:N}$;
-  number of particles, $J$;
-  number of filtering operations, $M$;
-  perturbation scales, $\sigma_{1:p}$;
-  evaluator for prior, $f_{\Theta}(\theta)$.
-}
-\BlankLine
-Initialization: compute $\loglikMC(\theta_0)$ using \cref{alg:pfilter} with $J$ particles.\;
-\For {$m$ in $\seq{1}{M}$}{
-  Draw a parameter proposal, $\theta^P_m$, from the proposal distribution:
-  $\Theta^P_m \sim q\left(\mydot\given\theta_{m-1}\right)$.\;
-  Compute $\loglikMC(\theta^P_m)$ using \cref{alg:pfilter} with $J$ particles.\;
-  Generate $U\sim\mathrm{Uniform}(0,1).$\;
-  Set $\big(\theta_m,\loglikMC(\theta_m)\big)=\begin{cases}
-  \big(\theta^P_m,\loglikMC(\theta^P_m)\big), &\text{if } U<\displaystyle\frac{f_\Theta(\theta^P_m)\exp(\loglikMC(\theta^P_m))}{f_\Theta(\theta_{m-1})\exp(\loglikMC(\theta_{m-1}))},\\
-  \big(\theta_{m-1},\loglikMC(\theta_{m-1})\big),&\text{otherwise.}
-  \end{cases}$\;
-}
-\KwOut{
-  Samples, $\theta_{1:M}$, representing the posterior distribution, $f_{\Theta|Y_{1:N}}(\theta\given y_{1:N}^*)$.
-}
-\KwCplx{$\bigO{J M}$}
+  \caption{
+    \textbf{Particle Markov chain Monte Carlo}:
+    \texttt{pmcmc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, Np{\argequals}$J$, proposal{\argequals}$q$)},
+    using notation from \cref{tab:notation}
+    where \code{P} is a \class{pomp} object with defined methods for
+    \code{rprocess}, \code{dmeasure}, \code{rinit}, \code{dprior}, and \code{obs}.
+    The supplied \code{proposal} samples from a symmetric, but otherwise arbitrary, MCMC proposal distribution, $q(\theta^P\given\theta)$.
+    \label{alg:pmcmc}
+  }
+  \KwIn{
+    Starting parameter, $\theta_0$;
+    simulator for $f_{X_0}(x_0\given\theta)$;
+    simulator for $f_{X_n|X_{n-1}}(x_n\given x_{n-1}\giventh\theta)$;
+    evaluator for $f_{Y_n|X_n}(y_n\given x_{n}\giventh\theta)$;
+    simulator for $q(\theta^P\given\theta)$;
+    data, $y^*_{1:N}$;
+    number of particles, $J$;
+    number of filtering operations, $M$;
+    perturbation scales, $\sigma_{1:p}$;
+    evaluator for prior, $f_{\Theta}(\theta)$.
+  }
+  \BlankLine
+  Initialization: compute $\loglikMC(\theta_0)$ using \cref{alg:pfilter} with $J$ particles.\;
+  \For {$m$ in $\seq{1}{M}$}{
+    Draw a parameter proposal, $\theta^P_m$, from the proposal distribution:
+    $\Theta^P_m \sim q\left(\mydot\given\theta_{m-1}\right)$.\;
+    Compute $\loglikMC(\theta^P_m)$ using \cref{alg:pfilter} with $J$ particles.\;
+    Generate $U\sim\mathrm{Uniform}(0,1).$\;
+    Set $\big(\theta_m,\loglikMC(\theta_m)\big)=\begin{cases}
+    \big(\theta^P_m,\loglikMC(\theta^P_m)\big), &\text{if } U<\displaystyle\frac{f_\Theta(\theta^P_m)\exp(\loglikMC(\theta^P_m))}{f_\Theta(\theta_{m-1})\exp(\loglikMC(\theta_{m-1}))},\\
+    \big(\theta_{m-1},\loglikMC(\theta_{m-1})\big),&\text{otherwise.}
+    \end{cases}$\;
+  }
+  \KwOut{
+    Samples, $\theta_{1:M}$, representing the posterior distribution, $f_{\Theta|Y_{1:N}}(\theta\given y_{1:N}^*)$.
+  }
+  \KwCplx{$\bigO{J M}$}
 \end{algorithm}
 
 Full information plug-and-play Bayesian inference for POMP models is enabled by particle Markov chain Monte Carlo (PMCMC) algorithms \citep{andrieu10}.
@@ -652,7 +622,7 @@ Nevertheless, its invention introduced the possibility of full-information plug-
     \texttt{probe(P, nsim{\argequals}$J$, probes{\argequals}$\featureFunc$)},
     using notation from \cref{tab:notation}
     where \code{P} is a \class{pomp} object with defined methods for
-    \code{rprocess}, \code{rmeasure}, \code{init.state}, and \code{obs}.
+    \code{rprocess}, \code{rmeasure}, \code{rinit}, and \code{obs}.
     \label{alg:probe}
   }
   \KwIn{
@@ -663,7 +633,7 @@ Nevertheless, its invention introduced the possibility of full-information plug-
     data, $y^*_{1:N}$;
     number of simulations, $J$;
     vector of summary statistics or \emph{probes}, $\featureFunc=(\featureFunc_1,\dots,\featureFunc_d)$.
-    }
+  }
   \BlankLine
   Compute observed probes:
   $s^*_{i}=\featureFunc_i(y^*_{1:N})$ for  $i$ in $\seq{1}{d}$.\;
@@ -692,7 +662,7 @@ Some motivations to estimate parameters based on features rather than the full l
   Acknowledging the limitations of all models, this limited aspiration may be all that can reasonably be demanded  \citep{kendall99,Wood2001a}.
 \item \label{whyFeature3} In conjunction with full-information methodology, consideration of individual features has diagnostic value to determine which aspects of the data are driving the full-information inferences \citep{reuman06}.
 \item  \label{whyFeature4} Feature-based methods for dynamic models typically do not require the POMP model structure.
-However, that benefit is outside the scope of the \pkg{pomp} package.
+  However, that benefit is outside the scope of the \pkg{pomp} package.
 \item \label{whyFeature5} Feature-based methods are typically \emph{doubly plug-and-play}, meaning that they require simulation, but not evaluation, for both the latent process transition density and the measurement model.
 \end{enumerate}
 When pursuing goal~B\ref{whyFeature2}, one aims to find summary statistics which are as close as possible to sufficient statistics for the unknown parameters.
@@ -718,10 +688,10 @@ Numerical optimization of the synthetic likelihood is implemented by \code{probe
   \caption{
     \textbf{Approximate Bayesian computation}:
     \protect
-    \texttt{abc(P, start{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, probes{\argequals}$\featureFunc$, scale{\argequals}$\tau_{1:d}$, proposal{\argequals}$q$, epsilon{\argequals}$\epsilon$)},
+    \texttt{abc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, probes{\argequals}$\featureFunc$, scale{\argequals}$\tau_{1:d}$, proposal{\argequals}$q$, epsilon{\argequals}$\epsilon$)},
     using notation from \cref{tab:notation}, where
     \code{P} is a \class{pomp} object with defined methods for
-    \code{rprocess}, \code{rmeasure}, \code{init.state}, \code{dprior}, and \code{obs}.
+    \code{rprocess}, \code{rmeasure}, \code{rinit}, \code{dprior}, and \code{obs}.
     \label{alg:abc}
   }
   \KwIn{
@@ -770,12 +740,12 @@ The key theoretical insight behind ABC algorithms is that an unbiased estimate o
 However, ABC takes a different approach to approximating the likelihood.
 The likelihood of the observed features, $\loglik_S(\theta)=f_{S}(s^*\giventh\theta)$, has an approximately unbiased estimate based on a single Monte~Carlo realization $Y_{1:N}\sim f_{Y_{1:N}}(\mydot\giventh\theta)$ given by
 \begin{equation}
-\label{eq:abc-lik}
-\synloglikMC^{ABC}(\theta)=\begin{cases}
+  \label{eq:abc-lik}
+  \synloglikMC^{ABC}(\theta)=\begin{cases}
   \epsilon^{-d}B_d^{-1}\displaystyle\prod_{i=1}^d \tau_i,
   & \text{if } \displaystyle\sum_{i=1}^d\left(\frac{s_i-s_i^*}{\tau_i}\right)^2 < \epsilon^2, \\
-0, & \text{otherwise,}
-\end{cases}
+  0, & \text{otherwise,}
+  \end{cases}
 \end{equation}
 where $B_d$ is the volume of the $d$-dimensional unit ball and $\tau_i$ is a scaling chosen for the $i$th feature.
 The likelihood approximation in \cref{eq:abc-lik} differs from the synthetic likelihood in \cref{alg:probe} in that only a single simulation is required.
@@ -793,7 +763,7 @@ the package supports alternative choices of the proposal distribution.
   \caption{
     \textbf{Simulated quasi log likelihood for NLF}.
     Pseudocode for the  quasi-likelihood function optimized by \texttt{nlf(\,P,\,start{\argequals}$\theta_0$, nasymp{\argequals}$J$, nconverge{\argequals}$B$, nrbf{\argequals}$K$, lags{\argequals}$\lags_{1:L}$)}.
-    Using notation from \cref{tab:notation}, \code{P} is a \class{pomp} object with defined methods for \code{rprocess}, \code{rmeasure}, \code{init.state}, and \code{obs}.
+    Using notation from \cref{tab:notation}, \code{P} is a \class{pomp} object with defined methods for \code{rprocess}, \code{rmeasure}, \code{rinit}, and \code{obs}.
     \label{alg:nlf}
   }
   \KwIn{
@@ -849,9 +819,9 @@ It is natural to ask when one might choose to use quasi-likelihood estimation in
 Some considerations follow, closely related to the considerations for the synthetic likelihood and ABC (\cref{sec:abc,sec:probe}):
 \begin{enumerate}[{C}1.]
 \item \label{whyNLF1}
-NLF benefits from stationarity since (unlike SMC) it uses all time points in the simulation to build a prediction rule valid at all time points.
-Indeed, NLF has not been considered applicable for non-stationary models and, on account of this, \code{nlf} is not appropriate if the model includes time-varying covariates.
-An intermediate scenario between stationarity and full non-stationarity is seasonality, where the dynamic model is forced by cyclical covariates, and this is supported by \code{nlf} (cf.~B\ref{whyFeature2} in \cref{sec:probe}).
+  NLF benefits from stationarity since (unlike SMC) it uses all time points in the simulation to build a prediction rule valid at all time points.
+  Indeed, NLF has not been considered applicable for non-stationary models and, on account of this, \code{nlf} is not appropriate if the model includes time-varying covariates.
+  An intermediate scenario between stationarity and full non-stationarity is seasonality, where the dynamic model is forced by cyclical covariates, and this is supported by \code{nlf} (cf.~B\ref{whyFeature2} in \cref{sec:probe}).
 \item  \label{whyNLF2}  Potentially, quasi-likelihood could be preferable to full likelihood in some situations.
   It has been argued that a two-step prediction criterion may sometimes be more robust than the likelihood to model misspecification \citep{xia11} (cf.~B\ref{whyFeature1}).
 \item\label{whyNLF3}
@@ -859,7 +829,7 @@ An intermediate scenario between stationarity and full non-stationarity is seaso
 \item \label{whyNLF4} NLF does not require that the model be Markovian (cf.~B\ref{whyFeature4}), although the \pkg{pomp} implementation, \code{nlf}, does.
 \item \label{whyNLF5} NLF is doubly plug-and-play (cf.~B\ref{whyFeature5}).
 \item\label{whyNLF6} The regression surface reconstruction carried out by NLF does not scale well with the dimension of the observed data.
-NLF is recommended only for low-dimensional time series observations.
+  NLF is recommended only for low-dimensional time series observations.
 \end{enumerate}
 NLF can be viewed as an estimating equation method, and so standard errors can be computed by standard sandwich estimator or bootstrap techniques \citep{kendall05}.
 The optimization in NLF is typically carried out with a fixed seed for the random number generator, so the simulated quasi-likelihood is a deterministic function. If \code{rprocess} depends smoothly on the random number sequence and on the parameters, and the number of calls to the random number generator does not depend on the parameters, then fixing the seed results in a smooth objective function.
@@ -875,10 +845,10 @@ However, some common components to model simulators, such as \code{rnbinom}, mak
 
 The plug-and-play methods in \pkg{pomp} were designed to facilitate data analysis based on complicated models, but we will first demonstrate the basics of \pkg{pomp} using simple discrete-time models, the Gompertz and Ricker models for population growth \citep{Reddingius1971,Ricker1954}.
 The Ricker model will be introduced in \cref{sec:ricker:setup} and used in \cref{sec:ricker:probe.match}; the remainder of \cref{sec:examples} will use the Gompertz model.
-The Gompertz model postulates that the density, $X_{t+\dlta{t}}$, of a population of organisms at time $t+\dlta{t}$ depends on the density, $X_{t}$, at time $t$ according to
+The Gompertz model postulates that the density, $X_{t+\Delta{t}}$, of a population of organisms at time $t+\Delta{t}$ depends on the density, $X_{t}$, at time $t$ according to
 \begin{equation}
   \label{eq:gompertz1}
-  X_{t+\dlta{t}}=K^{1-e^{-r\,\dlta{t}}}\,X_{t}^{e^{-r\,\dlta{t}}}\,\varepsilon_{t}.
+  X_{t+\Delta{t}}=K^{1-e^{-r\,\Delta{t}}}\,X_{t}^{e^{-r\,\Delta{t}}}\,\varepsilon_{t}.
 \end{equation}
 In \cref{eq:gompertz1}, $K$ is the carrying capacity of the population, $r$ is a positive parameter, and the $\varepsilon_{t}$ are independent and identically-distributed lognormal random variables with $\log\varepsilon_t\sim\normal(0,\sigma^2)$.
 Additionally, we will assume that the population density is observed with errors in measurement that are lognormally distributed:
@@ -889,7 +859,7 @@ Additionally, we will assume that the population density is observed with errors
 Taking a logarithmic transform of \cref{eq:gompertz1} gives
 \begin{equation}
   \label{eq:gompertz2}
-  \log{X_{t+\dlta{t}}}\;\sim\;\normal\left(\left(1-e^{-r\,\dlta{t}}\right)\,\log{K}+e^{-r\,\dlta{t}}\,\log{X_t},\sigma^2\right).
+  \log{X_{t+\Delta{t}}}\;\sim\;\normal\left(\left(1-e^{-r\,\Delta{t}}\right)\,\log{K}+e^{-r\,\Delta{t}}\,\log{X_t},\sigma^2\right).
 \end{equation}
 On this transformed scale, the model is linear and Gaussian and so we can obtain exact values of the likelihood function by applying the Kalman filter.
 Plug-and-play methods are not strictly needed;
@@ -901,17 +871,17 @@ This involves the specification of functions to do some or all of \code{rprocess
 The documentation (\code{?pomp}) spells out the usage of the \code{pomp} constructor, including detailed specifications for all its arguments and links to several examples.
 
 To begin, we will write a function that implements the process model simulator.
-This is a function that will simulate a single step ($t\to{t+\dlta{t}}$) of the unobserved process (\cref{eq:gompertz1}).
-<<gomp1-comment,include=F>>=
+This is a function that will simulate a single step ($t\to{t+\Delta{t}}$) of the unobserved process (\cref{eq:gompertz1}).
+<<gomp1-comment,include=FALSE>>=
 ##' ## Constructing a pomp object.
 ##' The following codes construct the basic elements of the Gompertz model
 ##' and construct the 'gompertz' pomp object.
 <<gomp1>>=
-gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
-   eps <- exp(rnorm(n=1,mean=0,sd=params["sigma"]))
-   S <- exp(-params["r"]*delta.t)
-   setNames(params["K"]^(1-S)*x["X"]^S*eps,"X")
- }
+gompertz.rproc <- function (X,r,K,sigma,...,delta.t) {
+  eps <- exp(rnorm(n=1,mean=0,sd=sigma))
+  S <- exp(-r*delta.t)
+  c(X=K^(1-S)*X^S*eps)
+}
 @
 The translation from the mathematical description (\cref{eq:gompertz1}) to the simulator is straightforward.
 When this function is called, the argument \code{x} contains the state at time \code{t}.
@@ -923,30 +893,33 @@ In this case, the time-step will be 1 unit;
 we will see below how this is specified.
 
 Next, we will implement a simulator for the observation process, \cref{eq:gompertz-obs}.
-<<gomp2,tidy.opts=list(width.cutoff=72)>>=
-gompertz.meas.sim <- function (x, t, params, ...) {
-   setNames(rlnorm(n=1,meanlog=log(x["X"]),sd=params["tau"]),"Y")
- }
+<<gomp2>>=
+gompertz.rmeas <- function (X, tau, ...) {
+  c(Y=rlnorm(n=1,meanlog=log(X),sdlog=tau))
+}
 @
 Again the translation from the measurement model \cref{eq:gompertz-obs} is straightforward.
-When the function \code{gompertz.meas.sim} is called, the named numeric vector \code{x} will contain the unobserved states at time \code{t};
+When the function \code{gompertz.rmeas} is called, the named numeric vector \code{x} will contain the unobserved states at time \code{t};
 \code{params} will contain the parameters as before.
 This return value will be a named numeric vector containing a single draw from the observation process (\cref{eq:gompertz-obs}).
 
 Complementing the measurement model simulator is the corresponding measurement model density, which we implement as follows:
-<<gomp3,tidy.opts=list(width.cutoff=65)>>=
-gompertz.meas.dens <- function (y, x, t, params, log, ...) {
-   dlnorm(x=y["Y"],meanlog=log(x["X"]),sdlog=params["tau"],log=log)
- }
+<<gomp3>>=
+gompertz.dmeas <- function (tau, X, Y, ..., log) {
+  dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
+}
 @
 We will need this later on for inference using \code{pfilter}, \code{mif} and \code{pmcmc}.
-When the function \code{gompertz.meas.dens} is called, \code{y} will contain the observation at time \code{t}, \code{x} and \code{params} will be as before, and the parameter \code{log} will indicate whether the likelihood (\code{log = FALSE}) or the log likelihood (\code{log = TRUE}) is required.
+When the function \code{gompertz.dmeas} is called, \code{y} will contain the observation at time \code{t}, \code{x} and \code{params} will be as before, and the parameter \code{log} will indicate whether the likelihood (\code{log = FALSE}) or the log likelihood (\code{log = TRUE}) is required.
 
 With the above in place, we build an object of \class{pomp} via a call to \code{pomp}:
 <<gomp5>>=
-gompertz <- pomp(data=data.frame(time=1:100, Y=NA), times="time",
-                 rprocess=discrete.time.sim(step.fun=gompertz.proc.sim,
-                   delta.t=1), rmeasure=gompertz.meas.sim, t0=0)
+gomp <- pomp(
+  data=data.frame(time=1:100, Y=NA), times="time", t0=0,
+  rprocess=discrete_time(step.fun=gompertz.rproc, delta.t=1),
+  rmeasure=gompertz.rmeas,
+  statenames="X",
+  paramnames=c("r", "K", "sigma", "tau", "X_0"))
 @
 The first argument (\code{data}) specifies a data frame that holds the data and the times at which the data were observed.
 Since this is a toy problem, we have as yet no data;
@@ -961,45 +934,44 @@ It is worth noting that implementing the \code{rprocess}, \code{rmeasure}, and \
 As we will see below, \pkg{pomp} provides facilities for specifying the model in \proglang{C}, which can accelerate computations manyfold.
 
 Before we can simulate from the model, we need to specify some parameter values.
-The parameters must be a named numeric vector containing at least all the parameters referenced by the functions \code{gompertz.proc.sim} and \code{gompertz.meas.sim}.
+The parameters must be a named numeric vector containing at least all the parameters referenced by the functions \code{gompertz.rproc} and \code{gompertz.rmeas}.
 The parameter vector needs to determine the initial condition $X(t_{0})$ as well.
 Let us take our parameter vector to be
 <<gomp6>>=
-theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1,X.0=1)
+theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1, X_0=1)
 @
-The parameters $r$, $K$, $\sigma$, and $\tau$ appear in \code{gompertz.proc.sim} and \code{gompertz.meas.sim}.
+The parameters $r$, $K$, $\sigma$, and $\tau$ appear in \code{gompertz.rproc} and \code{gompertz.rmeas}.
 The initial condition $X_0$ is also given in \code{theta}.
-The fact that the initial condition parameter's name ends in \code{.0} is significant:
+The fact that the initial condition parameter's name ends in \code{_0} is significant:
 it tells \code{pomp} that this is the initial condition of the state variable \code{X}.
-This use of the \code{.0} suffix is the default behavior of \code{pomp}:
-one can however parameterize the initial condition distribution arbitrarily using \code{pomp}'s optional \code{initializer} argument.
+This use of the \code{_0} suffix is the default behavior of \code{pomp}:
+one can however parameterize the initial condition distribution arbitrarily using \code{pomp}'s optional \code{rinit} argument.
 
 We can now simulate the model at these parameters:
-<<gomp7-setup,echo=F,results="hide">>=
+<<gomp7-setup,echo=FALSE,results="hide">>=
 set.seed(340398091L)
 <<gomp7>>=
-gompertz <- simulate(gompertz,params=theta)
+gomp <- simulate(gomp, rinit=function(X_0,...){c(X=X_0)}, params=theta)
 @
-Now \code{gompertz} is identical to what it was before, except that the missing data have been replaced by simulated data.
-The parameter vector (\code{theta}) at which the simulations were performed has also been saved internally to \code{gompertz}.
+Now \code{gomp} is identical to what it was before, except that the missing data have been replaced by simulated data.
+The parameter vector (\code{theta}) at which the simulations were performed has also been saved internally to \code{gomp}.
 We can plot the simulated data via
-<<gomp8,eval=F,purl=F>>=
-plot(gompertz, variables = "Y")
+<<gomp8,eval=FALSE,purl=FALSE>>=
+plot(gomp, variables = "Y")
 @
 \Cref{fig:gompertz-first-simulation-plot} shows the results of this operation.
 
 \begin{figure}[t!]
-<<gompertz-plot,echo=F,fig.height=3,fig.width=5>>=
-op <- par(mar=c(3,3,2,0),mgp=c(2,1,0))
-plot(Y~time,data=as.data.frame(gompertz),type="l")
-title("gompertz",line=1,cex.main=1)
-par(op)
-@
-\caption{
-  Simulated data from the Gompertz model (\cref{eq:gompertz1,eq:gompertz-obs}).
-  This figure shows the result of executing \code{plot(gompertz, variables = "Y")}.
-}
-\label{fig:gompertz-first-simulation-plot}
+  <<gompertz-plot,echo=FALSE,fig.height=3,fig.width=5>>=
+  op <- par(mar=c(3,3,2,0),mgp=c(2,1,0))
+  plot(Y~time,data=as.data.frame(gomp),type="l")
+  par(op)
+  @
+  \caption{
+    Simulated data from the Gompertz model (\cref{eq:gompertz1,eq:gompertz-obs}).
+    This figure shows the result of executing \code{plot(gomp, variables = "Y")}.
+  }
+  \label{fig:gompertz-first-simulation-plot}
 \end{figure}
 
 
@@ -1008,29 +980,29 @@ par(op)
 As discussed in \cref{sec:methods}, some parameter estimation algorithms in the \pkg{pomp} package are doubly plug-and-play in that they require only \code{rprocess} and \code{rmeasure}.
 These include the nonlinear forecasting algorithm \code{nlf}, the probe-matching algorithm \code{probe.match}, and approximate Bayesian computation via \code{abc}.
 The plug-and-play full-information methods in \pkg{pomp}, however, require \code{dmeasure}, i.e., the ability to evaluate the likelihood of the data given the unobserved state.
-The \code{gompertz.meas.dens} above does this, but we must fold it into the \class{pomp} object in order to use it.
+The \code{gompertz.dmeas} above does this, but we must fold it into the \class{pomp} object in order to use it.
 We can do this with another call to \code{pomp}:
-<<gomp9-comment,include=F>>=
+<<gomp9-comment,include=FALSE>>=
 ##' ## The particle filter
 ##' First, add in the measurement density function.
-@ 
-<<gomp9>>=
-gompertz <- pomp(gompertz,dmeasure=gompertz.meas.dens)
 @
-The result of the above is a new \class{pomp} object \code{gompertz} in every way identical to the one we had before, but with the measurement-model density function \code{dmeasure} now specified.
+<<gomp9>>=
+gomp <- pomp(gomp,dmeasure=gompertz.dmeas)
+@
+The result of the above is a new \class{pomp} object \code{gomp} in every way identical to the one we had before, but with the measurement-model density function \code{dmeasure} now specified.
 
 To estimate the likelihood of the data, we can use the function \code{pfilter}, an implementation of \cref{alg:pfilter}.
 We must decide how many concurrent realizations (\emph{particles}) to use:
 the larger the number of particles, the smaller the Monte Carlo error but the greater the computational burden.
 Here, we run \code{pfilter} with 1000 particles to estimate the likelihood at the true parameters:
-<<pfilter1-setup,eval=T,echo=F,results="hide">>=
+<<pfilter1-setup,eval=TRUE,echo=FALSE,results="hide">>=
 ##' Compute the approximate log likelihood using the particle filter.
 set.seed(334388458L)
-<<pfilter1-calc,eval=T,cache=T,results="markup",echo=T>>=
-pf <- pfilter(gompertz,params=theta,Np=1000)
+<<pfilter1-calc,eval=TRUE,cache=TRUE,results="markup",echo=TRUE>>=
+pf <- pfilter(gomp,params=theta,Np=1000)
 loglik.truth <- logLik(pf)
 loglik.truth
-<<pfilter1-followup,echo=F,results="hide",eval=T,cache=T>>=
+<<pfilter1-followup,echo=FALSE,results="hide",eval=TRUE,cache=TRUE>>=
 ##' Construct some functions to compute exact likelihoods for this model
 ##' using the Kalman filter.
 kalman.filter <- function (Y, X0, r, K, sigma, tau) {
@@ -1078,29 +1050,29 @@ kalman <- function (x, object, params) {
 }
 
 ##' Exact log likelihood at the true parameters
-exact.loglik.truth <- -kalman(coef(gompertz),gompertz,coef(gompertz))
+exact.loglik.truth <- -kalman(coef(gomp),gomp,coef(gomp))
 @
-Since the true parameters (i.e., the parameters that generated the data) are stored within the \class{pomp} object \code{gompertz} and can be extracted by the \code{coef} function, we could have done
-<<pfilter2-calc,eval=F,purl=F>>=
- pf <- pfilter(gompertz,params=coef(gompertz),Np=1000)
+Since the true parameters (i.e., the parameters that generated the data) are stored within the \class{pomp} object \code{gomp} and can be extracted by the \code{coef} function, we could have done
+<<pfilter2-calc,eval=FALSE,purl=FALSE>>=
+pf <- pfilter(gomp,params=coef(gomp),Np=1000)
 @
 or simply
-<<pfilter3-calc,eval=F,purl=F>>=
- pf <- pfilter(gompertz,Np=1000)
+<<pfilter3-calc,eval=FALSE,purl=FALSE>>=
+pf <- pfilter(gomp,Np=1000)
 @
 Now let us compute the log likelihood at a different point in parameter space, one for which $r$, $K$, and $\sigma$ are each 50\% higher than their true values.
-<<pfilter4-setup,eval=T,echo=F,results="hide">>=
+<<pfilter4-setup,eval=TRUE,echo=FALSE,results="hide">>=
 set.seed(334388458L)
 ##' Approximate log likelihood at an arbitrary parameter point
-<<pfilter4-calc,eval=T,results="markup",cache=T>>=
-theta.guess <- theta.true <- coef(gompertz)
+<<pfilter4-calc,eval=TRUE,results="markup",cache=TRUE>>=
+theta.guess <- theta.true <- coef(gomp)
 theta.guess[c("r","K","sigma")] <- 1.5 * theta.true[c("r","K","sigma")]
-pf <- pfilter(gompertz,params=theta.guess,Np=1000)
+pf <- pfilter(gomp,params=theta.guess,Np=1000)
 loglik.guess <- logLik(pf)
 loglik.guess
 @
-In this case, the Kalman filter computes the exact log likelihood at the true parameters to be \Sexpr{round(exact.loglik.truth,2)},
-while the particle filter with 1000 particles gives \Sexpr{round(loglik.truth,2)}.
+In this case, the Kalman filter computes the exact log likelihood at the true parameters to be $\Sexpr{round(exact.loglik.truth,2)}$,
+while the particle filter with 1000 particles gives $\Sexpr{round(loglik.truth,2)}$.
 Since the particle filter gives an unbiased estimate of the likelihood, the difference is due to Monte Carlo error in the particle filter.
 One can reduce this error by using a larger number of particles and/or by re-running \code{pfilter} multiple times and averaging the resulting estimated likelihoods.
 The latter approach has the advantage of allowing one to estimate the Monte Carlo error itself;
@@ -1109,56 +1081,59 @@ we will demonstrate this in \cref{sec:gompertz:mif}.
 \subsection{Maximum likelihood estimation via iterated filtering}
 \label{sec:gompertz:mif}
 
-Let us use the iterated filtering approach described in \cref{sec:mif} to obtain an approximate maximum likelihood estimate for the data in \code{gompertz}.
+Let us use the iterated filtering approach described in \cref{sec:mif} to obtain an approximate maximum likelihood estimate for the data in \code{gomp}.
 Since the parameters of \cref{eq:gompertz1,eq:gompertz-obs} are constrained to be positive, when estimating, we transform them to a scale on which they are unconstrained.
-The following encodes such a transformation and its inverse:
-<<gomp4-comment,include=F>>=
-##' Include some parameter transformations.
-<<gomp4>>=
-gompertz.log.tf <- function (params, ...) log(params)
-gompertz.exp.tf <- function (params, ...) exp(params)
-@
-We add these to the existing \class{pomp} object via:
-<<gompertz-transforms,tidy=F>>=
-gompertz <- pomp(gompertz, toEstimationScale = gompertz.log.tf,
-                 fromEstimationScale = gompertz.exp.tf)
+The following implements these transformations.
+<<gompertz-transforms>>=
+gomp <- pomp(
+  gomp,
+  partrans = parameter_trans(log=c("r","K","sigma","tau")),
+  paramnames=c("r","K","sigma","tau")
+)
 @
 
 The following code initializes the iterated filtering algorithm at several starting points around \code{theta.true} and estimates the parameters $r$, $\tau$, and $\sigma$.
-<<gompertz-mif-setup,echo=F,results="hide">>=
+<<gompertz-mif-setup,include=FALSE,purl=TRUE>>=
 ##' ## Iterated filtering.
 ##' First, retrieve the precompiled version of 'gompertz': much faster than
 ##' the one just constructed.
 ##' Simulate data to match the ones created before.
-dat1 <- as.data.frame(gompertz)
-pompExample(gompertz)
-gompertz <- simulate(window(gompertz,start=1),seed=340398091L)
-dat2 <- as.data.frame(gompertz)
+dat1 <- as.data.frame(gomp)
+const_gomp <- gomp
+gomp <- gompertz()
+gomp <- simulate(window(gomp,start=1),params=coef(const_gomp),seed=340398091L)
+dat2 <- as.data.frame(gomp)
 stopifnot(all.equal(dat1[c("time","Y")],dat2[c("time","Y")]))
-theta <- coef(gompertz)
+theta <- coef(gomp)
 theta.true <- theta
-<<gompertz-mif-inner1,echo=F,eval=F,purl=F>>=
+@
+<<gompertz-mif-inner1,echo=FALSE,eval=FALSE,purl=FALSE>>=
 theta.guess <- theta.true
 theta.guess[estpars] <- rlnorm(n = length(estpars),
-    meanlog = log(theta.guess[estpars]), sdlog = 1)
-<<gompertz-mif-inner2,echo=F,eval=F,purl=F>>=
-mif(gompertz, Nmif = 100, start = theta.guess, transform = TRUE,
-    Np = 2000, var.factor = 2, cooling.fraction = 0.7,
-    rw.sd = c(r = 0.02, sigma = 0.02, tau = 0.02))
-<<gompertz-mif-inner3,echo=F,eval=F,purl=F>>=
+  meanlog = log(theta.guess[estpars]), sdlog = 1)
+@
+<<gompertz-mif-inner2,echo=FALSE,eval=FALSE,purl=FALSE>>=
+mif2(gomp, Nmif = 100, params = theta.guess, Np = 2000,
+  cooling.fraction.50 = 0.7,
+  rw.sd = rw.sd(r=0.02, sigma=0.02,tau=0.02))
+@
+<<gompertz-mif-inner3,echo=FALSE,eval=FALSE,purl=FALSE>>=
 pf <- replicate(n = 10, logLik(pfilter(mf, Np = 10000)))
 logmeanexp(pf)
-<<gompertz-mif-estpar,eval=F,purl=F,echo=F>>=
+@
+<<gompertz-mif-estpar,eval=FALSE,purl=FALSE,echo=FALSE>>=
 estpars <- c("r", "sigma", "tau")
-<<gompertz-mif-post,eval=F,purl=F,echo=F>>=
+@
+<<gompertz-mif-post,eval=FALSE,purl=FALSE,echo=FALSE>>=
 mf1 <- mif1[[which.max(pf1)]]
 theta.mif <- coef(mf1)
 loglik.mif <- replicate(n = 10, logLik(pfilter(mf1,Np = 10000)))
 loglik.mif <- logmeanexp(loglik.mif,se=TRUE)
-theta.true <- coef(gompertz)
-loglik.true <- replicate(n = 10, logLik(pfilter(gompertz, Np = 20000)))
+theta.true <- coef(gomp)
+loglik.true <- replicate(n = 10, logLik(pfilter(gomp, Np = 20000)))
 loglik.true <- logmeanexp(loglik.true,se=TRUE)
-<<gompertz-mif-demo,eval=F,purl=F,echo=T,tidy=F>>=
+@
+<<gompertz-mif-demo,eval=FALSE,purl=FALSE,echo=TRUE,tidy=FALSE>>=
 <<gompertz-mif-estpar>>
 library("foreach")
 mif1 <- foreach(i = 1:10, .combine = c) %dopar% {
@@ -1169,17 +1144,16 @@ pf1 <- foreach(mf = mif1, .combine = c) %dopar% {
   <<gompertz-mif-inner3>>
 }
 @
-Note that we have set \code{transform = TRUE} in the call to \code{mif} above:
-this causes the parameter transformations we have specified to be applied to enforce the positivity of parameters.
+Note that the positivity of parameters is enforced by the transformations we have included in \code{gomp}.
 Note also that we have used the \pkg{foreach} package \citep{JSSv055i14,foreach} to parallelize the computations.
-<<gompertz-mif-eval,echo=F,results="hide",cache=F>>=
+<<gompertz-mif-eval,echo=FALSE,results="hide",cache=FALSE>>=
 ##' Perform some iterated filtering.
 ##' These calculations took about 68 sec on my 16-core Intel Xeon 2.90GHz machine.
-stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
+stew(file=file.path(resdir,"gompertz-mif.rda"),seed=334388458L,kind="L'Ecuyer",{
 
-  library(doMC)
+  library(doParallel)
   library(foreach)
-  registerDoMC()
+  registerDoParallel()
 
   <<gompertz-mif-estpar>>
 
@@ -1204,22 +1178,22 @@ stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
   kalm.fit1 <- optim(
     par=theta.guess[estpars],
     fn=kalman,
-    object=gompertz,
-    params=coef(gompertz),
+    object=gomp,
+    params=coef(gomp),
     hessian=TRUE,
     control=list(trace=2)
   )
 
   theta.mle <- kalm.fit1$par
   exact.loglik.maximized <- -kalm.fit1$value
-  exact.loglik.mif1 <- -kalman(coef(mf1),gompertz,coef(gompertz))
+  exact.loglik.mif1 <- -kalman(coef(mf1),gomp,coef(gomp))
 
-  mle.po <- gompertz
+  mle.po <- gomp
   coef(mle.po,names(theta.mle)) <- unname(theta.mle)
   loglik.mle <- replicate(n=10,logLik(pfilter(mle.po,Np=20000)))
   loglik.mle <- logmeanexp(loglik.mle,se=TRUE)
 })
-<<gompertz-mif-results,echo=F,eval=T,results="hide">>=
+<<gompertz-mif-results,echo=FALSE,eval=TRUE,results="hide">>=
 ##' Print out the comparison table.
 rbind(
       `Truth`=c(signif(theta.true[estpars],3),round(loglik.true,2),round(exact.loglik.truth,2)),
@@ -1234,19 +1208,19 @@ Each of the 10 \code{mif} runs ends up with a different point estimate (\cref{fi
 We focus on that with the highest estimated likelihood, having evaluated the likelihood several times to reduce the Monte Carlo error in the likelihood evaluation.
 The particle filter produces an unbiased estimate of the likelihood;
 therefore, we will average the likelihoods, not the log likelihoods.
-<<mif3,echo=T,eval=F,purl=F>>=
+<<mif3,echo=TRUE,eval=FALSE,purl=FALSE>>=
 <<gompertz-mif-post>>
 @
 
 \begin{figure}[t!]
-<<mif-plot,echo=F,cache=TRUE,fig.height=6>>=
+<<mif-plot,echo=FALSE,cache=TRUE,fig.height=6>>=
 ##' Plot the 'mif' diagnostics.
 op <- par(mfrow=c(4,1),mar=c(3,4,0.3,0),mgp=c(2,1,0),
           bty="l",cex.axis=1.2,cex.lab=1.4)
-loglik <- do.call(cbind,conv.rec(mif1,"loglik"))
-log.r <- do.call(cbind,conv.rec(mif1,"r"))
-log.sigma <- do.call(cbind,conv.rec(mif1,"sigma"))
-log.tau <- do.call(cbind,conv.rec(mif1,"tau"))
+loglik <- do.call(cbind, traces(mif1, "loglik"))
+log.r <- do.call(cbind, traces(mif1, "r"))
+log.sigma <- do.call(cbind, traces(mif1, "sigma"))
+log.tau <- do.call(cbind, traces(mif1, "tau"))
 matplot(loglik,type="l",lty=1,xlab="",ylab=expression(log~L),xaxt="n",ylim=max(loglik,na.rm=T)+c(-30,3))
 matplot(log.r,type="l",lty=1,xlab="",ylab=expression(log~r),xaxt="n")
 matplot(log.sigma,type="l",lty=1,xlab="",ylab=expression(log~sigma),xaxt="n")
@@ -1268,7 +1242,7 @@ In this case, we see that the \code{mif} procedure is successfully maximizing th
 
 \begin{table}[t!]
   \begin{center}
-    <<gompertz-multi-mif-table,echo=F,results="asis">>=
+    <<gompertz-multi-mif-table,echo=FALSE,results="asis">>=
     library(xtable)
     options(
     xtable.sanitize.text.function=function(x)x,
@@ -1297,15 +1271,18 @@ To carry out Bayesian inference we need to specify a prior distribution on unkno
 The \code{pomp} constructor function provides the \code{rprior} and \code{dprior} arguments, which can be filled with functions that simulate from and evaluate the prior density, respectively.
 %% Although POMP models frequently have strong nonlinear dependencies between parameters, it is common practice to specify independent prior distributions for each parameter.
 Methods based on random walk Metropolis-Hastings require evaluation of the prior density (\code{dprior}), but not simulation (\code{rprior}), so we specify \code{dprior} for the Gompertz model as follows.
-<<pmcmc-comments,include=F>>=
+<<pmcmc-comments,include=FALSE>>=
 ##' ## Particle MCMC
 ##' We'll need a prior density function:
-<<gompertz-dprior1,tidy=F>>=
-hyperparams <- list(min = coef(gompertz)/10, max = coef(gompertz) * 10)
+<<gompertz-dprior1>>=
+hyperparams <- list(
+  min = coef(gomp)/10,
+  max = coef(gomp)*10
+)
 @
-<<gompertz-dprior2,tidy=FALSE>>=
-gompertz.dprior <- function (params, ..., log) {
-  f <- sum(dunif(params, min = hyperparams$min, max = hyperparams$max,
+<<gompertz-dprior2>>=
+gompertz.dprior <- function (r, K, sigma, tau, X_0, ..., log) {
+  f <- sum(dunif(c(r, K, sigma, tau, X_0), min = hyperparams$min, max = hyperparams$max,
                  log = TRUE))
   if (log) f else exp(f)
 }
@@ -1317,15 +1294,15 @@ For this reason, PMCMC is relatively inefficient at traversing parameter space.
 When Bayesian inference is the goal, it is therefore advisable to first locate a neighborhood of the MLE using, for example, iterated filtering.
 PMCMC can then be initialized in this neighborhood to sample from the posterior distribution.
 The following adopts this approach, running 5 independent PMCMC chains using a multivariate normal random walk proposal (with diagonal variance-covariance matrix, see \code{?mvn.diag.rw}).
-<<pmcmc-inner,eval=F,purl=F,echo=F>>=
-pmcmc(pomp(gompertz, dprior = gompertz.dprior), start = theta.mif,
-      Nmcmc = 40000, Np = 100, max.fail = Inf,
+<<pmcmc-inner,eval=FALSE,purl=FALSE,echo=FALSE>>=
+pmcmc(gomp, dprior = gompertz.dprior, params = theta.mif,
+      Nmcmc = 40000, Np = 100,
       proposal = mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
-<<pmcmc-demo,eval=F,purl=F,echo=T,tidy=F>>=
+<<pmcmc-demo,eval=FALSE,purl=FALSE,echo=TRUE>>=
 pmcmc1 <- foreach(i = 1:5, .combine = c) %dopar% {
   <<pmcmc-inner>>
 }
-<<pmcmc-eval,echo=F,results="hide",cache=F>>=
+<<pmcmc-eval,echo=FALSE,results="hide",cache=FALSE>>=
 ##' Do the PMCMC calculations.
 ##' Again, delete 'pmcmc.rda' to reproduce the computations.
 ##' This took about 16 min on my 16-core Intel Xeon 2.90GHz machine
@@ -1333,14 +1310,12 @@ pmcmc1 <- foreach(i = 1:5, .combine = c) %dopar% {
 library(pomp)
 library(coda)
 
-stew(file="pmcmc.rda",seed=334388458L,kind="L'Ecuyer",{
-
-  pompExample(gompertz)
+stew(file=file.path(resdir,"pmcmc.rda"),seed=334388458L,kind="L'Ecuyer",{
 
   tic <- Sys.time()
-  library(doMC)
+  library(doParallel)
   library(foreach)
-  registerDoMC()
+  registerDoParallel()
 
   pmcmc1 <- foreach(
     i=1:5,
@@ -1356,12 +1331,12 @@ stew(file="pmcmc.rda",seed=334388458L,kind="L'Ecuyer",{
 toc <- Sys.time()
 pmcmcTime <- toc-tic
 
-pmcmc.traces <- conv.rec(pmcmc1,c("r","sigma","tau"))
+pmcmc.traces <- traces(pmcmc1,  c("r", "sigma", "tau"))
 pmcmc.traces <- window(pmcmc.traces,start=20001,thin=40)
 ess.pmcmc <- effectiveSize(pmcmc.traces)
 rm(pmcmc1,tic,toc)
 })
-<<pmcmc-diagnostics,results="hide",fig.show="hide",echo=F,eval=F,purl=F>>=
+<<pmcmc-diagnostics,results="hide",fig.show="hide",echo=FALSE,eval=FALSE,purl=FALSE>>=
 gelman.diag(pmcmc.traces)
 gelman.plot(pmcmc.traces)
 autocorr.plot(pmcmc.traces[[1]])
@@ -1369,7 +1344,7 @@ hist(rle(unlist(pmcmc.traces[,"r"]))$length)
 @
 
 \begin{figure}[t!]
-<<pmcmc-plot,echo=F,eval=T,results="hide",cache=TRUE>>=
+<<pmcmc-plot,echo=FALSE,eval=TRUE,results="hide",cache=TRUE>>=
 ##' Plot the traces and densities.
 op <- par(mar=c(4,3.5,0,1),mfcol=c(3,2),mgp=c(2.5,1,0),cex.axis=1.5,cex.lab=2)
 traceplot(pmcmc.traces[,"r"],smooth=TRUE,xlab="",ylab=expression(r),lty=1)
@@ -1377,20 +1352,20 @@ traceplot(pmcmc.traces[,"sigma"],smooth=TRUE,xlab="",ylab=expression(sigma),lty=
 traceplot(pmcmc.traces[,"tau"],smooth=TRUE,xlab="PMCMC iteration",ylab=expression(tau),lty=1)
 densplot(pmcmc.traces[,"r"],show.obs=FALSE,xlab="",main="")
 mtext(side=1,line=2,text=expression(r))
-abline(v=coef(gompertz,"r"))
+abline(v=coef(gomp,"r"))
 densplot(pmcmc.traces[,"sigma"],show.obs=FALSE,xlab="",main="")
 mtext(side=1,line=2,text=expression(sigma))
-abline(v=coef(gompertz,"sigma"))
+abline(v=coef(gomp,"sigma"))
 densplot(pmcmc.traces[,"tau"],show.obs=FALSE,xlab=expression(tau),main="")
-abline(v=coef(gompertz,"tau"))
+abline(v=coef(gomp,"tau"))
 par(op)
 @
 \caption{
   Diagnostic plots for the PMCMC algorithm.
-  The trace plots in the left column show the evolution of \Sexpr{length(pmcmc.traces)} independent MCMC chains after a burn-in period of length \Sexpr{start(pmcmc.traces)-1}.
+  The trace plots in the left column show the evolution of $\Sexpr{length(pmcmc.traces)}$ independent MCMC chains after a burn-in period of length $\Sexpr{start(pmcmc.traces)-1}$.
   Kernel density estimates of the marginal posterior distributions are shown in the right column.
-  The effective sample size of the \Sexpr{length(pmcmc.traces)} MCMC chains combined is lowest for the $r$ variable, being equal to \Sexpr{signif(min(ess.pmcmc),2)}:
-  the use of \Sexpr{end(pmcmc.traces)-1} proposal steps in this case is a modest number.
+  The effective sample size of the $\Sexpr{length(pmcmc.traces)}$ MCMC chains combined is lowest for the $r$ variable, being equal to $\Sexpr{signif(min(ess.pmcmc),2)}$:
+  the use of $\Sexpr{end(pmcmc.traces)-1}$ proposal steps in this case is a modest number.
   The density plots at right show the estimated marginal posterior distributions.
   The vertical line corresponds to the true value of each parameter.
   \label{fig:pmcmc-plot}
@@ -1426,20 +1401,17 @@ We have the option of writing these functions in \proglang{R}, as we did with th
 However, we can realize manyfold speed-ups by writing these in \proglang{C}.
 In particular, \pkg{pomp} allows us to write snippets of \proglang{C} code that it assembles, compiles, and dynamically links into a running \proglang{R} session.
 To begin the process, we will write snippets for the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} components.
-<<ricker-comments,include=F>>=
+<<ricker-comments,include=FALSE>>=
 ##' ## Second example: stochastic Ricker map.
 ##' Some C snippets defining the process model simulator
-<<ricker-map-defn,tidy=F>>=
-ricker.sim <- "
+<<ricker-map-defn>>=
+ricker.rproc <- "
    e = rnorm(0, sigma);
-   N = r * N * exp(-N + e);
-"
+   N = r * N * exp(-c * N + e);"
 ricker.rmeas <- "
-   y = rpois(phi * N);
-"
+   y = rpois(phi * N);"
 ricker.dmeas <- "
-   lik = dpois(y, phi * N, give_log);
-"
+   lik = dpois(y, phi * N, give_log);"
 @
 Note that, in this implementation, both $N$ and $e$ are state variables.
 The logical flag \code{give_log} requests the likelihood when \code{FALSE}, the log likelihood when \code{TRUE}.
@@ -1447,40 +1419,28 @@ Notice that, in these snippets, we never declare the variables;
 \pkg{pomp} will construct the appropriate declarations automatically.
 
 In a similar fashion, we can add transformations of the parameters to enforce constraints.
-<<ricker-trans,tidy=F>>=
+<<ricker-trans>>=
 log.trans <- "
-   Tr = log(r);
-   Tsigma = log(sigma);
-   Tphi = log(phi);
-   TN_0 = log(N_0);"
+   T_r = log(r);
+   T_sigma = log(sigma);
+   T_phi = log(phi);"
 exp.trans <- "
-   Tr = exp(r);
-   Tsigma = exp(sigma);
-   Tphi = exp(phi);
-   TN_0 = exp(N_0);"
+   r = exp(T_r);
+   sigma = exp(T_sigma);
+   phi = exp(T_phi);"
 @
 Note that in the foregoing \proglang{C} snippets, the prefix \code{T} designates the transformed version of the parameter.
 A full set of rules for using \code{Csnippet}s, including illustrative examples, is given in the package help system (\code{?Csnippet}).
 
 Now we can construct a \class{pomp} object as before and fill it with simulated data:
-<<ricker-pomp,tidy=F>>=
-ricker <- pomp(data = data.frame(time = seq(0, 50, by = 1), y = NA),
-     rprocess = discrete.time.sim(step.fun = Csnippet(ricker.sim),
-       delta.t = 1), rmeasure = Csnippet(ricker.rmeas),
-     dmeasure = Csnippet(ricker.dmeas),
-     toEstimationScale = Csnippet(log.trans),
-     fromEstimationScale = Csnippet(exp.trans),
-     paramnames = c("r", "sigma", "phi", "N.0", "e.0"),
-     statenames = c("N", "e"), times = "time", t0 = 0,
-     params = c(r = exp(3.8), sigma = 0.3, phi = 10, N.0 = 7, e.0 = 0))
-ricker <- simulate(ricker, seed = 73691676L)
-<<get-ricker,echo=F,eval=T,results="hide">>=
-##' Again, retrieve a precompiled version, checking to make sure data
-##' are the same as in the paper.
-dat1 <- as.data.frame(ricker)
-pompExample(ricker)
-dat2 <- as.data.frame(ricker)
-stopifnot(all.equal(dat1[c("time","y")],dat2[c("time","y")]))
+<<ricker-pomp,eval=TRUE,tidy=FALSE>>=
+rick <- simulate(times = seq(0,50,by=1), t0 = 0, seed=73691676L,
+  rprocess = discrete_time(step.fun = Csnippet(ricker.rproc), delta.t = 1),
+  rmeasure = Csnippet(ricker.rmeas), dmeasure = Csnippet(ricker.dmeas),
+  partrans = parameter_trans(toEst = Csnippet(log.trans),
+    fromEst = Csnippet(exp.trans)), paramnames = c("r", "c", "sigma",
+      "phi", "N_0", "e_0"), statenames = c("N", "e"), obsnames="y",
+  params = c(r = exp(3.8), sigma = 0.3, phi = 10, c=1, N_0 = 7, e_0 = 0))
 @
 
 \subsection{Feature-based synthetic likelihood maximization}
@@ -1496,31 +1456,31 @@ the probe's values are those of the regression coefficients.
 \code{probe.nlar} fits a simple nonlinear (polynomial) autoregressive model to the data;
 again, the coefficients of the fitted model are the probe's values.
 We construct a list of probes:
-<<probe-comments,include=F>>=
+<<probe-comments,include=FALSE>>=
 ##' ## Probe-matching via synthetic likelihood
 
 ##' We'll need a list of summary statistics ('probes').
 ##' The following are among those recommended by Wood (2010).
-<<probe-list,tidy=FALSE>>=
-plist <- list(probe.marginal("y", ref = obs(ricker), transform = sqrt),
+<<probe-list>>=
+plist <- list(probe.marginal("y", ref = obs(rick), transform = sqrt),
               probe.acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
               probe.nlar("y", lags = c(1, 1, 1, 2), powers = c(1, 2, 3, 1),
                          transform = sqrt))
 @
 Each element of \code{plist} is a function of a single argument.
-Each of these functions can be applied to the data in \code{ricker} and to simulated data sets.
+Each of these functions can be applied to the data in \code{rick} and to simulated data sets.
 Calling \pkg{pomp}'s function \code{probe} results in the application of these functions to the data, and to each of some large number, \code{nsim}, of simulated data sets, and finally to a comparison of the two.
 [Note that probe functions may be vector-valued, so a single probe taking values in $\R^k$ formally corresponds to a collection of $k$ probe functions in the terminology of \cref{sec:probe}.]
 Here, we will apply \code{probe} to the Ricker model at the true parameters and at a wild guess.
-<<first-probe-comment,include=F>>=
+<<first-probe-comment,include=FALSE>>=
 ##' Compute the probes at true parameters and arbitrary "guess".
-<<first-probe,eval=T,echo=T,cache=T>>=
-pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
-guess <- c(r=20,sigma=1,phi=20,N.0=7,e.0=0)
-pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
+<<first-probe,eval=TRUE,echo=TRUE,cache=TRUE>>=
+pb.truth <- probe(rick,probes=plist,nsim=1000,seed=803306074L)
+guess <- c(r=40,sigma=0.5,phi=12,N_0=7,e_0=0,c=1)
+pb.guess <- probe(rick,params=guess,probes=plist,nsim=1000,seed=803306074L)
 @
 Results summaries and diagnostic plots showing the model-data agreement and correlations among the probes can be obtained by
-<<first-probe-plot,eval=F,purl=F>>=
+<<first-probe-plot,eval=FALSE,purl=FALSE>>=
 summary(pb.truth)
 summary(pb.guess)
 plot(pb.truth)
@@ -1528,18 +1488,18 @@ plot(pb.guess)
 @
 
 \begin{figure}[t!]
-<<ricker-probe-plot,echo=F,cache=T,results="hide",dpi=600,dev.args=list(bg="transparent",pointsize=9),fig.height=4,fig.width=4>>=
+<<ricker-probe-plot,echo=FALSE,cache=TRUE,results="hide",dpi=600,dev.args=list(bg="transparent",pointsize=9),fig.height=4,fig.width=4>>=
 ##' An example of 'plot' applied to a 'probed.pomp' object.
-  pb <- probe(ricker,
-              probes=list(
-                probe.marginal("y",ref=obs(ricker),transform=sqrt,order=2),
-                probe.acf("y",lags=c(0,3),transform=sqrt),
-                mean=probe.mean("y",transform=sqrt)
-                ),
-              transform=TRUE,
-              nsim=1000,
-              seed=1066L
-              )
+pb <- probe(
+  rick,
+  probes=list(
+    probe.marginal("y",ref=obs(rick),transform=sqrt,order=2),
+    probe.acf("y",lags=c(0,3),transform=sqrt),
+    mean=probe.mean("y",transform=sqrt)
+  ),
+  nsim=1000,
+  seed=803306074L
+)
 plot(pb)
 @
 \caption{
@@ -1557,21 +1517,19 @@ Among the quantities returned by \code{summary} is the synthetic likelihood (\cr
 One can attempt to identify parameters that maximize this quantity;
 this procedure is referred to in \pkg{pomp} as ``probe matching''.
 Let us now attempt to fit the Ricker model to the data using probe-matching.
-<<ricker-probe-match-calc,eval=F,purl=F,results="markup">>=
-pm <- probe.match(
-                  pb.guess,
-                  est=c("r","sigma","phi"),
-                  transform=TRUE,
-                  method="Nelder-Mead",
-                  maxit=2000,
-                  seed=1066L,
-                  reltol=1e-8
-                  )
-<<ricker-probe.match-eval,echo=F,eval=T,results="hide",cache=F>>=
+<<ricker-probe-match-calc,eval=FALSE,purl=FALSE,results="markup">>=
+pfun <- probe_objfun(pb.guess,est=c("r","sigma","phi"),seed=803306074L)
+library("subplex")
+pm <- subplex(fn=pfun,
+  par = coef(pb.guess,c("r","sigma","phi"),transform=TRUE),
+  control=list(reltol=1e-10))
+pfun(pm$par)
+@
+<<ricker-probe.match-eval,echo=FALSE,eval=TRUE,results="hide",cache=FALSE>>=
 ##' Now we'll do some probe-matching.
 ##' Again, delete the binary file to cause the computations to be reproduced.
 ##' These calculations took less than 20 sec on my Intel Xeon 2.90GHz workstation.
-stew(file="ricker-probe-match.rda",{
+stew(file=file.path(resdir,"ricker-probe-match.rda"),{
   <<ricker-probe-match-calc>>
 })
 @
@@ -1581,15 +1539,14 @@ While \code{probe.match} provides substantial flexibility in the choice of the o
 
 To put the synthetic likelihood approach into context, let us compare the results of estimating the Ricker model parameters using probe-matching and using iterated filtering (IF), which is based on the likelihood.
 The following code runs 600 IF iterations starting at \code{guess}:
-<<ricker-mif-calc,eval=F,purl=F,tidy=FALSE>>=
-mf <- mif(ricker, start = guess, Nmif = 100, Np = 1000, transform = TRUE,
-          cooling.fraction = 0.95^50, var.factor = 2, ic.lag = 3,
-          rw.sd = c(r = 0.1, sigma = 0.1, phi = 0.1), max.fail = 50)
-mf <- continue(mf, Nmif = 500, max.fail = 20)
-<<ricker-mif-eval,echo=F,eval=T,cache=F,results="hide">>=
+<<ricker-mif-calc,eval=FALSE,purl=FALSE>>=
+mf <- mif2(pb.guess,Nmif=100,Np=1000,cooling.fraction.50 = 0.08,
+  rw.sd = rw.sd(r = 0.1, sigma = 0.1, phi = 0.1))
+mf <- continue(mf, Nmif = 500)
+<<ricker-mif-eval,echo=FALSE,eval=TRUE,cache=FALSE,results="hide">>=
 ##' Now, for comparison, run 600 'mif' iterations.
 ##' These serial calculations took about 3 minutes.
-stew(file="ricker-mif.rda",seed=718086921L,{
+stew(file=file.path(resdir,"ricker-mif.rda"),seed=718086921L,{
   <<ricker-mif-calc>>
 })
 @
@@ -1603,47 +1560,49 @@ stew(file="ricker-mif.rda",seed=718086921L,{
 These results demonstrate that it is possible, and indeed not difficult, to maximize the likelihood for this model, contrary to the claim of \citet{wood10}.
 Since synthetic likelihood discards some of the information in the data, it is not surprising that \cref{tab:ricker-comparison} also shows the statistical inefficiency of the maximum synthetic likelihood relative to that of the likelihood.
 
-<<ricker-comparison,eval=T,echo=F,cache=F>>=
+<<ricker-comparison,eval=TRUE,echo=FALSE,cache=FALSE>>=
 ##' The comparison, in terms of approximate likelihood and synthetic likelihood.
 ##' Not a very expensive set of computations.
-stew(file="ricker-comparison.rda",seed=1182206495L,kind="L'Ecuyer",{
-  library(plyr)
-  library(magrittr)
+stew(file=file.path(resdir,"ricker-comparison.rda"),{
+  library(tidyverse)
   library(foreach)
-  library(doMC)
-  registerDoMC()
+  library(doParallel)
+  library(doRNG)
+  registerDoParallel()
+  registerDoRNG(1431015321)
 
-  rbind(Guess=guess,
-        Truth=coef(ricker),
-        MLE=coef(mf),
-        MSLE=coef(pm)) -> comp
+  bind_rows(Guess=guess,Truth=coef(rick),
+    MLE=coef(mf),MSLE=coef(pfun),
+    .id="pt") -> comp
 
-  foreach (theta=iter(comp,"row"),.combine=rbind) %do% {
-
-    foreach (i=seq_len(10),.combine=c,.inorder=FALSE,
-             .options.multicore=list(set.seed=TRUE)) %dopar% {
-               logLik(pfilter(ricker,params=theta[1,],Np=10000))
-             } %>% logmeanexp(se=TRUE) -> pf
-
-    foreach (i=seq_len(10),.combine=c,.inorder=FALSE,
-             .options.multicore=list(set.seed=TRUE)) %dopar% {
-               logLik(probe(ricker,params=theta[1,],nsim=10000,
-                            probes=plist))
-             } %>% logmeanexp(se=TRUE) -> pb
-
-    cbind(theta,loglik=pf[1],loglik.se=pf[2],logsynlik=pb[1],logsynlik.se=pb[2])
-  } %>% subset(select=-c(N.0,e.0)) -> comp
-
+  foreach (theta=iter(expand_grid(comp,rep=1:10),"row"),
+    .combine=rbind) %dopar% {
+    logLik(pfilter(rick,params=theta[-1],Np=10000)) -> pf
+    logLik(probe(rick,params=theta[-1],nsim=10000,probes=plist)) -> pb
+    cbind(theta,pf=pf,pb=pb)
+    } |>
+    group_by(pt,r,sigma,phi,c,N_0,e_0) |>
+    summarize(
+      loglik=logmeanexp(pf)[1],
+      loglik.se=logmeanexp(pf,se=TRUE)[2],
+      logsynlik=logmeanexp(pb)[1],
+      logsynlik.se=logmeanexp(pb,se=TRUE)[2]
+    ) |>
+    ungroup() |>
+    column_to_rownames("pt") |>
+    select(-c,-N_0,-e_0) -> comp
+  
 })
 @
 \begin{table}[t!]
   \begin{center}
-<<ricker-comparison-show,echo=F,results="asis">>=
+<<ricker-comparison-show,echo=FALSE,results="asis">>=
 library(xtable)
 colnames(comp) <- c("$r$","$\\sigma$","$\\phi$",
                     "$\\loglikMC$","s.e.($\\loglikMC$)",
                     "$\\synloglikMC$","s.e.($\\synloglikMC$)")
-print(xtable(comp,align="r|ccccccc",digits=c(0,1,3,1,1,2,1,2)))
+print(xtable(comp[c("Guess","Truth","MLE","MSLE"),],
+  align="r|ccccccc",digits=c(0,1,3,1,1,2,1,2)))
 @
   \end{center}
   \caption{\label{tab:ricker-comparison}
@@ -1651,7 +1610,7 @@ print(xtable(comp,align="r|ccccccc",digits=c(0,1,3,1,1,2,1,2)))
     The row labeled ``guess'' contains the point at which both algorithms were initialized.
     That labeled ``truth'' contains the true parameter value, i.e., that at which the data were generated.
     The rows labeled ``MLE'' and ``MSLE'' show the estimates obtained using iterated filtering and maximum synthetic likelihood, respectively.
-    Parameters $r$, $\sigma$, and $\tau$ were estimated; all others were held at their true values.
+    Parameters $r$, $\sigma$, and $\phi$ were estimated; all others were held at their true values.
     The columns labeled $\loglikMC$ and $\synloglikMC$ are the Monte Carlo estimates of the log likelihood and the log synthetic likelihood, respectively;
     their Monte Carlo standard errors are also shown.
     While likelihood maximization results in an estimate for which both $\loglikMC$ and $\synloglikMC$ exceed their values at the truth,
@@ -1667,22 +1626,24 @@ Each iteration of ABC is therefore much quicker, essentially corresponding to th
 A consequence of this is that ABC cannot determine a good relative scaling of the features within each likelihood evaluation and this must be supplied in advance.
 One can imagine an adaptive version of ABC which modifies the scaling during the course of the algorithm, but here we do a preliminary calculation to accomplish this.
 We return to the Gompertz model to faciliate comparison between ABC and PMCMC.
-<<abc-load,eval=F,purl=F,echo=F,tidy=F>>=
+<<abc-load,eval=FALSE,purl=FALSE,echo=FALSE>>=
 plist <- list(probe.mean(var = "Y", transform = sqrt),
               probe.acf("Y", lags = c(0, 5, 10, 20)),
-              probe.marginal("Y", ref = obs(gompertz)))
-psim <- probe(gompertz, probes = plist, nsim = 500)
-scale.dat <- apply(psim$simvals, 2, sd)
-<<abc-inner,eval=F,purl=F,echo=FALSE>>=
-abc(pomp(gompertz, dprior = gompertz.dprior), Nabc = 4e6,
+              probe.marginal("Y", ref = obs(gomp)))
+psim <- probe(gomp, probes = plist, nsim = 500)
+scale.dat <- apply(psim@simvals, 2, sd)
+@
+<<abc-inner,eval=FALSE,purl=FALSE,echo=FALSE>>=
+abc(pomp(gomp, dprior = gompertz.dprior), Nabc = 4e6,
     probes = plist, epsilon = 2, scale = scale.dat,
     proposal = mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
-<<abc-demo,eval=F,purl=F,tidy=FALSE>>=
+@
+<<abc-demo,eval=FALSE,purl=FALSE,tidy=FALSE>>=
 <<abc-load>>
 abc1 <- foreach(i = 1:5, .combine = c) %dopar% {
   <<abc-inner>>
 }
-<<abc-eval,echo=F,results="hide",cache=F>>=
+<<abc-eval,include=FALSE,purl=TRUE,cache=FALSE>>=
 library("pomp")
 ##' ## Approximate Bayesian computation
 ##' We'll go back to working with the Gompertz model.
@@ -1694,14 +1655,12 @@ library("pomp")
 ##' Do 5 long ABC chains in parallel.
 ##' These computations took about 30 min on my
 ##' 16-core Intel Xeon 2.90GHz machine with 32MB of RAM.
-stew(file="abc.rda",seed=334388458L,kind="L'Ecuyer",{
-
-  pompExample(gompertz)
+stew(file=file.path(resdir,"abc.rda"),seed=334388458L,kind="L'Ecuyer",{
 
   tic <- Sys.time()
-  library(doMC)
+  library(doParallel)
   library(foreach)
-  registerDoMC()
+  registerDoParallel()
 
   abc1 <- foreach(
     i=1:5,
@@ -1716,13 +1675,13 @@ stew(file="abc.rda",seed=334388458L,kind="L'Ecuyer",{
 toc <- Sys.time()
 abcTime <- toc-tic
 
-abc.traces <- conv.rec(abc1,c("r","sigma","tau"))
+abc.traces <- traces(abc1,c("r","sigma","tau"))
 abc.traces <- window(abc.traces,start=2000001,thin=400)
 ess.abc <- effectiveSize(abc.traces)
 rm(abc1,tic,toc)
 })
 
-<<abc-diagnostics,results="hide",fig.show="hide",echo=FALSE,eval=FALSE,purl=F>>=
+<<abc-diagnostics,results="hide",fig.show="hide",echo=FALSE,eval=FALSE,purl=FALSE>>=
 gelman.diag(abc.traces)
 gelman.plot(abc.traces)
 autocorr.plot(abc.traces[[1]])
@@ -1731,47 +1690,55 @@ hist(rle(unlist(abc.traces[,"r"]))$length)
 
 \begin{figure}[t!]
 \begin{center}
-<<abc-pmmc-compare,echo=F,fig.width=7,fig.height=3,cache=T>>=
-library("ggplot2")
+<<abc-pmmc-compare,echo=FALSE,fig.width=7,fig.height=3,cache=TRUE>>=
+library("tidyverse")
 library("grid")
-library("plyr")
-library("reshape2")
-library("magrittr")
 ##' Make density plots comparing posteriors from 'abc' and 'pmcmc'.
-ldply(list(pmcmc=ldply(pmcmc.traces),abc=ldply(abc.traces)),.id='method') %>%
-  melt(id="method") %>%
-  mutate(log.value=log10(value)) -> traces
+bind_rows(
+  pmcmc=pmcmc.traces |> lapply(as.data.frame) |>
+    lapply(rownames_to_column,"iteration") |> bind_rows(.id="chain"),
+  abc=abc.traces |> lapply(as.data.frame) |>
+    lapply(rownames_to_column,"iteration") |> bind_rows(.id="chain"),
+  .id="method"
+) |>
+  gather(variable,value,-method,-chain,-iteration) |>
+  mutate(
+    method=ordered(method,levels=c("pmcmc","abc")),
+    iteration=as.integer(iteration),
+    variable=c(r="log[10]~r",sigma="log[10]~sigma",tau="log[10]~tau")[variable],
+    log.value=log10(value)
+  ) -> traces
 
-coef(gompertz,c("r","sigma","tau")) %>% as.list() %>% as.data.frame() %>%
-  melt(id=NULL) %>%
-  mutate(log.value=log10(value)) -> truth
+coef(gomp,c("r","sigma","tau")) |> as.list() |> as.data.frame() |>
+  gather(variable,value) |>
+  mutate(
+    variable=c(r="log[10]~r",sigma="log[10]~sigma",tau="log[10]~tau")[variable],
+    log.value=log10(value)
+  ) -> truth
 
-traces %>%
+traces |>
   ggplot(mapping=aes(x=log.value,linetype=method))+
   geom_density(adjust=5)+
   geom_vline(data=truth,mapping=aes(xintercept=log.value))+
   scale_linetype_manual(values=c(abc=2,pmcmc=1))+
-  facet_grid(~variable,scales="free_x",
-             labeller=labeller(variable=list(sigma=expression(log[10]~sigma),
-                                             tau=expression(log[10]~tau),
-                                             r=expression(log[10]~r))))+
+  facet_grid(~variable,scales="free_x",labeller=label_parsed)+
   labs(x="",y="",linetype="")+
   theme_classic()+
   theme(legend.position=c(0.35,0.7),
         strip.background=element_rect(fill=NA,color=NA),
         strip.text=element_text(size=12),
-        panel.margin=unit(4,"mm"))
+        panel.spacing=unit(4,"mm"))
 @
 \end{center}
 \caption{
   Marginal posterior distributions using full information via \code{pmcmc} (solid line) and partial information via \code{abc} (dashed line).
-  Kernel density estimates are shown for the posterior marginal densities of $\log_{10}({r})$ (left panel), $\log_{10}({\sigma})$ (middle panel), and $\log_{10}({\tau})$ (right panel).
+  Kernel density estimates are shown for the posterior marginal densities of the three estimated paramters.
   The vertical lines indicate the true values of each parameter.
 }
 \label{fig:abc:pmcmc:compare}
 \end{figure}
 
-The effective sample size of the ABC chains is lowest for the $r$ parameter (as was the case for PMCMC) and is \Sexpr{signif(min(ess.abc),2)}, as compared to \Sexpr{signif(min(ess.pmcmc),2)} for \code{pmcmc} in \cref{sec:gompertz:pmcmc}.
+The effective sample size of the ABC chains is lowest for the $r$ parameter (as was the case for PMCMC) and is $\Sexpr{signif(min(ess.abc),2)}$, as compared to $\Sexpr{signif(min(ess.pmcmc),2)}$ for \code{pmcmc} in \cref{sec:gompertz:pmcmc}.
 The total computational effort allocated to \code{abc} here matches that for \code{pmcmc} since \code{pmcmc} used 100 particles for each likelihood evaluation but is awarded 100 times fewer Metropolis-Hastings steps.
 In this example, we conclude that \code{abc} mixes somewhat more rapidly (as measured by total computational effort) than \code{pmcmc}.
 \Cref{fig:abc:pmcmc:compare} investigates the statistical efficiency of \code{abc} on this example.
@@ -1787,10 +1754,11 @@ Despite this loss of statistical efficiency, points~B\ref{whyFeature1}--B\ref{wh
 With the \pkg{pomp} package, it is fairly easy to try a quick comparison to see how \code{nlf} (\cref{sec:nlf}) compares with \code{mif} (\cref{sec:mif}) on the Gompertz model.
 Carrying out a simulation study with a correctly specified POMP model is appropriate for assessing computational and statistical efficiency, but does not contribute to the debate on the role of two-step prediction criteria to fit misspecified models \citep{xia11,ionides11-statSci}.
 The \code{nlf} implementation we will use to compare to the \code{mif} call from \cref{sec:gompertz:mif} is
-<<first-nlf,eval=F,purl=F,tidy=F>>=
-nlf1 <- nlf(gompertz, nasymp = 1000, nconverge = 1000, lags = c(2, 3),
+<<first-nlf,eval=FALSE,purl=FALSE>>=
+nlf1 <- nlf_objfun(gomp, ti=100, tf=4000, lags = c(2, 3),
             start = c(r = 1, K = 2, sigma = 0.5, tau = 0.5, X.0 = 1),
-            est = c("r", "sigma", "tau"), transform = TRUE)
+            est = c("r", "sigma", "tau"))
+subplex(par = c(r=0.2, sigma=0.15, tau=0.08), fn=nlf1, control=list(reltol=1e-4)) -> nlf1_out
 @
 where the first argument is the \class{pomp} object,
 \code{start} is a vector containing model parameters at which \code{nlf}'s search will begin,
@@ -1805,11 +1773,10 @@ the results of a small experiment (not shown) indicate that, on these simulated 
 larger values will give less variable parameter estimates, but will slow down the fitting process.
 The computational demand of \code{nlf} is dominated by the time required to generate the model simulations, so efficient coding of \code{rprocess} is worthwhile.
 
-<<nlf-mif-comp-setup,eval=T,echo=F,results="hide">>=
+<<nlf-mif-comp-setup,eval=TRUE,echo=FALSE,results="hide">>=
 ##' ## Nonlinear Forecasting
 
 ##' Here, we'll do a comparison of NLF with MIF.
-pompExample(gompertz)
 set.seed(4897341L)
 
 ##' Number of replicates:
@@ -1817,56 +1784,59 @@ R <- 10
 
 ##' Parameters to estimate:
 estpars <- c("r","sigma","tau")
-gompList <- simulate(gompertz,nsim=R)
+gompList <- simulate(gomp,nsim=R)
 
-<<nlf-mif-compare-eval,echo=F,eval=T,results="hide">>=
+<<nlf-mif-compare-eval,echo=FALSE,eval=TRUE,results="hide">>=
 ##' The following took 47 sec on my workstation.
-stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
-  library(doMC)
+stew(file=file.path(resdir,"nlf-mif-compare.rda"),seed=816326853L,kind="L'Ecuyer",{
+  library(doParallel)
   library(foreach)
-  registerDoMC()
+  registerDoParallel()
 
   tic <- Sys.time()
   cmp1 <- foreach(gomp=gompList,
                   .inorder=FALSE,.packages="pomp",.combine=rbind,
                   .options.multicore=list(set.seed=TRUE)
   ) %dopar% {
-    true.lik <- pfilter(gomp,Np=10000)
-    true.sql <- nlf(
-      gomp,
-      nasymp=10000,
-      eval.only=TRUE,
-      lags=c(2,3)
-    )
+    true.lik <- pfilter(gomp,Np=1000)
+    true.nlf <- nlf_objfun(gomp,
+      ti=100, tf=2000,
+      lags=c(2,3))
+    true.sql <- true.nlf(coef(gomp))
 
   ## start at the truth:
   theta.guess <- coef(gomp)
 
   tic <- Sys.time()
-  mif1 <- mif(gomp,Nmif=100,start=theta.guess,transform=TRUE,
-    rw.sd=c(r=0.02,sigma=0.02,tau=0.05),Np=1000,var.factor=4,ic.lag=10,
+  mif1 <- mif2(gomp,Nmif=100,start=theta.guess,
+    rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),Np=1000,
     cooling.type="geometric",cooling.fraction=0.5)
   mif.lik <- pfilter(mif1,Np=10000)
   toc <- Sys.time()
   mif.time <- toc-tic
   units(mif.time) <- "secs"
-  mif.sql <- nlf(mif1,nasymp=10000,eval.only=TRUE,lags=c(2,3))
+  mif.nlf <- nlf_objfun(mif1, ti=100, tf=4000,
+      lags=c(2,3))
+  mif.sql <- mif.nlf(coef(mif1))
 
   tic <- Sys.time()
-  nlf1 <- nlf(gomp,start=theta.guess,transform=TRUE,est=estpars,lags=c(2,3))
+  nlfobj <- nlf_objfun(gomp,
+      ti=100, tf=4000,
+      lags=c(2,3))
+  nlf_out <- subplex(par = coef(gomp, estpars, transform=TRUE), fn=nlfobj, control=list(reltol=1e-8))
   toc <- Sys.time()
   nlf.time <- toc-tic
   units(nlf.time) <- "secs"
-  nlf.lik <- pfilter(nlf1,Np=10000)
-  nlf.sql <- nlf(nlf1,nasymp=10000,eval.only=TRUE)
+  nlf.lik <- pfilter(pomp(gomp, params=coef(nlfobj)),Np=1000)
+  nlf.sql <- nlfobj(coef(nlfobj))
 
   c(
     trueLik=logLik(true.lik),
-    trueSQL=logLik(true.sql),
+    trueSQL=-true.sql,
     mifLik=logLik(mif.lik),
-    mifSQL=logLik(mif.sql),
+    mifSQL=-mif.sql,
     nlfLik=logLik(nlf.lik),
-    nlfSQL=logLik(nlf.sql),
+    nlfSQL=-nlf.sql,
     mifTime=mif.time,
     nlfTime=nlf.time
   )
@@ -1879,15 +1849,12 @@ cmp1 <- as.data.frame(cmp1)
 
 \begin{figure}[t!]
   \begin{center}
-<<nlf-mif-plot,echo=F,fig.width=8,fig.height=3.5>>=
+<<nlf-mif-plot,echo=FALSE,fig.width=8,fig.height=3.5>>=
 ##' Plot the results.
 library("ggplot2")
 library("grid")
-library("plyr")
-library("reshape2")
-library("magrittr")
 
-plA <- cmp1 %>%
+plA <- cmp1 |>
   ggplot(mapping=aes(y=mifLik-trueLik,x=nlfLik-trueLik))+
   geom_point()+
   geom_abline(slope=1,intercept=0,linetype=3)+
@@ -1898,7 +1865,7 @@ plA <- cmp1 %>%
        x=expression(hat("\u2113")(tilde(theta))-hat("\u2113")(theta)))+
   theme_classic()
 
-plB <- cmp1 %>%
+plB <- cmp1 |>
   ggplot(mapping=aes(y=mifSQL-trueSQL,x=nlfSQL-trueSQL))+
   geom_point()+
   geom_abline(slope=1,intercept=0,linetype=3)+
@@ -1925,7 +1892,7 @@ popViewport()
 @
   \end{center}
   \caption{
-    Comparison of \code{mif} and \code{nlf} for \Sexpr{nrow(cmp1)} simulated datasets using two criteria.
+    Comparison of \code{mif} and \code{nlf} for $\Sexpr{nrow(cmp1)}$ simulated datasets using two criteria.
     In both plots, the maximum likelihood estimate (MLE), $\hat\theta$, obtained using iterated filtering is compared with the maximum simulated quasi-likelihood (MSQL) estimate, $\tilde\theta$, obtained using nonlinear forecasting.
     (A) Improvement in estimated log likelihood, $\loglikMC$, at the point estimate over that at the true parameter value, $\theta$.
     (B) Improvement in simulated log quasi-likelihood $\loglikMC_Q$, at the point estimate over that at the true parameter value, $\theta$.
@@ -1939,7 +1906,7 @@ popViewport()
 \Cref{fig:mif:nlf:compare}B plots $\loglikMC_Q(\hat\theta)-\loglikMC_Q(\theta)$ against $\loglikMC_Q(\tilde\theta)-\loglikMC_Q(\theta)$, showing that likelihood-based inference is almost as good as \code{nlf} at optimizing the simulated quasi-likelihood criterion which \code{nlf} targets.
 \Cref{fig:mif:nlf:compare} suggests that the MSQL approach may be inefficient, since it can give estimates with poor behavior according to the statistically efficient criterion of likelihood.
 Another possibility is that this particular implementation of \code{nlf} was unfortunate.
-Each \code{mif} optimization took \Sexpr{format(round(mean(cmp1$mifTime),1))}~sec to run, compared to \Sexpr{format(round(mean(cmp1$nlfTime),1))}~sec for \code{nlf}, and it is possible that extra computer time or other algorithmic adjustments could substantially improve either or both estimators.
+Each \code{mif} optimization took $\Sexpr{format(round(mean(cmp1$mifTime),1))}$~sec to run, compared to $\Sexpr{format(round(mean(cmp1$nlfTime),1))}$~sec for \code{nlf}, and it is possible that extra computer time or other algorithmic adjustments could substantially improve either or both estimators.
 It is hard to ensure a fair comparison between methods, and in practice there is little substitute for some experimentation with different methods and algorithmic settings on a problem of interest.
 If the motivation for using NLF is preference for 2-step prediction in place of the likelihood, a comparison with SMC-based likelihood evaluation and maximization is useful to inform the user of the consequences of that preference.
 
@@ -2015,28 +1982,28 @@ We will go further and assume that birth and death rates are equal and independe
 A consequence is that the expected population size remains constant.
 
 The continuous-time Markov process is fully specified by the infinitesimal increment probabilities.
-Specifically, writing $\dlta{N(t)}=N(t+h)-N(t)$, we have
+Specifically, writing $\Delta{N(t)}=N(t+h)-N(t)$, we have
 \begin{equation}\label{eq:sir-cp}
   \begin{aligned}
-    \prob{\dlta{\cp{\BirthDeath}{S}(t)}\myequals 1 \given S(t), I(t), R(t)} &= \mu\,P(t)\,h+o(h), \\
-    \prob{\dlta{\cp{S}{I}(t)}\myequals 1 \given S(t), I(t), R(t)} &= \lambda(t)\,S(t)\,h+o(h), \\
-    \prob{\dlta{\cp{I}{R}(t)}\myequals 1 \given S(t), I(t), R(t)} &= \gamma\,I(t)\,h+o(h), \\
-    \prob{\dlta{\cp{S}{\BirthDeath}(t)}\myequals 1 \given S(t), I(t), R(t) } &= \mu\,S(t)\,h+o(h), \\
-    \prob{\dlta{\cp{I}{\BirthDeath}(t)}\myequals 1\given S(t), I(t), R(t)} &= \mu\,I(t)\,h+o(h), \\
-    \prob{\dlta{\cp{R}{\BirthDeath}(t)}\myequals 1 \given S(t), I(t), R(t)} &= \mu\,R(t)\,h+o(h),
+    \prob{\Delta{\cp{\BirthDeath}{S}(t)}\myequals 1 \given S(t), I(t), R(t)} &= \mu\,P(t)\,h+o(h), \\
+    \prob{\Delta{\cp{S}{I}(t)}\myequals 1 \given S(t), I(t), R(t)} &= \lambda(t)\,S(t)\,h+o(h), \\
+    \prob{\Delta{\cp{I}{R}(t)}\myequals 1 \given S(t), I(t), R(t)} &= \gamma\,I(t)\,h+o(h), \\
+    \prob{\Delta{\cp{S}{\BirthDeath}(t)}\myequals 1 \given S(t), I(t), R(t) } &= \mu\,S(t)\,h+o(h), \\
+    \prob{\Delta{\cp{I}{\BirthDeath}(t)}\myequals 1\given S(t), I(t), R(t)} &= \mu\,I(t)\,h+o(h), \\
+    \prob{\Delta{\cp{R}{\BirthDeath}(t)}\myequals 1 \given S(t), I(t), R(t)} &= \mu\,R(t)\,h+o(h),
   \end{aligned}
 \end{equation}
 together with statement that all events of the form
 \begin{equation*}
-  \{\dlta{\cp{A}{B}(t)}\,{>}\, 1\} \qquad \text{and} \qquad \{\dlta{\cp{A}{B}(t)}\myequals 1,\dlta{\cp{C}{D}(t)}\myequals 1\}
+  \{\Delta{\cp{A}{B}(t)}\,{>}\, 1\} \qquad \text{and} \qquad \{\Delta{\cp{A}{B}(t)}\myequals 1,\Delta{\cp{C}{D}(t)}\myequals 1\}
 \end{equation*}
 for $A$, $B$, $C$, $D$ with $(A,B)\neq (C,D)$ have probability $o(h)$.
 The counting processes are coupled to the state variables \citep{breto11} via the following identities
 \begin{equation}\label{eq:sir-cp-bal}
   \begin{aligned}
-    \dlta{S}(t) &= \dlta{\cp{\BirthDeath}{S}}(t)-\dlta{\cp{S}{I}}(t)-\dlta{\cp{S}{\BirthDeath}}(t),\\
-    \dlta{I}(t) &= \dlta{\cp{S}{I}}(t)-\dlta{\cp{I}{R}}(t)-\dlta{\cp{I}{\BirthDeath}}(t),\\
-    \dlta{R}(t) &= \dlta{\cp{I}{R}}(t)-\dlta{\cp{R}{\BirthDeath}}(t).\\
+    \Delta{S}(t) &= \Delta{\cp{\BirthDeath}{S}}(t)-\Delta{\cp{S}{I}}(t)-\Delta{\cp{S}{\BirthDeath}}(t),\\
+    \Delta{I}(t) &= \Delta{\cp{S}{I}}(t)-\Delta{\cp{I}{R}}(t)-\Delta{\cp{I}{\BirthDeath}}(t),\\
+    \Delta{R}(t) &= \Delta{\cp{I}{R}}(t)-\Delta{\cp{R}{\BirthDeath}}(t).\\
   \end{aligned}
 \end{equation}
 Taking expectations of \cref{eq:sir-cp,eq:sir-cp-bal}, dividing through by $h$, and taking the limit as $h\downarrow~0$, one obtains a system of nonlinear ordinary differential equations which is known as the deterministic skeleton of the model \citep{coulson04}.
@@ -2053,9 +2020,9 @@ It is typically impossible to monitor $S$, $I$, and $R$, directly.
 It sometimes happens, however, that public health authorities keep records of \emph{cases}, i.e., individual infections.
 The number of cases, $C(t_1,t_2)$, recorded within a given reporting interval $[t_1,t_2)$ might perhaps be modeled by a negative binomial process
 \begin{equation}
-  C(t_1,t_2)\;\sim\;\mathrm{NegBin}(\rho\,\dlta{\cp{S}{I}}(t_1,t_2),\theta),
+  C(t_1,t_2)\;\sim\;\mathrm{NegBin}(\rho\,\Delta{\cp{S}{I}}(t_1,t_2),\theta),
 \end{equation}
-where $\dlta{\cp{S}{I}}(t_1,t_2)$ is the true incidence (the accumulated number of new infections that have occured over the $[t_1,t_2)$ interval), $\rho$ is the \emph{reporting rate}, (the probability that an infection is observed and recorded), $\theta$ is the negative binomial ``size'' parameter, and the notation is meant to indicate that $\E{C(t_1,t_2)\given \dlta{\cp{S}{I}}(t_1,t_2)=H}=\rho\,H$ and $\VAR{C(t_1,t_2)\given \dlta{\cp{S}{I}}(t_1,t_2)=H}=\rho\,H+\rho^2\,H^2/\theta$.
+where $\Delta{\cp{S}{I}}(t_1,t_2)$ is the true incidence (the accumulated number of new infections that have occured over the $[t_1,t_2)$ interval), $\rho$ is the \emph{reporting rate}, (the probability that an infection is observed and recorded), $\theta$ is the negative binomial ``size'' parameter, and the notation is meant to indicate that $\E{C(t_1,t_2)\given \Delta{\cp{S}{I}}(t_1,t_2)=H}=\rho\,H$ and $\VAR{C(t_1,t_2)\given \Delta{\cp{S}{I}}(t_1,t_2)=H}=\rho\,H+\rho^2\,H^2/\theta$.
 The fact that the observed data are linked to an accumulation, as opposed to an instantaneous value, introduces a slight complication, which we discuss below.
 
 \subsection[Implementing the SIR model in pomp]{Implementing the SIR model in \pkg{pomp}}
@@ -2065,17 +2032,13 @@ As in \cref{sec:ricker:setup}, we will write these components using \pkg{pomp}'s
 Recall that these are snippets of \proglang{C} code that \pkg{pomp} automatically assembles, compiles, and dynamically loads into the running \proglang{R} session.
 
 To start with, we will write snippets that specify the measurement model (\code{rmeasure} and \code{dmeasure}):
-<<sir-comments,include=F>>=
+<<sir-comments,include=FALSE>>=
 ##' ## More complex models.
 ##' ### Simple SIR.
 ##' C snippets expressing the two faces of the measurement model.
-<<sir-measmodel,tidy=F>>=
-rmeas <- "
-  cases = rnbinom_mu(theta, rho * H);
-"
-dmeas <- "
-  lik = dnbinom_mu(cases, theta, rho * H, give_log);
-"
+<<sir-measmodel>>=
+rmeas <- Csnippet("cases = rnbinom_mu(theta, rho * H);")
+dmeas <- Csnippet("lik = dnbinom_mu(cases, theta, rho * H, give_log);")
 @
 Here, we are using \code{cases} to refer to the data (number of reported cases) and \code{H} to refer to the true incidence over the reporting interval.
 The negative binomial simulator \code{rnbinom\_mu} and density function \code{dnbinom\_mu} are provided by \proglang{R}.
@@ -2084,49 +2047,49 @@ Notice that, in these snippets, we never declare the variables;
 \code{pomp} will ensure that the state variable (\code{H}), observable (\code{cases}), parameters (\code{theta}, \code{rho}), and likelihood (\code{lik}) are defined in the contexts within which these snippets are executed.
 
 For the \code{rprocess} portion, we could simulate from the continuous-time Markov process exactly \citep{gillespie77};
-the \pkg{pomp} function \code{gillespie.sim} implements this algorithm.
+the \pkg{pomp} function \code{gillespie} implements this algorithm.
 However, for practical purposes, the exact algorithm is often prohibitively slow.
-If we are willing to live with an approximate simulation scheme, we can use the so-called ``tau-leap'' algorithm, one version of which is implemented in \pkg{pomp} via the \code{euler.sim} plug-in.
-This algorithm holds the transition rates $\lambda$, $\mu$, $\gamma$ constant over a small interval of time $\dlta{t}$ and simulates the numbers of births, deaths, and transitions that occur over that interval.
-It then updates the state variables $S$, $I$, $R$ accordingly, increments the time variable by $\dlta{t}$, recomputes the transition rates, and repeats.
-Naturally, as $\dlta{t}\to 0$, this approximation to the true continuous-time process becomes better and better.
-The critical feature from the inference point of view, however, is that no relationship needs to be assumed between the Euler simulation interval $\dlta{t}$ and the reporting interval, which itself does not even need to be the same from one observation to the next.
+If we are willing to live with an approximate simulation scheme, we can use the so-called ``tau-leap'' algorithm, one version of which is implemented in \pkg{pomp} via the \code{euler} plug-in.
+This algorithm holds the transition rates $\lambda$, $\mu$, $\gamma$ constant over a small interval of time $\Delta{t}$ and simulates the numbers of births, deaths, and transitions that occur over that interval.
+It then updates the state variables $S$, $I$, $R$ accordingly, increments the time variable by $\Delta{t}$, recomputes the transition rates, and repeats.
+Naturally, as $\Delta{t}\to 0$, this approximation to the true continuous-time process becomes better and better.
+The critical feature from the inference point of view, however, is that no relationship needs to be assumed between the Euler simulation interval $\Delta{t}$ and the reporting interval, which itself does not even need to be the same from one observation to the next.
 
 Under the above assumptions, the number of individuals leaving any of the classes by all available routes over a particular time interval is a multinomial process.
-For example, if $\dlta{\cp{S}{I}}$ and $\dlta{\cp{S}{}}$ are the numbers of S individuals acquiring infection and dying, respectively, over the Euler simulation interval $[t,t+\dlta{t})$, then
+For example, if $\Delta{\cp{S}{I}}$ and $\Delta{\cp{S}{}}$ are the numbers of S individuals acquiring infection and dying, respectively, over the Euler simulation interval $[t,t+\Delta{t})$, then
 \begin{equation}\label{eq:eulermultinomial}
-    (\dlta{\cp{S}{I}},\dlta{\cp{S}{}},S-\dlta{\cp{S}{I}}-\dlta{\cp{S}{}})\sim\mathrm{Multinom}\left(S(t);p_{S{\to}I},p_{S{\to}},1-p_{S{\to}I}-p_{S{\to}}\right),\\
+    (\Delta{\cp{S}{I}},\Delta{\cp{S}{}},S-\Delta{\cp{S}{I}}-\Delta{\cp{S}{}})\sim\mathrm{Multinom}\left(S(t);p_{S{\to}I},p_{S{\to}},1-p_{S{\to}I}-p_{S{\to}}\right),\\
 \end{equation}
 where
 \begin{equation}\label{eq:eulermultinomial2}
   \begin{aligned}
-    p_{S{\to}I} &= \frac{\lambda(t)}{\lambda(t)+\mu}\,\left(1-e^{-(\lambda(t)+\mu)\,\dlta{t}}\right),\\
-    p_{S{\to}} &= \frac{\mu}{\lambda(t)+\mu}\,\left(1-e^{-(\lambda(t)+\mu)\,\dlta{t}}\right).
+    p_{S{\to}I} &= \frac{\lambda(t)}{\lambda(t)+\mu}\,\left(1-e^{-(\lambda(t)+\mu)\,\Delta{t}}\right),\\
+    p_{S{\to}} &= \frac{\mu}{\lambda(t)+\mu}\,\left(1-e^{-(\lambda(t)+\mu)\,\Delta{t}}\right).
   \end{aligned}
 \end{equation}
-By way of shorthand, we say that the random variable $(\dlta{\cp{S}{I}},\dlta{\cp{S}{}})$ in \cref{eq:eulermultinomial} has an \emph{Euler-multinomial} distribution.
+By way of shorthand, we say that the random variable $(\Delta{\cp{S}{I}},\Delta{\cp{S}{}})$ in \cref{eq:eulermultinomial} has an \emph{Euler-multinomial} distribution.
 \pkg{pomp} provides convenience functions for such distributions, which arise with some frequency in compartmental models.
 Specifically, the functions \code{reulermultinom} and \code{deulermultinom} respectively draw random deviates from, and evaluate the probability mass function of, such distributions.
-As the help pages relate, \code{reulermultinom} and \code{deulermultinom} parameterize the Euler-multinomial distributions by the size ($S(t)$ in \cref{eq:eulermultinomial}), rates ($\lambda(t)$ and $\mu$), and time interval $\dlta{t}$.
+As the help pages relate, \code{reulermultinom} and \code{deulermultinom} parameterize the Euler-multinomial distributions by the size ($S(t)$ in \cref{eq:eulermultinomial}), rates ($\lambda(t)$ and $\mu$), and time interval $\Delta{t}$.
 Obviously, the Euler-multinomial distributions generalize to an arbitrary number of exit routes.
 
-The help page (\code{?euler.sim}) informs us that to use \code{euler.sim}, we need to specify a function that advances the states from $t$ to $t+\dlta{t}$.
+The help page (\code{?euler}) informs us that to use \code{euler}, we need to specify a function that advances the states from $t$ to $t+\Delta{t}$.
 Again, we write this in \proglang{C} to realize faster run-times:
-<<sir-step-comments,include=F>>=
+<<sir-step-comments,include=FALSE>>=
 ##' The process model simulator.
 ##' This takes one step from time t -> t+dt
 ##' The per-capita rates of the elementary transitions are stored in 'rate'.
 ##' The numbers of individuals making each transition is stored in 'trans'.
 ##' Births are Poisson, transitions are Euler-multinomial.
 ##' 'H' accumulates the recoveries (and will be zeroed after each observation).
-<<sir-proc-sim-def,tidy=F>>=
-sir.step <- "
+<<sir-proc-sim-def>>=
+sir.step <- Csnippet("
   double rate[6];
   double dN[6];
   double P;
   P = S + I + R;
   rate[0] = mu * P;       // birth
-  rate[1] = beta * I / P; // transmission
+  rate[1] = Beta * I / P; // transmission
   rate[2] = mu;           // death from S
   rate[3] = gamma;        // recovery
   rate[4] = mu;           // death from I
@@ -2138,8 +2101,13 @@ sir.step <- "
   S += dN[0] - dN[1] - dN[2];
   I += dN[1] - dN[3] - dN[4];
   R += dN[3] - dN[5];
-  H += dN[1];
-"
+  H += dN[1];")
+
+rinit <- Csnippet("
+  S = nearbyint(popsize*S_0 / (S_0+I_0+R_0));
+  I = nearbyint(popsize*I_0 / (S_0+I_0+R_0));
+  R = nearbyint(popsize*R_0 / (S_0+I_0+R_0));
+  H = 0;")
 @
 
 As before, \pkg{pomp} will ensure that the undeclared state variables and parameters are defined in the context within which the snippet is executed.
@@ -2150,7 +2118,7 @@ The package help system (\code{?Csnippet}) includes instructions for, and exampl
 
 Two significant wrinkles remain to be explained.
 First, notice that in \code{sir.step}, the variable \code{H} simply accumulates the numbers of new infections: \code{H} is a counting process that is nondecreasing with time.
-In fact, the incidence within an interval $[t_1,t_2)$ is $\dlta{\cp{S}{I}}(t_1,t_2)=\mathtt{H}(t_2)-\mathtt{H}(t_1)$.
+In fact, the incidence within an interval $[t_1,t_2)$ is $\Delta{\cp{S}{I}}(t_1,t_2)=\mathtt{H}(t_2)-\mathtt{H}(t_1)$.
 This leads to a technical difficulty with the measurement process, however, in that the data are assumed to be records of new infections occurring within the latest reporting interval, while the process model tracks the accumulated number of new infections since time $t_0$.
 We can get around this difficulty by re-setting \code{H} to zero immediately after each observation.
 We cause \pkg{pomp} to do this via the \code{pomp} function's \code{zeronames} argument, as we will see in a moment.
@@ -2160,26 +2128,20 @@ The second wrinkle has to do with the initial conditions, i.e., the states $S(t_
 By default, \pkg{pomp} will allow us to specify these initial states arbitrarily.
 For the model to be consistent, they should be positive integers that sum to the population size $N$.
 We can enforce this constraint by customizing the parameterization of our initial conditions.
-We do this by furnishing a custom \code{initializer} in the call to \code{pomp}.
+We do this by furnishing a custom \code{rinit} in the call to \code{pomp}.
 Let us construct it now and fill it with simulated data.
-<<sir-pomp-comment,include=F>>=
+<<sir-pomp-comment,include=FALSE>>=
 ##' Construct the pomp object and fill with simulated data.
-<<sir-pomp-def,eval=T,echo=T,results="hide",tidy=F>>=
-sir1 <- pomp(data = data.frame(cases = NA, time = seq(0, 10, by = 1/52)),
-     times = "time", t0 = -1/52, dmeasure = Csnippet(dmeas),
-     rmeasure = Csnippet(rmeas), rprocess = euler.sim(
-       step.fun = Csnippet(sir.step), delta.t = 1/52/20),
-     statenames = c("S", "I", "R", "H"),
-     paramnames = c("gamma", "mu", "theta", "beta", "popsize",
-       "rho", "S.0", "I.0", "R.0"), zeronames = "H",
-     initializer = function(params, t0, ...) {
-       fracs <- params[c("S.0", "I.0", "R.0")]
-       setNames(c(round(params["popsize"] * fracs/sum(fracs)), 0),
-                c("S", "I", "R", "H"))
-     }, params = c(popsize = 500000, beta = 400, gamma = 26,
-          mu = 1/50, rho = 0.1, theta = 100, S.0 = 26/400,
-          I.0 = 0.002, R.0 = 1))
-sir1 <- simulate(sir1, seed = 1914679908L)
+@
+<<sir-pomp-def,results="hide",tidy=FALSE>>=
+sir1 <- simulate(times =seq(0,10,by=1/52), t0 = -1/52,
+  dmeasure = dmeas, rmeasure = rmeas, rinit = rinit,
+  rprocess = euler(step.fun = sir.step, delta.t = 1/52/20),
+  statenames = c("S", "I", "R", "H"), accumvars="H", obsnames="cases",
+  paramnames = c("gamma", "mu", "theta", "Beta", "popsize", "rho",
+    "S_0", "I_0", "R_0"), params = c(popsize = 500000, Beta = 400,
+      gamma = 26, mu = 1/50, rho = 0.1, theta = 100, S_0 = 26/400,
+      I_0 = 0.002, R_0 = 1), seed = 1914679908L)
 @
 
 Notice that we are assuming here that the data are collected weekly and use an Euler step-size of 1/20~wk.
@@ -2188,7 +2150,7 @@ We have assumed a host population size of 500,000 and 10\% reporting efficiency.
 \cref{fig:sir1-plot} shows one realization of this process.
 
 \begin{figure}[t!]
-<<sir1-plot,echo=F,fig.height=5>>=
+<<sir1-plot,echo=FALSE,fig.height=5>>=
 ops <- options(scipen=-10)
 plot(sir1,mar=c(0,5,2,0))
 options(ops)
@@ -2228,16 +2190,16 @@ When we pass \code{birthdat} as the \code{covar} argument to \code{pomp}, we cau
 The package employs linear interpolation to provide a value of each variable in the covariate table at any requisite time:
 from the user's perspective, a variable \code{births} will simply be available for use by the model codes.
 
-<<birthdat,eval=T,echo=F,results="hide">>=
+<<birthdat,eval=TRUE,echo=FALSE,results="hide">>=
 ##' Construct some fake birthrate data.
 birthdat <- data.frame(time=seq(-1,11,by=1/12))
 birthdat$births <- 5e5*bspline.basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
 freeze(seed=5853712L,{
   birthdat$births <- ceiling(rlnorm(
-                                    n=nrow(birthdat),
-                                    meanlog=log(birthdat$births),
-                                    sdlog=0.001
-                                    ))
+    n=nrow(birthdat),
+    meanlog=log(birthdat$births),
+    sdlog=0.001
+  ))
 })
 @
 
@@ -2255,7 +2217,7 @@ This model assumption attempts to capture variability in the timing of seasonal 
 As $\sigma$ varies, it can represent anything from a very mild modulation of the timing of the seasonal progression to much more intense variation.
 
 Let us modify the process-model simulator to incorporate these complexities.
-<<complex-sir-comment,include=F>>=
+<<complex-sir-comment,include=FALSE>>=
 ##' ### Complex SIR model.
 ##' This has seasonal forcing, covariates, extrademographic stochasticity,
 ##' and imported infections.
@@ -2264,8 +2226,8 @@ Let us modify the process-model simulator to incorporate these complexities.
 ##' 'beta' is the transmission rate, which varies according to the random variable 'phase'.
 ##' 'iota' is the effective number of imported infections (assumed constant).
 ##' 'births' is interpolated from the covariate table 'birthdat'
-<<complex-sir-def,echo=T,eval=T,results="hide",tidy=F>>=
-seas.sir.step <- "
+<<complex-sir-def,echo=TRUE,eval=TRUE,results="hide",tidy=FALSE>>=
+seas.sir.step <- Csnippet("
   double rate[6];
   double dN[6];
   double Beta;
@@ -2288,29 +2250,31 @@ seas.sir.step <- "
   P = S + I + R;
   Phi += dW;
   H += dN[1];
-  noise += (dW - dt) / sigma;
-"
-sir2 <- pomp(sir1, rprocess = euler.sim(
-  step.fun = Csnippet(seas.sir.step), delta.t = 1/52/20),
-  dmeasure = Csnippet(dmeas), rmeasure = Csnippet(rmeas),
-  covar = birthdat, tcovar = "time", zeronames = c("H", "noise"),
+  noise += (dW - dt) / sigma;")
+
+seas.rinit <- Csnippet("
+  S = nearbyint(popsize*S_0 / (S_0+I_0+R_0));
+  I = nearbyint(popsize*I_0 / (S_0+I_0+R_0));
+  R = nearbyint(popsize*R_0 / (S_0+I_0+R_0));
+  P = popsize;
+  H = Phi = noise = 0;")
+
+sir2 <- simulate(sir1, dmeasure = dmeas, rmeasure = rmeas,
+  rprocess = euler(seas.sir.step, delta.t = 1/52/20),
+  covar = covariate_table(birthdat, order="linear", times = "time"),
+  rinit = seas.rinit, accumvars = c("H", "noise"),
   statenames = c("S", "I", "R", "H", "P", "Phi", "noise"),
   paramnames = c("gamma", "mu", "popsize", "rho", "theta", "sigma",
-                 "S.0", "I.0", "R.0", "b1", "b2", "b3", "iota"),
-  initializer = function(params, t0, ...) {
-    fracs <- params[c("S.0", "I.0", "R.0")]
-    setNames(c(round(params["popsize"] * c(fracs/sum(fracs), 1)),
-      0, 0, 0), c("S", "I", "R", "P", "H", "Phi", "noise"))
-  }, params = c(popsize = 500000, iota = 5, b1 = 6, b2 = 0.2,
-                b3 = -0.1, gamma = 26, mu = 1/50, rho = 0.1, theta = 100,
-                sigma = 0.3, S.0 = 0.055, I.0 = 0.002, R.0 = 0.94))
-sir2 <- simulate(sir2, seed = 619552910L)
+                 "S_0", "I_0", "R_0", "b1", "b2", "b3", "iota"),
+  params = c(popsize = 500000, iota = 5, b1 = 6, b2 = 0.2, b3 = -0.1,
+    gamma = 26, mu = 1/50, rho = 0.1, theta = 100, sigma = 0.3,
+    S_0 = 0.055, I_0 = 0.002, R_0 = 0.94), seed = 619552910L)
 @
 \Cref{fig:sir2-plot} shows the simulated data and latent states.
 The \code{sir2} object we have constructed here contains all the key elements of models used within \pkg{pomp} to investigate cholera \citep{king08}, measles \citep{he10}, malaria \citep{bhadra11}, pertussis \citep{blackwood13,Lavine2013}, pneumococcal pneumonia \citep{shrestha13}, rabies \citep{blackwood13b}, and Ebola virus disease \citep{King2015}.
 
 \begin{figure}[t!]
-<<sir2-plot,echo=F,fig.height=6.5>>=
+<<sir2-plot,echo=FALSE,fig.height=6.5>>=
 ops <- options(scipen=-10)
 plot(sir2,mar=c(0,5,2,0))
 options(ops)
@@ -2340,10 +2304,10 @@ Multi-processor computing also becomes necessary for ambitious projects.
 The two most common computationally intensive tasks are the assessment of Monte~Carlo variability and the investigation of the roles of starting values and other algorithmic settings on optimization routines.
 These analyses require only embarrassingly parallel computations and need no special discussion here.
 
-The package contains more examples (via \code{pompExample}), which can be used as templates for implementation of new models;
+The package contains more examples, which can be used as templates for implementation of new models;
 the \proglang{R} and \proglang{C} codes underlying these examples are provided with the package.
 In addition, \pkg{pomp} provides a number of interactive demos (via \code{demo}).
-Further documentation and an introductory tutorial are provided with the package and on the \pkg{pomp} website, \url{http://kingaa.github.io/pomp}.
+Further documentation and an introductory tutorial are provided with the package and on the \pkg{pomp} website, \url{https://kingaa.github.io/pomp}.
 
 \section*{Acknowledgments}
 
@@ -2357,19 +2321,21 @@ Financial support was provided by grants DMS-1308919, DMS-0805533, EF-0429588 fr
 
 \end{document}
 
-<<timing2,cache=F>>=
+<<timing2,cache=FALSE>>=
 bigtock <- Sys.time()
 totalSweaveTime <- bigtock-bigtick
+sysi <- Sys.info()
+sess <- sessionInfo()
+tfile <- file.path(resdir,"timing.rda")
 
-if (file.exists("timing.rda")) {
-  load("timing.rda")
+if (file.exists(tfile)) {
+  load(tfile)
 } else {
-  save(totalSweaveTime,file='timing.rda',compress='xz')
+  save(totalSweaveTime,sysi,sess,file=tfile,compress='xz')
 }
 
-print(Sys.info())
-print(sessionInfo())
-
+print(sysi)
+print(sess)
 print(mifTime)
 print(pmcmcTime)
 print(abcTime)

@@ -3,7 +3,7 @@ library(ggplot2)
 library(knitr)
 theme_set(theme_bw())
 library(pomp)
-stopifnot(packageVersion("pomp")>="2.1")
+stopifnot(packageVersion("pomp")>="4.2")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -20,8 +20,8 @@ theta <- coef(gomp)
 theta.true <- theta
 
 ## ----gompertz-sim,include=FALSE-----------------------------------------------
-gomp %>%
-  window(start=1) %>%
+gomp |>
+  window(start=1) |>
   simulate(seed=340398091L) -> gomp
 
 
@@ -34,7 +34,7 @@ estpars <- c("r","sigma","tau")
 
 
 ## ----gompertz-mif2-2-eval,eval=TRUE,purl=TRUE,include=FALSE-------------------
-bake(file="gompertz-mif2.rds",{
+bake(file="results/mif2/gompertz-mif2.rds",{
   library(doRNG)
   registerDoRNG(525386942)
   
@@ -45,16 +45,16 @@ bake(file="gompertz-mif2.rds",{
       meanlog=log(theta.guess[estpars]),
       sdlog=1
     )
-    gomp %>%
+    gomp |>
       mif2(
         Nmif=50,
         params=theta.guess,
         rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),
         cooling.fraction.50=0.95,
         Np=2000
-      ) %>%
-      continue(Nmif=50,cooling.fraction=0.8) %>%
-      continue(Nmif=50,cooling.fraction=0.6) %>%
+      ) |>
+      continue(Nmif=50,cooling.fraction=0.8) |>
+      continue(Nmif=50,cooling.fraction=0.6) |>
       continue(Nmif=50,cooling.fraction=0.2) -> m1
     ll <- replicate(n=10,logLik(pfilter(m1,Np=10000)))
     list(mif=m1,ll=logmeanexp(ll,se=TRUE))
@@ -66,7 +66,7 @@ lls <- sapply(mf,getElement,"ll")
 best <- which.max(sapply(mf,getElement,"ll")[1,])
 theta.mif <- coef(mf[[best]]$mif)
 
-replicate(10,logLik(pfilter(gomp,params=theta.mif,Np=10000))) %>%
+replicate(10,logLik(pfilter(gomp,params=theta.mif,Np=10000))) |>
   logmeanexp(se=TRUE) -> pf.loglik.mif
 
 
@@ -134,14 +134,14 @@ loglik.mle <- -kalm.fit1$value
 
 
 ## ----gomp-post-mif2,include=FALSE---------------------------------------------
-replicate(n=10,logLik(pfilter(gomp,Np=10000))) %>%
+replicate(n=10,logLik(pfilter(gomp,Np=10000))) |>
   logmeanexp(se=TRUE) -> pf.loglik.truth
-replicate(n=10,logLik(pfilter(gomp,params=theta.mle,Np=10000))) %>%
+replicate(n=10,logLik(pfilter(gomp,params=theta.mle,Np=10000))) |>
   logmeanexp(se=TRUE) -> pf.loglik.mle
 
 rbind(`Truth`=theta.true[estpars],
   `Exact MLE`=theta.mle[estpars],
-  `IF2 MLE`=theta.mif[estpars]) %>% round(digits=4) %>%
+  `IF2 MLE`=theta.mif[estpars]) |> round(digits=4) |>
   cbind(`$\\hat{\\ell}$`=round(c(pf.loglik.truth[1],pf.loglik.mle[1],pf.loglik.mif[1]),2),
     `s.e. $\\hat{\\ell}$`=round(c(pf.loglik.truth[2],pf.loglik.mle[2],pf.loglik.mif[2]),2),
     `$\\ell$`=round(c(loglik.truth,loglik.mle,loglik.mif),2)

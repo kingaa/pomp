@@ -12,10 +12,10 @@ output:
     code_folding: show
     highlight: haddock
     number_sections: FALSE
-    df_print: paged
+    df_print: kable
 params:
-  prefix: "getting-started"
-  min.pomp.version: "3.1"
+  prefix: "getting_started"
+  min.pomp.version: "4.2"
   show_solns: TRUE
 bibliography: pomp.bib
 csl: jss.csl
@@ -43,15 +43,23 @@ opts_chunk$set(
   fig.show='asis',
   size='small',
   fig.lp="fig:",
-  fig.path=paste0("figure/",params$prefix,"-"),
-  cache.path=paste0("cache/",params$prefix,"-"),
+  fig.path=paste0("figure/",params$prefix,"/"),
+  cache.path=paste0("cache/",params$prefix,"/"),
   fig.pos="h!",
   fig.align='center',
   fig.height=4,fig.width=6.83,
   dpi=200,
   dev='CairoPNG',
   dev.args=list(bg='transparent')
-)
+  )
+
+library(DT)
+dfprintfn <- function (x, ...) {
+  x |>
+    DT::datatable() |>
+    knitr::knit_print()
+}
+registerS3method("knit_print", "data.frame", dfprintfn)
 ```
 
 ```{r prelims,echo=FALSE,cache=FALSE}
@@ -62,10 +70,20 @@ options(
   encoding="UTF-8",
   scipen=5
 )
+resdir <- file.path("results",params$prefix)
+dir.create(resdir,recursive=TRUE)
 set.seed(594709947L)
 library(tidyverse)
 library(ggplot2)
 theme_set(theme_bw())
+```
+
+```{r parallel_setup,include=FALSE,purl=TRUE,cache=FALSE}
+if (file.exists("CLUSTE.R")) {
+  source("CLUSTE.R")
+}
+library(doRNG)
+registerDoRNG(348885445L)
 ```
 
 ## Introduction
@@ -277,6 +295,9 @@ The former is the *initial time*, $t_0$, i.e., the time at which the initial con
 Since our initial condition is that $N(0)=N_0$, our initial time is $t_0=0$.
 The `times` argument specifies the observation times $t_1,\dots,t_N$.
 
+Finally, note that we received a warning about \code{NA} values being generated.
+We will soon see what this is about.
+
 What sort of an object is `sim1`?
 If we print it, we see
 
@@ -312,9 +333,10 @@ Casting the 'pomp' object as a data frame allows us to use **ggplot2** graphics:
   geom_line()
 ```
 
-Now notice that we had a warning when we ran `simulate`.
-The warning was telling us that `simulate` could not simulate from the measurement process because we had supplied it with no rmeasure component.
-Let's see how we can specify rmeasure, the measurement model simulator.
+Tp return to the warning we got when we ran `simulate`:
+it was telling us that `simulate` could not make a random draw from the measurement process because we had not supplied it with any information about this process.
+In particular, we had not supplied a measurement-model simulator.
+Let's now see how to specify the measurement-model simulator, or rmeasure.
 
 ### The measurement model
 
@@ -444,7 +466,7 @@ To change some of these choices, one can do `f(y,...)`, where the `...` stands f
 
 Morever, since `y` contains so much information, this information will typically be reused when we apply a different function, `g`, to `y`, when it makes sense to do so.
 
-The [**magrittr** package](https://cran.r-project.org/package=magrittr) (part of the [**tidyverse**](https://cran.r-project.org/package=tidyverse)), provides new syntax that is especially convenient for us.
+As of version 4.1 **R** provides a new pipe syntax that is especially convenient for us.
 It allows us to construct *pipelines* of **R** commands, which leads (once one is used to it) to code that is easier to read.
 In brief, a command in ordinary **R** style, such as
 ```
@@ -460,7 +482,7 @@ w <- h(z,...)
 which multiplies the entities (`y`, `z`, `w`) one must name and keep track of.
 In contrast, the pipeline syntax of **magrittr** allows us to write
 ```
-x %>% f(...) %>% g(...) %>% h(...)
+x |> f(...) |> g(...) |> h(...)
 ```
 The object-oriented structure of **pomp** makes this kind of programming quite natural.
 
@@ -468,8 +490,6 @@ Some experienced **R** programmers find the pipeline syntax uncomfortable or unn
 Of course, it is not necessary to adopt this style of programming to use **pomp**, but it is quite natural and, experience shows, quite addictive!
 
 We will use pipelines freely for the remainder of the document.
-Note that it is not necessary to load **magrittr** to use this syntax:
-the `%>%` operator is imported from **magrittr** and re-exported by **pomp**.
 
 ***Important note:*** 
 If you opt to load the **tidyverse** (or individual packages therein), be sure to load **pomp** *after* loading these packages.
@@ -499,7 +519,7 @@ They are provided as part of the package, in the data frame `parus`.
 Here we display the data graphically and in a table:
 
 ```{r parus-plot}
-parus %>%
+parus |>
   ggplot(aes(x=year,y=pop))+
   geom_line()+geom_point()+
   expand_limits(y=0)
@@ -511,7 +531,7 @@ Let's construct such an object with these data, together with the Ricker model w
 We do this with a call to the constructor function `pomp`:
 
 ```{r rick}
-parus %>%
+parus |>
   pomp(
     times="year", t0=1960,
     rinit=function (N_0, ...) {
@@ -566,7 +586,7 @@ We'll also include the same measurement model we used before.
 Because everything but the 'rprocess' component is the same as with the Ricker model, to accomplish this, we can simply do
 
 ```{r vp1,eval=FALSE,include=FALSE,purl=FALSE}
-parus %>%
+parus |>
   pomp(
     times="year", t0=1960,
     rinit=function (N_0, ...) {
@@ -579,7 +599,7 @@ parus %>%
   ) -> vp
 ```
 ```{r vp}
-rick %>% pomp(rprocess=euler(vpstep,delta.t=1/365)) -> vp
+rick |> pomp(rprocess=euler(vpstep,delta.t=1/365)) -> vp
 ```
 
 Notice that we've specified an Euler-Maruyama step of about 1 day:
@@ -596,11 +616,11 @@ Notice that the `format="data.frame"` and `include.data=TRUE` options facilitate
 Vary the parameters to try to achieve a better fit to the data, as judged purely "by eye".
 
 ```{r vp_sim1}
-vp %>%
+vp |>
   simulate(
     params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
-    format="data.frame", include.data=TRUE, nsim=5) %>%
-  mutate(ds=case_when(.id=="data"~"data",TRUE~"simulation")) %>%
+    format="data.frame", include.data=TRUE, nsim=5) |>
+  mutate(ds=case_when(.id=="data"~"data",TRUE~"simulation")) |>
   ggplot(aes(x=year,y=pop,group=.id,color=ds))+
   geom_line()+
   labs(color="")
@@ -668,7 +688,7 @@ We cause all this to happen when we construct an object of class `pomp` via a ca
 Let's do this for the two models now.
 
 ```{r rickC}
-parus %>%
+parus |>
   pomp(
     times="year", t0=1960,
     rinit=rinit,
@@ -680,7 +700,7 @@ parus %>%
 ```
 
 ```{r vpC}
-parus %>%
+parus |>
   pomp(
     times="year", t0=1960,
     rinit=rinit,
@@ -758,7 +778,7 @@ In **pomp**, the simplest version of the particle filter is implemented in the f
 Its only required arguments are the 'pomp' object and the number of *particles*, i.e., the Monte Carlo sample size.
 
 ```{r pfilter1}
-rickC %>%
+rickC |>
   pfilter(Np=1000,
     params=c(r=1.2,K=2000,sigma=0.3,N_0=1600,b=0.1),
     dmeasure=dmeas,
@@ -799,7 +819,7 @@ We can reduce this noise by increasing the number of particles, `Np`, and we can
 For example:
 
 ```{r rick_loglik}
-replicate(10, pfrick %>% pfilter() %>% logLik()) -> lls
+replicate(10, pfrick |> pfilter() |> logLik()) -> lls
 lls
 logmeanexp(lls,se=TRUE) -> ll_rick1
 ll_rick1
@@ -815,14 +835,20 @@ Since the particle filter gives an unbiased estimate of the likelihood (not the 
 
 Let's repeat the operation for the Verhulst-Pearl model, again at arbitrary parameters.
 
-```{r vp_loglik}
+```{r vp_loglik,eval=FALSE,purl=FALSE}
 replicate(10,
-  vpC %>%
+  vpC |>
     pfilter(Np=1000,dmeasure=dmeas,
       params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
-      paramnames="b",statenames="N") %>%
-    logLik()) %>%
+      paramnames="b",statenames="N") |>
+    logLik()) |>
   logmeanexp(se=TRUE) -> ll_vp1
+ll_vp1
+```
+```{r vp_loglik_eval,include=FALSE,purl=TRUE}
+bake(file.path(resdir,"vp_loglik.rds"),{
+  <<vp_loglik>>
+}) -> ll_vp1
 ll_vp1
 ```
 
@@ -848,7 +874,7 @@ A deterministic skeleton of the stochastic Ricker model is the Ricker map, Eq.&n
 We implement this for **pomp**, again either as an **R** function or a C snippet and pass it to **pomp** functions via the `skeleton` argument.
 For example:
 ```{r rick_skel}
-rickC %>%
+rickC |>
   pomp(
     skeleton=map(
       Csnippet("DN = r*N*exp(1-N/K);"),
@@ -868,7 +894,7 @@ $$\frac{dN}{dt} = r\,N\,\left(1-\frac{N}{K}\right).$$
 We fold this into the `vpC` 'pomp' object so:
 
 ```{r vp_skel}
-vpC %>%
+vpC |>
   pomp(
     skeleton=vectorfield(Csnippet("DN = r*N*(1-N/K);")),
     paramnames=c("r","K"), statenames="N"
@@ -886,8 +912,8 @@ For example:
 ```{r vp_traj1}
 p <- parmat(c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),10)
 p["N_0",] <- seq(10,3000,length=10)
-vpC %>%
-  trajectory(params=p,format="data.frame") %>%
+vpC |>
+  trajectory(params=p,format="data.frame") |>
   ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
   guides(color="none")+
   geom_line()+
@@ -907,7 +933,7 @@ These optimizers search parameter space to find parameters under which the likel
 We'll demonstrate using the Verhulst-Pearl model.
 
 ```{r vp_traj_objfun}
-vpC %>%
+vpC |>
   traj_objfun(
     est=c("K","N_0"),
     params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
@@ -962,8 +988,8 @@ logLik(ofun)
 Then we can, for example, extract the fitted trajectory thus:
 
 ```{r traj_match_traj}
-ofun %>%
-  trajectory(format="data.frame") %>%
+ofun |>
+  trajectory(format="data.frame") |>
   ggplot(mapping=aes(x=year,y=N,color=.id,group=.id))+
   guides(color="none")+
   geom_line()+
@@ -973,21 +999,21 @@ ofun %>%
 We can superimpose the model predictions on the data as follows.
 
 ```{r traj_match_plot}
-ofun %>%
-  trajectory(format="data.frame") %>%
+ofun |>
+  trajectory(format="data.frame") |>
   mutate(
     pop=coef(ofun,"b")*N,
     .id="prediction"
-  ) %>%
-  select(-N) %>%
+  ) |>
+  select(-N) |>
   rbind(
-    parus %>%
+    parus |>
       mutate(
         .id="data",
         pop=as.double(pop)
       )
-  ) %>%
-  spread(.id,pop) %>%
+  ) |>
+  spread(.id,pop) |>
   ggplot(aes(x=year))+
   geom_line(aes(y=prediction))+
   geom_point(aes(y=data))+
@@ -1019,7 +1045,7 @@ We could then provide `vpr_partrans` as needed to any of the various **pomp** in
 For example, to estimate parameters for the Verhulst-Pearl model on the transformed scale, we do
 
 ```{r ofun2}
-vpC %>%
+vpC |>
   traj_objfun(
     est=c("b","K","N_0"),
     params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
@@ -1103,8 +1129,8 @@ IF2 therefore gradually reduces the intensity of the random perturbations.
 
 Let us examine a single call to `mif2`.
 
-```{r vp_mif1}
-vpC %>%
+```{r vp_mif1,eval=FALSE,purl=FALSE}
+vpC |>
   mif2(
     params=guesses[1,],
     Np=1000,
@@ -1117,7 +1143,11 @@ vpC %>%
     statenames=c("N")
   ) -> mf1
 ```
-
+```{r vp_mif1_eval,include=FALSE,purl=TRUE}
+bake(file.path(resdir,"vp_mif1.rds"),{
+  <<vp_mif1>>
+}) -> mf1
+```
 In this call, we specify the starting point with `params`:
 here, we've just taken this to be the first of the `guesses`.
 As in `pfilter`, `Np` sets the number of particles to be used.
@@ -1153,7 +1183,7 @@ This model differs from the one we are interested in.
 To compute the likelihood of our focal model at the parameter returned by `mif2`, we need to perform a few particle filter operations:
 
 ```{r mf_pfilter1}
-replicate(5, mf1 %>% pfilter() %>% logLik()) %>% logmeanexp(se=TRUE)
+replicate(5, mf1 |> pfilter() |> logLik()) |> logmeanexp(se=TRUE)
 ```
 
 ### Global search
@@ -1175,12 +1205,12 @@ foreach (guess=iter(guesses,"row"),
   .combine=c, .packages=c("pomp"),
   .errorhandling="remove", .inorder=FALSE) %dopar% {
     
-    mf1 %>% mif2(params=guess)
+    mf1 |> mif2(params=guess)
     
   } -> mifs
 ```
 ```{r parus_mif1_eval,include=FALSE,eval=TRUE,purl=TRUE}
-bake(file="parus_mif1.rds",{
+bake(file=file.path(resdir,"parus_mif1.rds"),{
   <<parus_mif1>>
 }) -> mifs
 ```
@@ -1198,10 +1228,10 @@ The following code chunk extracts the *traces* of the IF2 calculations.
 These are the movements of the parameters and the likelihood plotted against filter iteration.
 
 ```{r mif_plot2}
-mifs %>%
-  traces() %>%
-  melt() %>%
-  filter(variable!="b") %>%
+mifs |>
+  traces() |>
+  melt() |>
+  filter(variable!="b") |>
   ggplot(aes(x=iteration,y=value,group=L1,color=L1))+
   geom_line()+
   facet_wrap(~variable,scales="free_y")+
@@ -1212,9 +1242,9 @@ mifs %>%
 Next, we examine the diagnostics produced in the last iteration of the filter.
 
 ```{r mif_plot3}
-mifs %>% 
-  as("data.frame") %>% 
-  gather(variable,value,-year,-.id) %>%
+mifs |> 
+  as("data.frame") |> 
+  gather(variable,value,-year,-.id) |>
   ggplot(aes(x=year,y=value,group=.id,color=.id))+
   geom_line()+
   facet_wrap(~variable,scales="free_y",ncol=1)+
@@ -1229,8 +1259,8 @@ foreach (mf=mifs,
   .errorhandling="remove", .inorder=FALSE) %dopar% {
     
     replicate(5, 
-      mf %>% pfilter() %>% logLik()
-    ) %>%
+      mf |> pfilter() |> logLik()
+    ) |>
       logmeanexp(se=TRUE) -> ll
     
     data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
@@ -1238,7 +1268,7 @@ foreach (mf=mifs,
   } -> estimates
 ```
 ```{r parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE}
-bake(file="parus_pf1.rds",{
+bake(file=file.path(resdir,"parus_pf1.rds"),{
   <<parus_pf1>>
 }) -> estimates
 ```
@@ -1246,15 +1276,15 @@ bake(file="parus_pf1.rds",{
 A useful way of displaying the results of such multi-start search is the pairwise scatterplot matrix:
 
 ```{r mif_plot4,warning=FALSE,fig.width=4,fig.height=4}
-estimates %>%
-  full_join(guesses) %>%
-  filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) %>%
+estimates |>
+  full_join(guesses) |>
+  filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) |>
   do({
     pairs(~loglik+r+K+sigma+N_0,data=.,
       pch=16,
       col=if_else(is.na(.$loglik),"#99999955","#ff0000ff"))
     .
-  }) %>% 
+  }) |> 
   invisible()
 ```
 
@@ -1289,22 +1319,22 @@ In general, it is hard to know *a priori* how much effort will be required to fi
 Let's continue the search, starting with the best points we've uncovered so far.
 
 ```{r parus_mif2,purl=FALSE,eval=FALSE}
-estimates %>%
-  filter(!is.na(loglik)) %>%
-  filter(loglik > max(loglik)-30) %>%
+estimates |>
+  filter(!is.na(loglik)) |>
+  filter(loglik > max(loglik)-30) |>
   select(-loglik,-loglik.se) -> starts
 
 foreach (start=iter(starts,"row"),
   .combine=rbind, .packages=c("pomp"), 
   .errorhandling="remove", .inorder=FALSE) %dopar% {
     
-    mf1 %>% 
-      mif2(params=start) %>%
+    mf1 |> 
+      mif2(params=start) |>
       mif2() -> mf
     
     replicate(5, 
-      mf %>% pfilter() %>% logLik()
-    ) %>%
+      mf |> pfilter() |> logLik()
+    ) |>
       logmeanexp(se=TRUE) -> ll
     
     data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
@@ -1312,7 +1342,7 @@ foreach (start=iter(starts,"row"),
   } -> ests1
 ```
 ```{r parus_mif2_eval,include=FALSE,eval=TRUE,purl=TRUE}
-bake(file="parus_mif2.rds",{
+bake(file=file.path(resdir,"parus_mif2.rds"),{
   <<parus_mif2>>
 }) -> ests1
 ```
@@ -1324,22 +1354,22 @@ It returns just the parameter and likelihood estimates.
 We can combine the new estimates with the old ones into a general database:
 
 ```{r db1}
-estimates %>%
+estimates |>
   rbind(ests1) -> estimates
 
-estimates%>%
+estimates |>
   arrange(-loglik)
 ```
 
 ```{r mif2_plot1,fig.width=4,fig.height=4}
-estimates %>%
-  filter(loglik>max(loglik,na.rm=TRUE)-4) %>%
+estimates |>
+  filter(loglik>max(loglik,na.rm=TRUE)-4) |>
   do({
     pairs(~loglik+r+K+sigma+N_0,data=.,
       pch=16,
       col=if_else(is.na(.$loglik),"#99999955","#ff0000ff"))
     .
-  }) %>% 
+  }) |> 
   invisible()
 ```
 
@@ -1355,9 +1385,9 @@ In a likelihood profile, one varies the focal parameter (or parameters) across s
 The following codes construct a likelihood profile over $r$.
 
 ```{r parus_pd,fig.width=4,fig.height=4}
-estimates %>%
-  filter(loglik>max(loglik)-10) %>%
-  select(r,K,sigma,N_0,b) %>%
+estimates |>
+  filter(loglik>max(loglik)-10) |>
+  select(r,K,sigma,N_0,b) |>
   apply(2,range) -> ranges
 ranges
 
@@ -1381,25 +1411,25 @@ foreach (start=iter(starts,"row"),
   .combine=rbind, .packages=c("pomp"),
   .errorhandling="remove", .inorder=FALSE) %dopar% {
   
-  mf1 %>%
+  mf1 |>
     mif2(
       params=start,
       partrans=parameter_trans(log=c("K","sigma","N_0")),
       rw.sd=rw.sd(K=0.02,sigma=0.02,N_0=ivp(0.02)),
       paramnames=c("K","sigma","N_0","b")
-    ) %>%
+    ) |>
     mif2() -> mf
   
   replicate(5, 
-    mf %>% pfilter() %>% logLik()
-  ) %>%
+    mf |> pfilter() |> logLik()
+  ) |>
     logmeanexp(se=TRUE) -> ll
   
   data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
 } -> r_prof
 ```
 ```{r parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE}
-bake("parus_profile.rds",{
+bake(file.path(resdir,"parus_profile.rds"),{
   <<parus_profile>>
 }) -> r_prof
 ```
@@ -1410,7 +1440,7 @@ we've removed the perturbation on the $r$ parameter, since we want to hold this 
 We add these points to our database:
 
 ```{r db2}
-estimates %>%
+estimates |>
   rbind(r_prof) -> estimates
 ```
 
@@ -1418,10 +1448,10 @@ Next, we plot the likelihood profile.
 The following plot shows the top two estimates for each value of $r$ with error bars showing &plusmn;2 s.e. and a loess smooth.
 
 ```{r prof_plot1}
-r_prof %>%
-  group_by(r) %>%
-  filter(rank(-loglik)<=2) %>%
-  ungroup() %>%
+r_prof |>
+  group_by(r) |>
+  filter(rank(-loglik)<=2) |>
+  ungroup() |>
   ggplot(aes(x=r,y=loglik,
     ymin=loglik-2*loglik.se,ymax=loglik+2*loglik.se))+
   geom_point()+
@@ -1431,10 +1461,10 @@ r_prof %>%
 ```
 
 ```{r r_prof_lrt,echo=FALSE}
-r_prof %>%
-  group_by(r) %>%
-  filter(rank(-loglik)<=2) %>%
-  ungroup() %>%
+r_prof |>
+  group_by(r) |>
+  filter(rank(-loglik)<=2) |>
+  ungroup() |>
   do({
     loess(loglik~log(r),data=.,span=0.25) -> fit
     rr <- range(.$r)
@@ -1454,10 +1484,10 @@ If we plot the *profile trace* of $\sigma$, we see that, as we increase $r$, we 
 Why is this?
 
 ```{r prof_plot2}
-r_prof %>%
-  group_by(r) %>%
-  filter(rank(-loglik)<=2) %>%
-  ungroup() %>%
+r_prof |>
+  group_by(r) |>
+  filter(rank(-loglik)<=2) |>
+  ungroup() |>
   ggplot(aes(x=r,y=sigma))+
   geom_point()+
   geom_smooth(method="loess",span=0.2)+
@@ -1487,14 +1517,14 @@ Ultimately, since the model is viewed, at least hypothetically, as the process t
 Let's plot the data and several simulated realizations of the model process on the same axes.
 
 ```{r mle_sim_plot1}
-r_prof %>% 
+r_prof |> 
   filter(loglik==max(loglik)) -> mle
 
 mlepomp <- as(mifs[[1]],"pomp")
 coef(mlepomp) <- mle
 
-mlepomp %>%
-  simulate(nsim=8,format="data.frame",include.data=TRUE) %>%
+mlepomp |>
+  simulate(nsim=8,format="data.frame",include.data=TRUE) |>
   ggplot(mapping=aes(x=year,y=pop,group=.id,alpha=(.id=="data")))+
   scale_alpha_manual(values=c(`TRUE`=1,`FALSE`=0.2),
     labels=c(`FALSE`="simulation",`TRUE`="data"))+
@@ -1511,8 +1541,8 @@ Although it is clear from these plots that the estimated model has more variabil
 It's almost always a good idea to plot the data together with several simulated realizations in order to help assess how similar the two are.
 
 ```{r mle_sim_plot2}
-mlepomp %>%
-  simulate(nsim=11,format="data.frame",include.data=TRUE) %>%
+mlepomp |>
+  simulate(nsim=11,format="data.frame",include.data=TRUE) |>
   ggplot(mapping=aes(x=year,y=pop,group=.id,color=(.id=="data")))+
   scale_color_manual(values=c(`TRUE`="black",`FALSE`="grey50"),
     labels=c(`FALSE`="simulation",`TRUE`="data"))+
@@ -1532,7 +1562,7 @@ Let's perform this operation using several of the summary statistics provided wi
 we'll use the mean, several quantiles, and the autocorrelation at lags 1 and 3.
 
 ```{r probe1}
-mlepomp %>%
+mlepomp |>
   probe(nsim=200,probes=list(
     mean=probe.mean("pop"),
     q=probe.quantile("pop",probs=c(0.05,0.25,0.5,0.75,0.95)),
@@ -1578,6 +1608,7 @@ the main goal of the package is to facilitate effective inference by bringing a 
 
 Although the goal of this document has been to introduce the beginner to the package through a display of the **pomp** toolbox in the context of a rudimentary and incomplete data analysis of a short time series with toy models, it is important to realize that these tools have proven their utility on some extremely challenging problems, including some for which other existing methods are either less efficient or entirely infeasible.
 The [bibliography](https://kingaa.github.io/pomp/biblio.html) has links to peer-reviewed publications that have used these methods.
+
 
 ---------------------------------------
 
