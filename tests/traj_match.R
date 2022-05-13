@@ -49,7 +49,7 @@ f2(NA)
 
 enames <- c("gamma","iota","rho","k")
 
-sir() |>
+sir() %>%
   traj_objfun(
     dmeasure=Csnippet("
       lik = dnbinom_mu(nearbyint(reports),1/k,rho*cases,give_log);

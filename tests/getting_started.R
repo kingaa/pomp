@@ -16,41 +16,9 @@ set.seed(594709947L)
 options(digits=3)
 png(filename="getting_started-%02d.png",res=100)
 
-## ----load-parus-data-----------------------------------------------------
-parus.dat <- read.csv(text="
-                      year,P
-                      1960,148
-                      1961,258
-                      1962,185
-                      1963,170
-                      1964,267
-                      1965,239
-                      1966,196
-                      1967,132
-                      1968,167
-                      1969,186
-                      1970,128
-                      1971,227
-                      1972,174
-                      1973,177
-                      1974,137
-                      1975,172
-                      1976,119
-                      1977,226
-                      1978,166
-                      1979,161
-                      1980,199
-                      1981,306
-                      1982,206
-                      1983,350
-                      1984,214
-                      1985,175
-                      1986,211"
-)
-
 ## ----parus-plot----------------------------------------------------------
 library(ggplot2)
-ggplot(data=parus.dat,mapping=aes(x=year,y=P))+
+ggplot(data=parus,mapping=aes(x=year,y=pop))+
   geom_line()+geom_point()+
   expand_limits(y=0)+
   theme_bw()
@@ -63,7 +31,7 @@ step.fun <- Csnippet("
 ")
 
 ## ----logistic-pomp1------------------------------------------------------
-parus <- pomp(data=parus.dat,time="year",t0=1959,
+parus <- pomp(data=parus,time="year",t0=1959,
   rprocess=euler(step.fun=step.fun,delta.t=1/365),
   statenames="N",paramnames=c("r","K","sigma"))
 
@@ -83,7 +51,7 @@ simStates %>%
 
 ## ----logistic-rmeasure---------------------------------------------------
 rmeas <- Csnippet("
-  P = rpois(N);
+  pop = rpois(N);
 ")
 
 ## ----logistic-pomp------------------------------------------------------
@@ -109,7 +77,7 @@ sim %>%
   melt() %>%
   select(-L1) %>%
   pivot_wider(names_from=variable) %>%
-  ggplot(mapping=aes(x=N,y=P,color=factor(.id)))+
+  ggplot(mapping=aes(x=N,y=pop,color=factor(.id)))+
   geom_point()+scale_x_sqrt()+scale_y_sqrt()+
   coord_equal()+
   guides(color="none")+
@@ -117,7 +85,7 @@ sim %>%
 
 ## ----logistic-dmeasure---------------------------------------------------
 dmeas <- Csnippet("
-  lik = dpois(P,N,give_log);
+  lik = dpois(pop,N,give_log);
 ")
 
 ## ----logistic-pomp3------------------------------------------------------
@@ -193,7 +161,7 @@ stopifnot(all.equal(
 tm <- as.pomp(tm)
 coef(tm,"sigma") <- 0
 simulate(tm,nsim=10,format="data.frame",include.data=TRUE) %>%
-  ggplot(aes(x=year,y=P,group=.id,alpha=(.id=="data")))+
+  ggplot(aes(x=year,y=pop,group=.id,alpha=(.id=="data")))+
     scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
                        labels=c(`FALSE`="simulation",`TRUE`="data"))+
     geom_line()+
