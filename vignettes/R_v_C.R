@@ -61,9 +61,9 @@ simulate(times=1:100,t0=0,
 
 
 ## ----R2-----------------------------------------------------------------------
-gompertz %>%
-  as.data.frame() %>%
-  melt(id="time") %>%
+gompertz |>
+  as.data.frame() |>
+  melt(id="time") |>
   ggplot(aes(x=time,y=value,color=variable))+
   geom_line()+
   labs(y="X, Y")+
@@ -99,10 +99,10 @@ p["X.0",] <- c(0.5,0.9,1.1,1.5)
 
 
 ## ----sim1---------------------------------------------------------------------
-simulate(Gompertz,params=p,format="data.frame") %>%
+simulate(Gompertz,params=p,format="data.frame") |>
   ggplot(aes(x=time,y=X,group=.id,color=.id))+
   geom_line()+
-  guides(color=FALSE)+
+  guides(color="none")+
   theme_bw()+
   labs(title="Gompertz model",subtitle="stochastic simulations")
 

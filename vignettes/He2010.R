@@ -32,26 +32,26 @@ stopifnot(packageVersion("pomp")>="3.1")
 
 ## ----load-data----------------------------------------------------------------
 load("twentycities.rda")
-measles %>% 
-  mutate(year=as.integer(format(date,"%Y"))) %>%
-  filter(town==TOWN & year>=1950 & year<1964) %>%
-  mutate(time=(julian(date,origin=as.Date("1950-01-01")))/365.25+1950) %>%
-  filter(time>1950 & time<1964) %>%
+measles |> 
+  mutate(year=as.integer(format(date,"%Y"))) |>
+  filter(town==TOWN & year>=1950 & year<1964) |>
+  mutate(time=(julian(date,origin=as.Date("1950-01-01")))/365.25+1950) |>
+  filter(time>1950 & time<1964) |>
   select(time,cases) -> dat
-demog %>% filter(town==TOWN) %>%
+demog |> filter(town==TOWN) |>
   select(-town) -> demog
 
 
 ## ----data-plot----------------------------------------------------------------
-dat %>% ggplot(aes(x=time,y=cases))+geom_line()
-demog %>% 
-  gather(variable,value,-year) %>%
+dat |> ggplot(aes(x=time,y=cases))+geom_line()
+demog |> 
+  gather(variable,value,-year) |>
   ggplot(aes(x=year,y=value))+geom_point()+
   facet_wrap(~variable,ncol=1,scales="free_y")
 
 
 ## ----prep-covariates----------------------------------------------------------
-demog %>% 
+demog |> 
   summarize(
     time=seq(from=min(year),to=max(year),by=1/12),
     pop=predict(smooth.spline(x=year,y=pop),x=time)$y,
@@ -156,7 +156,7 @@ rmeas <- Csnippet("
 
 
 ## ----pomp-construction--------------------------------------------------------
-dat %>% 
+dat |> 
   pomp(t0=with(dat,2*time[1]-time[2]),
     time="time",
     rprocess=euler(rproc,delta.t=1/365.25),
@@ -178,9 +178,9 @@ dat %>%
 
 
 ## ----plot-pomp----------------------------------------------------------------
-m1 %>% 
-  as.data.frame() %>% 
-  gather(variable,value,-time) %>%
+m1 |> 
+  as.data.frame() |> 
+  gather(variable,value,-time) |>
   ggplot(aes(x=time,y=value))+
   geom_line()+
   facet_grid(variable~.,scales="free_y")
@@ -212,7 +212,7 @@ Sheffield,-2810.7,0.21,0.02,4,54.3,62.2,0.649,33.1,0.313,1.02,0.853,0.225,0.175,
 ",stringsAsFactors=FALSE) -> mles
 
 ## ----mle----------------------------------------------------------------------
-mles %>% filter(town==TOWN) -> mle
+mles |> filter(town==TOWN) -> mle
 paramnames <- c("R0","mu","sigma","gamma","alpha","iota",
   "rho","sigmaSE","psi","cohort","amplitude",
   "S_0","E_0","I_0","R_0")
@@ -231,33 +231,33 @@ registerDoParallel()
 registerDoRNG(998468235L)
 
 foreach(i=1:4) %dopar% {
-  m1 %>% pfilter(params=theta,Np=10000)
+  m1 |> pfilter(params=theta,Np=10000)
 } -> pfs
 
-pfs %>% sapply(logLik) %>% logmeanexp(se=TRUE)
+pfs |> sapply(logLik) |> logmeanexp(se=TRUE)
 
 
 ## ----sims1,fig.height=8-------------------------------------------------------
-m1 %>% 
-  simulate(params=theta,nsim=9,format="d",include.data=TRUE) %>%
+m1 |> 
+  simulate(params=theta,nsim=9,format="d",include.data=TRUE) |>
   ggplot(aes(x=time,y=cases,group=.id,color=(.id=="data")))+
-  guides(color=FALSE)+
+  guides(color="none")+
   geom_line()+facet_wrap(~.id,ncol=2)
 
 
 ## ----sims2--------------------------------------------------------------------
-m1 %>% 
-  simulate(params=theta,nsim=200,format="d",include.data=TRUE) %>%
-  select(time,.id,cases) %>%
+m1 |> 
+  simulate(params=theta,nsim=200,format="d",include.data=TRUE) |>
+  select(time,.id,cases) |>
   mutate(
     data=if_else(.id=="data","data","simulation")
-  ) %>%
-  group_by(time,data) %>%
+  ) |>
+  group_by(time,data) |>
   summarize(
     p=c("lo","med","hi"),
     q=quantile(cases,prob=c(0.05,0.5,0.95),names=FALSE)
-  ) %>%
-  spread(p,q) %>%
+  ) |>
+  spread(p,q) |>
   ggplot(aes(x=time,y=med,color=data,fill=data,ymin=lo,ymax=hi))+
   geom_ribbon(alpha=0.2)
 

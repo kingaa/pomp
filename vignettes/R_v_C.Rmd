@@ -48,8 +48,8 @@ opts_chunk$set(
   fig.show='asis',
   size='small',
   fig.lp="fig:",
-  fig.path=paste0("figure/",params$prefix,"-"),
-  cache.path=paste0("cache/",params$prefix,"-"),
+  fig.path=paste0("figure/",params$prefix,"/"),
+  cache.path=paste0("cache/",params$prefix,"/"),
   fig.pos="h!",
   fig.align='center',
   fig.height=3,fig.width=4.85,
@@ -114,9 +114,9 @@ simulate(times=1:100,t0=0,
 We plot the results.
 
 ```{r R2}
-gompertz %>%
-  as.data.frame() %>%
-  melt(id="time") %>%
+gompertz |>
+  as.data.frame() |>
+  melt(id="time") |>
   ggplot(aes(x=time,y=value,color=variable))+
   geom_line()+
   labs(y="X, Y")+
@@ -163,10 +163,10 @@ p["X.0",] <- c(0.5,0.9,1.1,1.5)
 ```
 
 ```{r sim1}
-simulate(Gompertz,params=p,format="data.frame") %>%
+simulate(Gompertz,params=p,format="data.frame") |>
   ggplot(aes(x=time,y=X,group=.id,color=.id))+
   geom_line()+
-  guides(color=FALSE)+
+  guides(color="none")+
   theme_bw()+
   labs(title="Gompertz model",subtitle="stochastic simulations")
 ```
