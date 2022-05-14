@@ -208,7 +208,7 @@ It enables a POMP model to be supplemented with prior distributions on parameter
 Thus \pkg{pomp} is a convenient environment for those who wish to explore both Bayesian and non-Bayesian data analyses.
 
 The remainder of this paper is organized as follows.
-\Cref{sec:background} defines mathematical notation for POMP models and relates this to their representation as objects of \class{pomp} in the \pkg{pomp} package.
+\Cref{sec:background} defines mathematical notation for POMP models and relates this to their representation as objects of class `pomp' in the \pkg{pomp} package.
 \Cref{sec:methods} introduces several of the statistical methods currently implemented in \pkg{pomp}.
 \Cref{sec:examples} constructs and explores a simple POMP model, demonstrating the use of the available statistical methods.
 \Cref{sec:EpidemicModel} illustrates the implementation of more complex POMPs, using a model of infectious disease transmission as an example.
@@ -243,7 +243,7 @@ Note that this formalism allows the transition density, $f_{X_{n}|X_{n-1}}$, and
 \pkg{pomp} is fully object-oriented:
 in the package, a POMP model is represented by an \proglang{S}4 object \citep{Chambers1998,genolini08} of \class{pomp}.
 Slots in this object encode the components of the POMP model, and can be filled or changed using the constructor function \code{pomp} and various other convenience functions.
-Methods for the \class{pomp} class use these components to carry out computations on the model.
+Methods for the `pomp' class use these components to carry out computations on the model.
 \Cref{tab:notation} gives the mathematical notation corresponding to the elementary methods that can be executed on a \class{pomp} object.
 
 \begin{table}[t!]
@@ -281,7 +281,7 @@ In particular, plug-and-play methodology by definition never uses \code{dprocess
 An empty \slot{dprocess} slot in a \class{pomp} object is therefore acceptable unless a non-plug-and-play algorithm is attempted.
 In the package, the data and corresponding measurement times are considered necessary parts of a \class{pomp} object whilst specific values of the parameters and latent states are not.
 %% It is nevertheless useful to have slots for parameters and states as these are natural properties of a simulation from a POMP model.
-Applying the \code{simulate} function to an object of \class{pomp} returns another object of \class{pomp}, within which the data $y^*_{1:N}$ have been replaced by a stochastic realization of $Y_{1:N}$, the corresponding realization of $X_{0:N}$ is accessible via the \code{states} method, and the \code{params} slot has been filled with the value of $\theta$ used in the simulation.
+Applying the \code{simulate} function to an object of class `pomp' returns another \class{pomp} object, within which the data $y^*_{1:N}$ have been replaced by a stochastic realization of $Y_{1:N}$, the corresponding realization of $X_{0:N}$ is accessible via the \code{states} method, and the \code{params} slot has been filled with the value of $\theta$ used in the simulation.
 
 To illustrate the specification of models in \pkg{pomp} and the use of the package's inference algorithms, we will use a simple example.
 The \citet{Gompertz1825} model can be constructed via
@@ -289,7 +289,7 @@ The \citet{Gompertz1825} model can be constructed via
 library("pomp")
 gomp <- gompertz()
 @
-which results in the creation of an object of \class{pomp}, named \code{gompertz}, in the workspace.
+which results in the creation of a \class{pomp} object, named \code{gompertz}, in the workspace.
 The structure of this model and its implementation in \pkg{pomp} is described below, in \cref{sec:examples}.
 One can view the components of \code{gompertz} listed in \cref{tab:notation} by executing
 <<eval=FALSE,purl=FALSE>>=
@@ -322,7 +322,7 @@ An example using covariates is given in \cref{sec:EpidemicModel}.
 
 Data analysis typically involves identifying regions of parameter space within which a postulated model is statistically consistent with the data.
 Additionally, one frequently desires to assess the relative merits of alternative models as explanations of the data.
-Once the user has encoded one or more POMP models as objects of \class{pomp}, the package provides a variety of algorithms to assist with these data analysis goals.
+Once the user has encoded one or more POMP models as \class{pomp} objects, the package provides a variety of algorithms to assist with these data analysis goals.
 \Cref{tab:methods} provides an overview of several inference methodologies for POMP models.
 Each method may be categorized as full-information or feature-based, Bayesian or frequentist, and plug-and-play or not plug-and-play.
 
@@ -762,7 +762,7 @@ the package supports alternative choices of the proposal distribution.
 \begin{algorithm}[t!]
   \caption{
     \textbf{Simulated quasi log likelihood for NLF}.
-    Pseudocode for the  quasi-likelihood function optimized by \texttt{nlf(\,P,\,start{\argequals}$\theta_0$, nasymp{\argequals}$J$, nconverge{\argequals}$B$, nrbf{\argequals}$K$, lags{\argequals}$\lags_{1:L}$)}.
+    Pseudocode for the  quasi-likelihood function returned by \texttt{nlf\_objfun(\,P,\,params{\argequals}$\theta_0$, ti{\argequals}$t_i$, tf{\argequals}$t_f$, nrbf{\argequals}$K$, lags{\argequals}$\lags_{1:L}$)}.
     Using notation from \cref{tab:notation}, \code{P} is a \class{pomp} object with defined methods for \code{rprocess}, \code{rmeasure}, \code{rinit}, and \code{obs}.
     \label{alg:nlf}
   }
@@ -773,8 +773,9 @@ the package supports alternative choices of the proposal distribution.
     parameter, $\theta$;
     data, $y^*_{1:N}$;
     collection of lags, $\lags_{1:L}$;
-    length of discarded transient, $B$;
-    length of simulation, $J$;
+    sampling frequency, $\nu$;
+    length of discarded transient, $B=\nu\,(t_i-t_0)$;
+    length of simulation, $J=\nu\,(t_f-t_i)$;
     number of radial basis functions, $K$.
   }
   Simulate long stationary time series:
@@ -866,7 +867,7 @@ Plug-and-play methods are not strictly needed;
 this example therefore allows us to compare the results of generally applicable plug-and-play methods with exact results from the Kalman filter.
 Later we will look at the Ricker model and a continuous-time model for which no such special tricks are available.
 
-The first step in implementing this model in \pkg{pomp} is to construct an \proglang{R} \citep{R} object of \class{pomp} that encodes the model and the data.
+The first step in implementing this model in \pkg{pomp} is to construct an \proglang{R} \citep{R} object of class `pomp' that encodes the model and the data.
 This involves the specification of functions to do some or all of \code{rprocess}, \code{rmeasure}, and \code{dmeasure}, along with data and (optionally) other information.
 The documentation (\code{?pomp}) spells out the usage of the \code{pomp} constructor, including detailed specifications for all its arguments and links to several examples.
 
@@ -912,7 +913,7 @@ gompertz.dmeas <- function (tau, X, Y, ..., log) {
 We will need this later on for inference using \code{pfilter}, \code{mif} and \code{pmcmc}.
 When the function \code{gompertz.dmeas} is called, \code{y} will contain the observation at time \code{t}, \code{x} and \code{params} will be as before, and the parameter \code{log} will indicate whether the likelihood (\code{log = FALSE}) or the log likelihood (\code{log = TRUE}) is required.
 
-With the above in place, we build an object of \class{pomp} via a call to \code{pomp}:
+With the above in place, we build a \class{pomp} object via a call to \code{pomp}:
 <<gomp5>>=
 gomp <- pomp(
   data=data.frame(time=1:100, Y=NA), times="time", t0=0,
@@ -1759,6 +1760,7 @@ nlf1 <- nlf_objfun(gomp, ti=100, tf=4000, lags = c(2, 3),
             start = c(r = 1, K = 2, sigma = 0.5, tau = 0.5, X.0 = 1),
             est = c("r", "sigma", "tau"))
 subplex(par = c(r=0.2, sigma=0.15, tau=0.08), fn=nlf1, control=list(reltol=1e-4)) -> nlf1_out
+nlf1(nlf1_out$par)
 @
 where the first argument is the \class{pomp} object,
 \code{start} is a vector containing model parameters at which \code{nlf}'s search will begin,
@@ -2306,15 +2308,14 @@ These analyses require only embarrassingly parallel computations and need no spe
 
 The package contains more examples, which can be used as templates for implementation of new models;
 the \proglang{R} and \proglang{C} codes underlying these examples are provided with the package.
-In addition, \pkg{pomp} provides a number of interactive demos (via \code{demo}).
 Further documentation and an introductory tutorial are provided with the package and on the \pkg{pomp} website, \url{https://kingaa.github.io/pomp}.
 
 \section*{Acknowledgments}
 
 Initial development of \pkg{pomp} was carried out as part of the {\it Inference for Mechanistic Models} working group supported from 2007 to 2010 by the National Center for Ecological Analysis and Synthesis, a center funded by the U.S.\ National Science Foundation (Grant DEB-0553768), the University of California, Santa Barbara, and the State of California.
 Participants were C.~Bret\'{o}, S.~P.~Ellner, M.~J.~Ferrari, G.~J.~Gibson, G.~Hooker, E.~L.~Ionides, V.~Isham, B.~E.~Kendall, K.~Koelle, A.~A.~King, M.~L.~Lavine, K.~B.~Newman, D.~C.~Reuman, P.~Rohani and H.~J.~Wearing.
-As of this writing, the \pkg{pomp} development team is A.~A.~King, E.~L.~Ionides, and D.~Nguyen.
-Financial support was provided by grants DMS-1308919, DMS-0805533, EF-0429588 from the U.S.\ National Science Foundation and by the Research and Policy for Infectious Disease Dynamics program of the Science and Technology Directorate, U.S.\ Department of Homeland Security and the Fogarty International Center, U.S.\ National Institutes of Health.
+M.~Wang prepared a first draft of this revision.
+Financial support was provided by grants \#DMS-1308919, \#DMS-0805533, and \#EF-0429588 from the U.S.\ National Science Foundation, by grants \#1U54GM111274 and \#1R01AI101155 from the U.S. National Institutes of Health, by grant \#1761603 from the Joint NSF/NIH Interface program, and by the Research and Policy for Infectious Disease Dynamics program of the Science and Technology Directorate, U.S.\ Department of Homeland Security and the Fogarty International Center, U.S.\ National Institutes of Health.
 
 
 \bibliography{pompjss}
