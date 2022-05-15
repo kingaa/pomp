@@ -49,8 +49,7 @@ jobs:
           
       - uses: r-lib/actions/check-r-package@v1
 
-      - name: Upload check results
-        uses: actions/upload-artifact@main
+      - uses: actions/upload-artifact@v3
         with:
-          name: ${{ runner.os }}-R-${{ matrix.config.r }}-results
+          name: ${{ matrix.config.os }}-${{ matrix.config.r }}-results
           path: check
