@@ -38,6 +38,7 @@ dist revdeps session tests check xcheck xxcheck: export R_KEEP_PKG_SOURCE=yes
 revdeps xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
 revdeps session xxcheck htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
 session: export R_DEFAULT_PACKAGES=datasets,utils,grDevices,graphics,stats,methods,tidyverse,$(PKG)
+xcheck: export _R_CHECK_DEPENDS_ONLY_=true
 
 inst/include/%.h: src/%.h
 	$(CP) $^ $@
