@@ -347,6 +347,14 @@
   pages: "20212358"
   doi: "https://doi.org/10.1098/rspb.2021.2358"
 
+- key: Domeyer2022
+  author: "J. E. Domeyer, J. D. Lee, H. Toyoda, B. Mehler, and B. Reimer"
+  year: "2022"
+  title: "Driver-pedestrian perceptual models demonstrate coupling: implications for vehicle automation"
+  journal: "IEEE Transactions on Human-Machine Systems"
+  pages: "1&#x2013;10"
+  doi: "https://doi.org/10.1109/THMS.2022.3158201"
+
 - key: Doucet2015
   author: "A. Doucet, M. K. Pitt, G. Deligiannidis, and R. Kohn"
   year: "2015"
