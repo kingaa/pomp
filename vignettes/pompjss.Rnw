@@ -21,7 +21,7 @@
 \newcommand\synloglikMC{\loglikMC_{\featureFunc}}
 \newcommand\R{\mathbb{R}}
 \newcommand\slot[1]{\code{#1}}
-\newcommand\class[1]{class-`\code{#1}'}
+\newcommand\class[1]{`\code{#1}'}
 \newcommand\prob[1]{\mathbb{P}\left[{#1}\right]}
 \def\dd{\mathrm{d}}
 \newcommand\given{{\,\vert\,}}
@@ -172,7 +172,7 @@ bigtick <- Sys.time()
 \section {Introduction}
 
 A partially observed Markov process (POMP) model consists of incomplete and noisy measurements of a latent, unobserved Markov process.
-The far-reaching applicability of this class of models has motivated much software development \citep{commandeur11}.
+The far-reaching applicability of this class of models has motivated much software development \citep{Commandeur2011}.
 It has been a challenge to provide a software environment that can effectively handle broad classes of POMP models and take advantage of the wide range of statistical methodologies that have been proposed for such models.
 The \pkg{pomp} software package \citep{pomp} differs from previous approaches by providing a general and abstract representation of a POMP model.
 Therefore, algorithms implemented within \pkg{pomp} are necessarily applicable to arbitrary POMP models.
@@ -185,22 +185,22 @@ A POMP model may be characterized by the transition density for the Markov proce
   Thus, in the latter case, i.e., when state variables and/or measured quantities are discrete, one could replace ``probability density function'' with ``probability mass function''.}.
 However, some methods require only simulation from the transition density whereas others require evaluation of this density.
 Still other methods may not work with the model itself but with an approximation, such as a linearization.
-Algorithms for which the dynamic model is specified only via a simulator are said to be {\it plug-and-play} \citep{breto09,he10}.
+Algorithms for which the dynamic model is specified only via a simulator are said to be {\it plug-and-play} \citep{Breto2009,He2010}.
 Plug-and-play methods can be employed once one has ``plugged'' a model simulator into the inference machinery.
 Since many POMP models of scientific interest are relatively easy to simulate, the plug-and-play property facilitates data analysis.
 Even if one candidate model has tractable transition probabilities, a scientist will frequently wish to consider alternative models for which these probabilities are intractable.
 In a plug-and-play methodological environment, analysis of variations in the model can often be achieved by changing a few lines of the model simulator codes.
 The price one pays for the flexibility of plug-and-play methodology is primarily additional computational effort, which can be substantial.
-Nevertheless, plug-and-play methods implemented using \pkg{pomp} have proved capable for state-of-the-art inference problems \citep[e.g.,][]{king08,bhadra11,shrestha11,shrestha13,Earn2012,roy13,blackwood13,blackwood13b,He2013a,Breto2014,Blake2014}.
+Nevertheless, plug-and-play methods implemented using \pkg{pomp} have proved capable for state-of-the-art inference problems \citep[e.g.,][]{King2008,Bhadra2011,Shrestha2011,Shrestha2013,Earn2012,Roy2013,Blackwood2013,Blackwood2013b,He2013a,Breto2014,Blake2014}.
 The recent surge of interest in plug-and-play methodology for POMP models includes the development of
-nonlinear forecasting \citep{ellner98},
-iterated filtering \citep{ionides06,ionides15},
+nonlinear forecasting \citep{Ellner1998},
+iterated filtering \citep{Ionides2006,Ionides2015},
 ensemble Kalman filtering \citep{Shaman2012},
-approximate Bayesian computation \citep[ABC;][]{sisson07},
-particle Markov chain Monte~Carlo \citep[PMCMC;][]{andrieu10},
-probe matching \citep{kendall99},
+approximate Bayesian computation \citep[ABC;][]{Sisson2007},
+particle Markov chain Monte~Carlo \citep[PMCMC;][]{Andrieu2010},
+probe matching \citep{Kendall1999},
 and
-synthetic likelihood \citep{wood10}.
+synthetic likelihood \citep{Wood2010}.
 Although the \pkg{pomp} package provides a general environment for methods with and without the plug-and-play property, development of the package to date has emphasized plug-and-play methods.
 
 The \pkg{pomp} package is philosophically neutral as to the merits of Bayesian inference.
@@ -208,7 +208,7 @@ It enables a POMP model to be supplemented with prior distributions on parameter
 Thus \pkg{pomp} is a convenient environment for those who wish to explore both Bayesian and non-Bayesian data analyses.
 
 The remainder of this paper is organized as follows.
-\Cref{sec:background} defines mathematical notation for POMP models and relates this to their representation as objects of class `pomp' in the \pkg{pomp} package.
+\Cref{sec:background} defines mathematical notation for POMP models and relates this to their representation as objects of class \class{pomp} in the \pkg{pomp} package.
 \Cref{sec:methods} introduces several of the statistical methods currently implemented in \pkg{pomp}.
 \Cref{sec:examples} constructs and explores a simple POMP model, demonstrating the use of the available statistical methods.
 \Cref{sec:EpidemicModel} illustrates the implementation of more complex POMPs, using a model of infectious disease transmission as an example.
@@ -241,10 +241,10 @@ Note that this formalism allows the transition density, $f_{X_{n}|X_{n-1}}$, and
 \label{sec:implementation}
 
 \pkg{pomp} is fully object-oriented:
-in the package, a POMP model is represented by an \proglang{S}4 object \citep{Chambers1998,genolini08} of \class{pomp}.
+in the package, a POMP model is represented by an \proglang{S}4 object \citep{Chambers1998,Genolini2008} of class \class{pomp}.
 Slots in this object encode the components of the POMP model, and can be filled or changed using the constructor function \code{pomp} and various other convenience functions.
-Methods for the `pomp' class use these components to carry out computations on the model.
-\Cref{tab:notation} gives the mathematical notation corresponding to the elementary methods that can be executed on a \class{pomp} object.
+Methods for the \class{pomp} class use these components to carry out computations on the model.
+\Cref{tab:notation} gives the mathematical notation corresponding to the elementary methods that can be executed on a class-\class{pomp} object.
 
 \begin{table}[t!]
   \begin{center}
@@ -269,7 +269,7 @@ Methods for the `pomp' class use these components to carry out computations on t
     \end{tabular}
   \end{center}
   \caption{
-    Constituent methods for \class{pomp} objects and their translation into mathematical notation for POMP models.
+    Constituent methods for class-\class{pomp} objects and their translation into mathematical notation for POMP models.
     For example, the \code{rprocess} method is set using the \code{rprocess} argument to the \code{pomp} constructor function.
     \label{tab:notation}
   }
@@ -278,10 +278,10 @@ Methods for the `pomp' class use these components to carry out computations on t
 The \code{rprocess}, \code{dprocess}, \code{rmeasure}, and \code{dmeasure} arguments specify the transition probabilities $f_{X_n|X_{n-1}}( x_n \given x_{n-1}\giventh \theta)$ and measurement densities $f_{Y_n|X_n}(y_n\given x_n\giventh \theta)$.
 Not all of these arguments must be supplied for any specific computation.
 In particular, plug-and-play methodology by definition never uses \code{dprocess}.
-An empty \slot{dprocess} slot in a \class{pomp} object is therefore acceptable unless a non-plug-and-play algorithm is attempted.
-In the package, the data and corresponding measurement times are considered necessary parts of a \class{pomp} object whilst specific values of the parameters and latent states are not.
+An empty \slot{dprocess} slot in a class-\class{pomp} object is therefore acceptable unless a non-plug-and-play algorithm is attempted.
+In the package, the data and corresponding measurement times are considered necessary parts of a class-\class{pomp} object whilst specific values of the parameters and latent states are not.
 %% It is nevertheless useful to have slots for parameters and states as these are natural properties of a simulation from a POMP model.
-Applying the \code{simulate} function to an object of class `pomp' returns another \class{pomp} object, within which the data $y^*_{1:N}$ have been replaced by a stochastic realization of $Y_{1:N}$, the corresponding realization of $X_{0:N}$ is accessible via the \code{states} method, and the \code{params} slot has been filled with the value of $\theta$ used in the simulation.
+Applying the \code{simulate} function to an object of class \class{pomp} returns another class-\class{pomp} object, within which the data $y^*_{1:N}$ have been replaced by a stochastic realization of $Y_{1:N}$, the corresponding realization of $X_{0:N}$ is accessible via the \code{states} method, and the \code{params} slot has been filled with the value of $\theta$ used in the simulation.
 
 To illustrate the specification of models in \pkg{pomp} and the use of the package's inference algorithms, we will use a simple example.
 The \citet{Gompertz1825} model can be constructed via
@@ -289,7 +289,7 @@ The \citet{Gompertz1825} model can be constructed via
 library("pomp")
 gomp <- gompertz()
 @
-which results in the creation of a \class{pomp} object, named \code{gompertz}, in the workspace.
+which results in the creation of a class-\class{pomp} object, named \code{gompertz}, in the workspace.
 The structure of this model and its implementation in \pkg{pomp} is described below, in \cref{sec:examples}.
 One can view the components of \code{gompertz} listed in \cref{tab:notation} by executing
 <<eval=FALSE,purl=FALSE>>=
@@ -322,7 +322,7 @@ An example using covariates is given in \cref{sec:EpidemicModel}.
 
 Data analysis typically involves identifying regions of parameter space within which a postulated model is statistically consistent with the data.
 Additionally, one frequently desires to assess the relative merits of alternative models as explanations of the data.
-Once the user has encoded one or more POMP models as \class{pomp} objects, the package provides a variety of algorithms to assist with these data analysis goals.
+Once the user has encoded one or more POMP models as class-\class{pomp} objects, the package provides a variety of algorithms to assist with these data analysis goals.
 \Cref{tab:methods} provides an overview of several inference methodologies for POMP models.
 Each method may be categorized as full-information or feature-based, Bayesian or frequentist, and plug-and-play or not plug-and-play.
 
@@ -346,7 +346,7 @@ In the remainder of this section, we describe and discuss several inference meth
     &Frequentist   & Bayesian  \tabularnewline
     \hline
     Full information&
-    Iterated filtering (\code{mif}, \cref{sec:mif}) \raggedright
+    Iterated filtering (\code{mif2}, \cref{sec:mif}) \raggedright
     &PMCMC (\code{pmcmc}, \cref{sec:pmcmc}) \raggedright \tabularnewline
     \hline
     Feature-based
@@ -393,7 +393,7 @@ In the remainder of this section, we describe and discuss several inference meth
 %%%%  PFILTER PSEUDOCODE
 \begin{algorithm}[t!]
   \caption{\textbf{Sequential Monte Carlo (SMC, or particle filter)}:
-    \code{pfilter(\,P,\,Np{\argequals}$J$)}, using notation from \cref{tab:notation} where \code{P} is a \class{pomp} object with definitions for \code{rprocess}, \code{dmeasure}, \code{rinit}, \code{coef}, and \code{obs}.
+    \code{pfilter(\,P,\,Np{\argequals}$J$)}, using notation from \cref{tab:notation} where \code{P} is a class-\class{pomp} object with definitions for \code{rprocess}, \code{dmeasure}, \code{rinit}, \code{coef}, and \code{obs}.
     \label{alg:pfilter}
   }
   \KwIn{
@@ -450,11 +450,11 @@ Using an evolutionary analogy, the prediction step (\cref{alg:pfilter:step1}) mu
 SMC is implemented in \pkg{pomp} in the \code{pfilter} function.
 The basic particle filter in \cref{alg:pfilter} possesses the plug-and-play property.
 Many variations and elaborations to SMC have been proposed;
-these may improve numerical performance in appropriate situations \citep{cappe07} but typically lose the plug-and-play property.
-\citet{arulampalam02}, \citet{Doucet2009}, and \citet{Kantas2015} have written excellent introductory tutorials on the particle filter and particle methods more generally.
+these may improve numerical performance in appropriate situations \citep{Cappe2007} but typically lose the plug-and-play property.
+\citet{Arulampalam2002}, \citet{Doucet2009}, and \citet{Kantas2015} have written excellent introductory tutorials on the particle filter and particle methods more generally.
 
 Basic SMC methods fail when an observation is extremely unlikely given the model.
-This leads to the situation that at most a few particles are consistent with the observation, in which case the effective sample size \citep{liu01a} of the Monte Carlo sample is small and the particle filter is said to suffer from \emph{particle depletion}.
+This leads to the situation that at most a few particles are consistent with the observation, in which case the effective sample size \citep{Liu2001a} of the Monte Carlo sample is small and the particle filter is said to suffer from \emph{particle depletion}.
 Many elaborations of the basic SMC algorithm have been proposed to ameliorate this problem.
 However, it is often preferable to remedy the situation by seeking a better model.
 The plug-and-play property assists in this process by facilitating investigation of alternative models.
@@ -492,7 +492,7 @@ The plug-and-play property assists in this process by facilitating investigation
 In \cref{alg:pfilter:systematic} of \cref{alg:pfilter}, systematic resampling (\cref{alg:systematic}) is used in preference to multinomial resampling.
 \Cref{alg:systematic} reduces Monte~Carlo variability while resampling with the proper marginal probability.
 In particular, if all the particle weights are equal then \cref{alg:systematic} has the appropriate behavior of leaving the particles unchanged.
-As pointed out by \citet{douc05}, stratified resampling performs better than multinomial sampling and \cref{alg:systematic} is in practice comparable in performance to stratified resampling and somewhat faster.
+As pointed out by \citet{Douc2005}, stratified resampling performs better than multinomial sampling and \cref{alg:systematic} is in practice comparable in performance to stratified resampling and somewhat faster.
 
 %%% ITERATED FILTERING
 \subsection{Iterated filtering}
@@ -504,7 +504,7 @@ As pointed out by \citet{douc05}, stratified resampling performs better than mul
     \textbf{Iterated filtering}:
     \texttt{mif2(P, params{\argequals}$\theta_0$, Nmif{\argequals}$M$, Np{\argequals}$J$, rw.sd{\argequals}$\sigma_{1:p}$, cooling.fraction.50{\argequals}$f$)},
     using notation from \cref{tab:notation}
-    where \code{P} is a \class{pomp} object with defined \code{rprocess}, \code{dmeasure}, \code{rinit}, and \code{obs} components.
+    where \code{P} is a class-\class{pomp} object with defined \code{rprocess}, \code{dmeasure}, \code{rinit}, and \code{obs} components.
     \label{alg:mif}
   }
   \KwIn{
@@ -534,14 +534,14 @@ As pointed out by \citet{douc05}, stratified resampling performs better than mul
   \KwCplx{$\bigO{J M}$}
 \end{algorithm}
 
-Iterated filtering techniques maximize the likelihood obtained by SMC \citep{ionides06,ionides11,ionides15}.
+Iterated filtering techniques maximize the likelihood obtained by SMC \citep{Ionides2006,Ionides2011,Ionides2015}.
 The key idea of iterated filtering is to replace the model we are interested in fitting---which has time-invariant parameters---with a model that is just the same except that its parameters take a random walk in time.
 Over multiple repetitions of the filtering procedure, the intensity of this random walk approaches zero and the modified model approaches the original one.
 Adding additional variability in this way has four positive effects:
 \begin{enumerate}[{A}1.]
 \item It smooths the likelihood surface, which facilitates optimization.
 \item It combats particle depletion by adding diversity to the population of particles.
-\item The additional variability can be exploited to explore the likelihood surface and estimate the gradient of the (smoothed) likelihood, based on the same filtering procedure that is required to estimate the value of the likelihood \citep{ionides06,ionides11}.
+\item The additional variability can be exploited to explore the likelihood surface and estimate the gradient of the (smoothed) likelihood, based on the same filtering procedure that is required to estimate the value of the likelihood \citep{Ionides2006,Ionides2011}.
 \item It preserves the plug-and-play property, inherited from the particle filter.
 \end{enumerate}
 Iterated filtering is implemented in the \code{mif2} function.
@@ -556,7 +556,7 @@ These IVPs will typically be inconsistently estimable as the length of the time 
 Searching the parameter space using time-varying parameters is inefficient in this situation, and so \cref{alg:mif} perturbs these parameters only at time zero.
 
 \Cref{alg:mif:perturb,alg:mif:sim,alg:mif:weights,alg:mif:syst,alg:mif:resample} of \cref{alg:mif} are exactly an application of SMC (\cref{alg:pfilter}) to a modified POMP model in which the parameters are added to the state space.
-This approach has been used in a variety of previously proposed POMP methodologies \citep{kitagawa98,janeliu01,wan00} but iterated filtering is distinguished by having theoretical justification for convergence to the maximum likelihood estimate \citep{ionides11}.
+This approach has been used in a variety of previously proposed POMP methodologies \citep{Kitagawa1998,Liu2001,Wan2000} but iterated filtering is distinguished by having theoretical justification for convergence to the maximum likelihood estimate \citep{Ionides2011}.
 
 \clearpage
 
@@ -569,7 +569,7 @@ This approach has been used in a variety of previously proposed POMP methodologi
     \textbf{Particle Markov chain Monte Carlo}:
     \texttt{pmcmc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, Np{\argequals}$J$, proposal{\argequals}$q$)},
     using notation from \cref{tab:notation}
-    where \code{P} is a \class{pomp} object with defined methods for
+    where \code{P} is a class-\class{pomp} object with defined methods for
     \code{rprocess}, \code{dmeasure}, \code{rinit}, \code{dprior}, and \code{obs}.
     The supplied \code{proposal} samples from a symmetric, but otherwise arbitrary, MCMC proposal distribution, $q(\theta^P\given\theta)$.
     \label{alg:pmcmc}
@@ -604,11 +604,11 @@ This approach has been used in a variety of previously proposed POMP methodologi
   \KwCplx{$\bigO{J M}$}
 \end{algorithm}
 
-Full information plug-and-play Bayesian inference for POMP models is enabled by particle Markov chain Monte Carlo (PMCMC) algorithms \citep{andrieu10}.
+Full information plug-and-play Bayesian inference for POMP models is enabled by particle Markov chain Monte Carlo (PMCMC) algorithms \citep{Andrieu2010}.
 PMCMC methods combine likelihood evaluation via SMC with MCMC moves in the parameter space.
-The simplest and most widely used PMCMC algorithm, termed particle marginal Metropolis-Hastings (PMMH), is based on the observation that the unbiased likelihood estimate provided by SMC can be plugged into the Metropolis-Hastings update procedure to give an algorithm targeting the desired posterior distribution for the parameters \citep{andrieu09}.
+The simplest and most widely used PMCMC algorithm, termed particle marginal Metropolis-Hastings (PMMH), is based on the observation that the unbiased likelihood estimate provided by SMC can be plugged into the Metropolis-Hastings update procedure to give an algorithm targeting the desired posterior distribution for the parameters \citep{Andrieu2009}.
 PMMH is implemented in \code{pmcmc}, as described in \cref{alg:pmcmc}.
-In part because it gains only a single likelihood evaluation from each particle filtering operation, PMCMC can be computationally relatively inefficient \citep{bhadra10,ionides15}.
+In part because it gains only a single likelihood evaluation from each particle filtering operation, PMCMC can be computationally relatively inefficient \citep{Bhadra2010,Ionides2015}.
 Nevertheless, its invention introduced the possibility of full-information plug-and-play Bayesian inferences in some situations where they had been unavailable.
 
 \subsection{Synthetic likelihood of summary statistics}
@@ -621,7 +621,7 @@ Nevertheless, its invention introduced the possibility of full-information plug-
     \protect
     \texttt{probe(P, nsim{\argequals}$J$, probes{\argequals}$\featureFunc$)},
     using notation from \cref{tab:notation}
-    where \code{P} is a \class{pomp} object with defined methods for
+    where \code{P} is a class-\class{pomp} object with defined methods for
     \code{rprocess}, \code{rmeasure}, \code{rinit}, and \code{obs}.
     \label{alg:probe}
   }
@@ -656,27 +656,27 @@ Nevertheless, its invention introduced the possibility of full-information plug-
 Some motivations to estimate parameters based on features rather than the full likelihood include:
 \begin{enumerate}[{B}1.]
 \item \label{whyFeature2}
-  Reducing the data to sensibly selected and informative low-dimensional summary statistics may have computational advantages \citep{wood10}.
+  Reducing the data to sensibly selected and informative low-dimensional summary statistics may have computational advantages \citep{Wood2010}.
 \item \label{whyFeature1}
   The scientific goal may be to match some chosen characteristics of the data rather than all aspects of it.
-  Acknowledging the limitations of all models, this limited aspiration may be all that can reasonably be demanded  \citep{kendall99,Wood2001a}.
-\item \label{whyFeature3} In conjunction with full-information methodology, consideration of individual features has diagnostic value to determine which aspects of the data are driving the full-information inferences \citep{reuman06}.
+  Acknowledging the limitations of all models, this limited aspiration may be all that can reasonably be demanded  \citep{Kendall1999,Wood2001a}.
+\item \label{whyFeature3} In conjunction with full-information methodology, consideration of individual features has diagnostic value to determine which aspects of the data are driving the full-information inferences \citep{Reuman2006}.
 \item  \label{whyFeature4} Feature-based methods for dynamic models typically do not require the POMP model structure.
   However, that benefit is outside the scope of the \pkg{pomp} package.
 \item \label{whyFeature5} Feature-based methods are typically \emph{doubly plug-and-play}, meaning that they require simulation, but not evaluation, for both the latent process transition density and the measurement model.
 \end{enumerate}
 When pursuing goal~B\ref{whyFeature2}, one aims to find summary statistics which are as close as possible to sufficient statistics for the unknown parameters.
 Goals~B\ref{whyFeature1} and~B\ref{whyFeature3} deliberately look for features which discard information from the data;
-in this context the features have been called probes \citep{kendall99}.
+in this context the features have been called probes \citep{Kendall1999}.
 The features are denoted by a collection of functions, $\featureFunc=(\featureFunc_1,\dots,\featureFunc_d)$, where each $\featureFunc_i$ maps an observed time series to a real number.
 We write $S=(S_1,\dots,S_d)$ for the vector-valued random variable with $S=\featureFunc(Y_{1:N})$, with $f_{S}(s\giventh\theta)$ being the corresponding joint density.
 The observed feature vector is $s^*$ where $s^*_i=\featureFunc_i(y^*_{1:N})$, and for any parameter set one can look for parameter values for which typical features for simulated data match the observed features.
 One can define a likelihood function, $\synloglik(\theta)=f_{S}(s^*\giventh\theta)$.
-Arguing that $S$ should be approximately multivariate normal, for suitable choices of the features, \citet{wood10} proposed using simulations to construct a multivariate normal approximation to $\synloglik(\theta)$, and called this a \emph{synthetic likelihood}.
+Arguing that $S$ should be approximately multivariate normal, for suitable choices of the features, \citet{Wood2010} proposed using simulations to construct a multivariate normal approximation to $\synloglik(\theta)$, and called this a \emph{synthetic likelihood}.
 
 Simulation-based evaluation of a feature matching criterion is implemented by \code{probe} (\cref{alg:probe}).
 The feature matching criterion requires a scale, and a natural scale to use is the empirical covariance of the simulations.
-Working on this scale, as implemented by \code{probe}, there is no substantial difference between the probe approaches of \citet{kendall99} and \citet{wood10}.
+Working on this scale, as implemented by \code{probe}, there is no substantial difference between the probe approaches of \citet{Kendall1999} and \citet{Wood2010}.
 Numerical optimization of the synthetic likelihood is implemented by \code{probe.match}, which offers the choice of either the subplex method \citep{Rowan1990,subplex} or any method provided by \code{optim} or the \pkg{nloptr} package \citep{Johnson2014,Ypma2014}.
 
 
@@ -690,7 +690,7 @@ Numerical optimization of the synthetic likelihood is implemented by \code{probe
     \protect
     \texttt{abc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, probes{\argequals}$\featureFunc$, scale{\argequals}$\tau_{1:d}$, proposal{\argequals}$q$, epsilon{\argequals}$\epsilon$)},
     using notation from \cref{tab:notation}, where
-    \code{P} is a \class{pomp} object with defined methods for
+    \code{P} is a class-\class{pomp} object with defined methods for
     \code{rprocess}, \code{rmeasure}, \code{rinit}, \code{dprior}, and \code{obs}.
     \label{alg:abc}
   }
@@ -733,10 +733,10 @@ Numerical optimization of the synthetic likelihood is implemented by \code{probe
 ABC algorithms are Bayesian feature-matching techniques, comparable to the frequentist generalized method of moments \citep{Marin2012}.
 The vector of summary statistics $\featureFunc$, the corresponding random variable $S$, and the value $s^*=\featureFunc(y^*_{1:N})$, are defined as in \cref{sec:probe}.
 The goal of ABC is to approximate the posterior distribution of the unknown parameters given $S=s^*$.
-ABC has typically been motivated by computational considerations, as in point~B\ref{whyFeature2} of \cref{sec:probe} \citep{sisson07,toni09,beaumont10}.
-Points~B\ref{whyFeature1} and~B\ref{whyFeature3} also apply \citep{ratmann09}.
+ABC has typically been motivated by computational considerations, as in point~B\ref{whyFeature2} of \cref{sec:probe} \citep{Sisson2007,Toni2009,Beaumont2010}.
+Points~B\ref{whyFeature1} and~B\ref{whyFeature3} also apply \citep{Ratmann2009}.
 
-The key theoretical insight behind ABC algorithms is that an unbiased estimate of the likelihood can be substituted into a Markov chain Monte~Carlo algorithm to target the required posterior, the same result that justifies PMCMC \citep{andrieu09}.
+The key theoretical insight behind ABC algorithms is that an unbiased estimate of the likelihood can be substituted into a Markov chain Monte~Carlo algorithm to target the required posterior, the same result that justifies PMCMC \citep{Andrieu2009}.
 However, ABC takes a different approach to approximating the likelihood.
 The likelihood of the observed features, $\loglik_S(\theta)=f_{S}(s^*\giventh\theta)$, has an approximately unbiased estimate based on a single Monte~Carlo realization $Y_{1:N}\sim f_{Y_{1:N}}(\mydot\giventh\theta)$ given by
 \begin{equation}
@@ -763,7 +763,7 @@ the package supports alternative choices of the proposal distribution.
   \caption{
     \textbf{Simulated quasi log likelihood for NLF}.
     Pseudocode for the  quasi-likelihood function returned by \texttt{nlf\_objfun(\,P,\,params{\argequals}$\theta_0$, ti{\argequals}$t_i$, tf{\argequals}$t_f$, nrbf{\argequals}$K$, lags{\argequals}$\lags_{1:L}$)}.
-    Using notation from \cref{tab:notation}, \code{P} is a \class{pomp} object with defined methods for \code{rprocess}, \code{rmeasure}, \code{rinit}, and \code{obs}.
+    Using notation from \cref{tab:notation}, \code{P} is a class-\class{pomp} object with defined methods for \code{rprocess}, \code{rmeasure}, \code{rinit}, and \code{obs}.
     \label{alg:nlf}
   }
   \KwIn{
@@ -809,13 +809,13 @@ the package supports alternative choices of the proposal distribution.
 Nonlinear forecasting (NLF) uses simulations to build up an approximation to the one-step prediction distribution that is then evaluated on the data.
 We saw in \cref{sec:pfilter} that SMC evaluates the prediction density for the observation, $f_{Y_n|Y_{1:{n-1}}}(y_n^*\given y_{1:n-1}^*\giventh \theta)$, by first building an approximation to the prediction density of the latent process, $f_{X_n|Y_{1:{n-1}}}(x_n\given y_{1:n-1}^*\giventh \theta)$.
 By contrast, NLF uses simulations to fit a linear regression of $Y_n$ on the $L$ variables $Y_{n-\lags_1}$, \dots, $Y_{n-\lags_L}$, for some choice of positive lags $\lags_{1:L}$.
-The prediction errors when this model is applied to the data give rise to a quantity called the quasi-likelihood, which behaves for many purposes like a likelihood \citep{smith93}.
+The prediction errors when this model is applied to the data give rise to a quantity called the quasi-likelihood, which behaves for many purposes like a likelihood \citep{Smith1993}.
 The implementation in \code{nlf} maximizes the quasi-likelihood computed in \cref{alg:nlf}, using the subplex method \citep{Rowan1990,subplex} or any other optimizer offerered by \code{optim}.
-The construction of the quasi-likelihood in \code{nlf} follows the specific recommendations of \citet{kendall05}.
-In particular, the choice of radial basis functions, $f_k$, in \cref{alg:nlf:rbf} and the specification of $m_k$ and $s$ in \cref{alg:nlf:rbf:params1,alg:nlf:rbf:params2} were proposed by \citet{kendall05} based on trial and error.
+The construction of the quasi-likelihood in \code{nlf} follows the specific recommendations of \citet{Kendall2005}.
+In particular, the choice of radial basis functions, $f_k$, in \cref{alg:nlf:rbf} and the specification of $m_k$ and $s$ in \cref{alg:nlf:rbf:params1,alg:nlf:rbf:params2} were proposed by \citet{Kendall2005} based on trial and error.
 The quasi-likelihood is mathematically most similar to a likelihood when $\min(\lags_{1:L})=1$, so that $\loglik_{Q}(\theta)$ approximates the factorization of the likelihood in \cref{eq:loglik:factorization}.
 With this in mind, it is natural to choose contiguous lags $\lags_{1:L}=1:L$.
-However, \citet{kendall05} found that a two-step prediction criterion, with $\min(\lags_{1:L})=2$, led to improved numerical performance.
+However, \citet{Kendall2005} found that a two-step prediction criterion, with $\min(\lags_{1:L})=2$, led to improved numerical performance.
 It is natural to ask when one might choose to use quasi-likelihood estimation in place of full likelihood estimation implemented by SMC.
 Some considerations follow, closely related to the considerations for the synthetic likelihood and ABC (\cref{sec:abc,sec:probe}):
 \begin{enumerate}[{C}1.]
@@ -824,15 +824,15 @@ Some considerations follow, closely related to the considerations for the synthe
   Indeed, NLF has not been considered applicable for non-stationary models and, on account of this, \code{nlf} is not appropriate if the model includes time-varying covariates.
   An intermediate scenario between stationarity and full non-stationarity is seasonality, where the dynamic model is forced by cyclical covariates, and this is supported by \code{nlf} (cf.~B\ref{whyFeature2} in \cref{sec:probe}).
 \item  \label{whyNLF2}  Potentially, quasi-likelihood could be preferable to full likelihood in some situations.
-  It has been argued that a two-step prediction criterion may sometimes be more robust than the likelihood to model misspecification \citep{xia11} (cf.~B\ref{whyFeature1}).
+  It has been argued that a two-step prediction criterion may sometimes be more robust than the likelihood to model misspecification \citep{Xia2011} (cf.~B\ref{whyFeature1}).
 \item\label{whyNLF3}
-  Arguably, two-step prediction should be viewed as a diagnostic tool that can be used to complement full likelihood analysis rather than replace it \citep{ionides11-statSci} (cf.~B\ref{whyFeature3}).
+  Arguably, two-step prediction should be viewed as a diagnostic tool that can be used to complement full likelihood analysis rather than replace it \citep{Ionides2011b} (cf.~B\ref{whyFeature3}).
 \item \label{whyNLF4} NLF does not require that the model be Markovian (cf.~B\ref{whyFeature4}), although the \pkg{pomp} implementation, \code{nlf}, does.
 \item \label{whyNLF5} NLF is doubly plug-and-play (cf.~B\ref{whyFeature5}).
 \item\label{whyNLF6} The regression surface reconstruction carried out by NLF does not scale well with the dimension of the observed data.
   NLF is recommended only for low-dimensional time series observations.
 \end{enumerate}
-NLF can be viewed as an estimating equation method, and so standard errors can be computed by standard sandwich estimator or bootstrap techniques \citep{kendall05}.
+NLF can be viewed as an estimating equation method, and so standard errors can be computed by standard sandwich estimator or bootstrap techniques \citep{Kendall2005}.
 The optimization in NLF is typically carried out with a fixed seed for the random number generator, so the simulated quasi-likelihood is a deterministic function. If \code{rprocess} depends smoothly on the random number sequence and on the parameters, and the number of calls to the random number generator does not depend on the parameters, then fixing the seed results in a smooth objective function.
 However, some common components to model simulators, such as \code{rnbinom}, make different numbers of calls to the random number generator depending on the arguments, which introduces nonsmoothness into the objective function.
 
@@ -867,7 +867,7 @@ Plug-and-play methods are not strictly needed;
 this example therefore allows us to compare the results of generally applicable plug-and-play methods with exact results from the Kalman filter.
 Later we will look at the Ricker model and a continuous-time model for which no such special tricks are available.
 
-The first step in implementing this model in \pkg{pomp} is to construct an \proglang{R} \citep{R} object of class `pomp' that encodes the model and the data.
+The first step in implementing this model in \pkg{pomp} is to construct an \proglang{R} \citep{R} object of class \class{pomp} that encodes the model and the data.
 This involves the specification of functions to do some or all of \code{rprocess}, \code{rmeasure}, and \code{dmeasure}, along with data and (optionally) other information.
 The documentation (\code{?pomp}) spells out the usage of the \code{pomp} constructor, including detailed specifications for all its arguments and links to several examples.
 
@@ -913,7 +913,7 @@ gompertz.dmeas <- function (tau, X, Y, ..., log) {
 We will need this later on for inference using \code{pfilter}, \code{mif} and \code{pmcmc}.
 When the function \code{gompertz.dmeas} is called, \code{y} will contain the observation at time \code{t}, \code{x} and \code{params} will be as before, and the parameter \code{log} will indicate whether the likelihood (\code{log = FALSE}) or the log likelihood (\code{log = TRUE}) is required.
 
-With the above in place, we build a \class{pomp} object via a call to \code{pomp}:
+With the above in place, we build a class-\class{pomp} object via a call to \code{pomp}:
 <<gomp5>>=
 gomp <- pomp(
   data=data.frame(time=1:100, Y=NA), times="time", t0=0,
@@ -981,7 +981,7 @@ plot(gomp, variables = "Y")
 As discussed in \cref{sec:methods}, some parameter estimation algorithms in the \pkg{pomp} package are doubly plug-and-play in that they require only \code{rprocess} and \code{rmeasure}.
 These include the nonlinear forecasting algorithm \code{nlf}, the probe-matching algorithm \code{probe.match}, and approximate Bayesian computation via \code{abc}.
 The plug-and-play full-information methods in \pkg{pomp}, however, require \code{dmeasure}, i.e., the ability to evaluate the likelihood of the data given the unobserved state.
-The \code{gompertz.dmeas} above does this, but we must fold it into the \class{pomp} object in order to use it.
+The \code{gompertz.dmeas} above does this, but we must fold it into the class-\class{pomp} object in order to use it.
 We can do this with another call to \code{pomp}:
 <<gomp9-comment,include=FALSE>>=
 ##' ## The particle filter
@@ -990,7 +990,7 @@ We can do this with another call to \code{pomp}:
 <<gomp9>>=
 gomp <- pomp(gomp,dmeasure=gompertz.dmeas)
 @
-The result of the above is a new \class{pomp} object \code{gomp} in every way identical to the one we had before, but with the measurement-model density function \code{dmeasure} now specified.
+The result of the above is a new class-\class{pomp} object \code{gomp} in every way identical to the one we had before, but with the measurement-model density function \code{dmeasure} now specified.
 
 To estimate the likelihood of the data, we can use the function \code{pfilter}, an implementation of \cref{alg:pfilter}.
 We must decide how many concurrent realizations (\emph{particles}) to use:
@@ -1053,7 +1053,7 @@ kalman <- function (x, object, params) {
 ##' Exact log likelihood at the true parameters
 exact.loglik.truth <- -kalman(coef(gomp),gomp,coef(gomp))
 @
-Since the true parameters (i.e., the parameters that generated the data) are stored within the \class{pomp} object \code{gomp} and can be extracted by the \code{coef} function, we could have done
+Since the true parameters (i.e., the parameters that generated the data) are stored within the class-\class{pomp} object \code{gomp} and can be extracted by the \code{coef} function, we could have done
 <<pfilter2-calc,eval=FALSE,purl=FALSE>>=
 pf <- pfilter(gomp,params=coef(gomp),Np=1000)
 @
@@ -1146,7 +1146,7 @@ pf1 <- foreach(mf = mif1, .combine = c) %dopar% {
 }
 @
 Note that the positivity of parameters is enforced by the transformations we have included in \code{gomp}.
-Note also that we have used the \pkg{foreach} package \citep{JSSv055i14,foreach} to parallelize the computations.
+Note also that we have used the \pkg{foreach} package \citep{Kane2013,foreach} to parallelize the computations.
 <<gompertz-mif-eval,echo=FALSE,results="hide",cache=FALSE>>=
 ##' Perform some iterated filtering.
 ##' These calculations took about 68 sec on my 16-core Intel Xeon 2.90GHz machine.
@@ -1373,7 +1373,7 @@ par(op)
 }
 \end{figure}
 
-Comparison with the analysis of \cref{sec:gompertz:mif} reinforces the observation of \citet{bhadra10} that PMCMC can require orders of magnitude more computation than iterated filtering.
+Comparison with the analysis of \cref{sec:gompertz:mif} reinforces the observation of \citet{Bhadra2010} that PMCMC can require orders of magnitude more computation than iterated filtering.
 Iterated filtering may have to be repeated multiple times while computing profile likelihood plots, whereas one successful run of PMCMC is sufficient to obtain all required posterior inferences.
 However, in practice, multiple runs from a range of starting points is always good practice since convergence cannot be reliably assessed on the basis of a single chain.
 To verify the convergence of the approach or to compare the performance with other approaches, we can use diagnostic plots produced by the \code{plot} methods (see \cref{fig:pmcmc-plot}).
@@ -1383,8 +1383,8 @@ To verify the convergence of the approach or to compare the performance with oth
 \label{sec:ricker:setup}
 
 In \cref{sec:ricker:probe.match}, we will illustrate probe matching (see \cref{sec:probe}) using a stochastic version of the Ricker map \citep{Ricker1954}.
-We switch models to allow direct comparison with \citet{wood10}, whose synthetic likelihood computations are reproduced below.
-In particular, the results of \cref{sec:ricker:probe.match} demonstrate frequentist inference using synthetic likelihood and also show that the full likelihood is both numerically tractable and reasonably well behaved, contrary to the claim of \citet{wood10}.
+We switch models to allow direct comparison with \citet{Wood2010}, whose synthetic likelihood computations are reproduced below.
+In particular, the results of \cref{sec:ricker:probe.match} demonstrate frequentist inference using synthetic likelihood and also show that the full likelihood is both numerically tractable and reasonably well behaved, contrary to the claim of \citet{Wood2010}.
 We will also take the opportunity to demonstrate features of \pkg{pomp} that allow acceleration of model codes through the use of \proglang{R}'s facilities for compiling and dynamically linking \proglang{C} code.
 
 The Ricker model is another discrete-time model for the size of a population.
@@ -1433,7 +1433,7 @@ exp.trans <- "
 Note that in the foregoing \proglang{C} snippets, the prefix \code{T} designates the transformed version of the parameter.
 A full set of rules for using \code{Csnippet}s, including illustrative examples, is given in the package help system (\code{?Csnippet}).
 
-Now we can construct a \class{pomp} object as before and fill it with simulated data:
+Now we can construct a class-\class{pomp} object as before and fill it with simulated data:
 <<ricker-pomp,eval=TRUE,tidy=FALSE>>=
 rick <- simulate(times = seq(0,50,by=1), t0 = 0, seed=73691676L,
   rprocess = discrete_time(step.fun = Csnippet(ricker.rproc), delta.t = 1),
@@ -1448,7 +1448,7 @@ rick <- simulate(times = seq(0,50,by=1), t0 = 0, seed=73691676L,
 \label{sec:ricker:probe.match}
 
 In \pkg{pomp}, probes are simply functions that can be applied to an array of real or simulated data to yield a scalar or vector quantity.
-Several functions that create useful probes are included with the package, including those recommended by \citet{wood10}.
+Several functions that create useful probes are included with the package, including those recommended by \citet{Wood2010}.
 In this illustration, we will make use of these probes:
 \code{probe.marginal}, \code{probe.acf}, and \code{probe.nlar}.
 \code{probe.marginal} regresses the data against a sample from a reference distribution;
@@ -1558,7 +1558,7 @@ stew(file=file.path(resdir,"ricker-mif.rda"),seed=718086921L,{
 \item the MLE from \code{mif}, and
 \item the maximum synthetic likelihood estimate (MSLE) from \code{probe.match}.
 \end{inparaenum}
-These results demonstrate that it is possible, and indeed not difficult, to maximize the likelihood for this model, contrary to the claim of \citet{wood10}.
+These results demonstrate that it is possible, and indeed not difficult, to maximize the likelihood for this model, contrary to the claim of \citet{Wood2010}.
 Since synthetic likelihood discards some of the information in the data, it is not surprising that \cref{tab:ricker-comparison} also shows the statistical inefficiency of the maximum synthetic likelihood relative to that of the likelihood.
 
 <<ricker-comparison,eval=TRUE,echo=FALSE,cache=FALSE>>=
@@ -1745,7 +1745,7 @@ In this example, we conclude that \code{abc} mixes somewhat more rapidly (as mea
 \Cref{fig:abc:pmcmc:compare} investigates the statistical efficiency of \code{abc} on this example.
 We see that \code{abc} gives rise to somewhat broader posterior distributions than the full-information posteriors from \code{pmcmc}.
 As in all numerical studies of this kind, one cannot readily generalize from one particular example: even for this specific model and dataset, the conclusions might be sensitive to the algorithmic settings.
-However, one should be aware of the possibility of losing substantial amounts of information even when the features are based on reasoned scientific argument \citep{shrestha11,ionides11-statSci}.
+However, one should be aware of the possibility of losing substantial amounts of information even when the features are based on reasoned scientific argument \citep{Shrestha2011,Ionides2011b}.
 Despite this loss of statistical efficiency, points~B\ref{whyFeature1}--B\ref{whyFeature5} of \cref{sec:probe} identify situations in which ABC may be the only practical method available for Bayesian inference.
 
 
@@ -1753,7 +1753,7 @@ Despite this loss of statistical efficiency, points~B\ref{whyFeature1}--B\ref{wh
 \label{sec:gompertz:nlf}
 
 With the \pkg{pomp} package, it is fairly easy to try a quick comparison to see how \code{nlf} (\cref{sec:nlf}) compares with \code{mif} (\cref{sec:mif}) on the Gompertz model.
-Carrying out a simulation study with a correctly specified POMP model is appropriate for assessing computational and statistical efficiency, but does not contribute to the debate on the role of two-step prediction criteria to fit misspecified models \citep{xia11,ionides11-statSci}.
+Carrying out a simulation study with a correctly specified POMP model is appropriate for assessing computational and statistical efficiency, but does not contribute to the debate on the role of two-step prediction criteria to fit misspecified models \citep{Xia2011,Ionides2011b}.
 The \code{nlf} implementation we will use to compare to the \code{mif} call from \cref{sec:gompertz:mif} is
 <<first-nlf,eval=FALSE,purl=FALSE>>=
 nlf1 <- nlf_objfun(gomp, ti=100, tf=4000, lags = c(2, 3),
@@ -1762,12 +1762,12 @@ nlf1 <- nlf_objfun(gomp, ti=100, tf=4000, lags = c(2, 3),
 subplex(par = c(r=0.2, sigma=0.15, tau=0.08), fn=nlf1, control=list(reltol=1e-4)) -> nlf1_out
 nlf1(nlf1_out$par)
 @
-where the first argument is the \class{pomp} object,
+where the first argument is the class-\class{pomp} object,
 \code{start} is a vector containing model parameters at which \code{nlf}'s search will begin,
 \code{est} contains the names of parameters \code{nlf} will estimate, and
 \code{lags} specifies which past values are to be used in the autoregressive model.
 The \code{transform = TRUE} setting causes the optimization to be performed on the transformed scale, as in \cref{sec:gompertz:mif}.
-In the call above \code{lags = c(2, 3)} specifies that the autoregressive model predicts each observation, $y_t$ using $y_{t-2}$ and $y_{t-3}$, as recommended by \citet{kendall05}.
+In the call above \code{lags = c(2, 3)} specifies that the autoregressive model predicts each observation, $y_t$ using $y_{t-2}$ and $y_{t-3}$, as recommended by \citet{Kendall2005}.
 The quasi-likelihood is optimized numerically, so the reliability of the optimization should be assessed by doing multiple fits with different starting parameter values:
 the results of a small experiment (not shown) indicate that, on these simulated data, repeated optimization is not needed.
 \code{nlf} defaults to optimization by the subplex method \citep{Rowan1990,subplex}, though all optimization methods provided by \code{optim} are available as well.
@@ -2000,7 +2000,7 @@ together with statement that all events of the form
   \{\Delta{\cp{A}{B}(t)}\,{>}\, 1\} \qquad \text{and} \qquad \{\Delta{\cp{A}{B}(t)}\myequals 1,\Delta{\cp{C}{D}(t)}\myequals 1\}
 \end{equation*}
 for $A$, $B$, $C$, $D$ with $(A,B)\neq (C,D)$ have probability $o(h)$.
-The counting processes are coupled to the state variables \citep{breto11} via the following identities
+The counting processes are coupled to the state variables \citep{Breto2011} via the following identities
 \begin{equation}\label{eq:sir-cp-bal}
   \begin{aligned}
     \Delta{S}(t) &= \Delta{\cp{\BirthDeath}{S}}(t)-\Delta{\cp{S}{I}}(t)-\Delta{\cp{S}{\BirthDeath}}(t),\\
@@ -2008,7 +2008,7 @@ The counting processes are coupled to the state variables \citep{breto11} via th
     \Delta{R}(t) &= \Delta{\cp{I}{R}}(t)-\Delta{\cp{R}{\BirthDeath}}(t).\\
   \end{aligned}
 \end{equation}
-Taking expectations of \cref{eq:sir-cp,eq:sir-cp-bal}, dividing through by $h$, and taking the limit as $h\downarrow~0$, one obtains a system of nonlinear ordinary differential equations which is known as the deterministic skeleton of the model \citep{coulson04}.
+Taking expectations of \cref{eq:sir-cp,eq:sir-cp-bal}, dividing through by $h$, and taking the limit as $h\downarrow~0$, one obtains a system of nonlinear ordinary differential equations which is known as the deterministic skeleton of the model \citep{Coulson2004}.
 Specifically, the SIR deterministic skeleton is
 \begin{equation}
   \begin{aligned}
@@ -2048,7 +2048,7 @@ The logical flag \code{give\_log} requests the likelihood when \code{FALSE}, the
 Notice that, in these snippets, we never declare the variables;
 \code{pomp} will ensure that the state variable (\code{H}), observable (\code{cases}), parameters (\code{theta}, \code{rho}), and likelihood (\code{lik}) are defined in the contexts within which these snippets are executed.
 
-For the \code{rprocess} portion, we could simulate from the continuous-time Markov process exactly \citep{gillespie77};
+For the \code{rprocess} portion, we could simulate from the continuous-time Markov process exactly \citep{Gillespie1977};
 the \pkg{pomp} function \code{gillespie} implements this algorithm.
 However, for practical purposes, the exact algorithm is often prohibitively slow.
 If we are willing to live with an approximate simulation scheme, we can use the so-called ``tau-leap'' algorithm, one version of which is implemented in \pkg{pomp} via the \code{euler} plug-in.
@@ -2159,7 +2159,7 @@ options(ops)
 @
   \caption{
     Result of \code{plot(sir1)}.
-    The \class{pomp} object \code{sir1} contains the SIR model with simulated data.
+    The class-\class{pomp} object \code{sir1} contains the SIR model with simulated data.
   }
   \label{fig:sir1-plot}
 \end{figure}
@@ -2273,7 +2273,7 @@ sir2 <- simulate(sir1, dmeasure = dmeas, rmeasure = rmeas,
     S_0 = 0.055, I_0 = 0.002, R_0 = 0.94), seed = 619552910L)
 @
 \Cref{fig:sir2-plot} shows the simulated data and latent states.
-The \code{sir2} object we have constructed here contains all the key elements of models used within \pkg{pomp} to investigate cholera \citep{king08}, measles \citep{he10}, malaria \citep{bhadra11}, pertussis \citep{blackwood13,Lavine2013}, pneumococcal pneumonia \citep{shrestha13}, rabies \citep{blackwood13b}, and Ebola virus disease \citep{King2015}.
+The \code{sir2} object we have constructed here contains all the key elements of models used within \pkg{pomp} to investigate cholera \citep{King2008}, measles \citep{He2010}, malaria \citep{Bhadra2011}, pertussis \citep{Blackwood2013,Lavine2013}, pneumococcal pneumonia \citep{Shrestha2013}, rabies \citep{Blackwood2013b}, and Ebola virus disease \citep{King2015}.
 
 \begin{figure}[t!]
 <<sir2-plot,echo=FALSE,fig.height=6.5>>=
@@ -2295,7 +2295,7 @@ The \pkg{pomp} package is designed to be both a tool for data analysis based on 
 The model specification language provided by \pkg{pomp} is very general.
 Implementing a POMP model in \pkg{pomp} makes a wide range of inference algorithms available.
 Moreover, the separation of model specification from the inference algorithm facilitates objective comparison of alternative models and methods.
-The examples demonstrated in this paper are relatively simple, but the package has been instrumental in a number of scientific studies \citep[e.g.,][]{king08,bhadra11,shrestha11,Earn2012,roy13,shrestha13,blackwood13,blackwood13b,Lavine2013,He2013a,Breto2014,King2015}.
+The examples demonstrated in this paper are relatively simple, but the package has been instrumental in a number of scientific studies \citep[e.g.,][]{King2008,Bhadra2011,Shrestha2011,Earn2012,Roy2013,Shrestha2013,Blackwood2013,Blackwood2013b,Lavine2013,He2013a,Breto2014,King2015}.
 
 As a development platform, \pkg{pomp} is particularly convenient for implementing algorithms with the plug-and-play property, since models will typically be defined by their \code{rprocess} simulator, together with \code{rmeasure} and often \code{dmeasure}, but can accommodate inference methods based on other model components such as \code{dprocess} and \code{skeleton} (the deterministic skeleton of the latent process).
 As an open-source project, the package readily supports expansion, and the authors invite community participation in the \pkg{pomp} project in the form of additional inference algorithms, improvements and extensions of existing algorithms, additional model/data examples, documentation contributions and improvements, bug reports, and feature requests.
@@ -2333,109 +2333,86 @@ Anderson R, May R (1991).
 \newblock \emph{Infectious Diseases of Humans}.
 \newblock Oxford University Press, Oxford.
 
-\bibitem[{Andrieu \emph{et~al.}(2010)Andrieu, Doucet, and
-  Holenstein}]{andrieu10}
+\bibitem[{Andrieu \emph{et~al.}(2010)Andrieu, Doucet, and Holenstein}]{Andrieu2010}
 Andrieu C, Doucet A, Holenstein R (2010).
 \newblock \enquote{Particle {M}arkov Chain {M}onte {C}arlo Methods.}
 \newblock \emph{Journal of the Royal Statistical Society B}, \textbf{72}(3),
   269--342.
 \newblock \doi{10.1111/j.1467-9868.2009.00736.x}.
 
-\bibitem[{Andrieu and Roberts(2009)}]{andrieu09}
+\bibitem[{Andrieu and Roberts(2009)}]{Andrieu2009}
 Andrieu C, Roberts G (2009).
 \newblock \enquote{The Pseudo-Marginal Approach for Efficient Computation.}
 \newblock \emph{The Annals of Statistics}, \textbf{37}(2), 697--725.
 \newblock \doi{10.1214/07-aos574}.
 
-\bibitem[{Arulampalam \emph{et~al.}(2002)Arulampalam, Maskell, Gordon, and
-  Clapp}]{arulampalam02}
+\bibitem[{Arulampalam \emph{et~al.}(2002)Arulampalam, Maskell, Gordon, and Clapp}]{Arulampalam2002}
 Arulampalam M, Maskell S, Gordon N, Clapp T (2002).
-\newblock \enquote{A Tutorial on Particle Filters for Online Nonlinear,
-  Non-{G}aussian {B}ayesian Tracking.}
+\newblock \enquote{A Tutorial on Particle Filters for Online Nonlinear, Non-{G}aussian {B}ayesian Tracking.}
 \newblock \emph{IEEE Transactions on Signal Processing}, \textbf{50}, 174--188.
 \newblock \doi{10.1109/78.978374}.
 
-\bibitem[{Beaumont(2010)}]{beaumont10}
+\bibitem[{Beaumont(2010)}]{Beaumont2010}
 Beaumont M (2010).
-\newblock \enquote{Approximate {B}ayesian Computation in Evolution and
-  Ecology.}
+\newblock \enquote{Approximate {B}ayesian Computation in Evolution and Ecology.}
 \newblock \emph{Annual Review of Ecology, Evolution, and Systematics},
   \textbf{41}, 379--406.
 \newblock \doi{10.1146/annurev-ecolsys-102209-144621}.
 
-\bibitem[{Bhadra(2010)}]{bhadra10}
+\bibitem[{Bhadra(2010)}]{Bhadra2010}
 Bhadra A (2010).
-\newblock \enquote{Discussion of `{P}article {M}arkov Chain {M}onte {C}arlo
-  Methods' by {C}.~{A}ndrieu, {A}.~{D}oucet and {R}.~{H}olenstein.}
+\newblock \enquote{Discussion of `{P}article {M}arkov Chain {M}onte {C}arlo Methods' by {C}.~{A}ndrieu, {A}.~{D}oucet and {R}.~{H}olenstein.}
 \newblock \emph{Journal of the Royal Statistical Society B}, \textbf{72},
   314--315.
 \newblock \doi{10.1111/j.1467-9868.2009.00736.x}.
 
-\bibitem[{Bhadra \emph{et~al.}(2011)Bhadra, Ionides, Laneri, Pascual, Bouma,
-  and Dhiman}]{bhadra11}
+\bibitem[{Bhadra \emph{et~al.}(2011)Bhadra, Ionides, Laneri, Pascual, Bouma, and Dhiman}]{Bhadra2011}
 Bhadra A, Ionides E, Laneri K, Pascual M, Bouma M, Dhiman R (2011).
-\newblock \enquote{Malaria in {N}orthwest {I}ndia: Data Analysis via Partially
-  Observed Stochastic Differential Equation Models Driven by {L}{\'e}vy Noise.}
+\newblock \enquote{Malaria in {N}orthwest {I}ndia: Data Analysis via Partially Observed Stochastic Differential Equation Models Driven by {L}{\'e}vy Noise.}
 \newblock \emph{Journal of the American Statistical Association},
   \textbf{106}(494), 440--451.
 \newblock \doi{10.1198/jasa.2011.ap10323}.
 
-\bibitem[{Blackwood \emph{et~al.}(2013{\natexlab{a}})Blackwood, Cummings,
-  Broutin, Iamsirithaworn, and Rohani}]{blackwood13}
+\bibitem[{Blackwood \emph{et~al.}(2013{\natexlab{a}})Blackwood, Cummings, Broutin, Iamsirithaworn, and Rohani}]{Blackwood2013}
 Blackwood J, Cummings D, Broutin H, Iamsirithaworn S, Rohani P
   (2013{\natexlab{a}}).
-\newblock \enquote{Deciphering the Impacts of Vaccination and Immunity on
-  Pertussis Epidemiology in {T}hailand.}
-\newblock \emph{Proceedings of the National Academy of Sciences of the United
-  States of America}, \textbf{110}(23), 9595--9600.
+\newblock \enquote{Deciphering the Impacts of Vaccination and Immunity on Pertussis Epidemiology in {T}hailand.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{110}(23), 9595--9600.
 \newblock \doi{10.1073/pnas.1220908110}.
 
-\bibitem[{Blackwood \emph{et~al.}(2013{\natexlab{b}})Blackwood, Streicker,
-  Altizer, and Rohani}]{blackwood13b}
+\bibitem[{Blackwood \emph{et~al.}(2013{\natexlab{b}})Blackwood, Streicker, Altizer, and Rohani}]{Blackwood2013b}
 Blackwood J, Streicker D, Altizer S, Rohani P (2013{\natexlab{b}}).
-\newblock \enquote{Resolving the Roles of Immunity, Pathogenesis, and
-  Immigration for Rabies Persistence in Vampire Bats.}
-\newblock \emph{Proceedings of the National Academy of Sciences of the United
-  States of America}, \textbf{110}(51), 20837--20842.
+\newblock \enquote{Resolving the Roles of Immunity, Pathogenesis, and Immigration for Rabies Persistence in Vampire Bats.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{110}(51), 20837--20842.
 \newblock \doi{10.1073/pnas.1308817110}.
 
-\bibitem[{Blake \emph{et~al.}(2014)Blake, Martin, Goel, Khetsuriani, Everts,
-  Wolff, Wassilak, Aylward, and Grassly}]{Blake2014}
-Blake I, Martin R, Goel A, Khetsuriani N, Everts J, Wolff C, Wassilak S,
-  Aylward R, Grassly N (2014).
-\newblock \enquote{The Role of Older Children and Adults in Wild Poliovirus
-  Transmission.}
-\newblock \emph{Proceedings of the National Academy of Sciences of the United
-  States of America}, \textbf{111}(29), 10604--10609.
+\bibitem[{Blake \emph{et~al.}(2014)Blake, Martin, Goel, Khetsuriani, Everts, Wolff, Wassilak, Aylward, and Grassly}]{Blake2014}
+Blake I, Martin R, Goel A, Khetsuriani N, Everts J, Wolff C, Wassilak S, Aylward R, Grassly N (2014).
+\newblock \enquote{The Role of Older Children and Adults in Wild Poliovirus Transmission.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{111}(29), 10604--10609.
 \newblock \doi{10.1073/pnas.1323688111}.
 
 \bibitem[{Bret{\'o}(2014)}]{Breto2014}
 Bret{\'o} C (2014).
-\newblock \enquote{On Idiosyncratic Stochasticity of Financial Leverage
-  Effects.}
+\newblock \enquote{On Idiosyncratic Stochasticity of Financial Leverage Effects.}
 \newblock \emph{Statistics \& Probability Letters}, \textbf{91}, 20--26.
 \newblock \doi{10.1016/j.spl.2014.04.003}.
 
-\bibitem[{Bret{\'o} \emph{et~al.}(2009)Bret{\'o}, He, Ionides, and
-  King}]{breto09}
+\bibitem[{Bret{\'o} \emph{et~al.}(2009)Bret{\'o}, He, Ionides, and King}]{Breto2009}
 Bret{\'o} C, He D, Ionides E, King AA (2009).
 \newblock \enquote{Time Series Analysis via Mechanistic Models.}
 \newblock \emph{The Annals of Applied Statistics}, \textbf{3}, 319--348.
 \newblock \doi{10.1214/08-aoas201}.
 
-\bibitem[{Bret{\'o} and Ionides(2011)}]{breto11}
+\bibitem[{Bret{\'o} and Ionides(2011)}]{Breto2011}
 Bret{\'o} C, Ionides E (2011).
-\newblock \enquote{Compound {M}arkov Counting Processes and Their Applications
-  to Modeling Infinitesimally Over-Dispersed Systems.}
-\newblock \emph{Stochastic Processes and their Applications}, \textbf{121}(11),
-  2571--2591.
+\newblock \enquote{Compound {M}arkov Counting Processes and Their Applications to Modeling Infinitesimally Over-Dispersed Systems.}
+\newblock \emph{Stochastic Processes and their Applications}, \textbf{121}(11), 2571--2591.
 \newblock \doi{10.1016/j.spa.2011.07.005}.
 
-\bibitem[{Capp{\'e} \emph{et~al.}(2007)Capp{\'e}, Godsill, and
-  Moulines}]{cappe07}
+\bibitem[{Capp{\'e} \emph{et~al.}(2007)Capp{\'e}, Godsill, and Moulines}]{Cappe2007}
 Capp{\'e} O, Godsill SJ, Moulines E (2007).
-\newblock \enquote{An Overview of Existing Methods and Recent Advances in
-  Sequential {M}onte {C}arlo.}
+\newblock \enquote{An Overview of Existing Methods and Recent Advances in Sequential {M}onte {C}arlo.}
 \newblock \emph{Proceedings of the IEEE}, \textbf{95}(5), 899--924.
 \newblock \doi{10.1109/jproc.2007.893250}.
 
@@ -2444,58 +2421,48 @@ Chambers J (1998).
 \newblock \emph{Programming with Data}.
 \newblock Springer-Verlag, New York.
 
-\bibitem[{Commandeur \emph{et~al.}(2011)Commandeur, Koopman, and
-  Ooms}]{commandeur11}
+\bibitem[{Commandeur \emph{et~al.}(2011)Commandeur, Koopman, and Ooms}]{Commandeur2011}
 Commandeur J, Koopman S, Ooms M (2011).
 \newblock \enquote{Statistical Software for State Space Methods.}
 \newblock \emph{Journal of Statistical Software}, \textbf{41}(1), 1--18.
 \newblock \doi{10.18637/jss.v041.i01}.
 
-\bibitem[{Coulson \emph{et~al.}(2004)Coulson, Rohani, and Pascual}]{coulson04}
+\bibitem[{Coulson \emph{et~al.}(2004)Coulson, Rohani, and Pascual}]{Coulson2004}
 Coulson T, Rohani P, Pascual M (2004).
-\newblock \enquote{Skeletons, Noise and Population Growth: The End of an Old
-  Debate?}
+\newblock \enquote{Skeletons, Noise and Population Growth: The End of an Old Debate?}
 \newblock \emph{Trends in Ecology and Evolution}, \textbf{19}, 359--364.
 \newblock \doi{10.1016/j.tree.2004.05.008}.
 
-\bibitem[{Douc \emph{et~al.}(2005)Douc, Capp{\'e}, and Moulines}]{douc05}
+\bibitem[{Douc \emph{et~al.}(2005)Douc, Capp{\'e}, and Moulines}]{Douc2005}
 Douc R, Capp{\'e} O, Moulines E (2005).
 \newblock \enquote{Comparison of Resampling Schemes for Particle Filtering.}
-\newblock In \emph{Proceedings of the 4th International Symposium on Image and
-  Signal Processing and Analysis, 2005}, pp. 64--69. IEEE.
+\newblock In \emph{Proceedings of the 4th International Symposium on Image and Signal Processing and Analysis, 2005}, pp. 64--69. IEEE.
 \newblock \doi{10.1109/ispa.2005.195385}.
 
 \bibitem[{Doucet and Johansen(2009)}]{Doucet2009}
 Doucet A, Johansen A (2009).
-\newblock \enquote{A Tutorial on Particle Filtering and Smoothing: Fifteen
-  Years Later.}
-\newblock In D~Crisan, B~Rozovsky (eds.), \emph{Oxford Handbook of Nonlinear
-  Filtering}. Oxford University Press.
+\newblock \enquote{A Tutorial on Particle Filtering and Smoothing: Fifteen Years Later.}
+\newblock In D~Crisan, B~Rozovsky (eds.), \emph{Oxford Handbook of Nonlinear Filtering}. Oxford University Press.
 
-\bibitem[{Earn \emph{et~al.}(2012)Earn, He, Loeb, Fonseca, Lee, and
-  Dushoff}]{Earn2012}
+\bibitem[{Earn \emph{et~al.}(2012)Earn, He, Loeb, Fonseca, Lee, and Dushoff}]{Earn2012}
 Earn D, He D, Loeb M, Fonseca K, Lee B, Dushoff J (2012).
-\newblock \enquote{Effects of School Closure on Incidence of Pandemic Influenza
-  in Alberta, Canada.}
+\newblock \enquote{Effects of School Closure on Incidence of Pandemic Influenza in Alberta, Canada.}
 \newblock \emph{The Annals of Internal Medicine}, \textbf{156}(3), 173--181.
 \newblock \doi{10.7326/0003-4819-156-3-201202070-00005}.
 
-\bibitem[{Ellner \emph{et~al.}(1998)Ellner, Bailey, Bobashev, Gallant,
-  Grenfell, and Nychka}]{ellner98}
+\bibitem[{Ellner \emph{et~al.}(1998)Ellner, Bailey, Bobashev, Gallant, Grenfell, and Nychka}]{Ellner1998}
 Ellner S, Bailey B, Bobashev G, Gallant A, Grenfell B, Nychka D (1998).
-\newblock \enquote{Noise and Nonlinearity in Measles Epidemics: Combining
-  Mechanistic and Statistical Approaches to Population Modeling.}
+\newblock \enquote{Noise and Nonlinearity in Measles Epidemics: Combining Mechanistic and Statistical Approaches to Population Modeling.}
 \newblock \emph{American Naturalist}, \textbf{151}(5), 425--440.
 \newblock \doi{10.1086/286130}.
 
-\bibitem[{Genolini(2008)}]{genolini08}
+\bibitem[{Genolini(2008)}]{Genolini2008}
 Genolini C (2008).
 \newblock \enquote{A (Not So) Short Introduction to \proglang{S}4.}
 \newblock \proglang{R} Foundation for Statistical Computing.
-\newblock
-  \urlprefix\url{https://CRAN.R-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf}.
+\newblock \urlprefix\url{https://CRAN.R-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf}.
 
-\bibitem[{Gillespie(1977)}]{gillespie77}
+\bibitem[{Gillespie(1977)}]{Gillespie1977}
 Gillespie D (1977).
 \newblock \enquote{Exact Stochastic Simulation of Coupled Chemical Reactions.}
 \newblock \emph{Journal of Physical Chemistry}, \textbf{81}(25), 2340--2361.
@@ -2503,56 +2470,44 @@ Gillespie D (1977).
 
 \bibitem[{Gompertz(1825)}]{Gompertz1825}
 Gompertz B (1825).
-\newblock \enquote{On the Nature of the Function Expressive of the Law of Human
-  Mortality, and on a New Mode of Determining the Value of Life Contingencies.}
-\newblock \emph{Philosophical Transactions of the Royal Society of London},
-  \textbf{115}, 513--583.
+\newblock \enquote{On the Nature of the Function Expressive of the Law of Human Mortality, and on a New Mode of Determining the Value of Life Contingencies.}
+\newblock \emph{Philosophical Transactions of the Royal Society of London}, \textbf{115}, 513--583.
 \newblock \doi{10.1098/rstl.1825.0026}.
 
 \bibitem[{He \emph{et~al.}(2013)He, Dushoff, Day, Ma, and Earn}]{He2013a}
 He D, Dushoff J, Day T, Ma J, Earn D (2013).
-\newblock \enquote{Inferring the Causes of the Three Waves of the 1918
-  Influenza Pandemic in England and Wales.}
-\newblock \emph{Proceedings of the Royal Society of London B},
-  \textbf{280}(1766), 20131345.
+\newblock \enquote{Inferring the Causes of the Three Waves of the 1918 Influenza Pandemic in England and Wales.}
+\newblock \emph{Proceedings of the Royal Society of London B}, \textbf{280}(1766), 20131345.
 \newblock \doi{10.1098/rspb.2013.1345}.
 
-\bibitem[{He \emph{et~al.}(2010)He, Ionides, and King}]{he10}
-He D, Ionides E, King A (2010).
-\newblock \enquote{Plug-and-Play Inference for Disease Dynamics: Measles in
-  Large and Small Towns as a Case Study.}
-\newblock \emph{Journal of the Royal Society Interface}, \textbf{7}(43),
-  271--283.
+\bibitem[{He \emph{et~al.}(2010)He, Ionides, and King}]{He2010}
+He D, Ionides E, King AA (2010).
+\newblock \enquote{Plug-and-Play Inference for Disease Dynamics: Measles in Large and Small Towns as a Case Study.}
+\newblock \emph{Journal of the Royal Society Interface}, \textbf{7}(43), 271--283.
 \newblock \doi{10.1098/rsif.2009.0151}.
 
-\bibitem[{Ionides(2011)}]{ionides11-statSci}
+\bibitem[{Ionides(2011)}]{Ionides2011b}
 Ionides E (2011).
-\newblock \enquote{Discussion of ``{F}eature Matching in Time Series Modeling''
-  by {Y}.~{X}ia and {H}.~{T}ong.}
+\newblock \enquote{Discussion of ``{F}eature Matching in Time Series Modeling'' by {Y}.~{X}ia and {H}.~{T}ong.}
 \newblock \emph{Statistical Science}, \textbf{26}, 49--52.
 \newblock \doi{10.1214/11-sts345c}.
 
-\bibitem[{Ionides \emph{et~al.}(2011)Ionides, Bhadra, Atchad{\'e}, and
-  King}]{ionides11}
-Ionides E, Bhadra A, Atchad{\'e} Y, King A (2011).
+\bibitem[{Ionides \emph{et~al.}(2011)Ionides, Bhadra, Atchad{\'e}, and King}]{Ionides2011}
+Ionides E, Bhadra A, Atchad{\'e} Y, King AA (2011).
 \newblock \enquote{Iterated Filtering.}
 \newblock \emph{The Annals of Statistics}, \textbf{39}(3), 1776--1802.
 \newblock \doi{10.1214/11-aos886}.
 
-\bibitem[{Ionides \emph{et~al.}(2006)Ionides, Bret{\'o}, and King}]{ionides06}
-Ionides E, Bret{\'o} C, King A (2006).
+\bibitem[{Ionides \emph{et~al.}(2006)Ionides, Bret{\'o}, and King}]{Ionides2006}
+Ionides E, Bret{\'o} C, King AA (2006).
 \newblock \enquote{Inference for Nonlinear Dynamical Systems.}
-\newblock \emph{Proceedings of the National Academy of Sciences of the United
-  States of America}, \textbf{103}(49), 18438--18443.
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{103}(49), 18438--18443.
 \newblock \doi{10.1073/pnas.0603181103}.
 
-\bibitem[{Ionides \emph{et~al.}(2015)Ionides, Nguyen, Atchad{\'e}, Stoev, and
-  King}]{ionides15}
-Ionides E, Nguyen D, Atchad{\'e} Y, Stoev S, King A (2015).
-\newblock \enquote{Inference for Dynamic and Latent Variable Models via
-  Iterated, Perturbed {B}ayes Maps.}
-\newblock \emph{Proceedings of the National Academy of Sciences of the United
-  States of America}, \textbf{112}(3), 719--724.
+\bibitem[{Ionides \emph{et~al.}(2015)Ionides, Nguyen, Atchad{\'e}, Stoev, and King}]{Ionides2015}
+Ionides E, Nguyen D, Atchad{\'e} Y, Stoev S, King AA (2015).
+\newblock \enquote{Inference for Dynamic and Latent Variable Models via Iterated, Perturbed {B}ayes Maps.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{112}(3), 719--724.
 \newblock \doi{10.1073/pnas.1410597112}.
 
 \bibitem[{Johnson(2014)}]{Johnson2014}
@@ -2560,17 +2515,15 @@ Johnson S (2014).
 \newblock \emph{The \pkg{NLopt} Nonlinear-Optimization Package}.
 \newblock Version 2.4.2, \urlprefix\url{http://ab-initio.mit.edu/nlopt}.
 
-\bibitem[{Kane \emph{et~al.}(2013)Kane, Emerson, and Weston}]{JSSv055i14}
+\bibitem[{Kane \emph{et~al.}(2013)Kane, Emerson, and Weston}]{Kane2013}
 Kane M, Emerson J, Weston S (2013).
 \newblock \enquote{Scalable Strategies for Computing with Massive Data.}
 \newblock \emph{Journal of Statistical Software}, \textbf{55}(1).
 \newblock \doi{10.18637/jss.v055.i14}.
 
-\bibitem[{Kantas \emph{et~al.}(2015)Kantas, Doucet, Singh, and
-  Maciejowski}]{Kantas2015}
+\bibitem[{Kantas \emph{et~al.}(2015)Kantas, Doucet, Singh, and Maciejowski}]{Kantas2015}
 Kantas N, Doucet A, Singh S, Maciejowski J (2015).
-\newblock \enquote{On Particle Methods for Parameter Estimation in State-Space
-  Models.}
+\newblock \enquote{On Particle Methods for Parameter Estimation in State-Space Models.}
 \newblock \emph{Statistical Science}, \textbf{30}(3), 328--351.
 \newblock \doi{doi:10.1214/14-STS511}.
 
@@ -2579,90 +2532,69 @@ Keeling M, Rohani P (2008).
 \newblock \emph{Modeling Infectious Diseases in Humans and Animals}.
 \newblock Princeton University Press, Princeton.
 
-\bibitem[{Kendall \emph{et~al.}(1999)Kendall, Briggs, Murdoch, Turchin, Ellner,
-  McCauley, Nisbet, and Wood}]{kendall99}
-Kendall B, Briggs C, Murdoch W, Turchin P, Ellner S, McCauley E, Nisbet R, Wood
-  S (1999).
-\newblock \enquote{Why Do Populations Cycle? {A} Synthesis of Statistical and
-  Mechanistic Modeling Approaches.}
+\bibitem[{Kendall \emph{et~al.}(1999)Kendall, Briggs, Murdoch, Turchin, Ellner, McCauley, Nisbet, and Wood}]{Kendall1999}
+Kendall B, Briggs C, Murdoch W, Turchin P, Ellner S, McCauley E, Nisbet R, Wood S (1999).
+\newblock \enquote{Why Do Populations Cycle? {A} Synthesis of Statistical and Mechanistic Modeling Approaches.}
 \newblock \emph{Ecology}, \textbf{80}(6), 1789--1805.
 \newblock \doi{10.1890/0012-9658(1999)080[1789:wdpcas]2.0.co;2}.
 
-\bibitem[{Kendall \emph{et~al.}(2005)Kendall, Ellner, McCauley, Wood, Briggs,
-  Murdoch, and Turchin}]{kendall05}
+\bibitem[{Kendall \emph{et~al.}(2005)Kendall, Ellner, McCauley, Wood, Briggs, Murdoch, and Turchin}]{Kendall2005}
 Kendall B, Ellner S, McCauley E, Wood S, Briggs C, Murdoch W, Turchin P (2005).
-\newblock \enquote{Population Cycles in the Pine Looper Moth: {D}ynamical Tests
-  of Mechanistic Hypotheses.}
+\newblock \enquote{Population Cycles in the Pine Looper Moth: {D}ynamical Tests of Mechanistic Hypotheses.}
 \newblock \emph{Ecological Monographs}, \textbf{75}(2), 259--276.
 \newblock \doi{10.1890/03-4056}.
 
 \bibitem[{Kermack and McKendrick(1927)}]{Kermack1927}
 Kermack W, McKendrick A (1927).
 \newblock \enquote{A Contribution to the Mathematical Theory of Epidemics.}
-\newblock \emph{Proceedings of the Royal Society of London A}, \textbf{115},
-  700--721.
+\newblock \emph{Proceedings of the Royal Society of London A}, \textbf{115}, 700--721.
 \newblock \doi{10.1098/rspa.1927.0118}.
 
-\bibitem[{King \emph{et~al.}(2015)King, Cell{\`e}s, Magpantay, and
-  Rohani}]{King2015}
-King A, Cell{\`e}s M, Magpantay F, Rohani P (2015).
-\newblock \enquote{Avoidable Errors in the Modelling of Outbreaks of Emerging
-  Pathogens, with Special Reference to Ebola.}
-\newblock \emph{Proceedings of the Royal Society of London B},
-  \textbf{282}(1806), 20150347.
+\bibitem[{King \emph{et~al.}(2015)King, Domenech de Cell{\`e}s, Magpantay, and Rohani}]{King2015}
+King AA, Domenech de Cell{\`e}s M, Magpantay F, Rohani P (2015).
+\newblock \enquote{Avoidable Errors in the Modelling of Outbreaks of Emerging Pathogens, with Special Reference to Ebola.}
+\newblock \emph{Proceedings of the Royal Society of London B}, \textbf{282}(1806), 20150347.
 \newblock \doi{10.1098/rspb.2015.0347}.
 
-\bibitem[{King \emph{et~al.}(2008)King, Ionides, Pascual, and Bouma}]{king08}
-King A, Ionides E, Pascual M, Bouma M (2008).
+\bibitem[{King \emph{et~al.}(2008)King, Ionides, Pascual, and Bouma}]{King2008}
+King AA, Ionides E, Pascual M, Bouma M (2008).
 \newblock \enquote{Inapparent Infections and Cholera Dynamics.}
 \newblock \emph{Nature}, \textbf{454}(7206), 877--880.
 \newblock \doi{10.1038/nature07084}.
 
-\bibitem[{King(2015)}]{subplex}
-King AA (2015).
-\newblock \emph{\pkg{subplex}: Unconstrained Optimization Using the Subplex
-  Algorithm}.
-\newblock \proglang{R}~package, version~1.1-6,
+\bibitem[{King(2022)}]{subplex}
+King AA and Rowan T (2022).
+\newblock \emph{\pkg{subplex}: Unconstrained Optimization Using the Subplex Algorithm}.
+\newblock \proglang{R}~package, version~1.8,
   \urlprefix\url{https://CRAN.R-project.org/package=subplex}.
 
-\bibitem[{King \emph{et~al.}(2022)King, Ionides, Bret\'o, Ellner, Ferrari,
-  Funk, Johnson, Kendall, Lavine, Nguyen, O'Dea, Reuman, Wearing, and
-  Wood}]{pomp}
-King AA, Ionides EL, Bret\'o CM, Ellner SP, Ferrari MJ, Funk S, Johnson SG,
-  Kendall BE, Lavine M, Nguyen D, O'Dea EB, Reuman DC, Wearing H, Wood SN
-  (2022).
-\newblock \emph{{pomp}: {Statistical} Inference for Partially Observed {Markov}
-  Processes}.
-\newblock \proglang{R}~package, version~4.2,
-  \urlprefix\url{https://kingaa.github.io/pomp/}.
+\bibitem[{King \emph{et~al.}(2022)King, Ionides, Bret\'o, Ellner, Ferrari, Funk, Johnson, Kendall, Lavine, Nguyen, O'Dea, Reuman, Wearing, and Wood}]{pomp}
+King AA, Ionides EL, Bret\'o CM, Ellner SP, Ferrari MJ, Funk S, Johnson SG, Kendall BE, Lavine M, Nguyen D, O'Dea EB, Reuman DC, Wearing H, Wood SN (2022).
+\newblock \emph{{pomp}: {Statistical} Inference for Partially Observed {Markov} Processes}.
+\newblock \proglang{R}~package, version~4.2, \urlprefix\url{https://kingaa.github.io/pomp/}.
 
-\bibitem[{Kitagawa(1998)}]{kitagawa98}
+\bibitem[{Kitagawa(1998)}]{Kitagawa1998}
 Kitagawa G (1998).
 \newblock \enquote{A Self-Organising State Space Model.}
-\newblock \emph{Journal of the American Statistical Association},
-  \textbf{93}(443), 1203--1215.
+\newblock \emph{Journal of the American Statistical Association}, \textbf{93}(443), 1203--1215.
 \newblock \doi{10.1080/01621459.1998.10473780}.
 
-\bibitem[{Lavine \emph{et~al.}(2013)Lavine, King, Andreasen, and
-  Bj{\o}rnstad}]{Lavine2013}
-Lavine J, King A, Andreasen V, Bj{\o}rnstad O (2013).
-\newblock \enquote{Immune Boosting Explains Regime-Shifts in Prevaccine-Era
-  Pertussis Dynamics.}
+\bibitem[{Lavine \emph{et~al.}(2013)Lavine, King, Andreasen, and Bj{\o}rnstad}]{Lavine2013}
+Lavine J, King AA, Andreasen V, Bj{\o}rnstad O (2013).
+\newblock \enquote{Immune Boosting Explains Regime-Shifts in Prevaccine-Era Pertussis Dynamics.}
 \newblock \emph{PLoS ONE}, \textbf{8}(8), e72086.
 \newblock \doi{10.1371/journal.pone.0072086}.
 
-\bibitem[{Liu(2001)}]{liu01a}
+\bibitem[{Liu(2001)}]{Liu2001a}
 Liu J (2001).
 \newblock \emph{Monte {C}arlo Strategies in Scientific Computing}.
 \newblock Springer-Verlag, New York.
 \newblock \doi{10.1007/978-0-387-76371-2}.
 
-\bibitem[{Liu and West(2001)}]{janeliu01}
+\bibitem[{Liu and West(2001)}]{Liu2001}
 Liu J, West M (2001).
-\newblock \enquote{Combining Parameter and State Estimation in Simulation-Based
-  Filtering.}
-\newblock In A~Doucet, N~Freitas, N~Gordon (eds.), \emph{Sequential {M}onte
-  {C}arlo Methods in Practice}, pp. 197--224. Springer-Verlag, New York.
+\newblock \enquote{Combining Parameter and State Estimation in Simulation-Based Filtering.}
+\newblock In A~Doucet, N~Freitas, N~Gordon (eds.), \emph{Sequential {M}onte {C}arlo Methods in Practice}, pp. 197--224. Springer-Verlag, New York.
 
 \bibitem[{Marin \emph{et~al.}(2012)Marin, Pudlo, Robert, and Ryder}]{Marin2012}
 Marin JM, Pudlo P, Robert CP, Ryder R (2012).
@@ -2670,114 +2602,91 @@ Marin JM, Pudlo P, Robert CP, Ryder R (2012).
 \newblock \emph{Statistics and Computing}, \textbf{22}(6), 1167--1180.
 \newblock \doi{10.1007/s11222-011-9288-2}.
 
-\bibitem[{Ratmann \emph{et~al.}(2009)Ratmann, Andrieu, Wiuf, and
-  Richardson}]{ratmann09}
+\bibitem[{Ratmann \emph{et~al.}(2009)Ratmann, Andrieu, Wiuf, and Richardson}]{Ratmann2009}
 Ratmann O, Andrieu C, Wiuf C, Richardson S (2009).
-\newblock \enquote{Model Criticism Based on Likelihood-Free Inference, with an
-  Application to Protein Network Evolution.}
-\newblock \emph{Proceedings of the National Academy of Sciences of the United
-  States of America}, \textbf{106}(26), 10576--10581.
+\newblock \enquote{Model Criticism Based on Likelihood-Free Inference, with an Application to Protein Network Evolution.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{106}(26), 10576--10581.
 \newblock \doi{10.1073/pnas.0807882106}.
 
 \bibitem[{{\proglang{R} Core Team}(2022)}]{R}
 {\proglang{R} Core Team} (2022).
-\newblock \emph{\proglang{R}: {A} Language and Environment for Statistical
-  Computing}.
+\newblock \emph{\proglang{R}: {A} Language and Environment for Statistical Computing}.
 \newblock \proglang{R} Foundation for Statistical Computing, Vienna, Austria.
 \newblock \urlprefix\url{https://www.R-project.org/}.
 
 \bibitem[{Reddingius(1971)}]{Reddingius1971}
 Reddingius J (1971).
-\newblock \emph{Gambling for Existence. A Discussion of Some Theoretical
-  Problems in Animal Population Ecology}.
+\newblock \emph{Gambling for Existence. A Discussion of Some Theoretical Problems in Animal Population Ecology}.
 \newblock B. J. Brill, Leiden.
 
-\bibitem[{Reuman \emph{et~al.}(2006)Reuman, Desharnais, Costantino, Ahmad, and
-  Cohen}]{reuman06}
+\bibitem[{Reuman \emph{et~al.}(2006)Reuman, Desharnais, Costantino, Ahmad, and Cohen}]{Reuman2006}
 Reuman D, Desharnais R, Costantino R, Ahmad O, Cohen J (2006).
-\newblock \enquote{Power Spectra Reveal the Influence Of Stochasticity on
-  Nonlinear Population Dynamics.}
-\newblock \emph{Proceedings of the National Academy of Sciences of the United
-  States of America}, \textbf{103}(49), 18860--18865.
+\newblock \enquote{Power Spectra Reveal the Influence Of Stochasticity on Nonlinear Population Dynamics.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{103}(49), 18860--18865.
 \newblock \doi{10.1073/pnas.0608571103}.
 
 \bibitem[{{Revolution Analytics} and Weston(2014)}]{foreach}
 {Revolution Analytics}, Weston S (2014).
 \newblock \emph{\pkg{foreach}: Foreach Looping Construct for \proglang{R}}.
-\newblock \proglang{R} package version 1.4.2,
-  \urlprefix\url{https://CRAN.R-project.org/package=foreach}.
+\newblock \proglang{R} package version 1.4.2, \urlprefix\url{https://CRAN.R-project.org/package=foreach}.
 
 \bibitem[{Ricker(1954)}]{Ricker1954}
 Ricker W (1954).
 \newblock \enquote{Stock and Recruitment.}
-\newblock \emph{Journal of the Fisheries Research Board of Canada},
-  \textbf{11}, 559--623.
+\newblock \emph{Journal of the Fisheries Research Board of Canada}, \textbf{11}, 559--623.
 \newblock \doi{10.1139/f54-039}.
 
 \bibitem[{Rowan(1990)}]{Rowan1990}
 Rowan T (1990).
 \newblock \emph{Functional Stability Analysis of Numerical Algorithms}.
-\newblock Ph.D. thesis, Department of Computer Sciences, University of Texas at
-  Austin.
+\newblock Ph.D. thesis, Department of Computer Sciences, University of Texas at Austin.
 
-\bibitem[{Roy \emph{et~al.}(2012)Roy, Bouma, Ionides, {Dhiman}, C., and
-  Pascual}]{roy13}
+\bibitem[{Roy \emph{et~al.}(2012)Roy, Bouma, Ionides, {Dhiman}, C., and Pascual}]{Roy2013}
 Roy M, Bouma M, Ionides E, {Dhiman}, C R, Pascual M (2012).
-\newblock \enquote{The Potential Elimination of {{\it {P}lasmodium Vivax}}
-  Malaria by Relapse Treatment: {I}nsights from a Transmission Model and
-  Surveillance Data from {NW} {I}ndia.}
+\newblock \enquote{The Potential Elimination of {{\it {P}lasmodium Vivax}} Malaria by Relapse Treatment: {I}nsights from a Transmission Model and Surveillance Data from {NW} {I}ndia.}
 \newblock \emph{PLoS Neglected Tropical Diseases}, \textbf{7}(1), e1979.
 \newblock \doi{10.1371/journal.pntd.0001979}.
 
 \bibitem[{Shaman and Karspeck(2012)}]{Shaman2012}
 Shaman J, Karspeck A (2012).
 \newblock \enquote{Forecasting Seasonal Outbreaks of Influenza.}
-\newblock \emph{Proceedings of the National Academy of Sciences of the United
-  States of America}, \textbf{109}(50), 20425--20430.
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{109}(50), 20425--20430.
 \newblock \doi{10.1073/pnas.1208772109}.
 
-\bibitem[{Shrestha \emph{et~al.}(2013)Shrestha, Foxman, {Weinberger}, Steiner,
-  Viboud, and Rohani}]{shrestha13}
+\bibitem[{Shrestha \emph{et~al.}(2013)Shrestha, Foxman, {Weinberger}, Steiner, Viboud, and Rohani}]{Shrestha2013}
 Shrestha S, Foxman B, {Weinberger} DM, Steiner C, Viboud C, Rohani P (2013).
-\newblock \enquote{Identifying the Interaction between Influenza and
-  Pneumococcal Pneumonia Using Incidence Data.}
+\newblock \enquote{Identifying the Interaction between Influenza and Pneumococcal Pneumonia Using Incidence Data.}
 \newblock \emph{Science Translational Medicine}, \textbf{5}(191), 191ra84.
 \newblock \doi{10.1126/scitranslmed.3005982}.
 
-\bibitem[{Shrestha \emph{et~al.}(2011)Shrestha, King, and Rohani}]{shrestha11}
-Shrestha S, King A, Rohani P (2011).
+\bibitem[{Shrestha \emph{et~al.}(2011)Shrestha, King, and Rohani}]{Shrestha2011}
+Shrestha S, King AA, Rohani P (2011).
 \newblock \enquote{Statistical Inference for Multi-Pathogen Systems.}
 \newblock \emph{PLoS Computational Biology}, \textbf{7}, e1002135.
 \newblock \doi{10.1371/journal.pcbi.1002135}.
 
-\bibitem[{Sisson \emph{et~al.}(2007)Sisson, Fan, and Tanaka}]{sisson07}
+\bibitem[{Sisson \emph{et~al.}(2007)Sisson, Fan, and Tanaka}]{Sisson2007}
 Sisson S, Fan Y, Tanaka M (2007).
 \newblock \enquote{Sequential {M}onte {C}arlo without Likelihoods.}
-\newblock \emph{Proceedings of the National Academy of Sciences of the United
-  States of America}, \textbf{104}(6), 1760--1765.
+\newblock \emph{Proceedings of the National Academy of Sciences of the United States of America}, \textbf{104}(6), 1760--1765.
 \newblock \doi{10.1073/pnas.0607208104}.
 
-\bibitem[{Smith(1993)}]{smith93}
+\bibitem[{Smith(1993)}]{Smith1993}
 Smith A (1993).
-\newblock \enquote{Estimating Nonlinear Time-Series Models Using Simulated
-  Vector Autoregression.}
+\newblock \enquote{Estimating Nonlinear Time-Series Models Using Simulated Vector Autoregression.}
 \newblock \emph{Journal of Applied Econometrics}, \textbf{8}(S1), S63--S84.
 \newblock \doi{10.1002/jae.3950080506}.
 
-\bibitem[{Toni \emph{et~al.}(2009)Toni, Welch, Strelkowa, Ipsen, and
-  Stumpf}]{toni09}
+\bibitem[{Toni \emph{et~al.}(2009)Toni, Welch, Strelkowa, Ipsen, and Stumpf}]{Toni2009}
 Toni T, Welch D, Strelkowa N, Ipsen A, Stumpf M (2009).
-\newblock \enquote{Approximate {B}ayesian Computation Scheme for Parameter
-  Inference and Model Selection in Dynamical Systems.}
-\newblock \emph{Journal of the Royal Society Interface}, \textbf{6}(31),
-  187--202.
+\newblock \enquote{Approximate {B}ayesian Computation Scheme for Parameter Inference and Model Selection in Dynamical Systems.}
+\newblock \emph{Journal of the Royal Society Interface}, \textbf{6}(31), 187--202.
 \newblock \doi{10.1098/rsif.2008.0172}.
 
-\bibitem[{Wan and Merwe(2000)}]{wan00}
+\bibitem[{Wan and Merwe(2000)}]{Wan2000}
 Wan EA, Merwe R (2000).
 \newblock \enquote{The Unscented {K}alman Filter for Nonlinear Estimation.}
-\newblock In \emph{Adaptive Systems for Signal Processing, Communications, and
-  Control}, pp. 153--158.
+\newblock In \emph{Adaptive Systems for Signal Processing, Communications, and Control}, pp. 153--158.
 \newblock \doi{10.1109/asspcc.2000.882463}.
 
 \bibitem[{Wood(2001)}]{Wood2001a}
@@ -2786,14 +2695,13 @@ Wood S (2001).
 \newblock \emph{Ecological Monographs}, \textbf{71}, 1--25.
 \newblock \doi{10.1890/0012-9615(2001)071[0001:psem]2.0.co;2}.
 
-\bibitem[{Wood(2010)}]{wood10}
+\bibitem[{Wood(2010)}]{Wood2010}
 Wood S (2010).
-\newblock \enquote{Statistical Inference for Noisy Nonlinear Ecological Dynamic
-  Systems.}
+\newblock \enquote{Statistical Inference for Noisy Nonlinear Ecological Dynamic Systems.}
 \newblock \emph{Nature}, \textbf{466}(7310), 1102--1104.
 \newblock \doi{10.1038/nature09319}.
 
-\bibitem[{Xia and Tong(2011)}]{xia11}
+\bibitem[{Xia and Tong(2011)}]{Xia2011}
 Xia Y, Tong H (2011).
 \newblock \enquote{Feature Matching in Time Series Modelling.}
 \newblock \emph{Statistical Science}, \textbf{26}(1), 21--46.
@@ -2802,8 +2710,7 @@ Xia Y, Tong H (2011).
 \bibitem[{Ypma(2014)}]{Ypma2014}
 Ypma J (2014).
 \newblock \emph{\pkg{nloptr}: \proglang{R} Interface to \pkg{NLopt}}.
-\newblock \proglang{R}~package, version~1.0.0,
-  \urlprefix\url{https://CRAN.R-project.org/package=nloptr}.
+\newblock \proglang{R}~package, version~1.0.0, \urlprefix\url{https://CRAN.R-project.org/package=nloptr}.
 
 \end{thebibliography}
 
