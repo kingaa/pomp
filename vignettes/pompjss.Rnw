@@ -2317,8 +2317,496 @@ Participants were C.~Bret\'{o}, S.~P.~Ellner, M.~J.~Ferrari, G.~J.~Gibson, G.~Ho
 M.~Wang prepared a first draft of this revision.
 Financial support was provided by grants \#DMS-1308919, \#DMS-0805533, and \#EF-0429588 from the U.S.\ National Science Foundation, by grants \#1U54GM111274 and \#1R01AI101155 from the U.S. National Institutes of Health, by grant \#1761603 from the Joint NSF/NIH Interface program, and by the Research and Policy for Infectious Disease Dynamics program of the Science and Technology Directorate, U.S.\ Department of Homeland Security and the Fogarty International Center, U.S.\ National Institutes of Health.
 
+\begin{thebibliography}{65}
+\newcommand{\enquote}[1]{``#1''}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+\providecommand{\eprint}[2][]{\url{#2}}
 
-\bibliography{pompjss}
+\bibitem[{Anderson and May(1991)}]{Anderson1991}
+Anderson R, May R (1991).
+\newblock \emph{Infectious Diseases of Humans}.
+\newblock Oxford University Press, Oxford.
+
+\bibitem[{Andrieu \emph{et~al.}(2010)Andrieu, Doucet, and
+  Holenstein}]{andrieu10}
+Andrieu C, Doucet A, Holenstein R (2010).
+\newblock \enquote{Particle {M}arkov Chain {M}onte {C}arlo Methods.}
+\newblock \emph{Journal of the Royal Statistical Society B}, \textbf{72}(3),
+  269--342.
+\newblock \doi{10.1111/j.1467-9868.2009.00736.x}.
+
+\bibitem[{Andrieu and Roberts(2009)}]{andrieu09}
+Andrieu C, Roberts G (2009).
+\newblock \enquote{The Pseudo-Marginal Approach for Efficient Computation.}
+\newblock \emph{The Annals of Statistics}, \textbf{37}(2), 697--725.
+\newblock \doi{10.1214/07-aos574}.
+
+\bibitem[{Arulampalam \emph{et~al.}(2002)Arulampalam, Maskell, Gordon, and
+  Clapp}]{arulampalam02}
+Arulampalam M, Maskell S, Gordon N, Clapp T (2002).
+\newblock \enquote{A Tutorial on Particle Filters for Online Nonlinear,
+  Non-{G}aussian {B}ayesian Tracking.}
+\newblock \emph{IEEE Transactions on Signal Processing}, \textbf{50}, 174--188.
+\newblock \doi{10.1109/78.978374}.
+
+\bibitem[{Beaumont(2010)}]{beaumont10}
+Beaumont M (2010).
+\newblock \enquote{Approximate {B}ayesian Computation in Evolution and
+  Ecology.}
+\newblock \emph{Annual Review of Ecology, Evolution, and Systematics},
+  \textbf{41}, 379--406.
+\newblock \doi{10.1146/annurev-ecolsys-102209-144621}.
+
+\bibitem[{Bhadra(2010)}]{bhadra10}
+Bhadra A (2010).
+\newblock \enquote{Discussion of `{P}article {M}arkov Chain {M}onte {C}arlo
+  Methods' by {C}.~{A}ndrieu, {A}.~{D}oucet and {R}.~{H}olenstein.}
+\newblock \emph{Journal of the Royal Statistical Society B}, \textbf{72},
+  314--315.
+\newblock \doi{10.1111/j.1467-9868.2009.00736.x}.
+
+\bibitem[{Bhadra \emph{et~al.}(2011)Bhadra, Ionides, Laneri, Pascual, Bouma,
+  and Dhiman}]{bhadra11}
+Bhadra A, Ionides E, Laneri K, Pascual M, Bouma M, Dhiman R (2011).
+\newblock \enquote{Malaria in {N}orthwest {I}ndia: Data Analysis via Partially
+  Observed Stochastic Differential Equation Models Driven by {L}{\'e}vy Noise.}
+\newblock \emph{Journal of the American Statistical Association},
+  \textbf{106}(494), 440--451.
+\newblock \doi{10.1198/jasa.2011.ap10323}.
+
+\bibitem[{Blackwood \emph{et~al.}(2013{\natexlab{a}})Blackwood, Cummings,
+  Broutin, Iamsirithaworn, and Rohani}]{blackwood13}
+Blackwood J, Cummings D, Broutin H, Iamsirithaworn S, Rohani P
+  (2013{\natexlab{a}}).
+\newblock \enquote{Deciphering the Impacts of Vaccination and Immunity on
+  Pertussis Epidemiology in {T}hailand.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, \textbf{110}(23), 9595--9600.
+\newblock \doi{10.1073/pnas.1220908110}.
+
+\bibitem[{Blackwood \emph{et~al.}(2013{\natexlab{b}})Blackwood, Streicker,
+  Altizer, and Rohani}]{blackwood13b}
+Blackwood J, Streicker D, Altizer S, Rohani P (2013{\natexlab{b}}).
+\newblock \enquote{Resolving the Roles of Immunity, Pathogenesis, and
+  Immigration for Rabies Persistence in Vampire Bats.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, \textbf{110}(51), 20837--20842.
+\newblock \doi{10.1073/pnas.1308817110}.
+
+\bibitem[{Blake \emph{et~al.}(2014)Blake, Martin, Goel, Khetsuriani, Everts,
+  Wolff, Wassilak, Aylward, and Grassly}]{Blake2014}
+Blake I, Martin R, Goel A, Khetsuriani N, Everts J, Wolff C, Wassilak S,
+  Aylward R, Grassly N (2014).
+\newblock \enquote{The Role of Older Children and Adults in Wild Poliovirus
+  Transmission.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, \textbf{111}(29), 10604--10609.
+\newblock \doi{10.1073/pnas.1323688111}.
+
+\bibitem[{Bret{\'o}(2014)}]{Breto2014}
+Bret{\'o} C (2014).
+\newblock \enquote{On Idiosyncratic Stochasticity of Financial Leverage
+  Effects.}
+\newblock \emph{Statistics \& Probability Letters}, \textbf{91}, 20--26.
+\newblock \doi{10.1016/j.spl.2014.04.003}.
+
+\bibitem[{Bret{\'o} \emph{et~al.}(2009)Bret{\'o}, He, Ionides, and
+  King}]{breto09}
+Bret{\'o} C, He D, Ionides E, King AA (2009).
+\newblock \enquote{Time Series Analysis via Mechanistic Models.}
+\newblock \emph{The Annals of Applied Statistics}, \textbf{3}, 319--348.
+\newblock \doi{10.1214/08-aoas201}.
+
+\bibitem[{Bret{\'o} and Ionides(2011)}]{breto11}
+Bret{\'o} C, Ionides E (2011).
+\newblock \enquote{Compound {M}arkov Counting Processes and Their Applications
+  to Modeling Infinitesimally Over-Dispersed Systems.}
+\newblock \emph{Stochastic Processes and their Applications}, \textbf{121}(11),
+  2571--2591.
+\newblock \doi{10.1016/j.spa.2011.07.005}.
+
+\bibitem[{Capp{\'e} \emph{et~al.}(2007)Capp{\'e}, Godsill, and
+  Moulines}]{cappe07}
+Capp{\'e} O, Godsill SJ, Moulines E (2007).
+\newblock \enquote{An Overview of Existing Methods and Recent Advances in
+  Sequential {M}onte {C}arlo.}
+\newblock \emph{Proceedings of the IEEE}, \textbf{95}(5), 899--924.
+\newblock \doi{10.1109/jproc.2007.893250}.
+
+\bibitem[{Chambers(1998)}]{Chambers1998}
+Chambers J (1998).
+\newblock \emph{Programming with Data}.
+\newblock Springer-Verlag, New York.
+
+\bibitem[{Commandeur \emph{et~al.}(2011)Commandeur, Koopman, and
+  Ooms}]{commandeur11}
+Commandeur J, Koopman S, Ooms M (2011).
+\newblock \enquote{Statistical Software for State Space Methods.}
+\newblock \emph{Journal of Statistical Software}, \textbf{41}(1), 1--18.
+\newblock \doi{10.18637/jss.v041.i01}.
+
+\bibitem[{Coulson \emph{et~al.}(2004)Coulson, Rohani, and Pascual}]{coulson04}
+Coulson T, Rohani P, Pascual M (2004).
+\newblock \enquote{Skeletons, Noise and Population Growth: The End of an Old
+  Debate?}
+\newblock \emph{Trends in Ecology and Evolution}, \textbf{19}, 359--364.
+\newblock \doi{10.1016/j.tree.2004.05.008}.
+
+\bibitem[{Douc \emph{et~al.}(2005)Douc, Capp{\'e}, and Moulines}]{douc05}
+Douc R, Capp{\'e} O, Moulines E (2005).
+\newblock \enquote{Comparison of Resampling Schemes for Particle Filtering.}
+\newblock In \emph{Proceedings of the 4th International Symposium on Image and
+  Signal Processing and Analysis, 2005}, pp. 64--69. IEEE.
+\newblock \doi{10.1109/ispa.2005.195385}.
+
+\bibitem[{Doucet and Johansen(2009)}]{Doucet2009}
+Doucet A, Johansen A (2009).
+\newblock \enquote{A Tutorial on Particle Filtering and Smoothing: Fifteen
+  Years Later.}
+\newblock In D~Crisan, B~Rozovsky (eds.), \emph{Oxford Handbook of Nonlinear
+  Filtering}. Oxford University Press.
+
+\bibitem[{Earn \emph{et~al.}(2012)Earn, He, Loeb, Fonseca, Lee, and
+  Dushoff}]{Earn2012}
+Earn D, He D, Loeb M, Fonseca K, Lee B, Dushoff J (2012).
+\newblock \enquote{Effects of School Closure on Incidence of Pandemic Influenza
+  in Alberta, Canada.}
+\newblock \emph{The Annals of Internal Medicine}, \textbf{156}(3), 173--181.
+\newblock \doi{10.7326/0003-4819-156-3-201202070-00005}.
+
+\bibitem[{Ellner \emph{et~al.}(1998)Ellner, Bailey, Bobashev, Gallant,
+  Grenfell, and Nychka}]{ellner98}
+Ellner S, Bailey B, Bobashev G, Gallant A, Grenfell B, Nychka D (1998).
+\newblock \enquote{Noise and Nonlinearity in Measles Epidemics: Combining
+  Mechanistic and Statistical Approaches to Population Modeling.}
+\newblock \emph{American Naturalist}, \textbf{151}(5), 425--440.
+\newblock \doi{10.1086/286130}.
+
+\bibitem[{Genolini(2008)}]{genolini08}
+Genolini C (2008).
+\newblock \enquote{A (Not So) Short Introduction to \proglang{S}4.}
+\newblock \proglang{R} Foundation for Statistical Computing.
+\newblock
+  \urlprefix\url{https://CRAN.R-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf}.
+
+\bibitem[{Gillespie(1977)}]{gillespie77}
+Gillespie D (1977).
+\newblock \enquote{Exact Stochastic Simulation of Coupled Chemical Reactions.}
+\newblock \emph{Journal of Physical Chemistry}, \textbf{81}(25), 2340--2361.
+\newblock \doi{10.1021/j100540a008}.
+
+\bibitem[{Gompertz(1825)}]{Gompertz1825}
+Gompertz B (1825).
+\newblock \enquote{On the Nature of the Function Expressive of the Law of Human
+  Mortality, and on a New Mode of Determining the Value of Life Contingencies.}
+\newblock \emph{Philosophical Transactions of the Royal Society of London},
+  \textbf{115}, 513--583.
+\newblock \doi{10.1098/rstl.1825.0026}.
+
+\bibitem[{He \emph{et~al.}(2013)He, Dushoff, Day, Ma, and Earn}]{He2013a}
+He D, Dushoff J, Day T, Ma J, Earn D (2013).
+\newblock \enquote{Inferring the Causes of the Three Waves of the 1918
+  Influenza Pandemic in England and Wales.}
+\newblock \emph{Proceedings of the Royal Society of London B},
+  \textbf{280}(1766), 20131345.
+\newblock \doi{10.1098/rspb.2013.1345}.
+
+\bibitem[{He \emph{et~al.}(2010)He, Ionides, and King}]{he10}
+He D, Ionides E, King A (2010).
+\newblock \enquote{Plug-and-Play Inference for Disease Dynamics: Measles in
+  Large and Small Towns as a Case Study.}
+\newblock \emph{Journal of the Royal Society Interface}, \textbf{7}(43),
+  271--283.
+\newblock \doi{10.1098/rsif.2009.0151}.
+
+\bibitem[{Ionides(2011)}]{ionides11-statSci}
+Ionides E (2011).
+\newblock \enquote{Discussion of ``{F}eature Matching in Time Series Modeling''
+  by {Y}.~{X}ia and {H}.~{T}ong.}
+\newblock \emph{Statistical Science}, \textbf{26}, 49--52.
+\newblock \doi{10.1214/11-sts345c}.
+
+\bibitem[{Ionides \emph{et~al.}(2011)Ionides, Bhadra, Atchad{\'e}, and
+  King}]{ionides11}
+Ionides E, Bhadra A, Atchad{\'e} Y, King A (2011).
+\newblock \enquote{Iterated Filtering.}
+\newblock \emph{The Annals of Statistics}, \textbf{39}(3), 1776--1802.
+\newblock \doi{10.1214/11-aos886}.
+
+\bibitem[{Ionides \emph{et~al.}(2006)Ionides, Bret{\'o}, and King}]{ionides06}
+Ionides E, Bret{\'o} C, King A (2006).
+\newblock \enquote{Inference for Nonlinear Dynamical Systems.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, \textbf{103}(49), 18438--18443.
+\newblock \doi{10.1073/pnas.0603181103}.
+
+\bibitem[{Ionides \emph{et~al.}(2015)Ionides, Nguyen, Atchad{\'e}, Stoev, and
+  King}]{ionides15}
+Ionides E, Nguyen D, Atchad{\'e} Y, Stoev S, King A (2015).
+\newblock \enquote{Inference for Dynamic and Latent Variable Models via
+  Iterated, Perturbed {B}ayes Maps.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, \textbf{112}(3), 719--724.
+\newblock \doi{10.1073/pnas.1410597112}.
+
+\bibitem[{Johnson(2014)}]{Johnson2014}
+Johnson S (2014).
+\newblock \emph{The \pkg{NLopt} Nonlinear-Optimization Package}.
+\newblock Version 2.4.2, \urlprefix\url{http://ab-initio.mit.edu/nlopt}.
+
+\bibitem[{Kane \emph{et~al.}(2013)Kane, Emerson, and Weston}]{JSSv055i14}
+Kane M, Emerson J, Weston S (2013).
+\newblock \enquote{Scalable Strategies for Computing with Massive Data.}
+\newblock \emph{Journal of Statistical Software}, \textbf{55}(1).
+\newblock \doi{10.18637/jss.v055.i14}.
+
+\bibitem[{Kantas \emph{et~al.}(2015)Kantas, Doucet, Singh, and
+  Maciejowski}]{Kantas2015}
+Kantas N, Doucet A, Singh S, Maciejowski J (2015).
+\newblock \enquote{On Particle Methods for Parameter Estimation in State-Space
+  Models.}
+\newblock \emph{Statistical Science}, \textbf{30}(3), 328--351.
+\newblock \doi{doi:10.1214/14-STS511}.
+
+\bibitem[{Keeling and Rohani(2008)}]{Keeling2008a}
+Keeling M, Rohani P (2008).
+\newblock \emph{Modeling Infectious Diseases in Humans and Animals}.
+\newblock Princeton University Press, Princeton.
+
+\bibitem[{Kendall \emph{et~al.}(1999)Kendall, Briggs, Murdoch, Turchin, Ellner,
+  McCauley, Nisbet, and Wood}]{kendall99}
+Kendall B, Briggs C, Murdoch W, Turchin P, Ellner S, McCauley E, Nisbet R, Wood
+  S (1999).
+\newblock \enquote{Why Do Populations Cycle? {A} Synthesis of Statistical and
+  Mechanistic Modeling Approaches.}
+\newblock \emph{Ecology}, \textbf{80}(6), 1789--1805.
+\newblock \doi{10.1890/0012-9658(1999)080[1789:wdpcas]2.0.co;2}.
+
+\bibitem[{Kendall \emph{et~al.}(2005)Kendall, Ellner, McCauley, Wood, Briggs,
+  Murdoch, and Turchin}]{kendall05}
+Kendall B, Ellner S, McCauley E, Wood S, Briggs C, Murdoch W, Turchin P (2005).
+\newblock \enquote{Population Cycles in the Pine Looper Moth: {D}ynamical Tests
+  of Mechanistic Hypotheses.}
+\newblock \emph{Ecological Monographs}, \textbf{75}(2), 259--276.
+\newblock \doi{10.1890/03-4056}.
+
+\bibitem[{Kermack and McKendrick(1927)}]{Kermack1927}
+Kermack W, McKendrick A (1927).
+\newblock \enquote{A Contribution to the Mathematical Theory of Epidemics.}
+\newblock \emph{Proceedings of the Royal Society of London A}, \textbf{115},
+  700--721.
+\newblock \doi{10.1098/rspa.1927.0118}.
+
+\bibitem[{King \emph{et~al.}(2015)King, Cell{\`e}s, Magpantay, and
+  Rohani}]{King2015}
+King A, Cell{\`e}s M, Magpantay F, Rohani P (2015).
+\newblock \enquote{Avoidable Errors in the Modelling of Outbreaks of Emerging
+  Pathogens, with Special Reference to Ebola.}
+\newblock \emph{Proceedings of the Royal Society of London B},
+  \textbf{282}(1806), 20150347.
+\newblock \doi{10.1098/rspb.2015.0347}.
+
+\bibitem[{King \emph{et~al.}(2008)King, Ionides, Pascual, and Bouma}]{king08}
+King A, Ionides E, Pascual M, Bouma M (2008).
+\newblock \enquote{Inapparent Infections and Cholera Dynamics.}
+\newblock \emph{Nature}, \textbf{454}(7206), 877--880.
+\newblock \doi{10.1038/nature07084}.
+
+\bibitem[{King(2015)}]{subplex}
+King AA (2015).
+\newblock \emph{\pkg{subplex}: Unconstrained Optimization Using the Subplex
+  Algorithm}.
+\newblock \proglang{R}~package, version~1.1-6,
+  \urlprefix\url{https://CRAN.R-project.org/package=subplex}.
+
+\bibitem[{King \emph{et~al.}(2022)King, Ionides, Bret\'o, Ellner, Ferrari,
+  Funk, Johnson, Kendall, Lavine, Nguyen, O'Dea, Reuman, Wearing, and
+  Wood}]{pomp}
+King AA, Ionides EL, Bret\'o CM, Ellner SP, Ferrari MJ, Funk S, Johnson SG,
+  Kendall BE, Lavine M, Nguyen D, O'Dea EB, Reuman DC, Wearing H, Wood SN
+  (2022).
+\newblock \emph{{pomp}: {Statistical} Inference for Partially Observed {Markov}
+  Processes}.
+\newblock \proglang{R}~package, version~4.2,
+  \urlprefix\url{https://kingaa.github.io/pomp/}.
+
+\bibitem[{Kitagawa(1998)}]{kitagawa98}
+Kitagawa G (1998).
+\newblock \enquote{A Self-Organising State Space Model.}
+\newblock \emph{Journal of the American Statistical Association},
+  \textbf{93}(443), 1203--1215.
+\newblock \doi{10.1080/01621459.1998.10473780}.
+
+\bibitem[{Lavine \emph{et~al.}(2013)Lavine, King, Andreasen, and
+  Bj{\o}rnstad}]{Lavine2013}
+Lavine J, King A, Andreasen V, Bj{\o}rnstad O (2013).
+\newblock \enquote{Immune Boosting Explains Regime-Shifts in Prevaccine-Era
+  Pertussis Dynamics.}
+\newblock \emph{PLoS ONE}, \textbf{8}(8), e72086.
+\newblock \doi{10.1371/journal.pone.0072086}.
+
+\bibitem[{Liu(2001)}]{liu01a}
+Liu J (2001).
+\newblock \emph{Monte {C}arlo Strategies in Scientific Computing}.
+\newblock Springer-Verlag, New York.
+\newblock \doi{10.1007/978-0-387-76371-2}.
+
+\bibitem[{Liu and West(2001)}]{janeliu01}
+Liu J, West M (2001).
+\newblock \enquote{Combining Parameter and State Estimation in Simulation-Based
+  Filtering.}
+\newblock In A~Doucet, N~Freitas, N~Gordon (eds.), \emph{Sequential {M}onte
+  {C}arlo Methods in Practice}, pp. 197--224. Springer-Verlag, New York.
+
+\bibitem[{Marin \emph{et~al.}(2012)Marin, Pudlo, Robert, and Ryder}]{Marin2012}
+Marin JM, Pudlo P, Robert CP, Ryder R (2012).
+\newblock \enquote{Approximate Bayesian Computational Methods.}
+\newblock \emph{Statistics and Computing}, \textbf{22}(6), 1167--1180.
+\newblock \doi{10.1007/s11222-011-9288-2}.
+
+\bibitem[{Ratmann \emph{et~al.}(2009)Ratmann, Andrieu, Wiuf, and
+  Richardson}]{ratmann09}
+Ratmann O, Andrieu C, Wiuf C, Richardson S (2009).
+\newblock \enquote{Model Criticism Based on Likelihood-Free Inference, with an
+  Application to Protein Network Evolution.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, \textbf{106}(26), 10576--10581.
+\newblock \doi{10.1073/pnas.0807882106}.
+
+\bibitem[{{\proglang{R} Core Team}(2022)}]{R}
+{\proglang{R} Core Team} (2022).
+\newblock \emph{\proglang{R}: {A} Language and Environment for Statistical
+  Computing}.
+\newblock \proglang{R} Foundation for Statistical Computing, Vienna, Austria.
+\newblock \urlprefix\url{https://www.R-project.org/}.
+
+\bibitem[{Reddingius(1971)}]{Reddingius1971}
+Reddingius J (1971).
+\newblock \emph{Gambling for Existence. A Discussion of Some Theoretical
+  Problems in Animal Population Ecology}.
+\newblock B. J. Brill, Leiden.
+
+\bibitem[{Reuman \emph{et~al.}(2006)Reuman, Desharnais, Costantino, Ahmad, and
+  Cohen}]{reuman06}
+Reuman D, Desharnais R, Costantino R, Ahmad O, Cohen J (2006).
+\newblock \enquote{Power Spectra Reveal the Influence Of Stochasticity on
+  Nonlinear Population Dynamics.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, \textbf{103}(49), 18860--18865.
+\newblock \doi{10.1073/pnas.0608571103}.
+
+\bibitem[{{Revolution Analytics} and Weston(2014)}]{foreach}
+{Revolution Analytics}, Weston S (2014).
+\newblock \emph{\pkg{foreach}: Foreach Looping Construct for \proglang{R}}.
+\newblock \proglang{R} package version 1.4.2,
+  \urlprefix\url{https://CRAN.R-project.org/package=foreach}.
+
+\bibitem[{Ricker(1954)}]{Ricker1954}
+Ricker W (1954).
+\newblock \enquote{Stock and Recruitment.}
+\newblock \emph{Journal of the Fisheries Research Board of Canada},
+  \textbf{11}, 559--623.
+\newblock \doi{10.1139/f54-039}.
+
+\bibitem[{Rowan(1990)}]{Rowan1990}
+Rowan T (1990).
+\newblock \emph{Functional Stability Analysis of Numerical Algorithms}.
+\newblock Ph.D. thesis, Department of Computer Sciences, University of Texas at
+  Austin.
+
+\bibitem[{Roy \emph{et~al.}(2012)Roy, Bouma, Ionides, {Dhiman}, C., and
+  Pascual}]{roy13}
+Roy M, Bouma M, Ionides E, {Dhiman}, C R, Pascual M (2012).
+\newblock \enquote{The Potential Elimination of {{\it {P}lasmodium Vivax}}
+  Malaria by Relapse Treatment: {I}nsights from a Transmission Model and
+  Surveillance Data from {NW} {I}ndia.}
+\newblock \emph{PLoS Neglected Tropical Diseases}, \textbf{7}(1), e1979.
+\newblock \doi{10.1371/journal.pntd.0001979}.
+
+\bibitem[{Shaman and Karspeck(2012)}]{Shaman2012}
+Shaman J, Karspeck A (2012).
+\newblock \enquote{Forecasting Seasonal Outbreaks of Influenza.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, \textbf{109}(50), 20425--20430.
+\newblock \doi{10.1073/pnas.1208772109}.
+
+\bibitem[{Shrestha \emph{et~al.}(2013)Shrestha, Foxman, {Weinberger}, Steiner,
+  Viboud, and Rohani}]{shrestha13}
+Shrestha S, Foxman B, {Weinberger} DM, Steiner C, Viboud C, Rohani P (2013).
+\newblock \enquote{Identifying the Interaction between Influenza and
+  Pneumococcal Pneumonia Using Incidence Data.}
+\newblock \emph{Science Translational Medicine}, \textbf{5}(191), 191ra84.
+\newblock \doi{10.1126/scitranslmed.3005982}.
+
+\bibitem[{Shrestha \emph{et~al.}(2011)Shrestha, King, and Rohani}]{shrestha11}
+Shrestha S, King A, Rohani P (2011).
+\newblock \enquote{Statistical Inference for Multi-Pathogen Systems.}
+\newblock \emph{PLoS Computational Biology}, \textbf{7}, e1002135.
+\newblock \doi{10.1371/journal.pcbi.1002135}.
+
+\bibitem[{Sisson \emph{et~al.}(2007)Sisson, Fan, and Tanaka}]{sisson07}
+Sisson S, Fan Y, Tanaka M (2007).
+\newblock \enquote{Sequential {M}onte {C}arlo without Likelihoods.}
+\newblock \emph{Proceedings of the National Academy of Sciences of the United
+  States of America}, \textbf{104}(6), 1760--1765.
+\newblock \doi{10.1073/pnas.0607208104}.
+
+\bibitem[{Smith(1993)}]{smith93}
+Smith A (1993).
+\newblock \enquote{Estimating Nonlinear Time-Series Models Using Simulated
+  Vector Autoregression.}
+\newblock \emph{Journal of Applied Econometrics}, \textbf{8}(S1), S63--S84.
+\newblock \doi{10.1002/jae.3950080506}.
+
+\bibitem[{Toni \emph{et~al.}(2009)Toni, Welch, Strelkowa, Ipsen, and
+  Stumpf}]{toni09}
+Toni T, Welch D, Strelkowa N, Ipsen A, Stumpf M (2009).
+\newblock \enquote{Approximate {B}ayesian Computation Scheme for Parameter
+  Inference and Model Selection in Dynamical Systems.}
+\newblock \emph{Journal of the Royal Society Interface}, \textbf{6}(31),
+  187--202.
+\newblock \doi{10.1098/rsif.2008.0172}.
+
+\bibitem[{Wan and Merwe(2000)}]{wan00}
+Wan EA, Merwe R (2000).
+\newblock \enquote{The Unscented {K}alman Filter for Nonlinear Estimation.}
+\newblock In \emph{Adaptive Systems for Signal Processing, Communications, and
+  Control}, pp. 153--158.
+\newblock \doi{10.1109/asspcc.2000.882463}.
+
+\bibitem[{Wood(2001)}]{Wood2001a}
+Wood S (2001).
+\newblock \enquote{Partially Specified Ecological Models.}
+\newblock \emph{Ecological Monographs}, \textbf{71}, 1--25.
+\newblock \doi{10.1890/0012-9615(2001)071[0001:psem]2.0.co;2}.
+
+\bibitem[{Wood(2010)}]{wood10}
+Wood S (2010).
+\newblock \enquote{Statistical Inference for Noisy Nonlinear Ecological Dynamic
+  Systems.}
+\newblock \emph{Nature}, \textbf{466}(7310), 1102--1104.
+\newblock \doi{10.1038/nature09319}.
+
+\bibitem[{Xia and Tong(2011)}]{xia11}
+Xia Y, Tong H (2011).
+\newblock \enquote{Feature Matching in Time Series Modelling.}
+\newblock \emph{Statistical Science}, \textbf{26}(1), 21--46.
+\newblock \doi{10.1214/10-sts345}.
+
+\bibitem[{Ypma(2014)}]{Ypma2014}
+Ypma J (2014).
+\newblock \emph{\pkg{nloptr}: \proglang{R} Interface to \pkg{NLopt}}.
+\newblock \proglang{R}~package, version~1.0.0,
+  \urlprefix\url{https://CRAN.R-project.org/package=nloptr}.
+
+\end{thebibliography}
+
 
 \end{document}
 
