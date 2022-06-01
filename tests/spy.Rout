@@ -1,5 +1,5 @@
 
-R version 4.1.3 (2022-03-10) -- "One Push-Up"
+R version 4.2.0 (2022-04-22) -- "Vigorous Calisthenics"
 Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -165,8 +165,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2022-03-26 16:03:33.145 -0400 */
-/* Salt: E3E1DFDEE5229A6C98732ABF */
+/* Time: 2022-06-01 11:58:21.097 -0400 */
+/* Salt: E73E4A8B16A4F6402A218925 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -289,8 +289,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2022-03-26 16:03:33.213 -0400 */
-/* Salt: 89718F5026F931AC4FBF9AA0 */
+/* Time: 2022-06-01 11:58:21.222 -0400 */
+/* Salt: B9D7C7603C837435B10943AF */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -924,8 +924,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2022-03-26 16:03:33.633 -0400 */
-/* Salt: 32FFA084C65243771293F953 */
+/* Time: 2022-06-01 11:58:21.822 -0400 */
+/* Salt: E87F353AD041EAA804398972 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1180,8 +1180,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2022-03-26 16:03:33.967 -0400 */
-/* Salt: 4F057EE0D5D111AC9DDC7D4D */
+/* Time: 2022-06-01 11:58:22.373 -0400 */
+/* Salt: A6A77CA2D5A5ADE184D27114 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

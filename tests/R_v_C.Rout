@@ -1,5 +1,5 @@
 
-R version 4.1.3 (2022-03-10) -- "One Push-Up"
+R version 4.2.0 (2022-04-22) -- "Vigorous Calisthenics"
 Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -108,16 +108,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  7.108   0.004   7.112 
+  7.189   0.163   7.352 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.167   0.000   0.167 
+  0.248   0.004   0.252 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.641   0.000   0.641 
+  0.630   0.013   0.643 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.032   0.000   0.032 
+  0.037   0.000   0.037 
 > 
 > dev.off()
 null device 
