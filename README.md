@@ -7,6 +7,7 @@
 [![CRAN Status](https://www.r-pkg.org/badges/version/pomp)](https://cran.r-project.org/package=pomp)
 [![Last CRAN release date](https://www.r-pkg.org/badges/last-release/pomp)](https://cran.r-project.org/package=pomp)
 [![R-CMD-check](https://github.com/kingaa/pomp/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/kingaa/pomp/actions/workflows/r-cmd-check.yml)
+[![binary-build](https://github.com/kingaa/pomp/actions/workflows/binary-build.yml/badge.svg)](https://github.com/kingaa/pomp/actions/workflows/binary-build.yml)
 [![test-coverage](https://github.com/kingaa/pomp/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/kingaa/pomp/actions/workflows/test-coverage.yml)
 [![codecov](https://codecov.io/gh/kingaa/pomp/branch/master/graph/badge.svg)](https://codecov.io/gh/kingaa/pomp)
 ![CRAN mirror monthly downloads](https://cranlogs.r-pkg.org/badges/last-month/pomp)
