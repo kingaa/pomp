@@ -15,7 +15,8 @@ bake(
   normal.kind = NULL,
   dependson = NULL,
   info = FALSE,
-  timing = TRUE
+  timing = TRUE,
+  dir = getOption("pomp_archive_dir", getwd())
 )
 
 stew(
@@ -25,7 +26,8 @@ stew(
   kind = NULL,
   normal.kind = NULL,
   dependson = NULL,
-  info = FALSE
+  info = FALSE,
+  dir = getOption("pomp_archive_dir", getwd())
 )
 
 freeze(
@@ -38,7 +40,7 @@ freeze(
 )
 }
 \arguments{
-\item{file}{Name of the binary data file in which the result will be stored or retrieved, as appropriate.
+\item{file}{Name of the archive file in which the result will be stored or retrieved, as appropriate.
 For \code{bake}, this will contain a single object and hence be an RDS file (extension \sQuote{rds});
 for \code{stew}, this will contain one or more named objects and hence be an RDA file (extension \sQuote{rda}).}
 
@@ -66,6 +68,9 @@ In the case of \code{stew}, this list is a hidden object named \dQuote{.ingredie
 \item{timing}{logical.
 If \code{TRUE}, the time required for the computation is returned.
 This is returned as the \dQuote{system.time} attribute of the returned object.}
+
+\item{dir}{Directory holding archive files; by default, this is the current working directory.
+This can also be set using the global option \code{pomp_archive_dir}.}
 
 \item{envir}{the \code{\link[base]{environment}} in which \code{expr} is to
     be evaluated.  May also be \code{NULL}, a list, a data frame,

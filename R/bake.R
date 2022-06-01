@@ -30,9 +30,11 @@
 ##' \code{bake} and \code{stew} also store information about the code executed, the dependencies, and the state of the random-number generator (if the latter is controlled) in the archive file.
 ##' Re-computation is triggered if any of these things change.
 ##'
-##' @param file Name of the binary data file in which the result will be stored or retrieved, as appropriate.
+##' @param file Name of the archive file in which the result will be stored or retrieved, as appropriate.
 ##' For \code{bake}, this will contain a single object and hence be an RDS file (extension \sQuote{rds});
 ##' for \code{stew}, this will contain one or more named objects and hence be an RDA file (extension \sQuote{rda}).
+##' @param dir Directory holding archive files; by default, this is the current working directory.
+##' This can also be set using the global option \code{pomp_archive_dir}.
 ##' @param expr Expression to be evaluated.
 ##' @param seed,kind,normal.kind optional.
 ##' To set the state and of the RNG.
@@ -139,7 +141,8 @@ update_bake_archive <- function (val, code, deps, file) {
 bake <- function (
   file, expr,
   seed = NULL, kind = NULL, normal.kind = NULL,
-  dependson = NULL, info = FALSE, timing = TRUE
+  dependson = NULL, info = FALSE, timing = TRUE,
+  dir = getOption("pomp_archive_dir",getwd())
 ) {
   expr <- substitute(expr)
   code <- digest(deparse(expr,control="all"))
@@ -150,6 +153,7 @@ bake <- function (
   )
   info <- as.logical(info)
   timing <- as.logical(timing)
+  file <- file.path(as.character(dir[[1L]]),as.character(file))
   reload <- file.exists(file)
   if (reload) {
     val <- readRDS(file)
@@ -224,7 +228,8 @@ update_stew_archive <- function (
 stew <- function (
   file, expr,
   seed = NULL, kind = NULL, normal.kind = NULL,
-  dependson = NULL, info = FALSE
+  dependson = NULL, info = FALSE,
+  dir = getOption("pomp_archive_dir",getwd())
 ) {
   expr <- substitute(expr)
   code <- digest(deparse(expr,control="all"))
@@ -234,6 +239,7 @@ stew <- function (
     ep="stew"
   )
   info <- as.logical(info)
+  file <- file.path(as.character(dir[[1L]]),as.character(file))
   reload <- file.exists(file)
   e <- new.env()
   if (reload) {

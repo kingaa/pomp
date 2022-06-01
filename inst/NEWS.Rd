@@ -1,5 +1,18 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.2.1}{
+  \itemize{
+    \item The archiving functions \code{bake} and \code{stew} now take the argument \code{dir}, which is the directory holding the archive files.
+    By default, this is the current working directory or the value of the global option \code{pomp.archive.dir}.
+    \item A new global option, \code{pomp_archive_dir}, can be used to specify the locations of archive files used by \code{bake} and \code{stew}.
+  }
+}
+\section{Changes in \pkg{pomp} version 4.2.0}{
+  \itemize{
+    \item Minor changes, invisible to the user.
+    \item Minor changes to the C codes to keep up with R-devel.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.1.0}{
   \itemize{
     \item Minor changes to the C codes to keep up with R-devel.
