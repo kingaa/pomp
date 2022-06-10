@@ -39,6 +39,13 @@
 \newcommand\maxlag{\overline{c}}
 \newcommand\nlfList{C}
 \newcommand\bigO[1]{\mathcal{O}\!\left({#1}\right)}
+\newcommand\dimtheta{d}
+\newcommand\DimTheta{D}
+\newcommand\DimX{\mathrm{dim}(X)}
+\newcommand\DimY{\mathrm{dim}(Y)}
+\newcommand\nprobe{k}
+\newcommand\Nprobe{K}
+\newcommand\carryingCapacity{\kappa}
 
 \usepackage[sort&compress]{cleveref}
 \newcommand{\crefrangeconjunction}{--}
@@ -218,14 +225,14 @@ Finally, \cref{sec:conclusion} discusses extensions and applications of \pkg{pom
 \section[POMP models and their representation in pomp]{POMP models and their representation in \pkg{pomp}}
 \label{sec:background}
 
-Let $\theta$ be a $p$-dimensional real-valued parameter, $\theta\in\R^p$.
+Let $\theta$ be a $\DimTheta$-dimensional real-valued parameter, $\theta\in\R^{\DimTheta}$.
 For each value of $\theta$, let $\{X(t\giventh\theta),t\in T\}$ be a Markov process,
-with $X(t\giventh\theta)$ taking values in $\R^q$.
+with $X(t\giventh\theta)$ taking values in $\R^{\DimX}$.
 The time index set $T\subset\mathbb{R}$ may be an interval or a discrete set.
 Let $\{t_i\in T, i=1,\dots,N\}$, be the times at which $X(t\giventh\theta)$ is observed, and $t_{0}\in T$ be an initial time.
 Assume $t_{0}\le t_{1}<t_{2}<\cdots<t_{N}$.
 We write $X_i=X(t_i\giventh\theta)$ and $X_{i:j}=(X_{i},\ X_{i+1},\dots,X_{j})$.
-The process $X_{0:N}$ is only observed by way of another process $Y_{1:N}=(Y_1,\dots,Y_N)$ with $Y_n$ taking values in  $\R^r$.
+The process $X_{0:N}$ is only observed by way of another process $Y_{1:N}=(Y_1,\dots,Y_N)$ with $Y_n$ taking values in  $\R^{\DimY}$.
 The observable random variables $Y_{1:N}$ are assumed to be conditionally independent given $X_{0:N}$.
 The data, $y_{1:N}^{*}=(y_{1}^{*},\ \ldots,\ y_{N}^{*})$, are modeled as a realization of this observation process and are considered fixed.
 We suppose that $X_{0:N}$ and $Y_{1:N}$ have a joint density $f_{X_{0:N},Y_{1:N}}(x_{0:N},\ y_{1:N}\giventh\theta)$.
@@ -502,7 +509,7 @@ As pointed out by \citet{Douc2005}, stratified resampling performs better than m
 \begin{algorithm}[t!]
   \caption{
     \textbf{Iterated filtering}:
-    \texttt{mif2(P, params{\argequals}$\theta_0$, Nmif{\argequals}$M$, Np{\argequals}$J$, rw.sd{\argequals}$\sigma_{1:p}$, cooling.fraction.50{\argequals}$f$)},
+    \texttt{mif2(P, params{\argequals}$\theta_0$, Nmif{\argequals}$M$, Np{\argequals}$J$, rw.sd{\argequals} $\sigma_{0:N,1:\DimTheta}$, cooling.fraction.50{\argequals}$a$)},
     using notation from \cref{tab:notation}
     where \code{P} is a class-\class{pomp} object with defined \code{rprocess}, \code{dmeasure}, \code{rinit}, and \code{obs} components.
     \label{alg:mif}
@@ -514,15 +521,15 @@ As pointed out by \citet{Douc2005}, stratified resampling performs better than m
     Number of iterations, $M$;
     number of particles, $J$;
     initial parameter swarm, $\{\Theta^0_j, j=1,\dots,J\}$;
-    perturbation density, $h_n(\theta|\varphi;\sigma)$;
-    perturbation scale, $\sigma_{1{:}M}$ 
+    random walk intensity, a $\DimTheta\times\DimTheta$ diagonal matrix $V_n$ with entries $\sigma^2_{n,\dimtheta}$;
+    cooling fraction in 50 iterations, $a$.
   }
   \BlankLine
   \For {$m$ in $1{:} M$}{
-    $\Theta^{F,m}_{0,j}\sim h_0(\theta|\Theta^{m-1}_{j}; \sigma_m)$ for $j$ in $1{:} J$\label{alg:mif:init:perturb}\;
+    $\Theta^{F,m}_{0,j}\sim \normal\big(\Theta^{m-1}_{j},V_0 \, a^{2m/50}\big)$ for $j$ in $1{:} J$\label{alg:mif:init:perturb}\;
     $X_{0,j}^{F,m}\sim f_{X_0}(x_0 ; \Theta^{F,m}_{0,j})$ for $j$ in $1{:} J$\;
     \For {$n$ in $1{:} N$}{
-      $\Theta^{P,m}_{n,j}\sim h_n(\theta|\Theta^{F,m}_{n-1,j},\sigma_m)$ for $j$ in $1{:} J$\label{alg:mif:perturb}\;
+      $\Theta^{P,m}_{n,j}\sim \normal\big(\Theta^{F,m}_{n-1,j},V_n \, a^{2m/50}\big)$ for $j$ in $1{:} J$\label{alg:mif:perturb}\;
       $X_{n,j}^{P,m}\sim f_{X_n|X_{n-1}}(x_n | X^{F,m}_{n-1,j}; \Theta^{P,m}_{n,j})$ for $j$ in $1{:} J$\label{alg:mif:sim}\;
       $w_{n,j}^m = f_{Y_n|X_n}(y^*_n| X_{n,j}^{P,m} ; \Theta^{P,m}_{n,j})$ for $j$ in $1{:} J$\label{alg:mif:weights}\;
       Apply \cref{alg:systematic} to draw $k_{1{:}J}$ with $P[k_j=i]=  w_{n,i}^m\Big/\sum_{u=1}^J w_{n,u}^m$\label{alg:mif:syst}\;
@@ -548,15 +555,20 @@ Iterated filtering is implemented in the \code{mif2} function.
 By analogy with annealing, the random walk intensity can be called a temperature, which is decreased according to a prescribed cooling schedule.
 One strives to ensure that the algorithm will freeze at the maximum of the likelihood as the temperature approaches zero.
 
-The perturbations on the parameters in \cref{alg:mif:init:perturb,alg:mif:perturb} of \cref{alg:mif} follow a normal distribution, with each component, $[\theta]_i$, of the parameter vector perturbed independently.
-Neither normality nor independence are necessary for iterated filtering, but, rather than varying the perturbation distribution, one can transform the parameters to make these simple algorithmic choices reasonable.
+The perturbations on the parameters in \cref{alg:mif:init:perturb,alg:mif:perturb} of \cref{alg:mif} follow a normal distribution, with each component of the parameter vector $\theta$ perturbed independently.
+Neither normality nor independence are necessary for iterated filtering to converge to a neighborhood of the MLE \citep{Ionides2015}.
+However, rather than varying the perturbation distribution, it is convenient to transform the parameters to make these simple algorithmic choices reasonable.
+\code{pomp} provides a \code{partrans} argument to facilitate optimization on a suitably transformed parameter space.
 
-\Cref{alg:mif} gives special treatment to a subset of the components of the parameter vector termed initial value parameters (IVPs), which arise when unknown initial conditions are modeled as parameters.
-These IVPs will typically be inconsistently estimable as the length of the time series increases, since for a stochastic process one expects only early time points to contain information about the initial state.
-Searching the parameter space using time-varying parameters is inefficient in this situation, and so \cref{alg:mif} perturbs these parameters only at time zero.
+\code{mif2} provides assistance in the specification of the collection of random talk intensities, $\sigma_{0:N,1:\DimTheta}$, via the \code{rw.sd} function.
+A parameter $\dimtheta$ for which $\sigma_{0:N,\dimtheta}$ is constant for $n=\seq{0}{N}$ is called a regular parameter (RP).
+A parameter $\dimtheta$ for which $\sigma_{1:N,\dimtheta}=0$, so perturbations happen only at time $t_0$, is called an initial value parameter (IVP) since this choice is appropriate for parameters which determine only the initial state of the latent process.
+In general, a parameter should be perturbed only during a time interval where it influences the transition or measuremnt process.
+Iterated filtering can be understood by an evolutionary analogy in parameter space, requiring both mutation and selection in order to increase the fitness of the population.
+An example of a parameter which is neither an RP nor an IVP is a break-point parameter which describes the time or magnitude of a change in the dynamics or the measurement process.
 
 \Cref{alg:mif:perturb,alg:mif:sim,alg:mif:weights,alg:mif:syst,alg:mif:resample} of \cref{alg:mif} are exactly an application of SMC (\cref{alg:pfilter}) to a modified POMP model in which the parameters are added to the state space.
-This approach has been used in a variety of previously proposed POMP methodologies \citep{Kitagawa1998,Liu2001,Wan2000} but iterated filtering is distinguished by having theoretical justification for convergence to the maximum likelihood estimate \citep{Ionides2011}.
+This approach has been used in a variety of previously proposed POMP methodologies \citep{Kitagawa1998,Liu2001,Wan2000} but iterated filtering is distinguished by having theoretical justification for convergence to the maximum likelihood estimate \citep{Ionides2015}.
 
 \clearpage
 
@@ -567,7 +579,7 @@ This approach has been used in a variety of previously proposed POMP methodologi
 \begin{algorithm}[t!]
   \caption{
     \textbf{Particle Markov chain Monte Carlo}:
-    \texttt{pmcmc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, Np{\argequals}$J$, proposal{\argequals}$q$)},
+    \texttt{pmcmc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, Np{\argequals}$J$, proposal{\argequals}mvn.rw($V$))},
     using notation from \cref{tab:notation}
     where \code{P} is a class-\class{pomp} object with defined methods for
     \code{rprocess}, \code{dmeasure}, \code{rinit}, \code{dprior}, and \code{obs}.
@@ -583,14 +595,13 @@ This approach has been used in a variety of previously proposed POMP methodologi
     data, $y^*_{1:N}$;
     number of particles, $J$;
     number of filtering operations, $M$;
-    perturbation scales, $\sigma_{1:p}$;
+    proposal variance matrix, $V$;
     evaluator for prior, $f_{\Theta}(\theta)$.
   }
   \BlankLine
   Initialization: compute $\loglikMC(\theta_0)$ using \cref{alg:pfilter} with $J$ particles.\;
   \For {$m$ in $\seq{1}{M}$}{
-    Draw a parameter proposal, $\theta^P_m$, from the proposal distribution:
-    $\Theta^P_m \sim q\left(\mydot\given\theta_{m-1}\right)$.\;
+    Draw a parameter proposal, $\theta^P_m\sim \normal\left(\theta_{m-1},V\right)$.\;
     Compute $\loglikMC(\theta^P_m)$ using \cref{alg:pfilter} with $J$ particles.\;
     Generate $U\sim\mathrm{Uniform}(0,1).$\;
     Set $\big(\theta_m,\loglikMC(\theta_m)\big)=\begin{cases}
@@ -608,6 +619,9 @@ Full information plug-and-play Bayesian inference for POMP models is enabled by 
 PMCMC methods combine likelihood evaluation via SMC with MCMC moves in the parameter space.
 The simplest and most widely used PMCMC algorithm, termed particle marginal Metropolis-Hastings (PMMH), is based on the observation that the unbiased likelihood estimate provided by SMC can be plugged into the Metropolis-Hastings update procedure to give an algorithm targeting the desired posterior distribution for the parameters \citep{Andrieu2009}.
 PMMH is implemented in \code{pmcmc}, as described in \cref{alg:pmcmc}.
+The \code{proposal} argument permits an arbitrary symmetric proposal distribution, but our pseudocode corresponds to the situation where the \code{mvn.rw} plug-in is used, to provide a Gaussian proposal with a specified covariance matrix.
+Other plug-in functions include \code{mvn.diag.rw} and \code{mvn.rw.adaptive}.
+
 In part because it gains only a single likelihood evaluation from each particle filtering operation, PMCMC can be computationally relatively inefficient \citep{Bhadra2010,Ionides2015}.
 Nevertheless, its invention introduced the possibility of full-information plug-and-play Bayesian inferences in some situations where they had been unavailable.
 
@@ -632,22 +646,22 @@ Nevertheless, its invention introduced the possibility of full-information plug-
     parameter, $\theta$;
     data, $y^*_{1:N}$;
     number of simulations, $J$;
-    vector of summary statistics or \emph{probes}, $\featureFunc=(\featureFunc_1,\dots,\featureFunc_d)$.
+    vector of summary statistics or \emph{probes}, $\featureFunc=(\featureFunc_1,\dots,\featureFunc_{\Nprobe})$.
   }
   \BlankLine
   Compute observed probes:
-  $s^*_{i}=\featureFunc_i(y^*_{1:N})$ for  $i$ in $\seq{1}{d}$.\;
+  $s^*_{\nprobe}=\featureFunc_{\nprobe}(y^*_{1:N})$ for  $\nprobe$ in $\seq{1}{\Nprobe}$.\;
   Simulate $J$ datasets:
   $Y^j_{1:N}\sim f_{Y_{1:N}}(\mydot \giventh \theta)$ for $j$ in $\seq{1}{J}$.\;
   Compute simulated probes:
-  $s_{ij}=\featureFunc_i(Y^j_{1:N})$ for  $i$ in $1\myto d$ and $j$ in $\seq{1}{J}$.\;
+  $s_{{\nprobe}j}=\featureFunc_{\nprobe}(Y^j_{1:N})$ for  ${\nprobe}$ in $1\myto {\Nprobe}$ and $j$ in $\seq{1}{J}$.\;
   Compute sample mean:
-  $\mu_i=J^{-1}\sum_{j=1}^Js_{ij}$ for  $i$ in $\seq{1}{d}$.\;
+  $\mu_{\nprobe}=J^{-1}\sum_{j=1}^Js_{{\nprobe}j}$ for  ${\nprobe}$ in $\seq{1}{\Nprobe}$.\;
   Compute sample covariance:
-  $\Sigma_{ik}=(J-1)^{-1}\sum_{j=1}^J (s_{ij}-\mu_i)(s_{kj}-\mu_k)$ for $i$ and $k$ in $\seq{1}{d}$.\;
+  $V_{i{\nprobe}}=(J-1)^{-1}\sum_{j=1}^J (s_{ij}-\mu_i)(s_{{\nprobe}j}-\mu_{\nprobe})$ for $i$ and ${\nprobe}$ in $\seq{1}{\Nprobe}$.\;
   Compute the log synthetic likelihood:
   \begin{equation}
-    \loglikMC_{\featureFunc}(\theta)=-\frac{1}{2}\,(s^*-\mu)^{\top}{\Sigma}^{-1}(s^*-\mu)-\frac{1}{2}\,\log|\Sigma|-\frac{d}{2}\,\log(2\pi).
+    \loglikMC_{\featureFunc}(\theta)=-\frac{1}{2}\,(s^*-\mu)^{\top}{V}^{-1}(s^*-\mu)-\frac{1}{2}\,\log|V|-\frac{d}{2}\,\log(2\pi).
   \end{equation}\;
   \KwOut{Synthetic likelihood, $\synloglikMC(\theta)$.}
   \KwCplx{$\bigO{J}$}
@@ -688,7 +702,7 @@ Numerical optimization of the synthetic likelihood is implemented by \code{probe
   \caption{
     \textbf{Approximate Bayesian computation}:
     \protect
-    \texttt{abc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, probes{\argequals}$\featureFunc$, scale{\argequals}$\tau_{1:d}$, proposal{\argequals}$q$, epsilon{\argequals}$\epsilon$)},
+    \texttt{abc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, probes{\argequals}$\featureFunc$, scale{\argequals}$\tau_{1:\Nprobe}$, proposal{\argequals}mvn.rw($V$), epsilon{\argequals}$\epsilon$)},
     using notation from \cref{tab:notation}, where
     \code{P} is a class-\class{pomp} object with defined methods for
     \code{rprocess}, \code{rmeasure}, \code{rinit}, \code{dprior}, and \code{obs}.
@@ -699,35 +713,34 @@ Numerical optimization of the synthetic likelihood is implemented by \code{probe
     simulator for $f_{X_0}(x_0\giventh\theta)$;
     simulator for $f_{X_n|X_{n-1}}(x_n\given x_{n-1}\giventh\theta)$;
     simulator for $f_{Y_n|X_n}(y_n\given x_{n}\giventh\theta)$;
-    simulator for $q(\theta^P\given\theta)$;
+%    simulator for $q(\theta^P\given\theta)$;
     data, $y^*_{1:N}$;
     number of proposals, $M$;
-    vector of probes, $\featureFunc=(\featureFunc_1,\dots,\featureFunc_d)$;
-    perturbation scales, $\sigma_{1:p}$;
-    evaluator for prior, $f_{\Theta}(\theta)$; feature scales, $\tau_{1:d}$;
+    vector of probes, $\featureFunc=(\featureFunc_1,\dots,\featureFunc_{\Nprobe})$;
+    proposal variance matrix, $V$;
+    evaluator for prior, $f_{\Theta}(\theta)$; feature scales, $\tau_{1:{\Nprobe}}$;
     tolerance, $\epsilon$.
   }
   \BlankLine
   Compute observed probes:
   $s^*_{i}=\featureFunc_i(y^*_{1:N})$ for  $i$ in $1\myto d$.\;
   \For {$m$ in $1\myto M$}{
-    Draw a parameter proposal, $\theta^P_m$, from the proposal distribution:
-    $\Theta^P_m \sim q\left(\mydot\given\theta_{m-1}\right)$.\;
+    Draw a parameter proposal, $\theta^P_m \sim \normal\left(\theta_{m-1},V\right)$.\;
     Simulate dataset:
     $Y_{1:N}\sim f_{Y_{1:N}}(\mydot\giventh\theta^P_{m})$.\;
     Compute simulated probes:
-    $s_i=\featureFunc_i(Y_{1:N})$ for  $i$ in $\seq{1}{d}$.\;
+    $s_{\nprobe}=\featureFunc_{\nprobe}(Y_{1:N})$ for  $\nprobe$ in $\seq{1}{\Nprobe}$.\;
     Generate $U\sim\mathrm{Uniform}(0,1).$\;
     Set $\theta_m=\begin{cases}
-    \theta^P_m,  &\text{if } \displaystyle \sum_{i=1}^d\left(\frac{s_i-s_i^*}{\tau_i}\right)^2<\epsilon^2 \text{ and }
+    \theta^P_m,  &\text{if } \displaystyle \sum_{\nprobe=1}^{\Nprobe}\left(\frac{s_{\nprobe}-s_{\nprobe}^*}{\tau_{\nprobe}}\right)^2<\epsilon^2 \text{ and }
     \displaystyle U<\frac{f_\Theta(\theta^P_m)}{f_\Theta(\theta_{m-1})},\\
     \theta_{m-1}, &\text{otherwise.}
     \end{cases}\nllabel{alg:abc:epsilon}$\;
   }
   \KwOut{
-    Samples, ${\theta_{1:M}}$, representing the posterior distribution, $f_{\Theta|S_{1:d}}(\theta\given s_{1:d}^*)$.
+    Samples, ${\theta_{1:M}}$, representing the posterior distribution, $f_{\Theta|S_{1:{\Nprobe}}}(\theta\given s_{1:{\Nprobe}}^*)$.
   }
-  \KwCplx{Nominally $\bigO{M}$, but performance will depend on the choice of $\epsilon$, $\tau_i$, and $\sigma_i$, as well as on the choice of probes $\featureFunc$.}
+  \KwCplx{Nominally $\bigO{M}$, but performance will depend on the choice of $\epsilon$, $\tau_{\nprobe}$, and $V$, as well as on the choice of probes $\featureFunc$.}
 \end{algorithm}
 
 ABC algorithms are Bayesian feature-matching techniques, comparable to the frequentist generalized method of moments \citep{Marin2012}.
@@ -742,17 +755,16 @@ The likelihood of the observed features, $\loglik_S(\theta)=f_{S}(s^*\giventh\th
 \begin{equation}
   \label{eq:abc-lik}
   \synloglikMC^{ABC}(\theta)=\begin{cases}
-  \epsilon^{-d}B_d^{-1}\displaystyle\prod_{i=1}^d \tau_i,
-  & \text{if } \displaystyle\sum_{i=1}^d\left(\frac{s_i-s_i^*}{\tau_i}\right)^2 < \epsilon^2, \\
+  \epsilon^{-{\Nprobe}}B_{\Nprobe}^{-1}\displaystyle\prod_{\nprobe=1}^{\Nprobe} \tau_{\nprobe},
+  & \text{if } \displaystyle\sum_{\nprobe=1}^{\Nprobe}\left(\frac{s_{\nprobe}-s_{\nprobe}^*}{\tau_{\nprobe}}\right)^2 < \epsilon^2, \\
   0, & \text{otherwise,}
   \end{cases}
 \end{equation}
-where $B_d$ is the volume of the $d$-dimensional unit ball and $\tau_i$ is a scaling chosen for the $i$th feature.
+where $B_{\Nprobe}$ is the volume of the $\Nprobe$-dimensional unit ball and $\tau_{\nprobe}$ is a scaling chosen for the $\nprobe$th feature.
 The likelihood approximation in \cref{eq:abc-lik} differs from the synthetic likelihood in \cref{alg:probe} in that only a single simulation is required.
 As $\epsilon$ becomes small, the bias in \cref{eq:abc-lik} decreases but the Monte Carlo variability increases.
 The ABC implementation \code{abc} (presented in \cref{alg:abc}) is a random walk Metropolis implementation of ABC-MCMC \citep[Algorithm 3 of][]{Marin2012}.
-In the same style as iterated filtering and PMCMC, we assume a Gaussian random walk in parameter space;
-the package supports alternative choices of the proposal distribution.
+In the same style as iterated filtering and PMCMC, we assume a Gaussian random walk in parameter space; the package supports alternative choices of the proposal distribution.
 
 
 \subsection{Nonlinear forecasting}
@@ -849,9 +861,9 @@ The Ricker model will be introduced in \cref{sec:ricker:setup} and used in \cref
 The Gompertz model postulates that the density, $X_{t+\Delta{t}}$, of a population of organisms at time $t+\Delta{t}$ depends on the density, $X_{t}$, at time $t$ according to
 \begin{equation}
   \label{eq:gompertz1}
-  X_{t+\Delta{t}}=K^{1-e^{-r\,\Delta{t}}}\,X_{t}^{e^{-r\,\Delta{t}}}\,\varepsilon_{t}.
+  X_{t+\Delta{t}}=\carryingCapacity^{1-e^{-r\,\Delta{t}}}\,X_{t}^{e^{-r\,\Delta{t}}}\,\varepsilon_{t}.
 \end{equation}
-In \cref{eq:gompertz1}, $K$ is the carrying capacity of the population, $r$ is a positive parameter, and the $\varepsilon_{t}$ are independent and identically-distributed lognormal random variables with $\log\varepsilon_t\sim\normal(0,\sigma^2)$.
+In \cref{eq:gompertz1}, $\carryingCapacity$ is the carrying capacity of the population, $r$ is a positive parameter, and the $\varepsilon_{t}$ are independent and identically-distributed lognormal random variables with $\log\varepsilon_t\sim\normal(0,\sigma^2)$.
 Additionally, we will assume that the population density is observed with errors in measurement that are lognormally distributed:
 \begin{equation}
   \label{eq:gompertz-obs}
@@ -860,7 +872,7 @@ Additionally, we will assume that the population density is observed with errors
 Taking a logarithmic transform of \cref{eq:gompertz1} gives
 \begin{equation}
   \label{eq:gompertz2}
-  \log{X_{t+\Delta{t}}}\;\sim\;\normal\left(\left(1-e^{-r\,\Delta{t}}\right)\,\log{K}+e^{-r\,\Delta{t}}\,\log{X_t},\sigma^2\right).
+  \log{X_{t+\Delta{t}}}\;\sim\;\normal\left(\left(1-e^{-r\,\Delta{t}}\right)\,\log{\carryingCapacity}+e^{-r\,\Delta{t}}\,\log{X_t},\sigma^2\right).
 \end{equation}
 On this transformed scale, the model is linear and Gaussian and so we can obtain exact values of the likelihood function by applying the Kalman filter.
 Plug-and-play methods are not strictly needed;
@@ -886,7 +898,7 @@ gompertz.rproc <- function (X,r,K,sigma,...,delta.t) {
 @
 The translation from the mathematical description (\cref{eq:gompertz1}) to the simulator is straightforward.
 When this function is called, the argument \code{x} contains the state at time \code{t}.
-The parameters (including $K$, $r$, and $\sigma$) are passed in the argument \code{params}.
+The parameters (including $\carryingCapacity$, $r$, and $\sigma$) are passed in the argument \code{params}.
 Notice that \code{x} and \code{params} are named numeric vectors and that the output must likewise be a named numeric vector, with names that match those of \code{x}.
 %% The algorithms in \pkg{pomp} all make heavy use of the \code{names} attributes of vectors and matrices.
 The argument \code{delta.t} specifies the time-step size.
@@ -941,7 +953,7 @@ Let us take our parameter vector to be
 <<gomp6>>=
 theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1, X_0=1)
 @
-The parameters $r$, $K$, $\sigma$, and $\tau$ appear in \code{gompertz.rproc} and \code{gompertz.rmeas}.
+The parameters $r$, $\carryingCapacity$, $\sigma$, and $\tau$ appear in \code{gompertz.rproc} and \code{gompertz.rmeas}.
 The initial condition $X_0$ is also given in \code{theta}.
 The fact that the initial condition parameter's name ends in \code{_0} is significant:
 it tells \code{pomp} that this is the initial condition of the state variable \code{X}.
