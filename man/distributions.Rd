@@ -61,7 +61,7 @@ In this case, we say that \deqn{(\Delta n_1, \dots, \Delta n_k) \sim \mathrm{Eul
 Draw \eqn{m} random samples from this distribution by doing \preformatted{
     dn <- reulermultinom(n=m,size=N,rate=r,dt=dt),
 } where \code{r} is the vector of rates.
-Evaluate the probability that \eqn{x=(x_1,\dots,x_k)}{x=(x1,\dots,xk)} are the numbers of individuals who have died in each of the \eqn{k} ways over the interval \eqn{\Delta t=}{}\code{dt},
+Evaluate the probability that \eqn{x=(x_1,\dots,x_k)}{x=(x1,\dots,xk)} are the numbers of individuals who have died in each of the \eqn{k} ways over the interval \eqn{\Delta t=}\code{dt},
 by doing \preformatted{
     deulermultinom(x=x,size=N,rate=r,dt=dt).
 }

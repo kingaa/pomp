@@ -5,6 +5,7 @@
     \item The archiving functions \code{bake} and \code{stew} now take the argument \code{dir}, which is the directory holding the archive files.
     By default, this is the current working directory or the value of the global option \code{pomp.archive.dir}.
     \item A new global option, \code{pomp_archive_dir}, can be used to specify the locations of archive files used by \code{bake} and \code{stew}.
+    \item Documentation repair of issue flagged by Kurt Hornik (9 June 2022).
   }
 }
 \section{Changes in \pkg{pomp} version 4.2.0}{
