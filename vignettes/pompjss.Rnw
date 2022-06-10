@@ -27,7 +27,6 @@
 \newcommand\given{{\,\vert\,}}
 \newcommand\equals{{{\,}={\,}}}
 \newcommand\myequals{\hspace{0.5mm}{=}\hspace{0.5mm}}
-\newcommand\myto{{\;:\;}}
 \newcommand\seq[2]{{#1}\!:\!{#2}}
 \newcommand\mydot{{\,\cdot\,}}
 \newcommand\cp[2]{N_{\mathrm{#1}\mathrm{#2}}}
@@ -654,7 +653,7 @@ Nevertheless, its invention introduced the possibility of full-information plug-
   Simulate $J$ datasets:
   $Y^j_{1:N}\sim f_{Y_{1:N}}(\mydot \giventh \theta)$ for $j$ in $\seq{1}{J}$.\;
   Compute simulated probes:
-  $s_{{\nprobe}j}=\featureFunc_{\nprobe}(Y^j_{1:N})$ for  ${\nprobe}$ in $1\myto {\Nprobe}$ and $j$ in $\seq{1}{J}$.\;
+  $s_{{\nprobe}j}=\featureFunc_{\nprobe}(Y^j_{1:N})$ for  ${\nprobe}$ in $\seq{1}{\Nprobe}$ and $j$ in $\seq{1}{J}$.\;
   Compute sample mean:
   $\mu_{\nprobe}=J^{-1}\sum_{j=1}^Js_{{\nprobe}j}$ for  ${\nprobe}$ in $\seq{1}{\Nprobe}$.\;
   Compute sample covariance:
@@ -723,8 +722,8 @@ Numerical optimization of the synthetic likelihood is implemented by \code{probe
   }
   \BlankLine
   Compute observed probes:
-  $s^*_{i}=\featureFunc_i(y^*_{1:N})$ for  $i$ in $1\myto d$.\;
-  \For {$m$ in $1\myto M$}{
+  $s^*_{i}=\featureFunc_i(y^*_{1:N})$ for  $i$ in $\seq{1}{d}$.\;
+  \For {$m$ in $\seq{1}{M}$}{
     Draw a parameter proposal, $\theta^P_m \sim \normal\left(\theta_{m-1},V\right)$.\;
     Simulate dataset:
     $Y_{1:N}\sim f_{Y_{1:N}}(\mydot\giventh\theta^P_{m})$.\;
