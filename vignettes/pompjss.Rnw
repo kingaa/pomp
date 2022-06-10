@@ -2,7 +2,7 @@
 %\VignetteEngine{knitr::knitr}
 \usepackage{paralist,amsmath,amssymb,thumbpdf,lmodern}
 \graphicspath{{figure/}}
-\shortcites{Blake2014,Kendall99,endall05,pomp}
+\shortcites{Blake2014,Kendall1999,Kendall2005,pomp}
 
 \usepackage{enumerate,alltt}
 \usepackage[ruled,noline,linesnumbered]{algorithm2e}
@@ -42,9 +42,9 @@
 \newcommand\DimTheta{D}
 \newcommand\DimX{\mathrm{dim}(X)}
 \newcommand\DimY{\mathrm{dim}(Y)}
-\newcommand\nprobe{k}
-\newcommand\Nprobe{K}
-\newcommand\carryingCapacity{\kappa}
+\newcommand\nprobe{q}
+\newcommand\Nprobe{Q}
+\newcommand\carryingCapacity{K}
 
 \usepackage[sort&compress]{cleveref}
 \newcommand{\crefrangeconjunction}{--}
@@ -547,22 +547,24 @@ Adding additional variability in this way has four positive effects:
 \begin{enumerate}[{A}1.]
 \item It smooths the likelihood surface, which facilitates optimization.
 \item It combats particle depletion by adding diversity to the population of particles.
-\item The additional variability can be exploited to explore the likelihood surface and estimate the gradient of the (smoothed) likelihood, based on the same filtering procedure that is required to estimate the value of the likelihood \citep{Ionides2006,Ionides2011}.
+\item Small perturbations preserve the mathematical property that, when the parameters are included in the model as latent states, recursive solution of the filtering equations converges to their maximum likelihood estimate (MLE) \citep{Ionides2015}.
 \item It preserves the plug-and-play property, inherited from the particle filter.
 \end{enumerate}
-Iterated filtering is implemented in the \code{mif2} function.
 By analogy with annealing, the random walk intensity can be called a temperature, which is decreased according to a prescribed cooling schedule.
 One strives to ensure that the algorithm will freeze at the maximum of the likelihood as the temperature approaches zero.
+Iterated filtering is implemented in the \code{mif2} function.
+Since \code{pomp} version 2.0, \code{mif2} has superseded the earlier IF1 algorithm \citep{Ionides2006,Ionides2011}.
 
 The perturbations on the parameters in \cref{alg:mif:init:perturb,alg:mif:perturb} of \cref{alg:mif} follow a normal distribution, with each component of the parameter vector $\theta$ perturbed independently.
-Neither normality nor independence are necessary for iterated filtering to converge to a neighborhood of the MLE \citep{Ionides2015}.
-However, rather than varying the perturbation distribution, it is convenient to transform the parameters to make these simple algorithmic choices reasonable.
-\code{pomp} provides a \code{partrans} argument to facilitate optimization on a suitably transformed parameter space.
+Neither normality nor independence are necessary for the convergence of the algorithm;
+the theory allows for a broad class of perturbation kernels \citep{Ionides2015}.
+\code{pomp} does not make use of all of this flexibility:
+it does allow arbitrary transformation of the parameter space, providing the \code{partrans} argument for this purpose.
 
 \code{mif2} provides assistance in the specification of the collection of random talk intensities, $\sigma_{0:N,1:\DimTheta}$, via the \code{rw.sd} function.
 A parameter $\dimtheta$ for which $\sigma_{0:N,\dimtheta}$ is constant for $n=\seq{0}{N}$ is called a regular parameter (RP).
 A parameter $\dimtheta$ for which $\sigma_{1:N,\dimtheta}=0$, so perturbations happen only at time $t_0$, is called an initial value parameter (IVP) since this choice is appropriate for parameters which determine only the initial state of the latent process.
-In general, a parameter should be perturbed only during a time interval where it influences the transition or measuremnt process.
+In general, a parameter should be perturbed only during a time interval where it influences the transition or measurement process.
 Iterated filtering can be understood by an evolutionary analogy in parameter space, requiring both mutation and selection in order to increase the fitness of the population.
 An example of a parameter which is neither an RP nor an IVP is a break-point parameter which describes the time or magnitude of a change in the dynamics or the measurement process.
 
@@ -619,7 +621,7 @@ PMCMC methods combine likelihood evaluation via SMC with MCMC moves in the param
 The simplest and most widely used PMCMC algorithm, termed particle marginal Metropolis-Hastings (PMMH), is based on the observation that the unbiased likelihood estimate provided by SMC can be plugged into the Metropolis-Hastings update procedure to give an algorithm targeting the desired posterior distribution for the parameters \citep{Andrieu2009}.
 PMMH is implemented in \code{pmcmc}, as described in \cref{alg:pmcmc}.
 The \code{proposal} argument permits an arbitrary symmetric proposal distribution, but our pseudocode corresponds to the situation where the \code{mvn.rw} plug-in is used, to provide a Gaussian proposal with a specified covariance matrix.
-Other plug-in functions include \code{mvn.diag.rw} and \code{mvn.rw.adaptive}.
+Other plug-in functions include \code{mvn.diag.rw} and \code{mvn.rw.adaptive}, which provides an adaptive proposal distribution.
 
 In part because it gains only a single likelihood evaluation from each particle filtering operation, PMCMC can be computationally relatively inefficient \citep{Bhadra2010,Ionides2015}.
 Nevertheless, its invention introduced the possibility of full-information plug-and-play Bayesian inferences in some situations where they had been unavailable.
@@ -649,18 +651,18 @@ Nevertheless, its invention introduced the possibility of full-information plug-
   }
   \BlankLine
   Compute observed probes:
-  $s^*_{\nprobe}=\featureFunc_{\nprobe}(y^*_{1:N})$ for  $\nprobe$ in $\seq{1}{\Nprobe}$.\;
+  $s^*=\featureFunc(y^*_{1:N})$.\;
   Simulate $J$ datasets:
   $Y^j_{1:N}\sim f_{Y_{1:N}}(\mydot \giventh \theta)$ for $j$ in $\seq{1}{J}$.\;
   Compute simulated probes:
-  $s_{{\nprobe}j}=\featureFunc_{\nprobe}(Y^j_{1:N})$ for  ${\nprobe}$ in $\seq{1}{\Nprobe}$ and $j$ in $\seq{1}{J}$.\;
+  $s_{j}=\featureFunc(Y^j_{1:N})$ for $j$ in $\seq{1}{J}$.\;
   Compute sample mean:
-  $\mu_{\nprobe}=J^{-1}\sum_{j=1}^Js_{{\nprobe}j}$ for  ${\nprobe}$ in $\seq{1}{\Nprobe}$.\;
+  $\mu=J^{-1}\sum_{j=1}^Js_{j}$.\;
   Compute sample covariance:
   $V_{i{\nprobe}}=(J-1)^{-1}\sum_{j=1}^J (s_{ij}-\mu_i)(s_{{\nprobe}j}-\mu_{\nprobe})$ for $i$ and ${\nprobe}$ in $\seq{1}{\Nprobe}$.\;
   Compute the log synthetic likelihood:
   \begin{equation}
-    \loglikMC_{\featureFunc}(\theta)=-\frac{1}{2}\,(s^*-\mu)^{\top}{V}^{-1}(s^*-\mu)-\frac{1}{2}\,\log|V|-\frac{d}{2}\,\log(2\pi).
+    \loglikMC_{\featureFunc}(\theta)=-\frac{1}{2}\,(s^*-\mu)^{\top}{V}^{-1}(s^*-\mu)-\frac{1}{2}\,\log\det{V}-\frac{d}{2}\,\log(2\pi).
   \end{equation}\;
   \KwOut{Synthetic likelihood, $\synloglikMC(\theta)$.}
   \KwCplx{$\bigO{J}$}
@@ -681,9 +683,10 @@ Some motivations to estimate parameters based on features rather than the full l
 When pursuing goal~B\ref{whyFeature2}, one aims to find summary statistics which are as close as possible to sufficient statistics for the unknown parameters.
 Goals~B\ref{whyFeature1} and~B\ref{whyFeature3} deliberately look for features which discard information from the data;
 in this context the features have been called probes \citep{Kendall1999}.
-The features are denoted by a collection of functions, $\featureFunc=(\featureFunc_1,\dots,\featureFunc_d)$, where each $\featureFunc_i$ maps an observed time series to a real number.
-We write $S=(S_1,\dots,S_d)$ for the vector-valued random variable with $S=\featureFunc(Y_{1:N})$, with $f_{S}(s\giventh\theta)$ being the corresponding joint density.
-The observed feature vector is $s^*$ where $s^*_i=\featureFunc_i(y^*_{1:N})$, and for any parameter set one can look for parameter values for which typical features for simulated data match the observed features.
+The features are denoted by a collection of functions, $\featureFunc=(\featureFunc_1,\dots,\featureFunc_\Nprobe)$, where each $\featureFunc_\nprobe$ maps an observed time series to a real number.
+We write $S=(S_1,\dots,S_\Nprobe)$ for the vector-valued random variable with $S=\featureFunc(Y_{1:N})$, with $f_{S}(s\giventh\theta)$ being the corresponding joint density.
+The observed feature vector is $s^*=\featureFunc(y^*_{1:N})$;
+for any parameter set one can look for parameter values for which typical features for simulated data match the observed features.
 One can define a likelihood function, $\synloglik(\theta)=f_{S}(s^*\giventh\theta)$.
 Arguing that $S$ should be approximately multivariate normal, for suitable choices of the features, \citet{Wood2010} proposed using simulations to construct a multivariate normal approximation to $\synloglik(\theta)$, and called this a \emph{synthetic likelihood}.
 
@@ -722,13 +725,13 @@ Numerical optimization of the synthetic likelihood is implemented by \code{probe
   }
   \BlankLine
   Compute observed probes:
-  $s^*_{i}=\featureFunc_i(y^*_{1:N})$ for  $i$ in $\seq{1}{d}$.\;
+  $s^*=\featureFunc(y^*_{1:N})$.\;
   \For {$m$ in $\seq{1}{M}$}{
     Draw a parameter proposal, $\theta^P_m \sim \normal\left(\theta_{m-1},V\right)$.\;
     Simulate dataset:
     $Y_{1:N}\sim f_{Y_{1:N}}(\mydot\giventh\theta^P_{m})$.\;
     Compute simulated probes:
-    $s_{\nprobe}=\featureFunc_{\nprobe}(Y_{1:N})$ for  $\nprobe$ in $\seq{1}{\Nprobe}$.\;
+    $s=\featureFunc(Y_{1:N})$.\;
     Generate $U\sim\mathrm{Uniform}(0,1).$\;
     Set $\theta_m=\begin{cases}
     \theta^P_m,  &\text{if } \displaystyle \sum_{\nprobe=1}^{\Nprobe}\left(\frac{s_{\nprobe}-s_{\nprobe}^*}{\tau_{\nprobe}}\right)^2<\epsilon^2 \text{ and }
@@ -737,7 +740,7 @@ Numerical optimization of the synthetic likelihood is implemented by \code{probe
     \end{cases}\nllabel{alg:abc:epsilon}$\;
   }
   \KwOut{
-    Samples, ${\theta_{1:M}}$, representing the posterior distribution, $f_{\Theta|S_{1:{\Nprobe}}}(\theta\given s_{1:{\Nprobe}}^*)$.
+    Samples, ${\theta_{1:M}}$, representing the posterior distribution, $f_{\Theta|S}(\theta\given{s^*})$.
   }
   \KwCplx{Nominally $\bigO{M}$, but performance will depend on the choice of $\epsilon$, $\tau_{\nprobe}$, and $V$, as well as on the choice of probes $\featureFunc$.}
 \end{algorithm}
@@ -759,7 +762,7 @@ The likelihood of the observed features, $\loglik_S(\theta)=f_{S}(s^*\giventh\th
   0, & \text{otherwise,}
   \end{cases}
 \end{equation}
-where $B_{\Nprobe}$ is the volume of the $\Nprobe$-dimensional unit ball and $\tau_{\nprobe}$ is a scaling chosen for the $\nprobe$th feature.
+where $B_{\Nprobe}$ is the volume of the $\Nprobe$-dimensional unit ball and $\tau_{\nprobe}$ is a scaling chosen for the $\nprobe$-th feature.
 The likelihood approximation in \cref{eq:abc-lik} differs from the synthetic likelihood in \cref{alg:probe} in that only a single simulation is required.
 As $\epsilon$ becomes small, the bias in \cref{eq:abc-lik} decreases but the Monte Carlo variability increases.
 The ABC implementation \code{abc} (presented in \cref{alg:abc}) is a random walk Metropolis implementation of ABC-MCMC \citep[Algorithm 3 of][]{Marin2012}.
