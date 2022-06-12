@@ -19,7 +19,6 @@ pompjss.pdf getting_started.html getting_started.R
 	R < $*.R > $*.Rout
 
 %.html: %.Rmd
-	PATH=/usr/lib/rstudio/bin/pandoc:$$PATH \
 	$(RSCRIPT) -e "rmarkdown::render(\"$*.Rmd\")"
 
 %.R: %.Rnw
