@@ -91,10 +91,10 @@ The following methods are avaiable:
 }
 }
 \description{
-Modified version of the Liu and West (2001) algorithm.
+Modified version of the Liu & West (2001) algorithm.
 }
 \details{
-\code{bsmc2} uses a version of the original algorithm (Liu \& West 2001), but discards the auxiliary particle filter.
+\code{bsmc2} uses a version of the original algorithm (Liu & West 2001), but discards the auxiliary particle filter.
 The modification appears to give superior performance for the same amount of effort.
 
 Samples from the prior distribution are drawn using the \code{rprior} component.
