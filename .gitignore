@@ -5,3 +5,5 @@ cache
 figure
 _drafts
 .Rhistory
+.DS_Store
+
