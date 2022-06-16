@@ -64,11 +64,9 @@ Here, \eqn{p(R_t | C_t)} is negative binomial with mean \eqn{\rho C_t} and dispe
 }
 
 \examples{
-\donttest{
-  data(ebolaWA2014)
+if (require(ggplot2) && require(tidyr)) {
 
-  library(ggplot2)
-  library(tidyr)
+  data(ebolaWA2014)
 
   ebolaWA2014 \%>\%
     gather(variable,count,cases,deaths) \%>\%

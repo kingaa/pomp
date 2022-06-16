@@ -17,9 +17,15 @@
       est="K") -> f
 
   ## Any numerical optimizer can be used to minimize 'f'.
-  library(subplex)
+  if (require(subplex)) {
 
-  subplex(fn=f,par=0.4,control=list(reltol=1e-5)) -> out
+    subplex(fn=f,par=0.4,control=list(reltol=1e-5)) -> out
+
+  } else {
+
+    optim(fn=f,par=0.4,control=list(reltol=1e-5)) -> out
+
+  }
 
   ## Call the objective one last time on the optimal parameters:
   f(out$par)
@@ -39,7 +45,7 @@
   ## to 'probe_objfun':
 
   f %>% probe_objfun(est=c("r","K")) -> f1
-  subplex(fn=f1,par=c(0.3,0.3),control=list(reltol=1e-5)) -> out
+  optim(fn=f1,par=c(0.3,0.3),control=list(reltol=1e-5)) -> out
   f1(out$par)
   coef(f1)
 }

@@ -14,15 +14,16 @@ In total, 763 boys were at risk of infection and, over the course of the outbrea
 The index case was a boy who arrived at school from holiday six days before the next case.
 }
 \examples{
-library(tidyr)
-library(ggplot2)
+if (require(tidyr) && require(ggplot2)) {
 
-bsflu \%>\%
-  gather(variable,value,-date,-day) \%>\%
-  ggplot(aes(x=date,y=value,color=variable))+
-  geom_line()+
-  labs(y="number of boys",title="boarding school flu outbreak")+
-  theme_bw()
+  bsflu \%>\%
+    gather(variable,value,-date,-day) \%>\%
+    ggplot(aes(x=date,y=value,color=variable))+
+    geom_line()+
+    labs(y="number of boys",title="boarding school flu outbreak")+
+    theme_bw()
+
+}
 }
 \references{
 \Anonymous1978

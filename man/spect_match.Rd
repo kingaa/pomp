@@ -192,8 +192,11 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
   f(log(c(20,0.3,10)))
   f \%>\% spect() \%>\% plot()
 
-  library(subplex)
-  subplex(fn=f,par=log(c(20,0.3,10)),control=list(reltol=1e-5)) -> out
+  if (require(subplex)) {
+    subplex(fn=f,par=log(c(20,0.3,10)),control=list(reltol=1e-5)) -> out
+  } else {
+    optim(fn=f,par=log(c(20,0.3,10)),control=list(reltol=1e-5)) -> out
+  }
   f(out$par)
 
   f \%>\% summary()
