@@ -30,6 +30,11 @@
 ##' \code{bake} and \code{stew} also store information about the code executed, the dependencies, and the state of the random-number generator (if the latter is controlled) in the archive file.
 ##' Re-computation is triggered if any of these things change.
 ##'
+##' @section Avoid using \sQuote{pomp} objects as dependencies:
+##' Note that when a \sQuote{pomp} object is built with one or more \link[=Csnippet]{C snippets}, the resulting code is \dQuote{salted} with a random element to prevent collisions in parallel computations.
+##' As a result, two such \sQuote{pomp} objects will never match perfectly, even if the codes and data used to construct them are identical.
+##' Therefore, avoid using \sQuote{pomp} objects as dependencies in \code{bake} and \code{stew}.
+##'
 ##' @param file Name of the archive file in which the result will be stored or retrieved, as appropriate.
 ##' For \code{bake}, this will contain a single object and hence be an RDS file (extension \sQuote{rds});
 ##' for \code{stew}, this will contain one or more named objects and hence be an RDA file (extension \sQuote{rda}).
@@ -48,6 +53,7 @@
 ##' recomputation is forced when these do not match.
 ##' The dependencies should be specified as unquoted symbols:
 ##' use a list if there are multiple dependencies.
+##' See the note below about avoiding using \sQuote{pomp} objects as dependencies.
 ##' @param timing logical.
 ##' If \code{TRUE}, the time required for the computation is returned.
 ##' This is returned as the \dQuote{system.time} attribute of the returned object.
@@ -90,6 +96,13 @@
 ##' @example examples/bake.R
 ##'
 NULL
+
+##' @importFrom digest digest
+code_digest <- function (expr) {
+  digest(deparse(expr,
+    control=c("keepInteger","quoteExpressions","showAttributes",
+      "keepNA","niceNames","delayPromises","hexNumeric")))
+}
 
 process_dependencies <- function (dependson, envir, ep)
 {
@@ -136,7 +149,6 @@ update_bake_archive <- function (val, code, deps, file) {
 }
 
 ##' @rdname bake
-##' @importFrom digest digest    
 ##' @export
 bake <- function (
   file, expr,
@@ -145,7 +157,7 @@ bake <- function (
   dir = getOption("pomp_archive_dir",getwd())
 ) {
   expr <- substitute(expr)
-  code <- digest(deparse(expr,control="all"))
+  code <- code_digest(expr)
   deps <- process_dependencies(
     dependson=substitute(dependson),
     envir=parent.frame(),
@@ -232,7 +244,7 @@ stew <- function (
   dir = getOption("pomp_archive_dir",getwd())
 ) {
   expr <- substitute(expr)
-  code <- digest(deparse(expr,control="all"))
+  code <- code_digest(expr)
   deps <- process_dependencies(
     dependson=substitute(dependson),
     envir=parent.frame(),

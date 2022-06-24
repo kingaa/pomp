@@ -58,7 +58,8 @@ A hash of these objects will be archived in \code{file}, along with the results 
 When \code{bake} or \code{stew} are called and \code{file} exists, the hash of these objects will be compared against the archived hash;
 recomputation is forced when these do not match.
 The dependencies should be specified as unquoted symbols:
-use a list if there are multiple dependencies.}
+use a list if there are multiple dependencies.
+See the note below about avoiding using \sQuote{pomp} objects as dependencies.}
 
 \item{info}{logical.
 If \code{TRUE}, the \dQuote{ingredients} of the calculation are returned as a list.
@@ -127,6 +128,13 @@ By contrast, \code{stew} creates a local environment within which \code{expr} is
 \code{bake} and \code{stew} also store information about the code executed, the dependencies, and the state of the random-number generator (if the latter is controlled) in the archive file.
 Re-computation is triggered if any of these things change.
 }
+\section{Avoid using \sQuote{pomp} objects as dependencies}{
+
+Note that when a \sQuote{pomp} object is built with one or more \link[=Csnippet]{C snippets}, the resulting code is \dQuote{salted} with a random element to prevent collisions in parallel computations.
+As a result, two such \sQuote{pomp} objects will never match perfectly, even if the codes and data used to construct them are identical.
+Therefore, avoid using \sQuote{pomp} objects as dependencies in \code{bake} and \code{stew}.
+}
+
 \section{Compatibility with older versions}{
 
 With \pkg{pomp} version 3.4.4.2, the behavior of \code{bake} and \code{stew} changed.
