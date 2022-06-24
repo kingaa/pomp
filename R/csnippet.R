@@ -45,8 +45,13 @@
 ##' \item The header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}, provided with \pkg{pomp}, will also be included, making all of the \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{\pkg{pomp} C API} available for use in every C snippet.
 ##' \item Snippets of C code passed to the \code{globals} argument of \code{pomp} will be included at the head of the generated C file.
 ##' This can be used to declare global variables, define useful functions, and include arbitrary header files.
-##' \item INCLUDE INFORMATION ABOUT LINKING TO PRECOMPILED LIBRARIES!
+##' \item TODO: Include information about linking to precompiled libraries.
+##' (e.g., \href{https://github.com/kingaa/pomp/discussions/156}{Discussion #156}).
 ##' }
+##'
+##' @section C snippets are salted:
+##' To prevent collisions in parallel computations, a \sQuote{pomp} object built using C snippets is \dQuote{salted} with the current time and a random number.
+##' A result is that two \sQuote{pomp} objects, built on identical codes and data, will \strong{not} be identical as \R objects, though they will be functionally identical in every respect.
 ##'
 NULL
 
