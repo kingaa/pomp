@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.2.2}{
+  \itemize{
+    \item The archiving functions \code{bake} and \code{stew} now use a slightly less exacting comparison of the expression, \code{expr}, they are furnished.
+    \strong{NB:} Running \code{bake} or \code{stew} with archives created by earlier versions may result in recomputation.
+    \item Some documentation improvements.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.2.1}{
   \itemize{
     \item The archiving functions \code{bake} and \code{stew} now take the argument \code{dir}, which is the directory holding the archive files.

@@ -1,5 +1,5 @@
 
-R version 4.2.0 (2022-04-22) -- "Vigorous Calisthenics"
+R version 4.2.1 (2022-06-23) -- "Funny-Looking Kid"
 Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -165,8 +165,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2022-06-15 09:44:44.774 -0400 */
-/* Salt: 4EE10E0BC59AF8A145B88FF1 */
+/* Time: 2022-06-24 07:15:18.362 -0400 */
+/* Salt: 8947FDD36692E896F1AA2324 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -289,8 +289,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2022-06-15 09:44:44.881 -0400 */
-/* Salt: F883AB2C116C0789967FD7C0 */
+/* Time: 2022-06-24 07:15:18.469 -0400 */
+/* Salt: 20AB0900864262E4DDBC161C */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -924,8 +924,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2022-06-15 09:44:45.418 -0400 */
-/* Salt: EBBA96CF7B39234B654E660C */
+/* Time: 2022-06-24 07:15:19.000 -0400 */
+/* Salt: 381FDE9D9E491379A866FA54 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1180,8 +1180,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2022-06-15 09:44:45.883 -0400 */
-/* Salt: 0E0BECB145DACF256644E463 */
+/* Time: 2022-06-24 07:15:19.476 -0400 */
+/* Salt: B9985415003D3C18B795AA23 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

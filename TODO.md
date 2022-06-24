@@ -2,6 +2,7 @@
 
 ## For pomp:
 
+- edit C snippet documentation with information about linking to precompiled libraries [see Discussion #156](https://github.com/kingaa/pomp/discussions/156).
 - rewrite to use `rmultinom`, which is now part of the API (?)
 - byte-compile basic components when furnished as **R** functions
 - ~~banish the binomial model from the SIR examples~~
