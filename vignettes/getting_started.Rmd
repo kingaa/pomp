@@ -43,8 +43,8 @@ opts_chunk$set(
   fig.show='asis',
   size='small',
   fig.lp="fig:",
-  fig.path=paste0("figure/",params$prefix,"/"),
-  cache.path=paste0("cache/",params$prefix,"/"),
+  fig.path=paste0("tmp/figure/",params$prefix,"/"),
+  cache.path=paste0("tmp/cache/",params$prefix,"/"),
   fig.pos="h!",
   fig.align='center',
   fig.height=4,fig.width=6.83,
@@ -68,10 +68,9 @@ options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
-  scipen=5
+  scipen=5,
+  pomp_archive_dir="results/getting_started"
 )
-resdir <- file.path("results",params$prefix)
-dir.create(resdir,recursive=TRUE)
 set.seed(594709947L)
 library(tidyverse)
 library(ggplot2)
@@ -847,7 +846,7 @@ replicate(10,
 ll_vp1
 ```
 ```{r vp_loglik_eval,include=FALSE,purl=TRUE}
-bake(file.path(resdir,"vp_loglik.rds"),{
+bake("vp_loglik.rds",{
   <<vp_loglik>>
 }) -> ll_vp1
 ll_vp1
@@ -1145,7 +1144,7 @@ vpC |>
   ) -> mf1
 ```
 ```{r vp_mif1_eval,include=FALSE,purl=TRUE}
-bake(file.path(resdir,"vp_mif1.rds"),{
+bake("vp_mif1.rds",{
   <<vp_mif1>>
 }) -> mf1
 ```
@@ -1211,7 +1210,7 @@ foreach (guess=iter(guesses,"row"),
   } -> mifs
 ```
 ```{r parus_mif1_eval,include=FALSE,eval=TRUE,purl=TRUE}
-bake(file=file.path(resdir,"parus_mif1.rds"),{
+bake("parus_mif1.rds",{
   <<parus_mif1>>
 }) -> mifs
 ```
@@ -1269,7 +1268,7 @@ foreach (mf=mifs,
   } -> estimates
 ```
 ```{r parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE}
-bake(file=file.path(resdir,"parus_pf1.rds"),{
+bake(file="parus_pf1.rds",{
   <<parus_pf1>>
 }) -> estimates
 ```
@@ -1343,7 +1342,7 @@ foreach (start=iter(starts,"row"),
   } -> ests1
 ```
 ```{r parus_mif2_eval,include=FALSE,eval=TRUE,purl=TRUE}
-bake(file=file.path(resdir,"parus_mif2.rds"),{
+bake(file="parus_mif2.rds",{
   <<parus_mif2>>
 }) -> ests1
 ```
@@ -1430,7 +1429,7 @@ foreach (start=iter(starts,"row"),
 } -> r_prof
 ```
 ```{r parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE}
-bake(file.path(resdir,"parus_profile.rds"),{
+bake(file="parus_profile.rds",{
   <<parus_profile>>
 }) -> r_prof
 ```
@@ -1617,7 +1616,7 @@ bigtock <- Sys.time()
 totalSweaveTime <- bigtock-bigtick
 sysi <- Sys.info()
 sess <- sessionInfo()
-tfile <- file.path(resdir,"timing.rda")
+tfile <- file.path("results","getting_started","timing.rda")
 
 if (file.exists(tfile)) {
   load(tfile)

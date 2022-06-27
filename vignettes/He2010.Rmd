@@ -2,6 +2,8 @@
 title: "Measles in large and small populations"
 author: "Aaron A. King"
 date: "2019-01-02"
+params:
+  prefix: he2010
 output:
   html_document:
     theme: default
@@ -35,39 +37,15 @@ The intentions are to:
 Whilst @He2010 examined measles in 20 towns, we will focus on `r TOWN` alone.
 The full 20 city dataset is available on [the **pomp** website](https://kingaa.github.io/pomp/docs.html) and the MLEs obtained by @He2010 for the full 20 towns are included in the R code accompanying this document.
 
-```{r knitr-opts,include=FALSE,cache=FALSE,purl=FALSE}
-library(knitr)
-prefix <- "he2010"
-opts_chunk$set(
-  progress=TRUE,
-  prompt=FALSE,tidy=FALSE,highlight=TRUE,
-  strip.white=TRUE,
-  warning=FALSE,
-  message=FALSE,
-  error=FALSE,
-  echo=TRUE,
-  cache=TRUE,
-  cache.extra=rand_seed,
-  results='markup',
-  fig.show='asis',
-  size='small',
-  fig.lp="fig:",
-  fig.path=paste0("figure/",prefix,"/"),
-  cache.path=paste0("cache/",prefix,"/"),
-  fig.pos="h!",
-  fig.align='center',
-  fig.height=4,fig.width=6.83,
-  dpi=300,
-  dev='CairoPNG',
-  dev.args=list(bg='transparent')
-)
-options(cores=4)
+```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
+source("setup.R", local = knitr::knit_global())
 ```
 ```{r opts,include=FALSE,cache=FALSE}
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
-  encoding="UTF-8"
+  encoding="UTF-8",
+  cores=4
 )
 
 set.seed(998468235L,kind="L'Ecuyer")

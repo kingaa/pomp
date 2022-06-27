@@ -32,31 +32,8 @@ stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 
 This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
 
-```{r knitr-opts,include=FALSE,purl=FALSE}
-library(knitr)
-opts_chunk$set(
-  progress=TRUE,
-  prompt=FALSE,tidy=FALSE,highlight=TRUE,
-  strip.white=TRUE,
-  warning=FALSE,
-  message=FALSE,
-  error=FALSE,
-  echo=TRUE,
-  cache=FALSE,
-  cache.extra=rand_seed,
-  results='markup',
-  fig.show='asis',
-  size='small',
-  fig.lp="fig:",
-  fig.path=paste0("figure/",params$prefix,"/"),
-  cache.path=paste0("cache/",params$prefix,"/"),
-  fig.pos="h!",
-  fig.align='center',
-  fig.height=3,fig.width=4.85,
-  dpi=100,
-  dev='png',
-  dev.args=list(bg='transparent')
-  )
+```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
+source("setup.R", local = knitr::knit_global())
 ```
 
 --------------------------------------------------------

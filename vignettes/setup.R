@@ -1,0 +1,31 @@
+stopifnot(getRversion()>="4.2")
+stopifnot(packageVersion("pomp")>="4.2")
+
+library(knitr)
+opts_chunk$set(
+  progress=TRUE,
+  prompt=FALSE,tidy=FALSE,highlight=TRUE,
+  strip.white=TRUE,
+  warning=FALSE,
+  message=FALSE,
+  error=FALSE,
+  echo=TRUE,
+  cache=TRUE,
+  cache.extra=list(rand_seed,R.version.string),
+  results='markup',
+  fig.show='asis',
+  size='small',
+  fig.lp="fig:",
+  fig.path=paste0("tmp/",params$prefix,"/figure/"),
+  cache.path=paste0("tmp/",params$prefix,"/cache/"),
+  fig.pos="h!",
+  fig.align='center',
+  fig.height=4,fig.width=6.83,
+  dpi=100,
+  dev='png',
+  dev.args=list(bg='transparent')
+  )
+options(
+  keep.source=TRUE,
+  encoding="UTF-8"
+)

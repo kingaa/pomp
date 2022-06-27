@@ -1,6 +1,8 @@
 ---
 title: "Iterated Filtering 2 Pseudocode and Example"
 author: "Aaron A. King and Edward Ionides"
+params:
+  prefix: mif2
 output:
   html_document:
     theme: default
@@ -15,32 +17,8 @@ Please share and remix noncommercially, mentioning its origin.
 
 This document was produced using **pomp** version `r packageVersion("pomp")`.
 
-```{r options,include=FALSE,cache=FALSE,purl=FALSE}
-library(knitr)
-prefix <- "mif2"
-opts_chunk$set(
-  progress=TRUE,
-  prompt=FALSE,tidy=FALSE,highlight=TRUE,
-  strip.white=TRUE,
-  warning=FALSE,
-  message=FALSE,
-  error=FALSE,
-  echo=TRUE,
-  cache=TRUE,
-  cache.extra=rand_seed,
-  results='markup',
-  fig.show='asis',
-  size='small',
-  fig.lp="fig:",
-  fig.path=paste0("figure/",prefix,"/"),
-  cache.path=paste0("cache/",prefix,"/"),
-  fig.pos="h!",
-  fig.align='center',
-  fig.height=4,fig.width=6.83,
-  dpi=300,
-  dev='png',
-  dev.args=list(bg='transparent')
-)
+```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
+source("setup.R", local = knitr::knit_global())
 ```
 ```{r prelims,echo=FALSE,cache=FALSE}
 library(ggplot2)
@@ -52,7 +30,8 @@ options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
-  scipen=5
+  scipen=5,
+  pomp_archive_dir="results/mif2"
 )
 set.seed(1332379783L)
 ```
@@ -148,7 +127,7 @@ foreach(i=1:10,.inorder=FALSE) %dopar% {
 } -> mf
 ```
 ```{r gompertz-mif2-2-eval,eval=TRUE,purl=TRUE,include=FALSE}
-bake(file="results/mif2/gompertz-mif2.rds",{
+bake(file="gompertz-mif2.rds",{
   <<gompertz-mif2-2>>
 }) -> mf
 ```

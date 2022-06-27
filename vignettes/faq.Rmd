@@ -1,6 +1,8 @@
 ---
 pagetitle: FAQ
 title: ""
+params:
+  prefix: faq
 output:
   html_document:
     theme: null
@@ -11,11 +13,11 @@ bibliography: pomp.bib
 csl: jss.csl
 ---
 
+```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
+source("setup.R", local = knitr::knit_global())
+```
 ```{r options,include=FALSE,cache=FALSE}
-require(knitr)
 require(pomp)
-knitr::opts_chunk$set(cache=FALSE,results="hide",echo=TRUE,fig.show="asis",
-                      message=FALSE,warning=TRUE,error=TRUE,out.width="70%")
 require(ggplot2)
 theme_set(theme_bw())
 set.seed(1810027260)
@@ -422,7 +424,8 @@ dat %>%
 
 bsflu %>%
   simulate(params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
-           nsim=10,format="d",include.data=TRUE) %>%
+    nsim=10,format="d",include.data=TRUE) %>%
+  filter(day>0) %>%
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
   guides(color="none")+

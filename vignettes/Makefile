@@ -13,7 +13,7 @@ RM = rm -f
 default: vignettes fresh
 
 vignettes: faq.html mif2.html mif2.R He2010.html He2010.R oaxaca.html oaxaca.R R_v_C.html R_v_C.R upgrade_guide.html C_API.html \
-pompjss.pdf getting_started.html getting_started.R
+pompjss.pdf pompjss.R getting_started.html getting_started.R
 
 %.Rout: %.R
 	R < $*.R > $*.Rout
@@ -42,4 +42,4 @@ clean:
 	$(RM) Rplots.pdf
 
 fresh: clean
-	$(RM) -r cache figure *.Rout
+	$(RM) -r tmp *.Rout

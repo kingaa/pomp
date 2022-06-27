@@ -1,3 +1,6 @@
+params <-
+list(prefix = "mif2")
+
 ## ----prelims,echo=FALSE,cache=FALSE-------------------------------------------
 library(ggplot2)
 library(knitr)
@@ -8,7 +11,8 @@ options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
-  scipen=5
+  scipen=5,
+  pomp_archive_dir="results/mif2"
 )
 set.seed(1332379783L)
 
@@ -34,7 +38,7 @@ estpars <- c("r","sigma","tau")
 
 
 ## ----gompertz-mif2-2-eval,eval=TRUE,purl=TRUE,include=FALSE-------------------
-bake(file="results/mif2/gompertz-mif2.rds",{
+bake(file="gompertz-mif2.rds",{
   library(doRNG)
   registerDoRNG(525386942)
   

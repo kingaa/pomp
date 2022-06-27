@@ -1,3 +1,6 @@
+params <-
+list(prefix = "he2010")
+
 ## ----select-town,echo=FALSE---------------------------------------------------
 TOWN <- "London"
 
@@ -7,7 +10,8 @@ TOWN <- "London"
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
-  encoding="UTF-8"
+  encoding="UTF-8",
+  cores=4
 )
 
 set.seed(998468235L,kind="L'Ecuyer")

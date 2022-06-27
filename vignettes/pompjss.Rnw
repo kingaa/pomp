@@ -108,7 +108,7 @@
 
 }
 
-<<packages,include=FALSE,cache=F>>=
+<<packages,include=FALSE,cache=FALSE>>=
 library("pomp")
 library("coda")
 library("foreach")
@@ -119,10 +119,11 @@ library("xtable")
 
 stopifnot(packageVersion("pomp")>="4.2")
 
-<<set-opts,include=FALSE,cache=F>>=
+<<set-opts,include=FALSE,cache=FALSE>>=
 options(
   scipen=2,
   help_type="html",
+  pomp_archive_dir="results/pompjss",
   stringsAsFactors=FALSE,
   prompt="R> ",
   continue="+  ",
@@ -132,11 +133,9 @@ options(
   useFancyQuotes=FALSE,
   xtable.comment=FALSE
 )
-resdir <- file.path("results","pompjss")
-dir.create(resdir,recursive=TRUE)
 @
 
-<<knitr-opts,include=FALSE,cache=FALSE,purl=F>>=
+<<knitr-opts,include=FALSE,cache=FALSE,purl=FALSE>>=
 library("knitr")
 opts_knit$set(concordance=TRUE)
 opts_chunk$set(
@@ -151,7 +150,8 @@ opts_chunk$set(
              results="markup",
              background="#FFFFFF00",
              size="normalsize",
-             fig.path="figure/pompjss/",
+             fig.path="tmp/figure/pompjss/",
+             cache.path="tmp/cache/pompjss/",
              fig.lp="fig:",
              fig.align="left",
              fig.show="asis",
@@ -1164,7 +1164,7 @@ Note also that we have used the \pkg{foreach} package \citep{Kane2013,foreach} t
 <<gompertz-mif-eval,echo=FALSE,results="hide",cache=FALSE>>=
 ##' Perform some iterated filtering.
 ##' These calculations took about 68 sec on my 16-core Intel Xeon 2.90GHz machine.
-stew(file=file.path(resdir,"gompertz-mif.rda"),seed=334388458L,kind="L'Ecuyer",{
+stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
 
   library(doParallel)
   library(foreach)
@@ -1325,7 +1325,7 @@ pmcmc1 <- foreach(i = 1:5, .combine = c) %dopar% {
 library(pomp)
 library(coda)
 
-stew(file=file.path(resdir,"pmcmc.rda"),seed=334388458L,kind="L'Ecuyer",{
+stew(file="pmcmc.rda",seed=334388458L,kind="L'Ecuyer",{
 
   tic <- Sys.time()
   library(doParallel)
@@ -1544,7 +1544,7 @@ pfun(pm$par)
 ##' Now we'll do some probe-matching.
 ##' Again, delete the binary file to cause the computations to be reproduced.
 ##' These calculations took less than 20 sec on my Intel Xeon 2.90GHz workstation.
-stew(file=file.path(resdir,"ricker-probe-match.rda"),{
+stew(file="ricker-probe-match.rda",{
   <<ricker-probe-match-calc>>
 })
 @
@@ -1561,7 +1561,7 @@ mf <- continue(mf, Nmif = 500)
 <<ricker-mif-eval,echo=FALSE,eval=TRUE,cache=FALSE,results="hide">>=
 ##' Now, for comparison, run 600 'mif' iterations.
 ##' These serial calculations took about 3 minutes.
-stew(file=file.path(resdir,"ricker-mif.rda"),seed=718086921L,{
+stew(file="ricker-mif.rda",seed=718086921L,{
   <<ricker-mif-calc>>
 })
 @
@@ -1578,7 +1578,7 @@ Since synthetic likelihood discards some of the information in the data, it is n
 <<ricker-comparison,eval=TRUE,echo=FALSE,cache=FALSE>>=
 ##' The comparison, in terms of approximate likelihood and synthetic likelihood.
 ##' Not a very expensive set of computations.
-stew(file=file.path(resdir,"ricker-comparison.rda"),{
+stew(file="ricker-comparison.rda",{
   library(tidyverse)
   library(foreach)
   library(doParallel)
@@ -1670,7 +1670,7 @@ library("pomp")
 ##' Do 5 long ABC chains in parallel.
 ##' These computations took about 30 min on my
 ##' 16-core Intel Xeon 2.90GHz machine with 32MB of RAM.
-stew(file=file.path(resdir,"abc.rda"),seed=334388458L,kind="L'Ecuyer",{
+stew(file="abc.rda",seed=334388458L,kind="L'Ecuyer",{
 
   tic <- Sys.time()
   library(doParallel)
@@ -1804,7 +1804,7 @@ gompList <- simulate(gomp,nsim=R)
 
 <<nlf-mif-compare-eval,echo=FALSE,eval=TRUE,results="hide">>=
 ##' The following took 47 sec on my workstation.
-stew(file=file.path(resdir,"nlf-mif-compare.rda"),seed=816326853L,kind="L'Ecuyer",{
+stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   library(doParallel)
   library(foreach)
   registerDoParallel()
@@ -2736,7 +2736,7 @@ bigtock <- Sys.time()
 totalSweaveTime <- bigtock-bigtick
 sysi <- Sys.info()
 sess <- sessionInfo()
-tfile <- file.path(resdir,"timing.rda")
+tfile <- "results/pompjss/timing.rda"
 
 if (file.exists(tfile)) {
   load(tfile)

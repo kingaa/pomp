@@ -1,3 +1,6 @@
+params <-
+list(prefix = "oaxaca")
+
 ## ----opts,include=FALSE,cache=FALSE-------------------------------------------
 options(stringsAsFactors=FALSE)
 library(ggplot2)

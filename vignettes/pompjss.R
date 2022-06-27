@@ -1,4 +1,4 @@
-## ----packages,include=FALSE,cache=F-------------------------------------------
+## ----packages,include=FALSE,cache=FALSE---------------------------------------
 library("pomp")
 library("coda")
 library("foreach")
@@ -10,10 +10,11 @@ library("xtable")
 stopifnot(packageVersion("pomp")>="4.2")
 
 
-## ----set-opts,include=FALSE,cache=F-------------------------------------------
+## ----set-opts,include=FALSE,cache=FALSE---------------------------------------
 options(
   scipen=2,
   help_type="html",
+  pomp_archive_dir="results/pompjss",
   stringsAsFactors=FALSE,
   prompt="R> ",
   continue="+  ",
@@ -872,16 +873,18 @@ options(ops)
 ## ----timing2,cache=FALSE------------------------------------------------------
 bigtock <- Sys.time()
 totalSweaveTime <- bigtock-bigtick
+sysi <- Sys.info()
+sess <- sessionInfo()
+tfile <- "results/pompjss/timing.rda"
 
-if (file.exists("timing.rda")) {
-  load("timing.rda")
+if (file.exists(tfile)) {
+  load(tfile)
 } else {
-  save(totalSweaveTime,file='timing.rda',compress='xz')
+  save(totalSweaveTime,sysi,sess,file=tfile,compress='xz')
 }
 
-print(Sys.info())
-print(sessionInfo())
-
+print(sysi)
+print(sess)
 print(mifTime)
 print(pmcmcTime)
 print(abcTime)

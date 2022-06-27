@@ -149,6 +149,15 @@
   pages: "10604&#x2013;10609"
   doi: "https://doi.org/10.1073/pnas.1323688111"
 
+- key: Boonpatcharanon2022
+  author: "S. Boonpatcharanon, J. M. Heffernan, and H. Jankowski"
+  year: "2022"
+  title: "Estimating the basic reproduction number at the beginning of an outbreak"
+  journal: "PLOS ONE"
+  volume: "17"
+  pages: "e0269306"
+  doi: "https://doi.org/10.1371/journal.pone.0269306"
+
 - key: Borchering2021
   author: "R. K. Borchering, C. E. Gunning, D. V. Gokhale, K. B. Weedop, A. Saeidpour, T. S. Brett, and P. Rohani"
   year: "2021"
@@ -220,6 +229,14 @@
   volume: "86"
   pages: "460&#x2013;472"
   doi: "https://doi.org/10.1111/1365-2656.12656"
+
+- key: Cabore2022
+  author: "J. W. Cabore, H. C. Karamagi, H. K. Kipruto, J. K. Mungatu, J. A. Asamani, B. Droti, R. Titi-ofei, A. B. W. Seydi, S. N. Kidane, T. Balde, A. S. Gueye, L. Makubalo, and M. R. Moeti"
+  year: "2022"
+  title: "COVID-19 in the 47 countries of the WHO African region: a modelling analysis of past trends and future patterns"
+  journal: "The Lancet Global Health"
+  doi: "https://doi.org/10.1016/S2214-109X(22)00233-9"
+  url: "https://www.sciencedirect.com/science/article/pii/S2214109X22002339"
 
 - key: Cai2007
   author: "X. Cai and Z. Xu"
@@ -721,6 +738,16 @@
   pages: "197&#x2013;224"
   booktitle: "Sequential Monte Carlo Methods in Practice"
   editor: "A. Doucet, N. de Freitas, and N. J. Gordon"
+
+- key: Liu2022
+  author: "Y. Liu, Y. Yu, Y. Zhao, and D. He"
+  year: "2022"
+  title: "Reduction in the infection fatality rate of Omicron variant compared with previous variants in South Africa"
+  journal: "International Journal of Infectious Diseases"
+  volume: "120"
+  pages: "146&#x2013;149"
+  doi: "https://doi.org/10.1016/j.ijid.2022.04.029"
+  url: "https://www.sciencedirect.com/science/article/pii/S1201971222002284"
 
 - key: Magpantay2016
   author: "F. M. G. Magpantay, M. Domenech de Cell&egrave;s, P. Rohani, and A. A. King"

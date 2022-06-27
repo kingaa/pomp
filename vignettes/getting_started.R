@@ -7,10 +7,9 @@ options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
-  scipen=5
+  scipen=5,
+  pomp_archive_dir="results/getting_started"
 )
-resdir <- file.path("results",params$prefix)
-dir.create(resdir,recursive=TRUE)
 set.seed(594709947L)
 library(tidyverse)
 library(ggplot2)
@@ -280,7 +279,7 @@ ll_rick1
 
 
 ## ----vp_loglik_eval,include=FALSE,purl=TRUE-----------------------------------
-bake(file.path(resdir,"vp_loglik.rds"),{
+bake("vp_loglik.rds",{
   replicate(10,
     vpC |>
       pfilter(Np=1000,dmeasure=dmeas,
@@ -415,7 +414,7 @@ plot(guesses,pch=16)
 
 
 ## ----vp_mif1_eval,include=FALSE,purl=TRUE-------------------------------------
-bake(file.path(resdir,"vp_mif1.rds"),{
+bake("vp_mif1.rds",{
   vpC |>
     mif2(
       params=guesses[1,],
@@ -451,7 +450,7 @@ if (file.exists("CLUSTE.R")) {
 
 
 ## ----parus_mif1_eval,include=FALSE,eval=TRUE,purl=TRUE------------------------
-bake(file=file.path(resdir,"parus_mif1.rds"),{
+bake("parus_mif1.rds",{
   library(foreach)
   
   foreach (guess=iter(guesses,"row"),
@@ -488,7 +487,7 @@ mifs |>
 
 
 ## ----parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE-------------------------
-bake(file=file.path(resdir,"parus_pf1.rds"),{
+bake(file="parus_pf1.rds",{
   foreach (mf=mifs,
     .combine=rbind, .packages=c("pomp"), 
     .errorhandling="remove", .inorder=FALSE) %dopar% {
@@ -521,7 +520,7 @@ estimates |>
 
 
 ## ----parus_mif2_eval,include=FALSE,eval=TRUE,purl=TRUE------------------------
-bake(file=file.path(resdir,"parus_mif2.rds"),{
+bake(file="parus_mif2.rds",{
   estimates |>
     filter(!is.na(loglik)) |>
     filter(loglik > max(loglik)-30) |>
@@ -590,7 +589,7 @@ pairs(~r+K+sigma+N_0+b,data=starts)
 
 
 ## ----parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE---------------------
-bake(file.path(resdir,"parus_profile.rds"),{
+bake(file="parus_profile.rds",{
   foreach (start=iter(starts,"row"),
     .combine=rbind, .packages=c("pomp"),
     .errorhandling="remove", .inorder=FALSE) %dopar% {
@@ -714,7 +713,7 @@ bigtock <- Sys.time()
 totalSweaveTime <- bigtock-bigtick
 sysi <- Sys.info()
 sess <- sessionInfo()
-tfile <- file.path(resdir,"timing.rda")
+tfile <- file.path("results","getting_started","timing.rda")
 
 if (file.exists(tfile)) {
   load(tfile)
