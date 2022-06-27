@@ -18,8 +18,11 @@ bigtick <- Sys.time()
 
 
 ## ----parallel_setup,include=FALSE,purl=TRUE,cache=FALSE-----------------------
-if (file.exists("CLUSTE.R")) {
-  source("CLUSTE.R")
+if (file.exists("CLUSTER.R")) {
+  source("CLUSTER.R")
+} else {
+  library(doParallel)
+  registerDoParallel()
 }
 library(doRNG)
 registerDoRNG(348885445L)
