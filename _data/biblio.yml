@@ -7,6 +7,15 @@
   pages: "2884&#x2013;2903"
   doi: "https://doi.org/10.1175/1520-0493(2001)129%3C2884:AEAKFF%3E2.0.CO;2"
 
+- key: Andrade2022
+  author: "J. Andrade and J. Duggan"
+  year: "2022"
+  title: "Inferring the effective reproductive number from deterministic and semi-deterministic compartmental models using incidence and mobility data"
+  journal: "PLOS Computational Biology"
+  volume: "18"
+  pages: "e1010206"
+  doi: "https://doi.org/10.1371/journal.pcbi.1010206"
+
 - key: Andrieu2010
   author: "C. Andrieu, A. Doucet, and R. Holenstein"
   year: "2010"
