@@ -7,12 +7,12 @@
 - byte-compile basic components when furnished as **R** functions
 - ~~banish the binomial model from the SIR examples~~
 
+- vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`
 - make `mcap` into a generic, provide a method for data frames and a plotting method
 - more demanding tests of `enkf` and `eakf`
 - iterated EnKF
 - ~~in EnKF and EAKF, allow matrices to depend on parameters~~
 - ~~accommodating matrices in~~ `hitch`
-- vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`
 - perhaps `dinit`?
 - ~~put basic true Kalman filter into~~ **pomp**
 - ~~put Kalman check in 'ou2' test~~
