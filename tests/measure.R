@@ -14,6 +14,8 @@ y %>% extract2("obs") %>% extract(,1,) -> y
 t <- time(po)
 p <- coef(po)
 
+dmeasure(po) -> L1
+stopifnot(dim(L1)==c(1,length(time(po))))
 dmeasure(po,x=x,y=y,times=t,params=p) -> L
 dmeasure(po,x=x,y=y,times=t,params=p,log=T) -> ll
 dmeasure(po,x=x,y=y,times=t,log=T,
@@ -35,10 +37,15 @@ stopifnot(
 try(dmeasure("ou2",x=x,y=y,times=t,params=p))
 try(dmeasure(x=x,y=y,times=t,params=p))
 try(dmeasure(x,y=y,times=t,params=p))
-try(dmeasure(po,x=x,y=y,times=t))
-try(dmeasure(po,x=x,y=y,params=p))
-try(dmeasure(po,x=x,times=t,params=p))
-try(dmeasure(po,y=y,times=t,params=p))
+dmeasure(po,x=x,y=y,times=t) -> L1
+dmeasure(po,x=x,y=y,params=p) -> L2
+dmeasure(po,x=x,times=t,params=p) -> L3
+dmeasure(po,y=y,times=t,params=p) -> L4
+stopifnot(
+  identical(L1,L2),
+  dim(L3)==c(5,10),
+  dim(L4)==c(1,10)
+)
 try(dmeasure(po,x=as.numeric(x),y=y,times=t,params=p))
 try(dmeasure(po,x=x,y=as.numeric(y),times=t,params=p))
 try(dmeasure(po,x=x,y=y,times=NULL,params=p))

@@ -102,7 +102,15 @@ setMethod(
 setMethod(
   "dmeasure",
   signature=signature(object="pomp"),
-  definition=function (object, y, x, times, params, ..., log = FALSE) {
+  definition=function (
+    object,
+    y = obs(object),
+    x = states(object),
+    times = time(object),
+    params = coef(object),
+    ...,
+    log = FALSE
+  ) {
     tryCatch(
       dmeasure.internal(object=object,y=y,x=x,times=times,
         params=params,log=log,...),
