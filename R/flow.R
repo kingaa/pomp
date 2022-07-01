@@ -66,7 +66,12 @@ setMethod(
 setMethod(
   "flow",
   signature=signature(object="pomp"),
-  definition=function (object, x0, t0, times, params, ...,
+  definition=function (
+    object, x0,
+    t0 = timezero(object),
+    times = time(object),
+    params = coef(object),
+    ...,
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
@@ -83,18 +88,8 @@ flow.internal <- function (object, x0, t0, times, params, ...,
 
   verbose <- as.logical(verbose)
 
-  if (missing(t0))
-    t0 <- object@t0
-  else
-    t0 <- as.numeric(t0)
-
-  if (missing(times))
-    times <- object@times
-  else
-    times <- as.numeric(times)
-
-  if (missing(params))
-    params <- object@params
+  t0 <- as.numeric(t0)
+  times <- as.numeric(times)
 
   if (length(times)==0)
     pStop_(sQuote("times")," is empty, there is no work to do.")

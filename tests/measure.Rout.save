@@ -95,8 +95,11 @@ Error : in 'dmeasure': larger number of replicates is not a multiple of smaller.
 +   names(dimnames(d))==c(".id","time")
 + )
 > 
+> rmeasure(po) -> y1
 > rmeasure(po,x=x,times=t,params=p) -> y
 > stopifnot(
++   dim(y1)==c(2,1,10),
++   names(dimnames(y1))==c("variable",".id","time"),
 +   dim(y)==c(2,5,10),
 +   names(dimnames(y))==c("variable",".id","time")
 + )
@@ -107,10 +110,9 @@ Error : 'rmeasure' is undefined for 'object' of class 'character'.
 Error : in 'rmeasure': 'object' is a required argument.
 > try(rmeasure(x,times=t,params=p))
 Error : 'rmeasure' is undefined for 'object' of class 'array'.
-> try(rmeasure(po,x=x,times=t))
-Error : in 'rmeasure': argument "params" is missing, with no default
-> try(rmeasure(po,x=x,params=p))
-Error : in 'rmeasure': argument "times" is missing, with no default
+> freeze(rmeasure(po,x=x,times=t),seed=30998684) -> xx1
+> freeze(rmeasure(po,x=x,params=p),seed=30998684) -> xx2
+> stopifnot(identical(xx1,xx2))
 > try(rmeasure(po,x=as.numeric(x),times=t,params=p))
 Error : in 'rmeasure': length of 'times' and 3rd dimension of 'x' do not agree.
 > try(rmeasure(po,x=x,times=NULL,params=p))

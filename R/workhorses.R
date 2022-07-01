@@ -431,7 +431,13 @@ setMethod(
 setMethod(
   "rmeasure",
   signature=signature(object="pomp"),
-  definition=function (object, x, times, params, ...) {
+  definition=function (
+    object,
+    x = states(object),
+    times = time(object),
+    params = coef(object),
+    ...
+  ) {
     tryCatch(
       rmeasure.internal(object=object,x=x,times=times,params=params,...),
       error = function (e) pStop("rmeasure",conditionMessage(e))

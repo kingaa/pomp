@@ -42,5 +42,5 @@ Error : in 'flow': 'times' must be a non-decreasing numeric sequence.
 Error : in 'flow': argument "x0" is missing, with no default
 > try(flow(po,t0=10,times=21:30,params=coef(po)))
 Error : in 'flow': argument "x0" is missing, with no default
-> flow(po,t0=0,times=1,params=coef(po),x0=rinit(po)) -> x
+> flow(po,t0=0,times=1,x0=rinit(po)) -> x
 > 

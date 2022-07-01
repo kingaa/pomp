@@ -61,8 +61,11 @@ stopifnot(
   names(dimnames(d))==c(".id","time")
 )
 
+rmeasure(po) -> y1
 rmeasure(po,x=x,times=t,params=p) -> y
 stopifnot(
+  dim(y1)==c(2,1,10),
+  names(dimnames(y1))==c("variable",".id","time"),
   dim(y)==c(2,5,10),
   names(dimnames(y))==c("variable",".id","time")
 )
@@ -70,8 +73,9 @@ stopifnot(
 try(rmeasure("ou2",x=x,times=t,params=p))
 try(rmeasure(x=x,times=t,params=p))
 try(rmeasure(x,times=t,params=p))
-try(rmeasure(po,x=x,times=t))
-try(rmeasure(po,x=x,params=p))
+freeze(rmeasure(po,x=x,times=t),seed=30998684) -> xx1
+freeze(rmeasure(po,x=x,params=p),seed=30998684) -> xx2
+stopifnot(identical(xx1,xx2))
 try(rmeasure(po,x=as.numeric(x),times=t,params=p))
 try(rmeasure(po,x=x,times=NULL,params=p))
 try(rmeasure(po,x=x[,,1],times=t[1],params=p))

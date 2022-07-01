@@ -12,4 +12,4 @@ try(flow(po,t0=10,times=NULL))
 try(flow(po,t0=10,times=30:11))
 try(flow(po,t0=10,times=21:30))
 try(flow(po,t0=10,times=21:30,params=coef(po)))
-flow(po,t0=0,times=1,params=coef(po),x0=rinit(po)) -> x
+flow(po,t0=0,times=1,x0=rinit(po)) -> x

@@ -7,7 +7,15 @@
 \alias{flow,pomp-method}
 \title{Flow of a deterministic model}
 \usage{
-\S4method{flow}{pomp}(object, x0, t0, times, params, ..., verbose = getOption("verbose", FALSE))
+\S4method{flow}{pomp}(
+  object,
+  x0,
+  t0 = timezero(object),
+  times = time(object),
+  params = coef(object),
+  ...,
+  verbose = getOption("verbose", FALSE)
+)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
