@@ -5,9 +5,14 @@ try(emeasure("does this work?"))
 try(simulate(t0=0,times=1:10,emeasure=Csnippet("E_B=rho*inc;")))
 
 ou2() -> po
-try(emeasure(po))
-try(emeasure(po,x=states(po)))
-try(emeasure(po,x=states(po),params=coef(po)))
+emeasure(po) -> x1
+emeasure(po,x=states(po)) -> x2
+emeasure(po,x=states(po),params=coef(po)) -> x3
+stopifnot(
+  dim(x1)==c(2,1,100),
+  identical(x1,x2),
+  identical(x1,x3)
+)
 try(emeasure(po,x=states(po),params=coef(po),times=numeric(0)))
 try(emeasure(po,x=states(po),params=coef(po),times=c(1,2,3)))
 simulate(po,nsim=3,format="arrays") %>% getElement("states") -> X

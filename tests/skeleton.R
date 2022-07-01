@@ -27,6 +27,9 @@ f %>% melt() %>%
   labs(y=expression(N[t+1]),x=expression(N[t]),color=expression(log(r)))+
   theme_classic()
 
+skeleton(ricker,params=parmat(coef(ricker),3)) -> dx
+stopifnot(dim(dx)==c(2,3,500))
+
 try(skeleton(x=x,times=time(ricker),params=p))
 try(skeleton("ricker",x=x,times=time(ricker),params=p))
 

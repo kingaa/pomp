@@ -10,8 +10,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._2._2:
         • The ‘time’ method has been extended to ‘pompList’ and related
           objects.
 
-        • The workhorse functions ‘flow’, ‘rmeasure’, ‘dmeasure’,
-          ‘rprior’, ‘dprior’, ‘rmeasure’, ‘dmeasure’ now have default
+        • All workhorse functions except ‘partrans’ have new default
           arguments.
 
         • Some documentation improvements.

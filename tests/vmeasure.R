@@ -5,9 +5,14 @@ try(vmeasure("does this work?"))
 try(simulate(t0=0,times=1:10,vmeasure=Csnippet("V_B_B=rho*(1-rho)*inc;")))
 
 ou2() -> po
-try(vmeasure(po))
-try(vmeasure(po,x=states(po)))
-try(vmeasure(po,x=states(po),params=coef(po)))
+vmeasure(po) -> v1
+vmeasure(po,x=states(po)) -> v2
+vmeasure(po,x=states(po),params=coef(po)) -> v3
+stopifnot(
+  dim(v1)==c(2,2,1,100),
+  identical(v1,v2),
+  identical(v1,v3)
+)
 try(vmeasure(po,x=states(po),params=coef(po),times=numeric(0)))
 try(vmeasure(po,x=states(po),params=coef(po),times=c(1,2,3)))
 simulate(po,nsim=3,format="arrays") %>% getElement("states") -> X

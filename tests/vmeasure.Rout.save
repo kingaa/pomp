@@ -27,12 +27,14 @@ Error : 'vmeasure' is undefined for 'object' of class 'character'.
 Error : in 'simulate': when 'vmeasure' is provided as a C snippet, you must also provide 'obsnames'.
 > 
 > ou2() -> po
-> try(vmeasure(po))
-Error : in 'vmeasure': argument "x" is missing, with no default
-> try(vmeasure(po,x=states(po)))
-Error : in 'vmeasure': argument "params" is missing, with no default
-> try(vmeasure(po,x=states(po),params=coef(po)))
-Error : in 'vmeasure': argument "times" is missing, with no default
+> vmeasure(po) -> v1
+> vmeasure(po,x=states(po)) -> v2
+> vmeasure(po,x=states(po),params=coef(po)) -> v3
+> stopifnot(
++   dim(v1)==c(2,2,1,100),
++   identical(v1,v2),
++   identical(v1,v3)
++ )
 > try(vmeasure(po,x=states(po),params=coef(po),times=numeric(0)))
 Error : in 'vmeasure': length('times') = 0, no work to do.
 > try(vmeasure(po,x=states(po),params=coef(po),times=c(1,2,3)))

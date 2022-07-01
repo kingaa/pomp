@@ -316,7 +316,11 @@ setMethod(
 setMethod(
   "partrans",
   signature=signature(object="pomp"),
-  definition=function (object, params, dir = c("fromEst", "toEst"), ...) {
+  definition=function (
+    object, params,
+    dir = c("fromEst", "toEst"),
+    ...
+  ) {
     dir <- match.arg(dir)
     tryCatch(
       partrans.internal(object=object,params=params,dir=dir,...),
@@ -385,7 +389,13 @@ setMethod(
 setMethod(
   "rinit",
   signature=signature("pomp"),
-  definition=function (object, params, t0, nsim = 1, ...) {
+  definition=function (
+    object,
+    params = coef(object),
+    t0 = timezero(object),
+    nsim = 1,
+    ...
+  ) {
     tryCatch(
       rinit.internal(object=object,params=params,t0=t0,nsim=nsim,...),
       error = function (e) pStop("rinit",conditionMessage(e))
@@ -520,7 +530,13 @@ setMethod(
 setMethod(
   "emeasure",
   signature=signature(object="pomp"),
-  definition=function (object, x, times, params, ...) {
+  definition=function (
+    object,
+    x = states(object),
+    times = time(object),
+    params = coef(object),
+    ...
+  ) {
     tryCatch(
       emeasure.internal(object=object,x=x,times=times,params=params,...),
       error = function (e) pStop("emeasure",conditionMessage(e))
@@ -585,7 +601,13 @@ setMethod(
 setMethod(
   "vmeasure",
   signature=signature(object="pomp"),
-  definition=function (object, x, times, params, ...) {
+  definition=function (
+    object,
+    x = states(object),
+    times = time(object),
+    params = coef(object),
+    ...
+  ) {
     tryCatch(
       vmeasure.internal(object=object,x=x,times=times,params=params,...),
       error = function (e) pStop("vmeasure",conditionMessage(e))
@@ -810,7 +832,13 @@ setMethod(
 setMethod(
   "skeleton",
   signature=signature("pomp"),
-  definition=function (object, x, times, params, ...)
+  definition=function (
+    object,
+    x = states(object),
+    times = time(object),
+    params = coef(object),
+    ...
+  )
     tryCatch(
       skeleton.internal(object=object,x=x,times=times,params=params,...),
       error = function (e) pStop("skeleton",conditionMessage(e))

@@ -27,12 +27,14 @@ Error : 'emeasure' is undefined for 'object' of class 'character'.
 Error : in 'simulate': when 'emeasure' is provided as a C snippet, you must also provide 'obsnames'.
 > 
 > ou2() -> po
-> try(emeasure(po))
-Error : in 'emeasure': argument "x" is missing, with no default
-> try(emeasure(po,x=states(po)))
-Error : in 'emeasure': argument "params" is missing, with no default
-> try(emeasure(po,x=states(po),params=coef(po)))
-Error : in 'emeasure': argument "times" is missing, with no default
+> emeasure(po) -> x1
+> emeasure(po,x=states(po)) -> x2
+> emeasure(po,x=states(po),params=coef(po)) -> x3
+> stopifnot(
++   dim(x1)==c(2,1,100),
++   identical(x1,x2),
++   identical(x1,x3)
++ )
 > try(emeasure(po,x=states(po),params=coef(po),times=numeric(0)))
 Error : in 'emeasure': length('times') = 0, no work to do.
 > try(emeasure(po,x=states(po),params=coef(po),times=c(1,2,3)))

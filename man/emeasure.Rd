@@ -8,7 +8,13 @@
 \alias{emeasure,pomp-method}
 \title{emeasure}
 \usage{
-\S4method{emeasure}{pomp}(object, x, times, params, ...)
+\S4method{emeasure}{pomp}(
+  object,
+  x = states(object),
+  times = time(object),
+  params = coef(object),
+  ...
+)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.

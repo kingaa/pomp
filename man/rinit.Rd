@@ -8,7 +8,7 @@
 \alias{rinit,pomp-method}
 \title{rinit}
 \usage{
-\S4method{rinit}{pomp}(object, params, t0, nsim = 1, ...)
+\S4method{rinit}{pomp}(object, params = coef(object), t0 = timezero(object), nsim = 1, ...)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.

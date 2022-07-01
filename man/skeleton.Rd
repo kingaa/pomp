@@ -8,7 +8,13 @@
 \alias{skeleton,pomp-method}
 \title{skeleton}
 \usage{
-\S4method{skeleton}{pomp}(object, x, times, params, ...)
+\S4method{skeleton}{pomp}(
+  object,
+  x = states(object),
+  times = time(object),
+  params = coef(object),
+  ...
+)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
