@@ -405,9 +405,7 @@ setMethod(
 
 rinit.internal <- function (object, params, t0, nsim = 1,
   .gnsi = TRUE, ...) {
-  if (missing(t0)) t0 <- object@t0
-  if (missing(params)) params <- coef(object)
-  else storage.mode(params) <- "double"
+  storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
   .Call(P_do_rinit,object,params,t0,nsim,.gnsi)
