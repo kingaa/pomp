@@ -39,6 +39,6 @@ make xcheck
 
 - Prepare an announcement for the blog: `www/vignettes/_post/`
 - Update manual pages:
-  - `make htmlhelp`
+  - `make publish`
   - Then push changes to `kingaa.github.io`
 - Make `X.X.0.0` release for Github site.
