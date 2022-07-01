@@ -8,7 +8,7 @@
 \alias{rprior,pomp-method}
 \title{rprior}
 \usage{
-\S4method{rprior}{pomp}(object, params, ...)
+\S4method{rprior}{pomp}(object, params = coef(object), ...)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.

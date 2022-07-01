@@ -176,7 +176,12 @@ setMethod(
 setMethod(
   "dprior",
   signature=signature(object="pomp"),
-  definition=function (object, params, ..., log = FALSE) {
+  definition=function (
+    object,
+    params = coef(object),
+    ...,
+    log = FALSE
+  ) {
     tryCatch(
       dprior.internal(object=object,params=params,log=log,...),
       error = function (e) pStop("dprior",conditionMessage(e))
@@ -637,7 +642,11 @@ setMethod(
 setMethod(
   "rprior",
   signature=signature(object="pomp"),
-  definition=function (object, params, ...)
+  definition=function (
+    object,
+    params = coef(object),
+    ...
+  )
     tryCatch(
       rprior.internal(object=object,params=params,...),
       error = function (e) pStop("rprior",conditionMessage(e))

@@ -41,7 +41,7 @@ stopifnot(
 
 replicate(5,rprior(po,params=coef(po))) %>% parmat() -> theta
 stopifnot(round(dprior(po,params=theta,log=TRUE),3) ==
-    c(-12.237, -10.848, -15.806, -10.847, -11.526))
+            c(-12.237, -10.848, -15.806, -10.847, -11.526))
 
 try(dprior("ou2",params=theta))
 try(dprior(params=theta))
@@ -56,3 +56,9 @@ stopifnot(
   names(dimnames(p))==c("variable",".id"),
   rownames(p)==names(coef(po))
 )
+
+freeze(
+  mean(dprior(po,params=replicate(n=10000,rprior(po)),log=TRUE)),
+  seed=1865498175
+) -> L
+stopifnot(round(L,1)==-12.1)

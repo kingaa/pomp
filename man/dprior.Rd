@@ -8,7 +8,7 @@
 \alias{dprior,pomp-method}
 \title{dprior}
 \usage{
-\S4method{dprior}{pomp}(object, params, ..., log = FALSE)
+\S4method{dprior}{pomp}(object, params = coef(object), ..., log = FALSE)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
