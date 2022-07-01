@@ -136,7 +136,7 @@ sannbox <- function (par, fn, control = list(), ...) {
   else if (is.function(control$candidate.dist)) {
     candidate.dist <- control$candidate.dist
     if (!all(c("par","temp","scale") %in% names(formals(candidate.dist))))
-      pStop(ep,sQuote("candidate.dist")," must be a function of prototype ",
+      pStop(ep,sQuote("candidate.dist")," must be a function of the form ",
         sQuote("candidate.dist(par, temp, scale, ...)"),".")
   } else
     pStop(ep,sQuote("control$candidate.dist")," must be a function.")

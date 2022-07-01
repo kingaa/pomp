@@ -58,5 +58,5 @@ Error : in 'sannbox': insufficiently many temperatures supplied in 'control$sche
 Error : in 'sannbox': 'control$candidate.dist' must be a function.
 > try(sannbox(par=c(2,2),fn=f,control=list(
 +   candidate.dist=function(x)x)))
-Error : in 'sannbox': 'candidate.dist' must be a function of prototype 'candidate.dist(par, temp, scale, ...)'.
+Error : in 'sannbox': 'candidate.dist' must be a function of the form 'candidate.dist(par, temp, scale, ...)'.
 > 

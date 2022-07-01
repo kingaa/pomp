@@ -27,7 +27,7 @@ setClassUnion(
 ##' @rdname plot
 ##' @param x the object to plot
 ##' @param variables optional character; names of variables to be displayed
-##' @param panel function of prototype \code{panel(x, col, bg, pch, type, ...)} which gives the action to be carried out in each panel of the display.
+##' @param panel function of the form \code{panel(x, col, bg, pch, type, ...)} which gives the action to be carried out in each panel of the display.
 ##' @param nc the number of columns to use.
 ##' Defaults to 1 for up to 4 series, otherwise to 2.
 ##' @param yax.flip logical;

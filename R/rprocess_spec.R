@@ -102,7 +102,7 @@
 ##'     rprocess = gillespie(rate.fun = f, v, hmax = Inf)
 ##' }
 ##' to \code{pomp}, where \code{f} gives the rates of the elementary events.
-##' Here, \code{f} may be an \R function with prototype
+##' Here, \code{f} may be an \R function of the form
 ##' \preformatted{
 ##'     f(j, x, t, params, ...)
 ##' }

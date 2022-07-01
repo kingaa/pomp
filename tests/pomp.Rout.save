@@ -159,7 +159,7 @@ Error : 'params' must be a named numeric vector.
 > try(po2 %>% pomp(covar="bob"))
 Error : bad option for 'covar'.
 > try(po2 %>% pomp(rmeasure=function(x)x))
-Error : in 'rmeasure': 'rmeasure' must be a function of prototype 'rmeasure(...)'
+Error : in 'rmeasure': 'rmeasure' must be a function of the form 'rmeasure(...)'
 > try(pomp(data=NULL,times=1:10,t0=0,rmeasure=Csnippet("")))
 Error : when 'rmeasure' is provided as a C snippet, you must also provide 'obsnames'.
 > 

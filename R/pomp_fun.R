@@ -118,7 +118,7 @@ setMethod(
       args <- prototype[-1]
       if (is.function(f)&&(!all(args%in%names(formals(f)))))
         pStop(slotname,
-          sQuote(fname)," must be a function of prototype ",
+          sQuote(fname)," must be a function of the form ",
           sQuote(deparse(proto)))
     }
     new("pomp_fun",R.fun=f,mode=pompfunmode$Rfun,purpose=as.character(slotname))

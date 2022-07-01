@@ -32,7 +32,7 @@ R function
   - definition: function(x,y)x+y
 
 > try(pomp:::pomp_fun(function(x)x+y,proto=quote(bob(x,y)),slotname="blarp"))
-Error : in 'blarp': 'bob' must be a function of prototype 'bob(x, y)'
+Error : in 'blarp': 'bob' must be a function of the form 'bob(x, y)'
 > pomp:::pomp_fun(function(x)x+y,slotname="blarp") -> f
 > print(f)
 R function
