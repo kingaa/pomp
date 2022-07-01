@@ -27,7 +27,7 @@ try(po %>% dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:2],log=FALSE))
 po %>% dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
   apply(1,sum)
 try(po %>% dprocess(x=x[,1:2,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
-    apply(1,sum))
+      apply(1,sum))
 po %>% dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
   apply(1,sum)
 po %>% pomp(dprocess=NULL) %>%
@@ -36,8 +36,8 @@ po %>% pomp(dprocess=NULL) %>%
 
 po %>% rinit(params=coef(po)) -> x0
 freeze(po %>%
-    rprocess(params=coef(po),x0=parmat(x0,3),t0=timezero(po),times=time(po),
-      offset=1),
+         rprocess(params=coef(po),x0=parmat(x0,3),t0=timezero(po),times=time(po),
+           offset=1),
   seed=3434388L) -> x1
 
 stopifnot(max(abs(x-x1))==0)
@@ -45,10 +45,10 @@ stopifnot(max(abs(x-x1))==0)
 po %>% rinit(nsim=6) -> x0
 try(rprocess("ou2",x0=x0,t0=t[1],times=t,params=p))
 try(rprocess(x0=x0,t0=t[1],times=t,params=p))
-try(po %>% rprocess(times=t,params=p))
+freeze(po %>% rprocess(times=t,params=p),seed=995484) -> x1
 try(po %>% rprocess(x0=x0,params=p))
 try(po %>% rprocess(x0=x0,t0=t[1],params=p))
-try(po %>% rprocess(x0=x0,times=t))
+freeze(po %>% rprocess(x0=x0,times=t),seed=995484) -> x2
 try(po %>% rprocess(x0=x0,times=t,params=p))
 try(po %>% rprocess(x0=x0,t0=t[1],times=t,params=p))
 po %>% rprocess(x0=x0,t0=t[1],times=t,params=p[,1:3]) -> x

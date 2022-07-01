@@ -8,7 +8,14 @@
 \alias{dprocess,pomp-method}
 \title{dprocess}
 \usage{
-\S4method{dprocess}{pomp}(object, x, times, params, ..., log = FALSE)
+\S4method{dprocess}{pomp}(
+  object,
+  x = states(object),
+  times = time(object),
+  params = coef(object),
+  ...,
+  log = FALSE
+)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.

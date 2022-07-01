@@ -54,7 +54,7 @@ Error : in 'dprocess': the larger number of replicates is not a multiple of smal
 +   apply(1,sum)
 [1] -30.7 -12.2 -14.3
 > try(po %>% dprocess(x=x[,1:2,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
-+     apply(1,sum))
++       apply(1,sum))
 Error : in 'dprocess': the larger number of replicates is not a multiple of smaller.
 > po %>% dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
 +   apply(1,sum)
@@ -67,8 +67,8 @@ Warning message:
 > 
 > po %>% rinit(params=coef(po)) -> x0
 > freeze(po %>%
-+     rprocess(params=coef(po),x0=parmat(x0,3),t0=timezero(po),times=time(po),
-+       offset=1),
++          rprocess(params=coef(po),x0=parmat(x0,3),t0=timezero(po),times=time(po),
++            offset=1),
 +   seed=3434388L) -> x1
 > 
 > stopifnot(max(abs(x-x1))==0)
@@ -78,16 +78,14 @@ Warning message:
 Error : 'rprocess' is undefined for 'object' of class 'character'.
 > try(rprocess(x0=x0,t0=t[1],times=t,params=p))
 Error : in 'rprocess': 'object' is a required argument.
-> try(po %>% rprocess(times=t,params=p))
-Error : in 'rprocess': argument "x0" is missing, with no default
+> freeze(po %>% rprocess(times=t,params=p),seed=995484) -> x1
 > try(po %>% rprocess(x0=x0,params=p))
-Error : in 'rprocess': argument "t0" is missing, with no default
+Error : in 'rprocess': the larger number of replicates is not a multiple of smaller.
 > try(po %>% rprocess(x0=x0,t0=t[1],params=p))
-Error : in 'rprocess': argument "times" is missing, with no default
-> try(po %>% rprocess(x0=x0,times=t))
-Error : in 'rprocess': argument "params" is missing, with no default
+Error : in 'rprocess': the larger number of replicates is not a multiple of smaller.
+> freeze(po %>% rprocess(x0=x0,times=t),seed=995484) -> x2
 > try(po %>% rprocess(x0=x0,times=t,params=p))
-Error : in 'rprocess': argument "t0" is missing, with no default
+Error : in 'rprocess': the larger number of replicates is not a multiple of smaller.
 > try(po %>% rprocess(x0=x0,t0=t[1],times=t,params=p))
 Error : in 'rprocess': the larger number of replicates is not a multiple of smaller.
 > po %>% rprocess(x0=x0,t0=t[1],times=t,params=p[,1:3]) -> x

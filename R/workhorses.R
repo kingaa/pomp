@@ -244,7 +244,14 @@ setMethod(
 setMethod(
   "dprocess",
   signature=signature(object="pomp"),
-  definition = function (object, x, times, params, ..., log = FALSE) {
+  definition = function (
+    object,
+    x = states(object),
+    times = time(object),
+    params = coef(object),
+    ...,
+    log = FALSE
+  ) {
     tryCatch(
       dprocess.internal(object=object,x=x,times=times,params=params,log=log,...),
       error = function (e) pStop("dprocess",conditionMessage(e))
@@ -727,7 +734,14 @@ setMethod(
 setMethod(
   "rprocess",
   signature=signature(object="pomp"),
-  definition=function (object, x0, t0, times, params, ...) {
+  definition=function (
+    object,
+    x0 = rinit(object),
+    t0 = timezero(object),
+    times = time(object),
+    params = coef(object),
+    ...
+  ) {
     tryCatch(
       rprocess.internal(object=object,x0=x0,t0=t0,times=times,params=params,...),
       error = function (e) pStop("rprocess",conditionMessage(e))

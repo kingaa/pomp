@@ -8,7 +8,14 @@
 \alias{rprocess,pomp-method}
 \title{rprocess}
 \usage{
-\S4method{rprocess}{pomp}(object, x0, t0, times, params, ...)
+\S4method{rprocess}{pomp}(
+  object,
+  x0 = rinit(object),
+  t0 = timezero(object),
+  times = time(object),
+  params = coef(object),
+  ...
+)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
