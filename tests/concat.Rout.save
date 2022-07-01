@@ -50,7 +50,8 @@ attr(,"package")
 [1] "pfilterList"
 attr(,"package")
 [1] "pomp"
-> c(a=pfs[[1]],b=pfs)
+> c(a=pfs[[1]],b=pfs) -> pfs
+> pfs
 $a
 <object of class 'pfilterd_pomp'>
 
@@ -60,4 +61,23 @@ $b1
 $b2
 <object of class 'pfilterd_pomp'>
 
+> time(pfs) -> tt
+> states(pfs) -> ss
+> obs(pfs) -> oo
+> coef(pfs) -> cc
+> stopifnot(
++   is.list(tt),
++   names(tt)==names(pfs),
++   sapply(tt,length)==100,
++   is.list(ss),
++   names(ss)==names(pfs),
++   sapply(ss,dim)==c(1,100),
++   is.list(oo),
++   names(oo)==names(pfs),
++   sapply(oo,dim)==c(1,100),
++   is.matrix(cc),
++   dim(cc)==c(5,3),
++   rownames(cc)==names(coef(pfs[[1]])),
++   colnames(cc)==names(pfs)
++ )
 > 

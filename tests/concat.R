@@ -13,4 +13,24 @@ c(a=ou2,c(b=gompertz,c=ou2)) %>% class()
 replicate(2,pfilter(gompertz,Np=10)) %>% class()
 do.call(c,replicate(2,pfilter(gompertz,Np=10))) -> pfs
 pfs %>% class()
-c(a=pfs[[1]],b=pfs)
+c(a=pfs[[1]],b=pfs) -> pfs
+pfs
+time(pfs) -> tt
+states(pfs) -> ss
+obs(pfs) -> oo
+coef(pfs) -> cc
+stopifnot(
+  is.list(tt),
+  names(tt)==names(pfs),
+  sapply(tt,length)==100,
+  is.list(ss),
+  names(ss)==names(pfs),
+  sapply(ss,dim)==c(1,100),
+  is.list(oo),
+  names(oo)==names(pfs),
+  sapply(oo,dim)==c(1,100),
+  is.matrix(cc),
+  dim(cc)==c(5,3),
+  rownames(cc)==names(coef(pfs[[1]])),
+  colnames(cc)==names(pfs)
+)

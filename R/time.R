@@ -21,7 +21,7 @@ setGeneric(
 ##' @rdname time
 ##' @param x  a \sQuote{pomp} object
 ##' @param t0 logical; should the zero time be included?
-##' @param \dots ignored or passed to the more primitive function
+##' @param ... ignored or passed to the more primitive function
 ##' @details
 ##' \code{time(object)} returns the vector of observation times.
 ##' \code{time(object,t0=TRUE)} returns the vector of observation
@@ -95,3 +95,13 @@ time.repl.internal <- function (object, t0 = FALSE, ..., value) {
   }
   object
 }
+
+##' @rdname time
+##' @export
+setMethod(
+  "time",
+  signature=signature(x="listie"),
+  definition=function (x, t0 = FALSE, ...) {
+    lapply(x,time,t0=t0,...)
+  }
+)

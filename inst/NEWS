@@ -7,6 +7,9 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._2._2:
           furnished.  *NB:* Running ‘bake’ or ‘stew’ with archives
           created by earlier versions may result in recomputation.
 
+        • The ‘time’ method has been extended to ‘pompList’ and related
+          objects.
+
         • Some documentation improvements.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._2._1:

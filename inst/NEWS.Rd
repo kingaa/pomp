@@ -4,6 +4,7 @@
   \itemize{
     \item The archiving functions \code{bake} and \code{stew} now use a slightly less exacting comparison of the expression, \code{expr}, they are furnished.
     \strong{NB:} Running \code{bake} or \code{stew} with archives created by earlier versions may result in recomputation.
+    \item The \code{time} method has been extended to \code{pompList} and related objects.
     \item Some documentation improvements.
   }
 }

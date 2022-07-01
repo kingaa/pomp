@@ -6,18 +6,21 @@
 \alias{time,missing-method}
 \alias{time,pomp-method}
 \alias{time<-,pomp-method}
+\alias{time,listie-method}
 \title{Methods to extract and manipulate the obseration times}
 \usage{
 \S4method{time}{pomp}(x, t0 = FALSE, ...)
 
 \S4method{time}{pomp}(object, t0 = FALSE, ...) <- value
+
+\S4method{time}{listie}(x, t0 = FALSE, ...)
 }
 \arguments{
 \item{x}{a \sQuote{pomp} object}
 
 \item{t0}{logical; should the zero time be included?}
 
-\item{\dots}{ignored or passed to the more primitive function}
+\item{...}{ignored or passed to the more primitive function}
 
 \item{object}{a \sQuote{pomp} object}
 
