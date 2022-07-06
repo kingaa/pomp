@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.3.1}{
+  \itemize{
+    \item The \code{bspline.basis} function now takes the optional argument \code{rg} which allows one to specify the range over which the basis will be constructed.
+    By default, this is \code{range(x)}, which agrees with the behavior in earlier versions.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.2.2}{
   \itemize{
     \item The archiving functions \code{bake} and \code{stew} now use a slightly less exacting comparison of the expression, \code{expr}, they are furnished.

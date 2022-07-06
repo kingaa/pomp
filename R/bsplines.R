@@ -10,6 +10,7 @@
 ##' @family interpolation
 ##'
 ##' @param x Vector at which the spline functions are to be evaluated.
+##' @param rg numeric of length 2; range of the B-spline basis.
 ##' @param nbasis The number of basis functions to return.
 ##' @param degree Degree of requested B-splines.
 ##' @param period The period of the requested periodic B-splines.
@@ -55,10 +56,11 @@ NULL
 
 ##' @rdname bsplines
 ##' @export
-bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL) {
+bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL, rg = range(x)) {
   ep <- "bspline.basis"
+  rg <- as.numeric(rg)
   y <- tryCatch(
-    .Call(P_bspline_basis,x,nbasis,degree,deriv),
+    .Call(P_bspline_basis,rg,x,nbasis,degree,deriv),
     error = function (e) {
       pStop(ep,conditionMessage(e))
     }

@@ -6,7 +6,7 @@ static void bspline_internal (double *y, const double *x, int nx, int i, int p, 
 
 // B-spline basis
 
-SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
+SEXP bspline_basis (SEXP range, SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
   SEXP y, xr;
   int nx = LENGTH(x);
   int nb = INTEGER_VALUE(nbasis);
@@ -25,10 +25,8 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
   PROTECT(y = allocMatrix(REALSXP,nx,nb));
   xdata = REAL(xr);
   ydata = REAL(y);
-  for (i = 1, minx = maxx = xdata[0]; i < nx; i++) {
-    minx = (minx > xdata[i]) ? xdata[i] : minx;
-    maxx = (maxx < xdata[i]) ? xdata[i] : maxx;
-  }
+  minx = REAL(range)[0];
+  maxx = REAL(range)[1];
   dx = (maxx-minx)/((double) (nb-deg));
   knots[0] = minx-deg*dx;
   for (i = 1; i < nk; i++) knots[i] = knots[i-1]+dx;
