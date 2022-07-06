@@ -27,6 +27,7 @@ SEXP bspline_basis (SEXP range, SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
   ydata = REAL(y);
   minx = REAL(range)[0];
   maxx = REAL(range)[1];
+  if (minx >= maxx) err("improper range 'rg'");
   dx = (maxx-minx)/((double) (nb-deg));
   knots[0] = minx-deg*dx;
   for (i = 1; i < nk; i++) knots[i] = knots[i-1]+dx;

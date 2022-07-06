@@ -104,6 +104,10 @@ Warning message:
 in 'periodic.bspline.basis': returning 0 since 'deriv' > 'degree' 
 > stopifnot(isTRUE(all(B==0)))
 > 
+> try(bspline.basis(x,degree=1,nbasis=6,rg=c(4,3)))
+Error : in 'bspline.basis': improper range 'rg'
+> try(bspline.basis(x,degree=1,nbasis=6,rg=c(4,4)))
+Error : in 'bspline.basis': improper range 'rg'
 > B <- bspline.basis(x,degree=1,nbasis=6,rg=c(-1,3))
 > matplot(x,B,type='l')
 > 

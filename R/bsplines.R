@@ -11,6 +11,7 @@
 ##'
 ##' @param x Vector at which the spline functions are to be evaluated.
 ##' @param rg numeric of length 2; range of the B-spline basis.
+##' To be properly specified, we must have \code{rg[1] < rg[2]}.
 ##' @param nbasis The number of basis functions to return.
 ##' @param degree Degree of requested B-splines.
 ##' @param period The period of the requested periodic B-splines.

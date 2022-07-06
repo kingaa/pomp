@@ -72,6 +72,8 @@ stopifnot(isTRUE(all(B==0)))
 B <- periodic.bspline.basis(x,degree=8,nbasis=30,deriv=11)
 stopifnot(isTRUE(all(B==0)))
 
+try(bspline.basis(x,degree=1,nbasis=6,rg=c(4,3)))
+try(bspline.basis(x,degree=1,nbasis=6,rg=c(4,4)))
 B <- bspline.basis(x,degree=1,nbasis=6,rg=c(-1,3))
 matplot(x,B,type='l')
 
