@@ -1,7 +1,5 @@
 ---
 title: 'version 2 upgrade guide'
-author: "Aaron A. King"
-date: "`r format(Sys.Date(),'%e %B %Y')`"
 output: 
   html_document:
     theme: null

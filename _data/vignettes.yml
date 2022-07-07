@@ -24,7 +24,7 @@
 
 - title: "Coding POMP models: R vs C snippets"
   page: R_v_C.html
-  R: vignettes/R_v_C.R
+  R: vignettes/r_v_c.R
 
 - title: Measles in large and small towns (He et al. 2010)
   html: vignettes/He2010.html
