@@ -48,7 +48,7 @@ They must be referred to in measurement model C snippets (\code{rmeasure} and \c
 \item Because the dot \sQuote{.} has syntactic meaning in C, \R variables with names containing dots (\sQuote{.}) are replaced in the C codes by variable names in which all dots have been replaced by underscores (\sQuote{_}).
 \item The headers \file{R.h} and \file{Rmath.h}, provided with \R, will be included in the generated C file, making all of the \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API}{\R C API} available for use in the C snippet.
 This makes a great many useful functions available, including all of \R's \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions}{statistical distribution functions}.
-\item The header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}, provided with \pkg{pomp}, will also be included, making all of the \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{\pkg{pomp} C API} available for use in every C snippet.
+\item The header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}, provided with \pkg{pomp}, will also be included, making all of the \href{https://kingaa.github.io/pomp/C_API.html}{\pkg{pomp} C API} available for use in every C snippet.
 \item Snippets of C code passed to the \code{globals} argument of \code{pomp} will be included at the head of the generated C file.
 This can be used to declare global variables, define useful functions, and include arbitrary header files.
 \item TODO: Include information about linking to precompiled libraries.

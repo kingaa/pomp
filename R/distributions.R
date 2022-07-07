@@ -76,7 +76,7 @@
 ##'
 ##' @section C API:
 ##' An interface for C codes using these functions is provided by the package.
-##' Visit the package homepage to view the \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{\pkg{pomp} C API document}.
+##' Visit the package homepage to view the \href{https://kingaa.github.io/pomp/C_API.html}{\pkg{pomp} C API document}.
 ##'
 ##' @author Aaron A. King
 ##'
