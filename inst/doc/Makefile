@@ -2,6 +2,7 @@ RM = rm -f
 CP = cp
 TOUCH = touch
 INSTALL = install
+PANDOC = pandoc
 
 default: index.html
 
@@ -28,15 +29,13 @@ default: index.html
 	$(MAKEIDX) $*
 
 %.html: %.Rmd
-	PATH=/usr/lib/rstudio/bin/pandoc:$$PATH \
 	Rscript --vanilla -e "rmarkdown::render(\"$*.Rmd\",output_format=\"html_document\")"
 
 %.html: %.md
-	PATH=/usr/lib/rstudio/bin/pandoc:$$PATH \
-	Rscript --vanilla -e "rmarkdown::render(\"$*.md\",output_format=\"html_document\")"
+	$(PANDOC) $^ -o $@
 
 %.R: %.Rmd
 	Rscript --vanilla -e "knitr::purl(\"$*.Rmd\",output=\"$*.R\",documentation=2)"
 
 clean:
-	$(RM) -r figure cache
+	$(RM) -r figure cache tmp

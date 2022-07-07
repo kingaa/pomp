@@ -25,7 +25,7 @@ TESTS=$(sort $(wildcard tests/*R))
 default:
 	@echo $(PKGVERS)
 
-.PHONY: binary check clean covr default dist fresh headers htmldocs \
+.PHONY: binary check clean covr default dist fresh headers instdocs \
 htmlhelp includes install manual news NEWS publish qcheck qqcheck \
 remove revdeps rhub roxy session tests vignettes win wind xcheck \
 xcovr xxcheck ycheck
@@ -36,14 +36,15 @@ roxy headers dist manual vignettes: export R_HOME=$(shell $(REXE) RHOME)
 check xcheck xxcheck: export FULL_TESTS=yes
 dist revdeps session tests check xcheck xxcheck: export R_KEEP_PKG_SOURCE=yes
 revdeps xcheck tests: export R_PROFILE_USER=$(CURDIR)/.Rprofile
-revdeps session xxcheck htmldocs vignettes data tests manual: export R_LIBS=$(CURDIR)/library
+revdeps session xxcheck vignettes data tests manual: export R_LIBS=$(CURDIR)/library
 session: export R_DEFAULT_PACKAGES=datasets,utils,grDevices,graphics,stats,methods,tidyverse,$(PKG)
 xcheck: export _R_CHECK_DEPENDS_ONLY_=true
 
 inst/include/%.h: src/%.h
 	$(CP) $^ $@
 
-htmldocs: inst/doc/*.html
+instdocs:
+	make -C inst/doc
 
 htmlhelp: install news manual
 	rsync --delete -a library/$(PKG)/html/ $(MANUALDIR)/html
@@ -79,7 +80,7 @@ revdeps: install
 roxy: $(SOURCE) headers
 	$(REXE) -e "pkgbuild::compile_dll(); devtools::document(roclets=c('rd','collate','namespace'))"
 
-dist: NEWS $(PKGVERS).tar.gz
+dist: NEWS instdocs $(PKGVERS).tar.gz
 
 $(PKGVERS).tar.gz: $(SOURCE) $(TESTS) includes headers
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both --md5 .
@@ -159,8 +160,6 @@ remove:
 
 fresh: clean remove
 
-inst/doc/*.html: install 
-
 %.tex: %.Rnw
 	$(RSCRIPT) -e "library(knitr); knit(\"$*.Rnw\")"
 
@@ -197,8 +196,8 @@ inst/doc/*.html: install
 clean:
 	$(RM) -r check
 	$(RM) src/*.o src/*.so src/symbols.rds www/vignettes/Rplots.*
-	$(RM) -r inst/doc/figure inst/doc/cache
 	$(RM) -r lib
 	$(RM) -r *-Ex.Rout *-Ex.timings *-Ex.pdf
 	$(RM) *.tar.gz $(PKGVERS).zip $(PKGVERS).tgz $(PKG).pdf
 	$(MAKE)	-C www/vignettes clean
+	$(MAKE) -C inst/doc clean
