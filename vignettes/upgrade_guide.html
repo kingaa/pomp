@@ -315,6 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <body>
 
 
+<a name="top"></a>
 
 
 <h1 class="title toc-ignore">pomp version 2 upgrade guide</h1>
@@ -326,17 +327,38 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <ul>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#terminology">Terminology</a></li>
-<li><a href="#changes-in-the-way-models-are-specified">Changes in the way models are specified</a></li>
+<li><a href="#changes-in-the-way-models-are-specified">Changes in the way models are specified</a><ul>
+<li><a href="#basic-component-specification">Basic component specification</a></li>
+<li><a href="#process-model-specification">Process model specification</a></li>
+<li><a href="#initialization-of-the-latent-state-process">Initialization of the latent state process</a></li>
+</ul></li>
 <li><a href="#covariates">Covariates</a></li>
 <li><a href="#parameter-transformations">Parameter transformations</a></li>
 <li><a href="#accumulator-variables">Accumulator variables</a></li>
-<li><a href="#changes-in-elementary-pomp-algorithms">Changes in elementary POMP algorithms</a></li>
-<li><a href="#change-in-pomp-estimation-algorithms">Change in <strong>pomp</strong> estimation algorithms</a></li>
-<li><a href="#changes-in-pomp-workhorses">Changes in <strong>pomp</strong> workhorses</a></li>
+<li><a href="#changes-in-elementary-pomp-algorithms">Changes in elementary POMP algorithms</a><ul>
+<li><a href="#simulate"><code>simulate</code></a></li>
+<li><a href="#pfilter-and-bsmc2"><code>pfilter</code> and <code>bsmc2</code></a></li>
+</ul></li>
+<li><a href="#change-in-pomp-estimation-algorithms">Change in <strong>pomp</strong> estimation algorithms</a><ul>
+<li><a href="#parameter-transformations-in-estimation">Parameter transformations in estimation</a></li>
+<li><a href="#mif2-defaults"><code>mif2</code> defaults</a></li>
+<li><a href="#params-not-start"><code>params</code> not <code>start</code></a></li>
+<li><a href="#changes-in-optimization-based-methods-probe-matching-spectrum-matching-trajectory-matching-nonlinear-forecasting">Changes in optimization-based methods: probe matching, spectrum matching, trajectory matching, nonlinear forecasting</a></li>
+</ul></li>
+<li><a href="#changes-in-pomp-workhorses">Changes in <strong>pomp</strong> workhorses</a><ul>
+<li><a href="#default-model-components">Default model components</a></li>
+<li><a href="#skeleton"><code>skeleton</code></a></li>
+<li><a href="#trajectory"><code>trajectory</code></a></li>
+<li><a href="#flow"><code>flow</code></a></li>
+<li><a href="#rprocess"><code>rprocess</code></a></li>
+</ul></li>
 <li><a href="#included-pomp-examples">Included <strong>pomp</strong> examples</a></li>
 <li><a href="#included-datasets">Included datasets</a></li>
 <li><a href="#facilities-removed-in-version-2">Facilities removed in version 2</a></li>
-<li><a href="#recoding-your-models-for-pomp-version-2-examples">Recoding your models for <strong>pomp</strong> version 2: examples</a></li>
+<li><a href="#recoding-your-models-for-pomp-version-2-examples">Recoding your models for <strong>pomp</strong> version 2: examples</a><ul>
+<li><a href="#gompertz-model">Gompertz model</a></li>
+<li><a href="#sir-model">SIR model</a></li>
+</ul></li>
 </ul>
 </div>
 
@@ -896,11 +918,13 @@ Y(t)\;\sim\;\mathrm{Lognormal}\left(\log{X(t)},\tau\right)
 <a class="sourceLine" id="cb16-7" title="7">  ...</a>
 <a class="sourceLine" id="cb16-8" title="8">) -&gt;<span class="st"> </span>sir2C</a></code></pre></div>
 <hr />
-<p><a href="https://kingaa.github.io/pomp/docs.html"><strong>pomp</strong> documentation index</a><br />
-<a href="https://kingaa.github.io/pomp/"><strong>pomp</strong> homepage</a></p>
 </div>
 </div>
 
+<a href="#top">Top of this document</a><br />
+<a href="https://kingaa.github.io/pomp/docs.html"><strong>pomp</strong> documentation index</a><br />
+<a href="https://kingaa.github.io/manuals/pomp/"><strong>pomp</strong> manual</a><br />
+<a href="https://kingaa.github.io/pomp/"><strong>pomp</strong> homepage</a></p>
 
 
 <!-- code folding -->

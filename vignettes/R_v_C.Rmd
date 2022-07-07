@@ -2,7 +2,13 @@
 title: 'Coding POMP models: R vs C snippets'
 author: "Aaron A. King"
 date: "`r format(Sys.Date(),'%e %B %Y')`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: yes
+    toc_depth: 3
+    includes:
+      before_body: topanchor.html
+      after_body: bottom_menu.html
 params:
   prefix: "R_v_C"
 vignette: >
@@ -164,6 +170,3 @@ system.time(pfilter(Gompertz,Np=10000))
 ```
 
 -----------------------------------
-
-[**R** codes for this document](./R_v_C.R)  
-[**pomp** documentation index](https://kingaa.github.io/pomp/docs.html)

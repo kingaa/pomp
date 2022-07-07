@@ -5,7 +5,10 @@ date: "`r format(Sys.Date(),'%e %B %Y')`"
 output: 
   rmarkdown::html_vignette:
     toc: yes
-    toc_depth: 2
+    toc_depth: 3
+    includes:
+      before_body: topanchor.html
+      after_body: bottom_menu.html
 vignette: >
   %\VignetteIndexEntry{pomp version 2 upgrade guide}
   %\VignetteEngine{knitr::rmarkdown}
@@ -717,6 +720,3 @@ simulate(
 ```
 
 --------------------------------------------------------
-
-[**pomp** documentation index](https://kingaa.github.io/pomp/docs.html)  
-[**pomp** homepage](https://kingaa.github.io/pomp/)

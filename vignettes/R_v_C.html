@@ -315,6 +315,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <body>
 
 
+<a name="top"></a>
 
 
 <h1 class="title toc-ignore">Coding POMP models: R vs C snippets</h1>
@@ -322,6 +323,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h4 class="date">7 July 2022</h4>
 
 
+<div id="TOC">
+<ul>
+<li><a href="#implementation-using-r-functions">Implementation using <strong>R</strong> functions</a></li>
+<li><a href="#implementation-using-c-snippets">Implementation using C snippets</a></li>
+<li><a href="#testing-the-implementations">Testing the implementations</a></li>
+<li><a href="#comparing-the-implementations">Comparing the implementations</a></li>
+</ul>
+</div>
 
 <style type="text/css">
 a:link, a:visited {
@@ -424,21 +433,23 @@ code {
 <p>Using each implementation, we’ll now run a number of simulations and compare the amount of time required.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">system.time</span>(<span class="kw">simulate</span>(gompertz,<span class="dt">nsim=</span><span class="dv">10000</span>,<span class="dt">format=</span><span class="st">&quot;arrays&quot;</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   6.997   0.012   7.034</code></pre>
+##   7.052   0.001   7.052</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">system.time</span>(<span class="kw">simulate</span>(Gompertz,<span class="dt">nsim=</span><span class="dv">10000</span>,<span class="dt">format=</span><span class="st">&quot;arrays&quot;</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.167   0.000   0.167</code></pre>
+##   0.166   0.000   0.166</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">system.time</span>(<span class="kw">pfilter</span>(gompertz,<span class="dt">Np=</span><span class="dv">10000</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   6.327   0.001   6.332</code></pre>
+##   6.257   0.000   6.256</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">system.time</span>(<span class="kw">pfilter</span>(Gompertz,<span class="dt">Np=</span><span class="dv">10000</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.218   0.004   0.221</code></pre>
+##   0.205   0.016   0.221</code></pre>
 <hr />
-<p><a href="./R_v_C.R"><strong>R</strong> codes for this document</a><br />
-<a href="https://kingaa.github.io/pomp/docs.html"><strong>pomp</strong> documentation index</a></p>
 </div>
 
+<a href="#top">Top of this document</a><br />
+<a href="https://kingaa.github.io/pomp/docs.html"><strong>pomp</strong> documentation index</a><br />
+<a href="https://kingaa.github.io/manuals/pomp/"><strong>pomp</strong> manual</a><br />
+<a href="https://kingaa.github.io/pomp/"><strong>pomp</strong> homepage</a></p>
 
 
 <!-- code folding -->

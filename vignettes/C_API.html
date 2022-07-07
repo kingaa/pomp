@@ -222,6 +222,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <body>
 
 
+<a name="top"></a>
 
 
 <h1 class="title toc-ignore">pomp C API</h1>
@@ -279,9 +280,6 @@ code {
 }
 </style>
 <p>This document was produced using <strong>pomp</strong> version 4.2.3.0 and <strong>R</strong> version 4.2.1.</p>
-<p><a href="https://kingaa.github.io/pomp/docs.html"><strong>pomp</strong> documentation index</a><br />
-<a href="https://kingaa.github.io/manuals/pomp/"><strong>pomp</strong> manual</a><br />
-<a href="https://kingaa.github.io/pomp/"><strong>pomp</strong> homepage</a></p>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
@@ -434,7 +432,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <ul>
 <li><code>p</code> is a pointer to parameter vector.</li>
 <li><code>t</code> is the current time.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>covars</code> is a pointer to a vector containing the (possibly interpolated) values of the covariates at the current time.</li>
 <li><code>x</code> is a vector that will, on return, contain a draw from the initial-state distribution.</li>
 </ul>
@@ -450,7 +448,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <p>Description:</p>
 <ul>
 <li><code>p</code> is the parameter vector.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>covars</code> is the vector of covariates.</li>
 <li><code>t</code> is the time at the beginning of the step.</li>
 <li><code>dt</code> is the step size (duration of the interval).</li>
@@ -470,7 +468,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <li><code>t</code> is the current time.</li>
 <li><code>x</code> is the vector of state variables.</li>
 <li><code>p</code> is the vector of parameters.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
 </ul>
 <p>The function returns the rate of the requested reaction.</p>
@@ -487,7 +485,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <li><code>t1</code>, <code>t2</code> are the times at the beginning and end of the interval, respectively.</li>
 <li><code>x1</code>, <code>x2</code> are the state vectors at time <code>t1</code> and <code>t2</code>, respectively.</li>
 <li><code>p</code> is the parameter vector.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
 <li><code>loglik</code> is a pointer to the scalar that will, on return, contain the log probability density.</li>
 </ul>
@@ -502,7 +500,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <li><code>t</code> is the time.</li>
 <li><code>x</code> is the state vector at time <code>t</code>.</li>
 <li><code>p</code> is the parameter parameter vector.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
 <li><code>f</code> is a vector, of the same length as <code>x</code>, that will, on return, contain the value of the map or vectorfield.</li>
 </ul>
@@ -518,7 +516,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <li><code>t</code> is the time at the beginning of the Euler step.</li>
 <li><code>x</code> is the state vector at time <code>t</code>.</li>
 <li><code>p</code> is the parameter vector.</li>
-<li><code>obsindex</code>, <code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>obsindex</code>, <code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
 <li><code>y</code> is a vector that will, on return, contain the simulated observations.</li>
 </ul>
@@ -540,7 +538,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <li><code>give_log=1</code> if log probability is desired;</li>
 <li><code>give_log=0</code> if probability is desired.</li>
 </ul></li>
-<li><code>obsindex</code>, <code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>obsindex</code>, <code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
 <li><code>lik</code> is a pointer to a scalar that will, on return, contain the requested likelihood or log likelihood.</li>
 </ul>
@@ -555,7 +553,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <li><code>t</code> is the time.</li>
 <li><code>x</code> is the state vector at time <code>t</code>.</li>
 <li><code>p</code> is the parameter parameter vector.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
 <li><code>e</code> is a vector, of the same length as <code>x</code>, that will, on return, contain the expected value of the observed variables.</li>
 </ul>
@@ -571,7 +569,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <li><code>t</code> is the time.</li>
 <li><code>x</code> is the state vector at time <code>t</code>.</li>
 <li><code>p</code> is the parameter parameter vector.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>, <code>vmatindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>, <code>vmatindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
 <li><code>v</code> points to a square matrix that will, on return, contain the covariance matrix of the observed variables. In particular, if <span class="math inline">\(X\)</span> is the latent state and the <code>nobs</code> observables are <span class="math inline">\(Y_i\)</span>, then <code>v[vmatindex[i+nobs*j]]</code> contains <span class="math inline">\(\mathrm{Cov}[Y_i,Y_j\;\vert\;X]\)</span>.</li>
 <li>It is the user’s responsibility to ensure that the returned covariance matrix is symmetric: this is not checked.</li>
@@ -583,7 +581,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <p>Description:</p>
 <ul>
 <li><code>p</code> is the parameter vector.</li>
-<li><code>parindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>parindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 </ul>
 <p>On return, <code>p</code> will contain a new random draw from the prior distribution.</p>
 <p><strong>NB:</strong> There is no need to call GetRNGstate() or PutRNGstate() in the body of the user-defined function. The RNG is initialized before any call to this function, and the RNG state is written afterward. Inclusion of these calls in the user-defined function may result in significant slowdown.</p>
@@ -599,7 +597,7 @@ const SEXP get_userdata(const char *name);</code></pre>
 <li><code>give_log=1</code> if log probability is desired;</li>
 <li><code>give_log=0</code> if probability is desired.</li>
 </ul></li>
-<li><code>parindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>parindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>lik</code> is a pointer to a scalar that will, on return, contain the requested probability density or log probability density.</li>
 </ul>
 </div>
@@ -609,16 +607,17 @@ const SEXP get_userdata(const char *name);</code></pre>
 <p>Description:</p>
 <ul>
 <li><code>p</code> is the parameter vector.</li>
-<li><code>parindex</code>: see <a href="#Indices"><strong>Indices</strong></a>, above.</li>
+<li><code>parindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>pt</code> is the vector wherein the results will be returned.</li>
 </ul>
 <hr />
-<p><a href="https://kingaa.github.io/pomp/docs.html"><strong>pomp</strong> documentation index</a><br />
-<a href="https://kingaa.github.io/manuals/pomp/"><strong>pomp</strong> manual</a><br />
-<a href="https://kingaa.github.io/pomp/"><strong>pomp</strong> homepage</a></p>
 </div>
 </div>
 
+<a href="#top">Top of this document</a><br />
+<a href="https://kingaa.github.io/pomp/docs.html"><strong>pomp</strong> documentation index</a><br />
+<a href="https://kingaa.github.io/manuals/pomp/"><strong>pomp</strong> manual</a><br />
+<a href="https://kingaa.github.io/pomp/"><strong>pomp</strong> homepage</a></p>
 
 
 <!-- code folding -->

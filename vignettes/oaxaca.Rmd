@@ -15,6 +15,9 @@ output:
     highlight: haddock
     number_sections: FALSE
     df_print: paged
+    includes:
+      before_body: topanchor.html
+      after_body: bottom_menu.html
 bibliography: pomp.bib
 csl: jss.csl
 ---
@@ -1107,15 +1110,7 @@ To go deeper, we'll go to the [source](https://github.com/kingaa/pomp/).
 
 ------------------------------
 
-## Links
-
-[**R** codes for this document](https://github.com/kingaa/pomp/blob/gh-pages/vignettes/oaxaca.R)  
-[**Rmarkdown** source code for this document](https://github.com/kingaa/pomp/blob/gh-pages/vignettes/oaxaca.Rmd)  
-[**pomp** homepage](https://kingaa.github.io/pomp/)  
-
---------------------
-
-This document draws on [materials from the "Simulation-based Inference for Epidemiological Dynamics" course](https://kingaa.github.io/sbied/) taught by E. L. Ionides and A.A.K. and also on @King2016.
+This document draws on @King2016 and on [materials from the "Simulation-based Inference for Epidemiological Dynamics" course](https://kingaa.github.io/sbied/) taught by E. L. Ionides and A.A.K.
 
 ----------------------
 
