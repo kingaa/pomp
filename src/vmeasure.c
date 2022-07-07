@@ -244,7 +244,7 @@ SEXP do_vmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     double *time = REAL(times), *xs = REAL(x), *ps = REAL(params);
     SEXP vmatindex;
     int *oidx, *sidx, *pidx, *cidx, *vmidx;
-    pomp_measure_model_expectation *ff = NULL;
+    pomp_measure_model_covariance *ff = NULL;
     int j, k;
 
     nobs = LENGTH(Onames);
