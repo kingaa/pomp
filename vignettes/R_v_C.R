@@ -29,7 +29,6 @@ list(prefix = "R_v_C")
 ## ----packages-----------------------------------------------------------------
 library(pomp)
 library(ggplot2)
-library(magrittr)
 
 
 ## ----seed,echo=FALSE----------------------------------------------------------

@@ -483,7 +483,7 @@ z <- g(y,...)
 w <- h(z,...)
 ```
 which multiplies the entities (`y`, `z`, `w`) one must name and keep track of.
-In contrast, the pipeline syntax of **magrittr** allows us to write
+In contrast, the new pipeline syntax of **R** allows us to write
 ```
 x |> f(...) |> g(...) |> h(...)
 ```

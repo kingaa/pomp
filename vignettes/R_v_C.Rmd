@@ -46,7 +46,6 @@ First, we'll load some packages.
 ```{r packages}
 library(pomp)
 library(ggplot2)
-library(magrittr)
 ```
 
 ```{r seed,echo=FALSE}

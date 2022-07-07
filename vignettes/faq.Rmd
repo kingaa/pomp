@@ -193,11 +193,10 @@ obj %>% pfilter(Np=1000) %>% logLik()
 ## How do I deal with missing data? {#how-to-handle-missing-data}
 
 Missing data are a common complication.
-**pomp** can handle NAs in the data, but the measurement model probability density function, `dmeasure`, if it is needed, must be written so as to deal with NAs appropriately.
+**pomp** can handle NAs in the data, but if it is needed, the measurement model probability density function, `dmeasure` must be written so as to deal with NAs appropriately.
 For example, look at the following variant of [the SIR model describing the influenza outbreak in a boarding school](https://kingaa.github.io/sbied/stochsim/stochsim.html):
 
 ```{r}
-library(magrittr)
 library(ggplot2)
 
 read.csv(text="
