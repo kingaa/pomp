@@ -34,7 +34,7 @@
 #toplink {
     text-align: right;
     padding-right: 40px;
-    display: none;
+    display: block;
 }
 
 #menu-icon {

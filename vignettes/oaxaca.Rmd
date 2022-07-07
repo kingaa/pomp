@@ -40,8 +40,6 @@ Please share and remix noncommercially, mentioning its origin.
 
 **Note:** This document has been updated for **pomp** version 4.
 
-Produced in **R** version `r getRversion()` using **pomp** version `r packageVersion("pomp")`.
-
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
 source("setup.R", local = knitr::knit_global())
 ```
@@ -1111,6 +1109,8 @@ To go deeper, we'll go to the [source](https://github.com/kingaa/pomp/).
 ------------------------------
 
 This document draws on @King2016 and on [materials from the "Simulation-based Inference for Epidemiological Dynamics" course](https://kingaa.github.io/sbied/) taught by E. L. Ionides and A.A.K.
+
+Produced in **R** version `r getRversion()` using **pomp** version `r packageVersion("pomp")`.
 
 ----------------------
 

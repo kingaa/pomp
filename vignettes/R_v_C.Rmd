@@ -31,8 +31,6 @@ code {
 }
 ```
 
-This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
-
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
 source("setup.R", local = knitr::knit_global())
 ```
@@ -170,3 +168,5 @@ system.time(pfilter(Gompertz,Np=10000))
 ```
 
 -----------------------------------
+
+This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.

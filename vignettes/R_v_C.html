@@ -345,7 +345,6 @@ code {
   font-size: 110%;
 }
 </style>
-<p>This document was produced using <strong>pomp</strong> version 4.2.3.0 and <strong>R</strong> version 4.2.1.</p>
 <hr />
 <p>To implement models in <strong>pomp</strong>, we have various options. While it is very easy to code basic model components using <strong>R</strong> functions, it can be much faster to do it using C snippets. Here, we’ll demonstrate both approaches.</p>
 <p>First, we’ll load some packages.</p>
@@ -433,17 +432,18 @@ code {
 <p>Using each implementation, we’ll now run a number of simulations and compare the amount of time required.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">system.time</span>(<span class="kw">simulate</span>(gompertz,<span class="dt">nsim=</span><span class="dv">10000</span>,<span class="dt">format=</span><span class="st">&quot;arrays&quot;</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   7.052   0.001   7.052</code></pre>
+##   7.291   0.001   7.292</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">system.time</span>(<span class="kw">simulate</span>(Gompertz,<span class="dt">nsim=</span><span class="dv">10000</span>,<span class="dt">format=</span><span class="st">&quot;arrays&quot;</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.166   0.000   0.166</code></pre>
+##   0.169   0.000   0.169</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">system.time</span>(<span class="kw">pfilter</span>(gompertz,<span class="dt">Np=</span><span class="dv">10000</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   6.257   0.000   6.256</code></pre>
+##   6.441   0.000   6.441</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">system.time</span>(<span class="kw">pfilter</span>(Gompertz,<span class="dt">Np=</span><span class="dv">10000</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.205   0.016   0.221</code></pre>
+##   0.214   0.003   0.217</code></pre>
 <hr />
+<p>This document was produced using <strong>pomp</strong> version 4.2.3.0 and <strong>R</strong> version 4.2.1.</p>
 </div>
 
 <a href="#top">Top of this document</a><br />
