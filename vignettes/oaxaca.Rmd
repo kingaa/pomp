@@ -35,7 +35,7 @@ csl: jss.csl
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](cc-by-nc.png)
 
-**Note:** This document has been updated for **pomp** version 2.
+**Note:** This document has been updated for **pomp** version 4.
 
 Produced in **R** version `r getRversion()` using **pomp** version `r packageVersion("pomp")`.
 
@@ -991,7 +991,6 @@ Non plug-and-play methods can also be implemented, via the `dprocess` slot.
 
 ### Obtaining help
 
-Learn about the various things you can do once you have a `pomp` object by doing `methods?pomp` and following the links therein.
 Read an overview of the package as a whole with links to its main features by doing `package?pomp`.
 A complete index of the functions in **pomp** is returned by the command `library(help=pomp)`.
 Finally, the home page for the `pomp` project is https://kingaa.github.io/pomp/;

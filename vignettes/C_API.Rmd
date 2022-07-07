@@ -1,19 +1,18 @@
 ---
-title: '**pomp** C API'
+title: 'pomp C API'
 author: "Aaron A. King"
 date: "`r format(Sys.Date(),'%e %B %Y')`"
 output: 
   rmarkdown::html_vignette:
     toc: yes
     toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{pomp C API}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 params:
   prefix: "c_api"
-  min.pomp.version: "2.2"
 ---
-
-```{r precheck,include=FALSE}
-stopifnot(packageVersion("pomp") >= params$min.pomp.version)
-```
 
 ```{css echo=FALSE}
 a:link, a:visited {
@@ -34,6 +33,10 @@ This document was produced using **pomp** version `r packageVersion("pomp")` and
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
 source("setup.R", local = knitr::knit_global())
 ```
+
+[**pomp** documentation index](https://kingaa.github.io/pomp/docs.html)  
+[**pomp** manual](https://kingaa.github.io/manuals/pomp/)  
+[**pomp** homepage](https://kingaa.github.io/pomp/)
 
 --------------------------------------------------------
 
@@ -192,7 +195,7 @@ Specifically,
 $$X_i = \frac{e^{Y_i}}{\sum_j\!e^{Y_j}}.$$
 
 Note that if $T:\mathbb{R}^n_+\to\mathbb{R}^n$ is the log-barycentric transformation so defined, $U$ is the pseudo-inverse, and $Id$ denotes the identity map, then $T\circ U=Id:\mathbb{R}^n\to\mathbb{R}^n$ but $U\circ T\ne Id$.
-However, if $T$ is restricted to the unit simplex,  then $U\circ T=Id:S\to S$.
+However, if $T$ is restricted to the unit simplex, then $U\circ T=Id:S\to S$.
 
 Input:
 
@@ -250,8 +253,9 @@ Specifically, basic model components are coded as C functions with the following
 
 **NB:** These functions should not be used within C snippets!
 
-**Indices:**
-Each of the following functions is supplied one or more of the `stateindex`, `parindex`, `covindex`, `obsindex` arguments.
+### Indices
+
+Each of the following functions is supplied one or more of the `stateindex`, `parindex`, `covindex`, `obsindex`, `vmatindex` arguments.
 Each of these is an integer vector:
 the integers within are indices giving the positions of specific model variables, according to the user's specification, the latter being given by means of the `statenames`, `paramnames`, `covarnames`, and `obsnames` arguments.
 See `?pomp` for more explanation.
@@ -277,7 +281,7 @@ Description:
 
 -  `p` is a pointer to parameter vector.
 -  `t` is the current time.
--  `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+-  `stateindex`, `parindex`, `covindex`: see [**Indices**](#Indices), above.
 -  `covars` is a pointer to a vector containing the (possibly interpolated) values of the covariates at the current time.
 -  `x` is a vector that will, on return, contain a draw from the initial-state distribution.
 
@@ -298,7 +302,7 @@ void pomp_onestep_sim(double *x, const double *p,
 Description:
 
 - `p` is the parameter vector.
-- `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `stateindex`, `parindex`, `covindex`: see [**Indices**](#Indices), above.
 - `covars` is the vector of covariates.
 - `t` is the time at the beginning of the step.
 - `dt` is the step size (duration of the interval).
@@ -323,7 +327,7 @@ Description:
 - `t` is the current time.
 - `x` is the vector of state variables.
 - `p` is the vector of parameters.
-- `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `stateindex`, `parindex`, `covindex`: see [**Indices**](#Indices), above.
 - `covars` is the vector of (possibly interpolated) covariates at time `t`.
 
 The function returns the rate of the requested reaction.
@@ -342,7 +346,7 @@ Description:
 - `t1`, `t2` are the times at the beginning and end of the interval, respectively.
 - `x1`, `x2` are the state vectors at time `t1` and `t2`, respectively.
 - `p` is the parameter vector.
-- `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `stateindex`, `parindex`, `covindex`: see [**Indices**](#Indices), above.
 - `covars` is the vector of (possibly interpolated) covariates at time `t`.
 - `loglik` is a pointer to the scalar that will, on return, contain the log probability density.
 
@@ -359,7 +363,7 @@ Description:
 - `t` is the time.
 - `x` is the state vector at time `t`.
 - `p` is the parameter parameter vector.
-- `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `stateindex`, `parindex`, `covindex`: see [**Indices**](#Indices), above.
 - `covars` is the vector of (possibly interpolated) covariates at time `t`.
 - `f` is a vector, of the same length as `x`, that will, on return, contain the value of the map or vectorfield.
 
@@ -377,7 +381,7 @@ Description:
 - `t` is the time at the beginning of the Euler step.
 - `x` is the state vector at time `t`.
 - `p` is the parameter vector.
-- `obsindex`, `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `obsindex`, `stateindex`, `parindex`, `covindex`: see [**Indices**](#Indices), above.
 - `covars` is the vector of (possibly interpolated) covariates at time `t`.
 - `y` is a vector that will, on return, contain the simulated observations.
 
@@ -402,9 +406,46 @@ Description:
 - `give_log` is an integer:
 	- `give_log=1` if log probability is desired;
 	- `give_log=0` if probability is desired.
-- `obsindex`, `stateindex`, `parindex`, `covindex`: see **Indices**, above.
+- `obsindex`, `stateindex`, `parindex`, `covindex`: see [**Indices**](#Indices), above.
 - `covars` is the vector of (possibly interpolated) covariates at time `t`.
 - `lik` is a pointer to a scalar that will, on return, contain the requested likelihood or log likelihood.
+
+### emeasure
+
+```
+void pomp_emeasure (double *e, const double *x, const double *p,
+  const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t);
+```
+
+Description:
+
+- `t` is the time.
+- `x` is the state vector at time `t`.
+- `p` is the parameter parameter vector.
+- `stateindex`, `parindex`, `covindex`: see [**Indices**](#Indices), above.
+- `covars` is the vector of (possibly interpolated) covariates at time `t`.
+- `e` is a vector, of the same length as `x`, that will, on return, contain the expected value of the observed variables.
+
+### vmeasure
+
+```
+void pomp_vmeasure (double *v, const double *x, const double *p,
+  const int *vmatindex, 
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t);
+```
+
+Description:
+
+- `t` is the time.
+- `x` is the state vector at time `t`.
+- `p` is the parameter parameter vector.
+- `stateindex`, `parindex`, `covindex`, `vmatindex`: see [**Indices**](#Indices), above.
+- `covars` is the vector of (possibly interpolated) covariates at time `t`.
+- `v` points to a square matrix that will, on return, contain the covariance matrix of the observed variables.
+  In particular, if $X$ is the latent state and the `nobs` observables are $Y_i$, then `v[vmatindex[i+nobs*j]]` contains $\mathrm{Cov}[Y_i,Y_j\;\vert\;X]$.
+- It is the user's responsibility to ensure that the returned covariance matrix is symmetric: this is not checked.
 
 ### rprior
 
@@ -415,7 +456,7 @@ void pomp_rprior(double *p, const int *parindex);
 Description:
 
 - `p` is the parameter vector.
-- `parindex`: see **Indices**, above.
+- `parindex`: see [**Indices**](#Indices), above.
 
 On return, `p` will contain a new random draw from the prior distribution.
 
@@ -435,7 +476,7 @@ Description:
 - `give_log` is an integer:
 	- `give_log=1` if log probability is desired;
 	- `give_log=0` if probability is desired.
-- `parindex`: see **Indices**, above.
+- `parindex`: see [**Indices**](#Indices), above.
 - `lik` is a pointer to a scalar that will, on return, contain the requested probability density or log probability density.
 
 ### partrans
@@ -447,10 +488,11 @@ void pomp_transform_fn(double *pt, const double *p, const int *parindex);
 Description:
 
 - `p` is the parameter vector.
-- `parindex`: see **Indices**, above.
+- `parindex`: see [**Indices**](#Indices), above.
 - `pt` is the vector wherein the results will be returned.
 
 --------------------------------------------------------
 
 [**pomp** documentation index](https://kingaa.github.io/pomp/docs.html)  
+[**pomp** manual](https://kingaa.github.io/manuals/pomp/)  
 [**pomp** homepage](https://kingaa.github.io/pomp/)

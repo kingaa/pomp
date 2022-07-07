@@ -1,5 +1,5 @@
 params <-
-list(prefix = "R_v_C", min.pomp.version = "2.0.3")
+list(prefix = "R_v_C")
 
 ## a:link, a:visited {
 
@@ -22,10 +22,6 @@ list(prefix = "R_v_C", min.pomp.version = "2.0.3")
 ##   font-size: 110%;
 
 ## }
-
-
-## ----precheck,include=FALSE---------------------------------------------------
-stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 
 
 

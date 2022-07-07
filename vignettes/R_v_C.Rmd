@@ -5,7 +5,6 @@ date: "`r format(Sys.Date(),'%e %B %Y')`"
 output: rmarkdown::html_vignette
 params:
   prefix: "R_v_C"
-  min.pomp.version: "2.0.3"
 vignette: >
   %\VignetteIndexEntry{Coding POMP models: R vs C snippets}
   %\VignetteEngine{knitr::rmarkdown}
@@ -24,10 +23,6 @@ a:hover, a:active {
 code {
   font-size: 110%;
 }
-```
-
-```{r precheck,include=FALSE}
-stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 ```
 
 This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
@@ -171,4 +166,4 @@ system.time(pfilter(Gompertz,Np=10000))
 -----------------------------------
 
 [**R** codes for this document](./R_v_C.R)  
-[**pomp** documentation](https://kingaa.github.io/pomp/docs.html)
+[**pomp** documentation index](https://kingaa.github.io/pomp/docs.html)
