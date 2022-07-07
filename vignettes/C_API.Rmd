@@ -1,18 +1,11 @@
 ---
 title: 'pomp C API'
-author: "Aaron A. King"
-date: "`r format(Sys.Date(),'%e %B %Y')`"
 output: 
-  rmarkdown::html_vignette:
+  html_document:
+    theme: null
+    highlight: kate
     toc: yes
     toc_depth: 3
-    includes:
-      before_body: topanchor.html
-      after_body: bottom_menu.html
-vignette: >
-  %\VignetteIndexEntry{pomp C API}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 params:
   prefix: "c_api"
 ---
@@ -49,7 +42,7 @@ Users wishing to write libraries to hold basic model components must furnish fun
 
 ### Beta-binomial distribution
 
-```
+```{c eval=FALSE}
 double rbetabinom(double size, double prob, double theta);
 double dbetabinom(double x, double size, double prob, 
 	double theta, int give_log);
@@ -65,7 +58,7 @@ $$\mathbb{E}\left[X\right]=n\,p\qquad\text{and}\qquad\mathrm{Var}\left[X\right]=
 
 ### Multinomial distribution
 
-```
+```{c eval=FALSE}
 double dmultinom(int m, const double *prob, double *x, int give_log);
 ```
 
@@ -89,7 +82,7 @@ The return value is the probability or log probability (as requested).
 #### Simulate Euler-multinomial transitions
 
 
-```
+```{c eval=FALSE}
 void reulermultinom(int m, double size, const double *rate,
   double dt, double *trans);
 ```
@@ -113,7 +106,7 @@ this is handled by **pomp**.
 
 #### Compute probabilities of Euler-multinomial transitions
 
-```
+```{c eval=FALSE}
 double deulermultinom(int m, double size, const double *rate,
   double dt, double *trans, int give_log);
 ```
@@ -136,7 +129,7 @@ See `?deulermultinom`, [FAQ 3.6](https://kingaa.github.io/pomp/FAQ.html#eulermul
 
 ### Gamma white noise
 
-```
+```{c eval=FALSE}
 double rgammawn(double sigma, double dt);
 ```
 
@@ -149,11 +142,10 @@ i.e., `mu*dW` will have expectation `mu*dt` and variance `mu*sigma^2*dt`.
 
 ## Splines
 
-```
-void periodic_bspline_basis_eval(double x, double period, int degree, 
-	int nbasis, double *y);
-void periodic_bspline_basis_eval_deriv(double x, double period, 
-	int degree, int nbasis, int deriv, double *y);
+```{c eval=FALSE}
+void periodic_bspline_basis_eval(double x, double period, int degree, int nbasis, double *y);
+void periodic_bspline_basis_eval_deriv(double x, double period, int degree, int nbasis,
+  int deriv, double *y);
 ```
 
 These functions work with periodic B-spline basis functions.
@@ -165,7 +157,7 @@ The second evaluates the order-`deriv` derivative of each basis function.
 
 ### Logit transformation
 
-```
+```{c eval=FALSE}
 double logit(double p);
 double expit(double x);
 ```
@@ -178,7 +170,7 @@ $$p = \frac{1}{1+e^{-x}}.$$
 
 ### Log-barycentric transformation
 
-```
+```{c eval=FALSE}
 void to_log_barycentric(double *xt, const double *x, int n);
 void from_log_barycentric(double *xt, const double *x, int n);
 ```
@@ -206,7 +198,7 @@ On return, `xt[0]`, ..., `xt[n-1]` will contain the transformed coordinates.
 
 ### Vector dot product
 
-```
+```{c eval=FALSE}
 double dot_product(int n, const double *x, const double *y);
 ```
 
@@ -217,7 +209,7 @@ $$x{\cdot}y = \sum_i\!x_i\,y_i.$$
 
 ### Exponential/geometric rate conversion
 
-```
+```{c eval=FALSE}
 double exp2geom_rate_correction(double R, double dt);
 ```
 
@@ -232,7 +224,7 @@ In particular $r \to R$ as ${\Delta}t \to 0$.
 
 ## Access to the userdata
 
-```
+```{c eval=FALSE}
 const int *get_userdata_int(const char *name);
 const double *get_userdata_double(const char *name);
 const SEXP get_userdata(const char *name);
@@ -257,7 +249,7 @@ Each of these is an integer vector:
 the integers within are indices giving the positions of specific model variables, according to the user's specification, the latter being given by means of the `statenames`, `paramnames`, `covarnames`, and `obsnames` arguments.
 See `?pomp` for more explanation.
 Thus, for example, within the body of a function of prototype `pomp_rinit` (see below), 
-```
+```{c eval=FALSE}
  x[stateindex[0]];
  x[stateindex[3]];
  p[parindex[2]];
@@ -268,7 +260,7 @@ refer to the first state variable, the fourth state variable, the third paramete
 
 ### rinit
 
-```
+```{c eval=FALSE}
 void pomp_rinit(double *x, const double *p, double t,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars);
@@ -290,7 +282,7 @@ Inclusion of these calls in the user-defined function may result in significant 
 
 #### `step.fun` as used by `euler` and `onestep`
 
-```
+```{c eval=FALSE}
 void pomp_onestep_sim(double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t, double dt);
@@ -311,7 +303,7 @@ Inclusion of these calls in the user-defined function may result in significant 
 
 #### `rate.fun` as used by `gillespie`
 
-```
+```{c eval=FALSE}
 double pomp_ssa_rate_fn(int event, 
 	double t, const double *x, const double *p,
 	const int *stateindex, const int *parindex, const int *covindex, 
@@ -331,7 +323,7 @@ The function returns the rate of the requested reaction.
 
 ### dprocess
 
-```
+```{c eval=FALSE}
 void pomp_onestep_pdf(double *loglik,
   const double *x1, const double *x2, double t1, double t2, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
@@ -349,7 +341,7 @@ Description:
 
 ### skeleton
 
-```
+```{c eval=FALSE}
 void pomp_skeleton(double *f, const double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
@@ -366,7 +358,7 @@ Description:
 
 ### rmeasure
 
-```
+```{c eval=FALSE}
 void pomp_measure_model_simulator(double *y, 
 	const double *x, const double *p,
 	const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
@@ -388,7 +380,7 @@ Inclusion of these calls in the user-defined function may result in significant 
 
 ### dmeasure
 
-```
+```{c eval=FALSE}
 void pomp_measure_model_density(double *lik, 
 	const double *y, const double *x, const double *p, int give_log,
 	const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
@@ -409,7 +401,7 @@ Description:
 
 ### emeasure
 
-```
+```{c eval=FALSE}
 void pomp_emeasure (double *e, const double *x, const double *p,
   const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
@@ -426,10 +418,9 @@ Description:
 
 ### vmeasure
 
-```
+```{c eval=FALSE}
 void pomp_vmeasure (double *v, const double *x, const double *p,
-  const int *vmatindex, 
-  const int *stateindex, const int *parindex, const int *covindex,
+  const int *vmatindex, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 ```
 
@@ -446,7 +437,7 @@ Description:
 
 ### rprior
 
-```
+```{c eval=FALSE}
 void pomp_rprior(double *p, const int *parindex);
 ```
 
@@ -463,7 +454,7 @@ Inclusion of these calls in the user-defined function may result in significant 
 
 ### dprior
 
-```
+```{c eval=FALSE}
 void pomp_dprior(double *lik, const double *p, int give_log, const int *parindex);
 ```
 
@@ -478,7 +469,7 @@ Description:
 
 ### partrans
 
-```
+```{c eval=FALSE}
 void pomp_transform_fn(double *pt, const double *p, const int *parindex);
 ```
 

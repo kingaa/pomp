@@ -16,7 +16,6 @@ output:
     number_sections: FALSE
     df_print: paged
     includes:
-      before_body: topanchor.html
       after_body: bottom_menu.html
 bibliography: pomp.bib
 csl: jss.csl

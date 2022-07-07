@@ -20,10 +20,10 @@
   html: NEWS/
 
 - title: <strong>pomp</strong> C API
-  html: vignettes/C_API.html
+  page: C_API.html
 
 - title: "Coding POMP models: R vs C snippets"
-  html: vignettes/R_v_C.html
+  page: R_v_C.html
   R: vignettes/R_v_C.R
 
 - title: Measles in large and small towns (He et al. 2010)
@@ -36,7 +36,7 @@
   video: https://www.youtube.com/playlist?list=PLluGwj6FGt2SufYmENYAngy8dEMtfFEU8
 
 - title: <strong>pomp</strong> version 2 upgrade guide
-  html: vignettes/upgrade_guide.html
+  page: upgrade_guide.html
 
 - title: Model-based Inference in Ecology and Epidemiology (a short course)
   html: https://kingaa.github.io/short-course/

@@ -8,6 +8,8 @@ output:
   html_document:
     theme: default
     toc: yes
+    includes:
+      after_body: bottom_menu.html
 bibliography: pomp.bib
 csl: jss.csl
 
@@ -16,9 +18,6 @@ csl: jss.csl
 Licensed under the Creative Commons attribution-noncommercial license, http://creativecommons.org/licenses/by-nc/3.0/.
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
-
-Produced using *R* version `r getRversion()` and **pomp** version `r packageVersion("pomp")`.
-
 
 ```{r select-town,echo=FALSE}
 TOWN <- "London"
@@ -372,5 +371,10 @@ m1 |>
   geom_ribbon(alpha=0.2)
 ```
 
+-------------------
+
+Produced using *R* version `r getRversion()` and **pomp** version `r packageVersion("pomp")`.
+
+------------------
 
 ## References

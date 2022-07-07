@@ -1,18 +1,13 @@
 ---
-title: 'pomp version 2 upgrade guide'
+title: 'version 2 upgrade guide'
 author: "Aaron A. King"
 date: "`r format(Sys.Date(),'%e %B %Y')`"
 output: 
-  rmarkdown::html_vignette:
+  html_document:
+    theme: null
+    highlight: kate
     toc: yes
     toc_depth: 3
-    includes:
-      before_body: topanchor.html
-      after_body: bottom_menu.html
-vignette: >
-  %\VignetteIndexEntry{pomp version 2 upgrade guide}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 params:
   prefix: "upgrade_guide"
 ---
