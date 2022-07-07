@@ -1,8 +1,7 @@
 params <-
-list(prefix = "getting_started", min.pomp.version = "4.2", show_solns = TRUE)
+list(prefix = "getting_started", show_solns = TRUE)
 
 ## ----prelims,echo=FALSE,cache=FALSE-------------------------------------------
-stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,

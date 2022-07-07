@@ -28,10 +28,8 @@ theme_set(theme_bw())
 
 ## ----prelims,cache=FALSE------------------------------------------------------
 set.seed(594709947L)
-library(ggplot2)
 library(tidyverse)
 library(pomp)
-stopifnot(packageVersion("pomp")>="3.1")
 
 
 ## ----load-data----------------------------------------------------------------

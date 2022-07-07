@@ -16,6 +16,14 @@
   html: https://kingaa.github.io/pomp/manual/
   pdf: https://kingaa.github.io/pomp/manual/pdf/
 
+- title: Measles in large and small towns (He et al. 2010)
+  html: vignettes/He2010.html
+  R: vignettes/He2010.R
+  data: vignettes/twentycities.rda
+
+- title: Two perspectives on the <strong>pomp</strong> project
+  html: vignettes/oaxaca.html
+  video: https://www.youtube.com/playlist?list=PLluGwj6FGt2SufYmENYAngy8dEMtfFEU8
 - title: Package NEWS
   html: NEWS/
 
@@ -26,23 +34,11 @@
   page: R_v_C.html
   R: vignettes/r_v_c.R
 
-- title: Measles in large and small towns (He et al. 2010)
-  html: vignettes/He2010.html
-  R: vignettes/He2010.R
-  data: vignettes/twentycities.rda
-
-- title: Two perspectives on the <strong>pomp</strong> project
-  html: vignettes/oaxaca.html
-  video: https://www.youtube.com/playlist?list=PLluGwj6FGt2SufYmENYAngy8dEMtfFEU8
-
 - title: <strong>pomp</strong> version 2 upgrade guide
   page: upgrade_guide.html
 
 - title: Model-based Inference in Ecology and Epidemiology (a short course)
   html: https://kingaa.github.io/short-course/
 
-- title: <strong>pomp</strong> discussions
+- title: <strong>pomp</strong> discussions forum
   html: https://github.com/kingaa/pomp/discussions
-
-- title: Pimp my pomp, a community wiki
-  html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp

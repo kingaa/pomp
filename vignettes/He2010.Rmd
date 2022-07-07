@@ -1,13 +1,22 @@
 ---
-title: "Measles in large and small populations"
-author: "Aaron A. King"
-date: "2019-01-02"
+title: Measles in large and small populations
+subtitle: A pomp example
+author: Aaron A. King
+date: 2019-01-02
 params:
   prefix: he2010
 output:
   html_document:
     theme: default
     toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: TRUE
+      smooth_scroll: TRUE
+    code_folding: show
+    highlight: haddock
+    number_sections: FALSE
+    df_print: kable
     includes:
       after_body: bottom_menu.html
 bibliography: pomp.bib
@@ -67,10 +76,8 @@ If we were to run into trouble in the above, we would consult the [package websi
 Now we'll load the packages we'll need, and set the random seed, to allow reproducibility.
 ```{r prelims,cache=FALSE}
 set.seed(594709947L)
-library(ggplot2)
 library(tidyverse)
 library(pomp)
-stopifnot(packageVersion("pomp")>="3.1")
 ```
 
 ## Data and covariates

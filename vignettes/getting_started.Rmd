@@ -13,9 +13,10 @@ output:
     highlight: haddock
     number_sections: FALSE
     df_print: kable
+    includes:
+      after_body: bottom_menu.html
 params:
   prefix: "getting_started"
-  min.pomp.version: "4.2"
   show_solns: TRUE
 bibliography: pomp.bib
 csl: jss.csl
@@ -24,8 +25,6 @@ csl: jss.csl
 Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
-
-This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
 
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
 library(knitr)
@@ -63,7 +62,6 @@ registerS3method("knit_print", "data.frame", dfprintfn)
 ```
 
 ```{r prelims,echo=FALSE,cache=FALSE}
-stopifnot(packageVersion("pomp") >= params$min.pomp.version)
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -1633,12 +1631,10 @@ print(totalSweaveTime)
 ```
 -->
 
-
 ---------------------------------------
 
-## Links
+This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
 
-[**R** codes for this document](getting_started.R)  
-[**pomp** homepage](https://kingaa.github.io/pomp/)  
+---------------------------------------
 
 ## References
