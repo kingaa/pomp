@@ -90,7 +90,7 @@ See the [**pomp** version 2 upgrade guide](./upgrade_guide.html) for information
 
 ## Where in the peer-reviewed literature is **pomp** described?
 
-The [paper announcing **pomp** was published in the *Journal of Statistical Software* in 2016 (doi:10.18637/jss.v069.i12)](https://doi.org/10.18637/jss.v069.i12).
+The paper announcing **pomp** was published in the *Journal of Statistical Software* [@King2016].
 An [updated version of that paper can be found on the **pomp** website](./vignettes/pompjss.pdf).
 
 The video and visual aids from a talk entitled "Two perspectives on the **pomp** project", which describes the goals and organization of the package from both the user's and developer's persectives is also [linked from the website](./docs.html).
