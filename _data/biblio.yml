@@ -971,6 +971,15 @@
   pages: "210948"
   doi: "https://doi.org/10.1098/rsos.210948"
 
+- key: Shirreff2022
+  author: "G. Shirreff, J.-R. Zahar, S. Cauchemez, L. Temime, and L. Opatowski"
+  year: "2022"
+  title: "Measuring basic reproduction number to assess effects of nonpharmaceutical interventions on nosocomial SARS-CoV-2 transmission"
+  journal: "Emerging Infectious Diseases"
+  volume: "28"
+  pages: "1345&#x2013;1354"
+  doi: "https://doi.org/10.3201/eid2807.212339"
+
 - key: Shrestha2011
   author: "S. Shrestha, A. A. King, and P. Rohani"
   year: "2011"
