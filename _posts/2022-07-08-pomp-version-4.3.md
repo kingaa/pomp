@@ -14,5 +14,4 @@ This release contains a few changes to the user interface.
 - The `time` method has been extended to `pompList` and related objects.
   **NB:** The behavior of this function may be streamlined in the near future.
 
-
 In addition, there are some small improvements to the [manual](https://kingaa.github.io/manuals/pomp/).
