@@ -40,8 +40,11 @@ Before submitting a request, first see if you can solve your own problem.
 
 1. Check to see if you are using the latest version of **pomp**:
 if not, check to see if the problem you have is solved by upgrading to the latest version.
-1. Before submitting a request, examine the error messages and try to figure out what they are telling you by reading the help pages and/or the [package tutorials](./docs.html).
+1. Before submitting a request, examine the error messages and try to figure out what they are telling you by reading the [help pages](./manual/) and/or the [package tutorials](./docs.html).
 1. Read through the [Frequently Asked Questions](./FAQ.html) to see if the answer to your question is there.
+1. Check the [discussions forum](https://github.com/kingaa/pomp/discussions/).
+Many conversations about various situations that have arisen are archived there.
+1. Search the [issues](https://github.com/kingaa/pomp/issues/) (including the closed issues) to see if your situation has been encountered and resolved already.
 
 If you still have a problem, then submit a request for help via the [Issues page](https://github.com/kingaa/pomp/issues) if possible or to Aaron King (kingaa at umich dot edu) if necessary.
 ***Include in your request---at a minimum---the code that you ran that produced the error, together with a transcript of the **R** session that gave the errors.***
@@ -63,21 +66,34 @@ You can get this information by executing `citation("pomp")` in an **R** session
 LaTeX users can get a BibTeX entry for these publications by executing `toBibtex(citation("pomp"))`.
 
 If you use **pomp** in a publication, please take a moment to let us know!
-Send an email with the citation, and we'll include it in [the bibliography](https://kingaa.github.io/pomp/biblio.html).
+Send an email with the citation, and we'll include it in [the bibliography](./biblio.html).
 
 ## I have an error message that I don't understand, and my question isn't answered below. How can I get help? {#help-with-error-message}
 
+There are many resources available that can help.
+First, check the [package manual](./manual/) to see if it describes the situation you have encountered.
+Second, check the [discussions forum](https://github.com/kingaa/pomp/discussions/).
+Many conversations about various situations that have arisen are archived there.
+Third, search the [issues](https://github.com/kingaa/pomp/issues/) (including the closed issues) to see if your situation has been encountered and resolved already.
+Finally, feel free to [submit an issue](https://github.com/kingaa/pomp/issues).
+In doing so, display the error message you get and document how it arises.
+Please [follow the instructions in FAQ 1.1 above](#effective-request).
+
 The pomp developers have a goal of replacing all unhelpful error messages with helpful ones.
-Please help us while we help you!
-You can do this by submitting a help request via the package [issues page](https://github.com/kingaa/pomp/issues).
-Display the error message you get and document how it arises.
-In doing so, please [follow the instructions in FAQ 1.1 above](#effective-request).
+By letting us know when messages are confusing or uninformative, you help us to make the package more usable.
 
 ## I am running a piece of **pomp** code I found on the web, but I get errors. What is going on? {#old-code}
 
 Of course, there could be many reasons for this.
 However, you should know that **pomp** version 2 made many changes to the **pomp** interface so that older code will not run under versions &ge; 2.
-See the [**pomp** version 2 upgrade guide](https://kingaa.github.io/pomp/vignettes/upgrade_guide.html) for information on how to fix broken code from earlier versions.
+See the [**pomp** version 2 upgrade guide](./upgrade_guide.html) for information on how to fix broken code from earlier versions.
+
+## Where in the peer-reviewed literature is **pomp** described?
+
+The [paper announcing **pomp** was published in the *Journal of Statistical Software* in 2016 (doi:10.18637/jss.v069.i12)](https://doi.org/10.18637/jss.v069.i12).
+An [updated version of that paper can be found on the **pomp** website](./vignettes/pompjss.pdf).
+
+The video and visual aids from a talk entitled "Two perspectives on the **pomp** project", which describes the goals and organization of the package from both the user's and developer's persectives is also [linked from the website](./docs.html).
 
 # Installation problems
 
@@ -88,7 +104,7 @@ See the [installation instructions](./install.html).
 ## Why do I get an error message about `gfortran` when I try to install **pomp** from source on my Mac? {#mac-gfortran}
 
 Compilation of **pomp** requires a FORTRAN compiler, which has not been installed (or not installed properly) on your system.
-See the [installation instructions](https://kingaa.github.io/pomp/install.html#important-note-for-mac-os-x-users).
+See the [installation instructions](./install.html#important-note-for-mac-os-x-users).
 
 ## I am using **R** version X. When I try to install the package, I get the error that "package **pomp** is not available (for R version X)". Yet it is stated that **pomp** is compatible with R(&ge;Y), where X > Y. What is going wrong? {#old-R}
 
@@ -96,7 +112,7 @@ Firstly, as a general rule, it's very probably a good idea to simply install the
 
 Usually, this warning arises because you are trying to install binaries from a repository on which binaries built for your version of **R** are no longer available.
 The preferred solution in this case is, again, to upgrade **R**, but if for some reason that is impossible or undesirable, you can always build the package from source using the source code retrieved from the [package website](https://kingaa.github.io/pomp/) or from one of the [CRAN mirrors](https://cran.r-project.org/mirrors.html).
-For more, see the [installation instructions](https://kingaa.github.io/pomp/install.html).
+For more, see the [installation instructions](./install.html).
 
 To be clear: the statement that pomp will work for **R**(>=Y) is a guarantee that the code is compatible with those versions of **R**.
 It is not a promise that binaries will always be available for old versions of **R**.
@@ -540,7 +556,7 @@ If it works, you should see
 hello world!
 list()
 ```
-If it doesn't work, consult the [installation instructions](https://kingaa.github.io/pomp/install.html).
+If it doesn't work, consult the [installation instructions](./install.html).
 
 
 ## Why do I get an error message "Could not compile shared-object library" when I run `pomp`? {#could-not-compile}
@@ -587,7 +603,8 @@ devtools::install_github("kingaa/pomp")
 
 For more help with installation, see the [installation instructions](./install.html).
 
-If these steps do not solve the problem, please [contact me via the issues page](https://github.com/kingaa/pomp/issues).
+If these steps do not solve the problem, please [open an issue](https://github.com/kingaa/pomp/issues).
+In doing so, please [follow the instructions in FAQ 1.1 above](#effective-request).
 
 ## I get warnings about extrapolation in 'table_lookup'. What is this about? {#extrapolation-warnings}
 
@@ -710,7 +727,7 @@ These transformations take the parameters on the "natural scale" to another "est
 One specifies parameter transformations using the `parameter_trans` function, passing its output to the `partrans` argument to any **pomp** estimation algorithm (or to the basic constructor, `pomp`).
 For convenience, shortcuts for the commonly used log, logit, and log-barycentric transformations are provided.
 [Note that the latter use C snippets internally, so that the `paramnames` argument must be specified when the `log`, `logit`, or `barycentric` arguments of `parameter_trans` are used.]
-See the `parameter_trans` manual page for more detail.
+See the [`parameter_trans` manual page](https://kingaa.github.io/manuals/pomp/html/parameter_trans.html) for more detail.
 
 ## Iterated filtering (`mif2`)
 
@@ -761,7 +778,7 @@ Indeed, it's worse than useless since the perturbations will impede the progress
 Declaring such parameters to be initial value parameters using `ivp` results in perturbations that are only applied at $t = t_0$.
 More generally, there may be parameters for which perturbations should only be applied at certain times.
 The `rw.sd` function allows one to specify (via a simple **R** expression in terms of time `t`) which parameters fall into this category and when and how much they are to be perturbed.
-See the manual page for `rw.sd` for details.
+See the [`mif2` manual page](https://kingaa.github.io/manuals/pomp/html/mif2.html) for details.
 
 # Debugging
 
