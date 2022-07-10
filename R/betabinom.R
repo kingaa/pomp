@@ -3,8 +3,8 @@
 ##' Density and random generation for the Beta-binomial distribution with parameters \code{size}, \code{mu}, and \code{theta}.
 ##' 
 ##' A variable \eqn{X} is Beta-binomially distributed if
-##' \eqn{X~Binomial(n,P)} where \eqn{P~Beta(mu,theta)}.
-##' Using the standard (a,b) parameterization, \eqn{a=mu*theta} and \eqn{b=(1-mu)*theta}.
+##' \eqn{X\sim{\mathrm{Binomial}(n,P)}}{X~{Binomial(n,P)}} where \eqn{P\sim{\mathrm{Beta}(\mu,\theta)}}{P~Beta(mu,theta)}.
+##' Using the standard \eqn{(a,b)} parameterization, \eqn{a=\mu\,\theta}{a=mu*theta} and \eqn{b=(1-\mu)\,\theta}{b=(1-mu)*theta}.
 ##'
 ##' @name betabinomial
 ##' @rdname betabinom
