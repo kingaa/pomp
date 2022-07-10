@@ -188,7 +188,7 @@ However, if $T$ is restricted to the unit simplex, then $U\circ T=Id:S\to S$.
 
 Input:
 
-- `x` is a pointer to vector of parameters to be tranformed either to or from to log barycentric coordinates.
+- `x` is a pointer to vector of parameters to be tranformed either to or from log barycentric coordinates.
 - `n` is the length of this vector.
 - `xt` is a pointer to the vector that will hold the results.
 

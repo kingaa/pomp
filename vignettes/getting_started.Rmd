@@ -263,7 +263,7 @@ The former is the *initial time*, $t_0$, i.e., the time at which the initial con
 Since our initial condition is that $N(0)=N_0$, our initial time is $t_0=0$.
 The `times` argument specifies the observation times $t_1,\dots,t_N$.
 
-Finally, note that we received a warning about \texttt{NA} values being generated.
+Finally, note that we received a warning about `NA` values being generated.
 We will soon see what this is about.
 
 What sort of an object is `sim1`?
