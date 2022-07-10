@@ -17,7 +17,6 @@ output:
       after_body: bottom_menu.html
 params:
   prefix: "getting_started"
-  show_solns: TRUE
 bibliography: pomp.bib
 csl: jss.csl
 ---
@@ -27,40 +26,8 @@ Please share and remix noncommercially, mentioning its origin.
 ![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
 
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
-library(knitr)
-opts_chunk$set(
-  progress=TRUE,
-  prompt=FALSE,tidy=FALSE,highlight=TRUE,
-  strip.white=TRUE,
-  warning=FALSE,
-  message=FALSE,
-  error=FALSE,
-  echo=TRUE,
-  cache=TRUE,
-  cache.extra=rand_seed,
-  results='markup',
-  fig.show='asis',
-  size='small',
-  fig.lp="fig:",
-  fig.path=paste0("tmp/figure/",params$prefix,"/"),
-  cache.path=paste0("tmp/cache/",params$prefix,"/"),
-  fig.pos="h!",
-  fig.align='center',
-  fig.height=4,fig.width=6.83,
-  dpi=200,
-  dev='CairoPNG',
-  dev.args=list(bg='transparent')
-  )
-
-library(DT)
-dfprintfn <- function (x, ...) {
-  x |>
-    DT::datatable() |>
-    knitr::knit_print()
-}
-registerS3method("knit_print", "data.frame", dfprintfn)
+source("setup.R", local = knitr::knit_global())
 ```
-
 ```{r prelims,echo=FALSE,cache=FALSE}
 options(
   keep.source=TRUE,
@@ -296,7 +263,7 @@ The former is the *initial time*, $t_0$, i.e., the time at which the initial con
 Since our initial condition is that $N(0)=N_0$, our initial time is $t_0=0$.
 The `times` argument specifies the observation times $t_1,\dots,t_N$.
 
-Finally, note that we received a warning about \code{NA} values being generated.
+Finally, note that we received a warning about \texttt{NA} values being generated.
 We will soon see what this is about.
 
 What sort of an object is `sim1`?
@@ -1192,12 +1159,6 @@ replicate(5, mf1 |> pfilter() |> logLik()) |> logmeanexp(se=TRUE)
 Now we repeat this calculation from each of our `r nrow(guesses)` guesses.
 Because these computations are each independent of the others, it is both easy and worthwhile to parallelize them.
 The **foreach** package provides some useful tools in this regard.
-
-```{r cluster_setup,purl=TRUE,include=FALSE}
-if (file.exists("CLUSTE.R")) {
-  source("CLUSTE.R")
-}
-```
 
 ```{r parus_mif1,purl=FALSE,eval=FALSE}
 library(foreach)

@@ -1,5 +1,5 @@
 params <-
-list(prefix = "getting_started", show_solns = TRUE)
+list(prefix = "getting_started")
 
 ## ----prelims,echo=FALSE,cache=FALSE-------------------------------------------
 options(
@@ -442,12 +442,6 @@ plot(mf1)
 
 ## ----mf_pfilter1--------------------------------------------------------------
 replicate(5, mf1 |> pfilter() |> logLik()) |> logmeanexp(se=TRUE)
-
-
-## ----cluster_setup,purl=TRUE,include=FALSE------------------------------------
-if (file.exists("CLUSTE.R")) {
-  source("CLUSTE.R")
-}
 
 
 
