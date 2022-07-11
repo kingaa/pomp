@@ -2,20 +2,14 @@
 
 ## For pomp:
 
-- edit C snippet documentation with information about linking to precompiled libraries [see Discussion #156](https://github.com/kingaa/pomp/discussions/156).
 - rewrite to use `rmultinom`, which is now part of the API (?)
 - byte-compile basic components when furnished as **R** functions
-- ~~banish the binomial model from the SIR examples~~
 
 - vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`
 - make `mcap` into a generic, provide a method for data frames and a plotting method
 - more demanding tests of `enkf` and `eakf`
 - iterated EnKF
-- ~~in EnKF and EAKF, allow matrices to depend on parameters~~
-- ~~accommodating matrices in~~ `hitch`
 - perhaps `dinit`?
-- ~~put basic true Kalman filter into~~ **pomp**
-- ~~put Kalman check in 'ou2' test~~
 - better scheme for indicating derivatives and maps in C snippets
 - more toy models
 - more/better examples
@@ -25,7 +19,6 @@
 - support for asymmetric MCMC proposals
 - `spy` methods for derived objects
 - for log-barycentric transformations, check that parameters are contiguous
-- ~~get the metaphors straight! "horses" vs "hitches" vs "workhorses" ("wagons"?)~~
 - manual pages on the organization of the package
     - diagnostic tools
     - auxiliary functions

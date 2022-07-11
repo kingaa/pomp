@@ -148,7 +148,7 @@ it is not used for any component specified using C snippets.
 \code{PACKAGE} can name at most one library.}
 
 \item{globals}{optional character;
-arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
+arbitrary C code that will be hard-coded into the shared-object library created when C snippets are provided.
 If no C snippets are used, \code{globals} has no effect.}
 
 \item{cdir}{optional character variable.
@@ -162,7 +162,10 @@ By default, a random filename is used.
 If the chosen filename would result in over-writing an existing file, an error is generated.}
 
 \item{shlib.args}{optional character variables.
-Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.}
+Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.
+One can, for example, specify libraries against which the C snippets are to be linked.
+In doing so, take care to make sure the appropriate header files are available to the C snippets, e.g., using the \code{globals} argument.
+See \code{\link{Csnippet}} for more information.}
 
 \item{compile}{logical;
 if \code{FALSE}, compilation of the C snippets will be postponed until they are needed.}

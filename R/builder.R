@@ -37,7 +37,7 @@
 ##' \code{PACKAGE} can name at most one library.
 ##'
 ##' @param globals optional character;
-##' arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
+##' arbitrary C code that will be hard-coded into the shared-object library created when C snippets are provided.
 ##' If no C snippets are used, \code{globals} has no effect.
 ##'
 ##' @param cdir optional character variable.
@@ -52,6 +52,9 @@
 ##'
 ##' @param shlib.args optional character variables.
 ##' Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.
+##' One can, for example, specify libraries against which the C snippets are to be linked.
+##' In doing so, take care to make sure the appropriate header files are available to the C snippets, e.g., using the \code{globals} argument.
+##' See \code{\link{Csnippet}} for more information.
 ##'
 ##' @param compile logical;
 ##' if \code{FALSE}, compilation of the C snippets will be postponed until they are needed.

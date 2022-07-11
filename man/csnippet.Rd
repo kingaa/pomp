@@ -27,12 +27,13 @@ The \href{https://kingaa.github.io/pomp/install.html}{package website contains i
 \section{General rules for writing C snippets}{
 
 
-  In writing a C snippet one must bear in mind both the \emph{goal} of the snippet, i.e., what computation it is intended to perform, and the \emph{context} in which it will be executed.  These are explained here in the form of general rules.
+In writing a C snippet one must bear in mind both the \emph{goal} of the snippet, i.e., what computation it is intended to perform, and the \emph{context} in which it will be executed.
+These are explained here in the form of general rules.
 Additional specific rules apply according to the function of the particular C snippet.
 Illustrative examples are given in the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 \enumerate{
 \item C snippets must be valid C.
-They will embedded verbatim in a template file which will then be compiled by a call to \code{R CMD SHLIB}.
+They will embedded verbatim in a template file which will then be compiled by a call to \code{\link[=SHLIB]{R CMD SHLIB}}.
 If the resulting file does not compile, an error message will be generated.
 Compiler messages will be displayed, but no attempt will be made by \pkg{pomp} to interpret them.
 Typically, compilation errors are due to either invalid C syntax or undeclared variables.
@@ -51,9 +52,16 @@ This makes a great many useful functions available, including all of \R's \href{
 \item The header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}, provided with \pkg{pomp}, will also be included, making all of the \href{https://kingaa.github.io/pomp/C_API.html}{\pkg{pomp} C API} available for use in every C snippet.
 \item Snippets of C code passed to the \code{globals} argument of \code{pomp} will be included at the head of the generated C file.
 This can be used to declare global variables, define useful functions, and include arbitrary header files.
-\item TODO: Include information about linking to precompiled libraries.
-(e.g., \href{https://github.com/kingaa/pomp/discussions/156}{Discussion #156}).
 }
+}
+
+\section{Linking to precompiled libraries}{
+
+It is straightforward to link C snippets with precompiled C libraries.
+To do so, one must make sure the library's header files are included;
+the \code{globals} argument can be used for this purpose.
+The \code{shlib.args} argument can then be used to specify additional arguments to be passed to \code{\link[=SHLIB]{R CMD SHLIB}}.
+\href{https://kingaa.github.io/pomp/FAQ.html#linking-C-libraries}{FAQ 3.7} gives an example.
 }
 
 \section{C snippets are salted}{

@@ -4,6 +4,7 @@
   \itemize{
     \item The \code{bspline.basis} function now takes the optional argument \code{rg} which allows one to specify the range over which the basis will be constructed.
     By default, this is \code{range(x)}, which agrees with the behavior in earlier versions.
+    \item Documentation improvements.
   }
 }
 \section{Changes in \pkg{pomp} version 4.2.2}{
