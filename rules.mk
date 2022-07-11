@@ -44,7 +44,7 @@ inst/include/%.h: src/%.h
 	$(CP) $^ $@
 
 instdocs:
-	make -C inst/doc
+	$(MAKE) -C inst/doc
 
 htmlhelp: install news manual
 	rsync --delete -a library/$(PKG)/html/ $(MANUALDIR)/html
@@ -54,7 +54,7 @@ htmlhelp: install news manual
 	$(CP) $(REPODIR)/assets/R.css $(MANUALDIR)/html
 
 vignettes: manual install
-	$(MAKE)	-C www/vignettes
+	$(MAKE)	-C www
 
 news: library/$(PKG)/html/NEWS.html
 
@@ -195,9 +195,9 @@ fresh: clean remove
 
 clean:
 	$(RM) -r check
-	$(RM) src/*.o src/*.so src/symbols.rds www/vignettes/Rplots.*
+	$(RM) src/*.o src/*.so src/symbols.rds
 	$(RM) -r lib
 	$(RM) -r *-Ex.Rout *-Ex.timings *-Ex.pdf
 	$(RM) *.tar.gz $(PKGVERS).zip $(PKGVERS).tgz $(PKG).pdf
-	$(MAKE)	-C www/vignettes clean
+	$(MAKE) -C www clean
 	$(MAKE) -C inst/doc clean
