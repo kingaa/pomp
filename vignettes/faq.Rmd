@@ -510,6 +510,68 @@ where `mu` is a vector containing the rates.
 
 The [manual page](https://kingaa.github.io/manuals/pomp/html/distributions.html) contains more information on the Euler-multinomial distribution.
 
+## Can I link a C library with my C snippets? {#linking-C-libraries}
+
+Yes, this is straightforward.
+One can make use of the `globals` and `shlib.args` arguments to do so.
+
+Any valid C code passed to `globals` is included at the top level of the C file containing C snippets.
+For example, any variables or functions defined there will be visible to every C snippet in that file.
+If one wishes to call functions defined in a precompiled C library, one can include the library's header file via the usual `#include` statement, passed via the `globals` argument.
+
+Any text passed to the `shlib.args` argument is included in the command-line call to `R CMD SHLIB`.
+To link to a precompiled library, then, one can do something like
+```
+  shlib.args = "<library>"
+```
+where `<library>` is the path of the library.
+
+Consider the following simple example.
+The function `truncated_normal_a_pdf` is defined in the library `libtn.so`, located in directory `libs`.
+It has a header file, located in `include/tn.h`.
+
+```{r tn-build,include=FALSE}
+dir.create("include",showWarnings=FALSE,recursive=TRUE)
+dir.create("libs",showWarnings=FALSE,recursive=TRUE)
+file.copy("src/tn.h","include")
+system("gcc -fpic -shared -o libs/libtn.so src/tn.c")
+```
+```{r tn-run,results="hide"}
+simulate(
+  t0 = 0,
+  times = 0:100,
+  obsnames = "y",
+  rprocess=discrete_time(
+    step.fun=Csnippet("
+      double e = rnorm(0,sigma);
+      N = exp(log(r)+log(N)-N+e);"),
+    delta.t=1
+  ),
+  rmeasure = Csnippet("
+      y = rnorm(N,4);
+      y = (y > 0) ? y : 0;"
+  ),
+  dmeasure = Csnippet("
+      lik = truncated_normal_a_pdf(y,N,4,0);
+      if (give_log) lik = log(lik);"
+  ),
+  statenames = "N",
+  paramnames = c("r", "sigma"),
+  params = c(N_0 = 7, r = 45, sigma = 0.3),
+  globals = sprintf("#include \"%s\"","include/tn.h"),
+  shlib.args = "libs/libtn.so"
+) -> rick
+
+rick |>
+  pfilter(Np=1000) |>
+  logLik()
+```
+```{r tn-clean,include=FALSE}
+unlink(c("include","libs"),recursive=TRUE)
+```
+
+In [Discussion #156](https://github.com/kingaa/pomp/discussions/156) there is another simple example.
+
 # Error messages and warnings. {#error-messages}
 
 ## I see an error about `dmeasure` returning illegal values.  What does it mean? {#illegal-dmeasure}

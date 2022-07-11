@@ -93,6 +93,7 @@ if (window.hljs) {
 <li><a href="#t0-much-less-than-t1-accumulators"><span class="toc-section-number">3.4</span> I have t0 much less than t[1]. How do I deal with accumulator variables in this case?</a></li>
 <li><a href="#what-is-the-best-measurement-model"><span class="toc-section-number">3.5</span> What is the best measurement model to use?</a></li>
 <li><a href="#eulermultinomial-approximation"><span class="toc-section-number">3.6</span> What is the Euler-multinomial approximation?</a></li>
+<li><a href="#linking-C-libraries"><span class="toc-section-number">3.7</span> Can I link a C library with my C snippets?</a></li>
 </ul></li>
 <li><a href="#error-messages"><span class="toc-section-number">4</span> Error messages and warnings.</a><ul>
 <li><a href="#illegal-dmeasure"><span class="toc-section-number">4.1</span> I see an error about <code>dmeasure</code> returning illegal values. What does it mean?</a></li>
@@ -481,6 +482,44 @@ bsflu %&gt;%
 <pre><code>dn &lt;- reulermultinom(n=1,size=N,rate=mu,dt=delta.t)</code></pre>
 <p>where <code>mu</code> is a vector containing the rates.</p>
 <p>The <a href="https://kingaa.github.io/manuals/pomp/html/distributions.html">manual page</a> contains more information on the Euler-multinomial distribution.</p>
+</div>
+<div id="linking-C-libraries" class="section level2">
+<h2><span class="header-section-number">3.7</span> Can I link a C library with my C snippets?</h2>
+<p>Yes, this is straightforward. One can make use of the <code>globals</code> and <code>shlib.args</code> arguments to do so.</p>
+<p>Any valid C code passed to <code>globals</code> is included at the top level of the C file containing C snippets. For example, any variables or functions defined there will be visible to every C snippet in that file. If one wishes to call functions defined in a precompiled C library, one can include the library’s header file via the usual <code>#include</code> statement, passed via the <code>globals</code> argument.</p>
+<p>Any text passed to the <code>shlib.args</code> argument is included in the command-line call to <code>R CMD SHLIB</code>. To link to a precompiled library, then, one can do something like</p>
+<pre><code>  shlib.args = &quot;&lt;library&gt;&quot;</code></pre>
+<p>where <code>&lt;library&gt;</code> is the path of the library.</p>
+<p>Consider the following simple example. The function <code>truncated_normal_a_pdf</code> is defined in the library <code>libtn.so</code>, located in directory <code>libs</code>. It has a header file, located in <code>include/tn.h</code>.</p>
+<pre class="r"><code>simulate(
+  t0 = 0,
+  times = 0:100,
+  obsnames = &quot;y&quot;,
+  rprocess=discrete_time(
+    step.fun=Csnippet(&quot;
+      double e = rnorm(0,sigma);
+      N = exp(log(r)+log(N)-N+e);&quot;),
+    delta.t=1
+  ),
+  rmeasure = Csnippet(&quot;
+      y = rnorm(N,4);
+      y = (y &gt; 0) ? y : 0;&quot;
+  ),
+  dmeasure = Csnippet(&quot;
+      lik = truncated_normal_a_pdf(y,N,4,0);
+      if (give_log) lik = log(lik);&quot;
+  ),
+  statenames = &quot;N&quot;,
+  paramnames = c(&quot;r&quot;, &quot;sigma&quot;),
+  params = c(N_0 = 7, r = 45, sigma = 0.3),
+  globals = sprintf(&quot;#include \&quot;%s\&quot;&quot;,&quot;include/tn.h&quot;),
+  shlib.args = &quot;libs/libtn.so&quot;
+) -&gt; rick
+
+rick |&gt;
+  pfilter(Np=1000) |&gt;
+  logLik()</code></pre>
+<p>In <a href="https://github.com/kingaa/pomp/discussions/156">Discussion #156</a> there is another simple example.</p>
 </div>
 </div>
 <div id="error-messages" class="section level1">
