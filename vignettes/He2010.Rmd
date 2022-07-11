@@ -327,7 +327,7 @@ kable(subset(mle,select=-c(town,mu,loglik.sd,delay,S_0,E_0,I_0,R_0)),row.names=F
 ```
 
 The following codes compute the likelihood using the particle filter.
-We use the **foreach** and **doMC** packages to parallelize the computations on a multicore machine.
+We use the **foreach** and **doParallel** packages to parallelize the computations on a multicore machine.
 Note the use of the L'Ecuyer parallel random number generator.
 
 ```{r pfilter1}
@@ -377,6 +377,10 @@ m1 |>
   ggplot(aes(x=time,y=med,color=data,fill=data,ymin=lo,ymax=hi))+
   geom_ribbon(alpha=0.2)
 ```
+
+## For more...
+
+The ["Simulation-based Inference for Epidemiological Dynamics"](https://kingaa.github.io/sbied/) short course discusses this study of measles in [much more detail](https://kingaa.github.io/sbied/measles/).
 
 -------------------
 
