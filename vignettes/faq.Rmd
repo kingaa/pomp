@@ -508,6 +508,8 @@ dn <- reulermultinom(n=1,size=N,rate=mu,dt=delta.t)
 ```
 where `mu` is a vector containing the rates.
 
+The [manual page](https://kingaa.github.io/manuals/pomp/html/distributions.html) contains more information on the Euler-multinomial distribution.
+
 # Error messages and warnings. {#error-messages}
 
 ## I see an error about `dmeasure` returning illegal values.  What does it mean? {#illegal-dmeasure}

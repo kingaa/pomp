@@ -97,7 +97,7 @@ Input:
 
 On return, `trans[0]`, ..., `trans[m-1]` will be the numbers of individuals making each of the respective transitions.
 
-See `?reulermultinom`, [FAQ 3.6](https://kingaa.github.io/pomp/FAQ.html#eulermultinomial-approximation), and the package vignettes for more on the Euler-multinomial distributions.
+See [`?reulermultinom`](https://kingaa.github.io/manuals/pomp/html/distributions.html) and [FAQ 3.6](./FAQ.html#eulermultinomial-approximation) for more on the Euler-multinomial distributions.
 
 **NB:** `reulermultinom` does not call `GetRNGstate()` or `PutRNGstate()` internally.
 This must be done by the calling program.
@@ -124,7 +124,7 @@ Input:
 
 The value returned is the probability or log probability (as requested).
 
-See `?deulermultinom`, [FAQ 3.6](https://kingaa.github.io/pomp/FAQ.html#eulermultinomial-approximation), and the package vignettes for more on the Euler-multinomial distributions.
+See [`?deulermultinom`](https://kingaa.github.io/manuals/pomp/html/distributions.html) and [FAQ 3.6](./FAQ.html#eulermultinomial-approximation) for more on the Euler-multinomial distributions.
 
 
 ### Gamma white noise
@@ -233,7 +233,7 @@ const SEXP get_userdata(const char *name);
 The first function returns a pointer to the integer element of the `userdata` with the given `name`.
 The second retrieves a pointer to a double-precision element of `userdata` by name.
 The third form returns a general S expression (`SEXP`).
-See `?userdata` for more information.
+See [`?userdata`](https://kingaa.github.io/manuals/pomp/html/userdata.html) for more information.
 
 ## Prototypes for basic model components
 
@@ -247,7 +247,7 @@ Specifically, basic model components are coded as C functions with the following
 Each of the following functions is supplied one or more of the `stateindex`, `parindex`, `covindex`, `obsindex`, `vmatindex` arguments.
 Each of these is an integer vector:
 the integers within are indices giving the positions of specific model variables, according to the user's specification, the latter being given by means of the `statenames`, `paramnames`, `covarnames`, and `obsnames` arguments.
-See `?pomp` for more explanation.
+See [`?pomp`](https://kingaa.github.io/manuals/pomp/html/pomp.html) for more explanation.
 Thus, for example, within the body of a function of prototype `pomp_rinit` (see below), 
 ```{c eval=FALSE}
  x[stateindex[0]];

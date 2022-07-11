@@ -236,7 +236,7 @@ code {
 <li><code>trans</code> is a pointer to the vector that will hold the random deviate.</li>
 </ul>
 <p>On return, <code>trans[0]</code>, …, <code>trans[m-1]</code> will be the numbers of individuals making each of the respective transitions.</p>
-<p>See <code>?reulermultinom</code>, <a href="https://kingaa.github.io/pomp/FAQ.html#eulermultinomial-approximation">FAQ 3.6</a>, and the package vignettes for more on the Euler-multinomial distributions.</p>
+<p>See <a href="https://kingaa.github.io/manuals/pomp/html/distributions.html"><code>?reulermultinom</code></a> and <a href="./FAQ.html#eulermultinomial-approximation">FAQ 3.6</a> for more on the Euler-multinomial distributions.</p>
 <p><strong>NB:</strong> <code>reulermultinom</code> does not call <code>GetRNGstate()</code> or <code>PutRNGstate()</code> internally. This must be done by the calling program. But note that when <code>reulermultinom</code> is called inside a <strong>pomp</strong> rprocess, there is no need to call either <code>GetRNGState()</code> or <code>PutRNGState()</code>; this is handled by <strong>pomp</strong>.</p>
 </div>
 <div id="compute-probabilities-of-euler-multinomial-transitions" class="section level4">
@@ -257,7 +257,7 @@ code {
 </ul></li>
 </ul>
 <p>The value returned is the probability or log probability (as requested).</p>
-<p>See <code>?deulermultinom</code>, <a href="https://kingaa.github.io/pomp/FAQ.html#eulermultinomial-approximation">FAQ 3.6</a>, and the package vignettes for more on the Euler-multinomial distributions.</p>
+<p>See <a href="https://kingaa.github.io/manuals/pomp/html/distributions.html"><code>?deulermultinom</code></a> and <a href="./FAQ.html#eulermultinomial-approximation">FAQ 3.6</a> for more on the Euler-multinomial distributions.</p>
 </div>
 </div>
 <div id="gamma-white-noise" class="section level3">
@@ -316,7 +316,7 @@ code {
 <div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb11-1" title="1"><span class="dt">const</span> <span class="dt">int</span> *get_userdata_int(<span class="dt">const</span> <span class="dt">char</span> *name);</a>
 <a class="sourceLine" id="cb11-2" title="2"><span class="dt">const</span> <span class="dt">double</span> *get_userdata_double(<span class="dt">const</span> <span class="dt">char</span> *name);</a>
 <a class="sourceLine" id="cb11-3" title="3"><span class="dt">const</span> SEXP get_userdata(<span class="dt">const</span> <span class="dt">char</span> *name);</a></code></pre></div>
-<p>The first function returns a pointer to the integer element of the <code>userdata</code> with the given <code>name</code>. The second retrieves a pointer to a double-precision element of <code>userdata</code> by name. The third form returns a general S expression (<code>SEXP</code>). See <code>?userdata</code> for more information.</p>
+<p>The first function returns a pointer to the integer element of the <code>userdata</code> with the given <code>name</code>. The second retrieves a pointer to a double-precision element of <code>userdata</code> by name. The third form returns a general S expression (<code>SEXP</code>). See <a href="https://kingaa.github.io/manuals/pomp/html/userdata.html"><code>?userdata</code></a> for more information.</p>
 </div>
 <div id="prototypes-for-basic-model-components" class="section level2">
 <h2>Prototypes for basic model components</h2>
@@ -324,7 +324,7 @@ code {
 <p><strong>NB:</strong> These functions should not be used within C snippets!</p>
 <div id="indices" class="section level3">
 <h3>Indices</h3>
-<p>Each of the following functions is supplied one or more of the <code>stateindex</code>, <code>parindex</code>, <code>covindex</code>, <code>obsindex</code>, <code>vmatindex</code> arguments. Each of these is an integer vector: the integers within are indices giving the positions of specific model variables, according to the user’s specification, the latter being given by means of the <code>statenames</code>, <code>paramnames</code>, <code>covarnames</code>, and <code>obsnames</code> arguments. See <code>?pomp</code> for more explanation. Thus, for example, within the body of a function of prototype <code>pomp_rinit</code> (see below),</p>
+<p>Each of the following functions is supplied one or more of the <code>stateindex</code>, <code>parindex</code>, <code>covindex</code>, <code>obsindex</code>, <code>vmatindex</code> arguments. Each of these is an integer vector: the integers within are indices giving the positions of specific model variables, according to the user’s specification, the latter being given by means of the <code>statenames</code>, <code>paramnames</code>, <code>covarnames</code>, and <code>obsnames</code> arguments. See <a href="https://kingaa.github.io/manuals/pomp/html/pomp.html"><code>?pomp</code></a> for more explanation. Thus, for example, within the body of a function of prototype <code>pomp_rinit</code> (see below),</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb12-1" title="1"> x[stateindex[<span class="dv">0</span>]];</a>
 <a class="sourceLine" id="cb12-2" title="2"> x[stateindex[<span class="dv">3</span>]];</a>
 <a class="sourceLine" id="cb12-3" title="3"> p[parindex[<span class="dv">2</span>]];</a>
