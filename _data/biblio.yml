@@ -1125,6 +1125,14 @@
   journal: "Clinical Infectious Diseases"
   doi: "https://doi.org/10.1093/cid/ciz1241"
 
+- key: Williams2022
+  author: "H. Williams, A. Scharf, A. R. Ryba, D. R. Norris, D. J. Mennill, A. E. M. Newman, S. M. Doucet, and J. C. Blackwood"
+  year: "2022"
+  title: "Cumulative cultural evolution and mechanisms for cultural selection in wild bird songs"
+  journal: "Nature Communications"
+  volume: "13"
+  doi: "https://doi.org/10.1038/s41467-022-31621-9"
+
 - key: Wood2010
   author: "S. N. Wood"
   year: "2010"
