@@ -20,12 +20,12 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-22.04,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,  r: 'release'}
           - {os: ubuntu-latest,  r: 'oldrel-1'}
           - {os: ubuntu-18.04,   r: '4.0.0'}
-          - {os: macOS-latest,   r: 'release'}
-          - {os: macOS-10.15,    r: 'release'}
+          - {os: macOS-11,       r: 'release'}
+          - {os: macOS-12,       r: 'release'}
           - {os: windows-latest, r: 'release'}
 
     env:
