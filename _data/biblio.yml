@@ -34,6 +34,13 @@
   pages: "174&#x2013;188"
   doi: "https://doi.org/10.1109/78.978374"
 
+- key: Asfaw2021
+  author: "K. Asfaw, J. Park, A. Ho, A. A. King, and E. L. Ionides"
+  year: "2021"
+  title: "Statistical inference for spatiotemporal partially observed Markov processes via the R package spatPomp"
+  journal: "arXiv:2101.01157"
+  doi: "https://doi.org/10.48550/arXiv.2101.01157"
+
 - key: AugerMethe2021
   author: "M. Auger-M&eacute;th&eacute;, K. Newman, D. Cole, F. Empacher, R. Gryba, A. A. King, V. Leos-Barajas, J. Mills Flemming, A. Nielsen, G. Petris, and L. Thomas"
   year: "2021"
