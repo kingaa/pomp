@@ -45,7 +45,7 @@ Users wishing to write libraries to hold basic model components must furnish fun
 ```{c eval=FALSE}
 double rbetabinom(double size, double prob, double theta);
 double dbetabinom(double x, double size, double prob, 
-	double theta, int give_log);
+  double theta, int give_log);
 ```
 
 $X$ is said to be Beta-binomially distributed with size $n$, mean probability $p$, and dispersion parameter $\theta$ if
@@ -143,13 +143,22 @@ i.e., `mu*dW` will have expectation `mu*dt` and variance `mu*sigma^2*dt`.
 ## Splines
 
 ```{c eval=FALSE}
-void periodic_bspline_basis_eval(double x, double period, int degree, int nbasis, double *y);
-void periodic_bspline_basis_eval_deriv(double x, double period, int degree, int nbasis,
-  int deriv, double *y);
+void bspline_eval(double *y, const double *x, int nx, int i,
+  int degree, int deriv, const double *knots);
+
+void periodic_bspline_basis_eval(double x, double period, int degree,
+  int nbasis, double *y);
+
+void periodic_bspline_basis_eval_deriv(double x, double period,
+  int degree, int nbasis, int deriv, double *y);
 ```
 
-These functions work with periodic B-spline basis functions.
-The period and smoothness of the functions are given by `period` and `degree`, respectively.
+These functions work with ordinary and periodic B-spline basis functions.
+For ordinary splines, one passes the spline knots in `knots`, together with the degree (`degree`) and order of derivative (`deriv`) desired.
+Then the value of the (order-`deriv` derivative of) the `i`-th spline at each of the values in `x` (an array of length `nx`) are passed into the array pointed to by `y`.
+
+For periodic splines, the period and smoothness of the functions are given by `period` and `degree`, respectively.
+The fundamental domain is always assumed to be $[0,T]$, where $T=$`period`.
 The first function evaluates `nbasis` periodic B-spline basis functions at `x`.
 The second evaluates the order-`deriv` derivative of each basis function.
 
@@ -305,9 +314,9 @@ Inclusion of these calls in the user-defined function may result in significant 
 
 ```{c eval=FALSE}
 double pomp_ssa_rate_fn(int event, 
-	double t, const double *x, const double *p,
-	const int *stateindex, const int *parindex, const int *covindex, 
-	const double *covars);
+  double t, const double *x, const double *p,
+  const int *stateindex, const int *parindex, const int *covindex, 
+  const double *covars);
 ```
 
 Description:
@@ -360,9 +369,10 @@ Description:
 
 ```{c eval=FALSE}
 void pomp_measure_model_simulator(double *y, 
-	const double *x, const double *p,
-	const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
-	const double *covars, double t);
+  const double *x, const double *p,
+  const int *obsindex, const int *stateindex,
+  const int *parindex, const int *covindex,
+  const double *covars, double t);
 ```
 
 Description:
@@ -382,9 +392,9 @@ Inclusion of these calls in the user-defined function may result in significant 
 
 ```{c eval=FALSE}
 void pomp_measure_model_density(double *lik, 
-	const double *y, const double *x, const double *p, int give_log,
-	const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
-	const double *covars, double t);
+  const double *y, const double *x, const double *p, int give_log,
+  const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t);
 ```
 
 Description:
@@ -479,6 +489,3 @@ Description:
 - `parindex`: see [**Indices**](#indices), above.
 - `pt` is the vector wherein the results will be returned.
 
---------------------------------------------------------
-
-This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.

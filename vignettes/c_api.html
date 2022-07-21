@@ -201,7 +201,7 @@ code {
 <h3>Beta-binomial distribution</h3>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb1-1" title="1"><span class="dt">double</span> rbetabinom(<span class="dt">double</span> size, <span class="dt">double</span> prob, <span class="dt">double</span> theta);</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="dt">double</span> dbetabinom(<span class="dt">double</span> x, <span class="dt">double</span> size, <span class="dt">double</span> prob, </a>
-<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">double</span> theta, <span class="dt">int</span> give_log);</a></code></pre></div>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="dt">double</span> theta, <span class="dt">int</span> give_log);</a></code></pre></div>
 <p><span class="math inline">\(X\)</span> is said to be Beta-binomially distributed with size <span class="math inline">\(n\)</span>, mean probability <span class="math inline">\(p\)</span>, and dispersion parameter <span class="math inline">\(\theta\)</span> if <span class="math display">\[P \sim \mathrm{Beta}\left(\theta\,p,\theta\,(1-p)\right)\]</span> and <span class="math display">\[X|P \sim \mathrm{Binomial}\left(n,P\right).\]</span> If <span class="math inline">\(X\sim\mathrm{BetaBinomial}\left(n,p,\theta\right)\)</span>, then <span class="math display">\[\mathbb{E}\left[X\right]=n\,p\qquad\text{and}\qquad\mathrm{Var}\left[X\right]=n\,p\,(1-p)\,\frac{\theta+n}{\theta+1}.\]</span></p>
 </div>
 <div id="multinomial-distribution" class="section level3">
@@ -269,10 +269,16 @@ code {
 </div>
 <div id="splines" class="section level2">
 <h2>Splines</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb6-1" title="1"><span class="dt">void</span> periodic_bspline_basis_eval(<span class="dt">double</span> x, <span class="dt">double</span> period, <span class="dt">int</span> degree, <span class="dt">int</span> nbasis, <span class="dt">double</span> *y);</a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="dt">void</span> periodic_bspline_basis_eval_deriv(<span class="dt">double</span> x, <span class="dt">double</span> period, <span class="dt">int</span> degree, <span class="dt">int</span> nbasis,</a>
-<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">int</span> deriv, <span class="dt">double</span> *y);</a></code></pre></div>
-<p>These functions work with periodic B-spline basis functions. The period and smoothness of the functions are given by <code>period</code> and <code>degree</code>, respectively. The first function evaluates <code>nbasis</code> periodic B-spline basis functions at <code>x</code>. The second evaluates the order-<code>deriv</code> derivative of each basis function.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb6-1" title="1"><span class="dt">void</span> bspline_eval(<span class="dt">double</span> *y, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">int</span> nx, <span class="dt">int</span> i,</a>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">int</span> degree, <span class="dt">int</span> deriv, <span class="dt">const</span> <span class="dt">double</span> *knots);</a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="dt">void</span> periodic_bspline_basis_eval(<span class="dt">double</span> x, <span class="dt">double</span> period, <span class="dt">int</span> degree,</a>
+<a class="sourceLine" id="cb6-5" title="5">  <span class="dt">int</span> nbasis, <span class="dt">double</span> *y);</a>
+<a class="sourceLine" id="cb6-6" title="6"></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="dt">void</span> periodic_bspline_basis_eval_deriv(<span class="dt">double</span> x, <span class="dt">double</span> period,</a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="dt">int</span> degree, <span class="dt">int</span> nbasis, <span class="dt">int</span> deriv, <span class="dt">double</span> *y);</a></code></pre></div>
+<p>These functions work with ordinary and periodic B-spline basis functions. For ordinary splines, one passes the spline knots in <code>knots</code>, together with the degree (<code>degree</code>) and order of derivative (<code>deriv</code>) desired. Then the value of the (order-<code>deriv</code> derivative of) the <code>i</code>-th spline at each of the values in <code>x</code> (an array of length <code>nx</code>) are passed into the array pointed to by <code>y</code>.</p>
+<p>For periodic splines, the period and smoothness of the functions are given by <code>period</code> and <code>degree</code>, respectively. The fundamental domain is always assumed to be <span class="math inline">\([0,T]\)</span>, where <span class="math inline">\(T=\)</span><code>period</code>. The first function evaluates <code>nbasis</code> periodic B-spline basis functions at <code>x</code>. The second evaluates the order-<code>deriv</code> derivative of each basis function.</p>
 </div>
 <div id="transformations" class="section level2">
 <h2>Transformations</h2>
@@ -367,9 +373,9 @@ code {
 <div id="rate.fun-as-used-by-gillespie" class="section level4">
 <h4><code>rate.fun</code> as used by <code>gillespie</code></h4>
 <div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb15-1" title="1"><span class="dt">double</span> pomp_ssa_rate_fn(<span class="dt">int</span> event, </a>
-<a class="sourceLine" id="cb15-2" title="2">    <span class="dt">double</span> t, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</a>
-<a class="sourceLine" id="cb15-3" title="3">    <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex, </a>
-<a class="sourceLine" id="cb15-4" title="4">    <span class="dt">const</span> <span class="dt">double</span> *covars);</a></code></pre></div>
+<a class="sourceLine" id="cb15-2" title="2">  <span class="dt">double</span> t, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</a>
+<a class="sourceLine" id="cb15-3" title="3">  <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex, </a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="dt">const</span> <span class="dt">double</span> *covars);</a></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>event</code> is an integer specifying the number of the reaction whose rate is desired (the first is event is 1, not 0).</li>
@@ -416,9 +422,10 @@ code {
 <div id="rmeasure" class="section level3">
 <h3>rmeasure</h3>
 <div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb18-1" title="1"><span class="dt">void</span> pomp_measure_model_simulator(<span class="dt">double</span> *y, </a>
-<a class="sourceLine" id="cb18-2" title="2">    <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</a>
-<a class="sourceLine" id="cb18-3" title="3">    <span class="dt">const</span> <span class="dt">int</span> *obsindex, <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</a>
-<a class="sourceLine" id="cb18-4" title="4">    <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</a></code></pre></div>
+<a class="sourceLine" id="cb18-2" title="2">  <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</a>
+<a class="sourceLine" id="cb18-3" title="3">  <span class="dt">const</span> <span class="dt">int</span> *obsindex, <span class="dt">const</span> <span class="dt">int</span> *stateindex,</a>
+<a class="sourceLine" id="cb18-4" title="4">  <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</a>
+<a class="sourceLine" id="cb18-5" title="5">  <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</a></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>t</code> is the time at the beginning of the Euler step.</li>
@@ -433,9 +440,9 @@ code {
 <div id="dmeasure" class="section level3">
 <h3>dmeasure</h3>
 <div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb19-1" title="1"><span class="dt">void</span> pomp_measure_model_density(<span class="dt">double</span> *lik, </a>
-<a class="sourceLine" id="cb19-2" title="2">    <span class="dt">const</span> <span class="dt">double</span> *y, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p, <span class="dt">int</span> give_log,</a>
-<a class="sourceLine" id="cb19-3" title="3">    <span class="dt">const</span> <span class="dt">int</span> *obsindex, <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</a>
-<a class="sourceLine" id="cb19-4" title="4">    <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</a></code></pre></div>
+<a class="sourceLine" id="cb19-2" title="2">  <span class="dt">const</span> <span class="dt">double</span> *y, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p, <span class="dt">int</span> give_log,</a>
+<a class="sourceLine" id="cb19-3" title="3">  <span class="dt">const</span> <span class="dt">int</span> *obsindex, <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</a>
+<a class="sourceLine" id="cb19-4" title="4">  <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</a></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>y</code> is the vector of observables at time <code>t</code>.</li>
@@ -517,8 +524,6 @@ code {
 <li><code>parindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>pt</code> is the vector wherein the results will be returned.</li>
 </ul>
-<hr />
-<p>This document was produced using <strong>pomp</strong> version 4.3 and <strong>R</strong> version 4.2.1.</p>
 </div>
 </div>
 
