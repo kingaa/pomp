@@ -10,6 +10,7 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+typedef void bspline_eval_t (double *y, const double *x, int nx, int i, int p, int d, const double *knots);
 typedef void periodic_bspline_basis_eval_t (double x, double period, int degree, int nbasis, double *y);
 typedef void periodic_bspline_basis_eval_deriv_t (double x, double period, int degree, int nbasis, int deriv, double *y);
 typedef const SEXP get_userdata_t (const char *name);

@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 4.3.1.4
-Date: 2022-07-11
+Version: 4.3.2.0
+Date: 2022-07-21
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -139,4 +139,4 @@ Collate:
     'verhulst.R'
     'vmeasure_spec.R'
     'window.R'
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1

@@ -1,5 +1,10 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._3._2:
+
+        • There is now a C interface to the ‘bspline_eval’ function.
+          See the ‘pomp’ C API documentation for details.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._3._1:
 
         • The ‘bspline.basis’ function now takes the optional argument

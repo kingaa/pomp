@@ -2,10 +2,50 @@
 
 #include "pomp_internal.h"
 
-static void bspline_internal (double *y, const double *x, int nx, int i, int p, int d, const double *knots);
+// The following function computes the derivative of order d of the i-th
+// B-spline of degree p with given knots at each of the nx points in x.
+// The results are stored in y.
+void bspline_eval (double *y, const double *x, int nx,
+                   int i, int p, int d, const double *knots)
+{
+  int j;
+  if (d > p) {
+    for (j = 0; j < nx; j++) y[j] = 0.0;
+  } else if (d > 0) {
+    int i2 = i+1, p2 = p-1, d2 = d-1;
+    double *y1 = (double *) R_Calloc(nx,double);
+    double *y2 = (double *) R_Calloc(nx,double);
+    double a, b;
+    bspline_eval(y1,x,nx,i,p2,d2,knots);
+    bspline_eval(y2,x,nx,i2,p2,d2,knots);
+    for (j = 0; j < nx; j++) {
+      a = p / (knots[i+p]-knots[i]);
+      b = p / (knots[i2+p]-knots[i2]);
+      y[j] = a * y1[j] - b * y2[j];
+    }
+    R_Free(y1); R_Free(y2);
+  } else { // d == 0
+    int i2 = i+1, p2 = p-1;
+    if (p > 0) {  // case d < p
+      double *y1 = (double *) R_Calloc(nx,double);
+      double *y2 = (double *) R_Calloc(nx,double);
+      double a, b;
+      bspline_eval(y1,x,nx,i,p2,d,knots);
+      bspline_eval(y2,x,nx,i2,p2,d,knots);
+      for (j = 0; j < nx; j++) {
+        a = (x[j]-knots[i]) / (knots[i+p]-knots[i]);
+        b = (knots[i2+p]-x[j]) / (knots[i2+p]-knots[i2]);
+        y[j] = a * y1[j] + b * y2[j];
+      }
+      R_Free(y1); R_Free(y2);
+    } else if (p == 0) { // case d == p
+      for (j = 0; j < nx; j++)
+        y[j] = (double) ((knots[i] <= x[j]) && (x[j] < knots[i2]));
+    }
+  }
+}
 
 // B-spline basis
-
 SEXP bspline_basis (SEXP range, SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
   SEXP y, xr;
   int nx = LENGTH(x);
@@ -32,7 +72,7 @@ SEXP bspline_basis (SEXP range, SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
   knots[0] = minx-deg*dx;
   for (i = 1; i < nk; i++) knots[i] = knots[i-1]+dx;
   for (i = 0; i < nb; i++) {
-    bspline_internal(ydata,xdata,nx,i,deg,d,&knots[0]);
+    bspline_eval(ydata,xdata,nx,i,deg,d,&knots[0]);
     ydata += nx;
   }
   R_Free(knots);
@@ -41,7 +81,7 @@ SEXP bspline_basis (SEXP range, SEXP x, SEXP nbasis, SEXP degree, SEXP deriv) {
 }
 
 SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period,
-  SEXP deriv) {
+                             SEXP deriv) {
 
   SEXP y, xr;
   int nx = LENGTH(x);
@@ -65,12 +105,12 @@ SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period,
 }
 
 void periodic_bspline_basis_eval (double x, double period, int degree,
-  int nbasis, double *y) {
+                                  int nbasis, double *y) {
   periodic_bspline_basis_eval_deriv(x,period,degree,nbasis,0,y);
 }
 
 void periodic_bspline_basis_eval_deriv (double x, double period, int degree,
-  int nbasis, int deriv, double *y)
+                                        int nbasis, int deriv, double *y)
 {
   int nknots = nbasis+2*degree+1;
   int shift = (degree-1)/2;
@@ -94,7 +134,7 @@ void periodic_bspline_basis_eval_deriv (double x, double period, int degree,
   x = fmod(x,period);
   if (x < 0.0) x += period;
   for (k = 0; k < nknots; k++) {
-    bspline_internal(&yy[k],&x,1,k,degree,deriv,knots);
+    bspline_eval(&yy[k],&x,1,k,degree,deriv,knots);
   }
   for (k = 0; k < degree; k++) yy[k] += yy[nbasis+k];
   for (k = 0; k < nbasis; k++) {
@@ -102,47 +142,4 @@ void periodic_bspline_basis_eval_deriv (double x, double period, int degree,
     y[k] = yy[j];
   }
   R_Free(yy); R_Free(knots);
-}
-
-// The following function computes the derivative of order d of the i-th
-// B-spline of degree p with given knots at each of the nx points in x.
-// The results are stored in y.
-static void bspline_internal (double *y, const double *x, int nx,
-  int i, int p, int d, const double *knots)
-{
-  int j;
-  if (d > p) {
-    for (j = 0; j < nx; j++) y[j] = 0.0;
-  } else if (d > 0) {
-    int i2 = i+1, p2 = p-1, d2 = d-1;
-    double *y1 = (double *) R_Calloc(nx,double);
-    double *y2 = (double *) R_Calloc(nx,double);
-    double a, b;
-    bspline_internal(y1,x,nx,i,p2,d2,knots);
-    bspline_internal(y2,x,nx,i2,p2,d2,knots);
-    for (j = 0; j < nx; j++) {
-      a = p / (knots[i+p]-knots[i]);
-      b = p / (knots[i2+p]-knots[i2]);
-      y[j] = a * y1[j] - b * y2[j];
-    }
-    R_Free(y1); R_Free(y2);
-  } else { // d == 0
-    int i2 = i+1, p2 = p-1;
-    if (p > 0) {  // case d < p
-      double *y1 = (double *) R_Calloc(nx,double);
-      double *y2 = (double *) R_Calloc(nx,double);
-      double a, b;
-      bspline_internal(y1,x,nx,i,p2,d,knots);
-      bspline_internal(y2,x,nx,i2,p2,d,knots);
-      for (j = 0; j < nx; j++) {
-        a = (x[j]-knots[i]) / (knots[i+p]-knots[i]);
-        b = (knots[i2+p]-x[j]) / (knots[i2+p]-knots[i2]);
-        y[j] = a * y1[j] + b * y2[j];
-      }
-      R_Free(y1); R_Free(y2);
-    } else if (p == 0) { // case d == p
-      for (j = 0; j < nx; j++)
-        y[j] = (double) ((knots[i] <= x[j]) && (x[j] < knots[i2]));
-    }
-  }
 }

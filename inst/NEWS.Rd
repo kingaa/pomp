@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.3.2}{
+  \itemize{
+    \item There is now a \proglang{C} interface to the \code{bspline_eval} function.
+    See the \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{\pkg{pomp} \proglang{C} API documentation} for details.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.3.1}{
   \itemize{
     \item The \code{bspline.basis} function now takes the optional argument \code{rg} which allows one to specify the range over which the basis will be constructed.
@@ -27,12 +33,12 @@
 \section{Changes in \pkg{pomp} version 4.2.0}{
   \itemize{
     \item Minor changes, invisible to the user.
-    \item Minor changes to the C codes to keep up with R-devel.
+    \item Minor changes to the \proglang{C} codes to keep up with R-devel.
   }
 }
 \section{Changes in \pkg{pomp} version 4.1.0}{
   \itemize{
-    \item Minor changes to the C codes to keep up with R-devel.
+    \item Minor changes to the \proglang{C} codes to keep up with R-devel.
     \item Minor changes in the implementation of \code{bake} and \code{stew}.
   }
 }
@@ -49,7 +55,7 @@
 }
 \section{Changes in \pkg{pomp} version 4.0.9}{
   \itemize{
-    \item The \code{rbetabinom} and \code{dbetabinom} functions, long present as part of the \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{C API}, are now available as \R functions.
+    \item The \code{rbetabinom} and \code{dbetabinom} functions, long present as part of the \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{\proglang{C} API}, are now available as \R functions.
   }
 }
 \section{Changes in \pkg{pomp} version 4.0.8}{
@@ -213,13 +219,13 @@
 }
 \section{Changes in \pkg{pomp} version 3.2.0}{
   \itemize{
-    \item The \pkg{pomp} C API has been expanded a bit, to facilitate other packages' linking to the \pkg{pomp} library.
+    \item The \pkg{pomp} \proglang{C} API has been expanded a bit, to facilitate other packages' linking to the \pkg{pomp} library.
   }
 }
 \section{Changes in \pkg{pomp} version 3.1.1}{
   \itemize{
     \item The help pages have been improved, with an description of the overall package structure and pages on basic model components, elementary algorithms, and estimation algorithms.
-    \item A note to Windows users on avoiding certain C snippet compilation errors has been added to the help pages.
+    \item A note to Windows users on avoiding certain \proglang{C} snippet compilation errors has been added to the help pages.
     \item The behavior of \code{profile_design} has changed.
     Previously, the same random (or sub-random) sequence was used for all non-profile parameters.
     Now, for each profile slice, a distinct set of points is generated.
@@ -317,13 +323,13 @@
 }
 \section{Changes in \pkg{pomp} version 2.2.2}{
   \itemize{
-    \item The C API for \pkg{pomp} is no longer explained only in comments in the \dQuote{pomp.h} header file.
-    It is now described and explained in the new \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{C API vignette}.
+    \item The \proglang{C} API for \pkg{pomp} is no longer explained only in comments in the \dQuote{pomp.h} header file.
+    It is now described and explained in the new \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{\proglang{C} API vignette}.
   }
 }
 \section{Changes in \pkg{pomp} version 2.2.1}{
   \itemize{
-    \item The new \code{pomp_cdir} global option allows one to set the directory holding C snippet files globally.
+    \item The new \code{pomp_cdir} global option allows one to set the directory holding \proglang{C} snippet files globally.
     \item A bug caused by re-use of the \code{cfile} argument has been fixed.
     Re-use now triggers an error, with an informative message.
   }
@@ -491,7 +497,7 @@
     The \code{tcovar} argument is no longer used.
     \item Instead of providing separate \code{fromEstimationScale} and \code{toEstimationScale} arguments to \code{pomp}, one now provides a single \code{partrans} argument constructed by means of the new function \code{parameter_trans}.
     In addition, references to \dQuote{fromEstimationScale} and \dQuote{toEstimationScale} have been abbreviated to \dQuote{fromEst} and \dQuote{toEst}, respectively, throughout the package.
-    \item When writing C snippets for parameter transformations, the notation \code{T_p} refers to the value of \code{p} on the estimation scale.
+    \item When writing \proglang{C} snippets for parameter transformations, the notation \code{T_p} refers to the value of \code{p} on the estimation scale.
     Thus, if parameter \eqn{alpha} is to be log-transformed for estimation, the \code{toEst} snippet would contain the line \code{T_alpha = log(alpha);} and the \code{fromEst} snippet would include \code{alpha = exp(T_alpha);}.
     \item The \code{parameter_trans} function now takes optional arguments \code{log}, \code{logit}, and \code{barycentric}, with names of parameters to be log-, logit-, and log-barycentric transformed, respectively.
     \item The \code{measurement.model} argument to \code{pomp} has been removed.
@@ -507,7 +513,7 @@
     \item When \code{trajectory} calls on \pkg{deSolve} routines to numerically integrate a model vectorfield, more informative error messages are generated, and diagnostics are printed when \code{verbose = TRUE}.
     \item The \code{show} method applied to pomp objects is now quite terse.
     To obtain detailed information, the \code{spy} method is available.
-    \item The \code{spy} method now returns the information formerly displayed in a call to \code{show}, in addition to the C files associated with any C snippets.
+    \item The \code{spy} method now returns the information formerly displayed in a call to \code{show}, in addition to the \proglang{C} files associated with any \proglang{C} snippets.
     \item The use of \code{$} methods to access the slots of \pkg{pomp} S4 objects has now been removed.
     These classes are no longer exported (for the most part).
     \item The \code{transform} argument to the \code{probe.quantile} function has been removed (as it is entirely redundant!).
@@ -532,7 +538,7 @@
     \item \code{show} and \code{print} methods have been made very terse:
     they simply report on the class of the object in question.
     To see more detailed information about a \sQuote{pomp} object, use \code{spy}.
-    \item New (unexported) \code{solibs<-} method allows developers of packages extending \pkg{pomp} to incorporate C snippets into object that contain \sQuote{pomp} objects.
+    \item New (unexported) \code{solibs<-} method allows developers of packages extending \pkg{pomp} to incorporate \proglang{C} snippets into object that contain \sQuote{pomp} objects.
   }
 }
 \section{Changes in \pkg{pomp} version 1.18.5}{
@@ -544,30 +550,30 @@
 }
 \section{Changes in \pkg{pomp} version 1.18.4}{
   \itemize{
-    \item New \code{hitch} function facilitates construction of \code{pomp.fun} objects from \R functions, C snippets, and links to external libraries.
-    \item Native routines needed to access \code{pomp.fun} objects in C are now registered for use by other packages.
+    \item New \code{hitch} function facilitates construction of \code{pomp.fun} objects from \R functions, \proglang{C} snippets, and links to external libraries.
+    \item Native routines needed to access \code{pomp.fun} objects in \proglang{C} are now registered for use by other packages.
     \item \code{coef(object) <- NULL}, where \code{object} is of class \sQuote{pomp}, erases any parameters stored in \code{object}.
   }
 }
 \section{Changes in \pkg{pomp} version 1.18.3}{
   \itemize{
-    \item The \code{euler.sir}, \code{gillespie.sir}, \code{blowflies}, \code{ricker}, \code{bbs}, \code{dacca}, and \code{rw2} examples are all now implemented using C snippets.
+    \item The \code{euler.sir}, \code{gillespie.sir}, \code{blowflies}, \code{ricker}, \code{bbs}, \code{dacca}, and \code{rw2} examples are all now implemented using \proglang{C} snippets.
     \item A new \file{pomp_defines.h} header is provided for developers of packages that depend on \pkg{pomp}.
     \item Internally, \code{rprocess} is no longer stored as an \R function.
     The use of plugins is now required for the implementation of the \code{rprocess} component.
     Currently, there are five plugins available:
     \code{onestep.sim}, \code{discrete.time.sim}, \code{euler.sim}, \code{gillespie.sim}, and \code{gillespie.hl.sim}.
-    \item The new \code{hitch} function automates the building and linking of C snippets and \R functions into \code{pomp.fun}s.
+    \item The new \code{hitch} function automates the building and linking of \proglang{C} snippets and \R functions into \code{pomp.fun}s.
     \item The handling of \code{dprocess} has changed.
     The \code{onestep.dens} plugin is now deprecated and will soon be removed.
-    \code{dprocess} is now specified directly using either a C snippet or an \R function, in much the same way that, for example, \code{dmeasure} is specified.
+    \code{dprocess} is now specified directly using either a \proglang{C} snippet or an \R function, in much the same way that, for example, \code{dmeasure} is specified.
     \item The old \sQuote{forward} and \sQuote{inverse} options for the \code{dir} argument of \code{partrans} have been dispensed with.
     The much more descriptive options \sQuote{toEstimationScale} and \sQuote{fromEstimationScale} remain.
   }
 }
 \section{Changes in \pkg{pomp} version 1.18.2}{
   \itemize{
-    \item The C snippet compiling facilities have been thoroughly reworked.
+    \item The \proglang{C} snippet compiling facilities have been thoroughly reworked.
   }
 }
 \section{Changes in \pkg{pomp} version 1.18.1}{
@@ -585,7 +591,7 @@
     \item When altering parameters in a call to \code{probe} on a \code{probed.pomp} object, the new parameters were ignored.
     This bug has been fixed.
     \item \code{mif2}, \code{pfilter}, \code{probe}, \code{probe.match}, and \code{probe.match.objfun} can now gracefully handle a list in the \code{start} or \code{params} arguments.
-    \item New \code{spy} method displays the C snippet file(s) associated with a \code{pomp} object.
+    \item New \code{spy} method displays the \proglang{C} snippet file(s) associated with a \code{pomp} object.
   }
 }
 \section{Changes in \pkg{pomp} version 1.17.2}{
@@ -600,7 +606,7 @@
 }
 \section{Changes in \pkg{pomp} version 1.16.4}{
   \itemize{
-    \item Messages from the compiler resulting from attempts to compile C snippets are now suppressed on all platforms except in case of failure.
+    \item Messages from the compiler resulting from attempts to compile \proglang{C} snippets are now suppressed on all platforms except in case of failure.
     Setting \code{verbose=TRUE} forces display of these messages.
     \item Source codes have been revisited to obviate warnings generated by T. Kalibera's latest \code{rchk} checks.
   }
@@ -646,8 +652,8 @@
 }
 \section{Changes in \pkg{pomp} version 1.15.2}{
   \itemize{
-    \item A new facility, \code{gillespie.hl.sim}, allows implementation of Gillespie's algorithm for exact stochastic simulation of continuous-time Markov processes via a streamlined C snippet interface.
-    \item The old facility for Gillespie simulations, \code{gillespie.sim}, now accepts C snippets for faster calculation of event rates.
+    \item A new facility, \code{gillespie.hl.sim}, allows implementation of Gillespie's algorithm for exact stochastic simulation of continuous-time Markov processes via a streamlined \proglang{C} snippet interface.
+    \item The old facility for Gillespie simulations, \code{gillespie.sim}, now accepts \proglang{C} snippets for faster calculation of event rates.
     \item The old \code{skeleton.type} and \code{skelmap.delta.t} arguments of the \code{pomp} constructor, which have generated error messages since version 1.9.2, have been done away with completely.
   }
 }
@@ -684,8 +690,8 @@
   \itemize{
     \item \code{bspline.basis} and \code{periodic.bspline.basis} now take an optional non-negative integer argument \code{deriv}.
     When \code{deriv > 0}, the order-\code{deriv} derivative of each basis function is returned.
-    \item A new function, \code{periodic_bspline_basis_eval_deriv}, has been added to the C API.
-    This function gives access, at the C level, to evaluation of the derivatives of periodic B-splines.
+    \item A new function, \code{periodic_bspline_basis_eval_deriv}, has been added to the \proglang{C} API.
+    This function gives access, at the \proglang{C} level, to evaluation of the derivatives of periodic B-splines.
   }
 }
 \section{Changes in \pkg{pomp} version 1.13.2}{
@@ -719,7 +725,7 @@
   \itemize{
     \item Some changes have been made to the use of random numbers in some codes (the stochastic simulations in \code{gillespie.sim} and the resampling in the particle-filtering codes).
     These changes will mean that calculations performed before will not be reproducible in perfect detail, but will be statistically equivalent.
-    \item Minor changes in C codes to obviate warnings generated by T. Kalibera's \code{rchk} checks.
+    \item Minor changes in \proglang{C} codes to obviate warnings generated by T. Kalibera's \code{rchk} checks.
   }
 }
 \section{Changes in \pkg{pomp} version 1.11.2}{
@@ -798,7 +804,7 @@
 }
 \section{Changes in \pkg{pomp} version 1.8.10}{
   \itemize{
-    \item C codes have been modified to take advantage of changes to the \R API (R SVN REVISION 71180).
+    \item \proglang{C} codes have been modified to take advantage of changes to the \R API (R SVN REVISION 71180).
   }
 }
 \section{Changes in \pkg{pomp} version 1.8.9}{
@@ -823,7 +829,7 @@
 }
 \section{Changes in \pkg{pomp} version 1.7.5}{
   \itemize{
-    \item The generation of Sobol' sequences (\code{sobolDesign}, \code{profileDesign}) is now performed using the \pkg{NLopt} routines written in C instead of the original \acronym{TOMS} 659 FORTRAN codes.
+    \item The generation of Sobol' sequences (\code{sobolDesign}, \code{profileDesign}) is now performed using the \pkg{NLopt} routines written in \proglang{C} instead of the original \acronym{TOMS} 659 \proglang{FORTRAN} codes.
     The copyright notices are located in the source code.
     \item Improved testing suite.
     \item Made \code{rw.sd} even more robust via new \code{safecall} class.
@@ -837,8 +843,8 @@
 \section{Changes in \pkg{pomp} version 1.7.3}{
   \itemize{
     \item Fixed a bug in \code{plot} on \code{pomp} objects with more than 10 variables to plot.
-    \item Added the \code{shlib.args} option to \code{pomp}, allowing arbitrary options to be passed to the compiler when C snippets are used.
-    \item Modified the \dQuote{dacca} example to use C snippets.
+    \item Added the \code{shlib.args} option to \code{pomp}, allowing arbitrary options to be passed to the compiler when \proglang{C} snippets are used.
+    \item Modified the \dQuote{dacca} example to use \proglang{C} snippets.
     \item Refactored \code{rw.sd} for greater stability.
     \item Made Sobol' codes more robust.
   }
@@ -897,7 +903,7 @@
 \section{Changes in \pkg{pomp} version 1.6.1}{
   \itemize{
     \item Major revisions to the package help pages and manual.
-    The separate documentation on C snippets and process-model plugins has been merged into the main \code{pomp} help page, which now has comprehensive instructions on building a \code{pomp} object.
+    The separate documentation on \proglang{C} snippets and process-model plugins has been merged into the main \code{pomp} help page, which now has comprehensive instructions on building a \code{pomp} object.
     \item Update to the package help page.
   }
 }
@@ -959,7 +965,7 @@
     \item \code{pomp} is no longer an S4 method.
     Its new status as an ordinary function abbreviates and consolidates the code and simplifies the documentation.
     \item Some minor improvements to error messages.
-    \item A bug restricting access in C code to \code{userdata} has been fixed.
+    \item A bug restricting access in \proglang{C} code to \code{userdata} has been fixed.
     \item Fixed bug in \code{pompExample(...,show=TRUE)}.
   }
 }
