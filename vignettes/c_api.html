@@ -460,7 +460,7 @@ code {
 </div>
 <div id="emeasure" class="section level3">
 <h3>emeasure</h3>
-<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb20-1" title="1"><span class="dt">void</span> pomp_emeasure (<span class="dt">double</span> *e, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</a>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb20-1" title="1"><span class="dt">void</span> pomp_measure_model_expectation (<span class="dt">double</span> *e, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</a>
 <a class="sourceLine" id="cb20-2" title="2">  <span class="dt">const</span> <span class="dt">int</span> *obsindex, <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</a>
 <a class="sourceLine" id="cb20-3" title="3">  <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</a></code></pre></div>
 <p>Description:</p>
@@ -475,7 +475,7 @@ code {
 </div>
 <div id="vmeasure" class="section level3">
 <h3>vmeasure</h3>
-<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb21-1" title="1"><span class="dt">void</span> pomp_vmeasure (<span class="dt">double</span> *v, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</a>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb21-1" title="1"><span class="dt">void</span> pomp_measure_model_covariance (<span class="dt">double</span> *v, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</a>
 <a class="sourceLine" id="cb21-2" title="2">  <span class="dt">const</span> <span class="dt">int</span> *vmatindex, <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</a>
 <a class="sourceLine" id="cb21-3" title="3">  <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</a></code></pre></div>
 <p>Description:</p>

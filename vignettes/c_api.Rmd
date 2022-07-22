@@ -412,7 +412,7 @@ Description:
 ### emeasure
 
 ```{c eval=FALSE}
-void pomp_emeasure (double *e, const double *x, const double *p,
+void pomp_measure_model_expectation (double *e, const double *x, const double *p,
   const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 ```
@@ -429,7 +429,7 @@ Description:
 ### vmeasure
 
 ```{c eval=FALSE}
-void pomp_vmeasure (double *v, const double *x, const double *p,
+void pomp_measure_model_covariance (double *v, const double *x, const double *p,
   const int *vmatindex, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 ```
