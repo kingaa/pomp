@@ -1038,6 +1038,8 @@
   title: "Iterated filtering methods for Markov process epidemic models"
   journal: "Handbook of Infectious Disease Data Analysis"
   pages: "199&#x2013;219"
+  editor: "L. Held, N. Hens, P. O&rsquo;Neill, and J. Wallinga"
+  doi: "https://doi.org/10.1201/9781315222912"
 
 - key: Stone2020
   author: "L. Stone, D. H. He, S. Lehnstaedt, and Y. Artzy-Randrup"
