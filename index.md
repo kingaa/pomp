@@ -33,10 +33,8 @@ This website contains:
 - access to the [source code](https://github.com/kingaa/pomp/), 
 - a facility for [reporting issues with the package](https://github.com/kingaa/pomp/issues), 
 - a place for [discussions with **pomp** users and developers](https://github.com/kingaa/pomp/discussions),
-- a [wiki](https://github.com/kingaa/pomp/wiki/pimp-my-pomp){:target="_blank"}:
-where you can contribute snippets of code, interesting results, references to papers, and so on, and
-- an extensive but incomplete [bibliography](biblio.html) of publications describing **pomp** methods and **pomp** applications.
-Please let the developers know if you find **pomp** useful and if you publish results obtained using it!
+- an extensive but necessarily incomplete [bibliography](biblio.html) of publications describing **pomp** methods and **pomp** applications.
+  Please let the developers know if you find **pomp** useful and if you publish results obtained using it!
 
 Although **pomp** is a mature package, it is actively maintained and new features are under development.
 If you come up with improvements, find bugs, or have suggestions or feature requests, please tell us about them using the [package issues page](https://github.com/kingaa/pomp/issues){:target="_blank"}.
