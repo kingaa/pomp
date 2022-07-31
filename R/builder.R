@@ -153,7 +153,7 @@ hitch <- function (..., templates,
         )
       ),
       error = function (e)
-        pStop_("error in building shared-object library from C snippets: ",conditionMessage(e)) # nocov
+        pStop_("error in building shared-object library from C snippets: ",conditionMessage(e)) #nocov
     )
     libname <- lib$name
   } else {
@@ -209,7 +209,7 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
   if (.Platform$OS.type=="unix") {
     pompheader <- "pomp.h"
   } else {
-    pompheader <- system.file("include/pomp.h",package="pomp") # nocov
+    pompheader <- system.file("include/pomp.h",package="pomp") #nocov
   }
 
   ## some information to help make file (and filename) unique
@@ -289,7 +289,7 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
       verbose=verbose
     ),
     error = function (e)
-      pStop("Cbuilder","compilation error: ",conditionMessage(e)) # nocov
+      pStop("Cbuilder","compilation error: ",conditionMessage(e)) #nocov
   )
 
   invisible(list(name=name,dir=dir,src=csrc))
@@ -300,7 +300,7 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL,
 
   stem <- file.path(direc,fname)
   if (.Platform$OS.type=="windows")
-    stem <- gsub("\\","/",stem,fixed=TRUE) # nocov
+    stem <- gsub("\\","/",stem,fixed=TRUE) #nocov
 
   modelfile <- paste0(stem,".c")
 
@@ -338,14 +338,14 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL,
           stderr=TRUE
         )
       },
-      error = function (e) pStop_("error compiling C snippets: ",conditionMessage(e)) # nocov
+      error = function (e) pStop_("error compiling C snippets: ",conditionMessage(e)) #nocov
     )
 
     stat <- as.integer(attr(rv,"status"))
 
     if (length(stat) > 0 && stat != 0L) {
-      pStop_("cannot compile shared-object library ",sQuote(solib),          # nocov
-        ": status = ",stat,"\ncompiler messages:\n",paste(rv,collapse="\n")) # nocov
+      pStop_("cannot compile shared-object library ",sQuote(solib),          #nocov
+        ": status = ",stat,"\ncompiler messages:\n",paste(rv,collapse="\n")) #nocov
     } else if (verbose) {
       cat("compiler messages:",rv,sep="\n")
     }
@@ -361,13 +361,13 @@ srcDir <- function (dir, verbose) {
     dir <- file.path(tempdir(),pid)
   }
   if (!dir.exists(dir)) {
-    if (verbose) cat("creating C snippet directory ",sQuote(dir),"\n") # nocov
+    if (verbose) cat("creating C snippet directory ",sQuote(dir),"\n") #nocov
     tryCatch(
       {
         dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700")
         stopifnot(dir.exists(dir))
       },
-      error = function (e) pStop_("cannot create cache directory ",sQuote(dir))   # nocov
+      error = function (e) pStop_("cannot create cache directory ",sQuote(dir))   #nocov
     )
   }
   dir
@@ -385,7 +385,7 @@ render <- function (template, ...) {
   if (length(vars)==0) return(template)
   n <- sapply(vars,length)
   if (!all((n==max(n))|(n==1)))
-    pStop("render","incommensurate lengths of replacements.") # nocov
+    pStop("render","incommensurate lengths of replacements.") #nocov
   short <- which(n==1)
   n <- max(n)
   for (i in short) vars[[i]] <- rep(vars[[i]],n)

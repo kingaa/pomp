@@ -581,7 +581,7 @@ rbf.basis <- function (X, knots) {
 
 make.tensorbasis <- function(A,B) {
   if (nrow(A) != nrow(B))
-    pStop("make.tensorbasis","incompatible matrices.") # nocov
+    pStop("make.tensorbasis","incompatible matrices.") #nocov
   nA <- ncol(A)
   nB <- ncol(B)
   Tmat <- matrix(0,nrow(A),nA*nB)

@@ -164,6 +164,9 @@ Error : in 'pmcmc': in 'dprior': not again!
 +   pmcmc(mcmc1,dprior=delayed.failure)})
 Error : in 'pmcmc': in 'dprior': uh huh
 > 
+> try(pmcmc(mcmc1,dmeasure=function(log,...)if (log) -Inf else 0))
+Error : in 'pmcmc': non-finite log likelihood at starting parameters.
+> 
 > capture.output(invisible(pmcmc(mcmc1,Nmcmc=10,verbose=TRUE))) -> out
 > stopifnot(sum(grepl("acceptance ratio",out))==10)
 > stopifnot(sum(grepl("PMCMC iteration",out))==11)

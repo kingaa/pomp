@@ -93,6 +93,8 @@ try({
   }
   pmcmc(mcmc1,dprior=delayed.failure)})
 
+try(pmcmc(mcmc1,dmeasure=function(log,...)if (log) -Inf else 0))
+
 capture.output(invisible(pmcmc(mcmc1,Nmcmc=10,verbose=TRUE))) -> out
 stopifnot(sum(grepl("acceptance ratio",out))==10)
 stopifnot(sum(grepl("PMCMC iteration",out))==11)

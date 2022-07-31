@@ -348,7 +348,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, ...,
       alpha <- exp(pfp.prop@loglik+log.prior.prop-pfp@loglik-log.prior)
 
       if (!is.finite(alpha))
-        pWarn_("non-finite log likelihood or log prior encountered.")
+        pWarn_("non-finite log likelihood or log prior encountered.") #nocov
 
       if (is.finite(alpha) && runif(1) < alpha) {
         pfp <- pfp.prop
