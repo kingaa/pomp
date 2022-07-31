@@ -313,7 +313,8 @@ abc.internal <- function (object,
   log.prior <-dprior(object,params=theta,log=TRUE,.gnsi=gnsi)
 
   if (!is.finite(log.prior))
-    pStop_("inadmissible value of ",sQuote("dprior")," at starting parameters.")
+    pStop_("non-finite log prior at starting parameters.")
+
   ## we suppose that theta is a "match",
   ## which does the right thing for continue() and
   ## should have negligible effect unless doing many short calls to continue()
@@ -371,8 +372,6 @@ abc.internal <- function (object,
         .accepts <- .accepts+1L
       }
 
-      gnsi <- FALSE
-
     }
 
     ## store a record of this iteration
@@ -381,6 +380,9 @@ abc.internal <- function (object,
       cat("ABC iteration",n+.ndone,"of",Nabc+.ndone,
         "completed\nacceptance ratio:",
         round(.accepts/(n+.ndone),3),"\n")
+
+    gnsi <- FALSE
+
   }
 
   pars <- apply(traces,2,function(x)diff(range(x))>0)

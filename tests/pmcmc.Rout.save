@@ -69,6 +69,9 @@ Error : in 'pmcmc': in 'pfilter': number of particles, 'Np', must be a positive 
 > pmcmc(po,proposal=prop1,Np=function(k)10*k+10)
 <object of class 'pmcmcd_pomp'>
 > 
+> try(pmcmc(mcmc1,params=c(r=3,K=1,sigma=0.1,tau=0.1,X_0=1),Np=100))
+Error : in 'pmcmc': non-finite log prior at starting parameters.
+> 
 > pf <- pfilter(po,Np=100)
 > mcmc2 <- pmcmc(pf,Nmcmc=100,proposal=prop1)
 > mcmc3 <- pmcmc(mcmc1,Nmcmc=50)
@@ -104,17 +107,16 @@ NULL
 > stopifnot(dim(filter.traj(mcmc1))==c(1,100,11),
 +   dim(filter.traj(c(mcmc1,mcmc2,mcmc3)))==c(1,100,11,3))
 > logLik(mcmc1)
-[1] 4.68
+[1] 3.43
 > logLik(c(mcmc1,mcmc2,mcmc3))
-[1] 4.68 4.75 3.43
+[1] 3.43 3.43 3.43
 > 
 > pmcmc(mcmc1,params=as.list(coef(mcmc3)))
 <object of class 'pmcmcd_pomp'>
 > try(pmcmc(mcmc1,params=NULL))
-Error : in 'pmcmc': in 'pfilter': in 'rprocess': variable 'X' not found among the state variables.
-In addition: Warning messages:
-1: In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
-2: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
+Error : in 'pmcmc': in 'dprior': variable 'r' not found among the parameters.
+In addition: Warning message:
+In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try(pmcmc(mcmc1,params=-7))
 Error : in 'pmcmc': 'params' must be a named numeric vector.
 > try(pmcmc(mcmc1,params="yes"))
@@ -122,19 +124,17 @@ Error : in 'pmcmc': 'params' must be a named numeric vector.
 In addition: Warning message:
 NAs introduced by coercion 
 > try(pmcmc(mcmc1,params=list()))
-Error : in 'pmcmc': in 'pfilter': in 'rprocess': variable 'X' not found among the state variables.
-In addition: Warning messages:
-1: In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
-2: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
+Error : in 'pmcmc': in 'dprior': variable 'r' not found among the parameters.
+In addition: Warning message:
+In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try({tmp <- mcmc1; coef(tmp) <- NULL; pmcmc(tmp)})
-Error : in 'pmcmc': in 'pfilter': in 'rprocess': variable 'X' not found among the state variables.
-In addition: Warning messages:
-1: In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
-2: in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
+Error : in 'pmcmc': in 'dprior': variable 'r' not found among the parameters.
+In addition: Warning message:
+In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try(pmcmc(mcmc1,proposal=function(...)c(3,2)))
 Error : in 'pmcmc': 'proposal' must return a named numeric vector.
-> try(pmcmc(mcmc1,proposal=function(...)c(a=3,b=2,X.0=1)))
-Error : in 'pmcmc': in 'pfilter': in 'rprocess': variable 'r' not found among the parameters.
+> try(pmcmc(mcmc1,Nmcmc=3,proposal=function(...)c(a=3,b=2,X.0=1)))
+Error : in 'pmcmc': in 'dprior': variable 'r' not found among the parameters.
 > try(pmcmc(mcmc1,proposal=function(...)stop("oh no!")))
 Error : in 'pmcmc': error in proposal function: oh no!
 > try({

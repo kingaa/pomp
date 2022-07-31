@@ -267,7 +267,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, ...,
 
   ## test proposal distribution
   theta <- tryCatch(
-    proposal(start,.n=0),
+    proposal(start,.n=0L),
     error = function (e) {
       pStop_("error in proposal function: ",conditionMessage(e))
     }
@@ -275,25 +275,31 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, ...,
   if (is.null(names(theta)) || !is.numeric(theta) || any(names(theta)==""))
     pStop_(sQuote("proposal")," must return a named numeric vector.")
 
+  theta <- start
+
   Nmcmc <- as.integer(Nmcmc)
-  if (length(Nmcmc)!=1 || !is.finite(Nmcmc) || Nmcmc < 0)
+  if (length(Nmcmc)!=1L || !is.finite(Nmcmc) || Nmcmc < 0L)
     pStop_(sQuote("Nmcmc")," must be a positive integer")
 
   if (verbose)
     cat("performing",Nmcmc,"PMCMC iteration(s) using",Np[1L],"particles\n")
 
-  traces <- array(data=NA_real_,dim=c(Nmcmc+1,length(theta)+2),
+  traces <- array(data=NA_real_,dim=c(Nmcmc+1L,length(theta)+2L),
     dimnames=list(
-      iteration=seq(from=0,to=Nmcmc,by=1),
+      iteration=seq(from=0L,to=Nmcmc,by=1L),
       variable=c("loglik","log.prior",names(theta))))
 
   if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
 
-    pfp <- pfilter(object,params=theta,Np=Np,filter.traj=TRUE,.gnsi=gnsi,verbose=verbose)
-
     log.prior <- dprior(object,params=theta,log=TRUE,.gnsi=gnsi)
 
-    gnsi <- FALSE
+    if (!is.finite(log.prior))
+      pStop_("non-finite log prior at starting parameters.")
+
+    pfp <- pfilter(object,params=theta,Np=Np,filter.traj=TRUE,.gnsi=gnsi,verbose=verbose)
+
+    if (!is.finite(pfp@loglik))
+      pStop_("non-finite log likelihood at starting parameters.")
 
   } else { ## has been computed previously
 
@@ -306,9 +312,13 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, ...,
   traces[1L,names(theta)] <- theta
   traces[1L,c(1L,2L)] <- c(pfp@loglik,log.prior)
 
-  filt.t <- array(data=numeric(0),dim=replace(dim(pfp@filter.traj),2L,Nmcmc),
-    dimnames=replace(dimnames(pfp@filter.traj),2L,
-      list(as.character(seq_len(Nmcmc)))))
+  filt.t <- array(
+    data=NA_real_,
+    dim=replace(dim(pfp@filter.traj),2L,Nmcmc),
+    dimnames=replace(
+      dimnames(pfp@filter.traj),2L,list(as.character(seq_len(Nmcmc)))
+    )
+  )
 
   for (n in seq_len(Nmcmc)) { # main loop
 
@@ -334,8 +344,6 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, ...,
         .gnsi=gnsi
       )
 
-      gnsi <- FALSE
-
       ## PMCMC update rule (OK because proposal is symmetric)
       alpha <- exp(pfp.prop@loglik+log.prior.prop-pfp@loglik-log.prior)
 
@@ -360,6 +368,8 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, ...,
     if (verbose) cat("PMCMC iteration",n+.ndone,"of",Nmcmc+.ndone,
       "completed\nacceptance ratio:",
       round(.accepts/(n+.ndone),3),"\n")
+
+    gnsi <- FALSE
 
   }
 

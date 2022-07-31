@@ -7,10 +7,10 @@
 ##' @aliases coef<- coef<-,missing-method
 ##' @docType methods
 ##' @include pomp_class.R listie.R
-##' @importFrom stats coef
 ##' @family extraction methods
 NULL
 
+##' @importFrom stats coef
 setGeneric("coef")
 
 setGeneric(

@@ -33,6 +33,8 @@ pmcmc(po,proposal=prop1,Np=rep(1,11))
 try(pmcmc(po,proposal=prop1,Np=function(k)10*k))
 pmcmc(po,proposal=prop1,Np=function(k)10*k+10)
 
+try(pmcmc(mcmc1,params=c(r=3,K=1,sigma=0.1,tau=0.1,X_0=1),Np=100))
+
 pf <- pfilter(po,Np=100)
 mcmc2 <- pmcmc(pf,Nmcmc=100,proposal=prop1)
 mcmc3 <- pmcmc(mcmc1,Nmcmc=50)
@@ -68,7 +70,7 @@ try(pmcmc(mcmc1,params="yes"))
 try(pmcmc(mcmc1,params=list()))
 try({tmp <- mcmc1; coef(tmp) <- NULL; pmcmc(tmp)})
 try(pmcmc(mcmc1,proposal=function(...)c(3,2)))
-try(pmcmc(mcmc1,proposal=function(...)c(a=3,b=2,X.0=1)))
+try(pmcmc(mcmc1,Nmcmc=3,proposal=function(...)c(a=3,b=2,X.0=1)))
 try(pmcmc(mcmc1,proposal=function(...)stop("oh no!")))
 try({
   count <- 0

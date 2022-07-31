@@ -25,7 +25,8 @@
 ##' To keep the code simple, the \code{cond.logLik} function is nevertheless used to extract this quantity.
 NULL
 
-setGeneric("cond.logLik",
+setGeneric(
+  "cond.logLik",
   function (object, ...)
     standardGeneric("cond.logLik")
 )

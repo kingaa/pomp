@@ -7,9 +7,9 @@
 ##' @aliases time<- time,missing-method
 ##' @family extraction methods
 ##'
-##' @importFrom stats time
 NULL
 
+##' @importFrom stats time
 setGeneric("time")
 
 setGeneric(

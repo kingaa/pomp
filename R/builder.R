@@ -104,7 +104,6 @@ hitch <- function (..., templates,
     pStop(ep,sQuote("templates")," must be supplied.")
 
   if (missing(cfile)) cfile <- NULL
-  if (missing(cdir)) cdir <- NULL
   if (missing(PACKAGE)) PACKAGE <- NULL
   if (missing(globals)) globals <- NULL
   if (missing(shlib.args)) shlib.args <- NULL

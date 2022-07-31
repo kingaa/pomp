@@ -1,5 +1,16 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._3._3:
+
+        • The precise order in which the ‘pmcmc’ function computes
+          prior and likelihood of furnished and proposed parameters has
+          changed slightly.  This prevents proposals that are
+          incompatible with the prior from being passed to ‘pfilter’
+          and forestalls an associated class of errors.  A consequence
+          of this change, ‘pmcmc’ computations using the new version
+          will differ very slightly from previous computations, even
+          with the RNG seed fixed at its previous values.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._3._2:
 
         • There is now a C interface to the ‘bspline_eval’ function.

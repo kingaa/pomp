@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.3.3}{
+  \itemize{
+    \item The precise order in which the \code{pmcmc} function computes prior and likelihood of furnished and proposed parameters has changed slightly.
+    This prevents proposals that are incompatible with the prior from being passed to \code{pfilter} and forestalls an associated class of errors.
+    A consequence of this change, \code{pmcmc} computations using the new version will differ very slightly from previous computations, even with the RNG seed fixed at its previous values.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.3.2}{
   \itemize{
     \item There is now a \proglang{C} interface to the \code{bspline_eval} function.

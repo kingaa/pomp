@@ -6,9 +6,9 @@
 ##' @docType methods
 ##' @rdname window
 ##' @include pomp_class.R
-##' @importFrom stats window
 NULL
 
+##' @importFrom stats window
 setGeneric("window")
 
 ##' @rdname window

@@ -2,11 +2,17 @@
 
 ## For pomp:
 
-- rewrite to use `rmultinom`, which is now part of the API (?)
+- Smoothing tool for 'pfilterd_pomp' and 'pmcmcd_pomp' objects
+- `bake`, `stew` should take attributes to be attached or stored (e.g., `getDoParWorkers()`)
+- `options(pomp_cdir)` should take effect *at run time* and not at initial compile time as currently
+- overriding C snippets should overwrite/delete old C snippets, keep one C snippet file
 - byte-compile basic components when furnished as **R** functions
+- make `mcap` into a generic, provide a method for data frames and a plotting method
 
 - vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`
-- make `mcap` into a generic, provide a method for data frames and a plotting method
+
+- rewrite to use `rmultinom`, which is now part of the API (?)
+
 - more demanding tests of `enkf` and `eakf`
 - iterated EnKF
 - perhaps `dinit`?

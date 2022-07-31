@@ -4,6 +4,7 @@
 
 // The following function computes the derivative of order d of the i-th
 // B-spline of degree p with given knots at each of the nx points in x.
+// knots must point to an array of length nbasis+p+1
 // The results are stored in y.
 void bspline_eval (double *y, const double *x, int nx,
                    int i, int p, int d, const double *knots)
@@ -103,6 +104,19 @@ SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period,
   UNPROTECT(2);
   return y;
 }
+
+/*
+void bspline_eval (double *y, const double *x, int nx,
+                   int i, int p, int d, const double *knots);
+
+void bspline_basis_eval (double x, int degree, int nbasis, double *y) {
+  bspline_basis_eval_deriv(x,knots,degree,nbasis,0,y);
+}
+
+void bspline_basis_eval_deriv (double x, double period, int degree,
+                                        int nbasis, int deriv, double *y)
+{}
+*/
 
 void periodic_bspline_basis_eval (double x, double period, int degree,
                                   int nbasis, double *y) {

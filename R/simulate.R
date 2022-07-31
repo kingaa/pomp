@@ -7,7 +7,6 @@
 ##' @docType methods
 ##' @rdname simulate
 ##' @include workhorses.R pomp_class.R pomp.R
-##' @importFrom stats simulate
 ##' @author Aaron A. King
 ##' @family elementary algorithms
 ##' @inheritSection pomp Note for Windows users
@@ -63,6 +62,7 @@
 ##'
 NULL
 
+##' @importFrom stats simulate
 setGeneric("simulate")
 
 ##' @rdname simulate

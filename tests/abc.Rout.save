@@ -165,7 +165,7 @@ Error : in 'abc': each probe must be a function of a single argument.
 > try(abc(abc1,dprior=function(log,...)stop("ouch!")))
 Error : in 'abc': in 'dprior': ouch!
 > try(abc(abc1,dprior=function(log,...)Inf))
-Error : in 'abc': inadmissible value of 'dprior' at starting parameters.
+Error : in 'abc': non-finite log prior at starting parameters.
 > try(abc(abc1,probes=function(x)stop("piff!")))
 Error : in 'abc': applying probes to data: piff!
 > count <- 0
