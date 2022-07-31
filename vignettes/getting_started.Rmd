@@ -34,11 +34,11 @@ options(
   stringsAsFactors=FALSE,
   encoding="UTF-8",
   scipen=5,
+  dplyr.summarise.inform=FALSE,
   pomp_archive_dir="results/getting_started"
 )
 set.seed(594709947L)
 library(tidyverse)
-library(ggplot2)
 theme_set(theme_bw())
 bigtick <- Sys.time()
 ```
@@ -1467,6 +1467,141 @@ Comment on your findings.
 
 ---------------------------------------
 
+## Sampling the posterior using particle Markov chain Monte Carlo
+
+### Running multiple `pmcmc` chains
+
+If we seek to do full-information Bayesian inference, we can use particle Markov chain Monte Carlo, implemented in **pomp** in the `pmcmc` function.
+The following codes cause parallel pMCMC chains to be run, each beginning at one of the estimates obtained using `mif2`.
+Note that we add a prior by furnishing a prior probability density evaluation function (`dprior=...`).
+In this case, we assume a product prior: marginally uniform in each of the parameters $r$, $\sigma$, $K$, and $N_0$.
+
+```{r parus-pmcmc-starts}
+r_prof |>
+  group_by(r) |>
+  filter(loglik==max(loglik)) |>
+  ungroup() |>
+  filter(
+    r > 0.75,
+    r < 6,
+    sigma < 2,
+    K > 100,
+    K < 600,
+    N_0 > 100,
+    N_0 < 600
+  ) |>
+  select(-loglik,-loglik.se) -> starts
+starts
+```
+
+```{r parus-pmcmc,eval=FALSE,purl=FALSE}
+foreach (start=iter(starts,"row"),.combine=c,
+  .errorhandling="remove",.inorder=FALSE) %dopar% 
+  {
+    library(pomp)
+    mf1 |>
+      pmcmc(
+        Nmcmc=2000,Np=200,params=start,
+        dprior=Csnippet("
+          lik = dunif(r,0,10,1)+dunif(sigma,0,2,1)+
+                dunif(K,0,600,1)+dunif(N_0,0,600,1);
+          lik = (give_log) ? lik : exp(lik);"
+        ),
+        paramnames=c("K","N_0","r","sigma"),
+        proposal=mvn.rw.adaptive(
+          rw.sd=c(r=0.02,sigma=0.02,K=50,N_0=50),
+          scale.start=100,shape.start=100
+        )
+      ) -> chain
+    chain |> pmcmc(Nmcmc=20000,proposal=mvn.rw(covmat(chain)))
+  } -> chains
+```
+
+```{r parus-pmcmc-eval,eval=TRUE,purl=TRUE,include=FALSE}
+bake(file="parus-pmcmc.rds",dependson=starts,{
+  <<parus-pmcmc>>
+}) -> chains
+```
+
+In the above, we first subset out those `mif2` estimates that are consistent with our prior.
+At each of these, we then perform a number of MCMC moves, using an adaptive multivariate-normal random-walk proposal distribution `mvn.rw.adaptive`.
+To complete the inference, we do `r nrow(chains[[1]])` more MCMC iterations using a multivariate random-walk proposal (`mvn.rw`) with covariance matrix derived from the preceding computation (`covmat`).
+
+### Convergence diagnostics
+
+Now we investigate the chains, to try and determine whether they have converged.
+
+```{r pmcmc-diagnostics1}
+library(coda)
+chains |> traces() -> traces
+rejectionRate(traces[,c("r","sigma","K","N_0")])
+```
+
+We see that the rejection rate is very good.
+Let us examine the autocorrelation in the chains.
+
+```{r pmcmc-diagnostics2}
+traces %>% autocorr.diag(lags=c(1,5,10,50,100))
+traces <- window(traces,thin=100,start=2000)
+```
+
+The autocorrelation is strong, but drops to small values by lag 100.
+Accordingly, we thin the chains by a factor of 100.
+We discard 2000 iterations as a burn-in.
+
+Now let us examine the traces.
+
+```{r pmcmc-diagnostics3,fig.dim=c(8,6),out.width="95%"}
+traces %>%
+  lapply(as.data.frame) %>%
+  lapply(rownames_to_column,"iter") %>%
+  bind_rows(.id="chain") %>%
+  mutate(iter=as.numeric(iter)) %>%
+  select(chain,iter,loglik,r,sigma,K,N_0) %>%
+  pivot_longer(c(-chain,-iter)) %>%
+  ggplot(aes(x=iter,group=chain,color=chain,y=value))+
+  guides(color="none")+
+  labs(x="iteration",y="")+
+  geom_line(alpha=0.3)+geom_smooth(method="loess",se=FALSE)+
+  facet_wrap(name~.,scales="free_y",strip.position="left",ncol=2)+
+  theme(
+    strip.placement="outside",
+    strip.background=element_rect(fill=NA,color=NA)
+  )
+
+gelman.diag(traces[,c("r","sigma","K","N_0")])
+```
+The trace-plots show good mixing and the Gelman-Rubin statistic confirms that the chains are mixing among themselves:
+a good indicator of convergence.
+Thus, insofar as we can tell by these diagnostics, the MCMC iterations appear to have converged to their stationary distribution and we are sampling it well after thinning.
+
+### Examining the posterior density
+
+The plots of the marginal posterior densities are shown below.
+
+```{r parus_posterior}
+traces %>%
+  lapply(as.data.frame) %>%
+  lapply(rownames_to_column,"iter") %>%
+  bind_rows(.id="chain") %>%
+  select(chain,iter,loglik,r,sigma,K,N_0) %>%
+  pivot_longer(c(-chain,-iter)) %>%
+  ggplot(aes(x=value))+
+  geom_density()+
+  geom_rug()+
+  labs(x="")+
+  facet_wrap(~name,scales="free",strip.position="bottom")+
+  theme(
+    strip.placement="outside",
+    strip.background=element_rect(fill=NA,color=NA)
+  )
+
+traces %>% summary()
+```
+
+
+---------------------------
+
 ## Model criticism
 
 Estimating model parameters by fitting the model to data is typically only a step in the process of trying to understand the processes that generated the data.
@@ -1571,6 +1706,23 @@ the main goal of the package is to facilitate effective inference by bringing a 
 Although the goal of this document has been to introduce the beginner to the package through a display of the **pomp** toolbox in the context of a rudimentary and incomplete data analysis of a short time series with toy models, it is important to realize that these tools have proven their utility on some extremely challenging problems, including some for which other existing methods are either less efficient or entirely infeasible.
 The [bibliography](https://kingaa.github.io/pomp/biblio.html) has links to peer-reviewed publications that have used these methods.
 
+---------------------------------------
+
+## Session information
+
+This document was produced with the following software versions:
+
+|                |                                  |
+|:---------------|:---------------------------------|
+| **R**          | `r getRversion()`                |
+| **pomp**       | `r packageVersion("pomp")`       |
+| **coda**       | `r packageVersion("coda")`       |
+| **foreach**    | `r packageVersion("foreach")`    |
+| **doParallel** | `r packageVersion("doParallel")` |
+| **doRNG**      | `r packageVersion("doRNG")`      |
+| **subplex**    | `r packageVersion("subplex")`    |
+| **tidyverse**  | `r packageVersion("tidyverse")`  |
+
 <!--
 
 ```{r sessinfo}
@@ -1592,9 +1744,6 @@ print(totalSweaveTime)
 ```
 -->
 
----------------------------------------
-
-This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
 
 ---------------------------------------
 

@@ -7,11 +7,11 @@ options(
   stringsAsFactors=FALSE,
   encoding="UTF-8",
   scipen=5,
+  dplyr.summarise.inform=FALSE,
   pomp_archive_dir="results/getting_started"
 )
 set.seed(594709947L)
 library(tidyverse)
-library(ggplot2)
 theme_set(theme_bw())
 bigtick <- Sys.time()
 
@@ -654,6 +654,103 @@ r_prof |>
   geom_smooth(method="loess",span=0.2)+
   scale_x_log10()+
   labs(y=expression(sigma))
+
+
+## ----parus-pmcmc-starts-------------------------------------------------------
+r_prof |>
+  group_by(r) |>
+  filter(loglik==max(loglik)) |>
+  ungroup() |>
+  filter(
+    r > 0.75,
+    r < 6,
+    sigma < 2,
+    K > 100,
+    K < 600,
+    N_0 > 100,
+    N_0 < 600
+  ) |>
+  select(-loglik,-loglik.se) -> starts
+starts
+
+
+
+
+## ----parus-pmcmc-eval,eval=TRUE,purl=TRUE,include=FALSE-----------------------
+bake(file="parus-pmcmc.rds",dependson=starts,{
+  foreach (start=iter(starts,"row"),.combine=c,
+    .errorhandling="remove",.inorder=FALSE) %dopar% 
+    {
+      library(pomp)
+      mf1 |>
+        pmcmc(
+          Nmcmc=2000,Np=200,params=start,
+          dprior=Csnippet("
+            lik = dunif(r,0,10,1)+dunif(sigma,0,2,1)+
+                  dunif(K,0,600,1)+dunif(N_0,0,600,1);
+            lik = (give_log) ? lik : exp(lik);"
+          ),
+          paramnames=c("K","N_0","r","sigma"),
+          proposal=mvn.rw.adaptive(
+            rw.sd=c(r=0.02,sigma=0.02,K=50,N_0=50),
+            scale.start=100,shape.start=100
+          )
+        ) -> chain
+      chain |> pmcmc(Nmcmc=20000,proposal=mvn.rw(covmat(chain)))
+    } -> chains
+}) -> chains
+
+
+## ----pmcmc-diagnostics1-------------------------------------------------------
+library(coda)
+chains |> traces() -> traces
+rejectionRate(traces[,c("r","sigma","K","N_0")])
+
+
+## ----pmcmc-diagnostics2-------------------------------------------------------
+traces %>% autocorr.diag(lags=c(1,5,10,50,100))
+traces <- window(traces,thin=100,start=2000)
+
+
+## ----pmcmc-diagnostics3,fig.dim=c(8,6),out.width="95%"------------------------
+traces %>%
+  lapply(as.data.frame) %>%
+  lapply(rownames_to_column,"iter") %>%
+  bind_rows(.id="chain") %>%
+  mutate(iter=as.numeric(iter)) %>%
+  select(chain,iter,loglik,r,sigma,K,N_0) %>%
+  pivot_longer(c(-chain,-iter)) %>%
+  ggplot(aes(x=iter,group=chain,color=chain,y=value))+
+  guides(color="none")+
+  labs(x="iteration",y="")+
+  geom_line(alpha=0.3)+geom_smooth(method="loess",se=FALSE)+
+  facet_wrap(name~.,scales="free_y",strip.position="left",ncol=2)+
+  theme(
+    strip.placement="outside",
+    strip.background=element_rect(fill=NA,color=NA)
+  )
+
+gelman.diag(traces[,c("r","sigma","K","N_0")])
+
+
+## ----parus_posterior----------------------------------------------------------
+traces %>%
+  lapply(as.data.frame) %>%
+  lapply(rownames_to_column,"iter") %>%
+  bind_rows(.id="chain") %>%
+  select(chain,iter,loglik,r,sigma,K,N_0) %>%
+  pivot_longer(c(-chain,-iter)) %>%
+  ggplot(aes(x=value))+
+  geom_density()+
+  geom_rug()+
+  labs(x="")+
+  facet_wrap(~name,scales="free",strip.position="bottom")+
+  theme(
+    strip.placement="outside",
+    strip.background=element_rect(fill=NA,color=NA)
+  )
+
+traces %>% summary()
 
 
 ## ----mle_sim_plot1------------------------------------------------------------
