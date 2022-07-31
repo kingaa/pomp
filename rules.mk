@@ -197,7 +197,7 @@ clean:
 	$(RM) -r check
 	$(RM) src/*.o src/*.so src/symbols.rds
 	$(RM) -r lib
-	$(RM) -r *-Ex.Rout *-Ex.timings *-Ex.pdf
+	$(RM) -r *-Ex.Rout *-Ex.timings *-Ex.pdf Rplots.*
 	$(RM) *.tar.gz $(PKGVERS).zip $(PKGVERS).tgz $(PKG).pdf
 	$(MAKE) -C www clean
 	$(MAKE) -C inst/doc clean
