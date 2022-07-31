@@ -710,21 +710,45 @@ This is due to a name conflict between a quantity `beta` defined as a model para
 To work around this, simply rename the parameter.
 For example, it could be called `Beta` instead.
 
-## I get an error saying X "must be a function of prototype" Y.  What does this mean?
+## I get an error saying X "must be a function of the form" Y.  What does this mean?
 
 The error message displays the "prototype" of the function **pomp** expects.
 For example, in the message
 ```
-Error : in 'sannbox': 'candidate.dist' must be a function of prototype 'candidate.dist(par, temp, scale, ...)'.
+Error : in 'sannbox': 'candidate.dist' must be a function of the form 'candidate.dist(par, temp, scale, ...)'.
 ```
 the prototype expected is `candidate.dist(par, temp, scale, ...)`.
 This means that a function supplied to the `candidate.dist` argument must have at least the arguments `par`, `temp`, `scale`, and `...`.
 Note that the ellipses (`...`) are necessary.
 Similarly, the error message
 ```
-Error: in ‘rmeasure’: ‘rmeasure’ must be a function of prototype ‘rmeasure(...)’
+Error: in ‘rmeasure’: ‘rmeasure’ must be a function of the form ‘rmeasure(...)’
 ```
 tells us that we have left the `...` out of the argument list in the function we supplied for `rmeasure`.
+
+## What does it mean when a variable is not found among the parameters, or state variables, or covariates, or observables?
+
+Error messages like the following
+```
+Error : in 'pmcmc': in 'dprior': variable 'r' not found among the parameters.
+```
+or
+```
+Error : in 'dmeasure': variable 'y2' not found among the observables.
+```
+or similar messages, wherein a named variable is not found among the parameters, state variables, covariates, or observables, arise when a C snippet-based [workhorse function](https://kingaa.github.io/manuals/pomp/html/workhorses.html), i.e., one that executes a basic model component, cannot find the named variable among the supplied parameters, state variables, covariates, or observables.
+Typically this means that either
+(a) the full vector of model parameters has been supplied neither via the `params` argument nor in the pomp object's `coef` slot;
+(b) a basic model component that computes state variables (e.g., `rinit` or `rprocess`) is not returning the full vector of state variables;
+(c) the covariate table does not contain the full set of covariates; or
+(d) some data variable is missing.
+
+It may seem puzzling when, for example, the `rinit` workhorse complains about the lack of a parameter upon which the rinit basic component does not in fact depend.
+To understand this, it is necessary to know that, whenever one or more C snippets are passed to a **pomp** function, the names of the parameters, state variables, covariates, and observables that are needed by *any* of them will be expected by *all* of them.
+Thus, when `rinit` complains that it cannot find a certain parameter that it actually doesn't need to know, it is effectively doing so on behalf of another basic model component which will depend on that parameter.
+
+Finally, note that, while one informs **pomp** functions about the names of parameters using the `paramnames` argument and about the names of state variables using `statenames`, the names of covariates are by default drawn from the covariate table itself, and the names of the observables are taken from the data.
+This behavior can be over-ridden using the optional `covarnames` and `obsnames` arguments.
 
 # Interpreting results
 

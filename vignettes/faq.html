@@ -103,7 +103,8 @@ if (window.hljs) {
 <li><a href="#extrapolation-warnings"><span class="toc-section-number">4.5</span> I get warnings about extrapolation in ‘table_lookup’. What is this about?</a></li>
 <li><a href="#whitespace-error"><span class="toc-section-number">4.6</span> When trying to use C snippets, I get an error message that refers to files and directories that don’t exist. What is going on?</a></li>
 <li><a href="#beta-redefined"><span class="toc-section-number">4.7</span> ‘Warning: “beta” redefined.’</a></li>
-<li><a href="#i-get-an-error-saying-x-must-be-a-function-of-prototype-y.-what-does-this-mean"><span class="toc-section-number">4.8</span> I get an error saying X “must be a function of prototype” Y. What does this mean?</a></li>
+<li><a href="#i-get-an-error-saying-x-must-be-a-function-of-the-form-y.-what-does-this-mean"><span class="toc-section-number">4.8</span> I get an error saying X “must be a function of the form” Y. What does this mean?</a></li>
+<li><a href="#what-does-it-mean-when-a-variable-is-not-found-among-the-parameters-or-state-variables-or-covariates-or-observables"><span class="toc-section-number">4.9</span> What does it mean when a variable is not found among the parameters, or state variables, or covariates, or observables?</a></li>
 </ul></li>
 <li><a href="#interpreting-results"><span class="toc-section-number">5</span> Interpreting results</a><ul>
 <li><a href="#mif-vs-pfilter-likelihood"><span class="toc-section-number">5.1</span> Is the likelihood <code>mif2</code> gives me the same as the likelihood I get from <code>pfilter</code>?</a></li>
@@ -151,7 +152,7 @@ if (window.hljs) {
 <p>To cite the ‘pomp’ package in publications, use:</p>
 <p>A. A. King, D. Nguyen, E. L. Ionides (2016). Statistical Inference for Partially Observed Markov Processes via the R Package pomp. Journal of Statistical Software 69(12): 1–43. <a href="DOI:10.18637/jss.v069.i12" class="uri">DOI:10.18637/jss.v069.i12</a>.</p>
 <p>Additionally, consider citing the package itself:</p>
-<p>A. A. King, E. L. Ionides, C. M. Breto, S. P. Ellner, M. J. Ferrari, S. Funk, S. G. Johnson, B. E. Kendall, M. Lavine, D. Nguyen, E. B. O’Dea, D. C. Reuman, H. Wearing, and S. N. Wood (2022). pomp: Statistical Inference for Partially Observed Markov Processes. (R package, version 4.3). <a href="https://kingaa.github.io/pomp/" class="uri">https://kingaa.github.io/pomp/</a></p>
+<p>A. A. King, E. L. Ionides, C. M. Breto, S. P. Ellner, M. J. Ferrari, S. Funk, S. G. Johnson, B. E. Kendall, M. Lavine, D. Nguyen, E. B. O’Dea, D. C. Reuman, H. Wearing, and S. N. Wood (2022). pomp: Statistical Inference for Partially Observed Markov Processes. (R package, version 4.3.2.0). <a href="https://kingaa.github.io/pomp/" class="uri">https://kingaa.github.io/pomp/</a></p>
 <p>You can get this information by executing <code>citation(&quot;pomp&quot;)</code> in an <strong>R</strong> session. LaTeX users can get a BibTeX entry for these publications by executing <code>toBibtex(citation(&quot;pomp&quot;))</code>.</p>
 <p>If you use <strong>pomp</strong> in a publication, please take a moment to let us know! Send an email with the citation, and we’ll include it in <a href="./biblio.html">the bibliography</a>.</p>
 </div>
@@ -604,13 +605,23 @@ warning: &quot;beta&quot; redefined
 ...</code></pre>
 <p>This is due to a name conflict between a quantity <code>beta</code> defined as a model parameter, covariate, data variable, or in some other way defined in a C snippet, and the <a href="https://en.wikipedia.org/wiki/Beta_function"><em>Euler beta function</em></a>, which is defined as <code>beta</code> in <code>Rmath.h</code> and documented in the <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions">R extensions manual</a>. To work around this, simply rename the parameter. For example, it could be called <code>Beta</code> instead.</p>
 </div>
-<div id="i-get-an-error-saying-x-must-be-a-function-of-prototype-y.-what-does-this-mean" class="section level2">
-<h2><span class="header-section-number">4.8</span> I get an error saying X “must be a function of prototype” Y. What does this mean?</h2>
+<div id="i-get-an-error-saying-x-must-be-a-function-of-the-form-y.-what-does-this-mean" class="section level2">
+<h2><span class="header-section-number">4.8</span> I get an error saying X “must be a function of the form” Y. What does this mean?</h2>
 <p>The error message displays the “prototype” of the function <strong>pomp</strong> expects. For example, in the message</p>
-<pre><code>Error : in &#39;sannbox&#39;: &#39;candidate.dist&#39; must be a function of prototype &#39;candidate.dist(par, temp, scale, ...)&#39;.</code></pre>
+<pre><code>Error : in &#39;sannbox&#39;: &#39;candidate.dist&#39; must be a function of the form &#39;candidate.dist(par, temp, scale, ...)&#39;.</code></pre>
 <p>the prototype expected is <code>candidate.dist(par, temp, scale, ...)</code>. This means that a function supplied to the <code>candidate.dist</code> argument must have at least the arguments <code>par</code>, <code>temp</code>, <code>scale</code>, and <code>...</code>. Note that the ellipses (<code>...</code>) are necessary. Similarly, the error message</p>
-<pre><code>Error: in ‘rmeasure’: ‘rmeasure’ must be a function of prototype ‘rmeasure(...)’</code></pre>
+<pre><code>Error: in ‘rmeasure’: ‘rmeasure’ must be a function of the form ‘rmeasure(...)’</code></pre>
 <p>tells us that we have left the <code>...</code> out of the argument list in the function we supplied for <code>rmeasure</code>.</p>
+</div>
+<div id="what-does-it-mean-when-a-variable-is-not-found-among-the-parameters-or-state-variables-or-covariates-or-observables" class="section level2">
+<h2><span class="header-section-number">4.9</span> What does it mean when a variable is not found among the parameters, or state variables, or covariates, or observables?</h2>
+<p>Error messages like the following</p>
+<pre><code>Error : in &#39;pmcmc&#39;: in &#39;dprior&#39;: variable &#39;r&#39; not found among the parameters.</code></pre>
+<p>or</p>
+<pre><code>Error : in &#39;dmeasure&#39;: variable &#39;y2&#39; not found among the observables.</code></pre>
+<p>or similar messages, wherein a named variable is not found among the parameters, state variables, covariates, or observables, arise when a C snippet-based <a href="https://kingaa.github.io/manuals/pomp/html/workhorses.html">workhorse function</a>, i.e., one that executes a basic model component, cannot find the named variable among the supplied parameters, state variables, covariates, or observables. Typically this means that either (a) the full vector of model parameters has been supplied neither via the <code>params</code> argument nor in the pomp object’s <code>coef</code> slot; (b) a basic model component that computes state variables (e.g., <code>rinit</code> or <code>rprocess</code>) is not returning the full vector of state variables; (c) the covariate table does not contain the full set of covariates; or (d) some data variable is missing.</p>
+<p>It may seem puzzling when, for example, the <code>rinit</code> workhorse complains about the lack of a parameter upon which the rinit basic component does not in fact depend. To understand this, it is necessary to know that, whenever one or more C snippets are passed to a <strong>pomp</strong> function, the names of the parameters, state variables, covariates, and observables that are needed by <em>any</em> of them will be expected by <em>all</em> of them. Thus, when <code>rinit</code> complains that it cannot find a certain parameter that it actually doesn’t need to know, it is effectively doing so on behalf of another basic model component which will depend on that parameter.</p>
+<p>Finally, note that, while one informs <strong>pomp</strong> functions about the names of parameters using the <code>paramnames</code> argument and about the names of state variables using <code>statenames</code>, the names of covariates are by default drawn from the covariate table itself, and the names of the observables are taken from the data. This behavior can be over-ridden using the optional <code>covarnames</code> and <code>obsnames</code> arguments.</p>
 </div>
 </div>
 <div id="interpreting-results" class="section level1">
@@ -677,10 +688,10 @@ warning: &quot;beta&quot; redefined
 <h1>References</h1>
 <div id="refs" class="references">
 <div id="ref-Ionides2015">
-<p>Ionides EL, Nguyen D, Atchadé Y, Stoev S, King AA (2015). “Inference for Dynamic and Latent Variable Models via Iterated, Perturbed Bayes Maps.” <em>Proceedings of the National Academy of Sciences of the U.S.A.</em>, <strong>112</strong>(3), 719–724. <a href="https://doi.org/10.1073/pnas.1410597112">https://doi.org/10.1073/pnas.1410597112</a>.</p>
+<p>Ionides EL, Nguyen D, Atchadé Y, Stoev S, King AA (2015). “Inference for Dynamic and Latent Variable Models via Iterated, Perturbed Bayes Maps.” <em>Proc Natl Acad Sci</em>, <strong>112</strong>(3), 719–724. <a href="https://doi.org/10.1073/pnas.1410597112">https://doi.org/10.1073/pnas.1410597112</a>.</p>
 </div>
 <div id="ref-King2016">
-<p>King AA, Nguyen D, Ionides EL (2016). “Statistical Inference for Partially Observed Markov Processes via the R Package Pomp.” <em>Journal of Statistical Software</em>, <strong>69</strong>(12), 1–43. <a href="https://doi.org/10.18637/jss.v069.i12">https://doi.org/10.18637/jss.v069.i12</a>.</p>
+<p>King AA, Nguyen D, Ionides EL (2016). “Statistical Inference for Partially Observed Markov Processes via the R Package Pomp.” <em>J Stat Softw</em>, <strong>69</strong>(12), 1–43. <a href="https://doi.org/10.18637/jss.v069.i12">https://doi.org/10.18637/jss.v069.i12</a>.</p>
 </div>
 </div>
 </div>
