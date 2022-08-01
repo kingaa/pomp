@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.3.4}{
+  \itemize{
+    \item The new function \code{wquant} computes weighted quantiles.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.3.3}{
   \itemize{
     \item The precise order in which the \code{pmcmc} function computes prior and likelihood of furnished and proposed parameters has changed slightly.
