@@ -22,12 +22,24 @@ wquant(
 If \code{probs} has names, these are inherited.
 }
 \description{
-Computes weighted quantiles
+Computes weighted quantiles.
+}
+\details{
+\code{wquant} computes a quantile of type 7 according to the typology of \code{\link[stats]{quantile}}.
 }
 \examples{
 x <- c(1,1,1,2,2,3,3,3,3,4,5,5,6,6,6)
 quantile(x)
 wquant(c(1,2,3,4,5,6),weights=c(3,2,4,1,2,3))
+
+\dontshow{
+  stopifnot(quantile(x)==wquant(c(1,2,3,4,5,6),weights=c(3,2,4,1,2,3)))
+  try(wquant(c(1,NA),c(1,2)))
+  try(wquant(c(1,2),c(NA,1)))
+  try(wquant(c(1,2,3),c(1,2)))
+  try(wquant(c(1,2,3),c(1,1,1),probs=c(0.1,NA)))
+  try(wquant(c(1,2,3),c(1,2,3),probs=c(0.1,2)))
+}
 
 }
 \author{
