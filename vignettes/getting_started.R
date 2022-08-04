@@ -1,7 +1,7 @@
 params <-
 list(prefix = "getting_started")
 
-## ----prelims,echo=FALSE,cache=FALSE-------------------------------------------
+## ----prelims------------------------------------------------------------------
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -16,7 +16,7 @@ theme_set(theme_bw())
 bigtick <- Sys.time()
 
 
-## ----parallel_setup,include=FALSE,purl=TRUE,cache=FALSE-----------------------
+## ----parallel_setup-----------------------------------------------------------
 if (file.exists("CLUSTER.R")) {
   source("CLUSTER.R")
 } else {
@@ -29,7 +29,7 @@ registerDoRNG(348885445L)
 
 
 
-## ----sim1,warning=TRUE--------------------------------------------------------
+## ----sim1---------------------------------------------------------------------
 library(pomp)
 
 simulate(t0=0, times=1:20,
@@ -136,7 +136,7 @@ ggplot(data=sims,aes(x=time,y=value,color=variable,
   labs(y="",color="")
 
 
-## ----sim2_sim3,message=F------------------------------------------------------
+## ----sim2_sim3----------------------------------------------------------------
 simulate(sim2,params=p,
   times=seq(0,3),
   nsim=500,format="data.frame") -> sims
@@ -280,7 +280,7 @@ ll_rick1
 
 
 
-## ----vp_loglik_eval,include=FALSE,purl=TRUE-----------------------------------
+## ----vp_loglik_eval-----------------------------------------------------------
 bake("vp_loglik.rds",{
   vpC |>
     pfilter(Np=1000,dmeasure=dmeas,
@@ -404,7 +404,7 @@ ofun2(fit$par)
 coef(ofun2)
 
 
-## ----mif_guesses,fig.width=4,fig.height=4-------------------------------------
+## ----mif_guesses--------------------------------------------------------------
 sobol_design(
   lower=c(r=0,K=100,sigma=0,N_0=150,b=1),
   upper=c(r=5,K=600,sigma=2,N_0=150,b=1),
@@ -414,7 +414,7 @@ plot(guesses,pch=16)
 
 
 
-## ----vp_mif1_eval,include=FALSE,purl=TRUE-------------------------------------
+## ----vp_mif1_eval-------------------------------------------------------------
 bake("vp_mif1.rds",{
   vpC |>
     mif2(
@@ -444,7 +444,7 @@ mf1 |> pfilter() |> logLik() |> replicate(n=5) |> logmeanexp(se=TRUE)
 
 
 
-## ----parus_mif1_eval,include=FALSE,eval=TRUE,purl=TRUE------------------------
+## ----parus_mif1_eval----------------------------------------------------------
 bake("parus_mif1.rds",{
   library(foreach)
   
@@ -481,7 +481,7 @@ mifs |>
 
 
 
-## ----parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE-------------------------
+## ----parus_pf1_eval-----------------------------------------------------------
 bake(file="parus_pf1.rds",{
   foreach (mf=mifs,
     .combine=rbind, .packages=c("pomp"), 
@@ -496,7 +496,7 @@ bake(file="parus_pf1.rds",{
 }) -> estimates
 
 
-## ----mif_plot4,warning=FALSE,fig.width=4,fig.height=4-------------------------
+## ----mif_plot4----------------------------------------------------------------
 estimates |>
   full_join(guesses) |>
   filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) |>
@@ -509,7 +509,7 @@ estimates |>
 
 
 
-## ----parus_mif2_eval,include=FALSE,eval=TRUE,purl=TRUE------------------------
+## ----parus_mif2_eval----------------------------------------------------------
 bake(file="parus_mif2.rds",{
   estimates |>
     filter(!is.na(loglik)) |>
@@ -542,7 +542,7 @@ estimates |>
   head()
 
 
-## ----mif2_plot1,fig.width=4,fig.height=4--------------------------------------
+## ----mif2_plot1---------------------------------------------------------------
 estimates |>
   filter(loglik>max(loglik,na.rm=TRUE)-4) |>
   {\(dat)
@@ -550,7 +550,7 @@ estimates |>
   }()
 
 
-## ----parus_pd,fig.width=4,fig.height=4----------------------------------------
+## ----parus_pd-----------------------------------------------------------------
 estimates |>
   filter(loglik>max(loglik)-10) |>
   select(r,K,sigma,N_0,b) |>
@@ -573,7 +573,7 @@ dim(starts)
 pairs(~r+sigma+K+N_0+b,data=starts)
 
 
-## ----parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE---------------------
+## ----parus_profile_eval-------------------------------------------------------
 bake(file="parus_profile.rds",{
   foreach (start=iter(starts,"row"),
     .combine=rbind, .packages=c("pomp"),
@@ -614,7 +614,7 @@ r_prof |>
   scale_x_log10()
 
 
-## ----r_prof_lrt,echo=FALSE----------------------------------------------------
+## ----r_prof_lrt---------------------------------------------------------------
 r_prof |>
   group_by(r) |>
   filter(rank(-loglik)<=2) |>
@@ -716,7 +716,7 @@ starts
 
 
 
-## ----parus-pmcmc-eval,eval=TRUE,purl=TRUE,include=FALSE-----------------------
+## ----parus-pmcmc-eval---------------------------------------------------------
 bake(file="parus_pmcmc.rds",dependson=starts,{
   foreach (start=iter(starts,"row"),.combine=c,
     .errorhandling="remove",.inorder=FALSE) %dopar% 
@@ -758,7 +758,7 @@ traces <- window(traces,thin=100,start=2000)
 traces |> effectiveSize()
 
 
-## ----pmcmc-diagnostics3,fig.dim=c(8,6),out.width="95%"------------------------
+## ----pmcmc-diagnostics3-------------------------------------------------------
 traces |>
   lapply(as.data.frame) |>
   lapply(rownames_to_column,"iter") |>
@@ -886,7 +886,7 @@ vp_probe
 summary(vp_probe)
 
 
-## ----probe1_plot,fig.width=6.8,fig.height=6.8---------------------------------
+## ----probe1_plot--------------------------------------------------------------
 plot(vp_probe)
 
 

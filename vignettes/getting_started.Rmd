@@ -1,6 +1,6 @@
 ---
-title: "Getting started with pomp"
-author: "Aaron A. King"
+title: Getting started with pomp
+author: Aaron A. King
 output:
   html_document:
     theme: default
@@ -25,10 +25,15 @@ Licensed under the [Creative Commons attribution-noncommercial license](http://c
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
 
-```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
+```{r knitr-opts}
+#| include: false
+#| purl: false
+#| cache: false
 source("setup.R", local = knitr::knit_global())
 ```
-```{r prelims,echo=FALSE,cache=FALSE}
+```{r prelims}
+#| echo: false
+#| cache: false
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -43,7 +48,10 @@ theme_set(theme_bw())
 bigtick <- Sys.time()
 ```
 
-```{r parallel_setup,include=FALSE,purl=TRUE,cache=FALSE}
+```{r parallel_setup}
+#| include: false
+#| purl: true
+#| cache: false
 if (file.exists("CLUSTER.R")) {
   source("CLUSTER.R")
 } else {
@@ -105,7 +113,12 @@ These conditions can be represented schematically by the following diagram, whic
 
 -----------------------------------
 
-```{r ssdiag2,echo=FALSE,purl=FALSE,fig.height=3,fig.width=6,fig.cap="**Conditional independence graph of a POMP.**  The latent state $X_n$ at time $t_n$ is conditionally independent of its history given $X_{n-1}$.  The observation $Y_n$ is conditionally independent of all other variables given $X_n$.  The underlying time scale can be taken to be either discrete or continuous, and the observation times need not be equally spaced."}
+```{r ssdiag2}
+#| echo: false
+#| purl: false
+#| fig.height: 3
+#| fig.width: 6
+#| fig.cap: "**Conditional independence graph of a POMP.**  The latent state $X_n$ at time $t_n$ is conditionally independent of its history given $X_{n-1}$.  The observation $Y_n$ is conditionally independent of all other variables given $X_n$.  The underlying time scale can be taken to be either discrete or continuous and the observation times need not be equally spaced."
 library(grid)
 vp <- viewport(x=unit(0.5,"npc"),y=unit(0.54,"npc"),
   width=unit(0.96,"npc"),height=unit(0.96,"npc"))
@@ -232,7 +245,8 @@ We'll also need to choose values for the model parameters, $r$, $K$, and $\sigma
 We'll also need to make a choice regarding the initial condition, $N(0)$.
 The simplest choice is to treat $N(0)=N_0$ as a parameter.
 
-```{r sim1,warning=TRUE}
+```{r sim1}
+#| warning: true
 library(pomp)
 
 simulate(t0=0, times=1:20,
@@ -278,7 +292,9 @@ We refer to these as 'pomp' objects.
 
 To get more insight into the structure of `sim1`, we can use `spy`:
 
-```{r sim1_spy,eval=FALSE,purl=FALSE}
+```{r sim1_spy}
+#| eval: false
+#| purl: false
 spy(sim1)
 ```
 
@@ -353,7 +369,9 @@ simulate(
 
 As before, we can examine our handiwork:
 
-```{r sim2_spy,eval=FALSE,purl=FALSE}
+```{r sim2_spy}
+#| eval: false
+#| purl: false
 spy(sim2)
 ```
 ```{r sim2_print_plot}
@@ -411,7 +429,8 @@ The second line modifies this matrix so that the columns are a set of points in 
 
 We can even run multiple simulations at each one of a set of parameters:
 
-```{r sim2_sim3,message=F}
+```{r sim2_sim3}
+#| message: false
 simulate(sim2,params=p,
   times=seq(0,3),
   nsim=500,format="data.frame") -> sims
@@ -553,7 +572,10 @@ We fold this with the data into a 'pomp' object via a call to the 'pomp'-object 
 We'll also include the same measurement model we used before.
 Because everything but the 'rprocess' component is the same as with the Ricker model, to accomplish this, we can simply do
 
-```{r vp1,eval=FALSE,include=FALSE,purl=FALSE}
+```{r vp1}
+#| eval: false
+#| purl: false
+#| include: false
 parus |>
   pomp(
     times="year", t0=1960,
@@ -803,7 +825,9 @@ Since the particle filter gives an unbiased estimate of the likelihood (not the 
 
 Let's repeat the operation for the Verhulst-Pearl model, again at arbitrary parameters.
 
-```{r vp_loglik,eval=FALSE,purl=FALSE}
+```{r vp_loglik}
+#| eval: false
+#| purl: false
 vpC |>
   pfilter(Np=1000,dmeasure=dmeas,
     params=c(r=0.5,K=2000,sigma=0.1,b=0.1,N_0=2000),
@@ -813,7 +837,9 @@ vpC |>
   logmeanexp(se=TRUE) -> ll_vp1
 ll_vp1
 ```
-```{r vp_loglik_eval,include=FALSE,purl=TRUE}
+```{r vp_loglik_eval}
+#| include: false
+#| purl: true
 bake("vp_loglik.rds",{
   <<vp_loglik>>
 }) -> ll_vp1
@@ -1074,7 +1100,9 @@ Importantly, although our hope is that the box we construct here embraces the ML
 the IF2 algorithm will be free to search parameter space outside the box.
 We use the `sobol_design` function to construct an overdispersed sequence of points within the selected box.
 
-```{r mif_guesses,fig.width=4,fig.height=4}
+```{r mif_guesses}
+#| fig.width: 4
+#| fig.height: 4
 sobol_design(
   lower=c(r=0,K=100,sigma=0,N_0=150,b=1),
   upper=c(r=5,K=600,sigma=2,N_0=150,b=1),
@@ -1096,7 +1124,9 @@ IF2 therefore gradually reduces the intensity of the random perturbations.
 
 Let us examine a single call to `mif2`.
 
-```{r vp_mif1,eval=FALSE,purl=FALSE}
+```{r vp_mif1}
+#| eval: false
+#| purl: false
 vpC |>
   mif2(
     params=guesses[1,],
@@ -1110,7 +1140,9 @@ vpC |>
     statenames=c("N")
   ) -> mf1
 ```
-```{r vp_mif1_eval,include=FALSE,purl=TRUE}
+```{r vp_mif1_eval}
+#| include: false
+#| purl: true
 bake("vp_mif1.rds",{
   <<vp_mif1>>
 }) -> mf1
@@ -1159,7 +1191,9 @@ Now we repeat this calculation from each of our `r nrow(guesses)` guesses.
 Because these computations are each independent of the others, it is both easy and worthwhile to parallelize them.
 The **foreach** package provides some useful tools in this regard.
 
-```{r parus_mif1,purl=FALSE,eval=FALSE}
+```{r parus_mif1}
+#| eval: false
+#| purl: false
 library(foreach)
 
 foreach (guess=iter(guesses,"row"),
@@ -1170,7 +1204,10 @@ foreach (guess=iter(guesses,"row"),
     
   } -> mifs
 ```
-```{r parus_mif1_eval,include=FALSE,eval=TRUE,purl=TRUE}
+```{r parus_mif1_eval}
+#| include: false
+#| eval: true
+#| purl: true
 bake("parus_mif1.rds",{
   <<parus_mif1>>
 }) -> mifs
@@ -1214,7 +1251,9 @@ mifs |>
 
 As we've discussed, to properly evaluate the likelihood at these estimates, we must perform several independent particle filter operations at each one:
 
-```{r parus_pf1,purl=FALSE,eval=FALSE}
+```{r parus_pf1}
+#| eval: false
+#| purl: false
 foreach (mf=mifs,
   .combine=rbind, .packages=c("pomp"), 
   .errorhandling="remove", .inorder=FALSE) %dopar% {
@@ -1226,7 +1265,10 @@ foreach (mf=mifs,
     
   } -> estimates
 ```
-```{r parus_pf1_eval,include=FALSE,eval=TRUE,purl=TRUE}
+```{r parus_pf1_eval}
+#| include: false
+#| eval: true
+#| purl: true
 bake(file="parus_pf1.rds",{
   <<parus_pf1>>
 }) -> estimates
@@ -1234,7 +1276,10 @@ bake(file="parus_pf1.rds",{
 
 A useful way of displaying the results of such multi-start search is the pairwise scatterplot matrix:
 
-```{r mif_plot4,warning=FALSE,fig.width=4,fig.height=4}
+```{r mif_plot4}
+#| warning: false
+#| fig.width: 4
+#| fig.height: 4
 estimates |>
   full_join(guesses) |>
   filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) |>
@@ -1252,7 +1297,8 @@ To actually parallelize, one must *register* a *parallel backend*.
 A good first choice is **doParallel**, which is a separate package that you must explicitly load.
 The following chunk of code shows how to do this, and prints the number of "workers" that result.
 
-```{r eval=FALSE,purl=FALSE}
+```{r eval=FALSE}
+#| purl: false
 library(doParallel)
 registerDoParallel()
 getDoParWorkers()
@@ -1274,7 +1320,9 @@ At this point, there's no particular reason to suspect that our IF2 searches hav
 In general, it is hard to know *a priori* how much effort will be required to find the MLE.
 Let's continue the search, starting with the best points we've uncovered so far.
 
-```{r parus_mif2,purl=FALSE,eval=FALSE}
+```{r parus_mif2}
+#| eval: false
+#| purl: false
 estimates |>
   filter(!is.na(loglik)) |>
   filter(loglik > max(loglik)-30) |>
@@ -1295,7 +1343,10 @@ foreach (start=iter(starts,"row"),
     
   } -> ests1
 ```
-```{r parus_mif2_eval,include=FALSE,eval=TRUE,purl=TRUE}
+```{r parus_mif2_eval}
+#| include: false
+#| eval: true
+#| purl: true
 bake(file="parus_mif2.rds",{
   <<parus_mif2>>
 }) -> ests1
@@ -1316,7 +1367,9 @@ estimates |>
   head()
 ```
 
-```{r mif2_plot1,fig.width=4,fig.height=4}
+```{r mif2_plot1}
+#| fig.width: 4
+#| fig.height: 4
 estimates |>
   filter(loglik>max(loglik,na.rm=TRUE)-4) |>
   {\(dat)
@@ -1335,7 +1388,9 @@ We can improve the quality of our estimates and obtain likelihood-ratio-test-bas
 In a likelihood profile, one varies the focal parameter (or parameters) across some range, maximizing the likelihood over the remaining parameters at each value of the focal parameter.
 The following codes construct a likelihood profile over $r$.
 
-```{r parus_pd,fig.width=4,fig.height=4}
+```{r parus_pd}
+#| fig.width: 4
+#| fig.height: 4
 estimates |>
   filter(loglik>max(loglik)-10) |>
   select(r,K,sigma,N_0,b) |>
@@ -1357,7 +1412,9 @@ dim(starts)
 
 pairs(~r+sigma+K+N_0+b,data=starts)
 ```
-```{r parus_profile,eval=FALSE,purl=FALSE}
+```{r parus_profile}
+#| eval: false
+#| purl: false
 foreach (start=iter(starts,"row"),
   .combine=rbind, .packages=c("pomp"),
   .errorhandling="remove", .inorder=FALSE) %dopar% {
@@ -1377,7 +1434,10 @@ foreach (start=iter(starts,"row"),
     data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
   } -> r_prof
 ```
-```{r parus_profile_eval,include=FALSE,purl=TRUE,eval=TRUE}
+```{r parus_profile_eval}
+#| include: false
+#| purl: true
+#| eval: true
 bake(file="parus_profile.rds",{
   <<parus_profile>>
 }) -> r_prof
@@ -1409,7 +1469,8 @@ r_prof |>
   scale_x_log10()
 ```
 
-```{r r_prof_lrt,echo=FALSE}
+```{r r_prof_lrt}
+#| echo: false
 r_prof |>
   group_by(r) |>
   filter(rank(-loglik)<=2) |>
@@ -1536,7 +1597,9 @@ r_prof |>
 starts
 ```
 
-```{r parus-pmcmc,eval=FALSE,purl=FALSE}
+```{r parus-pmcmc}
+#| eval: false
+#| purl: false
 foreach (start=iter(starts,"row"),.combine=c,
   .errorhandling="remove",.inorder=FALSE) %dopar% 
   {
@@ -1563,7 +1626,10 @@ foreach (start=iter(starts,"row"),.combine=c,
   } -> chains
 ```
 
-```{r parus-pmcmc-eval,eval=TRUE,purl=TRUE,include=FALSE}
+```{r parus-pmcmc-eval}
+#| eval: true
+#| purl: true
+#| include: false
 bake(file="parus_pmcmc.rds",dependson=starts,{
   <<parus-pmcmc>>
 }) -> chains
@@ -1599,7 +1665,10 @@ We discard 2000 iterations as a burn-in.
 
 Now let us examine the traces.
 
-```{r pmcmc-diagnostics3,fig.dim=c(8,6),out.width="95%"}
+```{r pmcmc-diagnostics3}
+#| fig.width: 8
+#| fig.dim: 6
+#| out.width: 95%
 traces |>
   lapply(as.data.frame) |>
   lapply(rownames_to_column,"iter") |>
@@ -1773,7 +1842,9 @@ Evidently, `summary` returns a list with several elements.
 The `quantiles` element contains, for each probe, what fraction of the `nsim` simulations had probe values below the value of the probe applied to the data.
 The `pvals` element contains $P$-values associated with the two-sided test of the hypothesis that the data were generated by the model.
 
-```{r probe1_plot,fig.width=6.8,fig.height=6.8}
+```{r probe1_plot}
+#| fig.width: 6.8
+#| fig.height: 6.8
 plot(vp_probe)
 ```
 
