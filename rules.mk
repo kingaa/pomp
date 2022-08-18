@@ -104,7 +104,7 @@ covr.rds: DESCRIPTION
 	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; report(cov,file="covr.html",browse=TRUE); saveRDS(cov,file="covr.rds")'
 
 xcovr: covr
-	$(REXE) -e 'library(covr); readRDS("covr.rds") -> cov; codecov(coverage=cov,token="$(TOKEN)",quiet=FALSE)'
+	$(REXE) -e 'library(covr); readRDS("covr.rds") -> cov; codecov(coverage=cov,quiet=FALSE)'
 
 win: dist
 	curl -T $(PKGVERS).tar.gz ftp://win-builder.r-project.org/R-release/
