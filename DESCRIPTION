@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 4.3.4.1
-Date: 2022-08-02
+Version: 4.3.4.2
+Date: 2022-08-18
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -27,7 +27,6 @@ Suggests: ggplot2, knitr, tidyr, dplyr, subplex, nloptr
 SystemRequirements: For Windows users, Rtools (see https://cran.r-project.org/bin/windows/Rtools/).
 License: GPL-3
 LazyData: true
-Contact: kingaa at umich dot edu
 BugReports: https://github.com/kingaa/pomp/issues/
 Encoding: UTF-8
 Collate: 
