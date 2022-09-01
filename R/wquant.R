@@ -3,7 +3,7 @@
 ##' Computes weighted quantiles.
 ##'
 ##' \code{wquant} computes a quantile of type 7 according to the typology of \code{\link[stats]{quantile}}.
-##' 
+##'
 ##' @param x numeric; a vector of data.
 ##' @param weights numeric; vector of weights.
 ##' @param probs numeric; desired quantiles.
@@ -11,7 +11,7 @@
 ##' @return
 ##' \code{wquant} returns a vector containing the quantiles.
 ##' If \code{probs} has names, these are inherited.
-##' 
+##'
 ##' @author Aaron A. King
 ##' @include package.R
 ##' @examples
