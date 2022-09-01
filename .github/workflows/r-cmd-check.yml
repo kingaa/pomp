@@ -32,6 +32,27 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
       _R_CHECK_DEPENDS_ONLY_: false
+      _R_CHECK_ALL_NON_ISO_C_: true
+      _R_CHECK_CODE_ASSIGN_TO_GLOBALENV_: true
+      _R_CHECK_CODE_ATTACH_: true
+      _R_CHECK_CODE_DATA_INTO_GLOBALENV_: true
+      _R_CHECK_CODE_USAGE_VIA_NAMESPACES_: true
+      _R_CHECK_DEPRECATED_DEFUNCT_: true
+      _R_CHECK_EXECUTABLES_EXCLUSIONS_: false
+      _R_CHECK_INSTALL_DEPENDS_: true
+      _R_CHECK_NO_RECOMMENDED_: true
+      _R_CHECK_OVERWRITE_REGISTERED_S3_METHODS_: true
+      _R_CHECK_REPLACING_IMPORTS_: true
+      _R_CHECK_S3_METHODS_NOT_REGISTERED_: true
+      _R_CHECK_SCREEN_DEVICE_: stop
+      _R_CHECK_SRC_MINUS_W_IMPLICIT_: true
+      _R_CHECK_SRC_MINUS_W_UNUSED_: true
+      _R_CHECK_SUGGESTS_ONLY_: true
+      _R_CHECK_TOPLEVEL_FILES_: true
+      _R_CHECK_VC_DIRS_: true
+      _R_CHECK_WALL_FORTRAN_: true
+      _R_CHECK_USE_CODETOOLS_: true
+      _R_CHECK_CODETOOLS_PROFILE_: "suppressLocalUnused=FALSE,suppressPartialMatchArgs=FALSE,suppressParamUnused=TRUE,suppressUndefined=FALSE"
 
     steps:
       - uses: actions/checkout@v2
