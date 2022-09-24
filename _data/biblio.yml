@@ -970,6 +970,14 @@
   pages: "533"
   doi: "https://doi.org/10.1038/s41467-022-28145-7"
 
+- key: Sartori2022
+  author: "L. Sartori, M. Pereira, and S. Oliva"
+  year: "2022"
+  title: "Time-scale analysis and parameter fitting for vector-borne diseases with spatial dynamics"
+  journal: "Bulletin of Mathematical Biology"
+  volume: "84"
+  doi: "https://doi.org/10.1007/s11538-022-01083-7"
+
 - key: Shah2022
   author: "M. Shah, G. Ferra, S. Fitzgerald, P. J. Barreira, P. C. Sabeti, and A. Colubri"
   year: "2022"
