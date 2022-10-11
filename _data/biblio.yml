@@ -59,6 +59,14 @@
   pages: "6689&#x2013;6694"
   doi: "https://doi.org/10.1073/pnas.1523941113"
 
+- key: Bakker2022
+  author: "K. M. Bakker, M. C. Eisenberg, R. J. Woods, and M. E. Martinez"
+  year: "2022"
+  title: "Identifying optimal vaccination scenarios to reduce varicella zoster virus transmission and reactivation"
+  journal: "BMC Medicine"
+  volume: "20"
+  doi: "https://doi.org/10.1186/s12916-022-02534-7"
+
 - key: Baracchini2017
   author: "T. Baracchini, A. A. King, M. J. Bouma, X. Rod&oacute;, E. Bertuzzo, and M. Pascual"
   year: "2017"
