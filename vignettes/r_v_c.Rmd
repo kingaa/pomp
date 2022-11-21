@@ -6,11 +6,9 @@ output:
     highlight: kate
     toc: yes
     toc_depth: 3
-params:
-  prefix: "R_v_C"
 ---
 
-```{css echo=FALSE}
+```{css echo=FALSE,purl=FALSE}
 a:link, a:visited {
   color: #0000ff;
   text-decoration: none;
@@ -25,8 +23,14 @@ code {
 ```
 
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
+params <- list(prefix="R_v_C")
 source("setup.R", local = knitr::knit_global())
 ```
+
+The **R** codes in this script are `r xfun::embed_file("r_v_c.R",text="available for download")`.
+This work is licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
+Please share and remix noncommercially, mentioning its origin.  
+![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
 
 --------------------------------------------------------
 
@@ -162,3 +166,4 @@ system.time(pfilter(Gompertz,Np=10000))
 -----------------------------------
 
 This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
+

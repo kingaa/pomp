@@ -1,31 +1,3 @@
-params <-
-list(prefix = "R_v_C")
-
-## a:link, a:visited {
-
-##   color: #0000ff;
-
-##   text-decoration: none;
-
-## }
-
-## a:hover, a:active {
-
-##   color: #cc3333;
-
-##   text-decoration: none;
-
-## }
-
-## code {
-
-##   font-size: 110%;
-
-## }
-
-
-
-
 ## ----packages-----------------------------------------------------------------
 library(pomp)
 library(ggplot2)

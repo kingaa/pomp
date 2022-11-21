@@ -15,13 +15,12 @@ output:
     df_print: kable
     includes:
       after_body: bottom_menu.html
-params:
-  prefix: "getting_started"
 bibliography: pomp.bib
 csl: jss.csl
 ---
 
-Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
+The **R** codes in this script are `r xfun::embed_file("getting_started.R",text="available for download")`.
+This work is licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
 
@@ -29,11 +28,13 @@ Please share and remix noncommercially, mentioning its origin.
 #| include: false
 #| purl: false
 #| cache: false
+params <- list(prefix="getting_started")
 source("setup.R", local = knitr::knit_global())
 ```
 ```{r prelims}
 #| echo: false
 #| cache: false
+## GETTING STARTED WITH POMP
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,

@@ -12,8 +12,9 @@ RM = rm -f
 
 default: vignettes clean
 
-vignettes: faq.html He2010.html He2010.R oaxaca.html oaxaca.R r_v_c.html r_v_c.R upgradeGuide.html c_api.html \
-pompjss.pdf pompjss.R getting_started.html getting_started.R
+vignettes: faq.html He2010.R He2010.html oaxaca.R oaxaca.html \
+r_v_c.R r_v_c.html upgradeGuide.html c_api.html \
+pompjss.R pompjss.pdf getting_started.R getting_started.html
 
 %.Rout: %.R
 	R < $*.R > $*.Rout

@@ -1,7 +1,5 @@
-params <-
-list(prefix = "getting_started")
-
 ## ----prelims------------------------------------------------------------------
+## GETTING STARTED WITH POMP
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
