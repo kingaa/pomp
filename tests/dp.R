@@ -133,7 +133,7 @@ create_example(N_0=1000,mu=0.02,simulator="gillespie",
   times=-1/0.02*log(c(1,0.8,0.6,0.4,0.2,0.01))) %>%
   simulate(format="data.frame", nsim=1000, seed=374244) %>%
   ggplot(aes(x=N,group=time))+
-  geom_histogram(aes(y=..density..),binwidth=10)+
+  geom_histogram(aes(y=after_stat(density)),binwidth=10)+
   labs(title="death process, Gillespie",subtitle=expression(mu==0.02))+
   facet_grid(time~.,labeller=label_bquote(t==.(time)))+
   theme(strip.text=element_text(size=6))
@@ -142,7 +142,7 @@ create_example(N_0=1000,mu=0.02,simulator="onestep",
   times=-1/0.02*log(c(1,0.8,0.6,0.4,0.2,0.01))) %>%
   simulate(format="data.frame", nsim=1000, seed=374244) %>%
   ggplot(aes(x=N,group=time))+
-  geom_histogram(aes(y=..density..),binwidth=10)+
+  geom_histogram(aes(y=after_stat(density)),binwidth=10)+
   labs(title="death process, onestep",subtitle=expression(mu==0.02))+
   facet_grid(time~.,labeller=label_bquote(t==.(time)))+
   theme(strip.text=element_text(size=6))
@@ -151,7 +151,7 @@ create_example(N_0=1000,mu=0.02,simulator="euler",
   times=-1/0.02*log(c(1,0.8,0.6,0.4,0.2,0.01))) %>%
   simulate(format="data.frame", nsim=1000, seed=374244) %>%
   ggplot(aes(x=N,group=time))+
-  geom_histogram(aes(y=..density..),binwidth=10)+
+  geom_histogram(aes(y=after_stat(density)),binwidth=10)+
   labs(title="death process, Euler",subtitle=expression(mu==0.02))+
   facet_grid(time~.,labeller=label_bquote(t==.(time)))+
   theme(strip.text=element_text(size=6))

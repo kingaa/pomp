@@ -1,5 +1,5 @@
 
-R version 4.2.1 (2022-06-23) -- "Funny-Looking Kid"
+R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"
 Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -71,7 +71,7 @@ Error : 'skeleton' is undefined for 'object' of class 'character'.
 +   labs(x="derivative",y="finite difference")+
 +   theme_bw()
 Warning message:
-Removed 9 rows containing missing values (geom_point). 
+Removed 9 rows containing missing values (`geom_point()`). 
 > 
 > try(ricker %>% pomp(skeleton=map(function(...)c(5))) %>%
 +     skeleton(x=x,times=time(ricker),params=coef(ricker)))

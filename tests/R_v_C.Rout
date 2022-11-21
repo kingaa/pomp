@@ -1,5 +1,5 @@
 
-R version 4.2.1 (2022-06-23) -- "Funny-Looking Kid"
+R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"
 Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -108,13 +108,13 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  6.396   0.053   6.450 
+  6.364   0.056   6.420 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.154   0.004   0.158 
+  0.150   0.009   0.158 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.594   0.008   0.602 
+  0.594   0.000   0.595 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
   0.028   0.000   0.028 
