@@ -358,7 +358,7 @@ In the remainder of this section, we describe and discuss several inference meth
     Feature-based
     &Nonlinear forecasting (\code{nlf}, \cref{sec:nlf}), \raggedright
     &ABC (\code{abc}, \cref{sec:abc}) \raggedright \tabularnewline
-    &synthetic likelihood (\code{probe.match}, \cref{sec:probe}) \raggedright
+    &synthetic likelihood (\code{probe\_objfun}, \cref{sec:probe}) \raggedright
     & \tabularnewline
     \hline
     \multicolumn{3}{c}{}\tabularnewline
@@ -373,7 +373,7 @@ In the remainder of this section, we describe and discuss several inference meth
     & \tabularnewline
     \hline
     Feature-based
-    &Trajectory matching (\code{traj.match}),  \raggedright
+    &Trajectory matching (\code{traj\_objfun}),  \raggedright
     & Extended Kalman filter \tabularnewline
     &extended Kalman filter,  \raggedright
     & \tabularnewline
@@ -693,7 +693,7 @@ Arguing that $S$ should be approximately multivariate normal, for suitable choic
 Simulation-based evaluation of a feature matching criterion is implemented by \code{probe} (\cref{alg:probe}).
 The feature matching criterion requires a scale, and a natural scale to use is the empirical covariance of the simulations.
 Working on this scale, as implemented by \code{probe}, there is no substantial difference between the probe approaches of \citet{Kendall1999} and \citet{Wood2010}.
-Numerical optimization of the synthetic likelihood is implemented by \code{probe.match}, which offers the choice of either the subplex method \citep{Rowan1990,subplex} or any method provided by \code{optim} or the \pkg{nloptr} package \citep{Johnson2014,Ypma2014}.
+Numerical optimization of the synthetic likelihood is achieved via the \code{probe\_objfun}, which constructs a stateful objective function suitable for use with standard optimizers such as \code{subplex} \citep{Rowan1990,subplex} or any of the methods provided by \code{optim} or the \pkg{nloptr} package \citep{Johnson2014,Ypma2014}.
 
 
 \subsection{Approximate Bayesian computation (ABC)}
@@ -993,7 +993,7 @@ plot(gomp, variables = "Y")
 \subsection{Computing the likelihood using SMC}
 
 As discussed in \cref{sec:methods}, some parameter estimation algorithms in the \pkg{pomp} package are doubly plug-and-play in that they require only \code{rprocess} and \code{rmeasure}.
-These include the nonlinear forecasting algorithm \code{nlf}, the probe-matching algorithm \code{probe.match}, and approximate Bayesian computation via \code{abc}.
+These include the nonlinear forecasting algorithm \code{nlf}, the probe-matching algorithm (\code{probe\_objfun}), and approximate Bayesian computation via \code{abc}.
 The plug-and-play full-information methods in \pkg{pomp}, however, require \code{dmeasure}, i.e., the ability to evaluate the likelihood of the data given the unobserved state.
 The \code{gompertz.dmeas} above does this, but we must fold it into the class-\class{pomp} object in order to use it.
 We can do this with another call to \code{pomp}:
@@ -1548,9 +1548,10 @@ stew(file="ricker-probe-match.rda",{
   <<ricker-probe-match-calc>>
 })
 @
-This code runs \code{optim}'s Nelder-Mead optimizer from the starting parameters \code{guess} in an attempt to maximize the synthetic likelihood based on the probes in \code{plist}.
+This code runs the \code{subplex} optimizer \citep{Rowan1990,subplex} from the starting parameters \code{guess} in an attempt to maximize the synthetic likelihood based on the probes in \code{plist}.
 Both the starting parameters and the list of probes are stored internally in \code{pb.guess}, which is why we need not specify them explicitly here.
-While \code{probe.match} provides substantial flexibility in the choice of the optimization algorithm, for situations requiring greater flexibility, \pkg{pomp} provides the function \code{probe.match.objfun}, which constructs an objective function suitable for use with arbitrary optimization routines.
+\pkg{pomp} allows full flexibility in the choice of the optimization algorithm:
+the objective function constructed by \code{probe\_objfun} is suitable for use with essentially arbitrary optimization routines.
 
 To put the synthetic likelihood approach into context, let us compare the results of estimating the Ricker model parameters using probe-matching and using iterated filtering (IF), which is based on the likelihood.
 The following code runs 600 IF iterations starting at \code{guess}:
@@ -1570,7 +1571,7 @@ stew(file="ricker-mif.rda",seed=718086921L,{
 \item the guess,
 \item the truth,
 \item the MLE from \code{mif}, and
-\item the maximum synthetic likelihood estimate (MSLE) from \code{probe.match}.
+\item the maximum synthetic likelihood estimate (MSLE) obtained by optimizing the objective function returned by \code{probe\_objfun}.
 \end{inparaenum}
 These results demonstrate that it is possible, and indeed not difficult, to maximize the likelihood for this model, contrary to the claim of \citet{Wood2010}.
 Since synthetic likelihood discards some of the information in the data, it is not surprising that \cref{tab:ricker-comparison} also shows the statistical inefficiency of the maximum synthetic likelihood relative to that of the likelihood.
