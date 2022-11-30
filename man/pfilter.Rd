@@ -21,7 +21,7 @@
   pred.var = FALSE,
   filter.mean = FALSE,
   filter.traj = FALSE,
-  save.states = FALSE,
+  save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
   ...,
   verbose = getOption("verbose", FALSE)
 )
@@ -33,7 +33,7 @@
   pred.var = FALSE,
   filter.mean = FALSE,
   filter.traj = FALSE,
-  save.states = FALSE,
+  save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
   ...,
   verbose = getOption("verbose", FALSE)
 )
@@ -82,8 +82,12 @@ For more information, see \link[=dmeasure specification]{dmeasure specification}
 \item{filter.traj}{logical; if \code{TRUE}, a filtered trajectory is returned for the state variables and parameters.
 See \code{\link{filter.traj}} for more information.}
 
-\item{save.states}{logical.
-If \code{save.states=TRUE}, the state-vector for each particle at each time is saved.}
+\item{save.states}{character;
+If \code{save.states="unweighted"}, the state-vector for each unweighted particle at each time is saved.
+If \code{save.states="weighted"}, the state-vector for each weighted particle at each time is saved, along with the corresponding weight.
+If \code{save.states="no"}, information on the latent states is not saved.
+\code{"FALSE"} is a synonym for \code{"no"} and \code{"TRUE"} is a synonym for \code{"unweighted"}.
+To retrieve the saved states, applying \code{\link{saved.states}} to the result of the \code{pfilter} computation.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
@@ -115,8 +119,8 @@ the (time-dependent) estimated effective sample size }
   retrieve one particle trajectory.
   Useful for building up the smoothing distribution.
 }
-\item{\code{\link{saved.states}}}{retrieve list of saved states.}
-\item{\code{\link{as.data.frame}}}{ coerce to a data frame }
+\item{\code{\link{saved.states}}}{retrieve saved states}
+\item{\code{\link{as.data.frame}}}{coerce to a data frame}
 \item{\code{\link{plot}}}{diagnostic plots}
 }
 }

@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.4.1}{
+  \itemize{
+    \item It is now possible to retrieve the weighted particles computed in the course of a \code{pfilter} computation.
+    To accomplish this, set \code{save.states="weighted"} in the call to \code{pfilter} and retrieve the particles and their weights using \code{saved.states}.
+    Previously, one could obtain only the unweighted particles.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.4.0}{
   \itemize{
     \item Some documentation improvements.

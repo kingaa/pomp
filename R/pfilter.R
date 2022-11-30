@@ -32,8 +32,12 @@
 ##' @param filter.traj logical; if \code{TRUE}, a filtered trajectory is returned for the state variables and parameters.
 ##' See \code{\link{filter.traj}} for more information.
 ##'
-##' @param save.states logical.
-##' If \code{save.states=TRUE}, the state-vector for each particle at each time is saved.
+##' @param save.states character;
+##' If \code{save.states="unweighted"}, the state-vector for each unweighted particle at each time is saved.
+##' If \code{save.states="weighted"}, the state-vector for each weighted particle at each time is saved, along with the corresponding weight.
+##' If \code{save.states="no"}, information on the latent states is not saved.
+##' \code{"FALSE"} is a synonym for \code{"no"} and \code{"TRUE"} is a synonym for \code{"unweighted"}.
+##' To retrieve the saved states, applying \code{\link{saved.states}} to the result of the \code{pfilter} computation.
 ##'
 ##' @return
 ##' An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
@@ -51,8 +55,8 @@
 ##'   retrieve one particle trajectory.
 ##'   Useful for building up the smoothing distribution.
 ##' }
-##' \item{\code{\link{saved.states}}}{retrieve list of saved states.}
-##' \item{\code{\link{as.data.frame}}}{ coerce to a data frame }
+##' \item{\code{\link{saved.states}}}{retrieve saved states}
+##' \item{\code{\link{as.data.frame}}}{coerce to a data frame}
 ##' \item{\code{\link{plot}}}{diagnostic plots}
 ##' }
 ##'
@@ -132,7 +136,7 @@ setMethod(
     pred.var = FALSE,
     filter.mean = FALSE,
     filter.traj = FALSE,
-    save.states = FALSE,
+    save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
     ...,
     verbose = getOption("verbose", FALSE)) {
 
@@ -170,7 +174,7 @@ setMethod(
     pred.var = FALSE,
     filter.mean = FALSE,
     filter.traj = FALSE,
-    save.states = FALSE,
+    save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
     ...,
     verbose = getOption("verbose", FALSE)) {
 
@@ -209,8 +213,9 @@ setMethod(
 
 pfilter.internal <- function (object, Np,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
-  filter.traj = FALSE, cooling, cooling.m, save.states = FALSE, ...,
-  .gnsi = TRUE, verbose = FALSE) {
+  filter.traj = FALSE, cooling, cooling.m,
+  save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
+  ..., .gnsi = TRUE, verbose = FALSE) {
 
   verbose <- as.logical(verbose)
 
@@ -224,7 +229,8 @@ pfilter.internal <- function (object, Np,
   pred.var <- as.logical(pred.var)
   filter.mean <- as.logical(filter.mean)
   filter.traj <- as.logical(filter.traj)
-  save.states <- as.logical(save.states)
+  save.states <- as.character(save.states)
+  save.states <- match.arg(save.states)
 
   params <- coef(object)
   times <- time(object,t0=TRUE)
@@ -241,8 +247,11 @@ pfilter.internal <- function (object, Np,
   x <- init.x
 
   ## set up storage for saving samples from filtering distributions
-  if (save.states || filter.traj) {
+  stsav <- save.states %in% c("unweighted","TRUE")
+  wtsav <- save.states == "weighted"
+  if (stsav || wtsav || filter.traj) {
     xparticles <- setNames(vector(mode="list",length=ntimes),time(object))
+    if (wtsav) xweights <- xparticles
   }
   if (filter.traj) {
     pedigree <- vector(mode="list",length=ntimes+1)
@@ -298,6 +307,12 @@ pfilter.internal <- function (object, Np,
       times=times[nt+1],params=params,log=TRUE,.gnsi=gnsi)
     gnsi <- FALSE
 
+    ## store unweighted particles and their weights
+    if (wtsav) {
+      xparticles[[nt]] <- x
+      xweights[[nt]] <- weights
+    }
+
     ## compute prediction mean, prediction variance, filtering mean,
     ## effective sample size, log-likelihood.
     ## also do resampling.
@@ -328,7 +343,7 @@ pfilter.internal <- function (object, Np,
     if (filter.mean) filt.m[,nt] <- xx$fm
     if (filter.traj) pedigree[[nt]] <- xx$ancestry
 
-    if (save.states || filter.traj) {
+    if (stsav || filter.traj) {
       xparticles[[nt]] <- x
       dimnames(xparticles[[nt]]) <- setNames(dimnames(xparticles[[nt]]),
         c("variable",".id"))
@@ -354,7 +369,13 @@ pfilter.internal <- function (object, Np,
     }
   }
 
-  if (!save.states) xparticles <- list()
+  if (stsav) {
+    stsav <- xparticles
+  } else if (wtsav) {
+    stsav <- list(states=xparticles,weights=xweights)
+  } else {
+    stsav <- list()
+  }
 
   new(
     "pfilterd_pomp",
@@ -366,7 +387,7 @@ pfilter.internal <- function (object, Np,
     paramMatrix=array(data=numeric(0),dim=c(0,0)),
     eff.sample.size=eff.sample.size,
     cond.logLik=loglik,
-    saved.states=xparticles,
+    saved.states=stsav,
     Np=as.integer(Np),
     loglik=sum(loglik)
   )
