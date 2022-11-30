@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.4.0}{
+  \itemize{
+    \item Some documentation improvements.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.3.4}{
   \itemize{
     \item The new function \code{wquant} computes weighted quantiles.

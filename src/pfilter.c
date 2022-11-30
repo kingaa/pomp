@@ -140,7 +140,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
     filt_mean(nvars,nreps,all_fail,w,xw,REAL(x),REAL(fm));
   }
 
-  // compute weighed average of parameters
+  // compute weighted average of parameters
   if (do_wave) {
     if (all_fail)
       warn("%s %s","filtering failure at last filter iteration:",

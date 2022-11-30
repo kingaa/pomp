@@ -4,6 +4,7 @@
 ##'
 ##' When one calls \code{\link{pfilter}} with \code{save.states=TRUE}, the latent state vector associated with each particle is saved.
 ##' This can be extracted by calling \code{saved.states} on the \sQuote{pfilterd.pomp} object.
+##' These are the \emph{unweighted} particles, saved \emph{after} resampling.
 ##' 
 ##' @name saved.states
 ##' @aliases saved.states,ANY-method saved.states,missing-method
