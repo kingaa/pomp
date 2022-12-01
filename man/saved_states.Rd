@@ -23,13 +23,13 @@ format of the returned object (see below).}
 \value{
 According to the \code{format} argument, the saved states are returned either as a list or a data frame.
 
-If \code{format="data.frame"}, then the returned data frame holds the state variables and (optionally) the log weight of each particle at each observation time.
+If \code{format="data.frame"}, then the returned data frame holds the state variables and (optionally) the unnormalized log weight of each particle at each observation time.
 The \code{.id} variable distinguishes particles.
 
 If \code{format="list"} and \code{\link{pfilter}} was called with \code{save.states="unweighted"} or \code{save.states="TRUE"}, the returned list contains one element per observation time.
 Each element consists of a matrix, with one row for each state variable and one column for each particle.
 If \code{\link{pfilter}} was called with \code{save.states="weighted"}, the list itself contains two lists:
-the first holds the particles as above, the second holds the corresponding log weights.
+the first holds the particles as above, the second holds the corresponding unnormalized log weights.
 In particular, it has one element per observation time; each element is the vector of per-particle log weights.
 }
 \description{

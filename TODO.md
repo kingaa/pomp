@@ -2,6 +2,7 @@
 
 ## For pomp:
 
+- eliminate dependence on **reshape2**
 - vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`
 - Smoothing tool for 'pfilterd_pomp' and 'pmcmcd_pomp' objects
 - `bake`, `stew` should take attributes to be attached or stored (e.g., `getDoParWorkers()`)

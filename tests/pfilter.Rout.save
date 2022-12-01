@@ -152,7 +152,6 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 > pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 +   filter.traj=TRUE)
-> pf5 <- pfilter(pf,save.states="weighted")
 > pf1 %>% saved.states() %>% melt() %>% names()
 [1] "variable" ".id"      "value"    "L1"      
 > pf1 %>% saved.states() %>% melt() %>% dim()
@@ -216,10 +215,6 @@ No id variables; using all as measure variables
 [1] "variable" "value"   
 > pf2 %>% melt(id="time") %>% names()
 [1] "time"     "variable" "value"   
-> pf5 %>% saved.states(format="d") %>% names()
-[1] "time"     ".id"      "variable" "value"   
-> pf5 %>% saved.states(format="d") %>% dim()
-[1] 30000     4
 > try(saved.states())
 Error : in 'saved.states': 'object' is a required argument.
 > try(saved.states(NULL))

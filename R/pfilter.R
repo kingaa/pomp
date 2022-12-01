@@ -309,7 +309,7 @@ pfilter.internal <- function (object, Np,
 
     ## store unweighted particles and their weights
     if (wtsav) {
-      xparticles[[nt]] <- x
+      xparticles[[nt]] <- X
       xweights[[nt]] <- weights
     }
 
