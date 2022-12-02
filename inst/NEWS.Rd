@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.4.2}{
+  \itemize{
+    \item The weighted quantile function \code{wquant} now uses the Harrell-Davis estimator instead of the type-7 estimator used previously.
+    This eliminates bugs associated with non-integer weights.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.4.1}{
   \itemize{
     \item It is now possible to retrieve the weighted particles computed in the course of a \code{pfilter} computation.

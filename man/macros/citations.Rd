@@ -75,3 +75,7 @@
 \newcommand{\Wood2010}{S. N. Wood Statistical inference for noisy nonlinear ecological dynamic systems. \emph{Nature} \bold{466}, 1102--1104, 2010.}
 
 \newcommand{\Xia2011}{Y. Xia and H. Tong. Feature matching in time series modeling. \emph{Statistical Science} \bold{26}, 21--46, 2011.}
+
+\newcommand{\Hyndman1996}{R. J. Hyndman and Y. Fan. Sample quantiles in statistical packages. \emph{American Statistician} \bold{50}, 361--365, 1996.}
+
+\newcommand{\Harrell1982}{F. E. Harrell and C. E. Davis. A new distribution-free quantile estimator. \emph{Biometrika} \bold{69}, 635--640, 1982.}

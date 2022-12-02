@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -18,17 +16,44 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-> set.seed(2124516392)
+> 
 > x <- c(1,1,1,2,2,3,3,3,3,4,5,5,6,6,6)
-> q1 <- quantile(x)
-> q2 <- wquant(c(1,2,3,4,5,6),weights=c(3,2,4,1,2,3))
-> stopifnot(q1==q2)
+> quantile(x)
+  0%  25%  50%  75% 100% 
+   1    2    3    5    6 
+> wquant(x,weights=rep(1,length(x)))
+      0%      25%      50%      75%     100% 
+1.000000 1.859616 3.213103 5.051810 6.000000 
+> wquant(c(1,2,3,4,5,6),weights=c(3,2,4,1,2,3))
+      0%      25%      50%      75%     100% 
+1.000000 1.878278 3.313936 4.972371 6.000000 
+> wquant(c(1,2,3,4,5),c(1,0,0,1,1))
+      0%      25%      50%      75%     100% 
+1.000000 1.925926 3.481481 4.592593 5.000000 
+> wquant(c(1,2,3,4,5),c(0,1,0,1,1))
+      0%      25%      50%      75%     100% 
+2.000000 2.629630 3.740741 4.629630 5.000000 
+> wquant(c(1,2,3,4,5),c(0,1,0,1,0))
+      0%      25%      50%      75%     100% 
+2.000000 2.300657 3.000000 3.699343 4.000000 
+> wquant(c(1,2,3,4,5),c(0,1,0,0,1))
+      0%      25%      50%      75%     100% 
+2.000000 2.450986 3.500000 4.549014 5.000000 
+> wquant(c(1,1,2,2),c(1,1,1,1))
+      0%      25%      50%      75%     100% 
+1.000000 1.104475 1.500000 1.895525 2.000000 
+> wquant(c(1,2),c(2,2))
+      0%      25%      50%      75%     100% 
+1.000000 1.150329 1.500000 1.849671 2.000000 
+> 
 > try(wquant(c(1,NA),c(1,2)))
-Error : in 'wquant': NA values are disallowed.
+Error : in 'wquant': NA and non-finite values are disallowed.
 > try(wquant(c(1,2),c(NA,1)))
-Error : in 'wquant': NA values are disallowed.
+Error : in 'wquant': NA and non-finite values are disallowed.
 > try(wquant(c(1,2,3),c(1,2)))
 Error : in 'wquant': 'x' and 'weights' must be of equal length.
+> try(wquant(c(1,2,3),c(1,2,-1)))
+Error : in 'wquant': weights must be non-negative.
 > try(wquant(c(1,2,3),c(1,1,1),probs=c(0.1,NA)))
 Error : in 'wquant': 'probs' must be a numeric vector with values in [0,1].
 > try(wquant(c(1,2,3),c(1,2,3),probs=c(0.1,2)))
