@@ -18,7 +18,7 @@
 ##' @examples
 ##' x <- c(1,1,1,2,2,3,3,3,3,4,5,5,6,6,6)
 ##' quantile(x)
-##' wquant(x,weights=rep(1,length(x)))
+##' wquant(x)
 ##' wquant(c(1,2,3,4,5,6),weights=c(3,2,4,1,2,3))
 ##' wquant(c(1,2,3,4,5),c(1,0,0,1,1))
 ##' @references
