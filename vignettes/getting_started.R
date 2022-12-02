@@ -815,7 +815,7 @@ chains |>
   summarize(
     label=c("lo","med","hi"),
     p=c(0.025,0.5,0.975),
-    q=quantile(N,probs=p)
+    q=wquant(N,probs=p)
   ) |>
   ungroup() |>
   select(-p) |>
