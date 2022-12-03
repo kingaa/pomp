@@ -15,36 +15,38 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> options(digits=3)
 > library(pomp)
+> set.seed(1147838039)
 > 
 > x <- c(1,1,1,2,2,3,3,3,3,4,5,5,6,6,6)
 > quantile(x)
   0%  25%  50%  75% 100% 
    1    2    3    5    6 
 > wquant(x,weights=rep(1,length(x)))
-      0%      25%      50%      75%     100% 
-1.000000 1.859616 3.213103 5.051810 6.000000 
+  0%  25%  50%  75% 100% 
+1.00 1.86 3.21 5.05 6.00 
 > wquant(c(1,2,3,4,5,6),weights=c(3,2,4,1,2,3))
-      0%      25%      50%      75%     100% 
-1.000000 1.878278 3.313936 4.972371 6.000000 
+  0%  25%  50%  75% 100% 
+1.00 1.88 3.31 4.97 6.00 
 > wquant(c(1,2,3,4,5),c(1,0,0,1,1))
-      0%      25%      50%      75%     100% 
-1.000000 1.925926 3.481481 4.592593 5.000000 
+  0%  25%  50%  75% 100% 
+1.00 1.93 3.48 4.59 5.00 
 > wquant(c(1,2,3,4,5),c(0,1,0,1,1))
-      0%      25%      50%      75%     100% 
-2.000000 2.629630 3.740741 4.629630 5.000000 
+  0%  25%  50%  75% 100% 
+2.00 2.63 3.74 4.63 5.00 
 > wquant(c(1,2,3,4,5),c(0,1,0,1,0))
-      0%      25%      50%      75%     100% 
-2.000000 2.300657 3.000000 3.699343 4.000000 
+  0%  25%  50%  75% 100% 
+ 2.0  2.3  3.0  3.7  4.0 
 > wquant(c(1,2,3,4,5),c(0,1,0,0,1))
-      0%      25%      50%      75%     100% 
-2.000000 2.450986 3.500000 4.549014 5.000000 
+  0%  25%  50%  75% 100% 
+2.00 2.45 3.50 4.55 5.00 
 > wquant(c(1,1,2,2),c(1,1,1,1))
-      0%      25%      50%      75%     100% 
-1.000000 1.104475 1.500000 1.895525 2.000000 
+  0%  25%  50%  75% 100% 
+ 1.0  1.1  1.5  1.9  2.0 
 > wquant(c(1,2),c(2,2))
-      0%      25%      50%      75%     100% 
-1.000000 1.150329 1.500000 1.849671 2.000000 
+  0%  25%  50%  75% 100% 
+1.00 1.15 1.50 1.85 2.00 
 > 
 > try(wquant(c(1,NA),c(1,2)))
 Error : in 'wquant': NA and non-finite values are disallowed.
@@ -58,4 +60,23 @@ Error : in 'wquant': weights must be non-negative.
 Error : in 'wquant': 'probs' must be a numeric vector with values in [0,1].
 > try(wquant(c(1,2,3),c(1,2,3),probs=c(0.1,2)))
 Error : in 'wquant': 'probs' must be a numeric vector with values in [0,1].
+> 
+> x <- rnorm(n=10000)
+> stopifnot(
++   all.equal(
++     wquant(x,probs=seq(0.1,0.9,by=0.1)),
++     quantile(x,probs=seq(0.1,0.9,by=0.1),names=FALSE),
++     tolerance=0.01
++   )
++ )
+> y <- seq(-4,4,by=0.01)
+> p <- diff(pnorm(y))
+> y <- 0.5*(head(y,-1)+tail(y,-1))
+> stopifnot(
++   all.equal(
++     wquant(y,weights=p,probs=c(0.1,0.5,0.9)),
++     qnorm(p=c(0.1,0.5,0.9)),
++     tolerance=0.01
++   )
++ )
 > 

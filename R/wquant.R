@@ -1,8 +1,8 @@
 ##' Weighted quantile function
 ##'
-##' Computes weighted quantiles.
+##' Estimate weighted quantiles.
 ##'
-##' \code{wquant} estimates quantiles of weighted data.
+##' \code{wquant} estimates quantiles of weighted data using the estimator of Harrell & Davis (1982), with improvements recommended by Andrey Akinshin.
 ##'
 ##' @param x numeric; a vector of data.
 ##' @param weights numeric; vector of weights.
@@ -11,7 +11,6 @@
 ##' @return
 ##' \code{wquant} returns a vector containing the estimated quantiles.
 ##' If \code{probs} has names, these are inherited.
-##' The estimator used is due to Harrell & Davis (1982), with improvements recommended by Andrey Akinshin.
 ##'
 ##' @author Aaron A. King
 ##' @include package.R
@@ -29,7 +28,7 @@
 ## was instrumental in developing these codes.
 ##'
 ##' @rdname wquant
-##' @importFrom stats approx setNames
+##' @importFrom stats pbeta
 ##' @export
 wquant <- function (
   x, weights = rep(1, length(x)),
@@ -37,8 +36,7 @@ wquant <- function (
 ) {
   x <- as.numeric(x)
   weights <- as.numeric(weights)
-  n <- length(x)
-  if (length(weights) != n)
+  if (length(weights) != length(x))
     pStop("wquant",sQuote("x")," and ",sQuote("weights"),
       " must be of equal length.")
   if (any(is.na(x)) || any(!is.finite(weights)))
@@ -55,18 +53,16 @@ wquant <- function (
   x <- x[idx]
   weights <- weights[idx]
   ## accumulate and normalize the weights
-  w <- cumsum(weights)
-  w <- w/w[n]
+  w <- cumsum(c(0,weights))
+  w <- w/w[length(w)]
   q <- probs       # inherits the names of `probs`
   ess <- sum(weights)^2/sum(weights^2) # Kish effective sample size
   a <- probs*(ess+1) # a,b are shape parameters for Beta distribution
   b <- (1-probs)*(ess+1)
   for (j in seq_along(probs)) {
-##' @importFrom stats pbeta
     W <- pbeta(q=w,shape1=a[j],shape2=b[j])
     W[w==1] <- 1
-    W <- diff(c(0,W))
-    q[j] <- sum(W*x)
+    q[j] <- sum(diff(W)*x)
   }
   q
 }
