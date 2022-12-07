@@ -1,0 +1,86 @@
+library(pomp)
+library(dplyr)
+library(tidyr)
+options(digits=3)
+set.seed(441155164)
+
+## Iterate a map using pomp
+
+trajectory(
+  t0=0,
+  times=seq(0,1,by=1/52),
+  rinit = Csnippet(r"{S = N; I = 0;}"),
+  skeleton = map(
+    Csnippet(r"{
+      double dt = 1.0/(52*200);
+      double rateS, transS;
+      double rateI, transI;
+      rateS = repno*gamma*(I+iota)/N;
+      rateI = gamma;
+      transS = (1.0 - exp(-rateS*dt))*S; 
+      transI = (1.0 - exp(-rateI*dt))*I; 
+      DS = S - transS;
+      DI = I + transS - transI;}"
+    ),
+    delta.t = 1/52/200
+  ),
+  rprocess=euler(
+    Csnippet(r"{
+      double rateS, transS;
+      double rateI, transI;
+      rateS = repno*gamma*(I+iota)/N;
+      rateI = gamma;
+      transS = (1.0 - exp(-rateS*dt))*S; 
+      transI = (1.0 - exp(-rateI*dt))*I; 
+      S -= transS;
+      I += transS - transI;}"),
+    delta.t=1/52/200
+  ),
+  paramnames = c("gamma","repno","iota","N"),
+  statenames = c("S","I"),
+  params=c(gamma=365/8,repno=2,iota=1,N=1e5)
+) -> po
+
+## Iterate a map by hand
+
+step <- function (x, repno, gamma, iota, N, dt) {
+  S <- x[1]
+  I <- x[2]
+  rateS <- repno*gamma*(I+iota)/N
+  rateI <- gamma
+  transS <- (1.0-exp(-rateS*dt))*S
+  transI <- (1.0-exp(-rateI*dt))*I
+  c(S=S-transS,I=I+transS-transI)
+}
+
+dt <- 1/(52*200) # Stepsize (should be consistent with dt in det_step)
+times <- seq(0,1,dt)
+states <- matrix(nrow=length(times),ncol=2,dimnames=list(NULL,c("S","I")))
+states[1,] <- rinit(po)
+for (n in seq.int(2,length(times))) {
+  states[n,] <- step(
+    states[n-1,],
+    coef(po,"repno"),
+    coef(po,"gamma"),
+    coef(po,"iota"),
+    coef(po,"N"),
+    dt=dt
+  )
+}
+
+## checks that all three methods give the same result
+stopifnot(
+  bind_rows(
+    traj=as.data.frame(po),
+    sim=simulate(po,format="d"),
+    direct=as.data.frame(cbind(time=times,states)),
+    .id="method"
+  ) %>%
+    select(method,time,I) %>%
+    mutate(time=round(time,6)) %>%
+    pivot_wider(names_from=method,values_from=I) %>%
+    filter(!is.na(sim)) %>%
+    arrange(time) %>%
+    filter(!all.equal(traj,sim),!all.equal(sim,direct)) %>%
+    nrow()==0
+)

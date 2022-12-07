@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.4.3}{
+  \itemize{
+    \item A bug in trajectory computation for maps (discrete-time dynamical systems) has been fixed.
+    Thanks to Felicia Magpantay for noticing it and tracking it down.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.4.2}{
   \itemize{
     \item The weighted quantile function \code{wquant} now uses the Harrell-Davis estimator instead of the type-7 estimator used previously.

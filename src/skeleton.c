@@ -237,7 +237,6 @@ void iterate_skeleton_R (
       if (h != nsteps-1) {
         t += deltat;
       } else {
-        deltat = *time - t;
         t = *time;
       }
 
@@ -327,7 +326,6 @@ void iterate_skeleton_native (
       if (h != nsteps-1) {
         t += deltat;
       } else {
-        deltat = *time - t;
         t = *time;
       }
 
