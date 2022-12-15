@@ -3,11 +3,12 @@
 ##' The basic Kalman filter for multivariate, linear, Gaussian processes.
 ##'
 ##' If the latent state is \eqn{X}, the observed variable is \eqn{Y},
-##' \eqn{X(t) \in R^m}, \eqn{Y(t) \in R^n}, and
-##' \deqn{X(t) ~ MultivariateNormal(A X(t-1), Q)}
-##' \deqn{Y(t) ~ MultivariateNormal(C X(t), R)}
-##' Then the Kalman filter computes the exact likelihood of \eqn{Y} given
-##' \eqn{A}, \eqn{C}, \eqn{Q}, and \eqn{R}.
+##' \eqn{X_t \in R^m}, \eqn{Y_t \in R^n}, and
+##' \deqn{X_t \sim \mathrm{MVN}(A X_{t-1}, Q)}{X_t ~ MVN(A X_{t-1}, Q)}
+##' \deqn{Y_t \sim \mathrm{MVN}(C X_t, R)}{Y_t ~ MVN(C X_t, R)}
+##' where \eqn{\mathrm{MVN}(M,V)} denotes the multivariate normal distribution with mean \eqn{M} and variance \eqn{V}.
+##' Then the Kalman filter computes the exact likelihood of \eqn{Y}
+##' given \eqn{A}, \eqn{C}, \eqn{Q}, and \eqn{R}.
 ##' 
 ##' @rdname kf
 ##' @concept Kalman filter
@@ -17,13 +18,13 @@
 ##' @param X0 length-m vector containing initial state.
 ##' This is assumed known without uncertainty.
 ##' @param A \eqn{m\times m}{m x m} latent state-process transition matrix.
-##' \eqn{E[X(t+1) | X(t)] = A.X(t)}.
+##' \eqn{E[X_{t+1} | X_t] = A.X_t}.
 ##' @param Q \eqn{m\times m}{m x m} latent state-process covariance matrix.
-##' \eqn{Var[X(t+1) | X(t)] = Q}
+##' \eqn{Var[X_{t+1} | X_t] = Q}
 ##' @param C \eqn{n\times m}{n x m} link matrix.
-##' \eqn{E[Y(t) | X(t)] = C.X(t)}.
+##' \eqn{E[Y_t | X_t] = C.X_t}.
 ##' @param R \eqn{n\times n}{n x n} observation process covariance matrix.
-##' \eqn{Var[Y(t) | X(t)] = R}
+##' \eqn{Var[Y_t | X_t] = R}
 ##' @param tol numeric;
 ##' the tolerance to be used in computing matrix pseudoinverses via singular-value decomposition.
 ##' Singular values smaller than \code{tol} are set to zero.
@@ -35,13 +36,13 @@
 ##' \describe{
 ##'   \item{object}{the \sQuote{pomp} object}
 ##'   \item{A, Q, C, R}{as in the call}
-##'   \item{filter.mean}{\eqn{E[X(t)|y^*(1),\dots,y^*(t)]}}
-##'   \item{pred.mean}{\eqn{E[X(t)|y^*(1),\dots,y^*(t-1)]}}
-##'   \item{forecast}{\eqn{E[Y(t)|y^*(1),\dots,y^*(t-1)]}}
-##'   \item{cond.logLik}{\eqn{f(y^*(t)|y^*(1),\dots,y^*(t-1))}}
-##'   \item{logLik}{\eqn{f(y^*(1),\dots,y^*(T))}}
+##'   \item{filter.mean}{\eqn{E[X_t|y^*_1,\dots,y^*_t]}}
+##'   \item{pred.mean}{\eqn{E[X_t|y^*_1,\dots,y^*_{t-1}]}}
+##'   \item{forecast}{\eqn{E[Y_t|y^*_1,\dots,y^*_{t-1}]}}
+##'   \item{cond.logLik}{\eqn{f(y^*_t|y^*_1,\dots,y^*_{t-1})}}
+##'   \item{logLik}{\eqn{f(y^*_1,\dots,y^*_T)}}
 ##' }
-## 
+##
 ## X(t) ~ MultivariateNormal(A X(t-1), Q)
 ## Y(t) ~ MultivariateNormal(C X(t), R)
 ##
@@ -61,7 +62,10 @@
 ## FM(t) = PM(t) + K(t) r(t)
 ##
 ##' @export
-kalmanFilter <- function (object, X0, A, Q, C, R, tol = 1e-6) {
+kalmanFilter <- function (
+  object, X0 = rinit(object),
+  A, Q, C, R, tol = 1e-6
+) {
 
   t <- time(object,t0=FALSE)
   y <- obs(object)

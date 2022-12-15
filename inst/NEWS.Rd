@@ -4,6 +4,7 @@
   \itemize{
     \item A bug in trajectory computation for maps (discrete-time dynamical systems) has been fixed.
     Thanks to Felicia Magpantay for noticing it and tracking it down.
+    \item Minor documentation improvements.
   }
 }
 \section{Changes in \pkg{pomp} version 4.4.2}{

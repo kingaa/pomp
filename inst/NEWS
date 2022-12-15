@@ -6,6 +6,8 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._4._3:
           dynamical systems) has been fixed.  Thanks to Felicia
           Magpantay for noticing it and tracking it down.
 
+        • Minor documentation improvements.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._4._2:
 
         • The weighted quantile function ‘wquant’ now uses the

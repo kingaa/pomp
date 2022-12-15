@@ -4,7 +4,7 @@
 \alias{kalmanFilter}
 \title{Kalman filter}
 \usage{
-kalmanFilter(object, X0, A, Q, C, R, tol = 1e-06)
+kalmanFilter(object, X0 = rinit(object), A, Q, C, R, tol = 1e-06)
 }
 \arguments{
 \item{object}{a pomp object containing data;}
@@ -13,16 +13,16 @@ kalmanFilter(object, X0, A, Q, C, R, tol = 1e-06)
 This is assumed known without uncertainty.}
 
 \item{A}{\eqn{m\times m}{m x m} latent state-process transition matrix.
-\eqn{E[X(t+1) | X(t)] = A.X(t)}.}
+\eqn{E[X_{t+1} | X_t] = A.X_t}.}
 
 \item{Q}{\eqn{m\times m}{m x m} latent state-process covariance matrix.
-\eqn{Var[X(t+1) | X(t)] = Q}}
+\eqn{Var[X_{t+1} | X_t] = Q}}
 
 \item{C}{\eqn{n\times m}{n x m} link matrix.
-\eqn{E[Y(t) | X(t)] = C.X(t)}.}
+\eqn{E[Y_t | X_t] = C.X_t}.}
 
 \item{R}{\eqn{n\times n}{n x n} observation process covariance matrix.
-\eqn{Var[Y(t) | X(t)] = R}}
+\eqn{Var[Y_t | X_t] = R}}
 
 \item{tol}{numeric;
 the tolerance to be used in computing matrix pseudoinverses via singular-value decomposition.
@@ -33,11 +33,11 @@ A named list containing the following elements:
 \describe{
   \item{object}{the \sQuote{pomp} object}
   \item{A, Q, C, R}{as in the call}
-  \item{filter.mean}{\eqn{E[X(t)|y^*(1),\dots,y^*(t)]}}
-  \item{pred.mean}{\eqn{E[X(t)|y^*(1),\dots,y^*(t-1)]}}
-  \item{forecast}{\eqn{E[Y(t)|y^*(1),\dots,y^*(t-1)]}}
-  \item{cond.logLik}{\eqn{f(y^*(t)|y^*(1),\dots,y^*(t-1))}}
-  \item{logLik}{\eqn{f(y^*(1),\dots,y^*(T))}}
+  \item{filter.mean}{\eqn{E[X_t|y^*_1,\dots,y^*_t]}}
+  \item{pred.mean}{\eqn{E[X_t|y^*_1,\dots,y^*_{t-1}]}}
+  \item{forecast}{\eqn{E[Y_t|y^*_1,\dots,y^*_{t-1}]}}
+  \item{cond.logLik}{\eqn{f(y^*_t|y^*_1,\dots,y^*_{t-1})}}
+  \item{logLik}{\eqn{f(y^*_1,\dots,y^*_T)}}
 }
 }
 \description{
@@ -45,11 +45,12 @@ The basic Kalman filter for multivariate, linear, Gaussian processes.
 }
 \details{
 If the latent state is \eqn{X}, the observed variable is \eqn{Y},
-\eqn{X(t) \in R^m}, \eqn{Y(t) \in R^n}, and
-\deqn{X(t) ~ MultivariateNormal(A X(t-1), Q)}
-\deqn{Y(t) ~ MultivariateNormal(C X(t), R)}
-Then the Kalman filter computes the exact likelihood of \eqn{Y} given
-\eqn{A}, \eqn{C}, \eqn{Q}, and \eqn{R}.
+\eqn{X_t \in R^m}, \eqn{Y_t \in R^n}, and
+\deqn{X_t \sim \mathrm{MVN}(A X_{t-1}, Q)}{X_t ~ MVN(A X_{t-1}, Q)}
+\deqn{Y_t \sim \mathrm{MVN}(C X_t, R)}{Y_t ~ MVN(C X_t, R)}
+where \eqn{\mathrm{MVN}(M,V)} denotes the multivariate normal distribution with mean \eqn{M} and variance \eqn{V}.
+Then the Kalman filter computes the exact likelihood of \eqn{Y}
+given \eqn{A}, \eqn{C}, \eqn{Q}, and \eqn{R}.
 }
 \examples{
 \dontrun{

@@ -28,7 +28,7 @@ R <- matrix(c(1,0.3,0.3,1),nrow=dimY,dimnames=list(rownames(C),rownames(C)))
 
 A <- matrix(c(
   -0.677822, -0.169411,  0.420662,  0.523571,
-   2.87451,  -0.323604, -0.489533, -0.806087,
+  2.87451,  -0.323604, -0.489533, -0.806087,
   -1.36617,  -0.592326,  0.567114,  0.345142,
   -0.807978, -0.163305,  0.668037,  0.468286),
   nrow=dimX,ncol=dimX,byrow=TRUE,
@@ -89,11 +89,20 @@ y %>%
     filter.mean=TRUE
   ) -> pf
 
-enkf <- enkf(pf,Np=1000)
-eakf <- eakf(pf,Np=1000)
-kf <- kalmanFilter(pf,X0=rinit(pf),A=A,Q=Q,C=C,R=R)
-stopifnot(
-  max(abs(c(kf$logLik,logLik(pf),logLik(enkf),logLik(eakf))-c(-67.0,-67.1,-66.9,-66.9)))<1
+freeze(
+  seed=1286628545,
+  {
+    enkf <- enkf(pf,Np=1000)
+    eakf <- eakf(pf,Np=1000)
+    kf <- kalmanFilter(pf,A=A,Q=Q,C=C,R=R,tol=1e-9)
+    stopifnot(
+      all.equal(
+        c(kf$logLik,logLik(pf),logLik(enkf),logLik(eakf)),
+        c(-67.0,-67.1,-66.7,-67.1),
+        tolerance=1e-3
+      )
+    )
+  }
 )
 
 try(enkf(pf))
