@@ -52,7 +52,18 @@ setMethod(
 setMethod(
   "cond_logLik",
   signature=signature(object="kalmand_pomp"),
-  definition=function(object,...)object@cond.logLik
+  definition=function (object, ...,
+    format = c("numeric", "data.frame")) {
+    format <- match.arg(format)
+    if (format == "numeric") {
+      object@cond.logLik
+    } else {
+      data.frame(
+        time=time(object),
+        cond.logLik=object@cond.logLik
+      )
+    }
+  }
 )
 
 ##' @rdname cond_logLik
@@ -60,7 +71,18 @@ setMethod(
 setMethod(
   "cond_logLik",
   signature=signature(object="pfilterd_pomp"),
-  definition=function(object,...)object@cond.logLik
+  definition=function (object, ...,
+    format = c("numeric", "data.frame")) {
+    format <- match.arg(format)
+    if (format == "numeric") {
+      object@cond.logLik
+    } else {
+      data.frame(
+        time=time(object),
+        cond.logLik=object@cond.logLik
+      )
+    }
+  }
 )
 
 ##' @rdname cond_logLik
@@ -68,7 +90,18 @@ setMethod(
 setMethod(
   "cond_logLik",
   signature=signature(object="wpfilterd_pomp"),
-  definition=function(object,...)object@cond.logLik
+  definition=function (object, ...,
+    format = c("numeric", "data.frame")) {
+    format <- match.arg(format)
+    if (format == "numeric") {
+      object@cond.logLik
+    } else {
+      data.frame(
+        time=time(object),
+        cond.logLik=object@cond.logLik
+      )
+    }
+  }
 )
 
 ##' @rdname cond_logLik
@@ -81,5 +114,16 @@ setMethod(
 setMethod(
   "cond_logLik",
   signature=signature(object="bsmcd_pomp"),
-  definition=function(object,...)object@cond.log.evidence
+  definition=function (object, ...,
+    format = c("numeric", "data.frame")) {
+    format <- match.arg(format)
+    if (format == "numeric") {
+      object@cond.log.evidence
+    } else {
+      data.frame(
+        time=time(object),
+        cond_log.evidence=object@cond.log.evidence
+      )
+    }
+  }
 )

@@ -7,7 +7,7 @@
 \alias{pred_var,pfilterd_pomp-method}
 \title{Prediction variance}
 \usage{
-\S4method{pred_var}{pfilterd_pomp}(object, vars, ...)
+\S4method{pred_var}{pfilterd_pomp}(object, vars, ..., format = c("array", "data.frame"))
 }
 \arguments{
 \item{object}{result of a filtering computation}
@@ -15,6 +15,8 @@
 \item{vars}{optional character; names of variables}
 
 \item{...}{ignored}
+
+\item{format}{format of the returned object.}
 }
 \description{
 The variance of the prediction distribution

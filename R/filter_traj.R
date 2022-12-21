@@ -48,9 +48,17 @@ setMethod(
 setMethod(
   "filter_traj",
   signature=signature(object="pfilterd_pomp"),
-  definition=function (object, vars, ...) {
+  definition=function (object, vars, ...,
+    format = c("array", "data.frame")) {
     if (missing(vars)) vars <- rownames(object@filter.traj)
-    object@filter.traj[vars,,,drop=FALSE]
+    format <- match.arg(format)
+    if (format == "array") {
+      object@filter.traj[vars,,,drop=FALSE]
+    } else {
+      x <- melt(object@filter.traj[vars,,,drop=FALSE])
+      x$time <- time(object,t0=TRUE)[as.integer(x$time)]
+      x
+    }
   }
 )
 

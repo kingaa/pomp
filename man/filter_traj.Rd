@@ -10,7 +10,7 @@
 \alias{filter_traj,pmcmcList-method}
 \title{Filtering trajectories}
 \usage{
-\S4method{filter_traj}{pfilterd_pomp}(object, vars, ...)
+\S4method{filter_traj}{pfilterd_pomp}(object, vars, ..., format = c("array", "data.frame"))
 
 \S4method{filter_traj}{pfilterList}(object, vars, ...)
 
@@ -24,6 +24,8 @@
 \item{vars}{optional character; names of variables}
 
 \item{...}{ignored}
+
+\item{format}{format of the returned object.}
 }
 \description{
 Drawing from the smoothing distribution

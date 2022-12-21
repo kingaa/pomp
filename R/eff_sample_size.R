@@ -43,7 +43,18 @@ setMethod(
 setMethod(
   "eff_sample_size",
   signature=signature(object="bsmcd_pomp"),
-  definition=function(object,...)object@eff.sample.size
+  definition=function (object, ...,
+    format = c("numeric", "data.frame")) {
+    format <- match.arg(format)
+    if (format == "numeric") {
+      object@eff.sample.size
+    } else {
+      data.frame(
+        time=time(object),
+        eff.sample.size=object@eff.sample.size
+      )
+    }
+  }
 )
 
 ##' @rdname eff_sample_size
@@ -51,7 +62,18 @@ setMethod(
 setMethod(
   "eff_sample_size",
   signature=signature(object="pfilterd_pomp"),
-  definition=function(object,...)object@eff.sample.size
+  definition=function (object, ...,
+    format = c("numeric", "data.frame")) {
+    format <- match.arg(format)
+    if (format == "numeric") {
+      object@eff.sample.size
+    } else {
+      data.frame(
+        time=time(object),
+        eff.sample.size=object@eff.sample.size
+      )
+    }
+  }
 )
 
 ##' @rdname eff_sample_size
@@ -59,5 +81,16 @@ setMethod(
 setMethod(
   "eff_sample_size",
   signature=signature(object="wpfilterd_pomp"),
-  definition=function(object,...)object@eff.sample.size
+  definition=function (object, ...,
+    format = c("numeric", "data.frame")) {
+    format <- match.arg(format)
+    if (format == "numeric") {
+      object@eff.sample.size
+    } else {
+      data.frame(
+        time=time(object),
+        eff.sample.size=object@eff.sample.size
+      )
+    }
+  }
 )

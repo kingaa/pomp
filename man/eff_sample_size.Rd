@@ -9,16 +9,18 @@
 \alias{eff_sample_size,wpfilterd_pomp-method}
 \title{Effective sample size}
 \usage{
-\S4method{eff_sample_size}{bsmcd_pomp}(object, ...)
+\S4method{eff_sample_size}{bsmcd_pomp}(object, ..., format = c("numeric", "data.frame"))
 
-\S4method{eff_sample_size}{pfilterd_pomp}(object, ...)
+\S4method{eff_sample_size}{pfilterd_pomp}(object, ..., format = c("numeric", "data.frame"))
 
-\S4method{eff_sample_size}{wpfilterd_pomp}(object, ...)
+\S4method{eff_sample_size}{wpfilterd_pomp}(object, ..., format = c("numeric", "data.frame"))
 }
 \arguments{
 \item{object}{result of a filtering computation}
 
 \item{...}{ignored}
+
+\item{format}{format of the returned object.}
 }
 \description{
 Estimate the effective sample size of a Monte Carlo computation.

@@ -19,6 +19,7 @@
 ##'
 ##' @param object result of a filtering computation
 ##' @param vars optional character; names of variables
+##' @param format format of the returned object.
 ##' @param ... ignored
 ##'
 NULL
@@ -50,9 +51,17 @@ setMethod(
 setMethod(
   "filter_mean",
   signature=signature(object="kalmand_pomp"),
-  definition=function (object, vars, ...) {
+  definition=function (object, vars, ...,
+    format = c("array", "data.frame")) {
     if (missing(vars)) vars <- rownames(object@filter.mean)
-    object@filter.mean[vars,,drop=FALSE]
+    format <- match.arg(format)
+    if (format == "array") {
+      object@filter.mean[vars,,drop=FALSE]
+    } else {
+      x <- melt(object@filter.mean[vars,,drop=FALSE])
+      x$time <- time(object)[as.integer(x$time)]
+      x
+    }
   }
 )
 
@@ -61,8 +70,16 @@ setMethod(
 setMethod(
   "filter_mean",
   signature=signature(object="pfilterd_pomp"),
-  definition=function (object, vars, ...) {
+  definition=function (object, vars, ...,
+    format = c("array", "data.frame")) {
     if (missing(vars)) vars <- rownames(object@filter.mean)
-    object@filter.mean[vars,,drop=FALSE]
+    format <- match.arg(format)
+    if (format == "array") {
+      object@filter.mean[vars,,drop=FALSE]
+    } else {
+      x <- melt(object@filter.mean[vars,,drop=FALSE])
+      x$time <- time(object)[as.integer(x$time)]
+      x
+    }
   }
 )

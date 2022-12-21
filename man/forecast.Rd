@@ -10,9 +10,9 @@
 \usage{
 forecast(object, ...)
 
-\S4method{forecast}{kalmand_pomp}(object, vars, ...)
+\S4method{forecast}{kalmand_pomp}(object, vars, ..., format = c("array", "data.frame"))
 
-\S4method{forecast}{pfilterd_pomp}(object, vars, ...)
+\S4method{forecast}{pfilterd_pomp}(object, vars, ..., format = c("array", "data.frame"))
 }
 \arguments{
 \item{object}{result of a filtering computation}
@@ -20,6 +20,8 @@ forecast(object, ...)
 \item{...}{ignored}
 
 \item{vars}{optional character; names of variables}
+
+\item{format}{format of the returned object.}
 }
 \description{
 Mean of the one-step-ahead forecasting distribution.

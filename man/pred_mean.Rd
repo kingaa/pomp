@@ -8,9 +8,9 @@
 \alias{pred_mean,pfilterd_pomp-method}
 \title{Prediction mean}
 \usage{
-\S4method{pred_mean}{kalmand_pomp}(object, vars, ...)
+\S4method{pred_mean}{kalmand_pomp}(object, vars, ..., format = c("array", "data.frame"))
 
-\S4method{pred_mean}{pfilterd_pomp}(object, vars, ...)
+\S4method{pred_mean}{pfilterd_pomp}(object, vars, ..., format = c("array", "data.frame"))
 }
 \arguments{
 \item{object}{result of a filtering computation}
@@ -18,6 +18,8 @@
 \item{vars}{optional character; names of variables}
 
 \item{...}{ignored}
+
+\item{format}{format of the returned object.}
 }
 \description{
 The mean of the prediction distribution
