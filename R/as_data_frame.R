@@ -159,7 +159,7 @@ as.data.frame.bsmcd_pomp <- function (x, ...) {
   as(x,"data.frame")
 }
 
-##' @importFrom plyr rbind.fill
+##' @importFrom dplyr bind_rows
 setAs(
   from="listie",
   to="data.frame",
@@ -173,7 +173,7 @@ setAs(
     for (k in seq_along(x)) {
       x[[k]]$.id <- id[k]
     }
-    plyr::rbind.fill(x)
+    dplyr::bind_rows(x)
   }
 )
 

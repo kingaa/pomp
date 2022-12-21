@@ -2,7 +2,6 @@
 
 ## For pomp:
 
-- eliminate dependence on **reshape2**
 - unit testing for the extractors:
   - returning arrays or data frames:
 	- filter_mean
