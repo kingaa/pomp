@@ -263,28 +263,28 @@ pfilter.internal <- function (object, Np,
   ## set up storage for prediction means, variances, etc.
   if (pred.mean) {
     pred.m <- array(data=numeric(1),dim=c(nvars,ntimes),
-      dimnames=list(variable=statenames,time=time(object)))
+      dimnames=list(variable=statenames,time=NULL))
   } else {
     pred.m <- array(data=numeric(0),dim=c(0,0))
   }
 
   if (pred.var) {
     pred.v <- array(data=numeric(1),dim=c(nvars,ntimes),
-      dimnames=list(variable=statenames,time=time(object)))
+      dimnames=list(variable=statenames,time=NULL))
   } else {
     pred.v <- array(data=numeric(0),dim=c(0,0))
   }
 
   if (filter.mean) {
     filt.m <- array(data=numeric(1),dim=c(nvars,ntimes),
-      dimnames=list(variable=statenames,time=time(object)))
+      dimnames=list(variable=statenames,time=NULL))
   } else {
     filt.m <- array(data=numeric(0),dim=c(0,0))
   }
 
   if (filter.traj) {
     filt.t <- array(data=numeric(1),dim=c(nvars,1,ntimes+1),
-      dimnames=list(variable=statenames,rep=1,time=times))
+      dimnames=list(variable=statenames,rep=1,time=NULL))
   } else {
     filt.t <- array(data=numeric(0),dim=c(0,0,0))
   }
@@ -292,7 +292,8 @@ pfilter.internal <- function (object, Np,
   for (nt in seq_len(ntimes)) { ## main loop
 
     ## advance the state variables according to the process model
-    X <- rprocess(object,x0=x,t0=times[nt],times=times[nt+1],params=params,.gnsi=gnsi)
+    X <- rprocess(object,x0=x,t0=times[nt],times=times[nt+1],
+      params=params,.gnsi=gnsi)
 
     if (pred.var) { ## check for nonfinite state variables and parameters
       problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1L])
