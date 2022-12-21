@@ -160,8 +160,8 @@ simulate(
   paramnames="N",
   params=c(N=5),
   format="data.frame"
-) %>%
-  melt(id=c("time",".id")) %>%
+) |>
+  melt(id=c("time",".id")) |>
   ggplot(aes(x=time,y=value,group=variable,color=variable))+
   geom_line()+theme_bw()
 ```
@@ -203,7 +203,7 @@ simulate(
 ```
 
 ```{r multivariate-data-check,include=FALSE}
-obj %>% pfilter(Np=1000) %>% logLik()
+obj |> pfilter(Np=1000) |> logLik()
 ```
 
 ## How do I deal with missing data? {#how-to-handle-missing-data}
@@ -234,7 +234,7 @@ NA,5
 4,14
 ") -> dat
 
-dat %>%
+dat |>
   ggplot(aes(x=day, y=B)) +
   geom_line() + geom_point()
 ```
@@ -273,7 +273,7 @@ dmeas <- Csnippet("
   }
 ")
 
-dat %>%
+dat |>
   pomp(time="day",t0=0,
        rprocess=euler(sir_step,delta.t=1/12),
        rinit=sir_init,
@@ -293,13 +293,13 @@ When there is an observation, it returns a binomial likelihood as usual.
 Our simulations now fill in simulated values for the missing data,
 
 ```{r}
-sir_na %>%
+sir_na |>
   simulate(
     params=c(Beta=3,gamma=2,rho=0.9,N=2600),
     nsim=10,
     format="data.frame",
     include.data=TRUE
-  ) %>%
+  ) |>
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
   guides(color="none")+
@@ -309,10 +309,10 @@ sir_na %>%
 and the particle filter handles the missing data correctly:
 
 ```{r}
-sir_na %>%
-  pfilter(Np=1000,params=c(Beta=3,gamma=2,rho=0.9,N=2600)) %>%
-  as.data.frame() %>%
-  melt(id="day") %>%
+sir_na |>
+  pfilter(Np=1000,params=c(Beta=3,gamma=2,rho=0.9,N=2600)) |>
+  as.data.frame() |>
+  melt(id="day") |>
   ggplot(aes(x=day,y=value,color=variable))+
   guides(color="none")+
   geom_line()+
@@ -380,7 +380,7 @@ day,B
 14,5
 ") -> dat
 
-dat %>%
+dat |>
   pomp(time="day",t0=-8,
        rprocess=euler(sir_step,delta.t=1/12),
        rinit=sir_init,
@@ -399,15 +399,15 @@ Now let's look at the data and some simulations from the model.
 ```{r}
 library(ggplot2)
 
-bsflu %>%
-  as.data.frame() %>%
+bsflu |>
+  as.data.frame() |>
   ggplot(aes(x=day,y=B))+
   geom_point()+geom_line()+
   theme_bw()
 
-bsflu %>%
+bsflu |>
   simulate(params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
-           nsim=10,format="d",include.data=TRUE) %>%
+           nsim=10,format="d",include.data=TRUE) |>
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
   guides(color="none")+
@@ -424,9 +424,9 @@ We can fix this by introducing a fictitious "observation" at `t=0`, with missing
 ```{r}
 library(dplyr)
 
-dat %>%
-  bind_rows(c(day=0,B=NA)) %>%
-  arrange(day) %>%
+dat |>
+  bind_rows(c(day=0,B=NA)) |>
+  arrange(day) |>
   pomp(time="day",t0=-8,
        rprocess=euler(sir_step,delta.t=1/12),
        rinit=sir_init,
@@ -437,10 +437,10 @@ dat %>%
        statenames=c("S","I","R","H")
   ) -> bsflu
 
-bsflu %>%
+bsflu |>
   simulate(params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
-    nsim=10,format="d",include.data=TRUE) %>%
-  filter(day>0) %>%
+    nsim=10,format="d",include.data=TRUE) |>
+  filter(day>0) |>
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
   guides(color="none")+
