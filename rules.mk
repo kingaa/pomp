@@ -201,3 +201,4 @@ clean:
 	$(RM) *.tar.gz $(PKGVERS).zip $(PKGVERS).tgz $(PKG).pdf
 	$(MAKE) -C www clean
 	$(MAKE) -C inst/doc clean
+	$(MAKE) -C tests clean
