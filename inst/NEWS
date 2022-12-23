@@ -1,5 +1,22 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._5._1:
+
+        • All ‘pomp’ functions with names.that.contain.dots have been
+          deprecated in favor of functions in ‘snake_case’.  This is to
+          avoid anticipated problems with CRAN checks, which (falsely)
+          assume that certain functions with dotted.names are S3
+          methods.  From this point, no expored ‘pomp’ function has
+          such a name.
+
+        • The ‘dimnames’ attributes for some of the arrays computed in
+          ‘pfilter’ and ‘pmcmc’ computations have changed.  In
+          particular, whereas in previous versions, the ‘time’
+          dimension was given names that were character strings
+          composed of decimal representations of the time (difficult to
+          work with and prone to roundoff error), the ‘time’ dimension
+          now is not given names.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._4._3:
 
         • A bug in trajectory computation for maps (discrete-time
