@@ -164,7 +164,7 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 [1] "variable" ".id"      "value"    "L2"       "L1"      
 > c(A=pf1,B=pf2) %>% saved_states() %>% melt() %>% sapply(class)
    variable         .id       value          L2          L1 
-   "factor"   "integer"   "numeric" "character" "character" 
+   "factor"   "integer"   "numeric"   "integer" "character" 
 > c(A=pf1,B=pf2) %>% as.data.frame() %>% sapply(class)
           time             y1             y2            ess    cond.logLik 
      "numeric"      "numeric"      "numeric"      "numeric"      "numeric" 

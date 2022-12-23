@@ -296,7 +296,14 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, ...,
     if (!is.finite(log.prior))
       pStop_("non-finite log prior at starting parameters.")
 
-    pfp <- pfilter(object,params=theta,Np=Np,filter.traj=TRUE,.gnsi=gnsi,verbose=verbose)
+    pfp <- pfilter(
+      object,
+      params=theta,
+      Np=Np,
+      filter.traj=TRUE,
+      .gnsi=gnsi,
+      verbose=verbose
+    )
 
     if (!is.finite(pfp@loglik))
       pStop_("non-finite log likelihood at starting parameters.")

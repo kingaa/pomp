@@ -3,6 +3,26 @@
 ## For pomp:
 
 - eliminate dependence on **reshape2**
+- unit testing for the extractors:
+  - returning arrays or data frames:
+	- filter_mean
+	- filter_traj
+	- pred_mean
+	- pred_var
+	- forecast
+  - returning lists or data frames:
+   	- saved_states
+  - returning numeric vector or data frame
+	- eff_sample_size
+	- cond_logLik
+- unit testing for melt and as_data_frame
+- remove melt from exports?
+  - it *is* handy when one wants to turn an array or a list into a data frame
+- overhaul of unit testing:
+  - stew model-specific codes in separate files:
+	- each should test all basic model components
+	- each should verify agreement with precomputed results
+  - aim for one unit-testing file per `R` file
 - vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`
 - Smoothing tool for 'pfilterd_pomp' and 'pmcmcd_pomp' objects
 - `bake`, `stew` should take attributes to be attached or stored (e.g., `getDoParWorkers()`)

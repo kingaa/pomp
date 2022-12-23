@@ -250,7 +250,7 @@ pfilter.internal <- function (object, Np,
   stsav <- save.states %in% c("unweighted","TRUE")
   wtsav <- save.states == "weighted"
   if (stsav || wtsav || filter.traj) {
-    xparticles <- setNames(vector(mode="list",length=ntimes),time(object))
+    xparticles <- vector(mode="list",length=ntimes)
     if (wtsav) xweights <- xparticles
   }
   if (filter.traj) {
@@ -309,8 +309,10 @@ pfilter.internal <- function (object, Np,
 
     ## store unweighted particles and their weights
     if (wtsav) {
-      xparticles[[nt]] <- X
-      xweights[[nt]] <- weights
+      xparticles[[nt]] <- array(X,dim=dim(X)[c(1L,2L)],
+        dimnames=list(variable=statenames,.id=NULL))
+      xweights[[nt]] <- array(weights,dim=length(weights),
+        dimnames=list(.id=NULL))
     }
 
     ## compute prediction mean, prediction variance, filtering mean,
@@ -345,8 +347,7 @@ pfilter.internal <- function (object, Np,
 
     if (stsav || filter.traj) {
       xparticles[[nt]] <- x
-      dimnames(xparticles[[nt]]) <- setNames(dimnames(xparticles[[nt]]),
-        c("variable",".id"))
+      dimnames(xparticles[[nt]]) <- list(variable=statenames,.id=NULL)
     }
 
     if (verbose && (nt%%5 == 0))
