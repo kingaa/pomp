@@ -4,7 +4,7 @@ png(filename="probe_match-%02d.png",res=100)
 library(pomp)
 
 gompertz() -> po
-po %>% as.data.frame() %>% subset(select=-X) -> dat
+po |> as.data.frame() |> subset(select=-X) -> dat
 
 plist <- list(
   mean=probe_mean("Y",trim=0.1,transform=sqrt),
@@ -14,10 +14,10 @@ plist <- list(
   probe_quantile("Y",prob=c(0.25,0.75),na.rm=TRUE)
 )
 
-try(dat %>% probe_objfun())
-try(dat %>% probe_objfun(times="time",t0=0))
+try(dat |> probe_objfun())
+try(dat |> probe_objfun(times="time",t0=0))
 
-dat %>%
+dat |>
   probe_objfun(
     times="time",t0=0,
     rinit=po@rinit,
@@ -35,7 +35,7 @@ f()
 stopifnot(f(0)==f(1))
 stopifnot(logLik(f)==-f(0))
 
-f %>% probe_objfun(est=c("K"),seed=580656309) -> f1
+f |> probe_objfun(est=c("K"),seed=580656309) -> f1
 plot(sapply(seq(0.8,1.6,by=0.1),f1))
 
 f1(1.1)
@@ -48,24 +48,24 @@ try(probe_objfun("bob"))
 
 try(probe_objfun(f,est="harry"))
 
-f1 %>% as("probed_pomp") %>% plot()
+f1 |> as("probed_pomp") |> plot()
 
-f1 %>% summary() %>% names()
+f1 |> summary() |> names()
 
-f1 %>% plot()
+f1 |> plot()
 
-f1 %>% probe() %>% plot()
+f1 |> probe() |> plot()
 
-f1 %>% as_pomp() %>% as.data.frame() %>% names()
+f1 |> as_pomp() |> as.data.frame() |> names()
 
-f1 %>% probe_objfun(fail.value=1e10) -> f2
+f1 |> probe_objfun(fail.value=1e10) -> f2
 
-f1 %>% spect(kernel.width=3,nsim=100,seed=748682047) %>% plot()
+f1 |> spect(kernel.width=3,nsim=100,seed=748682047) |> plot()
 
-f1 %>% as("pomp")
-f1 %>% as("data.frame") %>% names()
+f1 |> as("pomp")
+f1 |> as("data.frame") |> names()
 
-po %>% probe_objfun(nsim=100,probes=function(x)1,fail.value=1e9) -> f2
+po |> probe_objfun(nsim=100,probes=function(x)1,fail.value=1e9) -> f2
 logLik(f2)
 f2(1)
 

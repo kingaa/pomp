@@ -13,7 +13,7 @@
   ## Since this is a continuous-time POMP, the
   ## skeleton is a vectorfield.
 
-  po %>%
+  po |>
     trajectory(
       skeleton=vectorfield(
         function(r, K, n, ...) {
@@ -25,7 +25,7 @@
 
   ## We can also pass it as a C snippet:
 
-  po %>%
+  po |>
     traj_objfun(
       skeleton=vectorfield(Csnippet("Dn=r*n*(1-n/K);")),
       paramnames=c("r","K"),
@@ -39,7 +39,7 @@
 
   gompertz() -> po
 
-  po %>%
+  po |>
     traj_objfun(
       skeleton=map(
         Csnippet("

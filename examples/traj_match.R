@@ -1,6 +1,6 @@
 \donttest{
 
-  ricker() %>%
+  ricker() |>
     traj_objfun(
       est=c("r","sigma","N_0"),
       partrans=parameter_trans(log=c("r","sigma","N_0")),
@@ -19,8 +19,8 @@
 
   if (require(ggplot2)) {
 
-    f %>%
-      trajectory(format="data.frame") %>%
+    f |>
+      trajectory(format="data.frame") |>
       ggplot(aes(x=time,y=N))+geom_line()+theme_bw()
 
   }

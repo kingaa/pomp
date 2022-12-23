@@ -39,17 +39,17 @@ Error : in 'simulate': when 'emeasure' is provided as a C snippet, you must also
 Error : in 'emeasure': length('times') = 0, no work to do.
 > try(emeasure(po,x=states(po),params=coef(po),times=c(1,2,3)))
 Error : in 'emeasure': length of 'times' and 3rd dimension of 'x' do not agree.
-> simulate(po,nsim=3,format="arrays") %>% getElement("states") -> X
+> simulate(po,nsim=3,format="arrays") |> getElement("states") -> X
 > try(emeasure(po,x=X,params=parmat(coef(po),2),times=time(po)))
 Error : in 'emeasure': larger number of replicates is not a multiple of smaller.
-> po %>% simulate(emeasure=function(x1, x2, ...) x1+x2) -> po1
+> po |> simulate(emeasure=function(x1, x2, ...) x1+x2) -> po1
 > try(emeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
 Error : in 'emeasure': 'emeasure' must return a named numeric vector.
-> po %>% simulate(emeasure=function(x1, x2, t, ...)
+> po |> simulate(emeasure=function(x1, x2, t, ...)
 +   setNames(rep(x1+x2,ceiling(t)),head(letters,ceiling(t)))) -> po1
 > try(emeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
 Error : in 'emeasure': 'emeasure' returns variable-length results.
-> po %>% simulate(emeasure=NULL) -> po1
+> po |> simulate(emeasure=NULL) -> po1
 > e <- emeasure(po1,x=states(po1),params=coef(po1),times=time(po1))
 Warning message:
 'emeasure' unspecified: NAs generated. 
@@ -58,7 +58,7 @@ Warning message:
 +   sum(is.na(e))==200
 + )
 > 
-> sir() %>%
+> sir() |>
 +   simulate(
 +     times=(1:10)/52,
 +     emeasure=function(cases, rho, seas_1, seas_2, seas_3, ...)

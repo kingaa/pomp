@@ -38,20 +38,20 @@ plot(pf,yax.flip=TRUE)
 forecast(pf,format="d") -> fc
 simulate(pf) -> sm
 
-emeasure(pf) %>% melt() -> ef
-vmeasure(pf) %>% melt() -> vf
-vf %>% select(-time,-.id) %>% distinct()
+emeasure(pf) |> melt() -> ef
+vmeasure(pf) |> melt() -> vf
+vf |> select(-time,-.id) |> distinct()
 
 bind_rows(
-  sim=pf %>%
-    as.data.frame() %>%
+  sim=pf |>
+    as.data.frame() |>
     pivot_longer(c(x1,x2,y1,y2),names_to="variable"),
   forecast=fc,
-  filter=ef %>% select(-.id),
+  filter=ef |> select(-.id),
   prediction=pred_mean(pf,format="d"),
   filter=filter_mean(pf,format="d"),
   .id="type"
-) %>%
+) |>
   ggplot(aes(x=time,y=value,color=factor(type)))+
   geom_line()+
   labs(color="")+

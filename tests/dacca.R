@@ -42,7 +42,7 @@ stopifnot(
 
 plot(pf,yax.flip=TRUE)
 
-pf %>% window(end=1893) %>% simulate() -> sm
+pf |> window(end=1893) |> simulate() -> sm
 plot(sm,yax.flip=TRUE)
 
 try(dacca(logbeta=c(1,2,3),logomega=c(10,20)))

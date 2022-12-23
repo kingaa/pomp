@@ -16,7 +16,7 @@ Original source: McCleer and Perrins (1991).
 }
 \examples{
 \dontrun{
-  parus \%>\%
+  parus |>
     pfilter(Np=1000,times="year",t0=1960,
       params=c(K=190,r=2.7,sigma=0.2,theta=0.05,N.0=148),
       rprocess=discrete_time(
@@ -36,9 +36,9 @@ Original source: McCleer and Perrins (1991).
       paramnames=c("sigma","theta","N_0","r","K")
     ) -> pf
 
-  pf \%>\% logLik()
+  pf |> logLik()
 
-  pf \%>\% simulate() \%>\% plot()
+  pf |> simulate() |> plot()
 }
 }
 \references{

@@ -15,21 +15,21 @@ stopifnot(
 )
 try(emeasure(po,x=states(po),params=coef(po),times=numeric(0)))
 try(emeasure(po,x=states(po),params=coef(po),times=c(1,2,3)))
-simulate(po,nsim=3,format="arrays") %>% getElement("states") -> X
+simulate(po,nsim=3,format="arrays") |> getElement("states") -> X
 try(emeasure(po,x=X,params=parmat(coef(po),2),times=time(po)))
-po %>% simulate(emeasure=function(x1, x2, ...) x1+x2) -> po1
+po |> simulate(emeasure=function(x1, x2, ...) x1+x2) -> po1
 try(emeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
-po %>% simulate(emeasure=function(x1, x2, t, ...)
+po |> simulate(emeasure=function(x1, x2, t, ...)
   setNames(rep(x1+x2,ceiling(t)),head(letters,ceiling(t)))) -> po1
 try(emeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
-po %>% simulate(emeasure=NULL) -> po1
+po |> simulate(emeasure=NULL) -> po1
 e <- emeasure(po1,x=states(po1),params=coef(po1),times=time(po1))
 stopifnot(
   dim(e)==c(2,1,100),
   sum(is.na(e))==200
 )
 
-sir() %>%
+sir() |>
   simulate(
     times=(1:10)/52,
     emeasure=function(cases, rho, seas_1, seas_2, seas_3, ...)

@@ -68,9 +68,9 @@ The following objects are masked from 'package:base':
     intersect, setdiff, setequal, union
 
 > 
-> ebolaWA2014 %>%
-+   filter(country=="GIN") %>%
-+   mutate(day=as.numeric(date-as.Date("2014-04-30"))) %>%
+> ebolaWA2014 |>
++   filter(country=="GIN") |>
++   mutate(day=as.numeric(date-as.Date("2014-04-30"))) |>
 +   select(-date,-country) -> dat
 > ebolaModel(data=dat) -> eb
 > 

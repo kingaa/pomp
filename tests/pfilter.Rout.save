@@ -153,27 +153,27 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 +   filter.traj=TRUE)
 > 
-> pf1 %>% saved_states(format="data") %>% names()
+> pf1 |> saved_states(format="data") |> names()
 [1] "time"     ".id"      "variable" "value"   
-> pf1 %>% saved_states(format="data") %>% dim()
+> pf1 |> saved_states(format="data") |> dim()
 [1] 20000     4
-> pf1 %>% saved_states() %>% melt() %>% sapply(class)
+> pf1 |> saved_states() |> melt() |> sapply(class)
          L1    variable         .id       value 
 "character" "character"   "integer"   "numeric" 
-> pf1 %>% saved_states() %>% melt() %>% sapply(length)
+> pf1 |> saved_states() |> melt() |> sapply(length)
       L1 variable      .id    value 
    20000    20000    20000    20000 
-> pf2 %>% saved_states(format="data") %>% names()
+> pf2 |> saved_states(format="data") |> names()
 [1] "time"     ".id"      "variable" "value"   
-> pf2 %>% saved_states(format="data") %>% dim()
+> pf2 |> saved_states(format="data") |> dim()
 [1] 30000     4
 > 
-> c(A=pf1,B=pf2) %>% saved_states(format="d") %>% names()
+> c(A=pf1,B=pf2) |> saved_states(format="d") |> names()
 [1] "A" "B"
-> c(A=pf1,B=pf2) %>% saved_states(format="d") %>% sapply(class)
+> c(A=pf1,B=pf2) |> saved_states(format="d") |> sapply(class)
            A            B 
 "data.frame" "data.frame" 
-> c(A=pf1,B=pf2) %>% as.data.frame() %>% sapply(class)
+> c(A=pf1,B=pf2) |> as.data.frame() |> sapply(class)
           time             y1             y2            ess    cond.logLik 
      "numeric"      "numeric"      "numeric"      "numeric"      "numeric" 
            .id   pred.mean.x1   pred.mean.x2    pred.var.x1    pred.var.x2 
@@ -208,7 +208,7 @@ Error : in 'filter_traj': incommensurate dimensions.
 > names(as(c(pf1,pf4),"data.frame"))
 [1] "time"        "y1"          "y2"          "ess"         "cond.logLik"
 [6] ".id"        
-> pf2 %>% as.data.frame() %>% names()
+> pf2 |> as.data.frame() |> names()
  [1] "time"           "y1"             "y2"             "ess"           
  [5] "cond.logLik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   
  [9] "pred.var.x2"    "filter.mean.x1" "filter.mean.x2"
@@ -219,12 +219,12 @@ Error : 'saved_states' is undefined for 'object' of class 'NULL'.
 > try(saved_states("bob"))
 Error : 'saved_states' is undefined for 'object' of class 'character'.
 > 
-> try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
+> try(ou2 |> as.data.frame() |> pfilter(Np=1000))
 Error : in 'pfilter': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
-> ou2 %>%
-+   as.data.frame() %>%
-+   subset(select=c(time,y1,y2)) %>%
+> ou2 |>
++   as.data.frame() |>
++   subset(select=c(time,y1,y2)) |>
 +   pfilter(
 +     times="time",t0=0,Np=500,
 +     params=list(x1_0=-3,x2_0=4),
@@ -240,12 +240,12 @@ Error : in 'pfilter': 'times' should either be a numeric vector of observation t
 +   )
 <object of class 'pfilterd_pomp'>
 > 
-> try(ou2 %>% pfilter(Np=1000) %>% forecast())
+> try(ou2 |> pfilter(Np=1000) |> forecast())
 Error : in 'forecast': no prediction mean. Rerun 'pfilter' with 'pred.mean=TRUE'.
-> try(ou2 %>% pfilter(Np=1000,emeasure=NULL) %>% forecast())
+> try(ou2 |> pfilter(Np=1000,emeasure=NULL) |> forecast())
 Error : in 'forecast': 'emeasure' is a needed basic component.
-> ou2 %>% pfilter(Np=1000,pred.mean=TRUE) %>% forecast() -> y
-> ou2 %>% pfilter(Np=1000,pred.mean=TRUE) %>% forecast(vars="y1") -> y1
+> ou2 |> pfilter(Np=1000,pred.mean=TRUE) |> forecast() -> y
+> ou2 |> pfilter(Np=1000,pred.mean=TRUE) |> forecast(vars="y1") -> y1
 > stopifnot(
 +   dim(y)==c(2,100),
 +   dim(y1)==c(1,100)

@@ -87,8 +87,8 @@ trajectory(sir,format="data.frame") -> x
 plot(cases~time,data=x,type='l')
 
 gompertz() -> gompertz
-gompertz %>% trajectory(format="a") -> x
-gompertz %>%
+gompertz |> trajectory(format="a") -> x
+gompertz |>
   pomp(
     skeleton=map(function(r,X,Y,K,...){
       c(X=r*X*exp(-X/K),Y=Y+X)
@@ -96,24 +96,24 @@ gompertz %>%
     accumvars=c("Y"),
     params=c(r=17,X_0=1,Y.0=0,K=100)
   ) -> po3
-po3 %>%
+po3 |>
   trajectory(times=seq(1,1000),format="data.frame") -> dat
 plot(X~time,data=dat,subset=(time<100),type='l')
 plot(X~Y,data=dat)
-gompertz %>%
-  pomp(accumvars=c("X")) %>%
+gompertz |>
+  pomp(accumvars=c("X")) |>
   trajectory(times=seq(1,1000,by=10),format="a") -> x
 stopifnot(all(x==0))
 
 try(
-  po3 %>%
-    pomp(skeleton=map(function(...)c(X=1,Y=2,Z=3))) %>%
+  po3 |>
+    pomp(skeleton=map(function(...)c(X=1,Y=2,Z=3))) |>
     trajectory(params=c(X_0=1,Y_0=0),format="a")
 )
 
 stopifnot(
-  po3 %>% trajectory(times=seq(0,100,by=5),format="a") %>% dim()==c(2,1,21),
-  po3 %>% pomp(skeleton=NULL) %>% trajectory(format="a") %>% is.na()
+  po3 |> trajectory(times=seq(0,100,by=5),format="a") |> dim()==c(2,1,21),
+  po3 |> pomp(skeleton=NULL) |> trajectory(format="a") |> is.na()
 )
 
 trajectory(
@@ -127,7 +127,7 @@ lines(y~time,data=dat,col=3)
 
 dat1 <- dat[c("time","x","y")]
 names(dat1) <- c("time","X","Y")
-dat1 %>%
+dat1 |>
   trajectory(
     t0=0,times="time",
     rinit=function(...)c(x=1,y=0),
@@ -141,19 +141,19 @@ try(trajectory(po,params=c("A","B")))
 p <- parmat(coef(po),3)
 colnames(p) <- LETTERS[1:3]
 p["r",] <- c(5,10,45)
-po %>%
-  trajectory(params=p,times=1:5,format="array") %>%
+po |>
+  trajectory(params=p,times=1:5,format="array") |>
   dimnames() -> dn
 stopifnot(
   names(dn)==c("variable",".id","time"),
   dn$.id==LETTERS[1:3],
   is.null(dn$time)
 )
-po %>%
+po |>
   trajectory(params=p,times=1:5,format="data.frame") -> x
 unique(x$.id)
-po %>%
-  trajectory(format="pomps") %>%
+po |>
+  trajectory(format="pomps") |>
   trajectory(params=p,times=1:50,format="pomps") -> pos
 states(pos) -> x
 obs(pos) -> y
@@ -162,8 +162,8 @@ stopifnot(
   length(x)==3,
   length(y)==3
 )
-pos %>%
-  as.data.frame() %>%
+pos |>
+  as.data.frame() |>
   ggplot(aes(x=time,y=N,group=.id,color=.id))+
   geom_line()+
   facet_wrap(~.id,ncol=1)+

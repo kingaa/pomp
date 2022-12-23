@@ -68,7 +68,7 @@ Error : in 'partrans': variable 'K' not found among the parameters.
 > ou2() -> po
 > po1 <- simulate(po)
 > 
-> as(po,"data.frame") %>% head()
+> as(po,"data.frame") |> head()
   time        y1        y2         x1        x2
 1    1 -4.051293 4.7806442 -3.7184616  4.249533
 2    2  1.834630 6.2733019  0.9403927  6.843546
@@ -76,7 +76,7 @@ Error : in 'partrans': variable 'K' not found among the parameters.
 4    4  6.640487 5.7299615  5.8085324  6.490249
 5    5  6.575312 1.5614843  5.6054356  1.835443
 6    6  7.540323 0.1756402  7.3546052 -1.566206
-> as.data.frame(po1) %>% head()
+> as.data.frame(po1) |> head()
   time          y1       y2         x1       x2
 1    1  1.83110320 3.210702  3.0483049 3.974364
 2    2 -0.04753752 5.523446  0.4419551 4.171528
@@ -269,12 +269,12 @@ Error : in 'coef<-': 'value' must be a named vector.
 Error : in 'partrans': variable 'r' not found among the parameters.
 > coef(po)
 numeric(0)
-> po %>%
-+   window(start=5,end=20) %>%
+> po |>
++   window(start=5,end=20) |>
 +   pomp(covar=covariate_table(times=0:20,q=0:20),
 +     larry=3L) -> po1
 NOTE: The provided object 'larry' is available for use by POMP basic components.
-> as(po1,"data.frame") %>% head()
+> as(po1,"data.frame") |> head()
   time         Y  q
 1    5 0.7408867  5
 2    6 1.0457807  6

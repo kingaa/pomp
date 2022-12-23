@@ -8,14 +8,14 @@ suppressPackageStartupMessages({
 ou2() -> po
 
 stopifnot(
-  po %>% rprior() == coef(po)
+  po |> rprior() == coef(po)
 )
 
 coef(po,"alpha_sd") <- 5
 
 set.seed(1835425749L)
 
-po %>%
+po |>
   pomp(
     dprior=function(alpha_1,alpha_2,alpha_3,alpha_4,alpha_sd,...,log) {
       ll <- sum(
@@ -39,11 +39,11 @@ po %>%
   ) -> po
 
 stopifnot(
-  po %>% dprior(params=coef(po),log=TRUE) == 4*dnorm(x=0,mean=0,sd=5,log=TRUE),
-  all.equal(po %>% dprior(params=coef(po)),dnorm(x=0,mean=0,sd=5)^4)
+  po |> dprior(params=coef(po),log=TRUE) == 4*dnorm(x=0,mean=0,sd=5,log=TRUE),
+  all.equal(po |> dprior(params=coef(po)),dnorm(x=0,mean=0,sd=5)^4)
 )
 
-replicate(5,rprior(po,params=coef(po))) %>% parmat() -> theta
+replicate(5,rprior(po,params=coef(po))) |> parmat() -> theta
 stopifnot(round(dprior(po,params=theta,log=TRUE),3) ==
             c(-12.237, -10.848, -15.806, -10.847, -11.526))
 
@@ -53,8 +53,8 @@ try(dprior(params=theta))
 try(rprior("ou2",params=theta))
 try(rprior(params=theta))
 
-try(po %>% pomp(rprior=function(...)c(1,3,3)) %>% rprior(params=theta))
-po %>% rprior(params=parmat(theta,3)) -> p
+try(po |> pomp(rprior=function(...)c(1,3,3)) |> rprior(params=theta))
+po |> rprior(params=parmat(theta,3)) -> p
 stopifnot(
   dim(p)==c(11,15),
   names(dimnames(p))==c("variable",".id"),

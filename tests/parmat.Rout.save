@@ -89,19 +89,19 @@ Error : 'parmat' is undefined for 'params' of class 'character'.
 Error : in 'parmat': NAs introduced by coercion
 > 
 > try(
-+   expand.grid(a=1:3,c="hello",stringsAsFactors=FALSE) %>% parmat()
++   expand.grid(a=1:3,c="hello",stringsAsFactors=FALSE) |> parmat()
 + )
 Error : in 'parmat': 'params' must contain numeric variables only.
 > try(
-+   expand.grid(a=1:3,c="hello",stringsAsFactors=TRUE) %>% parmat()
++   expand.grid(a=1:3,c="hello",stringsAsFactors=TRUE) |> parmat()
 + )
 Error : in 'parmat': 'params' must contain numeric variables only.
-> expand.grid(a=1:3,b=1:2) %>% parmat()
+> expand.grid(a=1:3,b=1:2) |> parmat()
         .id
 variable 1 2 3 4 5 6
        a 1 2 3 1 2 3
        b 1 1 1 2 2 2
-> expand.grid(a=1:3,b=1:2) %>% parmat(nrep=2)
+> expand.grid(a=1:3,b=1:2) |> parmat(nrep=2)
         .id
 variable 1_1 2_1 3_1 4_1 5_1 6_1 1_2 2_2 3_2 4_2 5_2 6_2
        a   1   2   3   1   2   3   1   2   3   1   2   3

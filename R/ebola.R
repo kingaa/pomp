@@ -497,30 +497,30 @@ ebolaModel <- function (
 ## library(tidyverse)
 ## library(lubridate)
 
-## read_csv(dat_text,comment="#") %>%
-##   mutate(date=as.Date(date,format="%m/%d/%Y")) %>%
-##   gather(variable,value,-date) %>%
-##   separate(variable,into=c("vbl","country")) %>%
-##   filter(country != "total") %>%
-##   group_by(vbl,country) %>%
-##   arrange(date) %>%
-##   mutate(value=value-lag(value)) %>%
-##   filter(!is.na(value)) %>%
-##   ungroup() %>%
-##   group_by(date,country,vbl) %>%
-##   summarize(value=sum(value)) %>%
-##   ungroup() %>%
-##   mutate(date=ceiling_date(date,"month")-ddays(1)) %>%
-##   group_by(date,vbl,country) %>%
-##   summarize(value=sum(value)) %>%
-##   group_by(date,country) %>%
-##   spread(vbl,value) %>%
-##   ungroup() %>%
-##   filter(date>"2014-04-01") %>%
+## read_csv(dat_text,comment="#") |>
+##   mutate(date=as.Date(date,format="%m/%d/%Y")) |>
+##   gather(variable,value,-date) |>
+##   separate(variable,into=c("vbl","country")) |>
+##   filter(country != "total") |>
+##   group_by(vbl,country) |>
+##   arrange(date) |>
+##   mutate(value=value-lag(value)) |>
+##   filter(!is.na(value)) |>
+##   ungroup() |>
+##   group_by(date,country,vbl) |>
+##   summarize(value=sum(value)) |>
+##   ungroup() |>
+##   mutate(date=ceiling_date(date,"month")-ddays(1)) |>
+##   group_by(date,vbl,country) |>
+##   summarize(value=sum(value)) |>
+##   group_by(date,country) |>
+##   spread(vbl,value) |>
+##   ungroup() |>
+##   filter(date>"2014-04-01") |>
 ##   mutate(
 ##     cases=pmax(cases,0),
 ##     deaths=pmax(deaths,0)
-##   ) %>%
+##   ) |>
 ##   as.data.frame() -> ebolaWA2014
 
 ## save(ebolaWA2014,file="ebolaWA2014.rda",compress="xz")

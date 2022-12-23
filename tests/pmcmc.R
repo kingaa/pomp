@@ -5,7 +5,7 @@ library(pomp)
 
 set.seed(857075216L)
 
-gompertz() %>% window(end=10) -> po
+gompertz() |> window(end=10) -> po
 
 prop1 <- mvn_diag_rw(c(r=0.01,sigma=0.01))
 
@@ -105,13 +105,13 @@ gompertz() -> gompertz
 
 set.seed(857075216L)
 
-try(gompertz %>% as.data.frame() %>% pmcmc())
-try(gompertz %>% as.data.frame() %>% pmcmc(times="time",t0=0))
-try(gompertz %>% as.data.frame() %>% pmcmc(times="time",t0=0,
+try(gompertz |> as.data.frame() |> pmcmc())
+try(gompertz |> as.data.frame() |> pmcmc(times="time",t0=0))
+try(gompertz |> as.data.frame() |> pmcmc(times="time",t0=0,
   proposal=mvn_diag_rw(c(a=1,b=2))))
 
-gompertz %>%
-  as.data.frame() %>%
+gompertz |>
+  as.data.frame() |>
   pmcmc(
     Nmcmc=10,Np=100,
     times="time",t0=0,

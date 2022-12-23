@@ -65,7 +65,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
   ## Here, we pass the dmeasure specification to 'pfilter'
   ## as an R function.
 
-  po \%>\%
+  po |>
     pfilter(
       dmeasure=function (y, N, phi, ..., log) {
         dpois(y,lambda=phi*N,log=log)
@@ -75,7 +75,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 
   ## We can also pass it as a C snippet:
 
-  po \%>\%
+  po |>
     pfilter(
       dmeasure=Csnippet("lik = dpois(y,phi*N,give_log);"),
       paramnames="phi",

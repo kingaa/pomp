@@ -103,19 +103,19 @@ try(rmeasure(po,x=x,times=t,params=pp[,1:3]))
 rmeasure(po,x=x,times=t,params=pp) -> y
 stopifnot(dim(y)==c(2,5,10),names(dimnames(y))==c("variable",".id","time"))
 
-po %>% pomp(
+po |> pomp(
   rmeasure=function(...)c(1,2,3),
   dmeasure=function(...,log)c(3,2)
 ) -> po1
-try(po1 %>% rmeasure(x=x,times=t,params=p))
-try(po1 %>% dmeasure(x=x,y=y[,1,],times=t,params=p))
+try(po1 |> rmeasure(x=x,times=t,params=p))
+try(po1 |> dmeasure(x=x,y=y[,1,],times=t,params=p))
 
-po %>% pomp(
+po |> pomp(
   rmeasure=NULL,
   dmeasure=NULL
 ) -> po1
-po1 %>% rmeasure(x=x,times=t,params=p) %>% is.na() %>% stopifnot()
-po1 %>% dmeasure(x=x,y=y[,1,],times=t,params=p) %>% is.na() %>% stopifnot()
+po1 |> rmeasure(x=x,times=t,params=p) |> is.na() |> stopifnot()
+po1 |> dmeasure(x=x,y=y[,1,],times=t,params=p) |> is.na() |> stopifnot()
 
 sir() -> sir
 po <- window(sir,end=0.5)
@@ -127,27 +127,27 @@ y <- sm$obs[,1,,drop=FALSE]
 t <- time(po)
 p <- coef(po)
 
-po %>% dmeasure(x=x,y=y,params=p,times=t,log=TRUE) -> d
-po %>% rmeasure(x=x,params=p,times=t) -> yy
+po |> dmeasure(x=x,y=y,params=p,times=t,log=TRUE) -> d
+po |> rmeasure(x=x,params=p,times=t) -> yy
 
-po %>%
-  pomp(dmeasure=function(...,log)1) %>%
+po |>
+  pomp(dmeasure=function(...,log)1) |>
   dmeasure(x=x,y=y,params=p,times=t) -> d
 
 try({
   pp <- p
   names(pp)[3] <- NA
-  po %>% rmeasure(x=x,params=pp,times=t)
+  po |> rmeasure(x=x,params=pp,times=t)
 })
 
 try({
   pp <- p
   names(pp)[3] <- ""
-  po %>% rmeasure(x=x,params=pp,times=t)
+  po |> rmeasure(x=x,params=pp,times=t)
 })
 
 try({
   pp <- p
   names(pp) <- NULL
-  po %>% rmeasure(x=x,params=pp,times=t)
+  po |> rmeasure(x=x,params=pp,times=t)
 })

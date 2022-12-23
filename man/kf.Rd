@@ -59,13 +59,13 @@ given \eqn{A}, \eqn{C}, \eqn{Q}, and \eqn{R}.
 
     gompertz() -> po
 
-    po \%>\%
-      as.data.frame() \%>\%
+    po |>
+      as.data.frame() |>
       mutate(
         logY=log(Y)
-      ) \%>\%
-      select(time,logY) \%>\%
-      pomp(times="time",t0=0) \%>\%
+      ) |>
+      select(time,logY) |>
+      pomp(times="time",t0=0) |>
       kalmanFilter(
         X0=c(logX=0),
         A=matrix(exp(-0.1),1,1),
@@ -74,7 +74,7 @@ given \eqn{A}, \eqn{C}, \eqn{Q}, and \eqn{R}.
         R=matrix(0.01,1,1)
       ) -> kf
 
-    po \%>\%
+    po |>
       pfilter(Np=1000) -> pf
 
     kf$logLik

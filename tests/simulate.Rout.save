@@ -37,7 +37,7 @@ The following objects are masked from 'package:base':
 > set.seed(1041414791L)
 > 
 > ou2() -> ou2
-> ou2 %>% simulate(times=0:20,t0=-4,seed=298831503) %>% plot()
+> ou2 |> simulate(times=0:20,t0=-4,seed=298831503) |> plot()
 > 
 > try(simulate(rprocess=onestep(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
@@ -79,7 +79,7 @@ Error : in 'simulate': 't0' must be a single number not greater than 'times[1]'.
 +   rprocess=onestep(Csnippet("z = runif(z-0.5,z+0.5);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
-+   statenames="z",obsnames="w") %>% plot()
++   statenames="z",obsnames="w") |> plot()
 > 
 > try(simulate(times=1:100,t0=0,
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
@@ -101,7 +101,7 @@ Error : in 'simulate': 'rprocess' is undefined.
 +     simulate(times=1:100,t0=0,
 +       rprocess=onestep(function(z,...) {
 +         c(z=runif(1,z-0.5,z+0.5))
-+       }),params=c(z.0=0)) %>% obs() -> y
++       }),params=c(z.0=0)) |> obs() -> y
 +     dim(y)==c(0,100)
 +   }
 + )
@@ -138,41 +138,41 @@ Error : in 'simulate': 'rmeasure' returns variable-length results.
 +   rmeasure=function(z,...) c(w=rnorm(1,z,1)),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z") -> po
-> po %>% plot()
+> po |> plot()
 > 
 > simulate(times=1:100,t0=0,seed=378047885,
 +   rprocess=onestep(function(z,...)
 +     c(z=runif(n=1,z-0.5,z+0.5))),
 +   rmeasure=function(z,...) c(w=rnorm(1,z,1)),
-+   rinit=function(params,t0,...)c(z=0)) %>% plot()
++   rinit=function(params,t0,...)c(z=0)) |> plot()
 > 
 > rm(.Random.seed)
-> po %>%
-+   simulate(params=as.list(coef(po)),seed=406214171) %>%
+> po |>
++   simulate(params=as.list(coef(po)),seed=406214171) |>
 +   plot(variables=rep(c("z","w"),10),main="test",yax.flip=TRUE)
 > 
 > set.seed(1041414791L)
 > 
-> data.frame(u=1:10,v=runif(10)) %>%
-+   pomp(times="u",t0=0) %>%
+> data.frame(u=1:10,v=runif(10)) |>
++   pomp(times="u",t0=0) |>
 +   simulate(rprocess=onestep(Csnippet("w = runif(0,1);")),
 +     rmeasure=function(w,...){
 +       p <- w+c(-0.5,0.5)
 +       c(y=runif(n=1,p[1],p[2]))
 +     },
 +     rinit=Csnippet("w=0;"),
-+     statenames="w") %>%
-+   obs() %>%
++     statenames="w") |>
++   obs() |>
 +   rownames()
 [1] "y"
 > 
-> data.frame(u=1:10,v=runif(10)) %>%
-+   pomp(times="u",t0=0) %>%
+> data.frame(u=1:10,v=runif(10)) |>
++   pomp(times="u",t0=0) |>
 +   simulate(rprocess=onestep(Csnippet("w = runif(0,1);")),
 +     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
 +     rinit=Csnippet("w=0;"),
-+     statenames="w",obsnames="y") %>%
-+   obs() %>%
++     statenames="w",obsnames="y") |>
++   obs() |>
 +   rownames()
 [1] "y"
 > 
@@ -185,15 +185,15 @@ Error : in 'simulate': 'nsim' must be a positive integer.
 > try(simulate(ou2,nsim="bob"))
 Error : in 'simulate': 'nsim' must be a positive integer.
 > 
-> ou2 %>% window(end=3) -> po
-> simulate(po,format="data.frame",seed=49569969,nsim=3) %>%
-+   count(.id) %>% as.data.frame()
+> ou2 |> window(end=3) -> po
+> simulate(po,format="data.frame",seed=49569969,nsim=3) |>
++   count(.id) |> as.data.frame()
   .id n
 1   1 3
 2   2 3
 3   3 3
-> simulate(po,format="data.frame",seed=49569969,nsim=3,include.data=TRUE) %>%
-+   count(.id) %>% as.data.frame()
+> simulate(po,format="data.frame",seed=49569969,nsim=3,include.data=TRUE) |>
++   count(.id) |> as.data.frame()
    .id n
 1 data 3
 2    1 3
@@ -213,11 +213,11 @@ Error : in 'simulate': 'nsim' must be a positive integer.
 5    2    1 -0.486 3.18 -0.6614 4.80
 6    3    1  2.609 3.41  0.0843 5.75
 > simulate(po,format="arrays") -> s
-> s$states %>% rownames()
+> s$states |> rownames()
 [1] "x1" "x2"
-> s$obs %>% rownames()
+> s$obs |> rownames()
 [1] "y1" "y2"
-> simulate(po,nsim=3) %>% show()
+> simulate(po,nsim=3) |> show()
 [[1]]
 <object of class 'pomp'>
 
@@ -228,19 +228,19 @@ Error : in 'simulate': 'nsim' must be a positive integer.
 <object of class 'pomp'>
 
 > 
-> data.frame(u=1:10,v=runif(10)) %>%
-+   pomp(times="u",t0=0) %>%
+> data.frame(u=1:10,v=runif(10)) |>
++   pomp(times="u",t0=0) |>
 +   simulate(rprocess=onestep(Csnippet("w = runif(0,1);")),
 +     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
 +     rinit=Csnippet("w=0;"),
 +     statenames="w",obsnames="y",format="data.frame",include.data=TRUE) -> dat
-> dat %>% names()
+> dat |> names()
 [1] "u"   ".id" "v"   "w"   "y"  
-> dat %>% dim()
+> dat |> dim()
 [1] 20  5
 > 
 > rw2() -> rw2
-> simulate(rw2,accumvars="x2") %>% plot()
+> simulate(rw2,accumvars="x2") |> plot()
 > try(simulate(rw2,params=c(a="bob",b="nancy")))
 Error : in 'simulate': 'params' must be named and numeric.
 > 
@@ -251,11 +251,11 @@ Error : in 'simulate': 'params' must be named and numeric.
 > simulate(rw2,rinit=function(...) c(x1=0,x2=0)) -> x
 > 
 > library(tidyr)
-> dacca() %>%
+> dacca() |>
 +   simulate(nsim=2,include.data=TRUE,format="data.frame") -> dat
-> dat %>%
-+   select(time,.id,seas_1,seas_2) %>%
-+   arrange(time,.id) %>%
+> dat |>
++   select(time,.id,seas_1,seas_2) |>
++   arrange(time,.id) |>
 +   head(6)
   time  .id seas_1 seas_2
 1 1891 data  0.666  0.167
@@ -264,10 +264,10 @@ Error : in 'simulate': 'params' must be named and numeric.
 4 1891 data  0.479  0.479
 5 1891    1  0.479  0.479
 6 1891    2  0.479  0.479
-> dat %>%
-+   pivot_longer(-.id) %>%
-+   group_by(.id,name) %>%
-+   summarize(n=sum(is.na(value)),.groups="drop") %>%
+> dat |>
++   pivot_longer(-.id) |>
++   group_by(.id,name) |>
++   summarize(n=sum(is.na(value)),.groups="drop") |>
 +   filter(n>0) -> d1
 > stopifnot(
 +   `na in sim`=all(d1$.id=="data"),

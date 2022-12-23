@@ -148,7 +148,7 @@ fm <- filter_mean(pf) ## extract the filtering means
 ft <- filter_traj(pf) ## one draw from the smoothing distribution
 ss <- saved_states(pf,format="d") ## the latent-state portion of each particle
 
-as(pf,"data.frame") \%>\% head()
+as(pf,"data.frame") |> head()
 }
 \references{
 \Arulampalam2002

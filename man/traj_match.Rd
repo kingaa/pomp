@@ -126,7 +126,7 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 \examples{
 \donttest{
 
-  ricker() \%>\%
+  ricker() |>
     traj_objfun(
       est=c("r","sigma","N_0"),
       partrans=parameter_trans(log=c("r","sigma","N_0")),
@@ -145,8 +145,8 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 
   if (require(ggplot2)) {
 
-    f \%>\%
-      trajectory(format="data.frame") \%>\%
+    f |>
+      trajectory(format="data.frame") |>
       ggplot(aes(x=time,y=N))+geom_line()+theme_bw()
 
   }

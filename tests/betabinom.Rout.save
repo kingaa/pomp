@@ -20,33 +20,33 @@ Type 'q()' to quit R.
 > library(pomp)
 > 
 > freeze(
-+   rbetabinom(n=2000000,size=c(20,30),prob=0.5,theta=10000) %>%
++   rbetabinom(n=2000000,size=c(20,30),prob=0.5,theta=10000) |>
 +     matrix(2),
 +   seed=39596886L
 + )  -> x1
 > 
-> x1 %>%
-+   dbetabinom(size=c(20,30),prob=0.5,theta=100,log=TRUE) %>%
-+   matrix(2) %>%
+> x1 |>
++   dbetabinom(size=c(20,30),prob=0.5,theta=100,log=TRUE) |>
++   matrix(2) |>
 +   apply(1,mean) -> f1
 > 
 > freeze(
-+   rbetabinom(n=3000000,size=10,prob=c(0.5,0.9,1),theta=10) %>%
++   rbetabinom(n=3000000,size=10,prob=c(0.5,0.9,1),theta=10) |>
 +     matrix(3,1000000),
 +   seed=39596886L
 + ) -> x2
 > 
-> x2[-3,] %>%
-+   dbetabinom(size=10,prob=c(0.5,0.9),theta=10,log=TRUE) %>%
-+   matrix(2) %>%
+> x2[-3,] |>
++   dbetabinom(size=10,prob=c(0.5,0.9),theta=10,log=TRUE) |>
++   matrix(2) |>
 +   apply(1,mean) -> f2
 > 
 > stopifnot(
-+   `m1 fail`={x1 %>% apply(1,mean) %>% all.equal(c(10,15),tolerance=0.001)},
-+   `v1 fail`={x1 %>% apply(1,var) %>% all.equal(c(5,7.5),tolerance=0.005)},
++   `m1 fail`={x1 |> apply(1,mean) |> all.equal(c(10,15),tolerance=0.001)},
++   `v1 fail`={x1 |> apply(1,var) |> all.equal(c(5,7.5),tolerance=0.005)},
 +   `dcheck1`=all.equal(f1,c(-2.23,-2.44),tolerance=.005),
-+   `m2 fail`={x2 %>% apply(1,mean) %>% all.equal(c(5,9,10),tolerance=0.001)},
-+   `v2 fail`={x2 %>% apply(1,var) %>% all.equal(c(4.54,1.63,0),tolerance=0.005)},
++   `m2 fail`={x2 |> apply(1,mean) |> all.equal(c(5,9,10),tolerance=0.001)},
++   `v2 fail`={x2 |> apply(1,var) |> all.equal(c(4.54,1.63,0),tolerance=0.005)},
 +   `dcheck2`=all.equal(f2,c(-2.16,-1.38),tolerance=.005)
 + )
 > 

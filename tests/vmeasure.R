@@ -15,23 +15,23 @@ stopifnot(
 )
 try(vmeasure(po,x=states(po),params=coef(po),times=numeric(0)))
 try(vmeasure(po,x=states(po),params=coef(po),times=c(1,2,3)))
-simulate(po,nsim=3,format="arrays") %>% getElement("states") -> X
+simulate(po,nsim=3,format="arrays") |> getElement("states") -> X
 try(vmeasure(po,x=X,params=parmat(coef(po),2),times=time(po)))
-po %>%
+po |>
   simulate(
     vmeasure=function(x1, x2, ...) {
       matrix(c(x1+x2,1,1,x1+x2,1,1),nrow=2)
     }
   ) -> po1
 try(vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
-po %>%
+po |>
   simulate(
     vmeasure=function(x1, x2, ...) {
       matrix(c(x1+x2,1,1,x1+x2),nrow=2)
     }
   ) -> po1
 try(vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
-po %>%
+po |>
   simulate(
     vmeasure=function(x1, x2, t, ...) {
       v <- matrix(rep(x1+x2,ceiling(t)^2),nrow=ceiling(t))
@@ -41,7 +41,7 @@ po %>%
     }
   ) -> po1
 try(vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
-po %>%
+po |>
   simulate(
     vmeasure=function(x1, x2, t, ...) {
       v <- matrix(c(x1+x2,1,1,x1+x2),nrow=2)
@@ -59,7 +59,7 @@ stopifnot(
   colnames(v)==c("a","b"),
   sum(is.na(v))==0
 )
-po %>% simulate(vmeasure=NULL) -> po1
+po |> simulate(vmeasure=NULL) -> po1
 v <- vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1))
 stopifnot(
   dim(v)==c(2,2,1,100),
@@ -68,7 +68,7 @@ stopifnot(
   sum(is.na(v))==400
 )
 
-sir() %>%
+sir() |>
   simulate(
     times=(1:10)/52,
     vmeasure=function(cases, rho, seas_1, seas_2, seas_3, ...) {

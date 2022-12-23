@@ -1,8 +1,8 @@
 \donttest{
   ## A simple SIR model.
 
-  ewmeas %>%
-    subset(time < 1952) %>%
+  ewmeas |>
+    subset(time < 1952) |>
     pomp(
       times="time",t0=1948,
       rprocess=euler(
@@ -49,13 +49,13 @@
       S_0=0.07,I_0=0.001,R_0=0.93)
     ) -> ew1
 
-  ew1 %>%
-    simulate() %>%
+  ew1 |>
+    simulate() |>
     plot(variables=c("S","I","R"))
 
   ## A simple SIR model that tracks cumulative incidence.
 
-  ew1 %>%
+  ew1 |>
     pomp(
       rprocess=euler(
         Csnippet("
@@ -109,17 +109,17 @@
       S_0=0.07,I_0=0.001,R_0=0.93)
     ) -> ew2
 
-  ew2 %>%
-    simulate() %>%
+  ew2 |>
+    simulate() |>
     plot()
 
   ## A simple SIR model that tracks weekly incidence.
 
-  ew2 %>%
+  ew2 |>
     pomp(accumvars="H") -> ew3
 
-  ew3 %>%
-    simulate() %>%
+  ew3 |>
+    simulate() |>
     plot()
 
 }

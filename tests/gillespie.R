@@ -72,11 +72,11 @@ simulate(
   }
 ) -> gsir
 
-gsir %>%
-  simulate(accumvars=NULL) %>%
+gsir |>
+  simulate(accumvars=NULL) |>
   plot(main="Gillespie SIR, no zeroing")
 
-gsir %>%
+gsir |>
   simulate(
     rprocess=gillespie(
       rate.fun=Csnippet("
@@ -115,7 +115,7 @@ gsir %>%
     statenames=c("S","I","R","N","cases")
   ) -> gsir1
 
-gsir1 %>%
+gsir1 |>
   plot(main="Gillespie SIR, with zeroing")
 
 sir2() -> sir2
@@ -127,9 +127,9 @@ bind_rows(
   Csnippet=as.data.frame(gsir1),
   sir2=as.data.frame(gsir2),
   .id="model"
-) %>%
-  pivot_longer(-c(time,model)) %>%
-  filter(name=="reports") %>%
+) |>
+  pivot_longer(-c(time,model)) |>
+  filter(name=="reports") |>
   ggplot(aes(x=time,y=value,color=model))+
   labs(color="",y="reports",title="comparison of implementations")+
   geom_line()+
@@ -156,13 +156,13 @@ gillespie_hl(A=list("bob",c(a=2,b=1)),B=list("mary",c(a=1,c=2))) -> f
 f@v
 
 stopifnot(
-  gsir %>%
+  gsir |>
     simulate(params=c(gamma=0,mu=0,iota=0,beta1=0,beta2=0,beta3=0,
-      rho=0.1,S_0=0.07,I_0=1e-4,R_0=0.93,pop=1e6)) %>%
-    states() %>% apply(1,diff) == 0
+      rho=0.1,S_0=0.07,I_0=1e-4,R_0=0.93,pop=1e6)) |>
+    states() |> apply(1,diff) == 0
 )
 
-try(gsir %>% simulate(rprocess=gillespie(rate.fun=function(j,...)1,v=Vmatrix[1:4,])))
+try(gsir |> simulate(rprocess=gillespie(rate.fun=function(j,...)1,v=Vmatrix[1:4,])))
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) {
   if (t>1) {
@@ -171,7 +171,7 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
     rate.fun(j,x,t,params,covars,...)
   }
 }
-simulate(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>%
+simulate(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) |>
   plot(main="freeze at time 1")
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) {
@@ -184,10 +184,10 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
 try(simulate(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)))
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) -1
-try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) |> simulate())
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
-try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) |> simulate())
 
 try(pomp(gsir,rprocess=gillespie(rate.fun=3,v=Vmatrix)))
 

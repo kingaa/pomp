@@ -24,7 +24,7 @@ Type 'q()' to quit R.
 > 
 > set.seed(857075216L)
 > 
-> gompertz() %>% window(end=10) -> po
+> gompertz() |> window(end=10) -> po
 > 
 > prop1 <- mvn_diag_rw(c(r=0.01,sigma=0.01))
 > 
@@ -177,18 +177,18 @@ Error : in 'pmcmc': non-finite log likelihood at starting parameters.
 > 
 > set.seed(857075216L)
 > 
-> try(gompertz %>% as.data.frame() %>% pmcmc())
+> try(gompertz |> as.data.frame() |> pmcmc())
 Error : in 'pmcmc': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(gompertz %>% as.data.frame() %>% pmcmc(times="time",t0=0))
+> try(gompertz |> as.data.frame() |> pmcmc(times="time",t0=0))
 Error : in 'pmcmc': 'proposal' must be specified
-> try(gompertz %>% as.data.frame() %>% pmcmc(times="time",t0=0,
+> try(gompertz |> as.data.frame() |> pmcmc(times="time",t0=0,
 +   proposal=mvn_diag_rw(c(a=1,b=2))))
 Error : in 'pmcmc': in 'pfilter': 'rprocess', 'dmeasure' are needed basic components.
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > 
-> gompertz %>%
-+   as.data.frame() %>%
+> gompertz |>
++   as.data.frame() |>
 +   pmcmc(
 +     Nmcmc=10,Np=100,
 +     times="time",t0=0,

@@ -54,7 +54,7 @@ Type 'q()' to quit R.
 + ) -> sm
 Warning message:
 'rmeasure' unspecified: NAs generated. 
-> sm %>% trajectory() -> tj
+> sm |> trajectory() -> tj
 > stopifnot(
 +   all.equal(
 +     diff(floor(time(sm,t0=TRUE)/0.1)),
@@ -67,7 +67,7 @@ Warning message:
 + )
 > 
 > tm <- freeze(sort(runif(n=100,max=2)),seed=342643819)
-> sir() %>%
+> sir() |>
 +   simulate(
 +     times=tm,
 +     rprocess=euler(Csnippet("

@@ -36,7 +36,7 @@ observed variables \eqn{y_t}{y[t]} are distributed as
 po <- ricker()
 plot(po)
 coef(po)
-simulate(po) \%>\% plot()
+simulate(po) |> plot()
 \donttest{
   ## generate a bifurcation diagram for the Ricker map
   p <- parmat(coef(ricker()),nrep=500)

@@ -85,7 +85,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
   ## Since this is a continuous-time POMP, the
   ## skeleton is a vectorfield.
 
-  po \%>\%
+  po |>
     trajectory(
       skeleton=vectorfield(
         function(r, K, n, ...) {
@@ -97,7 +97,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 
   ## We can also pass it as a C snippet:
 
-  po \%>\%
+  po |>
     traj_objfun(
       skeleton=vectorfield(Csnippet("Dn=r*n*(1-n/K);")),
       paramnames=c("r","K"),
@@ -111,7 +111,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 
   gompertz() -> po
 
-  po \%>\%
+  po |>
     traj_objfun(
       skeleton=map(
         Csnippet("

@@ -30,29 +30,29 @@ simulate(times=seq(1,100),t0=0,
   statenames="x",obsnames="y",paramnames=c("beta1","beta2","beta3")
 ) -> po
 
-try(po %>%
+try(po |>
     simulate(rprocess=onestep(
       Csnippet("
       SEXP Msg = get_userdata(\"bob\");
       char *msg = CHAR(STRING_ELT(Msg,0));
       Rprintf(\"%s\\n\",msg);"))))
-try(po %>%
+try(po |>
     simulate(rprocess=onestep(
       Csnippet("double nbasis = *(get_userdata_double(\"nbasis\"));"))))
-try(po %>%
+try(po |>
     simulate(rprocess=onestep(
       Csnippet("double nbasis = *(get_userdata_double(\"bob\"));"))))
-try(po %>%
+try(po |>
     simulate(rprocess=onestep(
       Csnippet("int nbasis = *(get_userdata_int(\"period\"));"))))
-try(po %>%
+try(po |>
     simulate(rprocess=onestep(
       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));"))))
-try(po %>%
+try(po |>
     simulate(rprocess=onestep(
       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));")),
       bob=3))
-stopifnot(po %>%
+stopifnot(po |>
     simulate(rprocess=onestep(
       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));")),
-      bob=3L) %>% class() %>% magrittr::equals("pomp"))
+      bob=3L) |> class() == "pomp")

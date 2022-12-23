@@ -9,7 +9,7 @@ profile_design(
   lower=c(a=0,b=0),
   upper=c(a=1,b=2),
   nprof=10
-) %>%
+) |>
   mutate(
     logLik=rnorm(
       n=length(theta),

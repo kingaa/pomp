@@ -27,7 +27,7 @@ simulate(
   paramnames = c("Beta", "mu_IR", "rho"),
   rinit = sir_init,
   params = c(Beta = log(1), mu_IR = log(0.1), rho = log(0.1))
-) %>%
+) |>
   pmcmc(
     Np = 1000,
     Nmcmc = 100,

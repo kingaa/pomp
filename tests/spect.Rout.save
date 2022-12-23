@@ -117,7 +117,7 @@ Error : in 'spect': in simulation: yikes!
 Warning message:
 in 'plot': 'data.styles' contains an element with more than 1 entry but fewer entries than observed variables. 
 > 
-> try({bob %>% simulate(times=c(1:5,8:10)) %>%
+> try({bob |> simulate(times=c(1:5,8:10)) |>
 +     spect(kernel.width=3,nsim=10)})
 Error : in 'spect': 'spect' assumes evenly spaced times.
 > 
@@ -126,7 +126,7 @@ Error : in 'spect': 'spect' assumes evenly spaced times.
 +   count <<- count+1
 +   if (count>3) rep(NA_real_,length(y)) else y
 + }
-> try(bob %>% spect(transform.data=bad.transform,kernel.width=3,nsim=100))
+> try(bob |> spect(transform.data=bad.transform,kernel.width=3,nsim=100))
 Error : in 'spect': in 'spec.pgram': missing values in object
 > 
 > dev.off()

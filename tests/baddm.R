@@ -6,12 +6,12 @@ library(pomp)
 set.seed(398585L)
 
 try(
-  gompertz() %>%
+  gompertz() |>
     pfilter(Np=10,dmeasure=function(...,log) Inf)
 )
 
 try(
-  gompertz() %>%
+  gompertz() |>
     mif2(
       Np=10,Nmif=2,
       dmeasure=function(...,log) NaN,
@@ -21,7 +21,7 @@ try(
 )
 
 try(
-  gompertz() %>%
+  gompertz() |>
     bsmc2(
       Np=10,
       rprior=function(...)c(r=runif(n=1,min=0,max=1)),

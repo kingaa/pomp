@@ -7,7 +7,7 @@ set.seed(48832734L)
 
 png(filename="sir2-%02d.png",res=100)
 
-sir2() %>% window(end=2) -> po
+sir2() |> window(end=2) -> po
 plot(po)
 
 stopifnot(

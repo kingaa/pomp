@@ -13,16 +13,16 @@ plist <- list(
   probe_acf(var="Y",lags=c(0,4,8))
 )
 
-gompertz %>%
-  probe(probes=plist,nsim=100) %>%
-  as.data.frame() %>%
-  filter(.id=="sim") %>%
-  select(-.id) %>%
-  pivot_longer(everything()) %>%
-  group_by(name) %>%
-  summarize(value=(sd(value))) %>%
-  ungroup() %>%
-  pivot_wider(names_from=name) %>%
+gompertz |>
+  probe(probes=plist,nsim=100) |>
+  as.data.frame() |>
+  filter(.id=="sim") |>
+  select(-.id) |>
+  pivot_longer(everything()) |>
+  group_by(name) |>
+  summarize(value=(sd(value))) |>
+  ungroup() |>
+  pivot_wider(names_from=name) |>
   unlist() -> scale.dat
 
 abc(

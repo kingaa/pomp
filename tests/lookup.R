@@ -41,10 +41,10 @@ covariate_table(
   bspline_basis(times,nbasis=8,degree=3,deriv=0,names="f0"),
   bspline_basis(times,nbasis=8,degree=3,deriv=1,names="f1"),
   times=seq(0,10,by=0.1)
-) %>%
-  lookup(t=seq(0,10,by=0.01)) %>%
-  pivot_longer(-t) %>%
-  separate(name,into=c("variable","n")) %>%
+) |>
+  lookup(t=seq(0,10,by=0.01)) |>
+  pivot_longer(-t) |>
+  separate(name,into=c("variable","n")) |>
   ggplot(aes(x=t,y=value,color=factor(n)))+
   labs(color="element",y="",x="")+
   geom_line()+

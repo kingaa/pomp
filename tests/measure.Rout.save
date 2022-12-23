@@ -142,23 +142,23 @@ Error : in 'rmeasure': larger number of replicates is not a multiple of smaller.
 > rmeasure(po,x=x,times=t,params=pp) -> y
 > stopifnot(dim(y)==c(2,5,10),names(dimnames(y))==c("variable",".id","time"))
 > 
-> po %>% pomp(
+> po |> pomp(
 +   rmeasure=function(...)c(1,2,3),
 +   dmeasure=function(...,log)c(3,2)
 + ) -> po1
-> try(po1 %>% rmeasure(x=x,times=t,params=p))
+> try(po1 |> rmeasure(x=x,times=t,params=p))
 Error : in 'rmeasure': 'rmeasure' must return a named numeric vector.
-> try(po1 %>% dmeasure(x=x,y=y[,1,],times=t,params=p))
+> try(po1 |> dmeasure(x=x,y=y[,1,],times=t,params=p))
 Error : in 'dmeasure': user 'dmeasure' returns a vector of length 2 when it should return a scalar.
 > 
-> po %>% pomp(
+> po |> pomp(
 +   rmeasure=NULL,
 +   dmeasure=NULL
 + ) -> po1
-> po1 %>% rmeasure(x=x,times=t,params=p) %>% is.na() %>% stopifnot()
+> po1 |> rmeasure(x=x,times=t,params=p) |> is.na() |> stopifnot()
 Warning message:
 'rmeasure' unspecified: NAs generated. 
-> po1 %>% dmeasure(x=x,y=y[,1,],times=t,params=p) %>% is.na() %>% stopifnot()
+> po1 |> dmeasure(x=x,y=y[,1,],times=t,params=p) |> is.na() |> stopifnot()
 Warning message:
 'dmeasure' unspecified: likelihood undefined. 
 > 
@@ -172,31 +172,31 @@ Warning message:
 > t <- time(po)
 > p <- coef(po)
 > 
-> po %>% dmeasure(x=x,y=y,params=p,times=t,log=TRUE) -> d
-> po %>% rmeasure(x=x,params=p,times=t) -> yy
+> po |> dmeasure(x=x,y=y,params=p,times=t,log=TRUE) -> d
+> po |> rmeasure(x=x,params=p,times=t) -> yy
 > 
-> po %>%
-+   pomp(dmeasure=function(...,log)1) %>%
+> po |>
++   pomp(dmeasure=function(...,log)1) |>
 +   dmeasure(x=x,y=y,params=p,times=t) -> d
 > 
 > try({
 +   pp <- p
 +   names(pp)[3] <- NA
-+   po %>% rmeasure(x=x,params=pp,times=t)
++   po |> rmeasure(x=x,params=pp,times=t)
 + })
 Error : in 'rmeasure': invalid variable names among the parameters.
 > 
 > try({
 +   pp <- p
 +   names(pp)[3] <- ""
-+   po %>% rmeasure(x=x,params=pp,times=t)
++   po |> rmeasure(x=x,params=pp,times=t)
 + })
 Error : in 'rmeasure': invalid variable names among the parameters.
 > 
 > try({
 +   pp <- p
 +   names(pp) <- NULL
-+   po %>% rmeasure(x=x,params=pp,times=t)
++   po |> rmeasure(x=x,params=pp,times=t)
 + })
 Error : in 'rmeasure': variable 'gamma' not found among the parameters.
 > 

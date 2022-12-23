@@ -41,7 +41,7 @@ simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),form
 ## ----logistic-plot1,echo=FALSE-------------------------------------------
 library(tidyr)
 
-simStates %>%
+simStates |>
   ggplot(mapping=aes(x=year,y=N,group=.id,color=factor(.id)))+
   geom_line()+
   guides(color="none")+
@@ -60,8 +60,8 @@ sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),nsim=10,
   format="data.frame")
 
 ## ----logistic-plot2,echo=FALSE-------------------------------------------
-sim %>%
-  pivot_longer(cols=c(N,pop)) %>%
+sim |>
+  pivot_longer(cols=c(N,pop)) |>
   ggplot(mapping=aes(x=year,y=value,group=.id,color=factor(.id)))+
   geom_line()+
   guides(color="none")+
@@ -71,7 +71,7 @@ sim %>%
 
 library(dplyr)
 
-sim %>%
+sim |>
   ggplot(mapping=aes(x=N,y=pop,color=factor(.id)))+
   geom_point()+scale_x_sqrt()+scale_y_sqrt()+
   coord_equal()+
@@ -103,8 +103,8 @@ pars["N.0",] <- seq(20,300,length=5)
 traj <- trajectory(parus,params=pars,times=seq(1959,1970,by=0.01))
 
 ## ----logistic-plot3,echo=FALSE-------------------------------------------
-parus %>%
-  trajectory(params=pars,times=seq(1959,1970,by=0.01),format="data.frame") %>%
+parus |>
+  trajectory(params=pars,times=seq(1959,1970,by=0.01),format="data.frame") |>
   ggplot(mapping=aes(x=year,y=N,group=.id,color=.id))+
   guides(color="none")+
   geom_line()+
@@ -131,7 +131,7 @@ traj <- trajectory(parus.bh)
 pf <- pfilter(parus.bh,Np=1000)
 
 ## ----logistic-partrans---------------------------------------------------
-parus %>% pomp(partrans=parameter_trans(log=c("r","K","sigma")),
+parus |> pomp(partrans=parameter_trans(log=c("r","K","sigma")),
   paramnames=c("r","K","sigma")) -> parus
 
 ## ----logistic-partrans-test,include=FALSE--------------------------------
@@ -155,7 +155,7 @@ stopifnot(all.equal(
 ## ----parus-tm-sim1-------------------------------------------------------
 tm <- as_pomp(tm)
 coef(tm,"sigma") <- 0
-simulate(tm,nsim=10,format="data.frame",include.data=TRUE) %>%
+simulate(tm,nsim=10,format="data.frame",include.data=TRUE) |>
   ggplot(aes(x=year,y=pop,group=.id,alpha=(.id=="data")))+
     scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
                        labels=c(`FALSE`="simulation",`TRUE`="data"))+
@@ -163,7 +163,7 @@ simulate(tm,nsim=10,format="data.frame",include.data=TRUE) %>%
     theme_bw()
 
 ## ----parus-dprior--------------------------------------------------------
-parus %>%
+parus |>
   pomp(dprior=Csnippet("
     lik = dunif(r,0,5,1)+dunif(K,100,600,1)+dunif(sigma,0,2,1);
     lik = (give_log) ? lik : exp(lik);

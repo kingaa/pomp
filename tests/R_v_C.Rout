@@ -22,6 +22,7 @@ Type 'q()' to quit R.
 > 
 > ## ----packages------------------------------------------------------------
 > library(pomp)
+> library(tidyr)
 > library(ggplot2)
 > 
 > ## ----seed,echo=FALSE-----------------------------------------------------
@@ -55,10 +56,10 @@ Type 'q()' to quit R.
 + ) -> gompertz
 > 
 > ## ----R2------------------------------------------------------------------
-> gompertz %>%
-+   as.data.frame() %>%
-+   melt(id="time") %>%
-+   ggplot(aes(x=time,y=value,color=variable))+
+> gompertz |>
++   as.data.frame() |>
++   pivot_longer(cols=-time) |>
++   ggplot(aes(x=time,y=value,color=name))+
 +   geom_line()+
 +   labs(y="X, Y")+
 +   theme_bw()
@@ -91,7 +92,7 @@ Type 'q()' to quit R.
 > p["X.0",] <- c(0.5,0.9,1.1,1.5)
 > 
 > ## ----sim1----------------------------------------------------------------
-> simulate(Gompertz,params=p,format="data.frame") %>%
+> simulate(Gompertz,params=p,format="data.frame") |>
 +   ggplot(aes(x=time,y=X,group=.id,color=.id))+
 +   geom_line()+
 +   guides(color="none")+
@@ -108,16 +109,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  6.502   0.084   6.586 
+  6.487   0.044   6.531 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.155   0.000   0.155 
+  0.154   0.003   0.157 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-    0.6     0.0     0.6 
+  0.598   0.000   0.599 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.028   0.000   0.028 
+  0.027   0.000   0.027 
 > 
 > dev.off()
 null device 

@@ -38,7 +38,7 @@ Error : in 'hitch': the variable names in 'statenames', 'paramnames', 'covarname
 > 
 > hitch(step.fn=Csnippet("int bob; bob = 3"),
 +   templates=pomp:::workhorse_templates,
-+   compile=FALSE,cfile="bob") %>% names()
++   compile=FALSE,cfile="bob") |> names()
 [1] "funs" "lib" 
 > 
 > 

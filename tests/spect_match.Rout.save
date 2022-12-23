@@ -23,14 +23,14 @@ Type 'q()' to quit R.
 > library(pomp)
 > 
 > ou2() -> ou2
-> ou2 %>% as.data.frame() %>% subset(select=c(time,y1,y2)) -> dat
+> ou2 |> as.data.frame() |> subset(select=c(time,y1,y2)) -> dat
 > 
-> try(dat %>% spect_objfun())
+> try(dat |> spect_objfun())
 Error : in 'spect_objfun': in 'spect': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(dat %>% spect_objfun(times="time",t0=0))
+> try(dat |> spect_objfun(times="time",t0=0))
 Error : in 'spect_objfun': in 'spect': 'rprocess', 'rmeasure' are needed basic components.
 > 
-> dat %>%
+> dat |>
 +   spect_objfun(
 +     times="time",t0=0,
 +     rinit=ou2@rinit,
@@ -49,7 +49,7 @@ Error : in 'spect_objfun': in 'spect': 'rprocess', 'rmeasure' are needed basic c
 > stopifnot(f(0)==f(1))
 > stopifnot(logLik(f)==-f(0))
 > 
-> f %>% spect_objfun(est=c("alpha_1"),seed=580656309) -> f1
+> f |> spect_objfun(est=c("alpha_1"),seed=580656309) -> f1
 > plot(sapply(seq(0.3,1.2,by=0.1),f1),log='y')
 > 
 > f1(1.1)
@@ -67,21 +67,21 @@ Error : 'spect_objfun' is undefined for 'data' of class 'character'.
 > try(spect_objfun(f1,est="harry"))
 Error : in 'spect_objfun': parameter 'harry' not found in 'params'
 > 
-> f1 %>% as("spectd_pomp") %>% plot()
+> f1 |> as("spectd_pomp") |> plot()
 > 
-> f1 %>% summary() %>% names()
+> f1 |> summary() |> names()
 [1] "coef"  "nsim"  "pvals"
 > 
-> f1 %>% plot()
+> f1 |> plot()
 > 
-> f1 %>% spect() %>% plot()
+> f1 |> spect() |> plot()
 > 
-> f1 %>% as("pomp")
+> f1 |> as("pomp")
 <object of class 'pomp'>
-> f1 %>% as("data.frame") %>% names()
+> f1 |> as("data.frame") |> names()
 [1] "time" "y1"   "y2"  
 > 
-> f1 %>% spect_objfun(fail.value=1e10) -> f2
+> f1 |> spect_objfun(fail.value=1e10) -> f2
 > 
 > try(spect_objfun(f2,weights="heavy"))
 Error : in 'spect_objfun': 'weights' must be specified as a vector or as a function
@@ -97,12 +97,12 @@ Error : in 'spect_objfun': 'weights' function: oh no!
 > subplex(fn=f2,par=out$par,control=list(reltol=1e-3)) -> out
 > f2(out$par)
 [1] 83.6
-> summary(f2) %>% names()
+> summary(f2) |> names()
 [1] "coef"  "nsim"  "pvals"
 > plot(spect(f2))
 > 
-> f2 %>% probe(nsim=100,seed=639095851,
-+   probes=list(probe_mean("y1"),probe_mean("y2"))) %>%
+> f2 |> probe(nsim=100,seed=639095851,
++   probes=list(probe_mean("y1"),probe_mean("y2"))) |>
 +   plot()
 > 
 > dev.off()

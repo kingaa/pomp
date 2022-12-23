@@ -7,11 +7,11 @@ ou2() -> ou2
 
 try(traj_objfun())
 try(traj_objfun("bob"))
-try(ou2 %>% as.data.frame() %>% traj_objfun())
-try(ou2 %>% as.data.frame() %>% traj_objfun(times="time",t0=0))
+try(ou2 |> as.data.frame() |> traj_objfun())
+try(ou2 |> as.data.frame() |> traj_objfun(times="time",t0=0))
 
-ou2 %>%
-  as.data.frame() %>%
+ou2 |>
+  as.data.frame() |>
   traj_objfun(
     times="time",t0=0,
     rinit=ou2@rinit,
@@ -26,7 +26,7 @@ stopifnot(
   logLik(f)!=f(0)
 )
 
-f %>% traj_objfun(est=c("alpha_1")) -> f1
+f |> traj_objfun(est=c("alpha_1")) -> f1
 plot(sapply(seq(0.1,0.9,by=0.1),f1),xlab="",ylab="")
 
 f1(1.1)
@@ -37,10 +37,10 @@ f1(out$par)
 
 try(traj_objfun(f1,est="harry"))
 
-f1 %>% as("pomp")
-f1 %>% as("data.frame") %>% names()
+f1 |> as("pomp")
+f1 |> as("data.frame") |> names()
 
-f1 %>% traj_objfun(fail.value=1e10) -> f2
+f1 |> traj_objfun(fail.value=1e10) -> f2
 f2(NA)
 
 ## ------------------
@@ -49,7 +49,7 @@ f2(NA)
 
 enames <- c("gamma","iota","rho","k")
 
-sir() %>%
+sir() |>
   traj_objfun(
     dmeasure=Csnippet("
       lik = dnbinom_mu(nearbyint(reports),1/k,rho*cases,give_log);
@@ -82,8 +82,8 @@ invisible(ofun(fit$par))
 
 library(ggplot2)
 
-ofun %>%
-  trajectory(format="d") %>%
+ofun |>
+  trajectory(format="d") |>
   ggplot(aes(x=time,y=coef(ofun,"rho")*cases))+
   geom_line()+
   geom_point(

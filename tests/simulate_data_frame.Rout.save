@@ -35,7 +35,7 @@ The following objects are masked from 'package:base':
 > 
 > set.seed(1041414791L)
 > 
-> data.frame(t=0:10,y=runif(11)) %>%
+> data.frame(t=0:10,y=runif(11)) |>
 +   simulate(times="t",t0=0,
 +     rprocess=discrete_time(
 +       step.fun=function(r,x,...) {
@@ -48,7 +48,7 @@ The following objects are masked from 'package:base':
 +   )
 <object of class 'pomp'>
 > 
-> try(data.frame(t=0:10,y=runif(11)) %>%
+> try(data.frame(t=0:10,y=runif(11)) |>
 +     simulate(times="t",t0=0,
 +       rprocess=discrete_time(
 +         step.fun=function(r,x,...) {
@@ -63,19 +63,19 @@ The following objects are masked from 'package:base':
 + )
 Error : in 'simulate': 'arg' should be one of "pomps", "arrays", "data.frame"
 > 
-> try(data.frame(t=0:10,y=runif(11)) %>%
+> try(data.frame(t=0:10,y=runif(11)) |>
 +   simulate(times=1:50))
 Error : in 'simulate': 't0' is a required argument.
-> try(data.frame(t=0:10,y=runif(11)) %>%
+> try(data.frame(t=0:10,y=runif(11)) |>
 +     simulate(times="t"))
 Error : in 'simulate': 't0' is a required argument.
-> try(data.frame(t=0:10,y=runif(11)) %>%
+> try(data.frame(t=0:10,y=runif(11)) |>
 +     simulate(times="t",t0=0))
 Error : in 'simulate': 'rprocess' is undefined.
-> try(data.frame(t=0:10,y=runif(11)) %>%
+> try(data.frame(t=0:10,y=runif(11)) |>
 +     simulate(times="t",t0=0))
 Error : in 'simulate': 'rprocess' is undefined.
-> try(data.frame(t=0:10,y=runif(11)) %>%
+> try(data.frame(t=0:10,y=runif(11)) |>
 +     simulate(times="t",t0=0,params=c(x.0=1)))
 Error : in 'simulate': 'rprocess' is undefined.
 > 

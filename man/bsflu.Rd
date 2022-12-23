@@ -16,8 +16,8 @@ The index case was a boy who arrived at school from holiday six days before the 
 \examples{
 if (require(tidyr) && require(ggplot2)) {
 
-  bsflu \%>\%
-    gather(variable,value,-date,-day) \%>\%
+  bsflu |>
+    gather(variable,value,-date,-day) |>
     ggplot(aes(x=date,y=value,color=variable))+
     geom_line()+
     labs(y="number of boys",title="boarding school flu outbreak")+

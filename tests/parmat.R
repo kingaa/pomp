@@ -48,10 +48,10 @@ try({
 })
 
 try(
-  expand.grid(a=1:3,c="hello",stringsAsFactors=FALSE) %>% parmat()
+  expand.grid(a=1:3,c="hello",stringsAsFactors=FALSE) |> parmat()
 )
 try(
-  expand.grid(a=1:3,c="hello",stringsAsFactors=TRUE) %>% parmat()
+  expand.grid(a=1:3,c="hello",stringsAsFactors=TRUE) |> parmat()
 )
-expand.grid(a=1:3,b=1:2) %>% parmat()
-expand.grid(a=1:3,b=1:2) %>% parmat(nrep=2)
+expand.grid(a=1:3,b=1:2) |> parmat()
+expand.grid(a=1:3,b=1:2) |> parmat(nrep=2)

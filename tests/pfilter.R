@@ -72,16 +72,16 @@ pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
   filter.traj=TRUE)
 
-pf1 %>% saved_states(format="data") %>% names()
-pf1 %>% saved_states(format="data") %>% dim()
-pf1 %>% saved_states() %>% melt() %>% sapply(class)
-pf1 %>% saved_states() %>% melt() %>% sapply(length)
-pf2 %>% saved_states(format="data") %>% names()
-pf2 %>% saved_states(format="data") %>% dim()
+pf1 |> saved_states(format="data") |> names()
+pf1 |> saved_states(format="data") |> dim()
+pf1 |> saved_states() |> melt() |> sapply(class)
+pf1 |> saved_states() |> melt() |> sapply(length)
+pf2 |> saved_states(format="data") |> names()
+pf2 |> saved_states(format="data") |> dim()
 
-c(A=pf1,B=pf2) %>% saved_states(format="d") %>% names()
-c(A=pf1,B=pf2) %>% saved_states(format="d") %>% sapply(class)
-c(A=pf1,B=pf2) %>% as.data.frame() %>% sapply(class)
+c(A=pf1,B=pf2) |> saved_states(format="d") |> names()
+c(A=pf1,B=pf2) |> saved_states(format="d") |> sapply(class)
+c(A=pf1,B=pf2) |> as.data.frame() |> sapply(class)
 
 names(as(pf2,"data.frame"))
 dim(filter_traj(pf3))
@@ -91,16 +91,16 @@ dim(filter_traj(c(pf1,pf4)))
 dim(as.data.frame(c(pf1,pf4)))
 names(dimnames(filter_traj(c(pf1,pf4))))
 names(as(c(pf1,pf4),"data.frame"))
-pf2 %>% as.data.frame() %>% names()
+pf2 |> as.data.frame() |> names()
 try(saved_states())
 try(saved_states(NULL))
 try(saved_states("bob"))
 
-try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
+try(ou2 |> as.data.frame() |> pfilter(Np=1000))
 
-ou2 %>%
-  as.data.frame() %>%
-  subset(select=c(time,y1,y2)) %>%
+ou2 |>
+  as.data.frame() |>
+  subset(select=c(time,y1,y2)) |>
   pfilter(
     times="time",t0=0,Np=500,
     params=list(x1_0=-3,x2_0=4),
@@ -115,10 +115,10 @@ ou2 %>%
     }
   )
 
-try(ou2 %>% pfilter(Np=1000) %>% forecast())
-try(ou2 %>% pfilter(Np=1000,emeasure=NULL) %>% forecast())
-ou2 %>% pfilter(Np=1000,pred.mean=TRUE) %>% forecast() -> y
-ou2 %>% pfilter(Np=1000,pred.mean=TRUE) %>% forecast(vars="y1") -> y1
+try(ou2 |> pfilter(Np=1000) |> forecast())
+try(ou2 |> pfilter(Np=1000,emeasure=NULL) |> forecast())
+ou2 |> pfilter(Np=1000,pred.mean=TRUE) |> forecast() -> y
+ou2 |> pfilter(Np=1000,pred.mean=TRUE) |> forecast(vars="y1") -> y1
 stopifnot(
   dim(y)==c(2,100),
   dim(y1)==c(1,100)

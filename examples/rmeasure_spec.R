@@ -9,7 +9,7 @@
   ## Here, we pass the rmeasure specification to 'simulate'
   ## as an R function.
 
-  po %>%
+  po |>
     simulate(
       rmeasure=function (N, phi, ...) {
         c(y=rpois(n=1,lambda=phi*N))
@@ -18,7 +18,7 @@
 
   ## We can also pass it as a C snippet:
 
-  po %>%
+  po |>
     simulate(
       rmeasure=Csnippet("y = rpois(phi*N);"),
       paramnames="phi",

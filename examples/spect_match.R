@@ -1,6 +1,6 @@
 \donttest{
 
-  ricker() %>%
+  ricker() |>
     spect_objfun(
       est=c("r","sigma","N_0"),
       partrans=parameter_trans(log=c("r","sigma","N_0")),
@@ -11,7 +11,7 @@
     ) -> f
 
   f(log(c(20,0.3,10)))
-  f %>% spect() %>% plot()
+  f |> spect() |> plot()
 
   if (require(subplex)) {
     subplex(fn=f,par=log(c(20,0.3,10)),control=list(reltol=1e-5)) -> out
@@ -20,8 +20,8 @@
   }
   f(out$par)
 
-  f %>% summary()
+  f |> summary()
 
-  f %>% spect() %>% plot()
+  f |> spect() |> plot()
 
 }

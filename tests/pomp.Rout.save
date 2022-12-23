@@ -22,7 +22,6 @@ Type 'q()' to quit R.
 > set.seed(758723694)
 > 
 > library(pomp)
-> library(magrittr)
 > 
 > try(pomp())
 Error : in 'pomp': 'data' is a required argument.
@@ -32,65 +31,63 @@ Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'.
 Error : in 'pomp': 'data' is a required argument.
 > try(pomp(NULL))
 Error : 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(data.frame(a=1:10,a=1:10,check.names=FALSE) %>% pomp(t0=4))
+> try(data.frame(a=1:10,a=1:10,check.names=FALSE) |> pomp(t0=4))
 Error : 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(data.frame(a=1:10,a=1:10,check.names=FALSE) %>% pomp(times=1:10,t0=4))
+> try(data.frame(a=1:10,a=1:10,check.names=FALSE) |> pomp(times=1:10,t0=4))
 Error : names of data variables must be unique.
-> try(data.frame(a=1:10,a=1:10,check.names=FALSE) %>% pomp(times="a",t0=4))
+> try(data.frame(a=1:10,a=1:10,check.names=FALSE) |> pomp(times="a",t0=4))
 Error : names of data variables must be unique.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times=1:10,t0=4))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times=1:10,t0=4))
 Error : 't0' must be a single number not greater than 'times[1]'.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times="b"))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times="b"))
 Error : 't0' is a required argument.
-> try(data.frame(a=10:1,b=1:10) %>% pomp(times="a",t0=0))
+> try(data.frame(a=10:1,b=1:10) |> pomp(times="a",t0=0))
 Error : 'times' must be a non-decreasing sequence of numbers.
-> data.frame(a=1:10,b=1:10) %>% pomp(times=1:10,t0=0)
+> data.frame(a=1:10,b=1:10) |> pomp(times=1:10,t0=0)
 <object of class 'pomp'>
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times=1))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times=1))
 Error : 't0' is a required argument.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times="a"))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times="a"))
 Error : 't0' is a required argument.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times="c",t0=0))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times="c",t0=0))
 Error : 'times' does not identify a single column of 'data' by name.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times=NA,t0=0))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times=NA,t0=0))
 Error : 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times=NULL,t0=0))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times=NULL,t0=0))
 Error : 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times=1,t0=11))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times=1,t0=11))
 Error : the length of 'times' does not match that of the data.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times="a",t0=11))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times="a",t0=11))
 Error : 't0' must be a single number not greater than 'times[1]'.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times="b",t0=NULL))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times="b",t0=NULL))
 Error : 't0' must be a single number not greater than 'times[1]'.
-> try(data.frame(a=1:10,b=1:10) %>% pomp(times="a",t0=NA))
+> try(data.frame(a=1:10,b=1:10) |> pomp(times="a",t0=NA))
 Error : 't0' must be a single number not greater than 'times[1]'.
-> stopifnot(data.frame(a=1:10,b=1:10) %>%
+> stopifnot(data.frame(a=1:10,b=1:10) |>
 +     pomp(covar=covariate_table(c=0:10,d=0:10,times="c"),
-+       covarnames="d",times="a",t0=0,bob=3) %>% class() %>%
-+     equals("pomp"))
++       covarnames="d",times="a",t0=0,bob=3) |> class() == "pomp")
 NOTE: The provided object 'bob' is available for use by POMP basic components.
-> try(data.frame(a=1:10,b=1:10) %>%
+> try(data.frame(a=1:10,b=1:10) |>
 +     pomp(covar=covariate_table(c=1:10,d=1:10,d=1:10,times="c"),
 +       times="a",t0=0))
 <object of class 'pomp'>
 Warning message:
 in 'pomp': the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
-> stopifnot(data.frame(a=1:10,b=1:10) %>%
-+     pomp(times="a",t0=0) %>% class() %>%
-+     equals("pomp"))
-> try(NULL %>% pomp(t0=4))
+> stopifnot(data.frame(a=1:10,b=1:10) |>
++     pomp(times="a",t0=0) |> class() == "pomp")
+> try(NULL |> pomp(t0=4))
 Error : 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(NULL %>% pomp(times="a",t0=0))
+> try(NULL |> pomp(times="a",t0=0))
 Error : 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(NULL %>% pomp(times=1:10,t0=3))
+> try(NULL |> pomp(times=1:10,t0=3))
 Error : 't0' must be a single number not greater than 'times[1]'.
-> try(NULL %>% pomp(times=1:10,t0=1,rinit=3))
+> try(NULL |> pomp(times=1:10,t0=1,rinit=3))
 Error : bad option for 'rinit' argument.
-> stopifnot(NULL %>% pomp(times=1:10,t0=1) %>% class() %>% equals("pomp"))
+> stopifnot(NULL |> pomp(times=1:10,t0=1) |> class() == "pomp")
 > 
 > gompertz() -> po
 > stopifnot({
-+   po %>% pomp(rprocess=NULL) -> po1
++   po |> pomp(rprocess=NULL) -> po1
 +   rprocess(po1,x0=rinit(po1),t0=timezero(po1),
 +     times=time(po1),params=coef(po1)) -> x
 +   sum(is.na(x))==100
@@ -98,55 +95,54 @@ Error : bad option for 'rinit' argument.
 Warning message:
 'rprocess' unspecified: NAs generated. 
 > 
-> po %>% pomp(rprocess=NULL) %>% slot("rprocess")
+> po |> pomp(rprocess=NULL) |> slot("rprocess")
 <undefined>
-> po %>% pomp(skeleton=NULL) %>% slot("skeleton")
+> po |> pomp(skeleton=NULL) |> slot("skeleton")
 <default>
 
-> po %>% pomp(partrans=NULL) %>% slot("partrans")
+> po |> pomp(partrans=NULL) |> slot("partrans")
   - to estimation scale: <identity>
   - from estimation scale: <identity>
 > 
 > stopifnot({
-+   po %>% pomp(partrans=NULL) %>% coef(transform=TRUE) -> theta1
++   po |> pomp(partrans=NULL) |> coef(transform=TRUE) -> theta1
 +   coef(po) -> theta2
 +   theta1==theta2
 + },
-+   po %>% pomp(times=1:5) %>% class() %>% equals("pomp"))
++   po |> pomp(times=1:5) |> class() == "pomp")
 > 
-> stopifnot(po %>%
+> stopifnot(po |>
 +     pomp(rprocess=onestep(function(x,t,params,delta.t,...)x),
 +       skeleton=map(function(x,t,params,...)x),
 +       rmeasure=function(...)3,
 +       dmeasure=function(log,...)1,
-+       covar=covariate_table(a=1:20,b=1:20,times="a")) %>% class() %>%
-+     equals("pomp"))
++       covar=covariate_table(a=1:20,b=1:20,times="a")) |> class() == "pomp")
 Warning message:
 in 'pomp': the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > 
-> try(po %>% pomp(times=3:1))
+> try(po |> pomp(times=3:1))
 Error : in 'time<-': times must be a non-decreasing numeric sequence.
 > 
-> try(po %>% pomp(rinit=Csnippet("X=3;")))
+> try(po |> pomp(rinit=Csnippet("X=3;")))
 Error : when 'rinit' is provided as a C snippet, you must also provide 'statenames'.
 > stopifnot(
-+   po %>% pomp(rinit=Csnippet("X=3;"),statenames=c("X","Z")) %>%
-+     class() %>% equals("pomp"))
++   po |> pomp(rinit=Csnippet("X=3;"),statenames=c("X","Z")) |>
++     class() == "pomp")
 > 
-> try(po %>% pomp(rprocess="bob"))
+> try(po |> pomp(rprocess="bob"))
 Error : 'rprocess' must be specified using one of the plugins:
 'onestep', 'discrete_time', 'euler', 'gillespie', or 'gillespie_hl'.
-> try(po %>% pomp(skeleton="bob"))
+> try(po |> pomp(skeleton="bob"))
 Error : 'skeleton' must be specified using either 'map' or 'vectorfield'.
-> try(po %>% pomp(partrans="bob"))
+> try(po |> pomp(partrans="bob"))
 Error : 'partrans' must be specified using 'parameter_trans'.
-> try(po %>% pomp(params=c(1,2,3)))
+> try(po |> pomp(params=c(1,2,3)))
 Error : 'params' must be a named numeric vector.
-> try(po %>% pomp(params=c(a=1,b=2,3)))
+> try(po |> pomp(params=c(a=1,b=2,3)))
 Error : 'params' must be a named numeric vector.
 > 
-> sir() %>% window(end=0.12) -> po2
-> po2 %>% simulate(seed=4358686) %>% as.data.frame()
+> sir() |> window(end=0.12) -> po2
+> po2 |> simulate(seed=4358686) |> as.data.frame()
     time reports      S    I       R cases       W seas_1 seas_2 seas_3
 1 0.0192     798 136185 2085 1961717  1051  0.0281  0.663  0.197 0.1395
 2 0.0385     575 135920 2106 1961963  1006 -0.2345  0.654  0.230 0.1157
@@ -156,13 +152,13 @@ Error : 'params' must be a named numeric vector.
 6 0.1154     803 134298 2353 1963336  1184 -0.0699  0.567  0.379 0.0536
 > pomp(po2,covar=NULL)@covar
 <none>
-> try(po2 %>% pomp(covar="bob"))
+> try(po2 |> pomp(covar="bob"))
 Error : bad option for 'covar'.
-> try(po2 %>% pomp(rmeasure=function(x)x))
+> try(po2 |> pomp(rmeasure=function(x)x))
 Error : in 'rmeasure': 'rmeasure' must be a function of the form 'rmeasure(...)'
 > try(pomp(data=NULL,times=1:10,t0=0,rmeasure=Csnippet("")))
 Error : when 'rmeasure' is provided as a C snippet, you must also provide 'obsnames'.
 > 
-> try(po2 %>% pomp(rmeasure=Csnippet("reports=3;"),cfile="sir_source"))
+> try(po2 |> pomp(rmeasure=Csnippet("reports=3;"),cfile="sir_source"))
 Error : C file name "sir_source" cannot be re-used.
 > 

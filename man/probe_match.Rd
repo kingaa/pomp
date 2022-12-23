@@ -161,7 +161,7 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 
   ## Construct the probe-matching objective function.
   ## Here, we just want to estimate 'K'.
-  po \%>\%
+  po |>
     probe_objfun(probes=plist,nsim=100,seed=5069977,
       est="K") -> f
 
@@ -181,19 +181,19 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
   coef(f)
 
   ## There are 'plot' and 'summary' methods:
-  f \%>\% as("probed_pomp") \%>\% plot()
-  f \%>\% summary()
+  f |> as("probed_pomp") |> plot()
+  f |> summary()
 
   ## One can convert an objective function to a data frame:
-  f \%>\% as("data.frame") \%>\% head()
-  f \%>\% as("probed_pomp") \%>\% as("data.frame") \%>\% head()
+  f |> as("data.frame") |> head()
+  f |> as("probed_pomp") |> as("data.frame") |> head()
 
-  f \%>\% probe() \%>\% plot()
+  f |> probe() |> plot()
 
   ## One can modify the objective function with another call
   ## to 'probe_objfun':
 
-  f \%>\% probe_objfun(est=c("r","K")) -> f1
+  f |> probe_objfun(est=c("r","K")) -> f1
   optim(fn=f1,par=c(0.3,0.3),control=list(reltol=1e-5)) -> out
   f1(out$par)
   coef(f1)

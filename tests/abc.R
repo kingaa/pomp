@@ -16,11 +16,11 @@ plist <- list(
   probe_ccf(vars=c("y1","y2"),lags=0)
 )
 
-ou2 %>% probe(probes=plist,nsim=100) -> pb
+ou2 |> probe(probes=plist,nsim=100) -> pb
 
 sqrt(diag(covmat(pb))) -> scale.dat
 
-ou2 %>%
+ou2 |>
   abc(Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
     proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
     dprior=function(alpha_1,alpha_2,...,log) {
@@ -35,9 +35,9 @@ crossprod(
     dimnames=list(c("alpha_1","alpha_2"),c("alpha_1","alpha_2")))
 ) -> sig
 
-pb %>% abc(Nabc=100,scale=scale.dat,epsilon=2,proposal=mvn_rw(sig)) -> abc2
-abc2 %>% abc(Nabc=100) -> abc3
-abc1 %>% abc(Nabc=80) %>% continue(Nabc=20) -> abc4
+pb |> abc(Nabc=100,scale=scale.dat,epsilon=2,proposal=mvn_rw(sig)) -> abc2
+abc2 |> abc(Nabc=100) -> abc3
+abc1 |> abc(Nabc=80) |> continue(Nabc=20) -> abc4
 
 plot(c(abc1,abc2,abc3,abc4),y="bob")
 plot(c(abc1,abc2,abc3,abc4),scatter=TRUE)
@@ -49,21 +49,21 @@ stopifnot(all(dim(traces(abc1,"alpha_1"))==c(101,1)))
 invisible(traces(abc2))
 dim(as.data.frame(abclist))
   
-c(abc1,abc2) %>% traces() -> traces
-traces %>% length()
-traces %>% class()
-traces %>% sapply(dim)
-try(abclist %>% plot(pars="alpha_3",scatter=TRUE))
+c(abc1,abc2) |> traces() -> traces
+traces |> length()
+traces |> class()
+traces |> sapply(dim)
+try(abclist |> plot(pars="alpha_3",scatter=TRUE))
 
-abc1 %>%
+abc1 |>
   abc(Nabc=500,dprior=Csnippet("
     lik = dnorm(alpha_1,0.8,1,1)+dnorm(alpha_2,0.2,1,1);
     lik = (give_log) ? lik : exp(lik);"
   ),paramnames=c("alpha_1","alpha_2")) -> abc5
 
-abc1 %>% abc(Nabc=50,params=as.list(coef(ou2))) %>% plot()
+abc1 |> abc(Nabc=50,params=as.list(coef(ou2))) |> plot()
 
-abc4 %>% abc(proposal=function(theta,...)theta) %>% plot()
+abc4 |> abc(proposal=function(theta,...)theta) |> plot()
 
 try(abc())
 try(abc(3))
@@ -162,8 +162,8 @@ stopifnot(
 gompertz() -> gompertz
 set.seed(2079015564L)
 
-gompertz %>%
-  as.data.frame() %>%
+gompertz |>
+  as.data.frame() |>
   abc(Nabc=20,times="time",t0=0,
     scale=1,epsilon=10,
     probes=list(probe_mean("Y"),probe_median("Y")),
@@ -174,6 +174,6 @@ gompertz %>%
     rinit=function(...)c(X=1),
     rprocess=discrete_time(function (X, r, K, ...) c(X=r*X*exp(-X/K))),
     rmeasure=function (Y, X, ...) c(Y = rnorm(n=1,mean=X,sd=2))
-    ) %>% plot()
+    ) |> plot()
 
 dev.off()

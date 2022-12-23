@@ -27,7 +27,7 @@ Type 'q()' to quit R.
 > ou2() -> po
 > 
 > stopifnot(
-+   po %>% rprior() == coef(po)
++   po |> rprior() == coef(po)
 + )
 Warning message:
 'rprior' unspecified: duplicating parameters. 
@@ -38,7 +38,7 @@ in 'coef<-': name 'alpha_sd' refers to no existing parameter; it is being concat
 > 
 > set.seed(1835425749L)
 > 
-> po %>%
+> po |>
 +   pomp(
 +     dprior=function(alpha_1,alpha_2,alpha_3,alpha_4,alpha_sd,...,log) {
 +       ll <- sum(
@@ -62,11 +62,11 @@ in 'coef<-': name 'alpha_sd' refers to no existing parameter; it is being concat
 +   ) -> po
 > 
 > stopifnot(
-+   po %>% dprior(params=coef(po),log=TRUE) == 4*dnorm(x=0,mean=0,sd=5,log=TRUE),
-+   all.equal(po %>% dprior(params=coef(po)),dnorm(x=0,mean=0,sd=5)^4)
++   po |> dprior(params=coef(po),log=TRUE) == 4*dnorm(x=0,mean=0,sd=5,log=TRUE),
++   all.equal(po |> dprior(params=coef(po)),dnorm(x=0,mean=0,sd=5)^4)
 + )
 > 
-> replicate(5,rprior(po,params=coef(po))) %>% parmat() -> theta
+> replicate(5,rprior(po,params=coef(po))) |> parmat() -> theta
 > stopifnot(round(dprior(po,params=theta,log=TRUE),3) ==
 +             c(-12.237, -10.848, -15.806, -10.847, -11.526))
 > 
@@ -80,9 +80,9 @@ Error : 'rprior' is undefined for 'object' of class 'character'.
 > try(rprior(params=theta))
 Error : in 'rprior': 'object' is a required argument.
 > 
-> try(po %>% pomp(rprior=function(...)c(1,3,3)) %>% rprior(params=theta))
+> try(po |> pomp(rprior=function(...)c(1,3,3)) |> rprior(params=theta))
 Error : in 'rprior': 'rprior' must return a named numeric vector.
-> po %>% rprior(params=parmat(theta,3)) -> p
+> po |> rprior(params=parmat(theta,3)) -> p
 > stopifnot(
 +   dim(p)==c(11,15),
 +   names(dimnames(p))==c("variable",".id"),

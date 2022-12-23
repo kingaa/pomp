@@ -34,33 +34,33 @@ Error : in 'wpfilter': number of particles, 'Np', must be a positive integer.
 > try(wpfilter(po,Np=c(10,20,30)))
 Error : in 'wpfilter': 'Np' must have length 1 or length 52.
 > 
-> wpfilter(po,Np=200,trigger=1,target=1) %>% plot()
-> wpfilter(po,Np=200,trigger=1,target=0.5) %>% plot()
-> wpfilter(po,Np=200,trigger=1,target=0) %>% plot()
-> wpfilter(po,Np=200,trigger=0.8) %>% plot()
+> wpfilter(po,Np=200,trigger=1,target=1) |> plot()
+> wpfilter(po,Np=200,trigger=1,target=0.5) |> plot()
+> wpfilter(po,Np=200,trigger=1,target=0) |> plot()
+> wpfilter(po,Np=200,trigger=0.8) |> plot()
 > 
-> wpfilter(po,Np=1000,trigger=0.5,target=0.5) %>% logLik()
+> wpfilter(po,Np=1000,trigger=0.5,target=0.5) |> logLik()
 [1] -139
-> wpfilter(po,Np=1000,trigger=0.5,target=0.2) %>% logLik()
+> wpfilter(po,Np=1000,trigger=0.5,target=0.2) |> logLik()
 [1] -139
-> wpfilter(po,Np=1000,trigger=0.5,target=0) %>% logLik()
+> wpfilter(po,Np=1000,trigger=0.5,target=0) |> logLik()
 [1] -140
-> wpfilter(po,Np=1000,trigger=1,target=0) %>% logLik()
+> wpfilter(po,Np=1000,trigger=1,target=0) |> logLik()
 [1] -140
-> pfilter(po,Np=1000) %>% logLik()
+> pfilter(po,Np=1000) |> logLik()
 [1] -140
 > 
-> do.call(c,replicate(n=10,pfilter(window(po,end=4),Np=1000))) %>% logLik() %>% logmeanexp(se=TRUE)
+> do.call(c,replicate(n=10,pfilter(window(po,end=4),Np=1000))) |> logLik() |> logmeanexp(se=TRUE)
                se 
 -13.0978   0.0165 
-> do.call(c,replicate(n=10,wpfilter(window(po,end=4),Np=1000))) %>% logLik() %>% logmeanexp(se=TRUE)
+> do.call(c,replicate(n=10,wpfilter(window(po,end=4),Np=1000))) |> logLik() |> logmeanexp(se=TRUE)
                se 
 -13.0941   0.0198 
 > 
-> do.call(c,replicate(n=10,pfilter(window(po,end=20),Np=1000))) %>% logLik() %>% logmeanexp(se=TRUE)
+> do.call(c,replicate(n=10,pfilter(window(po,end=20),Np=1000))) |> logLik() |> logmeanexp(se=TRUE)
                se 
 -56.9719   0.0509 
-> do.call(c,replicate(n=10,wpfilter(window(po,end=20),Np=1000,trigger=0.8))) %>% logLik() %>% logmeanexp(se=TRUE)
+> do.call(c,replicate(n=10,wpfilter(window(po,end=20),Np=1000,trigger=0.8))) |> logLik() |> logmeanexp(se=TRUE)
                se 
 -57.0958   0.0742 
 > 
@@ -74,20 +74,20 @@ Error : 'wpfilter' is undefined for 'data' of class 'list'.
 > wpfilter(po,Np=100,dmeasure=function(...,log)-Inf)
 <object of class 'wpfilterd_pomp'>
 > 
-> wpfilter(po,Np=100) %>% wpfilter() -> pf
-> wpfilter(po,Np=100) %>% wpfilter(target=0,trigger=0.1,Np=200) -> pf
-> pf %>% as.data.frame() %>% nrow()
+> wpfilter(po,Np=100) |> wpfilter() -> pf
+> wpfilter(po,Np=100) |> wpfilter(target=0,trigger=0.1,Np=200) -> pf
+> pf |> as.data.frame() |> nrow()
 [1] 51
-> pf %>% as("data.frame") %>% names()
+> pf |> as("data.frame") |> names()
 [1] "time"            "y"               "eff.sample.size" "cond.logLik"    
-> pf %>% eff_sample_size(format="d") %>% names()
+> pf |> eff_sample_size(format="d") |> names()
 [1] "time"            "eff.sample.size"
-> pf %>% eff_sample_size(format="d") %>% sapply(class)
+> pf |> eff_sample_size(format="d") |> sapply(class)
            time eff.sample.size 
       "numeric"       "numeric" 
-> pf %>% cond_logLik(format="d") %>% names()
+> pf |> cond_logLik(format="d") |> names()
 [1] "time"        "cond.logLik"
-> pf %>% cond_logLik(format="d") %>% sapply(class)
+> pf |> cond_logLik(format="d") |> sapply(class)
        time cond.logLik 
   "numeric"   "numeric" 
 > 
@@ -129,15 +129,15 @@ loglik:          Inf
    N_0:            7
    e_0:            0
 > 
-> po %>%
-+   as.data.frame() %>%
+> po |>
++   as.data.frame() |>
 +   wpfilter(
 +     times="time",t0=0,Np=100,
 +     params=c(N0=7,phi=10,r=40),
 +     rinit=function(N0,...)c(N=N0),
 +     dmeasure=function(y,N,phi,...,log) dnorm(x=y,mean=phi*N,sd=sqrt(phi*N),log=log),
 +     rprocess=discrete_time(function(r,N,...) c(N=r*N*exp(-N+rnorm(1))),delta.t=1)
-+   ) %>% plot()
++   ) |> plot()
 > 
 > dev.off()
 null device 

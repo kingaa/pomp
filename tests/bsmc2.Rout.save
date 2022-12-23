@@ -122,13 +122,13 @@ Error : in 'bsmc2': 'rprior', 'rprocess', 'dmeasure' are needed basic components
 > theta["K"] <- 1
 > try(capture.output(bsmc2(po,Np=2,params=theta,verbose=TRUE)) -> out)
 > 
-> smc %>% as.data.frame() %>%
-+   filter(.id=="posterior") %>%
+> smc |> as.data.frame() |>
++   filter(.id=="posterior") |>
 +   select(-.id) -> pp
 > 
-> gompertz %>%
-+   as.data.frame() %>%
-+   subset(select=-X) %>%
+> gompertz |>
++   as.data.frame() |>
++   subset(select=-X) |>
 +   bsmc2(
 +     times="time",t0=-5,
 +     params=coef(gompertz),
@@ -141,11 +141,11 @@ Error : in 'bsmc2': 'rprior', 'rprocess', 'dmeasure' are needed basic components
 +     dmeasure=gompertz@dmeasure,
 +     statenames=c("X"),
 +     paramnames=c("r","K","sigma")) -> smc4
-> smc4 %>% plot()
+> smc4 |> plot()
 > 
-> try(gompertz %>%
-+     as.data.frame() %>%
-+     subset(select=-X) %>%
+> try(gompertz |>
++     as.data.frame() |>
++     subset(select=-X) |>
 +     bsmc2(
 +       times="time",t0=-5,
 +       params=coef(gompertz),
@@ -157,8 +157,8 @@ Error : in 'bsmc2': 'rprior', 'rprocess', 'dmeasure' are needed basic components
 +       paramnames=c("r","K","sigma")))
 Error : in 'bsmc2': bad option for 'rprior' argument.
 > 
-> smc %>%
-+   bsmc2(Np=seq(10,length=12,by=10)) %>%
+> smc |>
++   bsmc2(Np=seq(10,length=12,by=10)) |>
 +   eff_sample_size()
  [1]  5.3 14.3 21.1 17.4 11.3 18.6 32.9 61.0 61.1 34.3
 > 

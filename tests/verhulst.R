@@ -18,13 +18,13 @@ plot(pf)
 tj <- trajectory(po)
 plot(tj)
 
-po %>%
-  window(end=5) %>%
-  simulate(seed=1438408329L,nsim=10) %>%
+po |>
+  window(end=5) |>
+  simulate(seed=1438408329L,nsim=10) |>
   plot()
-po %>%
-  window(end=5) %>%
-  simulate(seed=1438408329L,nsim=10) %>%
+po |>
+  window(end=5) |>
+  simulate(seed=1438408329L,nsim=10) |>
   plot(col=rainbow(10))
 
 dev.off()

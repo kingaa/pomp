@@ -33,7 +33,7 @@ simulate(
   paramnames=c("sigma","r","N_0"),
   statenames=c("N","e","step")
 ) -> sm
-sm %>% trajectory() -> tj
+sm |> trajectory() -> tj
 stopifnot(
   all.equal(
     diff(floor(time(sm,t0=TRUE)/0.1)),
@@ -46,7 +46,7 @@ stopifnot(
 )
 
 tm <- freeze(sort(runif(n=100,max=2)),seed=342643819)
-sir() %>%
+sir() |>
   simulate(
     times=tm,
     rprocess=euler(Csnippet("

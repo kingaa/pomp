@@ -56,7 +56,7 @@ f1(c(alpha_1=1,alpha_3=1),.n=100,.accepts=1000,verbose=FALSE)
 mvn_rw_adaptive(rw.sd=c(alpha_1=0.1,alpha_3=0.1),
   scale.start=5,scale.cooling=0.1,shape.start=10) -> f
 options(verbose=TRUE) -> op
-capture.output(po %>% pmcmc(Nmcmc=200,Np=100,proposal=f) -> mcmc1) -> out
+capture.output(po |> pmcmc(Nmcmc=200,Np=100,proposal=f) -> mcmc1) -> out
 stopifnot(sum(grepl("proposal covariance matrix:",out))==200)
 evalq(covmat.emp,envir=environment(f))
 options(op)

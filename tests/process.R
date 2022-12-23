@@ -1,71 +1,70 @@
 options(digits=3)
 
 library(pomp)
-library(magrittr)
 
-ou2() %>% window(end=10) -> po
+ou2() |> window(end=10) -> po
 
 set.seed(293982095)
 
-po %>%
-  simulate(format="arrays",nsim=3,seed=3434388L) %>%
-  extract2("states") -> x
-po %>% time() -> t
-coef(po) %>% parmat(7) -> p
+po |>
+  simulate(format="arrays",nsim=3,seed=3434388L) |>
+  getElement("states") -> x
+po |> time() -> t
+coef(po) |> parmat(7) -> p
 p["sigma_1",] <- seq(from=1,to=7,by=1)
 
 try(dprocess("ou2",x=x,times=t,params=p))
 try(dprocess(x=x,times=t,params=p))
-try(po %>% dprocess(x=x,times=t,params=p,log=TRUE))
-try(po %>% dprocess(x=x,times=t,params=p[,1:2],log=TRUE))
-try(po %>% dprocess(x=x,times=t[1:5],params=p,log=TRUE))
-po %>% dprocess(x=x,times=t,params=p[,1:3],log=TRUE) -> d1
-po %>% dprocess(x=x,times=t,params=p[,2],log=TRUE) -> d2
+try(po |> dprocess(x=x,times=t,params=p,log=TRUE))
+try(po |> dprocess(x=x,times=t,params=p[,1:2],log=TRUE))
+try(po |> dprocess(x=x,times=t[1:5],params=p,log=TRUE))
+po |> dprocess(x=x,times=t,params=p[,1:3],log=TRUE) -> d1
+po |> dprocess(x=x,times=t,params=p[,2],log=TRUE) -> d2
 stopifnot(d1[2,]==d2[2,])
-try(po %>% dprocess(x=x[,,2],times=t[2],params=p[,1:3],log=FALSE))
-try(po %>% dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:2],log=FALSE))
-po %>% dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
+try(po |> dprocess(x=x[,,2],times=t[2],params=p[,1:3],log=FALSE))
+try(po |> dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:2],log=FALSE))
+po |> dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:3],log=TRUE) |>
   apply(1,sum)
-try(po %>% dprocess(x=x[,1:2,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
+try(po |> dprocess(x=x[,1:2,2:5],times=t[2:5],params=p[,1:3],log=TRUE) |>
       apply(1,sum))
-po %>% dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
+po |> dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) |>
   apply(1,sum)
-po %>% pomp(dprocess=NULL) %>%
-  dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>% is.na() %>%
+po |> pomp(dprocess=NULL) |>
+  dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) |> is.na() |>
   stopifnot()
 
-po %>% rinit(params=coef(po)) -> x0
-freeze(po %>%
+po |> rinit(params=coef(po)) -> x0
+freeze(po |>
          rprocess(params=coef(po),x0=parmat(x0,3),t0=timezero(po),times=time(po),
            offset=1),
   seed=3434388L) -> x1
 
 stopifnot(max(abs(x-x1))==0)
 
-po %>% rinit(nsim=6) -> x0
+po |> rinit(nsim=6) -> x0
 try(rprocess("ou2",x0=x0,t0=t[1],times=t,params=p))
 try(rprocess(x0=x0,t0=t[1],times=t,params=p))
-freeze(po %>% rprocess(times=t,params=p),seed=995484) -> x1
-try(po %>% rprocess(x0=x0,params=p))
-try(po %>% rprocess(x0=x0,t0=t[1],params=p))
-freeze(po %>% rprocess(x0=x0,times=t),seed=995484) -> x2
-try(po %>% rprocess(x0=x0,times=t,params=p))
-try(po %>% rprocess(x0=x0,t0=t[1],times=t,params=p))
-po %>% rprocess(x0=x0,t0=t[1],times=t,params=p[,1:3]) -> x
+freeze(po |> rprocess(times=t,params=p),seed=995484) -> x1
+try(po |> rprocess(x0=x0,params=p))
+try(po |> rprocess(x0=x0,t0=t[1],params=p))
+freeze(po |> rprocess(x0=x0,times=t),seed=995484) -> x2
+try(po |> rprocess(x0=x0,times=t,params=p))
+try(po |> rprocess(x0=x0,t0=t[1],times=t,params=p))
+po |> rprocess(x0=x0,t0=t[1],times=t,params=p[,1:3]) -> x
 stopifnot(
   dim(x)==c(2,6,10),
   names(dimnames(x))==c("variable",".id","time")
 )
-po %>% rprocess(x0=x0[,2],t0=t[1],times=t,params=p[,1:3]) -> x
+po |> rprocess(x0=x0[,2],t0=t[1],times=t,params=p[,1:3]) -> x
 stopifnot(
   dim(x)==c(2,3,10),
   names(dimnames(x))==c("variable",".id","time")
 )
 
-try(po %>% rprocess(x0=x0,t0=t[1],times=numeric(0),params=p))
-try(po %>% rprocess(x0=x0[,2],t0=t[2],times=t[1],params=p[,1:3]))
-try(po %>% rprocess(x0=x0[,2:4],t0=t[2],times=t[2:5],params=p[,1:2]))
-po %>% rprocess(x0=x0[,2:4],t0=t[2],times=t[2:5],params=p[,1:3]) %>%
+try(po |> rprocess(x0=x0,t0=t[1],times=numeric(0),params=p))
+try(po |> rprocess(x0=x0[,2],t0=t[2],times=t[1],params=p[,1:3]))
+try(po |> rprocess(x0=x0[,2:4],t0=t[2],times=t[2:5],params=p[,1:2]))
+po |> rprocess(x0=x0[,2:4],t0=t[2],times=t[2:5],params=p[,1:3]) |>
   apply(1,sum)
 
 simulate(

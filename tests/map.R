@@ -75,12 +75,12 @@ stopifnot(
     sim=simulate(po,format="d"),
     direct=as.data.frame(cbind(time=times,states)),
     .id="method"
-  ) %>%
-    select(method,time,I) %>%
-    mutate(time=round(time,6)) %>%
-    pivot_wider(names_from=method,values_from=I) %>%
-    filter(!is.na(sim)) %>%
-    arrange(time) %>%
-    filter(!all.equal(traj,sim),!all.equal(sim,direct)) %>%
+  ) |>
+    select(method,time,I) |>
+    mutate(time=round(time,6)) |>
+    pivot_wider(names_from=method,values_from=I) |>
+    filter(!is.na(sim)) |>
+    arrange(time) |>
+    filter(!all.equal(traj,sim),!all.equal(sim,direct)) |>
     nrow()==0
 )

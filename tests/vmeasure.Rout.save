@@ -39,10 +39,10 @@ Error : in 'simulate': when 'vmeasure' is provided as a C snippet, you must also
 Error : in 'vmeasure': length('times') = 0, no work to do.
 > try(vmeasure(po,x=states(po),params=coef(po),times=c(1,2,3)))
 Error : in 'vmeasure': length of 'times' and 3rd dimension of 'x' do not agree.
-> simulate(po,nsim=3,format="arrays") %>% getElement("states") -> X
+> simulate(po,nsim=3,format="arrays") |> getElement("states") -> X
 > try(vmeasure(po,x=X,params=parmat(coef(po),2),times=time(po)))
 Error : in 'vmeasure': larger number of replicates is not a multiple of smaller.
-> po %>%
+> po |>
 +   simulate(
 +     vmeasure=function(x1, x2, ...) {
 +       matrix(c(x1+x2,1,1,x1+x2,1,1),nrow=2)
@@ -50,7 +50,7 @@ Error : in 'vmeasure': larger number of replicates is not a multiple of smaller.
 +   ) -> po1
 > try(vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
 Error : in 'vmeasure': 'vmeasure' must return a symmetric square matrix.
-> po %>%
+> po |>
 +   simulate(
 +     vmeasure=function(x1, x2, ...) {
 +       matrix(c(x1+x2,1,1,x1+x2),nrow=2)
@@ -58,7 +58,7 @@ Error : in 'vmeasure': 'vmeasure' must return a symmetric square matrix.
 +   ) -> po1
 > try(vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
 Error : in 'vmeasure': 'vmeasure' must return a matrix with row-names.
-> po %>%
+> po |>
 +   simulate(
 +     vmeasure=function(x1, x2, t, ...) {
 +       v <- matrix(rep(x1+x2,ceiling(t)^2),nrow=ceiling(t))
@@ -69,7 +69,7 @@ Error : in 'vmeasure': 'vmeasure' must return a matrix with row-names.
 +   ) -> po1
 > try(vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1)))
 Error : in 'vmeasure': 'vmeasure' returns variable-length results.
-> po %>%
+> po |>
 +   simulate(
 +     vmeasure=function(x1, x2, t, ...) {
 +       v <- matrix(c(x1+x2,1,1,x1+x2),nrow=2)
@@ -87,7 +87,7 @@ Error : in 'vmeasure': 'vmeasure' returns variable-length results.
 +   colnames(v)==c("a","b"),
 +   sum(is.na(v))==0
 + )
-> po %>% simulate(vmeasure=NULL) -> po1
+> po |> simulate(vmeasure=NULL) -> po1
 > v <- vmeasure(po1,x=states(po1),params=coef(po1),times=time(po1))
 Warning message:
 'vmeasure' unspecified: NAs generated. 
@@ -98,7 +98,7 @@ Warning message:
 +   sum(is.na(v))==400
 + )
 > 
-> sir() %>%
+> sir() |>
 +   simulate(
 +     times=(1:10)/52,
 +     vmeasure=function(cases, rho, seas_1, seas_2, seas_3, ...) {

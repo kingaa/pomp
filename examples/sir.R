@@ -8,5 +8,5 @@
   plot(simulate(window(po,end=3)))
   coef(po)
   
-  po %>% as.data.frame() %>% head()
+  po |> as.data.frame() |> head()
 }

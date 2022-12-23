@@ -32,8 +32,8 @@ stopifnot(all.equal(coef(po),c(r=1,sigma=1,K=1,tau=1,X_0=1)))
 ou2() -> po
 po1 <- simulate(po)
 
-as(po,"data.frame") %>% head()
-as.data.frame(po1) %>% head()
+as(po,"data.frame") |> head()
+as.data.frame(po1) |> head()
 
 obs(po)[,1:3]
 obs(po,"y2")[,1:3]
@@ -103,10 +103,10 @@ coef(po) <- NULL
 try(coef(po,transform=FALSE) <- c(5,3))
 try(coef(po,transform=TRUE) <- c(5,3))
 coef(po)
-po %>%
-  window(start=5,end=20) %>%
+po |>
+  window(start=5,end=20) |>
   pomp(covar=covariate_table(times=0:20,q=0:20),
     larry=3L) -> po1
-as(po1,"data.frame") %>% head()
+as(po1,"data.frame") |> head()
 
 dim(as.data.frame(c(a=po1,b=po1)))

@@ -192,7 +192,7 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
 
   if (require(subplex)) {
 
-    ricker() \%>\%
+    ricker() |>
       nlf_objfun(est=c("r","sigma","N_0"),lags=c(4,6),
         partrans=parameter_trans(log=c("r","sigma","N_0")),
         paramnames=c("r","sigma","N_0"),

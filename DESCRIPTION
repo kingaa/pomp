@@ -22,7 +22,7 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",
 URL: https://kingaa.github.io/pomp/
 Description: Tools for data analysis with partially observed Markov process (POMP) models (also known as stochastic dynamical systems, hidden Markov models, and nonlinear, non-Gaussian, state-space models).  The package provides facilities for implementing POMP models, simulating them, and fitting them to time series data by a variety of frequentist and Bayesian methods.  It is also a versatile platform for implementation of inference methods for general POMP models.
 Depends: R(>= 4.1.0), methods
-Imports: stats, graphics, digest, mvtnorm, deSolve, coda, magrittr, dplyr
+Imports: stats, graphics, digest, mvtnorm, deSolve, coda, dplyr
 Suggests: ggplot2, knitr, tidyr, subplex, nloptr
 SystemRequirements: For Windows users, Rtools (see https://cran.r-project.org/bin/windows/Rtools/).
 License: GPL-3
@@ -115,7 +115,6 @@ Collate:
     'ou2.R'
     'parmat.R'
     'parus.R'
-    'pipe.R'
     'pomp_examp.R'
     'pred_mean.R'
     'pred_var.R'

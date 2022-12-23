@@ -51,38 +51,38 @@ Type 'q()' to quit R.
 NOTE: The provided objects 'nbasis','period','msg' are available for use by POMP basic components.
 hello!
 > 
-> try(po %>%
+> try(po |>
 +     simulate(rprocess=onestep(
 +       Csnippet("
 +       SEXP Msg = get_userdata(\"bob\");
 +       char *msg = CHAR(STRING_ELT(Msg,0));
 +       Rprintf(\"%s\\n\",msg);"))))
 Error : in 'simulate': no user-data element 'bob' is found.
-> try(po %>%
+> try(po |>
 +     simulate(rprocess=onestep(
 +       Csnippet("double nbasis = *(get_userdata_double(\"nbasis\"));"))))
 Error : in 'simulate': user-data element 'nbasis' is not a numeric vector.
-> try(po %>%
+> try(po |>
 +     simulate(rprocess=onestep(
 +       Csnippet("double nbasis = *(get_userdata_double(\"bob\"));"))))
 Error : in 'simulate': no user-data element 'bob' is found.
-> try(po %>%
+> try(po |>
 +     simulate(rprocess=onestep(
 +       Csnippet("int nbasis = *(get_userdata_int(\"period\"));"))))
 Error : in 'simulate': user-data element 'period' is not an integer.
-> try(po %>%
+> try(po |>
 +     simulate(rprocess=onestep(
 +       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));"))))
 Error : in 'simulate': no user-data element 'bob' is found.
-> try(po %>%
+> try(po |>
 +     simulate(rprocess=onestep(
 +       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));")),
 +       bob=3))
 NOTE: The provided object 'bob' is available for use by POMP basic components.
 Error : in 'simulate': user-data element 'bob' is not an integer.
-> stopifnot(po %>%
+> stopifnot(po |>
 +     simulate(rprocess=onestep(
 +       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));")),
-+       bob=3L) %>% class() %>% magrittr::equals("pomp"))
++       bob=3L) |> class() == "pomp")
 NOTE: The provided object 'bob' is available for use by POMP basic components.
 > 

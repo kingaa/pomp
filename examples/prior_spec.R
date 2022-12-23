@@ -1,14 +1,14 @@
 \dontrun{
   ## Starting with an existing pomp object
 
-  verhulst() %>% window(end=30) -> po
+  verhulst() |> window(end=30) -> po
   
   ## we add or change prior distributions using the two
   ## arguments 'rprior' and 'dprior'. Here, we introduce
   ## a Gamma prior on the 'r' parameter.
   ## We construct 'rprior' and 'dprior' using R functions.
 
-  po %>%
+  po |>
     bsmc2(
       rprior=function (n_0, K0, K1, sigma, tau, r0, r1, ...) {
         c(
@@ -30,7 +30,7 @@
 
   ## We can also pass them as C snippets:
 
-  po %>%
+  po |>
     bsmc2(
       rprior=Csnippet("
          K = rgamma(K0,K1);
@@ -50,7 +50,7 @@
   ## The prior is plotted in grey; the posterior, in blue.
   plot(B)
 
-  B %>%
+  B |>
     pmcmc(Nmcmc=100,Np=1000,proposal=mvn_diag_rw(c(r=0.01,K=10))) -> Bb
 
   plot(Bb,pars=c("loglik","log.prior","r","K"))

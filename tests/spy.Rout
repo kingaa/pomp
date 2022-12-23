@@ -89,7 +89,7 @@ pomp object 'po1':
 
 
 > 
-> po1 %>%
+> po1 |>
 +   pomp(partrans=parameter_trans(log="r"),params=NULL,
 +     rinit=function(params,t0,...)params,
 +     paramnames="r",compile=FALSE,cfile="nancy") -> po2
@@ -165,8 +165,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2022-12-27 12:14:01.550 -0500 */
-/* Salt: 8623E1CFB0FCED6DE7645933 */
+/* Time: 2022-12-27 12:26:28.139 -0500 */
+/* Salt: FB81223F4E67ED7581FDB486 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -289,8 +289,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2022-12-27 12:14:01.658 -0500 */
-/* Salt: 9CD4D0983E40EA9A37AE568C */
+/* Time: 2022-12-27 12:26:28.243 -0500 */
+/* Salt: B483FB72E2ADBACA48669BA2 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -924,8 +924,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2022-12-27 12:14:02.190 -0500 */
-/* Salt: 3139A94B9D6CEC560C9AFABF */
+/* Time: 2022-12-27 12:26:28.782 -0500 */
+/* Salt: 5BC63C69BE1FE8CCCA9D54E2 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1180,8 +1180,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2022-12-27 12:14:02.674 -0500 */
-/* Salt: 3A73CE2476F9E556A91ABBBA */
+/* Time: 2022-12-27 12:26:29.245 -0500 */
+/* Salt: 29FF8A2424CCBA49EA01EEE1 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

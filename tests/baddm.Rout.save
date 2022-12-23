@@ -25,7 +25,7 @@ Type 'q()' to quit R.
 > set.seed(398585L)
 > 
 > try(
-+   gompertz() %>%
++   gompertz() |>
 +     pfilter(Np=10,dmeasure=function(...,log) Inf)
 + )
 Error : in 'pfilter': 'dmeasure' with log=TRUE returns illegal value.
@@ -41,7 +41,7 @@ loglik:          Inf
    X_0:            1
 > 
 > try(
-+   gompertz() %>%
++   gompertz() |>
 +     mif2(
 +       Np=10,Nmif=2,
 +       dmeasure=function(...,log) NaN,
@@ -62,7 +62,7 @@ loglik:          NaN
    X_0:            1
 > 
 > try(
-+   gompertz() %>%
++   gompertz() |>
 +     bsmc2(
 +       Np=10,
 +       rprior=function(...)c(r=runif(n=1,min=0,max=1)),

@@ -29,15 +29,15 @@ Type 'q()' to quit R.
 > 
 > gompertz() -> po
 > 
-> po %>%
-+   window(start=1,end=30) %>%
-+   as.data.frame() %>%
+> po |>
++   window(start=1,end=30) |>
++   as.data.frame() |>
 +   subset(select=-X) -> dat
 > 
-> try(dat %>% enkf())
+> try(dat |> enkf())
 Error : in 'enkf': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
-> dat %>%
+> dat |>
 +   enkf(
 +     times="time",t0=0,Np=100,
 +     params=c(r=0.1,K=150),
@@ -52,12 +52,12 @@ Error : in 'enkf': 'times' should either be a numeric vector of observation time
 +     ),
 +     emeasure=function(x,...) c(Y=0.01*x),
 +     vmeasure=function(...) matrix(2,1,1,dimnames=list("Y","Y"))
-+   ) %>% plot()
++   ) |> plot()
 > 
-> try(dat %>% eakf())
+> try(dat |> eakf())
 Error : in 'eakf': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
-> dat %>%
+> dat |>
 +   eakf(
 +     times="time",t0=0,Np=100,
 +     params=c(r=0.1,K=100),
@@ -75,72 +75,72 @@ Error : in 'eakf': 'times' should either be a numeric vector of observation time
 +   ) -> kf
 NOTE: The provided object 'R' is available for use by POMP basic components.
 > 
-> kf %>% plot()
+> kf |> plot()
 > 
-> kf %>% as.data.frame() %>% names()
+> kf |> as.data.frame() |> names()
 [1] "time"          "Y"             "cond.logLik"   "pred.mean.x"  
 [5] "filter.mean.x" "forecast.Y"   
-> kf %>% as.data.frame() %>% pivot_longer(-time) %>% names()
+> kf |> as.data.frame() |> pivot_longer(-time) |> names()
 [1] "time"  "name"  "value"
-> kf %>% forecast() %>% melt() %>% sapply(class)
+> kf |> forecast() |> melt() |> sapply(class)
    variable        time       value 
 "character"   "integer"   "numeric" 
-> kf %>% forecast(format="d") %>% sapply(class)
+> kf |> forecast(format="d") |> sapply(class)
    variable        time       value 
 "character"   "numeric"   "numeric" 
-> kf %>% filter_mean() %>% melt() %>% sapply(class)
+> kf |> filter_mean() |> melt() |> sapply(class)
    variable        time       value 
 "character" "character"   "numeric" 
-> kf %>% filter_mean(format="d") %>% sapply(class)
+> kf |> filter_mean(format="d") |> sapply(class)
    variable        time       value 
 "character"   "numeric"   "numeric" 
-> kf %>% pred_mean() %>% melt() %>% sapply(class)
+> kf |> pred_mean() |> melt() |> sapply(class)
    variable        time       value 
 "character" "character"   "numeric" 
-> kf %>% pred_mean(format="d") %>% sapply(class)
+> kf |> pred_mean(format="d") |> sapply(class)
    variable        time       value 
 "character"   "numeric"   "numeric" 
-> try(kf %>% pred_var() %>% melt() %>% sapply(class))
+> try(kf |> pred_var() |> melt() |> sapply(class))
 Error in h(simpleError(msg, call)) : 
   error in evaluating the argument 'data' in selecting a method for function 'melt': 'pred_var' is undefined for 'object' of class 'kalmand_pomp'.
-> try(kf %>% pred_var(format="d") %>% sapply(class))
+> try(kf |> pred_var(format="d") |> sapply(class))
 Error : 'pred_var' is undefined for 'object' of class 'kalmand_pomp'.
-> try(kf %>% filter_traj() %>% melt() %>% sapply(class))
+> try(kf |> filter_traj() |> melt() |> sapply(class))
 Error in h(simpleError(msg, call)) : 
   error in evaluating the argument 'data' in selecting a method for function 'melt': 'filter_traj' is undefined for 'object' of class 'kalmand_pomp'.
-> try(kf %>% filter_traj(format="d") %>% sapply(class))
+> try(kf |> filter_traj(format="d") |> sapply(class))
 Error : 'filter_traj' is undefined for 'object' of class 'kalmand_pomp'.
-> try(kf %>% saved_states() %>% melt() %>% sapply(class))
+> try(kf |> saved_states() |> melt() |> sapply(class))
 Error in h(simpleError(msg, call)) : 
   error in evaluating the argument 'data' in selecting a method for function 'melt': 'saved_states' is undefined for 'object' of class 'kalmand_pomp'.
-> try(kf %>% saved_states(format="d") %>% sapply(class))
+> try(kf |> saved_states(format="d") |> sapply(class))
 Error : 'saved_states' is undefined for 'object' of class 'kalmand_pomp'.
-> try(kf %>% forecast(format="l"))
+> try(kf |> forecast(format="l"))
 Error in match.arg(format) : 'arg' should be one of "array", "data.frame"
 > 
-> kf %>% forecast(format="a") %>% melt() -> kdat1a
-> kf %>% filter_mean(format="a") %>% melt() -> kdat2a
-> kf %>% pred_mean(format="a") %>% melt() -> kdat3a
-> try(kf %>% filter_traj(format="a") %>% melt() -> kdat4a)
+> kf |> forecast(format="a") |> melt() -> kdat1a
+> kf |> filter_mean(format="a") |> melt() -> kdat2a
+> kf |> pred_mean(format="a") |> melt() -> kdat3a
+> try(kf |> filter_traj(format="a") |> melt() -> kdat4a)
 Error in h(simpleError(msg, call)) : 
   error in evaluating the argument 'data' in selecting a method for function 'melt': 'filter_traj' is undefined for 'object' of class 'kalmand_pomp'.
-> try(kf %>% eff_sample_size(format="n") %>% melt() -> kdat5a)
+> try(kf |> eff_sample_size(format="n") |> melt() -> kdat5a)
 Error in h(simpleError(msg, call)) : 
   error in evaluating the argument 'data' in selecting a method for function 'melt': 'eff_sample_size' is undefined for 'object' of class 'kalmand_pomp'.
-> kf %>% cond_logLik(format="n") %>% melt() -> kdat6a
-> try(kf %>% saved_states(format="l") %>% melt() -> kdat7a)
+> kf |> cond_logLik(format="n") |> melt() -> kdat6a
+> try(kf |> saved_states(format="l") |> melt() -> kdat7a)
 Error in h(simpleError(msg, call)) : 
   error in evaluating the argument 'data' in selecting a method for function 'melt': 'saved_states' is undefined for 'object' of class 'kalmand_pomp'.
-> kf %>% as.data.frame() -> kdat0
-> kf %>% forecast(format="d") -> kdat1
-> kf %>% filter_mean(format="d") -> kdat2
-> kf %>% pred_mean(format="d") -> kdat3
-> try(kf %>% filter_traj(format="d") -> kdat4)
+> kf |> as.data.frame() -> kdat0
+> kf |> forecast(format="d") -> kdat1
+> kf |> filter_mean(format="d") -> kdat2
+> kf |> pred_mean(format="d") -> kdat3
+> try(kf |> filter_traj(format="d") -> kdat4)
 Error : 'filter_traj' is undefined for 'object' of class 'kalmand_pomp'.
-> try(kf %>% eff_sample_size(format="d") -> kdat5)
+> try(kf |> eff_sample_size(format="d") -> kdat5)
 Error : 'eff_sample_size' is undefined for 'object' of class 'kalmand_pomp'.
-> kf %>% cond_logLik(format="d") -> kdat6
-> try(kf %>% saved_states(format="d") -> kdat7)
+> kf |> cond_logLik(format="d") -> kdat6
+> try(kf |> saved_states(format="d") -> kdat7)
 Error : 'saved_states' is undefined for 'object' of class 'kalmand_pomp'.
 > stopifnot(
 +   all(kdat0$forecast.Y==kdat1$value),
@@ -156,9 +156,9 @@ Error : 'saved_states' is undefined for 'object' of class 'kalmand_pomp'.
 +   all.equal(kdat6$cond.logLik,kdat6a$value)
 + )
 > 
-> try(po %>% enkf(rprocess=NULL))
+> try(po |> enkf(rprocess=NULL))
 Error : in 'enkf': 'rprocess' is a needed basic component.
-> try(po %>% eakf(rprocess=NULL))
+> try(po |> eakf(rprocess=NULL))
 Error : in 'eakf': 'rprocess' is a needed basic component.
 > 
 > dev.off()

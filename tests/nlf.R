@@ -7,14 +7,14 @@ set.seed(583615606L)
 
 ou2() -> ou2
 estnames=c("alpha_2","alpha_3")
-ou2 %>% window(end=40) %>% as.data.frame() %>%
+ou2 |> window(end=40) |> as.data.frame() |>
   subset(select=c(time,y1,y2)) -> dat
 guess <- coef(ou2,estnames,transform=TRUE)
 
 try(nlf_objfun())
 try(nlf_objfun("bob"))
 
-dat %>%
+dat |>
   nlf_objfun(times="time",t0=0,params=coef(ou2),
     lags=c(4,6),ti=100,tf=2000,seed=426094906L,
     rprocess=ou2@rprocess,rmeasure=ou2@rmeasure,rinit=ou2@rinit) -> m0
@@ -93,15 +93,15 @@ stopifnot(sum(grepl("logql = ",out))==1)
 
 po <- ou2
 time(po) <- c(1:5,8:10)
-try(po %>% nlf_objfun(lags=c(1,2,3),period=5,,ti=100,tf=500))
+try(po |> nlf_objfun(lags=c(1,2,3),period=5,,ti=100,tf=500))
 
 po <- ou2
 po@data[2,15] <- NA
-stopifnot(po %>% nlf_objfun(lags=c(1,2,3),ti=100,tf=500) %>% logLik() %>% is.na())
+stopifnot(po |> nlf_objfun(lags=c(1,2,3),ti=100,tf=500) |> logLik() |> is.na())
 
 po <- ou2
-stopifnot(po %>% nlf_objfun(rmeasure=NULL,lags=c(1,2,3),ti=100,tf=500) %>% logLik() %>% is.na())
+stopifnot(po |> nlf_objfun(rmeasure=NULL,lags=c(1,2,3),ti=100,tf=500) |> logLik() |> is.na())
 
-try(po %>% nlf_objfun(covar=covariate_table(t=0:100,Z=100,times="t"),ti=100,tf=500))
+try(po |> nlf_objfun(covar=covariate_table(t=0:100,Z=100,times="t"),ti=100,tf=500))
 
 dev.off()

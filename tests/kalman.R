@@ -51,9 +51,9 @@ for (k in seq_along(t)) {
   y[,k] <- C %*% xx + sqrtR %*% rnorm(n=dimY)
 }
 
-y %>%
-  t() %>%
-  as.data.frame() %>%
+y |>
+  t() |>
+  as.data.frame() |>
   pfilter(
     times=t,t0=0,
     A=A,C=C,R=R,sqrtQ=sqrtQ,sqrtR=sqrtR,X0=X0,
@@ -135,25 +135,25 @@ try(eakf(enkf,R=matrix(1,3,3,dimnames=list(c("a","b","c"),NULL)),Np=100))
 invisible(enkf(pf,Np=1000,params=as.list(coef(pf))))
 invisible(eakf(pf,Np=1000,params=as.list(coef(pf))))
 
-enkf %>%
-  as.data.frame() %>%
-  pivot_longer(cols=-time) %>%
-  group_by(name) %>%
+enkf |>
+  as.data.frame() |>
+  pivot_longer(cols=-time) |>
+  group_by(name) |>
   summarize(n=length(value))
-eakf %>%
-  as.data.frame() %>%
-  pivot_longer(cols=-time) %>%
-  group_by(name) %>%
+eakf |>
+  as.data.frame() |>
+  pivot_longer(cols=-time) |>
+  group_by(name) |>
   summarize(n=length(value))
 
-enkf %>%
-  forecast(format="d") %>%
+enkf |>
+  forecast(format="d") |>
   ggplot(aes(x=time,y=value,group=variable,color=variable))+
   geom_line()+theme_bw()+
   labs(title="EnKF forecasts")
 
-eakf %>%
-  forecast(vars=c("y1","y2"),format="d") %>%
+eakf |>
+  forecast(vars=c("y1","y2"),format="d") |>
   ggplot(aes(x=time,y=value,group=variable,color=variable))+
   geom_line()+theme_bw()+
   labs(title="EAKF forecasts")

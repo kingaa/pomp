@@ -37,9 +37,9 @@ simulate(times=1:100,t0=0,
 ) -> gompertz
 
 ## ----R2------------------------------------------------------------------
-gompertz %>%
-  as.data.frame() %>%
-  pivot_longer(cols=-time) %>%
+gompertz |>
+  as.data.frame() |>
+  pivot_longer(cols=-time) |>
   ggplot(aes(x=time,y=value,color=name))+
   geom_line()+
   labs(y="X, Y")+
@@ -73,7 +73,7 @@ p <- parmat(coef(Gompertz),4)
 p["X.0",] <- c(0.5,0.9,1.1,1.5)
 
 ## ----sim1----------------------------------------------------------------
-simulate(Gompertz,params=p,format="data.frame") %>%
+simulate(Gompertz,params=p,format="data.frame") |>
   ggplot(aes(x=time,y=X,group=.id,color=.id))+
   geom_line()+
   guides(color="none")+

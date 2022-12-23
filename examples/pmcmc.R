@@ -2,7 +2,7 @@
 sir(
   times=seq(from=0,to=1,by=1/26),
   t0=-1/26
-) %>%
+) |>
   pmcmc(
     Np = 1000,
     Nmcmc = 50,
@@ -13,7 +13,7 @@ sir(
     proposal = mvn_diag_rw(c(beta1=1,beta2=1,beta3=1))
   ) -> sirpm
 
-sirpm %>%
-  traces(c("beta1","beta2","beta3")) %>%
+sirpm |>
+  traces(c("beta1","beta2","beta3")) |>
   plot()
 }

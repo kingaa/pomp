@@ -11,5 +11,5 @@ try(hitch(templates=pomp:::workhorse_templates,
 
 hitch(step.fn=Csnippet("int bob; bob = 3"),
   templates=pomp:::workhorse_templates,
-  compile=FALSE,cfile="bob") %>% names()
+  compile=FALSE,cfile="bob") |> names()
 

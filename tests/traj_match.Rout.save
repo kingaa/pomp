@@ -28,13 +28,13 @@ Type 'q()' to quit R.
 Error : in 'traj_objfun': 'data' is a required argument.
 > try(traj_objfun("bob"))
 Error : 'traj_objfun' is undefined for 'data' of class 'character'.
-> try(ou2 %>% as.data.frame() %>% traj_objfun())
+> try(ou2 |> as.data.frame() |> traj_objfun())
 Error : in 'traj_objfun': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
-> try(ou2 %>% as.data.frame() %>% traj_objfun(times="time",t0=0))
+> try(ou2 |> as.data.frame() |> traj_objfun(times="time",t0=0))
 Error : in 'traj_objfun': 'skeleton', 'dmeasure' are needed basic components.
 > 
-> ou2 %>%
-+   as.data.frame() %>%
+> ou2 |>
++   as.data.frame() |>
 +   traj_objfun(
 +     times="time",t0=0,
 +     rinit=ou2@rinit,
@@ -50,7 +50,7 @@ Error : in 'traj_objfun': 'skeleton', 'dmeasure' are needed basic components.
 +   logLik(f)!=f(0)
 + )
 > 
-> f %>% traj_objfun(est=c("alpha_1")) -> f1
+> f |> traj_objfun(est=c("alpha_1")) -> f1
 > plot(sapply(seq(0.1,0.9,by=0.1),f1),xlab="",ylab="")
 > 
 > f1(1.1)
@@ -64,12 +64,12 @@ Error : in 'traj_objfun': 'skeleton', 'dmeasure' are needed basic components.
 > try(traj_objfun(f1,est="harry"))
 Error : in 'traj_objfun': parameter 'harry' not found in 'params'
 > 
-> f1 %>% as("pomp")
+> f1 |> as("pomp")
 <object of class 'pomp'>
-> f1 %>% as("data.frame") %>% names()
+> f1 |> as("data.frame") |> names()
 [1] "time" "y1"   "y2"   "x1"   "x2"  
 > 
-> f1 %>% traj_objfun(fail.value=1e10) -> f2
+> f1 |> traj_objfun(fail.value=1e10) -> f2
 > f2(NA)
 [1] 1e+10
 > 
@@ -79,7 +79,7 @@ Error : in 'traj_objfun': parameter 'harry' not found in 'params'
 > 
 > enames <- c("gamma","iota","rho","k")
 > 
-> sir() %>%
+> sir() |>
 +   traj_objfun(
 +     dmeasure=Csnippet("
 +       lik = dnbinom_mu(nearbyint(reports),1/k,rho*cases,give_log);
@@ -118,8 +118,8 @@ in 'coef<-': names of 'value' are being discarded.
 > 
 > library(ggplot2)
 > 
-> ofun %>%
-+   trajectory(format="d") %>%
+> ofun |>
++   trajectory(format="d") |>
 +   ggplot(aes(x=time,y=coef(ofun,"rho")*cases))+
 +   geom_line()+
 +   geom_point(

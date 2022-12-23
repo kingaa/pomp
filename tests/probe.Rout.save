@@ -38,7 +38,7 @@ Type 'q()' to quit R.
 > 
 > probe(po,probes=plist,nsim=500,seed=595969) -> pb
 > plot(pb,y=NULL)
-> pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
+> pb |> as.data.frame() |> head(3) |> knitr::kable()
 
 
 |   |  mean|    sd| marg.1| marg.2| marg.3| acf[1]| acf[3]| acf[5]|   25%|  75%|.id  |
@@ -145,13 +145,13 @@ Error : in 'probe': applying probes to simulated data: variable 'X' not found am
 In addition: Warning message:
 in default 'rinit': there are no parameters with suffix '.0' or '_0'. See '?rinit_spec'. 
 > 
-> po %>% probe(nsim=100,probes=function(x)1) %>% logLik()
+> po |> probe(nsim=100,probes=function(x)1) |> logLik()
 [1] NaN
 > 
-> try(data.frame(t=1:10,a=1:10) %>% probe())
+> try(data.frame(t=1:10,a=1:10) |> probe())
 Error : in 'probe': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
 > 
-> data.frame(t=1:10,a=1:10) %>%
+> data.frame(t=1:10,a=1:10) |>
 +   probe(
 +     times="t",t0=0,
 +     rprocess=euler(
@@ -172,7 +172,7 @@ Error : in 'probe': 'times' should either be a numeric vector of observation tim
 <object of class 'probed_pomp'>
 > 
 > ou2() -> ou2
-> ou2 %>% probe(nsim=100,probes=probe_ccf(c("y1","y2"),lags=c(-10,0,1))) %>% plot()
+> ou2 |> probe(nsim=100,probes=probe_ccf(c("y1","y2"),lags=c(-10,0,1))) |> plot()
 > 
 > dev.off()
 null device 

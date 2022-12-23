@@ -19,7 +19,7 @@ plist <- list(
 
 probe(po,probes=plist,nsim=500,seed=595969) -> pb
 plot(pb,y=NULL)
-pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
+pb |> as.data.frame() |> head(3) |> knitr::kable()
 summary(pb)
 
 try(probe())
@@ -72,11 +72,11 @@ try(probe(pb,params=NULL))
 try(probe(pb,params="I think so"))
 try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
 
-po %>% probe(nsim=100,probes=function(x)1) %>% logLik()
+po |> probe(nsim=100,probes=function(x)1) |> logLik()
 
-try(data.frame(t=1:10,a=1:10) %>% probe())
+try(data.frame(t=1:10,a=1:10) |> probe())
 
-data.frame(t=1:10,a=1:10) %>%
+data.frame(t=1:10,a=1:10) |>
   probe(
     times="t",t0=0,
     rprocess=euler(
@@ -96,6 +96,6 @@ data.frame(t=1:10,a=1:10) %>%
   )
 
 ou2() -> ou2
-ou2 %>% probe(nsim=100,probes=probe_ccf(c("y1","y2"),lags=c(-10,0,1))) %>% plot()
+ou2 |> probe(nsim=100,probes=probe_ccf(c("y1","y2"),lags=c(-10,0,1))) |> plot()
 
 dev.off()

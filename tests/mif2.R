@@ -6,7 +6,7 @@ set.seed(857075216L)
 library(pomp)
 library(dplyr)
 
-gompertz() %>% window(end=10) -> po
+gompertz() |> window(end=10) -> po
 
 mif2(po,Nmif=50,Np=100,cooling.fraction.50=0.5,
   rw.sd=rw_sd(sigma=0.02,K=0.02,r=0.02)) -> mf1
@@ -34,7 +34,7 @@ stopifnot(
   rownames(m)==names(coef(po))
 )
 
-mfl %>%
+mfl |>
   traces(transform=TRUE,pars=c("r","sigma")) -> tr
 stopifnot(
   length(tr)==2,
@@ -44,7 +44,7 @@ stopifnot(
   colnames(tr$a)==c("r","sigma")
 )
 
-try(mfl %>% traces(pars="bob"))
+try(mfl |> traces(pars="bob"))
 
 try(mif2())
 try(mif2("po"))
@@ -95,11 +95,11 @@ try(mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),cooling.fraction.50=0.1,params=
 
 theta <- coef(po)
 theta["sigma"] <- 0.2
-po %>%
-  pfilter(Np=100,params=theta) %>%
-  mif2(Nmif=3,rw.sd=rw_sd(sigma=0.01,X_0=ivp(0.01)),cooling.fraction.50=0.5) %>%
-  mif2() %>% continue(Nmif=3,cooling.fraction.50=0.1) -> mf
-mf %>%
+po |>
+  pfilter(Np=100,params=theta) |>
+  mif2(Nmif=3,rw.sd=rw_sd(sigma=0.01,X_0=ivp(0.01)),cooling.fraction.50=0.5) |>
+  mif2() |> continue(Nmif=3,cooling.fraction.50=0.1) -> mf
+mf |>
   plot(pars=c("X_0","sigma"),transform=TRUE)
 
 capture.output(
@@ -111,9 +111,9 @@ capture.output(
 stopifnot(sum(grepl("mif2 pfilter timestep",out))==4,
   sum(grepl("mif2 iteration",out))==2)
 
-po %>%
-  as.data.frame() %>%
-  subset(select=-X) %>%
+po |>
+  as.data.frame() |>
+  subset(select=-X) |>
   mif2(Nmif=3,Np=100,
     times="time",t0=0,
     params=c(sigma=5),
@@ -124,7 +124,7 @@ po %>%
     rinit=function(...)c(X=0)
   )
 
-mf3 %>%
+mf3 |>
   continue(dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"))
 
 

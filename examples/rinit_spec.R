@@ -10,7 +10,7 @@
   ## Here, we pass the rinit specification to 'simulate'
   ## as an R function.
 
-  po %>%
+  po |>
     simulate(
       rinit=function (n_0, ...) {
         c(n=rpois(n=1,lambda=n_0))
@@ -19,7 +19,7 @@
 
   ## We can also pass it as a C snippet:
 
-  po %>%
+  po |>
     simulate(
       rinit=Csnippet("n = rpois(n_0);"),
       paramnames="n_0",

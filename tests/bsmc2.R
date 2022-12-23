@@ -69,13 +69,13 @@ theta <- coef(gompertz)
 theta["K"] <- 1
 try(capture.output(bsmc2(po,Np=2,params=theta,verbose=TRUE)) -> out)
 
-smc %>% as.data.frame() %>%
-  filter(.id=="posterior") %>%
+smc |> as.data.frame() |>
+  filter(.id=="posterior") |>
   select(-.id) -> pp
 
-gompertz %>%
-  as.data.frame() %>%
-  subset(select=-X) %>%
+gompertz |>
+  as.data.frame() |>
+  subset(select=-X) |>
   bsmc2(
     times="time",t0=-5,
     params=coef(gompertz),
@@ -88,11 +88,11 @@ gompertz %>%
     dmeasure=gompertz@dmeasure,
     statenames=c("X"),
     paramnames=c("r","K","sigma")) -> smc4
-smc4 %>% plot()
+smc4 |> plot()
 
-try(gompertz %>%
-    as.data.frame() %>%
-    subset(select=-X) %>%
+try(gompertz |>
+    as.data.frame() |>
+    subset(select=-X) |>
     bsmc2(
       times="time",t0=-5,
       params=coef(gompertz),
@@ -103,8 +103,8 @@ try(gompertz %>%
       statenames=c("X"),
       paramnames=c("r","K","sigma")))
 
-smc %>%
-  bsmc2(Np=seq(10,length=12,by=10)) %>%
+smc |>
+  bsmc2(Np=seq(10,length=12,by=10)) |>
   eff_sample_size()
 
 dev.off()

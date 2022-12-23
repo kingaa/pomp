@@ -70,9 +70,9 @@ Type 'q()' to quit R.
 +   y[,k] <- C %*% xx + sqrtR %*% rnorm(n=dimY)
 + }
 > 
-> y %>%
-+   t() %>%
-+   as.data.frame() %>%
+> y |>
++   t() |>
++   as.data.frame() |>
 +   pfilter(
 +     times=t,t0=0,
 +     A=A,C=C,R=R,sqrtQ=sqrtQ,sqrtR=sqrtR,X0=X0,
@@ -199,10 +199,10 @@ Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those 
 > invisible(enkf(pf,Np=1000,params=as.list(coef(pf))))
 > invisible(eakf(pf,Np=1000,params=as.list(coef(pf))))
 > 
-> enkf %>%
-+   as.data.frame() %>%
-+   pivot_longer(cols=-time) %>%
-+   group_by(name) %>%
+> enkf |>
++   as.data.frame() |>
++   pivot_longer(cols=-time) |>
++   group_by(name) |>
 +   summarize(n=length(value))
 # A tibble: 13 × 2
    name               n
@@ -220,10 +220,10 @@ Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those 
 11 pred.mean.x4      20
 12 y1                20
 13 y2                20
-> eakf %>%
-+   as.data.frame() %>%
-+   pivot_longer(cols=-time) %>%
-+   group_by(name) %>%
+> eakf |>
++   as.data.frame() |>
++   pivot_longer(cols=-time) |>
++   group_by(name) |>
 +   summarize(n=length(value))
 # A tibble: 13 × 2
    name               n
@@ -242,14 +242,14 @@ Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those 
 12 y1                20
 13 y2                20
 > 
-> enkf %>%
-+   forecast(format="d") %>%
+> enkf |>
++   forecast(format="d") |>
 +   ggplot(aes(x=time,y=value,group=variable,color=variable))+
 +   geom_line()+theme_bw()+
 +   labs(title="EnKF forecasts")
 > 
-> eakf %>%
-+   forecast(vars=c("y1","y2"),format="d") %>%
+> eakf |>
++   forecast(vars=c("y1","y2"),format="d") |>
 +   ggplot(aes(x=time,y=value,group=variable,color=variable))+
 +   geom_line()+theme_bw()+
 +   labs(title="EAKF forecasts")
