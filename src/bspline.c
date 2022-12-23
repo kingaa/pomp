@@ -2,44 +2,44 @@
 
 #include "pomp_internal.h"
 
-// The following function computes the derivative of order d of the i-th
-// B-spline of degree p with given knots at each of the nx points in x.
+// The following function computes the derivative of order 'deriv' of the i-th
+// B-spline of given degree with given knots at each of the nx points in x.
 // knots must point to an array of length nbasis+p+1
 // The results are stored in y.
-void bspline_eval (double *y, const double *x, int nx,
-                   int i, int p, int d, const double *knots)
+void bspline_eval (double *y, const double *x, int nx, int i,
+		   int degree, int deriv, const double *knots)
 {
   int j;
-  if (d > p) {
+  if (deriv > degree) {
     for (j = 0; j < nx; j++) y[j] = 0.0;
-  } else if (d > 0) {
-    int i2 = i+1, p2 = p-1, d2 = d-1;
+  } else if (deriv > 0) {
+    int i2 = i+1, p2 = degree-1, d2 = deriv-1;
     double *y1 = (double *) R_Calloc(nx,double);
     double *y2 = (double *) R_Calloc(nx,double);
     double a, b;
     bspline_eval(y1,x,nx,i,p2,d2,knots);
     bspline_eval(y2,x,nx,i2,p2,d2,knots);
     for (j = 0; j < nx; j++) {
-      a = p / (knots[i+p]-knots[i]);
-      b = p / (knots[i2+p]-knots[i2]);
+      a = degree / (knots[i+degree]-knots[i]);
+      b = degree / (knots[i2+degree]-knots[i2]);
       y[j] = a * y1[j] - b * y2[j];
     }
     R_Free(y1); R_Free(y2);
-  } else { // d == 0
-    int i2 = i+1, p2 = p-1;
-    if (p > 0) {  // case d < p
+  } else { // deriv == 0
+    int i2 = i+1, p2 = degree-1;
+    if (degree > 0) {  // case deriv < degree
       double *y1 = (double *) R_Calloc(nx,double);
       double *y2 = (double *) R_Calloc(nx,double);
       double a, b;
-      bspline_eval(y1,x,nx,i,p2,d,knots);
-      bspline_eval(y2,x,nx,i2,p2,d,knots);
+      bspline_eval(y1,x,nx,i,p2,deriv,knots);
+      bspline_eval(y2,x,nx,i2,p2,deriv,knots);
       for (j = 0; j < nx; j++) {
-        a = (x[j]-knots[i]) / (knots[i+p]-knots[i]);
-        b = (knots[i2+p]-x[j]) / (knots[i2+p]-knots[i2]);
+        a = (x[j]-knots[i]) / (knots[i+degree]-knots[i]);
+        b = (knots[i2+degree]-x[j]) / (knots[i2+degree]-knots[i2]);
         y[j] = a * y1[j] + b * y2[j];
       }
       R_Free(y1); R_Free(y2);
-    } else if (p == 0) { // case d == p
+    } else if (degree == 0) { // case deriv == degree
       for (j = 0; j < nx; j++)
         y[j] = (double) ((knots[i] <= x[j]) && (x[j] < knots[i2]));
     }
@@ -106,9 +106,6 @@ SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period,
 }
 
 /*
-void bspline_eval (double *y, const double *x, int nx,
-                   int i, int p, int d, const double *knots);
-
 void bspline_basis_eval (double x, int degree, int nbasis, double *y) {
   bspline_basis_eval_deriv(x,knots,degree,nbasis,0,y);
 }

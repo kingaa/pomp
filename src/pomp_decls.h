@@ -1,5 +1,5 @@
 /* src/bspline.c */
-extern void bspline_eval(double *y, const double *x, int nx, int i, int p, int d, const double *knots);
+extern void bspline_eval(double *y, const double *x, int nx, int i, int degree, int deriv, const double *knots);
 extern SEXP bspline_basis(SEXP range, SEXP x, SEXP nbasis, SEXP degree, SEXP deriv);
 extern SEXP periodic_bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP period, SEXP deriv);
 extern void periodic_bspline_basis_eval(double x, double period, int degree, int nbasis, double *y);
