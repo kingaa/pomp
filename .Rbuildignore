@@ -18,6 +18,17 @@ TODO\.md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 \.Rprofile
+\.Rhistory
+\.NEWS
+\.dist
+\.instdocs
+\.install
+\.roxy
+\.source
+\.testsource
+\.includes
+\.headers
+\.tests
 Makefile
 rules.mk
 lib

@@ -1,5 +1,15 @@
-.Rhistory
-.Rproj.user
+\.NEWS
+\.dist
+\.instdocs
+\.install
+\.roxy
+\.source
+\.testsource
+\.includes
+\.headers
+\.tests
+\.Rhistory
+\.Rproj.user
 *.tar.gz
 *.tgz
 *.zip
