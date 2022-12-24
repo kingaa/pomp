@@ -110,16 +110,16 @@ Resampling is performed at each observation.
 
 \describe{
 \item{\code{\link{logLik}}}{ the estimated log likelihood  }
-\item{\code{\link{cond.logLik}}}{ the estimated conditional log likelihood }
-\item{\code{\link{eff.sample.size}}}{
+\item{\code{\link{cond_logLik}}}{ the estimated conditional log likelihood }
+\item{\code{\link{eff_sample_size}}}{
 the (time-dependent) estimated effective sample size }
-\item{\code{\link{pred.mean}}, \code{\link{pred.var}}}{ the mean and variance of the approximate prediction distribution }
-\item{\code{\link{filter.mean}}}{ the mean of the filtering distribution }
-\item{\code{\link{filter.traj}}}{
+\item{\code{\link{pred_mean}}, \code{\link{pred_var}}}{ the mean and variance of the approximate prediction distribution }
+\item{\code{\link{filter_mean}}}{ the mean of the filtering distribution }
+\item{\code{\link{filter_traj}}}{
   retrieve one particle trajectory.
   Useful for building up the smoothing distribution.
 }
-\item{\code{\link{saved.states}}}{retrieve saved states}
+\item{\code{\link{saved_states}}}{retrieve saved states}
 \item{\code{\link{as.data.frame}}}{coerce to a data frame}
 \item{\code{\link{plot}}}{diagnostic plots}
 }
@@ -138,15 +138,15 @@ pf <- pfilter(gompertz(),Np=1000)	## use 1000 particles
 
 plot(pf)
 logLik(pf)
-cond.logLik(pf)			## conditional log-likelihoods
-eff.sample.size(pf)             ## effective sample size
+cond_logLik(pf)			## conditional log-likelihoods
+eff_sample_size(pf)             ## effective sample size
 logLik(pfilter(pf))      	## run it again with 1000 particles
 
 ## run it again with 2000 particles
 pf <- pfilter(pf,Np=2000,filter.mean=TRUE,filter.traj=TRUE,save.states="weighted")
-fm <- filter.mean(pf) ## extract the filtering means
-ft <- filter.traj(pf) ## one draw from the smoothing distribution
-ss <- saved.states(pf,format="d") ## the latent-state portion of each particle
+fm <- filter_mean(pf) ## extract the filtering means
+ft <- filter_traj(pf) ## one draw from the smoothing distribution
+ss <- saved_states(pf,format="d") ## the latent-state portion of each particle
 
 as(pf,"data.frame") \%>\% head()
 }
@@ -168,16 +168,16 @@ More on \pkg{pomp} elementary algorithms:
 
 More on sequential Monte Carlo methods: 
 \code{\link{bsmc2}()},
-\code{\link{cond.logLik}()},
-\code{\link{eff.sample.size}()},
-\code{\link{filter.mean}()},
-\code{\link{filter.traj}()},
+\code{\link{cond_logLik}()},
+\code{\link{eff_sample_size}()},
+\code{\link{filter_mean}()},
+\code{\link{filter_traj}()},
 \code{\link{kalman}},
 \code{\link{mif2}()},
 \code{\link{pmcmc}()},
-\code{\link{pred.mean}()},
-\code{\link{pred.var}()},
-\code{\link{saved.states}()},
+\code{\link{pred_mean}()},
+\code{\link{pred_var}()},
+\code{\link{saved_states}()},
 \code{\link{wpfilter}()}
 
 More on full-information (i.e., likelihood-based) methods:

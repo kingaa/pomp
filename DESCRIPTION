@@ -83,6 +83,7 @@ Collate:
     'cond_logLik.R'
     'covmat.R'
     'dacca.R'
+    'deprecated.R'
     'design.R'
     'distributions.R'
     'ebola.R'

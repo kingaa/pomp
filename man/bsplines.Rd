@@ -2,13 +2,13 @@
 % Please edit documentation in R/bsplines.R
 \name{bsplines}
 \alias{bsplines}
-\alias{bspline.basis}
-\alias{periodic.bspline.basis}
+\alias{bspline_basis}
+\alias{periodic_bspline_basis}
 \title{B-spline bases}
 \usage{
-bspline.basis(x, nbasis, degree = 3, deriv = 0, names = NULL, rg = range(x))
+bspline_basis(x, nbasis, degree = 3, deriv = 0, names = NULL, rg = range(x))
 
-periodic.bspline.basis(
+periodic_bspline_basis(
   x,
   nbasis,
   degree = 3,
@@ -41,17 +41,18 @@ To be properly specified, we must have \code{rg[1] < rg[2]}.}
 \item{period}{The period of the requested periodic B-splines.}
 }
 \value{
-\item{bspline.basis}{ Returns a matrix with \code{length(x)} rows
+\item{bspline_basis}{ Returns a matrix with \code{length(x)} rows
 and \code{nbasis} columns.  Each column contains the values one of the
 spline basis functions.}
-\item{periodic.bspline.basis}{ Returns a matrix with \code{length(x)} rows
+\item{periodic_bspline_basis}{ Returns a matrix with \code{length(x)} rows
 and \code{nbasis} columns.  The basis functions returned are periodic with
 period \code{period}.}
 If \code{deriv>0}, the derivative of that order of each of the corresponding spline basis functions are returned.
 }
 \description{
-These functions generate B-spline basis functions.  \code{bspline.basis}
-gives a basis of spline functions.  \code{periodic.bspline.basis} gives a
+These functions generate B-spline basis functions.
+\code{bspline_basis} gives a basis of spline functions.
+\code{periodic_bspline_basis} gives a
 basis of periodic spline functions.
 }
 \section{C API}{
@@ -64,12 +65,12 @@ for definition and documentation of the C API.
 \examples{
 
 x <- seq(0,2,by=0.01)
-y <- bspline.basis(x,degree=3,nbasis=9,names="basis")
+y <- bspline_basis(x,degree=3,nbasis=9,names="basis")
 matplot(x,y,type='l',ylim=c(0,1.1))
 lines(x,apply(y,1,sum),lwd=2)
 
 x <- seq(-1,2,by=0.01)
-y <- periodic.bspline.basis(x,nbasis=5,names="spline\%d")
+y <- periodic_bspline_basis(x,nbasis=5,names="spline\%d")
 matplot(x,y,type='l')
 
 }

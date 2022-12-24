@@ -7,7 +7,7 @@
 ##' @aliases forecast,missing-method forecast,ANY-method
 ##' @family extraction methods
 ##' @include kalman.R
-##' @inheritParams filter.mean
+##' @inheritParams filter_mean
 ##'
 
 setGeneric(
@@ -54,14 +54,14 @@ setMethod(
     if (undefined(object@emeasure))
       pStop("forecast",paste(sQuote(c("emeasure")),collapse=", "),
         " is a needed basic component.")
-    x <- pred.mean(object)
+    x <- pred_mean(object)
     if (length(x)==0)
       pStop("forecast","no prediction mean. ",
         "Rerun ",sQuote("pfilter")," with ",
         sQuote("pred.mean=TRUE"),".")
     y <- emeasure(
       object,
-      x=pred.mean(object),
+      x=x,
       times=time(object),
       params=coef(object)
     )

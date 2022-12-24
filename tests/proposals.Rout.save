@@ -25,87 +25,87 @@ Type 'q()' to quit R.
 > 
 > set.seed(1178744046L)
 > 
-> try(mvn.diag.rw("bob"))
-Error : in 'mvn.diag.rw': 'rw.sd' must be a named numeric vector.
-> try(mvn.diag.rw(NULL))
-Error : in 'mvn.diag.rw': 'rw.sd' must be a named numeric vector.
-> try(mvn.diag.rw())
-Error : in 'mvn.diag.rw': 'rw.sd' must be a named numeric vector.
-> try(mvn.diag.rw(c(3,2)))
-Error : in 'mvn.diag.rw': 'rw.sd' must have names.
-> f <- mvn.diag.rw(c(a=3,b=2))
+> try(mvn_diag_rw("bob"))
+Error : in 'mvn_diag_rw': 'rw.sd' must be a named numeric vector.
+> try(mvn_diag_rw(NULL))
+Error : in 'mvn_diag_rw': 'rw.sd' must be a named numeric vector.
+> try(mvn_diag_rw())
+Error : in 'mvn_diag_rw': 'rw.sd' must be a named numeric vector.
+> try(mvn_diag_rw(c(3,2)))
+Error : in 'mvn_diag_rw': 'rw.sd' must have names.
+> f <- mvn_diag_rw(c(a=3,b=2))
 > f(c(a=0,b=0))
     a     b 
 -3.53 -1.45 
 > 
-> try(mvn.rw(matrix(0,2,2)))
-Error : in 'mvn.rw': 'rw.var' must have row- and column-names.
-> try(mvn.rw(array(dim=c(2,3),dimnames=list(letters[1:2],LETTERS[1:3]))))
-Error : in 'mvn.rw': 'rw.var' must be a square matrix.
+> try(mvn_rw(matrix(0,2,2)))
+Error : in 'mvn_rw': 'rw.var' must have row- and column-names.
+> try(mvn_rw(array(dim=c(2,3),dimnames=list(letters[1:2],LETTERS[1:3]))))
+Error : in 'mvn_rw': 'rw.var' must be a square matrix.
 > try({m <- diag(3); m[3,3] <- 0; rownames(m) <- colnames(m) <- letters[1:3];
-+     mvn.rw(m) -> f})
++     mvn_rw(m) -> f})
 Warning messages:
 1: In chol.default(rw.var, pivot = TRUE) :
   the matrix is either rank-deficient or indefinite
-2: in 'mvn.rw': rank-deficient covariance matrix 
+2: in 'mvn_rw': rank-deficient covariance matrix 
 > cmat <- matrix(c(1,1,0,1),2,2,dimnames=list(letters[1:2],letters[1:2]))
-> f <- mvn.rw(cmat)
+> f <- mvn_rw(cmat)
 > f(c(a=0,b=0))
       a       b 
  0.9458 -0.0943 
 > 
-> try(mvn.rw.adaptive(c(a=1,b=1),scale.start=-2))
-Error : in 'mvn.rw.adaptive': 'scale.start' must be a positive integer.
-> try(mvn.rw.adaptive(c(a=1,b=1),scale.cooling=2))
-Error : in 'mvn.rw.adaptive': 'scale.start' must be a positive integer.
-> try(mvn.rw.adaptive(c(a=1,b=1),shape.start=-3))
-Error : in 'mvn.rw.adaptive': 'scale.start' must be a positive integer.
-> try(mvn.rw.adaptive())
-Error : in 'mvn.rw.adaptive': exactly one of 'rw.sd' and 'rw.var' must be supplied.
-> try(mvn.rw.adaptive(rw.sd="bob"))
-Error : in 'mvn.rw.adaptive': 'rw.sd' must be a named numeric vector.
+> try(mvn_rw_adaptive(c(a=1,b=1),scale.start=-2))
+Error : in 'mvn_rw_adaptive': 'scale.start' must be a positive integer.
+> try(mvn_rw_adaptive(c(a=1,b=1),scale.cooling=2))
+Error : in 'mvn_rw_adaptive': 'scale.start' must be a positive integer.
+> try(mvn_rw_adaptive(c(a=1,b=1),shape.start=-3))
+Error : in 'mvn_rw_adaptive': 'scale.start' must be a positive integer.
+> try(mvn_rw_adaptive())
+Error : in 'mvn_rw_adaptive': exactly one of 'rw.sd' and 'rw.var' must be supplied.
+> try(mvn_rw_adaptive(rw.sd="bob"))
+Error : in 'mvn_rw_adaptive': 'rw.sd' must be a named numeric vector.
 > cmat1 <- matrix(c(1,1,0,1),2,2)
-> try(mvn.rw.adaptive(rw.var=cmat1))
-Error : in 'mvn.rw.adaptive': 'rw.var' must have row- and column-names.
+> try(mvn_rw_adaptive(rw.var=cmat1))
+Error : in 'mvn_rw_adaptive': 'rw.var' must have row- and column-names.
 > cmat1 <- matrix(c(1,1,0,1,1,0),2,3,dimnames=list(letters[1:2],letters[1:3]))
-> try(mvn.rw.adaptive(rw.var=cmat1))
-Error : in 'mvn.rw.adaptive': 'rw.var' must be a square matrix.
+> try(mvn_rw_adaptive(rw.var=cmat1))
+Error : in 'mvn_rw_adaptive': 'rw.var' must be a square matrix.
 > cmat1 <- matrix(c(1,1,0,1),2,2,dimnames=list(letters[1:2],letters[3:4]))
-> try(mvn.rw.adaptive(rw.var=cmat1))
-Error : in 'mvn.rw.adaptive': row- and column-names of 'rw.var' must agree.
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=-300))
-Error : in 'mvn.rw.adaptive': 'scale.start' must be a positive integer.
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=NA))
-Error : in 'mvn.rw.adaptive': 'scale.start' must be a positive integer.
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=NULL))
-Error : in 'mvn.rw.adaptive': 'scale.start' must be a positive integer.
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000))
-Error : in 'mvn.rw.adaptive': 'shape.start' must be a positive integer.
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000,scale.cooling=3))
-Error : in 'mvn.rw.adaptive': 'scale.cooling' must be in (0,1].
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000,scale.cooling=NA))
-Error : in 'mvn.rw.adaptive': 'scale.cooling' must be in (0,1].
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000,scale.cooling=3.2))
-Error : in 'mvn.rw.adaptive': 'scale.cooling' must be in (0,1].
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
+> try(mvn_rw_adaptive(rw.var=cmat1))
+Error : in 'mvn_rw_adaptive': row- and column-names of 'rw.var' must agree.
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=-300))
+Error : in 'mvn_rw_adaptive': 'scale.start' must be a positive integer.
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=NA))
+Error : in 'mvn_rw_adaptive': 'scale.start' must be a positive integer.
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=NULL))
+Error : in 'mvn_rw_adaptive': 'scale.start' must be a positive integer.
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=1000))
+Error : in 'mvn_rw_adaptive': 'shape.start' must be a positive integer.
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=1000,scale.cooling=3))
+Error : in 'mvn_rw_adaptive': 'scale.cooling' must be in (0,1].
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=1000,scale.cooling=NA))
+Error : in 'mvn_rw_adaptive': 'scale.cooling' must be in (0,1].
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=1000,scale.cooling=3.2))
+Error : in 'mvn_rw_adaptive': 'scale.cooling' must be in (0,1].
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
 +   shape.start=-10))
-Error : in 'mvn.rw.adaptive': 'shape.start' must be a positive integer.
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
+Error : in 'mvn_rw_adaptive': 'shape.start' must be a positive integer.
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
 +   shape.start=10,target=3))
-Error : in 'mvn.rw.adaptive': 'target' must be a number in (0,1).
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
+Error : in 'mvn_rw_adaptive': 'target' must be a number in (0,1).
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
 +   shape.start=10,target=NA))
-Error : in 'mvn.rw.adaptive': 'target' must be a number in (0,1).
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
+Error : in 'mvn_rw_adaptive': 'target' must be a number in (0,1).
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
 +   shape.start=10,target=Inf))
-Error : in 'mvn.rw.adaptive': 'target' must be a number in (0,1).
-> try(mvn.rw.adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
+Error : in 'mvn_rw_adaptive': 'target' must be a number in (0,1).
+> try(mvn_rw_adaptive(rw.var=cmat,scale.start=1000,scale.cooling=0.2,
 +   shape.start=10,target="bob"))
-Error : in 'mvn.rw.adaptive': 'target' must be a number in (0,1).
+Error : in 'mvn_rw_adaptive': 'target' must be a number in (0,1).
 In addition: Warning message:
-In mvn.rw.adaptive(rw.var = cmat, scale.start = 1000, scale.cooling = 0.2,  :
+In mvn_rw_adaptive(rw.var = cmat, scale.start = 1000, scale.cooling = 0.2,  :
   NAs introduced by coercion
-> mvn.rw.adaptive(rw.sd=c(alpha_1=0.1,alpha_3=0.0),
+> mvn_rw_adaptive(rw.sd=c(alpha_1=0.1,alpha_3=0.0),
 +   scale.start=5,scale.cooling=0.1,shape.start=10) -> f1
 > f1(c(alpha_1=1,alpha_3=1),.n=100,.accepts=1000,verbose=FALSE)
 alpha_1 alpha_3 
@@ -113,9 +113,9 @@ alpha_1 alpha_3
 Warning messages:
 1: In chol.default(covmat, pivot = TRUE) :
   the matrix is either rank-deficient or indefinite
-2: in 'mvn.rw.adaptive': degenerate proposal. 
+2: in 'mvn_rw_adaptive': degenerate proposal. 
 > 
-> mvn.rw.adaptive(rw.sd=c(alpha_1=0.1,alpha_3=0.1),
+> mvn_rw_adaptive(rw.sd=c(alpha_1=0.1,alpha_3=0.1),
 +   scale.start=5,scale.cooling=0.1,shape.start=10) -> f
 > options(verbose=TRUE) -> op
 > capture.output(po %>% pmcmc(Nmcmc=200,Np=100,proposal=f) -> mcmc1) -> out

@@ -2,7 +2,7 @@
 ##'
 ##' Coerce to a \sQuote{pomp} object
 ##'
-##' @name as.pomp
+##' @name as_pomp
 ##' @docType methods
 ##' @keywords internal
 ##' @rdname as_pomp
@@ -10,8 +10,8 @@
 ##'
 ##' @param object the object to be coerced
 ##' @param \dots additional arguments
-##' 
+##'
 ##' @export
-as.pomp <- function (object, ...) {
+as_pomp <- function (object, ...) {
   as(object,"pomp")
 }

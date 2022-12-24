@@ -28,7 +28,7 @@ Type 'q()' to quit R.
 > gompertz %>%
 +   mif2(Nmif=4,Np=1000,
 +     .indices=seq.int(1000),
-+     rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
++     rw.sd=rw_sd(r=0.02,K=0.02,sigma=0.02),
 +     cooling.fraction=0.5) %>%
 +   slot("indices") -> idx
 > stopifnot(
@@ -41,7 +41,7 @@ Type 'q()' to quit R.
 > gompertz %>%
 +   mif2(Nmif=4,Np=100,
 +     .indices=as.list(seq.int(100)),
-+     rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
++     rw.sd=rw_sd(r=0.02,K=0.02,sigma=0.02),
 +     cooling.fraction=0.5) %>%
 +   slot("indices") -> idx
 > stopifnot(
@@ -50,7 +50,7 @@ Type 'q()' to quit R.
 + )
 > 
 > try(mif2(gompertz,Nmif=1,Np=100,
-+   .indices=1:5,rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
++   .indices=1:5,rw.sd=rw_sd(r=0.02,K=0.02,sigma=0.02),
 +   cooling.fraction=0.5))
 Error : in 'mif2': '.indices' has improper length.
 > 

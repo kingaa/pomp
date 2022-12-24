@@ -152,11 +152,11 @@ Therefore, it is a good idea to evaluate the function on the parameters returned
   
   ## A list of probes:
   plist <- list(
-    mean=probe.mean("Y",trim=0.1,transform=sqrt),
-    sd=probe.sd("Y",transform=sqrt),
-    probe.marginal("Y",ref=obs(po)),
-    probe.acf("Y",lags=c(1,3,5),type="correlation",transform=sqrt),
-    probe.quantile("Y",prob=c(0.25,0.75),na.rm=TRUE)
+    mean=probe_mean("Y",trim=0.1,transform=sqrt),
+    sd=probe_sd("Y",transform=sqrt),
+    probe_marginal("Y",ref=obs(po)),
+    probe_acf("Y",lags=c(1,3,5),type="correlation",transform=sqrt),
+    probe_quantile("Y",prob=c(0.25,0.75),na.rm=TRUE)
   )
 
   ## Construct the probe-matching objective function.

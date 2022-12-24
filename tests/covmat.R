@@ -9,8 +9,8 @@ gompertz() -> gompertz
 set.seed(1546383977L)
 
 plist <- list(
-  y1.mean=probe.mean(var="Y"),
-  probe.acf(var="Y",lags=c(0,4,8))
+  y1.mean=probe_mean(var="Y"),
+  probe_acf(var="Y",lags=c(0,4,8))
 )
 
 gompertz %>%
@@ -34,7 +34,7 @@ abc(
   paramnames=c("K","sigma","tau","r"),
   Nabc=100,probes=plist,
   scale=scale.dat,epsilon=10,
-  proposal=mvn.diag.rw(c(K=0.01,r=0.01,sigma=0.01,tau=0.01))
+  proposal=mvn_diag_rw(c(K=0.01,r=0.01,sigma=0.01,tau=0.01))
 ) -> a1
 
 replicate(3,
@@ -42,7 +42,7 @@ replicate(3,
     a1,
     Nabc=500,probes=plist,
     scale=scale.dat,epsilon=10,
-    proposal=mvn.diag.rw(c(K=0.01,r=0.01,sigma=0.01,tau=0.01))
+    proposal=mvn_diag_rw(c(K=0.01,r=0.01,sigma=0.01,tau=0.01))
   )) -> a1
 do.call(c,a1) -> a1
 
@@ -58,7 +58,7 @@ stopifnot(
 
 po <- window(gompertz,end=10)
 
-prop1 <- mvn.diag.rw(c(r=0.01,sigma=0.01))
+prop1 <- mvn_diag_rw(c(r=0.01,sigma=0.01))
 
 mcmc1 <- pmcmc(po,Nmcmc=100,Np=100,dprior=Csnippet("
     lik = dunif(r,0,1,1)+dnorm(sigma,0,1,1);

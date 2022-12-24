@@ -158,7 +158,7 @@ stopifnot(all.equal(
   unname(coef(tm,c("r","K"),transform=TRUE)),out$par))
 
 ## ----parus-tm-sim1-------------------------------------------------------
-tm <- as.pomp(tm)
+tm <- as_pomp(tm)
 coef(tm,"sigma") <- 0
 simulate(tm,nsim=10,format="data.frame",include.data=TRUE) %>%
   ggplot(aes(x=year,y=pop,group=.id,alpha=(.id=="data")))+

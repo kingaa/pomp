@@ -10,47 +10,47 @@
 ##' \deqn{\ell_k(\theta) = \log f[Y(t_k)=y^*_k \vert Y(t_1)=y^*_1, \dots, Y(t_{k-1})=y^*_{k-1}],}{ell_k(theta)=log f[Yk = yk* | Y1=y1*, \dots, Y(k-1)=y(k-1)*],}
 ##' where \eqn{f} is the probability density above.
 ##'
-##' @name cond.logLik
+##' @name cond_logLik
 ##' @docType methods
 ##' @rdname cond_logLik
 ##' @include pomp_class.R kalman.R pfilter.R wpfilter.R
-##' @aliases cond.logLik,missing-method cond.logLik,ANY-method
+##' @aliases cond_logLik,missing-method cond_logLik,ANY-method
 ##' @family particle filter methods
 ##' @family extraction methods
-##' @inheritParams filter.mean
+##' @inheritParams filter_mean
 ##'
 ##' @return
 ##' The numerical value of the conditional log likelihood.
 ##' Note that some methods compute not the log likelihood itself but instead a related quantity.
-##' To keep the code simple, the \code{cond.logLik} function is nevertheless used to extract this quantity.
+##' To keep the code simple, the \code{cond_logLik} function is nevertheless used to extract this quantity.
 NULL
 
 setGeneric(
-  "cond.logLik",
+  "cond_logLik",
   function (object, ...)
-    standardGeneric("cond.logLik")
+    standardGeneric("cond_logLik")
 )
 
 setMethod(
-  "cond.logLik",
+  "cond_logLik",
   signature=signature(object="missing"),
   definition=function (...) {
-    reqd_arg("cond.logLik","object")
+    reqd_arg("cond_logLik","object")
   }
 )
 
 setMethod(
-  "cond.logLik",
+  "cond_logLik",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    undef_method("cond.logLik",object)
+    undef_method("cond_logLik",object)
   }
 )
 
 ##' @rdname cond_logLik
 ##' @export
 setMethod(
-  "cond.logLik",
+  "cond_logLik",
   signature=signature(object="kalmand_pomp"),
   definition=function(object,...)object@cond.logLik
 )
@@ -58,7 +58,7 @@ setMethod(
 ##' @rdname cond_logLik
 ##' @export
 setMethod(
-  "cond.logLik",
+  "cond_logLik",
   signature=signature(object="pfilterd_pomp"),
   definition=function(object,...)object@cond.logLik
 )
@@ -66,17 +66,20 @@ setMethod(
 ##' @rdname cond_logLik
 ##' @export
 setMethod(
-  "cond.logLik",
+  "cond_logLik",
   signature=signature(object="wpfilterd_pomp"),
   definition=function(object,...)object@cond.logLik
 )
 
 ##' @rdname cond_logLik
 ##' @return
-##' When \code{object} is of class \sQuote{bsmcd_pomp} (i.e., the result of a \code{bsmc2} computation), \code{cond.logLik} returns the conditional log \dQuote{evidence} (see \code{\link{bsmc2}}).
+##' When \code{object} is of class \sQuote{bsmcd_pomp}
+##' (i.e., the result of a \code{bsmc2} computation),
+##' \code{cond_logLik} returns the conditional log \dQuote{evidence}
+##' (see \code{\link{bsmc2}}).
 ##' @export
 setMethod(
-  "cond.logLik",
+  "cond_logLik",
   signature=signature(object="bsmcd_pomp"),
   definition=function(object,...)object@cond.log.evidence
 )

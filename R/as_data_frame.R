@@ -34,7 +34,6 @@ setAs(
   }
 )
 
-##' @method as.data.frame pomp
 ##' @rdname as_data_frame
 ##' @inheritParams base::as.data.frame
 ##' @details
@@ -49,13 +48,13 @@ setAs(
   from="pfilterd_pomp",
   to="data.frame",
   def = function (from) {
-    pm <- pred.mean(from)
-    pv <- pred.var(from)
-    fm <- filter.mean(from)
+    pm <- pred_mean(from)
+    pv <- pred_var(from)
+    fm <- filter_mean(from)
     out <- cbind(
       as(as(from,"pomp"),"data.frame"),
-      ess=eff.sample.size(from),
-      cond.logLik=cond.logLik(from)
+      ess=eff_sample_size(from),
+      cond.logLik=cond_logLik(from)
     )
     if (length(pm)>0) {
       pm <- as.data.frame(t(pm))
@@ -76,7 +75,6 @@ setAs(
   }
 )
 
-##' @method as.data.frame pfilterd_pomp
 ##' @rdname as_data_frame
 ##' @details When \code{object} is a \sQuote{pfilterd_pomp} object,
 ##' coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
@@ -95,7 +93,6 @@ setAs(
   }
 )
 
-##' @method as.data.frame probed_pomp
 ##' @rdname as_data_frame
 ##' @details When \code{object} is a \sQuote{probed_pomp} object,
 ##' coercion to a data frame results in a data frame with the values of the probes computed on the data and on simulations.
@@ -107,12 +104,12 @@ setAs(
   from="kalmand_pomp",
   to="data.frame",
   def = function (from) {
-    pm <- pred.mean(from)
-    fm <- filter.mean(from)
+    pm <- pred_mean(from)
+    fm <- filter_mean(from)
     fc <- forecast(from)
     out <- cbind(
       as(as(from,"pomp"),"data.frame"),
-      cond.logLik=cond.logLik(from)
+      cond.logLik=cond_logLik(from)
     )
     if (length(pm)>0) {
       pm <- as.data.frame(t(pm))
@@ -133,7 +130,6 @@ setAs(
   }
 )
 
-##' @method as.data.frame kalmand_pomp
 ##' @rdname as_data_frame
 ##' @details When \code{object} is a \sQuote{kalmand_pomp} object,
 ##' coercion to a data frame results in a data frame with prediction means, filter means and forecasts, in addition to the data.
@@ -154,7 +150,6 @@ setAs(
   }
 )
 
-##' @method as.data.frame bsmcd_pomp
 ##' @rdname as_data_frame
 ##' @details When \code{object} is a \sQuote{bsmcd_pomp} object,
 ##' coercion to a data frame results in a data frame with samples from the prior and posterior distribution.
@@ -182,35 +177,30 @@ setAs(
   }
 )
 
-##' @method as.data.frame pompList
 ##' @rdname as_data_frame
 ##' @export
 as.data.frame.pompList <- function (x, ...) {
   as(x,"data.frame")
 }
 
-##' @method as.data.frame pfilterList
 ##' @rdname as_data_frame
 ##' @export
 as.data.frame.pfilterList <- function (x, ...) {
   as(x,"data.frame")
 }
 
-##' @method as.data.frame abcList
 ##' @rdname as_data_frame
 ##' @export
 as.data.frame.abcList <- function (x, ...) {
   as(x,"data.frame")
 }
 
-##' @method as.data.frame mif2List
 ##' @rdname as_data_frame
 ##' @export
 as.data.frame.mif2List <- function (x, ...) {
   as(x,"data.frame")
 }
 
-##' @method as.data.frame pmcmcList
 ##' @rdname as_data_frame
 ##' @export
 as.data.frame.pmcmcList <- function (x, ...) {
@@ -223,13 +213,12 @@ setAs(
   def = function (from) {
     cbind(
       as(as(from,"pomp"),"data.frame"),
-      eff.sample.size=eff.sample.size(from),
-      cond.logLik=cond.logLik(from)
+      eff.sample.size=eff_sample_size(from),
+      cond.logLik=cond_logLik(from)
     )
   }
 )
 
-##' @method as.data.frame wpfilterd_pomp
 ##' @rdname as_data_frame
 ##' @details When \code{object} is a \sQuote{wpfilterd_pomp} object,
 ##' coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},

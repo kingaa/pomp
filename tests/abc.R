@@ -9,11 +9,11 @@ ou2() -> ou2
 set.seed(2079015564L)
 
 plist <- list(
-  y1.mean=probe.mean(var="y1"),
-  y2.mean=probe.mean(var="y2"),
-  probe.acf(var="y1",lags=c(0,5)),
-  probe.acf(var="y2",lags=c(0,5)),
-  probe.ccf(vars=c("y1","y2"),lags=0)
+  y1.mean=probe_mean(var="y1"),
+  y2.mean=probe_mean(var="y2"),
+  probe_acf(var="y1",lags=c(0,5)),
+  probe_acf(var="y2",lags=c(0,5)),
+  probe_ccf(vars=c("y1","y2"),lags=0)
 )
 
 ou2 %>% probe(probes=plist,nsim=100) -> pb
@@ -22,7 +22,7 @@ sqrt(diag(covmat(pb))) -> scale.dat
 
 ou2 %>%
   abc(Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-    proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
+    proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
     dprior=function(alpha_1,alpha_2,...,log) {
       ll <- sum(dnorm(x=c(alpha_1,alpha_2),mean=c(0.6,0),sd=4,log=TRUE))
       if (log) ll else exp(ll)
@@ -35,7 +35,7 @@ crossprod(
     dimnames=list(c("alpha_1","alpha_2"),c("alpha_1","alpha_2")))
 ) -> sig
 
-pb %>% abc(Nabc=100,scale=scale.dat,epsilon=2,proposal=mvn.rw(sig)) -> abc2
+pb %>% abc(Nabc=100,scale=scale.dat,epsilon=2,proposal=mvn_rw(sig)) -> abc2
 abc2 %>% abc(Nabc=100) -> abc3
 abc1 %>% abc(Nabc=80) %>% continue(Nabc=20) -> abc4
 
@@ -79,19 +79,19 @@ try(abc(abc1,Nabc=-5))
 stopifnot(all(dim(traces(abc(abc1,Nabc=0))==c(1,10))))
 
 try(abc(ou2,Nabc=50,scale=scale.dat[1:2],epsilon=1.7,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 try(abc(ou2,Nabc=50,probes=plist,scale=scale.dat[1:2],epsilon=1.7,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 po <- ou2
 coef(po) <- NULL
 try(abc(po,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 try(abc(ou2,params=numeric(0),Nabc=100,probes=plist,scale=scale.dat,
-  epsilon=1.7,proposal="mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))"))
+  epsilon=1.7,proposal="mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))"))
 try(abc(ou2,params=NULL,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-  proposal="mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))"))
+  proposal="mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))"))
 try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
   proposal=function(...)stop("yikes!")))
 try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
@@ -101,20 +101,20 @@ try(abc(ou2,Nabc=100,proposal=function(theta,...)theta,probes="mary",
   scale=scale.dat,epsilon=1.7))
 try(abc(ou2,Nabc=100,proposal="bob",probes="mary",epsilon=1.7))
 try(abc(ou2,Nabc=100,probes=plist,epsilon=1.7,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
   epsilon=1,rprocess=NULL))
 
 try(abc(abc1,Nabc=100,epsilon=NULL,scale=scale.dat))
 try(abc(ou2,params=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 try(abc(ou2,Nabc=100,probes="plist[[1]]",scale=scale.dat[1],epsilon=1.7,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 try(abc(ou2,Nabc=100,probes=function(x,y)x+y,scale=scale.dat[1],epsilon=1.7,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01))))
 try(abc(abc1,dprior=function(log,...)stop("ouch!")))
 try(abc(abc1,dprior=function(log,...)Inf))
 try(abc(abc1,probes=function(x)stop("piff!")))
@@ -151,7 +151,7 @@ c(one=abc1,two=abc2,three=abc3)
 print(c(one=abc1,two=abc2,three=abc3))
 
 capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
-  proposal=mvn.diag.rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
+  proposal=mvn_diag_rw(rw.sd=c(alpha_1=0.01,alpha_2=0.01)),
   verbose=TRUE) -> abc1) -> out
 stopifnot(
   length(out)==40,
@@ -166,10 +166,10 @@ gompertz %>%
   as.data.frame() %>%
   abc(Nabc=20,times="time",t0=0,
     scale=1,epsilon=10,
-    probes=list(probe.mean("Y"),probe.median("Y")),
+    probes=list(probe_mean("Y"),probe_median("Y")),
     partrans=parameter_trans(log=c("r","K")),
     paramnames=c("r","K"),
-    proposal=mvn.diag.rw(rw.sd=c(r=0.01,K=0.01)),
+    proposal=mvn_diag_rw(rw.sd=c(r=0.01,K=0.01)),
     params=coef(gompertz),
     rinit=function(...)c(X=1),
     rprocess=discrete_time(function (X, r, K, ...) c(X=r*X*exp(-X/K))),

@@ -517,16 +517,16 @@ perturbn.kernel.sd <- function (rw.sd, time, paramnames) {
   do.call(rbind,sds)
 }
 
-##' rw.sd
+##' rw_sd
 ##'
 ##' Specifying random-walk intensities.
 ##'
 ##' See \code{\link{mif2}} for details.
 ##'
-##' @name rw.sd
+##' @name rw_sd
 ##' @rdname rw_sd
 ##' @param \dots Specification of the random-walk intensities (as standard deviations).
 ##' @seealso \code{\link{mif2}}
 ##'
 ##' @export
-rw.sd <- safecall
+rw_sd <- safecall

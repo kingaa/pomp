@@ -31,6 +31,6 @@ simulate(
   pmcmc(
     Np = 1000,
     Nmcmc = 100,
-    proposal = mvn.diag.rw(c(Beta = 5, mu_IR = 5, rho = 5))
-#    proposal = mvn.diag.rw(c(Beta = 0.2, mu_IR = 0.2, rho = 0.2))
+    proposal = mvn_diag_rw(c(Beta = 5, mu_IR = 5, rho = 5))
+#    proposal = mvn_diag_rw(c(Beta = 0.2, mu_IR = 0.2, rho = 0.2))
   ) -> pmcmcSIR

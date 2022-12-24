@@ -1,7 +1,8 @@
 ##' B-spline bases
 ##'
-##' These functions generate B-spline basis functions.  \code{bspline.basis}
-##' gives a basis of spline functions.  \code{periodic.bspline.basis} gives a
+##' These functions generate B-spline basis functions.
+##' \code{bspline_basis} gives a basis of spline functions.
+##' \code{periodic_bspline_basis} gives a
 ##' basis of periodic spline functions.
 ##'
 ##' @name bsplines
@@ -26,10 +27,10 @@
 ##' vector.  By default, no column-names are given.
 ##'
 ##' @return
-##' \item{bspline.basis}{ Returns a matrix with \code{length(x)} rows
+##' \item{bspline_basis}{ Returns a matrix with \code{length(x)} rows
 ##' and \code{nbasis} columns.  Each column contains the values one of the
 ##' spline basis functions.}
-##' \item{periodic.bspline.basis}{ Returns a matrix with \code{length(x)} rows
+##' \item{periodic_bspline_basis}{ Returns a matrix with \code{length(x)} rows
 ##' and \code{nbasis} columns.  The basis functions returned are periodic with
 ##' period \code{period}.}
 ##' If \code{deriv>0}, the derivative of that order of each of the corresponding spline basis functions are returned.  
@@ -45,20 +46,20 @@
 ##' @examples
 ##'
 ##' x <- seq(0,2,by=0.01)
-##' y <- bspline.basis(x,degree=3,nbasis=9,names="basis")
+##' y <- bspline_basis(x,degree=3,nbasis=9,names="basis")
 ##' matplot(x,y,type='l',ylim=c(0,1.1))
 ##' lines(x,apply(y,1,sum),lwd=2)
 ##'
 ##' x <- seq(-1,2,by=0.01)
-##' y <- periodic.bspline.basis(x,nbasis=5,names="spline%d")
+##' y <- periodic_bspline_basis(x,nbasis=5,names="spline%d")
 ##' matplot(x,y,type='l')
 ##'
 NULL
 
 ##' @rdname bsplines
 ##' @export
-bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL, rg = range(x)) {
-  ep <- "bspline.basis"
+bspline_basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL, rg = range(x)) {
+  ep <- "bspline_basis"
   rg <- as.numeric(rg)
   y <- tryCatch(
     .Call(P_bspline_basis,rg,x,nbasis,degree,deriv),
@@ -85,9 +86,9 @@ bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL, rg = 
 
 ##' @rdname bsplines
 ##' @export
-periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1,
+periodic_bspline_basis <- function (x, nbasis, degree = 3, period = 1,
   deriv = 0, names = NULL) {
-  ep <- "periodic.bspline.basis"
+  ep <- "periodic_bspline_basis"
   y <- tryCatch(
     .Call(P_periodic_bspline_basis,x,nbasis,degree,period,deriv),
     error = function (e) {

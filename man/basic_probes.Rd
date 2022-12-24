@@ -2,47 +2,47 @@
 % Please edit documentation in R/basic_probes.R
 \name{basic probes}
 \alias{basic probes}
-\alias{probe.mean}
-\alias{probe.median}
-\alias{probe.var}
-\alias{probe.sd}
-\alias{probe.period}
-\alias{probe.quantile}
-\alias{probe.acf}
-\alias{probe.ccf}
-\alias{probe.marginal}
-\alias{probe.nlar}
+\alias{probe_mean}
+\alias{probe_median}
+\alias{probe_var}
+\alias{probe_sd}
+\alias{probe_period}
+\alias{probe_quantile}
+\alias{probe_acf}
+\alias{probe_ccf}
+\alias{probe_marginal}
+\alias{probe_nlar}
 \title{Useful probes for partially-observed Markov processes}
 \usage{
-probe.mean(var, trim = 0, transform = identity, na.rm = TRUE)
+probe_mean(var, trim = 0, transform = identity, na.rm = TRUE)
 
-probe.median(var, na.rm = TRUE)
+probe_median(var, na.rm = TRUE)
 
-probe.var(var, transform = identity, na.rm = TRUE)
+probe_var(var, transform = identity, na.rm = TRUE)
 
-probe.sd(var, transform = identity, na.rm = TRUE)
+probe_sd(var, transform = identity, na.rm = TRUE)
 
-probe.period(var, kernel.width, transform = identity)
+probe_period(var, kernel.width, transform = identity)
 
-probe.quantile(var, probs, ...)
+probe_quantile(var, probs, ...)
 
-probe.acf(
+probe_acf(
   var,
   lags,
   type = c("covariance", "correlation"),
   transform = identity
 )
 
-probe.ccf(
+probe_ccf(
   vars,
   lags,
   type = c("covariance", "correlation"),
   transform = identity
 )
 
-probe.marginal(var, ref, order = 3, diff = 1, transform = identity)
+probe_marginal(var, ref, order = 3, diff = 1, transform = identity)
 
-probe.nlar(var, lags, powers, transform = identity)
+probe_nlar(var, lags, powers, transform = identity)
 }
 \arguments{
 \item{var, vars}{character; the name(s) of the observed variable(s).}
@@ -60,11 +60,11 @@ in power-spectrum computation: see \code{\link[stats]{kernel}}.}
 
 \item{...}{additional arguments passed to the underlying algorithms.}
 
-\item{lags}{In \code{probe.ccf}, a vector of lags between time series.
+\item{lags}{In \code{probe_ccf}, a vector of lags between time series.
 Positive lags correspond to \code{x} advanced relative to \code{y};
 negative lags, to the reverse.
 
-In \code{probe.nlar}, a vector of lags present in the nonlinear
+In \code{probe_nlar}, a vector of lags present in the nonlinear
 autoregressive model that will be fit to the actual and simulated data.
 See Details, below, for a precise description.}
 

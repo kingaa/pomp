@@ -10,11 +10,11 @@ set.seed(234501470L)
 po <- gompertz
 
 plist <- list(
-  mean=probe.mean("Y",trim=0.1,transform=sqrt),
-  sd=probe.sd("Y",transform=sqrt),
-  probe.marginal("Y",ref=obs(po)),
-  probe.acf("Y",lags=c(1,3,5),type="correlation",transform=sqrt),
-  probe.quantile("Y",prob=c(0.25,0.75))
+  mean=probe_mean("Y",trim=0.1,transform=sqrt),
+  sd=probe_sd("Y",transform=sqrt),
+  probe_marginal("Y",ref=obs(po)),
+  probe_acf("Y",lags=c(1,3,5),type="correlation",transform=sqrt),
+  probe_quantile("Y",prob=c(0.25,0.75))
 )
 
 probe(po,probes=plist,nsim=500,seed=595969) -> pb
@@ -89,13 +89,13 @@ data.frame(t=1:10,a=1:10) %>%
     nsim=1000,
     params=c(x_0=1),
     probes=list(
-      f=probe.mean("a",transform=sqrt),
-      g=probe.median("a"),
+      f=probe_mean("a",transform=sqrt),
+      g=probe_median("a"),
       h=function(y)range(y)
     )
   )
 
 ou2() -> ou2
-ou2 %>% probe(nsim=100,probes=probe.ccf(c("y1","y2"),lags=c(-10,0,1))) %>% plot()
+ou2 %>% probe(nsim=100,probes=probe_ccf(c("y1","y2"),lags=c(-10,0,1))) %>% plot()
 
 dev.off()

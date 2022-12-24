@@ -16,11 +16,11 @@
 ##' @param na.rm if \code{TRUE}, remove all NA observations prior to computing the probe.
 ##' @param kernel.width width of modified Daniell smoothing kernel to be used
 ##' in power-spectrum computation: see \code{\link[stats]{kernel}}.
-##' @param lags In \code{probe.ccf}, a vector of lags between time series.
+##' @param lags In \code{probe_ccf}, a vector of lags between time series.
 ##' Positive lags correspond to \code{x} advanced relative to \code{y};
 ##' negative lags, to the reverse.
 ##'
-##' In \code{probe.nlar}, a vector of lags present in the nonlinear
+##' In \code{probe_nlar}, a vector of lags present in the nonlinear
 ##' autoregressive model that will be fit to the actual and simulated data.
 ##' See Details, below, for a precise description.
 ##' @param powers the powers of each term (corresponding to \code{lags}) in the
@@ -45,40 +45,40 @@ NULL
 
 ##' @rdname basic_probes
 ##' @export
-probe.mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
+probe_mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
   if (length(var)>1)
-    pStop_(sQuote("probe.mean")," is a univariate probe.")
+    pStop_(sQuote("probe_mean")," is a univariate probe.")
   transform <- match.fun(transform)
   function(y) mean(x=transform(y[var,]),trim=trim,na.rm=na.rm)
 }
 
 ##' @rdname basic_probes
 ##' @export
-probe.median <- function (var, na.rm = TRUE) {
-  if (length(var)>1) pStop_(sQuote("probe.median")," is a univariate probe.")
+probe_median <- function (var, na.rm = TRUE) {
+  if (length(var)>1) pStop_(sQuote("probe_median")," is a univariate probe.")
   function(y) median(x=as.numeric(y[var,]),na.rm=na.rm)
 }
 
 ##' @rdname basic_probes
 ##' @export
-probe.var <- function (var, transform = identity, na.rm = TRUE) {
-  if (length(var)>1) pStop_(sQuote("probe.var")," is a univariate probe.")
+probe_var <- function (var, transform = identity, na.rm = TRUE) {
+  if (length(var)>1) pStop_(sQuote("probe_var")," is a univariate probe.")
   transform <- match.fun(transform)
   function(y) var(x=transform(y[var,]),na.rm=na.rm)
 }
 
 ##' @rdname basic_probes
 ##' @export
-probe.sd <- function (var, transform = identity, na.rm = TRUE) {
-  if (length(var)>1) pStop_(sQuote("probe.sd")," is a univariate probe.")
+probe_sd <- function (var, transform = identity, na.rm = TRUE) {
+  if (length(var)>1) pStop_(sQuote("probe_sd")," is a univariate probe.")
   transform <- match.fun(transform)
   function(y) sd(x=transform(y[var,]),na.rm=na.rm)
 }
 
 ##' @rdname basic_probes
 ##' @export
-probe.period <- function (var, kernel.width, transform = identity) {
-  if (length(var)>1) pStop_(sQuote("probe.period")," is a univariate probe.")
+probe_period <- function (var, kernel.width, transform = identity) {
+  if (length(var)>1) pStop_(sQuote("probe_period")," is a univariate probe.")
   transform <- match.fun(transform)
   function (y) {
     zz <- spec.pgram(
@@ -97,16 +97,16 @@ probe.period <- function (var, kernel.width, transform = identity) {
 ##' @rdname basic_probes
 ##' @param probs the quantile or quantiles to compute: see \code{\link{quantile}}.
 ##' @export
-probe.quantile <- function (var, probs, ...) {
-  if (length(var)>1) pStop_(sQuote("probe.quantile")," is a univariate probe.")
+probe_quantile <- function (var, probs, ...) {
+  if (length(var)>1) pStop_(sQuote("probe_quantile")," is a univariate probe.")
   function (y) quantile(y[var,],probs=probs, ...)
 }
 
 ##' @rdname basic_probes
 ##' @export
-probe.acf <- function (var, lags, type = c("covariance", "correlation"),
+probe_acf <- function (var, lags, type = c("covariance", "correlation"),
   transform = identity) {
-  ep <- "probe.acf"
+  ep <- "probe_acf"
   type <- match.arg(type)
   corr <- type=="correlation"
   transform <- match.fun(transform)
@@ -120,9 +120,9 @@ probe.acf <- function (var, lags, type = c("covariance", "correlation"),
 
 ##' @rdname basic_probes
 ##' @export
-probe.ccf <- function (vars, lags, type = c("covariance", "correlation"),
+probe_ccf <- function (vars, lags, type = c("covariance", "correlation"),
   transform = identity) {
-  ep <- "probe.ccf"
+  ep <- "probe_ccf"
   type <- match.arg(type)
   corr <- type=="correlation"
   transform <- match.fun(transform)
@@ -144,21 +144,21 @@ probe.ccf <- function (vars, lags, type = c("covariance", "correlation"),
 ##' @param order order of polynomial regression.
 ##' @param diff order of differencing to perform.
 ##' @export
-probe.marginal <- function (var, ref, order = 3, diff = 1,
+probe_marginal <- function (var, ref, order = 3, diff = 1,
   transform = identity) {
-  if (length(var)>1) pStop_(sQuote("probe.marginal")," is a univariate probe.")
+  if (length(var)>1) pStop_(sQuote("probe_marginal")," is a univariate probe.")
   transform <- match.fun(transform)
   setup <- .Call(P_probe_marginal_setup,transform(ref),order,diff)
   function (y) tryCatch(
     .Call(P_probe_marginal_solve,x=transform(y[var,,drop=TRUE]),setup=setup,diff=diff),
-    error = function (e) pStop("probe.marginal",conditionMessage(e))
+    error = function (e) pStop("probe_marginal",conditionMessage(e))
   )
 }
 
 ##' @rdname basic_probes
 ##' @export
-probe.nlar <- function (var, lags, powers, transform = identity) {
-  ep <- "probe.nlar"
+probe_nlar <- function (var, lags, powers, transform = identity) {
+  ep <- "probe_nlar"
   if (length(var)>1) pStop_(sQuote(ep)," is a univariate probe.")
   transform <- match.fun(transform)
   if (missing(lags) || missing(powers))

@@ -2,16 +2,16 @@
 % Please edit documentation in R/proposals.R
 \name{proposals}
 \alias{proposals}
-\alias{mvn.diag.rw}
-\alias{mvn.rw}
-\alias{mvn.rw.adaptive}
+\alias{mvn_diag_rw}
+\alias{mvn_rw}
+\alias{mvn_rw_adaptive}
 \title{MCMC proposal distributions}
 \usage{
-mvn.diag.rw(rw.sd)
+mvn_diag_rw(rw.sd)
 
-mvn.rw(rw.var)
+mvn_rw(rw.var)
 
-mvn.rw.adaptive(
+mvn_rw_adaptive(
   rw.sd,
   rw.var,
   scale.start = NA,

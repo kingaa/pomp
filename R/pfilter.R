@@ -46,16 +46,16 @@
 ##' @section Methods:
 ##' \describe{
 ##' \item{\code{\link{logLik}}}{ the estimated log likelihood  }
-##' \item{\code{\link{cond.logLik}}}{ the estimated conditional log likelihood }
-##' \item{\code{\link{eff.sample.size}}}{
+##' \item{\code{\link{cond_logLik}}}{ the estimated conditional log likelihood }
+##' \item{\code{\link{eff_sample_size}}}{
 ##' the (time-dependent) estimated effective sample size }
-##' \item{\code{\link{pred.mean}}, \code{\link{pred.var}}}{ the mean and variance of the approximate prediction distribution }
-##' \item{\code{\link{filter.mean}}}{ the mean of the filtering distribution }
-##' \item{\code{\link{filter.traj}}}{
+##' \item{\code{\link{pred_mean}}, \code{\link{pred_var}}}{ the mean and variance of the approximate prediction distribution }
+##' \item{\code{\link{filter_mean}}}{ the mean of the filtering distribution }
+##' \item{\code{\link{filter_traj}}}{
 ##'   retrieve one particle trajectory.
 ##'   Useful for building up the smoothing distribution.
 ##' }
-##' \item{\code{\link{saved.states}}}{retrieve saved states}
+##' \item{\code{\link{saved_states}}}{retrieve saved states}
 ##' \item{\code{\link{as.data.frame}}}{coerce to a data frame}
 ##' \item{\code{\link{plot}}}{diagnostic plots}
 ##' }

@@ -2,23 +2,23 @@ options(digits=3)
 
 library(pomp)
 
-try(eff.sample.size())
-try(eff.sample.size("bob"))
+try(eff_sample_size())
+try(eff_sample_size("bob"))
 
-try(filter.mean())
-try(filter.mean("bob"))
+try(filter_mean())
+try(filter_mean("bob"))
 
 try(forecast())
 try(forecast("bob"))
 
-try(pred.mean())
-try(pred.mean("bob"))
+try(pred_mean())
+try(pred_mean("bob"))
 
-try(pred.var())
-try(pred.var("bob"))
+try(pred_var())
+try(pred_var("bob"))
 
-try(filter.traj())
-try(filter.traj("bob"))
+try(filter_traj())
+try(filter_traj("bob"))
 
 try(traces())
 try(traces("bob"))
@@ -26,8 +26,8 @@ try(traces("bob"))
 try(continue())
 try(continue("bob"))
 
-try(cond.logLik())
-try(cond.logLik("bob"))
+try(cond_logLik())
+try(cond_logLik("bob"))
 
 try(coef())
 try(coef("bob"))

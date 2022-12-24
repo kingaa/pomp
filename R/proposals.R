@@ -41,15 +41,15 @@ NULL
 
 ##' @rdname proposals
 ##' @export
-mvn.diag.rw <- function (rw.sd) {
+mvn_diag_rw <- function (rw.sd) {
   if (missing(rw.sd) || !is.numeric(rw.sd)) {
-    pStop("mvn.diag.rw",sQuote("rw.sd")," must be a named numeric vector.")
+    pStop("mvn_diag_rw",sQuote("rw.sd")," must be a named numeric vector.")
   }
   rw.sd <- rw.sd[rw.sd>0]
   parnm <- names(rw.sd)
   n <- length(rw.sd)
   if (is.null(parnm))
-    pStop("mvn.diag.rw",sQuote("rw.sd")," must have names.")
+    pStop("mvn_diag_rw",sQuote("rw.sd")," must have names.")
   function (theta, ...) {
     theta[parnm] <- rnorm(n=n,mean=theta[parnm],sd=rw.sd)
     theta
@@ -58,10 +58,10 @@ mvn.diag.rw <- function (rw.sd) {
 
 ##' @rdname proposals
 ##' @export
-mvn.rw <- function (rw.var) {
+mvn_rw <- function (rw.var) {
   rw.var <- as.matrix(rw.var)
   parnm <- colnames(rw.var)
-  ep <- "mvn.rw"
+  ep <- "mvn_rw"
   if (is.null(parnm))
     pStop(ep,sQuote("rw.var")," must have row- and column-names.")
   if (nrow(rw.var)!=ncol(rw.var))
@@ -86,10 +86,10 @@ mvn.rw <- function (rw.var) {
 ##' @rdname proposals
 ##' @export
 ## a stateful function implementing an adaptive proposal
-mvn.rw.adaptive <- function (rw.sd, rw.var, scale.start = NA,
+mvn_rw_adaptive <- function (rw.sd, rw.var, scale.start = NA,
   scale.cooling = 0.999, shape.start = NA, target = 0.234, max.scaling = 50) {
 
-  ep <- "mvn.rw.adaptive"
+  ep <- "mvn_rw_adaptive"
 
   if (!xor(missing(rw.sd),missing(rw.var))) {
     pStop(ep,"exactly one of ",sQuote("rw.sd")," and ",sQuote("rw.var"),

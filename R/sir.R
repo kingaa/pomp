@@ -70,7 +70,7 @@ sir <- function (
     ),
     covar=covariate_table(
       t=seq(from=tt0,to=max(tt)+0.2,by=0.01),
-      seas=periodic.bspline.basis(
+      seas=periodic_bspline_basis(
         x=t,
         period=1,
         nbasis=3,
@@ -228,7 +228,7 @@ sir2 <- function (
     cfile="sir2_source",
     covar=covariate_table(
       t=seq(tt0,max(tt)+0.2,by=0.01),
-      seas=periodic.bspline.basis(
+      seas=periodic_bspline_basis(
         x=t,
         period=1,
         nbasis=3,

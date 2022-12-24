@@ -10,9 +10,9 @@ library(reshape2)
 gompertz() %>% window(end=10) -> po
 
 mif2(po,Nmif=50,Np=100,cooling.fraction.50=0.5,
-  rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf1
+  rw.sd=rw_sd(sigma=0.02,K=0.02,r=0.02)) -> mf1
 mif2(po,Nmif=50,Np=100,cooling.fraction.50=0.5,
-  rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf2
+  rw.sd=rw_sd(sigma=0.02,K=0.02,r=0.02)) -> mf2
 plot(mf1)
 plot(c(a=mf1,b=mf2) -> mfl,y=NA)
 c(a=mf1,b=c(mf1,mf2))
@@ -60,51 +60,51 @@ try(mif2(po,Nmif=1,Np=Inf))
 try(mif2(po,Nmif=1,Np=100))
 try(mif2(po,Nmif=1,Np=NULL))
 try(mif2(po,Nmif=1,Np=c(3,4)))
-try(mif2(po,Nmif=1,Np=c(rep(100,10),40),rw.sd=rw.sd(sigma=0.1),cooling.frac=0.5))
-mif2(po,Nmif=1,Np=c(rep(100,9),40,100),rw.sd=rw.sd(sigma=0.1),cooling.frac=0.5)
+try(mif2(po,Nmif=1,Np=c(rep(100,10),40),rw.sd=rw_sd(sigma=0.1),cooling.frac=0.5))
+mif2(po,Nmif=1,Np=c(rep(100,9),40,100),rw.sd=rw_sd(sigma=0.1),cooling.frac=0.5)
 try(mif2(po,Nmif=1,Np=100,rw.sd=3))
-try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd()))
-try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(a=9)))
-try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=1:1000)))
-try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
-try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(NULL)))
-try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=12))
-try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=NA))
-try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=c(0.1,1)))
-try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=NULL))
-try(mif2(po,params=NULL,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
-try(mif2(po,params=list(),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
-try(mif2(po,params=list(NULL),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
-try(mif2(po,params=c(3,2,1),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
-try(mif2(po,Nmif=1,Np=100:1000,rw.sd=rw.sd(sigma=0.1)))
-mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
+try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd()))
+try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd(a=9)))
+try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd(sigma=1:1000)))
+try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd(sigma=0.1)))
+try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd(NULL)))
+try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd(sigma=0.1),cooling.fraction.50=12))
+try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd(sigma=0.1),cooling.fraction.50=NA))
+try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd(sigma=0.1),cooling.fraction.50=c(0.1,1)))
+try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd(sigma=0.1),cooling.fraction.50=NULL))
+try(mif2(po,params=NULL,Nmif=1,Np=100,rw.sd=rw_sd(sigma=0.1)))
+try(mif2(po,params=list(),Nmif=1,Np=100,rw.sd=rw_sd(sigma=0.1)))
+try(mif2(po,params=list(NULL),Nmif=1,Np=100,rw.sd=rw_sd(sigma=0.1)))
+try(mif2(po,params=c(3,2,1),Nmif=1,Np=100,rw.sd=rw_sd(sigma=0.1)))
+try(mif2(po,Nmif=1,Np=100:1000,rw.sd=rw_sd(sigma=0.1)))
+mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01,X_0=ivp(0.01)),
   cooling.fraction.50=0.1,cooling.type="geometric",
   params=as.list(coef(po)))
-try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
+try(mif2(po,Nmif=2,Np=100,rw.sd=rw_sd(sigma=0.01,X_0=ivp(0.01)),
   cooling.fraction.50=0.1,rprocess=onestep(function(x,t,params,covars,delta.t,...)stop("boink"))))
-try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
+try(mif2(po,Nmif=2,Np=100,rw.sd=rw_sd(sigma=0.01,X_0=ivp(0.01)),
   cooling.fraction.50=0.1,dmeasure=function(log,...)stop("blop")))
-try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
+try(mif2(po,Nmif=2,Np=100,rw.sd=rw_sd(sigma=0.01,X_0=ivp(0.01)),
   cooling.fraction.50=0.1,dmeasure=function(log,...)NA))
-mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),
+mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),
   cooling.type="hyper",cooling.fraction.50=0.1,
   drpocess="oops",
   dmeasure=function(log,...)0) -> mf3
-try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,dmeasure=NULL))
-try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,rprocess=NULL))
-try(mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,params=NULL))
+try(mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),cooling.fraction.50=0.1,dmeasure=NULL))
+try(mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),cooling.fraction.50=0.1,rprocess=NULL))
+try(mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),cooling.fraction.50=0.1,params=NULL))
 
 theta <- coef(po)
 theta["sigma"] <- 0.2
 po %>%
   pfilter(Np=100,params=theta) %>%
-  mif2(Nmif=3,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),cooling.fraction.50=0.5) %>%
+  mif2(Nmif=3,rw.sd=rw_sd(sigma=0.01,X_0=ivp(0.01)),cooling.fraction.50=0.5) %>%
   mif2() %>% continue(Nmif=3,cooling.fraction.50=0.1) -> mf
 mf %>%
   plot(pars=c("X_0","sigma"),transform=TRUE)
 
 capture.output(
-  mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X_0=ivp(0.01)),
+  mif2(po,Nmif=2,Np=100,rw.sd=rw_sd(sigma=0.01,X_0=ivp(0.01)),
     cooling.fraction.50=1,cooling.type="hyperbolic",
     params=as.list(coef(po)),verbose=TRUE),
   type="output"
@@ -118,7 +118,7 @@ po %>%
   mif2(Nmif=3,Np=100,
     times="time",t0=0,
     params=c(sigma=5),
-    rw.sd=rw.sd(sigma=0.01),
+    rw.sd=rw_sd(sigma=0.01),
     cooling.fraction.50=1,cooling.type="hyperbolic",
     rprocess=onestep(function(X,...)c(X=X)),
     dmeasure=function(Y,X,sigma,log,...)dnorm(x=Y,mean=X,sd=sigma,log=log),

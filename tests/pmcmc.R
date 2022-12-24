@@ -7,7 +7,7 @@ set.seed(857075216L)
 
 gompertz() %>% window(end=10) -> po
 
-prop1 <- mvn.diag.rw(c(r=0.01,sigma=0.01))
+prop1 <- mvn_diag_rw(c(r=0.01,sigma=0.01))
 
 mcmc1 <- pmcmc(po,Nmcmc=100,Np=100,dprior=Csnippet("
     lik = dunif(r,0,1,1)+dnorm(sigma,0,1,1);
@@ -47,7 +47,7 @@ plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
 try(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","bob")))
 dim(as.data.frame(c(mcmc1,mcmc2)))
 
-filter.traj(c(mcmc1,mcmc2,mcmc3)) -> ft
+filter_traj(c(mcmc1,mcmc2,mcmc3)) -> ft
 stopifnot(
   dim(ft)==c(1,100,11,3),
   names(dimnames(ft))==c("variable","rep","time","chain")
@@ -58,8 +58,8 @@ c(mcmc1,mcmc2) -> mcl
 mcl[1]
 mcl[3]
 
-stopifnot(dim(filter.traj(mcmc1))==c(1,100,11),
-  dim(filter.traj(c(mcmc1,mcmc2,mcmc3)))==c(1,100,11,3))
+stopifnot(dim(filter_traj(mcmc1))==c(1,100,11),
+  dim(filter_traj(c(mcmc1,mcmc2,mcmc3)))==c(1,100,11,3))
 logLik(mcmc1)
 logLik(c(mcmc1,mcmc2,mcmc3))
 
@@ -106,7 +106,7 @@ set.seed(857075216L)
 try(gompertz %>% as.data.frame() %>% pmcmc())
 try(gompertz %>% as.data.frame() %>% pmcmc(times="time",t0=0))
 try(gompertz %>% as.data.frame() %>% pmcmc(times="time",t0=0,
-  proposal=mvn.diag.rw(c(a=1,b=2))))
+  proposal=mvn_diag_rw(c(a=1,b=2))))
 
 gompertz %>%
   as.data.frame() %>%
@@ -125,7 +125,7 @@ gompertz %>%
       ll <- sum(dlnorm(x=c(r,K),meanlog=log(0.1,150),sdlog=3,log=TRUE))
       if (log) ll else exp(ll)
     },
-    proposal=mvn.diag.rw(c(r=0.01,K=10)),
+    proposal=mvn_diag_rw(c(r=0.01,K=10)),
     params=c(r=0.1,K=150,x_0=150)
   ) -> mcmc5
 plot(mcmc5,pars=c("r","K"))

@@ -26,8 +26,8 @@ plot(smc,pars=c("r","K"),thin=20)
 try(plot(smc,pars="bob"))
 plot(smc,pars="K")
 try(plot(smc,pars=NULL))
-stopifnot(sum(cond.logLik(smc))==logLik(smc))
-stopifnot(length(eff.sample.size(smc)) == 10)
+stopifnot(sum(cond_logLik(smc))==logLik(smc))
+stopifnot(length(eff_sample_size(smc)) == 10)
 
 try(bsmc2())
 try(bsmc2(3L))
@@ -99,6 +99,6 @@ try(gompertz %>%
 
 smc %>%
   bsmc2(Np=seq(10,length=12,by=10)) %>%
-  eff.sample.size()
+  eff_sample_size()
 
 dev.off()

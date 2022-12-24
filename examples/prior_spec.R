@@ -51,7 +51,7 @@
   plot(B)
 
   B %>%
-    pmcmc(Nmcmc=100,Np=1000,proposal=mvn.diag.rw(c(r=0.01,K=10))) -> Bb
+    pmcmc(Nmcmc=100,Np=1000,proposal=mvn_diag_rw(c(r=0.01,K=10))) -> Bb
 
   plot(Bb,pars=c("loglik","log.prior","r","K"))
 

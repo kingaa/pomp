@@ -110,16 +110,16 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 
 More on sequential Monte Carlo methods: 
 \code{\link{bsmc2}()},
-\code{\link{cond.logLik}()},
-\code{\link{eff.sample.size}()},
-\code{\link{filter.mean}()},
-\code{\link{filter.traj}()},
+\code{\link{cond_logLik}()},
+\code{\link{eff_sample_size}()},
+\code{\link{filter_mean}()},
+\code{\link{filter_traj}()},
 \code{\link{mif2}()},
 \code{\link{pfilter}()},
 \code{\link{pmcmc}()},
-\code{\link{pred.mean}()},
-\code{\link{pred.var}()},
-\code{\link{saved.states}()},
+\code{\link{pred_mean}()},
+\code{\link{pred_var}()},
+\code{\link{saved_states}()},
 \code{\link{wpfilter}()}
 
 More on \pkg{pomp} elementary algorithms: 

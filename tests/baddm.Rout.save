@@ -45,7 +45,7 @@ loglik:          Inf
 +     mif2(
 +       Np=10,Nmif=2,
 +       dmeasure=function(...,log) NaN,
-+       rw.sd=rw.sd(r=0.01),
++       rw.sd=rw_sd(r=0.01),
 +       cooling.fraction.50=0.1
 +     )
 + )

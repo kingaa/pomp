@@ -56,7 +56,7 @@ simulate(
   accumvars=c("cases"),
   covar=covariate_table(
     t=seq(0,2,by=1/52/10),
-    seas=periodic.bspline.basis(
+    seas=periodic_bspline_basis(
       t,degree=3,period=1,nbasis=3),
     times="t"
   ),

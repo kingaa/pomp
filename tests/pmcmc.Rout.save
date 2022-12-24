@@ -26,7 +26,7 @@ Type 'q()' to quit R.
 > 
 > gompertz() %>% window(end=10) -> po
 > 
-> prop1 <- mvn.diag.rw(c(r=0.01,sigma=0.01))
+> prop1 <- mvn_diag_rw(c(r=0.01,sigma=0.01))
 > 
 > mcmc1 <- pmcmc(po,Nmcmc=100,Np=100,dprior=Csnippet("
 +     lik = dunif(r,0,1,1)+dnorm(sigma,0,1,1);
@@ -86,7 +86,7 @@ Error : in 'traces': parameter 'bob' not found.
 > dim(as.data.frame(c(mcmc1,mcmc2)))
 [1] 20  5
 > 
-> filter.traj(c(mcmc1,mcmc2,mcmc3)) -> ft
+> filter_traj(c(mcmc1,mcmc2,mcmc3)) -> ft
 > stopifnot(
 +   dim(ft)==c(1,100,11,3),
 +   names(dimnames(ft))==c("variable","rep","time","chain")
@@ -104,8 +104,8 @@ Error : in 'traces': parameter 'bob' not found.
 NULL
 
 > 
-> stopifnot(dim(filter.traj(mcmc1))==c(1,100,11),
-+   dim(filter.traj(c(mcmc1,mcmc2,mcmc3)))==c(1,100,11,3))
+> stopifnot(dim(filter_traj(mcmc1))==c(1,100,11),
++   dim(filter_traj(c(mcmc1,mcmc2,mcmc3)))==c(1,100,11,3))
 > logLik(mcmc1)
 [1] 3.43
 > logLik(c(mcmc1,mcmc2,mcmc3))
@@ -180,7 +180,7 @@ Error : in 'pmcmc': 'times' should either be a numeric vector of observation tim
 > try(gompertz %>% as.data.frame() %>% pmcmc(times="time",t0=0))
 Error : in 'pmcmc': 'proposal' must be specified
 > try(gompertz %>% as.data.frame() %>% pmcmc(times="time",t0=0,
-+   proposal=mvn.diag.rw(c(a=1,b=2))))
++   proposal=mvn_diag_rw(c(a=1,b=2))))
 Error : in 'pmcmc': in 'pfilter': 'rprocess', 'dmeasure' are needed basic components.
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
@@ -202,7 +202,7 @@ In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 +       ll <- sum(dlnorm(x=c(r,K),meanlog=log(0.1,150),sdlog=3,log=TRUE))
 +       if (log) ll else exp(ll)
 +     },
-+     proposal=mvn.diag.rw(c(r=0.01,K=10)),
++     proposal=mvn_diag_rw(c(r=0.01,K=10)),
 +     params=c(r=0.1,K=150,x_0=150)
 +   ) -> mcmc5
 > plot(mcmc5,pars=c("r","K"))

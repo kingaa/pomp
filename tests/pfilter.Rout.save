@@ -28,10 +28,10 @@ Type 'q()' to quit R.
 > pf <- pfilter(ou2,Np=1000)
 > logLik(pf)
 [1] -478
-> stopifnot(logLik(pf)==sum(cond.logLik(pf)))
-> range(eff.sample.size(pf))
+> stopifnot(logLik(pf)==sum(cond_logLik(pf)))
+> range(eff_sample_size(pf))
 [1]   2.88 243.72
-> range(cond.logLik(pf))
+> range(cond_logLik(pf))
 [1] -9.32 -3.84
 > names(as(pf,"data.frame"))
 [1] "time"        "y1"          "y2"          "x1"          "x2"         
@@ -152,17 +152,17 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 > pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 +   filter.traj=TRUE)
-> pf1 %>% saved.states() %>% melt() %>% names()
+> pf1 %>% saved_states() %>% melt() %>% names()
 [1] "variable" ".id"      "value"    "L1"      
-> pf1 %>% saved.states() %>% melt() %>% dim()
+> pf1 %>% saved_states() %>% melt() %>% dim()
 [1] 20000     4
-> pf1 %>% saved.states(format="data") %>% names()
+> pf1 %>% saved_states(format="data") %>% names()
 [1] "time"     ".id"      "variable" "value"   
-> pf1 %>% saved.states(format="data") %>% dim()
+> pf1 %>% saved_states(format="data") %>% dim()
 [1] 20000     4
-> c(A=pf1,B=pf2) %>% saved.states() %>% melt() %>% names()
+> c(A=pf1,B=pf2) %>% saved_states() %>% melt() %>% names()
 [1] "variable" ".id"      "value"    "L2"       "L1"      
-> c(A=pf1,B=pf2) %>% saved.states() %>% melt() %>% sapply(class)
+> c(A=pf1,B=pf2) %>% saved_states() %>% melt() %>% sapply(class)
    variable         .id       value          L2          L1 
    "factor"   "integer"   "numeric" "character" "character" 
 > c(A=pf1,B=pf2) %>% as.data.frame() %>% sapply(class)
@@ -179,9 +179,9 @@ filter.mean.x1 filter.mean.x2
  [1] "time"           "y1"             "y2"             "ess"           
  [5] "cond.logLik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   
  [9] "pred.var.x2"    "filter.mean.x1" "filter.mean.x2"
-> dim(filter.traj(pf3))
+> dim(filter_traj(pf3))
 [1]   2   1 100
-> dimnames(filter.traj(pf3))
+> dimnames(filter_traj(pf3))
 $variable
 [1] "x1" "x2"
 
@@ -199,13 +199,13 @@ $time
  [85] "85"  "86"  "87"  "88"  "89"  "90"  "91"  "92"  "93"  "94"  "95"  "96" 
  [97] "97"  "98"  "99"  "100"
 
-> try(filter.traj(c(pf1,pf3)))
-Error : in 'filter.traj': incommensurate dimensions.
-> dim(filter.traj(c(pf1,pf4)))
+> try(filter_traj(c(pf1,pf3)))
+Error : in 'filter_traj': incommensurate dimensions.
+> dim(filter_traj(c(pf1,pf4)))
 [1]   2   1 101   2
 > dim(as.data.frame(c(pf1,pf4)))
 [1] 200   6
-> names(dimnames(filter.traj(c(pf1,pf4))))
+> names(dimnames(filter_traj(c(pf1,pf4))))
 [1] "variable" "rep"      "time"     "chain"   
 > names(melt(as(c(pf1,pf4),"data.frame")))
 No id variables; using all as measure variables
@@ -215,12 +215,12 @@ No id variables; using all as measure variables
 [1] "variable" "value"   
 > pf2 %>% melt(id="time") %>% names()
 [1] "time"     "variable" "value"   
-> try(saved.states())
-Error : in 'saved.states': 'object' is a required argument.
-> try(saved.states(NULL))
-Error : 'saved.states' is undefined for 'object' of class 'NULL'.
-> try(saved.states("bob"))
-Error : 'saved.states' is undefined for 'object' of class 'character'.
+> try(saved_states())
+Error : in 'saved_states': 'object' is a required argument.
+> try(saved_states(NULL))
+Error : 'saved_states' is undefined for 'object' of class 'NULL'.
+> try(saved_states("bob"))
+Error : 'saved_states' is undefined for 'object' of class 'character'.
 > 
 > try(ou2 %>% as.data.frame() %>% pfilter(Np=1000))
 Error : in 'pfilter': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.

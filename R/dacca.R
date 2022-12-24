@@ -296,7 +296,7 @@ dacca <- function (
     rinit=rinit,
     covar=covariate_table(
       t=seq(from=t0,to=max(cholera$time)+2/12,by=0.01),
-      seas=periodic.bspline.basis(t-1/12,nbasis=nbasis,degree=3,period=1),
+      seas=periodic_bspline_basis(t-1/12,nbasis=nbasis,degree=3,period=1),
       pop=predict(smooth.spline(x=census$year,y=census$census),x=t)$y,
       dpopdt=predict(smooth.spline(x=census$year,y=census$census),x=t,deriv=1)$y,
       trend=t-mean(t),

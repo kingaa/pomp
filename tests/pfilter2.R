@@ -12,11 +12,11 @@ ou2(tau=5) %>%
   window(end=10) %>%
   pfilter(Np=5000,save.states="weighted") -> pf
 
-pf %>% saved.states(format="d") %>% names()
-pf %>% saved.states(format="d") %>% dim()
+pf %>% saved_states(format="d") %>% names()
+pf %>% saved_states(format="d") %>% dim()
 
 pf %>%
-  saved.states(format="d") %>%
+  saved_states(format="d") %>%
   pivot_wider(names_from="variable") %>%
   group_by(time) %>%
   summarize(

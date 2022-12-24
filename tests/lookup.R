@@ -38,8 +38,8 @@ try(covariate_table(a=1:10,b=10:1,times="c"))
 try(covariate_table(a=1:10,b=10:1,times=NA))
 
 covariate_table(
-  bspline.basis(times,nbasis=8,degree=3,deriv=0,names="f0"),
-  bspline.basis(times,nbasis=8,degree=3,deriv=1,names="f1"),
+  bspline_basis(times,nbasis=8,degree=3,deriv=0,names="f0"),
+  bspline_basis(times,nbasis=8,degree=3,deriv=1,names="f1"),
   times=seq(0,10,by=0.1)
 ) %>%
   lookup(t=seq(0,10,by=0.01)) %>%

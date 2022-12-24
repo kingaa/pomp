@@ -10,7 +10,7 @@ sir(
       lp <- sum(dnorm(c(beta1,beta2,beta3),mean=400,sd=100,log=TRUE))
       if (log) lp else exp(lp)
     },
-    proposal = mvn.diag.rw(c(beta1=1,beta2=1,beta3=1))
+    proposal = mvn_diag_rw(c(beta1=1,beta2=1,beta3=1))
   ) -> sirpm
 
 sirpm %>%

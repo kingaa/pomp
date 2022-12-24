@@ -9,9 +9,9 @@
 ##' The filtering mean is therefore the expectation of this distribution
 ##' \deqn{E[X(t_k) \vert Y(t_1)=y^*_1,\dots,Y(t_k)=y^*_k].}{E[Xk | Y1=y1*,\dots,Yk=yk*].}
 ##'
-##' @name filter.mean
+##' @name filter_mean
 ##' @docType methods
-##' @aliases filter.mean,ANY-method filter.mean,missing-method
+##' @aliases filter_mean,ANY-method filter_mean,missing-method
 ##' @include pfilter.R kalman.R
 ##' @rdname filter_mean
 ##' @family particle filter methods
@@ -24,31 +24,31 @@
 NULL
 
 setGeneric(
-  "filter.mean",
+  "filter_mean",
   function (object, ...)
-    standardGeneric("filter.mean")
+    standardGeneric("filter_mean")
 )
 
 setMethod(
-  "filter.mean",
+  "filter_mean",
   signature=signature(object="missing"),
   definition=function (...) {
-    reqd_arg("filter.mean","object")
+    reqd_arg("filter_mean","object")
   }
 )
 
 setMethod(
-  "filter.mean",
+  "filter_mean",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    undef_method("filter.mean",object)
+    undef_method("filter_mean",object)
   }
 )
 
 ##' @rdname filter_mean
 ##' @export
 setMethod(
-  "filter.mean",
+  "filter_mean",
   signature=signature(object="kalmand_pomp"),
   definition=function (object, vars, ...) {
     if (missing(vars)) vars <- rownames(object@filter.mean)
@@ -59,7 +59,7 @@ setMethod(
 ##' @rdname filter_mean
 ##' @export
 setMethod(
-  "filter.mean",
+  "filter_mean",
   signature=signature(object="pfilterd_pomp"),
   definition=function (object, vars, ...) {
     if (missing(vars)) vars <- rownames(object@filter.mean)

@@ -3,16 +3,16 @@
 ##' Retrieve latent state trajectories from a particle filter calculation.
 ##'
 ##' When one calls \code{\link{pfilter}} with \code{save.states=TRUE}, the latent state vector associated with each particle is saved.
-##' This can be extracted by calling \code{saved.states} on the \sQuote{pfilterd.pomp} object.
+##' This can be extracted by calling \code{saved_states} on the \sQuote{pfilterd.pomp} object.
 ##' These are the \emph{unweighted} particles, saved \emph{after} resampling.
 ##' 
-##' @name saved.states
-##' @aliases saved.states,ANY-method saved.states,missing-method
+##' @name saved_states
+##' @aliases saved_states,ANY-method saved_states,missing-method
 ##' @include pfilter.R pmcmc.R
 ##' @rdname saved_states
 ##' @family particle filter methods
 ##' @family extraction methods
-##' @inheritParams filter.mean
+##' @inheritParams filter_mean
 ##' @param format character;
 ##' format of the returned object (see below).
 ##'
@@ -30,30 +30,30 @@
 NULL
 
 setGeneric(
-  "saved.states",
-  function (object,...) standardGeneric("saved.states")
+  "saved_states",
+  function (object,...) standardGeneric("saved_states")
 )
 
 setMethod(
-  "saved.states",
+  "saved_states",
   signature=signature(object="missing"),
   definition=function (...) {
-    reqd_arg("saved.states","object")
+    reqd_arg("saved_states","object")
   }
 )
 
 setMethod(
-  "saved.states",
+  "saved_states",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    undef_method("saved.states",object)
+    undef_method("saved_states",object)
   }
 )
 
 ##' @rdname saved_states
 ##' @export
 setMethod(
-  "saved.states",
+  "saved_states",
   signature=signature(object="pfilterd_pomp"),
   definition=function (object, ...,
     format = c("list","data.frame")) {
@@ -86,9 +86,9 @@ setMethod(
 ##' @rdname saved_states
 ##' @export
 setMethod(
-  "saved.states",
+  "saved_states",
   signature=signature(object="pfilterList"),
   definition=function (object, ...) {
-    lapply(object,saved.states,...)
+    lapply(object,saved_states,...)
   }
 )

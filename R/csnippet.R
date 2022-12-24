@@ -87,6 +87,5 @@ setAs(
   }
 )
 
-##' @method as.character Csnippet
 ##' @export
 as.character.Csnippet <- function(x, ...) as(x,"character")

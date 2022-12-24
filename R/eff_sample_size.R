@@ -6,42 +6,42 @@
 ##' \deqn{\left(\sum_i\!w_{it}^2\right)^{-1},}{1/(sum(w_it^2)),}
 ##' where \eqn{w_{it}}{w_it} is the normalized weight of particle \eqn{i} at time \eqn{t}.
 ##'
-##' @name eff.sample.size
+##' @name eff_sample_size
 ##' @rdname eff_sample_size
 ##' @include pfilter.R wpfilter.R bsmc2.R
-##' @aliases eff.sample.size,missing-method eff.sample.size,ANY-method
+##' @aliases eff_sample_size,missing-method eff_sample_size,ANY-method
 ##' @family particle filter methods
 ##' @family extraction methods
-##' @inheritParams filter.mean
+##' @inheritParams filter_mean
 ##'
 NULL
 
 setGeneric(
-    "eff.sample.size",
+    "eff_sample_size",
     function (object, ...)
-        standardGeneric("eff.sample.size")
+        standardGeneric("eff_sample_size")
 )
 
 setMethod(
-  "eff.sample.size",
+  "eff_sample_size",
   signature=signature(object="missing"),
   definition=function (...) {
-    reqd_arg("eff.sample.size","object")
+    reqd_arg("eff_sample_size","object")
   }
 )
 
 setMethod(
-  "eff.sample.size",
+  "eff_sample_size",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    undef_method("eff.sample.size",object)
+    undef_method("eff_sample_size",object)
   }
 )
 
 ##' @rdname eff_sample_size
 ##' @export
 setMethod(
-  "eff.sample.size",
+  "eff_sample_size",
   signature=signature(object="bsmcd_pomp"),
   definition=function(object,...)object@eff.sample.size
 )
@@ -49,7 +49,7 @@ setMethod(
 ##' @rdname eff_sample_size
 ##' @export
 setMethod(
-  "eff.sample.size",
+  "eff_sample_size",
   signature=signature(object="pfilterd_pomp"),
   definition=function(object,...)object@eff.sample.size
 )
@@ -57,7 +57,7 @@ setMethod(
 ##' @rdname eff_sample_size
 ##' @export
 setMethod(
-  "eff.sample.size",
+  "eff_sample_size",
   signature=signature(object="wpfilterd_pomp"),
   definition=function(object,...)object@eff.sample.size
 )
