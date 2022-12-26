@@ -1,0 +1,172 @@
+
+R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"
+Copyright (C) 2022 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> try(as.pomp())
+Error in as(object, "pomp") : 
+  argument "object" is missing, with no default
+In addition: Warning message:
+'as.pomp' is deprecated.
+Use 'as_pomp' instead.
+See help("Deprecated") 
+> try(bspline.basis())
+Error in bspline_basis(...) : argument "x" is missing, with no default
+In addition: Warning message:
+'bspline.basis' is deprecated.
+Use 'bspline_basis' instead.
+See help("Deprecated") 
+> try(cond.logLik())
+Error : in 'cond_logLik': 'object' is a required argument.
+In addition: Warning message:
+'cond.logLik' is deprecated.
+Use 'cond_logLik' instead.
+See help("Deprecated") 
+> try(eff.sample.size())
+Error : in 'eff_sample_size': 'object' is a required argument.
+In addition: Warning message:
+'eff.sample.size' is deprecated.
+Use 'eff_sample_size' instead.
+See help("Deprecated") 
+> try(filter.mean())
+Error : in 'filter_mean': 'object' is a required argument.
+In addition: Warning message:
+'filter.mean' is deprecated.
+Use 'filter_mean' instead.
+See help("Deprecated") 
+> try(filter.traj())
+Error : in 'filter_traj': 'object' is a required argument.
+In addition: Warning message:
+'filter.traj' is deprecated.
+Use 'filter_traj' instead.
+See help("Deprecated") 
+> try(mvn.diag.rw())
+Error : in 'mvn_diag_rw': 'rw.sd' must be a named numeric vector.
+In addition: Warning message:
+'mvn.diag.rw' is deprecated.
+Use 'mvn_diag_rw' instead.
+See help("Deprecated") 
+> try(mvn.rw())
+Error in as.matrix(rw.var) : 
+  argument "rw.var" is missing, with no default
+In addition: Warning message:
+'mvn.rw' is deprecated.
+Use 'mvn_rw' instead.
+See help("Deprecated") 
+> try(mvn.rw.adaptive())
+Error : in 'mvn_rw_adaptive': exactly one of 'rw.sd' and 'rw.var' must be supplied.
+In addition: Warning message:
+'mvn.rw.adaptive' is deprecated.
+Use 'mvn_rw_adaptive' instead.
+See help("Deprecated") 
+> try(periodic.bspline.basis())
+Error : in 'periodic_bspline_basis': argument "x" is missing, with no default
+In addition: Warning message:
+'periodic.bspline.basis' is deprecated.
+Use 'periodic_bspline_basis' instead.
+See help("Deprecated") 
+> try(pred.mean())
+Error : in 'pred_mean': 'object' is a required argument.
+In addition: Warning message:
+'pred.mean' is deprecated.
+Use 'pred_mean' instead.
+See help("Deprecated") 
+> try(pred.var())
+Error : in 'pred_var': 'object' is a required argument.
+In addition: Warning message:
+'pred.var' is deprecated.
+Use 'pred_var' instead.
+See help("Deprecated") 
+> try(probe.acf())
+Error in probe_acf(...) : argument "lags" is missing, with no default
+In addition: Warning message:
+'probe.acf' is deprecated.
+Use 'probe_acf' instead.
+See help("Deprecated") 
+> try(probe.ccf())
+Error in probe_ccf(...) : argument "vars" is missing, with no default
+In addition: Warning message:
+'probe.ccf' is deprecated.
+Use 'probe_ccf' instead.
+See help("Deprecated") 
+> try(probe.marginal())
+Error in probe_marginal(...) : argument "var" is missing, with no default
+In addition: Warning message:
+'probe.marginal' is deprecated.
+Use 'probe_marginal' instead.
+See help("Deprecated") 
+> try(probe.mean())
+Error in probe_mean(...) : argument "var" is missing, with no default
+In addition: Warning message:
+'probe.mean' is deprecated.
+Use 'probe_mean' instead.
+See help("Deprecated") 
+> try(probe.median())
+Error in probe_median(...) : argument "var" is missing, with no default
+In addition: Warning message:
+'probe.median' is deprecated.
+Use 'probe_median' instead.
+See help("Deprecated") 
+> try(probe.nlar())
+Error in probe_nlar(...) : argument "var" is missing, with no default
+In addition: Warning message:
+'probe.nlar' is deprecated.
+Use 'probe_nlar' instead.
+See help("Deprecated") 
+> try(probe.period())
+Error in probe_period(...) : argument "var" is missing, with no default
+In addition: Warning message:
+'probe.period' is deprecated.
+Use 'probe_period' instead.
+See help("Deprecated") 
+> try(probe.quantile())
+Error in probe_quantile(...) : argument "var" is missing, with no default
+In addition: Warning message:
+'probe.quantile' is deprecated.
+Use 'probe_quantile' instead.
+See help("Deprecated") 
+> try(probe.sd())
+Error in probe_sd(...) : argument "var" is missing, with no default
+In addition: Warning message:
+'probe.sd' is deprecated.
+Use 'probe_sd' instead.
+See help("Deprecated") 
+> try(probe.var())
+Error in probe_var(...) : argument "var" is missing, with no default
+In addition: Warning message:
+'probe.var' is deprecated.
+Use 'probe_var' instead.
+See help("Deprecated") 
+> try(rw.sd())
+An object of class "safecall"
+Slot "call":
+rw_sd()
+
+Slot "envir":
+<environment: 0x555ab96aa050>
+
+Warning message:
+'rw.sd' is deprecated.
+Use 'rw_sd' instead.
+See help("Deprecated") 
+> try(saved.states())
+Error : in 'saved_states': 'object' is a required argument.
+In addition: Warning message:
+'saved.states' is deprecated.
+Use 'saved_states' instead.
+See help("Deprecated") 
+> 
