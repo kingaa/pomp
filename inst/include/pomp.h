@@ -41,7 +41,7 @@ static R_INLINE double expit (double x) {
 }
 
 static R_INLINE void reulermultinom (int m, double size, const double *rate,
-  double dt, double *trans) {
+                                     double dt, double *trans) {
   double p = 0.0;
   int j, k;
   if ((size < 0.0) || (dt < 0.0) || (floor(size+0.5) != size)) {
@@ -75,7 +75,7 @@ static R_INLINE void reulermultinom (int m, double size, const double *rate,
 }
 
 static R_INLINE double deulermultinom (int m, double size, const double *rate,
-  double dt, double *trans, int give_log) {
+                                       double dt, double *trans, int give_log) {
   double p = 0.0;
   double n = 0.0;
   double ff = 0.0;
@@ -175,7 +175,7 @@ static R_INLINE double rbetabinom (double size, double prob, double theta) {
 }
 
 static R_INLINE double dbetabinom (double x, double size, double prob,
-  double theta, int give_log) {
+                                   double theta, int give_log) {
   double a = theta*prob;
   double b = theta*(1.0-prob);
   double f = lchoose(size,x)-lbeta(a,b)+lbeta(a+x,b+size-x);
@@ -188,7 +188,7 @@ static R_INLINE double rbetanbinom (double mu, double size, double theta) {
 }
 
 static R_INLINE double dbetanbinom (double x, double mu, double size,
-  double theta, int give_log) {
+                                    double theta, int give_log) {
   double p = size/(size+mu);
   double a = theta*p;
   double b = theta*(1.0-p);
@@ -210,13 +210,13 @@ typedef void pomp_onestep_sim(double *x, const double *p,
 typedef void pomp_onestep_pdf(double *loglik,
   const double *x1, const double *x2, double t1, double t2, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
-  const double *covars);
+                              const double *covars);
 
 typedef void pomp_skeleton (double *f, const double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 
-typedef void pomp_measure_model_simulator (double *y, const double *x, const double *p,
+typedef void pomp_measure_model_simulator (double *y, double *x, const double *p,
   const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 
@@ -228,9 +228,9 @@ typedef void pomp_measure_model_covariance (double *f, const double *x, const do
   const int *vmatindex, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 
-typedef void pomp_measure_model_density (double *lik, const double *y, const double *x, const double *p, int give_log,
-					 const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
-					 const double *covars, double t);
+typedef void pomp_measure_model_density (double *lik, const double *y, double *x, const double *p, int give_log,
+  const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t);
 
 typedef void pomp_rprior (double *p, const int *parindex);
 
