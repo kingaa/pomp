@@ -3,6 +3,8 @@ png(filename="gillespie-%02d.png",res=100)
 
 library(pomp)
 suppressPackageStartupMessages({
+  library(dplyr)
+  library(tidyr)
   library(ggplot2)
 })
 
@@ -120,14 +122,15 @@ sir2() -> sir2
 gsir2 <- simulate(sir2,params=c(coef(gsir),k=0.01),
   times=time(gsir),t0=timezero(gsir),seed=806867104L)
 
-list(
+bind_rows(
   R=as.data.frame(gsir),
   Csnippet=as.data.frame(gsir1),
-  sir2=as.data.frame(gsir2)
+  sir2=as.data.frame(gsir2),
+  .id="model"
 ) %>%
-  melt(id="time") %>%
-  subset(variable=="reports") %>%
-  ggplot(aes(x=time,y=value,color=L1))+
+  pivot_longer(-c(time,model)) %>%
+  filter(name=="reports") %>%
+  ggplot(aes(x=time,y=value,color=model))+
   labs(color="",y="reports",title="comparison of implementations")+
   geom_line()+
   theme_bw()+theme(legend.position=c(0.2,0.8))
@@ -168,7 +171,6 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
     rate.fun(j,x,t,params,covars,...)
   }
 }
-
 simulate(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>%
   plot(main="freeze at time 1")
 
@@ -179,15 +181,12 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
     rate.fun(j,x,t,params,covars,...)
   }
 }
-
 try(simulate(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)))
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) -1
-
 try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
-
 try(pomp(gsir,rprocess=gillespie(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 
 try(pomp(gsir,rprocess=gillespie(rate.fun=3,v=Vmatrix)))

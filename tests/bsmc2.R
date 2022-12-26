@@ -26,8 +26,14 @@ plot(smc,pars=c("r","K"),thin=20)
 try(plot(smc,pars="bob"))
 plot(smc,pars="K")
 try(plot(smc,pars=NULL))
-stopifnot(sum(cond_logLik(smc))==logLik(smc))
-stopifnot(length(eff_sample_size(smc)) == 10)
+stopifnot(
+  sum(cond_logLik(smc))==logLik(smc),
+  length(eff_sample_size(smc)) == 10
+)
+smc |> eff_sample_size(format="d") |> names()
+smc |> eff_sample_size(format="d") |> sapply(class)
+smc |> cond_logLik(format="d") |> names()
+smc |> cond_logLik(format="d") |> sapply(class)
 
 try(bsmc2())
 try(bsmc2(3L))

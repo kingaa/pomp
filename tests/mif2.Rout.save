@@ -35,14 +35,6 @@ The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
-> library(reshape2)
-
-Attaching package: 'reshape2'
-
-The following object is masked from 'package:pomp':
-
-    melt
-
 > 
 > gompertz() %>% window(end=10) -> po
 > 

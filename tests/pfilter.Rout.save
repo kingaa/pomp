@@ -148,23 +148,31 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 <object of class 'pfilterd_pomp'>
 > 
 > pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
-> pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE,save.states="unweighted")
+> pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE,save.states="weighted")
 > pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 +   filter.traj=TRUE)
-> pf1 %>% saved_states() %>% melt() %>% names()
-[1] "variable" ".id"      "value"    "L1"      
-> pf1 %>% saved_states() %>% melt() %>% dim()
-[1] 20000     4
+> 
 > pf1 %>% saved_states(format="data") %>% names()
 [1] "time"     ".id"      "variable" "value"   
 > pf1 %>% saved_states(format="data") %>% dim()
 [1] 20000     4
-> c(A=pf1,B=pf2) %>% saved_states() %>% melt() %>% names()
-[1] "variable" ".id"      "value"    "L2"       "L1"      
-> c(A=pf1,B=pf2) %>% saved_states() %>% melt() %>% sapply(class)
-   variable         .id       value          L2          L1 
-   "factor"   "integer"   "numeric"   "integer" "character" 
+> pf1 %>% saved_states() %>% melt() %>% sapply(class)
+         L1    variable         .id       value 
+"character" "character"   "integer"   "numeric" 
+> pf1 %>% saved_states() %>% melt() %>% sapply(length)
+      L1 variable      .id    value 
+   20000    20000    20000    20000 
+> pf2 %>% saved_states(format="data") %>% names()
+[1] "time"     ".id"      "variable" "value"   
+> pf2 %>% saved_states(format="data") %>% dim()
+[1] 30000     4
+> 
+> c(A=pf1,B=pf2) %>% saved_states(format="d") %>% names()
+[1] "A" "B"
+> c(A=pf1,B=pf2) %>% saved_states(format="d") %>% sapply(class)
+           A            B 
+"data.frame" "data.frame" 
 > c(A=pf1,B=pf2) %>% as.data.frame() %>% sapply(class)
           time             y1             y2            ess    cond.logLik 
      "numeric"      "numeric"      "numeric"      "numeric"      "numeric" 
@@ -172,9 +180,7 @@ Error : in 'pfilter': in 'dmeasure': ouch!
    "character"      "numeric"      "numeric"      "numeric"      "numeric" 
 filter.mean.x1 filter.mean.x2 
      "numeric"      "numeric" 
-> c(A=pf1,B=pf2) %>% melt(id=c("time",".id")) %>% sapply(class)
-       time         .id    variable       value 
-  "numeric" "character"    "factor"   "numeric" 
+> 
 > names(as(pf2,"data.frame"))
  [1] "time"           "y1"             "y2"             "ess"           
  [5] "cond.logLik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   
@@ -199,14 +205,13 @@ Error : in 'filter_traj': incommensurate dimensions.
 [1] 200   6
 > names(dimnames(filter_traj(c(pf1,pf4))))
 [1] "variable" "rep"      "time"     "chain"   
-> names(melt(as(c(pf1,pf4),"data.frame")))
-No id variables; using all as measure variables
-[1] "variable" "value"   
-> pf2 %>% melt() %>% names()
-No id variables; using all as measure variables
-[1] "variable" "value"   
-> pf2 %>% melt(id="time") %>% names()
-[1] "time"     "variable" "value"   
+> names(as(c(pf1,pf4),"data.frame"))
+[1] "time"        "y1"          "y2"          "ess"         "cond.logLik"
+[6] ".id"        
+> pf2 %>% as.data.frame() %>% names()
+ [1] "time"           "y1"             "y2"             "ess"           
+ [5] "cond.logLik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   
+ [9] "pred.var.x2"    "filter.mean.x1" "filter.mean.x2"
 > try(saved_states())
 Error : in 'saved_states': 'object' is a required argument.
 > try(saved_states(NULL))

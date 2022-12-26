@@ -1,23 +1,53 @@
-options(digits=3)
-png(filename="sir2-%02d.png",res=100)
-
 library(pomp)
-
-sir2() -> sir2
+suppressPackageStartupMessages({
+  library(dplyr)
+})
 
 set.seed(48832734L)
 
-plot(sir2)
-coef(sir2)
-rinit(sir2)
+png(filename="sir2-%02d.png",res=100)
 
-stopifnot(all.equal(coef(sir2),
-  partrans(sir2,coef(sir2,transform=TRUE),dir="from")))
+sir2() %>% window(end=2) -> po
+plot(po)
 
-plot(simulate(sir2,seed=48832734L))
-pf <- freeze(pfilter(window(sir2,end=0.5),Np=1000),seed=48832734L)
-plot(pf)
-tj <- trajectory(sir2,ode_control=list(maxsteps=10000),format="a")
-matplot(time(sir2),t(tj[c("I","cases"),1,]),type="l",ylab="")
+stopifnot(
+  all.equal(
+    coef(po),
+    partrans(po,coef(po,transform=TRUE),dir="from")
+  ),
+  all.equal(
+    coef(po,transform=TRUE),
+    partrans(po,coef(po),dir="to")
+  )
+)
+
+pfilter(
+  window(po,end=1),
+  Np=1000,
+  filter.mean=TRUE,
+  pred.mean=TRUE,
+  pred.var=TRUE,
+  filter.traj=TRUE,
+  save.states=TRUE
+) -> pf
+
+stopifnot(
+  abs(logLik(pf)+43.2)<0.5
+)
+
+plot(pf,yax.flip=TRUE)
+
+forecast(pf,format="d") -> fc
+simulate(pf) -> sm
+
+emeasure(sm) -> ef
+vmeasure(sm) -> vf
+plot(ef,vf)
+
+plot(time(sm),obs(sm),xlab="time",ylab="Y")
+lines(time(sm),ef)
+
+trajectory(po) -> tj
+plot(tj)
 
 dev.off()

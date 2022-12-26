@@ -1,30 +1,90 @@
-options(digits=3)
-png(filename="rw2-%02d.png",res=100)
-
 library(pomp)
-
-rw2() -> rw2
+suppressPackageStartupMessages({
+  library(tidyr)
+  library(dplyr)
+  library(ggplot2)
+})
 
 set.seed(1438408329L)
 
-rinit(rw2)
-coef(rw2)
+png(filename="rw2-%02d.png",res=100)
 
-stopifnot(all.equal(coef(rw2),partrans(rw2,coef(rw2,transform=TRUE),dir="from")))
-plot(simulate(rw2,seed=1438408329L))
-pf <- freeze(pfilter(rw2,Np=1000),seed=1438408329L)
-plot(pf)
-tj <- trajectory(rw2,format="array")
+rw2(x1_0=1,x2_0=-1) -> po
+plot(po)
+
 stopifnot(
-  is.na(tj)
+  all.equal(
+    coef(po),
+    partrans(po,coef(po,transform=TRUE),dir="from")
+  ),
+  all.equal(
+    coef(po,transform=TRUE),
+    partrans(po,coef(po),dir="to")
+  )
 )
 
-v <- vmeasure(rw2,params=coef(rw2),x=states(rw2),times=time(rw2))
+pfilter(
+  po,
+  Np=1000,
+  filter.mean=TRUE,
+  pred.mean=TRUE,
+  pred.var=TRUE,
+  filter.traj=TRUE,
+  save.states=TRUE
+) -> pf
+
+plot(pf,yax.flip=TRUE)
+
+forecast(pf,format="d") -> fc
+simulate(pf) -> sm
+
+emeasure(pf) %>% melt() -> ef
+vmeasure(pf) %>% melt() -> vf
+vf %>% select(-time,-.id) %>% distinct()
+
+bind_rows(
+  sim=pf %>%
+    as.data.frame() %>%
+    pivot_longer(c(x1,x2,y1,y2),names_to="variable"),
+  forecast=fc,
+  filter=ef %>% select(-.id),
+  prediction=pred_mean(pf,format="d"),
+  filter=filter_mean(pf,format="d"),
+  .id="type"
+) %>%
+  ggplot(aes(x=time,y=value,color=factor(type)))+
+  geom_line()+
+  labs(color="")+
+  facet_wrap(~variable,scales="free_y")+
+  theme_bw()+theme(legend.position="top")
+
+enkf(po,Np=1000) -> kf
+plot(kf,yax.flip=TRUE)
+
+eakf(po,Np=1000) -> kf2
+plot(kf2,yax.flip=TRUE)
+
+Kf <- kalmanFilter(
+  po,
+  A=diag(2),
+  Q=diag(coef(po,c("s1","s2"))^2),
+  C=diag(2),
+  R=coef(po,"tau")^2*diag(2)
+)
+
+print(c(logLik(pf),logLik(kf),logLik(kf2),Kf$logLik))
+
 stopifnot(
-  v[1,1,,]==1,
-  v[2,2,,]==1,
-  v[1,2,,]==0,
-  v[2,1,,]==0
+  abs(logLik(pf)+451.6)<0.5,
+  abs(logLik(kf)+450.4)<0.5,
+  abs(logLik(kf2)+449.1)<0.5,
+  abs(Kf$logLik+449.6)<0.5
+)
+
+d <- dprocess(sm,log=TRUE)
+print(sum(d))
+stopifnot(
+  abs(sum(d)+381.4) < 0.5
 )
 
 dev.off()

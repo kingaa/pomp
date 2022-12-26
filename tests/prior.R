@@ -1,11 +1,15 @@
 options(digits=3)
 
 library(pomp)
-library(magrittr)
+suppressPackageStartupMessages({
+  library(dplyr)
+})
 
 ou2() -> po
 
-stopifnot(po %>% rprior(params=coef(po)) %>% extract(,1)==coef(po))
+stopifnot(
+  po %>% rprior() == coef(po)
+)
 
 coef(po,"alpha_sd") <- 5
 

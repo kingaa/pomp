@@ -3,6 +3,7 @@ png(filename="R_v_C-%02d.png",res=100)
 
 ## ----packages------------------------------------------------------------
 library(pomp)
+library(tidyr)
 library(ggplot2)
 
 ## ----seed,echo=FALSE-----------------------------------------------------
@@ -38,8 +39,8 @@ simulate(times=1:100,t0=0,
 ## ----R2------------------------------------------------------------------
 gompertz %>%
   as.data.frame() %>%
-  melt(id="time") %>%
-  ggplot(aes(x=time,y=value,color=variable))+
+  pivot_longer(cols=-time) %>%
+  ggplot(aes(x=time,y=value,color=name))+
   geom_line()+
   labs(y="X, Y")+
   theme_bw()

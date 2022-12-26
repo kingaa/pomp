@@ -1,29 +1,54 @@
-options(digits=3)
-png(filename="gompertz-%02d.png",res=100)
-
 library(pomp)
-
-gompertz() -> po
 
 set.seed(1438408329L)
 
-rinit(po)
-coef(po)
+png(filename="gompertz-%02d.png",res=100)
 
-stopifnot(all.equal(coef(po),partrans(po,coef(po,transform=TRUE),dir="from")))
-plot(simulate(po,seed=1438408329L))
-pf <- freeze(pfilter(po,Np=1000),seed=1438408329L)
-plot(pf)
-tj <- trajectory(po,params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X_0=3),format="a")
-plot(time(po),tj[,,],type="l")
-e <- emeasure(po,x=states(po),params=coef(po),times=time(po))
-plot(time(po),obs(po),xlab="",ylab="")
-lines(time(po),t(apply(e,c(1,3),mean)))
-v <- vmeasure(po,x=states(po),params=coef(po),times=time(po))
+gompertz(X_0=1.5) -> po
+plot(po)
+
 stopifnot(
-  all(dim(v)==c(1,1,1,100)),
-  all(v>0)
+  all.equal(
+    coef(po),
+    partrans(po,coef(po,transform=TRUE),dir="from")
+  ),
+  all.equal(
+    coef(po,transform=TRUE),
+    partrans(po,coef(po),dir="to")
+  )
 )
-plot(e[1,1,],v[1,1,1,],xlab="mean",ylab="variance")
+
+pfilter(
+  po,
+  Np=1000,
+  filter.mean=TRUE,
+  pred.mean=TRUE,
+  pred.var=TRUE,
+  filter.traj=TRUE,
+  save.states=TRUE
+) -> pf
+
+stopifnot(
+  abs(logLik(pf)-30.1)<0.5
+)
+
+plot(pf,yax.flip=TRUE)
+
+forecast(pf,format="d") -> fc
+simulate(pf) -> sm
+
+emeasure(sm) -> ef
+vmeasure(sm) -> vf
+plot(ef,vf)
+
+plot(time(sm),obs(sm),xlab="time",ylab="Y")
+lines(time(sm),ef)
+
+enkf(po,Np=1000) -> kf
+plot(kf,yax.flip=TRUE)
+
+trajectory(po) -> tj
+plot(tj)
 
 dev.off()
+

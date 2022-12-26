@@ -80,6 +80,17 @@ Error : 'wpfilter' is undefined for 'data' of class 'list'.
 [1] 51
 > pf %>% as("data.frame") %>% names()
 [1] "time"            "y"               "eff.sample.size" "cond.logLik"    
+> pf %>% eff_sample_size(format="d") %>% names()
+[1] "time"            "eff.sample.size"
+> pf %>% eff_sample_size(format="d") %>% sapply(class)
+           time eff.sample.size 
+      "numeric"       "numeric" 
+> pf %>% cond_logLik(format="d") %>% names()
+[1] "time"        "cond.logLik"
+> pf %>% cond_logLik(format="d") %>% sapply(class)
+       time cond.logLik 
+  "numeric"   "numeric" 
+> 
 > try(wpfilter(po,dmeasure=NULL))
 Error : in 'wpfilter': 'rprocess', 'dmeasure' are needed basic components.
 > try(wpfilter(po,rprocess=NULL))

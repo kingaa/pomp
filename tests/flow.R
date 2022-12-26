@@ -2,7 +2,9 @@ library(pomp)
 
 try(flow())
 try(flow("bob"))
+
 sir() -> po
+
 try(flow(po))
 try(flow(po,t0=0))
 try(flow(po,t0=10))

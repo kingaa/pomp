@@ -48,10 +48,10 @@ create_example(times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%
   simulate(nsim=100,format="data.frame") -> sims
 sims %>%
   filter(.id<=4) %>%
-  melt(id=c("time",".id")) %>%
-  ggplot(aes(x=time,y=value,group=interaction(.id,variable)))+
+  pivot_longer(cols=-c(time,.id)) %>%
+  ggplot(aes(x=time,y=value,group=interaction(.id,name)))+
   geom_step()+
-  facet_grid(variable~.id,scales="free_y")+
+  facet_grid(name~.id,scales="free_y")+
   labs(title="death process, Gillespie",subtitle=expression(mu==0.01))
 stopifnot(
 (sims %>%
@@ -75,10 +75,10 @@ create_example(simulator="onestep",
   simulate(nsim=100,format="data.frame") -> sims
 sims %>%
   filter(.id<=4) %>%
-  melt(id=c("time",".id")) %>%
-  ggplot(aes(x=time,y=value,group=interaction(.id,variable)))+
+  pivot_longer(cols=-c(time,.id)) %>%
+  ggplot(aes(x=time,y=value,group=interaction(.id,name)))+
   geom_step()+
-  facet_grid(variable~.id,scales="free_y")+
+  facet_grid(name~.id,scales="free_y")+
   labs(title="death process, onestep",subtitle=expression(mu==0.01))
 stopifnot(
 (sims %>%
@@ -102,10 +102,10 @@ create_example(simulator="euler",
   simulate(nsim=100,format="data.frame") -> sims
 sims %>%
   filter(.id<=4) %>%
-  melt(id=c("time",".id")) %>%
-  ggplot(aes(x=time,y=value,group=interaction(.id,variable)))+
+  pivot_longer(cols=-c(time,.id)) %>%
+  ggplot(aes(x=time,y=value,group=interaction(.id,name)))+
   geom_step()+
-  facet_grid(variable~.id,scales="free_y")+
+  facet_grid(name~.id,scales="free_y")+
   labs(title="death process, Euler",subtitle=expression(mu==0.01))
 stopifnot(
 (sims %>%

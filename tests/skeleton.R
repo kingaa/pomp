@@ -4,8 +4,8 @@ png(filename="skeleton-%02d.png",res=100)
 library(pomp)
 suppressPackageStartupMessages({
   library(ggplot2)
-  library(reshape2)
-  library(plyr)
+  library(dplyr)
+  library(tidyr)
 })
 
 ricker() -> ricker
@@ -15,14 +15,22 @@ x <- states(ricker)
 p <- parmat(coef(ricker),3)
 p["r",] <- exp(c(1,2,4))
 f <- skeleton(ricker,x=x,params=p,t=time(ricker))
-f %>% melt() %>%
-  subset(variable=="N",select=-variable) %>%
-  dcast(time~.id) %>%
-  join(x %>% melt(value.name="x") %>% subset(variable=="N",select=-variable),
-       by="time") %>%
-  melt(id.vars=c("time","x")) %>%
-  mutate(log.r=mapvalues(variable,from=c(1,2,3),to=log(p["r",]))) %>%
-  ggplot(aes(x=x,y=value,color=factor(log.r)))+
+f %>%
+  melt() %>%
+  filter(variable=="N") %>%
+  select(-variable) %>%
+  pivot_wider(names_from=.id) %>%
+  left_join(
+    x %>% melt() %>% filter(variable=="N") %>%
+      select(-variable) %>% rename(x=value),
+    by="time"
+  ) %>%
+  pivot_longer(cols=-c(time,x)) %>%
+  mutate(
+    name=as.integer(name),
+    log.r=log(p["r",name])
+  ) %>% 
+  ggplot(aes(x=x,y=value,color=factor(signif(log.r,3))))+
   geom_line()+
   labs(y=expression(N[t+1]),x=expression(N[t]),color=expression(log(r)))+
   theme_classic()
@@ -38,10 +46,15 @@ p <- parmat(coef(sir),nrep=3)
 p["beta2",2:3] <- exp(c(3,5))
 trajectory(sir,params=p,times=seq(0,1,length=1000),format="a") -> tj
 skeleton(sir,x=tj,params=p,t=seq(0,1,length=1000)) -> f
-tj %>% apply(c(1,2),diff) %>% melt(value.name="diff") -> dtj
-f %>% melt(value.name="deriv") -> f
-join(f,dtj,by=c("time","variable",".id")) %>%
-  subset(variable %in% c("S","I","R")) %>%
+tj %>% apply(c(1,2),diff) %>% melt() %>% rename(diff=value) %>%
+  mutate(.id=as.integer(.id)) -> dtj
+f %>% melt() %>% rename(deriv=value) -> f
+right_join(
+  f,dtj,
+  by=c("time","variable",".id")
+) %>%
+  filter(variable %in% c("S","I","R")) %>%
+  mutate(variable=factor(variable,levels=c("S","I","R"))) %>%
   ggplot(aes(x=deriv,y=diff/0.001,color=factor(.id)))+
   geom_point()+
   geom_abline(intercept=0,slope=1,color='black')+

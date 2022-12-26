@@ -5,7 +5,6 @@ set.seed(857075216L)
 
 library(pomp)
 library(dplyr)
-library(reshape2)
 
 gompertz() %>% window(end=10) -> po
 

@@ -77,10 +77,10 @@ Warning message:
 'rmeasure' unspecified: NAs generated. 
 > sims %>%
 +   filter(.id<=4) %>%
-+   melt(id=c("time",".id")) %>%
-+   ggplot(aes(x=time,y=value,group=interaction(.id,variable)))+
++   pivot_longer(cols=-c(time,.id)) %>%
++   ggplot(aes(x=time,y=value,group=interaction(.id,name)))+
 +   geom_step()+
-+   facet_grid(variable~.id,scales="free_y")+
++   facet_grid(name~.id,scales="free_y")+
 +   labs(title="death process, Gillespie",subtitle=expression(mu==0.01))
 > stopifnot(
 + (sims %>%
@@ -114,10 +114,10 @@ Warning message:
 'rmeasure' unspecified: NAs generated. 
 > sims %>%
 +   filter(.id<=4) %>%
-+   melt(id=c("time",".id")) %>%
-+   ggplot(aes(x=time,y=value,group=interaction(.id,variable)))+
++   pivot_longer(cols=-c(time,.id)) %>%
++   ggplot(aes(x=time,y=value,group=interaction(.id,name)))+
 +   geom_step()+
-+   facet_grid(variable~.id,scales="free_y")+
++   facet_grid(name~.id,scales="free_y")+
 +   labs(title="death process, onestep",subtitle=expression(mu==0.01))
 > stopifnot(
 + (sims %>%
@@ -151,10 +151,10 @@ Warning message:
 'rmeasure' unspecified: NAs generated. 
 > sims %>%
 +   filter(.id<=4) %>%
-+   melt(id=c("time",".id")) %>%
-+   ggplot(aes(x=time,y=value,group=interaction(.id,variable)))+
++   pivot_longer(cols=-c(time,.id)) %>%
++   ggplot(aes(x=time,y=value,group=interaction(.id,name)))+
 +   geom_step()+
-+   facet_grid(variable~.id,scales="free_y")+
++   facet_grid(name~.id,scales="free_y")+
 +   labs(title="death process, Euler",subtitle=expression(mu==0.01))
 > stopifnot(
 + (sims %>%

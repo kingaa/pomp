@@ -71,10 +71,10 @@ Type 'q()' to quit R.
 + }
 > 
 > y %>%
-+   melt() %>%
-+   pivot_wider(time,names_from=variable) %>%
++   t() %>%
++   as.data.frame() %>%
 +   pfilter(
-+     times='time',t0=0,
++     times=t,t0=0,
 +     A=A,C=C,R=R,sqrtQ=sqrtQ,sqrtR=sqrtR,X0=X0,
 +     rprocess=discrete_time(
 +       step.fun=function(x1,x2,x3,x4,delta.t,...){
@@ -201,57 +201,55 @@ Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those 
 > 
 > enkf %>%
 +   as.data.frame() %>%
-+   melt(id.vars="time") %>%
-+   group_by(variable) %>%
++   pivot_longer(cols=-time) %>%
++   group_by(name) %>%
 +   summarize(n=length(value))
 # A tibble: 13 × 2
-   variable           n
-   <fct>          <int>
- 1 y1                20
- 2 y2                20
- 3 cond.logLik       20
- 4 pred.mean.x1      20
- 5 pred.mean.x2      20
- 6 pred.mean.x3      20
- 7 pred.mean.x4      20
- 8 filter.mean.x1    20
- 9 filter.mean.x2    20
-10 filter.mean.x3    20
-11 filter.mean.x4    20
-12 forecast.y1       20
-13 forecast.y2       20
+   name               n
+   <chr>          <int>
+ 1 cond.logLik       20
+ 2 filter.mean.x1    20
+ 3 filter.mean.x2    20
+ 4 filter.mean.x3    20
+ 5 filter.mean.x4    20
+ 6 forecast.y1       20
+ 7 forecast.y2       20
+ 8 pred.mean.x1      20
+ 9 pred.mean.x2      20
+10 pred.mean.x3      20
+11 pred.mean.x4      20
+12 y1                20
+13 y2                20
 > eakf %>%
 +   as.data.frame() %>%
-+   melt(id.vars="time") %>%
-+   group_by(variable) %>%
++   pivot_longer(cols=-time) %>%
++   group_by(name) %>%
 +   summarize(n=length(value))
 # A tibble: 13 × 2
-   variable           n
-   <fct>          <int>
- 1 y1                20
- 2 y2                20
- 3 cond.logLik       20
- 4 pred.mean.x1      20
- 5 pred.mean.x2      20
- 6 pred.mean.x3      20
- 7 pred.mean.x4      20
- 8 filter.mean.x1    20
- 9 filter.mean.x2    20
-10 filter.mean.x3    20
-11 filter.mean.x4    20
-12 forecast.y1       20
-13 forecast.y2       20
+   name               n
+   <chr>          <int>
+ 1 cond.logLik       20
+ 2 filter.mean.x1    20
+ 3 filter.mean.x2    20
+ 4 filter.mean.x3    20
+ 5 filter.mean.x4    20
+ 6 forecast.y1       20
+ 7 forecast.y2       20
+ 8 pred.mean.x1      20
+ 9 pred.mean.x2      20
+10 pred.mean.x3      20
+11 pred.mean.x4      20
+12 y1                20
+13 y2                20
 > 
 > enkf %>%
-+   forecast() %>%
-+   melt() %>%
++   forecast(format="d") %>%
 +   ggplot(aes(x=time,y=value,group=variable,color=variable))+
 +   geom_line()+theme_bw()+
 +   labs(title="EnKF forecasts")
 > 
 > eakf %>%
-+   forecast(vars=c("y1","y2")) %>%
-+   melt() %>%
++   forecast(vars=c("y1","y2"),format="d") %>%
 +   ggplot(aes(x=time,y=value,group=variable,color=variable))+
 +   geom_line()+theme_bw()+
 +   labs(title="EAKF forecasts")

@@ -1,32 +1,39 @@
 options(digits=3)
 
 library(pomp)
-library(magrittr)
 
-ou2() -> ou2
-
-po <- window(ou2,end=10)
+po <- window(ou2(),end=10)
 
 set.seed(3434388L)
-simulate(po,nsim=5,format="arrays") -> y
-y %>% extract2("states") -> x
-y %>% extract2("obs") %>% extract(,1,) -> y
+simulate(po,nsim=5,format="arrays") -> sm
+x <- sm$states
+y <- sm$obs[,1,]
 t <- time(po)
 p <- coef(po)
 
 dmeasure(po) -> L1
-stopifnot(dim(L1)==c(1,length(time(po))))
 dmeasure(po,x=x,y=y,times=t,params=p) -> L
-dmeasure(po,x=x,y=y,times=t,params=p,log=T) -> ll
-dmeasure(po,x=x,y=y,times=t,log=T,
+dmeasure(po,x=x,y=y,times=t,params=p,log=TRUE) -> ll
+dmeasure(po,x=x,y=y,times=t,log=TRUE,
   params=array(data=p,dim=length(p),dimnames=list(names(p)))) -> ll2
-dmeasure(po,x=array(data=x,dim=c(dim(x),1,1),
-  dimnames=list(rownames(x),NULL,NULL,NULL,NULL)),
-  y=y,times=t,log=T,
-  params=array(data=p,dim=length(p),dimnames=list(names(p)))) -> ll3
-dmeasure(po,x=array(data=x[,1,1],dim=nrow(x),dimnames=list(rownames(x))),
-  y=y[,1],times=t[1],params=p,log=TRUE) -> ll4
+dmeasure(
+  po,
+  x=array(data=x,dim=c(dim(x),1,1),
+    dimnames=list(rownames(x),NULL,NULL,NULL,NULL)),
+  y=y,
+  times=t,log=TRUE,
+  params=array(data=p,dim=length(p),dimnames=list(names(p)))
+) -> ll3
+dmeasure(
+  po,
+  x=array(data=x[,1,1],dim=nrow(x),dimnames=list(rownames(x))),
+  y=y[,1],
+  times=t[1],
+  params=p,
+  log=TRUE
+) -> ll4
 stopifnot(
+  dim(L1)==c(1,length(time(po))),
   all.equal(ll[,1:3],log(L[,1:3])),
   identical(dim(ll),c(5L,10L)),
   all.equal(ll,ll2),
@@ -114,16 +121,18 @@ sir() -> sir
 po <- window(sir,end=0.5)
 
 set.seed(3434388L)
-simulate(po,nsim=5,format="arrays") -> y
-y %>% extract2("states") -> x
-y %>% extract2("obs") %>% extract(,1,,drop=FALSE) -> y
+simulate(po,nsim=5,format="arrays") -> sm
+x <- sm$states
+y <- sm$obs[,1,,drop=FALSE]
 t <- time(po)
 p <- coef(po)
 
 po %>% dmeasure(x=x,y=y,params=p,times=t,log=TRUE) -> d
 po %>% rmeasure(x=x,params=p,times=t) -> yy
 
-po %>% pomp(dmeasure=function(...,log)1) %>% dmeasure(x=x,y=y,params=p,times=t) -> d
+po %>%
+  pomp(dmeasure=function(...,log)1) %>%
+  dmeasure(x=x,y=y,params=p,times=t) -> d
 
 try({
   pp <- p

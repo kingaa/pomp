@@ -23,7 +23,9 @@ Type 'q()' to quit R.
 Error : in 'flow': 'object' is a required argument.
 > try(flow("bob"))
 Error : 'flow' is undefined for 'object' of class 'character'.
+> 
 > sir() -> po
+> 
 > try(flow(po))
 Error : in 'flow': argument "x0" is missing, with no default
 > try(flow(po,t0=0))

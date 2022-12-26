@@ -1,52 +1,93 @@
-options(digits=3)
-png(filename="ou2-%02d.png",res=100)
-
 library(pomp)
-
-ou2() -> ou
+suppressPackageStartupMessages({
+  library(tidyr)
+  library(dplyr)
+  library(ggplot2)
+})
 
 set.seed(1438408329L)
 
-plot(ou)
-rinit(ou)
-coef(ou)
+png(filename="ou2-%02d.png",res=100)
 
-stopifnot(all.equal(coef(ou),partrans(ou,coef(ou,transform=TRUE),dir="from")))
-plot(s <- simulate(ou,seed=1438408329L))
-pf <- freeze(pfilter(ou,Np=1000),seed=1438408329L)
-plot(pf)
-kf <- freeze(enkf(ou,Np=1000),seed=1438408329L)
-plot(kf)
+ou2() -> po
+plot(po)
+
+stopifnot(
+  all.equal(
+    coef(po),
+    partrans(po,coef(po,transform=TRUE),dir="from")
+  ),
+  all.equal(
+    coef(po,transform=TRUE),
+    partrans(po,coef(po),dir="to")
+  )
+)
+
+pfilter(
+  po,
+  Np=1000,
+  filter.mean=TRUE,
+  pred.mean=TRUE,
+  pred.var=TRUE,
+  filter.traj=TRUE,
+  save.states=TRUE
+) -> pf
+
+plot(pf,yax.flip=TRUE)
+
+forecast(pf,format="d") -> fc
+simulate(pf) -> sm
+
+emeasure(pf) %>% melt() -> ef
+vmeasure(pf) %>% melt() -> vf
+vf %>% select(-time,-.id) %>% distinct()
+
+bind_rows(
+  sim=pf %>%
+    as.data.frame() %>%
+    pivot_longer(c(x1,x2,y1,y2),names_to="variable"),
+  forecast=fc,
+  filter=ef %>% select(-.id),
+  prediction=pred_mean(pf,format="d"),
+  filter=filter_mean(pf,format="d"),
+  .id="type"
+) %>%
+  ggplot(aes(x=time,y=value,color=factor(type)))+
+  geom_line()+
+  labs(color="")+
+  facet_wrap(~variable,scales="free_y")+
+  theme_bw()+theme(legend.position="top")
+
+enkf(po,Np=1000) -> kf
+plot(kf,yax.flip=TRUE)
+
+eakf(po,Np=1000) -> kf2
+plot(kf2,yax.flip=TRUE)
+
 Kf <- kalmanFilter(
-  ou,
-  X0=rinit(ou),
-  A=matrix(coef(ou,c("alpha_1","alpha_2","alpha_3","alpha_4")),2,2),
+  po,
+  A=matrix(coef(po,c("alpha_1","alpha_2","alpha_3","alpha_4")),2,2),
   Q={
-    q <- matrix(c(coef(ou,c("sigma_1","sigma_2")),0,coef(ou,"sigma_3")),2,2)
+    q <- matrix(c(coef(po,c("sigma_1","sigma_2")),0,coef(po,"sigma_3")),2,2)
     tcrossprod(q)
   },
   C=diag(2),
-  R=diag(coef(ou,"tau")^2,2)
+  R=diag(coef(po,"tau")^2,2)
 )
-tj <- trajectory(ou,format="a")
-matplot(time(ou),t(tj[,1,]),type="l",ylab="")
 
-d <- dprocess(s,x=states(s),params=coef(s),times=time(s),log=TRUE)
-plot(d[,],ylab="log prob")
-
-try(dprocess(s,x=states(s)[,c(1:9,15)],params=coef(s),times=time(s)[c(1:9,15)]))
-
-e <- emeasure(s,x=states(s),params=coef(s),times=time(s))
-matplot(time(s),t(obs(s)),xlab="",ylab="",col=1:2)
-matlines(time(s),t(apply(e,c(1,3),mean)),col=1:2)
-
-v <- vmeasure(s,x=states(s),params=coef(s),times=time(s))
 stopifnot(
-  dim(v)==c(2,2,1,100),
-  v[1,1,,]==v[2,2,,],
-  v[1,2,,]==v[2,1,,],
-  rownames(v)==c("y1","y2"),
-  colnames(v)==rownames(v)
+  abs(logLik(pf)+478.7)<0.5,
+  abs(logLik(kf)+477.1)<0.5,
+  abs(logLik(kf2)+476.3)<0.5,
+  abs(Kf$logLik+476.6)<0.5
+)
+
+trajectory(po) -> tj
+plot(tj)
+
+d <- dprocess(sm,log=TRUE)
+stopifnot(
+  abs(sum(d)+452.5)<0.5
 )
 
 dev.off()

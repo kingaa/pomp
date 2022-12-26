@@ -36,15 +36,13 @@ parus <- pomp(data=parus,time="year",t0=1959,
   statenames="N",paramnames=c("r","K","sigma"))
 
 ## ----logistic-simul1-----------------------------------------------------
-simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),format="arrays")$states
+simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),format="d")
 
 ## ----logistic-plot1,echo=FALSE-------------------------------------------
 library(tidyr)
 
 simStates %>%
-  melt() %>%
-  pivot_wider(names_from=variable) %>%
-  ggplot(mapping=aes(x=time,y=N,group=.id,color=factor(.id)))+
+  ggplot(mapping=aes(x=year,y=N,group=.id,color=factor(.id)))+
   geom_line()+
   guides(color="none")+
   theme_bw()
@@ -59,24 +57,21 @@ parus <- pomp(parus,rmeasure=rmeas,statenames="N")
 
 ## ----logistic-simul2-----------------------------------------------------
 sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),nsim=10,
-  format="arrays")
+  format="data.frame")
 
 ## ----logistic-plot2,echo=FALSE-------------------------------------------
 sim %>%
-  melt() %>%
-  ggplot(mapping=aes(x=time,y=value,group=.id,color=factor(.id)))+
+  pivot_longer(cols=c(N,pop)) %>%
+  ggplot(mapping=aes(x=year,y=value,group=.id,color=factor(.id)))+
   geom_line()+
   guides(color="none")+
   scale_y_sqrt()+
-  facet_grid(variable~.,scales="free_y")+
+  facet_grid(name~.,scales="free_y")+
   theme_bw()
 
 library(dplyr)
 
 sim %>%
-  melt() %>%
-  select(-L1) %>%
-  pivot_wider(names_from=variable) %>%
   ggplot(mapping=aes(x=N,y=pop,color=factor(.id)))+
   geom_point()+scale_x_sqrt()+scale_y_sqrt()+
   coord_equal()+

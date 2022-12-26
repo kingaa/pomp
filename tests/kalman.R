@@ -52,10 +52,10 @@ for (k in seq_along(t)) {
 }
 
 y %>%
-  melt() %>%
-  pivot_wider(time,names_from=variable) %>%
+  t() %>%
+  as.data.frame() %>%
   pfilter(
-    times='time',t0=0,
+    times=t,t0=0,
     A=A,C=C,R=R,sqrtQ=sqrtQ,sqrtR=sqrtR,X0=X0,
     rprocess=discrete_time(
       step.fun=function(x1,x2,x3,x4,delta.t,...){
@@ -137,25 +137,23 @@ invisible(eakf(pf,Np=1000,params=as.list(coef(pf))))
 
 enkf %>%
   as.data.frame() %>%
-  melt(id.vars="time") %>%
-  group_by(variable) %>%
+  pivot_longer(cols=-time) %>%
+  group_by(name) %>%
   summarize(n=length(value))
 eakf %>%
   as.data.frame() %>%
-  melt(id.vars="time") %>%
-  group_by(variable) %>%
+  pivot_longer(cols=-time) %>%
+  group_by(name) %>%
   summarize(n=length(value))
 
 enkf %>%
-  forecast() %>%
-  melt() %>%
+  forecast(format="d") %>%
   ggplot(aes(x=time,y=value,group=variable,color=variable))+
   geom_line()+theme_bw()+
   labs(title="EnKF forecasts")
 
 eakf %>%
-  forecast(vars=c("y1","y2")) %>%
-  melt() %>%
+  forecast(vars=c("y1","y2"),format="d") %>%
   ggplot(aes(x=time,y=value,group=variable,color=variable))+
   geom_line()+theme_bw()+
   labs(title="EAKF forecasts")

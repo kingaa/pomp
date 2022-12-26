@@ -2,6 +2,9 @@ options(digits=3)
 png(filename="kalman2-%02d.png",res=100)
 
 library(pomp)
+suppressPackageStartupMessages({
+  library(tidyr)
+})
 
 set.seed(1968726372)
 
@@ -53,7 +56,49 @@ dat %>%
 kf %>% plot()
 
 kf %>% as.data.frame() %>% names()
-kf %>% melt(id="time") %>% names()
+kf %>% as.data.frame() %>% pivot_longer(-time) %>% names()
+kf %>% forecast() %>% melt() %>% sapply(class)
+kf %>% forecast(format="d") %>% sapply(class)
+kf %>% filter_mean() %>% melt() %>% sapply(class)
+kf %>% filter_mean(format="d") %>% sapply(class)
+kf %>% pred_mean() %>% melt() %>% sapply(class)
+kf %>% pred_mean(format="d") %>% sapply(class)
+try(kf %>% pred_var() %>% melt() %>% sapply(class))
+try(kf %>% pred_var(format="d") %>% sapply(class))
+try(kf %>% filter_traj() %>% melt() %>% sapply(class))
+try(kf %>% filter_traj(format="d") %>% sapply(class))
+try(kf %>% saved_states() %>% melt() %>% sapply(class))
+try(kf %>% saved_states(format="d") %>% sapply(class))
+try(kf %>% forecast(format="l"))
+
+kf %>% forecast(format="a") %>% melt() -> kdat1a
+kf %>% filter_mean(format="a") %>% melt() -> kdat2a
+kf %>% pred_mean(format="a") %>% melt() -> kdat3a
+try(kf %>% filter_traj(format="a") %>% melt() -> kdat4a)
+try(kf %>% eff_sample_size(format="n") %>% melt() -> kdat5a)
+kf %>% cond_logLik(format="n") %>% melt() -> kdat6a
+try(kf %>% saved_states(format="l") %>% melt() -> kdat7a)
+kf %>% as.data.frame() -> kdat0
+kf %>% forecast(format="d") -> kdat1
+kf %>% filter_mean(format="d") -> kdat2
+kf %>% pred_mean(format="d") -> kdat3
+try(kf %>% filter_traj(format="d") -> kdat4)
+try(kf %>% eff_sample_size(format="d") -> kdat5)
+kf %>% cond_logLik(format="d") -> kdat6
+try(kf %>% saved_states(format="d") -> kdat7)
+stopifnot(
+  all(kdat0$forecast.Y==kdat1$value),
+  all(kdat0$filter.mean.x==kdat2$value),
+  all(kdat0$pred.mean.x==kdat3$value),
+  all(kdat0$cond.logLik==kdat6$value),
+  all.equal(kdat1$time,as.numeric(kdat1a$time)),
+  all.equal(kdat2$time,as.numeric(kdat2a$time)),
+  all.equal(kdat3$time,as.numeric(kdat3a$time)),
+  all.equal(kdat1$value,kdat1a$value),
+  all.equal(kdat2$value,kdat2a$value),
+  all.equal(kdat3$value,kdat3a$value),
+  all.equal(kdat6$cond.logLik,kdat6a$value)
+)
 
 try(po %>% enkf(rprocess=NULL))
 try(po %>% eakf(rprocess=NULL))

@@ -47,8 +47,20 @@ Error : in 'plot': unrecognized parameters: 'bob'
 > plot(smc,pars="K")
 > try(plot(smc,pars=NULL))
 Error : in 'plot': no parameters to plot.
-> stopifnot(sum(cond_logLik(smc))==logLik(smc))
-> stopifnot(length(eff_sample_size(smc)) == 10)
+> stopifnot(
++   sum(cond_logLik(smc))==logLik(smc),
++   length(eff_sample_size(smc)) == 10
++ )
+> smc |> eff_sample_size(format="d") |> names()
+[1] "time"            "eff.sample.size"
+> smc |> eff_sample_size(format="d") |> sapply(class)
+           time eff.sample.size 
+      "numeric"       "numeric" 
+> smc |> cond_logLik(format="d") |> names()
+[1] "time"              "cond_log.evidence"
+> smc |> cond_logLik(format="d") |> sapply(class)
+             time cond_log.evidence 
+        "numeric"         "numeric" 
 > 
 > try(bsmc2())
 Error : in 'bsmc2': 'data' is a required argument.
