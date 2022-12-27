@@ -66,7 +66,7 @@ static double dens_ou2 (double x1, double x2, double z1, double z2,
 // onestep simulator for use in 'discrete.time.sim' plug-in
 void _ou2_step (double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
-  int ncov, const double *covars, double t, double dt)
+  const double *covars, double t, double deltat)
 {
   sim_ou2(&x[X1],&x[X2],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3);
 }

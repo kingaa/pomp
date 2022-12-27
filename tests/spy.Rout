@@ -60,7 +60,7 @@ pomp object 'po1':
 - process-model simulator, rprocess: discrete-time process-model simulator
   - timestep = 1 
   - step.fun: native function
-  - name: '_gompertz_simulator'
+  - name: '_gompertz_step'
   - dynamically loaded from: 'pomp'
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
@@ -130,7 +130,7 @@ params
 - process-model simulator, rprocess: discrete-time process-model simulator
   - timestep = 1 
   - step.fun: native function
-  - name: '_gompertz_simulator'
+  - name: '_gompertz_step'
   - dynamically loaded from: 'pomp'
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: native function
@@ -165,8 +165,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2022-11-21 11:29:56.097 -0500 */
-/* Salt: 75D0A6FF391A595F42D5A1CC */
+/* Time: 2022-12-27 12:14:01.550 -0500 */
+/* Salt: 8623E1CFB0FCED6DE7645933 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -289,8 +289,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2022-11-21 11:29:56.201 -0500 */
-/* Salt: C5F7BC449EDF93C21DD71CDC */
+/* Time: 2022-12-27 12:14:01.658 -0500 */
+/* Salt: 9CD4D0983E40EA9A37AE568C */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -450,7 +450,7 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, con
 #define W		(__x[__stateindex[4]])
 #define reports		(__y[__obsindex[0]])
 
-void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
+void __pomp_rmeasure (double *__y, double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
       reports = rnbinom_mu(1.0/k,cases*rho); 
@@ -500,7 +500,7 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #define reports		(__y[__obsindex[0]])
 #define lik		(__lik[0])
 
-void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
+void __pomp_dmeasure (double *__lik, const double *__y, double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
       lik = dnbinom_mu(nearbyint(reports),1.0/k,cases*rho,give_log); 
@@ -924,8 +924,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2022-11-21 11:29:56.714 -0500 */
-/* Salt: AEFCD498E5EC079BCE478B64 */
+/* Time: 2022-12-27 12:14:02.190 -0500 */
+/* Salt: 3139A94B9D6CEC560C9AFABF */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -989,7 +989,7 @@ void __pomp_dproc (double *__loglik, const double *__x1, const double *__x2, dou
 #define y1		(__y[__obsindex[0]])
 #define y2		(__y[__obsindex[1]])
 
-void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
+void __pomp_rmeasure (double *__y, double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
         y1 = rnorm(x1,tau);
@@ -1014,7 +1014,7 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #define y2		(__y[__obsindex[1]])
 #define lik		(__lik[0])
 
-void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
+void __pomp_dmeasure (double *__lik, const double *__y, double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
         lik = dnorm(y1,x1,tau,1)+dnorm(y2,x2,tau,1);
@@ -1180,8 +1180,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2022-11-21 11:29:57.198 -0500 */
-/* Salt: 691F2996897CB96A4A61BA59 */
+/* Time: 2022-12-27 12:14:02.674 -0500 */
+/* Salt: 3A73CE2476F9E556A91ABBBA */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1360,7 +1360,7 @@ break;
 #define cases		(__x[__stateindex[4]])
 #define reports		(__y[__obsindex[0]])
 
-void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
+void __pomp_rmeasure (double *__y, double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
       reports = rnbinom_mu(1.0/k,cases*rho); 
@@ -1412,7 +1412,7 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #define reports		(__y[__obsindex[0]])
 #define lik		(__lik[0])
 
-void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
+void __pomp_dmeasure (double *__lik, const double *__y, double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
 {
  
       lik = dnbinom_mu(nearbyint(reports),1.0/k,cases*rho,give_log); 

@@ -5,8 +5,8 @@ extern SEXP periodic_bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP period
 extern void periodic_bspline_basis_eval(double x, double period, int degree, int nbasis, double *y);
 extern void periodic_bspline_basis_eval_deriv(double x, double period, int degree, int nbasis, int deriv, double *y);
 /* src/distributions.c */
-extern SEXP R_Euler_Multinom(SEXP n, SEXP size, SEXP rate, SEXP Rf_dt);
-extern SEXP D_Euler_Multinom(SEXP x, SEXP size, SEXP rate, SEXP Rf_dt, SEXP log);
+extern SEXP R_Euler_Multinom(SEXP n, SEXP size, SEXP rate, SEXP deltat);
+extern SEXP D_Euler_Multinom(SEXP x, SEXP size, SEXP rate, SEXP deltat, SEXP log);
 extern SEXP R_GammaWN(SEXP n, SEXP sigma, SEXP deltat);
 extern SEXP R_BetaBinom(SEXP n, SEXP size, SEXP prob, SEXP theta);
 extern SEXP D_BetaBinom(SEXP x, SEXP size, SEXP prob, SEXP theta, SEXP log);
@@ -20,14 +20,14 @@ extern SEXP do_dprocess(SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, 
 extern SEXP do_emeasure(SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi);
 /* src/euler.c */
 extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params, double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi);
-extern int num_euler_steps(double t1, double t2, double *Rf_dt);
-extern int num_map_steps(double t1, double t2, double Rf_dt);
+extern int num_euler_steps(double t1, double t2, double *deltat);
+extern int num_map_steps(double t1, double t2, double deltat);
 /* src/gompertz.c */
 extern void _gompertz_normal_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_normal_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_normal_emeasure(double *f, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _gompertz_normal_vmeasure(double *f, double *x, double *p, int *vmatindex, int *stateindex, int *parindex, int *covindex, double *covars, double t);
-extern void _gompertz_simulator(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t, double Rf_dt);
+extern void _gompertz_step(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, const double *covar, double t, double deltat);
 extern void _gompertz_skeleton(double *f, double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, const double *covar, double t);
 extern void _gompertz_to_trans(double *__pt, const double *__p, const int *__parindex);
 extern void _gompertz_from_trans(double *__p, const double *__pt, const int *__parindex);
@@ -41,7 +41,7 @@ extern void table_lookup(lookup_table_t *tab, double x, double *y);
 /* src/mif2.c */
 extern SEXP randwalk_perturbation(SEXP params, SEXP rw_sd);
 /* src/ou2.c */
-extern void _ou2_step(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int ncov, const double *covars, double t, double Rf_dt);
+extern void _ou2_step(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, const double *covars, double t, double deltat);
 extern void _ou2_pdf(double *f, double *x, double *z, double t1, double t2, const double *p, const int *stateindex, const int *parindex, const int *covindex, const double *covars);
 extern void _ou2_skel(double *f, double *x, double *p, int *stateindex, int *parindex, int *covindex, double *covars, double t);
 extern void _ou2_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, double *covar, double t);

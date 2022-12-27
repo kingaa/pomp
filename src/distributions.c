@@ -4,31 +4,31 @@
 
 #include "pomp_internal.h"
 
-static void reulermultinom_multi (int *n, int *ntrans, double *size, double *rate, double *dt, double *trans) {
+static void reulermultinom_multi (int *n, int *ntrans, double *size, double *rate, double *deltat, double *trans) {
   int k;
   int m = *ntrans;
   for (k = 0; k < *n; k++) {
-    reulermultinom(*ntrans,*size,rate,*dt,trans);
+    reulermultinom(*ntrans,*size,rate,*deltat,trans);
     trans += m;
   }
 }
 
-static void deulermultinom_multi (int *n, int *ntrans, double *size, double *rate, double *dt, double *trans, int *give_log, double *f) {
+static void deulermultinom_multi (int *n, int *ntrans, double *size, double *rate, double *deltat, double *trans, int *give_log, double *f) {
   int k;
   int m = *ntrans;
   for (k = 0; k < *n; k++) {
-    f[k] = deulermultinom(*ntrans,*size,rate,*dt,trans,*give_log);
+    f[k] = deulermultinom(*ntrans,*size,rate,*deltat,trans,*give_log);
     trans += m;
   }
 }
 
-SEXP R_Euler_Multinom (SEXP n, SEXP size, SEXP rate, SEXP dt) {
+SEXP R_Euler_Multinom (SEXP n, SEXP size, SEXP rate, SEXP deltat) {
   int ntrans = length(rate);
   int dim[2];
   SEXP nn, x, nm;
   if (length(size)>1)
     warn("in 'reulermultinom': only the first element of 'size' is meaningful");
-  if (length(dt)>1)
+  if (length(deltat)>1)
     warn("in 'reulermultinom': only the first element of 'dt' is meaningful");
   PROTECT(nn = AS_INTEGER(n));
   dim[0] = ntrans;
@@ -37,13 +37,13 @@ SEXP R_Euler_Multinom (SEXP n, SEXP size, SEXP rate, SEXP dt) {
   PROTECT(nm = GET_NAMES(rate));
   setrownames(x,nm,2);
   GetRNGstate();
-  reulermultinom_multi(INTEGER(nn),&ntrans,REAL(size),REAL(rate),REAL(dt),REAL(x));
+  reulermultinom_multi(INTEGER(nn),&ntrans,REAL(size),REAL(rate),REAL(deltat),REAL(x));
   PutRNGstate();
   UNPROTECT(3);
   return x;
 }
 
-SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP dt, SEXP log) {
+SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP deltat, SEXP log) {
   int ntrans = length(rate);
   int *dim, n;
   SEXP f;
@@ -53,10 +53,10 @@ SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP dt, SEXP log) {
   n = dim[1];
   if (length(size)>1)
     warn("in 'deulermultinom': only the first element of 'size' is meaningful");
-  if (length(dt)>1)
+  if (length(deltat)>1)
     warn("in 'deulermultinom': only the first element of 'dt' is meaningful");
   PROTECT(f = NEW_NUMERIC(n));
-  deulermultinom_multi(&n,&ntrans,REAL(size),REAL(rate),REAL(dt),REAL(x),INTEGER(log),REAL(f));
+  deulermultinom_multi(&n,&ntrans,REAL(size),REAL(rate),REAL(deltat),REAL(x),INTEGER(log),REAL(f));
   UNPROTECT(1);
   return f;
 }

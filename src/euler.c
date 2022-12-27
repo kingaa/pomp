@@ -234,52 +234,46 @@ SEXP euler_model_simulator (
 
         switch (mode) {
 
-        case Rfun: {
+        case Rfun:
+	  {
+	    SEXP ans, nm;
 
-          SEXP ans, nm;
+	    if (first) {
 
-          if (first) {
+	      PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
 
-            PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
+	      PROTECT(nm = GET_NAMES(ans));
+	      if (invalid_names(nm))
+		err("'rprocess' must return a named numeric vector.");
+	      pidx = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
 
-            PROTECT(nm = GET_NAMES(ans));
-            if (invalid_names(nm))
-              err("'rprocess' must return a named numeric vector.");
-            pidx = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
+	      nprotect += 3;
 
-            nprotect += 3;
+	      ap = REAL(AS_NUMERIC(ans));
+	      for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
 
-            ap = REAL(AS_NUMERIC(ans));
-            for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
+	      first = 0;
 
-            first = 0;
+	    } else {
 
-          } else {
+	      PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
 
-            PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
+	      ap = REAL(AS_NUMERIC(ans));
+	      for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
 
-            ap = REAL(AS_NUMERIC(ans));
-            for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
+	      UNPROTECT(1);
 
-            UNPROTECT(1);
-
-          }
-
-        }
-
+	    }
+	  }
           break;
 
-        case native: case regNative: {
-
-          (*ff)(xm,pm,sidx,pidx,cidx,cov,t,dt);
-
-        }
-
+        case native: case regNative:
+	  (*ff)(xm,pm,sidx,pidx,cidx,cov,t,dt);
           break;
 
-        default: // # nocov
-
-          err("unrecognized 'mode' %d",mode); // # nocov
+        default:			      // #nocov
+          err("unrecognized 'mode' %d",mode); // #nocov
+	  break;			      // #nocov
 
         }
 
@@ -322,35 +316,35 @@ SEXP euler_model_simulator (
 
 }
 
-int num_euler_steps (double t1, double t2, double *dt) {
+int num_euler_steps (double t1, double t2, double *deltat) {
   double tol = sqrt(DBL_EPSILON);
   int nstep;
   // nstep will be the number of Euler steps to take in going from t1 to t2.
   // note also that the stepsize changes.
   // this choice is meant to be conservative
-  // (i.e., so that the actual dt does not exceed the specified dt
+  // (i.e., so that the actual deltat does not exceed the specified deltat
   // by more than the relative tolerance 'tol')
   // and to counteract roundoff error.
   // It seems to work well, but is not guaranteed:
   // suggestions would be appreciated.
 
   if (t1 >= t2) {
-    *dt = 0.0;
+    *deltat = 0.0;
     nstep = 0;
-  } else if (t1+*dt >= t2) {
-    *dt = t2-t1;
+  } else if (t1+*deltat >= t2) {
+    *deltat = t2-t1;
     nstep = 1;
   } else {
-    nstep = (int) ceil((t2-t1)/(*dt)/(1+tol));
-    *dt = (t2-t1)/((double) nstep);
+    nstep = (int) ceil((t2-t1)/(*deltat)/(1+tol));
+    *deltat = (t2-t1)/((double) nstep);
   }
   return nstep;
 }
 
-int num_map_steps (double t1, double t2, double dt) {
+int num_map_steps (double t1, double t2, double deltat) {
   double tol = sqrt(DBL_EPSILON);
   int nstep;
   // nstep will be the number of discrete-time steps to take in going from t1 to t2.
-  nstep = (int) floor((t2-t1)/dt/(1-tol));
+  nstep = (int) floor((t2-t1)/deltat/(1-tol));
   return (nstep > 0) ? nstep : 0;
 }

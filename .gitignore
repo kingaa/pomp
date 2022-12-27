@@ -18,6 +18,7 @@
 *.gcda
 *.gcno
 tests/*.pdf
+scripts
 lib
 library
 check

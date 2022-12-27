@@ -52,9 +52,7 @@ gompertz <- function (K = 1, r = 0.1, sigma = 0.1, tau = 0.1, X_0 = 1,
       toEst="_gompertz_to_trans",
       fromEst="_gompertz_from_trans"
     ),
-    rprocess=discrete_time(
-      step.fun="_gompertz_simulator"
-    ),
+    rprocess=discrete_time("_gompertz_step",delta.t=1),
     emeasure="_gompertz_normal_emeasure",
     vmeasure="_gompertz_normal_vmeasure",
     rmeasure="_gompertz_normal_rmeasure",
