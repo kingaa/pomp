@@ -1,6 +1,3 @@
-params <-
-list(prefix = "oaxaca")
-
 ## ----opts,include=FALSE,cache=FALSE-------------------------------------------
 options(stringsAsFactors=FALSE)
 library(ggplot2)
@@ -209,7 +206,7 @@ options(ops)
 ## ----birthdat,eval=T,echo=F,results="hide"------------------------------------
 ##' Construct some fake birthrate data.
 birthdat <- data.frame(time=seq(-1,11,by=1/12))
-birthdat$births <- 5e5*bspline.basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
+birthdat$births <- 5e5*bspline_basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
 birthdat$births <- freeze(seed=5853712L,{
   ceiling(rlnorm(n=nrow(birthdat),meanlog=log(birthdat$births),sdlog=0.001))})
 
@@ -288,7 +285,7 @@ logmeanexp(ll,se=TRUE)
 ## ----parus-mif1---------------------------------------------------------------
 mif2(parus, Nmif=30, Np=1000, 
      cooling.fraction.50=0.8,cooling.type="geometric",
-     rw.sd=rw.sd(r=0.02,sigma=0.02,phi=0.02,N_0=ivp(0.1))
+     rw.sd=rw_sd(r=0.02,sigma=0.02,phi=0.02,N_0=ivp(0.1))
 ) -> mf
 
 plot(mf)
@@ -314,10 +311,10 @@ ggplot(sims,
 ## ----parus-probe1,fig.height=6,fig.width=6------------------------------------
 probe(mf, nsim=200, 
       probes=list(
-        mean=probe.mean("pop"),
-        sd=probe.sd("pop"),
-        probe.acf("pop",transform=sqrt,lags=c(1,2)),
-        probe.quantile("pop",prob=c(0.2,0.8))
+        mean=probe_mean("pop"),
+        sd=probe_sd("pop"),
+        probe_acf("pop",transform=sqrt,lags=c(1,2)),
+        probe_quantile("pop",prob=c(0.2,0.8))
       )) -> pb
       
 plot(pb)
@@ -344,7 +341,7 @@ priorDens <- "
 pmcmc(pomp(mf, dprior=Csnippet(priorDens),
            paramnames=c("sigma","phi","r")),
       Nmcmc = 500, Np = 1000, 
-      proposal = mvn.diag.rw(
+      proposal = mvn_diag_rw(
         rw.sd=c(N_0=0.1, sigma=0.02, r=0.02, phi=0.02)
       )) -> pmh
 

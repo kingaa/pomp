@@ -257,18 +257,18 @@ code {
 <p>Using each implementation, we’ll now run a number of simulations and compare the amount of time required.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">system.time</span>(<span class="kw">simulate</span>(gompertz,<span class="dt">nsim=</span><span class="dv">10000</span>,<span class="dt">format=</span><span class="st">&quot;arrays&quot;</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   7.402   0.029   7.430</code></pre>
+##   6.545   0.063   6.608</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">system.time</span>(<span class="kw">simulate</span>(Gompertz,<span class="dt">nsim=</span><span class="dv">10000</span>,<span class="dt">format=</span><span class="st">&quot;arrays&quot;</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.169   0.004   0.173</code></pre>
+##   0.156   0.004   0.160</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">system.time</span>(<span class="kw">pfilter</span>(gompertz,<span class="dt">Np=</span><span class="dv">10000</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   6.352   0.005   6.358</code></pre>
+##   5.844   0.026   5.868</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">system.time</span>(<span class="kw">pfilter</span>(Gompertz,<span class="dt">Np=</span><span class="dv">10000</span>))</a></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.207   0.008   0.215</code></pre>
+##   0.202   0.007   0.209</code></pre>
 <hr />
-<p>This document was produced using <strong>pomp</strong> version 4.4.0.0 and <strong>R</strong> version 4.2.2.</p>
+<p>This document was produced using <strong>pomp</strong> version 4.5.1.2 and <strong>R</strong> version 4.2.2.</p>
 </div>
 
 

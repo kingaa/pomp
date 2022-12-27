@@ -167,7 +167,7 @@ For example, in one of the examples, we see
 cbind(
   time=seq(from=1928,to=1934,by=0.01),
   as.data.frame(
-    periodic.bspline.basis(
+    periodic_bspline_basis(
       x=seq(from=1928,to=1934,by=0.01),
       nbasis=3,
       degree=3,
@@ -201,7 +201,7 @@ pomp(
   ...,
   covar=covariate_table(
     t=seq(from=1928,to=1934,by=0.01),
-    seas=periodic.bspline.basis(t,nbasis=3,degree=3,period=1),
+    seas=periodic_bspline_basis(t,nbasis=3,degree=3,period=1),
     pop=dat$population,
     times="t"
   ),
@@ -572,7 +572,7 @@ library(tidyverse)
 
 data.frame(time=seq(-1,11,by=1/12)) %>%
   mutate(
-    birthrate=5e5*bspline.basis(time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
+    birthrate=5e5*bspline_basis(time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
   ) -> birthdat
 ```
 ```{r sir_snips,eval=TRUE}

@@ -65,7 +65,7 @@
 \Crefname{AlgoLine}{Line}{Lines}
 
 \author{Aaron A. King\\University of Michigan \And
-  Dao Nguyen\\University of Michigan \And
+  Dao Nguyen\\University of Mississippi \And
   Edward L. Ionides\\University of Michigan}
 \Plainauthor{Aaron A. King, Dao Nguyen, Edward L. Ionides}
 
@@ -95,15 +95,21 @@
   Departments of Ecology \& Evolutionary Biology and Mathematics\\
   Center for the Study of Complex Systems\\
   University of Michigan\\
-  48109 Michigan, United States of America\\
+  Ann Arbor, MI 48109, United States of America\\
   E-mail: \email{kingaa@umich.edu}\\
   URL: \url{https://kinglab.eeb.lsa.umich.edu/}\\
 
-  Dao Nguyen, Edward Ionides\\
+  Dao Nguyen\\
+  Department of Mathematics\\
+  University of Mississippi\\
+  University, MI 38677, United States of America\\
+  E-mail: \email{dxnguyen@olemiss.edu}\\
+
+  Edward Ionides\\
   Department of Statistics\\
   University of Michigan\\
-  48109 Michigan, United States of America\\
-  E-mail: \email{nguyenxd@umich.edu}, \email{ionides@umich.edu}\\
+  Ann Arbor, MI 48109, United States of America\\
+  E-mail: \email{ionides@umich.edu}\\
   URL: \url{https://www.stat.lsa.umich.edu/~ionides/}\\
 
 }
@@ -117,7 +123,7 @@ library("tidyverse")
 library("grid")
 library("xtable")
 
-stopifnot(packageVersion("pomp")>="4.2")
+stopifnot(packageVersion("pomp")>="4.5.1")
 
 <<set-opts,include=FALSE,cache=FALSE>>=
 options(
@@ -150,8 +156,8 @@ opts_chunk$set(
              results="markup",
              background="#FFFFFF00",
              size="normalsize",
-             fig.path="tmp/figure/pompjss/",
-             cache.path="tmp/cache/pompjss/",
+             fig.path="tmp/pompjss/figure/",
+             cache.path="tmp/pompjss/cache/",
              fig.lp="fig:",
              fig.align="left",
              fig.show="asis",
@@ -580,7 +586,7 @@ This approach has been used in a variety of previously proposed POMP methodologi
 \begin{algorithm}[t!]
   \caption{
     \textbf{Particle Markov chain Monte Carlo}:
-    \texttt{pmcmc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, Np{\argequals}$J$, proposal{\argequals}mvn.rw($V$))},
+    \texttt{pmcmc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, Np{\argequals}$J$, proposal{\argequals}mvn\_rw($V$))},
     using notation from \cref{tab:notation}
     where \code{P} is a class-\class{pomp} object with defined methods for
     \code{rprocess}, \code{dmeasure}, \code{rinit}, \code{dprior}, and \code{obs}.
@@ -704,7 +710,7 @@ Numerical optimization of the synthetic likelihood is achieved via the \code{pro
   \caption{
     \textbf{Approximate Bayesian computation}:
     \protect
-    \texttt{abc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, probes{\argequals}$\featureFunc$, scale{\argequals}$\tau_{1:\Nprobe}$, proposal{\argequals}mvn.rw($V$), epsilon{\argequals}$\epsilon$)},
+    \texttt{abc(P, params{\argequals}$\theta_0$, Nmcmc{\argequals}$M$, probes{\argequals}$\featureFunc$, scale{\argequals}$\tau_{1:\Nprobe}$, proposal{\argequals}mvn\_rw($V$), epsilon{\argequals}$\epsilon$)},
     using notation from \cref{tab:notation}, where
     \code{P} is a class-\class{pomp} object with defined methods for
     \code{rprocess}, \code{rmeasure}, \code{rinit}, \code{dprior}, and \code{obs}.
@@ -1130,7 +1136,7 @@ theta.guess[estpars] <- rlnorm(n = length(estpars),
 <<gompertz-mif-inner2,echo=FALSE,eval=FALSE,purl=FALSE>>=
 mif2(gomp, Nmif = 100, params = theta.guess, Np = 2000,
   cooling.fraction.50 = 0.7,
-  rw.sd = rw.sd(r=0.02, sigma=0.02,tau=0.02))
+  rw.sd = rw_sd(r=0.02, sigma=0.02,tau=0.02))
 @
 <<gompertz-mif-inner3,echo=FALSE,eval=FALSE,purl=FALSE>>=
 pf <- replicate(n = 10, logLik(pfilter(mf, Np = 10000)))
@@ -1312,7 +1318,7 @@ The following adopts this approach, running 5 independent PMCMC chains using a m
 <<pmcmc-inner,eval=FALSE,purl=FALSE,echo=FALSE>>=
 pmcmc(gomp, dprior = gompertz.dprior, params = theta.mif,
       Nmcmc = 40000, Np = 100,
-      proposal = mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
+      proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
 <<pmcmc-demo,eval=FALSE,purl=FALSE,echo=TRUE>>=
 pmcmc1 <- foreach(i = 1:5, .combine = c) %dopar% {
   <<pmcmc-inner>>
@@ -1477,9 +1483,9 @@ We construct a list of probes:
 ##' We'll need a list of summary statistics ('probes').
 ##' The following are among those recommended by Wood (2010).
 <<probe-list>>=
-plist <- list(probe.marginal("y", ref = obs(rick), transform = sqrt),
-              probe.acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
-              probe.nlar("y", lags = c(1, 1, 1, 2), powers = c(1, 2, 3, 1),
+plist <- list(probe_marginal("y", ref = obs(rick), transform = sqrt),
+              probe_acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
+              probe_nlar("y", lags = c(1, 1, 1, 2), powers = c(1, 2, 3, 1),
                          transform = sqrt))
 @
 Each element of \code{plist} is a function of a single argument.
@@ -1508,9 +1514,9 @@ plot(pb.guess)
 pb <- probe(
   rick,
   probes=list(
-    probe.marginal("y",ref=obs(rick),transform=sqrt,order=2),
-    probe.acf("y",lags=c(0,3),transform=sqrt),
-    mean=probe.mean("y",transform=sqrt)
+    probe_marginal("y",ref=obs(rick),transform=sqrt,order=2),
+    probe_acf("y",lags=c(0,3),transform=sqrt),
+    mean=probe_mean("y",transform=sqrt)
   ),
   nsim=1000,
   seed=803306074L
@@ -1557,7 +1563,7 @@ To put the synthetic likelihood approach into context, let us compare the result
 The following code runs 600 IF iterations starting at \code{guess}:
 <<ricker-mif-calc,eval=FALSE,purl=FALSE>>=
 mf <- mif2(pb.guess,Nmif=100,Np=1000,cooling.fraction.50 = 0.08,
-  rw.sd = rw.sd(r = 0.1, sigma = 0.1, phi = 0.1))
+  rw.sd = rw_sd(r = 0.1, sigma = 0.1, phi = 0.1))
 mf <- continue(mf, Nmif = 500)
 <<ricker-mif-eval,echo=FALSE,eval=TRUE,cache=FALSE,results="hide">>=
 ##' Now, for comparison, run 600 'mif' iterations.
@@ -1643,16 +1649,16 @@ A consequence of this is that ABC cannot determine a good relative scaling of th
 One can imagine an adaptive version of ABC which modifies the scaling during the course of the algorithm, but here we do a preliminary calculation to accomplish this.
 We return to the Gompertz model to faciliate comparison between ABC and PMCMC.
 <<abc-load,eval=FALSE,purl=FALSE,echo=FALSE>>=
-plist <- list(probe.mean(var = "Y", transform = sqrt),
-              probe.acf("Y", lags = c(0, 5, 10, 20)),
-              probe.marginal("Y", ref = obs(gomp)))
+plist <- list(probe_mean(var = "Y", transform = sqrt),
+              probe_acf("Y", lags = c(0, 5, 10, 20)),
+              probe_marginal("Y", ref = obs(gomp)))
 psim <- probe(gomp, probes = plist, nsim = 500)
 scale.dat <- apply(psim@simvals, 2, sd)
 @
 <<abc-inner,eval=FALSE,purl=FALSE,echo=FALSE>>=
 abc(pomp(gomp, dprior = gompertz.dprior), Nabc = 4e6,
     probes = plist, epsilon = 2, scale = scale.dat,
-    proposal = mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
+    proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
 @
 <<abc-demo,eval=FALSE,purl=FALSE,tidy=FALSE>>=
 <<abc-load>>
@@ -1772,13 +1778,13 @@ Carrying out a simulation study with a correctly specified POMP model is appropr
 The \code{nlf} implementation we will use to compare to the \code{mif} call from \cref{sec:gompertz:mif} is
 <<first-nlf,eval=FALSE,purl=FALSE>>=
 nlf1 <- nlf_objfun(gomp, ti=100, tf=4000, lags = c(2, 3),
-            start = c(r = 1, K = 2, sigma = 0.5, tau = 0.5, X.0 = 1),
-            est = c("r", "sigma", "tau"))
+  params = c(r = 1, K = 2, sigma = 0.5, tau = 0.5, X.0 = 1),
+  est = c("r", "sigma", "tau"))
 subplex(par = c(r=0.2, sigma=0.15, tau=0.08), fn=nlf1, control=list(reltol=1e-4)) -> nlf1_out
 nlf1(nlf1_out$par)
 @
 where the first argument is the class-\class{pomp} object,
-\code{start} is a vector containing model parameters at which \code{nlf}'s search will begin,
+\code{params} is a vector containing model parameters at which \code{nlf}'s search will begin,
 \code{est} contains the names of parameters \code{nlf} will estimate, and
 \code{lags} specifies which past values are to be used in the autoregressive model.
 The \code{transform = TRUE} setting causes the optimization to be performed on the transformed scale, as in \cref{sec:gompertz:mif}.
@@ -1811,9 +1817,10 @@ stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   registerDoParallel()
 
   tic <- Sys.time()
-  cmp1 <- foreach(gomp=gompList,
-                  .inorder=FALSE,.packages="pomp",.combine=rbind,
-                  .options.multicore=list(set.seed=TRUE)
+  cmp1 <- foreach(
+    gomp=gompList,
+    .inorder=FALSE,.packages=c("pomp","subplex"),.combine=rbind,
+    .options.multicore=list(set.seed=TRUE)
   ) %dopar% {
     true.lik <- pfilter(gomp,Np=1000)
     true.nlf <- nlf_objfun(gomp,
@@ -1825,8 +1832,8 @@ stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   theta.guess <- coef(gomp)
 
   tic <- Sys.time()
-  mif1 <- mif2(gomp,Nmif=100,start=theta.guess,
-    rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),Np=1000,
+  mif1 <- mif2(gomp,Nmif=100,params=theta.guess,
+    rw.sd=rw_sd(r=0.02,sigma=0.02,tau=0.05),Np=1000,
     cooling.type="geometric",cooling.fraction=0.5)
   mif.lik <- pfilter(mif1,Np=10000)
   toc <- Sys.time()
@@ -2210,7 +2217,7 @@ from the user's perspective, a variable \code{births} will simply be available f
 <<birthdat,eval=TRUE,echo=FALSE,results="hide">>=
 ##' Construct some fake birthrate data.
 birthdat <- data.frame(time=seq(-1,11,by=1/12))
-birthdat$births <- 5e5*bspline.basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
+birthdat$births <- 5e5*bspline_basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
 freeze(seed=5853712L,{
   birthdat$births <- ceiling(rlnorm(
     n=nrow(birthdat),

@@ -2,9 +2,6 @@
 title: Measles in large and small populations
 subtitle: A pomp example
 author: Aaron A. King
-date: 2019-01-02
-params:
-  prefix: he2010
 output:
   html_document:
     theme: default
@@ -24,7 +21,8 @@ csl: jss.csl
 
 ---
 
-Licensed under the Creative Commons attribution-noncommercial license, http://creativecommons.org/licenses/by-nc/3.0/.
+The **R** codes in this script are `r xfun::embed_file("He2010.R",text="available for download")`.
+This work is licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
 
@@ -46,6 +44,7 @@ Whilst @He2010 examined measles in 20 towns, we will focus on `r TOWN` alone.
 The full 20 city dataset is available on [the **pomp** website](https://kingaa.github.io/pomp/docs.html) and the MLEs obtained by @He2010 for the full 20 towns are included in the R code accompanying this document.
 
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
+params <- list(prefix="he2010")
 source("setup.R", local = knitr::knit_global())
 ```
 ```{r opts,include=FALSE,cache=FALSE}

@@ -108,13 +108,20 @@ code span.wa { color: #bf0303; } /* Warning */
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -318,7 +325,7 @@ code {
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">cbind</span>(</a>
 <a class="sourceLine" id="cb3-2" title="2">  <span class="dt">time=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">1928</span>,<span class="dt">to=</span><span class="dv">1934</span>,<span class="dt">by=</span><span class="fl">0.01</span>),</a>
 <a class="sourceLine" id="cb3-3" title="3">  <span class="kw">as.data.frame</span>(</a>
-<a class="sourceLine" id="cb3-4" title="4">    <span class="kw">periodic.bspline.basis</span>(</a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="kw">periodic_bspline_basis</span>(</a>
 <a class="sourceLine" id="cb3-5" title="5">      <span class="dt">x=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">1928</span>,<span class="dt">to=</span><span class="dv">1934</span>,<span class="dt">by=</span><span class="fl">0.01</span>),</a>
 <a class="sourceLine" id="cb3-6" title="6">      <span class="dt">nbasis=</span><span class="dv">3</span>,</a>
 <a class="sourceLine" id="cb3-7" title="7">      <span class="dt">degree=</span><span class="dv">3</span>,</a>
@@ -341,7 +348,7 @@ code {
 <a class="sourceLine" id="cb4-2" title="2">  ...,</a>
 <a class="sourceLine" id="cb4-3" title="3">  <span class="dt">covar=</span><span class="kw">covariate_table</span>(</a>
 <a class="sourceLine" id="cb4-4" title="4">    <span class="dt">t=</span><span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">1928</span>,<span class="dt">to=</span><span class="dv">1934</span>,<span class="dt">by=</span><span class="fl">0.01</span>),</a>
-<a class="sourceLine" id="cb4-5" title="5">    <span class="dt">seas=</span><span class="kw">periodic.bspline.basis</span>(t,<span class="dt">nbasis=</span><span class="dv">3</span>,<span class="dt">degree=</span><span class="dv">3</span>,<span class="dt">period=</span><span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb4-5" title="5">    <span class="dt">seas=</span><span class="kw">periodic_bspline_basis</span>(t,<span class="dt">nbasis=</span><span class="dv">3</span>,<span class="dt">degree=</span><span class="dv">3</span>,<span class="dt">period=</span><span class="dv">1</span>),</a>
 <a class="sourceLine" id="cb4-6" title="6">    <span class="dt">pop=</span>dat<span class="op">$</span>population,</a>
 <a class="sourceLine" id="cb4-7" title="7">    <span class="dt">times=</span><span class="st">&quot;t&quot;</span></a>
 <a class="sourceLine" id="cb4-8" title="8">  ),</a>
@@ -613,7 +620,7 @@ Y(t)\;\sim\;\mathrm{Lognormal}\left(\log{X(t)},\tau\right)
 <a class="sourceLine" id="cb12-3" title="3"></a>
 <a class="sourceLine" id="cb12-4" title="4"><span class="kw">data.frame</span>(<span class="dt">time=</span><span class="kw">seq</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">11</span>,<span class="dt">by=</span><span class="dv">1</span><span class="op">/</span><span class="dv">12</span>)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb12-5" title="5"><span class="st">  </span><span class="kw">mutate</span>(</a>
-<a class="sourceLine" id="cb12-6" title="6">    <span class="dt">birthrate=</span><span class="fl">5e5</span><span class="op">*</span><span class="kw">bspline.basis</span>(time,<span class="dt">nbasis=</span><span class="dv">5</span>)<span class="op">%*%</span><span class="kw">c</span>(<span class="fl">0.018</span>,<span class="fl">0.019</span>,<span class="fl">0.021</span>,<span class="fl">0.019</span>,<span class="fl">0.015</span>)</a>
+<a class="sourceLine" id="cb12-6" title="6">    <span class="dt">birthrate=</span><span class="fl">5e5</span><span class="op">*</span><span class="kw">bspline_basis</span>(time,<span class="dt">nbasis=</span><span class="dv">5</span>)<span class="op">%*%</span><span class="kw">c</span>(<span class="fl">0.018</span>,<span class="fl">0.019</span>,<span class="fl">0.021</span>,<span class="fl">0.019</span>,<span class="fl">0.015</span>)</a>
 <a class="sourceLine" id="cb12-7" title="7">  ) -&gt;<span class="st"> </span>birthdat</a></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co">## measurement model C snippets</span></a>
 <a class="sourceLine" id="cb13-2" title="2">rmeas &lt;-<span class="st"> &quot;</span></a>
@@ -734,7 +741,7 @@ Y(t)\;\sim\;\mathrm{Lognormal}\left(\log{X(t)},\tau\right)
 <a class="sourceLine" id="cb16-7" title="7">  ...</a>
 <a class="sourceLine" id="cb16-8" title="8">) -&gt;<span class="st"> </span>sir2C</a></code></pre></div>
 <hr />
-<p>This document was produced using <strong>pomp</strong> version 4.2.3.0 and <strong>R</strong> version 4.2.1.</p>
+<p>This document was produced using <strong>pomp</strong> version 4.5.1.2 and <strong>R</strong> version 4.2.2.</p>
 </div>
 </div>
 

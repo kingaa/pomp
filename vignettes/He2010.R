@@ -1,6 +1,3 @@
-params <-
-list(prefix = "he2010")
-
 ## ----select-town,echo=FALSE---------------------------------------------------
 TOWN <- "London"
 

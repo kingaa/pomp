@@ -7,7 +7,7 @@ library("tidyverse")
 library("grid")
 library("xtable")
 
-stopifnot(packageVersion("pomp")>="4.2")
+stopifnot(packageVersion("pomp")>="4.5.1")
 
 
 ## ----set-opts,include=FALSE,cache=FALSE---------------------------------------
@@ -225,7 +225,7 @@ stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
       meanlog = log(theta.guess[estpars]), sdlog = 1)
     mif2(gomp, Nmif = 100, params = theta.guess, Np = 2000,
       cooling.fraction.50 = 0.7,
-      rw.sd = rw.sd(r=0.02, sigma=0.02,tau=0.02))
+      rw.sd = rw_sd(r=0.02, sigma=0.02,tau=0.02))
   }
 
   pf1 <- foreach(mf=mif1,
@@ -346,7 +346,7 @@ stew(file="pmcmc.rda",seed=334388458L,kind="L'Ecuyer",{
   {
     pmcmc(gomp, dprior = gompertz.dprior, params = theta.mif,
           Nmcmc = 40000, Np = 100,
-          proposal = mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
+          proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
   }
 
 toc <- Sys.time()
@@ -419,9 +419,9 @@ rick <- simulate(times = seq(0,50,by=1), t0 = 0, seed=73691676L,
 ##' The following are among those recommended by Wood (2010).
 
 ## ----probe-list---------------------------------------------------------------
-plist <- list(probe.marginal("y", ref = obs(rick), transform = sqrt),
-              probe.acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
-              probe.nlar("y", lags = c(1, 1, 1, 2), powers = c(1, 2, 3, 1),
+plist <- list(probe_marginal("y", ref = obs(rick), transform = sqrt),
+              probe_acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
+              probe_nlar("y", lags = c(1, 1, 1, 2), powers = c(1, 2, 3, 1),
                          transform = sqrt))
 
 
@@ -441,9 +441,9 @@ pb.guess <- probe(rick,params=guess,probes=plist,nsim=1000,seed=803306074L)
 pb <- probe(
   rick,
   probes=list(
-    probe.marginal("y",ref=obs(rick),transform=sqrt,order=2),
-    probe.acf("y",lags=c(0,3),transform=sqrt),
-    mean=probe.mean("y",transform=sqrt)
+    probe_marginal("y",ref=obs(rick),transform=sqrt,order=2),
+    probe_acf("y",lags=c(0,3),transform=sqrt),
+    mean=probe_mean("y",transform=sqrt)
   ),
   nsim=1000,
   seed=803306074L
@@ -472,7 +472,7 @@ stew(file="ricker-probe-match.rda",{
 ##' These serial calculations took about 3 minutes.
 stew(file="ricker-mif.rda",seed=718086921L,{
   mf <- mif2(pb.guess,Nmif=100,Np=1000,cooling.fraction.50 = 0.08,
-    rw.sd = rw.sd(r = 0.1, sigma = 0.1, phi = 0.1))
+    rw.sd = rw_sd(r = 0.1, sigma = 0.1, phi = 0.1))
   mf <- continue(mf, Nmif = 500)
 })
 
@@ -531,9 +531,9 @@ library("pomp")
 
 ##' Select a set of summary statistics ('probes').
 ##' Use simulations to estimate the scale of variation of these probes.
-plist <- list(probe.mean(var = "Y", transform = sqrt),
-              probe.acf("Y", lags = c(0, 5, 10, 20)),
-              probe.marginal("Y", ref = obs(gomp)))
+plist <- list(probe_mean(var = "Y", transform = sqrt),
+              probe_acf("Y", lags = c(0, 5, 10, 20)),
+              probe_marginal("Y", ref = obs(gomp)))
 psim <- probe(gomp, probes = plist, nsim = 500)
 scale.dat <- apply(psim@simvals, 2, sd)
 
@@ -556,7 +556,7 @@ stew(file="abc.rda",seed=334388458L,kind="L'Ecuyer",{
   ) %dopar% {
     abc(pomp(gomp, dprior = gompertz.dprior), Nabc = 4e6,
         probes = plist, epsilon = 2, scale = scale.dat,
-        proposal = mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
+        proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
   }
 
 toc <- Sys.time()
@@ -635,9 +635,10 @@ stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   registerDoParallel()
 
   tic <- Sys.time()
-  cmp1 <- foreach(gomp=gompList,
-                  .inorder=FALSE,.packages="pomp",.combine=rbind,
-                  .options.multicore=list(set.seed=TRUE)
+  cmp1 <- foreach(
+    gomp=gompList,
+    .inorder=FALSE,.packages=c("pomp","subplex"),.combine=rbind,
+    .options.multicore=list(set.seed=TRUE)
   ) %dopar% {
     true.lik <- pfilter(gomp,Np=1000)
     true.nlf <- nlf_objfun(gomp,
@@ -649,8 +650,8 @@ stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   theta.guess <- coef(gomp)
 
   tic <- Sys.time()
-  mif1 <- mif2(gomp,Nmif=100,start=theta.guess,
-    rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),Np=1000,
+  mif1 <- mif2(gomp,Nmif=100,params=theta.guess,
+    rw.sd=rw_sd(r=0.02,sigma=0.02,tau=0.05),Np=1000,
     cooling.type="geometric",cooling.fraction=0.5)
   mif.lik <- pfilter(mif1,Np=10000)
   toc <- Sys.time()
@@ -799,7 +800,7 @@ options(ops)
 ## ----birthdat,eval=TRUE,echo=FALSE,results="hide"-----------------------------
 ##' Construct some fake birthrate data.
 birthdat <- data.frame(time=seq(-1,11,by=1/12))
-birthdat$births <- 5e5*bspline.basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
+birthdat$births <- 5e5*bspline_basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
 freeze(seed=5853712L,{
   birthdat$births <- ceiling(rlnorm(
     n=nrow(birthdat),

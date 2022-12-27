@@ -1135,7 +1135,7 @@ vpC |>
     Nmif=20,
     dmeasure=dmeas,
     partrans=parameter_trans(log=c("r","K","sigma","N_0")),
-    rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02,N_0=ivp(0.02)),
+    rw.sd=rw_sd(r=0.02,K=0.02,sigma=0.02,N_0=ivp(0.02)),
     cooling.fraction.50=0.5,
     paramnames=c("r","K","sigma","N_0","b"),
     statenames=c("N")
@@ -1424,7 +1424,7 @@ foreach (start=iter(starts,"row"),
       mif2(
         params=start,
         partrans=parameter_trans(log=c("K","sigma","N_0")),
-        rw.sd=rw.sd(K=0.02,sigma=0.02,N_0=ivp(0.02)),
+        rw.sd=rw_sd(K=0.02,sigma=0.02,N_0=ivp(0.02)),
         paramnames=c("K","sigma","N_0","b")
       ) |>
       mif2() -> mf
@@ -1535,7 +1535,7 @@ bake(file="hindcast1.rds",{
   registerDoRNG(174423157)
   foreach (i=1:200) %dopar% {
     mf1 |> pfilter(params=theta,Np=500,filter.traj=TRUE) -> pf
-    list(loglik=logLik(pf),traj=filter.traj(pf))
+    list(loglik=logLik(pf),traj=filter_traj(pf))
   } -> fts
 }) -> fts
 
@@ -1614,7 +1614,7 @@ foreach (start=iter(starts,"row"),.combine=c,
           lik = (give_log) ? lik : exp(lik);"
         ),
         paramnames=c("K","N_0","r","sigma"),
-        proposal=mvn.rw.adaptive(
+        proposal=mvn_rw_adaptive(
           rw.sd=c(r=0.02,sigma=0.02,K=50,N_0=50),
           scale.start=100,shape.start=100
         )
@@ -1622,7 +1622,7 @@ foreach (start=iter(starts,"row"),.combine=c,
     chain |>
       pmcmc(
         Nmcmc=20000,
-        proposal=mvn.rw(covmat(chain))
+        proposal=mvn_rw(covmat(chain))
       )
   } -> chains
 ```
@@ -1729,7 +1729,7 @@ traces |>
 
 ```{r hindcast2}
 chains |>
-  filter.traj() |>
+  filter_traj() |>
   melt() |>
   filter(rep > 1000, rep %% 100 == 0) |>
   pivot_wider(names_from=variable) |>
@@ -1823,9 +1823,9 @@ we'll use the mean, several quantiles, and the autocorrelation at lags 1 and 3.
 ```{r probe1}
 mlepomp |>
   probe(nsim=200,probes=list(
-    mean=probe.mean("pop"),
-    q=probe.quantile("pop",probs=c(0.05,0.25,0.5,0.75,0.95)),
-    probe.acf("pop",lags=c(1,3),type="corr",transform=log)
+    mean=probe_mean("pop"),
+    q=probe_quantile("pop",probs=c(0.05,0.25,0.5,0.75,0.95)),
+    probe_acf("pop",lags=c(1,3),type="corr",transform=log)
   )) -> vp_probe
 
 vp_probe
