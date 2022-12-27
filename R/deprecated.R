@@ -3,14 +3,14 @@
 ##' These functions are deprecated and will be removed in a future release.
 ##'
 ##' @name deprecated
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @keywords internal
 ##' @include package.R
 ##' @param ... all arguments are passed to the replacement function.
 ##'
 NULL
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases as.pomp
 ##' @export
 as.pomp <- function (...) {
@@ -18,7 +18,7 @@ as.pomp <- function (...) {
   as_pomp(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases bspline.basis
 ##' @export
 bspline.basis <- function (...) {
@@ -26,7 +26,7 @@ bspline.basis <- function (...) {
   bspline_basis(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases cond.logLik
 ##' @export
 cond.logLik <- function (...) {
@@ -34,7 +34,7 @@ cond.logLik <- function (...) {
   cond_logLik(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases eff.sample.size
 ##' @export
 eff.sample.size <- function (...) {
@@ -42,7 +42,7 @@ eff.sample.size <- function (...) {
   eff_sample_size(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases filter.mean
 ##' @export
 filter.mean <- function (...) {
@@ -50,7 +50,7 @@ filter.mean <- function (...) {
   filter_mean(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases filter.traj
 ##' @export
 filter.traj <- function (...) {
@@ -58,7 +58,7 @@ filter.traj <- function (...) {
   filter_traj(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases mvn.diag.rw
 ##' @export
 mvn.diag.rw <- function (...) {
@@ -66,7 +66,7 @@ mvn.diag.rw <- function (...) {
   mvn_diag_rw(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases mvn.rw
 ##' @export
 mvn.rw <- function (...) {
@@ -74,7 +74,7 @@ mvn.rw <- function (...) {
   mvn_rw(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases mvn.rw.adaptive
 ##' @export
 mvn.rw.adaptive <- function (...) {
@@ -82,7 +82,7 @@ mvn.rw.adaptive <- function (...) {
   mvn_rw_adaptive(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases periodic.bspline.basis
 ##' @export
 periodic.bspline.basis <- function (...) {
@@ -90,7 +90,7 @@ periodic.bspline.basis <- function (...) {
   periodic_bspline_basis(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases pred.mean
 ##' @export
 pred.mean <- function (...) {
@@ -98,7 +98,7 @@ pred.mean <- function (...) {
   pred_mean(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases pred.var
 ##' @export
 pred.var <- function (...) {
@@ -106,7 +106,7 @@ pred.var <- function (...) {
   pred_var(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases probe.acf
 ##' @export
 probe.acf <- function (...) {
@@ -114,7 +114,7 @@ probe.acf <- function (...) {
   probe_acf(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases probe.ccf
 ##' @export
 probe.ccf <- function (...) {
@@ -122,7 +122,7 @@ probe.ccf <- function (...) {
   probe_ccf(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases probe.marginal
 ##' @export
 probe.marginal <- function (...) {
@@ -130,7 +130,7 @@ probe.marginal <- function (...) {
   probe_marginal(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases probe.mean
 ##' @export
 probe.mean <- function (...) {
@@ -138,7 +138,7 @@ probe.mean <- function (...) {
   probe_mean(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases probe.median
 ##' @export
 probe.median <- function (...) {
@@ -146,7 +146,7 @@ probe.median <- function (...) {
   probe_median(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases probe.nlar
 ##' @export
 probe.nlar <- function (...) {
@@ -154,7 +154,7 @@ probe.nlar <- function (...) {
   probe_nlar(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases probe.period
 ##' @export
 probe.period <- function (...) {
@@ -162,7 +162,7 @@ probe.period <- function (...) {
   probe_period(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases probe.quantile
 ##' @export
 probe.quantile <- function (...) {
@@ -170,7 +170,7 @@ probe.quantile <- function (...) {
   probe_quantile(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases probe.sd
 ##' @export
 probe.sd <- function (...) {
@@ -178,7 +178,7 @@ probe.sd <- function (...) {
   probe_sd(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases probe.var
 ##' @export
 probe.var <- function (...) {
@@ -186,7 +186,7 @@ probe.var <- function (...) {
   probe_var(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases rw.sd
 ##' @export
 rw.sd <- function (...) {
@@ -194,7 +194,7 @@ rw.sd <- function (...) {
   rw_sd(...)
 }
 
-##' @rdname deprecated
+##' @rdname pomp-deprecated
 ##' @aliases saved.states
 ##' @export
 saved.states <- function (...) {
