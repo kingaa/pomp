@@ -7,6 +7,7 @@
     From this point, no expored \pkg{pomp} function has such a name.
     \item The \code{dimnames} attributes for some of the arrays computed in \code{pfilter} and \code{pmcmc} computations have changed.
     In particular, whereas in previous versions, the \code{time} dimension was given names that were character strings composed of decimal representations of the time (difficult to work with and prone to roundoff error), the \code{time} dimension now is not given names.
+    \item A bug that resulted in \code{gompertz} giving different simulations on Windows machines has been fixed.
   }
 }
 \section{Changes in \pkg{pomp} version 4.4.3}{
