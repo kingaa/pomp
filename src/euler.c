@@ -1,4 +1,4 @@
-// dear emacs, please treat this as -*- C++ -*-
+// -*- C++ -*-
 
 #include <R.h>
 #include <Rmath.h>
@@ -67,11 +67,11 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 }
 
 static R_INLINE SEXP eval_call (
-    SEXP fn, SEXP args,
-    double *t, double *dt,
-    double *x, int nvar,
-    double *p, int npar,
-    double *c, int ncov)
+  SEXP fn, SEXP args,
+  double *t, double *dt,
+  double *x, int nvar,
+  double *p, int npar,
+  double *c, int ncov) 
 {
 
   SEXP var = args, ans, ob;
@@ -106,7 +106,8 @@ static R_INLINE SEXP ret_array (int n, int nreps, int ntimes, SEXP names)
 
 }
 
-SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params,
+SEXP euler_model_simulator (
+  SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params,
   double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi)
 {
 
@@ -158,35 +159,26 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
 
   switch (mode) {
 
-  case Rfun: {
-
+  case Rfun:
     // construct list of all arguments
     PROTECT(args = add_args(args,Snames,Pnames,Cnames)); nprotect++;
-
-  }
-
     break;
 
-  case native: case regNative: {
-
+  case native: case regNative:
     // construct state, parameter, covariate indices
     sidx = INTEGER(GET_SLOT(func,install("stateindex")));
     pidx = INTEGER(GET_SLOT(func,install("paramindex")));
     cidx = INTEGER(GET_SLOT(func,install("covarindex")));
-
+    
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
-
+    
     set_pomp_userdata(args);
     GetRNGstate();
-
-  }
-
     break;
 
-  default: // # nocov
-
-    err("unrecognized 'mode' %d",mode); // # nocov
-
+  default: // #nocov
+    err("unrecognized 'mode' %d",mode); // #nocov
+    break;                              // #nocov
   }
 
   // main computation loop
@@ -194,9 +186,11 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
   double *xt, *time, t;
   int first = 1;
 
-  for (step = 0, xt = REAL(X), time = REAL(times), t = t0;
-    step < ntimes;
-    step++, xt += nvars*nreps) {
+  for (
+       step = 0, xt = REAL(X), time = REAL(times), t = t0;
+       step < ntimes;
+       step++, xt += nvars*nreps
+       ) {
 
     double dt;
     int nstep = 0;
@@ -213,15 +207,15 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
 
     // determine size and number of time-steps
     switch (method) {
-    case onestep: default:	// one step
+    case onestep: default:      // one step
       dt = time[step]-t;
       nstep = (dt > 0) ? 1 : 0;
       break;
-    case discrete:			// fixed step
+    case discrete:              // fixed step
       dt = deltat;
       nstep = num_map_steps(t,time[step],dt);
       break;
-    case euler:			// Euler method
+    case euler:                 // Euler method
       dt = deltat;
       nstep = num_euler_steps(t,time[step],&dt);
       break;
@@ -253,12 +247,12 @@ SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEX
               err("'rprocess' must return a named numeric vector.");
             pidx = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
 
-	    nprotect += 3;
+            nprotect += 3;
 
             ap = REAL(AS_NUMERIC(ans));
             for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
 
-	    first = 0;
+            first = 0;
 
           } else {
 

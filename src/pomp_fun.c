@@ -59,30 +59,22 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
         PROTECT(pack = mkString("")); nprotect++; // #nocov
       }
 
-      switch (*mode) {
-      case native: {
+      if (*mode == native) {
+	
         SEXP nsi;
         PROTECT(nsi = eval(PROTECT(lang3(install("getNativeSymbolInfo"),nf,pack)),R_BaseEnv));
         PROTECT(f = getListElement(nsi,"address"));
 	nprotect += 3;
-      }
-        break;
-
-      case regNative: {
-        // Before version 3.4.0, R_MakeExternalPtrFn is not part of the R API.
-        // Therefore, we must use some trickery to avoid the ISO C proscription of
-        //     (void *) <-> (function *) conversion.
+	
+      } else if (*mode == regNative) {
+	
         const char *fname, *pkg;
         fname = (const char *) CHAR(STRING_ELT(nf,0));
         pkg = (const char *) CHAR(STRING_ELT(pack,0));
         DL_FUNC fn;
         fn = R_GetCCallable(pkg,fname);
         PROTECT(f = R_MakeExternalPtrFn(fn,R_NilValue,R_NilValue)); nprotect++;
-      }
-        break;
-
-      default: // #nocov
-        break; // #nocov
+	
       }
 
       SET_SLOT(pfun,install("address"),f);
@@ -115,13 +107,13 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
 
     break;
 
-  case undef: default: {
-
+  case undef: default:
+    
     PROTECT(f = R_NilValue); nprotect++;
     *mode = undef;
 
-  }
-
+    break;
+    
   }
 
   UNPROTECT(nprotect);
