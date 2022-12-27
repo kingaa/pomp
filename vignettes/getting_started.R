@@ -667,16 +667,20 @@ fts |>
 
 fts |>
   lapply(getElement,"traj") |>
-  lapply(melt) |>
-  bind_rows(.id="rep") |>
+  melt() |>
+  rename(.id=L1) |>
+  select(-rep) |>
   left_join(
     tibble(
-      rep=as.character(seq_along(ll)),
+      .id=seq_along(ll),
       loglik=ll
     ),
-    by="rep"
+    by=".id"
   ) |>
-  group_by(variable,time) |>
+  mutate(
+    year=time(mf1)[time]
+  ) |>
+  group_by(variable,year) |>
   summarize(
     label=c("lo","med","hi"),
     p=c(0.05,0.5,0.95),
@@ -688,8 +692,8 @@ fts |>
 
 quants1 |>
   ggplot()+
-  geom_line(aes(x=time,y=med),color="darkblue")+
-  geom_ribbon(aes(x=time,ymin=lo,ymax=hi),color=NA,fill="lightblue",alpha=0.5)+
+  geom_line(aes(x=year,y=med),color="darkblue")+
+  geom_ribbon(aes(x=year,ymin=lo,ymax=hi),color=NA,fill="lightblue",alpha=0.5)+
   geom_point(data=parus,aes(x=year,y=pop))+
   labs(y="N")
 
@@ -810,8 +814,9 @@ chains |>
   filter_traj() |>
   melt() |>
   filter(rep > 1000, rep %% 100 == 0) |>
+  mutate(year=time(mf1)[time]) |>
   pivot_wider(names_from=variable) |>
-  group_by(time) |>
+  group_by(year) |>
   summarize(
     label=c("lo","med","hi"),
     p=c(0.025,0.5,0.975),
@@ -823,8 +828,8 @@ chains |>
 
 quants2 |>
   ggplot()+
-  geom_line(aes(x=time,y=med),color="darkblue")+
-  geom_ribbon(aes(x=time,ymin=lo,ymax=hi),color=NA,fill="lightblue",alpha=0.5)+
+  geom_line(aes(x=year,y=med),color="darkblue")+
+  geom_ribbon(aes(x=year,ymin=lo,ymax=hi),color=NA,fill="lightblue",alpha=0.5)+
   geom_point(data=parus,aes(x=year,y=pop))+
   labs(y="N")
 
@@ -834,8 +839,8 @@ bind_rows(
   .id="uncert"
 ) |>
   ggplot()+
-  geom_line(aes(x=time,y=med,color=uncert))+
-  geom_ribbon(aes(x=time,ymin=lo,ymax=hi,fill=uncert),color=NA,alpha=0.4)+
+  geom_line(aes(x=year,y=med,color=uncert))+
+  geom_ribbon(aes(x=year,ymin=lo,ymax=hi,fill=uncert),color=NA,alpha=0.4)+
   geom_point(data=parus,aes(x=year,y=pop))+
   labs(y="N")
 
