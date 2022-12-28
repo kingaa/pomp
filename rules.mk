@@ -94,7 +94,7 @@ revdeps: install
 	$(RCMD) check --as-cran --library=library -o check library/*.tar.gz
 
 .roxy: .source .headers
-	$(REXE) -e "pkgbuild::compile_dll(); devtools::document(roclets=c('rd','collate','namespace'))"
+	$(REXE) -e "devtools::document()"
 	$(TOUCH) $@
 
 .headers: $(HEADERS)
@@ -174,8 +174,7 @@ $(PKG).pdf: $(SOURCE)
 
 tests: .tests
 
-.tests: .testsource
-	$(MAKE) .install
+.tests: .install .testsource
 	$(MAKE) -C tests
 	$(TOUCH) $@
 
