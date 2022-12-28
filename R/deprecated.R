@@ -44,7 +44,7 @@ eff.sample.size <- function (...) {
 
 ##' @rdname pomp-deprecated
 ##' @aliases filter.mean
-##' @export
+##' @export filter.mean
 filter.mean <- function (...) {
   .Deprecated("filter_mean")
   filter_mean(...)
@@ -52,7 +52,7 @@ filter.mean <- function (...) {
 
 ##' @rdname pomp-deprecated
 ##' @aliases filter.traj
-##' @export
+##' @export filter.traj
 filter.traj <- function (...) {
   .Deprecated("filter_traj")
   filter_traj(...)
