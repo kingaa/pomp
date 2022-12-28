@@ -181,9 +181,9 @@ tests: .tests
 
 install: .install
 
-.install: .dist
+.install: .roxy .NEWS .instdocs .source .includes .headers
 	mkdir -p library
-	$(RCMD) INSTALL --html --library=library $(PKGVERS).tar.gz
+	$(RCMD) INSTALL --html --library=library .
 	$(TOUCH) .install
 
 %.tex: %.Rnw
