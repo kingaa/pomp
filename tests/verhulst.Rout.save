@@ -17,39 +17,59 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> options(digits=3)
-> png(filename="verhulst-%02d.png",res=100)
-> 
 > library(pomp)
-> 
-> verhulst(n_0=100) -> po
 > 
 > set.seed(1438408329L)
 > 
-> rinit(po)
-        .id
-variable [,1]
-       n  100
-> coef(po)
-  n_0     K     r sigma   tau 
-1e+02 1e+04 9e-01 4e-01 1e-01 
+> png(filename="verhulst-%02d.png",res=100)
+> 
+> verhulst(n_0=100) -> po
 > plot(po)
 > 
-> stopifnot(all.equal(coef(po),partrans(po,coef(po,transform=TRUE),dir="from")))
-> plot(simulate(po,seed=1438408329L))
-> pf <- freeze(pfilter(po,Np=1000),seed=1438408329L)
-> plot(pf)
-> tj <- trajectory(po)
-> plot(tj)
+> stopifnot(
++   all.equal(
++     coef(po),
++     partrans(po,coef(po,transform=TRUE),dir="from")
++   ),
++   all.equal(
++     coef(po,transform=TRUE),
++     partrans(po,coef(po),dir="to")
++   )
++ )
 > 
-> po |>
-+   window(end=5) |>
-+   simulate(seed=1438408329L,nsim=10) |>
-+   plot()
-> po |>
-+   window(end=5) |>
-+   simulate(seed=1438408329L,nsim=10) |>
-+   plot(col=rainbow(10))
+> pfilter(
++   po,
++   Np=1000,
++   filter.mean=TRUE,
++   pred.mean=TRUE,
++   pred.var=TRUE,
++   filter.traj=TRUE,
++   save.states=TRUE
++ ) -> pf
+> 
+> print(logLik(pf))
+[1] -8687.331
+> stopifnot(
++   abs(logLik(pf)+8687.3)<0.05
++ )
+> 
+> plot(pf,yax.flip=TRUE)
+> 
+> forecast(pf,format="d") -> fc
+> simulate(pf) -> sm
+> 
+> emeasure(sm) -> ef
+> vmeasure(sm) -> vf
+> plot(ef,vf)
+> 
+> plot(time(sm),obs(sm),xlab="time",ylab="Y")
+> lines(time(sm),ef)
+> 
+> enkf(po,Np=1000) -> kf
+> plot(kf,yax.flip=TRUE)
+> 
+> trajectory(po) -> tj
+> plot(tj)
 > 
 > dev.off()
 null device 

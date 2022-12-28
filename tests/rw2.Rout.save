@@ -100,10 +100,10 @@ Type 'q()' to quit R.
 [1] -451.5674 -450.3839 -449.0972 -449.5744
 > 
 > stopifnot(
-+   abs(logLik(pf)+451.6)<0.5,
-+   abs(logLik(kf)+450.4)<0.5,
-+   abs(logLik(kf2)+449.1)<0.5,
-+   abs(Kf$logLik+449.6)<0.5
++   abs(logLik(pf)+451.6)<0.05,
++   abs(logLik(kf)+450.4)<0.05,
++   abs(logLik(kf2)+449.1)<0.05,
++   abs(Kf$logLik+449.6)<0.05
 + )
 > 
 > d <- dprocess(sm,log=TRUE)

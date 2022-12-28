@@ -75,10 +75,10 @@ Kf <- kalmanFilter(
 print(c(logLik(pf),logLik(kf),logLik(kf2),Kf$logLik))
 
 stopifnot(
-  abs(logLik(pf)+451.6)<0.5,
-  abs(logLik(kf)+450.4)<0.5,
-  abs(logLik(kf2)+449.1)<0.5,
-  abs(Kf$logLik+449.6)<0.5
+  abs(logLik(pf)+451.6)<0.05,
+  abs(logLik(kf)+450.4)<0.05,
+  abs(logLik(kf2)+449.1)<0.05,
+  abs(Kf$logLik+449.6)<0.05
 )
 
 d <- dprocess(sm,log=TRUE)

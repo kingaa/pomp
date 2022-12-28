@@ -22,12 +22,32 @@ Type 'q()' to quit R.
 +   library(dplyr)
 + })
 > 
+> png(filename="ebola-%02d.png",res=100)
+> 
 > set.seed(48832734L)
 > 
-> png(filename="sir2-%02d.png",res=100)
-> 
-> sir2() |> window(end=2) -> po
+> ebolaModel() -> po
 > plot(po)
+> coef(po)
+           N           R0          rho          cfr            k        alpha 
+1.062897e+07 1.400000e+00 2.000000e-01 7.000000e-01 0.000000e+00 8.919449e-02 
+       gamma          S_0          E_0          I_0          R_0 
+1.441480e-01 9.999991e-01 4.654124e-07 4.654124e-07 1.000000e-08 
+> 
+> ebolaWA2014 |>
++   filter(
++     country=="SLE",
++     date<="2014-10-31"
++   ) |>
++   mutate(day=as.numeric(date-as.Date("2014-04-30"))) |>
++   select(-date,-country) |>
++   ebolaModel(country="SLE",k=10) -> po
+> plot(po)
+> coef(po)
+           N           R0          rho          cfr            k        alpha 
+6.190280e+06 1.400000e+00 2.000000e-01 7.000000e-01 1.000000e+01 8.919449e-02 
+       gamma          S_0          E_0          I_0          R_0 
+1.441480e-01 9.999984e-01 8.027179e-07 8.027179e-07 1.000000e-08 
 > 
 > stopifnot(
 +   all.equal(
@@ -41,7 +61,7 @@ Type 'q()' to quit R.
 + )
 > 
 > pfilter(
-+   window(po,end=1),
++   po,
 +   Np=1000,
 +   filter.mean=TRUE,
 +   pred.mean=TRUE,
@@ -50,24 +70,21 @@ Type 'q()' to quit R.
 +   save.states=TRUE
 + ) -> pf
 > 
+> logLik(pf)
+[1] -99.72378
 > stopifnot(
-+   abs(logLik(pf)+43.2)<0.05
++   abs(logLik(pf)+100)<0.5
 + )
 > 
 > plot(pf,yax.flip=TRUE)
 > 
-> forecast(pf,format="d") -> fc
 > simulate(pf) -> sm
 > 
-> emeasure(sm) -> ef
-> vmeasure(sm) -> vf
-> plot(ef,vf)
-> 
-> plot(time(sm),obs(sm),xlab="time",ylab="Y")
-> lines(time(sm),ef)
+> plot(cases~day,data=as.data.frame(sm),type="l")
+> lines(deaths~day,data=as.data.frame(sm),type="l",col="red")
 > 
 > trajectory(po) -> tj
-> plot(tj)
+> plot(tj,var=c("cases","deaths","I"))
 > 
 > dev.off()
 null device 

@@ -110,9 +110,11 @@ Type 'q()' to quit R.
 > plot(tj)
 > 
 > d <- dprocess(sm,log=TRUE)
-> stopifnot(
-+   abs(sum(d)+452.5)<0.5
-+ )
+> sum(d)
+[1] -452.5375
+> #stopifnot(
+> #  abs(sum(d)+452.5)<0.05
+> #)
 > 
 > dev.off()
 null device 

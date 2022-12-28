@@ -29,7 +29,7 @@ pfilter(
 ) -> pf
 
 stopifnot(
-  abs(logLik(pf)-30.1)<0.5
+  abs(logLik(pf)-30.1)<0.05
 )
 
 plot(pf,yax.flip=TRUE)
