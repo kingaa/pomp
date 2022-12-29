@@ -3,6 +3,7 @@
 ##' Extract the latent states from a \sQuote{pomp} object.
 ##'
 ##' @name states
+##' @aliases states,ANY-method states,missing-method
 ##' @rdname states
 ##' @docType methods
 ##' @include pomp_class.R
@@ -15,6 +16,22 @@ setGeneric(
   "states",
   function (object, ...)
     standardGeneric("states")
+)
+
+setMethod(
+  "states",
+  signature=signature(object="missing"),
+  definition=function (object, ...) {
+    reqd_arg("states","object")
+  }
+)
+
+setMethod(
+  "states",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    undef_method("states","object")
+  }
 )
 
 ##' @rdname states

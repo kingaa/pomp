@@ -3,6 +3,8 @@
 \docType{methods}
 \name{obs}
 \alias{obs}
+\alias{obs,ANY-method}
+\alias{obs,missing-method}
 \alias{obs,pomp-method}
 \alias{obs,listie-method}
 \title{obs}

@@ -7,6 +7,7 @@
 ##'
 ##' @name melt
 ##' @rdname melt
+##' @keywords internal
 ##' @aliases melt,ANY-method melt,missing-method
 ##' @param data object to convert
 ##' @param ... ignored
@@ -23,12 +24,11 @@ setMethod(
   "melt",
   signature=signature(data="missing"),
   definition=function (data, ...) {
-    NULL   #nocov
+    reqd_arg("melt","data")
   }
 )
 
 ##' @rdname melt
-##' @keywords internal
 ##' @importFrom stats setNames
 ##' @export
 setMethod(
@@ -40,7 +40,6 @@ setMethod(
 )
 
 ##' @rdname melt
-##' @keywords internal
 ##' @details An array can be melted into a data frame.
 ##' In this case, the data frame will have one row per entry in the array.
 ##' @export
@@ -58,7 +57,6 @@ setMethod(
 )
 
 ##' @rdname melt
-##' @keywords internal
 ##' @details A list can be melted into a data frame.
 ##' This operation is recursive.
 ##' A variable will be appended to distinguish the separate list entries.
@@ -68,9 +66,11 @@ setMethod(
   "melt",
   signature=signature(data="list"),
   definition=function (data, ..., level = 1) {
-    if (is.null(names(data)))
-      names(data) <- seq_len(length(data))
-    parts <- lapply(data,melt,level=level+1,...)
-    bind_rows(parts,.id=paste0("L",level))
+    if (length(unique(lapply(data,mode))) > 1L)
+      pStop("melt","refusing to melt data of incompatible types.")
+    bind_rows(
+      lapply(data,melt,level=level+1,...),
+      .id=paste0("L",level)
+    )
   }
 )

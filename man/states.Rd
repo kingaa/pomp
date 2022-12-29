@@ -3,6 +3,8 @@
 \docType{methods}
 \name{states}
 \alias{states}
+\alias{states,ANY-method}
+\alias{states,missing-method}
 \alias{states,pomp-method}
 \alias{states,listie-method}
 \title{Latent states}

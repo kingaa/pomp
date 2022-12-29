@@ -88,7 +88,13 @@ setMethod(
 setMethod(
   "saved_states",
   signature=signature(object="pfilterList"),
-  definition=function (object, ...) {
-    lapply(object,saved_states,...)
+  definition=function (object, ...,
+    format = c("list","data.frame")) {
+    format <- match.arg(format)
+    x <- lapply(object,saved_states,...,format=format)
+    if (format == "data.frame") {
+      x <- bind_rows(x,.id=".id")
+    }
+    x
   }
 )

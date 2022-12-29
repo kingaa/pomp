@@ -168,16 +168,22 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 > pf2 |> saved_states(format="data") |> dim()
 [1] 30000     4
 > 
+> c(A=pf1,B=pf2) |> class()
+[1] "pfilterList"
+attr(,"package")
+[1] "pomp"
+> c(A=pf1,B=pf2) |> saved_states(format="d") |> class()
+[1] "data.frame"
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> names()
-[1] "A" "B"
+[1] "time"     ".id"      "variable" "value"   
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> sapply(class)
-           A            B 
-"data.frame" "data.frame" 
+       time         .id    variable       value 
+  "numeric" "character" "character"   "numeric" 
 > c(A=pf1,B=pf2) |> as.data.frame() |> sapply(class)
-          time             y1             y2            ess    cond.logLik 
-     "numeric"      "numeric"      "numeric"      "numeric"      "numeric" 
-           .id   pred.mean.x1   pred.mean.x2    pred.var.x1    pred.var.x2 
+           .id           time             y1             y2            ess 
    "character"      "numeric"      "numeric"      "numeric"      "numeric" 
+   cond.logLik   pred.mean.x1   pred.mean.x2    pred.var.x1    pred.var.x2 
+     "numeric"      "numeric"      "numeric"      "numeric"      "numeric" 
 filter.mean.x1 filter.mean.x2 
      "numeric"      "numeric" 
 > 
@@ -206,8 +212,8 @@ Error : in 'filter_traj': incommensurate dimensions.
 > names(dimnames(filter_traj(c(pf1,pf4))))
 [1] "variable" "rep"      "time"     "chain"   
 > names(as(c(pf1,pf4),"data.frame"))
-[1] "time"        "y1"          "y2"          "ess"         "cond.logLik"
-[6] ".id"        
+[1] ".id"         "time"        "y1"          "y2"          "ess"        
+[6] "cond.logLik"
 > pf2 |> as.data.frame() |> names()
  [1] "time"           "y1"             "y2"             "ess"           
  [5] "cond.logLik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   

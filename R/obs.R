@@ -3,6 +3,7 @@
 ##' Extract the data array from a \sQuote{pomp} object.
 ##'
 ##' @name obs
+##' @aliases obs,ANY-method obs,missing-method
 ##' @docType methods
 ##' @rdname obs
 ##' @include pomp_class.R
@@ -15,6 +16,22 @@ setGeneric(
     "obs",
     function (object, ...)
         standardGeneric("obs")
+)
+
+setMethod(
+  "obs",
+  signature=signature(object="missing"),
+  definition=function (object, ...) {
+    reqd_arg("obs","object")
+  }
+)
+
+setMethod(
+  "obs",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    undef_method("obs","object")
+  }
 )
 
 ##' @rdname obs

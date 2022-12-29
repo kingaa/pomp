@@ -10,7 +10,7 @@
 \usage{
 \S4method{saved_states}{pfilterd_pomp}(object, ..., format = c("list", "data.frame"))
 
-\S4method{saved_states}{pfilterList}(object, ...)
+\S4method{saved_states}{pfilterList}(object, ..., format = c("list", "data.frame"))
 }
 \arguments{
 \item{object}{result of a filtering computation}

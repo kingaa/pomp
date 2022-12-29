@@ -79,6 +79,8 @@ pf1 |> saved_states() |> melt() |> sapply(length)
 pf2 |> saved_states(format="data") |> names()
 pf2 |> saved_states(format="data") |> dim()
 
+c(A=pf1,B=pf2) |> class()
+c(A=pf1,B=pf2) |> saved_states(format="d") |> class()
 c(A=pf1,B=pf2) |> saved_states(format="d") |> names()
 c(A=pf1,B=pf2) |> saved_states(format="d") |> sapply(class)
 c(A=pf1,B=pf2) |> as.data.frame() |> sapply(class)

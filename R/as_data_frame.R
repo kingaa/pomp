@@ -18,14 +18,14 @@ setAs(
   def = function (from) {
     x <- as.data.frame(cbind(from@times,t(from@data)))
     names(x) <- c(from@timename,rownames(from@data))
-    if (length(from@states)>0) {
-      nm <- names(x)
+    if (length(from@states) > 0) {
+      nm <- c(names(x),rownames(from@states))
       x <- cbind(x,t(from@states))
-      names(x) <- c(nm,rownames(from@states))
+      names(x) <- nm
     }
     cnames <- get_covariate_names(from@covar)
     if (length(cnames) > 0) {
-      nm <- c(names(x),cnames)  # perhaps not strictly necessary (but see issue #56)
+      nm <- c(names(x),cnames) # see issue #56
       y <- .Call(P_lookup_in_table,from@covar,from@times)
       x <- cbind(x,t(y))
       names(x) <- nm
@@ -164,16 +164,10 @@ setAs(
   from="listie",
   to="data.frame",
   def = function (from) {
-    x <- lapply(from,as,"data.frame")
-    if (is.null(names(from))) {
-      id <- seq_along(from)
-    } else {
-      id <- names(from)
-    }
-    for (k in seq_along(x)) {
-      x[[k]]$.id <- id[k]
-    }
-    dplyr::bind_rows(x)
+    bind_rows(
+      lapply(from,as,"data.frame"),
+      .id=".id"
+    )
   }
 )
 
