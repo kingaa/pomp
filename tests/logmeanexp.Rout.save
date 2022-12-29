@@ -17,7 +17,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> options(digits=7)
 > library(pomp)
 > 
 > logmeanexp(rep(10,10),se=TRUE)
@@ -35,5 +34,13 @@ Type 'q()' to quit R.
 [1] 1e+10
 > logmeanexp(10^seq(8,10),se=NULL)
 [1] 1e+10
-> 
+> logmeanexp(rep(10,10),ess=TRUE)
+    ess 
+ 10  10 
+> logmeanexp(10^seq(8,10),ess=TRUE)
+        ess 
+1e+10 1e+00 
+> logmeanexp(c(1.2e-100,1.4e-100,1.8e-100),se=TRUE,ess=TRUE)
+                         se           ess 
+1.800000e-100 2.666667e-101  3.000000e+00 
 > 

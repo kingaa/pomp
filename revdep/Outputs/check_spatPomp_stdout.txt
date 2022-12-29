@@ -16,7 +16,7 @@ Suggests orphaned package: 'doRNG'
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'spatPomp' can be installed ... [18s/16s] OK
+* checking whether package 'spatPomp' can be installed ... [18s/17s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -38,7 +38,7 @@ Suggests orphaned package: 'doRNG'
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [27s/19s] OK
+* checking R code for possible problems ... [26s/20s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -59,13 +59,14 @@ Suggests orphaned package: 'doRNG'
 * checking examples ... OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
-16,23d15
+133,136d132
 < Warning message:
-< 'function (...) 
-< {
-<     .Deprecated("rw_sd")
-<     rw_sd(...)
-< }' is deprecated.
+< 'rw.sd' is deprecated.
+< Use 'rw_sd' instead.
+< See help("Deprecated") 
+16,19d15
+< Warning message:
+< 'rw.sd' is deprecated.
 < Use 'rw_sd' instead.
 < See help("Deprecated") 
 26,29d25
@@ -73,17 +74,18 @@ Suggests orphaned package: 'doRNG'
 < 'rw.sd' is deprecated.
 < Use 'rw_sd' instead.
 < See help("Deprecated") 
-78,85d77
+78,81d77
 < Warning message:
-< 'function (...) 
-< {
-<     .Deprecated("rw_sd")
-<     rw_sd(...)
-< }' is deprecated.
+< 'rw.sd' is deprecated.
 < Use 'rw_sd' instead.
 < See help("Deprecated") 
 14,17d13
 < In addition: Warning message:
+< 'rw.sd' is deprecated.
+< Use 'rw_sd' instead.
+< See help("Deprecated") 
+27,30d26
+< Warning message:
 < 'rw.sd' is deprecated.
 < Use 'rw_sd' instead.
 < See help("Deprecated") 
@@ -95,43 +97,9 @@ Suggests orphaned package: 'doRNG'
 > 1: in 'table_lookup': extrapolating at 1.965002e+03. 
 75d72
 < 3: in 'table_lookup': extrapolating at 1.965002e+03. 
- [80s/31s] ERROR
-Running the tests in 'tests/bm.R' failed.
-Last 13 lines of output:
-  +   Ngirf = 2,
-  +   rw.sd = b_rw.sd,
-  +   cooling.type = "geometric",
-  +   cooling.fraction.50 = 0.5,
-  +   Np=10,
-  +   Ninter = 2,
-  +   lookahead = 1,
-  +   Nguide = 5,
-  +   kind = 'moment',
-  +   verbose = FALSE
-  + )
-  Error in value[[3L]](cond) : 
-    igirf: Error in ivp(0.02): could not find function "ivp"
-  Calls: igirf ... tryCatch -> tryCatchList -> tryCatchOne -> <Anonymous>
-  Execution halted
-Running the tests in 'tests/lorenz.R' failed.
-Last 13 lines of output:
-  +   Np=10,
-  +   Ninter = 2,
-  +   lookahead = 1,
-  +   Nguide = 10,
-  +   kind = 'bootstrap',
-  +   verbose = FALSE
-  + )
-  Error in value[[3L]](cond) : 
-    igirf: Error in ivp(0): could not find function "ivp"
-  Calls: igirf ... tryCatch -> tryCatchList -> tryCatchOne -> <Anonymous>
-  In addition: Warning message:
-  'rw.sd' is deprecated.
-  Use 'rw_sd' instead.
-  See help("Deprecated") 
-  Execution halted
+ [85s/33s] OK
 * checking PDF version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 1 ERROR, 1 NOTE
+Status: 1 NOTE

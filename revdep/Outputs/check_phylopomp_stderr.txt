@@ -2,7 +2,7 @@
   Comparing ‘diagram.Rout’ to ‘diagram.Rout.save’ ... OK
   Running ‘lbdp1.R’
   Comparing ‘lbdp1.Rout’ to ‘lbdp1.Rout.save’ ... OK
-  Running ‘lbdp2.R’ [22s/20s]
+  Running ‘lbdp2.R’ [22s/21s]
   Comparing ‘lbdp2.Rout’ to ‘lbdp2.Rout.save’ ... OK
   Running ‘lineages.R’
   Comparing ‘lineages.Rout’ to ‘lineages.Rout.save’ ... OK

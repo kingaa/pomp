@@ -14,7 +14,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'epimdr2' can be installed ... [14s/13s] OK
+* checking whether package 'epimdr2' can be installed ... [16s/14s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -148,7 +148,7 @@ twostrain: local variable ‘res’ assigned but may not be used
 * checking data for non-ASCII characters ... OK
 * checking LazyData ... OK
 * checking data for ASCII and uncompressed saves ... OK
-* checking examples ... [13s/12s] OK
+* checking examples ... [14s/12s] OK
 ** found \donttest examples: check also with --run-donttest
 * checking PDF version of manual ... OK
 * checking for non-standard things in the check directory ... OK

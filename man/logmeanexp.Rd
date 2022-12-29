@@ -4,17 +4,19 @@
 \alias{logmeanexp}
 \title{The log-mean-exp trick}
 \usage{
-logmeanexp(x, se = FALSE)
+logmeanexp(x, se = FALSE, ess = FALSE)
 }
 \arguments{
 \item{x}{numeric}
 
 \item{se}{logical; give approximate standard error?}
+
+\item{ess}{logical; give effective sample size?}
 }
 \value{
-\code{log(mean(exp(x)))} computed so as to avoid over- or
-underflow.  If \code{se = FALSE}, the approximate standard error is
-returned as well.
+\code{log(mean(exp(x)))} computed so as to avoid over- or underflow.
+If \code{se = TRUE}, the approximate standard error is returned as well.
+If \code{ess = TRUE}, the effective sample size is returned also.
 }
 \description{
 \code{logmeanexp} computes \deqn{\log\frac{1}{N}\sum_{n=1}^N\!e^x_i,}{log
@@ -24,6 +26,8 @@ optionally return an estimate of the standard error in this quantity.
 \details{
 When \code{se = TRUE}, \code{logmeanexp} uses a jackknife estimate of the
 variance in \eqn{log(x)}.
+
+When \code{ess = TRUE}, \code{logmeanexp} returns an estimate of the effective sample size.
 }
 \examples{
 \dontrun{

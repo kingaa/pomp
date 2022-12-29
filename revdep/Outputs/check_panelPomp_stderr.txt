@@ -7,7 +7,7 @@
   Comparing ‘get_col_row.Rout’ to ‘get_col_row.Rout.save’ ... OK
   Running ‘mif2.R’
   Comparing ‘mif2.Rout’ to ‘mif2.Rout.save’ ...  Running ‘mif2_intern.R’
-  Running ‘mif2_methods.R’
+  Comparing ‘mif2_intern.Rout’ to ‘mif2_intern.Rout.save’ ...  Running ‘mif2_methods.R’
   Comparing ‘mif2_methods.Rout’ to ‘mif2_methods.Rout.save’ ...  Running ‘panelGompertz.R’
   Comparing ‘panelGompertz.Rout’ to ‘panelGompertz.Rout.save’ ... OK
   Running ‘panelGompertzLikelihood.R’
@@ -33,7 +33,4 @@
   Comparing ‘seeded-results.Rout’ to ‘seeded-results.Rout.save’ ...  Running ‘simulate.R’
   Comparing ‘simulate.Rout’ to ‘simulate.Rout.save’ ... OK
 
-See
-  '/home/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck/00check.log'
-for details.
 

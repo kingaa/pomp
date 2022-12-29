@@ -16,7 +16,7 @@ Suggests orphaned package: 'doRNG'
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'phylopomp' can be installed ... [40s/42s] OK
+* checking whether package 'phylopomp' can be installed ... [41s/44s] OK
 * checking installed package size ... NOTE
   installed size is 15.0Mb
   sub-directories of 1Mb or more:
@@ -56,10 +56,10 @@ Suggests orphaned package: 'doRNG'
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [14s/15s] OK
+* checking examples ... [13s/15s] OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [64s/48s] OK
+ [62s/47s] OK
 * checking PDF version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK

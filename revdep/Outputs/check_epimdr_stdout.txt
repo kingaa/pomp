@@ -37,7 +37,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [19s/10s] NOTE
+* checking R code for possible problems ... NOTE
 chainSIR: local variable ‘I’ assigned but may not be used
 chainSIR: local variable ‘R’ assigned but may not be used
 chainSIR: local variable ‘S’ assigned but may not be used

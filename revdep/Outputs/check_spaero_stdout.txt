@@ -58,10 +58,10 @@ Namespace in Imports field not imported from: ‘utils’
 * checking examples ... OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [15s/10s] OK
+ OK
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK
-* checking re-building of vignette outputs ... [21s/19s] OK
+* checking re-building of vignette outputs ... [21s/20s] OK
 * checking PDF version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
