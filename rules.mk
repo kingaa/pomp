@@ -1,7 +1,7 @@
-REXE = R --vanilla
+REXE = R -s --vanilla
 RSESSION = emacs -f R
 RCMD = $(REXE) CMD
-RCMD_ALT = R --no-save --no-restore CMD
+RCMD_ALT = R -s --no-save --no-restore CMD
 RSCRIPT = Rscript --vanilla
 REPODIR = ../www
 MANUALDIR = ../www/manuals/$(PKG)
@@ -18,10 +18,11 @@ INSTALL = install
 PKG = $(shell perl -ne 'print $$1 if /Package:\s+((\w+[-\.]?)+)/;' DESCRIPTION)
 VERSION = $(shell perl -ne 'print $$1 if /Version:\s+((\d+[-\.]?)+)/;' DESCRIPTION)
 PKGVERS = $(PKG)_$(VERSION)
-SOURCE=$(sort $(wildcard R/*R src/*.c src/*.h data/* examples/*))
-CSOURCE=$(sort $(wildcard src/*.c))
-TESTS=$(sort $(wildcard tests/*R))
-INSTDOCS=$(sort $(wildcard inst/doc/*))
+SOURCE = $(sort $(wildcard R/*R src/*.c src/*.h data/* examples/*))
+CSOURCE = $(sort $(wildcard src/*.c))
+TESTS = $(sort $(wildcard tests/*R))
+INSTDOCS = $(sort $(wildcard inst/doc/*))
+SESSION_PKGS = datasets,utils,grDevices,graphics,stats,methods,tidyverse,$(PKG)
 
 default:
 	@echo $(PKGVERS)
@@ -38,7 +39,6 @@ check xcheck xxcheck: export FULL_TESTS=yes
 .dist .tests revdeps session check xcheck xxcheck: export R_KEEP_PKG_SOURCE=yes
 .tests revdeps xcheck: export R_PROFILE_USER=$(CURDIR)/.Rprofile
 .tests revdeps session xxcheck vignettes data manual: export R_LIBS=$(CURDIR)/library
-session: export R_DEFAULT_PACKAGES=datasets,utils,grDevices,graphics,stats,methods,tidyverse,$(PKG)
 xcheck: export _R_CHECK_DEPENDS_ONLY_=true
 debug: export RSESSION=R -d gdb
 rsession: export RSESSION=R
@@ -82,6 +82,7 @@ library/$(PKG)/html/NEWS.html: inst/NEWS.Rd
 	$(RCMD) Rdconv -t html $^ -o $@
 
 session: install
+	export R_DEFAULT_PACKAGES=$(SESSION_PKGS) && \
 	exec $(RSESSION)
 
 debug: session
@@ -98,11 +99,9 @@ revdeps: install
 	$(TOUCH) $@
 
 .headers: $(HEADERS)
-	make $(HEADERS)
 	$(TOUCH) $@
 
 .includes: $(INCLUDES)
-	make $(INCLUDES)
 	$(TOUCH) $@
 
 .source: $(SOURCE)
