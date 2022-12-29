@@ -42,13 +42,13 @@ A \sQuote{pomp} object with simulated data.
 \code{ou2()} constructs a \sQuote{pomp} object encoding a bivariate discrete-time Ornstein-Uhlenbeck process with noisy observations.
 }
 \details{
-If the state process is \eqn{X(t) = (x_{1}(t),x_{2}(t))}, then
+If the state process is \eqn{X(t) = (X_{1}(t),X_{2}(t))}, then
 \deqn{X(t+1) = \alpha X(t) + \sigma \epsilon(t),}
 where \eqn{\alpha} and \eqn{\sigma} are 2x2 matrices,
 \eqn{\sigma} is lower-triangular, and
 \eqn{\epsilon(t)} is standard bivariate normal.
-The observation process is \eqn{Y(t) = (y_1(t),y_2(t))}, where
-\eqn{y_i(t) \sim \mathrm{normal}(x_i(t),\tau)}.
+The observation process is \eqn{Y(t) = (Y_1(t),Y_2(t))}, where
+\eqn{Y_i(t) \sim \mathrm{normal}(X_i(t),\tau)}.
 }
 \examples{
 po <- ou2()

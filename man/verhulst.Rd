@@ -31,11 +31,12 @@ The Verhulst-Pearl (logistic) model of population growth.
 \details{
 A stochastic version of the Verhulst-Pearl logistic model.
 This evolves in continuous time, according to the stochastic differential equation
-\deqn{dn = r\,n\,\left(1-\frac{n}{K}\right)\,dt+\sigma\,n\,dW.}{dn = r n (1-n/K) dt + sigma n dW.}
+\deqn{dn_t = r\,n_t\,\left(1-\frac{n_t}{K}\right)\,dt+\sigma\,n_t\,dW_t.}{dn[t] = r n[t] (1-n[t]/K) dt + sigma n[t] dW[t].}
 
 Numerically, we simulate the stochastic dynamics using an Euler approximation.
 
-The measurements are assumed to be log-normally distributed.
+The measurements are assumed to be log-normally distributed:
+\deqn{N_t \sim \mathrm{Lognormal}\left(\log{n_t},\tau\right).}{N[t] ~ Lognormal(log(n[t]),tau).}
 }
 \examples{
 \dontrun{

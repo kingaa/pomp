@@ -7,7 +7,7 @@
 ##' and the \eqn{\epsilon_t}{eps[t]} are i.i.d. lognormal random deviates with
 ##' variance \eqn{\sigma^2}{sigma^2}.
 ##' The observed variables \eqn{Y_t} are distributed as
-##' \deqn{Y_t\sim\mathrm{lognormal}(\log{X_t},\tau).}{Y[t]~lognormal(log(X[t]),tau).}
+##' \deqn{Y_t\sim\mathrm{Lognormal}(\log{X_t},\tau).}{Y[t]~Lognormal(log(X[t]),tau).}
 ##' Parameters include the per-capita growth rate \eqn{r}, the carrying
 ##' capacity \eqn{K}, the process noise s.d. \eqn{\sigma}{sigma}, the
 ##' measurement error s.d. \eqn{\tau}{tau}, and the initial condition
