@@ -6,7 +6,7 @@
 ##' @rdname forecast
 ##' @aliases forecast,missing-method forecast,ANY-method
 ##' @family extraction methods
-##' @include kalman.R
+##' @include pfilter.R kalman.R melt.R
 ##' @inheritParams filter_mean
 ##'
 

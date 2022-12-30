@@ -11,7 +11,7 @@
 ##'
 ##' @name pred_var
 ##' @aliases pred_var,ANY-method pred_var,missing-method
-##' @include pfilter.R kalman.R
+##' @include pfilter.R kalman.R melt.R
 ##' @rdname pred_var
 ##' @family particle filter methods
 ##' @family extraction methods

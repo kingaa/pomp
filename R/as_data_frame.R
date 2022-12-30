@@ -8,7 +8,7 @@
 ##' @keywords internal
 ##' @rdname as_data_frame
 ##' @include pomp_class.R pfilter.R bsmc2.R mif2.R pmcmc.R abc.R wpfilter.R
-##' @include probe.R kalman.R
+##' @include probe.R kalman.R melt.R
 ##'
 NULL
 

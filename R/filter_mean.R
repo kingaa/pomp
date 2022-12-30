@@ -12,7 +12,7 @@
 ##' @name filter_mean
 ##' @docType methods
 ##' @aliases filter_mean,ANY-method filter_mean,missing-method
-##' @include pfilter.R kalman.R
+##' @include pfilter.R kalman.R melt.R
 ##' @rdname filter_mean
 ##' @family particle filter methods
 ##' @family extraction methods

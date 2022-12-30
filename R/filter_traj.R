@@ -15,7 +15,7 @@
 ##' 
 ##' @name filter_traj
 ##' @aliases filter_traj,ANY-method filter_traj,missing-method
-##' @include pfilter.R pmcmc.R
+##' @include pfilter.R pmcmc.R melt.R
 ##' @rdname filter_traj
 ##' @family particle filter methods
 ##' @family extraction methods

@@ -11,7 +11,7 @@
 ##'
 ##' @name pred_mean
 ##' @aliases pred_mean,ANY-method pred_mean,missing-method
-##' @include pfilter.R kalman.R
+##' @include pfilter.R kalman.R melt.R
 ##' @rdname pred_mean
 ##' @family particle filter methods
 ##' @family extraction methods

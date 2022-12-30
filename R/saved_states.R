@@ -8,7 +8,7 @@
 ##' 
 ##' @name saved_states
 ##' @aliases saved_states,ANY-method saved_states,missing-method
-##' @include pfilter.R pmcmc.R
+##' @include pfilter.R pmcmc.R melt.R
 ##' @rdname saved_states
 ##' @family particle filter methods
 ##' @family extraction methods
@@ -71,13 +71,13 @@ setMethod(
         w[,c("time",".id","variable","value")]
       )
       x <- x[order(x$time,x$.id),]
-      rownames(x) <- NULL
+      row.names(x) <- NULL
       x
     } else {
       s <- melt(object@saved.states)
       s$time <- time(object)[as.integer(s$L1)]
       s <- s[,c("time",".id","variable","value")]
-      rownames(s) <- NULL
+      row.names(s) <- NULL
       s
     }
   }

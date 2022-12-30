@@ -506,7 +506,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
 
   ## store the data as double-precision matrix
   storage.mode(data) <- "double"
-  if (is.null(obsnames)) obsnames <- rownames(data)
+  if (is.null(obsnames)) obsnames <- row.names(data)
 
   ## check the parameters and force them to be double-precision
   params <- tryCatch(
