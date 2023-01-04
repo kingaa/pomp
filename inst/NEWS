@@ -1,5 +1,23 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._5._2:
+
+        • A new ‘format’ argument has been added to the extractor
+          functions ‘cond_logLik’, ‘eff_sample_size’, ‘filter_mean’,
+          ‘filter_traj’, ‘forecast’, ‘pred_mean’, ‘pred_var’, and
+          ‘saved_states’.  This allows the user to extract the relevant
+          elements in data-frame format if desired.
+
+        • ‘pomp’ no longer depends on the superseded packages
+          ‘reshape2’ or ‘plyr’.
+
+        • ‘pomp’ has a new dependency on the package ‘dplyr’.
+
+        • The ‘magrittr’ pipe ‘%>%’ is no longer re-exported by ‘pomp’:
+          use the native R pipe ‘|>’ instead.
+
+        • The package now requires R version 4.1 at least.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._5._1:
 
         • All ‘pomp’ functions with names.that.contain.dots have been
