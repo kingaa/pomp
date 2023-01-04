@@ -29,7 +29,7 @@ sobol_design <- function (lower = numeric(0), upper = numeric(0), nseq) {
   if (!all(sort(lnames)==sort(names(upper))))
     pStop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match.")
   upper <- upper[lnames]
-  ranges <- lapply(seq_along(lnames),function(k)c(lower[k],upper[k]))
+  ranges <- lapply(seq_along(lnames),\(k)c(lower[k],upper[k]))
   names(ranges) <- lnames
   tryCatch(
     sobol(ranges,n=as.integer(nseq)),

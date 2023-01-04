@@ -19,7 +19,7 @@ slice_design <- function (center, ...) {
     problems <- slnm[!(slnm%in%names(center))]
     pStop("slice_design",
       ngettext(length(problems),"variable ","variables "),
-      paste(sapply(problems,sQuote),collapse=","),
+      paste(lapply(problems,sQuote),collapse=","),
       ngettext(length(problems)," does "," do "),
       "not appear in ",sQuote("center"))
   }

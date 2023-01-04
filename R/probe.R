@@ -177,9 +177,9 @@ probe.internal <- function (object, probes, nsim, seed, ...,
 
   if (is.null(probes)) pStop_(sQuote("probes")," must be furnished.")
   if (!is.list(probes)) probes <- list(probes)
-  if (!all(sapply(probes,is.function)))
+  if (!all(vapply(probes,is.function,logical(1L))))
     pStop_(sQuote("probes")," must be a function or a list of functions.")
-  if (!all(sapply(probes,function(f)length(formals(f))==1)))
+  if (!all(vapply(probes,\(f)length(formals(f))==1L,logical(1L))))
     pStop_("each probe must be a function of a single argument.")
 
   nsim <- as.integer(nsim)

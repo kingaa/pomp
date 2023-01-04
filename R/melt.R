@@ -49,7 +49,7 @@ setMethod(
   definition=function (data, ...) {
     dn <- dimnames(data)
     nullnames <- which(unlist(lapply(dn,is.null)))
-    dn[nullnames] <- lapply(nullnames,function(i)seq_len(dim(data)[i]))
+    dn[nullnames] <- lapply(nullnames,\(i)seq_len(dim(data)[i]))
     labels <- expand.grid(dn,KEEP.OUT.ATTRS=FALSE,stringsAsFactors=FALSE)
     dim(data) <- NULL
     cbind(labels,value=data)

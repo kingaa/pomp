@@ -136,7 +136,7 @@ plotpomp.internal <- function (x, variables,
     vars <- vars[-tpos]
     covnames <- unique(
       c(
-        lapply(x,function(p)get_covariate_names(p@covar)),
+        lapply(x,\(p)get_covariate_names(p@covar)),
         recursive=TRUE
       )
     )
@@ -248,11 +248,11 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
   if (missing(pars)) {
     pars <- unique(do.call(c,lapply(z,slot,"pars")))
     if (length(pars)<1)
-      pars <- unique(do.call(c,lapply(z,function(x)names(x@params))))
+      pars <- unique(do.call(c,lapply(z,\(x)names(x@params))))
   }
   if (scatter) {
-    x <- lapply(z,function(x)as.matrix(traces(x,pars)))
-    x <- lapply(seq_along(x),function(n)cbind(x[[n]],.num=n))
+    x <- lapply(z,\(x)as.matrix(traces(x,pars)))
+    x <- lapply(seq_along(x),\(n)cbind(x[[n]],.num=n))
     x <- do.call(rbind,x)
     if (ncol(x)<3) {
       pStop("plot","can't make a scatterplot with only one variable.")
@@ -350,7 +350,7 @@ mif2.diagnostics <- function (z, pars, transform) {
       matplot(
         y=sapply(
           z,
-          function (po, label) {
+          \(po, label) {
             traces(
               po,label,
               transform=(transform && label %in% estnames)

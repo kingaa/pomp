@@ -305,8 +305,8 @@ gillespie_hl <- function (..., .pre = "", .post = "", hmax = Inf) {
 
   args <- list(...)
 
-  if (!all(sapply(args,inherits,what="list")) ||
-      !all(sapply(args,length) == 2L))
+  if (!all(vapply(args,inherits,what="list",logical(1L))) ||
+      !all(vapply(args,length,integer(1L)) == 2L))
     pStop(ep,"each event should be specified using a length-2 list.")
 
   codeChunks <- lapply(args,"[[",1)
@@ -328,8 +328,8 @@ gillespie_hl <- function (..., .pre = "", .post = "", hmax = Inf) {
   .pre <- paste(as(.pre,"character"),collapse="\n")
   .post <- paste(as(.post,"character"),collapse="\n")
 
-  if (!all(sapply(stoich,is.numeric)) ||
-      any(sapply(stoich,function(x)invalid_names(names(x)))))
+  if (!all(vapply(stoich,is.numeric,logical(1L))) ||
+      any(vapply(stoich,\(x)invalid_names(names(x)),logical(1L))))
     pStop(ep,"for each event, the second list-element should be ",
       "a named numeric vector (without duplicate names).")
 

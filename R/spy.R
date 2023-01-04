@@ -107,7 +107,7 @@ setMethod(
 
     if (length(object@userdata)>0) {
       cat("- extra user-defined variables: ",
-        paste(sapply(names(object@userdata),sQuote),collapse=", "),
+        paste(lapply(names(object@userdata),sQuote),collapse=", "),
         "\n")
     }
 

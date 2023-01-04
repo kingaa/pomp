@@ -406,7 +406,7 @@ setMethod(
     if (missing(cfile)) cfile <- NULL
     if (!is.null(cfile)) {
       cfile <- as.character(cfile)
-      fnames <- unlist(sapply(data@solibs,getElement,"name"))
+      fnames <- unlist(lapply(data@solibs,getElement,"name"))
       if (any(cfile==fnames)) {
         pStop_("C file name ",dQuote(cfile)," cannot be re-used.")
       }

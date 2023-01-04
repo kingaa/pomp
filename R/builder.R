@@ -202,9 +202,14 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
   ## 'registry' holds a list of functions to register
   registry <- c("__pomp_load_stack_incr","__pomp_load_stack_decr")
   ## which utilities are needed?
-  utils <- which(sapply(seq_along(pomp_templates$utilities),
-    function(x) any(grepl(pomp_templates$utilities[[x]]$trigger,
-      snippets))))
+  utils <- which(
+    vapply(
+      seq_along(pomp_templates$utilities),
+      \(x) any(grepl(pomp_templates$utilities[[x]]$trigger,
+        snippets)),
+      logical(1L)
+    )
+  )
 
   ## rely on "-I" flags under *nix
   if (.Platform$OS.type=="unix") {
@@ -384,7 +389,7 @@ cleanForC <- function (text) {
 render <- function (template, ...) {
   vars <- list(...)
   if (length(vars)==0) return(template)
-  n <- sapply(vars,length)
+  n <- vapply(vars,length,integer(1L))
   if (!all((n==max(n))|(n==1)))
     pStop("render","incommensurate lengths of replacements.") #nocov
   short <- which(n==1)
