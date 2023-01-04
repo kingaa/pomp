@@ -206,7 +206,7 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
 
   params <- partrans(object,params,dir="toEst",.gnsi=gnsi)
 
-  estind <- which(apply(params,1,function(x) diff(range(x)) > 0))
+  estind <- which(apply(params,1L,\(x)diff(range(x))>0))
   est <- paramnames[estind]
   nest <- length(est)
   if (nest < 1) pStop_("no parameters to estimate")
@@ -258,7 +258,7 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
     xx <- vapply(
       as.numeric(weights),
       function (x) is.finite(x)||isTRUE(x==-Inf),
-      logical(1)
+      logical(1L)
     )
     if (!all(xx)) {
       xx <- which(!xx)[1L]
@@ -291,7 +291,7 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
   }
 
   ## replace parameters with point estimate (posterior median)
-  coef(object,transform=TRUE) <- apply(params,1,median)
+  coef(object,transform=TRUE) <- apply(params,1L,median)
 
   new(
     "bsmcd_pomp",

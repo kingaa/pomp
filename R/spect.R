@@ -254,8 +254,8 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
     ## L-2 distance betw. each sim. and mean simulated spectrum
     simdist <- vapply(
       seq_len(nsim),
-      function(k)sum((simspec[k,,j]-mean.simspec[,j])^2),
-      numeric(1)
+      \(k)sum((simspec[k,,j]-mean.simspec[,j])^2),
+      numeric(1L)
     )
     pvals[j] <- (nsim+1-sum(simdist<datdist))/(nsim+1)
     totdatdist <- totdatdist+datdist

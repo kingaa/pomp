@@ -380,7 +380,7 @@ mif2.diagnostics <- function (z, pars, transform) {
 
 probeplot.internal <- function (x, ...) {
   ##function for plotting diagonal panels
-  diag.panel.hist <- function(x, ...) {
+  diag.panel.hist <- function (x, ...) {
     ##plot a histogram for the simulations
     usr <- par("usr")
     on.exit(par(usr=usr))

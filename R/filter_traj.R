@@ -70,7 +70,7 @@ setMethod(
   definition=function (object, vars, ...) {
     fts <- lapply(object,filter_traj,vars=vars,...)
     d <- vapply(fts,dim,integer(3L))
-    if (!all(apply(d,1L,function(x)x==x[1L])))
+    if (!all(apply(d,1L,\(x)x==x[1L])))
       pStop("filter_traj","incommensurate dimensions.")
     d <- d[,1L]
     nm <- dimnames(fts[[1L]])

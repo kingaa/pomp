@@ -49,14 +49,14 @@ probe_mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
   if (length(var)>1)
     pStop_(sQuote("probe_mean")," is a univariate probe.")
   transform <- match.fun(transform)
-  function(y) mean(x=transform(y[var,]),trim=trim,na.rm=na.rm)
+  \(y) mean(x=transform(y[var,]),trim=trim,na.rm=na.rm)
 }
 
 ##' @rdname basic_probes
 ##' @export
 probe_median <- function (var, na.rm = TRUE) {
   if (length(var)>1) pStop_(sQuote("probe_median")," is a univariate probe.")
-  function(y) median(x=as.numeric(y[var,]),na.rm=na.rm)
+  \(y) median(x=as.numeric(y[var,]),na.rm=na.rm)
 }
 
 ##' @rdname basic_probes
@@ -64,7 +64,7 @@ probe_median <- function (var, na.rm = TRUE) {
 probe_var <- function (var, transform = identity, na.rm = TRUE) {
   if (length(var)>1) pStop_(sQuote("probe_var")," is a univariate probe.")
   transform <- match.fun(transform)
-  function(y) var(x=transform(y[var,]),na.rm=na.rm)
+  \(y) var(x=transform(y[var,]),na.rm=na.rm)
 }
 
 ##' @rdname basic_probes
@@ -72,7 +72,7 @@ probe_var <- function (var, transform = identity, na.rm = TRUE) {
 probe_sd <- function (var, transform = identity, na.rm = TRUE) {
   if (length(var)>1) pStop_(sQuote("probe_sd")," is a univariate probe.")
   transform <- match.fun(transform)
-  function(y) sd(x=transform(y[var,]),na.rm=na.rm)
+  \(y) sd(x=transform(y[var,]),na.rm=na.rm)
 }
 
 ##' @rdname basic_probes

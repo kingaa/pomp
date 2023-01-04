@@ -390,7 +390,7 @@ nlf.lql <- function (object, times, lags, nrbf, period, tensor,
   tryCatch(
     {
       dat.mat[,] <- apply(dat.mat,2L,transform.data)
-      mod.mat[,] <- apply(y[,1,,drop=FALSE],c(2,3),transform.data)
+      mod.mat[,] <- apply(y[,1L,,drop=FALSE],c(2L,3L),transform.data)
     },
     error = function (e) pStop("transform.data",conditionMessage(e))
   )
@@ -568,7 +568,7 @@ rbf.basis <- function (X, knots) {
 #   a[seq.int(from=n1+1,to=NROW(a)-n2,by=1)]
 # }
 
-# Newey.West <- function(x, y, maxlag) {
+# Newey.West <- function (x, y, maxlag) {
 #   w <- 1-seq_len(maxlag)/(maxlag+1)
 #   out <- mean(x*y,na.rm=TRUE)
 #   for (i in seq_len(maxlag)) {

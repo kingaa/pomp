@@ -385,7 +385,7 @@ abc.internal <- function (object,
 
   }
 
-  pars <- apply(traces,2,function(x)diff(range(x))>0)
+  pars <- apply(traces,2L,\(x)diff(range(x))>0)
   pars <- names(pars[pars])
 
   new(

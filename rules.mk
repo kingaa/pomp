@@ -29,7 +29,7 @@ default:
 
 .PHONY: binary check clean covr debug default fresh \
 htmlhelp manual news publish qcheck qqcheck \
-remove revdeps rhub rsession session vignettes win wind xcheck \
+revdeps rhub rsession session vignettes win wind xcheck \
 xcovr xxcheck ycheck
 
 .dist manual vignettes: export R_QPDF=qpdf
@@ -228,12 +228,7 @@ clean:
 	$(MAKE) -C tests clean
 	$(RM) .dist
 
-remove:
-	if [ -d library ]; then \
-		$(RCMD) REMOVE --library=library $(PKG); \
-		rmdir library; \
-	fi
-
-fresh: clean remove
+fresh: clean
 	$(RM) .headers .includes .NEWS .instdocs
 	$(RM) .install .roxy .source .testsource .roxy .tests
+	$(RM) -r library

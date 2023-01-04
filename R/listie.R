@@ -38,8 +38,8 @@ setClass(
         )
         return(retval)
       }
-      d <- sapply(object,function(x)dim(x@traces))
-      if (!all(apply(d,1,diff)==0)) {
+      d <- sapply(object,\(x)dim(x@traces))
+      if (!all(apply(d,1L,diff)==0)) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": to be combined, ",sQuote("abcd_pomp"),
@@ -64,8 +64,8 @@ setClass(
         )
         return(retval)
       }
-      d <- sapply(object,function(x)dim(x@traces))
-      if (!all(apply(d,1,diff)==0)) {
+      d <- sapply(object,\(x)dim(x@traces))
+      if (!all(apply(d,1L,diff)==0)) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": to be combined, ",sQuote("mif2d_pomp"),
@@ -90,8 +90,8 @@ setClass(
         )
         return(retval)
       }
-      d <- sapply(object,function(x)dim(x@traces))
-      if (!all(apply(d,1,diff)==0)) {
+      d <- sapply(object,\(x)dim(x@traces))
+      if (!all(apply(d,1L,diff)==0)) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": to be combined, ",sQuote("pmcmcd_pomp"),

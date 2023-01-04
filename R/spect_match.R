@@ -83,8 +83,8 @@ setMethod(
 setMethod(
   "spect_objfun",
   signature=signature(data="data.frame"),
-  definition=function(data,
-    est = character(0), weights = 1, fail.value = NA,
+  definition=function(data, est = character(0),
+    weights = 1, fail.value = NA,
     vars, kernel.width, nsim, seed = NULL, transform.data = identity,
     detrend = c("none","mean","linear","quadratic"),
     params, rinit, rprocess, rmeasure, partrans,
@@ -121,8 +121,8 @@ setMethod(
 setMethod(
   "spect_objfun",
   signature=signature(data="pomp"),
-  definition=function(data,
-    est = character(0), weights = 1, fail.value = NA,
+  definition=function(data, est = character(0),
+    weights = 1, fail.value = NA,
     vars, kernel.width, nsim, seed = NULL, transform.data = identity,
     detrend = c("none","mean","linear","quadratic"),
     ..., verbose = getOption("verbose", FALSE)) {
@@ -153,8 +153,8 @@ setMethod(
 setMethod(
   "spect_objfun",
   signature=signature(data="spectd_pomp"),
-  definition=function(data,
-    est = character(0), weights = 1, fail.value = NA,
+  definition=function(data, est = character(0),
+    weights = 1, fail.value = NA,
     vars, kernel.width, nsim, seed = NULL, transform.data = identity,
     detrend,
     ..., verbose = getOption("verbose", FALSE)) {
@@ -188,9 +188,8 @@ setMethod(
 setMethod(
   "spect_objfun",
   signature=signature(data="spect_match_objfun"),
-  definition=function(data,
-    est, weights, fail.value, seed = NULL,
-    ..., verbose = getOption("verbose", FALSE)) {
+  definition=function(data, est, weights, fail.value,
+    seed = NULL, ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(est)) est <- data@est
     if (missing(weights)) weights <-data@env$weights
