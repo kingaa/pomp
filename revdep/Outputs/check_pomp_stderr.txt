@@ -1,0 +1,172 @@
+  Running ‘R_v_C.R’ [16s/12s]
+  Running ‘abc.R’
+  Comparing ‘abc.Rout’ to ‘abc.Rout.save’ ... OK
+  Running ‘baddm.R’
+  Comparing ‘baddm.Rout’ to ‘baddm.Rout.save’ ... OK
+  Running ‘bake.R’
+  Comparing ‘bake.Rout’ to ‘bake.Rout.save’ ... OK
+  Running ‘basic_probes.R’
+  Comparing ‘basic_probes.Rout’ to ‘basic_probes.Rout.save’ ... OK
+  Running ‘betabinom.R’
+  Comparing ‘betabinom.Rout’ to ‘betabinom.Rout.save’ ... OK
+  Running ‘blowflies.R’
+  Comparing ‘blowflies.Rout’ to ‘blowflies.Rout.save’ ... OK
+  Running ‘bsmc2.R’
+  Comparing ‘bsmc2.Rout’ to ‘bsmc2.Rout.save’ ... OK
+  Running ‘bsplines.R’
+  Comparing ‘bsplines.Rout’ to ‘bsplines.Rout.save’ ... OK
+  Running ‘concat.R’
+  Comparing ‘concat.Rout’ to ‘concat.Rout.save’ ... OK
+  Running ‘covmat.R’
+  Comparing ‘covmat.Rout’ to ‘covmat.Rout.save’ ... OK
+  Running ‘csnippet.R’
+  Comparing ‘csnippet.Rout’ to ‘csnippet.Rout.save’ ... OK
+  Running ‘dacca.R’
+  Comparing ‘dacca.Rout’ to ‘dacca.Rout.save’ ... OK
+  Running ‘deprecated.R’
+  Comparing ‘deprecated.Rout’ to ‘deprecated.Rout.save’ ... OK
+  Running ‘dp.R’
+  Comparing ‘dp.Rout’ to ‘dp.Rout.save’ ... OK
+  Running ‘dprocess.R’
+  Comparing ‘dprocess.Rout’ to ‘dprocess.Rout.save’ ... OK
+  Running ‘ebola.R’
+  Comparing ‘ebola.Rout’ to ‘ebola.Rout.save’ ... OK
+  Running ‘emeasure.R’
+  Comparing ‘emeasure.Rout’ to ‘emeasure.Rout.save’ ... OK
+  Running ‘eulermultinom.R’
+  Comparing ‘eulermultinom.Rout’ to ‘eulermultinom.Rout.save’ ... OK
+  Running ‘flow.R’
+  Comparing ‘flow.Rout’ to ‘flow.Rout.save’ ... OK
+  Running ‘getting_started.R’
+  Comparing ‘getting_started.Rout’ to ‘getting_started.Rout.save’ ... OK
+  Running ‘gillespie.R’ [19s/12s]
+  Comparing ‘gillespie.Rout’ to ‘gillespie.Rout.save’ ... OK
+  Running ‘gompertz.R’
+  Comparing ‘gompertz.Rout’ to ‘gompertz.Rout.save’ ... OK
+  Running ‘helpers.R’
+  Comparing ‘helpers.Rout’ to ‘helpers.Rout.save’ ... OK
+  Running ‘hitch.R’
+  Comparing ‘hitch.Rout’ to ‘hitch.Rout.save’ ... OK
+  Running ‘issue109.R’
+  Comparing ‘issue109.Rout’ to ‘issue109.Rout.save’ ... OK
+  Running ‘issue56.R’
+  Comparing ‘issue56.Rout’ to ‘issue56.Rout.save’ ... OK
+  Running ‘kalman.R’
+  Comparing ‘kalman.Rout’ to ‘kalman.Rout.save’ ... OK
+  Running ‘kalman2.R’
+  Comparing ‘kalman2.Rout’ to ‘kalman2.Rout.save’ ... OK
+  Running ‘link.R’
+  Comparing ‘link.Rout’ to ‘link.Rout.save’ ... OK
+  Running ‘load.R’
+  Comparing ‘load.Rout’ to ‘load.Rout.save’ ... OK
+  Running ‘logmeanexp.R’
+  Comparing ‘logmeanexp.Rout’ to ‘logmeanexp.Rout.save’ ... OK
+  Running ‘lookup.R’
+  Comparing ‘lookup.Rout’ to ‘lookup.Rout.save’ ... OK
+  Running ‘map.R’
+  Comparing ‘map.Rout’ to ‘map.Rout.save’ ... OK
+  Running ‘mcap.R’
+  Comparing ‘mcap.Rout’ to ‘mcap.Rout.save’ ... OK
+  Running ‘measure.R’
+  Comparing ‘measure.Rout’ to ‘measure.Rout.save’ ... OK
+  Running ‘mif2.R’
+  Comparing ‘mif2.Rout’ to ‘mif2.Rout.save’ ... OK
+  Running ‘mif2_index.R’
+  Comparing ‘mif2_index.Rout’ to ‘mif2_index.Rout.save’ ... OK
+  Running ‘mif2_kf.R’
+  Comparing ‘mif2_kf.Rout’ to ‘mif2_kf.Rout.save’ ... OK
+  Running ‘nlf.R’
+  Comparing ‘nlf.Rout’ to ‘nlf.Rout.save’ ... OK
+  Running ‘nullcases.R’
+  Comparing ‘nullcases.Rout’ to ‘nullcases.Rout.save’ ... OK
+  Running ‘ou2.R’
+  Comparing ‘ou2.Rout’ to ‘ou2.Rout.save’ ... OK
+  Running ‘parmat.R’
+  Comparing ‘parmat.Rout’ to ‘parmat.Rout.save’ ... OK
+  Running ‘partrans.R’
+  Comparing ‘partrans.Rout’ to ‘partrans.Rout.save’ ... OK
+  Running ‘pfilter.R’
+  Comparing ‘pfilter.Rout’ to ‘pfilter.Rout.save’ ... OK
+  Running ‘pfilter2.R’
+  Comparing ‘pfilter2.Rout’ to ‘pfilter2.Rout.save’ ... OK
+  Running ‘pmcmc.R’
+  Comparing ‘pmcmc.Rout’ to ‘pmcmc.Rout.save’ ... OK
+  Running ‘pomp.R’
+  Comparing ‘pomp.Rout’ to ‘pomp.Rout.save’ ... OK
+  Running ‘pomp_fun.R’
+  Comparing ‘pomp_fun.Rout’ to ‘pomp_fun.Rout.save’ ... OK
+  Running ‘pomp_methods.R’
+  Comparing ‘pomp_methods.Rout’ to ‘pomp_methods.Rout.save’ ... OK
+  Running ‘prior.R’
+  Comparing ‘prior.Rout’ to ‘prior.Rout.save’ ... OK
+  Running ‘probe.R’
+  Comparing ‘probe.Rout’ to ‘probe.Rout.save’ ... OK
+  Running ‘probe_match.R’
+  Comparing ‘probe_match.Rout’ to ‘probe_match.Rout.save’ ... OK
+  Running ‘process.R’
+  Comparing ‘process.Rout’ to ‘process.Rout.save’ ... OK
+  Running ‘profile_design.R’
+  Comparing ‘profile_design.Rout’ to ‘profile_design.Rout.save’ ... OK
+  Running ‘proposals.R’
+  Comparing ‘proposals.Rout’ to ‘proposals.Rout.save’ ... OK
+  Running ‘resample.R’
+  Comparing ‘resample.Rout’ to ‘resample.Rout.save’ ... OK
+  Running ‘rgammawn.R’
+  Comparing ‘rgammawn.Rout’ to ‘rgammawn.Rout.save’ ... OK
+  Running ‘ricker.R’
+  Comparing ‘ricker.Rout’ to ‘ricker.Rout.save’ ... OK
+  Running ‘rinit.R’
+  Comparing ‘rinit.Rout’ to ‘rinit.Rout.save’ ... OK
+  Running ‘runif_design.R’
+  Comparing ‘runif_design.Rout’ to ‘runif_design.Rout.save’ ... OK
+  Running ‘rw2.R’
+  Comparing ‘rw2.Rout’ to ‘rw2.Rout.save’ ... OK
+  Running ‘sannbox.R’
+  Comparing ‘sannbox.Rout’ to ‘sannbox.Rout.save’ ... OK
+  Running ‘simulate.R’
+  Comparing ‘simulate.Rout’ to ‘simulate.Rout.save’ ... OK
+  Running ‘simulate_data_frame.R’
+  Comparing ‘simulate_data_frame.Rout’ to ‘simulate_data_frame.Rout.save’ ... OK
+  Running ‘sir.R’
+  Comparing ‘sir.Rout’ to ‘sir.Rout.save’ ... OK
+  Running ‘sir2.R’
+  Comparing ‘sir2.Rout’ to ‘sir2.Rout.save’ ... OK
+  Running ‘skeleton.R’
+  Comparing ‘skeleton.Rout’ to ‘skeleton.Rout.save’ ... OK
+  Running ‘slice_design.R’
+  Comparing ‘slice_design.Rout’ to ‘slice_design.Rout.save’ ... OK
+  Running ‘sobol.R’
+  Comparing ‘sobol.Rout’ to ‘sobol.Rout.save’ ... OK
+  Running ‘spect.R’
+  Comparing ‘spect.Rout’ to ‘spect.Rout.save’ ... OK
+  Running ‘spect_match.R’
+  Comparing ‘spect_match.Rout’ to ‘spect_match.Rout.save’ ... OK
+  Running ‘spy.R’
+  Running ‘steps.R’
+  Comparing ‘steps.Rout’ to ‘steps.Rout.save’ ... OK
+  Running ‘synlik.R’
+  Comparing ‘synlik.Rout’ to ‘synlik.Rout.save’ ... OK
+  Running ‘traj_match.R’
+  Comparing ‘traj_match.Rout’ to ‘traj_match.Rout.save’ ... OK
+  Running ‘trajectory.R’
+  Comparing ‘trajectory.Rout’ to ‘trajectory.Rout.save’ ... OK
+  Running ‘transformations.R’
+  Comparing ‘transformations.Rout’ to ‘transformations.Rout.save’ ... OK
+  Running ‘undefined.R’
+  Comparing ‘undefined.Rout’ to ‘undefined.Rout.save’ ... OK
+  Running ‘userdata.R’
+  Comparing ‘userdata.Rout’ to ‘userdata.Rout.save’ ... OK
+  Running ‘verhulst.R’
+  Comparing ‘verhulst.Rout’ to ‘verhulst.Rout.save’ ... OK
+  Running ‘vmeasure.R’
+  Comparing ‘vmeasure.Rout’ to ‘vmeasure.Rout.save’ ... OK
+  Running ‘wpfilter.R’
+  Comparing ‘wpfilter.Rout’ to ‘wpfilter.Rout.save’ ... OK
+  Running ‘wquant.R’
+  Comparing ‘wquant.Rout’ to ‘wquant.Rout.save’ ... OK
+
+See
+  '/home/kingaa/projects/Rpkg/pomp/revdep/pomp.Rcheck/00check.log'
+for details.
+
+

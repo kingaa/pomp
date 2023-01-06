@@ -1,0 +1,98 @@
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck'
+* using R version 4.2.2 (2022-10-31)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using option '--as-cran'
+* checking for file 'circumstance/DESCRIPTION' ... OK
+* checking extension type ... Package
+* this is package 'circumstance' version '0.0.2.0'
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... NOTE
+Suggests orphaned package: 'doRNG'
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package 'circumstance' can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... NOTE
+Package in Depends field not imported from: ‘parallel’
+  These packages need to be imported from (in the NAMESPACE file)
+  for when this namespace is loaded but not attached.
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking examples ... ERROR
+Running examples in 'circumstance-Ex.R' failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pfilter
+> ### Title: Parallel particle filter computations
+> ### Aliases: pfilter pfilter,ANY,numeric-method pfilter-ANY,numeric
+> ###   pfilter,ANY,missing-method pfilter-ANY,missing
+> ###   pfilter,pompList,numeric-method pfilter-pompList,numeric
+> ###   pfilter,pompList,missing-method pfilter-pompList,missing
+> 
+> ### ** Examples
+> 
+> library(circumstance)
+> 
+> ou2() -> ou2
+> ou2 %>% pfilter(Np=1000,Nrep=6) -> pfs
+Error in ou2 %>% pfilter(Np = 1000, Nrep = 6) : 
+  could not find function "%>%"
+Execution halted
+* checking for unstated dependencies in 'tests' ... OK
+* checking tests ...
+47,53c47,53
+<   .id time    y1    y2     x1    x2   ess cond.logLik
+< 1   1    1 -4.05 4.781 -3.718  4.25 160.6       -4.31
+< 2   1    2  1.83 6.273  0.940  6.84 148.1       -4.42
+< 3   1    3 -1.32 7.556 -0.373  7.59  71.4       -5.20
+< 4   1    4  6.64 5.730  5.809  6.49  76.1       -5.01
+< 5   1    5  6.58 1.561  5.605  1.84 217.1       -3.99
+< 6   1    6  7.54 0.176  7.355 -1.57 135.8       -4.51
+---
+>   time    y1    y2     x1    x2   ess cond.logLik .id
+> 1    1 -4.05 4.781 -3.718  4.25 160.6       -4.31   1
+> 2    2  1.83 6.273  0.940  6.84 148.1       -4.42   1
+> 3    3 -1.32 7.556 -0.373  7.59  71.4       -5.20   1
+> 4    4  6.64 5.730  5.809  6.49  76.1       -5.01   1
+> 5    5  6.58 1.561  5.605  1.84 217.1       -3.99   1
+> 6    6  7.54 0.176  7.355 -1.57 135.8       -4.51   1
+ OK
+* checking PDF version of manual ... OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 ERROR, 2 NOTEs

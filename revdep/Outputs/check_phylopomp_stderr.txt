@@ -1,0 +1,24 @@
+  Running ‘diagram.R’
+  Comparing ‘diagram.Rout’ to ‘diagram.Rout.save’ ... OK
+  Running ‘lbdp1.R’
+  Comparing ‘lbdp1.Rout’ to ‘lbdp1.Rout.save’ ... OK
+  Running ‘lbdp2.R’ [22s/20s]
+  Comparing ‘lbdp2.Rout’ to ‘lbdp2.Rout.save’ ... OK
+  Running ‘lineages.R’
+  Comparing ‘lineages.Rout’ to ‘lineages.Rout.save’ ... OK
+  Running ‘moran1.R’
+  Comparing ‘moran1.Rout’ to ‘moran1.Rout.save’ ... OK
+  Running ‘si2r.R’
+  Comparing ‘si2r.Rout’ to ‘si2r.Rout.save’ ... OK
+  Running ‘siir1.R’
+  Comparing ‘siir1.Rout’ to ‘siir1.Rout.save’ ... OK
+  Running ‘simulate.R’
+  Comparing ‘simulate.Rout’ to ‘simulate.Rout.save’ ... OK
+  Running ‘sir1.R’
+  Comparing ‘sir1.Rout’ to ‘sir1.Rout.save’ ... OK
+
+See
+  '/home/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck/00check.log'
+for details.
+
+

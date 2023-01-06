@@ -1,0 +1,6 @@
+  Running ‘pfilter.R’
+  Comparing ‘pfilter.Rout’ to ‘pfilter.Rout.save’ ...
+See
+  '/home/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck/00check.log'
+for details.
+

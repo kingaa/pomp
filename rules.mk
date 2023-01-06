@@ -1,4 +1,5 @@
 REXE = R -s --vanilla
+REXE_ALT = R -s
 RSESSION = emacs -f R
 RCMD = $(REXE) CMD
 RCMD_ALT = R -s --no-save --no-restore CMD
@@ -36,9 +37,9 @@ xcovr xxcheck ycheck
 .headers: export LC_COLLATE=C
 .roxy .headers .dist manual vignettes: export R_HOME=$(shell $(REXE) RHOME)
 check xcheck xxcheck: export FULL_TESTS=yes
-.dist .tests revdeps session check xcheck xxcheck: export R_KEEP_PKG_SOURCE=yes
-.tests revdeps xcheck: export R_PROFILE_USER=$(CURDIR)/.Rprofile
-.tests revdeps session xxcheck vignettes data manual: export R_LIBS=$(CURDIR)/library
+.dist .tests session check xcheck xxcheck: export R_KEEP_PKG_SOURCE=yes
+revdeps .tests xcheck: export R_PROFILE_USER=$(CURDIR)/.Rprofile
+.tests session xxcheck vignettes data manual: export R_LIBS=$(CURDIR)/library
 xcheck: export _R_CHECK_DEPENDS_ONLY_=true
 debug: export RSESSION=R -d gdb
 rsession: export RSESSION=R
@@ -89,10 +90,10 @@ debug: session
 
 rsession: session
 
-revdeps: install
-	mkdir -p library check
-	$(REXE) -e "pkgs <- strsplit('$(REVDEPS)',' ')[[1]]; download.packages(pkgs,destdir='library',repos='https://mirrors.nics.utk.edu/cran/')"
-	$(RCMD) check --as-cran --library=library -o check library/*.tar.gz
+revdeps: .dist
+	mkdir -p revdep
+	$(CP) $(PKGVERS).tar.gz revdep
+	$(REXE_ALT) -e "tools::check_packages_in_dir(\"revdep\",check_args=\"--as-cran\",reverse=list(which=\"most\"))"
 
 .roxy: .source .headers
 	$(REXE) -e "devtools::document()"
@@ -232,3 +233,4 @@ fresh: clean
 	$(RM) .headers .includes .NEWS .instdocs
 	$(RM) .install .roxy .source .testsource .roxy .tests
 	$(RM) -r library
+	$(RM) -r revdep/*.Rcheck revdep/Library revdep/*.tar.gz

@@ -1,0 +1,6 @@
+
+See
+  '/home/kingaa/projects/Rpkg/pomp/revdep/DTAT.Rcheck/00check.log'
+for details.
+
+

@@ -1,0 +1,137 @@
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/spatPomp.Rcheck'
+* using R version 4.2.2 (2022-10-31)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using option '--as-cran'
+* checking for file 'spatPomp/DESCRIPTION' ... OK
+* checking extension type ... Package
+* this is package 'spatPomp' version '0.30.2.0'
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... NOTE
+Suggests orphaned package: 'doRNG'
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package 'spatPomp' can be installed ... [18s/16s] OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... [27s/19s] OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of 'data' directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking pragmas in C/C++ headers and code ... OK
+* checking compilation flags used ... OK
+* checking compiled code ... OK
+* checking examples ... OK
+* checking for unstated dependencies in 'tests' ... OK
+* checking tests ...
+16,23d15
+< Warning message:
+< 'function (...) 
+< {
+<     .Deprecated("rw_sd")
+<     rw_sd(...)
+< }' is deprecated.
+< Use 'rw_sd' instead.
+< See help("Deprecated") 
+26,29d25
+< Warning message:
+< 'rw.sd' is deprecated.
+< Use 'rw_sd' instead.
+< See help("Deprecated") 
+78,85d77
+< Warning message:
+< 'function (...) 
+< {
+<     .Deprecated("rw_sd")
+<     rw_sd(...)
+< }' is deprecated.
+< Use 'rw_sd' instead.
+< See help("Deprecated") 
+14,17d13
+< In addition: Warning message:
+< 'rw.sd' is deprecated.
+< Use 'rw_sd' instead.
+< See help("Deprecated") 
+71,73c71
+< 1: 'rw.sd' is deprecated.
+< Use 'rw_sd' instead.
+< See help("Deprecated") 
+---
+> 1: in 'table_lookup': extrapolating at 1.965002e+03. 
+75d72
+< 3: in 'table_lookup': extrapolating at 1.965002e+03. 
+ [80s/31s] ERROR
+Running the tests in 'tests/bm.R' failed.
+Last 13 lines of output:
+  +   Ngirf = 2,
+  +   rw.sd = b_rw.sd,
+  +   cooling.type = "geometric",
+  +   cooling.fraction.50 = 0.5,
+  +   Np=10,
+  +   Ninter = 2,
+  +   lookahead = 1,
+  +   Nguide = 5,
+  +   kind = 'moment',
+  +   verbose = FALSE
+  + )
+  Error in value[[3L]](cond) : 
+    igirf: Error in ivp(0.02): could not find function "ivp"
+  Calls: igirf ... tryCatch -> tryCatchList -> tryCatchOne -> <Anonymous>
+  Execution halted
+Running the tests in 'tests/lorenz.R' failed.
+Last 13 lines of output:
+  +   Np=10,
+  +   Ninter = 2,
+  +   lookahead = 1,
+  +   Nguide = 10,
+  +   kind = 'bootstrap',
+  +   verbose = FALSE
+  + )
+  Error in value[[3L]](cond) : 
+    igirf: Error in ivp(0): could not find function "ivp"
+  Calls: igirf ... tryCatch -> tryCatchList -> tryCatchOne -> <Anonymous>
+  In addition: Warning message:
+  'rw.sd' is deprecated.
+  Use 'rw_sd' instead.
+  See help("Deprecated") 
+  Execution halted
+* checking PDF version of manual ... OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 ERROR, 1 NOTE
