@@ -33,8 +33,16 @@ git push github v4.6
 ## Submitting
 
 - Use the [webform](https://xmpalantir.wu.ac.at/cransubmit/) for submission.
-- **Submission note text:**
-  The package has been checked under R-4.0.0, R-release, and R-devel on linux, osx, and windows.  I have checked for memory leaks using 'valgrind' and have verified that this release does not break any of the reverse dependencies listed on CRAN. This release fixes the one NOTE mentioned on the CRAN checks page.
+- **Submission note text:**  
+  The package has been checked under R-4.1.0, R-release, and R-devel on linux, osx, and windows.
+  I have checked for memory leaks using 'valgrind'.
+  There are two new NOTEs generated, concerning S3 generic/method consistency.
+  These are false positives, since the functions in question `filter.mean` and `filter.traj` are themselves S4 generics.
+  I have checked that the S3 method dispatch system works properly.
+  In any case, these functions have been deprecated as of this version in favor of functions named `filter_mean` and `filter_traj`, so this false positive will go away when these functions are removed in a future release.
+  I have verified that this release does not break the reverse dependencies listed on CRAN, with the exception of **spatPomp**.
+  I am one of the developers of that package and we have prepared a CRAN release of this package that corrects this problem.
+  We will submit this as soon as this version of **pomp** is published to CRAN.
 
 ## Announcement
 

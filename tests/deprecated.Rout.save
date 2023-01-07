@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -159,7 +157,7 @@ Slot "call":
 rw_sd()
 
 Slot "envir":
-<environment: 0x55ecc21dc530>
+<environment: R_GlobalEnv>
 
 Warning message:
 'rw.sd' is deprecated.
@@ -170,5 +168,16 @@ Error : in 'saved_states': 'object' is a required argument.
 In addition: Warning message:
 'saved.states' is deprecated.
 Use 'saved_states' instead.
+See help("Deprecated") 
+> stopifnot(
++   identical(rw.sd(a=3),rw_sd(a=3)),
++   identical(rw.sd(a=3,b=ivp(x,1)),rw_sd(a=3,b=ivp(x,1)))
++ )
+Warning messages:
+1: 'rw.sd' is deprecated.
+Use 'rw_sd' instead.
+See help("Deprecated") 
+2: 'rw.sd' is deprecated.
+Use 'rw_sd' instead.
 See help("Deprecated") 
 > 

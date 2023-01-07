@@ -190,8 +190,11 @@ probe.var <- function (...) {
 ##' @aliases rw.sd
 ##' @export
 rw.sd <- function (...) {
-  .Deprecated("rw_sd")
-  rw_sd(...)
+  .Deprecated(new="rw_sd",old="rw.sd")
+  call <- match.call()
+  env <- parent.frame()
+  call[[1L]] <- as.symbol("rw_sd")
+  new("safecall",call=call,envir=env)
 }
 
 ##' @rdname pomp-deprecated
