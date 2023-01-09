@@ -23,20 +23,20 @@
 logmeanexp <- function (x, se = FALSE, ess = FALSE) {
   se <- isTRUE(se)
   ess <- isTRUE(ess)
-  mx <- max(x)
-  w <- exp(x-mx)
-  est <- mx+log(mean(w))
+  x <- as.numeric(x)
+  est <- .Call(P_logmeanexp,x,-1L)
   if (se || ess) {
     if (se) {
       n <- length(x)
       jk <- vapply(
         seq_len(n),
-        \(k) logmeanexp(x[-k]),
-        numeric(1L)
+        \(k) .Call(P_logmeanexp,x,k),
+        double(1L)
       )
       xse <- (n-1)*sd(jk)/sqrt(n)
     }
     if (ess) {
+      w <- exp(x-max(x))
       xss <- sum(w)^2/sum(w^2)
       if (se) {
         c(est=est,se=xse,ess=xss)

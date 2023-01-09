@@ -33,6 +33,8 @@ extern void _gompertz_to_trans(double *__pt, const double *__p, const int *__par
 extern void _gompertz_from_trans(double *__p, const double *__pt, const int *__parindex);
 /* src/init.c */
 extern void R_init_pomp(DllInfo *info);
+/* src/logmeanexp.c */
+extern SEXP logmeanexp(const SEXP X, const SEXP Drop);
 /* src/lookup_table.c */
 extern SEXP get_covariate_names(SEXP object);
 extern lookup_table_t make_covariate_table(SEXP object, int *ncovar);
