@@ -20,6 +20,14 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > library(pomp)
+
+Welcome to pomp!
+
+As of version 4.6, no user-visible pomp function has a name that
+includes a dot (.). Function names have been changed to replace the dot
+with an underscore (_). For more information, see the pomp blog:
+https://kingaa.github.io/pomp/blog.html.
+
 > 
 > gompertz() -> po
 > 
@@ -165,8 +173,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2022-12-27 12:26:28.139 -0500 */
-/* Salt: FB81223F4E67ED7581FDB486 */
+/* Time: 2023-01-09 14:59:35.242 -0500 */
+/* Salt: EAA2A62DD92E54C55D9F8B38 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -289,8 +297,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2022-12-27 12:26:28.243 -0500 */
-/* Salt: B483FB72E2ADBACA48669BA2 */
+/* Time: 2023-01-09 14:59:35.346 -0500 */
+/* Salt: 7F211AFE6B51F2C68C2BD053 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -924,8 +932,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2022-12-27 12:26:28.782 -0500 */
-/* Salt: 5BC63C69BE1FE8CCCA9D54E2 */
+/* Time: 2023-01-09 14:59:35.912 -0500 */
+/* Salt: 9063E2B1D9A32C3595952F99 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1180,8 +1188,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2022-12-27 12:26:29.245 -0500 */
-/* Salt: 29FF8A2424CCBA49EA01EEE1 */
+/* Time: 2023-01-09 14:59:36.404 -0500 */
+/* Salt: 2E45C6245DE772A978879949 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

@@ -21,6 +21,14 @@ Type 'q()' to quit R.
 > png(filename="pfilter2-%02d.png",res=100)
 > 
 > library(pomp)
+
+Welcome to pomp!
+
+As of version 4.6, no user-visible pomp function has a name that
+includes a dot (.). Function names have been changed to replace the dot
+with an underscore (_). For more information, see the pomp blog:
+https://kingaa.github.io/pomp/blog.html.
+
 > suppressPackageStartupMessages({
 +   library(tidyr)
 +   library(dplyr)

@@ -32,9 +32,10 @@ Encoding: UTF-8
 Roxygen: list(roclets = c("collate", "namespace", "rd"))
 RoxygenNote: 7.2.3
 Collate: 
+    'package.R'
+    'aaa.R'
     'pstop.R'
     'undefined.R'
-    'package.R'
     'csnippet.R'
     'pomp_fun.R'
     'parameter_trans.R'

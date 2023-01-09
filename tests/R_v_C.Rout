@@ -22,6 +22,14 @@ Type 'q()' to quit R.
 > 
 > ## ----packages------------------------------------------------------------
 > library(pomp)
+
+Welcome to pomp!
+
+As of version 4.6, no user-visible pomp function has a name that
+includes a dot (.). Function names have been changed to replace the dot
+with an underscore (_). For more information, see the pomp blog:
+https://kingaa.github.io/pomp/blog.html.
+
 > library(tidyr)
 > library(ggplot2)
 > 
@@ -109,16 +117,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  6.561   0.055   6.616 
+  6.570   0.045   6.615 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.149   0.008   0.158 
+  0.149   0.009   0.159 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.585   0.012   0.597 
+  0.602   0.000   0.603 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.027   0.000   0.028 
+  0.027   0.000   0.027 
 > 
 > dev.off()
 null device 

@@ -2,6 +2,8 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 4.5.3}{
   \itemize{
+    \item \code{logmeanexp} can now compute the effective sample size, which can be useful in determining the reliability of its estimate.
+    To do so, set \code{ess=TRUE} in a call to \code{logmeanexp}.
     \item \code{logmeanexp} now returns a fully-named vector when either \code{se=TRUE} or \code{ess=TRUE}.
   }
 }
