@@ -25,18 +25,28 @@ logmeanexp <- function (x, se = FALSE, ess = FALSE) {
   ess <- isTRUE(ess)
   mx <- max(x)
   w <- exp(x-mx)
-  rv <- mx+log(mean(w))
-  if (se) {
-    n <- length(x)
-    jk <- vapply(
-      seq_len(n),
-      \(k) logmeanexp(x[-k]),
-      numeric(1L)
-    )
-    rv <- c(rv,se=(n-1)*sd(jk)/sqrt(n))
+  est <- mx+log(mean(w))
+  if (se || ess) {
+    if (se) {
+      n <- length(x)
+      jk <- vapply(
+        seq_len(n),
+        \(k) logmeanexp(x[-k]),
+        numeric(1L)
+      )
+      xse <- (n-1)*sd(jk)/sqrt(n)
+    }
+    if (ess) {
+      xss <- sum(w)^2/sum(w^2)
+      if (se) {
+        c(est=est,se=xse,ess=xss)
+      } else {
+        c(est=est,ess=xss)
+      }
+    } else {
+      c(est=est,se=xse)
+    }
+  } else {
+    est
   }
-  if (ess) {
-    rv <- c(rv,ess=sum(w)^2/sum(w^2))
-  }
-  rv
 }

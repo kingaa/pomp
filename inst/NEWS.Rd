@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.5.3}{
+  \itemize{
+    \item \code{logmeanexp} now returns a fully-named vector when either \code{se=TRUE} or \code{ess=TRUE}.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.5.2}{
   \itemize{
     \item A new \code{format} argument has been added to the extractor functions \code{cond_logLik}, \code{eff_sample_size}, \code{filter_mean}, \code{filter_traj}, \code{forecast}, \code{pred_mean}, \code{pred_var}, and \code{saved_states}.

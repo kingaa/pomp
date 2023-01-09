@@ -103,22 +103,22 @@ Type 'q()' to quit R.
 > pf <- replicate(n=10,pfilter(Gompertz,Np=500))
 > 
 > logmeanexp(sapply(pf,logLik),se=TRUE)
-           se 
+   est     se 
 62.814  0.168 
 > 
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  6.487   0.044   6.531 
+  6.561   0.055   6.616 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.154   0.003   0.157 
+  0.149   0.008   0.158 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.598   0.000   0.599 
+  0.585   0.012   0.597 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.027   0.000   0.027 
+  0.027   0.000   0.028 
 > 
 > dev.off()
 null device 

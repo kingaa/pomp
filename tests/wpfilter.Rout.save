@@ -51,17 +51,17 @@ Error : in 'wpfilter': 'Np' must have length 1 or length 52.
 [1] -140
 > 
 > do.call(c,replicate(n=10,pfilter(window(po,end=4),Np=1000))) |> logLik() |> logmeanexp(se=TRUE)
-               se 
+     est       se 
 -13.0978   0.0165 
 > do.call(c,replicate(n=10,wpfilter(window(po,end=4),Np=1000))) |> logLik() |> logmeanexp(se=TRUE)
-               se 
+     est       se 
 -13.0941   0.0198 
 > 
 > do.call(c,replicate(n=10,pfilter(window(po,end=20),Np=1000))) |> logLik() |> logmeanexp(se=TRUE)
-               se 
+     est       se 
 -56.9719   0.0509 
 > do.call(c,replicate(n=10,wpfilter(window(po,end=20),Np=1000,trigger=0.8))) |> logLik() |> logmeanexp(se=TRUE)
-               se 
+     est       se 
 -57.0958   0.0742 
 > 
 > set.seed(9994847L)

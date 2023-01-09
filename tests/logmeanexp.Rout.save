@@ -20,13 +20,13 @@ Type 'q()' to quit R.
 > library(pomp)
 > 
 > logmeanexp(rep(10,10),se=TRUE)
-   se 
-10  0 
+est  se 
+ 10   0 
 > logmeanexp(10^seq(8,10),se=TRUE)
-         se 
+  est    se 
 1e+10 6e+09 
 > logmeanexp(c(1.2e-100,1.4e-100,1.8e-100),se=TRUE)
-                         se 
+          est            se 
 1.800000e-100 2.666667e-101 
 > logmeanexp(c(1e-200,1.5e-200,1.6e-200))
 [1] 1.6e-200
@@ -35,12 +35,42 @@ Type 'q()' to quit R.
 > logmeanexp(10^seq(8,10),se=NULL)
 [1] 1e+10
 > logmeanexp(rep(10,10),ess=TRUE)
-    ess 
+est ess 
  10  10 
 > logmeanexp(10^seq(8,10),ess=TRUE)
-        ess 
+  est   ess 
 1e+10 1e+00 
 > logmeanexp(c(1.2e-100,1.4e-100,1.8e-100),se=TRUE,ess=TRUE)
-                         se           ess 
+          est            se           ess 
 1.800000e-100 2.666667e-101  3.000000e+00 
+> 
+> x1 <- freeze(-rexp(10,rate=0.1),seed=1951379414)
+> x1 <- x1-max(x1)
+> stopifnot(
++   all.equal(logmeanexp(x1),log(mean(exp(x1))))
++ )
+> logmeanexp(x1,se=TRUE)
+      est        se 
+-2.149512  1.744263 
+> logmeanexp(x1,ess=TRUE)
+      est       ess 
+-2.149512  1.342667 
+> logmeanexp(x1,ess=TRUE,se=TRUE)
+      est        se       ess 
+-2.149512  1.744263  1.342667 
+> 
+> x2 <- freeze(-rexp(10,rate=10),seed=1951379414)
+> x2 <- x2-max(x2)
+> stopifnot(
++   all.equal(logmeanexp(x2),log(mean(exp(x2))))
++ )
+> logmeanexp(x2,se=TRUE)
+        est          se 
+-0.10234692  0.03252946 
+> logmeanexp(x2,ess=TRUE)
+       est        ess 
+-0.1023469  9.9047782 
+> logmeanexp(x2,ess=TRUE,se=TRUE)
+        est          se         ess 
+-0.10234692  0.03252946  9.90477816 
 > 
