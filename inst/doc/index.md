@@ -120,8 +120,6 @@ dt {
 
 - [Guide to the **pomp** C API](https://kingaa.github.io/pomp/C_API.html)
 
-- [**pomp** version 2 upgrade guide](https://kingaa.github.io/pomp/upgrade_guide.html)
-
 - [Community discussions](https://github.com/kingaa/pomp/discussions)
 
 - [Report issues with the package](https://github.com/kingaa/pomp/issues)

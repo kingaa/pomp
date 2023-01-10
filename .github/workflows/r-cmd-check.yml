@@ -5,10 +5,7 @@ on:
     branches:
       - '*'
   pull_request:
-    branches: [master]
   workflow_dispatch:
-    branches:
-      - '*'
 
 name: R-CMD-check
 
@@ -24,7 +21,6 @@ jobs:
         config:
           - {os: ubuntu-22.04,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,  r: 'release'}
-          - {os: ubuntu-latest,  r: 'oldrel-1'}
           - {os: ubuntu-20.04,   r: '4.1.0'}
           - {os: macOS-11,       r: 'release'}
           - {os: macOS-12,       r: 'release'}
@@ -33,28 +29,6 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
-      _R_CHECK_DEPENDS_ONLY_: false
-      _R_CHECK_ALL_NON_ISO_C_: true
-      _R_CHECK_CODE_ASSIGN_TO_GLOBALENV_: true
-      _R_CHECK_CODE_ATTACH_: true
-      _R_CHECK_CODE_DATA_INTO_GLOBALENV_: true
-      _R_CHECK_CODE_USAGE_VIA_NAMESPACES_: true
-      _R_CHECK_DEPRECATED_DEFUNCT_: true
-      _R_CHECK_EXECUTABLES_EXCLUSIONS_: false
-      _R_CHECK_INSTALL_DEPENDS_: true
-      _R_CHECK_NO_RECOMMENDED_: true
-      _R_CHECK_OVERWRITE_REGISTERED_S3_METHODS_: true
-      _R_CHECK_REPLACING_IMPORTS_: true
-      _R_CHECK_S3_METHODS_NOT_REGISTERED_: true
-      _R_CHECK_SCREEN_DEVICE_: stop
-      _R_CHECK_SRC_MINUS_W_IMPLICIT_: true
-      _R_CHECK_SRC_MINUS_W_UNUSED_: true
-      _R_CHECK_SUGGESTS_ONLY_: true
-      _R_CHECK_TOPLEVEL_FILES_: true
-      _R_CHECK_VC_DIRS_: true
-      _R_CHECK_WALL_FORTRAN_: true
-      _R_CHECK_USE_CODETOOLS_: true
-      _R_CHECK_CODETOOLS_PROFILE_: "suppressLocalUnused=FALSE,suppressPartialMatchArgs=FALSE,suppressParamUnused=TRUE,suppressUndefined=FALSE"
 
     steps:
       - uses: actions/checkout@v3.1.0
@@ -67,11 +41,18 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2.3.1
         with:
-          extra-packages: any::rcmdcheck any::tidyr any::ggplot2 any::dplyr any::knitr any::subplex any::nloptr
-          
+          extra-packages: |
+            any::rcmdcheck
+            any::tidyr
+            any::ggplot2
+            any::dplyr
+            any::knitr
+            any::subplex
+            any::nloptr
+
       - uses: r-lib/actions/check-r-package@v2
 
       - uses: actions/upload-artifact@v3.1.1
         with:
           name: ${{ matrix.config.os }}-${{ matrix.config.r }}-results
-          path: check
+          path: check/pomp.Rcheck

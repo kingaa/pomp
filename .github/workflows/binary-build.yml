@@ -3,10 +3,8 @@
 on:
   push:
     tags:
-      - '**'
+      - '*.*.*.*'
   workflow_dispatch:
-    branches:
-      - '*'
 
 name: binary-build
 

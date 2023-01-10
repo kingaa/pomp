@@ -1,4 +1,5 @@
 revdep
+tools
 examples
 tests/Makefile
 tests/(.+?)\.png$
