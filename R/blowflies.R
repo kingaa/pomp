@@ -82,7 +82,7 @@ blowflies1 <- function (
 )
 {
 
-  dat <- read.csv2(text=blowfly.dat)
+  dat <- read.csv2(text=blowfly_dat)
 
   pomp(
     data=dat[dat$day>14,],
@@ -140,7 +140,7 @@ blowflies2 <- function (
   sigma.P = 1.442, sigma.d = 0.76033, sigma.y = 0.010846)
 {
 
-  dat <- read.csv2(text=blowfly.dat)
+  dat <- read.csv2(text=blowfly_dat)
 
   pomp(
     data=dat[dat$day>14,],
@@ -190,7 +190,7 @@ blowflies2 <- function (
 
 }
 
-blowfly.dat <- "
+blowfly_dat <- "
 day;y
 0;948
 2;942

@@ -335,7 +335,7 @@ setMethod(
 
     if (missing(covar)) covar <- covariate_table()
 
-    pomp.internal(
+    pomp_internal(
       data=data,
       times=times,
       rinit=rinit,
@@ -412,7 +412,7 @@ setMethod(
       }
     }
 
-    pomp.internal(
+    pomp_internal(
       data=data@data,
       times=times,
       t0=t0,
@@ -440,7 +440,7 @@ setMethod(
   }
 )
 
-pomp.internal <- function (data, times, t0, timename, ...,
+pomp_internal <- function (data, times, t0, timename, ...,
   rinit, rprocess, dprocess,
   rmeasure, dmeasure, emeasure, vmeasure,
   skeleton, rprior, dprior,

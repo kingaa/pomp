@@ -82,7 +82,7 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      trajectory.internal(
+      trajectory_internal(
         object=NULL,
         t0=t0,
         times=times,
@@ -115,7 +115,7 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      trajectory.internal(
+      trajectory_internal(
         object=object,
         t0=t0,
         times=times,
@@ -148,7 +148,7 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      trajectory.internal(
+      trajectory_internal(
         object=object,
         params=params,
         skeleton=skeleton,
@@ -164,7 +164,7 @@ setMethod(
   }
 )
 
-trajectory.internal <- function (
+trajectory_internal <- function (
   object, params,
   ...,
   format = c("pomps", "array", "data.frame"),

@@ -112,14 +112,14 @@ setMethod(
     log = FALSE
   ) {
     tryCatch(
-      dmeasure.internal(object=object,y=y,x=x,times=times,
+      dmeasure_internal(object=object,y=y,x=x,times=times,
         params=params,log=log,...),
       error = function (e) pStop("dmeasure",conditionMessage(e))
     )
   }
 )
 
-dmeasure.internal <- function (object, y, x, times, params, ..., log = FALSE,
+dmeasure_internal <- function (object, y, x, times, params, ..., log = FALSE,
   .gnsi = TRUE) {
   storage.mode(y) <- "double"
   storage.mode(x) <- "double"
@@ -183,13 +183,13 @@ setMethod(
     log = FALSE
   ) {
     tryCatch(
-      dprior.internal(object=object,params=params,log=log,...),
+      dprior_internal(object=object,params=params,log=log,...),
       error = function (e) pStop("dprior",conditionMessage(e))
     )
   }
 )
 
-dprior.internal <- function (object, params, log = FALSE,
+dprior_internal <- function (object, params, log = FALSE,
   .gnsi = TRUE, ...) {
   storage.mode(params) <- "double"
   pompLoad(object)
@@ -253,13 +253,13 @@ setMethod(
     log = FALSE
   ) {
     tryCatch(
-      dprocess.internal(object=object,x=x,times=times,params=params,log=log,...),
+      dprocess_internal(object=object,x=x,times=times,params=params,log=log,...),
       error = function (e) pStop("dprocess",conditionMessage(e))
     )
   }
 )
 
-dprocess.internal <- function (object, x, times, params, log = FALSE, .gnsi = TRUE, ...) {
+dprocess_internal <- function (object, x, times, params, log = FALSE, .gnsi = TRUE, ...) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)
@@ -323,13 +323,13 @@ setMethod(
   ) {
     dir <- match.arg(dir)
     tryCatch(
-      partrans.internal(object=object,params=params,dir=dir,...),
+      partrans_internal(object=object,params=params,dir=dir,...),
       error = function (e) pStop("partrans",conditionMessage(e))
     )
   }
 )
 
-partrans.internal <- function (object, params, dir = c("fromEst", "toEst"),
+partrans_internal <- function (object, params, dir = c("fromEst", "toEst"),
   .gnsi = TRUE, ...) {
   if (object@partrans@has) {
     dir <- switch(dir,fromEst=-1L,toEst=1L)
@@ -397,13 +397,13 @@ setMethod(
     ...
   ) {
     tryCatch(
-      rinit.internal(object=object,params=params,t0=t0,nsim=nsim,...),
+      rinit_internal(object=object,params=params,t0=t0,nsim=nsim,...),
       error = function (e) pStop("rinit",conditionMessage(e))
     )
   }
 )
 
-rinit.internal <- function (object, params, t0, nsim = 1,
+rinit_internal <- function (object, params, t0, nsim = 1,
   .gnsi = TRUE, ...) {
   storage.mode(params) <- "double"
   pompLoad(object)
@@ -467,13 +467,13 @@ setMethod(
     ...
   ) {
     tryCatch(
-      rmeasure.internal(object=object,x=x,times=times,params=params,...),
+      rmeasure_internal(object=object,x=x,times=times,params=params,...),
       error = function (e) pStop("rmeasure",conditionMessage(e))
     )
   }
 )
 
-rmeasure.internal <- function (object, x, times, params,
+rmeasure_internal <- function (object, x, times, params,
   .gnsi = TRUE, ...) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
@@ -536,13 +536,13 @@ setMethod(
     ...
   ) {
     tryCatch(
-      emeasure.internal(object=object,x=x,times=times,params=params,...),
+      emeasure_internal(object=object,x=x,times=times,params=params,...),
       error = function (e) pStop("emeasure",conditionMessage(e))
     )
   }
 )
 
-emeasure.internal <- function (object, x, times, params,
+emeasure_internal <- function (object, x, times, params,
   .gnsi = TRUE, ...) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
@@ -607,13 +607,13 @@ setMethod(
     ...
   ) {
     tryCatch(
-      vmeasure.internal(object=object,x=x,times=times,params=params,...),
+      vmeasure_internal(object=object,x=x,times=times,params=params,...),
       error = function (e) pStop("vmeasure",conditionMessage(e))
     )
   }
 )
 
-vmeasure.internal <- function (object, x, times, params,
+vmeasure_internal <- function (object, x, times, params,
   .gnsi = TRUE, ...) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
@@ -675,12 +675,12 @@ setMethod(
     ...
   )
     tryCatch(
-      rprior.internal(object=object,params=params,...),
+      rprior_internal(object=object,params=params,...),
       error = function (e) pStop("rprior",conditionMessage(e))
     )
 )
 
-rprior.internal <- function (object, params, .gnsi = TRUE, ...) {
+rprior_internal <- function (object, params, .gnsi = TRUE, ...) {
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
@@ -763,13 +763,13 @@ setMethod(
     ...
   ) {
     tryCatch(
-      rprocess.internal(object=object,x0=x0,t0=t0,times=times,params=params,...),
+      rprocess_internal(object=object,x0=x0,t0=t0,times=times,params=params,...),
       error = function (e) pStop("rprocess",conditionMessage(e))
     )
   }
 )
 
-rprocess.internal <- function (object, x0, t0, times, params, ...,
+rprocess_internal <- function (object, x0, t0, times, params, ...,
   .gnsi = TRUE) {
   storage.mode(x0) <- "double"
   storage.mode(params) <- "double"
@@ -838,12 +838,12 @@ setMethod(
     ...
   )
     tryCatch(
-      skeleton.internal(object=object,x=x,times=times,params=params,...),
+      skeleton_internal(object=object,x=x,times=times,params=params,...),
       error = function (e) pStop("skeleton",conditionMessage(e))
     )
 )
 
-skeleton.internal <- function (object, x, times, params, .gnsi = TRUE, ...) {
+skeleton_internal <- function (object, x, times, params, .gnsi = TRUE, ...) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)

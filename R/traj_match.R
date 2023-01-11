@@ -86,7 +86,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      tmof.internal(
+      tmof_internal(
         data,
         est=est,
         fail.value=fail.value,
@@ -115,7 +115,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      tmof.internal(
+      tmof_internal(
         data,
         est=est,
         fail.value=fail.value,
@@ -154,7 +154,7 @@ setMethod(
   }
 )
 
-tmof.internal <- function (
+tmof_internal <- function (
   object, est, fail.value, ode_control, ..., verbose
 ) {
 
@@ -181,12 +181,12 @@ tmof.internal <- function (
 
   pompLoad(object,verbose=verbose)
 
-  loglik <- traj.match.loglik(object,ode_control=ode_control)
+  loglik <- traj_match_logLik(object,ode_control=ode_control)
 
   ofun <- function (par = numeric(0)) {
     params[idx] <- par
     coef(object,transform=TRUE) <<- params
-    loglik <<- traj.match.loglik(object,ode_control=ode_control)
+    loglik <<- traj_match_logLik(object,ode_control=ode_control)
     if (is.finite(loglik) || is.na(fail.value)) -loglik else fail.value
   }
 
@@ -200,7 +200,7 @@ tmof.internal <- function (
 
 }
 
-traj.match.loglik <- function (object, ode_control) {
+traj_match_logLik <- function (object, ode_control) {
   object@states <- do.call(
     flow,
     c(list(object,x0=rinit(object)),ode_control)

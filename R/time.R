@@ -49,13 +49,13 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (object, t0 = FALSE, ..., value) {
     tryCatch(
-      time.repl.internal(object,t0=t0,...,value=value),
+      time_repl_internal(object,t0=t0,...,value=value),
       error = function (e) pStop("time<-",conditionMessage(e))
     )
   }
 )
 
-time.repl.internal <- function (object, t0 = FALSE, ..., value) {
+time_repl_internal <- function (object, t0 = FALSE, ..., value) {
   value <- tryCatch(
     as.double(value),
     warning = function (e) NULL,

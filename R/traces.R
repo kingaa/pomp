@@ -49,7 +49,7 @@ setMethod(
   "traces",
   signature=signature(object="mif2d_pomp"),
   definition=function (object, pars, transform = FALSE, ...) {
-    traces.internal(object=object,pars=pars,transform=transform,...)
+    traces_internal(object=object,pars=pars,transform=transform,...)
   }
 )
 
@@ -72,7 +72,7 @@ setMethod(
   "traces",
   signature=signature(object="abcd_pomp"),
   definition=function (object, pars, ...) {
-    tr <- traces.internal(object,pars=pars)
+    tr <- traces_internal(object,pars=pars)
     coda::mcmc(tr)
   }
 )
@@ -101,7 +101,7 @@ setMethod(
   "traces",
   signature=signature(object="pmcmcd_pomp"),
   function (object, pars, ...) {
-    tr <- traces.internal(object,pars=pars)
+    tr <- traces_internal(object,pars=pars)
     coda::mcmc(tr)
   }
 )
@@ -119,7 +119,7 @@ setMethod(
   }
 )
 
-traces.internal <- function (object, pars, transform = FALSE, ...) {
+traces_internal <- function (object, pars, transform = FALSE, ...) {
   transform <- as.logical(transform)
   if (transform) {
     retval <- cbind(

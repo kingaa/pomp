@@ -89,7 +89,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      pmof.internal(
+      pmof_internal(
         data,
         est=est,
         fail.value=fail.value,
@@ -121,7 +121,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      pmof.internal(
+      pmof_internal(
         data,
         est=est,
         fail.value=fail.value,
@@ -188,7 +188,7 @@ setMethod(
   }
 )
 
-pmof.internal <- function (object,
+pmof_internal <- function (object,
   est, fail.value = NA,
   probes, nsim, seed = NULL,
   ..., verbose) {

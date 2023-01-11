@@ -96,7 +96,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      enkf.internal(
+      enkf_internal(
         data,
         Np=Np,
         params=params,
@@ -122,7 +122,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      enkf.internal(
+      enkf_internal(
         data,
         Np=Np,
         ...,
@@ -143,7 +143,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
     if (missing(Np)) Np <- data@Np
     tryCatch(
-      enkf.internal(
+      enkf_internal(
         as(data,"pomp"),
         Np=Np,
         ...,
@@ -169,7 +169,7 @@ setMethod(
 ## Updated ensemble: $X^u_{t}=X_t + K_t\,(O_t - Y_t)$
 ## Filter mean: $m_t=\langle X^u_t \rangle = \frac{1}{q} \sum\limits_{i=1}^q x^{u_i}_t$
 
-enkf.internal <- function (object, Np, ..., verbose) {
+enkf_internal <- function (object, Np, ..., verbose) {
 
   verbose <- as.logical(verbose)
 
@@ -313,7 +313,7 @@ setMethod(
     ...,verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      eakf.internal(
+      eakf_internal(
         data,
         Np=Np,
         params=params,
@@ -339,7 +339,7 @@ setMethod(
     Np, ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      eakf.internal(
+      eakf_internal(
         data,
         Np=Np,
         ...,
@@ -363,7 +363,7 @@ setMethod(
 ## Filter mean: $m_t=M_t+K_t\,(y_t-C\,M_t)$
 ## Updated ensemble: $x_{t}=B\,(X_t-M_t\,\mathbb{1})+m_t\,\mathbb{1}$
 
-eakf.internal <- function (object, Np, ..., verbose) {
+eakf_internal <- function (object, Np, ..., verbose) {
 
   verbose <- as.logical(verbose)
 

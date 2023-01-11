@@ -134,7 +134,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      mif2.internal(
+      mif2_internal(
         data,
         Nmif=Nmif,
         rw.sd=rw.sd,
@@ -166,7 +166,7 @@ setMethod(
     Np, ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      mif2.internal(
+      mif2_internal(
         data,
         Nmif=Nmif,
         rw.sd=rw.sd,
@@ -256,7 +256,7 @@ setMethod(
   }
 )
 
-mif2.internal <- function (object, Nmif, rw.sd,
+mif2_internal <- function (object, Nmif, rw.sd,
   cooling.type, cooling.fraction.50, Np, ..., verbose,
   .ndone = 0L, .indices = integer(0), .paramMatrix = NULL,
   .gnsi = TRUE) {
@@ -288,7 +288,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
 
   if (missing(rw.sd))
     pStop_(sQuote("rw.sd")," must be specified!")
-  rw.sd <- perturbn.kernel.sd(rw.sd,time=time(object),paramnames=names(start))
+  rw.sd <- perturbn_kernel_sd(rw.sd,time=time(object),paramnames=names(start))
 
   if (missing(cooling.fraction.50))
     pStop_(sQuote("cooling.fraction.50")," is a required argument.")
@@ -298,7 +298,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
     pStop_(sQuote("cooling.fraction.50")," must be in (0,1].")
   cooling.fraction.50 <- as.numeric(cooling.fraction.50)
 
-  cooling.fn <- mif2.cooling(
+  cooling.fn <- mif2_cooling(
     type=cooling.type,
     fraction=cooling.fraction.50,
     ntimes=length(time(object))
@@ -324,7 +324,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
   ## iterate the filtering
   for (n in seq_len(Nmif)) {
 
-    pfp <- mif2.pfilter(
+    pfp <- mif2_pfilter(
       object=object,
       params=paramMatrix,
       Np=Np,
@@ -361,7 +361,7 @@ mif2.internal <- function (object, Nmif, rw.sd,
 
 }
 
-mif2.cooling <- function (type, fraction, ntimes) {
+mif2_cooling <- function (type, fraction, ntimes) {
   switch(
     type,
     geometric={
@@ -387,7 +387,7 @@ mif2.cooling <- function (type, fraction, ntimes) {
   )
 }
 
-mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
+mif2_pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
   verbose, .indices = integer(0), .gnsi = TRUE) {
 
   gnsi <- as.logical(.gnsi)
@@ -482,7 +482,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
   )
 }
 
-perturbn.kernel.sd <- function (rw.sd, time, paramnames) {
+perturbn_kernel_sd <- function (rw.sd, time, paramnames) {
 
   if (is.matrix(rw.sd)) return(rw.sd)
   if (is(rw.sd,"safecall")) {

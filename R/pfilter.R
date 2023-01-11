@@ -141,7 +141,7 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      pfilter.internal(
+      pfilter_internal(
         data,
         Np=Np,
         pred.mean=pred.mean,
@@ -179,7 +179,7 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      pfilter.internal(
+      pfilter_internal(
         data,
         Np=Np,
         pred.mean=pred.mean,
@@ -211,7 +211,7 @@ setMethod(
   }
 )
 
-pfilter.internal <- function (object, Np,
+pfilter_internal <- function (object, Np,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
   filter.traj = FALSE, cooling, cooling.m,
   save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),

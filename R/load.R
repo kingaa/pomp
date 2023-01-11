@@ -38,7 +38,7 @@ setMethod(
   "pompLoad",
   signature=signature(object="pomp"),
   definition = function (object, ...) {
-    pompLoad.internal(object,...)
+    pompLoad_internal(object,...)
   })
 
 ##' @rdname load
@@ -47,7 +47,7 @@ setMethod(
   "pompUnload",
   signature=signature(object="pomp"),
   definition = function (object, ...) {
-    pompUnload.internal(object,...)
+    pompUnload_internal(object,...)
   })
 
 ##' @rdname load
@@ -66,7 +66,7 @@ setMethod(
   }
 )
 
-pompLoad.internal <- function (object, ...,
+pompLoad_internal <- function (object, ...,
   verbose = getOption("verbose", FALSE)) {
   for (lib in object@solibs) {
     if (!is.loaded("__pomp_load_stack_incr",PACKAGE=lib$name)) {
@@ -85,7 +85,7 @@ pompLoad.internal <- function (object, ...,
   invisible(NULL)
 }
 
-pompUnload.internal <- function (object, ...,
+pompUnload_internal <- function (object, ...,
   verbose = getOption("verbose", FALSE)) {
   for (lib in object@solibs) {
     if (is.loaded("__pomp_load_stack_decr",PACKAGE=lib$name)) {

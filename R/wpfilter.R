@@ -98,7 +98,7 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      wpfilter.internal(
+      wpfilter_internal(
         data,
         Np=Np,
         rinit=rinit,
@@ -129,7 +129,7 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      wpfilter.internal(
+      wpfilter_internal(
         data,
         Np=Np,
         trigger=trigger,
@@ -162,7 +162,7 @@ setMethod(
   }
 )
 
-wpfilter.internal <- function (object, Np, trigger, target, ...,
+wpfilter_internal <- function (object, Np, trigger, target, ...,
   .gnsi = TRUE, verbose = FALSE) {
 
   verbose <- as.logical(verbose)

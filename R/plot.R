@@ -45,7 +45,7 @@ setMethod(
     mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
     oma = c(6, 0, 5, 0), axes = TRUE, ...) {
 
-    plotpomp.internal(x=x,variables=variables,
+    plotpomp_internal(x=x,variables=variables,
       panel=panel,nc=nc,yax.flip=yax.flip,
       mar=mar,oma=oma,axes=axes,...)
 
@@ -71,7 +71,7 @@ setMethod(
   "plot",
   signature=signature(x="Abc"),
   definition=function (x, ..., pars, scatter = FALSE) {
-    abc.diagnostics(x,pars=pars,scatter=scatter,...)
+    abc_diagnostics(x,pars=pars,scatter=scatter,...)
   }
 )
 
@@ -82,7 +82,7 @@ setMethod(
   "plot",
   signature=signature(x="Mif2"),
   definition=function (x, ..., pars, transform = FALSE) {
-    mif2.diagnostics(x,pars,transform=as.logical(transform))
+    mif2_diagnostics(x,pars,transform=as.logical(transform))
   }
 )
 
@@ -93,7 +93,7 @@ setMethod(
   "plot",
   signature=signature(x="probed_pomp"),
   definition=function (x, ...) {
-    probeplot.internal(x,...)
+    probeplot_internal(x,...)
   }
 )
 
@@ -113,7 +113,7 @@ setMethod(
     data.styles = list(lwd=2, lty=2, col="black")) {
 
     tryCatch(
-      plot_spect.internal(x,max.plots.per.page=max.plots.per.page,
+      plot_spect_internal(x,max.plots.per.page=max.plots.per.page,
         plot.data=plot.data,quantiles=quantiles,quantile.styles=quantile.styles,
         data.styles=data.styles),
       error = function (e) pStop("plot",conditionMessage(e))
@@ -122,7 +122,7 @@ setMethod(
   }
 )
 
-plotpomp.internal <- function (x, variables,
+plotpomp_internal <- function (x, variables,
   panel = lines, nc = NULL, yax.flip = FALSE,
   mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
   oma = c(6, 0, 5, 0), axes = TRUE, ...) {
@@ -243,7 +243,7 @@ plotpomp.internal <- function (x, variables,
   invisible(NULL)
 }
 
-abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
+abc_diagnostics <- function (z, pars, scatter = FALSE, ...) {
   if (!is.list(z)) z <- list(z)
   if (missing(pars)) {
     pars <- unique(do.call(c,lapply(z,slot,"pars")))
@@ -297,7 +297,7 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
   invisible(NULL)
 }
 
-mif2.diagnostics <- function (z, pars, transform) {
+mif2_diagnostics <- function (z, pars, transform) {
   if (!is.list(z)) z <- list(z)
   ## assumes that z is a list of mif2d_pomps with identical structure
   mar.multi <- c(0,5.1,0,2.1)
@@ -378,7 +378,7 @@ mif2.diagnostics <- function (z, pars, transform) {
   invisible(NULL)
 }
 
-probeplot.internal <- function (x, ...) {
+probeplot_internal <- function (x, ...) {
   ##function for plotting diagonal panels
   diag.panel.hist <- function (x, ...) {
     ##plot a histogram for the simulations
@@ -444,7 +444,7 @@ probeplot.internal <- function (x, ...) {
   }
 }
 
-plot_spect.internal <- function (x, max.plots.per.page, plot.data,
+plot_spect_internal <- function (x, max.plots.per.page, plot.data,
   quantiles, quantile.styles, data.styles) {
 
   spomp <- x

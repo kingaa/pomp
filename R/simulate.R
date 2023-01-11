@@ -78,7 +78,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      simulate.internal(
+      simulate_internal(
         object=NULL,
         nsim=nsim,
         seed=seed,
@@ -113,7 +113,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      simulate.internal(
+      simulate_internal(
         object,
         nsim=nsim,
         seed=seed,
@@ -146,7 +146,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      simulate.internal(
+      simulate_internal(
         object,
         nsim=nsim,
         seed=seed,
@@ -161,7 +161,7 @@ setMethod(
   }
 )
 
-simulate.internal <- function (
+simulate_internal <- function (
   object,
   nsim = 1L,
   seed = NULL,

@@ -115,7 +115,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      probe.internal(data,probes=probes,nsim=nsim,seed=seed,
+      probe_internal(data,probes=probes,nsim=nsim,seed=seed,
         rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,params=params,
         ...,verbose=verbose),
       error = function (e) pStop("probe",conditionMessage(e))
@@ -136,7 +136,7 @@ setMethod(
   {
 
     tryCatch(
-      probe.internal(data,probes=probes,nsim=nsim,seed=seed,
+      probe_internal(data,probes=probes,nsim=nsim,seed=seed,
         ...,verbose=verbose),
       error = function (e) pStop("probe",conditionMessage(e))
     )
@@ -162,7 +162,7 @@ setMethod(
   }
 )
 
-probe.internal <- function (object, probes, nsim, seed, ...,
+probe_internal <- function (object, probes, nsim, seed, ...,
   .gnsi = TRUE, verbose) {
 
   verbose <- as.logical(verbose)

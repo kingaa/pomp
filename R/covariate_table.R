@@ -99,7 +99,7 @@ setMethod(
     env <- parent.frame(2)
 
     tryCatch(
-      covariate.table.internal(...,times=times,order=order,env=env),
+      covariate_table_internal(...,times=times,order=order,env=env),
       error = function (e) pStop("covariate_table",conditionMessage(e))
     )
 
@@ -117,14 +117,14 @@ setMethod(
     env <- parent.frame(2)
 
     tryCatch(
-      covariate.table.internal(...,.timevar=times,order=order,env=env),
+      covariate_table_internal(...,.timevar=times,order=order,env=env),
       error = function (e) pStop("covariate_table",conditionMessage(e))
     )
 
   }
 )
 
-covariate.table.internal <- function (..., times = NULL, .timevar = NULL,
+covariate_table_internal <- function (..., times = NULL, .timevar = NULL,
   order, env) {
 
   d <- as.list(substitute(list(...)))[-1]

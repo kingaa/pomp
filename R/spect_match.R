@@ -91,7 +91,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      smof.internal(
+      smof_internal(
         data,
         est=est,
         weights=weights,
@@ -128,7 +128,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      smof.internal(
+      smof_internal(
         data,
         est=est,
         weights=weights,
@@ -208,7 +208,7 @@ setMethod(
   }
 )
 
-smof.internal <- function (object,
+smof_internal <- function (object,
   est, weights, fail.value,
   vars, kernel.width, nsim, seed, transform.data, detrend,
   ..., verbose) {
@@ -258,13 +258,13 @@ smof.internal <- function (object,
 
   pompLoad(object)
 
-  ker <- reuman.kernel(kernel.width)
-  discrep <- spect.discrep(object,ker=ker,weights=weights)
+  ker <- reuman_kernel(kernel.width)
+  discrep <- spect_discrep(object,ker=ker,weights=weights)
 
   ofun <- function (par = numeric(0)) {
     params[idx] <- par
     coef(object,transform=TRUE) <<- params
-    object@simspec <- compute.spect.sim(
+    object@simspec <- compute_spect_sim(
       object,
       vars=object@vars,
       params=object@params,
@@ -274,7 +274,7 @@ smof.internal <- function (object,
       detrend=object@detrend,
       ker=ker
     )
-    discrep <<- spect.discrep(object,ker=ker,weights=weights)
+    discrep <<- spect_discrep(object,ker=ker,weights=weights)
     if (is.finite(discrep) || is.na(fail.value)) discrep else fail.value #nocov
   }
 
@@ -290,7 +290,7 @@ smof.internal <- function (object,
 }
 
 ## compute a measure of the discrepancies between simulations and data
-spect.discrep <- function (object, ker, weights) {
+spect_discrep <- function (object, ker, weights) {
 
   discrep <- array(dim=c(length(object@freq),length(object@vars)))
   sim.means <- colMeans(object@simspec)

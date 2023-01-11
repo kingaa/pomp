@@ -120,7 +120,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      abc.internal(
+      abc_internal(
         data,
         Nabc=Nabc,
         proposal=proposal,
@@ -152,7 +152,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      abc.internal(
+      abc_internal(
         data,
         Nabc=Nabc,
         proposal=proposal,
@@ -243,7 +243,7 @@ setMethod(
   }
 )
 
-abc.internal <- function (object,
+abc_internal <- function (object,
   Nabc, proposal, scale, epsilon, probes,
   ...,
   verbose,

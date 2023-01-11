@@ -112,7 +112,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      spect.internal(
+      spect_internal(
         data,
         vars=vars,
         kernel.width=kernel.width,
@@ -143,7 +143,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      spect.internal(
+      spect_internal(
         data,
         vars=vars,
         kernel.width=kernel.width,
@@ -191,7 +191,7 @@ setMethod(
   }
 )
 
-spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
+spect_internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   transform.data, detrend, ..., verbose) {
 
   verbose <- as.logical(verbose)
@@ -215,14 +215,14 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   nsim <- as.integer(nsim)
   seed <- as.integer(seed)
 
-  ker <- reuman.kernel(kernel.width)
+  ker <- reuman_kernel(kernel.width)
 
   params <- coef(object)
 
   pompLoad(object)
   on.exit(pompUnload(object))
 
-  ds <- compute.spect.data(
+  ds <- compute_spect_data(
     object,
     vars=vars,
     transform.data=transform.data,
@@ -232,7 +232,7 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   freq <- ds$freq
   datspec <- ds$spec
 
-  simspec <- compute.spect.sim(
+  simspec <- compute_spect_sim(
     object,
     params=params,
     vars=vars,
@@ -281,7 +281,7 @@ spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   )
 }
 
-compute.spect.data <- function (object, vars, transform.data, detrend, ker) {
+compute_spect_data <- function (object, vars, transform.data, detrend, ker) {
 
   dat <- obs(object,vars)
   if (any(!is.finite(dat)))
@@ -295,7 +295,7 @@ compute.spect.data <- function (object, vars, transform.data, detrend, ker) {
 
   for (j in seq_along(vars)) {
     sp <- spec.pgram(
-      pomp.detrend(transform.data(dat[j,]),type=detrend),spans=ker,taper=0,
+      pomp_detrend(transform.data(dat[j,]),type=detrend),spans=ker,taper=0,
       pad=0,fast=FALSE,detrend=FALSE,plot=FALSE
     )
     if (j==1) {
@@ -310,7 +310,7 @@ compute.spect.data <- function (object, vars, transform.data, detrend, ker) {
   list(freq=freq,spec=datspec)
 }
 
-compute.spect.sim <- function (object, params, vars, nsim, seed,
+compute_spect_sim <- function (object, params, vars, nsim, seed,
   transform.data, detrend, ker) {
 
   sims <- tryCatch(
@@ -329,7 +329,7 @@ compute.spect.sim <- function (object, params, vars, nsim, seed,
   for (j in seq_len(nobs)) {
     for (k in seq_len(nsim)) {
       sp <- tryCatch(
-        spec.pgram(pomp.detrend(transform.data(sims[j,k,]),type=detrend),
+        spec.pgram(pomp_detrend(transform.data(sims[j,k,]),type=detrend),
           spans=ker,taper=0,pad=0,fast=FALSE,detrend=FALSE,plot=FALSE),
         error = function (e) pStop("spec.pgram",conditionMessage(e))
       )
@@ -347,7 +347,7 @@ compute.spect.sim <- function (object, params, vars, nsim, seed,
 
 ## detrends in one of several ways, according to type.
 ## tseries is a numeric vector,
-pomp.detrend <- function (tseries, type) {
+pomp_detrend <- function (tseries, type) {
   switch(
     type,
     mean=tseries-mean(tseries),
@@ -366,7 +366,7 @@ pomp.detrend <- function (tseries, type) {
 
 ## The default smoothing kernel for the R spec.pgram function is weird.
 ## This function creates a better one.
-reuman.kernel <- function (kernel.width) {
+reuman_kernel <- function (kernel.width) {
   ker <- kernel("modified.daniell",m=kernel.width,r=NA)
   x <- seq.int(from=0,to=kernel.width,by=1)/kernel.width
   ker[[1L]] <- (15/(16*2*pi))*((x-1)^2)*((x+1)^2)

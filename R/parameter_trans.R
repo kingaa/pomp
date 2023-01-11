@@ -122,7 +122,7 @@ setMethod(
     if (missing(log) && missing(logit) && missing(barycentric))
       new("partransPlugin",has=TRUE,to=toEst,from=fromEst)
     else
-      parameter_trans.internal(toEst=as(toEst,"character"),
+      parameter_trans_internal(toEst=as(toEst,"character"),
         fromEst=as(fromEst,"character"),log=log,logit=logit,
         barycentric=barycentric)
   }
@@ -135,7 +135,7 @@ setMethod(
     if (missing(log) && missing(logit) && missing(barycentric))
       new("partransPlugin",has=FALSE)
     else
-      parameter_trans.internal(toEst=NULL,fromEst=NULL,
+      parameter_trans_internal(toEst=NULL,fromEst=NULL,
         log=log,logit=logit,barycentric=barycentric)
   }
 )
@@ -205,7 +205,7 @@ setMethod(
   }
 )
 
-parameter_trans.internal <- function (toEst = NULL, fromEst = NULL,
+parameter_trans_internal <- function (toEst = NULL, fromEst = NULL,
   ..., log, logit, barycentric) {
 
   if (missing(log)) log <- NULL

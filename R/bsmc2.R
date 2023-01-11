@@ -104,7 +104,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      bsmc2.internal(
+      bsmc2_internal(
         data,
         Np=Np,
         smooth=smooth,
@@ -133,7 +133,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      bsmc2.internal(
+      bsmc2_internal(
         data,
         Np=Np,
         smooth=smooth,
@@ -158,7 +158,7 @@ setMethod(
     pars <- as.character(pars)
     if (length(pars)<1) pStop("plot","no parameters to plot.")
     if (missing(thin)) thin <- Inf
-    bsmc.plot(
+    bsmc_plot(
       prior=partrans(x,x@prior,dir="fromEst"),
       post=partrans(x,x@post,dir="fromEst"),
       pars=pars,
@@ -168,7 +168,7 @@ setMethod(
   }
 )
 
-bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
+bsmc2_internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
 
   verbose <- as.logical(verbose)
 
@@ -307,7 +307,7 @@ bsmc2.internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
 
 }
 
-bsmc.plot <- function (prior, post, pars, thin, ...) {
+bsmc_plot <- function (prior, post, pars, thin, ...) {
   p1 <- sample.int(n=ncol(prior),size=min(thin,ncol(prior)))
   p2 <- sample.int(n=ncol(post),size=min(thin,ncol(post)))
   if (!all(pars %in% rownames(prior))) {

@@ -165,7 +165,7 @@ setMethod(
     ..., verbose = getOption("verbose")) {
 
     tryCatch(
-      nlfof.internal(
+      nlfof_internal(
         object=data,
         est=est,
         lags=lags,
@@ -202,7 +202,7 @@ setMethod(
     ..., verbose = getOption("verbose")) {
 
     tryCatch(
-      nlfof.internal(
+      nlfof_internal(
         object=data,
         est=est,
         lags=lags,
@@ -262,7 +262,7 @@ setMethod(
   }
 )
 
-nlfof.internal <- function (object,
+nlfof_internal <- function (object,
   est, lags, nrbf, ti, tf, seed, period, tensor,
   transform.data, fail.value,
   ..., verbose)
@@ -346,14 +346,14 @@ nlfof.internal <- function (object,
       paste(sQuote(missing),collapse=",")," not found in ",sQuote("params"),".")
   }
 
-  logql <- nlf.lql(object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
+  logql <- nlf_lql(object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
     period=period,tensor=tensor,seed=seed,transform.data=transform.data,
     verbose=verbose)
 
   ofun <- function (par = numeric(0)) {
     params[idx] <- par
     coef(object,transform=TRUE) <<- params
-    logql <<- nlf.lql(object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
+    logql <<- nlf_lql(object,times=times,lags=lags,nrbf=nrbf,fail.value=fail.value,
       period=period,tensor=tensor,seed=seed,transform.data=transform.data,
       verbose=verbose)
     if (is.finite(logql) || is.na(fail.value)) -logql else fail.value #nocov
@@ -376,7 +376,7 @@ nlfof.internal <- function (object,
 ## Note that the log QL itself is returned, not the negative log QL,
 ## so a large NEGATIVE value is used to flag bad parameters
 
-nlf.lql <- function (object, times, lags, nrbf, period, tensor,
+nlf_lql <- function (object, times, lags, nrbf, period, tensor,
   seed, transform.data, fail.value, verbose)
 {
 
@@ -396,7 +396,7 @@ nlf.lql <- function (object, times, lags, nrbf, period, tensor,
   )
 
   tryCatch(
-    nlf.internal(
+    nlf_internal(
       dat.mat=dat.mat,
       dat.times=time(object),
       mod.mat=mod.mat,
@@ -408,7 +408,7 @@ nlf.lql <- function (object, times, lags, nrbf, period, tensor,
       fail.value=fail.value,
       verbose=verbose
     ),
-    error = function (e) pStop("nlf.lql",conditionMessage(e))
+    error = function (e) pStop("nlf_lql",conditionMessage(e))
   )
 
 }
@@ -455,23 +455,23 @@ nlf.lql <- function (object, times, lags, nrbf, period, tensor,
 ## that really are due to extrapolation far from the model-simulated time series.
 #######################################################################################
 
-nlf.internal <- function (dat.mat, dat.times, mod.mat, mod.times,
+nlf_internal <- function (dat.mat, dat.times, mod.mat, mod.times,
   lags, nrbf, period, tensor, fail.value, verbose) {
 
   seas <- !is.na(period)
   nvar <- nrow(dat.mat)
 
-  knots <- apply(mod.mat,1L,rbf.knots,n=nrbf)
+  knots <- apply(mod.mat,1L,rbf_knots,n=nrbf)
 
-  dat.lags <- make.lags.nlf(x=dat.mat,times=dat.times,lags=lags)
-  sim.lags <- make.lags.nlf(x=mod.mat,times=mod.times,lags=lags)
+  dat.lags <- make_lags_nlf(x=dat.mat,times=dat.times,lags=lags)
+  sim.lags <- make_lags_nlf(x=mod.mat,times=mod.times,lags=lags)
 
   dat.pred <- array(dim=c(dim(dat.lags$x),nrbf))
   sim.pred <- array(dim=c(dim(sim.lags$x),nrbf))
 
   for (i in seq_len(nvar)) {
-    dat.pred[,i,,] <- rbf.basis(dat.lags$x[,i,],knots=knots[,i])
-    sim.pred[,i,,] <- rbf.basis(sim.lags$x[,i,],knots=knots[,i])
+    dat.pred[,i,,] <- rbf_basis(dat.lags$x[,i,],knots=knots[,i])
+    sim.pred[,i,,] <- rbf_basis(sim.lags$x[,i,],knots=knots[,i])
   }
 
   dd <- dim(dat.pred)
@@ -485,8 +485,8 @@ nlf.internal <- function (dat.mat, dat.times, mod.mat, mod.times,
   if (seas) {
 
     knots <- seq(from=-0.1,to=1.1*period,length.out=nrbf)
-    dat.seas <- rbf.basis(as.matrix(dat.lags$t %% period),knots=knots)
-    sim.seas <- rbf.basis(as.matrix(sim.lags$t %% period),knots=knots)
+    dat.seas <- rbf_basis(as.matrix(dat.lags$t %% period),knots=knots)
+    sim.seas <- rbf_basis(as.matrix(sim.lags$t %% period),knots=knots)
     dd <- dim(dat.seas)
     dim(dat.seas) <- c(dd[1],prod(dd[-1]))
     dd <- dim(sim.seas)
@@ -495,8 +495,8 @@ nlf.internal <- function (dat.mat, dat.times, mod.mat, mod.times,
     if (tensor) {
 
       ## make gam coefficients time-dependent
-      dat.pred <- make.tensorbasis(dat.pred,dat.seas)
-      sim.pred <- make.tensorbasis(sim.pred,sim.seas)
+      dat.pred <- make_tensorbasis(dat.pred,dat.seas)
+      sim.pred <- make_tensorbasis(sim.pred,sim.seas)
 
     } else {
 
@@ -525,7 +525,7 @@ nlf.internal <- function (dat.mat, dat.times, mod.mat, mod.times,
 
 ## Create design array and response matrix out of lagged variables.
 ## Data series are in the rows of 'x'.
-make.lags.nlf <- function (x, times, lags) {
+make_lags_nlf <- function (x, times, lags) {
 
   nvar <- nrow(x)
   m <- length(lags)     ## number of lag variables per observable
@@ -544,7 +544,7 @@ make.lags.nlf <- function (x, times, lags) {
 
 }
 
-rbf.knots <- function (X, n, margin = 0.1) {
+rbf_knots <- function (X, n, margin = 0.1) {
   r <- range(X)
   seq(
     from=(1+margin)*r[1]-margin*r[2],
@@ -553,7 +553,7 @@ rbf.knots <- function (X, n, margin = 0.1) {
   )
 }
 
-rbf.basis <- function (X, knots) {
+rbf_basis <- function (X, knots) {
   X1 <- array(dim=c(dim(X),length(knots)))
   X1[] <- as.numeric(X)-rep(knots,each=length(X))
   s <- diff(range(knots))/length(knots)
@@ -579,9 +579,9 @@ rbf.basis <- function (X, knots) {
 #   out
 # }
 
-make.tensorbasis <- function(A,B) {
+make_tensorbasis <- function(A,B) {
   if (nrow(A) != nrow(B))
-    pStop("make.tensorbasis","incompatible matrices.") #nocov
+    pStop("make_tensorbasis","incompatible matrices.") #nocov
   nA <- ncol(A)
   nB <- ncol(B)
   Tmat <- matrix(0,nrow(A),nA*nB)

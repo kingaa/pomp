@@ -109,7 +109,7 @@ setMethod(
     ..., verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      pmcmc.internal(
+      pmcmc_internal(
         data,
         Nmcmc=Nmcmc,
         proposal=proposal,
@@ -139,7 +139,7 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     tryCatch(
-      pmcmc.internal(
+      pmcmc_internal(
         data,
         Nmcmc=Nmcmc,
         proposal=proposal,
@@ -244,7 +244,7 @@ setMethod(
   }
 )
 
-pmcmc.internal <- function (object, Nmcmc, proposal, Np, ...,
+pmcmc_internal <- function (object, Nmcmc, proposal, Np, ...,
   verbose, .ndone = 0L, .accepts = 0L, .prev.pfp = NULL, .prev.log.prior = NULL,
   .gnsi = TRUE) {
 

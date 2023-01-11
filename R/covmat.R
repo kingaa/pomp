@@ -34,7 +34,7 @@ setMethod(
   signature=signature(object="pmcmcd_pomp"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
-    covmat.internal(traces=as.matrix(traces(object,object@pars)),
+    covmat_internal(traces=as.matrix(traces(object,object@pars)),
       start=start,thin=thin,expand=expand)
   })
 
@@ -46,7 +46,7 @@ setMethod(
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
     pars <- unique(c(sapply(object,slot,"pars")))
-    covmat.internal(traces=as.array(traces(object,pars)),
+    covmat_internal(traces=as.array(traces(object,pars)),
       start=start,thin=thin,expand=expand)
   })
 
@@ -57,7 +57,7 @@ setMethod(
   signature=signature(object="abcd_pomp"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
-    covmat.internal(traces=as.matrix(traces(object,object@pars)),
+    covmat_internal(traces=as.matrix(traces(object,object@pars)),
       start=start,thin=thin,expand=expand)
   })
 
@@ -69,7 +69,7 @@ setMethod(
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
     pars <- unique(c(sapply(object,slot,"pars")))
-    covmat.internal(traces=as.array(traces(object,pars)),
+    covmat_internal(traces=as.array(traces(object,pars)),
       start=start,thin=thin,expand=expand)
   })
 
@@ -88,7 +88,7 @@ setMethod(
     crossprod(object@simvals)/(n-1)
   })
 
-covmat.internal <- function (traces, start, thin, expand = 2.38, ...) {
+covmat_internal <- function (traces, start, thin, expand = 2.38, ...) {
   dd <- dim(traces)
   nms <- colnames(traces)
   keep <- seq.int(from=as.integer(start),to=dd[1],by=as.integer(thin))

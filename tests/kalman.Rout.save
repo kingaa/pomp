@@ -143,7 +143,7 @@ Error : in 'enkf': 'Np' should be a single positive integer.
 > try(enkf(pf,Np="10b"))
 Error : in 'enkf': 'Np' should be a single positive integer.
 In addition: Warning message:
-In enkf.internal(data, Np = Np, ..., verbose = verbose) :
+In enkf_internal(data, Np = Np, ..., verbose = verbose) :
   NAs introduced by coercion
 > try(enkf(pf,Np=100,emeasure=NULL))
 Error : in 'enkf': 'emeasure' is a needed basic component.
@@ -179,7 +179,7 @@ Error : in 'eakf': 'Np' should be a single positive integer.
 > try(eakf(enkf,Np="10b"))
 Error : in 'eakf': 'Np' should be a single positive integer.
 In addition: Warning message:
-In eakf.internal(data, Np = Np, ..., verbose = verbose) :
+In eakf_internal(data, Np = Np, ..., verbose = verbose) :
   NAs introduced by coercion
 > try(eakf(enkf,Np=100,emeasure=NULL))
 Error : in 'eakf': 'emeasure' is a needed basic component.
