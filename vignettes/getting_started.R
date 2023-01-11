@@ -665,6 +665,8 @@ bake(file="hindcast1.rds",{
 fts |>
   sapply(getElement,"loglik") -> ll
 
+logmeanexp(ll,ess=TRUE)
+
 fts |>
   lapply(getElement,"traj") |>
   melt() |>
@@ -672,7 +674,7 @@ fts |>
   select(-rep) |>
   left_join(
     tibble(
-      .id=seq_along(ll),
+      .id=as.character(seq_along(ll)),
       loglik=ll
     ),
     by=".id"
