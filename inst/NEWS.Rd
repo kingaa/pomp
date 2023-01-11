@@ -11,8 +11,10 @@
   \itemize{
     \item A new \code{format} argument has been added to the extractor functions \code{cond_logLik}, \code{eff_sample_size}, \code{filter_mean}, \code{filter_traj}, \code{forecast}, \code{pred_mean}, \code{pred_var}, and \code{saved_states}.
     This allows the user to extract the relevant elements in data-frame format if desired.
-    \item \pkg{pomp} no longer depends on the superseded packages \pkg{reshape2} or \pkg{plyr}.
-    \item \pkg{pomp} has a new dependency on the package \pkg{dplyr}.
+    \item \pkg{pomp} no longer depends on the superseded package \pkg{reshape2}.
+    The \code{melt} function for converting arrays and nested lists into data frames is accordingly no longer re-exported from \pkg{reshape2}.
+    It has been replaced by a stricter version of \code{melt}.
+
     \item The \pkg{magrittr} pipe \code{\%>\%} is no longer re-exported by \pkg{pomp}: use the native \R pipe \code{|>} instead.
     \item The package now requires \R version 4.1 at least.
   }

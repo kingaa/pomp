@@ -159,14 +159,18 @@ as.data.frame.bsmcd_pomp <- function (x, ...) {
   as(x,"data.frame")
 }
 
-##' @importFrom dplyr bind_rows
+##' @importFrom plyr rbind.fill
 setAs(
   from="listie",
   to="data.frame",
   def = function (from) {
-    bind_rows(
-      lapply(from,as,"data.frame"),
-      .id=".id"
+    L <- lapply(from,as,"data.frame")
+    n <- vapply(L,nrow,integer(1L))
+    nm <- names(L)
+    if (is.null(nm)) nm <- seq_along(L)
+    cbind(
+      .id=rep(nm,n),
+      rbind.fill(L)
     )
   }
 )

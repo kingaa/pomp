@@ -17,10 +17,11 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._5._2:
           ‘saved_states’.  This allows the user to extract the relevant
           elements in data-frame format if desired.
 
-        • ‘pomp’ no longer depends on the superseded packages
-          ‘reshape2’ or ‘plyr’.
-
-        • ‘pomp’ has a new dependency on the package ‘dplyr’.
+        • ‘pomp’ no longer depends on the superseded package
+          ‘reshape2’.  The ‘melt’ function for converting arrays and
+          nested lists into data frames is accordingly no longer
+          re-exported from ‘reshape2’.  It has been replaced by a
+          stricter version of ‘melt’.
 
         • The ‘magrittr’ pipe ‘%>%’ is no longer re-exported by ‘pomp’:
           use the native R pipe ‘|>’ instead.

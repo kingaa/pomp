@@ -3,7 +3,7 @@
 ##' Convert arrays, lists, and other objects to data frames.
 ##'
 ##' \code{melt} converts its first argument to a data frame.
-##' It is a simplified version of the \code{melt} command provided by the now-deprecated \pkg{reshape2} package.
+##' It is a simplified version of the \code{melt} command provided by the no-longer maintained \pkg{reshape2} package.
 ##'
 ##' @name melt
 ##' @rdname melt
@@ -60,7 +60,7 @@ setMethod(
 ##' @details A list can be melted into a data frame.
 ##' This operation is recursive.
 ##' A variable will be appended to distinguish the separate list entries.
-##' @importFrom dplyr bind_rows
+##' @importFrom plyr rbind.fill
 ##' @export
 setMethod(
   "melt",
@@ -68,9 +68,15 @@ setMethod(
   definition=function (data, ..., level = 1) {
     if (length(unique(lapply(data,mode))) > 1L)
       pStop("melt","refusing to melt data of incompatible types.")
-    bind_rows(
-      lapply(data,melt,level=level+1,...),
-      .id=paste0("L",level)
+    nm <- names(data)
+    if (is.null(nm)) nm <- as.character(seq_along(data))
+    L <- lapply(data,melt,level=level+1,...)
+    n <- vapply(L,nrow,integer(1L))
+    x <- cbind(
+      .id=rep(nm,n),
+      rbind.fill(L)
     )
+    names(x)[1L] <- paste0("L",level)
+    x
   }
 )

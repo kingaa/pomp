@@ -24,7 +24,7 @@ Convert arrays, lists, and other objects to data frames.
 }
 \details{
 \code{melt} converts its first argument to a data frame.
-It is a simplified version of the \code{melt} command provided by the now-deprecated \pkg{reshape2} package.
+It is a simplified version of the \code{melt} command provided by the no-longer maintained \pkg{reshape2} package.
 
 An array can be melted into a data frame.
 In this case, the data frame will have one row per entry in the array.

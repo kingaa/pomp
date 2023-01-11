@@ -26,8 +26,8 @@ Type 'q()' to quit R.
 Welcome to pomp!
 
 As of version 4.6, no user-visible pomp function has a name that
-includes a dot (.). Function names have been changed to replace the dot
-with an underscore (_). For more information, see the pomp blog:
+includes a dot ('.'). Function names have been changed to replace the
+dot with an underscore ('_'). For more information, see the pomp blog:
 https://kingaa.github.io/pomp/blog.html.
 
 > library(tidyr)
@@ -117,16 +117,16 @@ https://kingaa.github.io/pomp/blog.html.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  6.570   0.045   6.615 
+  6.454   0.029   6.483 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.149   0.009   0.159 
+  0.153   0.004   0.158 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.602   0.000   0.603 
+  0.604   0.015   0.619 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.027   0.000   0.027 
+  0.028   0.000   0.028 
 > 
 > dev.off()
 null device 

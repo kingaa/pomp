@@ -24,8 +24,8 @@ Type 'q()' to quit R.
 Welcome to pomp!
 
 As of version 4.6, no user-visible pomp function has a name that
-includes a dot (.). Function names have been changed to replace the dot
-with an underscore (_). For more information, see the pomp blog:
+includes a dot ('.'). Function names have been changed to replace the
+dot with an underscore ('_'). For more information, see the pomp blog:
 https://kingaa.github.io/pomp/blog.html.
 
 > 
@@ -183,10 +183,12 @@ attr(,"package")
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> class()
 [1] "data.frame"
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> names()
-[1] "time"     ".id"      "variable" "value"   
+[1] "L1"       "time"     ".id"      "variable" "value"   
+> c(pf1,pf2) |> saved_states(format="d") |> names()
+[1] "L1"       "time"     ".id"      "variable" "value"   
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> sapply(class)
-       time         .id    variable       value 
-  "numeric" "character" "character"   "numeric" 
+         L1        time         .id    variable       value 
+"character"   "numeric"   "integer" "character"   "numeric" 
 > c(A=pf1,B=pf2) |> as.data.frame() |> sapply(class)
            .id           time             y1             y2            ess 
    "character"      "numeric"      "numeric"      "numeric"      "numeric" 
