@@ -84,7 +84,7 @@ setMethod(
 )
 
 ##' @rdname saved_states
-##' @importFrom plyr rbind.fill
+##' @importFrom dplyr bind_rows
 ##' @export
 setMethod(
   "saved_states",
@@ -94,13 +94,7 @@ setMethod(
     format <- match.arg(format)
     x <- lapply(object,saved_states,...,format=format)
     if (format == "data.frame") {
-      n <- vapply(x,nrow,integer(1L))
-      nm <- names(x)
-      if (is.null(nm)) nm <- as.character(seq_along(x))
-      x <- cbind(
-        .L1=rep(nm,n),
-        rbind.fill(x)
-      )
+      x <- bind_rows(x,.id=".L1")
     }
     x
   }

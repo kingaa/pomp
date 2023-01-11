@@ -2,6 +2,8 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._0._0:
 
+        • We no longer import from ‘plyr’.
+
         • The ‘dimnames’ attributes of various arrays that appear in
           ‘pomp’, including arrays of observables, state variables,
           parameters, covariates, and so on, have been made uniform.

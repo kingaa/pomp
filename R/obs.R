@@ -63,7 +63,7 @@ setMethod(
 )
 
 ##' @rdname obs
-##' @importFrom plyr rbind.fill
+##' @importFrom dplyr bind_rows
 ##' @export
 setMethod(
   "obs",
@@ -73,7 +73,7 @@ setMethod(
     format <- match.arg(format)
     y <- lapply(object,obs,vars=vars,format=format,...)
     if (format == "data.frame") {
-      rbind.fill(y,.id=".id")
+      bind_rows(y,.id=".id")
     } else {
       y
     }

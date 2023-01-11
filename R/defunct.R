@@ -39,20 +39,6 @@ eff.sample.size <- function (...) {
 }
 
 ##' @rdname pomp-defunct
-##' @aliases filter.mean
-##' @export filter.mean
-filter.mean <- function (...) {
-  .Defunct("filter_mean")
-}
-
-##' @rdname pomp-defunct
-##' @aliases filter.traj
-##' @export filter.traj
-filter.traj <- function (...) {
-  .Defunct("filter_traj")
-}
-
-##' @rdname pomp-defunct
 ##' @aliases mvn.diag.rw
 ##' @export
 mvn.diag.rw <- function (...) {

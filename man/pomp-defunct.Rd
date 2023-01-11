@@ -6,8 +6,6 @@
 \alias{bspline.basis}
 \alias{cond.logLik}
 \alias{eff.sample.size}
-\alias{filter.mean}
-\alias{filter.traj}
 \alias{mvn.diag.rw}
 \alias{mvn.rw}
 \alias{mvn.rw.adaptive}
@@ -35,10 +33,6 @@ bspline.basis(...)
 cond.logLik(...)
 
 eff.sample.size(...)
-
-filter.mean(...)
-
-filter.traj(...)
 
 mvn.diag.rw(...)
 

@@ -43,14 +43,6 @@ See help("Defunct")
 Error : 'eff.sample.size' is defunct.
 Use 'eff_sample_size' instead.
 See help("Defunct")
-> try(filter.mean())
-Error : 'filter.mean' is defunct.
-Use 'filter_mean' instead.
-See help("Defunct")
-> try(filter.traj())
-Error : 'filter.traj' is defunct.
-Use 'filter_traj' instead.
-See help("Defunct")
 > try(mvn.diag.rw())
 Error : 'mvn.diag.rw' is defunct.
 Use 'mvn_diag_rw' instead.

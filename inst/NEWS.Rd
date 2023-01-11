@@ -2,6 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 5.0.0}{
   \itemize{
+    \item We no longer import from \pkg{plyr}.
     \item The \code{dimnames} attributes of various arrays that appear in \pkg{pomp}, including arrays of observables, state variables, parameters, covariates, and so on, have been made uniform.
     In particular, when a dimension of an array corresponds to variables with different names, this dimension is itself named "name".
     Previously, its name was sometimes "variable" and sometimes "parameter".

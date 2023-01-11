@@ -77,7 +77,7 @@ setMethod(
 ##' @details A list can be melted into a data frame.
 ##' This operation is recursive.
 ##' A variable will be appended to distinguish the separate list entries.
-##' @importFrom plyr rbind.fill
+##' @importFrom dplyr bind_rows
 ##' @export
 setMethod(
   "melt",
@@ -85,15 +85,9 @@ setMethod(
   definition=function (data, ..., level = 1) {
     if (length(unique(lapply(data,mode))) > 1L)
       pStop("melt","refusing to melt data of incompatible types.")
-    nm <- names(data)
-    if (is.null(nm)) nm <- as.character(seq_along(data))
-    L <- lapply(data,melt,level=level+1,...)
-    n <- vapply(L,nrow,integer(1L))
-    x <- cbind(
-      .id=rep(nm,n),
-      rbind.fill(L)
+    bind_rows(
+      lapply(data,melt,level=level+1,...),
+      .id=paste0(".L",level)
     )
-    names(x)[1L] <- paste0(".L",level)
-    x
   }
 )

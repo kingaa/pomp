@@ -65,6 +65,7 @@ setMethod(
 
 ##' @rdname states
 ##' @inheritParams obs
+##' @importFrom dplyr bind_rows
 ##' @export
 setMethod(
   "states",
@@ -74,7 +75,7 @@ setMethod(
     format <- match.arg(format)
     x <- lapply(object,states,vars=vars,format=format,...)
     if (format == "data.frame") {
-      rbind.fill(x,.id=".id")
+      bind_rows(x,.id=".id")
     } else {
       x
     }
