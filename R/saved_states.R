@@ -60,11 +60,11 @@ setMethod(
     format <- match.arg(format)
     if (format=="list") {
       object@saved.states
-    } else if (length(object@saved.states)==2L) {
+    } else if ("weights" %in% names(object@saved.states)) {
       s <- melt(object@saved.states$states)
       w <- melt(object@saved.states$weights)
-      s$time <- time(object)[as.integer(s$L1)]
-      w$time <- time(object)[as.integer(w$L1)]
+      s$time <- time(object)[as.integer(s$.L1)]
+      w$time <- time(object)[as.integer(w$.L1)]
       w$variable <- ".log.weight"
       x <- rbind(
         s[,c("time",".id","variable","value")],
@@ -75,7 +75,7 @@ setMethod(
       x
     } else {
       s <- melt(object@saved.states)
-      s$time <- time(object)[as.integer(s$L1)]
+      s$time <- time(object)[as.integer(s$.L1)]
       s <- s[,c("time",".id","variable","value")]
       row.names(s) <- NULL
       s
@@ -98,7 +98,7 @@ setMethod(
       nm <- names(x)
       if (is.null(nm)) nm <- as.character(seq_along(x))
       x <- cbind(
-        L1=rep(nm,n),
+        .L1=rep(nm,n),
         rbind.fill(x)
       )
     }

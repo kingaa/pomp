@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.6.1}{
+  \itemize{
+    \item When \code{melt} is applied to a list, the identifier variable is now \sQuote{.L\code{x}}, where \code{x} denotes the level.
+    This applies when \code{as.data.frame} is used to coerce a list of \sQuote{pomp} objects, and when \code{saved_states} is used to extract the particles from a list of \sQuote{pfilterd_pomp} objects.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.5.3}{
   \itemize{
     \item \code{logmeanexp} can now compute the effective sample size, which can be useful in determining the reliability of its estimate.

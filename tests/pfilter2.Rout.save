@@ -86,7 +86,7 @@ https://kingaa.github.io/pomp/blog.html.
    variable         rep        time       value 
 "character" "character"   "numeric"   "numeric" 
 > pf |> saved_states() |> melt() |> sapply(class)
-         L1          L2    variable         .id       value 
+        .L1         .L2    variable         .id       value 
 "character" "character" "character"   "integer"   "numeric" 
 > pf |> saved_states(format="d") |> sapply(class)
        time         .id    variable       value 
@@ -174,9 +174,9 @@ Error in match.arg(format) : 'arg' should be one of "array", "data.frame"
 + ) |>
 +   mutate(
 +     variable=coalesce(variable,".log.weight"),
-+     time=time(pf)[as.integer(L1)]
++     time=time(pf)[as.integer(.L1)]
 +   ) |>
-+   select(-L1) |>
++   select(-.L1) |>
 +   arrange(time,.id) |>
 +   select(time,.id,variable,value) -> dat1
 > pf |>

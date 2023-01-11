@@ -76,7 +76,7 @@ setMethod(
       .id=rep(nm,n),
       rbind.fill(L)
     )
-    names(x)[1L] <- paste0("L",level)
+    names(x)[1L] <- paste0(".L",level)
     x
   }
 )

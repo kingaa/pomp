@@ -86,11 +86,11 @@ melt(list(list(x)))
 melt(list(t(x),x))
 names(dimnames(x)) <- c("X","Y")
 z1 <- melt(list(a=x,b=x[3:5,]))
-z1 <- z1[order(z1$L1,z1$X,z1$Y),]; z1
+z1 <- z1[order(z1$.L1,z1$X,z1$Y),]; z1
 z2 <- melt(list(a=x,b=x[3:5,c(2,3,1)]))
-z2 <- z2[order(z2$L1,z2$X,z2$Y),];
+z2 <- z2[order(z2$.L1,z2$X,z2$Y),];
 z3 <- melt(list(a=t(x),b=x[3:5,c(2,3,1)]))
-z3 <- z3[order(z3$L1,z3$X,z3$Y),names(z2)];
+z3 <- z3[order(z3$.L1,z3$X,z3$Y),names(z2)];
 stopifnot(
   all.equal(z1,z2,check.attributes=FALSE),
   all.equal(z1,z3,check.attributes=FALSE)

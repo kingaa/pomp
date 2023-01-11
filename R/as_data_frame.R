@@ -169,7 +169,7 @@ setAs(
     nm <- names(L)
     if (is.null(nm)) nm <- seq_along(L)
     cbind(
-      .id=rep(nm,n),
+      .L1=rep(nm,n),
       rbind.fill(L)
     )
   }

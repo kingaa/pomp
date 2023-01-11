@@ -164,9 +164,9 @@ stopifnot(
 )
 pos |>
   as.data.frame() |>
-  ggplot(aes(x=time,y=N,group=.id,color=.id))+
+  ggplot(aes(x=time,y=N,group=.L1,color=.L1))+
   geom_line()+
-  facet_wrap(~.id,ncol=1)+
+  facet_wrap(~.L1,ncol=1)+
   theme_bw()
 
 dev.off()

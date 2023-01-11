@@ -118,31 +118,31 @@ Error : in 'melt': refusing to melt data of incompatible types.
 > try(melt(x[2:4]))
 Error : in 'melt': refusing to melt data of incompatible types.
 > melt(x[2:3])
-   L1      value
-1   b -1.5199346
-2   b -0.6149350
-3   b -1.2227341
-4   b  0.6934577
-5   b -0.5857796
-6   c  1.0000000
-7   c  2.0000000
-8   c  3.0000000
-9   c  4.0000000
-10  c  5.0000000
+   .L1      value
+1    b -1.5199346
+2    b -0.6149350
+3    b -1.2227341
+4    b  0.6934577
+5    b -0.5857796
+6    c  1.0000000
+7    c  2.0000000
+8    c  3.0000000
+9    c  4.0000000
+10   c  5.0000000
 > 
 > names(x) <- NULL
 > melt(x[2:3])
-   L1      value
-1   1 -1.5199346
-2   1 -0.6149350
-3   1 -1.2227341
-4   1  0.6934577
-5   1 -0.5857796
-6   2  1.0000000
-7   2  2.0000000
-8   2  3.0000000
-9   2  4.0000000
-10  2  5.0000000
+   .L1      value
+1    1 -1.5199346
+2    1 -0.6149350
+3    1 -1.2227341
+4    1  0.6934577
+5    1 -0.5857796
+6    2  1.0000000
+7    2  2.0000000
+8    2  3.0000000
+9    2  4.0000000
+10   2  5.0000000
 > 
 > try(
 +   list(
@@ -184,103 +184,103 @@ Error : in 'melt': refusing to melt data of incompatible types.
 14 O    c    14
 15 P    c    15
 > melt(list(x))
-   L1 X Var2 value
-1   1 L    a     1
-2   1 M    a     2
-3   1 N    a     3
-4   1 O    a     4
-5   1 P    a     5
-6   1 L    b     6
-7   1 M    b     7
-8   1 N    b     8
-9   1 O    b     9
-10  1 P    b    10
-11  1 L    c    11
-12  1 M    c    12
-13  1 N    c    13
-14  1 O    c    14
-15  1 P    c    15
+   .L1 X Var2 value
+1    1 L    a     1
+2    1 M    a     2
+3    1 N    a     3
+4    1 O    a     4
+5    1 P    a     5
+6    1 L    b     6
+7    1 M    b     7
+8    1 N    b     8
+9    1 O    b     9
+10   1 P    b    10
+11   1 L    c    11
+12   1 M    c    12
+13   1 N    c    13
+14   1 O    c    14
+15   1 P    c    15
 > melt(list(list(x)))
-   L1 L2 X Var2 value
-1   1  1 L    a     1
-2   1  1 M    a     2
-3   1  1 N    a     3
-4   1  1 O    a     4
-5   1  1 P    a     5
-6   1  1 L    b     6
-7   1  1 M    b     7
-8   1  1 N    b     8
-9   1  1 O    b     9
-10  1  1 P    b    10
-11  1  1 L    c    11
-12  1  1 M    c    12
-13  1  1 N    c    13
-14  1  1 O    c    14
-15  1  1 P    c    15
+   .L1 .L2 X Var2 value
+1    1   1 L    a     1
+2    1   1 M    a     2
+3    1   1 N    a     3
+4    1   1 O    a     4
+5    1   1 P    a     5
+6    1   1 L    b     6
+7    1   1 M    b     7
+8    1   1 N    b     8
+9    1   1 O    b     9
+10   1   1 P    b    10
+11   1   1 L    c    11
+12   1   1 M    c    12
+13   1   1 N    c    13
+14   1   1 O    c    14
+15   1   1 P    c    15
 > melt(list(t(x),x))
-   L1 Var1 X value Var2
-1   1    a L     1 <NA>
-2   1    b L     6 <NA>
-3   1    c L    11 <NA>
-4   1    a M     2 <NA>
-5   1    b M     7 <NA>
-6   1    c M    12 <NA>
-7   1    a N     3 <NA>
-8   1    b N     8 <NA>
-9   1    c N    13 <NA>
-10  1    a O     4 <NA>
-11  1    b O     9 <NA>
-12  1    c O    14 <NA>
-13  1    a P     5 <NA>
-14  1    b P    10 <NA>
-15  1    c P    15 <NA>
-16  2 <NA> L     1    a
-17  2 <NA> M     2    a
-18  2 <NA> N     3    a
-19  2 <NA> O     4    a
-20  2 <NA> P     5    a
-21  2 <NA> L     6    b
-22  2 <NA> M     7    b
-23  2 <NA> N     8    b
-24  2 <NA> O     9    b
-25  2 <NA> P    10    b
-26  2 <NA> L    11    c
-27  2 <NA> M    12    c
-28  2 <NA> N    13    c
-29  2 <NA> O    14    c
-30  2 <NA> P    15    c
+   .L1 Var1 X value Var2
+1    1    a L     1 <NA>
+2    1    b L     6 <NA>
+3    1    c L    11 <NA>
+4    1    a M     2 <NA>
+5    1    b M     7 <NA>
+6    1    c M    12 <NA>
+7    1    a N     3 <NA>
+8    1    b N     8 <NA>
+9    1    c N    13 <NA>
+10   1    a O     4 <NA>
+11   1    b O     9 <NA>
+12   1    c O    14 <NA>
+13   1    a P     5 <NA>
+14   1    b P    10 <NA>
+15   1    c P    15 <NA>
+16   2 <NA> L     1    a
+17   2 <NA> M     2    a
+18   2 <NA> N     3    a
+19   2 <NA> O     4    a
+20   2 <NA> P     5    a
+21   2 <NA> L     6    b
+22   2 <NA> M     7    b
+23   2 <NA> N     8    b
+24   2 <NA> O     9    b
+25   2 <NA> P    10    b
+26   2 <NA> L    11    c
+27   2 <NA> M    12    c
+28   2 <NA> N    13    c
+29   2 <NA> O    14    c
+30   2 <NA> P    15    c
 > names(dimnames(x)) <- c("X","Y")
 > z1 <- melt(list(a=x,b=x[3:5,]))
-> z1 <- z1[order(z1$L1,z1$X,z1$Y),]; z1
-   L1 X Y value
-1   a L a     1
-6   a L b     6
-11  a L c    11
-2   a M a     2
-7   a M b     7
-12  a M c    12
-3   a N a     3
-8   a N b     8
-13  a N c    13
-4   a O a     4
-9   a O b     9
-14  a O c    14
-5   a P a     5
-10  a P b    10
-15  a P c    15
-16  b N a     3
-19  b N b     8
-22  b N c    13
-17  b O a     4
-20  b O b     9
-23  b O c    14
-18  b P a     5
-21  b P b    10
-24  b P c    15
+> z1 <- z1[order(z1$.L1,z1$X,z1$Y),]; z1
+   .L1 X Y value
+1    a L a     1
+6    a L b     6
+11   a L c    11
+2    a M a     2
+7    a M b     7
+12   a M c    12
+3    a N a     3
+8    a N b     8
+13   a N c    13
+4    a O a     4
+9    a O b     9
+14   a O c    14
+5    a P a     5
+10   a P b    10
+15   a P c    15
+16   b N a     3
+19   b N b     8
+22   b N c    13
+17   b O a     4
+20   b O b     9
+23   b O c    14
+18   b P a     5
+21   b P b    10
+24   b P c    15
 > z2 <- melt(list(a=x,b=x[3:5,c(2,3,1)]))
-> z2 <- z2[order(z2$L1,z2$X,z2$Y),];
+> z2 <- z2[order(z2$.L1,z2$X,z2$Y),];
 > z3 <- melt(list(a=t(x),b=x[3:5,c(2,3,1)]))
-> z3 <- z3[order(z3$L1,z3$X,z3$Y),names(z2)];
+> z3 <- z3[order(z3$.L1,z3$X,z3$Y),names(z2)];
 > stopifnot(
 +   all.equal(z1,z2,check.attributes=FALSE),
 +   all.equal(z1,z3,check.attributes=FALSE)

@@ -166,10 +166,10 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 > pf1 |> saved_states(format="data") |> dim()
 [1] 20000     4
 > pf1 |> saved_states() |> melt() |> sapply(class)
-         L1    variable         .id       value 
+        .L1    variable         .id       value 
 "character" "character"   "integer"   "numeric" 
 > pf1 |> saved_states() |> melt() |> sapply(length)
-      L1 variable      .id    value 
+     .L1 variable      .id    value 
    20000    20000    20000    20000 
 > pf2 |> saved_states(format="data") |> names()
 [1] "time"     ".id"      "variable" "value"   
@@ -183,14 +183,14 @@ attr(,"package")
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> class()
 [1] "data.frame"
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> names()
-[1] "L1"       "time"     ".id"      "variable" "value"   
+[1] ".L1"      "time"     ".id"      "variable" "value"   
 > c(pf1,pf2) |> saved_states(format="d") |> names()
-[1] "L1"       "time"     ".id"      "variable" "value"   
+[1] ".L1"      "time"     ".id"      "variable" "value"   
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> sapply(class)
-         L1        time         .id    variable       value 
+        .L1        time         .id    variable       value 
 "character"   "numeric"   "integer" "character"   "numeric" 
 > c(A=pf1,B=pf2) |> as.data.frame() |> sapply(class)
-           .id           time             y1             y2            ess 
+           .L1           time             y1             y2            ess 
    "character"      "numeric"      "numeric"      "numeric"      "numeric" 
    cond.logLik   pred.mean.x1   pred.mean.x2    pred.var.x1    pred.var.x2 
      "numeric"      "numeric"      "numeric"      "numeric"      "numeric" 
@@ -222,7 +222,7 @@ Error : in 'filter_traj': incommensurate dimensions.
 > names(dimnames(filter_traj(c(pf1,pf4))))
 [1] "variable" "rep"      "time"     "chain"   
 > names(as(c(pf1,pf4),"data.frame"))
-[1] ".id"         "time"        "y1"          "y2"          "ess"        
+[1] ".L1"         "time"        "y1"          "y2"          "ess"        
 [6] "cond.logLik"
 > pf2 |> as.data.frame() |> names()
  [1] "time"           "y1"             "y2"             "ess"           

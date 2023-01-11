@@ -117,9 +117,9 @@ bind_rows(
 ) |>
   mutate(
     variable=coalesce(variable,".log.weight"),
-    time=time(pf)[as.integer(L1)]
+    time=time(pf)[as.integer(.L1)]
   ) |>
-  select(-L1) |>
+  select(-.L1) |>
   arrange(time,.id) |>
   select(time,.id,variable,value) -> dat1
 pf |>
