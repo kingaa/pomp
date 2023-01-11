@@ -8,8 +8,40 @@ on:
 
 name: binary-build
 
+env:
+  release_name: ${{ vars.repo_name }}_${{ github.ref_name }}
+
 jobs:
-  binary-build:
+  source_build:          
+    runs-on: ubuntu-latest
+    name: Build source tarball
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v3.1.0
+
+      - uses: r-lib/actions/setup-r@v2.3.1
+        with:
+          r-version: latest
+
+      - uses: r-lib/actions/setup-r-dependencies@v2.3.1
+        with:
+          extra-packages: |
+            any::pkgbuild
+
+      - name: Build source tarball
+        run: |
+          R CMD build --force --no-manual --resave-data --compact-vignettes=both --md5 .
+          mkdir -p ${{ github.workspace }}/artifacts
+          cp ${{ env.release_name }}.tar.gz ${{ github.workspace }}/artifacts
+
+      - uses: actions/upload-artifact@v3.1.1
+        with:
+          name: Source tarball
+          path: ${{ github.workspace }}/artifacts/${{ env.release_name }}.tar.gz
+
+  binary_build:
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
@@ -18,13 +50,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: ubuntu-latest,  r: 'release'}
-          - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_KEEP_PKG_SOURCE: yes
+          - {os: macOS-latest,   r: 'release', ext: "tgz"}
+          - {os: windows-latest, r: 'release', ext: "zip"}
 
     steps:
       - uses: actions/checkout@v3.1.0
@@ -32,23 +59,22 @@ jobs:
       - uses: r-lib/actions/setup-r@v2.3.1
         with:
           r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2.3.1
         with:
-          extra-packages: rcmdcheck 
-          
+          extra-packages: |
+            any::pkgbuild
+
       - name: Build binary
         run: pkgbuild::build(binary=TRUE,manual=TRUE)
         shell: Rscript {0}
-      
-      - name: Copying tarball
+
+      - name: Copy tarball
         run: |
           mkdir -p ${{ github.workspace }}/artifacts
-          cp ../pomp_* ${{ github.workspace }}/artifacts
-          
+          cp ../${{ env.release_name }}.${{ matrix.config.ext }} ${{ github.workspace }}/artifacts
+
       - uses: actions/upload-artifact@v3.1.1
         with:
-          name: binary-${{ matrix.config.os }}-${{ matrix.config.r }}
-          path: ${{ github.workspace }}/artifacts
+          name: ${{ matrix.config.os }}-${{ matrix.config.r }}
+          path: ${{ github.workspace }}/artifacts/${{ env.release_name }}.${{ matrix.config.ext }}
