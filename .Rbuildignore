@@ -42,6 +42,5 @@ www
 ^(.+?)\.tar\.gz
 ^(.+?)\.tgz
 ^(.+?)\.zip
-hub_cov\.R
 covr.html
 covr.rds
