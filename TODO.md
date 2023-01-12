@@ -2,15 +2,17 @@
 
 ## For pomp:
 
+- make `mcap` into a generic, provide a method for data frames and a plotting method
 - remove melt from exports?
   - it *is* handy when one wants to turn an array or a list into a data frame
-- vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`
+- vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`:
+  skeleton is in place; needs text.
 - Smoothing tool for 'pfilterd_pomp' and 'pmcmcd_pomp' objects
 - `bake`, `stew` should take attributes to be attached or stored (e.g., `getDoParWorkers()`)
 - `options(pomp_cdir)` should take effect *at run time* and not at initial compile time as currently
 - overriding C snippets should overwrite/delete old C snippets, keep one C snippet file
-- byte-compile basic components when furnished as **R** functions: this does not appear to speed anything up
-- make `mcap` into a generic, provide a method for data frames and a plotting method
+
+- in `pfilter`, perhaps filter trajectory (one sample from the smoothing distribution) should go into `states` slot (??)
 
 - rewrite to use `rmultinom`, which is now part of the **R** API (?)
 
