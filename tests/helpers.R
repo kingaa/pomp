@@ -95,3 +95,11 @@ stopifnot(
   all.equal(z1,z2,check.attributes=FALSE),
   all.equal(z1,z3,check.attributes=FALSE)
 )
+
+list(
+  a=1:5,
+  b=c(a=5,b=2),
+  c=array(rnorm(3),dim=3,dimnames=list(name=NULL)),
+  d=array(rnorm(3),dim=3),
+  e=array(rnorm(2),dim=2,dimnames=list(name=LETTERS[14:15]))
+) |> melt()

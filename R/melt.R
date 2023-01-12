@@ -35,7 +35,22 @@ setMethod(
   "melt",
   signature=signature(data="ANY"),
   definition=function (data, ...) {
-    data.frame(value=data)
+    if (is.null(names(data))) {
+      data.frame(
+        value=data,
+        row.names=NULL,
+        check.names=FALSE,
+        fix.empty.names=FALSE
+      )
+    } else {
+      data.frame(
+        name=names(data),
+        value=data,
+        row.names=NULL,
+        check.names=FALSE,
+        fix.empty.names=FALSE
+      )
+    }
   }
 )
 
@@ -48,6 +63,7 @@ setMethod(
   signature=signature(data="array"),
   definition=function (data, ...) {
     dn <- dimnames(data)
+    if (is.null(dn)) dn <- vector(mode="list",length=length(dim(data)))
     nullnames <- which(unlist(lapply(dn,is.null)))
     dn[nullnames] <- lapply(nullnames,\(i)seq_len(dim(data)[i]))
     labels <- expand.grid(dn,KEEP.OUT.ATTRS=FALSE,stringsAsFactors=FALSE)

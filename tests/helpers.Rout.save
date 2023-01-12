@@ -286,3 +286,27 @@ Error : in 'melt': refusing to melt data of incompatible types.
 +   all.equal(z1,z3,check.attributes=FALSE)
 + )
 > 
+> list(
++   a=1:5,
++   b=c(a=5,b=2),
++   c=array(rnorm(3),dim=3,dimnames=list(name=NULL)),
++   d=array(rnorm(3),dim=3),
++   e=array(rnorm(2),dim=2,dimnames=list(name=LETTERS[14:15]))
++ ) |> melt()
+   .L1      value name Var1
+1    a  1.0000000 <NA>   NA
+2    a  2.0000000 <NA>   NA
+3    a  3.0000000 <NA>   NA
+4    a  4.0000000 <NA>   NA
+5    a  5.0000000 <NA>   NA
+6    b  5.0000000    a   NA
+7    b  2.0000000    b   NA
+8    c  1.1692565    1   NA
+9    c -1.3578778    2   NA
+10   c -1.0923684    3   NA
+11   d  0.1172689 <NA>    1
+12   d  0.3549312 <NA>    2
+13   d  1.6241228 <NA>    3
+14   e  1.3449047    N   NA
+15   e  0.3683851    O   NA
+> 

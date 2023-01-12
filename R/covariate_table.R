@@ -94,10 +94,8 @@ setMethod(
   "covariate_table",
   signature=signature(times="numeric"),
   definition=function (..., order = c("linear", "constant"), times) {
-
     order <- match.arg(order)
     env <- parent.frame(2)
-
     tryCatch(
       covariate_table_internal(...,times=times,order=order,env=env),
       error = function (e) pStop("covariate_table",conditionMessage(e))
@@ -112,10 +110,8 @@ setMethod(
   "covariate_table",
   signature=signature(times="character"),
   definition=function (..., order = c("linear", "constant"), times) {
-
     order <- match.arg(order)
     env <- parent.frame(2)
-
     tryCatch(
       covariate_table_internal(...,.timevar=times,order=order,env=env),
       error = function (e) pStop("covariate_table",conditionMessage(e))

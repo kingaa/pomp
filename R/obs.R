@@ -61,6 +61,6 @@ setMethod(
   "obs",
   signature=signature(object="listie"),
   definition=function (object, vars, ...) {
-    lapply(object,obs)
+    lapply(object,obs,vars=vars)
   }
 )

@@ -64,6 +64,6 @@ setMethod(
   "states",
   signature=signature(object="listie"),
   definition=function (object, vars, ...) {
-    lapply(object,states)
+    lapply(object,states,vars=vars)
   }
 )

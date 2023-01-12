@@ -80,7 +80,7 @@ For more information, see \link[=dmeasure specification]{dmeasure specification}
 \item{filter.mean}{logical; if \code{TRUE}, the filtering means are calculated for the state variables and parameters.}
 
 \item{filter.traj}{logical; if \code{TRUE}, a filtered trajectory is returned for the state variables and parameters.
-See \code{\link{filter.traj}} for more information.}
+See \code{\link{filter_traj}} for more information.}
 
 \item{save.states}{character;
 If \code{save.states="unweighted"}, the state-vector for each unweighted particle at each time is saved.

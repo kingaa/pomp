@@ -112,7 +112,7 @@ The following can be applied to the output of a \code{pmcmc} operation:
 \item{\code{pmcmc}}{repeats the calculation, beginning with the last state}
 \item{\code{\link{continue}}}{continues the \code{pmcmc} calculation}
 \item{\code{plot}}{produces a series of diagnostic plots}
-\item{\code{\link{filter.traj}}}{extracts a random sample from the smoothing distribution}
+\item{\code{\link{filter_traj}}}{extracts a random sample from the smoothing distribution}
 \item{\code{\link{traces}}}{produces an \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
 }
 }
