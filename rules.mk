@@ -38,7 +38,7 @@ session: RSESSION = emacs -f R
 debug: RSESSION = R -d gdb
 rsession: RSESSION = R
 
-default:
+default: .roxy .NEWS .instdocs .source .includes .headers
 	@echo $(PKGVERS)
 
 roxy: .roxy
