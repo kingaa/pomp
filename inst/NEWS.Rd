@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.6.2}{
+  \itemize{
+    \item The \code{states} and \code{obs} methods take a new optional argument, \code{format}.
+    Setting \code{format="data.frame"} causes the method to return the states or data in a convenient data-frame format.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.6.1}{
   \itemize{
     \item When \code{melt} is applied to a list, the identifier variable is now \sQuote{.L\code{x}}, where \code{x} denotes the level.

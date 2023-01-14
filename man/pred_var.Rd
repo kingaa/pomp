@@ -16,7 +16,7 @@
 
 \item{...}{ignored}
 
-\item{format}{format of the returned object.}
+\item{format}{format of the returned object}
 }
 \description{
 The variance of the prediction distribution

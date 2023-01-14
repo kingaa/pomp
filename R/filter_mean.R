@@ -19,7 +19,7 @@
 ##'
 ##' @param object result of a filtering computation
 ##' @param vars optional character; names of variables
-##' @param format format of the returned object.
+##' @param format format of the returned object
 ##' @param ... ignored
 ##'
 NULL

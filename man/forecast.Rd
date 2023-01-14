@@ -21,7 +21,7 @@ forecast(object, ...)
 
 \item{vars}{optional character; names of variables}
 
-\item{format}{format of the returned object.}
+\item{format}{format of the returned object}
 }
 \description{
 Mean of the one-step-ahead forecasting distribution.

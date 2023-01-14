@@ -1,6 +1,9 @@
 set.seed(901772384)
 
-library(pomp)
+suppressPackageStartupMessages({
+  library(pomp)
+  library(tidyr)
+})
 
 try(eff_sample_size())
 try(eff_sample_size("bob"))
@@ -40,9 +43,21 @@ logLik("bob")
 
 try(states())
 try(states("bob"))
+ou2() |>
+  states(format="d") |>
+  head()
+c(A=ou2(),B=gompertz()) |>
+  states(format="d") |>
+  head()
 
 try(obs())
 try(obs("bob"))
+ou2() |>
+  obs(format="d") |>
+  head()
+c(A=ou2(),B=gompertz()) |>
+  obs(format="d") |>
+  head()
 
 try(melt())
 melt("bob")

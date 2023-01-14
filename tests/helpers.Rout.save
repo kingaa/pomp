@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -19,15 +17,10 @@ Type 'q()' to quit R.
 
 > set.seed(901772384)
 > 
-> library(pomp)
-
-Welcome to pomp!
-
-As of version 4.6, no user-visible pomp function has a name that
-includes a dot ('.'). Function names have been changed to replace the
-dot with an underscore ('_'). For more information, see the pomp blog:
-https://kingaa.github.io/pomp/blog.html.
-
+> suppressPackageStartupMessages({
++   library(pomp)
++   library(tidyr)
++ })
 > 
 > try(eff_sample_size())
 Error : in 'eff_sample_size': 'object' is a required argument.
@@ -94,11 +87,51 @@ Error : in 'logLik': 'object' is a required argument.
 Error : in 'states': 'object' is a required argument.
 > try(states("bob"))
 Error : 'states' is undefined for '"object"' of class 'character'.
+> ou2() |>
++   states(format="d") |>
++   head()
+  time         x1        x2
+1    1 -3.7184616  4.249533
+2    2  0.9403927  6.843546
+3    3 -0.3725648  7.592267
+4    4  5.8085324  6.490249
+5    5  5.6054356  1.835443
+6    6  7.3546052 -1.566206
+> c(A=ou2(),B=gompertz()) |>
++   states(format="d") |>
++   head()
+  time         x1        x2  X
+1    1 -3.7184616  4.249533 NA
+2    2  0.9403927  6.843546 NA
+3    3 -0.3725648  7.592267 NA
+4    4  5.8085324  6.490249 NA
+5    5  5.6054356  1.835443 NA
+6    6  7.3546052 -1.566206 NA
 > 
 > try(obs())
 Error : in 'obs': 'object' is a required argument.
 > try(obs("bob"))
 Error : 'obs' is undefined for '"object"' of class 'character'.
+> ou2() |>
++   obs(format="d") |>
++   head()
+  time        y1        y2
+1    1 -4.051293 4.7806442
+2    2  1.834630 6.2733019
+3    3 -1.317003 7.5558688
+4    4  6.640487 5.7299615
+5    5  6.575312 1.5614843
+6    6  7.540323 0.1756402
+> c(A=ou2(),B=gompertz()) |>
++   obs(format="d") |>
++   head()
+  time        y1        y2  Y
+1    1 -4.051293 4.7806442 NA
+2    2  1.834630 6.2733019 NA
+3    3 -1.317003 7.5558688 NA
+4    4  6.640487 5.7299615 NA
+5    5  6.575312 1.5614843 NA
+6    6  7.540323 0.1756402 NA
 > 
 > try(melt())
 Error : in 'melt': 'data' is a required argument.

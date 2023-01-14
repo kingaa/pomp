@@ -63,20 +63,20 @@ setMethod(
     } else if ("weights" %in% names(object@saved.states)) {
       s <- melt(object@saved.states$states)
       w <- melt(object@saved.states$weights)
-      s$time <- time(object)[as.integer(s$.L1)]
-      w$time <- time(object)[as.integer(w$.L1)]
+      s[[object@timename]] <- time(object)[as.integer(s$.L1)]
+      w[[object@timename]] <- time(object)[as.integer(w$.L1)]
       w$variable <- ".log.weight"
       x <- rbind(
-        s[,c("time",".id","variable","value")],
-        w[,c("time",".id","variable","value")]
+        s[,c(object@timename,".id","variable","value")],
+        w[,c(object@timename,".id","variable","value")]
       )
       x <- x[order(x$time,x$.id),]
       row.names(x) <- NULL
       x
     } else {
       s <- melt(object@saved.states)
-      s$time <- time(object)[as.integer(s$.L1)]
-      s <- s[,c("time",".id","variable","value")]
+      s[[object@timename]] <- time(object)[as.integer(s$.L1)]
+      s <- s[,c(object@timename,".id","variable","value")]
       row.names(s) <- NULL
       s
     }

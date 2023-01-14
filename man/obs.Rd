@@ -9,9 +9,9 @@
 \alias{obs,listie-method}
 \title{obs}
 \usage{
-\S4method{obs}{pomp}(object, vars, ...)
+\S4method{obs}{pomp}(object, vars, ..., format = c("array", "data.frame"))
 
-\S4method{obs}{listie}(object, vars, ...)
+\S4method{obs}{listie}(object, vars, ..., format = c("array", "data.frame"))
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}}
@@ -19,6 +19,8 @@
 \item{vars}{names of variables to retrieve}
 
 \item{\dots}{ignored}
+
+\item{format}{format of the returned object}
 }
 \description{
 Extract the data array from a \sQuote{pomp} object.

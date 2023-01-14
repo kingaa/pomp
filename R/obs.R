@@ -37,12 +37,14 @@ setMethod(
 ##' @rdname obs
 ##' @param object an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}
 ##' @param vars names of variables to retrieve
+##' @param format format of the returned object
 ##' @param \dots ignored
 ##' @export
 setMethod(
   "obs",
   signature=signature(object="pomp"),
-  definition=function (object, vars, ...) {
+  definition=function (object, vars, ...,
+    format = c("array", "data.frame")) {
     varnames <- rownames(object@data)
     if (missing(vars))
       vars <- varnames
@@ -50,17 +52,30 @@ setMethod(
       pStop("obs","some elements of ",
         sQuote("vars")," correspond to no observed variable.")
     y <- object@data[vars,,drop=FALSE]
-    dimnames(y) <- setNames(list(vars,NULL),c("variable","time"))
+    dimnames(y) <- setNames(list(vars,NULL),c("variable",object@timename))
+    format <- match.arg(format)
+    if (format == "data.frame") {
+      y <- data.frame(time=time(object),t(y))
+      names(y)[1L] <- object@timename
+    }
     y
   }
 )
 
 ##' @rdname obs
+##' @importFrom plyr rbind.fill
 ##' @export
 setMethod(
   "obs",
   signature=signature(object="listie"),
-  definition=function (object, vars, ...) {
-    lapply(object,obs,vars=vars)
+  definition=function (object, vars, ...,
+    format = c("array", "data.frame")) {
+    format <- match.arg(format)
+    y <- lapply(object,obs,vars=vars,format=format,...)
+    if (format == "data.frame") {
+      rbind.fill(y,.id=".id")
+    } else {
+      y
+    }
   }
 )

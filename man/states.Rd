@@ -9,9 +9,9 @@
 \alias{states,listie-method}
 \title{Latent states}
 \usage{
-\S4method{states}{pomp}(object, vars, ...)
+\S4method{states}{pomp}(object, vars, ..., format = c("array", "data.frame"))
 
-\S4method{states}{listie}(object, vars, ...)
+\S4method{states}{listie}(object, vars, ..., format = c("array", "data.frame"))
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}}
@@ -19,6 +19,8 @@
 \item{vars}{names of variables to retrieve}
 
 \item{...}{ignored}
+
+\item{format}{format of the returned object}
 }
 \description{
 Extract the latent states from a \sQuote{pomp} object.

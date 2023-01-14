@@ -20,7 +20,7 @@
 
 \item{...}{ignored}
 
-\item{format}{format of the returned object.}
+\item{format}{format of the returned object}
 }
 \description{
 Estimate the effective sample size of a Monte Carlo computation.

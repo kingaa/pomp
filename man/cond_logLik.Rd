@@ -24,7 +24,7 @@
 
 \item{...}{ignored}
 
-\item{format}{format of the returned object.}
+\item{format}{format of the returned object}
 }
 \value{
 The numerical value of the conditional log likelihood.

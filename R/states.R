@@ -40,7 +40,8 @@ setMethod(
 setMethod(
   "states",
   signature=signature(object="pomp"),
-  definition=function (object, vars, ...) {
+  definition=function (object, vars, ...,
+    format = c("array", "data.frame")) {
     if (length(object@states)==0) {
       x <- array(NA_real_,dim=c(0,length(object@times)),
         dimnames=setNames(list(NULL,NULL),c("variable",object@timename)))
@@ -53,6 +54,11 @@ setMethod(
       x <- object@states[vars,,drop=FALSE]
       dimnames(x) <- setNames(list(vars,NULL),c("variable",object@timename))
     }
+    format <- match.arg(format)
+    if (format == "data.frame") {
+      x <- data.frame(time=time(object),t(x))
+      names(x)[1L] <- object@timename
+    }
     x
   }
 )
@@ -63,7 +69,14 @@ setMethod(
 setMethod(
   "states",
   signature=signature(object="listie"),
-  definition=function (object, vars, ...) {
-    lapply(object,states,vars=vars)
+  definition=function (object, vars, ...,
+    format = c("array", "data.frame")) {
+    format <- match.arg(format)
+    x <- lapply(object,states,vars=vars,format=format,...)
+    if (format == "data.frame") {
+      rbind.fill(x,.id=".id")
+    } else {
+      x
+    }
   }
 )
