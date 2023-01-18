@@ -12,6 +12,7 @@
 [![codecov](https://codecov.io/gh/kingaa/pomp/branch/master/graph/badge.svg)](https://codecov.io/gh/kingaa/pomp)
 ![CRAN mirror monthly downloads](https://cranlogs.r-pkg.org/badges/last-month/pomp)
 ![CRAN mirror total downloads](https://cranlogs.r-pkg.org/badges/grand-total/pomp)
+[![Dependencies](https://tinyverse.netlify.com/badge/pomp)](https://cran.r-project.org/package=pomp)
 
 For installation instructions and user guides, see [the package website](https://kingaa.github.io/pomp/).
 
@@ -19,6 +20,7 @@ Manual: [(HTML)](https://kingaa.github.io/pomp/manual/) [(PDF)](https://kingaa.g
 
 Related packages:
 
+- [**phylopomp**](https://github.com/kingaa/phylopomp/)
 - [**spatPomp**](https://github.com/kidusasfaw/spatPomp)
 - [**panelPomp**](https://cbreto.github.io/panelPomp/)
 - [**circumstance**](https://github.com/kingaa/circumstance/)

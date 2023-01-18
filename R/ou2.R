@@ -22,9 +22,9 @@
 NULL
 
 ##' @rdname ou2
-##' @param alpha_1,alpha_2,alpha_3,alpha_4 entries of the \eqn{alpha} matrix, in column-major order.
+##' @param alpha_1,alpha_2,alpha_3,alpha_4 entries of the \eqn{\alpha} matrix, in column-major order.
 ##' That is, \code{alpha_2} is in the lower-left position.
-##' @param sigma_1,sigma_2,sigma_3 entries of the lower-triangular \eqn{sigma} matrix.
+##' @param sigma_1,sigma_2,sigma_3 entries of the lower-triangular \eqn{\sigma} matrix.
 ##' \code{sigma_2} is the entry in the lower-left position.
 ##' @param tau measurement error s.d.
 ##' @param x1_0,x2_0 latent variable values at time \code{t0}

@@ -21,10 +21,10 @@ ou2(
 )
 }
 \arguments{
-\item{alpha_1, alpha_2, alpha_3, alpha_4}{entries of the \eqn{alpha} matrix, in column-major order.
+\item{alpha_1, alpha_2, alpha_3, alpha_4}{entries of the \eqn{\alpha} matrix, in column-major order.
 That is, \code{alpha_2} is in the lower-left position.}
 
-\item{sigma_1, sigma_2, sigma_3}{entries of the lower-triangular \eqn{sigma} matrix.
+\item{sigma_1, sigma_2, sigma_3}{entries of the lower-triangular \eqn{\sigma} matrix.
 \code{sigma_2} is the entry in the lower-left position.}
 
 \item{tau}{measurement error s.d.}
