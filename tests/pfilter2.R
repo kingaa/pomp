@@ -36,6 +36,11 @@ pf |> filter_traj(format="d") |> sapply(class)
 pf |> saved_states() |> melt() |> sapply(class)
 pf |> saved_states(format="d") |> sapply(class)
 
+c(A=pf,B=pf) -> pfs
+pfs |> filter_traj(format="d") |> head()
+pfs |> filter_traj(format="d") |> dim()
+pfs |> filter_traj(format="a") |> dim()
+
 try(pf |> forecast(format="l"))
 
 pf |> as.data.frame() -> dat0

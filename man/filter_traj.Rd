@@ -5,18 +5,15 @@
 \alias{filter_traj,ANY-method}
 \alias{filter_traj,missing-method}
 \alias{filter_traj,pfilterd_pomp-method}
-\alias{filter_traj,pfilterList-method}
+\alias{filter_traj,listie-method}
 \alias{filter_traj,pmcmcd_pomp-method}
-\alias{filter_traj,pmcmcList-method}
 \title{Filtering trajectories}
 \usage{
 \S4method{filter_traj}{pfilterd_pomp}(object, vars, ..., format = c("array", "data.frame"))
 
-\S4method{filter_traj}{pfilterList}(object, vars, ...)
+\S4method{filter_traj}{listie}(object, vars, ..., format = c("array", "data.frame"))
 
 \S4method{filter_traj}{pmcmcd_pomp}(object, vars, ...)
-
-\S4method{filter_traj}{pmcmcList}(object, vars, ...)
 }
 \arguments{
 \item{object}{result of a filtering computation}

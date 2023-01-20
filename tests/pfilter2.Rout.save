@@ -92,6 +92,20 @@ https://kingaa.github.io/pomp/blog.html.
        time         .id    variable       value 
   "numeric"   "integer" "character"   "numeric" 
 > 
+> c(A=pf,B=pf) -> pfs
+> pfs |> filter_traj(format="d") |> head()
+  variable rep time chain value
+1       x1   1    1     A -3.00
+2       x2   1    1     A  4.00
+3       x1   1    2     A -3.58
+4       x2   1    2     A  5.85
+5       x1   1    3     A -1.13
+6       x2   1    3     A  8.31
+> pfs |> filter_traj(format="d") |> dim()
+[1] 44  5
+> pfs |> filter_traj(format="a") |> dim()
+[1]  2  1 11  2
+> 
 > try(pf |> forecast(format="l"))
 Error in match.arg(format) : 'arg' should be one of "array", "data.frame"
 > 

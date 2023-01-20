@@ -66,9 +66,11 @@ setMethod(
 ##' @export
 setMethod(
   "filter_traj",
-  signature=signature(object="pfilterList"),
-  definition=function (object, vars, ...) {
-    fts <- lapply(object,filter_traj,vars=vars,...)
+  signature=signature(object="listie"),
+  definition=function (object, vars, ...,
+    format = c("array", "data.frame")) {
+    format <- match.arg(format)
+    fts <- lapply(object,filter_traj,vars=vars,format="array",...)
     d <- vapply(fts,dim,integer(3L))
     if (!all(apply(d,1L,\(x)x==x[1L])))
       pStop("filter_traj","incommensurate dimensions.")
@@ -77,7 +79,11 @@ setMethod(
     x <- do.call(c,fts)
     dim(x) <- c(d,length(fts))
     dimnames(x) <- c(nm,list(chain=names(fts)))
-    x
+    if (format == "array") {
+      x
+    } else {
+      melt(x)
+    }
   }
 )
 
@@ -88,21 +94,5 @@ setMethod(
   signature=signature(object="pmcmcd_pomp"),
   definition=function (object, vars, ...) {
     filter_traj(as(object,"pfilterd_pomp"),vars,...)
-  }
-)
-
-##' @rdname filter_traj
-##' @export
-setMethod(
-  "filter_traj",
-  signature=signature(object="pmcmcList"),
-  definition=function (object, vars, ...) {
-    fts <- lapply(object,filter_traj,vars=vars,...)
-    d <- dim(fts[[1]])
-    nm <- dimnames(fts[[1]])
-    x <- do.call(c,fts)
-    dim(x) <- c(d,length(fts))
-    dimnames(x) <- c(nm,list(chain=names(fts)))
-    x
   }
 )

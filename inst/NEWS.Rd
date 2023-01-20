@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.6.3}{
+  \itemize{
+    \item Bug fix in \code{filter_traj} applied to \sQuote{pfilterList} and \sQuote{pmcmcList} objects.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.6.2}{
   \itemize{
     \item The \code{states} and \code{obs} methods take a new optional argument, \code{format}.
