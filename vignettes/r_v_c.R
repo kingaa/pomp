@@ -1,6 +1,7 @@
 ## ----packages-----------------------------------------------------------------
 library(pomp)
 library(ggplot2)
+library(tidyr)
 
 
 ## ----seed,echo=FALSE----------------------------------------------------------
@@ -30,15 +31,16 @@ simulate(times=1:100,t0=0,
 ## ----R2-----------------------------------------------------------------------
 gompertz |>
   as.data.frame() |>
-  melt(id="time") |>
-  ggplot(aes(x=time,y=value,color=variable))+
+  pivot_longer(c(X,Y)) |>
+  ggplot(aes(x=time,y=value,color=name))+
   geom_line()+
   labs(y="X, Y")+
   theme_bw()
 
 
 ## ----C1-----------------------------------------------------------------------
-simulate(times=0:100,t0=0,
+simulate(
+  times=0:100,t0=0,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
   dmeasure=Csnippet("
     lik = dlnorm(Y,log(X),tau,give_log);"
@@ -61,12 +63,15 @@ simulate(times=0:100,t0=0,
 
 
 ## ----params-------------------------------------------------------------------
-p <- parmat(coef(Gompertz),4)
+Gompertz |>
+  coef() |>
+  parmat(4) -> p
 p["X.0",] <- c(0.5,0.9,1.1,1.5)
 
 
 ## ----sim1---------------------------------------------------------------------
-simulate(Gompertz,params=p,format="data.frame") |>
+Gompertz |>
+  simulate(params=p,format="data.frame") |>
   ggplot(aes(x=time,y=X,group=.id,color=.id))+
   geom_line()+
   guides(color="none")+
@@ -75,9 +80,11 @@ simulate(Gompertz,params=p,format="data.frame") |>
 
 
 ## ----pf1----------------------------------------------------------------------
-pf <- replicate(n=10,pfilter(Gompertz,Np=500))
+Gompertz |>
+  pfilter(Np=500) |>
+  replicate(n=10) -> pf
 
-logmeanexp(sapply(pf,logLik),se=TRUE)
+logmeanexp(sapply(pf,logLik),se=TRUE,ess=TRUE)
 
 
 ## ----comparison,cache=TRUE----------------------------------------------------

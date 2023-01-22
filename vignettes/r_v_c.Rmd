@@ -43,6 +43,7 @@ First, we'll load some packages.
 ```{r packages}
 library(pomp)
 library(ggplot2)
+library(tidyr)
 ```
 
 ```{r seed,echo=FALSE}
@@ -88,8 +89,8 @@ We plot the results.
 ```{r R2}
 gompertz |>
   as.data.frame() |>
-  melt(id="time") |>
-  ggplot(aes(x=time,y=value,color=variable))+
+  pivot_longer(c(X,Y)) |>
+  ggplot(aes(x=time,y=value,color=name))+
   geom_line()+
   labs(y="X, Y")+
   theme_bw()
@@ -101,7 +102,8 @@ gompertz |>
 Now we'll code up the same example using C snippets.
 
 ```{r C1}
-simulate(times=0:100,t0=0,
+simulate(
+  times=0:100,t0=0,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
   dmeasure=Csnippet("
     lik = dlnorm(Y,log(X),tau,give_log);"
@@ -130,12 +132,15 @@ We can run simulations and a particle filter operation to check that the *rproce
 
 First, some simulations, from several initial conditions:
 ```{r params}
-p <- parmat(coef(Gompertz),4)
+Gompertz |>
+  coef() |>
+  parmat(4) -> p
 p["X.0",] <- c(0.5,0.9,1.1,1.5)
 ```
 
 ```{r sim1}
-simulate(Gompertz,params=p,format="data.frame") |>
+Gompertz |>
+  simulate(params=p,format="data.frame") |>
   ggplot(aes(x=time,y=X,group=.id,color=.id))+
   geom_line()+
   guides(color="none")+
@@ -147,9 +152,11 @@ We run 10 replicate particle filter operations at the true parameter values as f
 This allows us to assess the Monte Carlo error in the likelihood estimate.
 
 ```{r pf1}
-pf <- replicate(n=10,pfilter(Gompertz,Np=500))
+Gompertz |>
+  pfilter(Np=500) |>
+  replicate(n=10) -> pf
 
-logmeanexp(sapply(pf,logLik),se=TRUE)
+logmeanexp(sapply(pf,logLik),se=TRUE,ess=TRUE)
 ```
 
 ## Comparing the implementations
