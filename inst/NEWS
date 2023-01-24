@@ -14,7 +14,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._6._2:
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._6._1:
 
         • When ‘melt’ is applied to a list, the identifier variable is
-          now ‘.L‘x’’, where ‘x’ denotes the level.  This applies when
+          now “‘.Lx’”, where ‘x’ denotes the level.  This applies when
           ‘as.data.frame’ is used to coerce a list of ‘pomp’ objects,
           and when ‘saved_states’ is used to extract the particles from
           a list of ‘pfilterd_pomp’ objects.

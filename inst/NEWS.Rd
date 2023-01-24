@@ -13,7 +13,7 @@
 }
 \section{Changes in \pkg{pomp} version 4.6.1}{
   \itemize{
-    \item When \code{melt} is applied to a list, the identifier variable is now \sQuote{.L\code{x}}, where \code{x} denotes the level.
+    \item When \code{melt} is applied to a list, the identifier variable is now \dQuote{\code{.Lx}}, where \code{x} denotes the level.
     This applies when \code{as.data.frame} is used to coerce a list of \sQuote{pomp} objects, and when \code{saved_states} is used to extract the particles from a list of \sQuote{pfilterd_pomp} objects.
   }
 }
