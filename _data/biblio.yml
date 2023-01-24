@@ -1,11 +1,87 @@
-- key: Rodo2021
-  author: "X. Rodo, P. P. Martinez, A. Siraj, and M. Pascual"
+- key: Anderson2001a
+  author: "J. L. Anderson"
+  year: "2001"
+  title: "An ensemble adjustment Kalman filter for data assimilation"
+  journal: "Mon Weather Rev"
+  volume: "129"
+  pages: "2884&#x2013;2903"
+  doi: "https://doi.org/10.1175/1520-0493(2001)129%3C2884:AEAKFF%3E2.0.CO;2"
+
+- key: Andrade2022
+  author: "J. Andrade and J. Duggan"
+  year: "2022"
+  title: "Inferring the effective reproductive number from deterministic and semi-deterministic compartmental models using incidence and mobility data"
+  journal: "PLoS Comput Biol"
+  volume: "18"
+  pages: "e1010206"
+  doi: "https://doi.org/10.1371/journal.pcbi.1010206"
+
+- key: Andrieu2010
+  author: "C. Andrieu, A. Doucet, and R. Holenstein"
+  year: "2010"
+  title: "Particle Markov chain Monte Carlo methods"
+  journal: "J R Stat Soc B"
+  volume: "72"
+  pages: "269&#x2013;342"
+  doi: "https://doi.org/10.1111/j.1467-9868.2009.00736.x"
+
+- key: Arulampalam2002
+  author: "M. S. Arulampalam, S. Maskell, N. Gordon, and T. Clapp"
+  year: "2002"
+  title: "A tutorial on particle filters for online nonlinear, non-Gaussian Bayesian tracking"
+  journal: "IEEE Trans Signal Process"
+  volume: "50"
+  pages: "174&#x2013;188"
+  doi: "https://doi.org/10.1109/78.978374"
+
+- key: Asfaw2021
+  author: "K. Asfaw, J. Park, A. Ho, A. A. King, and E. L. Ionides"
   year: "2021"
-  title: "Malaria trends in Ethiopian highlands track the 2000 &lsquo;slowdown&rsquo; in global warming"
-  journal: "Nat Commun"
-  volume: "12"
-  pages: "1555"
-  doi: "https://doi.org/10.1038/s41467-021-21815-y"
+  title: "Statistical inference for spatiotemporal partially observed Markov processes via the R package spatPomp"
+  journal: "arXiv"
+  doi: "https://doi.org/10.48550/arXiv.2101.01157"
+
+- key: AugerMethe2021
+  author: "M. Auger-M&eacute;th&eacute;, K. Newman, D. Cole, F. Empacher, R. Gryba, A. A. King, V. Leos-Barajas, J. Mills Flemming, A. Nielsen, G. Petris, and L. Thomas"
+  year: "2021"
+  title: "A guide to state-space modeling of ecological time series"
+  journal: "Ecol Monogr"
+  volume: "91"
+  pages: "e01470"
+  doi: "https://doi.org/10.1002/ecm.1470"
+
+- key: Bakker2016
+  author: "K. M. Bakker, M. E. Martinez-Bakker, B. Helm, and T. J. Stevenson"
+  year: "2016"
+  title: "Digital epidemiology reveals global childhood disease seasonality and the effects of immunization"
+  journal: "Proc Natl Acad Sci"
+  volume: "113"
+  pages: "6689&#x2013;6694"
+  doi: "https://doi.org/10.1073/pnas.1523941113"
+
+- key: Bakker2022
+  author: "K. M. Bakker, M. C. Eisenberg, R. J. Woods, and M. E. Martinez"
+  year: "2022"
+  title: "Identifying optimal vaccination scenarios to reduce varicella zoster virus transmission and reactivation"
+  journal: "BMC Medicine"
+  volume: "20"
+  doi: "https://doi.org/10.1186/s12916-022-02534-7"
+
+- key: Baracchini2017
+  author: "T. Baracchini, A. A. King, M. J. Bouma, X. Rod&oacute;, E. Bertuzzo, and M. Pascual"
+  year: "2017"
+  title: "Seasonality in cholera dynamics: a rainfall-driven model explains the wide range of patterns in endemic areas"
+  journal: "Adv Water Resour"
+  volume: "108C"
+  pages: "357&#x2013;366"
+  doi: "https://doi.org/10.1016/j.advwatres.2016.11.012"
+
+- key: Barrows2016
+  author: "D. Barrows"
+  year: "2016"
+  title: "A comparative study of techniques for estimation and inference of nonlinear stochastic time series"
+  school: "McMaster University"
+  url: "http://hdl.handle.net/11375/19103"
 
 - key: Becker2016
   author: "A. D. Becker, R. B. Birger, A. Teillant, P. A. Gastanaduy, G. S. Wallace, and B. T. Grenfell"
@@ -25,519 +101,6 @@
   pages: "e1007305"
   doi: "https://doi.org/10.1371/journal.pcbi.1007305"
 
-- key: Martinez2017
-  author: "P. P. Martinez, R. C. Reiner Jr, M. Roy, B. A. Cash, M. Yunus, A. S. G. Faruque, S. Huq, A. A. King, and M. Pascual"
-  year: "2017"
-  title: "Cholera forecast for Dhaka, Bangladesh, with the 2015&#x2013;2016 El Ni&ntilde;o: lessons learned"
-  journal: "PLoS ONE"
-  volume: "12"
-  pages: "e0172355"
-  doi: "https://doi.org/10.1371/journal.pone.0172355"
-
-- key: Marino2019
-  author: "J. A. Marino Jr., S. D. Peacor, D. B. Bunnell, H. A. Vanderploeg, S. A. Pothoven, A. K. Elgin, J. R. Bence, J. Jiao, and E. L. Ionides"
-  year: "2019"
-  title: "Evaluating consumptive and nonconsumptive predator effects on prey density using field time-series data"
-  journal: "Ecology"
-  volume: "100"
-  pages: "e02583"
-  doi: "https://doi.org/10.1002/ecy.2583"
-
-- key: Pak2022
-  author: "D. Pak, S. Carran, D. Biddinger, B. Nelson, and O. N. Bj&oslash;rnstad"
-  year: "2022"
-  title: "Incorporating diapause to predict the interannual dynamics of an important agricultural pest"
-  journal: "Popul Ecol"
-  volume: "n/a"
-  doi: "https://doi.org/10.1002/1438-390X.12117"
-
-- key: Du2017
-  author: "X. Du, A. A. King, R. J. Woods, and M. Pascual"
-  year: "2017"
-  title: "Evolution-informed forecasting of seasonal influenza A (H3N2)"
-  journal: "Sci Transl Med"
-  volume: "9"
-  pages: "eaan5325"
-  doi: "https://doi.org/10.1126/scitranslmed.aan5325"
-
-- key: Toni2009a
-  author: "T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf"
-  year: "2009"
-  title: "Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems"
-  journal: "J R Soc Interface"
-  volume: "6"
-  pages: "187&#x2013;202"
-  doi: "https://doi.org/10.1098/rsif.2008.0172"
-
-- key: King2015
-  author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
-  year: "2015"
-  title: "Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola"
-  journal: "Proc. R. Soc. Lond. B"
-  volume: "282"
-  pages: "20150347"
-  doi: "https://doi.org/10.1098/rspb.2015.0347"
-
-- key: Blake2014
-  author: "I. M. Blake, R. Martin, A. Goel, N. Khetsuriani, J. Everts, C. Wolff, S. Wassilak, R. B. Aylward, and N. C. Grassly"
-  year: "2014"
-  title: "The role of older children and adults in wild poliovirus transmission"
-  journal: "Proc Natl Acad Sci"
-  volume: "111"
-  pages: "10604&#x2013;10609"
-  doi: "https://doi.org/10.1073/pnas.1323688111"
-
-- key: Laneri2015
-  author: "K. Laneri, R. E. Paul, A. Tall, J. Faye, F. Diene-Sarr, C. Sokhna, J.-F. Trape, and X. Rod&oacute;"
-  year: "2015"
-  title: "Dynamical malaria models reveal how immunity buffers effect of climate variability"
-  journal: "Proc Natl Acad Sci"
-  volume: "112"
-  pages: "8786&#x2013;8791"
-  doi: "https://doi.org/10.1073/pnas.1419047112"
-
-- key: Andrade2022
-  author: "J. Andrade and J. Duggan"
-  year: "2022"
-  title: "Inferring the effective reproductive number from deterministic and semi-deterministic compartmental models using incidence and mobility data"
-  journal: "PLoS Comput Biol"
-  volume: "18"
-  pages: "e1010206"
-  doi: "https://doi.org/10.1371/journal.pcbi.1010206"
-
-- key: He2020
-  author: "D. He, S. Zhao, Q. Lin, S. S. Musa, and L. Stone"
-  year: "2020"
-  title: "New estimates of the Zika virus epidemic attack rate in northeastern Brazil from 2015 to 2016: a modelling analysis based on Guillain-Barr&eacute; syndrome (gbs) surveillance data"
-  journal: "PLoS Negl Trop Dis"
-  volume: "14"
-  pages: "e0007502"
-  doi: "https://doi.org/10.1371/journal.pntd.0007502"
-
-- key: Molodecky2021
-  author: "N. A. Molodecky, H. Jafari, R. M. Safdar, J. A. Ahmed, A. Mahamud, A. S. Bandyopadhyay, H. Shukla, A. Quddus, M. Zaffran, R. W. Sutter, N. C. Grassly, and I. M. Blake"
-  year: "2021"
-  title: "Modelling the spread of serotype-2 vaccine derived-poliovirus outbreak in Pakistan and Afghanistan to inform outbreak control strategies in the context of the COVID-19 pandemic"
-  journal: "Vaccine"
-  doi: "https://doi.org/10.1016/j.vaccine.2021.09.037"
-
-- key: Ionides2021
-  author: "E. L. Ionides, K. Asfaw, J. Park, and A. A. King"
-  year: "2021"
-  title: "Bagged filters for partially observed interacting systems"
-  journal: "J Am Stat Assoc"
-  pages: "1&#x2013;12"
-  doi: "https://doi.org/10.1080/01621459.2021.1974867"
-
-- key: Blackwood2013a
-  author: "J. C. Blackwood, D. G. Streicker, S. Altizer, and P. Rohani"
-  year: "2013"
-  title: "Resolving the roles of immunity, pathogenesis, and immigration for rabies persistence in vampire bats"
-  journal: "Proc Natl Acad Sci"
-  volume: "110"
-  pages: "20837&#x2013;20842"
-  doi: "https://doi.org/10.1073/pnas.1308817110"
-
-- key: Lee2020
-  author: "E. C. Lee, D. L. Chao, J. C. Lemaitre, L. Matrajt, D. Pasetto, J. Perez-Saez, F. Finger, A. Rinaldo, J. D. Sugimoto, M. E. Halloran, I. M. Longini, R. Ternier, K. Vissieres, A. S. Azman, J. Lessler, and L. C. Ivers"
-  year: "2020"
-  title: "Achieving coordinated national immunity and cholera elimination in Haiti through vaccination: a modelling study"
-  journal: "Lancet Global Health"
-  volume: "8"
-  pages: "e1081&#x2013;e1089"
-  doi: "https://doi.org/10.1016/S2214-109X(20)30310-7"
-
-- key: Coffeng2019
-  author: "L. E. Coffeng, E. A. Le Rutte, J. Mu&ntilde;oz, E. R. Adams, J. M. Prada, S. J. de Vlas, and G. F. Medley"
-  year: "2019"
-  title: "Impact of changes in detection effort on control of visceral leishmaniasis in the Indian subcontinent"
-  journal: "J Infect Dis"
-  volume: "221"
-  pages: "S546&#x2013;S553"
-  doi: "https://doi.org/10.1093/infdis/jiz644"
-
-- key: Williams2022
-  author: "H. Williams, A. Scharf, A. R. Ryba, D. R. Norris, D. J. Mennill, A. E. M. Newman, S. M. Doucet, and J. C. Blackwood"
-  year: "2022"
-  title: "Cumulative cultural evolution and mechanisms for cultural selection in wild bird songs"
-  journal: "Nat Commun"
-  volume: "13"
-  doi: "https://doi.org/10.1038/s41467-022-31621-9"
-
-- key: Stocks2018
-  author: "T. Stocks, T. Britton, and M. H&ouml;hle"
-  year: "2018"
-  title: "Model selection and parameter estimation for dynamic epidemic models via iterated filtering: application to rotavirus in Germany"
-  journal: "Biostatistics"
-  pages: "400&#x2013;416"
-  doi: "https://doi.org/10.1093/biostatistics/kxy057"
-
-- key: Kain2021
-  author: "M. P. Kain, M. L. Childs, A. D. Becker, and E. A. Mordecai"
-  year: "2021"
-  title: "Chopping the tail: How preventing superspreading can help to maintain COVID-19 control"
-  journal: "Epidemics"
-  volume: "34"
-  pages: "100430"
-  doi: "https://doi.org/10.1016/j.epidem.2020.100430"
-
-- key: Wang2021
-  author: "X. Wang, Z. Du, K. Johnson, R. Pasco, S. Fox, M. Lachmann, J. McLellan, and L. A. Meyers"
-  year: "2021"
-  title: "Effects of COVID-19 vaccination timing and risk prioritization on mortality rates, United States"
-  journal: "Emerg Infect Dis"
-  volume: "27"
-  pages: "1976"
-  doi: "https://doi.org/10.3201/eid2707.210118"
-
-- key: Dablander2022
-  author: "F. Dablander, H. Heesterbeek, D. Borsboom, and J. M. Drake"
-  year: "2022"
-  title: "Overlapping timescales obscure early warning signals of the second COVID-19 wave"
-  journal: "Proc. R. Soc. Lond. B"
-  volume: "289"
-  pages: "20211809"
-  doi: "https://doi.org/10.1098/rspb.2021.1809"
-
-- key: Park2021
-  author: "S. W. Park, M. Pons-Salort, K. Messacar, C. Cook, L. Meyers, J. Farrar, and B. T. Grenfell"
-  year: "2021"
-  title: "Epidemiological dynamics of enterovirus D68 in the United States and implications for acute flaccid myelitis"
-  journal: "Sci Transl Med"
-  volume: "13"
-  pages: "eabd2400"
-  doi: "https://doi.org/10.1126/scitranslmed.abd2400"
-
-- key: PonsSalort2018a
-  author: "M. Pons-Salort and N. C. Grassly"
-  year: "2018"
-  title: "Serotype-specific immunity explains the incidence of diseases caused by human enteroviruses"
-  journal: "Science"
-  volume: "361"
-  pages: "800"
-  doi: "https://doi.org/10.1126/science.aat6777"
-
-- key: Hayman2015
-  author: "D. T. S. Hayman"
-  year: "2015"
-  title: "Biannual birth pulses allow filoviruses to persist in bat populations"
-  journal: "Proc. R. Soc. Lond. B"
-  volume: "282"
-  pages: "20142591"
-  doi: "https://doi.org/10.1098/rspb.2014.2591"
-
-- key: Barrows2016
-  author: "D. Barrows"
-  year: "2016"
-  title: "A comparative study of techniques for estimation and inference of nonlinear stochastic time series"
-  school: "McMaster University"
-  url: "http://hdl.handle.net/11375/19103"
-
-- key: Fasiolo2016
-  author: "M. Fasiolo, N. Pya, and S. N. Wood"
-  year: "2016"
-  title: "A comparison of inferential methods for highly nonlinear state space models in ecology and epidemiology"
-  journal: "Stat Sci"
-  volume: "31"
-  pages: "96&#x2013;118"
-  doi: "https://doi.org/10.1214/15-sts534"
-
-- key: Wale2019
-  author: "N. Wale, M. J. Jones, D. G. Sim, A. F. Read, and A. A. King"
-  year: "2019"
-  title: "The contribution of host cell-directed vs. parasite-directed immunity to the disease and dynamics of malaria infections"
-  journal: "Proc Natl Acad Sci"
-  pages: "201908147"
-  doi: "https://doi.org/10.1073/pnas.1908147116"
-
-- key: Romero-Severson2015
-  author: "E. O. Romero-Severson, E. Volz, J. S. Koopman, T. Leitner, and E. L. Ionides"
-  year: "2015"
-  title: "Dynamic variation in sexual contact rates in a cohort of HIV-negative gay men"
-  journal: "Am J Epidemiol"
-  volume: "182"
-  pages: "255&#x2013;262"
-  doi: "https://doi.org/10.1093/aje/kwv044"
-
-- key: Buhnerkempe2017
-  author: "M. G. Buhnerkempe, K. C. Prager, C. C. Strelioff, D. J. Greig, J. L. Laake, S. R. Melin, R. L. DeLong, F. M. D. Gulland, and J. O. Lloyd-Smith"
-  year: "2017"
-  title: "Detecting signals of chronic shedding to explain pathogen persistence: <em>Leptospira interrogans</em> in California sea lions"
-  journal: "J Anim Ecol"
-  volume: "86"
-  pages: "460&#x2013;472"
-  doi: "https://doi.org/10.1111/1365-2656.12656"
-
-- key: Whittles2017
-  author: "L. K. Whittles, P. J. White, and X. Didelot"
-  year: "2017"
-  title: "Estimating the fitness cost and benefit of cefixime resistance in <i>Neisseria gonorrhoeae</i> to inform prescription policy: a modelling study"
-  journal: "PLoS Med"
-  volume: "14"
-  pages: "e1002416"
-  doi: "https://doi.org/10.1371/journal.pmed.1002416"
-
-- key: King2008
-  author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
-  year: "2008"
-  title: "Inapparent infections and cholera dynamics"
-  journal: "Nature"
-  volume: "454"
-  pages: "877&#x2013;880"
-  doi: "https://doi.org/10.1038/nature07084"
-
-- key: Yang2021
-  author: "W. Yang, D. Zhang, L. Peng, C. Zhuge, and L. Hong"
-  year: "2021"
-  title: "Rational evaluation of various epidemic models based on the COVID-19 data of China"
-  journal: "Epidemics"
-  volume: "37"
-  pages: "100501"
-  doi: "https://doi.org/10.1016/j.epidem.2021.100501"
-
-- key: Ionides2011
-  author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
-  year: "2011"
-  title: "Iterated filtering"
-  journal: "Ann Stat"
-  volume: "39"
-  pages: "1776&#x2013;1802"
-  doi: "https://doi.org/10.1214/11-AOS886"
-
-- key: Funk2020
-  author: "S. Funk and A. A. King"
-  year: "2020"
-  title: "Choices and trade-offs in inference with infectious disease models"
-  journal: "Epidemics"
-  volume: "30"
-  pages: "100383"
-  doi: "https://doi.org/10.1016/j.epidem.2019.100383"
-
-- key: Camacho2011
-  author: "A. Camacho, S. Ballesteros, A. L. Graham, F. Carrat, O. Ratmann, and B. Cazelles"
-  year: "2011"
-  title: "Explaining rapid reinfections in multiple-wave influenza outbreaks: Tristan da Cunha 1971 epidemic as a case study"
-  journal: "Proc. R. Soc. Lond. B"
-  volume: "278"
-  pages: "3635&#x2013;3643"
-  doi: "https://doi.org/10.1098/rspb.2011.0300"
-
-- key: Shrestha2015
-  author: "S. Shrestha, B. Foxman, J. Berus, W. G. van Panhuis, C. Steiner, C. Viboud, and P. Rohani"
-  year: "2015"
-  title: "The role of influenza in the epidemiology of pneumonia"
-  journal: "Sci Rep"
-  volume: "5"
-  pages: "15314&#x2013;"
-  doi: "https://doi.org/10.1038/srep15314"
-
-- key: Kucherenko2005
-  author: "S. Kucherenko and Y. Sytsko"
-  year: "2005"
-  title: "Application of deterministic low-discrepancy sequences in global optimization"
-  journal: "Comput Optim Appl"
-  volume: "30"
-  pages: "297&#x2013;318"
-  doi: "https://doi.org/10.1007/s10589-005-4615-1"
-
-- key: Ionides2015
-  author: "E. L. Ionides, D. Nguyen, Y. Atchad&eacute;, S. Stoev, and A. A. King"
-  year: "2015"
-  title: "Inference for dynamic and latent variable models via iterated, perturbed Bayes maps"
-  journal: "Proc Natl Acad Sci"
-  volume: "112"
-  pages: "719&#x2013;724"
-  doi: "https://doi.org/10.1073/pnas.1410597112"
-
-- key: Musa2020
-  author: "S. S. Musa, S. Zhao, D. Gao, Q. Lin, G. Chowell, and D. He"
-  year: "2020"
-  title: "Mechanistic modelling of the large-scale Lassa fever epidemics in Nigeria from 2016 to 2019"
-  journal: "J Theor Biol"
-  volume: "493"
-  pages: "110209"
-  doi: "https://doi.org/10.1016/j.jtbi.2020.110209"
-
-- key: Cai2007
-  author: "X. Cai and Z. Xu"
-  year: "2007"
-  title: "K-leap method for accelerating stochastic simulation of coupled chemical reactions"
-  journal: "J Chem Phys"
-  volume: "126"
-  pages: "074102"
-  doi: "https://doi.org/10.1063/1.2436869"
-
-- key: Breto2018
-  author: "C. Bret&oacute;"
-  year: "2018"
-  title: "Modeling and inference for infectious disease dynamics: a likelihood-based approach"
-  journal: "Stat Sci"
-  volume: "33"
-  pages: "57&#x2013;69"
-  doi: "https://doi.org/10.1214/17-STS636"
-
-- key: Laneri2010
-  author: "K. Laneri, A. Bhadra, E. L. Ionides, M. Bouma, R. C. Dhiman, R. S. Yadav, and M. Pascual"
-  year: "2010"
-  title: "Forcing versus feedback: epidemic malaria and monsoon rains in northwest India"
-  journal: "PLoS Comput Biol"
-  volume: "6"
-  pages: "e1000898"
-  doi: "https://doi.org/10.1371/journal.pcbi.1000898"
-
-- key: Kennedy2018
-  author: "D. A. Kennedy, P. A. Dunn, and A. F. Read"
-  year: "2018"
-  title: "Modeling Marek&rsquo;s disease virus transmission: A framework for evaluating the impact of farming practices and evolution"
-  journal: "Epidemics"
-  volume: "23"
-  pages: "85&#x2013;95"
-  doi: "https://doi.org/10.1016/j.epidem.2018.01.001"
-
-- key: Andrieu2010
-  author: "C. Andrieu, A. Doucet, and R. Holenstein"
-  year: "2010"
-  title: "Particle Markov chain Monte Carlo methods"
-  journal: "J R Stat Soc B"
-  volume: "72"
-  pages: "269&#x2013;342"
-  doi: "https://doi.org/10.1111/j.1467-9868.2009.00736.x"
-
-- key: Magpantay2019
-  author: "F. M. G. Magpantay, A. King A., and P. Rohani"
-  year: "2019"
-  title: "Age-structure and transient dynamics in epidemiological systems"
-  journal: "J R Soc Interface"
-  volume: "16"
-  pages: "20190151"
-  doi: "https://doi.org/10.1098/rsif.2019.0151"
-
-- key: Romero-Severson2018
-  author: "E. O. Romero-Severson, R. M. Ribeiro, and M. Castro"
-  year: "2018"
-  title: "Noise is not error: detecting parametric heterogeneity between epidemiologic time series"
-  journal: "Front Microbiol"
-  volume: "9"
-  pages: "1529"
-  doi: "https://doi.org/10.3389/fmicb.2018.01529"
-
-- key: Lin2018
-  author: "Q. Lin, A. P. Chiu, S. Zhao, and D. He"
-  year: "2018"
-  title: "Modeling the spread of Middle East respiratory syndrome coronavirus in Saudi Arabia"
-  journal: "Stat Methods Med Res"
-  volume: "27"
-  pages: "1968&#x2013;1978"
-  doi: "https://doi.org/10.1177/0962280217746442"
-
-- key: Ionides2017
-  author: "E. L. Ionides, C. Breto, J. Park, R. A. Smith, and A. A. King"
-  year: "2017"
-  title: "Monte Carlo profile confidence intervals for dynamic systems"
-  journal: "J R Soc Interface"
-  volume: "14"
-  pages: "20170126"
-  doi: "https://doi.org/10.1098/rsif.2017.0126"
-
-- key: Tavakoli2016
-  author: "S. Tavakoli and V. M. Panaretos"
-  year: "2016"
-  title: "Detecting and localizing differences in functional time series dynamics: a case study in molecular biophysics"
-  journal: "J Am Stat Assoc"
-  volume: "111"
-  pages: "1020&#x2013;1035"
-  doi: "https://doi.org/10.1080/01621459.2016.1147355"
-
-- key: Toni2010
-  author: "T. Toni and M. P. H. Stumpf"
-  year: "2010"
-  title: "Simulation-based model selection for dynamical systems in systems and population biology"
-  journal: "Bioinformatics"
-  volume: "26"
-  pages: "104&#x2013;110"
-  doi: "https://doi.org/10.1093/bioinformatics/btp619"
-
-- key: Clairon2020
-  author: "Q. Clairon and A. Samson"
-  year: "2020"
-  title: "Optimal control for estimation in partially observed elliptic and hypoelliptic linear stochastic differential equations"
-  journal: "Stat Inference Stoch Process"
-  volume: "23"
-  pages: "105&#x2013;127"
-  doi: "https://doi.org/10.1007/s11203-019-09199-9"
-
-- key: Ionides2006
-  author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
-  year: "2006"
-  title: "Inference for nonlinear dynamical systems"
-  journal: "Proc Natl Acad Sci"
-  volume: "103"
-  pages: "18438&#x2013;18443"
-  doi: "https://doi.org/10.1073/pnas.0603181103"
-
-- key: Liu2022
-  author: "Y. Liu, Y. Yu, Y. Zhao, and D. He"
-  year: "2022"
-  title: "Reduction in the infection fatality rate of omicron variant compared with previous variants in South Africa"
-  journal: "Int J Infect Dis"
-  volume: "120"
-  pages: "146&#x2013;149"
-  doi: "https://doi.org/10.1016/j.ijid.2022.04.029"
-
-- key: Colubri2020
-  author: "A. Colubri, M. Kemball, K. Sani, C. Boehm, K. Mutch-Jones, B. Fry, T. Brown, and P. C. Sabeti"
-  year: "2020"
-  title: "Preventing outbreaks through interactive, experiential real-life simulations"
-  journal: "Cell"
-  volume: "182"
-  pages: "1366&#x2013;1371"
-  doi: "https://doi.org/10.1016/j.cell.2020.08.042"
-
-- key: Shirreff2022
-  author: "G. Shirreff, J.-R. Zahar, S. Cauchemez, L. Temime, and L. Opatowski"
-  year: "2022"
-  title: "Measuring basic reproduction number to assess effects of nonpharmaceutical interventions on nosocomial SARS-CoV-2 transmission"
-  journal: "Emerg Infect Dis"
-  volume: "28"
-  pages: "1345&#x2013;1354"
-  doi: "https://doi.org/10.3201/eid2807.212339"
-
-- key: Gokhale2023
-  author: "D. V. Gokhale, T. S. Brett, B. He, A. A. King, and P. Rohani"
-  year: "2023"
-  title: "Disentangling the causes of mumps reemergence in the United States"
-  journal: "Proceedings of the National Academy of Sciences of the U.S.A."
-  volume: "120"
-  pages: "e2207595120"
-  doi: "https://doi.org/10.1073/pnas.2207595120"
-
-- key: Breto2020
-  author: "C. Bret&oacute;, E. L. Ionides, and A. A. King"
-  year: "2020"
-  title: "Panel data analysis via mechanistic models"
-  journal: "J Am Stat Assoc"
-  volume: "115"
-  pages: "1178&#x2013;1188"
-  doi: "https://doi.org/10.1080/01621459.2019.1604367"
-
-- key: King2016
-  author: "A. A. King, D. Nguyen, and E. L. Ionides"
-  year: "2016"
-  title: "Statistical inference for partially observed Markov processes via the R package pomp"
-  journal: "J Stat Softw"
-  volume: "69"
-  pages: "1&#x2013;43"
-  doi: "https://doi.org/10.18637/jss.v069.i12"
-
-- key: He2013a
-  author: "D. He, J. Dushoff, T. Day, J. Ma, and D. J. D. Earn"
-  year: "2013"
-  title: "Inferring the causes of the three waves of the 1918 influenza pandemic in England and Wales"
-  journal: "Proc. R. Soc. Lond. B"
-  volume: "280"
-  pages: "20131345"
-  doi: "https://doi.org/10.1098/rspb.2013.1345"
-
 - key: Becker2020
   author: "A. D. Becker, S. H. Zhou, A. Wesolowski, and B. T. Grenfell"
   year: "2020"
@@ -547,103 +110,6 @@
   pages: "20191510"
   doi: "https://doi.org/10.1098/rspb.2019.1510"
 
-- key: Blackwood2013
-  author: "J. C. Blackwood, D. A. T. Cummings, H. Broutin, S. Iamsirithaworn, and P. Rohani"
-  year: "2013"
-  title: "Deciphering the impacts of vaccination and immunity on pertussis epidemiology in Thailand"
-  journal: "Proc Natl Acad Sci"
-  volume: "110"
-  pages: "9595&#x2013;9600"
-  doi: "https://doi.org/10.1073/pnas.1220908110"
-
-- key: Kendall1999
-  author: "B. E. Kendall, C. J. Briggs, W. W. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, and S. N. Wood"
-  year: "1999"
-  title: "Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches"
-  journal: "Ecology"
-  volume: "80"
-  pages: "1789&#x2013;1805"
-  doi: "https://doi.org/10.1890/0012-9658(1999)080%5B1789:wdpcas%5D2.0.co;2"
-
-- key: Bakker2016
-  author: "K. M. Bakker, M. E. Martinez-Bakker, B. Helm, and T. J. Stevenson"
-  year: "2016"
-  title: "Digital epidemiology reveals global childhood disease seasonality and the effects of immunization"
-  journal: "Proc Natl Acad Sci"
-  volume: "113"
-  pages: "6689&#x2013;6694"
-  doi: "https://doi.org/10.1073/pnas.1523941113"
-
-- key: Baracchini2017
-  author: "T. Baracchini, A. A. King, M. J. Bouma, X. Rod&oacute;, E. Bertuzzo, and M. Pascual"
-  year: "2017"
-  title: "Seasonality in cholera dynamics: a rainfall-driven model explains the wide range of patterns in endemic areas"
-  journal: "Adv Water Resour"
-  volume: "108C"
-  pages: "357&#x2013;366"
-  doi: "https://doi.org/10.1016/j.advwatres.2016.11.012"
-
-- key: ODea2019
-  author: "E. B. O'Dea and J. M. Drake"
-  year: "2019"
-  title: "Disentangling reporting and disease transmission"
-  journal: "Theor Ecol"
-  volume: "12"
-  pages: "89&#x2013;98"
-  doi: "https://doi.org/10.1007/s12080-018-0390-3"
-
-- key: Bhadra2016
-  author: "A. Bhadra and E. L. Ionides"
-  year: "2016"
-  title: "Adaptive particle allocation in iterated sequential Monte Carlo via approximating meta-models"
-  journal: "Stat Comput"
-  volume: "26"
-  pages: "393&#x2013;407"
-  doi: "https://doi.org/10.1007/s11222-014-9513-x"
-
-- key: BravoVega2022
-  author: "C. Bravo-Vega, M. Santos-Vega, and J. M. Cordovez"
-  year: "2022"
-  title: "Disentangling snakebite dynamics in Colombia: How does rainfall and temperature drive snakebite temporal patterns?"
-  journal: "PLoS Negl Trop Dis"
-  volume: "16"
-  pages: "e0010270"
-  doi: "https://doi.org/10.1371/journal.pntd.0010270"
-
-- key: AugerMethe2021
-  author: "M. Auger-M&eacute;th&eacute;, K. Newman, D. Cole, F. Empacher, R. Gryba, A. A. King, V. Leos-Barajas, J. Mills Flemming, A. Nielsen, G. Petris, and L. Thomas"
-  year: "2021"
-  title: "A guide to state-space modeling of ecological time series"
-  journal: "Ecol Monogr"
-  volume: "91"
-  pages: "e01470"
-  doi: "https://doi.org/10.1002/ecm.1470"
-
-- key: He2010
-  author: "D. He, E. L. Ionides, and A. A. King"
-  year: "2010"
-  title: "Plug-and-play inference for disease dynamics: measles in large and small populations as a case study"
-  journal: "J R Soc Interface"
-  volume: "7"
-  pages: "271&#x2013;283"
-  doi: "https://doi.org/10.1098/rsif.2009.0151"
-
-- key: Reuman2006
-  author: "D. C. Reuman, R. A. Desharnais, R. F. Costantino, O. S. Ahmad, and J. E. Cohen"
-  year: "2006"
-  title: "Power spectra reveal the influence of stochasticity on nonlinear population dynamics"
-  journal: "Proc Natl Acad Sci"
-  volume: "103"
-  pages: "18860&#x2013;18865"
-  doi: "https://doi.org/10.1073/pnas.0608571103"
-
-- key: Cabore2022
-  author: "J. W. Cabore, H. C. Karamagi, H. K. Kipruto, J. K. Mungatu, J. A. Asamani, B. Droti, R. Titi-ofei, A. B. W. Seydi, S. N. Kidane, T. Balde, A. S. Gueye, L. Makubalo, and M. R. Moeti"
-  year: "2022"
-  title: "COVID-19 in the 47 countries of the WHO African region: a modelling analysis of past trends and future patterns"
-  journal: "Lancet Global Health"
-  doi: "https://doi.org/10.1016/S2214-109X(22)00233-9"
-
 - key: Becker2021
   author: "A. D. Becker, K. H. Grantz, S. T. Hegde, S. B&eacute;rub&eacute;, D. A. T. Cummings, and A. Wesolowski"
   year: "2021"
@@ -652,324 +118,6 @@
   volume: "3"
   pages: "e41&#x2013;e50"
   doi: "https://doi.org/10.1016/S2589-7500(20)30268-5"
-
-- key: Martinez-Bakker2015
-  author: "M. Martinez-Bakker, A. A. King, and P. Rohani"
-  year: "2015"
-  title: "Unraveling the transmission ecology of polio"
-  journal: "PLoS Biol"
-  volume: "13"
-  pages: "e1002172"
-  doi: "https://doi.org/10.1371/journal.pbio.1002172"
-
-- key: Borchering2021
-  author: "R. K. Borchering, C. E. Gunning, D. V. Gokhale, K. B. Weedop, A. Saeidpour, T. S. Brett, and P. Rohani"
-  year: "2021"
-  title: "Anomalous influenza seasonality in the United States and the emergence of novel influenza B viruses"
-  journal: "Proc Natl Acad Sci"
-  volume: "118"
-  pages: "e2012327118"
-  doi: "https://doi.org/10.1073/pnas.2012327118"
-
-- key: Subramanian2021
-  author: "R. Subramanian, Q. He, and M. Pascual"
-  year: "2021"
-  title: "Quantifying asymptomatic infection and transmission of COVID-19 in New York City using observed cases, serology, and testing capacity"
-  journal: "Proc Natl Acad Sci"
-  volume: "118"
-  pages: "e2019716118"
-  doi: "https://doi.org/10.1073/pnas.2019716118"
-
-- key: Lemaitre2019
-  author: "J. Lemaitre, D. Pasetto, J. Perez-Saez, C. Sciarra, J. F. Wamala, and A. Rinaldo"
-  year: "2019"
-  title: "Rainfall as a driver of epidemic cholera: Comparative model assessments of the effect of intra-seasonal precipitation events"
-  journal: "Acta Trop"
-  volume: "190"
-  pages: "235&#x2013;243"
-  doi: "https://doi.org/10.1016/j.actatropica.2018.11.013"
-
-- key: Kendall2005
-  author: "B. E. Kendall, S. P. Ellner, E. McCauley, S. N. Wood, C. J. Briggs, W. M. Murdoch, and P. Turchin"
-  year: "2005"
-  title: "Population cycles in the pine looper moth: Dynamical tests of mechanistic hypotheses"
-  journal: "Ecol Monogr"
-  volume: "75"
-  pages: "259&#x2013;276"
-  doi: "https://doi.org/10.1890/03-4056"
-
-- key: Ranjeva2017
-  author: "S. L. Ranjeva, E. B. Baskerville, V. Dukic, L. L. Villa, E. Lazcano-Ponce, A. R. Giuliano, G. Dwyer, and S. Cobey"
-  year: "2017"
-  title: "Recurring infection with ecologically distinct HPV types can explain high prevalence and diversity"
-  journal: "Proc Natl Acad Sci"
-  volume: "114"
-  pages: "13573&#x2013;13578"
-  doi: "https://doi.org/10.1073/pnas.1714712114"
-
-- key: Stone2020
-  author: "L. Stone, D. H. He, S. Lehnstaedt, and Y. Artzy-Randrup"
-  year: "2020"
-  title: "Extraordinary curtailment of massive typhus epidemic in the Warsaw Ghetto"
-  journal: "Sci Adv"
-  volume: "6"
-  pages: "eabc0927"
-  doi: "https://doi.org/10.1126/sciadv.abc0927"
-
-- key: DomenechdeCelles2019b
-  author: "M. Domenech de Cell&egrave;s, H. Arduin, D. L&eacute;vy-Bruhl, S. Georges, C. Souty, D. Guillemot, L. Watier, and L. Opatowski"
-  year: "2019"
-  title: "Unraveling the seasonal epidemiology of pneumococcus"
-  journal: "Proc Natl Acad Sci"
-  volume: "116"
-  pages: "1802"
-  doi: "https://doi.org/10.1073/pnas.1812388116"
-
-- key: Breto2009
-  author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
-  year: "2009"
-  title: "Time series analysis via mechanistic models"
-  journal: "Ann Appl Stat"
-  volume: "3"
-  pages: "319&#x2013;348"
-  doi: "https://doi.org/10.1214/08-AOAS201"
-
-- key: SantosVega2022
-  author: "M. Santos-Vega, P. P. Martinez, K. G. Vaishnav, V. Kohli, V. Desai, M. J. Bouma, and M. Pascual"
-  year: "2022"
-  title: "The neglected role of relative humidity in the interannual variability of urban malaria in Indian cities"
-  journal: "Nat Commun"
-  volume: "13"
-  pages: "533"
-  doi: "https://doi.org/10.1038/s41467-022-28145-7"
-
-- key: Magpantay2016
-  author: "F. M. G. Magpantay, M. Domenech de Cell&egrave;s, P. Rohani, and A. A. King"
-  year: "2016"
-  title: "Pertussis immunity and epidemiology: mode and duration of vaccine-induced immunity"
-  journal: "Parasitology"
-  volume: "143"
-  pages: "835&#x2013;849"
-  doi: "https://doi.org/10.1017/S0031182015000979"
-
-- key: DomenechdeCelles2018
-  author: "M. Domenech de Cell&egrave;s, F. M. G. Magpantay, A. A. King, and P. Rohani"
-  year: "2018"
-  title: "The impact of past vaccination coverage and immunity on pertussis resurgence"
-  journal: "Sci Transl Med"
-  volume: "10"
-  pages: "eaaj1748"
-  doi: "https://doi.org/10.1126/scitranslmed.aaj1748"
-
-- key: Martinez2016
-  author: "P. P. Martinez, A. A. King, M. Yunus, A. S. G. Faruque, and M. Pascual"
-  year: "2016"
-  title: "Differential and enhanced response to climate forcing in diarrheal disease due to rotavirus across a megacity of the developing world"
-  journal: "Proc Natl Acad Sci"
-  volume: "113"
-  pages: "4092&#x2013;4097"
-  doi: "https://doi.org/10.1073/pnas.1518977113"
-
-- key: Zhang2021
-  author: "B. Zhang, S. Liang, G. Wang, C. Zhang, C. Chen, M. Zou, W. Shen, H. Long, D. He, Y. Shu, and X. Du"
-  year: "2021"
-  title: "Synchronized nonpharmaceutical interventions for the control of COVID-19"
-  journal: "Nonlinear Dynam"
-  doi: "https://doi.org/10.1007/s11071-021-06505-0"
-
-- key: DomenechdeCelles2022a
-  author: "M. Domenech de Cell&egrave;s, E. Goult, J.-S. Casalegno, and S. C. Kramer"
-  year: "2022"
-  title: "The pitfalls of inferring virus-virus interactions from co-detection prevalence data: application to influenza and SARS-CoV-2"
-  journal: "Proc. R. Soc. Lond. B"
-  volume: "289"
-  pages: "20212358"
-  doi: "https://doi.org/10.1098/rspb.2021.2358"
-
-- key: Shrestha2011
-  author: "S. Shrestha, A. A. King, and P. Rohani"
-  year: "2011"
-  title: "Statistical inference for multi-pathogen systems"
-  journal: "PLoS Comput Biol"
-  volume: "7"
-  pages: "e1002135"
-  doi: "https://doi.org/10.1371/journal.pcbi.1002135"
-
-- key: Ganyani2021
-  author: "T. Ganyani, C. Faes, and N. Hens"
-  year: "2021"
-  title: "Simulation and analysis methods for stochastic compartmental epidemic models"
-  journal: "Annu Rev Stat Appl"
-  volume: "8"
-  pages: "69&#x2013;88"
-  doi: "https://doi.org/10.1146/annurev-statistics-061120-034438"
-
-- key: Lin2016
-  author: "Q. Lin, Z. Lin, A. P. Y. Chiu, and D. He"
-  year: "2016"
-  title: "Seasonality of influenza A(H7N9) virus in China&#x2013;-fitting simple epidemic models to human cases"
-  journal: "PLoS ONE"
-  volume: "11"
-  pages: "e0151333"
-  doi: "https://doi.org/10.1371/journal.pone.0151333"
-
-- key: Pasetto2021
-  author: "D. Pasetto, J. C. Lemaitre, E. Bertuzzo, M. Gatto, and A. Rinaldo"
-  year: "2021"
-  title: "Range of reproduction number estimates for COVID-19 spread"
-  journal: "Biochem Biophys Res Commun"
-  volume: "538"
-  pages: "253&#x2013;258"
-  doi: "https://doi.org/10.1016/j.bbrc.2020.12.003"
-
-- key: Cai2021
-  author: "Y. Cai, S. Zhao, Y. Niu, Z. Peng, K. Wang, D. He, and W. Wang"
-  year: "2021"
-  title: "Modelling the effects of the contaminated environments on tuberculosis in Jiangsu, China"
-  journal: "J Theor Biol"
-  volume: "508"
-  pages: "110453"
-  doi: "https://doi.org/10.1016/j.jtbi.2020.110453"
-
-- key: He2013
-  author: "D. He, J. Dushoff, R. Eftimie, and D. J. D. Earn"
-  year: "2013"
-  title: "Patterns of spread of influenza A in Canada"
-  journal: "Proc. R. Soc. Lond. B"
-  volume: "280"
-  pages: "20131174"
-  doi: "https://doi.org/10.1098/rspb.2013.1174"
-
-- key: Lavine2013
-  author: "J. S. Lavine, A. A. King, V. Andreasen, and O. N. Bj&oslash;rnstad"
-  year: "2013"
-  title: "Immune boosting explains regime-shifts in prevaccine-era pertussis dynamics"
-  journal: "PLoS ONE"
-  volume: "8"
-  pages: "e72086"
-  doi: "https://doi.org/10.1371/journal.pone.0072086"
-
-- key: Sartori2022
-  author: "L. Sartori, M. Pereira, and S. Oliva"
-  year: "2022"
-  title: "Time-scale analysis and parameter fitting for vector-borne diseases with spatial dynamics"
-  journal: "Bull Math Biol"
-  volume: "84"
-  doi: "https://doi.org/10.1007/s11538-022-01083-7"
-
-- key: Asfaw2021
-  author: "K. Asfaw, J. Park, A. Ho, A. A. King, and E. L. Ionides"
-  year: "2021"
-  title: "Statistical inference for spatiotemporal partially observed Markov processes via the R package spatPomp"
-  journal: "arXiv"
-  doi: "https://doi.org/10.48550/arXiv.2101.01157"
-
-- key: Boonpatcharanon2022
-  author: "S. Boonpatcharanon, J. M. Heffernan, and H. Jankowski"
-  year: "2022"
-  title: "Estimating the basic reproduction number at the beginning of an outbreak"
-  journal: "PLoS ONE"
-  volume: "17"
-  pages: "e0269306"
-  doi: "https://doi.org/10.1371/journal.pone.0269306"
-
-- key: King2022
-  author: "A. A. King, Q. Lin, and E. L. Ionides"
-  year: "2022"
-  title: "Markov genealogy processes"
-  journal: "Theor Popul Biol"
-  volume: "143"
-  pages: "77&#x2013;91"
-  doi: "https://doi.org/10.1016/j.tpb.2021.11.003"
-
-- key: Ellner1998
-  author: "S. P. Ellner, B. A. Bailey, G. V. Bobashev, A. R. Gallant, B. T. Grenfell, and D. W. Nychka"
-  year: "1998"
-  title: "Noise and nonlinearity in measles epidemics: Combining mechanistic and statistical approaches to population modeling"
-  journal: "Am Nat"
-  volume: "151"
-  pages: "425&#x2013;440"
-  doi: "https://doi.org/10.1086/286130"
-
-- key: Park2020
-  author: "J. Park and E. L. Ionides"
-  year: "2020"
-  title: "Inference on high-dimensional implicit dynamic models using a guided intermediate resampling filter"
-  journal: "Stat Comput"
-  volume: "30"
-  pages: "1497&#x2013;1522"
-  doi: "https://doi.org/10.1007/s11222-020-09957-3"
-
-- key: Breto2011
-  author: "C. Bret&oacute; and E. L. Ionides"
-  year: "2011"
-  title: "Compound Markov counting processes and their applications to modeling infinitesimally over-dispersed systems"
-  journal: "Stochastic Process Appl"
-  volume: "121"
-  pages: "2571&#x2013;2591"
-  doi: "https://doi.org/10.1016/j.spa.2011.07.005"
-
-- key: Knape2011
-  author: "J. Knape and P. de Valpine"
-  year: "2011"
-  title: "Fitting complex population models by combining particle filters with Markov chain Monte Carlo"
-  journal: "Ecology"
-  volume: "93"
-  pages: "256&#x2013;263"
-  doi: "https://doi.org/10.1890/11-0797.1"
-
-- key: Doucet2015
-  author: "A. Doucet, M. K. Pitt, G. Deligiannidis, and R. Kohn"
-  year: "2015"
-  title: "Efficient implementation of Markov chain Monte Carlo when using an unbiased likelihood estimator"
-  journal: "Biometrika"
-  volume: "102"
-  pages: "295&#x2013;313"
-  doi: "https://doi.org/10.1093/biomet/asu075"
-
-- key: Zhao2018
-  author: "S. Zhao, L. Stone, D. Gao, and D. He"
-  year: "2018"
-  title: "Modelling the large-scale yellow fever outbreak in Luanda, Angola, and the impact of vaccination"
-  journal: "PLoS Negl Trop Dis"
-  volume: "12"
-  pages: "e0006158"
-  doi: "https://doi.org/10.1371/journal.pntd.0006158"
-
-- key: Cotterill2020
-  author: "G. G. Cotterill, P. C. Cross, J. A. Merkle, J. D. Rogerson, B. M. Scurlock, and J. T. du Toit"
-  year: "2020"
-  title: "Parsing the effects of demography, climate and management on recurrent brucellosis outbreaks in elk"
-  journal: "J Appl Ecol"
-  volume: "57"
-  pages: "379&#x2013;389"
-  doi: "https://doi.org/10.1111/1365-2664.13553"
-
-- key: Anderson2001a
-  author: "J. L. Anderson"
-  year: "2001"
-  title: "An ensemble adjustment Kalman filter for data assimilation"
-  journal: "Mon Weather Rev"
-  volume: "129"
-  pages: "2884&#x2013;2903"
-  doi: "https://doi.org/10.1175/1520-0493(2001)129%3C2884:AEAKFF%3E2.0.CO;2"
-
-- key: Arulampalam2002
-  author: "M. S. Arulampalam, S. Maskell, N. Gordon, and T. Clapp"
-  year: "2002"
-  title: "A tutorial on particle filters for online nonlinear, non-Gaussian Bayesian tracking"
-  journal: "IEEE Trans Signal Process"
-  volume: "50"
-  pages: "174&#x2013;188"
-  doi: "https://doi.org/10.1109/78.978374"
-
-- key: Bakker2022
-  author: "K. M. Bakker, M. C. Eisenberg, R. J. Woods, and M. E. Martinez"
-  year: "2022"
-  title: "Identifying optimal vaccination scenarios to reduce varicella zoster virus transmission and reactivation"
-  journal: "BMC Medicine"
-  volume: "20"
-  doi: "https://doi.org/10.1186/s12916-022-02534-7"
 
 - key: Bhadra2010
   author: "A. Bhadra"
@@ -989,11 +137,93 @@
   pages: "440&#x2013;451"
   doi: "https://doi.org/10.1198/jasa.2011.ap10323"
 
+- key: Bhadra2016
+  author: "A. Bhadra and E. L. Ionides"
+  year: "2016"
+  title: "Adaptive particle allocation in iterated sequential Monte Carlo via approximating meta-models"
+  journal: "Stat Comput"
+  volume: "26"
+  pages: "393&#x2013;407"
+  doi: "https://doi.org/10.1007/s11222-014-9513-x"
+
 - key: Bjornstad2023
   author: "O. N. Bj&oslash;rnstad"
   year: "2023"
   title: "Epidemics"
+  publisher: "Springer"
   doi: "https://doi.org/10.1007/978-3-031-12056-5"
+
+- key: Blackwood2013
+  author: "J. C. Blackwood, D. A. T. Cummings, H. Broutin, S. Iamsirithaworn, and P. Rohani"
+  year: "2013"
+  title: "Deciphering the impacts of vaccination and immunity on pertussis epidemiology in Thailand"
+  journal: "Proc Natl Acad Sci"
+  volume: "110"
+  pages: "9595&#x2013;9600"
+  doi: "https://doi.org/10.1073/pnas.1220908110"
+
+- key: Blackwood2013a
+  author: "J. C. Blackwood, D. G. Streicker, S. Altizer, and P. Rohani"
+  year: "2013"
+  title: "Resolving the roles of immunity, pathogenesis, and immigration for rabies persistence in vampire bats"
+  journal: "Proc Natl Acad Sci"
+  volume: "110"
+  pages: "20837&#x2013;20842"
+  doi: "https://doi.org/10.1073/pnas.1308817110"
+
+- key: Blake2014
+  author: "I. M. Blake, R. Martin, A. Goel, N. Khetsuriani, J. Everts, C. Wolff, S. Wassilak, R. B. Aylward, and N. C. Grassly"
+  year: "2014"
+  title: "The role of older children and adults in wild poliovirus transmission"
+  journal: "Proc Natl Acad Sci"
+  volume: "111"
+  pages: "10604&#x2013;10609"
+  doi: "https://doi.org/10.1073/pnas.1323688111"
+
+- key: Boonpatcharanon2022
+  author: "S. Boonpatcharanon, J. M. Heffernan, and H. Jankowski"
+  year: "2022"
+  title: "Estimating the basic reproduction number at the beginning of an outbreak"
+  journal: "PLoS ONE"
+  volume: "17"
+  pages: "e0269306"
+  doi: "https://doi.org/10.1371/journal.pone.0269306"
+
+- key: Borchering2021
+  author: "R. K. Borchering, C. E. Gunning, D. V. Gokhale, K. B. Weedop, A. Saeidpour, T. S. Brett, and P. Rohani"
+  year: "2021"
+  title: "Anomalous influenza seasonality in the United States and the emergence of novel influenza B viruses"
+  journal: "Proc Natl Acad Sci"
+  volume: "118"
+  pages: "e2012327118"
+  doi: "https://doi.org/10.1073/pnas.2012327118"
+
+- key: BravoVega2022
+  author: "C. Bravo-Vega, M. Santos-Vega, and J. M. Cordovez"
+  year: "2022"
+  title: "Disentangling snakebite dynamics in Colombia: How does rainfall and temperature drive snakebite temporal patterns?"
+  journal: "PLoS Negl Trop Dis"
+  volume: "16"
+  pages: "e0010270"
+  doi: "https://doi.org/10.1371/journal.pntd.0010270"
+
+- key: Breto2009
+  author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
+  year: "2009"
+  title: "Time series analysis via mechanistic models"
+  journal: "Ann Appl Stat"
+  volume: "3"
+  pages: "319&#x2013;348"
+  doi: "https://doi.org/10.1214/08-AOAS201"
+
+- key: Breto2011
+  author: "C. Bret&oacute; and E. L. Ionides"
+  year: "2011"
+  title: "Compound Markov counting processes and their applications to modeling infinitesimally over-dispersed systems"
+  journal: "Stochastic Process Appl"
+  volume: "121"
+  pages: "2571&#x2013;2591"
+  doi: "https://doi.org/10.1016/j.spa.2011.07.005"
 
 - key: Breto2014
   author: "C. Bret&oacute;"
@@ -1004,6 +234,67 @@
   pages: "20&#x2013;26"
   doi: "https://doi.org/10.1016/j.spl.2014.04.003"
 
+- key: Breto2018
+  author: "C. Bret&oacute;"
+  year: "2018"
+  title: "Modeling and inference for infectious disease dynamics: a likelihood-based approach"
+  journal: "Stat Sci"
+  volume: "33"
+  pages: "57&#x2013;69"
+  doi: "https://doi.org/10.1214/17-STS636"
+
+- key: Breto2020
+  author: "C. Bret&oacute;, E. L. Ionides, and A. A. King"
+  year: "2020"
+  title: "Panel data analysis via mechanistic models"
+  journal: "J Am Stat Assoc"
+  volume: "115"
+  pages: "1178&#x2013;1188"
+  doi: "https://doi.org/10.1080/01621459.2019.1604367"
+
+- key: Buhnerkempe2017
+  author: "M. G. Buhnerkempe, K. C. Prager, C. C. Strelioff, D. J. Greig, J. L. Laake, S. R. Melin, R. L. DeLong, F. M. D. Gulland, and J. O. Lloyd-Smith"
+  year: "2017"
+  title: "Detecting signals of chronic shedding to explain pathogen persistence: <em>Leptospira interrogans</em> in California sea lions"
+  journal: "J Anim Ecol"
+  volume: "86"
+  pages: "460&#x2013;472"
+  doi: "https://doi.org/10.1111/1365-2656.12656"
+
+- key: Cabore2022
+  author: "J. W. Cabore, H. C. Karamagi, H. K. Kipruto, J. K. Mungatu, J. A. Asamani, B. Droti, R. Titi-ofei, A. B. W. Seydi, S. N. Kidane, T. Balde, A. S. Gueye, L. Makubalo, and M. R. Moeti"
+  year: "2022"
+  title: "COVID-19 in the 47 countries of the WHO African region: a modelling analysis of past trends and future patterns"
+  journal: "Lancet Global Health"
+  doi: "https://doi.org/10.1016/S2214-109X(22)00233-9"
+
+- key: Cai2007
+  author: "X. Cai and Z. Xu"
+  year: "2007"
+  title: "K-leap method for accelerating stochastic simulation of coupled chemical reactions"
+  journal: "J Chem Phys"
+  volume: "126"
+  pages: "074102"
+  doi: "https://doi.org/10.1063/1.2436869"
+
+- key: Cai2021
+  author: "Y. Cai, S. Zhao, Y. Niu, Z. Peng, K. Wang, D. He, and W. Wang"
+  year: "2021"
+  title: "Modelling the effects of the contaminated environments on tuberculosis in Jiangsu, China"
+  journal: "J Theor Biol"
+  volume: "508"
+  pages: "110453"
+  doi: "https://doi.org/10.1016/j.jtbi.2020.110453"
+
+- key: Camacho2011
+  author: "A. Camacho, S. Ballesteros, A. L. Graham, F. Carrat, O. Ratmann, and B. Cazelles"
+  year: "2011"
+  title: "Explaining rapid reinfections in multiple-wave influenza outbreaks: Tristan da Cunha 1971 epidemic as a case study"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "278"
+  pages: "3635&#x2013;3643"
+  doi: "https://doi.org/10.1098/rspb.2011.0300"
+
 - key: Childs2021
   author: "M. L. Childs, M. P. Kain, M. J. Harris, D. Kirk, L. Couper, N. Nova, I. Delwel, J. Ritchie, A. D. Becker, and E. A. Mordecai"
   year: "2021"
@@ -1012,6 +303,69 @@
   volume: "288"
   pages: "20210811"
   doi: "https://doi.org/10.1098/rspb.2021.0811"
+
+- key: Clairon2020
+  author: "Q. Clairon and A. Samson"
+  year: "2020"
+  title: "Optimal control for estimation in partially observed elliptic and hypoelliptic linear stochastic differential equations"
+  journal: "Stat Inference Stoch Process"
+  volume: "23"
+  pages: "105&#x2013;127"
+  doi: "https://doi.org/10.1007/s11203-019-09199-9"
+
+- key: Coffeng2019
+  author: "L. E. Coffeng, E. A. Le Rutte, J. Mu&ntilde;oz, E. R. Adams, J. M. Prada, S. J. de Vlas, and G. F. Medley"
+  year: "2019"
+  title: "Impact of changes in detection effort on control of visceral leishmaniasis in the Indian subcontinent"
+  journal: "J Infect Dis"
+  volume: "221"
+  pages: "S546&#x2013;S553"
+  doi: "https://doi.org/10.1093/infdis/jiz644"
+
+- key: Colubri2020
+  author: "A. Colubri, M. Kemball, K. Sani, C. Boehm, K. Mutch-Jones, B. Fry, T. Brown, and P. C. Sabeti"
+  year: "2020"
+  title: "Preventing outbreaks through interactive, experiential real-life simulations"
+  journal: "Cell"
+  volume: "182"
+  pages: "1366&#x2013;1371"
+  doi: "https://doi.org/10.1016/j.cell.2020.08.042"
+
+- key: Cotterill2020
+  author: "G. G. Cotterill, P. C. Cross, J. A. Merkle, J. D. Rogerson, B. M. Scurlock, and J. T. du Toit"
+  year: "2020"
+  title: "Parsing the effects of demography, climate and management on recurrent brucellosis outbreaks in elk"
+  journal: "J Appl Ecol"
+  volume: "57"
+  pages: "379&#x2013;389"
+  doi: "https://doi.org/10.1111/1365-2664.13553"
+
+- key: Dablander2022
+  author: "F. Dablander, H. Heesterbeek, D. Borsboom, and J. M. Drake"
+  year: "2022"
+  title: "Overlapping timescales obscure early warning signals of the second COVID-19 wave"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "289"
+  pages: "20211809"
+  doi: "https://doi.org/10.1098/rspb.2021.1809"
+
+- key: DomenechdeCelles2018
+  author: "M. Domenech de Cell&egrave;s, F. M. G. Magpantay, A. A. King, and P. Rohani"
+  year: "2018"
+  title: "The impact of past vaccination coverage and immunity on pertussis resurgence"
+  journal: "Sci Transl Med"
+  volume: "10"
+  pages: "eaaj1748"
+  doi: "https://doi.org/10.1126/scitranslmed.aaj1748"
+
+- key: DomenechdeCelles2019b
+  author: "M. Domenech de Cell&egrave;s, H. Arduin, D. L&eacute;vy-Bruhl, S. Georges, C. Souty, D. Guillemot, L. Watier, and L. Opatowski"
+  year: "2019"
+  title: "Unraveling the seasonal epidemiology of pneumococcus"
+  journal: "Proc Natl Acad Sci"
+  volume: "116"
+  pages: "1802"
+  doi: "https://doi.org/10.1073/pnas.1812388116"
 
 - key: DomenechdeCelles2020
   author: "M. Domenech de Cell&egrave;s, H. Campbell, R. Borrow, M.-K. Taha, and L. Opatowski"
@@ -1030,6 +384,15 @@
   volume: "19"
   doi: "https://doi.org/10.1098/rsif.2022.0070"
 
+- key: DomenechdeCelles2022a
+  author: "M. Domenech de Cell&egrave;s, E. Goult, J.-S. Casalegno, and S. C. Kramer"
+  year: "2022"
+  title: "The pitfalls of inferring virus-virus interactions from co-detection prevalence data: application to influenza and SARS-CoV-2"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "289"
+  pages: "20212358"
+  doi: "https://doi.org/10.1098/rspb.2021.2358"
+
 - key: Domeyer2022
   author: "J. E. Domeyer, J. D. Lee, H. Toyoda, B. Mehler, and B. Reimer"
   year: "2022"
@@ -1038,6 +401,33 @@
   volume: "52"
   pages: "1&#x2013;10"
   doi: "https://doi.org/10.1109/THMS.2022.3158201"
+
+- key: Doucet2015
+  author: "A. Doucet, M. K. Pitt, G. Deligiannidis, and R. Kohn"
+  year: "2015"
+  title: "Efficient implementation of Markov chain Monte Carlo when using an unbiased likelihood estimator"
+  journal: "Biometrika"
+  volume: "102"
+  pages: "295&#x2013;313"
+  doi: "https://doi.org/10.1093/biomet/asu075"
+
+- key: Du2017
+  author: "X. Du, A. A. King, R. J. Woods, and M. Pascual"
+  year: "2017"
+  title: "Evolution-informed forecasting of seasonal influenza A (H3N2)"
+  journal: "Sci Transl Med"
+  volume: "9"
+  pages: "eaan5325"
+  doi: "https://doi.org/10.1126/scitranslmed.aan5325"
+
+- key: Ellner1998
+  author: "S. P. Ellner, B. A. Bailey, G. V. Bobashev, A. R. Gallant, B. T. Grenfell, and D. W. Nychka"
+  year: "1998"
+  title: "Noise and nonlinearity in measles epidemics: Combining mechanistic and statistical approaches to population modeling"
+  journal: "Am Nat"
+  volume: "151"
+  pages: "425&#x2013;440"
+  doi: "https://doi.org/10.1086/286130"
 
 - key: Evensen1994
   author: "G. Evensen"
@@ -1052,7 +442,17 @@
   author: "G. Evensen"
   year: "2009"
   title: "Data Assimilation: The Ensemble Kalman Filter"
+  publisher: "Springer"
   url: "http://www.isbnsearch.org/isbn/3642037100"
+
+- key: Fasiolo2016
+  author: "M. Fasiolo, N. Pya, and S. N. Wood"
+  year: "2016"
+  title: "A comparison of inferential methods for highly nonlinear state space models in ecology and epidemiology"
+  journal: "Stat Sci"
+  volume: "31"
+  pages: "96&#x2013;118"
+  doi: "https://doi.org/10.1214/15-sts534"
 
 - key: Fox2022
   author: "S. J. Fox, M. Lachmann, M. Tec, R. Pasco, S. Woody, Z. Du, X. Wang, T. A. Ingle, E. Javan, M. Dahan, K. Gaither, M. E. Escott, S. I. Adler, S. C. Johnston, J. G. Scott, and L. A. Meyers"
@@ -1063,6 +463,24 @@
   pages: "e2111870119"
   doi: "https://doi.org/10.1073/pnas.2111870119"
 
+- key: Funk2020
+  author: "S. Funk and A. A. King"
+  year: "2020"
+  title: "Choices and trade-offs in inference with infectious disease models"
+  journal: "Epidemics"
+  volume: "30"
+  pages: "100383"
+  doi: "https://doi.org/10.1016/j.epidem.2019.100383"
+
+- key: Ganyani2021
+  author: "T. Ganyani, C. Faes, and N. Hens"
+  year: "2021"
+  title: "Simulation and analysis methods for stochastic compartmental epidemic models"
+  journal: "Annu Rev Stat Appl"
+  volume: "8"
+  pages: "69&#x2013;88"
+  doi: "https://doi.org/10.1146/annurev-statistics-061120-034438"
+
 - key: Gillespie1977a
   author: "D. T. Gillespie"
   year: "1977"
@@ -1072,11 +490,39 @@
   pages: "2340&#x2013;2361"
   doi: "https://doi.org/10.1021/j100540a008"
 
+- key: Gokhale2023
+  author: "D. V. Gokhale, T. S. Brett, B. He, A. A. King, and P. Rohani"
+  year: "2023"
+  title: "Disentangling the causes of mumps reemergence in the United States"
+  journal: "Proceedings of the National Academy of Sciences of the U.S.A."
+  volume: "120"
+  pages: "e2207595120"
+  doi: "https://doi.org/10.1073/pnas.2207595120"
+
 - key: Gourieroux1996
   author: "C. Gouri&eacute;roux and A. Monfort"
   year: "1997"
   title: "Simulation-based Econometric Methods"
+  publisher: "Oxford University Press"
   url: "http://www.isbnsearch.org/isbn/9780198774754"
+
+- key: Hayman2015
+  author: "D. T. S. Hayman"
+  year: "2015"
+  title: "Biannual birth pulses allow filoviruses to persist in bat populations"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "282"
+  pages: "20142591"
+  doi: "https://doi.org/10.1098/rspb.2014.2591"
+
+- key: He2010
+  author: "D. He, E. L. Ionides, and A. A. King"
+  year: "2010"
+  title: "Plug-and-play inference for disease dynamics: measles in large and small populations as a case study"
+  journal: "J R Soc Interface"
+  volume: "7"
+  pages: "271&#x2013;283"
+  doi: "https://doi.org/10.1098/rsif.2009.0151"
 
 - key: He2011
   author: "D. He, J. Dushoff, T. Day, J. Ma, and D. Earn"
@@ -1087,6 +533,51 @@
   pages: "1&#x2013;6"
   doi: "https://doi.org/10.1007/s12080-011-0123-3"
 
+- key: He2013
+  author: "D. He, J. Dushoff, R. Eftimie, and D. J. D. Earn"
+  year: "2013"
+  title: "Patterns of spread of influenza A in Canada"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "280"
+  pages: "20131174"
+  doi: "https://doi.org/10.1098/rspb.2013.1174"
+
+- key: He2013a
+  author: "D. He, J. Dushoff, T. Day, J. Ma, and D. J. D. Earn"
+  year: "2013"
+  title: "Inferring the causes of the three waves of the 1918 influenza pandemic in England and Wales"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "280"
+  pages: "20131345"
+  doi: "https://doi.org/10.1098/rspb.2013.1345"
+
+- key: He2020
+  author: "D. He, S. Zhao, Q. Lin, S. S. Musa, and L. Stone"
+  year: "2020"
+  title: "New estimates of the Zika virus epidemic attack rate in northeastern Brazil from 2015 to 2016: a modelling analysis based on Guillain-Barr&eacute; syndrome (gbs) surveillance data"
+  journal: "PLoS Negl Trop Dis"
+  volume: "14"
+  pages: "e0007502"
+  doi: "https://doi.org/10.1371/journal.pntd.0007502"
+
+- key: Ionides2006
+  author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
+  year: "2006"
+  title: "Inference for nonlinear dynamical systems"
+  journal: "Proc Natl Acad Sci"
+  volume: "103"
+  pages: "18438&#x2013;18443"
+  doi: "https://doi.org/10.1073/pnas.0603181103"
+
+- key: Ionides2011
+  author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
+  year: "2011"
+  title: "Iterated filtering"
+  journal: "Ann Stat"
+  volume: "39"
+  pages: "1776&#x2013;1802"
+  doi: "https://doi.org/10.1214/11-AOS886"
+
 - key: Ionides2011a
   author: "E. L. Ionides"
   year: "2011"
@@ -1096,6 +587,185 @@
   pages: "49&#x2013;52"
   doi: "https://doi.org/10.1214/11-sts345c"
 
+- key: Ionides2015
+  author: "E. L. Ionides, D. Nguyen, Y. Atchad&eacute;, S. Stoev, and A. A. King"
+  year: "2015"
+  title: "Inference for dynamic and latent variable models via iterated, perturbed Bayes maps"
+  journal: "Proc Natl Acad Sci"
+  volume: "112"
+  pages: "719&#x2013;724"
+  doi: "https://doi.org/10.1073/pnas.1410597112"
+
+- key: Ionides2017
+  author: "E. L. Ionides, C. Breto, J. Park, R. A. Smith, and A. A. King"
+  year: "2017"
+  title: "Monte Carlo profile confidence intervals for dynamic systems"
+  journal: "J R Soc Interface"
+  volume: "14"
+  pages: "20170126"
+  doi: "https://doi.org/10.1098/rsif.2017.0126"
+
+- key: Ionides2021
+  author: "E. L. Ionides, K. Asfaw, J. Park, and A. A. King"
+  year: "2021"
+  title: "Bagged filters for partially observed interacting systems"
+  journal: "J Am Stat Assoc"
+  pages: "1&#x2013;12"
+  doi: "https://doi.org/10.1080/01621459.2021.1974867"
+
+- key: Kain2021
+  author: "M. P. Kain, M. L. Childs, A. D. Becker, and E. A. Mordecai"
+  year: "2021"
+  title: "Chopping the tail: How preventing superspreading can help to maintain COVID-19 control"
+  journal: "Epidemics"
+  volume: "34"
+  pages: "100430"
+  doi: "https://doi.org/10.1016/j.epidem.2020.100430"
+
+- key: Kendall1999
+  author: "B. E. Kendall, C. J. Briggs, W. W. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, and S. N. Wood"
+  year: "1999"
+  title: "Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches"
+  journal: "Ecology"
+  volume: "80"
+  pages: "1789&#x2013;1805"
+  doi: "https://doi.org/10.1890/0012-9658(1999)080%5B1789:wdpcas%5D2.0.co;2"
+
+- key: Kendall2005
+  author: "B. E. Kendall, S. P. Ellner, E. McCauley, S. N. Wood, C. J. Briggs, W. M. Murdoch, and P. Turchin"
+  year: "2005"
+  title: "Population cycles in the pine looper moth: Dynamical tests of mechanistic hypotheses"
+  journal: "Ecol Monogr"
+  volume: "75"
+  pages: "259&#x2013;276"
+  doi: "https://doi.org/10.1890/03-4056"
+
+- key: Kennedy2018
+  author: "D. A. Kennedy, P. A. Dunn, and A. F. Read"
+  year: "2018"
+  title: "Modeling Marek&rsquo;s disease virus transmission: A framework for evaluating the impact of farming practices and evolution"
+  journal: "Epidemics"
+  volume: "23"
+  pages: "85&#x2013;95"
+  doi: "https://doi.org/10.1016/j.epidem.2018.01.001"
+
+- key: King2008
+  author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
+  year: "2008"
+  title: "Inapparent infections and cholera dynamics"
+  journal: "Nature"
+  volume: "454"
+  pages: "877&#x2013;880"
+  doi: "https://doi.org/10.1038/nature07084"
+
+- key: King2015
+  author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
+  year: "2015"
+  title: "Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "282"
+  pages: "20150347"
+  doi: "https://doi.org/10.1098/rspb.2015.0347"
+
+- key: King2016
+  author: "A. A. King, D. Nguyen, and E. L. Ionides"
+  year: "2016"
+  title: "Statistical inference for partially observed Markov processes via the R package pomp"
+  journal: "J Stat Softw"
+  volume: "69"
+  pages: "1&#x2013;43"
+  doi: "https://doi.org/10.18637/jss.v069.i12"
+
+- key: King2022
+  author: "A. A. King, Q. Lin, and E. L. Ionides"
+  year: "2022"
+  title: "Markov genealogy processes"
+  journal: "Theor Popul Biol"
+  volume: "143"
+  pages: "77&#x2013;91"
+  doi: "https://doi.org/10.1016/j.tpb.2021.11.003"
+
+- key: Knape2011
+  author: "J. Knape and P. de Valpine"
+  year: "2011"
+  title: "Fitting complex population models by combining particle filters with Markov chain Monte Carlo"
+  journal: "Ecology"
+  volume: "93"
+  pages: "256&#x2013;263"
+  doi: "https://doi.org/10.1890/11-0797.1"
+
+- key: Kucherenko2005
+  author: "S. Kucherenko and Y. Sytsko"
+  year: "2005"
+  title: "Application of deterministic low-discrepancy sequences in global optimization"
+  journal: "Comput Optim Appl"
+  volume: "30"
+  pages: "297&#x2013;318"
+  doi: "https://doi.org/10.1007/s10589-005-4615-1"
+
+- key: Laneri2010
+  author: "K. Laneri, A. Bhadra, E. L. Ionides, M. Bouma, R. C. Dhiman, R. S. Yadav, and M. Pascual"
+  year: "2010"
+  title: "Forcing versus feedback: epidemic malaria and monsoon rains in northwest India"
+  journal: "PLoS Comput Biol"
+  volume: "6"
+  pages: "e1000898"
+  doi: "https://doi.org/10.1371/journal.pcbi.1000898"
+
+- key: Laneri2015
+  author: "K. Laneri, R. E. Paul, A. Tall, J. Faye, F. Diene-Sarr, C. Sokhna, J.-F. Trape, and X. Rod&oacute;"
+  year: "2015"
+  title: "Dynamical malaria models reveal how immunity buffers effect of climate variability"
+  journal: "Proc Natl Acad Sci"
+  volume: "112"
+  pages: "8786&#x2013;8791"
+  doi: "https://doi.org/10.1073/pnas.1419047112"
+
+- key: Lavine2013
+  author: "J. S. Lavine, A. A. King, V. Andreasen, and O. N. Bj&oslash;rnstad"
+  year: "2013"
+  title: "Immune boosting explains regime-shifts in prevaccine-era pertussis dynamics"
+  journal: "PLoS ONE"
+  volume: "8"
+  pages: "e72086"
+  doi: "https://doi.org/10.1371/journal.pone.0072086"
+
+- key: Lee2020
+  author: "E. C. Lee, D. L. Chao, J. C. Lemaitre, L. Matrajt, D. Pasetto, J. Perez-Saez, F. Finger, A. Rinaldo, J. D. Sugimoto, M. E. Halloran, I. M. Longini, R. Ternier, K. Vissieres, A. S. Azman, J. Lessler, and L. C. Ivers"
+  year: "2020"
+  title: "Achieving coordinated national immunity and cholera elimination in Haiti through vaccination: a modelling study"
+  journal: "Lancet Global Health"
+  volume: "8"
+  pages: "e1081&#x2013;e1089"
+  doi: "https://doi.org/10.1016/S2214-109X(20)30310-7"
+
+- key: Lemaitre2019
+  author: "J. Lemaitre, D. Pasetto, J. Perez-Saez, C. Sciarra, J. F. Wamala, and A. Rinaldo"
+  year: "2019"
+  title: "Rainfall as a driver of epidemic cholera: Comparative model assessments of the effect of intra-seasonal precipitation events"
+  journal: "Acta Trop"
+  volume: "190"
+  pages: "235&#x2013;243"
+  doi: "https://doi.org/10.1016/j.actatropica.2018.11.013"
+
+- key: Lin2016
+  author: "Q. Lin, Z. Lin, A. P. Y. Chiu, and D. He"
+  year: "2016"
+  title: "Seasonality of influenza A(H7N9) virus in China&#x2013;-fitting simple epidemic models to human cases"
+  journal: "PLoS ONE"
+  volume: "11"
+  pages: "e0151333"
+  doi: "https://doi.org/10.1371/journal.pone.0151333"
+
+- key: Lin2018
+  author: "Q. Lin, A. P. Chiu, S. Zhao, and D. He"
+  year: "2018"
+  title: "Modeling the spread of Middle East respiratory syndrome coronavirus in Saudi Arabia"
+  journal: "Stat Methods Med Res"
+  volume: "27"
+  pages: "1968&#x2013;1978"
+  doi: "https://doi.org/10.1177/0962280217746442"
+
 - key: Liu2001b
   author: "J. Liu and M. West"
   year: "2001"
@@ -1103,6 +773,34 @@
   pages: "197&#x2013;224"
   booktitle: "Sequential Monte Carlo Methods in Practice"
   editor: "A. Doucet, N. de Freitas, and N. J. Gordon"
+  publisher: "Springer, New York"
+
+- key: Liu2022
+  author: "Y. Liu, Y. Yu, Y. Zhao, and D. He"
+  year: "2022"
+  title: "Reduction in the infection fatality rate of omicron variant compared with previous variants in South Africa"
+  journal: "Int J Infect Dis"
+  volume: "120"
+  pages: "146&#x2013;149"
+  doi: "https://doi.org/10.1016/j.ijid.2022.04.029"
+
+- key: Magpantay2016
+  author: "F. M. G. Magpantay, M. Domenech de Cell&egrave;s, P. Rohani, and A. A. King"
+  year: "2016"
+  title: "Pertussis immunity and epidemiology: mode and duration of vaccine-induced immunity"
+  journal: "Parasitology"
+  volume: "143"
+  pages: "835&#x2013;849"
+  doi: "https://doi.org/10.1017/S0031182015000979"
+
+- key: Magpantay2019
+  author: "F. M. G. Magpantay, A. King A., and P. Rohani"
+  year: "2019"
+  title: "Age-structure and transient dynamics in epidemiological systems"
+  journal: "J R Soc Interface"
+  volume: "16"
+  pages: "20190151"
+  doi: "https://doi.org/10.1098/rsif.2019.0151"
 
 - key: Marin2012
   author: "J.-M. Marin, P. Pudlo, C. P. Robert, and R. J. Ryder"
@@ -1112,6 +810,58 @@
   volume: "22"
   pages: "1167&#x2013;1180"
   doi: "https://doi.org/10.1007/s11222-011-9288-2"
+
+- key: Marino2019
+  author: "J. A. Marino Jr., S. D. Peacor, D. B. Bunnell, H. A. Vanderploeg, S. A. Pothoven, A. K. Elgin, J. R. Bence, J. Jiao, and E. L. Ionides"
+  year: "2019"
+  title: "Evaluating consumptive and nonconsumptive predator effects on prey density using field time-series data"
+  journal: "Ecology"
+  volume: "100"
+  pages: "e02583"
+  doi: "https://doi.org/10.1002/ecy.2583"
+
+- key: Martinez2016
+  author: "P. P. Martinez, A. A. King, M. Yunus, A. S. G. Faruque, and M. Pascual"
+  year: "2016"
+  title: "Differential and enhanced response to climate forcing in diarrheal disease due to rotavirus across a megacity of the developing world"
+  journal: "Proc Natl Acad Sci"
+  volume: "113"
+  pages: "4092&#x2013;4097"
+  doi: "https://doi.org/10.1073/pnas.1518977113"
+
+- key: Martinez2017
+  author: "P. P. Martinez, R. C. Reiner Jr, M. Roy, B. A. Cash, M. Yunus, A. S. G. Faruque, S. Huq, A. A. King, and M. Pascual"
+  year: "2017"
+  title: "Cholera forecast for Dhaka, Bangladesh, with the 2015&#x2013;2016 El Ni&ntilde;o: lessons learned"
+  journal: "PLoS ONE"
+  volume: "12"
+  pages: "e0172355"
+  doi: "https://doi.org/10.1371/journal.pone.0172355"
+
+- key: Martinez-Bakker2015
+  author: "M. Martinez-Bakker, A. A. King, and P. Rohani"
+  year: "2015"
+  title: "Unraveling the transmission ecology of polio"
+  journal: "PLoS Biol"
+  volume: "13"
+  pages: "e1002172"
+  doi: "https://doi.org/10.1371/journal.pbio.1002172"
+
+- key: Molodecky2021
+  author: "N. A. Molodecky, H. Jafari, R. M. Safdar, J. A. Ahmed, A. Mahamud, A. S. Bandyopadhyay, H. Shukla, A. Quddus, M. Zaffran, R. W. Sutter, N. C. Grassly, and I. M. Blake"
+  year: "2021"
+  title: "Modelling the spread of serotype-2 vaccine derived-poliovirus outbreak in Pakistan and Afghanistan to inform outbreak control strategies in the context of the COVID-19 pandemic"
+  journal: "Vaccine"
+  doi: "https://doi.org/10.1016/j.vaccine.2021.09.037"
+
+- key: Musa2020
+  author: "S. S. Musa, S. Zhao, D. Gao, Q. Lin, G. Chowell, and D. He"
+  year: "2020"
+  title: "Mechanistic modelling of the large-scale Lassa fever epidemics in Nigeria from 2016 to 2019"
+  journal: "J Theor Biol"
+  volume: "493"
+  pages: "110209"
+  doi: "https://doi.org/10.1016/j.jtbi.2020.110209"
 
 - key: Navideh2019
   author: "N. Noori and P. Rohani"
@@ -1129,6 +879,104 @@
   journal: "Methods Ecol Evol"
   doi: "https://doi.org/10.1111/2041-210x.13833"
 
+- key: ODea2019
+  author: "E. B. O'Dea and J. M. Drake"
+  year: "2019"
+  title: "Disentangling reporting and disease transmission"
+  journal: "Theor Ecol"
+  volume: "12"
+  pages: "89&#x2013;98"
+  doi: "https://doi.org/10.1007/s12080-018-0390-3"
+
+- key: Pak2022
+  author: "D. Pak, S. Carran, D. Biddinger, B. Nelson, and O. N. Bj&oslash;rnstad"
+  year: "2022"
+  title: "Incorporating diapause to predict the interannual dynamics of an important agricultural pest"
+  journal: "Popul Ecol"
+  volume: "n/a"
+  doi: "https://doi.org/10.1002/1438-390X.12117"
+
+- key: Park2020
+  author: "J. Park and E. L. Ionides"
+  year: "2020"
+  title: "Inference on high-dimensional implicit dynamic models using a guided intermediate resampling filter"
+  journal: "Stat Comput"
+  volume: "30"
+  pages: "1497&#x2013;1522"
+  doi: "https://doi.org/10.1007/s11222-020-09957-3"
+
+- key: Park2021
+  author: "S. W. Park, M. Pons-Salort, K. Messacar, C. Cook, L. Meyers, J. Farrar, and B. T. Grenfell"
+  year: "2021"
+  title: "Epidemiological dynamics of enterovirus D68 in the United States and implications for acute flaccid myelitis"
+  journal: "Sci Transl Med"
+  volume: "13"
+  pages: "eabd2400"
+  doi: "https://doi.org/10.1126/scitranslmed.abd2400"
+
+- key: Pasetto2021
+  author: "D. Pasetto, J. C. Lemaitre, E. Bertuzzo, M. Gatto, and A. Rinaldo"
+  year: "2021"
+  title: "Range of reproduction number estimates for COVID-19 spread"
+  journal: "Biochem Biophys Res Commun"
+  volume: "538"
+  pages: "253&#x2013;258"
+  doi: "https://doi.org/10.1016/j.bbrc.2020.12.003"
+
+- key: PonsSalort2018a
+  author: "M. Pons-Salort and N. C. Grassly"
+  year: "2018"
+  title: "Serotype-specific immunity explains the incidence of diseases caused by human enteroviruses"
+  journal: "Science"
+  volume: "361"
+  pages: "800"
+  doi: "https://doi.org/10.1126/science.aat6777"
+
+- key: Ranjeva2017
+  author: "S. L. Ranjeva, E. B. Baskerville, V. Dukic, L. L. Villa, E. Lazcano-Ponce, A. R. Giuliano, G. Dwyer, and S. Cobey"
+  year: "2017"
+  title: "Recurring infection with ecologically distinct HPV types can explain high prevalence and diversity"
+  journal: "Proc Natl Acad Sci"
+  volume: "114"
+  pages: "13573&#x2013;13578"
+  doi: "https://doi.org/10.1073/pnas.1714712114"
+
+- key: Reuman2006
+  author: "D. C. Reuman, R. A. Desharnais, R. F. Costantino, O. S. Ahmad, and J. E. Cohen"
+  year: "2006"
+  title: "Power spectra reveal the influence of stochasticity on nonlinear population dynamics"
+  journal: "Proc Natl Acad Sci"
+  volume: "103"
+  pages: "18860&#x2013;18865"
+  doi: "https://doi.org/10.1073/pnas.0608571103"
+
+- key: Rodo2021
+  author: "X. Rodo, P. P. Martinez, A. Siraj, and M. Pascual"
+  year: "2021"
+  title: "Malaria trends in Ethiopian highlands track the 2000 &lsquo;slowdown&rsquo; in global warming"
+  journal: "Nat Commun"
+  volume: "12"
+  pages: "1555"
+  doi: "https://doi.org/10.1038/s41467-021-21815-y"
+
+- key: Romero-Severson2015
+  author: "E. O. Romero-Severson, E. Volz, J. S. Koopman, T. Leitner, and E. L. Ionides"
+  year: "2015"
+  title: "Dynamic variation in sexual contact rates in a cohort of HIV-negative gay men"
+  journal: "Am J Epidemiol"
+  volume: "182"
+  pages: "255&#x2013;262"
+  doi: "https://doi.org/10.1093/aje/kwv044"
+
+- key: Romero-Severson2018
+  author: "E. O. Romero-Severson, R. M. Ribeiro, and M. Castro"
+  year: "2018"
+  title: "Noise is not error: detecting parametric heterogeneity between epidemiologic time series"
+  journal: "Front Microbiol"
+  volume: "9"
+  pages: "1529"
+  doi: "https://doi.org/10.3389/fmicb.2018.01529"
+
 - key: Roy2012
   author: "M. Roy, M. J. Bouma, E. L. Ionides, R. C. Dhiman, and M. Pascual"
   year: "2012"
@@ -1137,6 +985,23 @@
   volume: "7"
   pages: "e1979"
   doi: "https://doi.org/10.1371/journal.pntd.0001979"
+
+- key: SantosVega2022
+  author: "M. Santos-Vega, P. P. Martinez, K. G. Vaishnav, V. Kohli, V. Desai, M. J. Bouma, and M. Pascual"
+  year: "2022"
+  title: "The neglected role of relative humidity in the interannual variability of urban malaria in Indian cities"
+  journal: "Nat Commun"
+  volume: "13"
+  pages: "533"
+  doi: "https://doi.org/10.1038/s41467-022-28145-7"
+
+- key: Sartori2022
+  author: "L. Sartori, M. Pereira, and S. Oliva"
+  year: "2022"
+  title: "Time-scale analysis and parameter fitting for vector-borne diseases with spatial dynamics"
+  journal: "Bull Math Biol"
+  volume: "84"
+  doi: "https://doi.org/10.1007/s11538-022-01083-7"
 
 - key: Shah2022
   author: "M. Shah, G. Ferra, S. Fitzgerald, P. J. Barreira, P. C. Sabeti, and A. Colubri"
@@ -1147,6 +1012,24 @@
   pages: "210948"
   doi: "https://doi.org/10.1098/rsos.210948"
 
+- key: Shirreff2022
+  author: "G. Shirreff, J.-R. Zahar, S. Cauchemez, L. Temime, and L. Opatowski"
+  year: "2022"
+  title: "Measuring basic reproduction number to assess effects of nonpharmaceutical interventions on nosocomial SARS-CoV-2 transmission"
+  journal: "Emerg Infect Dis"
+  volume: "28"
+  pages: "1345&#x2013;1354"
+  doi: "https://doi.org/10.3201/eid2807.212339"
+
+- key: Shrestha2011
+  author: "S. Shrestha, A. A. King, and P. Rohani"
+  year: "2011"
+  title: "Statistical inference for multi-pathogen systems"
+  journal: "PLoS Comput Biol"
+  volume: "7"
+  pages: "e1002135"
+  doi: "https://doi.org/10.1371/journal.pcbi.1002135"
+
 - key: Shrestha2013
   author: "S. Shrestha, B. Foxman, D. M. Weinberger, C. Steiner, C. Viboud, and P. Rohani"
   year: "2013"
@@ -1155,6 +1038,23 @@
   volume: "5"
   pages: "191ra84"
   doi: "https://doi.org/10.1126/scitranslmed.3005982"
+
+- key: Shrestha2015
+  author: "S. Shrestha, B. Foxman, J. Berus, W. G. van Panhuis, C. Steiner, C. Viboud, and P. Rohani"
+  year: "2015"
+  title: "The role of influenza in the epidemiology of pneumonia"
+  journal: "Sci Rep"
+  volume: "5"
+  pages: "15314&#x2013;"
+  doi: "https://doi.org/10.1038/srep15314"
+
+- key: Stocks2018
+  author: "T. Stocks, T. Britton, and M. H&ouml;hle"
+  year: "2018"
+  title: "Model selection and parameter estimation for dynamic epidemic models via iterated filtering: application to rotavirus in Germany"
+  journal: "Biostatistics"
+  pages: "400&#x2013;416"
+  doi: "https://doi.org/10.1093/biostatistics/kxy057"
 
 - key: Stocks2020
   author: "T. Stocks, L. J. Martin, S. K&uuml;hlmann-Berenzon, and T. Britton"
@@ -1171,7 +1071,26 @@
   title: "Iterated filtering methods for Markov process epidemic models"
   pages: "199&#x2013;219"
   editor: "L. Held, N. Hens, P. O&rsquo;Neill, and J. Wallinga"
+  publisher: "Chapman and Hall/CRC"
   doi: "https://doi.org/10.1201/9781315222912"
+
+- key: Stone2020
+  author: "L. Stone, D. H. He, S. Lehnstaedt, and Y. Artzy-Randrup"
+  year: "2020"
+  title: "Extraordinary curtailment of massive typhus epidemic in the Warsaw Ghetto"
+  journal: "Sci Adv"
+  volume: "6"
+  pages: "eabc0927"
+  doi: "https://doi.org/10.1126/sciadv.abc0927"
+
+- key: Subramanian2021
+  author: "R. Subramanian, Q. He, and M. Pascual"
+  year: "2021"
+  title: "Quantifying asymptomatic infection and transmission of COVID-19 in New York City using observed cases, serology, and testing capacity"
+  journal: "Proc Natl Acad Sci"
+  volume: "118"
+  pages: "e2019716118"
+  doi: "https://doi.org/10.1073/pnas.2019716118"
 
 - key: Szczepocki2020
   author: "P. Szczepocki"
@@ -1182,6 +1101,33 @@
   pages: "173&#x2013;187"
   url: "https://sciendo.com/article/10.21307/stattrans-2020-019"
 
+- key: Tavakoli2016
+  author: "S. Tavakoli and V. M. Panaretos"
+  year: "2016"
+  title: "Detecting and localizing differences in functional time series dynamics: a case study in molecular biophysics"
+  journal: "J Am Stat Assoc"
+  volume: "111"
+  pages: "1020&#x2013;1035"
+  doi: "https://doi.org/10.1080/01621459.2016.1147355"
+
+- key: Toni2009a
+  author: "T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf"
+  year: "2009"
+  title: "Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems"
+  journal: "J R Soc Interface"
+  volume: "6"
+  pages: "187&#x2013;202"
+  doi: "https://doi.org/10.1098/rsif.2008.0172"
+
+- key: Toni2010
+  author: "T. Toni and M. P. H. Stumpf"
+  year: "2010"
+  title: "Simulation-based model selection for dynamical systems in systems and population biology"
+  journal: "Bioinformatics"
+  volume: "26"
+  pages: "104&#x2013;110"
+  doi: "https://doi.org/10.1093/bioinformatics/btp619"
+
 - key: Tredennick2022
   author: "A. T. Tredennick, E. B. O'Dea, M. J. Ferrari, A. W. Park, P. Rohani, and J. M. Drake"
   year: "2022"
@@ -1190,12 +1136,46 @@
   volume: "19"
   doi: "https://doi.org/10.1098/rsif.2022.0123"
 
+- key: Wale2019
+  author: "N. Wale, M. J. Jones, D. G. Sim, A. F. Read, and A. A. King"
+  year: "2019"
+  title: "The contribution of host cell-directed vs. parasite-directed immunity to the disease and dynamics of malaria infections"
+  journal: "Proc Natl Acad Sci"
+  pages: "201908147"
+  doi: "https://doi.org/10.1073/pnas.1908147116"
+
+- key: Wang2021
+  author: "X. Wang, Z. Du, K. Johnson, R. Pasco, S. Fox, M. Lachmann, J. McLellan, and L. A. Meyers"
+  year: "2021"
+  title: "Effects of COVID-19 vaccination timing and risk prioritization on mortality rates, United States"
+  journal: "Emerg Infect Dis"
+  volume: "27"
+  pages: "1976"
+  doi: "https://doi.org/10.3201/eid2707.210118"
+
+- key: Whittles2017
+  author: "L. K. Whittles, P. J. White, and X. Didelot"
+  year: "2017"
+  title: "Estimating the fitness cost and benefit of cefixime resistance in <i>Neisseria gonorrhoeae</i> to inform prescription policy: a modelling study"
+  journal: "PLoS Med"
+  volume: "14"
+  pages: "e1002416"
+  doi: "https://doi.org/10.1371/journal.pmed.1002416"
+
 - key: Whittles2020
   author: "L. K. Whittles, P. J. White, and X. Didelot"
   year: "2020"
   title: "Assessment of the potential of vaccination to combat antibiotic resistance in gonorrhea: a modeling analysis to determine preferred product characteristics"
   journal: "Clin Infect Dis"
   doi: "https://doi.org/10.1093/cid/ciz1241"
+
+- key: Williams2022
+  author: "H. Williams, A. Scharf, A. R. Ryba, D. R. Norris, D. J. Mennill, A. E. M. Newman, S. M. Doucet, and J. C. Blackwood"
+  year: "2022"
+  title: "Cumulative cultural evolution and mechanisms for cultural selection in wild bird songs"
+  journal: "Nat Commun"
+  volume: "13"
+  doi: "https://doi.org/10.1038/s41467-022-31621-9"
 
 - key: Wood2010
   author: "S. N. Wood"
@@ -1215,6 +1195,15 @@
   pages: "21&#x2013;46"
   doi: "https://doi.org/10.1214/10-sts345"
 
+- key: Yang2021
+  author: "W. Yang, D. Zhang, L. Peng, C. Zhuge, and L. Hong"
+  year: "2021"
+  title: "Rational evaluation of various epidemic models based on the COVID-19 data of China"
+  journal: "Epidemics"
+  volume: "37"
+  pages: "100501"
+  doi: "https://doi.org/10.1016/j.epidem.2021.100501"
+
 - key: Yu2022
   author: "Y. Yu, Y. Liu, S. Zhao, and D. He"
   year: "2022"
@@ -1223,4 +1212,20 @@
   volume: "19"
   pages: "10361&#x2013;10373"
   doi: "https://doi.org/10.3934/mbe.2022485"
+
+- key: Zhang2021
+  author: "B. Zhang, S. Liang, G. Wang, C. Zhang, C. Chen, M. Zou, W. Shen, H. Long, D. He, Y. Shu, and X. Du"
+  year: "2021"
+  title: "Synchronized nonpharmaceutical interventions for the control of COVID-19"
+  journal: "Nonlinear Dynam"
+  doi: "https://doi.org/10.1007/s11071-021-06505-0"
+
+- key: Zhao2018
+  author: "S. Zhao, L. Stone, D. Gao, and D. He"
+  year: "2018"
+  title: "Modelling the large-scale yellow fever outbreak in Luanda, Angola, and the impact of vaccination"
+  journal: "PLoS Negl Trop Dis"
+  volume: "12"
+  pages: "e0006158"
+  doi: "https://doi.org/10.1371/journal.pntd.0006158"
 

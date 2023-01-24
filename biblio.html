@@ -30,6 +30,9 @@ title: references to the POMP literature
 {% if rec.pages %}
     {{ rec.pages }}.
 {% endif %}
+{% if rec.publisher %}
+    {{ rec.publisher }}.
+{% endif %}
 {% if rec.doi %}
     <a target="_blank" href="{{ rec.doi }}">Link</a>
 {% elsif rec.url %}
