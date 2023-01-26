@@ -2,17 +2,11 @@
 % Please edit documentation in R/concat.R
 \name{concat}
 \alias{concat}
-\alias{c}
 \alias{concat,Pomp-method}
 \alias{concat,Pfilter-method}
 \alias{concat,Abc-method}
 \alias{concat,Mif2-method}
 \alias{concat,Pmcmc-method}
-\alias{c.Pomp}
-\alias{c.Pfilter}
-\alias{c.Abc}
-\alias{c.Mif2}
-\alias{c.Pmcmc}
 \title{Concatenate}
 \usage{
 \S4method{concat}{Pomp}(...)
@@ -24,16 +18,6 @@
 \S4method{concat}{Mif2}(...)
 
 \S4method{concat}{Pmcmc}(...)
-
-\method{c}{Pomp}(...)
-
-\method{c}{Pfilter}(...)
-
-\method{c}{Abc}(...)
-
-\method{c}{Mif2}(...)
-
-\method{c}{Pmcmc}(...)
 }
 \description{
 Methods to concatenate objects into useful listie

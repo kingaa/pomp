@@ -200,8 +200,27 @@ Error : in 'abc': in proposal function: 'fraid not!
 +   apply(theta[c("alpha_1","alpha_2"),],1,diff) != 0)
 > try(c(abc1,3))
 Error : 'c' is not defined for objects of mixed class.
-> try(c(c(abc1,abc2),ou2))
-Error : 'c' is not defined for objects of mixed class.
+> 
+> c(c(abc1,abc2),ou2)
+[[1]]
+<object of class 'pomp'>
+
+[[2]]
+<object of class 'pomp'>
+
+[[3]]
+<object of class 'pomp'>
+
+> c(a=c(abc1,abc2),b=abc2)
+$a1
+<object of class 'abcd_pomp'>
+
+$a2
+<object of class 'abcd_pomp'>
+
+$b
+<object of class 'abcd_pomp'>
+
 > c(abc1)
 [[1]]
 <object of class 'abcd_pomp'>
@@ -211,10 +230,8 @@ Error : 'c' is not defined for objects of mixed class.
 [1] "abcList"
 attr(,"package")
 [1] "pomp"
-> try(alist[3])
-[[1]]
-NULL
-
+> try(alist[[3]])
+Error in alist[[3]] : subscript out of bounds
 > alist <- c(a=abc1,b=abc2)
 > alist["b"]
 $b

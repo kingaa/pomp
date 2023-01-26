@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 4.6.3.1
-Date: 2023-01-24
+Version: 4.6.4.1
+Date: 2023-01-26
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -84,6 +84,7 @@ Collate:
     'childhood.R'
     'coef.R'
     'concat.R'
+    'combine.R'
     'cond_logLik.R'
     'covmat.R'
     'dacca.R'

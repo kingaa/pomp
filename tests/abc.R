@@ -137,11 +137,13 @@ stopifnot(dim(theta)==c(10,2),
     "sigma_1","sigma_2","sigma_3","tau","x1_0","x2_0"),],1,diff)==0,
   apply(theta[c("alpha_1","alpha_2"),],1,diff) != 0)
 try(c(abc1,3))
-try(c(c(abc1,abc2),ou2))
+
+c(c(abc1,abc2),ou2)
+c(a=c(abc1,abc2),b=abc2)
 c(abc1)
 alist <- c(c(abc1,abc2))
 class(alist[2])
-try(alist[3])
+try(alist[[3]])
 alist <- c(a=abc1,b=abc2)
 alist["b"]
 alist["c"]

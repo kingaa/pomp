@@ -6,6 +6,7 @@
 NULL
 
 ##' @rdname listie
+##' @importFrom stats setNames
 ##' @export
 setMethod(
   "[",
@@ -18,7 +19,7 @@ setMethod(
     if (is.null(y)) {
       list(NULL)
     } else {
-      new(cl,y)
+      setNames(new(cl,y),names(y))
     }
   }
 )

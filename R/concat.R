@@ -4,10 +4,10 @@
 ##'
 ##' @name concat
 ##' @rdname concat
-##' @aliases c
 ##' @include listie.R
 ##' @importFrom stats setNames
 ##' @keywords internal
+##' 
 NULL
 
 setGeneric(
@@ -32,21 +32,34 @@ setMethod(
   }
 )
 
+flatten_list <- function (...) {
+  unlist(
+    lapply(
+      list(...),
+      \(z) {
+        if (is(z,"list")) {
+          setNames(as(z,"list"),names(z))
+        } else {
+          z
+        }
+      }
+    )
+  )
+}
+
 ##' @rdname concat
 setMethod(
   "concat",
   signature=signature(...="Pomp"),
   definition=function (...) {
-    y <- lapply(
-      list(...),
-      function (z) {
-        if (is(z,"list"))
-          setNames(as(z,"list"),names(z))
-        else
-          z
-      }
+    y <- flatten_list(...)
+    setNames(
+      new(
+        "pompList",
+        lapply(y,as,"pomp")
+      ),
+      names(y)
     )
-    new("pompList",unlist(y))
   }
 )
 
@@ -55,16 +68,14 @@ setMethod(
   "concat",
   signature=signature(...="Pfilter"),
   definition=function (...) {
-    y <- lapply(
-      list(...),
-      function (z) {
-        if (is(z,"list"))
-          setNames(as(z,"list"),names(z))
-        else
-          z
-      }
+    y <- flatten_list(...)
+    setNames(
+      new(
+        "pfilterList",
+        lapply(y,as,"pfilterd_pomp")
+      ),
+      names(y)
     )
-    new("pfilterList",unlist(y))
   }
 )
 
@@ -73,16 +84,14 @@ setMethod(
   "concat",
   signature=signature(...="Abc"),
   definition=function (...) {
-    y <- lapply(
-      list(...),
-      function (z) {
-        if (is(z,"list"))
-          setNames(as(z,"list"),names(z))
-        else
-          z
-      }
+    y <- flatten_list(...)
+    setNames(
+      new(
+        "abcList",
+        lapply(y,as,"abcd_pomp")
+      ),
+      names(y)
     )
-    new("abcList",unlist(y))
   }
 )
 
@@ -91,16 +100,14 @@ setMethod(
   "concat",
   signature=signature(...="Mif2"),
   definition=function (...) {
-    y <- lapply(
-      list(...),
-      function (z) {
-        if (is(z,"list"))
-          setNames(as(z,"list"),names(z))
-        else
-          z
-      }
+    y <- flatten_list(...)
+    setNames(
+      new(
+        "mif2List",
+        lapply(y,as,"mif2d_pomp")
+      ),
+      names(y)
     )
-    new("mif2List",unlist(y))
   }
 )
 
@@ -109,35 +116,13 @@ setMethod(
   "concat",
   signature=signature(...="Pmcmc"),
   definition=function (...) {
-    y <- lapply(
-      list(...),
-      function (z) {
-        if (is(z,"list"))
-          setNames(as(z,"list"),names(z))
-        else
-          z
-      }
+    y <- flatten_list(...)
+    setNames(
+      new(
+        "pmcmcList",
+        lapply(y,as,"pmcmcd_pomp")
+      ),
+      names(y)
     )
-    new("pmcmcList",unlist(y))
   }
 )
-
-##' @rdname concat
-##' @export
-c.Pomp <- function (...) concat(...)
-
-##' @rdname concat
-##' @export
-c.Pfilter <- function (...) concat(...)
-
-##' @rdname concat
-##' @export
-c.Abc <- function (...) concat(...)
-
-##' @rdname concat
-##' @export
-c.Mif2 <- function (...) concat(...)
-
-##' @rdname concat
-##' @export
-c.Pmcmc <- function (...) concat(...)

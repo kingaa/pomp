@@ -13,8 +13,8 @@ setClass(
   "pompList",
   contains="list",
   validity=function (object) {
-    if (length(object) > 0) {
-      if (!all(vapply(object,is,logical(1),"pomp"))) {
+    if (length(object) > 0L) {
+      if (!all(vapply(object,is,logical(1L),"pomp"))) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": dissimilar objects cannot be combined"
@@ -28,10 +28,10 @@ setClass(
 
 setClass(
   "abcList",
-  contains="list",
+  contains="pompList",
   validity=function (object) {
-    if (length(object) > 0) {
-      if (!all(vapply(object,is,logical(1),"abcd_pomp"))) {
+    if (length(object) > 0L) {
+      if (!all(vapply(object,is,logical(1L),"abcd_pomp"))) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": dissimilar objects cannot be combined"
@@ -39,7 +39,7 @@ setClass(
         return(retval)
       }
       d <- sapply(object,\(x)dim(x@traces))
-      if (!all(apply(d,1L,diff)==0)) {
+      if (!all(apply(d,1L,diff)==0L)) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": to be combined, ",sQuote("abcd_pomp"),
@@ -53,11 +53,30 @@ setClass(
 )
 
 setClass(
-  "mif2List",
-  contains="list",
+  "pfilterList",
+  contains="pompList",
   validity=function (object) {
-    if (length(object) > 0) {
-      if (!all(vapply(object,is,logical(1),"mif2d_pomp"))) {
+    if (length(object) > 0L) {
+      pftypes <- vapply(object,is,logical(1L),"pfilterd_pomp")
+      wftypes <- vapply(object,is,logical(1L),"wpfilterd_pomp")
+      if (!all(pftypes | wftypes)) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+    }
+    TRUE
+  }
+)
+
+setClass(
+  "mif2List",
+  contains="pfilterList",
+  validity=function (object) {
+    if (length(object) > 0L) {
+      if (!all(vapply(object,is,logical(1L),"mif2d_pomp"))) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": dissimilar objects cannot be combined"
@@ -65,7 +84,7 @@ setClass(
         return(retval)
       }
       d <- sapply(object,\(x)dim(x@traces))
-      if (!all(apply(d,1L,diff)==0)) {
+      if (!all(apply(d,1L,diff)==0L)) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": to be combined, ",sQuote("mif2d_pomp"),
@@ -80,10 +99,10 @@ setClass(
 
 setClass(
   "pmcmcList",
-  contains="list",
+  contains="pfilterList",
   validity=function (object) {
-    if (length(object) > 0) {
-      if (!all(vapply(object,is,logical(1),"pmcmcd_pomp"))) {
+    if (length(object) > 0L) {
+      if (!all(vapply(object,is,logical(1L),"pmcmcd_pomp"))) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": dissimilar objects cannot be combined"
@@ -91,30 +110,11 @@ setClass(
         return(retval)
       }
       d <- sapply(object,\(x)dim(x@traces))
-      if (!all(apply(d,1L,diff)==0)) {
+      if (!all(apply(d,1L,diff)==0L)) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": to be combined, ",sQuote("pmcmcd_pomp"),
           " objects must have chains of equal length"
-        )
-        return(retval)
-      }
-    }
-    TRUE
-  }
-)
-
-setClass(
-  "pfilterList",
-  contains="list",
-  validity=function (object) {
-    if (length(object) > 0) {
-      pftypes <- vapply(object,is,logical(1L),"pfilterd_pomp")
-      wftypes <- vapply(object,is,logical(1L),"wpfilterd_pomp")
-      if (!all(pftypes | wftypes)) {
-        retval <- paste0(
-          "error in ",sQuote("c"),
-          ": dissimilar objects cannot be combined"
         )
         return(retval)
       }
