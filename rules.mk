@@ -23,16 +23,16 @@ SESSION_PKGS = datasets,utils,grDevices,graphics,stats,methods,tidyverse,$(PKG)
 
 .PHONY: .check check clean covr debug default fresh \
 htmlhelp manual publish qcheck qqcheck \
-revdeps rhub rsession .session session www win wind xcheck \
+revdeps rhub rsession session www win wind xcheck \
 xcovr vcheck ycheck
 
 .dist manual www: export R_QPDF=qpdf
 .headers: export LC_COLLATE=C
 .roxy .headers .dist manual www: export R_HOME=$(shell $(REXE) RHOME)
 .check: export FULL_TESTS=yes
-.dist .tests session .check: export R_KEEP_PKG_SOURCE=yes
-revdeps session .tests .check: export R_PROFILE_USER=$(CURDIR)/.Rprofile
-.tests session vcheck www manual: export R_LIBS=$(CURDIR)/library
+.dist .tests .session .check: export R_KEEP_PKG_SOURCE=yes
+revdeps .session .tests .check: export R_PROFILE_USER=$(CURDIR)/.Rprofile
+.tests .session vcheck www manual: export R_LIBS=$(CURDIR)/library
 .check: export R_CHECK_ENVIRON=$(CURDIR)/tools/check.env
 session: RSESSION = emacs -f R
 debug: RSESSION = R -d gdb
