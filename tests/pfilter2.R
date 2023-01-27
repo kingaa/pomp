@@ -40,6 +40,14 @@ c(A=pf,B=pf) -> pfs
 pfs |> filter_traj(format="d") |> head()
 pfs |> filter_traj(format="d") |> dim()
 pfs |> filter_traj(format="a") |> dim()
+list(A=pf,B=pf) |> conjoin() -> pfs2
+stopifnot(
+  all.equal(
+    pfs |> as.data.frame(),
+    pfs2 |> as.data.frame()
+  )
+)
+  
 
 try(pf |> forecast(format="l"))
 

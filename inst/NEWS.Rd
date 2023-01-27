@@ -3,7 +3,7 @@
 \section{Changes in \pkg{pomp} version 4.6.4}{
   \itemize{
     \item Better handling of \sQuote{listie}s (lists of \sQuote{pomp} objects).
-    \item New \code{combine} function to turn lists of \sQuote{pomp} objects into \sQuote{listies}.
+    \item New \code{conjoin} function to turn lists of \sQuote{pomp} objects into \sQuote{listies}.
   }
 }
 \section{Changes in \pkg{pomp} version 4.6.3}{

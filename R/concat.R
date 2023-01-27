@@ -28,7 +28,7 @@ setMethod(
   "concat",
   signature=signature(...="ANY"),
   definition=function (...) {
-    pStop_(sQuote("c")," is not defined for objects of mixed class.")
+    undef_method("c",..1)
   }
 )
 

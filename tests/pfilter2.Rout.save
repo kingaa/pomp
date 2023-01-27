@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -105,6 +103,14 @@ https://kingaa.github.io/pomp/blog.html.
 [1] 44  5
 > pfs |> filter_traj(format="a") |> dim()
 [1]  2  1 11  2
+> list(A=pf,B=pf) |> conjoin() -> pfs2
+> stopifnot(
++   all.equal(
++     pfs |> as.data.frame(),
++     pfs2 |> as.data.frame()
++   )
++ )
+>   
 > 
 > try(pf |> forecast(format="l"))
 Error in match.arg(format) : 'arg' should be one of "array", "data.frame"
