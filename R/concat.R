@@ -18,17 +18,19 @@ setGeneric(
 
 setMethod(
   "concat",
-  signature=signature(...="missing"),
-  definition=function (...) {
-    NULL   #nocov
-  }
-)
-
-setMethod(
-  "concat",
   signature=signature(...="ANY"),
   definition=function (...) {
-    undef_method("c",..1)
+    if (...length()==0L) {
+      cls <- "missing"
+    } else {
+      cls <- unique(vapply(list(...),class,character(1L)))
+    }
+    pStop_(
+      sQuote("c"),
+      " is not defined for objects of ",
+      ngettext(length(cls),"class ","classes "),
+      paste(sQuote(cls),collapse=", "),"."
+    )
   }
 )
 

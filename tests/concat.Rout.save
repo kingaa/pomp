@@ -30,9 +30,9 @@ https://kingaa.github.io/pomp/blog.html.
 
 > 
 > try(pomp:::concat())
-Error : 'c' is not defined for objects of mixed class.
+Error : 'c' is not defined for objects of class 'missing'.
 > try(pomp:::concat("a","b"))
-Error : 'c' is not defined for objects of mixed class.
+Error : 'c' is not defined for objects of class 'character'.
 > 
 > gompertz() -> gompertz
 > ou2() -> ou2

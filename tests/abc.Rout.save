@@ -199,7 +199,7 @@ Error : in 'abc': in proposal function: 'fraid not!
 +     "sigma_1","sigma_2","sigma_3","tau","x1_0","x2_0"),],1,diff)==0,
 +   apply(theta[c("alpha_1","alpha_2"),],1,diff) != 0)
 > try(c(abc1,3))
-Error : 'c' is not defined for objects of mixed class.
+Error : 'c' is not defined for objects of classes 'abcd_pomp', 'numeric'.
 > 
 > c(c(abc1,abc2),ou2)
 [[1]]
