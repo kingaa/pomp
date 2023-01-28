@@ -127,3 +127,20 @@ setMethod(
     }
   }
 )
+
+##' @rdname cond_logLik
+##' @export
+setMethod(
+  "cond_logLik",
+  signature=signature(object="pfilterList"),
+  definition=function (object, ...,
+    format = c("numeric", "data.frame")) {
+    format <- match.arg(format)
+    x <- lapply(object,cond_logLik)
+    if (format == "numeric") {
+      x
+    } else {
+      melt(x)
+    }
+  }
+)

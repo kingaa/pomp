@@ -94,3 +94,20 @@ setMethod(
     }
   }
 )
+
+##' @rdname eff_sample_size
+##' @export
+setMethod(
+  "eff_sample_size",
+  signature=signature(object="pfilterList"),
+  definition=function (object, ...,
+    format = c("numeric", "data.frame")) {
+    format <- match.arg(format)
+    x <- lapply(object,eff_sample_size)
+    if (format == "data.frame") {
+      melt(x)
+    } else {
+      x
+    }
+  }
+)

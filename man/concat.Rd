@@ -2,24 +2,38 @@
 % Please edit documentation in R/concat.R
 \name{concat}
 \alias{concat}
-\alias{concat,Pomp-method}
-\alias{concat,Pfilter-method}
-\alias{concat,Abc-method}
-\alias{concat,Mif2-method}
-\alias{concat,Pmcmc-method}
+\alias{c}
+\alias{c.Pomp}
 \title{Concatenate}
 \usage{
-\S4method{concat}{Pomp}(...)
+\method{c}{Pomp}(...)
 
-\S4method{concat}{Pfilter}(...)
-
-\S4method{concat}{Abc}(...)
-
-\S4method{concat}{Mif2}(...)
-
-\S4method{concat}{Pmcmc}(...)
+concat(...)
+}
+\arguments{
+\item{...}{elements to be recursively combined into a \sQuote{listie}}
 }
 \description{
-Methods to concatenate objects into useful listie
+Concatenate two or more \sQuote{pomp} objects into a list-like \sQuote{listie}.
 }
-\keyword{internal}
+\details{
+\code{concat} applied to one or more \sQuote{pomp} objects or lists of \sQuote{pomp} objects converts the list into a \sQuote{listie}.
+In particular, \code{concat(A,B,C)} is equivalent to \code{do.call(c,unlist(list(A,B,C)))}.
+}
+\examples{
+gompertz(sigma=2,tau=1) -> g
+Np <- c(low=100,med=1000,high=10000)
+lapply(
+  Np,
+  \(np) pfilter(g,Np=np)
+) |>
+  concat() -> pfs
+
+pfs
+coef(pfs)
+logLik(pfs)
+eff_sample_size(pfs)
+cond_logLik(pfs)
+
+pfs |> plot()
+}

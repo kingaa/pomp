@@ -5,6 +5,7 @@
 \alias{plot}
 \alias{plot,missing-method}
 \alias{plot,pomp_plottable-method}
+\alias{plot,pomp-method}
 \alias{plot,Pmcmc-method}
 \alias{plot,Abc-method}
 \alias{plot,Mif2-method}

@@ -105,7 +105,7 @@ https://kingaa.github.io/pomp/blog.html.
 [1] 44  5
 > pfs |> filter_traj(format="a") |> dim()
 [1]  2  1 11  2
-> list(A=pf,B=pf) |> conjoin() -> pfs2
+> list(A=pf,B=pf) |> concat() -> pfs2
 > stopifnot(
 +   all.equal(
 +     pfs |> as.data.frame(),

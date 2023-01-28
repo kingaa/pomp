@@ -29,14 +29,14 @@ dot with an underscore ('_'). For more information, see the pomp blog:
 https://kingaa.github.io/pomp/blog.html.
 
 > 
-> try(pomp:::concat())
+> try(pomp:::conc())
 Error : 'c' is not defined for objects of class 'missing'.
-> try(pomp:::concat("a","b"))
+> try(pomp:::conc("a","b"))
 Error : 'c' is not defined for objects of class 'character'.
 > 
 > gompertz() -> gompertz
 > ou2() -> ou2
-> pomp:::concat(a=ou2,c(b=gompertz,c=ou2))
+> pomp:::conc(a=ou2,c(b=gompertz,c=ou2))
 $a
 <object of class 'pomp'>
 
@@ -118,5 +118,4 @@ $b2
 +   rownames(cc)==names(coef(pfs[[1]])),
 +   colnames(cc)==names(pfs)
 + )
-> 
 > 

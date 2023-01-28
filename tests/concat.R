@@ -2,12 +2,12 @@ options(digits=3)
 
 library(pomp)
 
-try(pomp:::concat())
-try(pomp:::concat("a","b"))
+try(pomp:::conc())
+try(pomp:::conc("a","b"))
 
 gompertz() -> gompertz
 ou2() -> ou2
-pomp:::concat(a=ou2,c(b=gompertz,c=ou2))
+pomp:::conc(a=ou2,c(b=gompertz,c=ou2))
 c(a=ou2,c(b=gompertz,c=ou2)) |> class()
 c(a=ou2,b=ou2(alpha_1=-11)) -> pomps
 pomps |> coef()
@@ -38,4 +38,3 @@ stopifnot(
   rownames(cc)==names(coef(pfs[[1]])),
   colnames(cc)==names(pfs)
 )
-

@@ -4,7 +4,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._6._4:
 
         • Better handling of ‘listie’s (lists of ‘pomp’ objects).
 
-        • New ‘conjoin’ function to turn lists of ‘pomp’ objects into
+        • New ‘concat’ function to turn lists of ‘pomp’ objects into
           ‘listies’.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._6._3:

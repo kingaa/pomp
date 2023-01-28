@@ -1,130 +1,26 @@
 ##' Concatenate
 ##'
-##' Methods to concatenate objects into useful listie
+##' Concatenate two or more \sQuote{pomp} objects into a list-like \sQuote{listie}.
 ##'
 ##' @name concat
 ##' @rdname concat
-##' @include listie.R
-##' @importFrom stats setNames
-##' @keywords internal
+##' @aliases c
+##' @include listie.R conc.R
+##' @param ... elements to be recursively combined into a \sQuote{listie}
+##' @details
+##' \code{concat} applied to one or more \sQuote{pomp} objects or lists of \sQuote{pomp} objects converts the list into a \sQuote{listie}.
+##' In particular, \code{concat(A,B,C)} is equivalent to \code{do.call(c,unlist(list(A,B,C)))}.
+##' 
+##' @example examples/concat.R
 ##' 
 NULL
 
-setGeneric(
-  "concat",
-  function (...)
-    standardGeneric("concat")
-)
+##' @rdname concat
+##' @export
+c.Pomp <- function (...) conc(...)
 
-setMethod(
-  "concat",
-  signature=signature(...="ANY"),
-  definition=function (...) {
-    if (...length()==0L) {
-      cls <- "missing"
-    } else {
-      cls <- unique(vapply(list(...),class,character(1L)))
-    }
-    pStop_(
-      sQuote("c"),
-      " is not defined for objects of ",
-      ngettext(length(cls),"class ","classes "),
-      paste(sQuote(cls),collapse=", "),"."
-    )
-  }
-)
-
-flatten_list <- function (...) {
-  unlist(
-    lapply(
-      list(...),
-      \(z) {
-        if (is(z,"list")) {
-          setNames(as(z,"list"),names(z))
-        } else {
-          z
-        }
-      }
-    )
-  )
+##' @rdname concat
+##' @export
+concat <- function (...) {
+  do.call(conc,unlist(list(...)))
 }
-
-##' @rdname concat
-setMethod(
-  "concat",
-  signature=signature(...="Pomp"),
-  definition=function (...) {
-    y <- flatten_list(...)
-    setNames(
-      new(
-        "pompList",
-        lapply(y,as,"pomp")
-      ),
-      names(y)
-    )
-  }
-)
-
-##' @rdname concat
-setMethod(
-  "concat",
-  signature=signature(...="Pfilter"),
-  definition=function (...) {
-    y <- flatten_list(...)
-    setNames(
-      new(
-        "pfilterList",
-        lapply(y,as,"pfilterd_pomp")
-      ),
-      names(y)
-    )
-  }
-)
-
-##' @rdname concat
-setMethod(
-  "concat",
-  signature=signature(...="Abc"),
-  definition=function (...) {
-    y <- flatten_list(...)
-    setNames(
-      new(
-        "abcList",
-        lapply(y,as,"abcd_pomp")
-      ),
-      names(y)
-    )
-  }
-)
-
-##' @rdname concat
-setMethod(
-  "concat",
-  signature=signature(...="Mif2"),
-  definition=function (...) {
-    y <- flatten_list(...)
-    setNames(
-      new(
-        "mif2List",
-        lapply(y,as,"mif2d_pomp")
-      ),
-      names(y)
-    )
-  }
-)
-
-##' @rdname concat
-setMethod(
-  "concat",
-  signature=signature(...="Pmcmc"),
-  definition=function (...) {
-    y <- flatten_list(...)
-    setNames(
-      new(
-        "pmcmcList",
-        lapply(y,as,"pmcmcd_pomp")
-      ),
-      names(y)
-    )
-  }
-)

@@ -7,6 +7,7 @@
 \alias{eff_sample_size,bsmcd_pomp-method}
 \alias{eff_sample_size,pfilterd_pomp-method}
 \alias{eff_sample_size,wpfilterd_pomp-method}
+\alias{eff_sample_size,pfilterList-method}
 \title{Effective sample size}
 \usage{
 \S4method{eff_sample_size}{bsmcd_pomp}(object, ..., format = c("numeric", "data.frame"))
@@ -14,6 +15,8 @@
 \S4method{eff_sample_size}{pfilterd_pomp}(object, ..., format = c("numeric", "data.frame"))
 
 \S4method{eff_sample_size}{wpfilterd_pomp}(object, ..., format = c("numeric", "data.frame"))
+
+\S4method{eff_sample_size}{pfilterList}(object, ..., format = c("numeric", "data.frame"))
 }
 \arguments{
 \item{object}{result of a filtering computation}
