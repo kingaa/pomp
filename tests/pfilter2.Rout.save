@@ -105,6 +105,14 @@ https://kingaa.github.io/pomp/blog.html.
 [1] 44  5
 > pfs |> filter_traj(format="a") |> dim()
 [1]  2  1 11  2
+> pfs |> eff_sample_size(format="n") |> melt() |> dim()
+[1] 20  2
+> pfs |> eff_sample_size(format="d") |> dim()
+[1] 20  2
+> pfs |> cond_logLik(format="n") |> melt() |> dim()
+[1] 20  2
+> pfs |> cond_logLik(format="d") |> dim()
+[1] 20  2
 > list(A=pf,B=pf) |> concat() -> pfs2
 > stopifnot(
 +   all.equal(

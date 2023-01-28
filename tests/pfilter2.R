@@ -40,6 +40,10 @@ c(A=pf,B=pf) -> pfs
 pfs |> filter_traj(format="d") |> head()
 pfs |> filter_traj(format="d") |> dim()
 pfs |> filter_traj(format="a") |> dim()
+pfs |> eff_sample_size(format="n") |> melt() |> dim()
+pfs |> eff_sample_size(format="d") |> dim()
+pfs |> cond_logLik(format="n") |> melt() |> dim()
+pfs |> cond_logLik(format="d") |> dim()
 list(A=pf,B=pf) |> concat() -> pfs2
 stopifnot(
   all.equal(
