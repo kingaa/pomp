@@ -24,7 +24,3 @@ try(probe.sd())
 try(probe.var())
 try(rw.sd())
 try(saved.states())
-stopifnot(
-  identical(rw.sd(a=3),rw_sd(a=3)),
-  identical(rw.sd(a=3,b=ivp(x,1)),rw_sd(a=3,b=ivp(x,1)))
-)

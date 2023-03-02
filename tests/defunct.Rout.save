@@ -1,0 +1,126 @@
+
+R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"
+Copyright (C) 2022 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+
+Welcome to pomp!
+
+As of version 4.6, no user-visible pomp function has a name that
+includes a dot ('.'). Function names have been changed to replace the
+dot with an underscore ('_'). For more information, see the pomp blog:
+https://kingaa.github.io/pomp/blog.html.
+
+> 
+> try(as.pomp())
+Error : 'as.pomp' is defunct.
+Use 'as_pomp' instead.
+See help("Defunct")
+> try(bspline.basis())
+Error : 'bspline.basis' is defunct.
+Use 'bspline_basis' instead.
+See help("Defunct")
+> try(cond.logLik())
+Error : 'cond.logLik' is defunct.
+Use 'cond_logLik' instead.
+See help("Defunct")
+> try(eff.sample.size())
+Error : 'eff.sample.size' is defunct.
+Use 'eff_sample_size' instead.
+See help("Defunct")
+> try(filter.mean())
+Error : 'filter.mean' is defunct.
+Use 'filter_mean' instead.
+See help("Defunct")
+> try(filter.traj())
+Error : 'filter.traj' is defunct.
+Use 'filter_traj' instead.
+See help("Defunct")
+> try(mvn.diag.rw())
+Error : 'mvn.diag.rw' is defunct.
+Use 'mvn_diag_rw' instead.
+See help("Defunct")
+> try(mvn.rw())
+Error : 'mvn.rw' is defunct.
+Use 'mvn_rw' instead.
+See help("Defunct")
+> try(mvn.rw.adaptive())
+Error : 'mvn.rw.adaptive' is defunct.
+Use 'mvn_rw_adaptive' instead.
+See help("Defunct")
+> try(periodic.bspline.basis())
+Error : 'periodic.bspline.basis' is defunct.
+Use 'periodic_bspline_basis' instead.
+See help("Defunct")
+> try(pred.mean())
+Error : 'pred.mean' is defunct.
+Use 'pred_mean' instead.
+See help("Defunct")
+> try(pred.var())
+Error : 'pred.var' is defunct.
+Use 'pred_var' instead.
+See help("Defunct")
+> try(probe.acf())
+Error : 'probe.acf' is defunct.
+Use 'probe_acf' instead.
+See help("Defunct")
+> try(probe.ccf())
+Error : 'probe.ccf' is defunct.
+Use 'probe_ccf' instead.
+See help("Defunct")
+> try(probe.marginal())
+Error : 'probe.marginal' is defunct.
+Use 'probe_marginal' instead.
+See help("Defunct")
+> try(probe.mean())
+Error : 'probe.mean' is defunct.
+Use 'probe_mean' instead.
+See help("Defunct")
+> try(probe.median())
+Error : 'probe.median' is defunct.
+Use 'probe_median' instead.
+See help("Defunct")
+> try(probe.nlar())
+Error : 'probe.nlar' is defunct.
+Use 'probe_nlar' instead.
+See help("Defunct")
+> try(probe.period())
+Error : 'probe.period' is defunct.
+Use 'probe_period' instead.
+See help("Defunct")
+> try(probe.quantile())
+Error : 'probe.quantile' is defunct.
+Use 'probe_quantile' instead.
+See help("Defunct")
+> try(probe.sd())
+Error : 'probe.sd' is defunct.
+Use 'probe_sd' instead.
+See help("Defunct")
+> try(probe.var())
+Error : 'probe.var' is defunct.
+Use 'probe_var' instead.
+See help("Defunct")
+> try(rw.sd())
+Error : 'rw.sd' is defunct.
+Use 'rw_sd' instead.
+See help("Defunct")
+> try(saved.states())
+Error : 'saved.states' is defunct.
+Use 'saved_states' instead.
+See help("Defunct")
+> 

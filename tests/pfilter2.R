@@ -149,7 +149,7 @@ pf |>
   saved_states(format="d") |>
   pivot_wider(names_from="variable") |>
   group_by(time) |>
-  summarize(
+  reframe(
     p=c(0.05,0.5,0.95),
     x1=wquant(x1,weights=exp(.log.weight),probs=p),
     x2=wquant(x2,weights=exp(.log.weight),probs=p)
