@@ -1,3 +1,4 @@
+\dontrun{
 if (require(ggplot2) && require(tidyr)) {
 
   ebolaWA2014 |>
@@ -13,3 +14,4 @@ if (require(ggplot2) && require(tidyr)) {
 plot(ebolaModel(country="SLE"))
 plot(ebolaModel(country="GIN"))
 plot(ebolaModel(country="LBR"))
+}

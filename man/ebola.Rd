@@ -64,6 +64,7 @@ Here, \eqn{p(R_t | C_t)} is negative binomial with mean \eqn{\rho C_t} and dispe
 }
 
 \examples{
+\dontrun{
 if (require(ggplot2) && require(tidyr)) {
 
   ebolaWA2014 |>
@@ -79,6 +80,7 @@ if (require(ggplot2) && require(tidyr)) {
 plot(ebolaModel(country="SLE"))
 plot(ebolaModel(country="GIN"))
 plot(ebolaModel(country="LBR"))
+}
 }
 \references{
 \King2015
