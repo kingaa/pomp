@@ -2,44 +2,45 @@
 ** package 'pomp' successfully unpacked and MD5 sums checked
 ** using staged installation
 ** libs
-make[1]: Entering directory '/tmp/RtmpCaapKV/R.INSTALL463bc7d9fca2a/pomp/src'
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c bspline.c -o bspline.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c distributions.c -o distributions.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c dmeasure.c -o dmeasure.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c dprior.c -o dprior.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c dprocess.c -o dprocess.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c emeasure.c -o emeasure.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c euler.c -o euler.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c gompertz.c -o gompertz.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c init.c -o init.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c lookup_table.c -o lookup_table.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c mif2.c -o mif2.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c ou2.c -o ou2.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c partrans.c -o partrans.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c pfilter.c -o pfilter.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c pomp_fun.c -o pomp_fun.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c probe.c -o probe.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c probe_acf.c -o probe_acf.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c probe_marginal.c -o probe_marginal.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c probe_nlar.c -o probe_nlar.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c resample.c -o resample.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c rinit.c -o rinit.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c rmeasure.c -o rmeasure.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c rprior.c -o rprior.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c rprocess.c -o rprocess.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c simulate.c -o simulate.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c skeleton.c -o skeleton.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c sobolseq.c -o sobolseq.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c ssa.c -o ssa.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c synth_lik.c -o synth_lik.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c trajectory.c -o trajectory.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c transformations.c -o transformations.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c userdata.c -o userdata.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c vmeasure.c -o vmeasure.o
-gcc -I"/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c wpfilter.c -o wpfilter.o
-gcc -shared -L/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/lib -L/usr/local/lib64 -o pomp.so bspline.o distributions.o dmeasure.o dprior.o dprocess.o emeasure.o euler.o gompertz.o init.o lookup_table.o mif2.o ou2.o partrans.o pfilter.o pomp_fun.o probe.o probe_acf.o probe_marginal.o probe_nlar.o resample.o rinit.o rmeasure.o rprior.o rprocess.o simulate.o skeleton.o sobolseq.o ssa.o synth_lik.o trajectory.o transformations.o userdata.o vmeasure.o wpfilter.o -lopenblas -lgfortran -lm -lquadmath -L/usr/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/lib -lR
-make[1]: Leaving directory '/tmp/RtmpCaapKV/R.INSTALL463bc7d9fca2a/pomp/src'
-installing to /home/kingaa/projects/Rpkg/pomp/revdep/Library/00LOCK-pomp/00new/pomp/libs
+make[1]: Entering directory '/tmp/RtmpvDFUyU/R.INSTALL12a56034bbbb7a/pomp/src'
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c bspline.c -o bspline.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c distributions.c -o distributions.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c dmeasure.c -o dmeasure.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c dprior.c -o dprior.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c dprocess.c -o dprocess.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c emeasure.c -o emeasure.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c euler.c -o euler.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c gompertz.c -o gompertz.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c init.c -o init.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c logmeanexp.c -o logmeanexp.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c lookup_table.c -o lookup_table.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c mif2.c -o mif2.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c ou2.c -o ou2.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c partrans.c -o partrans.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c pfilter.c -o pfilter.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c pomp_fun.c -o pomp_fun.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c probe.c -o probe.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c probe_acf.c -o probe_acf.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c probe_marginal.c -o probe_marginal.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c probe_nlar.c -o probe_nlar.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c resample.c -o resample.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c rinit.c -o rinit.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c rmeasure.c -o rmeasure.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c rprior.c -o rprior.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c rprocess.c -o rprocess.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c simulate.c -o simulate.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c skeleton.c -o skeleton.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c sobolseq.c -o sobolseq.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c ssa.c -o ssa.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c synth_lik.c -o synth_lik.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c trajectory.c -o trajectory.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c transformations.c -o transformations.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c userdata.c -o userdata.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c vmeasure.c -o vmeasure.o
+gcc -I"/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/include" -DNDEBUG   -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c wpfilter.c -o wpfilter.o
+gcc -shared -L/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/lib -L/usr/local/lib64 -o pomp.so bspline.o distributions.o dmeasure.o dprior.o dprocess.o emeasure.o euler.o gompertz.o init.o logmeanexp.o lookup_table.o mif2.o ou2.o partrans.o pfilter.o pomp_fun.o probe.o probe_acf.o probe_marginal.o probe_nlar.o resample.o rinit.o rmeasure.o rprior.o rprocess.o simulate.o skeleton.o sobolseq.o ssa.o synth_lik.o trajectory.o transformations.o userdata.o vmeasure.o wpfilter.o -lopenblas -lgfortran -lm -lquadmath -L/export/local/apps/R/ubuntu_20.04/4.2.2/lib64/R/lib -lR
+make[1]: Leaving directory '/tmp/RtmpvDFUyU/R.INSTALL12a56034bbbb7a/pomp/src'
+installing to /userdata/kingaa/projects/Rpkg/pomp/revdep/Library/00LOCK-pomp/00new/pomp/libs
 ** R
 ** data
 *** moving datasets to lazyload DB

@@ -1,6 +1,10 @@
+  Running ‘mif2.R’
+  Comparing ‘mif2.Rout’ to ‘mif2.Rout.save’ ... OK
   Running ‘pfilter.R’
-  Comparing ‘pfilter.Rout’ to ‘pfilter.Rout.save’ ...
+  Comparing ‘pfilter.Rout’ to ‘pfilter.Rout.save’ ... OK
+
 See
-  '/home/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck/00check.log'
+  '/userdata/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck/00check.log'
 for details.
+
 

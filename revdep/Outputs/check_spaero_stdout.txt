@@ -1,4 +1,4 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck'
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck'
 * using R version 4.2.2 (2022-10-31)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * using session charset: UTF-8
@@ -18,7 +18,8 @@
 * checking whether package 'spaero' can be installed ... OK
 * checking installed package size ... OK
 * checking package directory ... OK
-* checking for future file timestamps ... OK
+* checking for future file timestamps ... NOTE
+unable to verify current time
 * checking 'build' directory ... OK
 * checking DESCRIPTION meta-information ... OK
 * checking top-level files ... OK
@@ -56,14 +57,17 @@ Namespace in Imports field not imported from: ‘utils’
 * checking installed files from 'inst/doc' ... OK
 * checking files in 'vignettes' ... OK
 * checking examples ... OK
+Examples with CPU (user + system) or elapsed time > 5s
+                  user system elapsed
+create_simulator 2.185  5.256   1.303
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
  OK
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK
-* checking re-building of vignette outputs ... [21s/20s] OK
+* checking re-building of vignette outputs ... [48s/21s] OK
 * checking PDF version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 2 NOTEs
+Status: 3 NOTEs

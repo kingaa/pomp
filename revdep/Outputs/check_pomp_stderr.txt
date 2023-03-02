@@ -1,4 +1,4 @@
-  Running ‘R_v_C.R’ [16s/12s]
+  Running ‘R_v_C.R’ [26s/12s]
   Running ‘abc.R’
   Comparing ‘abc.Rout’ to ‘abc.Rout.save’ ... OK
   Running ‘baddm.R’
@@ -23,9 +23,9 @@
   Comparing ‘csnippet.Rout’ to ‘csnippet.Rout.save’ ... OK
   Running ‘dacca.R’
   Comparing ‘dacca.Rout’ to ‘dacca.Rout.save’ ... OK
-  Running ‘deprecated.R’
-  Comparing ‘deprecated.Rout’ to ‘deprecated.Rout.save’ ... OK
-  Running ‘dp.R’
+  Running ‘defunct.R’
+  Comparing ‘defunct.Rout’ to ‘defunct.Rout.save’ ... OK
+  Running ‘dp.R’ [147s/12s]
   Comparing ‘dp.Rout’ to ‘dp.Rout.save’ ... OK
   Running ‘dprocess.R’
   Comparing ‘dprocess.Rout’ to ‘dprocess.Rout.save’ ... OK
@@ -39,7 +39,7 @@
   Comparing ‘flow.Rout’ to ‘flow.Rout.save’ ... OK
   Running ‘getting_started.R’
   Comparing ‘getting_started.Rout’ to ‘getting_started.Rout.save’ ... OK
-  Running ‘gillespie.R’ [19s/12s]
+  Running ‘gillespie.R’ [41s/13s]
   Comparing ‘gillespie.Rout’ to ‘gillespie.Rout.save’ ... OK
   Running ‘gompertz.R’
   Comparing ‘gompertz.Rout’ to ‘gompertz.Rout.save’ ... OK
@@ -166,7 +166,7 @@
   Comparing ‘wquant.Rout’ to ‘wquant.Rout.save’ ... OK
 
 See
-  '/home/kingaa/projects/Rpkg/pomp/revdep/pomp.Rcheck/00check.log'
+  '/userdata/kingaa/projects/Rpkg/pomp/revdep/pomp.Rcheck/00check.log'
 for details.
 
 
