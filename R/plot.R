@@ -180,7 +180,7 @@ plotpomp_internal <- function (x, variables,
     on.exit(par(oldpar))
     for (i in seq_len(nser)) {
       plot.default(
-        x=range(time),y=range(x[[i]]),
+        x=range(time),y=range(x[[i]],na.rm=TRUE),
         axes=FALSE,xlab="",ylab="",log=log,
         col=col,bg=bg,pch=pch,ann=ann,type="n",...
       )
