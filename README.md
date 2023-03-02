@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/kingaa/pomp/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/kingaa/pomp/actions/workflows/r-cmd-check.yml)
 [![binary-build](https://github.com/kingaa/pomp/actions/workflows/binary-build.yml/badge.svg)](https://github.com/kingaa/pomp/actions/workflows/binary-build.yml)
 [![test-coverage](https://github.com/kingaa/pomp/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/kingaa/pomp/actions/workflows/test-coverage.yml)
-[![codecov](https://codecov.io/gh/kingaa/pomp/branch/master/graph/badge.svg)](https://codecov.io/gh/kingaa/pomp)
+[![codecov](https://codecov.io/gh/kingaa/pomp/branch/master/graph/badge.svg)](https://app.codecov.io/gh/kingaa/pomp)
 ![CRAN mirror monthly downloads](https://cranlogs.r-pkg.org/badges/last-month/pomp)
 ![CRAN mirror total downloads](https://cranlogs.r-pkg.org/badges/grand-total/pomp)
 [![Dependencies](https://tinyverse.netlify.com/badge/pomp)](https://cran.r-project.org/package=pomp)

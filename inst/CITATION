@@ -7,7 +7,7 @@ c(
     header=paste("To cite the",sQuote("pomp"),"package in publications, use:"),
     bibtype = "Article",
     title = "Statistical Inference for Partially Observed {Markov} Processes via the {R} Package {pomp}",
-    author=personList(
+    author=c(
       as.person("Aaron A. King"),
       as.person("Dao Nguyen"),
       as.person("Edward L. Ionides")
@@ -29,7 +29,7 @@ c(
     header="Additionally, consider citing the package itself:",
     bibtype="Manual",
     title="{pomp}: {Statistical} Inference for Partially Observed {Markov} Processes",
-    author=personList(
+    author=c(
       as.person("Aaron A. King"),
       as.person("Edward L. Ionides"),
       as.person("Carles Martinez Bret\\'o"),
