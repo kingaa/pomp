@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 4.7.0}{
+  \itemize{
+    \item Functions with names.that.contain.dots that were been deprecated in version 4.5.1 are now defunct.
+    Attempts to use such functions will generate an error with a message indicating the replacement function.
+    \item \code{plot} now removes \code{NA}.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.6.4}{
   \itemize{
     \item Better handling of \sQuote{listie}s (lists of \sQuote{pomp} objects).
