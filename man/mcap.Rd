@@ -18,7 +18,7 @@ mcap(logLik, parameter, level = 0.95, span = 0.75, Ngrid = 1000)
 \item{Ngrid}{integer; the number of points to evaluate the smoothed profile.}
 }
 \value{
-\code{mcap} returns a list including the' \code{\link[stats]{loess}}-smoothed
+\code{mcap} returns a list including the \code{\link[stats]{loess}}-smoothed
 profile, a quadratic approximation, and the constructed confidence interval.
 }
 \description{

@@ -17,7 +17,7 @@
 ##' \Ionides2017
 ##' 
 ##' @return
-##' \code{mcap} returns a list including the' \code{\link[stats]{loess}}-smoothed
+##' \code{mcap} returns a list including the \code{\link[stats]{loess}}-smoothed
 ##' profile, a quadratic approximation, and the constructed confidence interval.
 ##' 
 ##' @author Edward L. Ionides
