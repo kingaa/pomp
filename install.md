@@ -36,6 +36,13 @@ Note that, after installing **Rtools**, it is necessary to edit the system path,
 
 A video tutorial on installing **Rtools** is [available here](https://youtu.be/lmIhiT_QsPE){:target="_blank"}.
 
+To test your ability to compile C and FORTRAN code, run the following in an **R** session:
+```
+source("https://kingaa.github.io/scripts/hello.R",echo=TRUE)
+```
+This script attempts to compile two simple programs, one in C and one in FORTRAN.
+Upon success, you'll see two "Hello!" messages.
+
 
 ## Important note for Mac OS X users
 
@@ -44,6 +51,13 @@ These facilities are provided in the <code>Xcode</code> app, which is free and c
 
 Some users report problems installing **pomp** from source due to lack of an appropriate **gfortran** installation, which is not included by default in all versions of **Xcode**.
 If you have this problem, see [these instructions](https://mac.r-project.org/tools/){:target="_blank"}.
+
+To test your ability to compile C and FORTRAN code, run the following in an **R** session:
+```
+source("https://kingaa.github.io/scripts/hello.R",echo=TRUE)
+```
+This script attempts to compile two simple programs, one in C and one in FORTRAN.
+Upon success, you'll see two "Hello!" messages.
 
 ## Important note for Linux users
 
@@ -62,4 +76,3 @@ sudo yum install gcc-gfortran
 **pomp** version 2 introduced a number of changes that were not compatible with earlier versions.
 This means that code that ran under versions &lt;2 may break under up-to-date versions of **pomp**.
 An [upgrade guide](https://kingaa.github.io/pomp/vignettes/upgrade_guide.html){:target="_blank"} is available to help you transition your codes to the new version.
-
