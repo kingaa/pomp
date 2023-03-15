@@ -166,6 +166,7 @@ tmof_internal <- function (
       " are needed basic components.")
 
   fail.value <- as.numeric(fail.value)
+  .gnsi <- TRUE
 
   est <- as.character(est)
   est <- est[nzchar(est)]
@@ -185,14 +186,15 @@ tmof_internal <- function (
 
   ofun <- function (par = numeric(0)) {
     params[idx] <- par
-    coef(object,transform=TRUE) <<- params
-    loglik <<- traj_match_logLik(object,ode_control=ode_control)
+    coef(object,transform=TRUE,.gnsi=.gnsi) <<- params
+    loglik <<- traj_match_logLik(object,ode_control=ode_control,.gnsi=.gnsi)
+    .gnsi <<- FALSE
     if (is.finite(loglik) || is.na(fail.value)) -loglik else fail.value
   }
 
   environment(ofun) <- list2env(
     list(object=object,fail.value=fail.value,params=params,
-      idx=idx,loglik=loglik,ode_control=ode_control),
+      idx=idx,loglik=loglik,ode_control=ode_control,.gnsi=.gnsi),
     parent=parent.frame(2)
   )
 
@@ -200,10 +202,10 @@ tmof_internal <- function (
 
 }
 
-traj_match_logLik <- function (object, ode_control) {
+traj_match_logLik <- function (object, ode_control, .gnsi = TRUE) {
   object@states <- do.call(
     flow,
-    c(list(object,x0=rinit(object)),ode_control)
+    c(list(object,x0=rinit(object),.gnsi=.gnsi),ode_control),
   )
   sum(
     dmeasure(
@@ -212,7 +214,8 @@ traj_match_logLik <- function (object, ode_control) {
       x=object@states,
       times=object@times,
       params=object@params,
-      log=TRUE
+      log=TRUE,
+      .gnsi=.gnsi
     )
   )
 }

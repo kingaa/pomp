@@ -260,10 +260,11 @@ smof_internal <- function (object,
 
   ker <- reuman_kernel(kernel.width)
   discrep <- spect_discrep(object,ker=ker,weights=weights)
+  .gnsi <- TRUE
 
   ofun <- function (par = numeric(0)) {
     params[idx] <- par
-    coef(object,transform=TRUE) <<- params
+    coef(object,transform=TRUE,.gnsi=.gnsi) <<- params
     object@simspec <- compute_spect_sim(
       object,
       vars=object@vars,
@@ -272,16 +273,18 @@ smof_internal <- function (object,
       seed=object@seed,
       transform.data=object@transform.data,
       detrend=object@detrend,
-      ker=ker
+      ker=ker,
+      .gnsi=.gnsi
     )
     discrep <<- spect_discrep(object,ker=ker,weights=weights)
+    .gnsi <<- FALSE
     if (is.finite(discrep) || is.na(fail.value)) discrep else fail.value #nocov
   }
 
   environment(ofun) <- list2env(
     list(object=object,fail.value=fail.value,
       params=params,idx=idx,discrep=discrep,seed=seed,ker=ker,
-      weights=weights),
+      .gnsi=.gnsi,weights=weights),
     parent=parent.frame(2)
   )
 
@@ -291,7 +294,6 @@ smof_internal <- function (object,
 
 ## compute a measure of the discrepancies between simulations and data
 spect_discrep <- function (object, ker, weights) {
-
   discrep <- array(dim=c(length(object@freq),length(object@vars)))
   sim.means <- colMeans(object@simspec)
   for (j in seq_along(object@freq)) {
@@ -301,9 +303,7 @@ spect_discrep <- function (object, ker, weights) {
     }
     discrep[j,] <- weights[j]*discrep[j,]
   }
-
   sum(discrep)
-
 }
 
 ##' @rdname spect

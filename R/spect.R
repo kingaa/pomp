@@ -192,7 +192,7 @@ setMethod(
 )
 
 spect_internal <- function (object, vars, kernel.width, nsim, seed = NULL,
-  transform.data, detrend, ..., verbose) {
+  transform.data, detrend, ..., .gnsi = TRUE, verbose) {
 
   verbose <- as.logical(verbose)
 
@@ -240,8 +240,10 @@ spect_internal <- function (object, vars, kernel.width, nsim, seed = NULL,
     seed=seed,
     transform.data=transform.data,
     detrend=detrend,
-    ker=ker
+    ker=ker,
+    .gnsi=.gnsi
   )
+  .gnsi <- FALSE
 
   pvals <- numeric(length(vars)+1)
   names(pvals) <- c(vars,"all")
@@ -311,11 +313,14 @@ compute_spect_data <- function (object, vars, transform.data, detrend, ker) {
 }
 
 compute_spect_sim <- function (object, params, vars, nsim, seed,
-  transform.data, detrend, ker) {
+  transform.data, detrend, ker, .gnsi = TRUE) {
 
   sims <- tryCatch(
     {
-      s <- freeze(.Call(P_do_simulate,object,params,nsim,0L,gnsi=TRUE),seed=seed)
+      s <- freeze(
+        .Call(P_do_simulate,object,params,nsim,0L,gnsi=.gnsi),
+        seed=seed
+      )
       s$obs[vars,,,drop=FALSE]
     },
     error = function (e) pStop_("in simulation: ",

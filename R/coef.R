@@ -57,7 +57,7 @@ setMethod(
   definition=function (object, pars, transform = FALSE, ...) {
     if (length(object@params)>0) {
       if (transform)
-        params <- partrans(object,params=object@params,dir="toEst")
+        params <- partrans(object,params=object@params,...,dir="toEst")
       else
         params <- object@params
       if (missing(pars))
@@ -100,7 +100,7 @@ setMethod(
     if (missing(pars)) {          ## replace the whole params slot with 'value'
       if (length(value)>0) {
         if (transform)
-          value <- partrans(object,params=value,dir="fromEst")
+          value <- partrans(object,params=value,...,dir="fromEst")
         pars <- names(value)
         if (is.null(pars)) {
           pStop("coef<-",sQuote("value")," must be a named vector.")
@@ -114,7 +114,7 @@ setMethod(
         val <- numeric(length(pars))
         names(val) <- pars
         val[] <- value
-        if (transform) val <- partrans(object,params=val,dir="fromEst")
+        if (transform) val <- partrans(object,params=val,...,dir="fromEst")
         object@params <- val
       } else { ## pre-existing params slot
         params <- coef(object,transform=transform)
@@ -132,7 +132,7 @@ setMethod(
           params <- c(params,val[excl])
         }
         params[pars] <- val
-        if (transform) params <- partrans(object,params=params,dir="fromEst")
+        if (transform) params <- partrans(object,params=params,...,dir="fromEst")
         object@params <- params
       }
     }

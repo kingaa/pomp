@@ -199,6 +199,7 @@ pmof_internal <- function (object,
 
   fail.value <- as.numeric(fail.value)
   loglik <- logLik(object)
+  .gnsi <- TRUE
 
   est <- as.character(est)
   est <- est[nzchar(est)]
@@ -216,13 +217,14 @@ pmof_internal <- function (object,
 
   ofun <- function (par = numeric(0)) {
     params[idx] <- par
-    coef(object,transform=TRUE) <<- params
-    loglik <<- probe.eval(object)
+    coef(object,transform=TRUE,.gnsi=.gnsi) <<- params
+    loglik <<- probe.eval(object,.gnsi=.gnsi)
+    .gnsi <<- FALSE
     if (is.finite(loglik) || is.na(fail.value)) -loglik else fail.value
   }
 
   environment(ofun) <- list2env(
-    list(object=object,fail.value=fail.value,
+    list(object=object,fail.value=fail.value,.gnsi=.gnsi,
       params=params,idx=idx,loglik=loglik,seed=seed),
     parent=parent.frame(2)
   )
@@ -231,13 +233,13 @@ pmof_internal <- function (object,
 
 }
 
-probe.eval <- function (object) {
+probe.eval <- function (object, .gnsi = TRUE) {
 
   ## apply probes to model simulations
   simvals <- tryCatch(
     freeze(
       .Call(P_apply_probe_sim,object=object,nsim=object@nsim,params=object@params,
-        probes=object@probes,datval=object@datvals,.gnsi=TRUE),
+        probes=object@probes,datval=object@datvals,.gnsi=.gnsi),
       seed=object@seed
     ),
     error = function (e) pStop_("applying probes to simulated data: ",conditionMessage(e))
