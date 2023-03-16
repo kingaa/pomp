@@ -43,7 +43,7 @@ vmeasure(pf) |> melt() -> vf
 vf |> select(-time,-.id) |> distinct()
 
 bind_rows(
-  sim=pf |>
+  sim=sm |>
     as.data.frame() |>
     pivot_longer(c(x1,x2,y1,y2)),
   forecast=fc,

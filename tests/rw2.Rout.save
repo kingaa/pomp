@@ -75,7 +75,7 @@ https://kingaa.github.io/pomp/blog.html.
 4   y2   y2     1
 > 
 > bind_rows(
-+   sim=pf |>
++   sim=sm |>
 +     as.data.frame() |>
 +     pivot_longer(c(x1,x2,y1,y2)),
 +   forecast=fc,
