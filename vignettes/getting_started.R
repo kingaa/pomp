@@ -18,9 +18,12 @@ bigtick <- Sys.time()
 if (file.exists("CLUSTER.R")) {
   source("CLUSTER.R")
 } else {
-  library(doParallel)
-  registerDoParallel()
+  library(doFuture)
+  registerDoFuture()
+  plan(multicore)
 }
+library(foreach)
+library(iterators)
 library(doRNG)
 registerDoRNG(348885445L)
 
@@ -60,7 +63,7 @@ as(sim1,"data.frame")
 
 
 ## ----sim1_plot2---------------------------------------------------------------
-  ggplot(data=as.data.frame(sim1),aes(x=time,y=N))+
+ggplot(data=as.data.frame(sim1),aes(x=time,y=N))+
   geom_line()
 
 
@@ -97,24 +100,22 @@ simulate(
 ## ----sim2_print_plot----------------------------------------------------------
 as(sim2,"data.frame")
 plot(sim2)
-ggplot(data=gather(
-  as(sim2,"data.frame"),
-  variable,value,-time),
-  aes(x=time,y=value,color=variable))+
+ggplot(data=pivot_longer(as(sim2,"data.frame"),-time),
+  aes(x=time,y=value,color=name))+
   geom_line()
 
 
 ## ----sim2_sim1----------------------------------------------------------------
 simulate(sim2,nsim=20) -> sims
 
-ggplot(data=gather(
-  as.data.frame(sims),
-  variable,value,Y,N
-),
-  aes(x=time,y=value,color=variable,
-    group=interaction(.id,variable)))+
+ggplot(data=pivot_longer(
+         as.data.frame(sims),
+         c(Y,N)
+       ),
+  aes(x=time,y=value,color=name,
+    group=interaction(.L1,name)))+
   geom_line()+
-  facet_grid(variable~.,scales="free_y")+
+  facet_grid(name~.,scales="free_y")+
   labs(y="",color="")
 
 
@@ -124,13 +125,13 @@ p["sigma",] <- c(0.05,0.25,1)
 colnames(p) <- LETTERS[1:3]
 
 simulate(sim2,params=p,format="data.frame") -> sims
-sims <- gather(sims,variable,value,Y,N)
-ggplot(data=sims,aes(x=time,y=value,color=variable,
-  group=interaction(.id,variable)))+
+sims <- pivot_longer(sims,c(Y,N))
+ggplot(data=sims,aes(x=time,y=value,color=name,
+  group=interaction(.id,name)))+
   geom_line()+
   scale_y_log10()+
   expand_limits(y=1)+
-  facet_grid(variable~.id,scales="free_y")+
+  facet_grid(name~.id,scales="free_y")+
   labs(y="",color="")
 
 
@@ -376,7 +377,7 @@ ofun |>
         pop=as.double(pop)
       )
   ) |>
-  spread(.id,pop) |>
+  pivot_wider(names_from=.id,values_from=pop) |>
   ggplot(aes(x=year))+
   geom_line(aes(y=prediction))+
   geom_point(aes(y=data))+
@@ -444,8 +445,6 @@ mf1 |> pfilter() |> logLik() |> replicate(n=5) |> logmeanexp(se=TRUE)
 
 ## ----parus_mif1_eval----------------------------------------------------------
 bake("parus_mif1.rds",{
-  library(foreach)
-  
   foreach (guess=iter(guesses,"row"),
     .combine=c, .packages=c("pomp"),
     .errorhandling="remove", .inorder=FALSE) %dopar% {
@@ -461,20 +460,19 @@ mifs |>
   traces() |>
   melt() |>
   filter(variable!="b") |>
-  ggplot(aes(x=iteration,y=value,group=L1,color=L1))+
+  ggplot(aes(x=iteration,y=value,group=.L1,color=.L1))+
   geom_line()+
   facet_wrap(~variable,scales="free_y")+
   guides(color="none")
 
 
-
 ## ----mif_plot3----------------------------------------------------------------
 mifs |> 
   as("data.frame") |> 
-  gather(variable,value,-year,-.id) |>
-  ggplot(aes(x=year,y=value,group=.id,color=.id))+
+  pivot_longer(-c(.L1,year)) |>
+  ggplot(aes(x=year,y=value,group=.L1,color=.L1))+
   geom_line()+
-  facet_wrap(~variable,scales="free_y",ncol=1)+
+  facet_wrap(~name,scales="free_y",ncol=1)+
   guides(color="none")
 
 
@@ -670,7 +668,7 @@ logmeanexp(ll,ess=TRUE)
 fts |>
   lapply(getElement,"traj") |>
   melt() |>
-  rename(.id=L1) |>
+  rename(.id=.L1) |>
   select(-rep) |>
   left_join(
     tibble(
