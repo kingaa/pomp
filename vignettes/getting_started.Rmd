@@ -1294,23 +1294,24 @@ estimates |>
 
 The above `foreach` call, as written, will result in *serial*, not parallel, execution of the `r nrow(guesses)` computations.
 To actually parallelize, one must *register* a *parallel backend*.
-A good first choice is **doParallel**, which is a separate package that you must explicitly load.
+A good first choice is **doFuture**, which is a separate package that you must explicitly load.
 The following chunk of code shows how to do this, and prints the number of "workers" that result.
 
 ```{r eval=FALSE}
 #| purl: false
-library(doParallel)
-registerDoParallel()
+library(doFuture)
+registerDoFuture()
+plan(multicore)
 getDoParWorkers()
 ```
 
-**doParallel** allows one to exploit multiple cores on a single machine, or to expand a parallel computation across a cluster.
+**doFuture** allows one to exploit multiple cores on a single machine or to expand a parallel computation across a cluster.
 
 ---------------------------------------
 
 #### Exercise
 
-Use **doParallel** to parallelize the estimation of likelihood for your negative-binomial model.
+Use **doFuture** to parallelize the estimation of likelihood for your negative-binomial model.
 
 ---------------------------------------
 
@@ -1882,16 +1883,16 @@ The [bibliography](https://kingaa.github.io/pomp/biblio.html) has links to peer-
 
 This document was produced with the following software versions:
 
-|                |                                  |
-|:---------------|:---------------------------------|
-| **R**          | `r getRversion()`                |
-| **pomp**       | `r packageVersion("pomp")`       |
-| **coda**       | `r packageVersion("coda")`       |
-| **foreach**    | `r packageVersion("foreach")`    |
-| **doParallel** | `r packageVersion("doParallel")` |
-| **doRNG**      | `r packageVersion("doRNG")`      |
-| **subplex**    | `r packageVersion("subplex")`    |
-| **tidyverse**  | `r packageVersion("tidyverse")`  |
+|               |                                 |
+|:--------------|:--------------------------------|
+| **R**         | `r getRversion()`               |
+| **pomp**      | `r packageVersion("pomp")`      |
+| **coda**      | `r packageVersion("coda")`      |
+| **foreach**   | `r packageVersion("foreach")`   |
+| **doFuture**  | `r packageVersion("doFuture")`  |
+| **doRNG**     | `r packageVersion("doRNG")`     |
+| **subplex**   | `r packageVersion("subplex")`   |
+| **tidyverse** | `r packageVersion("tidyverse")` |
 
 <!--
 
