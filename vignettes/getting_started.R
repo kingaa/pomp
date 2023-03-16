@@ -460,6 +460,7 @@ mifs |>
   traces() |>
   melt() |>
   filter(variable!="b") |>
+  mutate(iteration=as.integer(iteration)) |>
   ggplot(aes(x=iteration,y=value,group=.L1,color=.L1))+
   geom_line()+
   facet_wrap(~variable,scales="free_y")+
