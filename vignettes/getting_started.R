@@ -459,11 +459,10 @@ bake("parus_mif1.rds",{
 mifs |>
   traces() |>
   melt() |>
-  filter(variable!="b") |>
-  mutate(iteration=as.integer(iteration)) |>
+  filter(name!="b") |>
   ggplot(aes(x=iteration,y=value,group=.L1,color=.L1))+
   geom_line()+
-  facet_wrap(~variable,scales="free_y")+
+  facet_wrap(~name,scales="free_y")+
   guides(color="none")
 
 
@@ -681,7 +680,7 @@ fts |>
   mutate(
     year=time(mf1)[time]
   ) |>
-  group_by(variable,year) |>
+  group_by(name,year) |>
   summarize(
     label=c("lo","med","hi"),
     p=c(0.05,0.5,0.95),
@@ -764,9 +763,8 @@ traces |> effectiveSize()
 ## ----pmcmc-diagnostics3-------------------------------------------------------
 traces |>
   lapply(as.data.frame) |>
-  lapply(rownames_to_column,"iter") |>
+  lapply(rowid_to_column,"iter") |>
   bind_rows(.id="chain") |>
-  mutate(iter=as.numeric(iter)) |>
   select(chain,iter,loglik,r,sigma,K,N_0) |>
   pivot_longer(c(-chain,-iter)) |>
   ggplot(aes(x=iter,group=chain,color=chain,y=value))+
@@ -785,7 +783,7 @@ gelman.diag(traces[,c("r","sigma","K","N_0")])
 ## ----parus_posterior----------------------------------------------------------
 traces |>
   lapply(as.data.frame) |>
-  lapply(rownames_to_column,"iter") |>
+  lapply(rowid_to_column,"iter") |>
   bind_rows(.id="chain") |>
   select(chain,iter,loglik,r,sigma,K,N_0) |>
   pivot_longer(c(-chain,-iter)) |>
@@ -803,7 +801,7 @@ traces |> summary()
 
 traces |>
   lapply(as.data.frame) |>
-  lapply(rownames_to_column,"iter") |>
+  lapply(rowid_to_column,"iter") |>
   bind_rows(.id="chain") |>
   {\(dat)
     pairs(~r+sigma+K+N_0,data=dat,pch=16)
@@ -816,7 +814,7 @@ chains |>
   melt() |>
   filter(rep > 1000, rep %% 100 == 0) |>
   mutate(year=time(mf1)[time]) |>
-  pivot_wider(names_from=variable) |>
+  pivot_wider(names_from=name) |>
   group_by(year) |>
   summarize(
     label=c("lo","med","hi"),
