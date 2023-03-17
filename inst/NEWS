@@ -1,5 +1,18 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._0._0:
+
+        • The ‘dimnames’ attributes of various arrays that appear in
+          ‘pomp’, including arrays of observables, state variables,
+          parameters, covariates, and so on, have been made uniform.
+          In particular, when a dimension of an array corresponds to
+          variables with different names, this dimension is itself
+          named "name".  Previously, its name was sometimes "variable"
+          and sometimes "parameter".  This change is meant to
+          streamline interaction with the ‘tidyverse’.
+
+        • Some minor bugfixes.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._7._0:
 
         • Functions with names.that.contain.dots that were been

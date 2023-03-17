@@ -1,5 +1,14 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.0.0}{
+  \itemize{
+    \item The \code{dimnames} attributes of various arrays that appear in \pkg{pomp}, including arrays of observables, state variables, parameters, covariates, and so on, have been made uniform.
+    In particular, when a dimension of an array corresponds to variables with different names, this dimension is itself named "name".
+    Previously, its name was sometimes "variable" and sometimes "parameter".
+    This change is meant to streamline interaction with the \pkg{tidyverse}.
+    \item Some minor bugfixes.
+  }
+}
 \section{Changes in \pkg{pomp} version 4.7.0}{
   \itemize{
     \item Functions with names.that.contain.dots that were been deprecated in version 4.5.1 are now defunct.
