@@ -162,17 +162,17 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 +   filter.traj=TRUE)
 > 
 > pf1 |> saved_states(format="data") |> names()
-[1] "time"     ".id"      "variable" "value"   
+[1] "time"  ".id"   "name"  "value"
 > pf1 |> saved_states(format="data") |> dim()
 [1] 20000     4
 > pf1 |> saved_states() |> melt() |> sapply(class)
-        .L1    variable         .id       value 
+        .L1        name         .id       value 
 "character" "character"   "integer"   "numeric" 
 > pf1 |> saved_states() |> melt() |> sapply(length)
-     .L1 variable      .id    value 
-   20000    20000    20000    20000 
+  .L1  name   .id value 
+20000 20000 20000 20000 
 > pf2 |> saved_states(format="data") |> names()
-[1] "time"     ".id"      "variable" "value"   
+[1] "time"  ".id"   "name"  "value"
 > pf2 |> saved_states(format="data") |> dim()
 [1] 30000     4
 > 
@@ -183,11 +183,11 @@ attr(,"package")
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> class()
 [1] "data.frame"
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> names()
-[1] ".L1"      "time"     ".id"      "variable" "value"   
+[1] ".L1"   "time"  ".id"   "name"  "value"
 > c(pf1,pf2) |> saved_states(format="d") |> names()
-[1] ".L1"      "time"     ".id"      "variable" "value"   
+[1] ".L1"   "time"  ".id"   "name"  "value"
 > c(A=pf1,B=pf2) |> saved_states(format="d") |> sapply(class)
-        .L1        time         .id    variable       value 
+        .L1        time         .id        name       value 
 "character"   "numeric"   "integer" "character"   "numeric" 
 > c(A=pf1,B=pf2) |> as.data.frame() |> sapply(class)
            .L1           time             y1             y2            ess 
@@ -204,7 +204,7 @@ filter.mean.x1 filter.mean.x2
 > dim(filter_traj(pf3))
 [1]   2   1 100
 > dimnames(filter_traj(pf3))
-$variable
+$name
 [1] "x1" "x2"
 
 $rep
@@ -220,7 +220,7 @@ Error : in 'filter_traj': incommensurate dimensions.
 > dim(as.data.frame(c(pf1,pf4)))
 [1] 200   6
 > names(dimnames(filter_traj(c(pf1,pf4))))
-[1] "variable" "rep"      "time"     "chain"   
+[1] "name"  "rep"   "time"  "chain"
 > names(as(c(pf1,pf4),"data.frame"))
 [1] ".L1"         "time"        "y1"          "y2"          "ess"        
 [6] "cond.logLik"

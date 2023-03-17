@@ -53,12 +53,12 @@ try(po |> rprocess(x0=x0,t0=t[1],times=t,params=p))
 po |> rprocess(x0=x0,t0=t[1],times=t,params=p[,1:3]) -> x
 stopifnot(
   dim(x)==c(2,6,10),
-  names(dimnames(x))==c("variable",".id","time")
+  names(dimnames(x))==c("name",".id","time")
 )
 po |> rprocess(x0=x0[,2],t0=t[1],times=t,params=p[,1:3]) -> x
 stopifnot(
   dim(x)==c(2,3,10),
-  names(dimnames(x))==c("variable",".id","time")
+  names(dimnames(x))==c("name",".id","time")
 )
 
 try(po |> rprocess(x0=x0,t0=t[1],times=numeric(0),params=p))

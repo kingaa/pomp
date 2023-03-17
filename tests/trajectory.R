@@ -145,7 +145,7 @@ po |>
   trajectory(params=p,times=1:5,format="array") |>
   dimnames() -> dn
 stopifnot(
-  names(dn)==c("variable",".id","time"),
+  names(dn)==c("name",".id","time"),
   dn$.id==LETTERS[1:3],
   is.null(dn$time)
 )

@@ -56,63 +56,63 @@ https://kingaa.github.io/pomp/blog.html.
 > pf |> as.data.frame() |> pivot_longer(-time) |> names()
 [1] "time"  "name"  "value"
 > pf |> forecast() |> melt() |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "integer"   "numeric" 
 > pf |> forecast(format="d") |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "numeric"   "numeric" 
 > pf |> filter_mean() |> melt() |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "integer"   "numeric" 
 > pf |> filter_mean(format="d") |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "numeric"   "numeric" 
 > pf |> pred_mean() |> melt() |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "integer"   "numeric" 
 > pf |> pred_mean(format="d") |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "numeric"   "numeric" 
 > pf |> pred_var() |> melt() |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "integer"   "numeric" 
 > pf |> pred_var(format="d") |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "numeric"   "numeric" 
 > pf |> filter_traj() |> melt() |> sapply(class)
-   variable         rep        time       value 
+       name         rep        time       value 
 "character" "character"   "integer"   "numeric" 
 > pf |> filter_traj(format="d") |> sapply(class)
-   variable         rep        time       value 
+       name         rep        time       value 
 "character" "character"   "numeric"   "numeric" 
 > pf |> saved_states() |> melt() |> sapply(class)
-        .L1         .L2    variable         .id       value 
+        .L1         .L2        name         .id       value 
 "character" "character" "character"   "integer"   "numeric" 
 > pf |> saved_states(format="d") |> sapply(class)
-       time         .id    variable       value 
+       time         .id        name       value 
   "numeric"   "integer" "character"   "numeric" 
 > 
 > c(A=pf,B=pf) -> pfs
 > pfs |> filter_traj(format="d") |> head()
-  variable rep time chain value
-1       x1   1    1     A -3.00
-2       x2   1    1     A  4.00
-3       x1   1    2     A -3.58
-4       x2   1    2     A  5.85
-5       x1   1    3     A -1.13
-6       x2   1    3     A  8.31
+  name rep time chain value
+1   x1   1    1     A -3.00
+2   x2   1    1     A  4.00
+3   x1   1    2     A -3.58
+4   x2   1    2     A  5.85
+5   x1   1    3     A -1.13
+6   x2   1    3     A  8.31
 > pfs |> filter_traj(format="d") |> dim()
 [1] 44  5
 > pfs |> filter_traj(format="a") |> dim()
 [1]  2  1 11  2
 > pfs |> eff_sample_size(format="n") |> melt() |> dim()
-[1] 20  2
+[1] 20  3
 > pfs |> eff_sample_size(format="d") |> dim()
-[1] 20  2
+[1] 20  3
 > pfs |> cond_logLik(format="n") |> melt() |> dim()
-[1] 20  2
+[1] 20  3
 > pfs |> cond_logLik(format="d") |> dim()
-[1] 20  2
+[1] 20  3
 > list(A=pf,B=pf) |> concat() -> pfs2
 > stopifnot(
 +   all.equal(
@@ -163,8 +163,8 @@ Error in match.arg(format) : 'arg' should be one of "array", "data.frame"
 +   mutate(
 +     time=time(pf)[as.integer(time)]
 +   ) |>
-+   unite(col=variable,type,variable,sep=".") |>
-+   pivot_wider(names_from=variable) -> dat1
++   unite(col=name,type,name,sep=".") |>
++   pivot_wider() -> dat1
 > bind_rows(
 +   forecast=forecast(pf,format="d"),
 +   filter.mean=filter_mean(pf,format="d"),
@@ -172,8 +172,8 @@ Error in match.arg(format) : 'arg' should be one of "array", "data.frame"
 +   pred.var=pred_var(pf,format="d"),
 +   .id="type"
 + ) |>
-+   unite(col=variable,type,variable,sep=".") |>
-+   pivot_wider(names_from=variable) -> dat2
++   unite(col=name,type,name,sep=".") |>
++   pivot_wider() -> dat2
 > stopifnot(
 +   all.equal(dat1,dat2,check.attributes=FALSE),
 +   all.equal(dat0$filter.mean.x1,dat2$filter.mean.x1),
@@ -203,12 +203,12 @@ Error in match.arg(format) : 'arg' should be one of "array", "data.frame"
 +   melt(dat1$weights)
 + ) |>
 +   mutate(
-+     variable=coalesce(variable,".log.weight"),
++     name=coalesce(name,".log.weight"),
 +     time=time(pf)[as.integer(.L1)]
 +   ) |>
 +   select(-.L1) |>
 +   arrange(time,.id) |>
-+   select(time,.id,variable,value) -> dat1
++   select(time,.id,name,value) -> dat1
 > pf |>
 +   saved_states(format="d") -> dat2
 > stopifnot(
@@ -217,7 +217,7 @@ Error in match.arg(format) : 'arg' should be one of "array", "data.frame"
 > 
 > pf |>
 +   saved_states(format="d") |>
-+   pivot_wider(names_from="variable") |>
++   pivot_wider() |>
 +   group_by(time) |>
 +   reframe(
 +     p=c(0.05,0.5,0.95),

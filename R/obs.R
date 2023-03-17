@@ -52,7 +52,7 @@ setMethod(
       pStop("obs","some elements of ",
         sQuote("vars")," correspond to no observed variable.")
     y <- object@data[vars,,drop=FALSE]
-    dimnames(y) <- setNames(list(vars,NULL),c("variable",object@timename))
+    dimnames(y) <- setNames(list(vars,NULL),c("name",object@timename))
     format <- match.arg(format)
     if (format == "data.frame") {
       y <- data.frame(time=time(object),t(y))

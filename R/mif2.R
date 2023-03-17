@@ -241,8 +241,13 @@ setMethod(
 
     ndone <- object@Nmif
 
-    obj <- mif2(object,Nmif=Nmif,...,
-      .ndone=ndone,.paramMatrix=object@paramMatrix)
+    obj <- mif2(
+      object,
+      Nmif=Nmif,
+      ...,
+      .ndone=ndone,
+      .paramMatrix=object@paramMatrix
+    )
 
     object@traces[ndone+1,"loglik"] <- obj@traces[1L,"loglik"]
     obj@traces <- rbind(
@@ -311,9 +316,13 @@ mif2_internal <- function (object, Nmif, rw.sd,
     paramMatrix <- .paramMatrix
   }
 
-  traces <- array(dim=c(Nmif+1,length(start)+1),
-    dimnames=list(iteration=seq.int(.ndone,.ndone+Nmif),
-      variable=c("loglik",names(start))))
+  traces <- array(
+    dim=c(Nmif+1,length(start)+1),
+    dimnames=list(
+      iteration=NULL,
+      variable=c("loglik",names(start))
+    )
+  )
   traces[1L,] <- c(NA,start)
 
   pompLoad(object,verbose=verbose)

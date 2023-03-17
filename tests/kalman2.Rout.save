@@ -91,10 +91,10 @@ NOTE: The provided object 'R' is available for use by POMP basic components.
 > kf |> as.data.frame() |> pivot_longer(-time) |> names()
 [1] "time"  "name"  "value"
 > kf |> forecast() |> melt() |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "integer"   "numeric" 
 > kf |> forecast(format="d") |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "numeric"   "numeric" 
 > kf |> filter_mean() |> melt() |> sapply(class)
    variable        time       value 

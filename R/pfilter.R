@@ -263,28 +263,28 @@ pfilter_internal <- function (object, Np,
   ## set up storage for prediction means, variances, etc.
   if (pred.mean) {
     pred.m <- array(data=numeric(1),dim=c(nvars,ntimes),
-      dimnames=list(variable=statenames,time=NULL))
+      dimnames=list(name=statenames,time=NULL))
   } else {
     pred.m <- array(data=numeric(0),dim=c(0,0))
   }
 
   if (pred.var) {
     pred.v <- array(data=numeric(1),dim=c(nvars,ntimes),
-      dimnames=list(variable=statenames,time=NULL))
+      dimnames=list(name=statenames,time=NULL))
   } else {
     pred.v <- array(data=numeric(0),dim=c(0,0))
   }
 
   if (filter.mean) {
     filt.m <- array(data=numeric(1),dim=c(nvars,ntimes),
-      dimnames=list(variable=statenames,time=NULL))
+      dimnames=list(name=statenames,time=NULL))
   } else {
     filt.m <- array(data=numeric(0),dim=c(0,0))
   }
 
   if (filter.traj) {
     filt.t <- array(data=numeric(1),dim=c(nvars,1,ntimes+1),
-      dimnames=list(variable=statenames,rep=1,time=NULL))
+      dimnames=list(name=statenames,rep=1,time=NULL))
   } else {
     filt.t <- array(data=numeric(0),dim=c(0,0,0))
   }
@@ -310,7 +310,7 @@ pfilter_internal <- function (object, Np,
     ## store unweighted particles and their weights
     if (wtsav) {
       xparticles[[nt]] <- array(X,dim=dim(X)[c(1L,2L)],
-        dimnames=list(variable=statenames,.id=NULL))
+        dimnames=list(name=statenames,.id=NULL))
       xweights[[nt]] <- array(weights,dim=length(weights),
         dimnames=list(.id=NULL))
     }
@@ -347,7 +347,7 @@ pfilter_internal <- function (object, Np,
 
     if (stsav || filter.traj) {
       xparticles[[nt]] <- x
-      dimnames(xparticles[[nt]]) <- list(variable=statenames,.id=NULL)
+      dimnames(xparticles[[nt]]) <- list(name=statenames,.id=NULL)
     }
 
     if (verbose && (nt%%5 == 0))

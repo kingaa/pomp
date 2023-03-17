@@ -53,7 +53,7 @@ attr(,"package")
 > c(a=ou2,b=ou2(alpha_1=-11)) -> pomps
 > pomps |> coef()
          .id
-parameter    a     b
+name         a     b
   alpha_1  0.8 -11.0
   alpha_2 -0.5  -0.5
   alpha_3  0.3   0.3
@@ -65,21 +65,21 @@ parameter    a     b
   x1_0    -3.0  -3.0
   x2_0     4.0   4.0
 > pomps |> obs(vars="y1") |> melt() |> head()
-  .L1 variable time value
-1   a       y1    1 -4.05
-2   a       y1    2  1.83
-3   a       y1    3 -1.32
-4   a       y1    4  6.64
-5   a       y1    5  6.58
-6   a       y1    6  7.54
+  .L1 name time value
+1   a   y1    1 -4.05
+2   a   y1    2  1.83
+3   a   y1    3 -1.32
+4   a   y1    4  6.64
+5   a   y1    5  6.58
+6   a   y1    6  7.54
 > pomps |> states(vars="x2") |> melt() |> head()
-  .L1 variable time value
-1   a       x2    1  4.25
-2   a       x2    2  6.84
-3   a       x2    3  7.59
-4   a       x2    4  6.49
-5   a       x2    5  1.84
-6   a       x2    6 -1.57
+  .L1 name time value
+1   a   x2    1  4.25
+2   a   x2    2  6.84
+3   a   x2    3  7.59
+4   a   x2    4  6.49
+5   a   x2    5  1.84
+6   a   x2    6 -1.57
 > 
 > replicate(2,pfilter(gompertz,Np=10)) |> class()
 [1] "list"

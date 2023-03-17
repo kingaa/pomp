@@ -37,6 +37,7 @@ setMethod(
   definition=function (data, ...) {
     if (is.null(names(data))) {
       data.frame(
+        name=seq_along(data),
         value=data,
         row.names=NULL,
         check.names=FALSE,

@@ -79,9 +79,9 @@ rmeasure(po) -> y1
 rmeasure(po,x=x,times=t,params=p) -> y
 stopifnot(
   dim(y1)==c(2,1,10),
-  names(dimnames(y1))==c("variable",".id","time"),
+  names(dimnames(y1))==c("name",".id","time"),
   dim(y)==c(2,5,10),
-  names(dimnames(y))==c("variable",".id","time")
+  names(dimnames(y))==c("name",".id","time")
 )
 
 try(rmeasure("ou2",x=x,times=t,params=p))
@@ -101,7 +101,10 @@ try(rmeasure(po,x=x,y=y,times=t,params=p[-k]))
 pp <- parmat(p,5)
 try(rmeasure(po,x=x,times=t,params=pp[,1:3]))
 rmeasure(po,x=x,times=t,params=pp) -> y
-stopifnot(dim(y)==c(2,5,10),names(dimnames(y))==c("variable",".id","time"))
+stopifnot(
+  dim(y)==c(2,5,10),
+  names(dimnames(y))==c("name",".id","time")
+)
 
 po |> pomp(
   rmeasure=function(...)c(1,2,3),

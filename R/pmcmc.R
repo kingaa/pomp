@@ -289,10 +289,14 @@ pmcmc_internal <- function (object, Nmcmc, proposal, Np, ...,
   if (verbose)
     cat("performing",Nmcmc,"PMCMC iteration(s) using",Np[1L],"particles\n")
 
-  traces <- array(data=NA_real_,dim=c(Nmcmc+1L,length(theta)+2L),
+  traces <- array(
+    data=NA_real_,
+    dim=c(Nmcmc+1L,length(theta)+2L),
     dimnames=list(
-      iteration=seq(from=0L,to=Nmcmc,by=1L),
-      variable=c("loglik","log.prior",names(theta))))
+      iteration=NULL,
+      variable=c("loglik","log.prior",names(theta))
+    )
+  )
 
   if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
 

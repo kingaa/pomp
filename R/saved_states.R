@@ -65,10 +65,10 @@ setMethod(
       w <- melt(object@saved.states$weights)
       s[[object@timename]] <- time(object)[as.integer(s$.L1)]
       w[[object@timename]] <- time(object)[as.integer(w$.L1)]
-      w$variable <- ".log.weight"
+      w$name <- ".log.weight"
       x <- rbind(
-        s[,c(object@timename,".id","variable","value")],
-        w[,c(object@timename,".id","variable","value")]
+        s[,c(object@timename,".id","name","value")],
+        w[,c(object@timename,".id","name","value")]
       )
       x <- x[order(x$time,x$.id),]
       row.names(x) <- NULL
@@ -76,7 +76,7 @@ setMethod(
     } else {
       s <- melt(object@saved.states)
       s[[object@timename]] <- time(object)[as.integer(s$.L1)]
-      s <- s[,c(object@timename,".id","variable","value")]
+      s <- s[,c(object@timename,".id","name","value")]
       row.names(s) <- NULL
       s
     }

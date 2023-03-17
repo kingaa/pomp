@@ -24,7 +24,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
   SEXP ess, loglik;
   SEXP newstates = R_NilValue, newparams = R_NilValue;
   SEXP retval, retvalnames;
-  const char *dimnm[2] = {"variable",".id"};
+  const char *dimnm[2] = {"name",".id"};
   double *xw = 0;
   long double w = 0, ws, maxw, sum;
   int *xanc = 0;

@@ -93,8 +93,8 @@ bind_rows(
   mutate(
     time=time(pf)[as.integer(time)]
   ) |>
-  unite(col=variable,type,variable,sep=".") |>
-  pivot_wider(names_from=variable) -> dat1
+  unite(col=name,type,name,sep=".") |>
+  pivot_wider() -> dat1
 bind_rows(
   forecast=forecast(pf,format="d"),
   filter.mean=filter_mean(pf,format="d"),
@@ -102,8 +102,8 @@ bind_rows(
   pred.var=pred_var(pf,format="d"),
   .id="type"
 ) |>
-  unite(col=variable,type,variable,sep=".") |>
-  pivot_wider(names_from=variable) -> dat2
+  unite(col=name,type,name,sep=".") |>
+  pivot_wider() -> dat2
 stopifnot(
   all.equal(dat1,dat2,check.attributes=FALSE),
   all.equal(dat0$filter.mean.x1,dat2$filter.mean.x1),
@@ -133,12 +133,12 @@ bind_rows(
   melt(dat1$weights)
 ) |>
   mutate(
-    variable=coalesce(variable,".log.weight"),
+    name=coalesce(name,".log.weight"),
     time=time(pf)[as.integer(.L1)]
   ) |>
   select(-.L1) |>
   arrange(time,.id) |>
-  select(time,.id,variable,value) -> dat1
+  select(time,.id,name,value) -> dat1
 pf |>
   saved_states(format="d") -> dat2
 stopifnot(
@@ -147,7 +147,7 @@ stopifnot(
 
 pf |>
   saved_states(format="d") |>
-  pivot_wider(names_from="variable") |>
+  pivot_wider() |>
   group_by(time) |>
   reframe(
     p=c(0.05,0.5,0.95),

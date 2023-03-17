@@ -93,7 +93,7 @@ Error : in 'rprior': 'rprior' must return a named numeric vector.
 > po |> rprior(params=parmat(theta,3)) -> p
 > stopifnot(
 +   dim(p)==c(11,15),
-+   names(dimnames(p))==c("variable",".id"),
++   names(dimnames(p))==c("name",".id"),
 +   rownames(p)==names(coef(po))
 + )
 > 

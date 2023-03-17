@@ -17,12 +17,12 @@ p["r",] <- exp(c(1,2,4))
 f <- skeleton(ricker,x=x,params=p,t=time(ricker))
 f |>
   melt() |>
-  filter(variable=="N") |>
-  select(-variable) |>
+  filter(name=="N") |>
+  select(-name) |>
   pivot_wider(names_from=.id) |>
   left_join(
-    x |> melt() |> filter(variable=="N") |>
-      select(-variable) |> rename(x=value),
+    x |> melt() |> filter(name=="N") |>
+      select(-name) |> rename(x=value),
     by="time"
   ) |>
   pivot_longer(cols=-c(time,x)) |>
@@ -48,17 +48,19 @@ trajectory(sir,params=p,times=seq(0,1,length=1000),format="a") -> tj
 skeleton(sir,x=tj,params=p,t=seq(0,1,length=1000)) -> f
 tj |> apply(c(1,2),diff) |> melt() |> rename(diff=value) |>
   mutate(.id=as.integer(.id)) -> dtj
-f |> melt() |> rename(deriv=value) -> f
-right_join(
-  f,dtj,
-  by=c("time","variable",".id")
-) |>
-  filter(variable %in% c("S","I","R")) |>
-  mutate(variable=factor(variable,levels=c("S","I","R"))) |>
+f |>
+  melt() |>
+  rename(deriv=value) |>
+  right_join(
+    dtj,
+    by=c("time","name",".id")
+  ) |>
+  filter(name %in% c("S","I","R")) |>
+  mutate(name=factor(name,levels=c("S","I","R"))) |>
   ggplot(aes(x=deriv,y=diff/0.001,color=factor(.id)))+
   geom_point()+
   geom_abline(intercept=0,slope=1,color='black')+
-  facet_grid(.id~variable,labeller=labeller(.id=label_both))+
+  facet_grid(.id~name,labeller=labeller(.id=label_both))+
   guides(color="none")+
   labs(x="derivative",y="finite difference")+
   theme_bw()

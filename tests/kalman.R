@@ -148,13 +148,13 @@ eakf |>
 
 enkf |>
   forecast(format="d") |>
-  ggplot(aes(x=time,y=value,group=variable,color=variable))+
+  ggplot(aes(x=time,y=value,group=name,color=name))+
   geom_line()+theme_bw()+
   labs(title="EnKF forecasts")
 
 eakf |>
   forecast(vars=c("y1","y2"),format="d") |>
-  ggplot(aes(x=time,y=value,group=variable,color=variable))+
+  ggplot(aes(x=time,y=value,group=name,color=name))+
   geom_line()+theme_bw()+
   labs(title="EAKF forecasts")
 

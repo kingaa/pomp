@@ -45,7 +45,7 @@ vf |> select(-time,-.id) |> distinct()
 bind_rows(
   sim=pf |>
     as.data.frame() |>
-    pivot_longer(c(x1,x2,y1,y2),names_to="variable"),
+    pivot_longer(c(x1,x2,y1,y2)),
   forecast=fc,
   filter=ef |> select(-.id),
   prediction=pred_mean(pf,format="d"),
@@ -55,7 +55,7 @@ bind_rows(
   ggplot(aes(x=time,y=value,color=factor(type)))+
   geom_line()+
   labs(color="")+
-  facet_wrap(~variable,scales="free_y")+
+  facet_wrap(~name,scales="free_y")+
   theme_bw()+theme(legend.position="top")
 
 enkf(po,Np=1000) -> kf

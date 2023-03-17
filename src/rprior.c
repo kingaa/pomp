@@ -47,7 +47,7 @@ static R_INLINE SEXP eval_call (SEXP fn, SEXP args, double *p, int n)
 
 static R_INLINE SEXP ret_array (SEXP params)
 {
-  const char *dimnm[2] = {"variable", ".id"};
+  const char *dimnm[2] = {"name", ".id"};
   SEXP P;
 
   PROTECT(P = duplicate(params));

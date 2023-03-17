@@ -70,7 +70,7 @@ static R_INLINE SEXP eval_call (SEXP fn, SEXP args,
 static R_INLINE SEXP ret_array (int m, int n, SEXP names)
 {
   int dim[2] = {m, n};
-  const char *dimnm[2] = {"variable",".id"};
+  const char *dimnm[2] = {"name",".id"};
   SEXP X;
   PROTECT(X = makearray(2,dim));
   setrownames(X,names,2);

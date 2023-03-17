@@ -53,17 +53,17 @@ https://kingaa.github.io/pomp/blog.html.
 > skeleton(fhn,x,t=c(0,3),params=params)
 , , 1
 
-        .id
-variable  [,1]  [,2]
-       V -0.40 -6.67
-       R -0.05  0.10
+    .id
+name  [,1]  [,2]
+   V -0.40 -6.67
+   R -0.05  0.10
 
 , , 2
 
-        .id
-variable  [,1] [,2]
-       V 0.933  5.0
-       R 0.450  0.2
+    .id
+name  [,1] [,2]
+   V 0.933  5.0
+   R 0.450  0.2
 
 > y <- trajectory(fhn,params=params,ode_control=list(hmax=0.1),format="a")
 > invisible(y[,,599:601])
@@ -99,24 +99,24 @@ variable  [,1] [,2]
 > y[,,199:201]
 , , 1
 
-        .id
-variable      1      2
-       V -0.133 -0.538
-       R  1.184  0.632
+    .id
+name      1      2
+   V -0.133 -0.538
+   R  1.184  0.632
 
 , , 2
 
-        .id
-variable      1      2
-       V -0.161 -0.600
-       R  1.182  0.632
+    .id
+name      1      2
+   V -0.161 -0.600
+   R  1.182  0.632
 
 , , 3
 
-        .id
-variable      1      2
-       V -0.189 -0.660
-       R  1.180  0.631
+    .id
+name      1      2
+   V -0.189 -0.660
+   R  1.180  0.631
 
 > matplot(time(fhn1),t(y["V",,]),type='l',lty=1)
 > plot(y[1,,],y[2,,],type='n')
@@ -271,7 +271,7 @@ Error : in 'trajectory': 'params' must be named and numeric.
 +   trajectory(params=p,times=1:5,format="array") |>
 +   dimnames() -> dn
 > stopifnot(
-+   names(dn)==c("variable",".id","time"),
++   names(dn)==c("name",".id","time"),
 +   dn$.id==LETTERS[1:3],
 +   is.null(dn$time)
 + )
