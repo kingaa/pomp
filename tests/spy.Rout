@@ -173,8 +173,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2023-01-11 07:57:37.045 -0500 */
-/* Salt: 197C1A8B084F165CF4E33248 */
+/* Time: 2023-03-17 17:04:49.244 -0400 */
+/* Salt: D1A1BCADFCD7DB184C975528 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -297,8 +297,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2023-01-11 07:57:37.153 -0500 */
-/* Salt: C86AD5F47187B382871A1190 */
+/* Time: 2023-03-17 17:04:49.683 -0400 */
+/* Salt: 472928C92453D6CA77A36068 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -932,8 +932,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2023-01-11 07:57:37.679 -0500 */
-/* Salt: 23C4C0D44C5A0FEDC46E3A20 */
+/* Time: 2023-03-17 17:04:53.427 -0400 */
+/* Salt: 2EED33E1E7862111C97F6BE4 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1143,13 +1143,13 @@ pomp object 'sir2':
   - defined by a C snippet in library 'sir2_source'
 - process-model simulator, rprocess: Gillespie-method process-model simulator
   - stoichiometry matrix:
-        event
-variable birth susc.death infection inf.death recovery recov.death
-   S         1         -1        -1         0        0           0
-   I         0          0         1        -1       -1           0
-   R         0          0         0         0        1          -1
-   N         1         -1         0        -1        0          -1
-   cases     0          0         0         0        1           0
+       event
+name    birth susc.death infection inf.death recovery recov.death
+  S         1         -1        -1         0        0           0
+  I         0          0         1        -1       -1           0
+  R         0          0         0         0        1          -1
+  N         1         -1         0        -1        0          -1
+  cases     0          0         0         0        1           0
   - rate.fun: native function
   - name: '__pomp_ratefn'
   - defined by a C snippet in library 'sir2_source'
@@ -1188,8 +1188,8 @@ variable birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2023-01-11 07:57:38.166 -0500 */
-/* Salt: 402A3EB5A93E527029CE21E5 */
+/* Time: 2023-03-17 17:04:56.570 -0400 */
+/* Salt: 8600A6BDAA43C5278E2E93D3 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

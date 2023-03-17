@@ -346,7 +346,7 @@ gillespie_hl <- function (..., .pre = "", .post = "", hmax = Inf) {
   if (anyDuplicated(names(stoich))) pStop(ep,"duplicated elementary event names.")
   vars <- unique(do.call(c,lapply(stoich,names)))
   v <- array(data=0,dim=c(length(vars),length(stoich)),
-    dimnames=list(variable=vars,event=names(stoich)))
+    dimnames=list(name=vars,event=names(stoich)))
   for (s in seq_along(stoich))
     v[names(stoich[[s]]),s] <- stoich[[s]]
 

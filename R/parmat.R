@@ -42,7 +42,7 @@ setMethod(
   signature=signature(params="numeric"),
   definition=function (params, nrep = 1, ..., names = NULL) {
     matrix(data=params,nrow=length(params),ncol=nrep,
-      dimnames=list(variable=names(params),.id=names))
+      dimnames=list(name=names(params),.id=names))
   }
 )
 
@@ -60,7 +60,7 @@ setMethod(
           nrow=length(params),
           ncol=nrep,
           dimnames=list(
-            variable=names(params),
+            name=names(params),
             .id=names
           )
         )
@@ -70,7 +70,7 @@ setMethod(
           nrow=nrow(params),
           ncol=ncol(params)*nrep,
           dimnames=list(
-            variable=rownames(params),
+            name=rownames(params),
             .id=names
           )
         )
@@ -80,7 +80,7 @@ setMethod(
           nrow=nrow(params),
           ncol=prod(d[-1L])*nrep,
           dimnames=list(
-            variable=rownames(params),
+            name=rownames(params),
             .id=names
           )
         )
@@ -105,7 +105,7 @@ setMethod(
     rv <- array(
       data=NA_real_,
       dim=c(d[2L],nrep*d[1L]),
-      dimnames=list(variable=names(params),.id=rn)
+      dimnames=list(name=names(params),.id=rn)
     )
     tryCatch(
       for (n in names(params)) {

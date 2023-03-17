@@ -97,16 +97,16 @@ NOTE: The provided object 'R' is available for use by POMP basic components.
        name        time       value 
 "character"   "numeric"   "numeric" 
 > kf |> filter_mean() |> melt() |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character" "character"   "numeric" 
 > kf |> filter_mean(format="d") |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "numeric"   "numeric" 
 > kf |> pred_mean() |> melt() |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character" "character"   "numeric" 
 > kf |> pred_mean(format="d") |> sapply(class)
-   variable        time       value 
+       name        time       value 
 "character"   "numeric"   "numeric" 
 > try(kf |> pred_var() |> melt() |> sapply(class))
 Error in h(simpleError(msg, call)) : 

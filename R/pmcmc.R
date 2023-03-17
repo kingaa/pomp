@@ -225,11 +225,11 @@ setMethod(
       object@traces[,colnames(obj@traces)],
       obj@traces[-1,]
     )
-    names(dimnames(obj@traces)) <- c("iteration","variable")
+    names(dimnames(obj@traces)) <- c("iteration","name")
     ft <- array(
       dim=replace(dim(obj@filter.traj),2L,ndone+Nmcmc),
       dimnames=list(
-        variable=rownames(obj@filter.traj),
+        name=rownames(obj@filter.traj),
         rep=NULL,
         time=NULL
       )
@@ -294,7 +294,7 @@ pmcmc_internal <- function (object, Nmcmc, proposal, Np, ...,
     dim=c(Nmcmc+1L,length(theta)+2L),
     dimnames=list(
       iteration=NULL,
-      variable=c("loglik","log.prior",names(theta))
+      name=c("loglik","log.prior",names(theta))
     )
   )
 
@@ -332,7 +332,7 @@ pmcmc_internal <- function (object, Nmcmc, proposal, Np, ...,
     data=NA_real_,
     dim=replace(dim(pfp@filter.traj),2L,Nmcmc),
     dimnames=list(
-      variable=rownames(pfp@filter.traj),
+      name=rownames(pfp@filter.traj),
       rep=NULL,
       time=NULL
     )

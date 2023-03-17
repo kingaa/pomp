@@ -52,7 +52,7 @@ dim(as.data.frame(c(mcmc1,mcmc2)))
 filter_traj(c(mcmc1,mcmc2,mcmc3)) -> ft
 stopifnot(
   dim(ft)==c(1,100,11,3),
-  names(dimnames(ft))==c("variable","rep","time","chain")
+  names(dimnames(ft))==c("name","rep","time","chain")
 )
 
 print(mcmc1)

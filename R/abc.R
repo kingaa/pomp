@@ -235,7 +235,7 @@ setMethod(
       object@traces[,colnames(obj@traces)],
       obj@traces[-1,]
     )
-    names(dimnames(obj@traces)) <- c("iteration","variable")
+    names(dimnames(obj@traces)) <- c("iteration","name")
     obj@Nabc <- as.integer(ndone+Nabc)
     obj@accepts <- as.integer(accepts+obj@accepts)
 
@@ -325,7 +325,7 @@ abc_internal <- function (object,
     ncol=length(theta),
     dimnames=list(
       iteration=seq(from=0,to=Nabc,by=1),
-      variable=names(theta)
+      name=names(theta)
     )
   )
 

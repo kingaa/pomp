@@ -203,8 +203,8 @@ enkf_internal <- function (object, Np, ..., verbose) {
   X <- rinit(object,params=params,nsim=Np)
   nvar <- nrow(X)
 
-  filterMeans <- array(dim=c(nvar,ntimes),dimnames=list(variable=rownames(X),time=t))
-  predMeans <- array(dim=c(nvar,ntimes),dimnames=list(variable=rownames(X),time=t))
+  filterMeans <- array(dim=c(nvar,ntimes),dimnames=list(name=rownames(X),time=t))
+  predMeans <- array(dim=c(nvar,ntimes),dimnames=list(name=rownames(X),time=t))
   forecast <- array(dim=c(nobs,ntimes),dimnames=dimnames(y))
   condlogLik <- numeric(ntimes)
 
@@ -398,9 +398,9 @@ eakf_internal <- function (object, Np, ..., verbose) {
   nvar <- nrow(X)
 
   filterMeans <- array(dim=c(nvar,ntimes),
-    dimnames=list(variable=rownames(X),time=t))
+    dimnames=list(name=rownames(X),time=t))
   predMeans <- array(dim=c(nvar,ntimes),
-    dimnames=list(variable=rownames(X),time=t))
+    dimnames=list(name=rownames(X),time=t))
   forecast <- array(dim=c(nobs,ntimes),dimnames=dimnames(y))
   condlogLik <- numeric(ntimes)
 

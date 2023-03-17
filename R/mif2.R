@@ -254,7 +254,7 @@ setMethod(
       object@traces,
       obj@traces[-1L,colnames(object@traces)]
     )
-    names(dimnames(obj@traces)) <- c("iteration","variable")
+    names(dimnames(obj@traces)) <- c("iteration","name")
     obj@Nmif <- as.integer(ndone+Nmif)
 
     obj
@@ -311,16 +311,17 @@ mif2_internal <- function (object, Nmif, rw.sd,
 
   if (is.null(.paramMatrix)) {
     paramMatrix <- array(data=start,dim=c(length(start),Np[1L]),
-      dimnames=list(variable=names(start),rep=NULL))
+      dimnames=list(name=names(start),rep=NULL))
   } else {
     paramMatrix <- .paramMatrix
   }
 
   traces <- array(
+    data=NA_real_,
     dim=c(Nmif+1,length(start)+1),
     dimnames=list(
       iteration=NULL,
-      variable=c("loglik",names(start))
+      name=c("loglik",names(start))
     )
   )
   traces[1L,] <- c(NA,start)

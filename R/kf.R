@@ -75,7 +75,7 @@ kalmanFilter <- function (
 
   filterMeans <- array(
     dim=c(nvar,N),
-    dimnames=list(variable=names(X0),time=NULL)
+    dimnames=list(name=names(X0),time=NULL)
   )
   predMeans <- filterMeans
   forecast <- array(dim=c(nobs,N),dimnames=dimnames(y))

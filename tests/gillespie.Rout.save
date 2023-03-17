@@ -195,11 +195,11 @@ Error : in 'gillespie_hl': for each event, the second list-element should be a n
 Error : in 'gillespie_hl': duplicated elementary event names.
 > gillespie_hl(A=list("bob",c(a=2,b=1)),B=list("mary",c(a=1,c=2))) -> f
 > f@v
-        event
-variable A B
-       a 2 1
-       b 1 0
-       c 0 2
+    event
+name A B
+   a 2 1
+   b 1 0
+   c 0 2
 > 
 > stopifnot(
 +   gsir |>
