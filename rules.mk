@@ -162,7 +162,7 @@ $(PKG).pdf: $(SOURCE)
 tests: .tests
 
 .tests: .install .testsource
-	$(MAKE) -C tests
+	$(MAKE) -j10 -C tests
 	$(TOUCH) $@
 
 install: .install
