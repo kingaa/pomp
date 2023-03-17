@@ -1,4 +1,4 @@
-\dontrun{
+\donttest{ # takes too long for R CMD check
   verhulst() -> po
   plot(po)
   plot(simulate(po))

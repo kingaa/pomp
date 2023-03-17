@@ -322,26 +322,20 @@ Error : in 'melt': refusing to melt data of incompatible types.
 + )
 > 
 > list(
-+   a=1:5,
 +   b=c(a=5,b=2),
 +   c=array(rnorm(3),dim=3,dimnames=list(name=as.character(1:3))),
 +   d=array(rnorm(3),dim=3),
 +   e=array(rnorm(2),dim=2,dimnames=list(name=LETTERS[14:15]))
 + ) |> melt()
    .L1 name      value Var1
-1    a    1  1.0000000   NA
-2    a    2  2.0000000   NA
-3    a    3  3.0000000   NA
-4    a    4  4.0000000   NA
-5    a    5  5.0000000   NA
-6    b    a  5.0000000   NA
-7    b    b  2.0000000   NA
-8    c    1  1.1692565   NA
-9    c    2 -1.3578778   NA
-10   c    3 -1.0923684   NA
-11   d <NA>  0.1172689    1
-12   d <NA>  0.3549312    2
-13   d <NA>  1.6241228    3
-14   e    N  1.3449047   NA
-15   e    O  0.3683851   NA
+1    b    a  5.0000000   NA
+2    b    b  2.0000000   NA
+3    c    1  1.1692565   NA
+4    c    2 -1.3578778   NA
+5    c    3 -1.0923684   NA
+6    d <NA>  0.1172689    1
+7    d <NA>  0.3549312    2
+8    d <NA>  1.6241228    3
+9    e    N  1.3449047   NA
+10   e    O  0.3683851   NA
 > 

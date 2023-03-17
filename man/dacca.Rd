@@ -76,7 +76,7 @@ Data are provided courtesy of Dr. Menno J. Bouma, London School of Tropical
 Medicine and Hygiene.
 }
 \examples{
-\dontrun{
+\donttest{ # takes too long for R CMD check
   po <- dacca()
   plot(po)
   ## MLE:

@@ -39,7 +39,7 @@ The measurements are assumed to be log-normally distributed:
 \deqn{N_t \sim \mathrm{Lognormal}\left(\log{n_t},\tau\right).}{N[t] ~ Lognormal(log(n[t]),tau).}
 }
 \examples{
-\dontrun{
+\donttest{ # takes too long for R CMD check
   verhulst() -> po
   plot(po)
   plot(simulate(po))

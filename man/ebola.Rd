@@ -64,22 +64,22 @@ Here, \eqn{p(R_t | C_t)} is negative binomial with mean \eqn{\rho C_t} and dispe
 }
 
 \examples{
-\dontrun{
-if (require(ggplot2) && require(tidyr)) {
-
-  ebolaWA2014 |>
-    pivot_longer(c(cases,deaths)) |>
-    ggplot(aes(x=date,y=value,group=name,color=name))+
-    geom_line()+
-    facet_grid(country~.,scales="free_y")+
-    theme_bw()+
-    theme(axis.text=element_text(angle=-90))
-
-}
-
-plot(ebolaModel(country="SLE"))
-plot(ebolaModel(country="GIN"))
-plot(ebolaModel(country="LBR"))
+\donttest{ # takes too long for R CMD check
+  if (require(ggplot2) && require(tidyr)) {
+    
+    ebolaWA2014 |>
+      pivot_longer(c(cases,deaths)) |>
+      ggplot(aes(x=date,y=value,group=name,color=name))+
+      geom_line()+
+      facet_grid(country~.,scales="free_y")+
+      theme_bw()+
+      theme(axis.text=element_text(angle=-90))
+    
+  }
+  
+  plot(ebolaModel(country="SLE"))
+  plot(ebolaModel(country="GIN"))
+  plot(ebolaModel(country="LBR"))
 }
 }
 \references{

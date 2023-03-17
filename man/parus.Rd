@@ -15,7 +15,7 @@ The Global Population Dynamics Database Version 2.
 Original source: McCleer and Perrins (1991).
 }
 \examples{
-\dontrun{
+\donttest{ # takes too long for R CMD check
   parus |>
     pfilter(Np=1000,times="year",t0=1960,
       params=c(K=190,r=2.7,sigma=0.2,theta=0.05,N.0=148),

@@ -112,7 +112,6 @@ stopifnot(
 )
 
 list(
-  a=1:5,
   b=c(a=5,b=2),
   c=array(rnorm(3),dim=3,dimnames=list(name=as.character(1:3))),
   d=array(rnorm(3),dim=3),

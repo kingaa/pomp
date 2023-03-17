@@ -1,9 +1,8 @@
-\dontrun{
-  ## Starting with an existing pomp object
-
+\donttest{ # takes too long for R CMD check
+  ## Starting with an existing pomp object:
   verhulst() |> window(end=30) -> po
   
-  ## we add or change prior distributions using the two
+  ## We add or change prior distributions using the two
   ## arguments 'rprior' and 'dprior'. Here, we introduce
   ## a Gamma prior on the 'r' parameter.
   ## We construct 'rprior' and 'dprior' using R functions.

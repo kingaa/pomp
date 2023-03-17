@@ -30,13 +30,17 @@ variance in \eqn{log(x)}.
 When \code{ess = TRUE}, \code{logmeanexp} returns an estimate of the effective sample size.
 }
 \examples{
-\dontrun{
+\donttest{ # takes too long for R CMD check
   ## an estimate of the log likelihood:
-  po <- ricker()
-  ll <- replicate(n=5,logLik(pfilter(po,Np=1000)))
+  ricker() |>
+    pfilter(Np=1000) |>
+    logLik() |>
+    replicate(n=5) -> ll
   logmeanexp(ll)
   ## with standard error:
   logmeanexp(ll,se=TRUE)
+  ## with effective sample size
+  logmeanexp(ll,ess=TRUE)
 }
 }
 \author{

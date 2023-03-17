@@ -53,7 +53,7 @@ Then the Kalman filter computes the exact likelihood of \eqn{Y}
 given \eqn{A}, \eqn{C}, \eqn{Q}, and \eqn{R}.
 }
 \examples{
-\dontrun{
+\donttest{ # takes too long for R CMD check
 
   if (require(dplyr)) {
 
