@@ -161,9 +161,10 @@ simulate(
   params=c(N=5),
   format="data.frame"
 ) |>
-  melt(id=c("time",".id")) |>
-  ggplot(aes(x=time,y=value,group=variable,color=variable))+
-  geom_line()+theme_bw()
+  pivot_longer(-c(.id,time)) |>
+  ggplot(aes(x=time,y=value,group=name,color=name))+
+  geom_line()+
+  theme_bw()
 ```
 
 ## Can I write a `pomp` for multivariate data? {#multivariate-data-pomp}
@@ -210,7 +211,7 @@ obj |> pfilter(Np=1000) |> logLik()
 
 Missing data are a common complication.
 **pomp** can handle NAs in the data, but if it is needed, the measurement model probability density function, `dmeasure` must be written so as to deal with NAs appropriately.
-For example, look at the following variant of [the SIR model describing the influenza outbreak in a boarding school](https://kingaa.github.io/sbied/stochsim/stochsim.html):
+For example, look at the following variant of [the SIR model describing the influenza outbreak in a boarding school](https://kingaa.github.io/sbied/stochsim/):
 
 ```{r}
 library(ggplot2)
@@ -312,11 +313,11 @@ and the particle filter handles the missing data correctly:
 sir_na |>
   pfilter(Np=1000,params=c(Beta=3,gamma=2,rho=0.9,N=2600)) |>
   as.data.frame() |>
-  melt(id="day") |>
-  ggplot(aes(x=day,y=value,color=variable))+
+  pivot_longer(-day) |>
+  ggplot(aes(x=day,y=value,color=name))+
   guides(color="none")+
   geom_line()+
-  facet_wrap(~variable,ncol=1,scales='free_y')+
+  facet_wrap(~name,ncol=1,scales='free_y')+
   theme_bw()
 ```
 
@@ -647,7 +648,7 @@ We hypothesize that this is due to Windows securities features.
 Again, there is a workaround.
 One can specify to **pomp** that all compilation should be done in the current working directory.
 
-An illustration is given in the [Simulation-based Inference for Epidemiological Dynamics](https://kingaa.github.io/sbied/mif/windows.html) short course.
+An illustration is given in the [Simulation-based Inference for Epidemiological Dynamics](https://kingaa.github.io/sbied/misc/windows.html) short course.
 
 ## I get the error message 'could not find symbol "recursive" in environment of the generic function' when I use the `c` operator to concatenate certain kinds of **pomp** structures. How do I fix this?  {#could-not-find-symbol-recursive}
 
@@ -855,7 +856,7 @@ Of course, this is famously not the case in general!
 Nevertheless, it suggests perturbing the rates (or odds ratios) additively on the log scale with random increments on the order of a few percent.
 The idea here is to err on the side of small perturbations, counting on cheap computing power to perform the IF2 iterations needed to achieve the MLE.
 At any rate, this is the reasoning behind the common choice of setting `rw.sd` to a few percent (say 0.01--0.05).
-[When [parameter transformations](#what-are-parameter-transformations-partrans-parameter_trans-in-pomp-and-when-should-i-use-them) are in use, the perturbations will be applied on the estimation scale.]
+[When [parameter transformations](#partrans) are in use, the perturbations will be applied on the estimation scale.]
 It frequently happens, then, that IF2 rapidly climbs the likelihood surface, despite the choice of a "small" `rw.sd`.
 In subsequent iterations, it is often useful to reduce the random-walk intensities further, as attention shifts to the fine structure in the highlands of the likelihood surface.
 

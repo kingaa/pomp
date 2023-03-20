@@ -1079,8 +1079,8 @@ parameter estimation for fully stochastic models.
 Iterated filtering is a method for maximizing the likelihood.
 The method was introduced in its original form by @Ionides2006, and was subsequently much improved by @Ionides2015.
 The latter paper rigorously expounds the theory.
-An [addendum to the **pomp** *Journal of Statistical Software paper](https://kingaa.github.io/pomp/vignettes/mif2.html) provides pseudocode and a simple example.
-Finally, a [tutorial on the theory and practice](https://kingaa.github.io/sbied/mif/mif.html) is linked from the [**pomp** documentation index](https://kingaa.github.io/pomp/docs.html).
+An [updated version of the **pomp** *Journal of Statistical Software paper](https://kingaa.github.io/pomp/vignettes/pompjss.pdf) provides pseudocode and a simple example.
+Finally, a [tutorial on the theory and practice](https://kingaa.github.io/sbied/mif/) is linked from the [**pomp** documentation index](https://kingaa.github.io/pomp/docs.html).
 Here, we confine ourselves to demonstrating how the IF2 algorithm [@Ionides2015] is applied to the toy examples we have been discussing.
 
 ### Local vs global search
