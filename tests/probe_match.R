@@ -54,7 +54,9 @@ f1 |> summary() |> names()
 
 f1 |> plot()
 
+pompLoad(f1)
 f1 |> probe() |> plot()
+pompUnload(f1)
 
 f1 |> as_pomp() |> as.data.frame() |> names()
 
@@ -68,5 +70,21 @@ f1 |> as("data.frame") |> names()
 po |> probe_objfun(nsim=100,probes=function(x)1,fail.value=1e9) -> f2
 logLik(f2)
 f2(1)
+
+ricker() |>
+  probe_objfun(
+    nsim=1000,
+    probes=list(
+      mean=probe_mean("y",trim=0.1,transform=sqrt),
+      sd=probe_sd("y",transform=sqrt),
+      probe_quantile("y",prob=c(0.25,0.75),na.rm=TRUE)
+    ),
+    seed=501991903
+  ) -> f
+
+pompUnload(f)
+## f() # would result in segfault
+pompLoad(f)
+stopifnot(all.equal(round(f(),4),2.7242))
 
 dev.off()
