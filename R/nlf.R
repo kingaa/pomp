@@ -23,8 +23,6 @@
 ##' @aliases nlf
 ##' @aliases nlf_objfun nlf_objfun,missing-method nlf_objfun,ANY-method
 ##'
-##' @inheritSection pomp Note for Windows users
-##' 
 ##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
 ##'
 ##' @concept nonlinear forecasting
@@ -59,7 +57,9 @@
 ##' constructed using tensor products of basis functions of observables with
 ##' basis functions of time.
 ##'
+##' @inheritSection pomp Note for Windows users
 ##' @inheritSection objfun Important Note
+##' @inheritSection objfun Objective functions based on C snippets
 ##'
 ##' @param lags A vector specifying the lags to use when constructing the nonlinear autoregressive prediction model.
 ##' The first lag is the prediction interval.

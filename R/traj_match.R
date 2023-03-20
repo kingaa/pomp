@@ -24,8 +24,6 @@
 ##' @inheritParams trajectory
 ##' @inheritParams pomp
 ##'
-##' @inheritSection pomp Note for Windows users
-##' 
 ##' @param \dots additional arguments will modify the model structure
 ##'
 ##' @return
@@ -36,7 +34,10 @@
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the log likelihood.
 ##'
+##' @inheritSection pomp Note for Windows users
 ##' @inheritSection objfun Important Note
+##' @inheritSection objfun Objective functions based on C snippets
+##' 
 ##' @seealso \code{\link[stats]{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 ##' 
 ##' @example examples/traj_match.R

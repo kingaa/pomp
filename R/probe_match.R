@@ -39,8 +39,8 @@
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
 ##'
 ##' @inheritSection pomp Note for Windows users
-##' 
 ##' @inheritSection objfun Important Note
+##' @inheritSection objfun Objective functions based on C snippets
 ##'
 ##' @example examples/probe_match.R
 ##'

@@ -176,6 +176,19 @@ Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes 
 Therefore, it is a good idea to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
 }
 
+\section{Objective functions based on C snippets}{
+
+The use of C snippets (see \code{\link{Csnippet}}) causes a dynamically loadable library to be built.
+As a rule, \pkg{pomp} functions load this library as needed and unload it when it is no longer needed.
+The stateful objective functions are an exception to this rule.
+For efficiency, calls to the objective function do not execute \code{\link{pompLoad}} or \code{\link{pompUnload}}:
+rather, it is assumed that \code{\link{pompLoad}} has been called before any call to the objective function.
+When a stateful objective function using one or more C snippets is created, \code{\link{pompLoad}} is called internally to build and load the library:
+therefore, within a single \R session, if one creates a stateful objective function, one can freely call that objective function and (more to the point) pass it to an optimizer that calls it freely, without needing to call \code{\link{pompLoad}}.
+On the other hand, if one retrieves a stored objective function from a file, or passes one to another \R session, one must call \code{\link{pompLoad}} before using it.
+\strong{Failure to do this will typically result in a segmentation fault (i.e., it will crash the \R session).}
+}
+
 \examples{
 \donttest{
 
