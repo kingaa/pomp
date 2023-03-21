@@ -44,9 +44,9 @@ demog |> filter(town==TOWN) |>
 ## ----data-plot----------------------------------------------------------------
 dat |> ggplot(aes(x=time,y=cases))+geom_line()
 demog |> 
-  gather(variable,value,-year) |>
+  pivot_longer(-year) |>
   ggplot(aes(x=year,y=value))+geom_point()+
-  facet_wrap(~variable,ncol=1,scales="free_y")
+  facet_wrap(~name,ncol=1,scales="free_y")
 
 
 ## ----prep-covariates----------------------------------------------------------
@@ -179,10 +179,10 @@ dat |>
 ## ----plot-pomp----------------------------------------------------------------
 m1 |> 
   as.data.frame() |> 
-  gather(variable,value,-time) |>
+  pivot_longer(-time) |>
   ggplot(aes(x=time,y=value))+
   geom_line()+
-  facet_grid(variable~.,scales="free_y")
+  facet_grid(name~.,scales="free_y")
 
 
 ## ----load-mle,echo=FALSE------------------------------------------------------
@@ -256,7 +256,7 @@ m1 |>
     p=c("lo","med","hi"),
     q=quantile(cases,prob=c(0.05,0.5,0.95),names=FALSE)
   ) |>
-  spread(p,q) |>
+  pivot_wider(names_from=p,values_from=q) |>
   ggplot(aes(x=time,y=med,color=data,fill=data,ymin=lo,ymax=hi))+
   geom_ribbon(alpha=0.2)
 
