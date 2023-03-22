@@ -2,7 +2,7 @@
 
 ## For pomp:
 
-- make `mcap` into a generic, provide a method for data frames and a plotting method
+- format option for 'coef', 'obs', and 'states'
 - vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`:
   skeleton is in place; needs text.
 - format option for 'coef', 'obs', and 'states'

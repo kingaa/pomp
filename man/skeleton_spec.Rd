@@ -55,6 +55,13 @@ It must also take the argument \sQuote{\code{...}}.
 As with the other basic components, \code{f} may take additional arguments, provided these are passed along with it in the call to \code{pomp}.
 The function \code{f} must return a numeric vector of the same length as the number of state variables, which contains the value of the map or vectorfield at the required point and time.
 }
+\section{Masking of \code{map}}{
+
+Other packages (most notably the \pkg{tidyverse} package \pkg{purrr}) have functions named \sQuote{map}.
+Beware that, if you load one of these packages after you load \pkg{pomp}, the \pkg{pomp} function \code{map} described here will be masked.
+You can always access the \pkg{pomp} function by calling \code{pomp::map}.
+}
+
 \section{Default behavior}{
 
 The default \code{skeleton} is undefined.
