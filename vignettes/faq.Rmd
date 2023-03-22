@@ -36,17 +36,19 @@ set.seed(1810027260)
 
 ## How can I submit an effective request for help? {#effective-request}
 
-Before submitting a request, first see if you can solve your own problem.
+You are always welcome to ask for help, but maintainer time is limited.
+Therefore, before submitting a request, first see if you can solve your own problem.
+The following steps will help you to do so.
 
-1. Check to see if you are using the latest version of **pomp**:
-if not, check to see if the problem you have is solved by upgrading to the latest version.
-1. Before submitting a request, examine the error messages and try to figure out what they are telling you by reading the [help pages](./manual/) and/or the [package tutorials](./docs.html).
+1. Check to see if you are using [the latest version of **pomp**](https://cran.r-project.org/package=pomp):
+if not, check to see if the problem you have is solved by [upgrading to the latest version](https://kingaa.github.io/pomp/install.html).
+1. Before submitting a request, examine the error messages and try to figure out what they are telling you by reading the [manual](./manual/) and/or the [package tutorials](./docs.html).
 1. Read through the [Frequently Asked Questions](./FAQ.html) to see if the answer to your question is there.
 1. Check the [discussions forum](https://github.com/kingaa/pomp/discussions/).
 Many conversations about various situations that have arisen are archived there.
 1. Search the [issues](https://github.com/kingaa/pomp/issues/) (including the closed issues) to see if your situation has been encountered and resolved already.
 
-If you still have a problem, then submit a request for help via the [Issues page](https://github.com/kingaa/pomp/issues) if possible or to Aaron King (kingaa at umich dot edu) if necessary.
+If you find that your question has not been answered, or you believe you have found a bug, then submit a request for help via the [Issues page](https://github.com/kingaa/pomp/issues) if possible or to Aaron King (kingaa at umich dot edu) if necessary.
 ***Include in your request---at a minimum---the code that you ran that produced the error, together with a transcript of the **R** session that gave the errors.***
 Better still, construct a minimal example that will reproduce the error: this allows for the most efficient solution of problems.
 
