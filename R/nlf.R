@@ -59,7 +59,7 @@
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' @inheritSection objfun Important Note
-##' @inheritSection objfun Objective functions based on C snippets
+##' @inheritSection objfun Warning! Objective functions based on C snippets
 ##'
 ##' @param lags A vector specifying the lags to use when constructing the nonlinear autoregressive prediction model.
 ##' The first lag is the prediction interval.

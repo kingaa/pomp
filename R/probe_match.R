@@ -40,7 +40,7 @@
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' @inheritSection objfun Important Note
-##' @inheritSection objfun Objective functions based on C snippets
+##' @inheritSection objfun Warning! Objective functions based on C snippets
 ##'
 ##' @example examples/probe_match.R
 ##'

@@ -146,9 +146,9 @@ Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes 
 Therefore, it is a good idea to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
 }
 
-\section{Objective functions based on C snippets}{
+\section{Warning! Objective functions based on C snippets}{
 
-The use of C snippets (see \code{\link{Csnippet}}) causes a dynamically loadable library to be built.
+If you use C snippets (see \code{\link{Csnippet}}), a dynamically loadable library will be built.
 As a rule, \pkg{pomp} functions load this library as needed and unload it when it is no longer needed.
 The stateful objective functions are an exception to this rule.
 For efficiency, calls to the objective function do not execute \code{\link{pompLoad}} or \code{\link{pompUnload}}:

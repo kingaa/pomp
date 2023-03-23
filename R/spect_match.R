@@ -40,7 +40,7 @@
 ##'
 ##' @inheritSection pomp Note for Windows users
 ##' @inheritSection objfun Important Note
-##' @inheritSection objfun Objective functions based on C snippets
+##' @inheritSection objfun Warning! Objective functions based on C snippets
 ##'
 ##' @seealso \code{\link{spect}} \code{\link[stats]{optim}}
 ##' \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
