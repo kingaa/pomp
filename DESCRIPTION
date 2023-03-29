@@ -1,23 +1,33 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 4.7.0.3
-Date: 2023-03-23
+Version: 4.7.0.4
+Date: 2023-03-29
 Authors@R: c(person(given=c("Aaron","A."),family="King",
-		role=c("aut","cre"),email="kingaa@umich.edu"),
-	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
-	  person(given=c("Carles"),family="Breto",role=c("aut")),
-	  person(given=c("Stephen","P."),family="Ellner",role=c("ctb")),
+	     role=c("aut","cre"),email="kingaa@umich.edu",
+	     comment=c(ORCID="0000-0001-6159-3207")),
+	  person(given=c("Edward","L."),family="Ionides",role=c("aut"),
+	  comment=c(ORCID="0000-0002-4190-0174"))	,
+	  person(given=c("Carles"),family="Breto",role=c("aut"),
+	  comment=c(ORCID="0000-0003-4695-4902")),
+	  person(given=c("Stephen","P."),family="Ellner",role=c("ctb"),
+	  comment=c(ORCID="0000-0002-8351-9734")),
 	  person(given=c("Matthew","J."),family="Ferrari",role=c("ctb")),
-	  person(given="Sebastian",family="Funk",role=c("ctb")),
+	  person(given="Sebastian",family="Funk",role=c("ctb"),
+	  comment=c(ORCID="0000-0002-2842-3406")),
 	  person(given=c("Steven","G."),family="Johnson",role=c("ctb")),
-	  person(given=c("Bruce","E."),family="Kendall",role=c("ctb")),
+	  person(given=c("Bruce","E."),family="Kendall",role=c("ctb"),
+	  comment=c(ORCID="0000-0003-1782-8106")),
 	  person(given=c("Michael"),family="Lavine",role=c("ctb")),
-	  person(given="Dao",family="Nguyen",role=c("ctb")),
-	  person(given=c("Eamon","B."),family="O'Dea",role=c("ctb")),
+	  person(given="Dao",family="Nguyen",role=c("ctb"),
+	  comment=c(ORCID="0000-0003-2215-613X")),
+	  person(given=c("Eamon","B."),family="O'Dea",role=c("ctb"),
+	  comment=c(ORCID="0000-0003-4748-683X")),
 	  person(given=c("Daniel","C."),family="Reuman",role=c("ctb")),
-	  person(given=c("Helen"),family="Wearing",role=c("ctb")),
-	  person(given=c("Simon","N."),family="Wood",role=c("ctb"))
+	  person(given=c("Helen"),family="Wearing",role=c("ctb"),
+	  comment=c(ORCID="0000-0002-9837-9797")),
+	  person(given=c("Simon","N."),family="Wood",role=c("ctb"),
+	  comment=c(ORCID="0000-0002-2034-7453"))
 	  )
 URL: https://kingaa.github.io/pomp/
 Description: Tools for data analysis with partially observed Markov process (POMP) models (also known as stochastic dynamical systems, hidden Markov models, and nonlinear, non-Gaussian, state-space models).  The package provides facilities for implementing POMP models, simulating them, and fitting them to time series data by a variety of frequentist and Bayesian methods.  It is also a versatile platform for implementation of inference methods for general POMP models.
