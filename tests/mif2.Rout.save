@@ -1,6 +1,6 @@
 
-R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"
-Copyright (C) 2022 The R Foundation for Statistical Computing
+R version 4.2.3 (2023-03-15) -- "Shortstop Beagle"
+Copyright (C) 2023 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -135,7 +135,7 @@ Error : in 'mif2': Np[1] must equal Np[11].
 > mif2(po,Nmif=1,Np=c(rep(100,9),40,100),rw.sd=rw_sd(sigma=0.1),cooling.frac=0.5)
 <object of class 'mif2d_pomp'>
 > try(mif2(po,Nmif=1,Np=100,rw.sd=3))
-Error : in 'mif2': 'rw.sd' should be specified using the 'rw.sd' function. See '?mif2'.
+Error : in 'mif2': 'rw.sd' should be specified using the 'rw_sd' function. See '?mif2'.
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd()))
 Error : in 'mif2': in 'rw.sd': parameters must be referenced by name.
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd(a=9)))
