@@ -38,8 +38,10 @@
 ##' @param file Name of the archive file in which the result will be stored or retrieved, as appropriate.
 ##' For \code{bake}, this will contain a single object and hence be an RDS file (extension \sQuote{rds});
 ##' for \code{stew}, this will contain one or more named objects and hence be an RDA file (extension \sQuote{rda}).
-##' @param dir Directory holding archive files; by default, this is the current working directory.
+##' @param dir Directory holding archive files;
+##' by default, this is the current working directory.
 ##' This can also be set using the global option \code{pomp_archive_dir}.
+##' This directory will be created if it does not exist.
 ##' @param expr Expression to be evaluated.
 ##' @param seed,kind,normal.kind optional.
 ##' To set the state and of the RNG.
@@ -165,6 +167,9 @@ bake <- function (
   )
   info <- as.logical(info)
   timing <- as.logical(timing)
+  if (!dir.exists(dir)) {
+    dir.create(dir,recursive=TRUE,mode="0644") #nocov
+  }
   file <- file.path(as.character(dir[[1L]]),as.character(file))
   reload <- file.exists(file)
   if (reload) {
@@ -251,6 +256,9 @@ stew <- function (
     ep="stew"
   )
   info <- as.logical(info)
+  if (!dir.exists(dir)) {
+    dir.create(dir,recursive=TRUE,mode="0644") #nocov
+  }
   file <- file.path(as.character(dir[[1L]]),as.character(file))
   reload <- file.exists(file)
   e <- new.env()
