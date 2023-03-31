@@ -1303,8 +1303,8 @@ hyperparams <- list(
 @
 <<gompertz-dprior2>>=
 gompertz.dprior <- function (r, K, sigma, tau, X_0, ..., log) {
-  f <- sum(dunif(c(r, K, sigma, tau, X_0), min = hyperparams$min, max = hyperparams$max,
-                 log = TRUE))
+  f <- sum(dunif(c(r, K, sigma, tau, X_0),
+    min = hyperparams$min, max = hyperparams$max,log = TRUE))
   if (log) f else exp(f)
 }
 @

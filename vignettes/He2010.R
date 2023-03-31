@@ -51,7 +51,7 @@ demog |>
 
 ## ----prep-covariates----------------------------------------------------------
 demog |> 
-  summarize(
+  reframe(
     time=seq(from=min(year),to=max(year),by=1/12),
     pop=predict(smooth.spline(x=year,y=pop),x=time)$y,
     birthrate=predict(smooth.spline(x=year+0.5,y=births),x=time-4)$y
@@ -224,9 +224,10 @@ kable(subset(mle,select=-c(town,mu,loglik.sd,delay,S_0,E_0,I_0,R_0)),row.names=F
 
 ## ----pfilter1-----------------------------------------------------------------
 library(foreach)
-library(doParallel)
+library(doFuture)
 library(doRNG)
-registerDoParallel()
+registerDoFuture()
+plan(multicore)
 registerDoRNG(998468235L)
 
 foreach(i=1:4) %dopar% {
@@ -252,7 +253,7 @@ m1 |>
     data=if_else(.id=="data","data","simulation")
   ) |>
   group_by(time,data) |>
-  summarize(
+  reframe(
     p=c("lo","med","hi"),
     q=quantile(cases,prob=c(0.05,0.5,0.95),names=FALSE)
   ) |>
