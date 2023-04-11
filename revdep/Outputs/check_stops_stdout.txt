@@ -1,5 +1,5 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck'
-* using R version 4.2.2 (2022-10-31)
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck'
+* using R version 4.2.3 (2023-03-15)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * using session charset: UTF-8
 * using option '--as-cran'
@@ -14,14 +14,10 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'stops' can be installed ... [39s/22s] WARNING
-Found the following significant warnings:
-  Warning: 'rgl.init' failed, running with 'rgl.useNULL = TRUE'.
-See '/userdata/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck/00install.out' for details.
+* checking whether package 'stops' can be installed ... [20s/23s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
-* checking for future file timestamps ... NOTE
-unable to verify current time
+* checking for future file timestamps ... OK
 * checking 'build' directory ... OK
 * checking DESCRIPTION meta-information ... OK
 * checking top-level files ... OK
@@ -41,7 +37,7 @@ unable to verify current time
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [64s/22s] NOTE
+* checking R code for possible problems ... [35s/29s] NOTE
 bcStressMin: local variable ‘lambdaorig’ assigned but may not be used
 bcStressMin: local variable ‘t’ assigned but may not be used
 c_inequality: local variable ‘out’ assigned but may not be used
@@ -89,7 +85,7 @@ tgpoptim: local variable ‘valsorig’ assigned but may not be used
 * checking data for ASCII and uncompressed saves ... OK
 * checking installed files from 'inst/doc' ... OK
 * checking files in 'vignettes' ... OK
-* checking examples ... [32s/12s] OK
+* checking examples ... [31s/11s] OK
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK
@@ -98,4 +94,4 @@ tgpoptim: local variable ‘valsorig’ assigned but may not be used
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 1 WARNING, 2 NOTEs
+Status: 1 NOTE

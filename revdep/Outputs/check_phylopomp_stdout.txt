@@ -1,5 +1,5 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck'
-* using R version 4.2.2 (2022-10-31)
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck'
+* using R version 4.2.3 (2023-03-15)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * using session charset: UTF-8
 * using option '--as-cran'
@@ -15,14 +15,13 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'phylopomp' can be installed ... [61s/42s] OK
+* checking whether package 'phylopomp' can be installed ... [40s/48s] OK
 * checking installed package size ... NOTE
-  installed size is 18.3Mb
+  installed size is  8.0Mb
   sub-directories of 1Mb or more:
-    libs  17.5Mb
+    libs   7.1Mb
 * checking package directory ... OK
-* checking for future file timestamps ... NOTE
-unable to verify current time
+* checking for future file timestamps ... OK
 * checking DESCRIPTION meta-information ... OK
 * checking top-level files ... OK
 * checking for left-over files ... OK
@@ -41,7 +40,7 @@ unable to verify current time
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [52s/10s] OK
+* checking R code for possible problems ... [20s/11s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -56,12 +55,16 @@ unable to verify current time
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [17s/14s] OK
+* checking examples ... [16s/18s] OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [111s/52s] OK
+31c31
+< # ℹ 1,739 more rows
+---
+> # … with 1,739 more rows
+ [66s/50s] OK
 * checking PDF version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 2 NOTEs
+Status: 1 NOTE

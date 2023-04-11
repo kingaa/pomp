@@ -1,0 +1,7 @@
+  Running ‘fakery.R’ [19s/21s]
+  Comparing ‘fakery.Rout’ to ‘fakery.Rout.save’ ...  Running ‘filter.R’
+  Comparing ‘filter.Rout’ to ‘filter.Rout.save’ ...  Running ‘indep.R’
+  Comparing ‘indep.Rout’ to ‘indep.Rout.save’ ...  Running ‘test_time.R’ [19s/18s]
+  Comparing ‘test_time.Rout’ to ‘test_time.Rout.save’ ...  Running ‘transmiss.R’ [153s/153s]
+  Comparing ‘transmiss.Rout’ to ‘transmiss.Rout.save’ ...
+

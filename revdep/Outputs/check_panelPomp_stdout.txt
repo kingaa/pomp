@@ -1,11 +1,11 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
-* using R version 4.2.2 (2022-10-31)
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
+* using R version 4.2.3 (2023-03-15)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'panelPomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'panelPomp' version '0.16.0'
+* this is package 'panelPomp' version '1.1'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -18,8 +18,7 @@
 * checking whether package 'panelPomp' can be installed ... OK
 * checking installed package size ... OK
 * checking package directory ... OK
-* checking for future file timestamps ... NOTE
-unable to verify current time
+* checking for future file timestamps ... OK
 * checking DESCRIPTION meta-information ... OK
 * checking top-level files ... OK
 * checking for left-over files ... OK
@@ -38,7 +37,7 @@ unable to verify current time
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... OK
+* checking R code for possible problems ... [19s/13s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -48,210 +47,49 @@ unable to verify current time
 * checking Rd \usage sections ... OK
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
-* checking examples ... OK
+* checking examples ... [32s/13s] OK
+** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
-5,12d4
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-20c12
-<         t
+14c14
+< name [,1] [,2] [,3] [,4]
 ---
->         time
-23c15
-<         t
+> variable [,1] [,2] [,3] [,4]
+17c17
+< name [,1] [,2] [,3] [,4]
 ---
->         time
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-5,12d4
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-20c12
-<         t
+> variable [,1] [,2] [,3] [,4]
+14c14
+< name     [,1]      [,2]     [,3]      [,4]     [,5]
 ---
->         time
-23c15
-<         t
+> variable     [,1]      [,2]     [,3]      [,4]     [,5]
+17c17
+< name      [,1]     [,2]     [,3]    [,4]     [,5]
 ---
->         time
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-6,13d5
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-5,12d4
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-20c12
-<         t
+> variable      [,1]     [,2]     [,3]    [,4]     [,5]
+14c14
+< name   [,1]     [,2]     [,3]     [,4]     [,5]
 ---
->         time
-23c15
-<         t
+> variable   [,1]     [,2]     [,3]     [,4]     [,5]
+17c17
+< name    [,1]       [,2]      [,3]      [,4]      [,5]
 ---
->         time
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-6,13d5
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-33c25
-<         t
+> variable    [,1]       [,2]      [,3]      [,4]      [,5]
+26c26
+< name       [,1]      [,2]      [,3]      [,4]      [,5]      [,6]
 ---
->         time
-38c30
-<         t
+> variable       [,1]      [,2]      [,3]      [,4]      [,5]      [,6]
+31c31
+< name     [,1]     [,2]     [,3]     [,4]     [,5]      [,6]
 ---
->         time
-6,13d5
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-4,11d3
-< 
-< Welcome to pomp!
-< 
-< As of version 4.6, no user-visible pomp function has a name that
-< includes a dot ('.'). Function names have been changed to replace the
-< dot with an underscore ('_'). For more information, see the pomp blog:
-< https://kingaa.github.io/pomp/blog.html.
-< 
-17c9
-<         t
+> variable     [,1]     [,2]     [,3]     [,4]     [,5]      [,6]
+11c11
+< name     [,1]     [,2]     [,3]     [,4]      [,5]
 ---
->         time
- [271s/39s] OK
+> variable     [,1]     [,2]     [,3]     [,4]      [,5]
+ [102s/59s] OK
 * checking PDF version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 1 NOTE
+Status: OK

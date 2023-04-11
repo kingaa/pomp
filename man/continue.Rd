@@ -9,8 +9,6 @@
 \alias{continue,mif2d_pomp-method}
 \title{Continue an iterative calculation}
 \usage{
-continue(object, ...)
-
 \S4method{continue}{abcd_pomp}(object, Nabc = 1, ...)
 
 \S4method{continue}{pmcmcd_pomp}(object, Nmcmc = 1, ...)
@@ -20,10 +18,10 @@ continue(object, ...)
 \arguments{
 \item{object}{the result of an iterative \pkg{pomp} computation}
 
+\item{Nabc}{positive integer; number of additional ABC iterations to perform}
+
 \item{\dots}{additional arguments will be passed to the underlying method.
 This allows one to modify parameters used in the original computations.}
-
-\item{Nabc}{positive integer; number of additional ABC iterations to perform}
 
 \item{Nmcmc}{positive integer; number of additional PMCMC iterations to perform}
 

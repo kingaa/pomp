@@ -1,10 +1,8 @@
-  Running ‘mif2.R’
+  Running ‘mif2.R’ [10s/11s]
   Comparing ‘mif2.Rout’ to ‘mif2.Rout.save’ ... OK
   Running ‘pfilter.R’
   Comparing ‘pfilter.Rout’ to ‘pfilter.Rout.save’ ... OK
-
-See
-  '/userdata/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck/00check.log'
-for details.
+  Running ‘plot_matrix.R’
+  Comparing ‘plot_matrix.Rout’ to ‘plot_matrix.Rout.save’ ... OK
 
 

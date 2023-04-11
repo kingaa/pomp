@@ -1,5 +1,5 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/epimdr2.Rcheck'
-* using R version 4.2.2 (2022-10-31)
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/epimdr2.Rcheck'
+* using R version 4.2.3 (2023-03-15)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * using session charset: UTF-8
 * using option '--as-cran'
@@ -14,11 +14,10 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'epimdr2' can be installed ... [31s/17s] OK
+* checking whether package 'epimdr2' can be installed ... [15s/14s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
-* checking for future file timestamps ... NOTE
-unable to verify current time
+* checking for future file timestamps ... OK
 * checking DESCRIPTION meta-information ... OK
 * checking top-level files ... OK
 * checking for left-over files ... OK
@@ -37,7 +36,7 @@ unable to verify current time
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [53s/11s] NOTE
+* checking R code for possible problems ... [22s/15s] NOTE
 coyne: local variable ‘H1’ assigned but may not be used
 coyne: local variable ‘H2’ assigned but may not be used
 coyne: local variable ‘I’ assigned but may not be used
@@ -149,10 +148,10 @@ twostrain: local variable ‘res’ assigned but may not be used
 * checking data for non-ASCII characters ... OK
 * checking LazyData ... OK
 * checking data for ASCII and uncompressed saves ... OK
-* checking examples ... [20s/11s] OK
+* checking examples ... [13s/12s] OK
 ** found \donttest examples: check also with --run-donttest
 * checking PDF version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 2 NOTEs
+Status: 1 NOTE

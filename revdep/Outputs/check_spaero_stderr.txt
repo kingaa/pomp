@@ -1,7 +1,7 @@
-  Running ‘testthat.R’
+  Running ‘testthat.R’ [13s/11s]
 
 See
-  '/userdata/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck/00check.log'
+  '/home/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck/00check.log'
 for details.
 
 

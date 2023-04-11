@@ -12,8 +12,6 @@
 ##' This allows one to modify parameters used in the original computations.
 NULL
 
-##' @name continue
-##' @rdname continue
 ##' @export
 setGeneric(
   "continue",

@@ -1,11 +1,11 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/DTAT.Rcheck'
-* using R version 4.2.2 (2022-10-31)
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/DTAT.Rcheck'
+* using R version 4.2.3 (2023-03-15)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'DTAT/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'DTAT' version '0.3-4'
+* this is package 'DTAT' version '0.3-6'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -15,12 +15,10 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking serialization versions ... OK
-* checking whether package 'DTAT' can be installed ... [27s/14s] OK
+* checking whether package 'DTAT' can be installed ... [15s/15s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
-* checking for future file timestamps ... NOTE
-unable to verify current time
+* checking for future file timestamps ... OK
 * checking 'build' directory ... OK
 * checking DESCRIPTION meta-information ... OK
 * checking top-level files ... OK
@@ -40,7 +38,7 @@ unable to verify current time
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [68s/14s] NOTE
+* checking R code for possible problems ... [25s/18s] NOTE
 dose.survfit: local variable ‘S’ assigned but may not be used
 as_d3_data,DE : rel_dose: local variable ‘where_na’ assigned but may
   not be used
@@ -57,18 +55,16 @@ initialize,DE: local variable ‘Q1’ assigned but may not be used
 * checking contents of 'data' directory ... OK
 * checking data for non-ASCII characters ... OK
 * checking data for ASCII and uncompressed saves ... OK
+* checking sizes of PDF files under 'inst/doc' ... OK
 * checking installed files from 'inst/doc' ... OK
 * checking files in 'vignettes' ... OK
 * checking examples ... OK
-Examples with CPU (user + system) or elapsed time > 5s
-               user system elapsed
-Onoue.Friberg 3.405  6.673   1.782
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK
-* checking re-building of vignette outputs ... OK
+* checking re-building of vignette outputs ... [28s/25s] OK
 * checking PDF version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 2 NOTEs
+Status: 1 NOTE
