@@ -1,4 +1,4 @@
-REXE = R -s
+REXE = $(shell which R) -s
 RCMD = $(REXE) CMD
 MANUALDIR = $(REPODIR)/manuals/$(PKG)
 
