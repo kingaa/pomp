@@ -123,7 +123,7 @@ library("tidyverse")
 library("grid")
 library("xtable")
 
-stopifnot(packageVersion("pomp")>="4.5.1")
+stopifnot(packageVersion("pomp")>="5.0")
 
 <<set-opts,include=FALSE,cache=FALSE>>=
 options(
@@ -2535,7 +2535,7 @@ Ionides E, Nguyen D, Atchad{\'e} Y, Stoev S, King AA (2015).
 \bibitem[{Johnson(2014)}]{Johnson2014}
 Johnson S (2014).
 \newblock \emph{The \pkg{NLopt} Nonlinear-Optimization Package}.
-\newblock Version 2.4.2, \urlprefix\url{http://ab-initio.mit.edu/nlopt}.
+\newblock \urlprefix\url{https://nlopt.readthedocs.io/en/latest/}.
 
 \bibitem[{Kane \emph{et~al.}(2013)Kane, Emerson, and Weston}]{Kane2013}
 Kane M, Emerson J, Weston S (2013).
@@ -2587,13 +2587,12 @@ King AA, Ionides E, Pascual M, Bouma M (2008).
 \bibitem[{King(2022)}]{subplex}
 King AA and Rowan T (2022).
 \newblock \emph{\pkg{subplex}: Unconstrained Optimization Using the Subplex Algorithm}.
-\newblock \proglang{R}~package, version~1.8,
-  \urlprefix\url{https://CRAN.R-project.org/package=subplex}.
+\newblock \proglang{R}~package, \urlprefix\url{https://CRAN.R-project.org/package=subplex}.
 
-\bibitem[{King \emph{et~al.}(2022)King, Ionides, Bret\'o, Ellner, Ferrari, Funk, Johnson, Kendall, Lavine, Nguyen, O'Dea, Reuman, Wearing, and Wood}]{pomp}
+\bibitem[{King \emph{et~al.}(2023)King, Ionides, Bret\'o, Ellner, Ferrari, Funk, Johnson, Kendall, Lavine, Nguyen, O'Dea, Reuman, Wearing, and Wood}]{pomp}
 King AA, Ionides EL, Bret\'o CM, Ellner SP, Ferrari MJ, Funk S, Johnson SG, Kendall BE, Lavine M, Nguyen D, O'Dea EB, Reuman DC, Wearing H, Wood SN (2022).
 \newblock \emph{{pomp}: {Statistical} Inference for Partially Observed {Markov} Processes}.
-\newblock \proglang{R}~package, version~4.2, \urlprefix\url{https://kingaa.github.io/pomp/}.
+\newblock \proglang{R}~package, \urlprefix\url{https://kingaa.github.io/pomp/}.
 
 \bibitem[{Kitagawa(1998)}]{Kitagawa1998}
 Kitagawa G (1998).
@@ -2650,7 +2649,7 @@ Reuman D, Desharnais R, Costantino R, Ahmad O, Cohen J (2006).
 \bibitem[{{Revolution Analytics} and Weston(2014)}]{foreach}
 {Revolution Analytics}, Weston S (2014).
 \newblock \emph{\pkg{foreach}: Foreach Looping Construct for \proglang{R}}.
-\newblock \proglang{R} package version 1.4.2, \urlprefix\url{https://CRAN.R-project.org/package=foreach}.
+\newblock \proglang{R} package \urlprefix\url{https://CRAN.R-project.org/package=foreach}.
 
 \bibitem[{Ricker(1954)}]{Ricker1954}
 Ricker W (1954).
@@ -2732,7 +2731,7 @@ Xia Y, Tong H (2011).
 \bibitem[{Ypma(2014)}]{Ypma2014}
 Ypma J (2014).
 \newblock \emph{\pkg{nloptr}: \proglang{R} Interface to \pkg{NLopt}}.
-\newblock \proglang{R}~package, version~1.0.0, \urlprefix\url{https://CRAN.R-project.org/package=nloptr}.
+\newblock \proglang{R}~package, \urlprefix\url{https://CRAN.R-project.org/package=nloptr}.
 
 \end{thebibliography}
 

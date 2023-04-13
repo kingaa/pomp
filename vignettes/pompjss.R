@@ -7,7 +7,7 @@ library("tidyverse")
 library("grid")
 library("xtable")
 
-stopifnot(packageVersion("pomp")>="4.5.1")
+stopifnot(packageVersion("pomp")>="5.0")
 
 
 ## ----set-opts,include=FALSE,cache=FALSE---------------------------------------

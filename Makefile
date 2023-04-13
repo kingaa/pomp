@@ -9,4 +9,4 @@ clean:
 
 fresh:
 	$(MAKE) -C vignettes fresh
-	$(RM) -r _site
+	$(RM) -r _site .jekyll-cache

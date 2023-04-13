@@ -1888,6 +1888,7 @@ This document was produced with the following software versions:
 | **coda**      | `r packageVersion("coda")`      |
 | **foreach**   | `r packageVersion("foreach")`   |
 | **doFuture**  | `r packageVersion("doFuture")`  |
+| **doMPI**     | `r packageVersion("doMPI")`     |
 | **doRNG**     | `r packageVersion("doRNG")`     |
 | **subplex**   | `r packageVersion("subplex")`   |
 | **tidyverse** | `r packageVersion("tidyverse")` |
