@@ -128,3 +128,28 @@ stopifnot(
   identical(x,xx),
   identical(y,yy)
 )
+
+capture.output(
+  {
+    bake(file="results/bob/mary/tmp.rds",rnorm(5)) -> x1
+    bake(file="results/bob/mary/tmp.rds",rnorm(5)) -> x2
+    bake(file="mary/tmp.rds",rnorm(5),dir=file.path(tempdir(),"results/bob")) -> x3
+    op <- options(pomp_archive_dir=file.path(tempdir(),"results"))
+    bake(file="bob/mary/tmp.rds",rnorm(5)) -> x4
+    bake(file="results/bob/mary/tmp.rds",rnorm(5)) -> x5
+    options(op)
+    bake(file="results/results/bob/mary/tmp.rds",rnorm(5)) -> x6
+  },
+  type="message"
+) -> out
+stopifnot(
+  identical(x1,x2),
+  identical(x1,x3),
+  identical(x1,x4),
+  !identical(x1,x5),
+  identical(x5,x6),
+  length(out)==2,
+  grepl("^NOTE: creating archive directory",out),
+  grepl("results/bob/mary'.",out),
+  grepl("results/results/bob/mary'.",out[2])
+)

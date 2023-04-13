@@ -73,7 +73,7 @@ This is returned as the \dQuote{system.time} attribute of the returned object.}
 \item{dir}{Directory holding archive files;
 by default, this is the current working directory.
 This can also be set using the global option \code{pomp_archive_dir}.
-This directory will be created if it does not exist.}
+If it does not exist, this directory will be created (with a message).}
 
 \item{envir}{the \code{\link[base]{environment}} in which \code{expr} is to
     be evaluated.  May also be \code{NULL}, a list, a data frame,

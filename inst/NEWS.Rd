@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.0.1}{
+  \itemize{
+    \item When the archive directory does not exist, \code{bake} and \code{stew} now create it.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.0.0}{
   \itemize{
     \item We no longer import from \pkg{plyr}.

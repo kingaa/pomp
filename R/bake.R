@@ -41,7 +41,7 @@
 ##' @param dir Directory holding archive files;
 ##' by default, this is the current working directory.
 ##' This can also be set using the global option \code{pomp_archive_dir}.
-##' This directory will be created if it does not exist.
+##' If it does not exist, this directory will be created (with a message).
 ##' @param expr Expression to be evaluated.
 ##' @param seed,kind,normal.kind optional.
 ##' To set the state and of the RNG.
@@ -150,6 +150,16 @@ update_bake_archive <- function (val, code, deps, file) {
   val
 }
 
+create_path <- function (dir, file, mode = "0755") {
+  path <- file.path(as.character(dir[[1L]]),as.character(file[1L]))
+  dir <- dirname(path)
+  if (!dir.exists(dir)) {
+    pMess_("creating archive directory ",sQuote(dir),".")
+    dir.create(dir,recursive=TRUE,mode=mode)
+  }
+  path
+}
+
 ##' @rdname bake
 ##' @export
 bake <- function (
@@ -167,10 +177,7 @@ bake <- function (
   )
   info <- as.logical(info)
   timing <- as.logical(timing)
-  if (!dir.exists(dir)) {
-    dir.create(dir,recursive=TRUE,mode="0644") #nocov
-  }
-  file <- file.path(as.character(dir[[1L]]),as.character(file))
+  file <- create_path(dir,file)
   reload <- file.exists(file)
   if (reload) {
     val <- readRDS(file)
@@ -256,10 +263,7 @@ stew <- function (
     ep="stew"
   )
   info <- as.logical(info)
-  if (!dir.exists(dir)) {
-    dir.create(dir,recursive=TRUE,mode="0644") #nocov
-  }
-  file <- file.path(as.character(dir[[1L]]),as.character(file))
+  file <- create_path(dir,file)
   reload <- file.exists(file)
   e <- new.env()
   if (reload) {
