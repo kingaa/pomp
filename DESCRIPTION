@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 5.0.1.2
-Date: 2023-04-13
+Version: 5.0.1.3
+Date: 2023-04-14
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 	     role=c("aut","cre"),email="kingaa@umich.edu",
 	     comment=c(ORCID="0000-0001-6159-3207")),

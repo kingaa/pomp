@@ -363,8 +363,7 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL,
 
 srcDir <- function (dir, verbose) {
   if (is.null(dir)) {
-    pid <- Sys.getpid()
-    dir <- file.path(tempdir(),pid)
+    dir <- file.path(tempdir(),Sys.getpid())
   }
   if (!dir.exists(dir)) {
     if (verbose) cat("creating C snippet directory ",sQuote(dir),"\n") #nocov

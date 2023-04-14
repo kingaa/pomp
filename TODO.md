@@ -2,14 +2,12 @@
 
 ## For pomp:
 
-- format option for 'coef', 'obs', and 'states'
 - vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`:
   skeleton is in place; needs text.
 - format option for 'coef', 'obs', and 'states'
 - make `mcap` into a generic, provide a method for data frames and a plotting method
-- `bake`, `stew` should take attributes to be attached or stored (e.g., `getDoParWorkers()`)
-- `options(pomp_cdir)` should take effect *at run time* and not at initial compile time as currently
 - overriding C snippets should overwrite/delete old C snippets, keep one C snippet file
+- `options(pomp_cdir)` should take effect *at run time* and not at initial compile time as currently
 
 - in `pfilter`, perhaps filter trajectory (one sample from the smoothing distribution) should go into `states` slot (??)
 
@@ -19,10 +17,6 @@
 - iterated EnKF
 - perhaps `dinit`?
 - better scheme for indicating derivatives and maps in C snippets
-- more toy models
-- more/better examples
-	- need examples of objective function methods
-	- `pmcmc` examples
 
 - support for asymmetric MCMC proposals
 - `spy` methods for derived objects
@@ -38,7 +32,6 @@
 	- BetaNegBinom
 - remove need to specify paramnames when log,logit,barycentric partrans is given? HOW?
 
-- `coef` returns data frame in some circumstances?
 - demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
 
@@ -51,7 +44,7 @@
 - what does a generic `pomp.fun` interface look like?
 
 - should parameter transformations allow renaming of variables?
-	- would require attention to `rw.sd`, e.g.
+	- would require attention to `rw_sd`, e.g.
 
 - streamline the R snippets so that ... is unnecessary?
 	- probably not worth the trouble, since C snippets are so much faster
@@ -69,15 +62,12 @@
 ## Documentation
 
 - FAQ needs update with new issues from @MarieAugerMethe:
-	- guidelines for choosing `rw.sd`
-	- linking to standalone C libraries
 	- prediction vs smoothing 
 - documentation for existing issues with "todo" label
 
 ## Helper packages
 
 - parallel mif-farm and multi-start optimization helpers
-- parallel `pfilter` algorithm (in **circumstance**)
 - number of processors stored in `bake`, `stew`, `freeze` outputs
 - parallel likelihood profiling tool (with MCAP)
 
@@ -87,3 +77,7 @@
 - LPA beetle examples
 - budmoth examples
 - variants on SIR: SEIR, SIRS, ...
+- more toy models
+- more/better examples
+	- need examples of objective function methods
+	- `pmcmc` examples
