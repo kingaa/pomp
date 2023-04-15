@@ -8,13 +8,13 @@
 
 \newcommand{\Anonymous1978}{Anonymous. Influenza in a boarding school. \emph{British Medical Journal} \bold{1}, 587, 1978.}
 
-\newcommand{\Arulampalam2002}{M.S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp. A tutorial on particle filters for online nonlinear, non-Gaussian Bayesian tracking. \emph{IEEE Transactions on Signal Processing} \bold{50}, 174--188, 2002.}
+\newcommand{\Arulampalam2002}{M.S. Arulampalam, S. Maskell, N. Gordon, and T. Clapp. A tutorial on particle filters for online nonlinear, non-Gaussian Bayesian tracking. \emph{IEEE Transactions on Signal Processing} \bold{50}, 174--188, 2002.}
 
 \newcommand{\Bhadra2016}{A. Bhadra and E.L. Ionides. Adaptive particle allocation in iterated sequential Monte Carlo via approximating meta-models. \emph{Statistics and Computing} \bold{26}, 393--407, 2016.}
 
 \newcommand{\Bratley1988}{P. Bratley and B.L. Fox. Algorithm 659 Implementing Sobol's quasirandom sequence generator. \emph{ACM Transactions on Mathematical Software} \bold{14}, 88--100, 1988.}
 
-\newcommand{\Breto2011}{C. \ifelse{latex}{\out{Bret\'o}}{\ifelse{html}{\out{Breto&oacute;}}{Breto}} and E. L. Ionides. Compound Markov counting processe and their applications to modeling infinitesimally over-dispersed systems. \emph{Stochastic Processes and their Applications} \bold{121}, 2571--2591, 2011.}
+\newcommand{\Breto2011}{C. Bretó and E. L. Ionides. Compound Markov counting processes and their applications to modeling infinitesimally over-dispersed systems. \emph{Stochastic Processes and their Applications} \bold{121}, 2571--2591, 2011.}
 
 \newcommand{\Brillinger1980}{D.R. Brillinger, J. Guckenheimer, P. Guttorp, and G. Oster. Empirical modelling of population time series: The case of age and density dependent rates. In: G. Oster (ed.), \emph{Some Questions in Mathematical Biology} vol. 13, pp. 65--90, American Mathematical Society, Providence, 1980.}
 
@@ -26,13 +26,13 @@
 
 \newcommand{\Gurney1980}{W.S.C. Gurney, S.P. Blythe, and R.M. Nisbet. Nicholson's blowflies revisited. \emph{Nature} \bold{287}, 17--21, 1980.}
 
-\newcommand{\He2010}{D. He, E.L. Ionides, & A.A. King. Plug-and-play inference for disease dynamics: measles in large and small populations as a case study.  \emph{Journal of the Royal Society Interface} \bold{7}, 271--283, 2010.}
+\newcommand{\He2010}{D. He, E.L. Ionides, and A.A. King. Plug-and-play inference for disease dynamics: measles in large and small populations as a case study.  \emph{Journal of the Royal Society Interface} \bold{7}, 271--283, 2010.}
 
 \newcommand{\Ionides2011}{E.L. Ionides. Discussion of \dQuote{Feature matching in time series modeling} by Y. Xia and H. Tong. \emph{Statistical Science} \bold{26}, 49--52, 2011.}
 
-\newcommand{\Ionides2015}{E.L. Ionides, D. Nguyen, Y. \ifelse{latex}{\out{Atchad\'e}}{\ifelse{html}{\out{Atchad&eacute;}}{Atchade}}, S. Stoev, and A.A. King. Inference for dynamic and latent variable models via iterated, perturbed Bayes maps. \emph{Proceedings of the National Academy of Sciences} \bold{112}, 719--724, 2015.}
+\newcommand{\Ionides2015}{E.L. Ionides, D. Nguyen, Y. Atchadé, S. Stoev, and A.A. King. Inference for dynamic and latent variable models via iterated, perturbed Bayes maps. \emph{Proceedings of the National Academy of Sciences} \bold{112}, 719--724, 2015.}
 
-\newcommand{\Ionides2017}{E. L. Ionides, C. Breto, J. Park, R. A. Smith, and A. A. King. Monte Carlo profile confidence intervals for dynamic systems. \emph{Journal of the Royal Society, Interface} \bold{14}, 20170126, 2017.}
+\newcommand{\Ionides2017}{E. L. Ionides, C. Bretó, J. Park, R. A. Smith, and A. A. King. Monte Carlo profile confidence intervals for dynamic systems. \emph{Journal of the Royal Society, Interface} \bold{14}, 20170126, 2017.}
 
 \newcommand{\Joe2003}{S. Joe and F.Y. Kuo. Remark on algorithm 659: Implementing Sobol' quasirandom sequence generator. \emph{ACM Transactions on Mathematical Software} \bold{29}, 49--57, 2003.}
 
@@ -42,7 +42,7 @@
 
 \newcommand{\King2008}{A.A. King, E.L. Ionides, M. Pascual, and M.J. Bouma. Inapparent infections and cholera dynamics. \emph{Nature} \bold{454}, 877-880, 2008}
 
-\newcommand{\King2015}{A.A. King, M. Domenech de \ifelse{latex}{\out{Cell\`es}}{\ifelse{html}{\out{Cell&egrave;s}}{Celles}}, F.M.G. Magpantay, and P. Rohani. Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola. \emph{Proceedings of the Royal Society of London, Series B} \bold{282}, 20150347, 2015.}
+\newcommand{\King2015}{A.A. King, M. Domenech de Cellès, F.M.G. Magpantay, and P. Rohani. Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola. \emph{Proceedings of the Royal Society of London, Series B} \bold{282}, 20150347, 2015.}
 
 \newcommand{\King2016}{A. A. King, D. Nguyen, and E. L. Ionides. Statistical inference for partially observed Markov processes via the package \pkg{pomp}. \emph{Journal of Statistical Software} \bold{69}(12), 1--43, 2016.  An updated version of this paper is available on the \href{https://kingaa.github.io/pomp/docs.html}{package website}.}
 

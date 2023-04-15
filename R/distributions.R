@@ -22,7 +22,7 @@
 ##'     deulermultinom(x=x,size=N,rate=r,dt=dt).
 ##' }
 ##'
-##' Breto & Ionides (2011) discuss how an infinitesimally overdispersed death process can be constructed by compounding a multinomial process with a Gamma white noise process.
+##' Bretó & Ionides (2011) discuss how an infinitesimally overdispersed death process can be constructed by compounding a multinomial process with a Gamma white noise process.
 ##' The Euler approximation of the resulting process can be obtained as follows.
 ##' Let the increments of the equidispersed process be given by
 ##' \preformatted{

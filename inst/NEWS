@@ -14,8 +14,8 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._0._0:
           parameters, covariates, and so on, have been made uniform.
           In particular, when a dimension of an array corresponds to
           variables with different names, this dimension is itself
-          named "name".  Previously, its name was sometimes "variable"
-          and sometimes "parameter".  This change is meant to
+          named “name”.  Previously, its name was sometimes “variable”
+          and sometimes “parameter”.  This change is meant to
           streamline interaction with the ‘tidyverse’.
 
         • Some minor bugfixes.

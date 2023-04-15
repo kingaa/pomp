@@ -34,7 +34,7 @@ TODO\.md$
 \.tests
 Makefile
 rules.mk
-yaml/
+yaml
 scripts
 lib
 libs
