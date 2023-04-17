@@ -1,7 +1,7 @@
 options(
   help_type="html",
   repos=c(
-    CRAN="https://repo.miserver.it.umich.edu/cran/",
+    CRAN="https://cloud.r-project.org/",
     kingaa="https://kingaa.github.io"
   ),
   useFancyQuotes=FALSE,
