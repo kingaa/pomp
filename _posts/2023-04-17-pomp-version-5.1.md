@@ -1,10 +1,10 @@
 ---
-date: 14 April 2023
+date: 17 April 2023
 layout: pomp
-title: pomp version 5 coming soon
+title: pomp version 5.1 released
 ---
     
-**pomp** version 5.1 will soon be released.
+**pomp** version 5.1 is now on CRAN and coming soon to [a mirror near you](https://cran.r-project.org/mirrors.html).
 This release contains one change that may break existing code.
 See below for details.
 
