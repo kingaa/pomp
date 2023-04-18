@@ -223,18 +223,17 @@ kable(subset(mle,select=-c(town,mu,loglik.sd,delay,S_0,E_0,I_0,R_0)),row.names=F
 
 
 ## ----pfilter1-----------------------------------------------------------------
-library(foreach)
 library(doFuture)
 library(doRNG)
+library(circumstance)
 registerDoFuture()
-plan(multicore)
 registerDoRNG(998468235L)
+plan(multicore)
 
-foreach(i=1:4) %dopar% {
-  m1 |> pfilter(params=theta,Np=10000)
-} -> pfs
-
-pfs |> sapply(logLik) |> logmeanexp(se=TRUE)
+m1 |>
+  pfilter(params=theta,Np=10000,Nrep=8) |>
+  logLik() |>
+  logmeanexp(se=TRUE,ess=TRUE)
 
 
 ## ----sims1,fig.height=8-------------------------------------------------------

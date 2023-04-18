@@ -49,21 +49,15 @@ theme_set(theme_bw())
 bigtick <- Sys.time()
 ```
 
-```{r parallel_setup}
+```{r packages}
 #| include: false
 #| purl: true
 #| cache: false
-if (file.exists("CLUSTER.R")) {
-  source("CLUSTER.R")
-} else {
-  library(doFuture)
-  registerDoFuture()
-  plan(multicore)
-}
+library(tidyverse)
 library(foreach)
-library(iterators)
 library(doRNG)
 registerDoRNG(348885445L)
+library(pomp)
 ```
 
 ## Introduction
@@ -188,7 +182,7 @@ popViewport()
 To implement a POMP model in **pomp**, we have to specify the measurement and process distributions.
 Note however, that, for each of the process and the measurement models there are two distinct operations that we might desire to perform:
 
-1. we might wish to *simulate*, i.e., to draw a (pseudo)random sample from the distribution, or
+1. we might wish to *simulate*, i.e., to draw a random sample from the distribution, or
 2. we might wish to *evaluate the density* itself at given values of $X_n$ and/or $Y_n$.
 
 Following the **R** convention, we refer to the simulation of $f_{X_n|X_{n-1}}$ as the *rprocess* component of the POMP model and the evaluation of $f_{X_n|X_{n-1}}$ as the *dprocess* component.
@@ -249,9 +243,12 @@ We'll also need to choose values for the model parameters, $r$, $K$, and $\sigma
 We'll also need to make a choice regarding the initial condition, $N(0)$.
 The simplest choice is to treat $N(0)=N_0$ as a parameter.
 
-```{r sim1}
-#| warning: true
+```{r sim1a}
+#| eval: FALSE
 library(pomp)
+```
+```{r sim1b}
+#| warning: true
 
 simulate(t0=0, times=1:20,
   params=c(r=1.2,K=200,sigma=0.1,N_0=50),
@@ -802,7 +799,7 @@ plot(pfrick)
 as(pfrick,"data.frame")
 ```
 
-Both of these reveal that `pfrick` contains information about the *effective sample size* of the particle filter (`ess`) and the *conditional log likelihood*, `cond.logLik`, which in the notation of the [introduction](#partially-observed-markov-process-pomp-models), is
+Both of these reveal that `pfrick` contains information about the *effective sample size* of the particle filter (`ess`) and the *conditional log likelihood*, `cond.logLik` which, in the notation [introduced above](#partially-observed-markov-process-pomp-models), is
 $$\log f_{Y_n|Y_{1:n-1}}(y_n^*|y_{1:n-1}^*).$$
 
 The particle filter is a Monte Carlo algorithm.
@@ -813,7 +810,7 @@ For example:
 ```{r rick_loglik}
 pfrick |> pfilter() |> logLik() |> replicate(n=10) -> lls
 lls
-logmeanexp(lls,se=TRUE) -> ll_rick1
+logmeanexp(lls,se=TRUE,ess=TRUE) -> ll_rick1
 ll_rick1
 ```
 
@@ -822,8 +819,11 @@ Indeed, because `pfrick` is a 'pfilterd_pomp' object, it knows the value of `Np`
 By default, this same value is used again when it is passed to `pfilter`.
 We could, of course, have used a different value simply by specifying `Np` in this call to `pfilter`.
 
-The last line of the preceding code chunk computes the log of the mean of the estimated likelihoods and the standard error on this mean via the delta method.
+The last line of the preceding code chunk computes the log of the mean of the estimated likelihoods and the standard error on this mean using a jack-knife method.
 Since the particle filter gives an unbiased estimate of the likelihood (not the log likelihood), this operation is sensible, provided the Monte Carlo error is not too large.
+It also estimates the "effective sample size".
+The facts that this is close to the nominal sample size (`r length(lls)`) and that the standard error is small relative to 1 log unit are both indications that the log likelihood is well estimated.
+`r stopifnot(ll_rick1["ess"]>8,ll_rick1["se"]<0.2)`
 
 Let's repeat the operation for the Verhulst-Pearl model, again at arbitrary parameters.
 
@@ -836,7 +836,7 @@ vpC |>
     paramnames="b",statenames="N") |>
   logLik() |>
   replicate(n=10) |>
-  logmeanexp(se=TRUE) -> ll_vp1
+  logmeanexp(se=TRUE,ess=TRUE) -> ll_vp1
 ll_vp1
 ```
 ```{r vp_loglik_eval}
@@ -1103,13 +1103,14 @@ the IF2 algorithm will be free to search parameter space outside the box.
 We use the `sobol_design` function to construct an overdispersed sequence of points within the selected box.
 
 ```{r mif_guesses}
-#| fig.width: 4
-#| fig.height: 4
+#| fig.width: 5
+#| fig.height: 5
 sobol_design(
   lower=c(r=0,K=100,sigma=0,N_0=150,b=1),
   upper=c(r=5,K=600,sigma=2,N_0=150,b=1),
   nseq=100
 ) -> guesses
+
 plot(guesses,pch=16)
 ```
 
@@ -1140,14 +1141,14 @@ vpC |>
     cooling.fraction.50=0.5,
     paramnames=c("r","K","sigma","N_0","b"),
     statenames=c("N")
-  ) -> mf1
+  ) -> vpM
 ```
 ```{r vp_mif1_eval}
 #| include: false
 #| purl: true
 bake("vp_mif1.rds",{
   <<vp_mif1>>
-}) -> mf1
+}) -> vpM
 ```
 In this call, we specify the starting point with `params`:
 here, we've just taken this to be the first of the `guesses`.
@@ -1160,21 +1161,21 @@ The `ivp` syntax indicates that `N_0` is an *initial value parameter* and accord
 The `cooling.fraction.50` argument controls the speed at which the magnitude of the perturbations is drawn down.
 Finally, the `paramnames` and `statenames` arguments are needed since `dmeas` and the parameter transformations are built using C snippets.
 
-What kind of object is `mf1`?
-```{r mf1_display}
-mf1
+What kind of object is `vpM`?
+```{r vpM_display}
+vpM
 ```
 
 **pomp** provides various methods for 'mif2d_pomp' objects.
 The `plot` method, for example, produces a diagnostic plot.
 
 ```{r mif_plot1}
-plot(mf1)
+plot(vpM)
 ```
 
 The first plot ("filter diagnostics") shows the results of the last iteration of the particle filter, comparable to the plot produced by calling `plot` on a 'pfilterd_pomp' object.
 The second plot ("convergence diagnostics") summarizes the results of the sequence of IF2 iterations.
-We observe that the log likelihood has increased, concomitant with movement in the $r$, $K$, and $\sigma$ paramters and, to a lesser extent, the $N_0$ parameter.
+We observe that the log likelihood has increased, concomitant with movement in the $r$, $K$, and $\sigma$ parameters and, to a lesser extent, the $N_0$ parameter.
 We observe that, as intended, the $b$ parameter has remained fixed.
 
 ### Estimating the log likelihood
@@ -1184,25 +1185,63 @@ This model differs from the one we are interested in.
 To compute the likelihood of our focal model at the parameter returned by `mif2`, we need to perform a few particle filter operations:
 
 ```{r mf_pfilter1}
-mf1 |> pfilter() |> logLik() |> replicate(n=5) |> logmeanexp(se=TRUE)
+vpM |> pfilter() |> logLik() |> replicate(n=5) |> logmeanexp(se=TRUE,ess=TRUE)
 ```
+
+Modern computers have multiple processors (cores).
+To take advantage of these, we can parallelize the above particle-filter computation using the **circumstance** and **doFuture** packages:
+```{r mf_pfilter1a}
+library(doFuture)
+library(doRNG)
+library(circumstance)
+registerDoFuture()
+registerDoRNG(58582004)
+plan(multicore)
+```
+```{r pfilter1b}
+#| echo: FALSE
+library(circumstance)
+```
+```{r mf_pfilter1c}
+vpM |> pfilter(Nrep=5) |> logLik() |> logmeanexp(se=TRUE,ess=TRUE)
+```
+In the above, the `pfilter` function is provided by **circumstance**.
+It causes the particle filters to be run in parallel, each using a different core.
+The **doRNG** package provides parallel random-number generators, so that we can consider each of the parallel computations to be independent.
+**doFuture** provides a number of other ways of parallelizing computations, inclusing `multisession` (needed on Windows computers) and `cluster` (for parallelizing across multiple machines).
+
+---------------------------------------
+
+#### Exercise
+
+Use **doFuture** and `circumstance::pfilter()` to parallelize the estimation of likelihood for your negative-binomial model.
+
+---------------------------------------
 
 ### Global search
 
 Now we repeat this calculation from each of our `r nrow(guesses)` guesses.
 Because these computations are each independent of the others, it is both easy and worthwhile to parallelize them.
-The **foreach** package provides some useful tools in this regard.
+The **circumstance** package is also useful for this purpose.
+In particular, it defines a `mif2` method that takes a data frame of guesses of the kind we defined above.
+For each of these, it performs an iterated filtering computation.
 
+```{r parallel_setup}
+#| include: false
+#| purl: true
+#| cache: false
+if (file.exists("CLUSTER.R")) {
+  source("CLUSTER.R")
+} else {
+  library(doFuture)
+  registerDoFuture()
+  plan(multicore)
+}
+```
 ```{r parus_mif1}
 #| eval: false
 #| purl: false
-foreach (guess=iter(guesses,"row"),
-  .combine=c, .packages=c("pomp"),
-  .errorhandling="remove", .inorder=FALSE) %dopar% {
-    
-    mf1 |> mif2(params=guess)
-    
-  } -> mifs
+vpM |> mif2(starts=guesses) -> mifs
 ```
 ```{r parus_mif1_eval}
 #| include: false
@@ -1213,15 +1252,22 @@ bake("parus_mif1.rds",{
 }) -> mifs
 ```
 
-Let us now walk through the above code.
-At each of the guesses (`foreach (guess=`), which are stored in the rows of the `guesses` data frame (`iter(guesses,"row")`), we run `r mf1@Nmif` iterations of the IF2 algorithm (`mif2`).
-Notice that the settings of `mif2` are not explicitly given here.
-They are inherited from `mf1`, which we computed previously.
+Notice that, in the above, the settings of `mif2` are not explicitly given here.
+They are inherited from `vpM`, which we computed previously.
 If we had wanted to modify any of them (e.g., `Nmif`, `Np`, `rw.sd`, etc.), we would have simply done so in the call to `mif2`.
-Next, we run a few independent particle filters to estimate the log likelihood.
-Finally, we return the result as a one-row data frame containing estimates of the parameters (`coef(mf)`), the log likelihood, and its standard error.
+For example, to increase the number of particles and the number of iterations, we would do:
+```{r parus_mif_example}
+#| eval: false
+#| purl: false
+vpM |>
+  mif2(
+    starts=guesses,
+    Nmif=30,
+    Np=2000
+  ) -> mifs
+```
 
-We can examine the results of this computation.
+Let us examine the results of our `mif2` computation.
 The following code chunk extracts the *traces* of the IF2 calculations.
 These are the movements of the parameters and the likelihood plotted against filter iteration.
 
@@ -1234,6 +1280,11 @@ mifs |>
   geom_line()+
   facet_wrap(~name,scales="free_y")+
   guides(color="none")
+```
+More simply, executing `plot(mifs)`, would give us a less fancy plot.
+```{r mif_plot2a}
+#| include: false
+mifs |> plot()
 ```
 
 Next, we examine the diagnostics produced in the last iteration of the filter.
@@ -1248,21 +1299,28 @@ mifs |>
   guides(color="none")
 ```
 
-As we've discussed, to properly evaluate the likelihood at these estimates, we must perform several independent particle filter operations at each one:
+Next, to estimate the log likelihoods, we run a few independent particle filters on the results of our `mif2` computations.
+We combine the resulting log likelihood estimates with the parameter estimates themselves (obtained using `coef()`).
 
 ```{r parus_pf1}
 #| eval: false
 #| purl: false
-foreach (mf=mifs,
-  .combine=rbind, .packages=c("pomp"), 
-  .errorhandling="remove", .inorder=FALSE) %dopar% {
-    
-    mf |> pfilter() |> logLik() |> replicate(n=5) |>
-      logmeanexp(se=TRUE) -> ll
-    
-    data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
-    
-  } -> estimates
+mifs |>
+  pfilter(Nrep=5) |>
+  logLik() |>
+  melt() |>
+  separate(name,into=c(".id","rep")) |>
+  group_by(.id) |>
+  reframe(melt(logmeanexp(value,se=TRUE))) |>
+  ungroup() |>
+  bind_rows(
+    mifs |> coef() |> melt()
+  ) |>
+  pivot_wider() |>
+  rename(
+    loglik=est,
+    loglik.se=se
+  ) -> estimates
 ```
 ```{r parus_pf1_eval}
 #| include: false
@@ -1273,46 +1331,21 @@ bake(file="parus_pf1.rds",{
 }) -> estimates
 ```
 
-A useful way of displaying the results of such multi-start search is the pairwise scatterplot matrix:
+To display the results of such a multi-start search pairwise scatterplot matrices are useful:
 
 ```{r mif_plot4}
 #| warning: false
-#| fig.width: 4
-#| fig.height: 4
+#| fig.width: 8
+#| fig.height: 8
+#| out.width: 95%
 estimates |>
-  full_join(guesses) |>
+  bind_rows(guesses) |>
   filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) |>
-  {\(dat)
-    pairs(~loglik+r+sigma+K+N_0,data=dat,pch=16,
-      col=if_else(is.na(dat$loglik),"#99999955","#ff0000ff"))
+  mutate(col=if_else(is.na(loglik),"#99999955","#ff0000ff")) |>
+  {
+    \(dat) pairs(~loglik+r+sigma+K+N_0,data=dat,col=dat$col,pch=16)
   }()
 ```
-
-
-### Note regarding parallelization
-
-The above `foreach` call, as written, will result in *serial*, not parallel, execution of the `r nrow(guesses)` computations.
-To actually parallelize, one must *register* a *parallel backend*.
-A good first choice is **doFuture**, which is a separate package that you must explicitly load.
-The following chunk of code shows how to do this, and prints the number of "workers" that result.
-
-```{r eval=FALSE}
-#| purl: false
-library(doFuture)
-registerDoFuture()
-plan(multicore)
-getDoParWorkers()
-```
-
-**doFuture** allows one to exploit multiple cores on a single machine or to expand a parallel computation across a cluster.
-
----------------------------------------
-
-#### Exercise
-
-Use **doFuture** to parallelize the estimation of likelihood for your negative-binomial model.
-
----------------------------------------
 
 ### More search effort
 
@@ -1326,22 +1359,28 @@ Let's continue the search, starting with the best points we've uncovered so far.
 estimates |>
   filter(!is.na(loglik)) |>
   filter(loglik > max(loglik)-30) |>
-  select(-loglik,-loglik.se) -> starts
+  select(-.id,-loglik,-loglik.se) -> starts
 
-foreach (start=iter(starts,"row"),
-  .combine=rbind, .packages=c("pomp"), 
-  .errorhandling="remove", .inorder=FALSE) %dopar% {
-    
-    mf1 |> 
-      mif2(params=start) |>
-      mif2() -> mf
-    
-    mf |> pfilter() |> logLik() |> replicate(n=5) |>
-      logmeanexp(se=TRUE) -> ll
-    
-    data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
-    
-  } -> ests1
+vpM |>
+  mif2(starts=starts) |>
+  mif2() -> mf
+
+mf |>
+  pfilter(Nrep=5) |>
+  logLik() |>
+  melt() |>
+  separate(name,into=c(".id","rep")) |>
+  group_by(.id) |>
+  reframe(melt(logmeanexp(value,se=TRUE))) |>
+  ungroup() |>
+  bind_rows(
+    mf |> coef() |> melt()
+  ) |>
+  pivot_wider() |>
+  rename(
+    loglik=est,
+    loglik.se=se
+  ) -> ests1
 ```
 ```{r parus_mif2_eval}
 #| include: false
@@ -1359,22 +1398,19 @@ It returns just the parameter and likelihood estimates.
 We can combine the new estimates with the old ones into a general database:
 
 ```{r db1}
-estimates |>
-  rbind(ests1) -> estimates
+estimates |> bind_rows(ests1) |> select(-.id) -> estimates
 
-estimates |>
-  arrange(-loglik) |>
-  head()
+estimates |> arrange(-loglik) |> head()
 ```
 
 ```{r mif2_plot1}
-#| fig.width: 4
-#| fig.height: 4
+#| fig.width: 8
+#| fig.height: 8
+#| out.width: 95%
 estimates |>
   filter(loglik>max(loglik,na.rm=TRUE)-4) |>
-  {\(dat)
-    pairs(~loglik+r+sigma+K+N_0,data=dat,pch=16)
-  }()
+  select(loglik,r,sigma,K,N_0) |>
+  plot_matrix()
 ```
 
 In this plot, we begin to see the emergence of structure in the likelihood surface.
@@ -1389,8 +1425,9 @@ In a likelihood profile, one varies the focal parameter (or parameters) across s
 The following codes construct a likelihood profile over $r$.
 
 ```{r parus_pd}
-#| fig.width: 4
-#| fig.height: 4
+#| fig.width: 8
+#| fig.height: 8
+#| out.width: 95%
 estimates |>
   filter(loglik>max(loglik)-10) |>
   select(r,K,sigma,N_0,b) |>
@@ -1410,29 +1447,39 @@ profile_design(
 
 dim(starts)
 
-pairs(~r+sigma+K+N_0+b,data=starts)
+starts |>
+  select(r,sigma,K,N_0,b) |>
+  plot_matrix()
 ```
 ```{r parus_profile}
 #| eval: false
 #| purl: false
-foreach (start=iter(starts,"row"),
-  .combine=rbind, .packages=c("pomp"),
-  .errorhandling="remove", .inorder=FALSE) %dopar% {
-    
-    mf1 |>
-      mif2(
-        params=start,
-        partrans=parameter_trans(log=c("K","sigma","N_0")),
-        rw.sd=rw_sd(K=0.02,sigma=0.02,N_0=ivp(0.02)),
-        paramnames=c("K","sigma","N_0","b")
-      ) |>
-      mif2() -> mf
-    
-    mf |> pfilter() |> logLik() |> replicate(n=5) |>
-      logmeanexp(se=TRUE) -> ll
-    
-    data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
-  } -> r_prof
+vpM |>
+  mif2(
+    starts=starts,
+    partrans=parameter_trans(log=c("K","sigma","N_0")),
+    rw.sd=rw_sd(K=0.02,sigma=0.02,N_0=ivp(0.02)),
+    paramnames=c("K","sigma","N_0","b")
+  ) |>
+  mif2() -> mf
+
+mf |>
+  pfilter(Nrep=5) |>
+  logLik() |>
+  melt() |>
+  separate(name,into=c(".id","rep")) |>
+  group_by(.id) |>
+  reframe(melt(logmeanexp(value,se=TRUE))) |>
+  ungroup() |>
+  bind_rows(
+    mf |> coef() |> melt()
+  ) |>
+  pivot_wider() |>
+  select(-.id) |>
+  rename(
+    loglik=est,
+    loglik.se=se
+  ) -> r_prof
 ```
 ```{r parus_profile_eval}
 #| include: false
@@ -1450,7 +1497,7 @@ We add these points to our database:
 
 ```{r db2}
 estimates |>
-  rbind(r_prof) -> estimates
+  bind_rows(r_prof) -> estimates
 ```
 
 Next, we plot the likelihood profile.
@@ -1532,34 +1579,31 @@ r_prof |>
 
 bake(file="hindcast1.rds",{
   registerDoRNG(174423157)
-  foreach (i=1:200) %dopar% {
-    mf1 |> pfilter(params=theta,Np=500,filter.traj=TRUE) -> pf
-    list(loglik=logLik(pf),traj=filter_traj(pf))
-  } -> fts
+  vpM |>
+    pfilter(params=theta,Np=500,Nrep=200,filter.traj=TRUE) -> pf
+  list(
+    loglik=logLik(pf),
+    traj=filter_traj(pf)
+  ) -> fts
 }) -> fts
 
-fts |>
-  sapply(getElement,"loglik") -> ll
+fts$loglik |> logmeanexp(se=TRUE,ess=TRUE)
 
-logmeanexp(ll,ess=TRUE)
-
-fts |>
-  lapply(getElement,"traj") |>
+fts$traj |>
   melt() |>
-  rename(.id=.L1) |>
   select(-rep) |>
   left_join(
     tibble(
-      .id=as.character(seq_along(ll)),
-      loglik=ll
+      chain=as.character(seq_along(fts$loglik)),
+      loglik=fts$loglik
     ),
-    by=".id"
+    by="chain"
   ) |>
   mutate(
-    year=time(mf1)[time]
+    year=time(vpM)[time]
   ) |>
   group_by(name,year) |>
-  summarize(
+  reframe(
     label=c("lo","med","hi"),
     p=c(0.05,0.5,0.95),
     q=wquant(value,weights=exp(loglik-max(loglik)),probs=p)
@@ -1606,30 +1650,26 @@ starts
 ```{r parus-pmcmc}
 #| eval: false
 #| purl: false
-foreach (start=iter(starts,"row"),.combine=c,
-  .errorhandling="remove",.inorder=FALSE) %dopar% 
-  {
-    library(pomp)
-    mf1 |>
-      pmcmc(
-        Nmcmc=2000,Np=200,params=start,
-        dprior=Csnippet("
-          lik = dunif(r,0,10,1)+dunif(sigma,0,2,1)+
-                dunif(K,0,600,1)+dunif(N_0,0,600,1);
-          lik = (give_log) ? lik : exp(lik);"
-        ),
-        paramnames=c("K","N_0","r","sigma"),
-        proposal=mvn_rw_adaptive(
-          rw.sd=c(r=0.02,sigma=0.02,K=50,N_0=50),
-          scale.start=100,shape.start=100
-        )
-      ) -> chain
-    chain |>
-      pmcmc(
-        Nmcmc=20000,
-        proposal=mvn_rw(covmat(chain))
-      )
-  } -> chains
+vpM |>
+  pmcmc(
+    starts=starts,
+    Nmcmc=2000,Np=200,
+    dprior=Csnippet(r"{
+      lik = dunif(r,0,10,1)+dunif(sigma,0,2,1)+
+            dunif(K,0,600,1)+dunif(N_0,0,600,1);
+      lik = (give_log) ? lik : exp(lik);}"),
+    paramnames=c("K","N_0","r","sigma"),
+    proposal=mvn_rw_adaptive(
+      rw.sd=c(r=0.02,sigma=0.02,K=50,N_0=50),
+      scale.start=100,shape.start=100
+    )
+  ) -> chains
+
+chains |>
+  pmcmc(
+    Nmcmc=20000,
+    proposal=mvn_rw(covmat(chains))
+  ) -> chains
 ```
 
 ```{r parus-pmcmc-eval}
@@ -1673,7 +1713,7 @@ Now let us examine the traces.
 
 ```{r pmcmc-diagnostics3}
 #| fig.width: 8
-#| fig.dim: 6
+#| fig.height: 6
 #| out.width: 95%
 traces |>
   lapply(as.data.frame) |>
@@ -1701,7 +1741,10 @@ Thus, insofar as we can tell by these diagnostics, the MCMC iterations appear to
 
 The plots of the marginal posterior densities are shown below.
 
-```{r parus_posterior}
+```{r parus_posterior1}
+#| fig.width: 8
+#| fig.height: 4
+#| out.width: 95%
 traces |>
   lapply(as.data.frame) |>
   lapply(rowid_to_column,"iter") |>
@@ -1719,14 +1762,17 @@ traces |>
   )
 
 traces |> summary()
-
+```
+```{r parus_posterior2}
+#| fig.width: 8
+#| fig.height: 8
+#| out.width: 95%
 traces |>
   lapply(as.data.frame) |>
   lapply(rowid_to_column,"iter") |>
   bind_rows(.id="chain") |>
-  {\(dat)
-    pairs(~r+sigma+K+N_0,data=dat,pch=16)
-  }()
+  select(loglik,r,sigma,K,N_0) |>
+  plot_matrix()
 ```
 
 ### Hindcast and smoothing with parametric uncertainty
@@ -1736,7 +1782,7 @@ chains |>
   filter_traj() |>
   melt() |>
   filter(rep > 1000, rep %% 100 == 0) |>
-  mutate(year=time(mf1)[time]) |>
+  mutate(year=time(vpM)[time]) |>
   pivot_wider(names_from=name) |>
   group_by(year) |>
   summarize(
@@ -1748,13 +1794,6 @@ chains |>
   select(-p) |>
   pivot_wider(names_from=label,values_from=q) -> quants2
 
-quants2 |>
-  ggplot()+
-  geom_line(aes(x=year,y=med),color="darkblue")+
-  geom_ribbon(aes(x=year,ymin=lo,ymax=hi),color=NA,fill="lightblue",alpha=0.5)+
-  geom_point(data=parus,aes(x=year,y=pop))+
-  labs(y="N")
-
 bind_rows(
   with=quants2,
   without=quants1,
@@ -1764,7 +1803,7 @@ bind_rows(
   geom_line(aes(x=year,y=med,color=uncert))+
   geom_ribbon(aes(x=year,ymin=lo,ymax=hi,fill=uncert),color=NA,alpha=0.4)+
   geom_point(data=parus,aes(x=year,y=pop))+
-  labs(y="N")
+  labs(y="N",fill="parametric\nuncertainty",color="parametric\nuncertainty")
 ```
 
 ---------------------------
@@ -1781,7 +1820,7 @@ Ultimately, since the model is viewed, at least hypothetically, as the process t
 Let's plot the data and several simulated realizations of the model process on the same axes.
 
 ```{r mle_sim_plot1}
-r_prof |> 
+r_prof |>
   filter(loglik==max(loglik)) -> mle
 
 mlepomp <- as(mifs[[1]],"pomp")
@@ -1881,17 +1920,17 @@ The [bibliography](https://kingaa.github.io/pomp/biblio.html) has links to peer-
 
 This document was produced with the following software versions:
 
-|               |                                 |
-|:--------------|:--------------------------------|
-| **R**         | `r getRversion()`               |
-| **pomp**      | `r packageVersion("pomp")`      |
-| **coda**      | `r packageVersion("coda")`      |
-| **foreach**   | `r packageVersion("foreach")`   |
-| **doFuture**  | `r packageVersion("doFuture")`  |
-| **doMPI**     | `r packageVersion("doMPI")`     |
-| **doRNG**     | `r packageVersion("doRNG")`     |
-| **subplex**   | `r packageVersion("subplex")`   |
-| **tidyverse** | `r packageVersion("tidyverse")` |
+|                  |                                    |
+|:-----------------|:-----------------------------------|
+| **R**            | `r getRversion()`                  |
+| **pomp**         | `r packageVersion("pomp")`         |
+| **circumstance** | `r packageVersion("circumstance")` |
+| **coda**         | `r packageVersion("coda")`         |
+| **foreach**      | `r packageVersion("foreach")`      |
+| **doFuture**     | `r packageVersion("doFuture")`     |
+| **doRNG**        | `r packageVersion("doRNG")`        |
+| **subplex**      | `r packageVersion("subplex")`      |
+| **tidyverse**    | `r packageVersion("tidyverse")`    |
 
 <!--
 

@@ -14,25 +14,20 @@ theme_set(theme_bw())
 bigtick <- Sys.time()
 
 
-## ----parallel_setup-----------------------------------------------------------
-if (file.exists("CLUSTER.R")) {
-  source("CLUSTER.R")
-} else {
-  library(doFuture)
-  registerDoFuture()
-  plan(multicore)
-}
+## ----packages-----------------------------------------------------------------
+library(tidyverse)
 library(foreach)
-library(iterators)
 library(doRNG)
 registerDoRNG(348885445L)
-
-
-
-
-## ----sim1---------------------------------------------------------------------
 library(pomp)
 
+
+
+
+## ----sim1a--------------------------------------------------------------------
+## library(pomp)
+
+## ----sim1b--------------------------------------------------------------------
 simulate(t0=0, times=1:20,
   params=c(r=1.2,K=200,sigma=0.1,N_0=50),
   rinit=function (N_0, ...) {
@@ -274,7 +269,7 @@ as(pfrick,"data.frame")
 ## ----rick_loglik--------------------------------------------------------------
 pfrick |> pfilter() |> logLik() |> replicate(n=10) -> lls
 lls
-logmeanexp(lls,se=TRUE) -> ll_rick1
+logmeanexp(lls,se=TRUE,ess=TRUE) -> ll_rick1
 ll_rick1
 
 
@@ -287,7 +282,7 @@ bake("vp_loglik.rds",{
       paramnames="b",statenames="N") |>
     logLik() |>
     replicate(n=10) |>
-    logmeanexp(se=TRUE) -> ll_vp1
+    logmeanexp(se=TRUE,ess=TRUE) -> ll_vp1
   ll_vp1
 }) -> ll_vp1
 ll_vp1
@@ -409,6 +404,7 @@ sobol_design(
   upper=c(r=5,K=600,sigma=2,N_0=150,b=1),
   nseq=100
 ) -> guesses
+
 plot(guesses,pch=16)
 
 
@@ -426,33 +422,53 @@ bake("vp_mif1.rds",{
       cooling.fraction.50=0.5,
       paramnames=c("r","K","sigma","N_0","b"),
       statenames=c("N")
-    ) -> mf1
-}) -> mf1
+    ) -> vpM
+}) -> vpM
 
 
-## ----mf1_display--------------------------------------------------------------
-mf1
+## ----vpM_display--------------------------------------------------------------
+vpM
 
 
 ## ----mif_plot1----------------------------------------------------------------
-plot(mf1)
+plot(vpM)
 
 
 ## ----mf_pfilter1--------------------------------------------------------------
-mf1 |> pfilter() |> logLik() |> replicate(n=5) |> logmeanexp(se=TRUE)
+vpM |> pfilter() |> logLik() |> replicate(n=5) |> logmeanexp(se=TRUE,ess=TRUE)
 
+
+## ----mf_pfilter1a-------------------------------------------------------------
+library(doFuture)
+library(doRNG)
+library(circumstance)
+registerDoFuture()
+registerDoRNG(58582004)
+plan(multicore)
+
+## ----pfilter1b----------------------------------------------------------------
+library(circumstance)
+
+## ----mf_pfilter1c-------------------------------------------------------------
+vpM |> pfilter(Nrep=5) |> logLik() |> logmeanexp(se=TRUE,ess=TRUE)
+
+
+## ----parallel_setup-----------------------------------------------------------
+if (file.exists("CLUSTER.R")) {
+  source("CLUSTER.R")
+} else {
+  library(doFuture)
+  registerDoFuture()
+  plan(multicore)
+}
 
 
 ## ----parus_mif1_eval----------------------------------------------------------
 bake("parus_mif1.rds",{
-  foreach (guess=iter(guesses,"row"),
-    .combine=c, .packages=c("pomp"),
-    .errorhandling="remove", .inorder=FALSE) %dopar% {
-      
-      mf1 |> mif2(params=guess)
-      
-    } -> mifs
+  vpM |> mif2(starts=guesses) -> mifs
 }) -> mifs
+
+
 
 
 ## ----mif_plot2----------------------------------------------------------------
@@ -464,6 +480,10 @@ mifs |>
   geom_line()+
   facet_wrap(~name,scales="free_y")+
   guides(color="none")
+
+
+## ----mif_plot2a---------------------------------------------------------------
+mifs |> plot()
 
 
 ## ----mif_plot3----------------------------------------------------------------
@@ -479,29 +499,33 @@ mifs |>
 
 ## ----parus_pf1_eval-----------------------------------------------------------
 bake(file="parus_pf1.rds",{
-  foreach (mf=mifs,
-    .combine=rbind, .packages=c("pomp"), 
-    .errorhandling="remove", .inorder=FALSE) %dopar% {
-      
-      mf |> pfilter() |> logLik() |> replicate(n=5) |>
-        logmeanexp(se=TRUE) -> ll
-      
-      data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
-      
-    } -> estimates
+  mifs |>
+    pfilter(Nrep=5) |>
+    logLik() |>
+    melt() |>
+    separate(name,into=c(".id","rep")) |>
+    group_by(.id) |>
+    reframe(melt(logmeanexp(value,se=TRUE))) |>
+    ungroup() |>
+    bind_rows(
+      mifs |> coef() |> melt()
+    ) |>
+    pivot_wider() |>
+    rename(
+      loglik=est,
+      loglik.se=se
+    ) -> estimates
 }) -> estimates
 
 
 ## ----mif_plot4----------------------------------------------------------------
 estimates |>
-  full_join(guesses) |>
+  bind_rows(guesses) |>
   filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) |>
-  {\(dat)
-    pairs(~loglik+r+sigma+K+N_0,data=dat,pch=16,
-      col=if_else(is.na(dat$loglik),"#99999955","#ff0000ff"))
+  mutate(col=if_else(is.na(loglik),"#99999955","#ff0000ff")) |>
+  {
+    \(dat) pairs(~loglik+r+sigma+K+N_0,data=dat,col=dat$col,pch=16)
   }()
-
-
 
 
 
@@ -510,40 +534,42 @@ bake(file="parus_mif2.rds",{
   estimates |>
     filter(!is.na(loglik)) |>
     filter(loglik > max(loglik)-30) |>
-    select(-loglik,-loglik.se) -> starts
+    select(-.id,-loglik,-loglik.se) -> starts
   
-  foreach (start=iter(starts,"row"),
-    .combine=rbind, .packages=c("pomp"), 
-    .errorhandling="remove", .inorder=FALSE) %dopar% {
-      
-      mf1 |> 
-        mif2(params=start) |>
-        mif2() -> mf
-      
-      mf |> pfilter() |> logLik() |> replicate(n=5) |>
-        logmeanexp(se=TRUE) -> ll
-      
-      data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
-      
-    } -> ests1
+  vpM |>
+    mif2(starts=starts) |>
+    mif2() -> mf
+  
+  mf |>
+    pfilter(Nrep=5) |>
+    logLik() |>
+    melt() |>
+    separate(name,into=c(".id","rep")) |>
+    group_by(.id) |>
+    reframe(melt(logmeanexp(value,se=TRUE))) |>
+    ungroup() |>
+    bind_rows(
+      mf |> coef() |> melt()
+    ) |>
+    pivot_wider() |>
+    rename(
+      loglik=est,
+      loglik.se=se
+    ) -> ests1
 }) -> ests1
 
 
 ## ----db1----------------------------------------------------------------------
-estimates |>
-  rbind(ests1) -> estimates
+estimates |> bind_rows(ests1) |> select(-.id) -> estimates
 
-estimates |>
-  arrange(-loglik) |>
-  head()
+estimates |> arrange(-loglik) |> head()
 
 
 ## ----mif2_plot1---------------------------------------------------------------
 estimates |>
   filter(loglik>max(loglik,na.rm=TRUE)-4) |>
-  {\(dat)
-    pairs(~loglik+r+sigma+K+N_0,data=dat,pch=16)
-  }()
+  select(loglik,r,sigma,K,N_0) |>
+  plot_matrix()
 
 
 ## ----parus_pd-----------------------------------------------------------------
@@ -566,35 +592,45 @@ profile_design(
 
 dim(starts)
 
-pairs(~r+sigma+K+N_0+b,data=starts)
+starts |>
+  select(r,sigma,K,N_0,b) |>
+  plot_matrix()
 
 
 ## ----parus_profile_eval-------------------------------------------------------
 bake(file="parus_profile.rds",{
-  foreach (start=iter(starts,"row"),
-    .combine=rbind, .packages=c("pomp"),
-    .errorhandling="remove", .inorder=FALSE) %dopar% {
-      
-      mf1 |>
-        mif2(
-          params=start,
-          partrans=parameter_trans(log=c("K","sigma","N_0")),
-          rw.sd=rw_sd(K=0.02,sigma=0.02,N_0=ivp(0.02)),
-          paramnames=c("K","sigma","N_0","b")
-        ) |>
-        mif2() -> mf
-      
-      mf |> pfilter() |> logLik() |> replicate(n=5) |>
-        logmeanexp(se=TRUE) -> ll
-      
-      data.frame(as.list(coef(mf)),loglik=ll[1],loglik.se=ll[2])
-    } -> r_prof
+  vpM |>
+    mif2(
+      starts=starts,
+      partrans=parameter_trans(log=c("K","sigma","N_0")),
+      rw.sd=rw_sd(K=0.02,sigma=0.02,N_0=ivp(0.02)),
+      paramnames=c("K","sigma","N_0","b")
+    ) |>
+    mif2() -> mf
+  
+  mf |>
+    pfilter(Nrep=5) |>
+    logLik() |>
+    melt() |>
+    separate(name,into=c(".id","rep")) |>
+    group_by(.id) |>
+    reframe(melt(logmeanexp(value,se=TRUE))) |>
+    ungroup() |>
+    bind_rows(
+      mf |> coef() |> melt()
+    ) |>
+    pivot_wider() |>
+    select(-.id) |>
+    rename(
+      loglik=est,
+      loglik.se=se
+    ) -> r_prof
 }) -> r_prof
 
 
 ## ----db2----------------------------------------------------------------------
 estimates |>
-  rbind(r_prof) -> estimates
+  bind_rows(r_prof) -> estimates
 
 
 ## ----prof_plot1---------------------------------------------------------------
@@ -654,34 +690,31 @@ r_prof |>
 
 bake(file="hindcast1.rds",{
   registerDoRNG(174423157)
-  foreach (i=1:200) %dopar% {
-    mf1 |> pfilter(params=theta,Np=500,filter.traj=TRUE) -> pf
-    list(loglik=logLik(pf),traj=filter_traj(pf))
-  } -> fts
+  vpM |>
+    pfilter(params=theta,Np=500,Nrep=200,filter.traj=TRUE) -> pf
+  list(
+    loglik=logLik(pf),
+    traj=filter_traj(pf)
+  ) -> fts
 }) -> fts
 
-fts |>
-  sapply(getElement,"loglik") -> ll
+fts$loglik |> logmeanexp(se=TRUE,ess=TRUE)
 
-logmeanexp(ll,ess=TRUE)
-
-fts |>
-  lapply(getElement,"traj") |>
+fts$traj |>
   melt() |>
-  rename(.id=.L1) |>
   select(-rep) |>
   left_join(
     tibble(
-      .id=as.character(seq_along(ll)),
-      loglik=ll
+      chain=as.character(seq_along(fts$loglik)),
+      loglik=fts$loglik
     ),
-    by=".id"
+    by="chain"
   ) |>
   mutate(
-    year=time(mf1)[time]
+    year=time(vpM)[time]
   ) |>
   group_by(name,year) |>
-  summarize(
+  reframe(
     label=c("lo","med","hi"),
     p=c(0.05,0.5,0.95),
     q=wquant(value,weights=exp(loglik-max(loglik)),probs=p)
@@ -720,30 +753,26 @@ starts
 
 ## ----parus-pmcmc-eval---------------------------------------------------------
 bake(file="parus_pmcmc.rds",dependson=starts,{
-  foreach (start=iter(starts,"row"),.combine=c,
-    .errorhandling="remove",.inorder=FALSE) %dopar% 
-    {
-      library(pomp)
-      mf1 |>
-        pmcmc(
-          Nmcmc=2000,Np=200,params=start,
-          dprior=Csnippet("
-            lik = dunif(r,0,10,1)+dunif(sigma,0,2,1)+
-                  dunif(K,0,600,1)+dunif(N_0,0,600,1);
-            lik = (give_log) ? lik : exp(lik);"
-          ),
-          paramnames=c("K","N_0","r","sigma"),
-          proposal=mvn_rw_adaptive(
-            rw.sd=c(r=0.02,sigma=0.02,K=50,N_0=50),
-            scale.start=100,shape.start=100
-          )
-        ) -> chain
-      chain |>
-        pmcmc(
-          Nmcmc=20000,
-          proposal=mvn_rw(covmat(chain))
-        )
-    } -> chains
+  vpM |>
+    pmcmc(
+      starts=starts,
+      Nmcmc=2000,Np=200,
+      dprior=Csnippet(r"{
+        lik = dunif(r,0,10,1)+dunif(sigma,0,2,1)+
+              dunif(K,0,600,1)+dunif(N_0,0,600,1);
+        lik = (give_log) ? lik : exp(lik);}"),
+      paramnames=c("K","N_0","r","sigma"),
+      proposal=mvn_rw_adaptive(
+        rw.sd=c(r=0.02,sigma=0.02,K=50,N_0=50),
+        scale.start=100,shape.start=100
+      )
+    ) -> chains
+  
+  chains |>
+    pmcmc(
+      Nmcmc=20000,
+      proposal=mvn_rw(covmat(chains))
+    ) -> chains
 }) -> chains
 
 
@@ -780,7 +809,7 @@ traces |>
 gelman.diag(traces[,c("r","sigma","K","N_0")])
 
 
-## ----parus_posterior----------------------------------------------------------
+## ----parus_posterior1---------------------------------------------------------
 traces |>
   lapply(as.data.frame) |>
   lapply(rowid_to_column,"iter") |>
@@ -799,13 +828,13 @@ traces |>
 
 traces |> summary()
 
+## ----parus_posterior2---------------------------------------------------------
 traces |>
   lapply(as.data.frame) |>
   lapply(rowid_to_column,"iter") |>
   bind_rows(.id="chain") |>
-  {\(dat)
-    pairs(~r+sigma+K+N_0,data=dat,pch=16)
-  }()
+  select(loglik,r,sigma,K,N_0) |>
+  plot_matrix()
 
 
 ## ----hindcast2----------------------------------------------------------------
@@ -813,7 +842,7 @@ chains |>
   filter_traj() |>
   melt() |>
   filter(rep > 1000, rep %% 100 == 0) |>
-  mutate(year=time(mf1)[time]) |>
+  mutate(year=time(vpM)[time]) |>
   pivot_wider(names_from=name) |>
   group_by(year) |>
   summarize(
@@ -825,13 +854,6 @@ chains |>
   select(-p) |>
   pivot_wider(names_from=label,values_from=q) -> quants2
 
-quants2 |>
-  ggplot()+
-  geom_line(aes(x=year,y=med),color="darkblue")+
-  geom_ribbon(aes(x=year,ymin=lo,ymax=hi),color=NA,fill="lightblue",alpha=0.5)+
-  geom_point(data=parus,aes(x=year,y=pop))+
-  labs(y="N")
-
 bind_rows(
   with=quants2,
   without=quants1,
@@ -841,11 +863,11 @@ bind_rows(
   geom_line(aes(x=year,y=med,color=uncert))+
   geom_ribbon(aes(x=year,ymin=lo,ymax=hi,fill=uncert),color=NA,alpha=0.4)+
   geom_point(data=parus,aes(x=year,y=pop))+
-  labs(y="N")
+  labs(y="N",fill="parametric\nuncertainty",color="parametric\nuncertainty")
 
 
 ## ----mle_sim_plot1------------------------------------------------------------
-r_prof |> 
+r_prof |>
   filter(loglik==max(loglik)) -> mle
 
 mlepomp <- as(mifs[[1]],"pomp")
