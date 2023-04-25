@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 5.1.0.0
-Date: 2023-04-17
+Version: 5.1.1.0
+Date: 2023-04-25
 Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),email="kingaa@umich.edu",comment=c(ORCID="0000-0001-6159-3207")),
 	  person(given=c("Edward","L."),family="Ionides",role="aut",comment=c(ORCID="0000-0002-4190-0174"))	,
 	  person(given="Carles",family="Bretó",role="aut",comment=c(ORCID="0000-0003-4695-4902")),
@@ -21,8 +21,8 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),emai
 URL: https://kingaa.github.io/pomp/
 Description: Tools for data analysis with partially observed Markov process (POMP) models (also known as stochastic dynamical systems, hidden Markov models, and nonlinear, non-Gaussian, state-space models).  The package provides facilities for implementing POMP models, simulating them, and fitting them to time series data by a variety of frequentist and Bayesian methods.  It is also a versatile platform for implementation of inference methods for general POMP models.
 Depends: R(>= 4.1.0)
-Imports: methods, stats, graphics, digest, mvtnorm, deSolve, coda, dplyr
-Suggests: ggplot2, knitr, tidyr, subplex, nloptr
+Imports: methods, stats, graphics, digest, mvtnorm, deSolve, coda, data.table
+Suggests: ggplot2, knitr, dplyr, tidyr, subplex, nloptr
 SystemRequirements: For Windows users, Rtools (see https://cran.r-project.org/bin/windows/Rtools/).
 License: GPL-3
 LazyData: true

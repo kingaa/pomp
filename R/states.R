@@ -6,7 +6,7 @@
 ##' @aliases states,ANY-method states,missing-method
 ##' @rdname states
 ##' @docType methods
-##' @include pomp_class.R
+##' @include pomp_class.R melt.R
 ##' @importFrom stats setNames
 ##' @family extraction methods
 ##'
@@ -65,7 +65,6 @@ setMethod(
 
 ##' @rdname states
 ##' @inheritParams obs
-##' @importFrom dplyr bind_rows
 ##' @export
 setMethod(
   "states",

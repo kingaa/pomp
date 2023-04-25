@@ -14,6 +14,13 @@
 ##'
 NULL
 
+##' @importFrom data.table rbindlist
+bind_rows <- function (x, .id = ".id") {
+  as.data.frame(
+    rbindlist(x,use.names=TRUE,fill=TRUE,idcol=.id)
+  )
+}
+
 setGeneric(
   "melt",
   function (data, ...)
@@ -77,7 +84,6 @@ setMethod(
 ##' @details A list can be melted into a data frame.
 ##' This operation is recursive.
 ##' A variable will be appended to distinguish the separate list entries.
-##' @importFrom dplyr bind_rows
 ##' @export
 setMethod(
   "melt",

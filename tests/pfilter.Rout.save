@@ -1,6 +1,6 @@
 
-R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"
-Copyright (C) 2022 The R Foundation for Statistical Computing
+R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
+Copyright (C) 2023 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -167,7 +167,7 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 [1] 20000     4
 > pf1 |> saved_states() |> melt() |> sapply(class)
         .L1        name         .id       value 
-"character" "character"   "integer"   "numeric" 
+  "integer" "character"   "integer"   "numeric" 
 > pf1 |> saved_states() |> melt() |> sapply(length)
   .L1  name   .id value 
 20000 20000 20000 20000 

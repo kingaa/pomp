@@ -6,7 +6,7 @@
 ##' @aliases obs,ANY-method obs,missing-method
 ##' @docType methods
 ##' @rdname obs
-##' @include pomp_class.R
+##' @include pomp_class.R melt.R
 ##' @importFrom stats setNames
 ##' @family extraction methods
 ##'
@@ -63,7 +63,6 @@ setMethod(
 )
 
 ##' @rdname obs
-##' @importFrom dplyr bind_rows
 ##' @export
 setMethod(
   "obs",

@@ -159,7 +159,6 @@ as.data.frame.bsmcd_pomp <- function (x, ...) {
   as(x,"data.frame")
 }
 
-##' @importFrom dplyr bind_rows
 setAs(
   from="listie",
   to="data.frame",

@@ -1,6 +1,6 @@
 
-R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"
-Copyright (C) 2022 The R Foundation for Statistical Computing
+R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
+Copyright (C) 2023 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -117,16 +117,16 @@ https://kingaa.github.io/pomp/blog.html.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  7.075   0.113   7.188 
+  7.293   0.092   7.385 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.159   0.004   0.163 
+   0.16    0.00    0.16 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.662   0.000   0.663 
+  0.654   0.008   0.662 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.028   0.000   0.028 
+  0.031   0.000   0.032 
 > 
 > dev.off()
 null device 

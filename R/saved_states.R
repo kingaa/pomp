@@ -70,7 +70,7 @@ setMethod(
         s[,c(object@timename,".id","name","value")],
         w[,c(object@timename,".id","name","value")]
       )
-      x <- x[order(x$time,x$.id),]
+      x <- x[order(x[[object@timename]],x$.id),]
       row.names(x) <- NULL
       x
     } else {
@@ -84,7 +84,6 @@ setMethod(
 )
 
 ##' @rdname saved_states
-##' @importFrom dplyr bind_rows
 ##' @export
 setMethod(
   "saved_states",
