@@ -1780,7 +1780,8 @@ The \code{nlf} implementation we will use to compare to the \code{mif} call from
 nlf1 <- nlf_objfun(gomp, ti=100, tf=4000, lags = c(2, 3),
   params = c(r = 1, K = 2, sigma = 0.5, tau = 0.5, X.0 = 1),
   est = c("r", "sigma", "tau"))
-subplex(par = c(r=0.2, sigma=0.15, tau=0.08), fn=nlf1, control=list(reltol=1e-4)) -> nlf1_out
+subplex(par = c(r=0.2, sigma=0.15, tau=0.08), fn=nlf1,
+  control=list(reltol=1e-4)) -> nlf1_out
 nlf1(nlf1_out$par)
 @
 where the first argument is the class-\class{pomp} object,
