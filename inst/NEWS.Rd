@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.1.1}{
+  \itemize{
+    \item We no longer import directly from \pkg{tidyverse} functions.
+    This reduces the list of packages upon which \pkg{pomp} depends from 20 to 5.
+    This does introduce a dependency on the \pkg{data.table} package.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.0.1}{
   \itemize{
     \item When the archive directory does not exist, \code{bake} and \code{stew} now create it.

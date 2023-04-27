@@ -77,7 +77,7 @@ This allows the user to pass information to the basic components outside of the 
 See \link[=userdata]{userdata} for information on how to use this facility.}
 
 \item{ode_control}{optional list;
-the elements of this list will be passed to \code{\link[=deSolve]{ode}} if the skeleton is a vectorfield, and ignored if it is a map.}
+the elements of this list will be passed to \code{\link[deSolve]{ode}} if the skeleton is a vectorfield, and ignored if it is a map.}
 
 \item{format}{the format in which to return the results.
 

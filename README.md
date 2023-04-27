@@ -12,7 +12,7 @@
 [![codecov](https://codecov.io/gh/kingaa/pomp/branch/master/graph/badge.svg)](https://app.codecov.io/gh/kingaa/pomp)
 ![CRAN mirror monthly downloads](https://cranlogs.r-pkg.org/badges/last-month/pomp)
 ![CRAN mirror total downloads](https://cranlogs.r-pkg.org/badges/grand-total/pomp)
-[![Dependencies](https://tinyverse.netlify.com/badge/pomp)](https://cran.r-project.org/package=pomp)
+[![Dependencies](https://tinyverse.netlify.com/badge/pomp)](https://tinyverse.netlify.com/)
 
 For installation instructions and user guides, see [the package website](https://kingaa.github.io/pomp/).
 
