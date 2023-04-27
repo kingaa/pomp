@@ -115,6 +115,8 @@ inst/NEWS: inst/NEWS.Rd
 	$(RCMD) Rdconv -t txt $^ -o $@
 
 htmlhelp: install manual
+	mkdir -p $(MANUALDIR)/source
+	doxygen
 	rsync --delete -a library/$(PKG)/html/ $(MANUALDIR)/html
 	rsync --delete --exclude=aliases.rds --exclude=paths.rds --exclude=$(PKG).rdb --exclude=$(PKG).rdx --exclude=macros -a library/$(PKG)/help/ $(MANUALDIR)/help
 	(cd $(MANUALDIR); (cat links.ed && echo w ) | ed - html/00Index.html)
