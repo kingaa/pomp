@@ -9,9 +9,11 @@
 
 #include "pomp_internal.h"
 
-static R_INLINE SEXP dmeas_args (SEXP args, SEXP Onames, SEXP Snames,
-  SEXP Pnames, SEXP Cnames, SEXP log)
-{
+static R_INLINE SEXP add_args
+(
+ SEXP args, SEXP Onames, SEXP Snames,
+ SEXP Pnames, SEXP Cnames, SEXP log
+ ) {
   SEXP var;
   int v;
 
@@ -177,7 +179,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     int j, k;
 
     // build argument list
-    PROTECT(args = dmeas_args(args,Onames,Snames,Pnames,Cnames,log)); nprotect++;
+    PROTECT(args = add_args(args,Onames,Snames,Pnames,Cnames,log)); nprotect++;
 
     for (k = 0; k < ntimes; k++, time++, ys += nobs) { // loop over times
 
