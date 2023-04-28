@@ -15,7 +15,7 @@
 NULL
 
 ##' @importFrom data.table rbindlist
-bind_rows <- function (x, .id = ".id") {
+rbind_fill <- function (x, .id = ".id") {
   as.data.frame(
     rbindlist(x,use.names=TRUE,fill=TRUE,idcol=.id)
   )
@@ -91,7 +91,7 @@ setMethod(
   definition=function (data, ..., level = 1) {
     if (length(unique(lapply(data,mode))) > 1L)
       pStop("melt","refusing to melt data of incompatible types.")
-    bind_rows(
+    rbind_fill(
       lapply(data,melt,level=level+1,...),
       .id=paste0(".L",level)
     )

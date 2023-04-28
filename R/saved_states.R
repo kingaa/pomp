@@ -93,7 +93,7 @@ setMethod(
     format <- match.arg(format)
     x <- lapply(object,saved_states,...,format=format)
     if (format == "data.frame") {
-      x <- bind_rows(x,.id=".L1")
+      x <- rbind_fill(x,.id=".L1")
     }
     x
   }

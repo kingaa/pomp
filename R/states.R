@@ -74,7 +74,7 @@ setMethod(
     format <- match.arg(format)
     x <- lapply(object,states,vars=vars,format=format,...)
     if (format == "data.frame") {
-      bind_rows(x,.id=".id")
+      rbind_fill(x,.id=".id")
     } else {
       x
     }

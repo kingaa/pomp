@@ -163,7 +163,7 @@ setAs(
   from="listie",
   to="data.frame",
   def = function (from) {
-    bind_rows(
+    rbind_fill(
       lapply(from,as,"data.frame"),
       .id=".L1"
     )

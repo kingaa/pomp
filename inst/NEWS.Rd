@@ -2,6 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 5.1.1}{
   \itemize{
+    \item A bug in \code{stew} resulting in namespace conflicts has been repaired.
     \item We no longer import directly from \pkg{tidyverse} functions.
     This reduces the list of packages upon which \pkg{pomp} depends from 20 to 5.
     This does introduce a dependency on the \pkg{data.table} package.

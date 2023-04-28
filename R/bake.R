@@ -257,15 +257,16 @@ stew <- function (
 ) {
   expr <- substitute(expr)
   code <- code_digest(expr)
+  pf <- parent.frame()
   deps <- process_dependencies(
     dependson=substitute(dependson),
-    envir=parent.frame(),
+    envir=pf,
     ep="stew"
   )
   info <- as.logical(info)
   file <- create_path(dir,file)
   reload <- file.exists(file)
-  e <- new.env()
+  e <- new.env(parent=pf)
   if (reload) {
     objlist <- load(file,envir=e)
     e <- update_stew_archive(e,code=code,deps=deps,
@@ -286,7 +287,7 @@ stew <- function (
       freeze(
         expr,
         envir=e,
-        enclos=parent.frame(),
+        enclos=pf,
         seed=seed,
         kind=kind,
         normal.kind=normal.kind
@@ -304,17 +305,18 @@ stew <- function (
   }
   objlist <- objects(envir=e,all.names=info)
   for (obj in objlist) {
-    assign(obj,get(obj,envir=e),envir=parent.frame())
+    assign(obj,get(obj,envir=e),envir=pf)
   }
   if (!info) {
-    assign(".system.time",e$.systemtime,envir=parent.frame())
+    assign(".system.time",e$.systemtime,envir=pf)
   }
   invisible(objlist)
 }
 
 ##' @rdname bake
 ##' @export
-freeze <- function (expr, seed = NULL, kind = NULL, normal.kind = NULL,
+freeze <- function (expr,
+  seed = NULL, kind = NULL, normal.kind = NULL,
   envir = parent.frame(),
   enclos =  if(is.list(envir) || is.pairlist(envir))
               parent.frame() else baseenv()
