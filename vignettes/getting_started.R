@@ -753,6 +753,8 @@ starts
 
 ## ----parus-pmcmc-eval---------------------------------------------------------
 bake(file="parus_pmcmc.rds",dependson=starts,{
+  registerDoRNG(1360273392)
+  
   vpM |>
     pmcmc(
       starts=starts,

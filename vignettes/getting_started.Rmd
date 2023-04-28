@@ -1650,6 +1650,8 @@ starts
 ```{r parus-pmcmc}
 #| eval: false
 #| purl: false
+registerDoRNG(1360273392)
+
 vpM |>
   pmcmc(
     starts=starts,
