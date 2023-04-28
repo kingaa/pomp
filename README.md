@@ -13,10 +13,10 @@
 ![CRAN mirror monthly downloads](https://cranlogs.r-pkg.org/badges/last-month/pomp)
 ![CRAN mirror total downloads](https://cranlogs.r-pkg.org/badges/grand-total/pomp)
 [![Dependencies](https://tinyverse.netlify.com/badge/pomp)](https://tinyverse.netlify.com/)
+[![manual](https://img.shields.io/badge/manual-HTML-informational)](https://kingaa.github.io/pomp/manual/)
+[![pdf-manual](https://img.shields.io/badge/manual-PDF-informational)](https://kingaa.github.io/pomp/manual/pdf/)
 
 For installation instructions and user guides, see [the package website](https://kingaa.github.io/pomp/).
-
-Manual: [(HTML)](https://kingaa.github.io/pomp/manual/) [(PDF)](https://kingaa.github.io/pomp/manual/pdf/)
 
 Related packages:
 

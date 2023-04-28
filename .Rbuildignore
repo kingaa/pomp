@@ -1,6 +1,11 @@
-revdep
-tools
 examples
+repo
+revdep
+scripts
+tools
+wiki
+www
+yaml
 tests/Makefile
 tests/(.+?)\.png$
 tests/(.+?)\.pdf$
@@ -34,13 +39,10 @@ TODO\.md$
 \.tests
 Makefile
 rules.mk
-yaml
-scripts
 lib
 libs
 library
 check
-www
 ^(.+?)\.pdf
 ^(.+?)\.tar\.gz
 ^(.+?)\.tgz
