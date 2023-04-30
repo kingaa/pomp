@@ -2,25 +2,25 @@
 title: pomp rss feed
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+<feed xmlns="https://www.w3.org/2005/Atom" xmlns:media="https://search.yahoo.com/mrss/" xml:lang="en-US">
   <id>tag:kingaa.github.io,2008:/kingaa/pomp</id>
-  <link type="text/html" rel="alternate" href="http://kingaa.github.io/pomp"/>
-  <link type="application/atom+xml" rel="self" href="http://kingaa.github.io/pomp/pomp.atom"/>
+  <link type="text/html" rel="alternate" href="https://kingaa.github.io/pomp"/>
+  <link type="application/atom+xml" rel="self" href="https://kingaa.github.io/pomp/pomp.atom"/>
   <title>pomp blog</title>
   <updated>{{ site.time | date_to_xmlschema }}</updated>
 {% for post in site.posts %}
   <entry>
     <id>{{ post.id }}</id>
     <published>{{ post.date }}</published>
-    <link type="text/html" rel="alternate" href="http://kingaa.github.io/pomp/blog.html#{{ post.title | slugify }}"/>
+    <link type="text/html" rel="alternate" href="https://kingaa.github.io/pomp/blog.html#{{ post.title | slugify }}"/>
     <title type="html">{{ post.title }}</title>
     <author>
       <name>Aaron A. King</name>
       <email></email>
-      <uri>http://kingaa.github.io/pomp/blog.html#{{ post.title | slugify }}</uri>
+      <uri>https://kingaa.github.io/pomp/blog.html#{{ post.title | slugify }}</uri>
     </author>
     <content type="html">
-      <a href="http://kingaa.github.io/pomp/blog.html#{{ post.title | slugify }}"><h2>{{ post.title }}</h2></a>
+      <a href="https://kingaa.github.io/pomp/blog.html#{{ post.title | slugify }}"><h2>{{ post.title }}</h2></a>
       {{ post.excerpt }}
     </content>
   </entry>

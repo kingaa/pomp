@@ -647,7 +647,7 @@ They must not actually *violate* the rules of C syntax however.
 Among other things, lines must end with a semicolon (`;`), variable names must respect C restrictions, etc.
 Although one can enclose essentially arbitrarily complex C code in a C snippet, one can do quite a lot with very simple snippets.
 If you are new (even very new) to C, don't worry: 
-once you master a few simple rules, you'll be able to code up C snippets just as easily, or even more easily, than you code up **R** functions and you'll learn to value the resulting speed-up extremely.
+once you master a few simple rules, you'll be able to code up C snippets just as easily, or even more easily, than you code up **R** functions and you will come to value the resulting speed-up extremely.
 
 Now we'll code the Ricker and Verhulst-Pearl simulation steps as C snippets.
 
@@ -664,7 +664,7 @@ Csnippet("
 ```
 
 A few observations are in order.
-First, note that the local variables `eps` and `dW` are declared "double", the standard C data-type for floating point numbers.
+First, note that the local variables `eps` and `dW` are declared `double`, the standard C data-type for (double-precision) floating point numbers.
 Observe that `dt` is a variable that is defined in the context of the `vpstepC` snippet;
 when this snippet is executed, `dt` will be provided by `pomp` and will be equal to the size of the Euler step actually being taken.
 Note also that in each of these snippets, the value of `N` gets over-written by its new value at the next time-step.
@@ -1031,7 +1031,7 @@ In this model, $\rho$ can take any (positive or negative) values while $r$ remai
 We incorporate parameter transformations using the `partrans` argument to many **pomp** functions, specifying them using the `parameter_trans` function.
 In general, the parameter transformations, like other basic model components, can be supplied using **R** functions or C snippets.
 If we are merely log-transforming, logit-transforming, or log-barycentric-transforming parameters, however, it is even easier.
-The following code chunk implements log transformation of the all the parameters of the Verhulst-Pearl and Ricker models.
+The following code chunk implements log transformation of all of the parameters of the Verhulst-Pearl and Ricker models.
 
 ```{r vp_partrans}
 vpr_partrans <- parameter_trans(log=c("r","K","sigma","b","N_0"))
@@ -1079,7 +1079,7 @@ parameter estimation for fully stochastic models.
 Iterated filtering is a method for maximizing the likelihood.
 The method was introduced in its original form by @Ionides2006, and was subsequently much improved by @Ionides2015.
 The latter paper rigorously expounds the theory.
-An [updated version of the **pomp** *Journal of Statistical Software paper](https://kingaa.github.io/pomp/vignettes/pompjss.pdf) provides pseudocode and a simple example.
+An [updated version of the **pomp** *Journal of Statistical Software* paper](https://kingaa.github.io/pomp/vignettes/pompjss.pdf) provides pseudocode and a simple example.
 Finally, a [tutorial on the theory and practice](https://kingaa.github.io/sbied/mif/) is linked from the [**pomp** documentation index](https://kingaa.github.io/pomp/docs.html).
 Here, we confine ourselves to demonstrating how the IF2 algorithm [@Ionides2015] is applied to the toy examples we have been discussing.
 

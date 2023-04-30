@@ -27,7 +27,7 @@ params <- list(prefix="R_v_C")
 source("setup.R", local = knitr::knit_global())
 ```
 
-The **R** codes in this script are `r xfun::embed_file("r_v_c.R",text="available for download")`.
+The **R** codes in this script are `r xfun::embed_file("R_v_C.R",text="available for download")`.
 This work is licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](https://kingaa.github.io/images/cc-by-nc.png)
