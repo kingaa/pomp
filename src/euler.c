@@ -106,10 +106,12 @@ static R_INLINE SEXP ret_array (int n, int nreps, int ntimes, SEXP names)
 
 }
 
-SEXP euler_model_simulator (
-  SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params,
-  double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi)
-{
+SEXP euler_model_simulator
+(
+ SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params,
+ double deltat, rprocmode method, SEXP accumvars, SEXP covar,
+ SEXP args, SEXP gnsi
+ ) {
 
   pompfunmode mode = undef;
   int nvars, npars, nreps, ntimes, nzeros, ncovars;
