@@ -119,6 +119,14 @@
   pages: "e41&#x2013;e50"
   doi: "https://doi.org/10.1016/S2589-7500(20)30268-5"
 
+- key: Beloconi2023
+  author: "A. Beloconi, B. O. Nyawanda, G. Bigogo, S. Khagayi, D. Obor, I. Danquah, S. Kariuki, S. Munga, and P. Vounatsou"
+  year: "2023"
+  title: "Malaria, climate variability, and interventions: modelling transmission dynamics"
+  journal: "Scientific Reports"
+  volume: "13"
+  doi: "https://doi.org/10.1038/s41598-023-33868-8"
+
 - key: Bhadra2010
   author: "A. Bhadra"
   year: "2010"
