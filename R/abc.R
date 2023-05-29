@@ -81,7 +81,7 @@ setClass(
     probes = list(),
     scale = numeric(0),
     epsilon = 1.0,
-    proposal = function (...) pStop("abc","proposal not specified."),
+    proposal = function (...) pStop(who="abc","proposal not specified."),
     traces=array(dim=c(0,0))
   )
 )
@@ -135,7 +135,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("abc",conditionMessage(e))
+      error = function (e) pStop(who="abc",conditionMessage(e))
     )
 
   }
@@ -162,7 +162,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("abc",conditionMessage(e))
+      error = function (e) pStop(who="abc",conditionMessage(e))
     )
 
   }

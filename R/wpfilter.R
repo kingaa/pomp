@@ -102,7 +102,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("wpfilter",conditionMessage(e))
+      error = function (e) pStop(who="wpfilter",conditionMessage(e))
     )
 
   }
@@ -129,7 +129,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("wpfilter",conditionMessage(e))
+      error = function (e) pStop(who="wpfilter",conditionMessage(e))
     )
 
   }

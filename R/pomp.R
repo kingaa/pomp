@@ -188,7 +188,7 @@ pomp <- function (data, times, t0, ...,
     reqd_arg("pomp","data")
 
   if (!inherits(data,what=c("data.frame","pomp","NULL")))
-    pStop("pomp",sQuote("data")," must be a data frame or an object of ",
+    pStop(who="pomp",sQuote("data")," must be a data frame or an object of ",
       "class ",sQuote("pomp"),".")
 
   ## return as quickly as possible if no work is to be done

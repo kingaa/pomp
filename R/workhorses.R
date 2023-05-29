@@ -114,7 +114,7 @@ setMethod(
     tryCatch(
       dmeasure_internal(object=object,y=y,x=x,times=times,
         params=params,log=log,...),
-      error = function (e) pStop("dmeasure",conditionMessage(e))
+      error = function (e) pStop(who="dmeasure",conditionMessage(e))
     )
   }
 )
@@ -184,7 +184,7 @@ setMethod(
   ) {
     tryCatch(
       dprior_internal(object=object,params=params,log=log,...),
-      error = function (e) pStop("dprior",conditionMessage(e))
+      error = function (e) pStop(who="dprior",conditionMessage(e))
     )
   }
 )
@@ -254,7 +254,7 @@ setMethod(
   ) {
     tryCatch(
       dprocess_internal(object=object,x=x,times=times,params=params,log=log,...),
-      error = function (e) pStop("dprocess",conditionMessage(e))
+      error = function (e) pStop(who="dprocess",conditionMessage(e))
     )
   }
 )
@@ -324,7 +324,7 @@ setMethod(
     dir <- match.arg(dir)
     tryCatch(
       partrans_internal(object=object,params=params,dir=dir,...),
-      error = function (e) pStop("partrans",conditionMessage(e))
+      error = function (e) pStop(who="partrans",conditionMessage(e))
     )
   }
 )
@@ -398,7 +398,7 @@ setMethod(
   ) {
     tryCatch(
       rinit_internal(object=object,params=params,t0=t0,nsim=nsim,...),
-      error = function (e) pStop("rinit",conditionMessage(e))
+      error = function (e) pStop(who="rinit",conditionMessage(e))
     )
   }
 )
@@ -468,7 +468,7 @@ setMethod(
   ) {
     tryCatch(
       rmeasure_internal(object=object,x=x,times=times,params=params,...),
-      error = function (e) pStop("rmeasure",conditionMessage(e))
+      error = function (e) pStop(who="rmeasure",conditionMessage(e))
     )
   }
 )
@@ -537,7 +537,7 @@ setMethod(
   ) {
     tryCatch(
       emeasure_internal(object=object,x=x,times=times,params=params,...),
-      error = function (e) pStop("emeasure",conditionMessage(e))
+      error = function (e) pStop(who="emeasure",conditionMessage(e))
     )
   }
 )
@@ -608,7 +608,7 @@ setMethod(
   ) {
     tryCatch(
       vmeasure_internal(object=object,x=x,times=times,params=params,...),
-      error = function (e) pStop("vmeasure",conditionMessage(e))
+      error = function (e) pStop(who="vmeasure",conditionMessage(e))
     )
   }
 )
@@ -676,7 +676,7 @@ setMethod(
   )
     tryCatch(
       rprior_internal(object=object,params=params,...),
-      error = function (e) pStop("rprior",conditionMessage(e))
+      error = function (e) pStop(who="rprior",conditionMessage(e))
     )
 )
 
@@ -764,7 +764,7 @@ setMethod(
   ) {
     tryCatch(
       rprocess_internal(object=object,x0=x0,t0=t0,times=times,params=params,...),
-      error = function (e) pStop("rprocess",conditionMessage(e))
+      error = function (e) pStop(who="rprocess",conditionMessage(e))
     )
   }
 )
@@ -839,7 +839,7 @@ setMethod(
   )
     tryCatch(
       skeleton_internal(object=object,x=x,times=times,params=params,...),
-      error = function (e) pStop("skeleton",conditionMessage(e))
+      error = function (e) pStop(who="skeleton",conditionMessage(e))
     )
 )
 

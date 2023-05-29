@@ -104,7 +104,7 @@ NULL
 reulermultinom <- function (n = 1, size, rate, dt) {
   tryCatch(
     .Call(P_R_Euler_Multinom,n,size,rate,dt),
-    error = function (e) pStop("reulermultinom",conditionMessage(e))
+    error = function (e) pStop(who="reulermultinom",conditionMessage(e))
   )
 }
 
@@ -113,7 +113,7 @@ reulermultinom <- function (n = 1, size, rate, dt) {
 deulermultinom <- function (x, size, rate, dt, log = FALSE) {
   tryCatch(
     .Call(P_D_Euler_Multinom,as.matrix(x),size,rate,dt,log),
-    error = function (e) pStop("deulermultinom",conditionMessage(e))
+    error = function (e) pStop(who="deulermultinom",conditionMessage(e))
   )
 }
 
@@ -122,6 +122,6 @@ deulermultinom <- function (x, size, rate, dt, log = FALSE) {
 rgammawn <- function (n = 1, sigma, dt) {
   tryCatch(
     .Call(P_R_GammaWN,n,sigma,dt),
-    error = function (e) pStop("rgammwn",conditionMessage(e))
+    error = function (e) pStop(who="rgammwn",conditionMessage(e))
   )
 }

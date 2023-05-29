@@ -110,7 +110,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("spect_objfun",conditionMessage(e))
+      error = function (e) pStop(who="spect_objfun",conditionMessage(e))
     )
 
   }
@@ -142,7 +142,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("spect_objfun",conditionMessage(e))
+      error = function (e) pStop(who="spect_objfun",conditionMessage(e))
     )
 
   }

@@ -66,7 +66,7 @@ setMethod(
         excl <- setdiff(pars,names(params))
         nexcl <- length(excl)
         if (nexcl > 0) {
-          pStop("coef","name",ngettext(nexcl," ","s "),
+          pStop(who="coef","name",ngettext(nexcl," ","s "),
             paste(sQuote(excl),collapse=","),
             " correspond",ngettext(nexcl,"s",""),
             " to no parameter",ngettext(nexcl,".","s."))
@@ -103,13 +103,13 @@ setMethod(
           value <- partrans(object,params=value,...,dir="fromEst")
         pars <- names(value)
         if (is.null(pars)) {
-          pStop("coef<-",sQuote("value")," must be a named vector.")
+          pStop(who="coef<-",sQuote("value")," must be a named vector.")
         }
       }
       object@params <- value
     } else { ## replace or append only the parameters named in 'pars'
       if (!is.null(names(value))) ## we ignore the names of 'value'
-        pWarn("coef<-","names of ",sQuote("value")," are being discarded.")
+        pWarn(who=-2L,"names of ",sQuote("value")," are being discarded.")
       if (length(object@params)==0) { ## no pre-existing 'params' slot
         val <- numeric(length(pars))
         names(val) <- pars
@@ -124,7 +124,7 @@ setMethod(
         excl <- !(pars%in%names(params)) ## new parameter names
         if (any(excl)) { ## append parameters
           nexcl <- sum(excl)
-          pWarn("coef<-","name",ngettext(nexcl,"","s")," ",
+          pWarn(who=-2L,ngettext(nexcl,"name","names")," ",
             paste(sQuote(pars[excl]),collapse=","),
             " refer",ngettext(nexcl,"s","")," to no existing parameter",
             ngettext(nexcl,"","s"),"; ",

@@ -44,9 +44,9 @@ setMethod(
   definition=function(object,...,value) {
     ep <- "timezero<-"
     if (!(is.numeric(value) && length(value) == 1L && is.finite(value)))
-      pStop(ep,"the zero-time ",sQuote("t0")," must be a single finite number.")
+      pStop(who=ep,"the zero-time ",sQuote("t0")," must be a single finite number.")
     if (value > object@times[1L])
-      pStop(ep,"the zero-time ",sQuote("t0"),
+      pStop(who=ep,"the zero-time ",sQuote("t0"),
         " must occur no later than the first observation.")
     storage.mode(value) <- "double"
     object@t0 <- value

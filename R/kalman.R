@@ -107,7 +107,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("enkf",conditionMessage(e))
+      error = function (e) pStop(who="enkf",conditionMessage(e))
     )
 
   }
@@ -128,7 +128,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("enkf",conditionMessage(e))
+      error = function (e) pStop(who="enkf",conditionMessage(e))
     )
 
   }
@@ -149,7 +149,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("enkf",conditionMessage(e))
+      error = function (e) pStop(who="enkf",conditionMessage(e))
     )
 
   }
@@ -324,7 +324,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("eakf",conditionMessage(e))
+      error = function (e) pStop(who="eakf",conditionMessage(e))
     )
 
   }
@@ -345,7 +345,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("eakf",conditionMessage(e))
+      error = function (e) pStop(who="eakf",conditionMessage(e))
     )
 
   }

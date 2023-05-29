@@ -118,7 +118,7 @@ setMethod(
       probe_internal(data,probes=probes,nsim=nsim,seed=seed,
         rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,params=params,
         ...,verbose=verbose),
-      error = function (e) pStop("probe",conditionMessage(e))
+      error = function (e) pStop(who="probe",conditionMessage(e))
     )
 
 
@@ -138,7 +138,7 @@ setMethod(
     tryCatch(
       probe_internal(data,probes=probes,nsim=nsim,seed=seed,
         ...,verbose=verbose),
-      error = function (e) pStop("probe",conditionMessage(e))
+      error = function (e) pStop(who="probe",conditionMessage(e))
     )
 
   }

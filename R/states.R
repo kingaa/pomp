@@ -49,7 +49,7 @@ setMethod(
       varnames <- rownames(object@states)
       if (missing(vars)) vars <- varnames
       else if (!all(vars%in%varnames))
-        pStop("states","some elements of ",
+        pStop(who="states","some elements of ",
           sQuote("vars")," correspond to no state variable")
       x <- object@states[vars,,drop=FALSE]
       dimnames(x) <- setNames(list(vars,NULL),c("name",object@timename))

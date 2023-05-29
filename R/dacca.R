@@ -70,7 +70,7 @@ dacca <- function (
   nrstage <- 3L
   nbasis <- length(logbeta)
   if (length(logomega) != nbasis)
-    pStop("dacca",sQuote("logbeta")," and ",sQuote("logomega")," should be of equal length.")
+    pStop(sQuote("logbeta")," and ",sQuote("logomega")," should be of equal length.")
 
   mle <- c(
     gamma=gamma,eps=eps,rho=rho,

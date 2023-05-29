@@ -280,12 +280,11 @@ euler <- function (step.fun, delta.t) {
 ##' @name gillespie
 ##' @export
 gillespie <- function (rate.fun, v, hmax = Inf) {
-  ep <- "gillespie"
-  if (!is.matrix(v)) pStop(ep,sQuote("v")," must be a matrix.")
+  if (!is.matrix(v)) pStop(sQuote("v")," must be a matrix.")
   if (anyDuplicated(rownames(v)))
-    pStop(ep,"duplicates in row names of ",sQuote("v"),".")
+    pStop("duplicates in row names of ",sQuote("v"),".")
   if (!is.null(colnames(v)) && anyDuplicated(colnames(v)))
-    pStop(ep,"duplicates in column names of ",sQuote("v"),".")
+    pStop("duplicates in column names of ",sQuote("v"),".")
 
   new("gillespieRprocPlugin",
     rate.fn=rate.fun,
@@ -301,13 +300,11 @@ gillespie <- function (rate.fun, v, hmax = Inf) {
 ##' @export
 gillespie_hl <- function (..., .pre = "", .post = "", hmax = Inf) {
 
-  ep <- "gillespie_hl"
-
   args <- list(...)
 
   if (!all(vapply(args,inherits,what="list",logical(1L))) ||
       !all(vapply(args,length,integer(1L)) == 2L))
-    pStop(ep,"each event should be specified using a length-2 list.")
+    pStop("each event should be specified using a length-2 list.")
 
   codeChunks <- lapply(args,"[[",1)
   stoich <- lapply(args,"[[",2)
@@ -315,7 +312,7 @@ gillespie_hl <- function (..., .pre = "", .post = "", hmax = Inf) {
   checkCode <- function (x) {
     inh <- inherits(x,what=c("Csnippet", "character"))
     if (!any(inh) || length(x) != 1)
-      pStop(ep,"for each event, the first list-element should be a C snippet or string.")
+      pStop(who="gillespie_hl","for each event, the first list-element should be a C snippet or string.")
     as(x,"character")
   }
 
@@ -323,14 +320,14 @@ gillespie_hl <- function (..., .pre = "", .post = "", hmax = Inf) {
 
   if (!inherits(.pre,what=c("character","Csnippet")) ||
       !inherits(.post,what=c("character","Csnippet")))
-    pStop(ep,sQuote(".pre")," and ",sQuote(".post")," must be C snippets or strings.")
+    pStop(sQuote(".pre")," and ",sQuote(".post")," must be C snippets or strings.")
 
   .pre <- paste(as(.pre,"character"),collapse="\n")
   .post <- paste(as(.post,"character"),collapse="\n")
 
   if (!all(vapply(stoich,is.numeric,logical(1L))) ||
       any(vapply(stoich,\(x)invalid_names(names(x)),logical(1L))))
-    pStop(ep,"for each event, the second list-element should be ",
+    pStop("for each event, the second list-element should be ",
       "a named numeric vector (without duplicate names).")
 
   ## Create C snippet of switch statement
@@ -343,7 +340,8 @@ gillespie_hl <- function (..., .pre = "", .post = "", hmax = Inf) {
   rate.fn <- Csnippet(paste(header, body, footer, sep="\n"))
 
   ## now put together the stoichiometry matrix
-  if (anyDuplicated(names(stoich))) pStop(ep,"duplicated elementary event names.")
+  if (anyDuplicated(names(stoich)))
+    pStop("duplicated elementary event names.")
   vars <- unique(do.call(c,lapply(stoich,names)))
   v <- array(data=0,dim=c(length(vars),length(stoich)),
     dimnames=list(name=vars,event=names(stoich)))

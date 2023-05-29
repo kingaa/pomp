@@ -156,7 +156,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("pfilter",conditionMessage(e))
+      error = function (e) pStop(who="pfilter",conditionMessage(e))
     )
 
   }
@@ -190,7 +190,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("pfilter",conditionMessage(e))
+      error = function (e) pStop(who="pfilter",conditionMessage(e))
     )
 
   }

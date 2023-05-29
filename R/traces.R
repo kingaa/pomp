@@ -142,7 +142,7 @@ traces_internal <- function (object, pars, transform = FALSE, ...) {
     pars <- as.character(pars)
     bad.pars <- setdiff(pars,colnames(retval))
     if (length(bad.pars)>0)
-      pStop("traces",
+      pStop(who="traces",
         ngettext(length(bad.pars),"parameter ","parameters "),
         paste(sQuote(bad.pars),collapse=",")," not found.")
 

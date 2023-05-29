@@ -111,7 +111,7 @@ process_dependencies <- function (dependson, envir, ep)
   tryCatch(
     digest(eval(dependson,envir=envir)),
     error = function (e) {
-      pStop(ep,"cannot compute hash of dependencies: ",
+      pStop(who=ep,"cannot compute hash of dependencies: ",
         conditionMessage(e))
     }
   )
@@ -121,7 +121,7 @@ reload_check <- function (ingredients, code, deps,
   seed, kind, normal.kind, file, ep)
 {
   if (is.null(ingredients)) {
-    pStop(ep,sQuote(basename(file))," lacks ingredients.")
+    pStop(who=ep,sQuote(basename(file))," lacks ingredients.")
   }
   identical(code,ingredients$code) &&
     identical(deps,ingredients$dependencies) &&
@@ -134,7 +134,7 @@ update_bake_archive <- function (val, code, deps, file) {
   if (is.null(attr(val,"ingredients")) &&
         !is.null(attr(val,"system.time"))
   ) {
-    pMess("bake","archive in old format detected. Updating....")
+    pMess(who="bake","archive in old format detected. Updating....")
     attr(val,"ingredients") <- list(
       code=code,
       dependencies=deps,
@@ -186,10 +186,11 @@ bake <- function (
       ingredients=attr(val,"ingredients"),
       code=code,deps=deps,
       seed=seed,kind=kind,normal.kind=normal.kind,
-      file=file,ep="bake"
+      file=file,
+      ep="bake"
     )
     if (!reload) {
-      pMess("bake","recomputing archive ",basename(file),".")
+      pMess(who="bake","recomputing archive ",basename(file),".")
     }
   }
   if (!reload) {
@@ -204,7 +205,7 @@ bake <- function (
       )
     )
     if (is.null(val)) {
-      pWarn("bake","expression evaluates to NULL,",
+      pWarn("expression evaluates to NULL,",
         " an empty list will be returned.")
       val <- list()
     }
@@ -233,7 +234,7 @@ update_stew_archive <- function (
   file
 ) {
   if (is.null(e$.ingredients)) {
-    pMess("stew","archive in old format detected. Updating....")
+    pMess(who="stew","archive in old format detected. Updating....")
     e$.ingredients <- list(
       code=code,
       dependencies=deps,
@@ -275,10 +276,11 @@ stew <- function (
       ingredients=e$.ingredients,
       code=code,deps=deps,
       seed=seed,kind=kind,normal.kind=normal.kind,
-      file=file,ep="stew"
+      file=file,
+      ep="stew"
     )
     if (!reload) {
-      pMess("stew","recomputing archive ",basename(file),".")
+      pMess(who="stew","recomputing archive ",basename(file),".")
     }
   }
   if (!reload) {

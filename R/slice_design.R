@@ -11,17 +11,18 @@
 slice_design <- function (center, ...) {
   slices <- list(...)
   if ((!is.numeric(center))||is.null(names(center)))
-    pStop("slice_design",sQuote("center")," must be a named numeric vector")
+    pStop(sQuote("center")," must be a named numeric vector")
   slnm <- names(slices)
   if (any(slnm==""))
-    pStop("slice_design","cannot slice along an unnamed parameter.")
+    pStop("cannot slice along an unnamed parameter.")
   if (!all(slnm%in%names(center))) {
     problems <- slnm[!(slnm%in%names(center))]
-    pStop("slice_design",
+    pStop(
       ngettext(length(problems),"variable ","variables "),
       paste(lapply(problems,sQuote),collapse=","),
       ngettext(length(problems)," does "," do "),
-      "not appear in ",sQuote("center"))
+      "not appear in ",sQuote("center")
+    )
   }
   nslice <- length(slices)
   nvars <- length(center)

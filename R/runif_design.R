@@ -6,20 +6,19 @@
 ##'
 ##' @export
 runif_design <- function (lower = numeric(0), upper = numeric(0), nseq) {
-  ep <- "runif_design"
   if (length(lower)!=length(upper))
-    pStop(ep,sQuote("lower")," and ",sQuote("upper")," must have same length.")
+    pStop(sQuote("lower")," and ",sQuote("upper")," must have same length.")
   lnames <- names(lower)
   if (is.null(lnames))
-    pStop(ep,sQuote("lower")," and ",sQuote("upper")," must be named vectors.")
+    pStop(sQuote("lower")," and ",sQuote("upper")," must be named vectors.")
   if (!all(sort(lnames)==sort(names(upper))))
-    pStop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match.")
+    pStop("names of ",sQuote("lower")," and ",sQuote("upper")," must match.")
   upper <- upper[lnames]
   if (!all(upper>=lower))
-    pStop(ep,"upper values should be at least as large as lower ones.")
+    pStop("upper values should be at least as large as lower ones.")
   nseq <- as.integer(nseq)
   if (nseq < 0)
-    pStop(ep,sQuote("nseq"),"< 0.")
+    pStop(sQuote("nseq"),"< 0.")
   y <- matrix(
     data=runif(n=nseq*length(lower),min=lower,max=upper),
     nrow=nseq,ncol=length(lower),

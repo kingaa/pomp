@@ -164,7 +164,7 @@ setMethod(
   "parameter_trans",
   signature=signature(toEst="ANY",fromEst="missing"),
   definition=function(toEst, fromEst, ...) {
-    pStop("parameter_trans","if one of ",sQuote("toEst"),", ",
+    pStop(who="parameter_trans","if one of ",sQuote("toEst"),", ",
       sQuote("fromEst")," is supplied, then so must the other be.")
   }
 )
@@ -173,7 +173,7 @@ setMethod(
   "parameter_trans",
   signature=signature(toEst="missing",fromEst="ANY"),
   definition=function(toEst, fromEst, ...) {
-    pStop("parameter_trans","if one of ",sQuote("toEst"),", ",
+    pStop(who="parameter_trans","if one of ",sQuote("toEst"),", ",
       sQuote("fromEst")," is supplied, then so must the other be.")
   }
 )

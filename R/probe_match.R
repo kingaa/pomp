@@ -104,7 +104,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("probe_objfun",conditionMessage(e))
+      error = function (e) pStop(who="probe_objfun",conditionMessage(e))
     )
 
   }
@@ -131,7 +131,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("probe_objfun",conditionMessage(e))
+      error = function (e) pStop(who="probe_objfun",conditionMessage(e))
     )
 
   }

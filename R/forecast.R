@@ -59,11 +59,11 @@ setMethod(
   definition=function (object, vars, ...,
     format = c("array", "data.frame")) {
     if (undefined(object@emeasure))
-      pStop("forecast",paste(sQuote(c("emeasure")),collapse=", "),
+      pStop(who="forecast",paste(sQuote(c("emeasure")),collapse=", "),
         " is a needed basic component.")
     x <- pred_mean(object)
     if (length(x)==0)
-      pStop("forecast","no prediction mean. ",
+      pStop(who="forecast","no prediction mean. ",
         "Rerun ",sQuote("pfilter")," with ",
         sQuote("pred.mean=TRUE"),".")
     y <- emeasure(

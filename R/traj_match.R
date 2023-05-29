@@ -100,7 +100,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("traj_objfun",conditionMessage(e))
+      error = function (e) pStop(who="traj_objfun",conditionMessage(e))
     )
 
   }
@@ -124,7 +124,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("traj_objfun",conditionMessage(e))
+      error = function (e) pStop(who="traj_objfun",conditionMessage(e))
     )
 
   }
@@ -206,7 +206,7 @@ tmof_internal <- function (
 traj_match_logLik <- function (object, ode_control, .gnsi = TRUE) {
   object@states <- do.call(
     flow,
-    c(list(object,x0=rinit(object),.gnsi=.gnsi),ode_control),
+    c(list(object,x0=rinit(object),.gnsi=.gnsi),ode_control)
   )
   sum(
     dmeasure(

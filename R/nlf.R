@@ -184,7 +184,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("nlf_objfun",conditionMessage(e))
+      error = function (e) pStop(who="nlf_objfun",conditionMessage(e))
     )
 
   }
@@ -217,7 +217,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("nlf_objfun",conditionMessage(e))
+      error = function (e) pStop(who="nlf_objfun",conditionMessage(e))
     )
 
   }
@@ -324,7 +324,7 @@ nlfof_internal <- function (object,
     pStop_("insufficiently long simulated time series: increase ",sQuote("tf"),
       " to at least ",ti+10*dof*dt,".")
   if (length(times) < 30*dof)
-    pWarn("nlf_objfun","insufficiently long simulated time series: ",
+    pWarn(who="nlf_objfun","insufficiently long simulated time series: ",
       "consider increasing ",sQuote("tf")," to ",ti+30*dof*dt," or larger.")
 
   transform.data <- match.fun(transform.data)
@@ -333,7 +333,8 @@ nlfof_internal <- function (object,
     pStop_(sQuote("fail.value")," should be a single (large) number or ",sQuote("NA"),".")
   fail.value <- as.numeric(fail.value)
   if (isTRUE(fail.value < 1000))
-    pWarn("nlf",sQuote("fail.value")," should be a large number or ",sQuote("NA"),".")
+    pWarn(who="nlf_objfun",
+      sQuote("fail.value")," should be a large number or ",sQuote("NA"),".")
 
   pompLoad(object,verbose=verbose)
 
@@ -395,7 +396,7 @@ nlf_lql <- function (object, times, lags, nrbf, period, tensor,
       dat.mat[,] <- apply(dat.mat,2L,transform.data)
       mod.mat[,] <- apply(y[,1L,,drop=FALSE],c(2L,3L),transform.data)
     },
-    error = function (e) pStop("transform.data",conditionMessage(e))
+    error = function (e) pStop(who="transform.data",conditionMessage(e))
   )
 
   tryCatch(
@@ -411,7 +412,7 @@ nlf_lql <- function (object, times, lags, nrbf, period, tensor,
       fail.value=fail.value,
       verbose=verbose
     ),
-    error = function (e) pStop("nlf_lql",conditionMessage(e))
+    error = function (e) pStop(who="nlf_lql",conditionMessage(e))
   )
 
 }
@@ -584,7 +585,7 @@ rbf_basis <- function (X, knots) {
 
 make_tensorbasis <- function(A,B) {
   if (nrow(A) != nrow(B))
-    pStop("make_tensorbasis","incompatible matrices.") #nocov
+    pStop(who="make_tensorbasis","incompatible matrices.") #nocov
   nA <- ncol(A)
   nB <- ncol(B)
   Tmat <- matrix(0,nrow(A),nA*nB)

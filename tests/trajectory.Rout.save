@@ -191,7 +191,7 @@ Warning messages:
   an excessive amount of work (> maxsteps ) was done, but integration was not successful - increase maxsteps
 2: In lsoda(y, times, func, parms, ...) :
   Returning early. Results are accurate, as far as they go
-3: in 'trajectory': abnormal exit from ODE integrator, istate = -1 
+3: in 'flow': abnormal exit from ODE integrator, istate = -1 
 > try(trajectory(pomp(fhn,accumvars="q")) -> x)
 Error : in 'trajectory': in 'flow': accumulator variable 'q' not found among the state variables.
 > fhn@skeleton@type <- 3L

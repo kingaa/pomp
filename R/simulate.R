@@ -93,7 +93,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("simulate",conditionMessage(e))
+      error = function (e) pStop(who="simulate",conditionMessage(e))
     )
 
   }
@@ -128,7 +128,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("simulate",conditionMessage(e))
+      error = function (e) pStop(who="simulate",conditionMessage(e))
     )
 
   }
@@ -155,7 +155,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("simulate",conditionMessage(e))
+      error = function (e) pStop(who="simulate",conditionMessage(e))
     )
 
   }

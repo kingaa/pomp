@@ -9,24 +9,27 @@
 \alias{pMess_}
 \title{pStop}
 \usage{
-pStop(fn, ...)
+pStop(..., who = -1L)
 
 pStop_(...)
 
-pWarn(fn, ...)
+pWarn(..., who = -1L)
 
 pWarn_(...)
 
-pMess(fn, ...)
+pMess(..., who = -1L)
 
 pMess_(...)
 }
 \arguments{
-\item{fn}{name of function (will be enclosed in single quotes)}
-
 \item{\dots}{message}
+
+\item{who}{integer or character.
+If \code{who} is an integer, it is passed to \code{\link{sys.call}} to retrieve the name of the calling function.
+One can also pass the name of the calling function in \code{who}.
+In either case, the name of the calling function is included in the message.}
 }
 \description{
-Custom error function
+Custom error, warning, and message functions.
 }
 \keyword{internal}

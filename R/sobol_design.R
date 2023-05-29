@@ -20,20 +20,19 @@
 ##'
 ##' @export
 sobol_design <- function (lower = numeric(0), upper = numeric(0), nseq) {
-  ep <- "sobol_design"
   if (length(lower)!=length(upper))
-    pStop(ep,sQuote("lower")," and ",sQuote("upper")," must have same length.")
+    pStop(sQuote("lower")," and ",sQuote("upper")," must have same length.")
   lnames <- names(lower)
   if (is.null(lnames))
-    pStop(ep,sQuote("lower")," and ",sQuote("upper")," must be named vectors.")
+    pStop(sQuote("lower")," and ",sQuote("upper")," must be named vectors.")
   if (!all(sort(lnames)==sort(names(upper))))
-    pStop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match.")
+    pStop("names of ",sQuote("lower")," and ",sQuote("upper")," must match.")
   upper <- upper[lnames]
   ranges <- lapply(seq_along(lnames),\(k)c(lower[k],upper[k]))
   names(ranges) <- lnames
   tryCatch(
     sobol(ranges,n=as.integer(nseq)),
-    error = function (e) pStop(ep,conditionMessage(e))
+    error = function (e) pStop(who="sobol_design",conditionMessage(e))
   )
 }
 

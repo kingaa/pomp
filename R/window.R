@@ -25,10 +25,10 @@ setMethod(
     if (missing(end)) end <- tm[length(tm)]
     if (!(is.numeric(start) && is.finite(start) && length(start)==1 &&
         is.numeric(end) && is.finite(end) && length(end)==1))
-      pStop("window",sQuote("start")," and ",sQuote("end"),
+      pStop(who="window",sQuote("start")," and ",sQuote("end"),
         " must be finite times.")
     if (!isTRUE(start <= end))
-      pStop("window",sQuote("start"),
+      pStop(who="window",sQuote("start"),
         " must not be later than ",sQuote("end"),".")
     tm <- tm[(tm>=start)&(tm<=end)]
     time(x,t0=FALSE) <- tm

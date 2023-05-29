@@ -149,7 +149,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("mif2",conditionMessage(e))
+      error = function (e) pStop(who="mif2",conditionMessage(e))
     )
 
   }
@@ -176,7 +176,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("mif2",conditionMessage(e))
+      error = function (e) pStop(who="mif2",conditionMessage(e))
     )
 
   }
@@ -503,7 +503,7 @@ perturbn_kernel_sd <- function (rw.sd, time, paramnames) {
       " function. See ",sQuote("?mif2"),".")
   }
   if (is.null(names(rw.sd)) | any(names(rw.sd)==""))
-    pStop("rw.sd","parameters must be referenced by name.")
+    pStop(who="rw.sd","parameters must be referenced by name.")
   if (!all(names(rw.sd) %in% paramnames)) {
     unrec <- names(rw.sd)[!names(rw.sd) %in% paramnames]
     pStop_("the following parameter(s), ",

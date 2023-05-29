@@ -117,7 +117,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("bsmc2",conditionMessage(e))
+      error = function (e) pStop(who="bsmc2",conditionMessage(e))
     )
 
   }
@@ -140,7 +140,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("bsmc2",conditionMessage(e))
+      error = function (e) pStop(who="bsmc2",conditionMessage(e))
     )
 
   }
@@ -156,7 +156,7 @@ setMethod(
   definition=function (x, pars, thin, ...) {
     if (missing(pars)) pars <- x@est
     pars <- as.character(pars)
-    if (length(pars)<1) pStop("plot","no parameters to plot.")
+    if (length(pars)<1) pStop(who="plot","no parameters to plot.")
     if (missing(thin)) thin <- Inf
     bsmc_plot(
       prior=partrans(x,x@prior,dir="fromEst"),
@@ -237,7 +237,7 @@ bsmc2_internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
     pert <- tryCatch(
       rmvnorm(n=Np[nt],mean=rep(0,nest),sigma=hsq*params.var,method="svd"),
       error = function (e)
-        pStop("rmvnorm",conditionMessage(e))
+        pStop(who="rmvnorm",conditionMessage(e))
     )
 
     if (!all(is.finite(pert))) pStop_("extreme particle depletion") #nocov
@@ -312,7 +312,7 @@ bsmc_plot <- function (prior, post, pars, thin, ...) {
   p2 <- sample.int(n=ncol(post),size=min(thin,ncol(post)))
   if (!all(pars %in% rownames(prior))) {
     missing <- which(!(pars%in%rownames(prior)))
-    pStop("plot","unrecognized parameters: ",paste(sQuote(pars[missing]),collapse=","))
+    pStop(who="plot","unrecognized parameters: ",paste(sQuote(pars[missing]),collapse=","))
   }
   prior <- t(prior[pars,,drop=FALSE])
   post <- t(post[pars,,drop=FALSE])

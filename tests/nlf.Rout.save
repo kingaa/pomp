@@ -163,7 +163,7 @@ Error : in 'nlf_objfun': 'fail.value' should be a single (large) number or 'NA'.
 Error : in 'nlf_objfun': 'fail.value' should be a single (large) number or 'NA'.
 > capture.output(nlf_objfun(ou2,lags=c(1,2,3),ti=100,tf=500,fail.value=10,verbose=TRUE)) -> out
 Warning message:
-in 'nlf': 'fail.value' should be a large number or 'NA'. 
+in 'nlf_objfun': 'fail.value' should be a large number or 'NA'. 
 > stopifnot(sum(grepl("logql = ",out))==1)
 > 
 > po <- ou2

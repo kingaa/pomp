@@ -98,7 +98,7 @@ setMethod(
     env <- parent.frame(2)
     tryCatch(
       covariate_table_internal(...,times=times,order=order,env=env),
-      error = function (e) pStop("covariate_table",conditionMessage(e))
+      error = function (e) pStop(who="covariate_table",conditionMessage(e))
     )
 
   }
@@ -114,7 +114,7 @@ setMethod(
     env <- parent.frame(2)
     tryCatch(
       covariate_table_internal(...,.timevar=times,order=order,env=env),
-      error = function (e) pStop("covariate_table",conditionMessage(e))
+      error = function (e) pStop(who="covariate_table",conditionMessage(e))
     )
 
   }
@@ -183,7 +183,7 @@ get_covariate_names <- function (object) {
 covar_time_warning <- function (object, times, t0, wp) {
   if ((length(object@times)>0) &&
       ((min(object@times)>t0) || (max(object@times)<max(times))))
-    pWarn(wp,"the supplied covariate times do not embrace the ",
+    pWarn(who=wp,"the supplied covariate times do not embrace the ",
       "data times: covariates may be extrapolated.")
 }
 

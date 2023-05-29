@@ -17,15 +17,14 @@ profile_design <- function (...,
   type = c("runif","sobol"),
   stringsAsFactors = getOption("stringsAsFactors",FALSE)
 ) {
-  ep <- "profile_design"
   type <- match.arg(type)
   prof <- list(...)
   pvars <- names(prof)
   if (any(pvars==""))
-    pStop(ep,"you cannot profile over an unnamed variable!")
+    pStop("you cannot profile over an unnamed variable!")
   ovars <- names(lower)
   if (!all(sort(ovars)==sort(names(upper))))
-    pStop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match!")
+    pStop("names of ",sQuote("lower")," and ",sQuote("upper")," must match!")
   x <- expand.grid(...,stringsAsFactors=stringsAsFactors)
   n <- nrow(x)
   z <- vector(mode='list',length=n)

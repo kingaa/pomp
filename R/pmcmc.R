@@ -69,7 +69,7 @@ setClass(
     Nmcmc = 0L,
     accepts = 0L,
     proposal = function (...)
-      pStop("pmcmc","proposal not specified."),
+      pStop(who="pmcmc","proposal not specified."),
     traces=array(dim=c(0,0)),
     log.prior=numeric(0)
   )
@@ -122,7 +122,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("pmcmc",conditionMessage(e))
+      error = function (e) pStop(who="pmcmc",conditionMessage(e))
     )
 
   }
@@ -147,7 +147,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("pmcmc",conditionMessage(e))
+      error = function (e) pStop(who="pmcmc",conditionMessage(e))
     )
 
   }

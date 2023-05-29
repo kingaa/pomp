@@ -85,8 +85,8 @@ setMethod(
           )
         )
       },
-      error = function (e) pStop("parmat",conditionMessage(e)),
-      warning = function (e) pStop("parmat",conditionMessage(e))
+      error = function (e) pStop(who="parmat",conditionMessage(e)),
+      warning = function (e) pStop(who="parmat",conditionMessage(e))
     )
   }
 )
@@ -113,8 +113,8 @@ setMethod(
           pStop_(sQuote("params")," must contain numeric variables only.")
         rv[n,] <- rep(as.double(params[[n]]),times=nrep)
       },
-      error = function (e) pStop("parmat",conditionMessage(e)),
-      warning = function (e) pStop("parmat",conditionMessage(e))
+      error = function (e) pStop(who="parmat",conditionMessage(e)),
+      warning = function (e) pStop(who="parmat",conditionMessage(e))
     )
     rv
   }

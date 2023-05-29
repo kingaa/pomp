@@ -98,10 +98,8 @@ hitch <- function (..., templates,
   shlib.args, compile = TRUE,
   verbose = getOption("verbose", FALSE)) {
 
-  ep <- "hitch"
-
   if (missing(templates))
-    pStop(ep,sQuote("templates")," must be supplied.")
+    pStop(sQuote("templates")," must be supplied.")
 
   if (missing(cfile)) cfile <- NULL
   if (missing(cdir)) cdir <- NULL
@@ -123,7 +121,7 @@ hitch <- function (..., templates,
   covarnames <- as.character(covarnames)
 
   if (anyDuplicated(c(statenames,paramnames,obsnames,covarnames))) {
-    pStop(ep,"the variable names in ",sQuote("statenames"),", ",
+    pStop("the variable names in ",sQuote("statenames"),", ",
       sQuote("paramnames"),", ",sQuote("covarnames"),
       ", and ",sQuote("obsnames")," must be unique and disjoint.")
   }
@@ -295,7 +293,7 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
       verbose=verbose
     ),
     error = function (e)
-      pStop("Cbuilder","compilation error: ",conditionMessage(e)) #nocov
+      pStop(who="Cbuilder","compilation error: ",conditionMessage(e)) #nocov
   )
 
   invisible(list(name=name,dir=dir,src=csrc))
@@ -390,7 +388,7 @@ render <- function (template, ...) {
   if (length(vars)==0) return(template)
   n <- vapply(vars,length,integer(1L))
   if (!all((n==max(n))|(n==1)))
-    pStop("render","incommensurate lengths of replacements.") #nocov
+    pStop("incommensurate lengths of replacements.") #nocov
   short <- which(n==1)
   n <- max(n)
   for (i in short) vars[[i]] <- rep(vars[[i]],n)

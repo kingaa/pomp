@@ -127,7 +127,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("spect",conditionMessage(e))
+      error = function (e) pStop(who="spect",conditionMessage(e))
     )
 
   }
@@ -154,7 +154,7 @@ setMethod(
         ...,
         verbose=verbose
       ),
-      error = function (e) pStop("spect",conditionMessage(e))
+      error = function (e) pStop(who="spect",conditionMessage(e))
     )
 
   }
@@ -336,7 +336,7 @@ compute_spect_sim <- function (object, params, vars, nsim, seed,
       sp <- tryCatch(
         spec.pgram(pomp_detrend(transform.data(sims[j,k,]),type=detrend),
           spans=ker,taper=0,pad=0,fast=FALSE,detrend=FALSE,plot=FALSE),
-        error = function (e) pStop("spec.pgram",conditionMessage(e))
+        error = function (e) pStop(who="spec.pgram",conditionMessage(e))
       )
       if ((j==1)&&(k==1)) {
         simspec <- array(

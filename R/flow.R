@@ -77,7 +77,7 @@ setMethod(
     tryCatch(
       flow_internal(object=object,x0=x0,t0=t0,times=times,params=params,
         ...,verbose=verbose),
-      error = function (e) pStop("flow",conditionMessage(e))
+      error = function (e) pStop(who="flow",conditionMessage(e))
     )
     
   }
@@ -157,7 +157,7 @@ flow_internal <- function (object, x0, t0, times, params, ...,
     .Call(P_pomp_desolve_takedown)
 
     if (attr(X,"istate")[1L] != 2)
-      pWarn("trajectory",
+      pWarn(who="flow",
         "abnormal exit from ODE integrator, istate = ",attr(X,'istate')[1L])
 
     if (verbose) diagnostics(X)

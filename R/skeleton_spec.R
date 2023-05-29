@@ -161,6 +161,6 @@ vectorfield <- function (f) {
 ##' @export
 map <- function (f, delta.t = 1) {
   if (!isTRUE(length(delta.t)==1 && is.finite(delta.t) && delta.t > 0))
-    pStop("map",sQuote("delta.t")," must be a positive number.")
+    pStop(sQuote("delta.t")," must be a positive number.")
   new("mapPlugin",skel.fn=f,delta.t=delta.t)
 }

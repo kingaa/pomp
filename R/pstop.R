@@ -1,42 +1,67 @@
 ##' pStop
 ##'
-##' Custom error function
+##' Custom error, warning, and message functions.
 ##' @name pStop
+##' @rdname pStop
 ##' @keywords internal
-##'
-##' @param fn name of function (will be enclosed in single quotes)
+##' @include package.R
+##' @param who integer or character.
+##' If \code{who} is an integer, it is passed to \code{\link{sys.call}} to retrieve the name of the calling function.
+##' One can also pass the name of the calling function in \code{who}.
+##' In either case, the name of the calling function is included in the message.
 ##' @param \dots message
 ##'
-pStop <- function (fn, ...) {
-  fn <- as.character(fn)
-  stop("in ",sQuote(fn[1L]),": ",...,call.=FALSE)
+NULL
+
+##' @rdname pStop
+pStop <- function (..., who = -1L) {
+  if (is.integer(who)) {
+    who <- sys.call(who)[[1]]
+  }
+  who <- as.character(who)
+  if (length(who) > 0L)
+    stop("in ",sQuote(who[1L]),": ",...,call.=FALSE)
+  else
+    stop(...,call.=FALSE)
 }
 
 ##' @rdname pStop
 pStop_ <- function (...) {
-  stop(...,call.=FALSE)
+  pStop(...,who=NULL)
 }
 
 ##' @rdname pStop
-pWarn <- function (fn, ...) {
-  fn <- as.character(fn)
-  warning("in ",sQuote(fn[1L]),": ",...,call.=FALSE)
+pWarn <- function (..., who = -1L) {
+  if (is.integer(who)) {
+    who <- sys.call(who)[[1]]
+  }
+  who <- as.character(who)
+  if (length(who) > 0L)
+    warning("in ",sQuote(who[1L]),": ",...,call.=FALSE)
+  else
+    warning(...,call.=FALSE)
 }
 
 ##' @rdname pStop
 pWarn_ <- function (...) {
-  warning(...,call.=FALSE)
+  pWarn(...,who=NULL)
 }
 
 ##' @rdname pStop
-pMess <- function (fn, ...) {
-  fn <- as.character(fn)
-  message("NOTE: in ",sQuote(fn[1L]),": ",...)
+pMess <- function (..., who = -1L) {
+  if (is.integer(who)) {
+    who <- sys.call(who)[[1]] #nocov
+  }
+  who <- as.character(who)
+  if (length(who) > 0L)
+    message("NOTE: in ",sQuote(who[1L]),": ",...)
+  else
+    message("NOTE: ",...)
 }
 
 ##' @rdname pStop
 pMess_ <- function (...) {
-  message("NOTE: ",...)
+  pMess(...,who=NULL)
 }
 
 undef_method <- function (method, object) {
@@ -49,7 +74,7 @@ reqd_arg <- function (method, object) {
   if (is.null(method) || length(method)==0)
     pStop_(sQuote(object)," is a required argument.")
   else
-    pStop(method,sQuote(object)," is a required argument.")
+    pStop(who=method,sQuote(object)," is a required argument.")
 }
 
 invalid_names <- function (names) {

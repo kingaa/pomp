@@ -110,11 +110,11 @@ probe_acf <- function (var, lags, type = c("covariance", "correlation"),
   type <- match.arg(type)
   corr <- type=="correlation"
   transform <- match.fun(transform)
-  if (corr && any(lags<=0)) pStop(ep,"lags must be positive integers.")
+  if (corr && any(lags<=0)) pStop(who=ep,"lags must be positive integers.")
   lags <- as.integer(lags)
   function (y) tryCatch(
     .Call(P_probe_acf,x=transform(y[var,,drop=FALSE]),lags=lags,corr=corr),
-    error = function (e) pStop(ep,conditionMessage(e))
+    error = function (e) pStop(who=ep,conditionMessage(e))
   )
 }
 
@@ -127,11 +127,11 @@ probe_ccf <- function (vars, lags, type = c("covariance", "correlation"),
   corr <- type=="correlation"
   transform <- match.fun(transform)
   if (length(vars)!=2)
-    pStop(ep,sQuote("vars")," must name two variables.")
+    pStop(who=ep,sQuote("vars")," must name two variables.")
   lags <- as.integer(lags)
   function (y) tryCatch(
     .Call(P_probe_ccf,x=transform(y[vars[1L],,drop=TRUE]),y=transform(y[vars[2L],,drop=TRUE]),lags=lags,corr=corr),
-    error = function (e) pStop(ep,conditionMessage(e))
+    error = function (e) pStop(who=ep,conditionMessage(e))
   )
 }
 
@@ -151,7 +151,7 @@ probe_marginal <- function (var, ref, order = 3, diff = 1,
   setup <- .Call(P_probe_marginal_setup,transform(ref),order,diff)
   function (y) tryCatch(
     .Call(P_probe_marginal_solve,x=transform(y[var,,drop=TRUE]),setup=setup,diff=diff),
-    error = function (e) pStop("probe_marginal",conditionMessage(e))
+    error = function (e) pStop(who="probe_marginal",conditionMessage(e))
   )
 }
 
@@ -162,24 +162,24 @@ probe_nlar <- function (var, lags, powers, transform = identity) {
   if (length(var)>1) pStop_(sQuote(ep)," is a univariate probe.")
   transform <- match.fun(transform)
   if (missing(lags) || missing(powers))
-    pStop(ep,sQuote("lags")," and ",sQuote("powers")," are required arguments.")
+    pStop(who=ep,sQuote("lags")," and ",sQuote("powers")," are required arguments.")
   lags <- as.integer(lags)
   powers <- as.integer(powers)
   if (any(lags<1)||any(powers<1))
-    pStop(ep,sQuote("lags")," and ",sQuote("powers")," must be positive integers.")
+    pStop(who=ep,sQuote("lags")," and ",sQuote("powers")," must be positive integers.")
   if (length(lags)<length(powers)) {
     if (length(lags)>1)
-      pStop(ep,sQuote("lags")," must match ",sQuote("powers")," in length, or have length 1.")
+      pStop(who=ep,sQuote("lags")," must match ",sQuote("powers")," in length, or have length 1.")
     lags <- rep(lags,length(powers))
   } else if (length(lags)>length(powers)) {
     if (length(powers)>1)
-      pStop(ep,sQuote("powers")," must match ",sQuote("lags")," in length, or have length 1.")
+      pStop(who=ep,sQuote("powers")," must match ",sQuote("lags")," in length, or have length 1.")
     powers <- rep(powers,length(lags))
   }
   lags <- as.integer(lags)
   powers <- as.integer(powers)
   function (y) tryCatch(
     .Call(P_probe_nlar,x=transform(y[var,,drop=TRUE]),lags=lags,powers=powers),
-    error = function (e) pStop(ep,conditionMessage(e))
+    error = function (e) pStop(who=ep,conditionMessage(e))
   )
 }

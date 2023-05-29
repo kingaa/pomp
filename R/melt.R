@@ -90,7 +90,7 @@ setMethod(
   signature=signature(data="list"),
   definition=function (data, ..., level = 1) {
     if (length(unique(lapply(data,mode))) > 1L)
-      pStop("melt","refusing to melt data of incompatible types.")
+      pStop(who="melt","refusing to melt data of incompatible types.")
     rbind_fill(
       lapply(data,melt,level=level+1,...),
       .id=paste0(".L",level)

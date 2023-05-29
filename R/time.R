@@ -50,7 +50,7 @@ setMethod(
   definition=function (object, t0 = FALSE, ..., value) {
     tryCatch(
       time_repl_internal(object,t0=t0,...,value=value),
-      error = function (e) pStop("time<-",conditionMessage(e))
+      error = function (e) pStop(who="time<-",conditionMessage(e))
     )
   }
 )

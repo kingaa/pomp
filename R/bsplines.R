@@ -59,16 +59,15 @@ NULL
 ##' @rdname bsplines
 ##' @export
 bspline_basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL, rg = range(x)) {
-  ep <- "bspline_basis"
   rg <- as.numeric(rg)
   y <- tryCatch(
     .Call(P_bspline_basis,rg,x,nbasis,degree,deriv),
     error = function (e) {
-      pStop(ep,conditionMessage(e))
+      pStop(who="bspline_basis",conditionMessage(e))
     }
   )
   if (deriv > degree)
-    pWarn(ep,"returning 0 since ",sQuote("deriv")," > ",sQuote("degree"))
+    pWarn("returning 0 since ",sQuote("deriv")," > ",sQuote("degree"))
   if (!is.null(names)) {
     if (length(names)==1) {
       if (!grepl("%",names)) {
@@ -78,7 +77,7 @@ bspline_basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL, rg = 
     } else if (length(names)==nbasis) {
       colnames(y) <- names
     } else {
-      pStop(ep,sQuote("names")," must be of length 1 or ",nbasis)
+      pStop(sQuote("names")," must be of length 1 or ",nbasis)
     }
   }
   y
@@ -88,15 +87,14 @@ bspline_basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL, rg = 
 ##' @export
 periodic_bspline_basis <- function (x, nbasis, degree = 3, period = 1,
   deriv = 0, names = NULL) {
-  ep <- "periodic_bspline_basis"
   y <- tryCatch(
     .Call(P_periodic_bspline_basis,x,nbasis,degree,period,deriv),
     error = function (e) {
-      pStop(ep,conditionMessage(e))
+      pStop(who="periodic_bspline_basis",conditionMessage(e))
     }
   )
   if (deriv > degree)
-    pWarn(ep,"returning 0 since ",sQuote("deriv")," > ",sQuote("degree"))
+    pWarn("returning 0 since ",sQuote("deriv")," > ",sQuote("degree"))
   if (!is.null(names)) {
     if (length(names)==1) {
       if (!grepl("%",names)) {
@@ -106,7 +104,7 @@ periodic_bspline_basis <- function (x, nbasis, degree = 3, period = 1,
     } else if (length(names)==nbasis) {
       colnames(y) <- names
     } else {
-      pStop(ep,sQuote("names")," must be of length 1 or ",nbasis)
+      pStop(sQuote("names")," must be of length 1 or ",nbasis)
     }
   }
   y

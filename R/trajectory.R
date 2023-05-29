@@ -94,7 +94,7 @@ setMethod(
         format=format,
         verbose=verbose
       ),
-      error = function (e) pStop("trajectory",conditionMessage(e))
+      error = function (e) pStop(who="trajectory",conditionMessage(e))
     )
 
   }
@@ -127,7 +127,7 @@ setMethod(
         format=format,
         verbose=verbose
       ),
-      error = function (e) pStop("trajectory",conditionMessage(e))
+      error = function (e) pStop(who="trajectory",conditionMessage(e))
     )
     
   }
@@ -158,7 +158,7 @@ setMethod(
         format=format,
         verbose=verbose
       ),
-      error = function (e) pStop("trajectory",conditionMessage(e))
+      error = function (e) pStop(who="trajectory",conditionMessage(e))
     )
 
   }

@@ -45,7 +45,7 @@ setClass(
   ),
   prototype=prototype(
     R.fun=function (...) {
-      pStop("pomp_fun","unreachable error: please report this bug!")
+      pStop(who="pomp_fun","unreachable error: please report this bug!")
     },
     native.fun=character(0),
     PACKAGE=character(0),
@@ -117,7 +117,7 @@ setMethod(
       fname <- prototype[1]
       args <- prototype[-1]
       if (is.function(f)&&(!all(args%in%names(formals(f)))))
-        pStop(slotname,
+        pStop(who=slotname,
           sQuote(fname)," must be a function of the form ",
           sQuote(deparse(proto)))
     }

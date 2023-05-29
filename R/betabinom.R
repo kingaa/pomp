@@ -30,7 +30,7 @@ NULL
 rbetabinom <- function (n = 1, size, prob, theta) {
   tryCatch(
     .Call(P_R_BetaBinom,n,size,prob,theta),
-    error = function (e) pStop("rbetabinom",conditionMessage(e))
+    error = function (e) pStop(who="rbetabinom",conditionMessage(e))
   )
 }
 
@@ -39,6 +39,6 @@ rbetabinom <- function (n = 1, size, prob, theta) {
 dbetabinom <- function (x, size, prob, theta, log = FALSE) {
   tryCatch(
     .Call(P_D_BetaBinom,x,size,prob,theta,log),
-    error = function (e) pStop("dbetabinom",conditionMessage(e))
+    error = function (e) pStop(who="dbetabinom",conditionMessage(e))
   )
 }
