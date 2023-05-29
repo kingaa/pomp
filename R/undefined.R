@@ -2,18 +2,15 @@
 ##'
 ##' Check for undefined methods.
 ##'
+##' @name undefined
+##' @rdname undefined
 ##' @return
 ##' Returns \code{TRUE} if the \pkg{pomp} workhorse method is undefined,
 ##' \code{FALSE} if it is defined,
 ##' and \code{NA} if the question is inapplicable.
-##'
-##' @name undefined
-##' @rdname undefined
 ##' @include pstop.R
 ##' @keywords internal
-##'
 ##' @param object  object to test.
-##'
 ##' @param ... currently ignored.
 ##'
 NULL

@@ -32,7 +32,6 @@ Roxygen: list(roclets = c("collate", "namespace", "rd"))
 RoxygenNote: 7.2.3
 Collate: 
     'package.R'
-    'aaa.R'
     'pstop.R'
     'undefined.R'
     'csnippet.R'

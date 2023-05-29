@@ -37,16 +37,14 @@ wquant <- function (
   x <- as.numeric(x)
   weights <- as.numeric(weights)
   if (length(weights) != length(x))
-    pStop(who="wquant",sQuote("x")," and ",sQuote("weights"),
-      " must be of equal length.")
+    pStop(sQuote("x")," and ",sQuote("weights")," must be of equal length.")
   if (any(is.na(x)) || any(!is.finite(weights)))
-    pStop(who="wquant","NA and non-finite values are disallowed.")
+    pStop("NA and non-finite values are disallowed.")
   if (any(weights < 0))
-    pStop(who="wquant","weights must be non-negative.")
+    pStop("weights must be non-negative.")
   if (!is.numeric(probs) || any(is.na(probs)) ||
         isTRUE(any(probs < 0 | probs > 1))) {
-    pStop(who="wquant",sQuote("probs"),
-      " must be a numeric vector with values in [0,1].")
+    pStop(sQuote("probs")," must be a numeric vector with values in [0,1].")
   }
   ## order the data and the weights
   idx <- order(x)

@@ -106,15 +106,14 @@ probe_quantile <- function (var, probs, ...) {
 ##' @export
 probe_acf <- function (var, lags, type = c("covariance", "correlation"),
   transform = identity) {
-  ep <- "probe_acf"
   type <- match.arg(type)
   corr <- type=="correlation"
   transform <- match.fun(transform)
-  if (corr && any(lags<=0)) pStop(who=ep,"lags must be positive integers.")
+  if (corr && any(lags<=0)) pStop("lags must be positive integers.")
   lags <- as.integer(lags)
   function (y) tryCatch(
     .Call(P_probe_acf,x=transform(y[var,,drop=FALSE]),lags=lags,corr=corr),
-    error = function (e) pStop(who=ep,conditionMessage(e))
+    error = function (e) pStop(who="probe_acf",conditionMessage(e))
   )
 }
 
@@ -122,16 +121,15 @@ probe_acf <- function (var, lags, type = c("covariance", "correlation"),
 ##' @export
 probe_ccf <- function (vars, lags, type = c("covariance", "correlation"),
   transform = identity) {
-  ep <- "probe_ccf"
   type <- match.arg(type)
   corr <- type=="correlation"
   transform <- match.fun(transform)
   if (length(vars)!=2)
-    pStop(who=ep,sQuote("vars")," must name two variables.")
+    pStop(sQuote("vars")," must name two variables.")
   lags <- as.integer(lags)
   function (y) tryCatch(
     .Call(P_probe_ccf,x=transform(y[vars[1L],,drop=TRUE]),y=transform(y[vars[2L],,drop=TRUE]),lags=lags,corr=corr),
-    error = function (e) pStop(who=ep,conditionMessage(e))
+    error = function (e) pStop(who="probe_ccf",conditionMessage(e))
   )
 }
 
