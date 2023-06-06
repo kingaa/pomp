@@ -16,7 +16,7 @@ inst/doc/(.+?).Rmd
 man/roxygen
 Doxyfile
 LICENSE\.md$
-README\.(.?)$
+README\.md$
 CRAN\.md$
 TODO\.md$
 ^\.gitignore$
