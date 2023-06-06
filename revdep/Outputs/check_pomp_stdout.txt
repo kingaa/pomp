@@ -1,11 +1,15 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/pomp.Rcheck'
-* using R version 4.2.3 (2023-03-15)
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/pomp.Rcheck'
+* using R version 4.3.0 (2023-04-21)
 * using platform: x86_64-pc-linux-gnu (64-bit)
+* R was compiled by
+    gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+* running under: Ubuntu 22.04.2 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'pomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'pomp' version '5.0.1.1'
+* this is package 'pomp' version '5.1.2.1'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -15,7 +19,8 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'pomp' can be installed ... [28s/33s] OK
+* checking whether package 'pomp' can be installed ... [38s/30s] OK
+* used C compiler: 'gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0'
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -32,12 +37,13 @@
 * checking whether the namespace can be loaded with stated dependencies ... OK
 * checking whether the namespace can be unloaded cleanly ... OK
 * checking loading without being on the library search path ... OK
+* checking startup messages can be suppressed ... OK
 * checking use of S3 registration ... OK
 * checking dependencies in R code ... OK
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [32s/26s] OK
+* checking R code for possible problems ... [61s/19s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -62,13 +68,18 @@
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [13s/11s] OK
+* checking examples ... OK
+Examples with CPU (user + system) or elapsed time > 5s
+        user system elapsed
+ricker 1.356  5.423   0.882
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [651s/206s] OK
+ [1633s/223s] OK
 * checking PDF version of manual ... OK
+* checking HTML version of manual ... NOTE
+Skipping checking math rendering: package 'V8' unavailable
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: OK
+Status: 1 NOTE

@@ -1,11 +1,15 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/hte.Rcheck'
-* using R version 4.2.3 (2023-03-15)
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/hte.Rcheck'
+* using R version 4.3.0 (2023-04-21)
 * using platform: x86_64-pc-linux-gnu (64-bit)
+* R was compiled by
+    gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+* running under: Ubuntu 22.04.2 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'hte/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'hte' version '0.0.5.0'
+* this is package 'hte' version '0.0.12.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -16,6 +20,7 @@
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
 * checking whether package 'hte' can be installed ... OK
+* used C compiler: 'gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0'
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -32,12 +37,15 @@
 * checking whether the namespace can be loaded with stated dependencies ... OK
 * checking whether the namespace can be unloaded cleanly ... OK
 * checking loading without being on the library search path ... OK
+* checking startup messages can be suppressed ... OK
 * checking use of S3 registration ... OK
 * checking dependencies in R code ... OK
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [18s/11s] OK
+* checking R code for possible problems ... NOTE
+filterfun : fun: local variable ‘theta’ assigned but may not be used
+stobfun : ofun: local variable ‘theta’ assigned but may not be used
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -56,87 +64,22 @@
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [103s/57s] OK
+* checking examples ... [262s/36s] OK
 Examples with CPU (user + system) or elapsed time > 5s
-                   user system elapsed
-fake_data        20.442 21.427  19.083
-simuldat         17.802 22.838  15.568
-transmission      9.609  0.000  10.707
-bernoulli_filter  5.919  0.124   7.238
+            user system elapsed
+fake_data 32.968 94.052  12.694
+simuldat  29.368 90.180  10.999
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
-5c5
-< ✔ dplyr     1.1.1     ✔ readr     2.1.4
----
-> ✔ dplyr     1.1.0     ✔ readr     2.1.4
-7c7
-< ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
----
-> ✔ ggplot2   3.4.1     ✔ tibble    3.2.0
-98c98
-<    patient visit date                  time event    unit  result  isol infected
----
->    patient visit date                  time event     unit  result  isol infec…¹
-100c100
-<  1      19     1 2020-01-31 20:15:13  0.865 dischar… out       NA     0        0
----
->  1      19     1 2020-01-31 20:15:13  0.865 discharge out       NA     0       0
-102c102
-<  3      19     2 2020-02-05 01:34:17  5.09  dischar… out       NA     0        0
----
->  3      19     2 2020-02-05 01:34:17  5.09  discharge out       NA     0       0
-106c106
-<  7      20     1 2020-02-02 11:47:53  2.51  dischar… out       NA     0        0
----
->  7      20     1 2020-02-02 11:47:53  2.51  discharge out       NA     0       0
-110c110,111
-< 11      21     1 2020-02-10 23:54:34 11.0   dischar… out       NA     0        0
----
-> 11      21     1 2020-02-10 23:54:34 11.0   discharge out       NA     0       0
-> # … with abbreviated variable name ¹​infected
-5c5
-< ✔ dplyr     1.1.1     ✔ readr     2.1.4
----
-> ✔ dplyr     1.1.0     ✔ readr     2.1.4
-7c7
-< ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
----
-> ✔ ggplot2   3.4.1     ✔ tibble    3.2.0
-107c107
-< # ℹ 1,138 more rows
----
-> # … with 1,138 more rows
-5c5
-< ✔ dplyr     1.1.1     ✔ readr     2.1.4
----
-> ✔ dplyr     1.1.0     ✔ readr     2.1.4
-7c7
-< ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
----
-> ✔ ggplot2   3.4.1     ✔ tibble    3.2.0
-5c5
-< ✔ dplyr     1.1.1     ✔ readr     2.1.4
----
-> ✔ dplyr     1.1.0     ✔ readr     2.1.4
-7c7
-< ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
----
-> ✔ ggplot2   3.4.1     ✔ tibble    3.2.0
 175c175
-< [1] 0.08828831
+< [1] 0.0514613
 ---
-> [1] 0.06714141
-5c5
-< ✔ dplyr     1.1.1     ✔ readr     2.1.4
----
-> ✔ dplyr     1.1.0     ✔ readr     2.1.4
-7c7
-< ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
----
-> ✔ ggplot2   3.4.1     ✔ tibble    3.2.0
- [203s/201s] OK
+> [1] 0.05579485
+ [89s/60s] OK
 * checking PDF version of manual ... OK
+* checking HTML version of manual ... NOTE
+Skipping checking math rendering: package 'V8' unavailable
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: OK
+Status: 2 NOTEs

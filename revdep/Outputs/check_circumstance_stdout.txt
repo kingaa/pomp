@@ -1,11 +1,15 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck'
-* using R version 4.2.3 (2023-03-15)
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck'
+* using R version 4.3.0 (2023-04-21)
 * using platform: x86_64-pc-linux-gnu (64-bit)
+* R was compiled by
+    gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+* running under: Ubuntu 22.04.2 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'circumstance/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'circumstance' version '0.0.6.0'
+* this is package 'circumstance' version '0.0.8.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -37,7 +41,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [17s/10s] OK
+* checking R code for possible problems ... OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -51,12 +55,13 @@
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
          user system elapsed
-pfilter 6.801  0.195   6.218
+pfilter 6.118  0.304     5.1
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [19s/20s] OK
+ [40s/28s] OK
 * checking PDF version of manual ... OK
+* checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE

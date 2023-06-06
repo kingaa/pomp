@@ -12,7 +12,7 @@
 [![codecov](https://codecov.io/gh/kingaa/pomp/branch/master/graph/badge.svg)](https://app.codecov.io/gh/kingaa/pomp)
 ![CRAN mirror monthly downloads](https://cranlogs.r-pkg.org/badges/last-month/pomp)
 ![CRAN mirror total downloads](https://cranlogs.r-pkg.org/badges/grand-total/pomp)
-[![Dependencies](https://tinyverse.netlify.com/badge/pomp)](https://tinyverse.netlify.com/)
+[![Dependencies](https://tinyverse.netlify.app/badge/pomp)](https://tinyverse.netlify.app/)
 [![manual](https://img.shields.io/badge/manual-HTML-informational)](https://kingaa.github.io/pomp/manual/)
 [![pdf-manual](https://img.shields.io/badge/manual-PDF-informational)](https://kingaa.github.io/pomp/manual/pdf/)
 
@@ -22,6 +22,6 @@ Related packages:
 
 - [**phylopomp**](https://github.com/kingaa/phylopomp/)
 - [**spatPomp**](https://github.com/kidusasfaw/spatPomp)
-- [**panelPomp**](https://cbreto.github.io/panelPomp/)
+- [**panelPomp**](https://github.com/cbreto/panelPomp/)
 - [**circumstance**](https://github.com/kingaa/circumstance/)
 - [**subplex**](https://github.com/kingaa/subplex/)

@@ -1,5 +1,6 @@
   Running ‘abf.R’
   Running ‘abfir.R’
+  Running ‘arma_benchmark.R’
   Running ‘bm.R’
   Comparing ‘bm.Rout’ to ‘bm.Rout.save’ ... OK
   Running ‘bm2.R’
@@ -7,8 +8,7 @@
   Running ‘bpfilter.R’
   Running ‘enkf.R’
   Running ‘gbm.R’
-  Comparing ‘gbm.Rout’ to ‘gbm.Rout.save’ ... OK
-  Running ‘girf.R’
+  Comparing ‘gbm.Rout’ to ‘gbm.Rout.save’ ...  Running ‘girf.R’
   Running ‘he10.R’
   Comparing ‘he10.Rout’ to ‘he10.Rout.save’ ... OK
   Running ‘ibpf.R’
@@ -21,10 +21,18 @@
   Comparing ‘lorenz.Rout’ to ‘lorenz.Rout.save’ ... OK
   Running ‘measles.R’
   Comparing ‘measles.Rout’ to ‘measles.Rout.save’ ... OK
+  Running ‘measles2.R’
+  Comparing ‘measles2.Rout’ to ‘measles2.Rout.save’ ... OK
+  Running ‘param_formats.R’
+  Comparing ‘param_formats.Rout’ to ‘param_formats.Rout.save’ ... OK
   Running ‘pfilter.R’
   Running ‘plot.R’
   Running ‘simulate.R’
   Running ‘spatPomp.R’
   Running ‘xtests.R’
+
+See
+  '/userdata/kingaa/projects/Rpkg/pomp/revdep/spatPomp.Rcheck/00check.log'
+for details.
 
 

@@ -1,11 +1,15 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/spatPomp.Rcheck'
-* using R version 4.2.3 (2023-03-15)
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/spatPomp.Rcheck'
+* using R version 4.3.0 (2023-04-21)
 * using platform: x86_64-pc-linux-gnu (64-bit)
+* R was compiled by
+    gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+* running under: Ubuntu 22.04.2 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'spatPomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'spatPomp' version '0.31.0.0'
+* this is package 'spatPomp' version '0.32.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -15,7 +19,8 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'spatPomp' can be installed ... [17s/18s] OK
+* checking whether package 'spatPomp' can be installed ... [33s/18s] OK
+* used C compiler: 'gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0'
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -37,7 +42,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [28s/23s] OK
+* checking R code for possible problems ... [59s/17s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -58,9 +63,15 @@
 * checking examples ... OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [84s/41s] OK
+46c46
+< [1] "ARMA benchmark: 197.4929061052"
+---
+> [1] "ARMA benchmark: 196.3173327754"
+ [367s/46s] OK
 * checking PDF version of manual ... OK
+* checking HTML version of manual ... NOTE
+Skipping checking math rendering: package 'V8' unavailable
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: OK
+Status: 1 NOTE

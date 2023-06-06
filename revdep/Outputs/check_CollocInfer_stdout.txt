@@ -1,6 +1,10 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/CollocInfer.Rcheck'
-* using R version 4.2.3 (2023-03-15)
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/CollocInfer.Rcheck'
+* using R version 4.3.0 (2023-04-21)
 * using platform: x86_64-pc-linux-gnu (64-bit)
+* R was compiled by
+    gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+* running under: Ubuntu 22.04.2 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'CollocInfer/DESCRIPTION' ... OK
@@ -14,7 +18,7 @@
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
 * checking serialization versions ... OK
-* checking whether package 'CollocInfer' can be installed ... [17s/17s] OK
+* checking whether package 'CollocInfer' can be installed ... [28s/20s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -36,7 +40,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [37s/31s] NOTE
+* checking R code for possible problems ... [72s/22s] NOTE
 Profile.GausNewt: local variable ‘dcdp’ assigned but may not be used
 Profile.GausNewt: local variable ‘gradnorm0’ assigned but may not be
   used
@@ -78,10 +82,11 @@ Variables with usage in documentation object 'FhNest' but not in code:
 * checking data for ASCII and uncompressed saves ... OK
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
-           user system elapsed
-Profile   3.157 11.819   1.657
-FitMatch  6.745  6.529   1.284
-ParsMatch 5.824  3.728   1.032
+            user system elapsed
+Profile   17.417 68.241   1.619
+FitMatch   5.672 12.041   0.402
+ParsMatch  6.026 10.051   0.331
+setup      0.807  4.572   0.132
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

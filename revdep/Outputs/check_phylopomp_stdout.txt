@@ -1,11 +1,15 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck'
-* using R version 4.2.3 (2023-03-15)
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck'
+* using R version 4.3.0 (2023-04-21)
 * using platform: x86_64-pc-linux-gnu (64-bit)
+* R was compiled by
+    gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+* running under: Ubuntu 22.04.2 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'phylopomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'phylopomp' version '0.3.0.0'
+* this is package 'phylopomp' version '0.7.2.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -15,11 +19,13 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'phylopomp' can be installed ... [40s/48s] OK
+* checking whether package 'phylopomp' can be installed ... [53s/39s] OK
+* used C compiler: 'gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0'
+* used C++ compiler: 'g++ (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0'
 * checking installed package size ... NOTE
-  installed size is  8.0Mb
+  installed size is  8.6Mb
   sub-directories of 1Mb or more:
-    libs   7.1Mb
+    libs   7.7Mb
 * checking package directory ... OK
 * checking for future file timestamps ... OK
 * checking DESCRIPTION meta-information ... OK
@@ -35,12 +41,13 @@
 * checking whether the namespace can be loaded with stated dependencies ... OK
 * checking whether the namespace can be unloaded cleanly ... OK
 * checking loading without being on the library search path ... OK
+* checking startup messages can be suppressed ... OK
 * checking use of S3 registration ... OK
 * checking dependencies in R code ... OK
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [20s/11s] OK
+* checking R code for possible problems ... [54s/10s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -55,16 +62,14 @@
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [16s/18s] OK
+* checking examples ... [15s/13s] OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
-31c31
-< # ℹ 1,739 more rows
----
-> # … with 1,739 more rows
- [66s/50s] OK
+ [143s/70s] OK
 * checking PDF version of manual ... OK
+* checking HTML version of manual ... NOTE
+Skipping checking math rendering: package 'V8' unavailable
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 1 NOTE
+Status: 2 NOTEs
