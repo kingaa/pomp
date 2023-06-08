@@ -32,9 +32,9 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._0._0:
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _4._7._0:
 
-        • Functions with names.that.contain.dots that were been
-          deprecated in version 4.5.1 are now defunct.  Attempts to use
-          such functions will generate an error with a message
+        • Functions with names.that.contain.dots that have been
+          deprecated since version 4.5.1 are now defunct.  Attempts to
+          use such functions will generate an error with a message
           indicating the replacement function.
 
         • ‘plot’ now removes ‘NA’.
