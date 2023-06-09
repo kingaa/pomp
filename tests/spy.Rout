@@ -173,8 +173,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2023-05-29 15:02:13.115 -0400 */
-/* Salt: 50453C7E41CAFB8480A2A754 */
+/* Time: 2023-06-09 18:46:21.230 -0400 */
+/* Salt: 60BB32FC5347D1433A320460 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -297,8 +297,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2023-05-29 15:02:13.234 -0400 */
-/* Salt: 83608D1C68C4E13F5F7C3FD9 */
+/* Time: 2023-06-09 18:46:21.350 -0400 */
+/* Salt: 18D4B7594C14ABC91AAA73AA */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -932,8 +932,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2023-05-29 15:02:13.902 -0400 */
-/* Salt: A64329DD3F499A0D065BD4EF */
+/* Time: 2023-06-09 18:46:22.069 -0400 */
+/* Salt: A6E61F6B9AFCD1FF9E42C124 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1188,8 +1188,8 @@ name    birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2023-05-29 15:02:14.486 -0400 */
-/* Salt: AD16CC958CD491CCCBA166B4 */
+/* Time: 2023-06-09 18:46:22.726 -0400 */
+/* Salt: 84F1443290D96C8DF612FF16 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.2.1}{
+  \itemize{
+    \item \code{reulermultinom} now returns \code{NA} rather than \code{NaN}, in keeping with the behavior of \code{rbinom}.
+    Thanks to John Drake for calling attention to this issue.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.1.1}{
   \itemize{
     \item A bug in \code{stew} resulting in namespace conflicts has been repaired.

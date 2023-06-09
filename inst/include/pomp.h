@@ -44,27 +44,26 @@ static R_INLINE void reulermultinom (int m, double size, const double *rate,
                                      double dt, double *trans) {
   double p = 0.0;
   int j, k;
-  if ((size < 0.0) || (dt < 0.0) || (floor(size+0.5) != size)) {
-    for (k = 0; k < m; k++) trans[k] = R_NaN;
+  if ( !R_FINITE(size) || size < 0.0 || floor(size+0.5) != size ||
+       !R_FINITE(dt) || dt < 0.0) {
+    for (k = 0; k < m; k++) trans[k] = R_NaReal;
+    warningcall(R_NilValue,"in 'reulermultinom': NAs produced.");
     return;
   }
   for (k = 0; k < m; k++) {
-    if (rate[k] < 0.0) {
-      for (j = 0; j < m; j++) trans[j] = R_NaN;
+    if (!R_FINITE(rate[k]) || rate[k] < 0.0) {
+      for (j = 0; j < m; j++) trans[j] = R_NaReal;
+      warningcall(R_NilValue,"in 'reulermultinom': NAs produced.");
       return;
     }
     p += rate[k]; // total event rate
   }
   if (p > 0.0) {
     size = rbinom(size,1-exp(-p*dt)); // total number of events
-    if (!(R_FINITE(size)))
-      warningcall(R_NilValue,"in 'reulermultinom': result of binomial draw is not finite.");
     m -= 1;
     for (k = 0; k < m; k++) {
       if (rate[k] > p) p = rate[k];
       trans[k] = ((size > 0) && (p > 0)) ? rbinom(size,rate[k]/p) : 0;
-      if (!(R_FINITE(size)&&R_FINITE(p)&&R_FINITE(rate[k])&&R_FINITE(trans[k])))
-        warningcall(R_NilValue,"in 'reulermultinom': result of binomial draw is not finite.");
       size -= trans[k];
       p -= rate[k];
     }

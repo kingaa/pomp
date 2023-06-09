@@ -36,39 +36,62 @@ https://kingaa.github.io/pomp/blog.html.
 [3,]   20   22   21   23   20
 > reulermultinom(n=5,size=-3,rate=c(1,2,3),dt=0.1)
      [,1] [,2] [,3] [,4] [,5]
-[1,]  NaN  NaN  NaN  NaN  NaN
-[2,]  NaN  NaN  NaN  NaN  NaN
-[3,]  NaN  NaN  NaN  NaN  NaN
+[1,]   NA   NA   NA   NA   NA
+[2,]   NA   NA   NA   NA   NA
+[3,]   NA   NA   NA   NA   NA
+Warning messages:
+1: in 'reulermultinom': NAs produced. 
+2: in 'reulermultinom': NAs produced. 
+3: in 'reulermultinom': NAs produced. 
+4: in 'reulermultinom': NAs produced. 
+5: in 'reulermultinom': NAs produced. 
 > reulermultinom(n=5,size=100,rate=c(1,-2,3),dt=0.1)
      [,1] [,2] [,3] [,4] [,5]
-[1,]  NaN  NaN  NaN  NaN  NaN
-[2,]  NaN  NaN  NaN  NaN  NaN
-[3,]  NaN  NaN  NaN  NaN  NaN
+[1,]   NA   NA   NA   NA   NA
+[2,]   NA   NA   NA   NA   NA
+[3,]   NA   NA   NA   NA   NA
+Warning messages:
+1: in 'reulermultinom': NAs produced. 
+2: in 'reulermultinom': NAs produced. 
+3: in 'reulermultinom': NAs produced. 
+4: in 'reulermultinom': NAs produced. 
+5: in 'reulermultinom': NAs produced. 
 > reulermultinom(n=5,size=100,rate=c(1,NA,3),dt=0.1)
      [,1] [,2] [,3] [,4] [,5]
-[1,]    0    0    0    0    0
-[2,]    0    0    0    0    0
-[3,]    0    0    0    0    0
+[1,]   NA   NA   NA   NA   NA
+[2,]   NA   NA   NA   NA   NA
+[3,]   NA   NA   NA   NA   NA
+Warning messages:
+1: in 'reulermultinom': NAs produced. 
+2: in 'reulermultinom': NAs produced. 
+3: in 'reulermultinom': NAs produced. 
+4: in 'reulermultinom': NAs produced. 
+5: in 'reulermultinom': NAs produced. 
 > reulermultinom(n=5,size=100.3,rate=c(1,2,3),dt=0.1)
      [,1] [,2] [,3] [,4] [,5]
-[1,]  NaN  NaN  NaN  NaN  NaN
-[2,]  NaN  NaN  NaN  NaN  NaN
-[3,]  NaN  NaN  NaN  NaN  NaN
+[1,]   NA   NA   NA   NA   NA
+[2,]   NA   NA   NA   NA   NA
+[3,]   NA   NA   NA   NA   NA
+Warning messages:
+1: in 'reulermultinom': NAs produced. 
+2: in 'reulermultinom': NAs produced. 
+3: in 'reulermultinom': NAs produced. 
+4: in 'reulermultinom': NAs produced. 
+5: in 'reulermultinom': NAs produced. 
 > reulermultinom(n=0,size=100,rate=c(1,2,3),dt=0.1)
     
 [1,]
 [2,]
 [3,]
 > try(reulermultinom(n=-2,size=100,rate=c(1,2,3),dt=0.1))
-Error : in 'reulermultinom': negative length vectors are not allowed
+Error : in 'reulermultinom': in 'reulermultinom': 'n' must be a non-negative integer.
 > reulermultinom(n=1,size=100,rate=c(1,2e400,3),dt=0.1)
      [,1]
-[1,]    0
-[2,]  NaN
-[3,]  NaN
-Warning messages:
-1: in 'reulermultinom': result of binomial draw is not finite. 
-2: in 'reulermultinom': result of binomial draw is not finite. 
+[1,]   NA
+[2,]   NA
+[3,]   NA
+Warning message:
+in 'reulermultinom': NAs produced. 
 > reulermultinom(n=1,size=100,rate=c(1,2,3),dt=c(0.1,0.2,0.3,Inf))
      [,1]
 [1,]   11
@@ -90,21 +113,60 @@ in 'reulermultinom': only the first element of 'size' is meaningful
 [3,]    0
 > reulermultinom(n=1,size=10,rate=c(1,Inf,1),0.1)
      [,1]
-[1,]    0
-[2,]  NaN
-[3,]  NaN
-Warning messages:
-1: in 'reulermultinom': result of binomial draw is not finite. 
-2: in 'reulermultinom': result of binomial draw is not finite. 
+[1,]   NA
+[2,]   NA
+[3,]   NA
+Warning message:
+in 'reulermultinom': NAs produced. 
 > reulermultinom(n=1,size=Inf,rate=c(1,100,1),0.1)
      [,1]
-[1,]    0
-[2,]    0
-[3,]  NaN
+[1,]   NA
+[2,]   NA
+[3,]   NA
+Warning message:
+in 'reulermultinom': NAs produced. 
+> try(reulermultinom(n=NA,size=100,rate=c(1,2,3),dt=1))
+Error : in 'reulermultinom': in 'reulermultinom': 'n' must be a non-negative integer.
+> reulermultinom(n=5,size=NA,rate=c(1,2,3),dt=1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]   NA   NA   NA   NA   NA
+[2,]   NA   NA   NA   NA   NA
+[3,]   NA   NA   NA   NA   NA
 Warning messages:
-1: in 'reulermultinom': result of binomial draw is not finite. 
-2: in 'reulermultinom': result of binomial draw is not finite. 
-3: in 'reulermultinom': result of binomial draw is not finite. 
+1: in 'reulermultinom': NAs produced. 
+2: in 'reulermultinom': NAs produced. 
+3: in 'reulermultinom': NAs produced. 
+4: in 'reulermultinom': NAs produced. 
+5: in 'reulermultinom': NAs produced. 
+> reulermultinom(n=5,size=100,rate=c(1,NA,3),dt=1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]   NA   NA   NA   NA   NA
+[2,]   NA   NA   NA   NA   NA
+[3,]   NA   NA   NA   NA   NA
+Warning messages:
+1: in 'reulermultinom': NAs produced. 
+2: in 'reulermultinom': NAs produced. 
+3: in 'reulermultinom': NAs produced. 
+4: in 'reulermultinom': NAs produced. 
+5: in 'reulermultinom': NAs produced. 
+> reulermultinom(n=5,size=100,rate=c(1,2,3),dt=NA)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]   NA   NA   NA   NA   NA
+[2,]   NA   NA   NA   NA   NA
+[3,]   NA   NA   NA   NA   NA
+Warning messages:
+1: in 'reulermultinom': NAs produced. 
+2: in 'reulermultinom': NAs produced. 
+3: in 'reulermultinom': NAs produced. 
+4: in 'reulermultinom': NAs produced. 
+5: in 'reulermultinom': NAs produced. 
+> reulermultinom(n=5,size=100,rate=c(0,0,0,0),dt=1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    0    0    0    0
+[2,]    0    0    0    0    0
+[3,]    0    0    0    0    0
+[4,]    0    0    0    0    0
+> 
 > x <- reulermultinom(n=3,size=100,rate=c(3,2,1),dt=0.1)
 > try(deulermultinom(rbind(x,c(0,1,0)),size=100,rate=c(3,2,1),dt=0.1))
 Error : in 'deulermultinom': NROW('x') should match length of 'rate'
@@ -130,6 +192,7 @@ in 'deulermultinom': NaNs produced.
 [1] 0
 > deulermultinom(x=c(3,6,3),size=10,rate=c(1,1,0),dt=0.1,log=TRUE)
 [1] -Inf
+> 
 > rgammawn(n=5,sigma=2,dt=0.1)
 [1] 2.593438e-18 2.417425e-05 5.489565e-25 1.344180e-18 3.775061e-03
 > rgammawn(n=5,sigma=1:5,dt=0.1)
