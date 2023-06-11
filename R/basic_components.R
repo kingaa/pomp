@@ -6,6 +6,7 @@
 ##' Accordingly, for each such component, there are two basic model components, one prefixed by a \sQuote{r}, the other by a \sQuote{d}, following the usual \R convention.
 ##'
 ##' In addition to the parts listed above, \pkg{pomp} includes two additional basic model components: the deterministic skeleton, and parameter transformations that can be used to map the parameter space onto a Euclidean space for estimation purposes.
+##' There are also basic model components for computing the mean and variance of the measurement process conditional on the latent-state process.
 ##'
 ##' There are thus altogether eleven \bold{basic model components}:
 ##' \enumerate{
@@ -22,7 +23,7 @@
 ##' \item \link[=parameter_trans]{partrans}, which evaluates the forward or inverse parameter transformations.
 ##' }
 ##'
-##' Each of these can be set or modified in the \code{pomp} constructor function or in any of the \pkg{pomp} \link[=elementary algorithms]{elementary algorithms} or \link[=estimation algorithms]{estimation algorithms} using an argument that matches the basic model component.
+##' Each of these can be set or modified in the \code{pomp} \link[=pomp]{constructor function} or in any of the \pkg{pomp} \link[=elementary algorithms]{elementary algorithms} or \link[=estimation algorithms]{estimation algorithms} using an argument that matches the basic model component.
 ##' A basic model component can be unset by passing \code{NULL} in the same way.
 ##'
 ##' Help pages detailing each basic model component are provided.

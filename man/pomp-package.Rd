@@ -49,7 +49,7 @@ The package also provides various tools for plotting and extracting information 
 \section{Structure of the package}{
 
 
-\pkg{pomp} algorithms are arranged on several levels.
+\pkg{pomp} algorithms are arranged into several levels.
 At the top level, \link[=estimation algorithms]{estimation algorithms} estimate model parameters and return information needed for other aspects of inference.
 \link[=elementary algorithms]{Elementary algorithms} perform common operations on \acronym{POMP} models, including simulation, filtering, and application of diagnostic probes;
 these functions may be useful in inference, but they do not themselves perform estimation.

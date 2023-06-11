@@ -13,9 +13,9 @@ There are six elementary algorithms in \pkg{pomp}:
 \item \code{\link{simulate}} which simulates from the joint distribution of latent and observed variables,
 \item \code{\link{pfilter}}, which performs a simple particle filter operation,
 \item \code{\link{wpfilter}}, which performs a weighted particle filter operation,
-\item \code{\link{probe}}, which computes a suite of user-specified summary statistics to actual and simulated data,
+\item \code{\link{probe}}, which computes a suite of user-specified summary statistics on actual and simulated data,
 \item \code{\link{spect}}, which performs a power-spectral density function computation on actual and simulated data,
-\item \code{\link{trajectory}}, which iterates or integrates the deterministic skeleton (according to whether the latter is a (discrete-time) map or a (continuous-time) vectorfield.
+\item \code{\link{trajectory}}, which iterates or integrates the deterministic skeleton according to whether the latter is a (discrete-time) map or a (continuous-time) vectorfield.
 }
 
 Help pages detailing each elementary algorithm component are provided.
