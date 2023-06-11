@@ -561,7 +561,7 @@ simulate(
   statenames = "N",
   paramnames = c("r", "sigma"),
   params = c(N_0 = 7, r = 45, sigma = 0.3),
-  globals = sprintf("#include \"%s\"","include/tn.h"),
+  globals = r"{#include "include/tn.h"}",
   shlib.args = "libs/libtn.so"
 ) -> rick
 
