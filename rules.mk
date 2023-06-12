@@ -144,10 +144,13 @@ rhub:
 covr: covr.rds
 
 covr.rds: DESCRIPTION
-	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; report(cov,file="covr.html",browse=TRUE); saveRDS(cov,file="covr.rds")'
+	$(REXE) -e 'library(covr); package_coverage(type="all") -> cov; saveRDS(cov,file="covr.rds")'
 
 xcovr: covr
 	$(REXE) -e 'library(covr); readRDS("covr.rds") -> cov; codecov(coverage=cov,quiet=FALSE)'
+
+vcovr: covr
+	$(REXE) -e 'library(covr); readRDS("covr.rds") -> cov; report(cov,file="covr.html",browse=TRUE)'
 
 win: dist
 	curl -T $(TARBALL) ftp://win-builder.r-project.org/R-release/
