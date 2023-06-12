@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -111,49 +113,8 @@ name      [,1]
 > gompertz |> pomp(rinit=function(K,...)c(X=K)) |> rinit(nsim=3) -> y
 > stopifnot(identical(x,y))
 > 
-> theta <- coef(gompertz)
-> theta["X_0"] <- 2
 > gompertz |>
-+   simulate(
-+     dinit=function(X, X_0, ...) {
-+       if (X==X_0) 0 else -Inf
-+     }
-+   ) -> sm
-> sm |> dinit(x=rinit(sm,nsim=5))
-[1] 1 1 1 1 1
-> sm |> dinit(params=theta,x=rinit(sm))
-[1] 0
-> sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm))
-[1] 0 0 0 1
-> sm |> dinit(params=theta,x=rinit(sm,nsim=5))
-[1] 0 0 0 0 0
-> try(sm |> dinit(params=cbind(parmat(theta,2),coef(sm)),x=rinit(sm,nsim=2)))
-Error : in 'dinit': the larger number of replicates is not a multiple of smaller.
-> try(sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=5)))
-Error : in 'dinit': the larger number of replicates is not a multiple of smaller.
-> sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=8))
-[1] 0 0 0 1 0 0 0 1
-> 
-> po |>
-+   simulate(
-+     rinit=Csnippet("X = rexp(1/X_0);"),
-+     dinit=Csnippet("lik = dexp(X,1/X_0,1);"),
-+     statenames="X",
-+     paramnames="X_0"
-+   ) -> sm
-> sm |> dinit(x=rinit(sm,nsim=5))
-[1] 0.1576150 0.5240730 0.1790111 0.8216801 0.4180157
-> sm |> dinit(params=theta,x=rinit(sm))
-[1] 0.3475559
-> sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm))
-[1] 0.5068413 0.5068413 0.5068413 0.5034090
-> sm |> dinit(params=theta,x=rinit(sm,nsim=5))
-[1] 0.4576421 1.4367733 0.1334146 0.2399558 0.6005177
-> try(sm |> dinit(params=cbind(parmat(theta,2),coef(sm)),x=rinit(sm,nsim=2)))
-Error : in 'dinit': the larger number of replicates is not a multiple of smaller.
-> try(sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=5)))
-Error : in 'dinit': the larger number of replicates is not a multiple of smaller.
-> sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=8))
-[1] 0.01280549 1.45388887 1.63779138 0.13955052 1.12280978 0.97139152 0.93706236
-[8] 0.70945565
++   pomp(rinit=Csnippet("X=0.1;"),statenames=c("X","Z"),nstatevars=4) |>
++   rinit() -> x
+> stopifnot(rownames(x)==c("X","Z","",""))
 > 

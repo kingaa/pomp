@@ -134,8 +134,18 @@ Error : in 'time<-': times must be a non-decreasing numeric sequence.
 > try(po |> pomp(rinit=Csnippet("X=3;")))
 Error : when 'rinit' is provided as a C snippet, you must also provide 'statenames'.
 > stopifnot(
-+   po |> pomp(rinit=Csnippet("X=3;"),statenames=c("X","Z")) |>
-+     class() == "pomp")
++   po |> pomp(rinit=Csnippet("X=3;"),statenames=c("X","Z")) |> class() == "pomp",
++   po |> pomp(
++           globals=r"{#define X (__x[0])}",
++           rinit=Csnippet("X=3;"),
++           statenames=character(0),
++           nstatevars=c(3,NA)
++         ) |>
++     rinit() |>
++     dim()==c(3,1),
++   po |> pomp(nstatevars=-3) |> class() == "pomp",
++   po |> pomp(nstatevars=NA) |> class() == "pomp"
++ )
 > 
 > try(po |> pomp(rprocess="bob"))
 Error : 'rprocess' must be specified using one of the plugins:

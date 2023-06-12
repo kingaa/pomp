@@ -1,0 +1,109 @@
+
+R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+
+Welcome to pomp!
+
+As of version 4.6, no user-visible pomp function has a name that
+includes a dot ('.'). Function names have been changed to replace the
+dot with an underscore ('_'). For more information, see the pomp blog:
+https://kingaa.github.io/pomp/blog.html.
+
+> set.seed(807969746L)
+> 
+> gompertz() -> gompertz
+> theta <- coef(gompertz)
+> theta["X_0"] <- 2
+> gompertz |>
++   simulate(
++     dinit=function(X, X_0, t0, ...) {
++       if (X==X_0) 0 else -Inf
++     }
++   ) -> sm
+> 
+> sm |> dinit(x=rinit(sm,nsim=5))
+[1] 1 1 1 1 1
+> sm |> dinit(params=theta,x=rinit(sm),t0=3)
+[1] 0
+> sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm))
+[1] 0 0 0 1
+> sm |> dinit(params=theta,x=rinit(sm,nsim=5))
+[1] 0 0 0 0 0
+> try(sm |> dinit(params=cbind(parmat(theta,2),coef(sm)),x=rinit(sm,nsim=2)))
+Error : in 'dinit': the larger number of replicates is not a multiple of smaller.
+> try(sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=5)))
+Error : in 'dinit': the larger number of replicates is not a multiple of smaller.
+> sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=8))
+[1] 0 0 0 1 0 0 0 1
+> 
+> gompertz |>
++   simulate(
++     rinit=Csnippet("X = rexp(1/X_0);"),
++     dinit=Csnippet("lik = dexp(X,1/X_0,1);"),
++     statenames="X",
++     paramnames="X_0"
++   ) -> sm
+> sm |> dinit(x=rinit(sm,nsim=5))
+[1] 0.94448838 0.80500760 0.31791549 0.43259382 0.05245853
+> sm |> dinit(params=theta,x=rinit(sm),t0=3)
+[1] 0.7630703
+> sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm))
+[1] 0.08727601 0.08727601 0.08727601 0.20889711
+> sm |> dinit(params=theta,x=rinit(sm,nsim=5))
+[1] 0.252742110 0.729608760 0.001120369 1.054681124 1.510551471
+> try(sm |> dinit(params=cbind(parmat(theta,2),coef(sm)),x=rinit(sm,nsim=2)))
+Error : in 'dinit': the larger number of replicates is not a multiple of smaller.
+> try(sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=5)))
+Error : in 'dinit': the larger number of replicates is not a multiple of smaller.
+> sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=8))
+[1] 1.381070221 0.340442425 0.001317691 0.993160154 1.530700436 0.424874199
+[7] 0.010634378 0.889641078
+> 
+> try(dinit(x=rinit(sm)))
+Error : in 'dinit': 'object' is a required argument.
+> try(dinit("bob",x=rinit(sm)))
+Error : 'dinit' is undefined for 'object' of class 'character'.
+> 
+> sir() -> sir
+> theta <- coef(sir)
+> sir |>
++   simulate(
++     dinit=function (S, I, R, S_0, I_0, R_0, t0,
++       seas_1, seas_2, seas_3, pop, ...) {
++       print(c(t0,seas_1+seas_2+seas_3))
++       frac <- c(S,I,R)/(S+I+R)
++       if (all(frac==c(S_0,I_0,R_0))) {
++         0
++       } else {
++         -Inf
++       }
++     }
++   ) |>
++   dinit(x=rinit(sir),params=parmat(theta,2),log=FALSE)
+[1] 0 1
+[1] 0 1
+[1] 1 1
+> 
+> sir |>
++   dinit(x=rinit(sir),params=parmat(theta,2),log=FALSE)
+[1] NA NA
+Warning message:
+'dinit' unspecified: likelihood undefined. 
+> 

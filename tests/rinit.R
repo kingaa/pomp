@@ -54,33 +54,7 @@ gompertz |> rinit(nsim=3) -> x
 gompertz |> pomp(rinit=function(K,...)c(X=K)) |> rinit(nsim=3) -> y
 stopifnot(identical(x,y))
 
-theta <- coef(gompertz)
-theta["X_0"] <- 2
 gompertz |>
-  simulate(
-    dinit=function(X, X_0, t0, ...) {
-      if (X==X_0) 0 else -Inf
-    }
-  ) -> sm
-sm |> dinit(x=rinit(sm,nsim=5))
-sm |> dinit(params=theta,x=rinit(sm),t0=3)
-sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm))
-sm |> dinit(params=theta,x=rinit(sm,nsim=5))
-try(sm |> dinit(params=cbind(parmat(theta,2),coef(sm)),x=rinit(sm,nsim=2)))
-try(sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=5)))
-sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=8))
-
-po |>
-  simulate(
-    rinit=Csnippet("X = rexp(1/X_0);"),
-    dinit=Csnippet("lik = dexp(X,1/X_0,1);"),
-    statenames="X",
-    paramnames="X_0"
-  ) -> sm
-sm |> dinit(x=rinit(sm,nsim=5))
-sm |> dinit(params=theta,x=rinit(sm),t0=3)
-sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm))
-sm |> dinit(params=theta,x=rinit(sm,nsim=5))
-try(sm |> dinit(params=cbind(parmat(theta,2),coef(sm)),x=rinit(sm,nsim=2)))
-try(sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=5)))
-sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=8))
+  pomp(rinit=Csnippet("X=0.1;"),statenames=c("X","Z"),nstatevars=4) |>
+  rinit() -> x
+stopifnot(rownames(x)==c("X","Z","",""))

@@ -65,6 +65,8 @@ pomp object 'po1':
  Max.   :20  
 
 - initial state simulator, rinit: <default>
+
+- initial state density, dinit: <default>
 - process-model simulator, rprocess: discrete-time process-model simulator
   - timestep = 1 
   - step.fun: native function
@@ -135,6 +137,8 @@ pomp object 'po2':
   - definition: function (params, t0, ...) 
 params
 
+
+- initial state density, dinit: <default>
 - process-model simulator, rprocess: discrete-time process-model simulator
   - timestep = 1 
   - step.fun: native function
@@ -173,8 +177,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2023-06-09 18:46:21.230 -0400 */
-/* Salt: 60BB32FC5347D1433A320460 */
+/* Time: 2023-06-16 14:01:03.756 -0400 */
+/* Salt: EC4BD6675CCCDBF9E45CD688 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -257,6 +261,8 @@ pomp object 'sir':
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
   - defined by a C snippet in library 'sir_source'
+
+- initial state density, dinit: <default>
 - process-model simulator, rprocess: Euler-method process-model simulator
   - timestep = 0.000962 
   - step.fun: native function
@@ -297,8 +303,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2023-06-09 18:46:21.350 -0400 */
-/* Salt: 18D4B7594C14ABC91AAA73AA */
+/* Time: 2023-06-16 14:01:03.869 -0400 */
+/* Salt: 9502C0CB4B1AEF10AE754DA2 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -902,6 +908,8 @@ pomp object 'rw2':
 - covariates: <none>
 
 - initial state simulator, rinit: <default>
+
+- initial state density, dinit: <default>
 - process-model simulator, rprocess: one-step process-model simulator
   - step.fun: native function
   - name: '__pomp_stepfn'
@@ -932,8 +940,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2023-06-09 18:46:22.069 -0400 */
-/* Salt: A6E61F6B9AFCD1FF9E42C124 */
+/* Time: 2023-06-16 14:01:04.519 -0400 */
+/* Salt: D28D13E438C5202BED4DFA1C */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1141,6 +1149,8 @@ pomp object 'sir2':
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
   - defined by a C snippet in library 'sir2_source'
+
+- initial state density, dinit: <default>
 - process-model simulator, rprocess: Gillespie-method process-model simulator
   - stoichiometry matrix:
        event
@@ -1188,8 +1198,8 @@ name    birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2023-06-09 18:46:22.726 -0400 */
-/* Salt: 84F1443290D96C8DF612FF16 */
+/* Time: 2023-06-16 14:01:05.111 -0400 */
+/* Salt: 2473B95CFF71F45DFC9648F4 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

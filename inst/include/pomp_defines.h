@@ -53,12 +53,7 @@ static R_INLINE SEXP makearray (int rank, const int *dim) {
 
 // check if names exist and are nonempty
 static R_INLINE int invalid_names (SEXP names) {
-  int i, ok;
-  ok = !isNull(names);
-  for (i = 0; ok && i < LENGTH(names); i++)
-    ok = ok && LENGTH(STRING_ELT(names,i)) > 0 &&
-      STRING_ELT(names,i) != NA_STRING;
-  return !ok;
+  return isNull(names);
 }
 
 static R_INLINE SEXP matchnames (SEXP provided, SEXP needed, const char *where) {
@@ -85,6 +80,29 @@ static R_INLINE SEXP matchnames (SEXP provided, SEXP needed, const char *where) 
   }
   UNPROTECT(3);
   return index;
+}
+
+static R_INLINE void fillrownames (SEXP x, SEXP names) {
+  SEXP dim, dimnms;
+  int nr;
+  PROTECT(names = AS_CHARACTER(names));
+  PROTECT(dim = GET_DIM(x));
+  PROTECT(dimnms = allocVector(VECSXP,length(dim)));
+  nr = INTEGER(dim)[0];
+  if (nr > length(names)) {
+    SEXP nm;
+    int k;
+    PROTECT(nm = NEW_CHARACTER(nr));
+    for (k = 0; k < length(names); k++) {
+      SET_STRING_ELT(nm,k,STRING_ELT(names,k));
+    }
+    SET_ELEMENT(dimnms,0,nm);
+    UNPROTECT(1);
+  } else {
+    SET_ELEMENT(dimnms,0,names);
+  }
+  SET_DIMNAMES(x,dimnms);
+  UNPROTECT(3);
 }
 
 static R_INLINE void setrownames (SEXP x, SEXP names, int rank) {

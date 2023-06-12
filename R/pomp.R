@@ -381,8 +381,8 @@ setMethod(
   definition = function (data, times, t0, timename, ...,
     rinit, dinit, rprocess, dprocess,
     rmeasure, dmeasure, emeasure, vmeasure,
-    skeleton, rprior, dprior,
-    partrans, params, covar, accumvars, cfile) {
+    skeleton, rprior, dprior, partrans, params, covar,
+    accumvars, nstatevars, cfile) {
 
     times <- data@times
     if (missing(t0)) t0 <- data@t0
@@ -413,6 +413,9 @@ setMethod(
     if (missing(covar)) covar <- data@covar
     if (missing(accumvars)) accumvars <- data@accumvars
 
+    if (missing(nstatevars)) nstatevars <- data@nstatevars
+    else nstatevars <- max(nstatevars[1L],data@nstatevars,na.rm=TRUE)
+
     if (missing(cfile)) cfile <- NULL
     if (!is.null(cfile)) {
       cfile <- as.character(cfile)
@@ -441,6 +444,7 @@ setMethod(
       partrans=partrans,
       covar=covar,
       accumvars=accumvars,
+      nstatevars=nstatevars,
       params=params,
       .solibs=data@solibs,
       .userdata=data@userdata,
@@ -456,7 +460,8 @@ pomp_internal <- function (data, times, t0, timename, ...,
   rmeasure, dmeasure, emeasure, vmeasure,
   skeleton, rprior, dprior,
   partrans, params, covar, accumvars, obsnames, statenames,
-  paramnames, covarnames, PACKAGE, globals, cdir, cfile, shlib.args,
+  paramnames, covarnames, nstatevars,
+  PACKAGE, globals, cdir, cfile, shlib.args,
   compile, .userdata, .solibs = list(), verbose = getOption("verbose", FALSE)) {
 
   ## check times
@@ -511,6 +516,10 @@ pomp_internal <- function (data, times, t0, timename, ...,
   if (missing(paramnames)) paramnames <- NULL
   if (missing(obsnames)) obsnames <- NULL
   if (missing(covarnames)) covarnames <- NULL
+
+  if (missing(nstatevars)) nstatevars <- 0L
+  nstatevars <- as.integer(nstatevars[1L])
+  nstatevars <- max(nstatevars,length(statenames),na.rm=TRUE)
 
   if (missing(accumvars)) accumvars <- NULL
   accumvars <- unique(as.character(accumvars))
@@ -623,6 +632,7 @@ pomp_internal <- function (data, times, t0, timename, ...,
     params=params,
     covar=covar,
     accumvars=accumvars,
+    nstatevars=nstatevars,
     solibs=if (is.null(hitches$lib)) {
              .solibs
            } else {

@@ -195,14 +195,14 @@ Warning message:
 +   names(pp)[3] <- NA
 +   po |> rmeasure(x=x,params=pp,times=t)
 + })
-Error : in 'rmeasure': invalid variable names among the parameters.
+Error : in 'rmeasure': variable 'iota' not found among the parameters.
 > 
 > try({
 +   pp <- p
 +   names(pp)[3] <- ""
 +   po |> rmeasure(x=x,params=pp,times=t)
 + })
-Error : in 'rmeasure': invalid variable names among the parameters.
+Error : in 'rmeasure': variable 'iota' not found among the parameters.
 > 
 > try({
 +   pp <- p

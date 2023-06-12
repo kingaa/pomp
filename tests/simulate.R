@@ -80,7 +80,11 @@ stopifnot(
 )
 
 try(simulate(times=1:100,t0=0,
-  rprocess=euler(function(w,z,...,delta.t) c("w"=w,z),delta.t=0.1),
+  rprocess=euler(function(w,z,...,delta.t) c(w,z),delta.t=0.1),
+  params=c(w_0=1,z_0=3)))
+
+try(simulate(times=1:100,t0=0,
+  rprocess=euler(function(w,z,...,delta.t) c(w=w,z),delta.t=0.1),
   params=c(w_0=1,z_0=3)))
 
 try(simulate(times=1:100,t0=0,

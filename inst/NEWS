@@ -2,6 +2,18 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._2._2:
 
+        • The constructor ‘pomp’ now takes the optional argument
+          ‘nstatevars’, which can be used to increase the dimension of
+          the latent state-vectors created by ‘rinit’.  By default,
+          ‘nstatevars = length(statenames)’, and ‘nstatevars’ can only
+          be used to _increase_, not to decrease, the dimension of the
+          latent state process.  Moreover, ‘nstatevars’ has no effect
+          if the ‘rinit’ basic component is furnished as an R function.
+
+        • Name checking on internally-created vectors and arrays is
+          less strict than previously.  In particular, it is possible
+          to have variables without names (i.e., ‘""’).
+
         • This version adds the new basic component ‘dinit’ for
           evaluating the probability density function of the
           initial-state distribution.  There is a corresponding

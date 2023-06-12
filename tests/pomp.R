@@ -68,8 +68,18 @@ try(po |> pomp(times=3:1))
 
 try(po |> pomp(rinit=Csnippet("X=3;")))
 stopifnot(
-  po |> pomp(rinit=Csnippet("X=3;"),statenames=c("X","Z")) |>
-    class() == "pomp")
+  po |> pomp(rinit=Csnippet("X=3;"),statenames=c("X","Z")) |> class() == "pomp",
+  po |> pomp(
+          globals=r"{#define X (__x[0])}",
+          rinit=Csnippet("X=3;"),
+          statenames=character(0),
+          nstatevars=c(3,NA)
+        ) |>
+    rinit() |>
+    dim()==c(3,1),
+  po |> pomp(nstatevars=-3) |> class() == "pomp",
+  po |> pomp(nstatevars=NA) |> class() == "pomp"
+)
 
 try(po |> pomp(rprocess="bob"))
 try(po |> pomp(skeleton="bob"))

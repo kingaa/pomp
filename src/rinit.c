@@ -73,7 +73,7 @@ static R_INLINE SEXP ret_array (int m, int n, SEXP names)
   const char *dimnm[2] = {"name",".id"};
   SEXP X;
   PROTECT(X = makearray(2,dim));
-  setrownames(X,names,2);
+  fillrownames(X,names);
   fixdimnames(X,dimnm,2);
   UNPROTECT(1);
   return X;
@@ -172,7 +172,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     pomp_rinit *ff = NULL;
     int j;
 
-    nvar = LENGTH(Snames);
+    nvar = *INTEGER(GET_SLOT(object,install("nstatevars")));
     PROTECT(x = ret_array(nvar,ns,Snames)); nprotect++;
 
     sidx = INTEGER(GET_SLOT(pompfun,install("stateindex")));
