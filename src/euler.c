@@ -247,7 +247,7 @@ SEXP euler_model_simulator
 	      PROTECT(nm = GET_NAMES(ans));
 	      if (invalid_names(nm))
 		err("'rprocess' must return a named numeric vector.");
-	      pidx = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
+	      pidx = INTEGER(PROTECT(matchnames(nm,Snames,"state variables")));
 
 	      nprotect += 3;
 

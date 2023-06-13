@@ -13,9 +13,9 @@
 NULL
 
 setGeneric(
-    "obs",
-    function (object, ...)
-        standardGeneric("obs")
+  "obs",
+  function (object, ...)
+    standardGeneric("obs")
 )
 
 setMethod(
@@ -45,14 +45,17 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (object, vars, ...,
     format = c("array", "data.frame")) {
-    varnames <- rownames(object@data)
-    if (missing(vars))
-      vars <- varnames
-    else if (!all(vars%in%varnames))
-      pStop(who="obs","some elements of ",
-        sQuote("vars")," correspond to no observed variable.")
-    y <- object@data[vars,,drop=FALSE]
-    dimnames(y) <- setNames(list(vars,NULL),c("name",object@timename))
+    if (missing(vars)) {
+      y <- object@data
+      names(dimnames(y)) <- c("name",object@timename)
+    } else {
+      varnames <- rownames(object@data)
+      if (!all(vars%in%varnames))
+        pStop(who="obs","some elements of ",
+          sQuote("vars")," correspond to no observed variable.")
+      y <- object@data[vars,,drop=FALSE]
+      dimnames(y) <- setNames(list(vars,NULL),c("name",object@timename))
+    }
     format <- match.arg(format)
     if (format == "data.frame") {
       y <- data.frame(time=time(object),t(y))

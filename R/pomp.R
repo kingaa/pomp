@@ -450,13 +450,13 @@ pomp_internal <- function (data, times, t0, timename, ...,
 
   ## check times
   if (missing(times) || !is.numeric(times) || !all(is.finite(times)) ||
-      (length(times)>1 && !all(diff(times)>=0)))
+        (length(times)>1 && !all(diff(times)>=0)))
     pStop_(sQuote("times")," must be a non-decreasing sequence of numbers.")
   storage.mode(times) <- "double"
 
   ## check t0
   if (missing(t0) || !is.numeric(t0) || !is.finite(t0) ||
-      length(t0) > 1 ||  t0 > times[1])
+        length(t0) > 1 ||  t0 > times[1])
     pStop_(sQuote("t0")," must be a single number not greater than ",
       sQuote("times[1]"),".")
   storage.mode(t0) <- "double"
@@ -516,7 +516,7 @@ pomp_internal <- function (data, times, t0, timename, ...,
   )
   if (length(params) > 0) {
     if (is.null(names(params)) || !is.numeric(params) ||
-        !all(nzchar(names(params))))
+          !all(nzchar(names(params))))
       pStop_(sQuote("params")," must be a named numeric vector.")
   }
 
@@ -527,17 +527,17 @@ pomp_internal <- function (data, times, t0, timename, ...,
 
   if (is(rmeasure,"Csnippet") && is.null(obsnames)) {
     pStop_("when ",sQuote("rmeasure")," is provided as a C snippet, ",
-           "you must also provide ",sQuote("obsnames"),".")
+      "you must also provide ",sQuote("obsnames"),".")
   }
 
   if (is(emeasure,"Csnippet") && is.null(obsnames)) {
     pStop_("when ",sQuote("emeasure")," is provided as a C snippet, ",
-           "you must also provide ",sQuote("obsnames"),".")
+      "you must also provide ",sQuote("obsnames"),".")
   }
 
   if (is(vmeasure,"Csnippet") && is.null(obsnames)) {
     pStop_("when ",sQuote("vmeasure")," is provided as a C snippet, ",
-           "you must also provide ",sQuote("obsnames"),".")
+      "you must also provide ",sQuote("obsnames"),".")
   }
 
   ## check and arrange covariates
@@ -582,39 +582,39 @@ pomp_internal <- function (data, times, t0, timename, ...,
 
   new(
     "pomp",
-    data = data,
-    times = times,
-    t0 = t0,
-    timename = timename,
-    rinit = hitches$funs$rinit,
-    rprocess = rproc_plugin(
+    data=data,
+    times=times,
+    t0=t0,
+    timename=timename,
+    rinit=hitches$funs$rinit,
+    rprocess=rproc_plugin(
       rprocess,
       step.fn=hitches$funs$step.fn,
       rate.fn=hitches$funs$rate.fn
     ),
-    dprocess = hitches$funs$dprocess,
-    dmeasure = hitches$funs$dmeasure,
-    rmeasure = hitches$funs$rmeasure,
-    emeasure = hitches$funs$emeasure,
-    vmeasure = hitches$funs$vmeasure,
-    skeleton = skel_plugin(
+    dprocess=hitches$funs$dprocess,
+    dmeasure=hitches$funs$dmeasure,
+    rmeasure=hitches$funs$rmeasure,
+    emeasure=hitches$funs$emeasure,
+    vmeasure=hitches$funs$vmeasure,
+    skeleton=skel_plugin(
       skeleton,
       skel.fn=hitches$funs$skeleton
     ),
-    dprior = hitches$funs$dprior,
-    rprior = hitches$funs$rprior,
-    partrans = parameter_trans(
+    dprior=hitches$funs$dprior,
+    rprior=hitches$funs$rprior,
+    partrans=parameter_trans(
       toEst=hitches$funs$toEst,
       fromEst=hitches$funs$fromEst
     ),
-    params = params,
-    covar = covar,
-    accumvars = accumvars,
-    solibs = if (is.null(hitches$lib)) {
-      .solibs
-    } else {
-      c(list(hitches$lib),.solibs)
-    },
-    userdata = .userdata
+    params=params,
+    covar=covar,
+    accumvars=accumvars,
+    solibs=if (is.null(hitches$lib)) {
+             .solibs
+           } else {
+             c(list(hitches$lib),.solibs)
+           },
+    userdata=.userdata
   )
 }

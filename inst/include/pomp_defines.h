@@ -69,7 +69,8 @@ static R_INLINE SEXP matchnames (SEXP provided, SEXP needed, const char *where) 
 
   PROTECT(provided = AS_CHARACTER(provided));
   PROTECT(needed = AS_CHARACTER(needed));
-  if (invalid_names(provided)) errorcall(R_NilValue,"invalid variable names among the %s.",where);
+  if (invalid_names(provided))
+    errorcall(R_NilValue,"invalid variable names among the %s.",where); // #nocov
   PROTECT(index = NEW_INTEGER(n));
   idx = INTEGER(index);
 

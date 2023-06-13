@@ -45,10 +45,12 @@ setMethod(
     if (length(object@states)==0) {
       x <- array(NA_real_,dim=c(0,length(object@times)),
         dimnames=setNames(list(NULL,NULL),c("name",object@timename)))
+    } else if (missing(vars)) {
+      x <- object@states
+      names(dimnames(x)) <- c("name",object@timename)
     } else {
       varnames <- rownames(object@states)
-      if (missing(vars)) vars <- varnames
-      else if (!all(vars%in%varnames))
+      if (!all(vars%in%varnames))
         pStop(who="states","some elements of ",
           sQuote("vars")," correspond to no state variable")
       x <- object@states[vars,,drop=FALSE]
