@@ -199,6 +199,10 @@ typedef void pomp_rinit(double *x, const double *p, double t,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars);
 
+typedef void pomp_dinit (double *lik, const double *x, const double *p,
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars, double t0);
+
 typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex, const double *covars);
 

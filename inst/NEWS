@@ -1,5 +1,12 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._2._2:
+
+        • This version adds the new basic component ‘dinit’ for
+          evaluating the probability density function of the
+          initial-state distribution.  There is a corresponding
+          workhorse function, ‘dinit()’.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._2._1:
 
         • ‘reulermultinom’ now returns ‘NA’ rather than ‘NaN’, in

@@ -98,6 +98,7 @@ More on implementing POMP models:
 \code{\link{basic components}},
 \code{\link{betabinomial}},
 \code{\link{covariates}},
+\code{\link{dinit specification}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},

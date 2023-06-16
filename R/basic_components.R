@@ -8,7 +8,7 @@
 ##' In addition to the parts listed above, \pkg{pomp} includes two additional basic model components: the deterministic skeleton, and parameter transformations that can be used to map the parameter space onto a Euclidean space for estimation purposes.
 ##' There are also basic model components for computing the mean and variance of the measurement process conditional on the latent-state process.
 ##'
-##' There are thus altogether eleven \bold{basic model components}:
+##' There are thus altogether twelve \bold{basic model components}:
 ##' \enumerate{
 ##' \item \link[=rprocess specification]{rprocess}, which samples from the latent-state transition distribution,
 ##' \item \link[=dprocess specification]{dprocess}, which evaluates the latent-state transition density,
@@ -19,6 +19,7 @@
 ##' \item \link[=prior specification]{rprior}, which samples from the prior distribution,
 ##' \item \link[=prior specification]{dprior}, which evaluates the prior density,
 ##' \item \link[=rinit specification]{rinit}, which samples from the initial-state distribution,
+##' \item \link[=dinit specification]{dinit}, which evaluates the initial-state density,
 ##' \item \link[=skeleton specification]{skeleton}, which evaluates the deterministic skeleton,
 ##' \item \link[=parameter_trans]{partrans}, which evaluates the forward or inverse parameter transformations.
 ##' }

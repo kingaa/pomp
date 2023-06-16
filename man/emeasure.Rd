@@ -47,6 +47,7 @@ Return the expected value of the observed variables, given values of the latent 
 Specification of the measurement-model expectation: \link{emeasure specification}
 
 More on \pkg{pomp} workhorse functions: 
+\code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},

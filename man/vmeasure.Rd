@@ -49,6 +49,7 @@ Return the covariance matrix of the observed variables, given values of the late
 Specification of the measurement-model covariance matrix: \link{vmeasure specification}
 
 More on \pkg{pomp} workhorse functions: 
+\code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},

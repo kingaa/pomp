@@ -50,6 +50,7 @@ it does not iterate or integrate (see \code{\link{trajectory}} for this).
 Specification of the deterministic skeleton: \link{skeleton specification}
 
 More on \pkg{pomp} workhorse functions: 
+\code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},

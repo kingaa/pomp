@@ -47,6 +47,7 @@ Sample from the measurement model distribution, given values of the latent state
 Specification of the measurement-model simulator: \link{rmeasure specification}
 
 More on \pkg{pomp} workhorse functions: 
+\code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},

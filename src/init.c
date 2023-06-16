@@ -43,6 +43,7 @@ static const R_CallMethodDef callMethods[] = {
   {"do_dprior", (DL_FUNC) &do_dprior, 4},
   {"do_skeleton", (DL_FUNC) &do_skeleton, 5},
   {"do_rinit", (DL_FUNC) &do_rinit, 5},
+  {"do_dinit", (DL_FUNC) &do_dinit, 6},
   {"LogitTransform", (DL_FUNC) &LogitTransform, 1},
   {"ExpitTransform", (DL_FUNC) &ExpitTransform, 1},
   {"LogBarycentricTransform", (DL_FUNC) &LogBarycentricTransform, 1},

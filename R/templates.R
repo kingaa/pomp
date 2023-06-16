@@ -23,6 +23,31 @@ workhorse_templates <- list(
       )
     )
   ),
+  dinit=list(
+    slotname="dinit",
+    Cname="__pomp_dinit",
+    proto=quote(dinit(...)),
+    header="\nvoid __pomp_dinit (double *__lik, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)\n{\n",
+    footer="\n}\n\n",
+    vars=list(
+      params=list(
+        names=quote(paramnames),
+        cref="__p[__parindex[{%v%}]]"
+      ),
+      covars=list(
+        names=quote(covarnames),
+        cref="__covars[__covindex[{%v%}]]"
+      ),
+      states=list(
+        names=quote(statenames),
+        cref="__x[__stateindex[{%v%}]]"
+      ),
+      lik=list(
+        names="lik",
+        cref="__lik[0]"
+      )
+    )
+  ),
   rmeasure=list(
     slotname="rmeasure",
     Cname="__pomp_rmeasure",

@@ -66,6 +66,9 @@ setMethod(
     cat("\n- initial state simulator, rinit: ")
     show(object@rinit)
 
+    cat("\n- initial state density, dinit: ")
+    show(object@dinit)
+
     cat("- process-model simulator, rprocess: ")
     show(object@rprocess)
 

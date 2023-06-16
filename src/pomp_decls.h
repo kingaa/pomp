@@ -4,6 +4,8 @@ extern SEXP bspline_basis(SEXP range, SEXP x, SEXP nbasis, SEXP degree, SEXP der
 extern SEXP periodic_bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP period, SEXP deriv);
 extern void periodic_bspline_basis_eval(double x, double period, int degree, int nbasis, double *y);
 extern void periodic_bspline_basis_eval_deriv(double x, double period, int degree, int nbasis, int deriv, double *y);
+/* src/dinit.c */
+extern SEXP do_dinit(SEXP object, SEXP t0, SEXP x, SEXP params, SEXP log, SEXP gnsi);
 /* src/distributions.c */
 extern SEXP R_Euler_Multinom(SEXP n, SEXP size, SEXP rate, SEXP deltat);
 extern SEXP D_Euler_Multinom(SEXP x, SEXP size, SEXP rate, SEXP deltat, SEXP log);

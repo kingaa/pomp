@@ -2,9 +2,10 @@
 
 ## For pomp:
 
-- vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter.traj`:
+- ARMA benchmarking (a la **spatPomp**)?
+- `pomp_fun` should be able to take symbols
+- vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter_traj`:
   skeleton is in place; needs text.
-- format option for 'coef', 'obs', and 'states'
 - make `mcap` into a generic, provide a method for data frames and a plotting method
 - overriding C snippets should overwrite/delete old C snippets, keep one C snippet file
 - `options(pomp_cdir)` should take effect *at run time* and not at initial compile time as currently
@@ -15,7 +16,6 @@
 
 - more demanding tests of `enkf` and `eakf`
 - iterated EnKF
-- perhaps `dinit`?
 - better scheme for indicating derivatives and maps in C snippets
 
 - support for asymmetric MCMC proposals
@@ -41,7 +41,7 @@
 	- perhaps recognized data variables, states, covariates in calls to `pomp` are replaced?
 - MCMC proposals as pomp slots?
 - probes as pomp slots?
-- what does a generic `pomp.fun` interface look like?
+- what does a generic `pomp_fun` interface look like?
 
 - should parameter transformations allow renaming of variables?
 	- would require attention to `rw_sd`, e.g.

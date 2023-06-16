@@ -10,6 +10,8 @@ They are low-level functions that do the work needed by the package's inference 
 }
 \details{
 They include \describe{
+\item{\code{\link{rinit}}}{which samples from the initial-state distribution,}
+\item{\code{\link{dinit}}}{which evaluates the initial-state density,}
 \item{\code{\link{dmeasure}}}{which evaluates the measurement model density,}
 \item{\code{\link{rmeasure}}}{which samples from the measurement model distribution,}
 \item{\code{\link{emeasure}}}{which computes the expectation of the observed variables conditional on the latent state,}
@@ -29,6 +31,7 @@ They include \describe{
 \link[=estimation algorithms]{estimation algorithms}
 
 More on \pkg{pomp} workhorse functions: 
+\code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},

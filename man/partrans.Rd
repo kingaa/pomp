@@ -36,6 +36,7 @@ Performs parameter transformations.
 Specification of parameter transformations: \code{\link{parameter_trans}}
 
 More on \pkg{pomp} workhorse functions: 
+\code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},

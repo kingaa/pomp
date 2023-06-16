@@ -54,6 +54,7 @@ If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or log like
 Specification of the measurement density evaluator: \link{dmeasure specification}
 
 More on \pkg{pomp} workhorse functions: 
+\code{\link{dinit}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},
 \code{\link{emeasure}()},

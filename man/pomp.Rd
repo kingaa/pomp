@@ -10,6 +10,7 @@ pomp(
   t0,
   ...,
   rinit,
+  dinit,
   rprocess,
   dprocess,
   rmeasure,
@@ -61,12 +62,16 @@ This can be furnished either as a C snippet, an \R function, or the name of a pr
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
 For more information, see \link[=rinit specification]{rinit specification}.}
 
+\item{dinit}{evaluator of the initial-state density.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{dinit=NULL} removes this basic component.
+For more information, see \link[=dinit specification]{dinit specification}.}
+
 \item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess specification]{rprocess plugins}.
 Setting \code{rprocess=NULL} removes the latent-state simulator.
 For more information, see \link[=rprocess specification]{rprocess specification for the documentation on these plugins}.}
 
-\item{dprocess}{optional;
-specification of the probability density evaluation function of the unobserved state process.
+\item{dprocess}{evaluator of the probability density of transitions of the unobserved state process.
 Setting \code{dprocess=NULL} removes the latent-state density evaluator.
 For more information, see \link[=dprocess specification]{dprocess specification}.}
 
@@ -185,6 +190,7 @@ One implements the \acronym{POMP} model by specifying some or all of its \emph{b
 These comprise:
 \describe{
 \item{rinit,}{which samples from the distribution of the state process at the zero-time;}
+\item{dinit,}{which evaluates the density of the state process at the zero-time;}
 \item{rprocess,}{the simulator of the unobserved Markov state process;}
 \item{dprocess,}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
 \item{rmeasure,}{the simulator of the observed process, conditional on the unobserved state;}
@@ -231,6 +237,7 @@ More on implementing POMP models:
 \code{\link{basic components}},
 \code{\link{betabinomial}},
 \code{\link{covariates}},
+\code{\link{dinit specification}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},

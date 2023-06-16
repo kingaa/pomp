@@ -44,6 +44,7 @@ More on implementing POMP models:
 \code{\link{accumulator variables}},
 \code{\link{basic components}},
 \code{\link{betabinomial}},
+\code{\link{dinit specification}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},

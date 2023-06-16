@@ -52,6 +52,7 @@ In the case of a continuous-time system (vectorfield), \code{flow} uses the nume
 }
 \seealso{
 More on \pkg{pomp} workhorse functions: 
+\code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},

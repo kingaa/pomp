@@ -6,6 +6,7 @@
 ##' These comprise:
 ##' \describe{
 ##' \item{rinit,}{which samples from the distribution of the state process at the zero-time;}
+##' \item{dinit,}{which evaluates the density of the state process at the zero-time;}
 ##' \item{rprocess,}{the simulator of the unobserved Markov state process;}
 ##' \item{dprocess,}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
 ##' \item{rmeasure,}{the simulator of the observed process, conditional on the unobserved state;}
@@ -29,7 +30,7 @@
 ##' @rdname pomp
 ##' @family implementation information
 ##' @include pomp_class.R pomp_fun.R csnippet.R safecall.R builder.R
-##' @include rinit_spec.R rprocess_spec.R rmeasure_spec.R
+##' @include dinit_spec.R rinit_spec.R rprocess_spec.R rmeasure_spec.R
 ##' @include dprocess_spec.R dmeasure_spec.R prior_spec.R
 ##' @include skeleton_spec.R parameter_trans.R covariate_table.R
 ##' @importFrom stats setNames
@@ -53,12 +54,16 @@
 ##' Setting \code{rinit=NULL} sets the initial-state simulator to its default.
 ##' For more information, see \link[=rinit specification]{rinit specification}.
 ##'
+##' @param dinit evaluator of the initial-state density.
+##' This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+##' Setting \code{dinit=NULL} removes this basic component.
+##' For more information, see \link[=dinit specification]{dinit specification}.
+##'
 ##' @param rprocess simulator of the latent state process, specified using one of the \link[=rprocess specification]{rprocess plugins}.
 ##' Setting \code{rprocess=NULL} removes the latent-state simulator.
 ##' For more information, see \link[=rprocess specification]{rprocess specification for the documentation on these plugins}.
 ##'
-##' @param dprocess optional;
-##' specification of the probability density evaluation function of the unobserved state process.
+##' @param dprocess evaluator of the probability density of transitions of the unobserved state process.
 ##' Setting \code{dprocess=NULL} removes the latent-state density evaluator.
 ##' For more information, see \link[=dprocess specification]{dprocess specification}.
 ##'
@@ -171,7 +176,7 @@ NULL
 ##' @rdname pomp
 ##' @export
 pomp <- function (data, times, t0, ...,
-  rinit,
+  rinit, dinit,
   rprocess, dprocess,
   rmeasure, dmeasure, emeasure, vmeasure,
   skeleton,
@@ -194,7 +199,8 @@ pomp <- function (data, times, t0, ...,
   ## return as quickly as possible if no work is to be done
   if (
     is(data,"pomp") && missing(times) && missing(t0) &&
-      missing(rinit) && missing(rprocess) && missing(dprocess) &&
+      missing(rinit) && missing(dinit) &&
+      missing(rprocess) && missing(dprocess) &&
       missing(rmeasure) && missing(dmeasure) && missing(emeasure) &&
       missing(vmeasure) && missing(skeleton) &&
       missing(rprior) && missing(dprior) && missing(partrans) &&
@@ -208,7 +214,8 @@ pomp <- function (data, times, t0, ...,
   tryCatch(
     construct_pomp(
       data=data,times=times,t0=t0,...,
-      rinit=rinit,rprocess=rprocess,dprocess=dprocess,
+      rinit=rinit,dinit=dinit,
+      rprocess=rprocess,dprocess=dprocess,
       rmeasure=rmeasure,dmeasure=dmeasure,
       emeasure=emeasure,vmeasure=vmeasure,
       skeleton=skeleton,rprior=rprior,dprior=dprior,partrans=partrans,
@@ -302,12 +309,13 @@ setMethod(
   "construct_pomp",
   signature=signature(data="array", times="numeric"),
   definition = function (data, times, ...,
-    rinit, rprocess, dprocess,
+    rinit, dinit, rprocess, dprocess,
     rmeasure, dmeasure, emeasure, vmeasure,
     skeleton, rprior, dprior,
     partrans, params, covar) {
 
     if (missing(rinit)) rinit <- NULL
+    if (missing(dinit)) dinit <- NULL
 
     if (missing(rprocess) || is.null(rprocess)) {
       rprocess <- rproc_plugin()
@@ -339,6 +347,7 @@ setMethod(
       data=data,
       times=times,
       rinit=rinit,
+      dinit=dinit,
       rprocess=rprocess,
       dprocess=dprocess,
       rmeasure=rmeasure,
@@ -370,7 +379,7 @@ setMethod(
   "construct_pomp",
   signature=signature(data="pomp", times="NULL"),
   definition = function (data, times, t0, timename, ...,
-    rinit, rprocess, dprocess,
+    rinit, dinit, rprocess, dprocess,
     rmeasure, dmeasure, emeasure, vmeasure,
     skeleton, rprior, dprior,
     partrans, params, covar, accumvars, cfile) {
@@ -380,6 +389,7 @@ setMethod(
     if (missing(timename)) timename <- data@timename
 
     if (missing(rinit)) rinit <- data@rinit
+    if (missing(dinit)) dinit <- data@dinit
 
     if (missing(rprocess)) rprocess <- data@rprocess
     else if (is.null(rprocess)) rprocess <- rproc_plugin()
@@ -418,6 +428,7 @@ setMethod(
       t0=t0,
       timename=timename,
       rinit=rinit,
+      dinit=dinit,
       rprocess=rprocess,
       dprocess=dprocess,
       rmeasure=rmeasure,
@@ -441,7 +452,7 @@ setMethod(
 )
 
 pomp_internal <- function (data, times, t0, timename, ...,
-  rinit, rprocess, dprocess,
+  rinit, dinit, rprocess, dprocess,
   rmeasure, dmeasure, emeasure, vmeasure,
   skeleton, rprior, dprior,
   partrans, params, covar, accumvars, obsnames, statenames,
@@ -551,6 +562,7 @@ pomp_internal <- function (data, times, t0, timename, ...,
 
   hitches <- hitch(
     rinit=rinit,
+    dinit=dinit,
     step.fn=rprocess@step.fn,
     rate.fn=rprocess@rate.fn,
     dprocess=dprocess,
@@ -587,6 +599,7 @@ pomp_internal <- function (data, times, t0, timename, ...,
     t0=t0,
     timename=timename,
     rinit=hitches$funs$rinit,
+    dinit=hitches$funs$dinit,
     rprocess=rproc_plugin(
       rprocess,
       step.fn=hitches$funs$step.fn,

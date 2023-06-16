@@ -104,6 +104,7 @@ More on implementing POMP models:
 \code{\link{basic components}},
 \code{\link{betabinomial}},
 \code{\link{covariates}},
+\code{\link{dinit specification}},
 \code{\link{distributions}},
 \code{\link{dmeasure specification}},
 \code{\link{dprocess specification}},
@@ -120,6 +121,7 @@ More on implementing POMP models:
 \code{\link{vmeasure specification}}
 
 More on \pkg{pomp} workhorse functions: 
+\code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},
