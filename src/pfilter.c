@@ -47,7 +47,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
     err("ncol('states') should be a multiple of ncol('params')"); // # nocov
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
 
-  PROTECT(weights = duplicate(weights)); // FIXME: unnecessary copy
+  PROTECT(weights = duplicate(weights));
 
   np = *(INTEGER(AS_INTEGER(Np))); // number of particles to resample
 

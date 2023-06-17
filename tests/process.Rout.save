@@ -1,5 +1,5 @@
 
-R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
 Copyright (C) 2023 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -54,7 +54,7 @@ Error : in 'dprocess': the length of 'times' and 3rd dimension of 'x' do not agr
 > po |> dprocess(x=x,times=t,params=p[,2],log=TRUE) -> d2
 > stopifnot(d1[2,]==d2[2,])
 > try(po |> dprocess(x=x[,,2],times=t[2],params=p[,1:3],log=FALSE))
-Error : in 'dprocess': length(times)<2: with no transitions, there is no work to do.
+Error : in 'dprocess': length(times) < 2: with no transitions, there is no work to do.
 > try(po |> dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:2],log=FALSE))
 Error : in 'dprocess': the larger number of replicates is not a multiple of smaller.
 > po |> dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:3],log=TRUE) |>

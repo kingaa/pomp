@@ -49,10 +49,8 @@ static R_INLINE SEXP ret_array (SEXP params)
 {
   const char *dimnm[2] = {"name", ".id"};
   SEXP P;
-
-  PROTECT(P = duplicate(params));
+  PROTECT(P = as_matrix(params));
   fixdimnames(P,dimnm,2);
-
   UNPROTECT(1);
   return P;
 
@@ -64,10 +62,9 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   pompfunmode mode = undef;
   int npars, nreps;
   SEXP Pnames, pompfun, fn, args;
-  SEXP P = R_NilValue;
   int *dim;
   
-  PROTECT(params = as_matrix(params));
+  PROTECT(params = ret_array(params));
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nreps = dim[1];
 
@@ -79,9 +76,8 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
-  PROTECT(P = ret_array(params));
 
-  int nprotect = 6;
+  int nprotect = 5;
   int first = 1;
   
   switch (mode) {
@@ -89,18 +85,18 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   case Rfun: {
 
     SEXP ans, nm;
-    double *pa, *ps = REAL(params), *pt = REAL(P);
+    double *pa, *p = REAL(params);
     int *posn = NULL;
     int i, j;
 
     // set up the function call
     PROTECT(args = add_args(args,Pnames)); nprotect++;
 
-    for (j = 0; j < nreps; j++, ps += npars, pt += npars) {
+    for (j = 0; j < nreps; j++, p += npars) {
 
       if (first) {
 
-        PROTECT(ans = eval_call(fn,args,ps,npars));
+        PROTECT(ans = AS_NUMERIC(eval_call(fn,args,p,npars)));
 
         PROTECT(nm = GET_NAMES(ans));
         if (invalid_names(nm))
@@ -109,17 +105,17 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 	
 	nprotect += 3;
 
-        pa = REAL(AS_NUMERIC(ans));
-        for (i = 0; i < LENGTH(ans); i++) pt[posn[i]] = pa[i];
+        pa = REAL(ans);
+        for (i = 0; i < LENGTH(ans); i++) p[posn[i]] = pa[i];
 
 	first = 0;
 
       } else {
 
-        PROTECT(ans = eval_call(fn,args,ps,npars));
+        PROTECT(ans = AS_NUMERIC(eval_call(fn,args,p,npars)));
 
-        pa = REAL(AS_NUMERIC(ans));
-        for (i = 0; i < LENGTH(ans); i++) pt[posn[i]] = pa[i];
+        pa = REAL(ans);
+        for (i = 0; i < LENGTH(ans); i++) p[posn[i]] = pa[i];
 
         UNPROTECT(1);
 
@@ -131,7 +127,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
   case native: case regNative: {
 
-    double *ps;
+    double *p;
     int *pidx = 0;
     pomp_rprior *ff = NULL;
     int j;
@@ -148,8 +144,8 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
     GetRNGstate();
 
     // loop over replicates
-    for (j = 0, ps = REAL(P); j < nreps; j++, ps += npars)
-      (*ff)(ps,pidx);
+    for (j = 0, p = REAL(params); j < nreps; j++, p += npars)
+      (*ff)(p,pidx);
 
     PutRNGstate();
     unset_pomp_userdata();
@@ -165,5 +161,5 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   }
 
   UNPROTECT(nprotect);
-  return P;
+  return params;
 }

@@ -1,5 +1,5 @@
 
-R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
 Copyright (C) 2023 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -177,8 +177,8 @@ params
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2023-06-16 14:01:03.756 -0400 */
-/* Salt: EC4BD6675CCCDBF9E45CD688 */
+/* Time: 2023-06-17 14:29:47.065 -0400 */
+/* Salt: BA3A29197DC5DFF47CF991F0 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -303,8 +303,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2023-06-16 14:01:03.869 -0400 */
-/* Salt: 9502C0CB4B1AEF10AE754DA2 */
+/* Time: 2023-06-17 14:29:47.179 -0400 */
+/* Salt: 59D5C3EFBC8AAAE1F78AF7BF */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -940,8 +940,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2023-06-16 14:01:04.519 -0400 */
-/* Salt: D28D13E438C5202BED4DFA1C */
+/* Time: 2023-06-17 14:29:47.849 -0400 */
+/* Salt: 3291F5E5A5D0664049D62A92 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1198,8 +1198,8 @@ name    birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2023-06-16 14:01:05.111 -0400 */
-/* Salt: 2473B95CFF71F45DFC9648F4 */
+/* Time: 2023-06-17 14:29:48.460 -0400 */
+/* Salt: 0E1AF4C2547932A9AEE1AEC3 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>

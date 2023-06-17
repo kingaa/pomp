@@ -74,13 +74,14 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 
 }
 
-static R_INLINE SEXP eval_call (
-    SEXP fn, SEXP args,
-    double *t1, double *t2,
-    double *x1, double *x2, int nvar,
-    double *p, int npar,
-    double *c, int ncov)
-{
+static R_INLINE SEXP eval_call
+(
+ SEXP fn, SEXP args,
+ double *t1, double *t2,
+ double *x1, double *x2, int nvar,
+ double *p, int npar,
+ double *c, int ncov
+ ) {
 
   SEXP var = args, ans, ob;
   int v;
@@ -114,22 +115,37 @@ static R_INLINE SEXP ret_array (int nreps, int ntimes)
 }
 
 // compute pdf of a sequence of elementary steps
-static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP covar,
-  SEXP log, SEXP args, SEXP gnsi)
-{
+static SEXP onestep_density
+(
+ SEXP func, SEXP x, SEXP times, SEXP params, SEXP covar,
+ SEXP log, SEXP args, SEXP gnsi
+ ) {
 
   pompfunmode mode = undef;
   int give_log;
-  int nvars, npars, nreps, ntimes, ncovars;
+  int nvars, npars, nrepsx, nrepsp, nreps, ntimes, ncovars;
   SEXP Snames, Pnames, Cnames;
   SEXP fn;
   SEXP F, cvec;
   double *cov;
   int *dim;
 
-  dim = INTEGER(GET_DIM(x)); nvars = dim[0]; nreps = dim[1];
-  dim = INTEGER(GET_DIM(params)); npars = dim[0];
   ntimes = LENGTH(times);
+  dim = INTEGER(GET_DIM(x)); nvars = dim[0]; nrepsx = dim[1];
+  if (ntimes < 2)
+    err("length(times) < 2: with no transitions, there is no work to do.");
+  if (ntimes != dim[2])
+    err("the length of 'times' and 3rd dimension of 'x' do not agree.");
+  dim = INTEGER(GET_DIM(params)); npars = dim[0]; nrepsp = dim[1];
+
+  give_log = *(INTEGER(AS_INTEGER(log)));
+
+  // handle case with different numbers of states and parameters
+  if (nrepsx != nrepsp && nrepsx % nrepsp != 0 && nrepsp % nrepsx != 0) {
+    err("the larger number of replicates is not a multiple of smaller.");
+  } else {
+    nreps = (nrepsx > nrepsp) ? nrepsx : nrepsp;
+  }
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x)));
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
@@ -144,45 +160,41 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
 
   PROTECT(fn = pomp_fun_handler(func,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames));
 
-  give_log = *(INTEGER(AS_INTEGER(log)));
-
   int nprotect = 6;
+  double *t1 = REAL(times), *t2 = REAL(times)+1;
+  double *x1p = REAL(x);
+  double *x2p = REAL(x)+nrepsx*nvars;
+  double *ft = REAL(F);
 
   switch (mode) {
 
   case Rfun: {
 
-    SEXP ans;
-    double *t1 = REAL(times), *t2 = REAL(times)+1;
-    double *ps;
-    double *x1 = REAL(x), *x2 = REAL(x)+nvars*nreps;
-    double *ft = REAL(F);
-    int j, k;
-
     PROTECT(args = add_args(args,Snames,Pnames,Cnames)); nprotect++;
 
-    for (k = 0; k < ntimes-1; k++, t1++, t2++) { // loop over times
+    for (int k = 0; k < ntimes-1; k++, t1++, t2++) { // loop over times
 
       R_CheckUserInterrupt();
 
       // interpolate the covariates at time t1
       table_lookup(&covariate_table,*t1,cov);
 
-      for (j = 0, ps = REAL(params);
-        j < nreps;
-        j++, ft++, x1 += nvars, x2 += nvars, ps += npars) {
+      for (int j = 0; j < nreps; j++, ft++) {
 
-        PROTECT(ans = eval_call(fn,args,t1,t2,x1,x2,nvars,ps,npars,cov,ncovars));
+        double *p = REAL(params)+(j%nrepsp)*npars;
+        double *x1 = x1p+(j%nrepsx)*nvars;
+        double *x2 = x2p+(j%nrepsx)*nvars;
 
-        *ft = *(REAL(AS_NUMERIC(ans)));
-
-        UNPROTECT(1);
+        *ft = *REAL(AS_NUMERIC(eval_call(fn,args,t1,t2,x1,x2,nvars,p,npars,cov,ncovars)));
 
         if (!give_log) *ft = exp(*ft);
 
       }
-    }
 
+      x1p = x2p;
+      x2p += nrepsx*nvars;
+
+    }
 
   }
 
@@ -191,12 +203,7 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
   case native: case regNative: {
 
     int *sidx, *pidx, *cidx;
-    double *t1 = REAL(times), *t2 = REAL(times)+1;
-    double *ps = REAL(params);
-    double *x1 = REAL(x), *x2 = REAL(x)+nvars*nreps;
-    double *ft = REAL(F);
     pomp_onestep_pdf *ff = NULL;
-    int j, k;
 
     sidx = INTEGER(GET_SLOT(func,install("stateindex")));
     pidx = INTEGER(GET_SLOT(func,install("paramindex")));
@@ -206,20 +213,28 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
 
     set_pomp_userdata(args);
 
-    for (k = 0; k < ntimes-1; k++, t1++, t2++) {
+    for (int k = 0; k < ntimes-1; k++, t1++, t2++) {
 
       R_CheckUserInterrupt();
 
       // interpolate the covariates at time t1
       table_lookup(&covariate_table,*t1,cov);
 
-      for (j = 0, ps = REAL(params); j < nreps; j++, ft++, x1 += nvars, x2 += nvars, ps += npars) {
+      for (int j = 0; j < nreps; j++, ft++) {
 
-        (*ff)(ft,x1,x2,*t1,*t2,ps,sidx,pidx,cidx,cov);
+        double *p = REAL(params)+(j%nrepsp)*npars;
+        double *x1 = x1p+(j%nrepsx)*nvars;
+        double *x2 = x2p+(j%nrepsx)*nvars;
+
+        (*ff)(ft,x1,x2,*t1,*t2,p,sidx,pidx,cidx,cov);
 
         if (!give_log) *ft = exp(*ft);
 
       }
+      
+      x1p = x2p;
+      x2p += nrepsx*nvars;
+      
     }
 
     unset_pomp_userdata();
@@ -249,74 +264,10 @@ static SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP co
 
 SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi)
 {
-
-  int *xdim, npars, nvars, nreps, nrepsx, ntimes;
   SEXP X, fn, args, covar;
-
   PROTECT(times=AS_NUMERIC(times));
-  ntimes = length(times);
-  if (ntimes < 2)
-    err("length(times)<2: with no transitions, there is no work to do.");
-
   PROTECT(x = as_state_array(x));
-  xdim = INTEGER(GET_DIM(x));
-  nvars = xdim[0]; nrepsx = xdim[1];
-  if (ntimes != xdim[2])
-    err("the length of 'times' and 3rd dimension of 'x' do not agree.");
-
   PROTECT(params = as_matrix(params));
-  xdim = INTEGER(GET_DIM(params));
-  npars = xdim[0]; nreps = xdim[1];
-
-  int nprotect = 3;
-
-  if (nrepsx > nreps) {         // more states than parameters
-    if (nrepsx % nreps != 0) {
-      err("the larger number of replicates is not a multiple of smaller.");
-    } else {
-      SEXP copy;
-      double *src, *tgt;
-      int dims[2];
-      int j, k;
-      dims[0] = npars; dims[1] = nrepsx;
-      PROTECT(copy = duplicate(params));
-      PROTECT(params = makearray(2,dims));
-      nprotect += 2;
-      setrownames(params,GET_ROWNAMES(GET_DIMNAMES(copy)),2);
-      src = REAL(copy);
-      tgt = REAL(params);
-      for (j = 0; j < nrepsx; j++) {
-        for (k = 0; k < npars; k++, tgt++) {
-          *tgt = src[k+npars*(j%nreps)];
-        }
-      }
-    }
-    nreps = nrepsx;
-  } else if (nrepsx < nreps) {  // more parameters than states
-    if (nreps % nrepsx != 0) {
-      err("the larger number of replicates is not a multiple of smaller.");
-    } else {
-      SEXP copy;
-      double *src, *tgt;
-      int dims[3];
-      int i, j, k;
-      dims[0] = nvars; dims[1] = nreps; dims[2] = ntimes;
-      PROTECT(copy = duplicate(x));
-      PROTECT(x = makearray(3,dims));
-      nprotect += 2;
-      setrownames(x,GET_ROWNAMES(GET_DIMNAMES(copy)),3);
-      src = REAL(copy);
-      tgt = REAL(x);
-      for (i = 0; i < ntimes; i++) {
-        for (j = 0; j < nreps; j++) {
-          for (k = 0; k < nvars; k++, tgt++) {
-            *tgt = src[k+nvars*((j%nrepsx)+nrepsx*i)];
-          }
-        }
-      }
-    }
-  }
-
   // extract the process function
   PROTECT(fn = GET_SLOT(object,install("dprocess")));
   // extract other arguments
@@ -324,9 +275,6 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
   PROTECT(covar = GET_SLOT(object,install("covar")));
   // evaluate the density
   PROTECT(X = onestep_density(fn,x,times,params,covar,log,args,gnsi));
-
-  nprotect += 4;
-
-  UNPROTECT(nprotect);
+  UNPROTECT(7);
   return X;
 }

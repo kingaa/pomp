@@ -1,5 +1,5 @@
 
-R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
 Copyright (C) 2023 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -54,7 +54,7 @@ Error : in 'mvn_rw': 'rw.var' must be a square matrix.
 +     mvn_rw(m) -> f})
 Warning messages:
 1: In chol.default(rw.var, pivot = TRUE) :
-  the matrix is either rank-deficient or indefinite
+  the matrix is either rank-deficient or not positive definite
 2: in 'mvn_rw': rank-deficient covariance matrix 
 > cmat <- matrix(c(1,1,0,1),2,2,dimnames=list(letters[1:2],letters[1:2]))
 > f <- mvn_rw(cmat)
@@ -120,7 +120,7 @@ alpha_1 alpha_3
       1       1 
 Warning messages:
 1: In chol.default(covmat, pivot = TRUE) :
-  the matrix is either rank-deficient or indefinite
+  the matrix is either rank-deficient or not positive definite
 2: in 'mvn_rw_adaptive': degenerate proposal. 
 > 
 > mvn_rw_adaptive(rw.sd=c(alpha_1=0.1,alpha_3=0.1),

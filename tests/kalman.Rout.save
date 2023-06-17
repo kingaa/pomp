@@ -1,5 +1,5 @@
 
-R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
 Copyright (C) 2023 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -268,7 +268,7 @@ Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those 
 +   enkf(pf,Np=1000,R=R)
 + })
 NOTE: The provided object 'R' is available for use by POMP basic components.
-Error : in 'enkf': degenerate 'vmeasure': the leading minor of order 2 is not positive definite
+Error : in 'enkf': degenerate 'vmeasure': the leading minor of order 2 is not positive
 > 
 > try({
 +   eakf(pf,Np=1000,R=R)

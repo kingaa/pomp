@@ -1,5 +1,5 @@
 
-R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
 Copyright (C) 2023 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -117,16 +117,16 @@ https://kingaa.github.io/pomp/blog.html.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  7.822   0.125   7.948 
+  7.383   0.084   7.468 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.170   0.001   0.170 
+  0.154   0.005   0.159 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.719   0.024   0.743 
+  0.660   0.006   0.667 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.029   0.005   0.034 
+  0.031   0.000   0.032 
 > 
 > dev.off()
 null device 

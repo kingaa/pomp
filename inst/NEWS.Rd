@@ -2,13 +2,13 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 5.2.2}{
   \itemize{
+    \item This version adds the new basic component \code{dinit} for evaluating the probability density function of the initial-state distribution.
+    There is a corresponding workhorse function, \code{dinit()}.
     \item The constructor \code{pomp} now takes the optional argument \code{nstatevars}, which can be used to increase the dimension of the latent state-vectors created by \code{rinit}.
     By default, \code{nstatevars = length(statenames)}, and \code{nstatevars} can only be used to \emph{increase}, not to decrease, the dimension of the latent state process.
     Moreover, \code{nstatevars} has no effect if the \code{rinit} basic component is furnished as an \R function.
     \item Name checking on internally-created vectors and arrays is less strict than previously.
     In particular, it is possible to have variables without names (i.e., \code{""}).
-    \item This version adds the new basic component \code{dinit} for evaluating the probability density function of the initial-state distribution.
-    There is a corresponding workhorse function, \code{dinit()}.
   }
 }
 \section{Changes in \pkg{pomp} version 5.2.1}{
