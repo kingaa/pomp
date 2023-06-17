@@ -104,6 +104,10 @@
 ##' @param statenames optional character vector;
 ##' names of the latent state variables.
 ##' It is typically only necessary to supply \code{statenames} when C snippets are in use.
+##' See also \code{nstatevars}.
+##' @param nstatevars optional integer scalar;
+##' If C snippets or native routines are used, one can specify the number of state variables with this argument.
+##' By default, \code{nstatevars = length(statenames)}.
 ##' @param paramnames optional character vector;
 ##' names of model parameters.
 ##' It is typically only necessary to supply \code{paramnames} when C snippets are in use.
@@ -154,7 +158,7 @@ pomp <- function (data, times, t0, ...,
   partrans,
   covar, params, accumvars,
   obsnames, statenames, paramnames, covarnames,
-  PACKAGE, globals, on_load,
+  nstatevars, PACKAGE, globals, on_load,
   cdir = getOption("pomp_cdir", NULL), cfile,
   shlib.args, compile = TRUE,
   verbose = getOption("verbose", FALSE)) {
@@ -175,6 +179,7 @@ pomp <- function (data, times, t0, ...,
       missing(vmeasure) && missing(skeleton) &&
       missing(rprior) && missing(dprior) && missing(partrans) &&
       missing(covar) && missing(params) && missing(accumvars) &&
+      missing(nstatevars) &&
       ...length() == 0
   )
     return(as(data,"pomp"))
@@ -191,7 +196,7 @@ pomp <- function (data, times, t0, ...,
       skeleton=skeleton,rprior=rprior,dprior=dprior,partrans=partrans,
       params=params,covar=covar,accumvars=accumvars,
       obsnames=obsnames,statenames=statenames,paramnames=paramnames,
-      covarnames=covarnames,PACKAGE=PACKAGE,
+      covarnames=covarnames,nstatevars=nstatevars,PACKAGE=PACKAGE,
       globals=globals,on_load=on_load,
       cdir=cdir,cfile=cfile,shlib.args=shlib.args,
       compile=compile,verbose=verbose

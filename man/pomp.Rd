@@ -29,6 +29,7 @@ pomp(
   statenames,
   paramnames,
   covarnames,
+  nstatevars,
   PACKAGE,
   globals,
   on_load,
@@ -137,7 +138,8 @@ these are read from the names of the data variables.}
 
 \item{statenames}{optional character vector;
 names of the latent state variables.
-It is typically only necessary to supply \code{statenames} when C snippets are in use.}
+It is typically only necessary to supply \code{statenames} when C snippets are in use.
+See also \code{nstatevars}.}
 
 \item{paramnames}{optional character vector;
 names of model parameters.
@@ -147,6 +149,10 @@ It is typically only necessary to supply \code{paramnames} when C snippets are i
 names of the covariates.
 It is not usually necessary to specify \code{covarnames} since, by default,
 these are read from the names of the covariates.}
+
+\item{nstatevars}{optional integer scalar;
+If C snippets or native routines are used, one can specify the number of state variables with this argument.
+By default, \code{nstatevars = length(statenames)}.}
 
 \item{PACKAGE}{optional character;
 the name (without extension) of the external, dynamically loaded library in which any native routines are to be found.
