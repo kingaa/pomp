@@ -141,36 +141,35 @@ static R_INLINE void fixdimnames (SEXP x, const char **names, int n) {
 }
 
 static R_INLINE SEXP as_matrix (SEXP x) {
-  int nprotect = 0;
+  int nprotect = 1;
   SEXP dim, names;
   int *xdim, nrow, ncol;
-  PROTECT(dim = GET_DIM(x)); nprotect++;
+  PROTECT(dim = GET_DIM(x));
   if (isNull(dim)) {
-    PROTECT(x = duplicate(x)); nprotect++;
-    PROTECT(names = GET_NAMES(x)); nprotect++;
+    PROTECT(x = duplicate(x));
+    PROTECT(names = GET_NAMES(x));
+    nprotect += 2;
     dim = NEW_INTEGER(2);
-    xdim = INTEGER(dim);
-    xdim[0] = LENGTH(x); xdim[1] = 1;
+    xdim = INTEGER(dim); xdim[0] = LENGTH(x); xdim[1] = 1;
     SET_DIM(x,dim);
     SET_NAMES(x,R_NilValue);
     setrownames(x,names,2);
   } else if (LENGTH(dim) == 1) {
-    PROTECT(x = duplicate(x)); nprotect++;
-    PROTECT(names = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
+    PROTECT(x = duplicate(x));
+    PROTECT(names = GET_ROWNAMES(GET_DIMNAMES(x)));
+    nprotect += 2;
     dim = NEW_INTEGER(2);
-    xdim = INTEGER(dim);
-    xdim[0] = LENGTH(x); xdim[1] = 1;
+    xdim = INTEGER(dim); xdim[0] = LENGTH(x); xdim[1] = 1;
     SET_DIM(x,dim);
     SET_NAMES(x,R_NilValue);
     setrownames(x,names,2);
   } else if (LENGTH(dim) > 2) {
-    PROTECT(x = duplicate(x)); nprotect++;
-    PROTECT(names = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
-    nrow = INTEGER(dim)[0];
-    ncol = LENGTH(x)/nrow;
+    PROTECT(x = duplicate(x));
+    PROTECT(names = GET_ROWNAMES(GET_DIMNAMES(x)));
+    nprotect += 2;
+    nrow = INTEGER(dim)[0]; ncol = LENGTH(x)/nrow;
     dim = NEW_INTEGER(2);
-    xdim = INTEGER(dim);
-    xdim[0] = nrow; xdim[1] = ncol;
+    xdim = INTEGER(dim); xdim[0] = nrow; xdim[1] = ncol;
     SET_DIM(x,dim);
     SET_NAMES(x,R_NilValue);
     setrownames(x,names,2);
@@ -180,44 +179,43 @@ static R_INLINE SEXP as_matrix (SEXP x) {
 }
 
 static R_INLINE SEXP as_state_array (SEXP x) {
-  int nprotect = 0;
+  int nprotect = 1;
   SEXP dim, names;
   int *xdim, nrow, ncol;
-  PROTECT(dim = GET_DIM(x)); nprotect++;
+  PROTECT(dim = GET_DIM(x));
   if (isNull(dim)) {
-    PROTECT(x = duplicate(x)); nprotect++;
-    PROTECT(names = GET_NAMES(x)); nprotect++;
+    PROTECT(x = duplicate(x));
+    PROTECT(names = GET_NAMES(x));
+    nprotect += 2;
     dim = NEW_INTEGER(3);
-    xdim = INTEGER(dim);
-    xdim[0] = LENGTH(x); xdim[1] = 1; xdim[2] = 1;
+    xdim = INTEGER(dim); xdim[0] = LENGTH(x); xdim[1] = 1; xdim[2] = 1;
     SET_DIM(x,dim);
     SET_NAMES(x,R_NilValue);
     setrownames(x,names,3);
   } else if (LENGTH(dim) == 1) {
-    PROTECT(x = duplicate(x)); nprotect++;
-    PROTECT(names = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
+    PROTECT(x = duplicate(x));
+    PROTECT(names = GET_ROWNAMES(GET_DIMNAMES(x)));
+    nprotect += 2;
     dim = NEW_INTEGER(3);
-    xdim = INTEGER(dim);
-    xdim[0] = LENGTH(x); xdim[1] = 1; xdim[2] = 1;
+    xdim = INTEGER(dim); xdim[0] = LENGTH(x); xdim[1] = 1; xdim[2] = 1;
     SET_DIM(x,dim);
     SET_NAMES(x,R_NilValue);
     setrownames(x,names,3);
   } else if (LENGTH(dim) == 2) {
-    PROTECT(x = duplicate(x)); nprotect++;
-    PROTECT(names = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
-    xdim = INTEGER(dim);
-    nrow = xdim[0]; ncol = xdim[1];
+    PROTECT(x = duplicate(x));
+    PROTECT(names = GET_ROWNAMES(GET_DIMNAMES(x)));
+    nprotect += 2;
+    xdim = INTEGER(dim); nrow = xdim[0]; ncol = xdim[1];
     dim = NEW_INTEGER(3);
-    xdim = INTEGER(dim);
-    xdim[0] = nrow; xdim[1] = 1; xdim[2] = ncol;
+    xdim = INTEGER(dim); xdim[0] = nrow; xdim[1] = 1; xdim[2] = ncol;
     SET_DIM(x,dim);
     SET_NAMES(x,R_NilValue);
     setrownames(x,names,3);
   } else if (LENGTH(dim) > 3) {
-    PROTECT(x = duplicate(x)); nprotect++;
-    PROTECT(names = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
-    xdim = INTEGER(dim);
-    nrow = xdim[0]; ncol = xdim[1];
+    PROTECT(x = duplicate(x));
+    PROTECT(names = GET_ROWNAMES(GET_DIMNAMES(x)));
+    nprotect += 2;
+    xdim = INTEGER(dim); nrow = xdim[0]; ncol = xdim[1];
     dim = NEW_INTEGER(3);
     xdim = INTEGER(dim);
     xdim[0] = nrow; xdim[1] = ncol; xdim[2] = LENGTH(x)/nrow/ncol;
