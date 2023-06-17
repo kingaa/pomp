@@ -27,7 +27,7 @@ workhorse_templates <- list(
     slotname="dinit",
     Cname="__pomp_dinit",
     proto=quote(dinit(...)),
-    header="\nvoid __pomp_dinit (double *__lik, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)\n{\n",
+    header="\nvoid __pomp_dinit (double *__loglik, const double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
     footer="\n}\n\n",
     vars=list(
       params=list(
@@ -42,9 +42,9 @@ workhorse_templates <- list(
         names=quote(statenames),
         cref="__x[__stateindex[{%v%}]]"
       ),
-      lik=list(
-        names="lik",
-        cref="__lik[0]"
+      loglik=list(
+        names="loglik",
+        cref="__loglik[0]"
       )
     )
   ),

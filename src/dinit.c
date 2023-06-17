@@ -192,7 +192,7 @@ static SEXP init_density
 	 j < nreps;
 	 j++, ft++, x += nvars, ps += npars) {
 
-      (*ff)(ft,x,ps,sidx,pidx,cidx,cov,*t);
+      (*ff)(ft,x,ps,*t,sidx,pidx,cidx,cov);
 
       if (!give_log) *ft = exp(*ft);
 

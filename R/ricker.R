@@ -97,28 +97,23 @@ ricker <- function (r = exp(3.8), sigma = 0.3, phi = 10, c = 1,
     params=c(r=r,sigma=sigma,phi=phi,c=c,N_0=N_0,e_0=0),
     cfile="ricker_source",
     rprocess=discrete_time(
-      step.fun=Csnippet("
-      e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
-      N = exp(log(r)+log(N)-c*N+e);"),
+      step.fun=Csnippet(r"{
+        e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
+        N = exp(log(r)+log(N)-c*N+e);}"),
       delta.t=1
     ),
-    emeasure=Csnippet("
-    E_y = phi*N;"),
-    vmeasure=Csnippet("
-    V_y_y = phi*N;"),
-    rmeasure=Csnippet("
-    y = rpois(phi*N);"),
-    dmeasure=Csnippet("
-    lik = dpois(y,phi*N,give_log);"),
-    skeleton=map(Csnippet("
+    emeasure=Csnippet("E_y = phi*N;"),
+    vmeasure=Csnippet("V_y_y = phi*N;"),
+    rmeasure=Csnippet("y = rpois(phi*N);"),
+    dmeasure=Csnippet("lik = dpois(y,phi*N,give_log);"),
+    skeleton=map(
+      Csnippet(r"{
         DN = exp(log(r)+log(N)-c*N);
-        De = 0.0;"),
+        De = 0.0;}"),
       delta.t=1),
     partrans=parameter_trans(log=c("r","sigma","phi","c","N_0")),
-    rinit=Csnippet("
-        N = N_0;
-        e = 0;"
-    ),
+    rinit=Csnippet("N = N_0; e = 0;"),
+    dinit=Csnippet("loglik = (N == N_0) ? 0 : R_NegInf;"),
     paramnames=c("r","sigma","phi","c","N_0"),
     statenames=c("N","e")
   )

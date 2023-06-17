@@ -22,7 +22,7 @@ sm |> dinit(params=cbind(parmat(theta,3),coef(sm)),x=rinit(sm,nsim=8))
 gompertz |>
   simulate(
     rinit=Csnippet("X = rexp(1/X_0);"),
-    dinit=Csnippet("lik = dexp(X,1/X_0,1);"),
+    dinit=Csnippet("loglik = dexp(X,1/X_0,1);"),
     statenames="X",
     paramnames="X_0"
   ) -> sm
@@ -56,3 +56,8 @@ sir |>
 
 sir |>
   dinit(x=rinit(sir),params=parmat(theta,2),log=FALSE)
+
+ricker() |>
+  dinit(
+    x=cbind(c(N=7,e=0),c(N=7,e=1),c(N=4,e=0))
+  )
