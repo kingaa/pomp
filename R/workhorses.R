@@ -456,8 +456,7 @@ setMethod(
   }
 )
 
-dinit_internal <- function (object, x, params, t0,
-  log, .gnsi = TRUE, ...) {
+dinit_internal <- function (object, x, params, t0, log, .gnsi = TRUE, ...) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)
