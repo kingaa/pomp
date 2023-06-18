@@ -1,9 +1,9 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck'
-* using R version 4.3.0 (2023-04-21)
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck'
+* using R version 4.3.1 (2023-06-16)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
-    gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
-    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+    gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
+    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
 * running under: Ubuntu 22.04.2 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
@@ -55,11 +55,11 @@
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
          user system elapsed
-pfilter 6.118  0.304     5.1
+pfilter 7.133  0.197   6.915
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [40s/28s] OK
+ [32s/32s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

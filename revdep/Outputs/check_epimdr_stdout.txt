@@ -1,9 +1,9 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/epimdr.Rcheck'
-* using R version 4.3.0 (2023-04-21)
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/epimdr.Rcheck'
+* using R version 4.3.1 (2023-06-16)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
-    gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
-    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+    gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
+    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
 * running under: Ubuntu 22.04.2 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
@@ -19,7 +19,7 @@
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
 * checking serialization versions ... OK
-* checking whether package 'epimdr' can be installed ... [29s/11s] OK
+* checking whether package 'epimdr' can be installed ... OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -41,7 +41,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... NOTE
+* checking R code for possible problems ... [18s/12s] NOTE
 chainSIR: local variable ‘I’ assigned but may not be used
 chainSIR: local variable ‘R’ assigned but may not be used
 chainSIR: local variable ‘S’ assigned but may not be used

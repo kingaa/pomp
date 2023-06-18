@@ -1,9 +1,9 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck'
-* using R version 4.3.0 (2023-04-21)
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck'
+* using R version 4.3.1 (2023-06-16)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
-    gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
-    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+    gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
+    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
 * running under: Ubuntu 22.04.2 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
@@ -60,15 +60,12 @@ Namespace in Imports field not imported from: ‘utils’
 * checking installed files from 'inst/doc' ... OK
 * checking files in 'vignettes' ... OK
 * checking examples ... OK
-Examples with CPU (user + system) or elapsed time > 5s
-                  user system elapsed
-create_simulator 2.587  8.041   1.296
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- OK
+ [15s/12s] OK
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK
-* checking re-building of vignette outputs ... [41s/21s] OK
+* checking re-building of vignette outputs ... [22s/22s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

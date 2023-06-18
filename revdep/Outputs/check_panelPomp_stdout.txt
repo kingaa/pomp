@@ -1,9 +1,9 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
-* using R version 4.3.0 (2023-04-21)
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
+* using R version 4.3.1 (2023-06-16)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
-    gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
-    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+    gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
+    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
 * running under: Ubuntu 22.04.2 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
@@ -51,22 +51,7 @@
 * checking Rd \usage sections ... OK
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
-* checking examples ... [111s/13s] OK
-Examples with CPU (user + system) or elapsed time > 5s
-                         user system elapsed
-simulate                2.287  8.430   0.725
-unitobjects             2.463  8.220   0.712
-unitlogLik              1.947  7.041   0.834
-plot                    1.715  6.837   0.815
-mif2                    1.928  6.195   0.986
-pparams                 1.663  6.333   0.730
-panelGompertzLikelihood 1.487  5.985   0.995
-panelRandomWalk         1.497  5.869   0.743
-params                  1.297  5.794   0.825
-pfilter                 1.381  5.686   0.729
-panelPomp_methods       1.394  5.223   0.788
-panelGompertz           1.423  4.937   0.926
-panelPomp               1.379  4.974   0.785
+* checking examples ... [32s/15s] OK
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
@@ -106,7 +91,7 @@ panelPomp               1.379  4.974   0.785
 < name     [,1]     [,2]     [,3]     [,4]      [,5]
 ---
 > variable     [,1]     [,2]     [,3]     [,4]      [,5]
- [268s/44s] OK
+ [96s/49s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

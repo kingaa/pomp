@@ -2,7 +2,7 @@
   Comparing ‘_options.Rout’ to ‘_options.Rout.save’ ... OK
   Running ‘aaa.R’
   Comparing ‘aaa.Rout’ to ‘aaa.Rout.save’ ... OK
-  Running ‘contacts.R’
+  Running ‘contacts.R’ [13s/12s]
   Comparing ‘contacts.Rout’ to ‘contacts.Rout.save’ ...  Running ‘get_col_row.R’
   Comparing ‘get_col_row.Rout’ to ‘get_col_row.Rout.save’ ... OK
   Running ‘mif2.R’
