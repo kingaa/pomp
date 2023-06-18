@@ -270,22 +270,39 @@ refer to the first state variable, the fourth state variable, the third paramete
 ### rinit
 
 ```{c eval=FALSE}
-void pomp_rinit(double *x, const double *p, double t,
+void pomp_rinit(double *x, const double *p, double t0,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars);
 ```
 
 Description:
 
--  `p` is a pointer to parameter vector.
--  `t` is the current time.
--  `stateindex`, `parindex`, `covindex`: see [**Indices**](#indices), above.
--  `covars` is a pointer to a vector containing the (possibly interpolated) values of the covariates at the current time.
--  `x` is a vector that will, on return, contain a draw from the initial-state distribution.
+- `p` is a pointer to parameter vector.
+- `t0` is the zero time.
+- `stateindex`, `parindex`, `covindex`: see [**Indices**](#indices), above.
+- `covars` is a pointer to a vector containing the (possibly interpolated) values of the covariates at the current time.
+- `x` is a vector that will, on return, contain a draw from the initial-state distribution.
 
 **NB:** There is no need to call `GetRNGstate()` or `PutRNGstate()` in the body of the user-defined function.
 The RNG is initialized before any call to this function, and the RNG state is written afterward.
 Inclusion of these calls in the user-defined function may result in significant slowdown.
+
+### dinit
+
+```{c eval=FALSE}
+void pomp_dinit (double *loglik, const double *x, const double *p, double t0,
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars);
+```
+
+Description:
+
+- `loglik` is a pointer to the scalar that will, on return, contain the log probability density.
+- `x` is the state vector at time `t`.
+- `p` is a pointer to parameter vector.
+- `t0` is the zero time.
+- `stateindex`, `parindex`, `covindex`: see [**Indices**](#indices), above.
+- `covars` is a pointer to a vector containing the (possibly interpolated) values of the covariates at the current time.
 
 ### rprocess
 
