@@ -1,4 +1,4 @@
-##' Probability distributions
+##' Eulermultinomial and gamma-whitenoise distributions
 ##'
 ##' \pkg{pomp} provides a number of probability distributions that have proved useful in modeling partially observed Markov processes.
 ##' These include the Euler-multinomial family of distributions and
@@ -47,11 +47,10 @@
 ##' For all of the functions described here, access to the underlying C routines is available:
 ##' see below.
 ##'
-##' @name distributions
-##' @rdname distributions
+##' @name eulermultinom
+##' @rdname eulermultinom
 ##' @family implementation information
 ##' @concept probability distributions
-##'
 ##' @param n integer; number of random variates to generate.
 ##' @param size scalar integer; number of individuals at risk.
 ##' @param rate numeric vector of hazard rates.
@@ -60,7 +59,6 @@
 ##' @param x matrix or vector containing number of individuals that have
 ##' succumbed to each death process.
 ##' @param log logical; if TRUE, return logarithm(s) of probabilities.
-##'
 ##' @return
 ##' \item{reulermultinom}{
 ##'    Returns a \code{length(rate)} by \code{n} matrix.
@@ -99,7 +97,7 @@
 ##'
 NULL
 
-##' @rdname distributions
+##' @rdname eulermultinom
 ##' @export
 reulermultinom <- function (n = 1, size, rate, dt) {
   tryCatch(
@@ -108,7 +106,7 @@ reulermultinom <- function (n = 1, size, rate, dt) {
   )
 }
 
-##' @rdname distributions
+##' @rdname eulermultinom
 ##' @export
 deulermultinom <- function (x, size, rate, dt, log = FALSE) {
   tryCatch(
@@ -117,7 +115,7 @@ deulermultinom <- function (x, size, rate, dt, log = FALSE) {
   )
 }
 
-##' @rdname distributions
+##' @rdname eulermultinom
 ##' @export
 rgammawn <- function (n = 1, sigma, dt) {
   tryCatch(

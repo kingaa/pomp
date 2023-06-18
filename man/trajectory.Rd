@@ -60,14 +60,14 @@ This will be coerced internally to storage mode \code{double}.}
 
 \item{skeleton}{optional; the deterministic skeleton of the unobserved state process.
 Depending on whether the model operates in continuous or discrete time, this is either a vectorfield or a map.
-Accordingly, this is supplied using either the \code{\link[=skeleton specification]{vectorfield}} or \code{\link[=skeleton specification]{map}} fnctions.
-For more information, see \link[=skeleton specification]{skeleton specification}.
+Accordingly, this is supplied using either the \code{\link[=skeleton_spec]{vectorfield}} or \code{\link[=skeleton_spec]{map}} fnctions.
+For more information, see \link[=skeleton_spec]{skeleton specification}.
 Setting \code{skeleton=NULL} removes the deterministic skeleton.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit specification]{rinit specification}.}
+For more information, see \link[=rinit_spec]{rinit specification}.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
@@ -174,7 +174,7 @@ In the case of a continuous-time system, the deterministic skeleton is a vector-
 }
 \seealso{
 More on \pkg{pomp} elementary algorithms: 
-\code{\link{elementary algorithms}},
+\code{\link{elementary_algorithms}},
 \code{\link{kalman}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},
@@ -185,9 +185,9 @@ More on \pkg{pomp} elementary algorithms:
 
 More on methods for deterministic process models: 
 \code{\link{flow}()},
-\code{\link{skeleton specification}},
+\code{\link{skeleton_spec}},
 \code{\link{skeleton}()},
-\code{\link{trajectory matching}}
+\code{\link{traj_match}}
 }
 \concept{deterministic methods}
 \concept{elementary algorithms}

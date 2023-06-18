@@ -52,25 +52,6 @@ setGeneric(
     standardGeneric("covariate_table")
 )
 
-##' @rdname show
-##' @export
-setMethod(
-  "show",
-  signature=signature(object="covartable"),
-  definition=function (object) {
-    if (length(object@times)>0) {
-      cat("\n  -",ncol(object@table),"records of",
-        nrow(object@table),"covariates,",
-        "recorded from t =",min(object@times),
-        "to",max(object@times),"\n")
-      cat("  - summary of covariates:\n")
-      print(summary(as.data.frame(t(object@table))))
-    } else {
-      cat("<none>\n")
-    }
-  }
-)
-
 setMethod(
   "covariate_table",
   signature=signature(times="missing"),

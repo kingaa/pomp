@@ -1,13 +1,12 @@
-##' pomp_examples
+##' pre-built pomp examples
 ##'
-##' Pre-built POMP examples 
+##' Examples of pomp objects containing models and data.
 ##'
-##' @name pomp examples
+##' @name pomp_examples
 ##' @rdname pomp_examp
 ##' @docType data
 ##' @keywords models
 ##' @family pomp examples
-##'
 ##' @details
 ##' \pkg{pomp} includes a number of pre-built examples of pomp objects and data that can be analyzed using \pkg{pomp} methods.
 ##' These include:

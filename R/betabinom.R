@@ -10,8 +10,8 @@
 ##' @rdname betabinom
 ##' @family implementation information
 ##' @concept probability distributions
-##' @inheritSection distributions C API
-##' @inheritParams distributions
+##' @inheritSection eulermultinom C API
+##' @inheritParams eulermultinom
 ##' @param size \code{size} parameter of the binomial distribution
 ##' @param prob mean of the Beta distribution
 ##' @param theta Beta distribution dispersion parameter

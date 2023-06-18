@@ -1,8 +1,8 @@
-##' The variance of the measurement model
+##' vmeasure specification
 ##'
 ##' Specification of the measurement-model covariance  matrix, vmeasure.
 ##'
-##' @name vmeasure specification
+##' @name vmeasure_spec
 ##' @rdname vmeasure_spec
 ##' @family implementation information
 ##' @seealso \code{\link{vmeasure}}

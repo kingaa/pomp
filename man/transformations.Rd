@@ -51,25 +51,25 @@ Thus, \preformatted{
 \seealso{
 More on implementing POMP models: 
 \code{\link{Csnippet}},
-\code{\link{accumulator variables}},
-\code{\link{basic components}},
+\code{\link{accumvars}},
+\code{\link{basic_components}},
 \code{\link{betabinomial}},
 \code{\link{covariates}},
-\code{\link{dinit specification}},
-\code{\link{distributions}},
-\code{\link{dmeasure specification}},
-\code{\link{dprocess specification}},
-\code{\link{emeasure specification}},
-\code{\link{parameter transformations}},
+\code{\link{dinit_spec}},
+\code{\link{dmeasure_spec}},
+\code{\link{dprocess_spec}},
+\code{\link{emeasure_spec}},
+\code{\link{eulermultinom}},
+\code{\link{parameter_trans}()},
 \code{\link{pomp-package}},
-\code{\link{pomp}},
-\code{\link{prior specification}},
-\code{\link{rinit specification}},
-\code{\link{rmeasure specification}},
-\code{\link{rprocess specification}},
-\code{\link{skeleton specification}},
+\code{\link{pomp_constructor}},
+\code{\link{prior_spec}},
+\code{\link{rinit_spec}},
+\code{\link{rmeasure_spec}},
+\code{\link{rprocess_spec}},
+\code{\link{skeleton_spec}},
 \code{\link{userdata}},
-\code{\link{vmeasure specification}}
+\code{\link{vmeasure_spec}}
 }
 \concept{implementation information}
 \concept{parameter transformations}

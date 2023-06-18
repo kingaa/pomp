@@ -6,7 +6,7 @@
 ##' In \pkg{pomp}, this discrepancy is measured using the \dQuote{synthetic likelihood} as defined by Wood (2010).
 ##'
 ##' @docType methods
-##' @name probe matching
+##' @name probe_match
 ##' @rdname probe_match
 ##' @aliases probe_objfun probe_objfun,missing-method probe_objfun,ANY-method
 ##' @include probe.R plot.R

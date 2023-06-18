@@ -70,7 +70,7 @@
 ##'
 ##' @author Daniel Reuman, Aaron A. King
 ##'
-##' @seealso \link{trajectory matching}, \link{probe matching}, \link{spectrum matching}, \link{nonlinear forecasting}.
+##' @seealso \link[=traj_match]{trajectory matching}, \link[=probe_match]{probe matching}, \link[=spect_match]{spectrum matching}, \link[=nlf]{nonlinear forecasting}.
 ##'
 ##' @keywords optimize
 NULL

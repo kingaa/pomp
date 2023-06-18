@@ -6,7 +6,7 @@
 \alias{dprocess,ANY-method}
 \alias{dprocess,missing-method}
 \alias{dprocess,pomp-method}
-\title{dprocess}
+\title{dprocess workhorse}
 \usage{
 \S4method{dprocess}{pomp}(
   object,
@@ -46,7 +46,7 @@ If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or the log 
 Evaluates the probability density of a sequence of consecutive state transitions.
 }
 \seealso{
-Specification of the process-model density evaluator: \link{dprocess specification}
+Specification of the process-model density evaluator: \link{dprocess_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},

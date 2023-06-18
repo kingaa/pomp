@@ -6,7 +6,7 @@
 \alias{emeasure,ANY-method}
 \alias{emeasure,missing-method}
 \alias{emeasure,pomp-method}
-\title{emeasure}
+\title{emeasure workhorse}
 \usage{
 \S4method{emeasure}{pomp}(
   object,
@@ -44,7 +44,7 @@ where \code{nobs} is the number of observed variables.
 Return the expected value of the observed variables, given values of the latent states and the parameters.
 }
 \seealso{
-Specification of the measurement-model expectation: \link{emeasure specification}
+Specification of the measurement-model expectation: \link{emeasure_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},

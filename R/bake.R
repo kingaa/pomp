@@ -1,8 +1,8 @@
-##' Tools for reproducible computations.
+##' Tools for reproducible computations
 ##'
-##' Bake, stew, and freeze assist in the construction of reproducible computations.
+##' Archiving of computations and control of the random-number generator.
 ##'
-##' @name reproducibility tools
+##' @name reproducibility_tools
 ##' @rdname bake
 ##' @include package.R
 ##' @concept reproducibility

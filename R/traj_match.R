@@ -11,7 +11,7 @@
 ##' \code{traj_objfun} constructs an objective function that evaluates the likelihood function.
 ##' It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 ##'
-##' @name trajectory matching
+##' @name traj_match
 ##' @rdname traj_match
 ##' @docType methods
 ##' @include trajectory.R pomp_class.R workhorses.R
@@ -19,13 +19,10 @@
 ##' @concept trajectory matching
 ##' @family deterministic methods
 ##' @family methods based on maximization
-##'
-##' @inheritParams probe matching
+##' @inheritParams probe_match
 ##' @inheritParams trajectory
 ##' @inheritParams pomp
-##'
 ##' @param \dots additional arguments will modify the model structure
-##'
 ##' @return
 ##' \code{traj_objfun} constructs a stateful objective function for spectrum matching.
 ##' Specifically, \code{traj_objfun} returns an object of class \sQuote{traj_match_objfun}, which is a function suitable for use in an \code{\link[stats]{optim}}-like optimizer.
@@ -33,11 +30,9 @@
 ##' When called, it will return the negative log likelihood.
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the log likelihood.
-##'
 ##' @inheritSection pomp Note for Windows users
 ##' @inheritSection objfun Important Note
 ##' @inheritSection objfun Warning! Objective functions based on C snippets
-##' 
 ##' @seealso \code{\link[stats]{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 ##' 
 ##' @example examples/traj_match.R

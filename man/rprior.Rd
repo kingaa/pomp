@@ -6,7 +6,7 @@
 \alias{rprior,ANY-method}
 \alias{rprior,missing-method}
 \alias{rprior,pomp-method}
-\title{rprior}
+\title{rprior workhorse}
 \usage{
 \S4method{rprior}{pomp}(object, params = coef(object), ...)
 }
@@ -26,7 +26,7 @@ A numeric matrix containing the required samples.
 Sample from the prior probability distribution.
 }
 \seealso{
-Specification of the prior distribution simulator: \link{prior specification}
+Specification of the prior distribution simulator: \link{prior_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},
@@ -45,11 +45,11 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{workhorses}}
 
 More on Bayesian methods:
-\code{\link{approximate Bayesian computation}},
+\code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{dprior}()},
 \code{\link{pmcmc}()},
-\code{\link{prior specification}}
+\code{\link{prior_spec}}
 }
 \concept{Bayesian methods}
 \concept{extending the pomp package}

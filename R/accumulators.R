@@ -2,9 +2,8 @@
 ##'
 ##' Latent state variables that accumulate quantities through time.
 ##'
-##' @name accumulator variables
-##' @rdname accumulators
-##' @aliases accumvars
+##' @name accumvars
+##' @rdname accumvars
 ##' @family implementation information
 ##' @seealso \code{\link{sir}}
 ##'

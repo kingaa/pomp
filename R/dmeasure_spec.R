@@ -1,8 +1,8 @@
-##' The measurement model density
+##' dmeasure specification
 ##'
 ##' Specification of the measurement model density function, dmeasure.
 ##'
-##' @name dmeasure specification
+##' @name dmeasure_spec
 ##' @rdname dmeasure_spec
 ##' @family implementation information
 ##' @seealso \code{\link{dmeasure}}

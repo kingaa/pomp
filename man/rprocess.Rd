@@ -6,7 +6,7 @@
 \alias{rprocess,ANY-method}
 \alias{rprocess,missing-method}
 \alias{rprocess,pomp-method}
-\title{rprocess}
+\title{rprocess workhorse}
 \usage{
 \S4method{rprocess}{pomp}(
   object,
@@ -55,7 +55,7 @@ When \code{rprocess} is called, \code{t0} is taken to be the initial time (i.e.,
 The values in \code{times} are the times at which the state of the simulated processes are required.
 }
 \seealso{
-Specification of the process-model simulator: \link{rprocess specification}
+Specification of the process-model simulator: \link{rprocess_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},

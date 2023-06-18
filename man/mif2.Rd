@@ -88,15 +88,15 @@ This will be coerced internally to storage mode \code{double}.}
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit specification]{rinit specification}.}
+For more information, see \link[=rinit_spec]{rinit specification}.}
 
-\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess specification]{rprocess plugins}.
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
 Setting \code{rprocess=NULL} removes the latent-state simulator.
-For more information, see \link[=rprocess specification]{rprocess specification for the documentation on these plugins}.}
+For more information, see \link[=rprocess_spec]{rprocess specification for the documentation on these plugins}.}
 
 \item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{dmeasure=NULL} removes the measurement density evaluator.
-For more information, see \link[=dmeasure specification]{dmeasure specification}.}
+For more information, see \link[=dmeasure_spec]{dmeasure specification}.}
 
 \item{partrans}{optional parameter transformations, constructed using \code{\link{parameter_trans}}.
 
@@ -208,20 +208,20 @@ More on sequential Monte Carlo methods:
 \code{\link{wpfilter}()}
 
 More on \pkg{pomp} estimation algorithms:
-\code{\link{approximate Bayesian computation}},
+\code{\link{abc}()},
 \code{\link{bsmc2}()},
-\code{\link{estimation algorithms}},
-\code{\link{nonlinear forecasting}},
+\code{\link{estimation_algorithms}},
+\code{\link{nlf}},
 \code{\link{pmcmc}()},
 \code{\link{pomp-package}},
-\code{\link{probe matching}},
-\code{\link{spectrum matching}}
+\code{\link{probe_match}},
+\code{\link{spect_match}}
 
 More on maximization-based estimation methods:
-\code{\link{nonlinear forecasting}},
-\code{\link{probe matching}},
-\code{\link{spectrum matching}},
-\code{\link{trajectory matching}}
+\code{\link{nlf}},
+\code{\link{probe_match}},
+\code{\link{spect_match}},
+\code{\link{traj_match}}
 }
 \author{
 Aaron A. King, Edward L. Ionides, Dao Nguyen

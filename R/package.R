@@ -28,48 +28,48 @@
 ##' \item The iterated filtering methods of Ionides et al. (2006, 2011, 2015);
 ##' see \code{\link{mif2}}.
 ##' \item The nonlinear forecasting algorithm of Kendall et al. (2005);
-##' see \link{nonlinear forecasting}.
+##' see \link{nlf}.
 ##' \item The particle MCMC approach of Andrieu et al. (2010);
 ##' see \code{\link{pmcmc}}.
 ##' \item The probe-matching method of Kendall et al. (1999, 2005);
-##' see \link{probe matching}.
+##' see \link{probe_match}.
 ##' \item Synthetic likelihood a la Wood (2010);
 ##' see \code{\link{probe}}.
 ##' \item A spectral probe-matching method (Reuman et al. 2006, 2008);
-##' see \link{spectrum matching}.
+##' see \link{spect_match}.
 ##' \item Approximate Bayesian computation (Toni et al. 2009);
 ##' see \code{\link{abc}}.
 ##' \item The approximate Bayesian sequential Monte Carlo scheme of Liu & West (2001);
 ##' see \code{\link{bsmc2}}.
 ##' \item Ensemble and ensemble adjusted Kalman filters;
-##' see \code{\link{kalman}}.
+##' see \link{kalman}.
 ##' \item Simple trajectory matching;
-##' see \link{trajectory matching}.
+##' see \link{traj_match}.
 ##' }
 ##' The package also provides various tools for plotting and extracting information on models and data.
 ##'
 ##' @section Structure of the package:
 ##'
 ##' \pkg{pomp} algorithms are arranged into several levels.
-##' At the top level, \link[=estimation algorithms]{estimation algorithms} estimate model parameters and return information needed for other aspects of inference.
-##' \link[=elementary algorithms]{Elementary algorithms} perform common operations on \acronym{POMP} models, including simulation, filtering, and application of diagnostic probes;
+##' At the top level, \link[=estimation_algorithms]{estimation algorithms} estimate model parameters and return information needed for other aspects of inference.
+##' \link[=elementary_algorithms]{Elementary algorithms} perform common operations on \acronym{POMP} models, including simulation, filtering, and application of diagnostic probes;
 ##' these functions may be useful in inference, but they do not themselves perform estimation.
-##' At the lowest level, \link[=workhorses]{workhorse functions} provide the interface to \link[=basic components]{basic POMP model components}.
+##' At the lowest level, \link[=workhorses]{workhorse functions} provide the interface to \link[=basic_components]{basic POMP model components}.
 ##' Beyond these, \pkg{pomp} provides a variety of auxiliary functions for manipulating and extracting information from \sQuote{pomp} objects, producing diagnostic plots, \link[=bake]{facilitating reproducible computations}, and so on.
 ##'
 ##' @section Implementing a model:
 ##'
 ##' The basic structure at the heart of the package is the \sQuote{pomp object}.
 ##' This is a container holding a time series of data (possibly multivariate) and a model.
-##' The model is specified by specifying some or all of its \link[=basic components]{basic model components}.
-##' One does this using the \link[=basic components]{basic component arguments} to the \code{\link{pomp}} constructor.
+##' The model is specified by specifying some or all of its \link[=basic_components]{basic model components}.
+##' One does this using the \link[=basic_components]{basic component arguments} to the \code{\link{pomp}} constructor.
 ##' One can also add, modify, or delete basic model components \dQuote{on the fly} in any \pkg{pomp} function that accepts them.
 ##'
 ##' @section Documentation and examples:
 ##'
 ##' The package contains a number of examples.
 ##' Some of these are included in the help pages.
-##' In addition, \link[=pomp examples]{several pre-built POMP models} are included with the package.
+##' In addition, \link[=pomp_examples]{several pre-built POMP models} are included with the package.
 ##' Tutorials and other documentation, including a \href{https://kingaa.github.io/pomp/FAQ.html}{package FAQ}, are available from the \href{https://kingaa.github.io/pomp/}{package website}.
 ##' 
 ##' @section Useful links:

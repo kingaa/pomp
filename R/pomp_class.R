@@ -8,6 +8,7 @@
 ##' @include rprocess_spec.R skeleton_spec.R
 ##' @include covariate_table.R parameter_trans.R
 ##' @keywords internal
+##' @seealso \link{pomp_constructor}
 
 ##' @export
 setClass(

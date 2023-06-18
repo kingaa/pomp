@@ -7,4 +7,7 @@
 \description{
 The basic class implementing a \acronym{POMP} model with data
 }
+\seealso{
+\link{pomp_constructor}
+}
 \keyword{internal}

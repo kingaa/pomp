@@ -6,7 +6,7 @@
 \alias{rinit,ANY-method}
 \alias{rinit,missing-method}
 \alias{rinit,pomp-method}
-\title{rinit}
+\title{rinit workhorse}
 \usage{
 \S4method{rinit}{pomp}(object, params = coef(object), t0 = timezero(object), nsim = 1, ...)
 }
@@ -31,7 +31,7 @@ By default, \code{t0} is the initial time defined when the \sQuote{pomp} object 
 Samples from the initial-state distribution.
 }
 \seealso{
-Specification of the initial-state distribution: \link{rinit specification}
+_spec of the initial-state distribution: \link{rinit_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},

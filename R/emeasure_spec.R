@@ -1,8 +1,8 @@
-##' The expectation of the measurement model
+##' emeasure specification
 ##'
 ##' Specification of the measurement-model conditional expectation, emeasure.
 ##'
-##' @name emeasure specification
+##' @name emeasure_spec
 ##' @rdname emeasure_spec
 ##' @family implementation information
 ##' @seealso \code{\link{emeasure}}

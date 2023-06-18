@@ -13,13 +13,13 @@
 ##' This and similar examples are discussed and constructed in tutorials
 ##' available on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
-##' @name SIR models
+##' @name compartmental_models
+##' @aliases SIR_models
 ##' @rdname sir
 ##' @aliases sir sir2
 ##' @docType data
 ##' @keywords models
 ##' @family pomp examples
-##'
 ##' @return
 ##' These functions return \sQuote{pomp} objects containing simulated data.
 ##'
@@ -28,7 +28,6 @@
 NULL
 
 ##' @rdname sir
-##'
 ##' @param gamma recovery rate
 ##' @param mu death rate (assumed equal to the birth rate)
 ##' @param iota infection import rate
@@ -42,7 +41,6 @@ NULL
 ##' @param times observation times
 ##' @param seed seed of the random number generator
 ##' @param delta.t Euler step size
-##'
 ##' @export
 sir <- function (
   gamma = 26, mu = 0.02, iota = 0.01,

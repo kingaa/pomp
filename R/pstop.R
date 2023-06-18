@@ -1,4 +1,4 @@
-##' pStop
+##' pStop, pWarn, pMess
 ##'
 ##' Custom error, warning, and message functions.
 ##' @name pStop
@@ -10,7 +10,6 @@
 ##' One can also pass the name of the calling function in \code{who}.
 ##' In either case, the name of the calling function is included in the message.
 ##' @param \dots message
-##'
 NULL
 
 ##' @rdname pStop

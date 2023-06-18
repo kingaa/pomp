@@ -46,14 +46,14 @@ The random-walk process is fully but noisily observed.
 }
 \seealso{
 More examples provided with \pkg{pomp}: 
-\code{\link{SIR models}},
 \code{\link{blowflies}},
-\code{\link{childhood disease data}},
+\code{\link{childhood_disease_data}},
+\code{\link{compartmental_models}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{gompertz}()},
 \code{\link{ou2}()},
-\code{\link{pomp examples}},
+\code{\link{pomp_examples}},
 \code{\link{ricker}()},
 \code{\link{verhulst}()}
 }

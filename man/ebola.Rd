@@ -93,18 +93,18 @@ Here, \eqn{p(R_t | C_t)} is negative binomial with mean \eqn{\rho C_t} and dispe
 More data sets provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
-\code{\link{childhood disease data}},
+\code{\link{childhood_disease_data}},
 \code{\link{dacca}()},
 \code{\link{parus}}
 
 More examples provided with \pkg{pomp}: 
-\code{\link{SIR models}},
 \code{\link{blowflies}},
-\code{\link{childhood disease data}},
+\code{\link{childhood_disease_data}},
+\code{\link{compartmental_models}},
 \code{\link{dacca}()},
 \code{\link{gompertz}()},
 \code{\link{ou2}()},
-\code{\link{pomp examples}},
+\code{\link{pomp_examples}},
 \code{\link{ricker}()},
 \code{\link{rw2}()},
 \code{\link{verhulst}()}

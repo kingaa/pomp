@@ -56,7 +56,7 @@ Functions to construct proposal distributions for use with MCMC methods.
 }
 \seealso{
 More on Markov chain Monte Carlo methods:
-\code{\link{approximate Bayesian computation}},
+\code{\link{abc}()},
 \code{\link{pmcmc}()}
 }
 \author{

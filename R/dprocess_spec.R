@@ -1,8 +1,8 @@
-##' The latent state process density
+##' dprocess specification
 ##'
 ##' Specification of the latent state process density function, dprocess.
 ##'
-##' @name dprocess specification
+##' @name dprocess_spec
 ##' @rdname dprocess_spec
 ##' @family implementation information
 ##' @seealso \code{\link{dprocess}}

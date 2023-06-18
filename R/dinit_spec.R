@@ -1,8 +1,8 @@
-##' The initial-state distribution
+##' dinit specification
 ##'
 ##' Specification of the initial-state distribution density evaluator, dinit.
 ##'
-##' @name dinit specification
+##' @name dinit_spec
 ##' @rdname dinit_spec
 ##' @family implementation information
 ##' @seealso \code{\link{dinit}}

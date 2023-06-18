@@ -29,11 +29,11 @@ if (require(tidyr) && require(ggplot2)) {
 \Anonymous1978
 }
 \seealso{
-\link{SIR models}
+\link[=compartmental_models]{compartmental models}
 
 More data sets provided with \pkg{pomp}: 
 \code{\link{blowflies}},
-\code{\link{childhood disease data}},
+\code{\link{childhood_disease_data}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{parus}}

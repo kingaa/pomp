@@ -7,7 +7,7 @@
 \alias{partrans,missing-method}
 \alias{partrans,pomp-method}
 \alias{partrans,objfun-method}
-\title{partrans}
+\title{partrans workhorse}
 \usage{
 \S4method{partrans}{pomp}(object, params, dir = c("fromEst", "toEst"), ...)
 

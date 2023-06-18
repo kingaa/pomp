@@ -89,15 +89,15 @@ This will be coerced internally to storage mode \code{double}.}
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit specification]{rinit specification}.}
+For more information, see \link[=rinit_spec]{rinit specification}.}
 
-\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess specification]{rprocess plugins}.
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
 Setting \code{rprocess=NULL} removes the latent-state simulator.
-For more information, see \link[=rprocess specification]{rprocess specification for the documentation on these plugins}.}
+For more information, see \link[=rprocess_spec]{rprocess specification for the documentation on these plugins}.}
 
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
-For more information, see \link[=rmeasure specification]{rmeasure specification}.}
+For more information, see \link[=rmeasure_spec]{rmeasure specification}.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
@@ -151,15 +151,15 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 \seealso{
 More on methods based on summary statistics: 
-\code{\link{approximate Bayesian computation}},
-\code{\link{basic probes}},
-\code{\link{nonlinear forecasting}},
-\code{\link{probe matching}},
+\code{\link{abc}()},
+\code{\link{basic_probes}},
+\code{\link{nlf}},
+\code{\link{probe_match}},
 \code{\link{probe}()},
-\code{\link{spectrum matching}}
+\code{\link{spect_match}}
 
 More on \pkg{pomp} elementary algorithms: 
-\code{\link{elementary algorithms}},
+\code{\link{elementary_algorithms}},
 \code{\link{kalman}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},

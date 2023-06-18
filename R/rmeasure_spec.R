@@ -1,8 +1,8 @@
-##' The measurement-model simulator
+##' rmeasure specification
 ##'
 ##' Specification of the measurement-model simulator, rmeasure.
 ##'
-##' @name rmeasure specification
+##' @name rmeasure_spec
 ##' @rdname rmeasure_spec
 ##' @family implementation information
 ##' @seealso \code{\link{rmeasure}}

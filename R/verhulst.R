@@ -15,14 +15,12 @@
 ##' @rdname verhulst
 ##' @docType data
 ##' @family pomp examples
-##'
 ##' @param r intrinsic growth rate
 ##' @param K carrying capacity
 ##' @param sigma environmental process noise s.d.
 ##' @param tau measurement error s.d.
 ##' @param n_0 initial condition
 ##' @param dt Euler timestep
-##'
 ##' @return
 ##' A \sQuote{pomp} object containing the model and simulated data.
 ##' The following basic components are included in the \sQuote{pomp} object:

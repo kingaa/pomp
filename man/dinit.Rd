@@ -6,7 +6,7 @@
 \alias{dinit,ANY-method}
 \alias{dinit,missing-method}
 \alias{dinit,pomp-method}
-\title{dinit}
+\title{dinit workhorse}
 \usage{
 \S4method{dinit}{pomp}(
   object,
@@ -45,7 +45,7 @@ By default, \code{t0} is the initial time defined when the \sQuote{pomp} object 
 Evaluates the initial-state density.
 }
 \seealso{
-Specification of the initial-state distribution: \link{dinit specification}
+Specification of the initial-state distribution: \link{dinit_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dmeasure}()},

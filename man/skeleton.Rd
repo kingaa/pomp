@@ -6,7 +6,7 @@
 \alias{skeleton,ANY-method}
 \alias{skeleton,missing-method}
 \alias{skeleton,pomp-method}
-\title{skeleton}
+\title{skeleton workhorse}
 \usage{
 \S4method{skeleton}{pomp}(
   object,
@@ -44,10 +44,10 @@ Evaluates the deterministic skeleton at a point or points in state space, given 
 In the case of a discrete-time system, the skeleton is a map.
 In the case of a continuous-time system, the skeleton is a vectorfield.
 NB: \code{skeleton} just evaluates the deterministic skeleton;
-it does not iterate or integrate (see \code{\link{trajectory}} for this).
+it does not iterate or integrate (see \code{\link{flow}} and \code{\link{trajectory}} for this).
 }
 \seealso{
-Specification of the deterministic skeleton: \link{skeleton specification}
+Specification of the deterministic skeleton: \link{skeleton_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},
@@ -67,8 +67,8 @@ More on \pkg{pomp} workhorse functions:
 
 More on methods for deterministic process models: 
 \code{\link{flow}()},
-\code{\link{skeleton specification}},
-\code{\link{trajectory matching}},
+\code{\link{skeleton_spec}},
+\code{\link{traj_match}},
 \code{\link{trajectory}()}
 }
 \concept{deterministic methods}

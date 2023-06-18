@@ -73,18 +73,18 @@ This will be coerced internally to storage mode \code{double}.}
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
-For more information, see \link[=rinit specification]{rinit specification}.}
+For more information, see \link[=rinit_spec]{rinit specification}.}
 
-\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess specification]{rprocess plugins}.
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
 Setting \code{rprocess=NULL} removes the latent-state simulator.
-For more information, see \link[=rprocess specification]{rprocess specification for the documentation on these plugins}.}
+For more information, see \link[=rprocess_spec]{rprocess specification for the documentation on these plugins}.}
 
 \item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{dmeasure=NULL} removes the measurement density evaluator.
-For more information, see \link[=dmeasure specification]{dmeasure specification}.}
+For more information, see \link[=dmeasure_spec]{dmeasure specification}.}
 
 \item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information, see \link[=prior specification]{prior specification}.
+For more information, see \link[=prior_spec]{prior specification}.
 Setting \code{dprior=NULL} resets the prior distribution to its default, which is a flat improper prior.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
@@ -139,14 +139,14 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 \seealso{
 More on \pkg{pomp} estimation algorithms:
-\code{\link{approximate Bayesian computation}},
+\code{\link{abc}()},
 \code{\link{bsmc2}()},
-\code{\link{estimation algorithms}},
+\code{\link{estimation_algorithms}},
 \code{\link{mif2}()},
-\code{\link{nonlinear forecasting}},
+\code{\link{nlf}},
 \code{\link{pomp-package}},
-\code{\link{probe matching}},
-\code{\link{spectrum matching}}
+\code{\link{probe_match}},
+\code{\link{spect_match}}
 
 More on sequential Monte Carlo methods: 
 \code{\link{bsmc2}()},
@@ -169,14 +169,14 @@ More on full-information (i.e., likelihood-based) methods:
 \code{\link{wpfilter}()}
 
 More on Markov chain Monte Carlo methods:
-\code{\link{approximate Bayesian computation}},
+\code{\link{abc}()},
 \code{\link{proposals}}
 
 More on Bayesian methods:
-\code{\link{approximate Bayesian computation}},
+\code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{dprior}()},
-\code{\link{prior specification}},
+\code{\link{prior_spec}},
 \code{\link{rprior}()}
 }
 \author{

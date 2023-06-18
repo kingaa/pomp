@@ -6,7 +6,7 @@
 \alias{dprior,ANY-method}
 \alias{dprior,missing-method}
 \alias{dprior,pomp-method}
-\title{dprior}
+\title{dprior workhorse}
 \usage{
 \S4method{dprior}{pomp}(object, params = coef(object), ..., log = FALSE)
 }
@@ -28,7 +28,7 @@ The required density (or log density), as a numeric vector.
 Evaluates the prior probability density.
 }
 \seealso{
-Specification of the prior density evaluator: \link{prior specification}
+Specification of the prior density evaluator: \link{prior_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},
@@ -47,10 +47,10 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{workhorses}}
 
 More on Bayesian methods:
-\code{\link{approximate Bayesian computation}},
+\code{\link{abc}()},
 \code{\link{bsmc2}()},
 \code{\link{pmcmc}()},
-\code{\link{prior specification}},
+\code{\link{prior_spec}},
 \code{\link{rprior}()}
 }
 \concept{Bayesian methods}

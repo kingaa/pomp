@@ -1,8 +1,8 @@
-##' The latent state process simulator
+##' rprocess specification
 ##'
 ##' Specification of the latent state process simulator, rprocess.
 ##'
-##' @name rprocess specification
+##' @name rprocess_spec
 ##' @rdname rprocess_spec
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R

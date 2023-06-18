@@ -25,25 +25,24 @@
 ##' @family pomp workhorses
 ##' @concept extending the pomp package
 ##' @concept low-level interface
-##' @seealso \link[=basic components]{basic model components},
-##' \link[=elementary algorithms]{elementary algorithms},
-##' \link[=estimation algorithms]{estimation algorithms}
+##' @seealso \link[=basic_components]{basic model components},
+##' \link[=elementary_algorithms]{elementary algorithms},
+##' \link[=estimation_algorithms]{estimation algorithms}
 ##' @author Aaron A. King
 ##' @concept extending the pomp package
 ##' @concept low-level interface
 NULL
 
-##' dmeasure
+##' dmeasure workhorse
 ##'
 ##' \code{dmeasure} evaluates the probability density of observations given states.
-##'
 ##' @name dmeasure
 ##' @docType methods
 ##' @aliases dmeasure,ANY-method dmeasure,missing-method
 ##' @family pomp workhorses
 ##' @concept extending the pomp package
 ##' @concept low-level interface
-##' @seealso Specification of the measurement density evaluator: \link{dmeasure specification}
+##' @seealso Specification of the measurement density evaluator: \link{dmeasure_spec}
 ##' @param object an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 ##' This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.
 ##' @param x an array containing states of the unobserved process.
@@ -121,7 +120,7 @@ dmeasure_internal <- function (object, y, x, times, params, ..., log = FALSE,
   .Call(P_do_dmeasure,object,y,x,times,params,log,.gnsi)  
 }
 
-##' dprior
+##' dprior workhorse
 ##'
 ##' Evaluates the prior probability density.
 ##'
@@ -132,7 +131,7 @@ dmeasure_internal <- function (object, y, x, times, params, ..., log = FALSE,
 ##' @family Bayesian methods
 ##' @concept extending the pomp package
 ##' @concept low-level interface
-##' @seealso Specification of the prior density evaluator: \link{prior specification}
+##' @seealso Specification of the prior density evaluator: \link{prior_spec}
 ##' @inheritParams dmeasure
 ##' @return
 ##' The required density (or log density), as a numeric vector.
@@ -187,7 +186,7 @@ dprior_internal <- function (object, params, log = FALSE,
   .Call(P_do_dprior,object,params,log,.gnsi)
 }
 
-##' dprocess
+##' dprocess workhorse
 ##'
 ##' Evaluates the probability density of a sequence of consecutive state transitions.
 ##'
@@ -197,7 +196,7 @@ dprior_internal <- function (object, params, log = FALSE,
 ##' @family pomp workhorses
 ##' @concept extending the pomp package
 ##' @concept low-level interface
-##' @seealso Specification of the process-model density evaluator: \link{dprocess specification}
+##' @seealso Specification of the process-model density evaluator: \link{dprocess_spec}
 ##' @inheritParams dmeasure
 ##' @return
 ##' \code{dprocess} returns a matrix of dimensions \code{nrep} x \code{ntimes-1}.
@@ -255,7 +254,7 @@ dprocess_internal <- function (object, x, times, params, log = FALSE, .gnsi = TR
   .Call(P_do_dprocess,object,x,times,params,log,.gnsi)
 }
 
-##' partrans
+##' partrans workhorse
 ##'
 ##' Performs parameter transformations.
 ##'
@@ -326,7 +325,7 @@ partrans_internal <- function (object, params, dir = c("fromEst", "toEst"),
   params
 }
 
-##' rinit
+##' rinit workhorse
 ##'
 ##' Samples from the initial-state distribution.
 ##'
@@ -336,7 +335,7 @@ partrans_internal <- function (object, params, dir = c("fromEst", "toEst"),
 ##' @family pomp workhorses
 ##' @concept extending the pomp package
 ##' @concept low-level interface
-##' @seealso Specification of the initial-state distribution: \link{rinit specification}
+##' @seealso_spec of the initial-state distribution: \link{rinit_spec}
 ##' @inheritParams dmeasure
 ##' @param t0 the initial time, i.e., the time corresponding to the initial-state distribution.
 ##' @param nsim optional integer; the number of initial states to simulate per column of \code{params}.
@@ -395,7 +394,7 @@ rinit_internal <- function (object, params, t0, nsim = 1,
   .Call(P_do_rinit,object,params,t0,nsim,.gnsi)
 }
 
-##' dinit
+##' dinit workhorse
 ##'
 ##' Evaluates the initial-state density.
 ##'
@@ -405,7 +404,7 @@ rinit_internal <- function (object, params, t0, nsim = 1,
 ##' @family pomp workhorses
 ##' @concept extending the pomp package
 ##' @concept low-level interface
-##' @seealso Specification of the initial-state distribution: \link{dinit specification}
+##' @seealso Specification of the initial-state distribution: \link{dinit_spec}
 ##' @inheritParams dmeasure
 ##' @param t0 the initial time, i.e., the time corresponding to the initial-state distribution.
 ##' @return
@@ -464,7 +463,7 @@ dinit_internal <- function (object, x, params, t0, log, .gnsi = TRUE, ...) {
   .Call(P_do_dinit,object,t0,x,params,log,.gnsi)
 }
 
-##' rmeasure
+##' rmeasure workhorse
 ##'
 ##' Sample from the measurement model distribution, given values of the latent states and the parameters.
 ##'
@@ -474,7 +473,7 @@ dinit_internal <- function (object, x, params, t0, log, .gnsi = TRUE, ...) {
 ##' @family pomp workhorses
 ##' @concept extending the pomp package
 ##' @concept low-level interface
-##' @seealso Specification of the measurement-model simulator: \link{rmeasure specification}
+##' @seealso Specification of the measurement-model simulator: \link{rmeasure_spec}
 ##' @inheritParams dmeasure
 ##' @return
 ##' \code{rmeasure} returns a rank-3 array of dimensions
@@ -533,7 +532,7 @@ rmeasure_internal <- function (object, x, times, params,
   .Call(P_do_rmeasure,object,x,times,params,.gnsi)
 }
 
-##' emeasure
+##' emeasure workhorse
 ##'
 ##' Return the expected value of the observed variables, given values of the latent states and the parameters.
 ##'
@@ -541,7 +540,7 @@ rmeasure_internal <- function (object, x, times, params,
 ##' @docType methods
 ##' @aliases emeasure,ANY-method emeasure,missing-method
 ##' @family pomp workhorses
-##' @seealso Specification of the measurement-model expectation: \link{emeasure specification}
+##' @seealso Specification of the measurement-model expectation: \link{emeasure_spec}
 ##' @inheritParams dmeasure
 ##' @return
 ##' \code{emeasure} returns a rank-3 array of dimensions
@@ -600,7 +599,7 @@ emeasure_internal <- function (object, x, times, params,
   .Call(P_do_emeasure,object,x,times,params,.gnsi)
 }
 
-##' vmeasure
+##' vmeasure workhorse
 ##'
 ##' Return the covariance matrix of the observed variables, given values of the latent states and the parameters.
 ##'
@@ -608,7 +607,7 @@ emeasure_internal <- function (object, x, times, params,
 ##' @docType methods
 ##' @aliases vmeasure,ANY-method vmeasure,missing-method
 ##' @family pomp workhorses
-##' @seealso Specification of the measurement-model covariance matrix: \link{vmeasure specification}
+##' @seealso Specification of the measurement-model covariance matrix: \link{vmeasure_spec}
 ##' @inheritParams dmeasure
 ##' @return
 ##' \code{vmeasure} returns a rank-4 array of dimensions
@@ -669,7 +668,7 @@ vmeasure_internal <- function (object, x, times, params,
   .Call(P_do_vmeasure,object,x,times,params,.gnsi)
 }
 
-##' rprior
+##' rprior workhorse
 ##'
 ##' Sample from the prior probability distribution.
 ##'
@@ -680,7 +679,7 @@ vmeasure_internal <- function (object, x, times, params,
 ##' @family Bayesian methods
 ##' @concept extending the pomp package
 ##' @concept low-level interface
-##' @seealso Specification of the prior distribution simulator: \link{prior specification}
+##' @seealso Specification of the prior distribution simulator: \link{prior_spec}
 ##' @inheritParams dmeasure
 ##' @return
 ##' A numeric matrix containing the required samples.
@@ -732,7 +731,7 @@ rprior_internal <- function (object, params, .gnsi = TRUE, ...) {
   .Call(P_do_rprior,object,params,.gnsi)
 }
 
-##' rprocess
+##' rprocess workhorse
 ##'
 ##' \code{rprocess} simulates the process-model portion of partially-observed Markov process.
 ##'
@@ -745,7 +744,7 @@ rprior_internal <- function (object, params, .gnsi = TRUE, ...) {
 ##' @family pomp workhorses
 ##' @concept extending the pomp package
 ##' @concept low-level interface
-##' @seealso Specification of the process-model simulator: \link{rprocess specification}
+##' @seealso Specification of the process-model simulator: \link{rprocess_spec}
 ##' @inheritParams dmeasure
 ##' @param x0 an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
 ##' Columns of \code{x0} correspond to states;
@@ -818,13 +817,13 @@ rprocess_internal <- function (object, x0, t0, times, params, ...,
   .Call(P_do_rprocess,object,x0,t0,times,params,.gnsi)
 }
 
-##' skeleton
+##' skeleton workhorse
 ##'
 ##' Evaluates the deterministic skeleton at a point or points in state space, given parameters.
 ##' In the case of a discrete-time system, the skeleton is a map.
 ##' In the case of a continuous-time system, the skeleton is a vectorfield.
 ##' NB: \code{skeleton} just evaluates the deterministic skeleton;
-##' it does not iterate or integrate (see \code{\link{trajectory}} for this).
+##' it does not iterate or integrate (see \code{\link{flow}} and \code{\link{trajectory}} for this).
 ##'
 ##' @name skeleton
 ##' @docType methods
@@ -833,7 +832,7 @@ rprocess_internal <- function (object, x0, t0, times, params, ...,
 ##' @family deterministic methods
 ##' @concept extending the pomp package
 ##' @concept low-level interface
-##' @seealso Specification of the deterministic skeleton: \link{skeleton specification}
+##' @seealso Specification of the deterministic skeleton: \link{skeleton_spec}
 ##' @inheritParams dmeasure
 ##' @return
 ##' \code{skeleton} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.

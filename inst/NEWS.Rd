@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.2.3}{
+  \itemize{
+    \item The manual pages have been reorganized, with improved cross-linking.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.2.2}{
   \itemize{
     \item This version adds the new basic component \code{dinit} for evaluating the probability density function of the initial-state distribution.

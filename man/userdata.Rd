@@ -11,7 +11,7 @@ It can happen that one desires to pass information to one of the \acronym{POMP} 
 \pkg{pomp} provides facilities for this purpose.
 We refer to the objects one wishes to pass in this way as \dfn{user data}.
 
-The following will apply to every \link[=basic components]{basic model component}.
+The following will apply to every \link[=basic_components]{basic model component}.
 For the sake of definiteness, however, we'll use the \code{rmeasure} component as an example.
 To be even more specific, the measurement model we wish to implement is
 \preformatted{
@@ -155,24 +155,24 @@ See the example below.
 \seealso{
 More on implementing POMP models: 
 \code{\link{Csnippet}},
-\code{\link{accumulator variables}},
-\code{\link{basic components}},
+\code{\link{accumvars}},
+\code{\link{basic_components}},
 \code{\link{betabinomial}},
 \code{\link{covariates}},
-\code{\link{dinit specification}},
-\code{\link{distributions}},
-\code{\link{dmeasure specification}},
-\code{\link{dprocess specification}},
-\code{\link{emeasure specification}},
-\code{\link{parameter transformations}},
+\code{\link{dinit_spec}},
+\code{\link{dmeasure_spec}},
+\code{\link{dprocess_spec}},
+\code{\link{emeasure_spec}},
+\code{\link{eulermultinom}},
+\code{\link{parameter_trans}()},
 \code{\link{pomp-package}},
-\code{\link{pomp}},
-\code{\link{prior specification}},
-\code{\link{rinit specification}},
-\code{\link{rmeasure specification}},
-\code{\link{rprocess specification}},
-\code{\link{skeleton specification}},
+\code{\link{pomp_constructor}},
+\code{\link{prior_spec}},
+\code{\link{rinit_spec}},
+\code{\link{rmeasure_spec}},
+\code{\link{rprocess_spec}},
+\code{\link{skeleton_spec}},
 \code{\link{transformations}},
-\code{\link{vmeasure specification}}
+\code{\link{vmeasure_spec}}
 }
 \concept{implementation information}

@@ -13,24 +13,18 @@
 ##'
 ##' NLF assumes that the observation frequency (equivalently the time between successive observations) is uniform.
 ##'
-##' @name nonlinear forecasting
+##' @name nlf
 ##' @rdname nlf
 ##' @include pomp.R simulate.R probe_match.R
-##'
 ##' @importFrom stats .lm.fit optim setNames dnorm .lm.fit sd cov
 ##' @importFrom mvtnorm dmvnorm
-##'
-##' @aliases nlf
 ##' @aliases nlf_objfun nlf_objfun,missing-method nlf_objfun,ANY-method
-##'
 ##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
-##'
 ##' @concept nonlinear forecasting
 ##' @family estimation methods
 ##' @family summary statistic-based methods
 ##' @family methods based on maximization
 ##' @seealso \code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
-##'
 ##' @return
 ##' \code{nlf_objfun} constructs a stateful objective function for NLF estimation.
 ##' Specfically, \code{nlf_objfun} returns an object of class \sQuote{nlf_objfun}, which is a function suitable for use in an \code{\link[stats]{optim}}-like optimizer.
@@ -38,7 +32,6 @@
 ##' When called, it will return the negative log quasilikelihood.
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the log quasilikelihood.
-##'
 ##' @references
 ##'
 ##' \Ellner1998
@@ -56,17 +49,13 @@
 ##' If \code{tensor = TRUE}, by contrast, the fitted model includes time-periodic coefficients,
 ##' constructed using tensor products of basis functions of observables with
 ##' basis functions of time.
-##'
 ##' @inheritSection pomp Note for Windows users
 ##' @inheritSection objfun Important Note
 ##' @inheritSection objfun Warning! Objective functions based on C snippets
-##'
 ##' @param lags A vector specifying the lags to use when constructing the nonlinear autoregressive prediction model.
 ##' The first lag is the prediction interval.
-##'
 ##' @param nrbf integer scalar;
 ##' the number of radial basis functions to be used at each lag.
-##'
 ##' @param ti,tf required numeric values.
 ##' NLF works by generating simulating long time series from the model.
 ##' The simulated time series will be from \code{ti} to \code{tf}, with the same sampling frequency as the data.
@@ -74,30 +63,25 @@
 ##' \code{tf} should be chosen large enough so that sufficiently many data points are available to estimate the nonlinear forecasting model well.
 ##' An error will be generated unless the data-to-parameter ratio exceeds 10 and
 ##' a warning will be given if the ratio is smaller than 30.
-##'
 ##' @param period numeric; \code{period=NA} means the model is nonseasonal.
 ##' \code{period > 0} is the period of seasonal forcing.
 ##' \code{period <= 0} is equivalent to \code{period = NA}.
-##'
 ##' @param tensor logical;
 ##' if FALSE, the fitted model is a generalized additive model with time mod period as one of the predictors,
 ##' i.e., a gam with time-varying intercept.
 ##' If TRUE, the fitted model is a gam with lagged state variables as predictors and time-periodic coefficients, constructed using tensor products of basis functions of state variables with basis
 ##' functions of time.
-##'
 ##' @param transform.data optional function.
 ##' If specified, forecasting is performed using data and model simulations transformed by this function.
 ##' By default, \code{transform.data} is the identity function,
 ##' i.e., no transformation is performed.
 ##' The main purpose of \code{transform.data} is to achieve approximately multivariate normal forecasting errors.
-##' If the data are univariate, \code{transform.data} should take a scalar and return a
-##' scalar.
+##' If the data are univariate, \code{transform.data} should take a scalar and return a scalar.
 ##' If the data are multivariate, \code{transform.data} should assume a vector input and return a vector of the same length.
+##' @inheritParams probe_match
+##' @inheritParams pomp
 ##'
 ##' @example examples/nlf.R
-##'
-##' @inheritParams probe matching
-##' @inheritParams pomp
 ##'
 NULL
 

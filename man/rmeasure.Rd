@@ -6,7 +6,7 @@
 \alias{rmeasure,ANY-method}
 \alias{rmeasure,missing-method}
 \alias{rmeasure,pomp-method}
-\title{rmeasure}
+\title{rmeasure workhorse}
 \usage{
 \S4method{rmeasure}{pomp}(
   object,
@@ -44,7 +44,7 @@ where \code{nobs} is the number of observed variables.
 Sample from the measurement model distribution, given values of the latent states and the parameters.
 }
 \seealso{
-Specification of the measurement-model simulator: \link{rmeasure specification}
+Specification of the measurement-model simulator: \link{rmeasure_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},

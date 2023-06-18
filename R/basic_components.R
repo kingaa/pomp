@@ -10,31 +10,31 @@
 ##'
 ##' There are thus altogether twelve \bold{basic model components}:
 ##' \enumerate{
-##' \item \link[=rprocess specification]{rprocess}, which samples from the latent-state transition distribution,
-##' \item \link[=dprocess specification]{dprocess}, which evaluates the latent-state transition density,
-##' \item \link[=rmeasure specification]{rmeasure}, which samples from the measurement distribution,
-##' \item \link[=emeasure specification]{emeasure}, which computes the conditional expectation of the measurements, given the latent states,
-##' \item \link[=vmeasure specification]{vmeasure}, which computes the conditional covariance matrix of the measurements, given the latent states,
-##' \item \link[=dmeasure specification]{dmeasure}, which evaluates the measurement density,
-##' \item \link[=prior specification]{rprior}, which samples from the prior distribution,
-##' \item \link[=prior specification]{dprior}, which evaluates the prior density,
-##' \item \link[=rinit specification]{rinit}, which samples from the initial-state distribution,
-##' \item \link[=dinit specification]{dinit}, which evaluates the initial-state density,
-##' \item \link[=skeleton specification]{skeleton}, which evaluates the deterministic skeleton,
+##' \item \link[=rprocess_spec]{rprocess}, which samples from the latent-state transition distribution,
+##' \item \link[=dprocess_spec]{dprocess}, which evaluates the latent-state transition density,
+##' \item \link[=rmeasure_spec]{rmeasure}, which samples from the measurement distribution,
+##' \item \link[=emeasure_spec]{emeasure}, which computes the conditional expectation of the measurements, given the latent states,
+##' \item \link[=vmeasure_spec]{vmeasure}, which computes the conditional covariance matrix of the measurements, given the latent states,
+##' \item \link[=dmeasure_spec]{dmeasure}, which evaluates the measurement density,
+##' \item \link[=prior_spec]{rprior}, which samples from the prior distribution,
+##' \item \link[=prior_spec]{dprior}, which evaluates the prior density,
+##' \item \link[=rinit_spec]{rinit}, which samples from the initial-state distribution,
+##' \item \link[=dinit_spec]{dinit}, which evaluates the initial-state density,
+##' \item \link[=skeleton_spec]{skeleton}, which evaluates the deterministic skeleton,
 ##' \item \link[=parameter_trans]{partrans}, which evaluates the forward or inverse parameter transformations.
 ##' }
 ##'
-##' Each of these can be set or modified in the \code{pomp} \link[=pomp]{constructor function} or in any of the \pkg{pomp} \link[=elementary algorithms]{elementary algorithms} or \link[=estimation algorithms]{estimation algorithms} using an argument that matches the basic model component.
+##' Each of these can be set or modified in the \code{pomp} \link[=pomp]{constructor function} or in any of the \pkg{pomp} \link[=elementary_algorithms]{elementary algorithms} or \link[=estimation_algorithms]{estimation algorithms} using an argument that matches the basic model component.
 ##' A basic model component can be unset by passing \code{NULL} in the same way.
 ##'
 ##' Help pages detailing each basic model component are provided.
 ##'
-##' @name basic components
+##' @name basic_components
 ##' @rdname basic_components
 ##' @concept basic model components
 ##' @family implementation information
 ##' @seealso \link[=workhorses]{workhorse functions},
-##' \link[=elementary algorithms]{elementary algorithms},
-##' \link[=estimation algorithms]{estimation algorithms}.
+##' \link[=elementary_algorithms]{elementary algorithms},
+##' \link[=estimation_algorithms]{estimation algorithms}.
 ##' 
 NULL

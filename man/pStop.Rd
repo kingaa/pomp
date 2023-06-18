@@ -7,7 +7,7 @@
 \alias{pWarn_}
 \alias{pMess}
 \alias{pMess_}
-\title{pStop}
+\title{pStop, pWarn, pMess}
 \usage{
 pStop(..., who = -1L)
 

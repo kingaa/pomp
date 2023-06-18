@@ -3,13 +3,11 @@
 ##' Several simple and configurable probes are provided with in the package.
 ##' These can be used directly and as templates for custom probes.
 ##'
-##' @name basic probes
+##' @name basic_probes
 ##' @rdname basic_probes
 ##' @family summary statistic-based methods
 ##' @concept diagnostics
-##' 
 ##' @importFrom stats median spec.pgram kernel quantile sd var
-##'
 ##' @param var,vars character; the name(s) of the observed variable(s).
 ##' @param trim the fraction of observations to be trimmed (see \code{\link{mean}}).
 ##' @param transform transformation to be applied to the data before the probe is computed.

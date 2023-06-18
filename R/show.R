@@ -28,6 +28,7 @@ setMethod(
 )
 
 ##' @rdname show
+##' @include listie.R
 ##' @export
 setMethod(
   "show",
@@ -40,6 +41,7 @@ setMethod(
 )
 
 ##' @rdname show
+##' @include rprocess_spec.R
 ##' @export
 setMethod(
   "show",
@@ -50,6 +52,7 @@ setMethod(
 )
 
 ##' @rdname show
+##' @include rprocess_spec.R
 ##' @export
 setMethod(
   "show",
@@ -62,6 +65,7 @@ setMethod(
 )
 
 ##' @rdname show
+##' @include rprocess_spec.R
 ##' @export
 setMethod(
   "show",
@@ -75,6 +79,7 @@ setMethod(
 )
 
 ##' @rdname show
+##' @include rprocess_spec.R
 ##' @export
 setMethod(
   "show",
@@ -88,6 +93,7 @@ setMethod(
 )
 
 ##' @rdname show
+##' @include rprocess_spec.R
 ##' @export
 setMethod(
   "show",
@@ -98,5 +104,119 @@ setMethod(
     print(object@v)
     cat("  - rate.fun: ")
     show(object@rate.fn)
+  }
+)
+
+##' @rdname show
+##' @include pomp_fun.R
+##' @export
+setMethod(
+  "show",
+  signature=signature("pomp_fun"),
+  definition=function (object) {
+
+    mode <- object@mode
+
+    if (mode==pompfunmode$Rfun) { # R function
+
+      cat("R function\n  - definition: ")
+      f <- object@R.fun
+      environment(f) <- globalenv()
+      print(f)
+
+    } else if (mode==pompfunmode$native) { # user supplied native code
+
+      cat("native function\n  - name: ",sQuote(object@native.fun),"\n",sep="")
+      if (length(object@PACKAGE)>0)
+        cat("  - dynamically loaded from: ",sQuote(object@PACKAGE),sep="")
+
+    } else if (mode==pompfunmode$regNative) { # built from C snippets
+
+      cat("native function\n  - name: ",sQuote(object@native.fun),"\n",sep="")
+      if (length(object@PACKAGE)>0)
+        cat("  - defined by a C snippet in library ",sQuote(object@PACKAGE),sep="")
+
+    } else {
+
+      cat("<default>")
+
+    }
+    cat("\n")
+  }
+)
+
+##' @rdname show
+##' @include parameter_trans.R
+##' @export
+setMethod(
+  "show",
+  signature=signature(object="partransPlugin"),
+  definition=function (object) {
+    if (object@has) {
+      cat("  - to estimation scale: ")
+      show(object@to)
+      cat("  - from estimation scale: ")
+      show(object@from)
+    } else {
+      cat("  - to estimation scale: <identity>\n")
+      cat("  - from estimation scale: <identity>\n")
+    }
+  }
+)
+
+##' @rdname show
+##' @include covariate_table.R
+##' @export
+setMethod(
+  "show",
+  signature=signature(object="covartable"),
+  definition=function (object) {
+    if (length(object@times)>0) {
+      cat("\n  -",ncol(object@table),"records of",
+        nrow(object@table),"covariates,",
+        "recorded from t =",min(object@times),
+        "to",max(object@times),"\n")
+      cat("  - summary of covariates:\n")
+      print(summary(as.data.frame(t(object@table))))
+    } else {
+      cat("<none>\n")
+    }
+  }
+)
+
+##' @rdname show
+##' @include skeleton_spec.R
+##' @export
+setMethod(
+  "show",
+  signature=signature(object="skelPlugin"),
+  definition=function (object) {
+    cat("<default>\n\n")
+  }
+)
+
+##' @rdname show
+##' @include skeleton_spec.R
+##' @export
+setMethod(
+  "show",
+  signature=signature(object="vectorfieldPlugin"),
+  definition=function (object) {
+    cat("vectorfield:\n  - ")
+    show(object@skel.fn)
+  }
+)
+
+##' @rdname show
+##' @include skeleton_spec.R
+##' @export
+setMethod(
+  "show",
+  signature=signature(object="mapPlugin"),
+  definition=function (object) {
+    cat("map:\n")
+    cat("  - timestep =",object@delta.t,"\n")
+    cat("  - ")
+    show(object@skel.fn)
   }
 )

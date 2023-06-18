@@ -6,30 +6,24 @@
 ##'
 ##' \code{spect_objfun} constructs an objective function that measures the discrepancy.
 ##' It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
-##'
+##' 
 ##' @docType methods
-##' @name spectrum matching
+##' @name spect_match
 ##' @rdname spect_match
 ##' @aliases spect_objfun spect_objfun,missing-method spect_objfun,ANY-method
 ##' @concept power-spectrum matching
 ##' @family estimation methods
 ##' @family summary statistic-based methods
 ##' @family methods based on maximization
-##' 
-##' @example examples/spect_match.R
-##'
 ##' @include spect.R probe_match.R loglik.R plot.R
-##'
 ##' @param weights optional numeric or function.
 ##' The mismatch between model and data is measured by a weighted average of mismatch at each frequency.
 ##' By default, all frequencies are weighted equally.
 ##' \code{weights} can be specified either as a vector (which must have length equal to the number of frequencies) or as a function of frequency.
 ##' If the latter, \code{weights(freq)} must return a nonnegative weight for each frequency.
-##'
-##' @inheritParams probe matching
+##' @inheritParams probe_match
 ##' @inheritParams spect
 ##' @inheritParams pomp
-##'
 ##' @return
 ##' \code{spect_objfun} constructs a stateful objective function for spectrum matching.
 ##' Specifically, \code{spect_objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link[stats]{optim}}-like optimizer.
@@ -37,13 +31,13 @@
 ##' When called, it will return the (optionally weighted) \eqn{L^2}{L2} distance between the data spectrum and simulated spectra.
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and the discrepancy measure.
-##'
 ##' @inheritSection pomp Note for Windows users
 ##' @inheritSection objfun Important Note
 ##' @inheritSection objfun Warning! Objective functions based on C snippets
-##'
 ##' @seealso \code{\link{spect}} \code{\link[stats]{optim}}
 ##' \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
+##' 
+##' @example examples/spect_match.R
 ##'
 NULL
 

@@ -26,9 +26,9 @@ They include \describe{
 }
 }
 \seealso{
-\link[=basic components]{basic model components},
-\link[=elementary algorithms]{elementary algorithms},
-\link[=estimation algorithms]{estimation algorithms}
+\link[=basic_components]{basic model components},
+\link[=elementary_algorithms]{elementary algorithms},
+\link[=estimation_algorithms]{estimation algorithms}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},

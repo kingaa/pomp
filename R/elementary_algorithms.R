@@ -14,12 +14,11 @@
 ##' }
 ##'
 ##' Help pages detailing each elementary algorithm component are provided.
-##'
-##' @name elementary algorithms
+##' @name elementary_algorithms
 ##' @rdname elementary_algorithms
 ##' @family elementary algorithms
-##' @seealso \link[=basic components]{basic model components},
+##' @seealso \link[=basic_components]{basic model components},
 ##' \link[=workhorses]{workhorse functions},
-##' \link[=estimation algorithms]{estimation algorithms}.
+##' \link[=estimation_algorithms]{estimation algorithms}.
 ##' 
 NULL

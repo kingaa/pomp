@@ -6,7 +6,7 @@
 \alias{vmeasure,ANY-method}
 \alias{vmeasure,missing-method}
 \alias{vmeasure,pomp-method}
-\title{vmeasure}
+\title{vmeasure workhorse}
 \usage{
 \S4method{vmeasure}{pomp}(
   object,
@@ -46,7 +46,7 @@ covariance matrix at time \code{times[k]} given the state \code{x[,j,k]}.
 Return the covariance matrix of the observed variables, given values of the latent states and the parameters.
 }
 \seealso{
-Specification of the measurement-model covariance matrix: \link{vmeasure specification}
+Specification of the measurement-model covariance matrix: \link{vmeasure_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},

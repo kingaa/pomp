@@ -85,7 +85,7 @@ library was created in the session's temporary directory.  }
 character string with the full contents of the C snippet file.  } }
 }
 \description{
-The algorithms in \pkg{pomp} are formulated using \R functions that access the \link[=basic components]{basic model components}
+The algorithms in \pkg{pomp} are formulated using \R functions that access the \link[=basic_components]{basic model components}
 (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, etc.).
 For short, we refer to these elementary functions as \dQuote{\link{workhorses}}.
 In implementing a model, the user specifies basic model components

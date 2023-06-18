@@ -1,9 +1,8 @@
-##' Parameter transformations
+##' parameter transformations
 ##'
-##' Equipping models with parameter transformations to ease searches in constrained parameter spaces.
+##' Equipping models with parameter transformations to facilitate searches in constrained parameter spaces.
 ##'
-##' @name parameter transformations
-##' @aliases parameter_trans
+##' @name parameter_trans
 ##' @rdname parameter_trans
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R pstop.R undefined.R
@@ -22,7 +21,7 @@
 ##' @inheritSection pomp Note for Windows users
 ##' @details
 ##' When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans} function.
-##' As with the other \link[=basic components]{basic model components}, these should ordinarily be specified using C snippets.
+##' As with the other \link[=basic_components]{basic model components}, these should ordinarily be specified using C snippets.
 ##' When doing so, note that:
 ##' \enumerate{
 ##'   \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \preformatted{parameter_trans(toEst,fromEst)}.
@@ -184,24 +183,6 @@ setMethod(
   definition=function(toEst, fromEst, ...) {
     pStop_(sQuote("parameter_trans")," not defined for arguments of class ",
       sQuote(class(toEst)),", ",sQuote(class(fromEst)),".")
-  }
-)
-
-##' @rdname show
-##' @export
-setMethod(
-  "show",
-  signature=signature(object="partransPlugin"),
-  definition=function (object) {
-    if (object@has) {
-      cat("  - to estimation scale: ")
-      show(object@to)
-      cat("  - from estimation scale: ")
-      show(object@from)
-    } else {
-      cat("  - to estimation scale: <identity>\n")
-      cat("  - from estimation scale: <identity>\n")
-    }
   }
 )
 

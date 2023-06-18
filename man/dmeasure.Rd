@@ -6,7 +6,7 @@
 \alias{dmeasure,ANY-method}
 \alias{dmeasure,missing-method}
 \alias{dmeasure,pomp-method}
-\title{dmeasure}
+\title{dmeasure workhorse}
 \usage{
 \S4method{dmeasure}{pomp}(
   object,
@@ -51,7 +51,7 @@ If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or log like
 \code{dmeasure} evaluates the probability density of observations given states.
 }
 \seealso{
-Specification of the measurement density evaluator: \link{dmeasure specification}
+Specification of the measurement density evaluator: \link{dmeasure_spec}
 
 More on \pkg{pomp} workhorse functions: 
 \code{\link{dinit}()},

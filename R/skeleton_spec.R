@@ -1,8 +1,8 @@
-##' The deterministic skeleton of a model
+##' skeleton specification
 ##'
 ##' Specification of the deterministic skeleton.
 ##'
-##' @name skeleton specification
+##' @name skeleton_spec
 ##' @rdname skeleton_spec
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R
@@ -103,40 +103,6 @@ setClass(
     type=skeletontype$map,
     delta.t=1.0
   )
-)
-
-##' @rdname show
-##' @export
-setMethod(
-  "show",
-  signature=signature(object="skelPlugin"),
-  definition=function (object) {
-    cat("<default>\n\n")
-  }
-)
-
-##' @rdname show
-##' @export
-setMethod(
-  "show",
-  signature=signature(object="vectorfieldPlugin"),
-  definition=function (object) {
-    cat("vectorfield:\n  - ")
-    show(object@skel.fn)
-  }
-)
-
-##' @rdname show
-##' @export
-setMethod(
-  "show",
-  signature=signature(object="mapPlugin"),
-  definition=function (object) {
-    cat("map:\n")
-    cat("  - timestep =",object@delta.t,"\n")
-    cat("  - ")
-    show(object@skel.fn)
-  }
 )
 
 skel_plugin <- function (object, skel.fn) {

@@ -48,7 +48,7 @@ Original source: McCleer and Perrins (1991).
 More data sets provided with \pkg{pomp}: 
 \code{\link{blowflies}},
 \code{\link{bsflu}},
-\code{\link{childhood disease data}},
+\code{\link{childhood_disease_data}},
 \code{\link{dacca}()},
 \code{\link{ebola}}
 }

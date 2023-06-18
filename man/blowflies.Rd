@@ -88,20 +88,20 @@ plot(blowflies2())
 }
 \seealso{
 More examples provided with \pkg{pomp}: 
-\code{\link{SIR models}},
-\code{\link{childhood disease data}},
+\code{\link{childhood_disease_data}},
+\code{\link{compartmental_models}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{gompertz}()},
 \code{\link{ou2}()},
-\code{\link{pomp examples}},
+\code{\link{pomp_examples}},
 \code{\link{ricker}()},
 \code{\link{rw2}()},
 \code{\link{verhulst}()}
 
 More data sets provided with \pkg{pomp}: 
 \code{\link{bsflu}},
-\code{\link{childhood disease data}},
+\code{\link{childhood_disease_data}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{parus}}
