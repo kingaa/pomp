@@ -235,7 +235,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     double *yt = 0, *xp, *pp;
     double *time = REAL(times), *xs = REAL(x), *ps = REAL(params);
     int *oidx, *sidx, *pidx, *cidx;
-    pomp_measure_model_simulator *ff = NULL;
+    pomp_rmeasure *ff = NULL;
     int j, k;
 
     nobs = LENGTH(Onames);

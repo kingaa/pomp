@@ -215,7 +215,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   case native: case regNative: {
     int *oidx, *sidx, *pidx, *cidx;
     int give_log;
-    pomp_measure_model_density *ff = NULL;
+    pomp_dmeasure *ff = NULL;
     double *yp = REAL(y), *xs = REAL(x), *ps = REAL(params), *time = REAL(times);
     double *ft = REAL(F);
     double *xp, *pp;

@@ -205,7 +205,7 @@ static SEXP onestep_density
   case native: case regNative: {
 
     int *sidx, *pidx, *cidx;
-    pomp_onestep_pdf *ff = NULL;
+    pomp_dprocess *ff = NULL;
 
     sidx = INTEGER(GET_SLOT(func,install("stateindex")));
     pidx = INTEGER(GET_SLOT(func,install("paramindex")));

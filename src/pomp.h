@@ -23,12 +23,10 @@ static R_INLINE double rgammawn (double sigma, double dt) {
   return (sigmasq > 0) ? rgamma(dt/sigmasq,sigmasq) : dt;
 }
 
-static R_INLINE double dot_product (int dim, const double *basis, const double *coef) {
-  int j;
-  double trans = 0.0;
-  for (j = 0; j < dim; j++)
-    trans += coef[j]*basis[j];
-  return(trans);
+static R_INLINE double dot_product (int n, const double *x, const double *y) {
+  double p = 0.0;
+  for (int j = 0; j < n; j++) p += x[j]*y[j];
+  return p;
 }
 
 
@@ -166,7 +164,7 @@ static R_INLINE void from_log_barycentric (double *xt, const double *x, int n) {
 }
 
 static R_INLINE double exp2geom_rate_correction (double R, double dt) {
-  return (dt > 0) ? log(1.0+R*dt)/dt : R;
+  return (dt > 0) ? log1p(R*dt)/dt : R;
 }
 
 static R_INLINE double rbetabinom (double size, double prob, double theta) {
@@ -195,7 +193,7 @@ static R_INLINE double dbetanbinom (double x, double mu, double size,
   return (give_log) ? f : exp(f);
 }
 
-typedef void pomp_rinit(double *x, const double *p, double t0,
+typedef void pomp_rinit (double *x, const double *p, double t0,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars);
 
@@ -203,42 +201,43 @@ typedef void pomp_dinit (double *lik, const double *x, const double *p,
   double t0, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars);
 
-typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const double *p,
+typedef double pomp_ssa_rate_fn (int event, double t, const double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex, const double *covars);
 
-typedef void pomp_onestep_sim(double *x, const double *p,
+typedef void pomp_onestep_sim (double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t, double dt);
 
-typedef void pomp_onestep_pdf(double *loglik,
+typedef void pomp_dprocess (double *loglik,
   const double *x1, const double *x2, double t1, double t2, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
-                              const double *covars);
+  const double *covars);
 
 typedef void pomp_skeleton (double *f, const double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 
-typedef void pomp_measure_model_simulator (double *y, const double *x, const double *p,
-  const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
-  const double *covars, double t);
+typedef void pomp_rmeasure (double *y, const double *x, const double *p,
+  const int *obsindex, const int *stateindex, const int *parindex,
+  const int *covindex, const double *covars, double t);
 
-typedef void pomp_measure_model_expectation (double *f, const double *x, const double *p,
-  const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
-  const double *covars, double t);
+typedef void pomp_dmeasure (double *lik, const double *y, const double *x,
+  const double *p, int give_log, const int *obsindex, const int *stateindex,
+  const int *parindex, const int *covindex, const double *covars, double t);
 
-typedef void pomp_measure_model_covariance (double *f, const double *x, const double *p,
-  const int *vmatindex, const int *stateindex, const int *parindex, const int *covindex,
-  const double *covars, double t);
+typedef void pomp_emeasure (double *f, const double *x, const double *p,
+  const int *obsindex, const int *stateindex, const int *parindex,
+  const int *covindex, const double *covars, double t);
 
-typedef void pomp_measure_model_density (double *lik, const double *y, const double *x, const double *p, int give_log,
-  const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
-  const double *covars, double t);
+typedef void pomp_vmeasure (double *f, const double *x, const double *p,
+  const int *vmatindex, const int *stateindex, const int *parindex,
+  const int *covindex, const double *covars, double t);
 
 typedef void pomp_rprior (double *p, const int *parindex);
 
-typedef void pomp_dprior (double *lik, const double *p, int give_log, const int *parindex);
+typedef void pomp_dprior (double *lik, const double *p, int give_log,
+  const int *parindex);
 
-typedef void pomp_transform_fn (double *pt, const double *p, const int *parindex);
+typedef void pomp_transform (double *pt, const double *p, const int *parindex);
 
 #endif

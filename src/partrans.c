@@ -123,7 +123,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
   case native: case regNative: {
 
-    pomp_transform_fn *ff;
+    pomp_transform *ff;
     double *ps, *pt;
     int *idx;
     int j;
