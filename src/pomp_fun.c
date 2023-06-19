@@ -4,8 +4,6 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
-#include <Rversion.h>
-#include <stdarg.h>
 
 #include "pomp_internal.h"
 
@@ -141,38 +139,3 @@ SEXP load_stack_decr (SEXP pack) {
   UNPROTECT(1);
   return s;
 }
-
-// SEXP concat (int nargs, ...) {
-//   int nprotect = 0;
-//   va_list ap;
-//   SEXP f = R_NilValue;
-//   int i;
-
-//   va_start(ap,nargs);
-//   for (i = 0; i < nargs; i++) {
-//     PROTECT(f = LCONS(va_arg(ap,SEXP),f)); nprotect++;
-//   }
-//   va_end(ap);
-
-//   PROTECT(f = eval(LCONS(install("c"),f),R_BaseEnv)); nprotect++;
-
-//   UNPROTECT(nprotect);
-//   return f;
-// }
-
-// 'pomp_fun' is provided for use by other packages
-// It returns a list of two elements.
-// The first is the the R function or the address of the native routine.
-// The second is the 'mode'.
-
-// SEXP pomp_fun (SEXP pfun, SEXP gnsi) {
-//   pompfunmode md;
-//   SEXP fun, mode, retval;
-//   PROTECT(fun = pomp_fun_handler(pfun,gnsi,&md));
-//   PROTECT(mode = NEW_INTEGER(1));
-//   *(INTEGER(mode)) = (int) md;
-//   PROTECT(retval = NEW_LIST(2));
-//   SET_ELEMENT(retval,0,fun);
-//   SET_ELEMENT(retval,0,mode);
-//   return retval;
-// }

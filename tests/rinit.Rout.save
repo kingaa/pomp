@@ -96,7 +96,7 @@ Error : in 'rinit': a state variable and a parameter share the name: 'r'.
 +       c(X=rep(1,a))) |>
 +     rinit(params=pp)
 + })
-Error : in 'rinit': user 'rinit' returns vectors of non-uniform length.
+Error : in 'rinit': user 'rinit' returns vectors of variable length.
 > 
 > sir() -> sir
 > try(sir |> simulate(rinit=NULL))

@@ -4,8 +4,6 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
-#include <R_ext/Rdynload.h>
-#include <R_ext/Arith.h>
 
 #include "pomp_internal.h"
 
@@ -152,8 +150,8 @@ static SEXP init_density
 
     for (int j = 0; j < nreps; j++, ft++) {
 
-      double *xs = REAL(X)+(j%nrepsx)*nvars;
-      double *ps = REAL(params)+(j%nrepsp)*npars;
+      double *xs = REAL(X)+nvars*(j%nrepsx);
+      double *ps = REAL(params)+npars*(j%nrepsp);
 
       *ft = *REAL(AS_NUMERIC(eval_call(fn,args,t,xs,nvars,ps,npars,cov,ncovars)));
       
@@ -186,8 +184,8 @@ static SEXP init_density
 
     for (int j = 0; j < nreps; j++, ft++) {
 
-      double *xs = REAL(X)+(j%nrepsx)*nvars;
-      double *ps = REAL(params)+(j%nrepsp)*npars;
+      double *xs = REAL(X)+nvars*(j%nrepsx);
+      double *ps = REAL(params)+npars*(j%nrepsp);
 
       (*ff)(ft,xs,ps,*t,sidx,pidx,cidx,cov);
 

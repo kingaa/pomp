@@ -1,7 +1,6 @@
 // -*- C++ -*-
 
 #include <Rdefines.h>
-#include <string.h>
 #include "pomp_internal.h"
 
 SEXP do_simulate (SEXP object, SEXP params, SEXP nsim, SEXP rettype, SEXP gnsi)

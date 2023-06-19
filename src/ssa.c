@@ -4,8 +4,6 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
-#include <R_ext/Constants.h>
-#include <string.h>
 
 #include "pomp_internal.h"
 

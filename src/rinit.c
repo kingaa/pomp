@@ -4,9 +4,12 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
-#include <string.h>
 
 #include "pomp_internal.h"
+
+static R_INLINE SEXP paste0 (SEXP a, SEXP b, SEXP c) {
+  return eval(lang4(install("paste0"),a,b,c),R_BaseEnv);
+}
 
 static SEXP pomp_default_rinit(SEXP params, SEXP Pnames,
   int npar, int nrep, int nsim);
@@ -48,9 +51,11 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Pnames, SEXP Cnames)
 
 }
 
-static R_INLINE SEXP eval_call (SEXP fn, SEXP args,
-  double *t0, double *p, int npar, double *c, int ncov)
-{
+static R_INLINE SEXP eval_call
+(
+ SEXP fn, SEXP args,
+ double *t0, double *p, int npar, double *c, int ncov
+ ) {
 
   SEXP var = args, ans, ob;
   int v;
@@ -156,7 +161,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       PROTECT(ans = eval_call(fn,args,time,ps+npar*(j%nrep),npar,cov,ncovars));
       xs = REAL(ans);
       if (LENGTH(ans) != nvar)
-        err("user 'rinit' returns vectors of non-uniform length.");
+        err("user 'rinit' returns vectors of variable length.");
       memcpy(xt,xs,nvar*sizeof(double));
       UNPROTECT(1);
     }
@@ -223,7 +228,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
       PROTECT(xn = NEW_INTEGER(ns));
       for (k = 0, sp = INTEGER(xn); k < ns; k++, sp++) *sp = (k/nrep)+1;
-      PROTECT(xn = paste(pcnames,xn,mkString("_")));
+      PROTECT(xn = paste0(pcnames,mkString("_"),xn));
       PROTECT(dn = GET_DIMNAMES(x));
       nprotect += 3;
       SET_ELEMENT(dn,1,xn);
@@ -246,33 +251,20 @@ static SEXP pomp_default_rinit (SEXP params, SEXP Pnames,
   int npar, int nrep, int nsim)
 {
 
-  SEXP fcall, pat, repl, val, ivpnames, statenames, x;
+  SEXP fcall, pat, ivpnames, statenames, x;
   int *pidx;
   int nvar, j, k;
   double *xp, *pp;
 
-  // set up search pattern: ".0" or "_0"
-  PROTECT(pat = NEW_CHARACTER(1));
-  SET_STRING_ELT(pat,0,mkChar("[\\_\\.]0$"));
-  PROTECT(repl = NEW_CHARACTER(1));
-  SET_STRING_ELT(repl,0,mkChar(""));
-  PROTECT(val = NEW_LOGICAL(1));
-  *(INTEGER(val)) = 1;
-
   // extract names of IVPs using 'grep'
-  PROTECT(fcall = LCONS(val,R_NilValue));
+  PROTECT(pat = mkString("[\\_\\.]0$"));
+  PROTECT(fcall = LCONS(trueSEXP(),R_NilValue));
   SET_TAG(fcall,install("value"));
-  fcall = LCONS(Pnames,fcall);
-  UNPROTECT(1);
-  PROTECT(fcall);
+  PROTECT(fcall = LCONS(Pnames,fcall));
   SET_TAG(fcall,install("x"));
-  fcall = LCONS(pat,fcall);
-  UNPROTECT(1);
-  PROTECT(fcall);
+  PROTECT(fcall = LCONS(pat,fcall));
   SET_TAG(fcall,install("pattern"));
-  fcall = LCONS(install("grep"),fcall);
-  UNPROTECT(1);
-  PROTECT(fcall);
+  PROTECT(fcall = LCONS(install("grep"),fcall));
   PROTECT(ivpnames = eval(fcall,R_BaseEnv));
 
   nvar = LENGTH(ivpnames);
@@ -285,17 +277,11 @@ static SEXP pomp_default_rinit (SEXP params, SEXP Pnames,
   // construct names of state variables using 'sub'
   PROTECT(fcall = LCONS(ivpnames,R_NilValue));
   SET_TAG(fcall,install("x"));
-  fcall = LCONS(repl,fcall);
-  UNPROTECT(1);
-  PROTECT(fcall);
+  PROTECT(fcall = LCONS(mkString(""),fcall));
   SET_TAG(fcall,install("replacement"));
-  fcall = LCONS(pat,fcall);
-  UNPROTECT(1);
-  PROTECT(fcall);
+  PROTECT(fcall = LCONS(pat,fcall));
   SET_TAG(fcall,install("pattern"));
-  fcall = LCONS(install("sub"),fcall);
-  UNPROTECT(1);
-  PROTECT(fcall);
+  PROTECT(fcall = LCONS(install("sub"),fcall));
   PROTECT(statenames = eval(fcall,R_BaseEnv));
 
   PROTECT(x = ret_array(nvar,nsim,statenames));
@@ -305,6 +291,6 @@ static SEXP pomp_default_rinit (SEXP params, SEXP Pnames,
     for (k = 0; k < nvar; k++, xp++) *xp = pp[pidx[k]];
   }
 
-  UNPROTECT(9);
+  UNPROTECT(13);
   return x;
 }

@@ -4,10 +4,12 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
-#include <R_ext/Rdynload.h>
-#include <R_ext/Arith.h>
 
 #include "pomp_internal.h"
+
+static R_INLINE SEXP paste0 (SEXP a, SEXP b) {
+  return eval(lang3(install("paste0"),a,b),R_BaseEnv);
+}
 
 static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 {
@@ -181,9 +183,9 @@ static SEXP onestep_density
 
       for (int j = 0; j < nreps; j++, ft++) {
 
-        double *p = REAL(params)+(j%nrepsp)*npars;
-        double *x1 = x1p+(j%nrepsx)*nvars;
-        double *x2 = x2p+(j%nrepsx)*nvars;
+        double *p = REAL(params)+npars*(j%nrepsp);
+        double *x1 = x1p+nvars*(j%nrepsx);
+        double *x2 = x2p+nvars*(j%nrepsx);
 
         *ft = *REAL(AS_NUMERIC(eval_call(fn,args,t1,t2,x1,x2,nvars,p,npars,cov,ncovars)));
 
@@ -222,9 +224,9 @@ static SEXP onestep_density
 
       for (int j = 0; j < nreps; j++, ft++) {
 
-        double *p = REAL(params)+(j%nrepsp)*npars;
-        double *x1 = x1p+(j%nrepsx)*nvars;
-        double *x2 = x2p+(j%nrepsx)*nvars;
+        double *p = REAL(params)+npars*(j%nrepsp);
+        double *x1 = x1p+nvars*(j%nrepsx);
+        double *x2 = x2p+nvars*(j%nrepsx);
 
         (*ff)(ft,x1,x2,*t1,*t2,p,sidx,pidx,cidx,cov);
 
