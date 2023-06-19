@@ -270,7 +270,7 @@ refer to the first state variable, the fourth state variable, the third paramete
 ### rinit
 
 ```{c eval=FALSE}
-void pomp_rinit(double *x, const double *p, double t0,
+void pomp_rinit (double *x, const double *p, double t0,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars);
 ```
@@ -309,7 +309,7 @@ Description:
 #### `step.fun` as used by `euler` and `onestep`
 
 ```{c eval=FALSE}
-void pomp_onestep_sim(double *x, const double *p,
+void pomp_onestep_sim (double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t, double dt);
 ```
@@ -330,8 +330,7 @@ Inclusion of these calls in the user-defined function may result in significant 
 #### `rate.fun` as used by `gillespie`
 
 ```{c eval=FALSE}
-double pomp_ssa_rate_fn(int event, 
-  double t, const double *x, const double *p,
+double pomp_ssa_rate_fn (int event, double t, const double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex, 
   const double *covars);
 ```
@@ -350,7 +349,7 @@ The function returns the rate of the requested reaction.
 ### dprocess
 
 ```{c eval=FALSE}
-void pomp_onestep_pdf(double *loglik,
+void pomp_dprocess (double *loglik,
   const double *x1, const double *x2, double t1, double t2, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars);
@@ -368,7 +367,7 @@ Description:
 ### skeleton
 
 ```{c eval=FALSE}
-void pomp_skeleton(double *f, const double *x, const double *p,
+void pomp_skeleton (double *f, const double *x, const double *p,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 ```
@@ -385,11 +384,9 @@ Description:
 ### rmeasure
 
 ```{c eval=FALSE}
-void pomp_measure_model_simulator(double *y, 
-  const double *x, const double *p,
-  const int *obsindex, const int *stateindex,
-  const int *parindex, const int *covindex,
-  const double *covars, double t);
+void pomp_rmeasure (double *y, const double *x, const double *p,
+  const int *obsindex, const int *stateindex, const int *parindex,
+  const int *covindex, const double *covars, double t);
 ```
 
 Description:
@@ -408,10 +405,9 @@ Inclusion of these calls in the user-defined function may result in significant 
 ### dmeasure
 
 ```{c eval=FALSE}
-void pomp_measure_model_density(double *lik, 
-  const double *y, const double *x, const double *p, int give_log,
-  const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
-  const double *covars, double t);
+void pomp_dmeasure (double *lik, const double *y, const double *x, const double *p,
+  int give_log, const int *obsindex, const int *stateindex, const int *parindex,
+  const int *covindex, const double *covars, double t);
 ```
 
 Description:
@@ -429,7 +425,7 @@ Description:
 ### emeasure
 
 ```{c eval=FALSE}
-void pomp_measure_model_expectation (double *e, const double *x, const double *p,
+void pomp_emeasure (double *e, const double *x, const double *p,
   const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 ```
@@ -446,7 +442,7 @@ Description:
 ### vmeasure
 
 ```{c eval=FALSE}
-void pomp_measure_model_covariance (double *v, const double *x, const double *p,
+void pomp_vmeasure (double *v, const double *x, const double *p,
   const int *vmatindex, const int *stateindex, const int *parindex, const int *covindex,
   const double *covars, double t);
 ```
@@ -465,7 +461,7 @@ Description:
 ### rprior
 
 ```{c eval=FALSE}
-void pomp_rprior(double *p, const int *parindex);
+void pomp_rprior (double *p, const int *parindex);
 ```
 
 Description:
@@ -482,7 +478,7 @@ Inclusion of these calls in the user-defined function may result in significant 
 ### dprior
 
 ```{c eval=FALSE}
-void pomp_dprior(double *lik, const double *p, int give_log, const int *parindex);
+void pomp_dprior (double *lik, const double *p, int give_log, const int *parindex);
 ```
 
 Description:
@@ -497,7 +493,7 @@ Description:
 ### partrans
 
 ```{c eval=FALSE}
-void pomp_transform_fn(double *pt, const double *p, const int *parindex);
+void pomp_transform (double *pt, const double *p, const int *parindex);
 ```
 
 Description:
