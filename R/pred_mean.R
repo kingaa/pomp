@@ -48,15 +48,17 @@ setMethod(
   signature=signature(object="kalmand_pomp"),
   definition=function (object, vars, ...,
     format = c("array", "data.frame")) {
-    if (missing(vars)) vars <- rownames(object@pred.mean)
-    format <- match.arg(format)
-    if (format == "array") {
-      object@pred.mean[vars,,drop=FALSE]
+    if (missing(vars)) {
+      x <- object@pred.mean
     } else {
+      x <- object@pred.mean[vars,,drop=FALSE]
+    }
+    format <- match.arg(format)
+    if (format == "data.frame") {
       x <- melt(object@pred.mean[vars,,drop=FALSE])
       x$time <- time(object)[as.integer(x$time)]
-      x
     }
+    x
   }
 )
 
@@ -67,14 +69,16 @@ setMethod(
   signature=signature(object="pfilterd_pomp"),
   definition=function (object, vars, ...,
     format = c("array", "data.frame")) {
-    if (missing(vars)) vars <- rownames(object@pred.mean)
-    format <- match.arg(format)
-    if (format == "array") {
-      object@pred.mean[vars,,drop=FALSE]
+    if (missing(vars)) {
+      x <- object@pred.mean
     } else {
+      x <- object@pred.mean[vars,,drop=FALSE]
+    }
+    format <- match.arg(format)
+    if (format == "data.frame") {
       x <- melt(object@pred.mean[vars,,drop=FALSE])
       x$time <- time(object)[as.integer(x$time)]
-      x
     }
+    x
   }
 )

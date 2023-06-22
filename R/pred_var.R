@@ -48,14 +48,16 @@ setMethod(
   signature=signature(object="pfilterd_pomp"),
   definition=function (object, vars, ...,
     format = c("array", "data.frame")) {
-    if (missing(vars)) vars <- rownames(object@pred.var)
-    format <- match.arg(format)
-    if (format == "array") {
-      object@pred.var[vars,,drop=FALSE]
+    if (missing(vars)) {
+      x <- object@pred.var
     } else {
+      x <- object@pred.var[vars,,drop=FALSE]
+    }
+    format <- match.arg(format)
+    if (format == "data.frame") {
       x <- melt(object@pred.var[vars,,drop=FALSE])
       x$time <- time(object)[as.integer(x$time)]
-      x
     }
+    x
   }
 )

@@ -3,6 +3,7 @@
 \section{Changes in \pkg{pomp} version 5.2.3}{
   \itemize{
     \item The manual pages have been reorganized, with improved cross-linking.
+    \item A bug in \code{filter_traj} etc. arising when not all state variables have names was fixed.
   }
 }
 \section{Changes in \pkg{pomp} version 5.2.2}{
