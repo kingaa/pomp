@@ -61,7 +61,7 @@ theta["alpha_1"] <- 1e60
 try(pfilter(pf,params=theta,pred.var=TRUE))
 
 try(pfilter(pf,rprocess=onestep(
-  function(x, t, params, delta.t, ...)stop("yikes!"))))
+                 function(x, t, params, delta.t, ...)stop("yikes!"))))
 try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 pfilter(pf,dmeasure=function(log,...) -Inf)
 pfilter(pf,dmeasure=function(log,...) -Inf,filter.mean=TRUE)
@@ -71,6 +71,27 @@ pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE,save.states="wei
 pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
   filter.traj=TRUE)
+
+stopifnot(
+  pf2 |> filter_mean() |> dim()==c(2,100),
+  pf2 |> filter_mean(vars="x1") |> dim()==c(1,100),
+  pf2 |> filter_mean(vars=c("x2","x1")) |> dimnames() |> getElement("name")==c("x2","x1"),
+  pf2 |> filter_mean(format="d") |> dim()==c(200,3),
+  pf2 |> filter_mean(vars="x2",format="d") |> dim()==c(100,3),
+  pf2 |> filter_mean(vars="x2",format="d") |> names()==c("name","time","value"),
+  pf2 |> pred_mean() |> dim()==c(2,100),
+  pf2 |> pred_mean(vars="x1") |> dim()==c(1,100),
+  pf2 |> pred_mean(vars=c("x2","x1")) |> dimnames() |> getElement("name")==c("x2","x1"),
+  pf2 |> pred_mean(format="d") |> dim()==c(200,3),
+  pf2 |> pred_mean(vars="x2",format="d") |> dim()==c(100,3),
+  pf2 |> pred_mean(vars="x2",format="d") |> names()==c("name","time","value"),
+  pf2 |> pred_var() |> dim()==c(2,100),
+  pf2 |> pred_var(vars="x1") |> dim()==c(1,100),
+  pf2 |> pred_var(vars=c("x2","x1")) |> dimnames() |> getElement("name")==c("x2","x1"),
+  pf2 |> pred_var(format="d") |> dim()==c(200,3),
+  pf2 |> pred_var(vars="x2",format="d") |> dim()==c(100,3),
+  pf2 |> pred_var(vars="x2",format="d") |> names()==c("name","time","value")
+)
 
 pf1 |> saved_states(format="data") |> names()
 pf1 |> saved_states(format="data") |> dim()
@@ -98,6 +119,10 @@ pf2 |> as.data.frame() |> names()
 try(saved_states())
 try(saved_states(NULL))
 try(saved_states("bob"))
+stopifnot(
+  filter_traj(pf1,vars="x2") |> dim()==c(1,1,101),
+  filter_traj(pf1,vars="x2",format="d") |> dim()==c(101,4)
+)
 
 try(ou2 |> as.data.frame() |> pfilter(Np=1000))
 
@@ -108,10 +133,10 @@ ou2 |>
     times="time",t0=0,Np=500,
     params=list(x1_0=-3,x2_0=4),
     rprocess=onestep(
-    step.fun=function(x1,x2,delta.t,...) {
-      setNames(rnorm(n=2,mean=c(x1,x2),sd=5*delta.t),c("x1","x2"))
-    }
-  ),
+      step.fun=function(x1,x2,delta.t,...) {
+        setNames(rnorm(n=2,mean=c(x1,x2),sd=5*delta.t),c("x1","x2"))
+      }
+    ),
     dmeasure=function(x1,x2,y1,y2,...,log) {
       ll <- sum(dnorm(x=c(y1,y2),mean=c(x1,x2),sd=5,log=TRUE))
       if (log) ll else exp(ll)

@@ -146,7 +146,7 @@ sigma_3:            2
 Error : in 'pfilter': non-finite state variable: x1
 > 
 > try(pfilter(pf,rprocess=onestep(
-+   function(x, t, params, delta.t, ...)stop("yikes!"))))
++                  function(x, t, params, delta.t, ...)stop("yikes!"))))
 Error : in 'pfilter': in 'rprocess': yikes!
 > try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 Error : in 'pfilter': in 'dmeasure': ouch!
@@ -160,6 +160,27 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 > pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 +   filter.traj=TRUE)
+> 
+> stopifnot(
++   pf2 |> filter_mean() |> dim()==c(2,100),
++   pf2 |> filter_mean(vars="x1") |> dim()==c(1,100),
++   pf2 |> filter_mean(vars=c("x2","x1")) |> dimnames() |> getElement("name")==c("x2","x1"),
++   pf2 |> filter_mean(format="d") |> dim()==c(200,3),
++   pf2 |> filter_mean(vars="x2",format="d") |> dim()==c(100,3),
++   pf2 |> filter_mean(vars="x2",format="d") |> names()==c("name","time","value"),
++   pf2 |> pred_mean() |> dim()==c(2,100),
++   pf2 |> pred_mean(vars="x1") |> dim()==c(1,100),
++   pf2 |> pred_mean(vars=c("x2","x1")) |> dimnames() |> getElement("name")==c("x2","x1"),
++   pf2 |> pred_mean(format="d") |> dim()==c(200,3),
++   pf2 |> pred_mean(vars="x2",format="d") |> dim()==c(100,3),
++   pf2 |> pred_mean(vars="x2",format="d") |> names()==c("name","time","value"),
++   pf2 |> pred_var() |> dim()==c(2,100),
++   pf2 |> pred_var(vars="x1") |> dim()==c(1,100),
++   pf2 |> pred_var(vars=c("x2","x1")) |> dimnames() |> getElement("name")==c("x2","x1"),
++   pf2 |> pred_var(format="d") |> dim()==c(200,3),
++   pf2 |> pred_var(vars="x2",format="d") |> dim()==c(100,3),
++   pf2 |> pred_var(vars="x2",format="d") |> names()==c("name","time","value")
++ )
 > 
 > pf1 |> saved_states(format="data") |> names()
 [1] "time"  ".id"   "name"  "value"
@@ -234,6 +255,10 @@ Error : in 'saved_states': 'object' is a required argument.
 Error : 'saved_states' is undefined for 'object' of class 'NULL'.
 > try(saved_states("bob"))
 Error : 'saved_states' is undefined for 'object' of class 'character'.
+> stopifnot(
++   filter_traj(pf1,vars="x2") |> dim()==c(1,1,101),
++   filter_traj(pf1,vars="x2",format="d") |> dim()==c(101,4)
++ )
 > 
 > try(ou2 |> as.data.frame() |> pfilter(Np=1000))
 Error : in 'pfilter': 'times' should either be a numeric vector of observation times or a single name identifying the column of data that represents the observation times.
@@ -245,10 +270,10 @@ Error : in 'pfilter': 'times' should either be a numeric vector of observation t
 +     times="time",t0=0,Np=500,
 +     params=list(x1_0=-3,x2_0=4),
 +     rprocess=onestep(
-+     step.fun=function(x1,x2,delta.t,...) {
-+       setNames(rnorm(n=2,mean=c(x1,x2),sd=5*delta.t),c("x1","x2"))
-+     }
-+   ),
++       step.fun=function(x1,x2,delta.t,...) {
++         setNames(rnorm(n=2,mean=c(x1,x2),sd=5*delta.t),c("x1","x2"))
++       }
++     ),
 +     dmeasure=function(x1,x2,y1,y2,...,log) {
 +       ll <- sum(dnorm(x=c(y1,y2),mean=c(x1,x2),sd=5,log=TRUE))
 +       if (log) ll else exp(ll)

@@ -102,12 +102,40 @@ NOTE: The provided object 'R' is available for use by POMP basic components.
 > kf |> filter_mean(format="d") |> sapply(class)
        name        time       value 
 "character"   "numeric"   "numeric" 
+> kf |> filter_mean(vars="x") |> dim()
+[1]  1 30
+> kf |> filter_mean(vars="x") |> dimnames()
+$name
+[1] "x"
+
+$time
+ [1] "1"  "2"  "3"  "4"  "5"  "6"  "7"  "8"  "9"  "10" "11" "12" "13" "14" "15"
+[16] "16" "17" "18" "19" "20" "21" "22" "23" "24" "25" "26" "27" "28" "29" "30"
+
+> kf |> filter_mean(vars="x",format="d") |> dim()
+[1] 30  3
+> kf |> filter_mean(vars="x",format="d") |> getElement("name") |> unique()
+[1] "x"
 > kf |> pred_mean() |> melt() |> sapply(class)
        name        time       value 
 "character" "character"   "numeric" 
 > kf |> pred_mean(format="d") |> sapply(class)
        name        time       value 
 "character"   "numeric"   "numeric" 
+> kf |> pred_mean(vars="x") |> dim()
+[1]  1 30
+> kf |> pred_mean(vars="x") |> dimnames()
+$name
+[1] "x"
+
+$time
+ [1] "1"  "2"  "3"  "4"  "5"  "6"  "7"  "8"  "9"  "10" "11" "12" "13" "14" "15"
+[16] "16" "17" "18" "19" "20" "21" "22" "23" "24" "25" "26" "27" "28" "29" "30"
+
+> kf |> pred_mean(vars="x",format="d") |> dim()
+[1] 30  3
+> kf |> pred_mean(vars="x",format="d") |> getElement("name") |> unique()
+[1] "x"
 > try(kf |> pred_var() |> melt() |> sapply(class))
 Error in h(simpleError(msg, call)) : 
   error in evaluating the argument 'data' in selecting a method for function 'melt': 'pred_var' is undefined for 'object' of class 'kalmand_pomp'.

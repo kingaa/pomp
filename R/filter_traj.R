@@ -53,7 +53,7 @@ setMethod(
     if (missing(vars)) {
       x <- object@filter.traj
     } else {
-      x <- object@filter.traj[vars,,drop=FALSE]
+      x <- object@filter.traj[vars,,,drop=FALSE]
     }
     format <- match.arg(format)
     if (format == "data.frame") {
