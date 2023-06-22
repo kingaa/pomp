@@ -55,8 +55,7 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
 
     if (ISNAN(*xW) || *xW == R_PosInf) { // check the weights
       SEXP rv;
-      PROTECT(rv = NEW_INTEGER(1)); nprotect++;
-      *INTEGER(rv) = k+1; // return the index of the peccant particle
+      PROTECT(rv = ScalarInteger(k+1)); nprotect++;
       UNPROTECT(nprotect);
       return rv;
     }

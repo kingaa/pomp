@@ -258,7 +258,7 @@ static SEXP pomp_default_rinit (SEXP params, SEXP Pnames,
 
   // extract names of IVPs using 'grep'
   PROTECT(pat = mkString("[\\_\\.]0$"));
-  PROTECT(fcall = LCONS(trueSEXP(),R_NilValue));
+  PROTECT(fcall = LCONS(ScalarLogical(1),R_NilValue));
   SET_TAG(fcall,install("value"));
   PROTECT(fcall = LCONS(Pnames,fcall));
   SET_TAG(fcall,install("x"));
