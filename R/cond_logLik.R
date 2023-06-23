@@ -13,12 +13,11 @@
 ##' @name cond_logLik
 ##' @docType methods
 ##' @rdname cond_logLik
-##' @include pomp_class.R kalman.R pfilter.R wpfilter.R
+##' @include pomp_class.R kalman.R pfilter.R wpfilter.R melt.R
 ##' @aliases cond_logLik,missing-method cond_logLik,ANY-method
 ##' @family particle filter methods
 ##' @family extraction methods
 ##' @inheritParams filter_mean
-##'
 ##' @return
 ##' The numerical value of the conditional log likelihood.
 ##' Note that some methods compute not the log likelihood itself but instead a related quantity.
@@ -136,11 +135,10 @@ setMethod(
   definition=function (object, ...,
     format = c("numeric", "data.frame")) {
     format <- match.arg(format)
-    x <- lapply(object,cond_logLik)
-    if (format == "numeric") {
-      x
-    } else {
-      melt(x)
+    x <- lapply(object,cond_logLik,format=format)
+    if (format == "data.frame") {
+      x <- rbind_fill(x,.id=".id")
     }
+    x
   }
 )

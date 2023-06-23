@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.2.4}{
+  \itemize{
+    \item The data frames returned by \code{cond_logLik} and \code{eff_sample_size} when \code{format="data.frame"} have been improved.
+    In particular, they contain (as variable \code{time}) the times (rather than the index of the time vector as before).
+  }
+}
 \section{Changes in \pkg{pomp} version 5.2.3}{
   \itemize{
     \item The manual pages have been reorganized, with improved cross-linking.

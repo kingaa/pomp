@@ -103,11 +103,10 @@ setMethod(
   definition=function (object, ...,
     format = c("numeric", "data.frame")) {
     format <- match.arg(format)
-    x <- lapply(object,eff_sample_size)
+    x <- lapply(object,cond_logLik,format=format)
     if (format == "data.frame") {
-      melt(x)
-    } else {
-      x
+      x <- rbind_fill(x,.id=".id")
     }
+    x
   }
 )
