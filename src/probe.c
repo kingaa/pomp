@@ -1,5 +1,5 @@
 // -*- mode: C++; -*-
-#include "pomp_internal.h"
+#include "internal.h"
 
 SEXP apply_probe_data (SEXP object, SEXP probes) {
   SEXP retval, data, vals;

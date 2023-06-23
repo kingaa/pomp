@@ -1,7 +1,7 @@
 // -*- C++ -*-
 
 #include <Rdefines.h>
-#include "pomp_internal.h"
+#include "internal.h"
 
 SEXP systematic_resampling(SEXP weights, SEXP np);
 void nosort_resamp(int nw, double *w, int np, int *p, int offset);

@@ -5,7 +5,7 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 
-#include "pomp_internal.h"
+#include "internal.h"
 
 static SEXP pomp_default_rprocess (SEXP xstart, int nvars, int nreps, int ntimes)
 {

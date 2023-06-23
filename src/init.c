@@ -1,4 +1,4 @@
-#include "pomp_internal.h"
+#include "internal.h"
 #include <R_ext/Rdynload.h>
 
 static const R_CallMethodDef callMethods[] = {

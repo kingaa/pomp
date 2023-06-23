@@ -4,7 +4,7 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 
-#include "pomp_internal.h"
+#include "internal.h"
 
 SEXP LogitTransform(SEXP P);
 SEXP ExpitTransform(SEXP X);

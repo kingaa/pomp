@@ -6,7 +6,7 @@
 #ifndef FCONE
 # define FCONE
 #endif
-#include "pomp_internal.h"
+#include "internal.h"
 
 static R_INLINE void pomp_backsolve (double *a, int lda, int n, double *x, int incx,
 				     char *uplo, char *transpose, char *unit) {

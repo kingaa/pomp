@@ -1,6 +1,6 @@
 // -*- mode: C++; -*-
 
-#include "pomp_internal.h"
+#include "internal.h"
 #include "pomp_mat.h"
 #include <stdio.h>
 

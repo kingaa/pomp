@@ -1,6 +1,6 @@
 // -*- C++ -*-
 
-#include "pomp_internal.h"
+#include "internal.h"
 #include <Rdefines.h>
 
 static void pred_mean_var (int, int, int, const double *, double *, double *);

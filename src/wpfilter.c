@@ -1,7 +1,7 @@
 // -*- C++ -*-
 
 #include <Rdefines.h>
-#include "pomp_internal.h"
+#include "internal.h"
 
 // examines weights for filtering failure.
 // computes conditional log likelihood and effective sample size.

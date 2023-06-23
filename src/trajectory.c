@@ -1,7 +1,7 @@
 // -*- C++ -*-
 
 #include <Rdefines.h>
-#include "pomp_internal.h"
+#include "internal.h"
 
 static R_INLINE SEXP ret_array (int nvars, int nreps, int ntimes, SEXP Snames, SEXP repnames)
 {

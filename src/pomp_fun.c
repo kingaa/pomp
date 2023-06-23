@@ -5,7 +5,7 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
-#include "pomp_internal.h"
+#include "internal.h"
 
 static R_INLINE SEXP name_index (SEXP provided, SEXP object, const char *slot, const char *humanreadable) {
   SEXP slotnames, index;

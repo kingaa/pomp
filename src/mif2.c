@@ -1,6 +1,6 @@
 // -*- C++ -*-
 
-#include "pomp_internal.h"
+#include "internal.h"
 #include <Rdefines.h>
 
 SEXP randwalk_perturbation (SEXP params, SEXP rw_sd)

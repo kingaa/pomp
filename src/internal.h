@@ -9,9 +9,6 @@
 #include <Rinternals.h>
 
 #include "pomp_defines.h"
-#include "pomp_decls.h"
-
-#define err(...) errorcall(R_NilValue,__VA_ARGS__)
-#define warn(...) warningcall(R_NilValue,__VA_ARGS__)
+#include "decls.h"
 
 #endif

@@ -1,6 +1,6 @@
 // -*- C++ -*-
 
-#include "pomp_internal.h"
+#include "internal.h"
 
 // The following function computes the derivative of order 'deriv' of the i-th
 // B-spline of given degree with given knots at each of the nx points in x.

@@ -3,7 +3,7 @@
 #include <R.h>
 #include <Rmath.h>
 #include <Rdefines.h>
-#include "pomp_internal.h"
+#include "internal.h"
 
 // simple 2D Ornstein-Uhlenbeck process simulation
 static void sim_ou2 (double *x1, double *x2,

@@ -5,7 +5,7 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 
-#include "pomp_internal.h"
+#include "internal.h"
 
 SEXP add_skel_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 {

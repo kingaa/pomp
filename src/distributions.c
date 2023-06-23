@@ -2,7 +2,7 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 
-#include "pomp_internal.h"
+#include "internal.h"
 
 static void reulermultinom_multi (int m, int n, double *size, double *rate, double *deltat, double *trans) {
   int k;

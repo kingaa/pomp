@@ -1,6 +1,6 @@
 // -*- C++ -*-
 
-#include "pomp_internal.h"
+#include "internal.h"
 
 // Compute log(mean(exp(X))) accurately,
 // optionally with one element dropped

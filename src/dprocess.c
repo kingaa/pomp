@@ -5,7 +5,7 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 
-#include "pomp_internal.h"
+#include "internal.h"
 
 static R_INLINE SEXP paste0 (SEXP a, SEXP b) {
   return eval(lang3(install("paste0"),a,b),R_BaseEnv);

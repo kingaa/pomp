@@ -54,7 +54,7 @@
    greater than 2^32-1 has also been removed. This case generates an error.
 */
 
-#include "pomp_internal.h"
+#include "internal.h"
 
 typedef Int32 uint32_t;
 typedef struct nlopt_soboldata_s *nlopt_sobol;

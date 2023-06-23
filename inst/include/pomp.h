@@ -10,6 +10,9 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+#define err(...) errorcall(R_NilValue,__VA_ARGS__)
+#define warn(...) warningcall(R_NilValue,__VA_ARGS__)
+
 typedef void bspline_eval_t (double *y, const double *x, int nx, int i, int p, int d, const double *knots);
 typedef void periodic_bspline_basis_eval_t (double x, double period, int degree, int nbasis, double *y);
 typedef void periodic_bspline_basis_eval_deriv_t (double x, double period, int degree, int nbasis, int deriv, double *y);
@@ -45,13 +48,13 @@ static R_INLINE void reulermultinom (int m, double size, const double *rate,
   if ( !R_FINITE(size) || size < 0.0 || floor(size+0.5) != size ||
        !R_FINITE(dt) || dt < 0.0) {
     for (k = 0; k < m; k++) trans[k] = R_NaReal;
-    warningcall(R_NilValue,"in 'reulermultinom': NAs produced.");
+    warn("in 'reulermultinom': NAs produced.");
     return;
   }
   for (k = 0; k < m; k++) {
     if (!R_FINITE(rate[k]) || rate[k] < 0.0) {
       for (j = 0; j < m; j++) trans[j] = R_NaReal;
-      warningcall(R_NilValue,"in 'reulermultinom': NAs produced.");
+      warn("in 'reulermultinom': NAs produced.");
       return;
     }
     p += rate[k]; // total event rate
@@ -78,12 +81,12 @@ static R_INLINE double deulermultinom (int m, double size, const double *rate,
   double ff = 0.0;
   int k;
   if ((dt < 0.0) || (size < 0.0) || (floor(size+0.5) != size)) {
-    warningcall(R_NilValue,"in 'deulermultinom': NaNs produced.");
+    warn("in 'deulermultinom': NaNs produced.");
     return R_NaN;
   }
   for (k = 0; k < m; k++) {
     if (rate[k] < 0.0) {
-      warningcall(R_NilValue,"in 'deulermultinom': NaNs produced.");
+      warn("in 'deulermultinom': NaNs produced.");
       return R_NaN;
     }
     if (trans[k] < 0.0) {
@@ -119,7 +122,7 @@ static R_INLINE double dmultinom (int m, const double *prob, double *x, int give
 
   for (k = 0; k < m; k++) {
     if (prob[k] < 0.0) {
-      warningcall(R_NilValue,"in 'dmultinom': NaNs produced.");
+      warn("in 'dmultinom': NaNs produced.");
       return R_NaN;
     }
 

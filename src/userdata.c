@@ -1,6 +1,6 @@
 // dear emacs, please treat this as -*- C++ -*-
 
-#include "pomp_internal.h"
+#include "internal.h"
 
 static SEXP __pomp_ptr_userdata;
 #define USERDATA  (__pomp_ptr_userdata)
