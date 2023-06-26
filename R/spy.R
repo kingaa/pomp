@@ -49,24 +49,28 @@ setMethod(
 
     cat("==================\npomp object ",sQuote(nm),":\n\n",sep="")
 
-    cat("- data:\n")
-    cat("  -",length(object@times),"records of",
-      nrow(object@data),
-      ngettext(nrow(object@data),"observable,","observables,"),
-      "recorded from t =",
-      min(object@times),"to",max(object@times),"\n")
-    cat("  - summary of data:\n")
-    print(summary(as.data.frame(t(obs(object)))))
+    if (nrow(object@data) > 0L) {
+      cat("- data:\n")
+      cat("  -",length(object@times),"records of",
+        nrow(object@data),
+        ngettext(nrow(object@data),"observable,","observables,"),
+        "recorded from t =",
+        min(object@times),"to",max(object@times),"\n")
+      cat("  - summary of data:\n")
+      print(summary(as.data.frame(t(obs(object)))))
+    } else {
+      cat("- data: <none>\n")
+    }
 
-    cat("\n- zero time, t0 = ",object@t0,"\n\n",sep="")
+    cat("- zero time, t0 = ",object@t0,"\n",sep="")
 
     cat("- covariates: ")
     show(object@covar)
 
-    cat("\n- initial state simulator, rinit: ")
+    cat("- initial state simulator, rinit: ")
     show(object@rinit)
 
-    cat("\n- initial state density, dinit: ")
+    cat("- initial state density, dinit: ")
     show(object@dinit)
 
     cat("- process-model simulator, rprocess: ")
@@ -109,9 +113,13 @@ setMethod(
     }
 
     if (length(object@userdata)>0) {
-      cat("- extra user-defined variables: ",
-        paste(lapply(names(object@userdata),sQuote),collapse=", "),
-        "\n")
+      unames <- names(object@userdata)
+      utypes <- vapply(object@userdata,typeof,character(1))
+      cat(
+        "- extra user-defined variables:",
+        sprintf("  - %s (type %s)",sQuote(unames),sQuote(utypes)),
+        sep="\n"
+      )
     }
 
     cat("\n")

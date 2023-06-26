@@ -26,3 +26,13 @@ spy(sir2)
 try(spy())
 try(spy(list()))
 
+pomp(
+  data=NULL,
+  t0=0,times=1:10,
+  x0=as.double(1),
+  params=c(x_0=1,a=22),
+  rinit=Csnippet(r"{x = *get_userdata_double("x0");}"),
+  statenames="x",
+  compile=FALSE
+) |>
+  spy()

@@ -36,20 +36,20 @@ https://kingaa.github.io/pomp/blog.html.
 +   msg="hello!",
 +   params=setNames(runif(n=9,min=-5,max=5),sprintf("beta%d",1:9)),
 +   rprocess=euler(
-+     Csnippet("
++     Csnippet(r"{
 +       static int first = 1;
 +       if (first) {
-+         SEXP Msg = get_userdata(\"msg\");
++         SEXP Msg = get_userdata("msg");
 +         char *msg = CHAR(STRING_ELT(Msg,0));
-+         Rprintf(\"%s\\n\",msg);
++         Rprintf("%s\n",msg);
 +         first = 0;
 +       }
-+       int nbasis = *(get_userdata_int(\"nbasis\"));
++       int nbasis = *(get_userdata_int("nbasis"));
 +       int degree = 3;
-+       double period = *(get_userdata_double(\"period\"));
++       double period = *(get_userdata_double("period"));
 +       double dxdt[nbasis];
 +       periodic_bspline_basis_eval(t,period,degree,nbasis,dxdt);
-+       x += dt*dot_product(nbasis,dxdt,&beta1);"
++       x += dt*dot_product(nbasis,dxdt,&beta1);}"
 +     ),delta.t=0.01
 +   ),
 +   rmeasure=Csnippet("y = x;"),
@@ -61,36 +61,36 @@ hello!
 > 
 > try(po |>
 +     simulate(rprocess=onestep(
-+       Csnippet("
-+       SEXP Msg = get_userdata(\"bob\");
++       Csnippet(r"{
++       SEXP Msg = get_userdata("bob");
 +       char *msg = CHAR(STRING_ELT(Msg,0));
-+       Rprintf(\"%s\\n\",msg);"))))
++       Rprintf("%s\n",msg);}"))))
 Error : in 'simulate': no user-data element 'bob' is found.
 > try(po |>
 +     simulate(rprocess=onestep(
-+       Csnippet("double nbasis = *(get_userdata_double(\"nbasis\"));"))))
++       Csnippet(r"{double nbasis = *(get_userdata_double("nbasis"));}"))))
 Error : in 'simulate': user-data element 'nbasis' is not a numeric vector.
 > try(po |>
 +     simulate(rprocess=onestep(
-+       Csnippet("double nbasis = *(get_userdata_double(\"bob\"));"))))
++       Csnippet(r"{double nbasis = *(get_userdata_double("bob"));}"))))
 Error : in 'simulate': no user-data element 'bob' is found.
 > try(po |>
 +     simulate(rprocess=onestep(
-+       Csnippet("int nbasis = *(get_userdata_int(\"period\"));"))))
++       Csnippet(r"{int nbasis = *(get_userdata_int("period"));}"))))
 Error : in 'simulate': user-data element 'period' is not an integer.
 > try(po |>
 +     simulate(rprocess=onestep(
-+       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));"))))
++       Csnippet(r"{int nbasis = *(get_userdata_int("bob"));}"))))
 Error : in 'simulate': no user-data element 'bob' is found.
 > try(po |>
 +     simulate(rprocess=onestep(
-+       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));")),
++       Csnippet(r"{int nbasis = *(get_userdata_int("bob"));}")),
 +       bob=3))
 NOTE: The provided object 'bob' is available for use by POMP basic components.
 Error : in 'simulate': user-data element 'bob' is not an integer.
 > stopifnot(po |>
 +     simulate(rprocess=onestep(
-+       Csnippet("int nbasis = *(get_userdata_int(\"bob\"));")),
++       Csnippet(r"{int nbasis = *(get_userdata_int("bob"));}")),
 +       bob=3L) |> class() == "pomp")
 NOTE: The provided object 'bob' is available for use by POMP basic components.
 > 

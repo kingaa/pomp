@@ -50,9 +50,7 @@ pomp object 'po1':
  Mean   :1.134  
  3rd Qu.:1.325  
  Max.   :2.012  
-
 - zero time, t0 = 0
-
 - covariates: 
   - 21 records of 1 covariates, recorded from t = 0 to 20 
   - summary of covariates:
@@ -63,9 +61,7 @@ pomp object 'po1':
  Mean   :10  
  3rd Qu.:15  
  Max.   :20  
-
 - initial state simulator, rinit: <default>
-
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: discrete-time process-model simulator
   - timestep = 1 
@@ -95,7 +91,8 @@ pomp object 'po1':
 - parameter vector:
     K     r sigma   tau   X_0 
   1.0   0.1   0.1   0.1   1.0 
-- extra user-defined variables:  'bob' 
+- extra user-defined variables:
+  - 'bob' (type 'double')
 
 
 > 
@@ -119,9 +116,7 @@ pomp object 'po2':
  Mean   :1.134  
  3rd Qu.:1.325  
  Max.   :2.012  
-
 - zero time, t0 = 0
-
 - covariates: 
   - 21 records of 1 covariates, recorded from t = 0 to 20 
   - summary of covariates:
@@ -132,11 +127,9 @@ pomp object 'po2':
  Mean   :10  
  3rd Qu.:15  
  Max.   :20  
-
 - initial state simulator, rinit: R function
   - definition: function (params, t0, ...) 
 params
-
 
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: discrete-time process-model simulator
@@ -172,13 +165,14 @@ params
   - name: '__pomp_from_trans'
   - defined by a C snippet in library 'nancy'
 - parameter vector unspecified
-- extra user-defined variables:  'bob' 
+- extra user-defined variables:
+  - 'bob' (type 'double')
 
 - C snippet file  1 :
 
 /* pomp C snippet file: nancy */
-/* Time: 2023-06-17 14:29:47.065 -0400 */
-/* Salt: BA3A29197DC5DFF47CF991F0 */
+/* Time: 2023-06-26 10:17:47.206 -0400 */
+/* Salt: D20AFEF109126C754F6B644D */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -244,9 +238,7 @@ pomp object 'sir':
  Mean   : 448  
  3rd Qu.: 645  
  Max.   :2183  
-
 - zero time, t0 = 0
-
 - covariates: 
   - 421 records of 3 covariates, recorded from t = 0 to 4.2 
   - summary of covariates:
@@ -257,11 +249,9 @@ pomp object 'sir':
  Mean   :0.345   Mean   :0.334   Mean   :0.321  
  3rd Qu.:0.560   3rd Qu.:0.539   3rd Qu.:0.539  
  Max.   :0.667   Max.   :0.667   Max.   :0.667  
-
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
   - defined by a C snippet in library 'sir_source'
-
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: Euler-method process-model simulator
   - timestep = 0.000962 
@@ -303,8 +293,8 @@ pomp object 'sir':
 - C snippet file  1 :
 
 /* pomp C snippet file: sir_source */
-/* Time: 2023-06-17 14:29:47.179 -0400 */
-/* Salt: 59D5C3EFBC8AAAE1F78AF7BF */
+/* Time: 2023-06-26 10:17:47.279 -0400 */
+/* Salt: 2ADE341C235006296BA66EFC */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -902,13 +892,9 @@ pomp object 'rw2':
  Mean   : -5.81   Mean   : -0.92  
  3rd Qu.: -1.30   3rd Qu.:  3.07  
  Max.   :  3.50   Max.   : 10.26  
-
 - zero time, t0 = 0
-
 - covariates: <none>
-
 - initial state simulator, rinit: <default>
-
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: one-step process-model simulator
   - step.fun: native function
@@ -940,8 +926,8 @@ x1_0 x2_0   s1   s2  tau
 - C snippet file  1 :
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2023-06-17 14:29:47.849 -0400 */
-/* Salt: 3291F5E5A5D0664049D62A92 */
+/* Time: 2023-06-26 10:17:47.705 -0400 */
+/* Salt: 87B2BD2900BAA94441DC8A67 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1132,9 +1118,7 @@ pomp object 'sir2':
  Mean   :110  
  3rd Qu.:151  
  Max.   :876  
-
 - zero time, t0 = 0
-
 - covariates: 
   - 1021 records of 3 covariates, recorded from t = 0 to 10.2 
   - summary of covariates:
@@ -1145,11 +1129,9 @@ pomp object 'sir2':
  Mean   :0.338   Mean   :0.334   Mean   :0.328  
  3rd Qu.:0.560   3rd Qu.:0.550   3rd Qu.:0.550  
  Max.   :0.667   Max.   :0.667   Max.   :0.667  
-
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
   - defined by a C snippet in library 'sir2_source'
-
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: Gillespie-method process-model simulator
   - stoichiometry matrix:
@@ -1198,8 +1180,8 @@ name    birth susc.death infection inf.death recovery recov.death
 - C snippet file  1 :
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2023-06-17 14:29:48.460 -0400 */
-/* Salt: 0E1AF4C2547932A9AEE1AEC3 */
+/* Time: 2023-06-26 10:17:48.079 -0400 */
+/* Salt: D03045B80592352207CAE3F0 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -1813,4 +1795,79 @@ Error : in 'spy': 'object' is a required argument.
 > try(spy(list()))
 Error : 'spy' is undefined for 'object' of class 'list'.
 > 
+> pomp(
++   data=NULL,
++   t0=0,times=1:10,
++   x0=as.double(1),
++   params=c(x_0=1,a=22),
++   rinit=Csnippet(r"{x = *get_userdata_double("x0");}"),
++   statenames="x",
++   compile=FALSE
++ ) |>
++   spy()
+NOTE: The provided object 'x0' is available for use by POMP basic components.
+==================
+pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params = c(x_0 = 1, ''    a = 22), rinit = Csnippet("x = *get_userdata_double(\"x0\");"), ''    statenames = "x", compile = FALSE)':
+
+- data: <none>
+- zero time, t0 = 0
+- covariates: <none>
+- initial state simulator, rinit: native function
+  - name: '__pomp_rinit'
+  - defined by a C snippet in library 'pomp_31280fa4ec1c8869a8091417161da4d5'
+- initial state density, dinit: <default>
+- process-model simulator, rprocess: <undefined>
+- process model density, dprocess: <default>
+- measurement model simulator, rmeasure: <default>
+- measurement model density, dmeasure: <default>
+- measurement model expectation, emeasure: <default>
+- measurement model covariance, vmeasure: <default>
+- prior simulator, rprior: <default>
+- prior density, dprior: <default>
+- deterministic skeleton: <default>
+
+- parameter vector:
+x_0   a 
+  1  22 
+- extra user-defined variables:
+  - 'x0' (type 'double')
+
+- C snippet file  1 :
+
+/* pomp C snippet file: pomp_31280fa4ec1c8869a8091417161da4d5 */
+/* Time: 2023-06-26 10:17:48.530 -0400 */
+/* Salt: 959323F73815F6CDF24E522B */
+
+#include <pomp.h>
+#include <R_ext/Rdynload.h>
+
+ 
+
+static get_userdata_double_t *__pomp_get_userdata_double;
+#define get_userdata_double(X)	(__pomp_get_userdata_double(X))
+
+/* C snippet: 'rinit' */
+#define x		(__x[__stateindex[0]])
+
+void __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
+{
+ x = *get_userdata_double("x0"); 
+}
+
+#undef x
+
+static int __pomp_load_stack = 0;
+
+void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
+
+void R_init_pomp_31280fa4ec1c8869a8091417161da4d5 (DllInfo *info)
+{
+__pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
+R_RegisterCCallable("pomp_31280fa4ec1c8869a8091417161da4d5", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_31280fa4ec1c8869a8091417161da4d5", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_31280fa4ec1c8869a8091417161da4d5", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+}
+
 > 

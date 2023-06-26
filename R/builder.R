@@ -432,7 +432,7 @@ pomp_templates <- list(
       reg="__pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable(\"pomp\",\"get_userdata_double\");\n"
     ),
     get_userdata=list(
-      trigger="get_userdata(\\b|[^_])",
+      trigger=r"{get_userdata(\b|[^_])}",
       header="static get_userdata_t *__pomp_get_userdata;\n#define get_userdata(X)\t(__pomp_get_userdata(X))\n",
       reg="__pomp_get_userdata = (get_userdata_t *) R_GetCCallable(\"pomp\",\"get_userdata\");\n"
     )
