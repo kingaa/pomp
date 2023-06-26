@@ -41,10 +41,10 @@
 ##' @section When the basic component is specified via a C snippet:
 ##' A C snippet implementation of the aforementioned measurement model is:
 ##' \preformatted{
-##'     f <- Csnippet("
-##'      double theta = *(get_userdata_double(\"theta\"));
+##'     f <- Csnippet(r"{
+##'      double theta = *get_userdata_double("theta");
 ##'      y1 = rpois(x1+theta); y2 = rpois(x2+theta);
-##'     ")}
+##'     }")}
 ##' Here, the call to \code{get_userdata_double} retrieves a \emph{pointer} to the stored value of \code{theta}.
 ##' Note the need to escape the quotes in the C snippet text.
 ##'

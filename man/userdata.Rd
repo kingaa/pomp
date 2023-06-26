@@ -49,10 +49,10 @@ This warning helps forestall accidental triggering of this facility due to typog
 
 A C snippet implementation of the aforementioned measurement model is:
 \preformatted{
-    f <- Csnippet("
-     double theta = *(get_userdata_double(\"theta\"));
+    f <- Csnippet(r"{
+     double theta = *get_userdata_double("theta");
      y1 = rpois(x1+theta); y2 = rpois(x2+theta);
-    ")}
+    }")}
 Here, the call to \code{get_userdata_double} retrieves a \emph{pointer} to the stored value of \code{theta}.
 Note the need to escape the quotes in the C snippet text.
 
@@ -89,9 +89,9 @@ See the example below.
 
 \examples{
 \donttest{
-  ## The familiar Ricker example
-  ## For some bizarre reason, we wish to pass 'phi'
-  ## via the userdata facility.
+  ## The familiar Ricker example.
+  ## Suppose that for some reason we wish to pass 'phi'
+  ## via the userdata facility instead of as a parameter.
 
   ## C snippet approach:
 
@@ -99,15 +99,15 @@ See the example below.
     phi=as.double(100),
     params=c(r=3.8,sigma=0.3,N.0=7),
     rprocess=discrete_time(
-      step.fun=Csnippet("
+      step.fun=Csnippet(r"{
       double e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
-      N = r*N*exp(-N+e);"
+      N = r*N*exp(-N+e);}"
       ),
       delta.t=1
     ),
-    rmeasure=Csnippet("
-       double phi = *(get_userdata_double(\"phi\"));
-       y = rpois(phi*N);"
+    rmeasure=Csnippet(r"{
+       double phi = *get_userdata_double("phi");
+       y = rpois(phi*N);}"
     ),
     paramnames=c("r","sigma"),
     statenames="N",
@@ -119,9 +119,9 @@ See the example below.
     globals=Csnippet("static double phi = 100;"),
     params=c(r=3.8,sigma=0.3,N.0=7),
     rprocess=discrete_time(
-      step.fun=Csnippet("
+      step.fun=Csnippet(r"{
       double e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
-      N = r*N*exp(-N+e);"
+      N = r*N*exp(-N+e);}"
       ),
       delta.t=1
     ),
@@ -145,7 +145,7 @@ See the example below.
       },
       delta.t=1
     ),
-    rmeasure=function(phi, N, ...) {
+    rmeasure=function (phi, N, ...) {
       c(y=rpois(n=1,lambda=phi*N))
     }
   ) -> rick3

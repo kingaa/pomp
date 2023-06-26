@@ -1,7 +1,7 @@
 \donttest{
-  ## The familiar Ricker example
-  ## For some bizarre reason, we wish to pass 'phi'
-  ## via the userdata facility.
+  ## The familiar Ricker example.
+  ## Suppose that for some reason we wish to pass 'phi'
+  ## via the userdata facility instead of as a parameter.
 
   ## C snippet approach:
 
@@ -9,15 +9,15 @@
     phi=as.double(100),
     params=c(r=3.8,sigma=0.3,N.0=7),
     rprocess=discrete_time(
-      step.fun=Csnippet("
+      step.fun=Csnippet(r"{
       double e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
-      N = r*N*exp(-N+e);"
+      N = r*N*exp(-N+e);}"
       ),
       delta.t=1
     ),
-    rmeasure=Csnippet("
-       double phi = *(get_userdata_double(\"phi\"));
-       y = rpois(phi*N);"
+    rmeasure=Csnippet(r"{
+       double phi = *get_userdata_double("phi");
+       y = rpois(phi*N);}"
     ),
     paramnames=c("r","sigma"),
     statenames="N",
@@ -29,9 +29,9 @@
     globals=Csnippet("static double phi = 100;"),
     params=c(r=3.8,sigma=0.3,N.0=7),
     rprocess=discrete_time(
-      step.fun=Csnippet("
+      step.fun=Csnippet(r"{
       double e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
-      N = r*N*exp(-N+e);"
+      N = r*N*exp(-N+e);}"
       ),
       delta.t=1
     ),
@@ -55,7 +55,7 @@
       },
       delta.t=1
     ),
-    rmeasure=function(phi, N, ...) {
+    rmeasure=function (phi, N, ...) {
       c(y=rpois(n=1,lambda=phi*N))
     }
   ) -> rick3
