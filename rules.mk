@@ -41,6 +41,9 @@ rsession: RSESSION = R
 default: .roxy .NEWS .instdocs .source .includes .headers
 	@echo $(PKGVERS)
 
+version:
+	@echo $(PKGVERS)
+
 roxy: .roxy
 
 dist: .dist
@@ -65,9 +68,9 @@ INSTALLCMD = devtools::install(args=c("--preclean","--html","--library=library")
 
 check xcheck ycheck qcheck qqcheck: .check
 
-vcheck: check/$(PKG).Rcheck/$(PKG)-Ex.R
+vcheck: check 
 	$(REXE) -d "valgrind -s --tool=memcheck --track-origins=yes --leak-check=full"\
-	< $^ 2>&1 | tee $(PKG)-Ex.Rout
+	< check/$(PKG).Rcheck/$(PKG)-Ex.R 2>&1 | tee $(PKG)-Ex.Rout
 
 NEWS: .NEWS
 
