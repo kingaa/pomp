@@ -409,38 +409,79 @@ render <- function (template, ...) {
 ## TEMPLATES
 
 pomp_templates <- list(
-  define="#define {%variable%}\t\t({%cref%})\n",
-  undefine="#undef {%variable%}\n",
+  define=r"{
+#define {%variable%}  ({%cref%})
+  }",
+  undefine=r"{
+#undef {%variable%}
+  }",
   file=list(
-    header="/* pomp C snippet file: {%name%} */\n/* Time: {%timestamp%} */\n/* Salt: {%salt%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n"
-  ),
+    header=r"{
+/* pomp C snippet file: {%name%} */
+/* Time: {%timestamp%} */
+/* Salt: {%salt%} */
+
+#include <{%pompheader%}>
+#include <R_ext/Rdynload.h>
+
+    }"
+    ),
   utilities=list(
     periodic_bspline_basis=list(
       trigger="periodic_bspline_basis_eval",
-      header="static periodic_bspline_basis_eval_t *__pomp_periodic_bspline_basis_eval;\n#define periodic_bspline_basis_eval(X,Y,M,N,Z)\t(__pomp_periodic_bspline_basis_eval((X),(Y),(M),(N),(Z)))
-\n",
-      reg="__pomp_periodic_bspline_basis_eval = (periodic_bspline_basis_eval_t *) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n"
+      header=r"{
+static periodic_bspline_basis_eval_t *__pomp_periodic_bspline_basis_eval;
+#define periodic_bspline_basis_eval(X,Y,M,N,Z)  (__pomp_periodic_bspline_basis_eval((X),(Y),(M),(N),(Z)))
+      }",
+      reg=r"{
+__pomp_periodic_bspline_basis_eval = (periodic_bspline_basis_eval_t *) R_GetCCallable("pomp","periodic_bspline_basis_eval");
+      }"
     ),
     get_userdata_int=list(
       trigger="get_userdata_int",
-      header="static get_userdata_int_t *__pomp_get_userdata_int;\n#define get_userdata_int(X)\t(__pomp_get_userdata_int(X))\n",
-      reg="__pomp_get_userdata_int = (get_userdata_t *) R_GetCCallable(\"pomp\",\"get_userdata_int\");\n"
+      header=r"{
+static get_userdata_int_t *__pomp_get_userdata_int;
+#define get_userdata_int(X)  (__pomp_get_userdata_int(X))
+      }",
+      reg=r"{
+__pomp_get_userdata_int = (get_userdata_t *) R_GetCCallable("pomp","get_userdata_int");
+      }"
     ),
     get_userdata_double=list(
       trigger="get_userdata_double",
-      header="static get_userdata_double_t *__pomp_get_userdata_double;\n#define get_userdata_double(X)\t(__pomp_get_userdata_double(X))\n",
-      reg="__pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable(\"pomp\",\"get_userdata_double\");\n"
+      header=r"{
+static get_userdata_double_t *__pomp_get_userdata_double;
+#define get_userdata_double(X)  (__pomp_get_userdata_double(X))
+      }",
+      reg=r"{
+__pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
+      }"
     ),
     get_userdata=list(
       trigger=r"{get_userdata(\b|[^_])}",
-      header="static get_userdata_t *__pomp_get_userdata;\n#define get_userdata(X)\t(__pomp_get_userdata(X))\n",
-      reg="__pomp_get_userdata = (get_userdata_t *) R_GetCCallable(\"pomp\",\"get_userdata\");\n"
+      header=r"{
+static get_userdata_t *__pomp_get_userdata;
+#define get_userdata(X)  (__pomp_get_userdata(X))
+      }",
+      reg=r"{
+__pomp_get_userdata = (get_userdata_t *) R_GetCCallable("pomp","get_userdata");
+      }"
     )
   ),
-  stackhandling="\nstatic int __pomp_load_stack = 0;\n\nvoid __pomp_load_stack_incr (void) {++__pomp_load_stack;}\n\nvoid __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}\n",
+  stackhandling=r"{
+static int __pomp_load_stack = 0;
+void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
+  }",
   registration=list(
-    header="\nvoid R_init_{%name%} (DllInfo *info)\n{\n",
-    main="R_RegisterCCallable(\"{%name%}\", \"{%fun%}\", (DL_FUNC) {%fun%});\n",
-    footer="}\n\n"
+    header=r"{
+void R_init_{%name%} (DllInfo *info) {
+    }",
+    main=r"(
+R_RegisterCCallable("{%name%}", "{%fun%}", (DL_FUNC) {%fun%});
+    )",
+    footer=r"{
+}
+    }"
   )
 )
