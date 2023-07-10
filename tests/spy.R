@@ -36,3 +36,17 @@ pomp(
   compile=FALSE
 ) |>
   spy()
+
+pomp(
+  data=NULL,
+  t0=0,times=1:10,
+  x0=as.double(1),
+  params=c(x_0=1,a=22),
+  globals=Csnippet("static double X0;"),
+  rinit=Csnippet(r"{x = X0;}"),
+  rprocess=euler(Csnippet(r"(x += rgammawn(0.1,dt);)"),delta.t=0.1),
+  on_load=Csnippet(r"{X0 = *get_userdata_double("x0");}"),
+  statenames="x",
+  compile=FALSE
+) |>
+  spy()

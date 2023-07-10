@@ -170,58 +170,58 @@ params
 
 - C snippet file  1 :
 
+
 /* pomp C snippet file: nancy */
-/* Time: 2023-06-26 10:17:47.206 -0400 */
-/* Salt: D20AFEF109126C754F6B644D */
+/* Time: 2023-07-10 14:49:24.803 -0400 */
+/* Salt: F833BDA4890A96F96CB897C1 */
 
 #include <pomp.h>
-#include <R_ext/Rdynload.h>
-
+#include <R_ext/Rdynload.h> 
  
 
 
 /* C snippet: 'toEst' */
-#define b		(__covars[__covindex[0]])
-#define r		(__p[__parindex[0]])
-#define T_r		(__pt[__parindex[0]])
 
-void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
-{
- 	T_r = log(r); 
+#define b (__covars[__covindex[0]])
+#define r (__p[__parindex[0]])
+#define T_r (__pt[__parindex[0]])
+ 
+void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex) { 
+  T_r = log(r); 
 }
+ 
 
 #undef b
 #undef r
 #undef T_r
-
 /* C snippet: 'fromEst' */
-#define b		(__covars[__covindex[0]])
-#define r		(__p[__parindex[0]])
-#define T_r		(__pt[__parindex[0]])
 
-void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
-{
- 	r = exp(T_r); 
+#define b (__covars[__covindex[0]])
+#define r (__p[__parindex[0]])
+#define T_r (__pt[__parindex[0]])
+ 
+void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex) { 
+  r = exp(T_r); 
 }
+ 
 
 #undef b
 #undef r
 #undef T_r
-
 static int __pomp_load_stack = 0;
-
 void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
-void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
+ 
+void R_init_nancy (DllInfo *info) {
+  R_RegisterCCallable("nancy", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("nancy", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("nancy", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+  R_RegisterCCallable("nancy", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+  
 
-void R_init_nancy (DllInfo *info)
-{
-R_RegisterCCallable("nancy", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("nancy", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("nancy", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("nancy", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
 }
-
+ 
 > 
 > sir() -> sir
 > spy(sir)
@@ -292,41 +292,42 @@ pomp object 'sir':
 
 - C snippet file  1 :
 
+
 /* pomp C snippet file: sir_source */
-/* Time: 2023-06-26 10:17:47.279 -0400 */
-/* Salt: 2ADE341C235006296BA66EFC */
+/* Time: 2023-07-10 14:49:24.921 -0400 */
+/* Salt: 53DDBDC52ED06AC4EACC37C4 */
 
 #include <pomp.h>
-#include <R_ext/Rdynload.h>
-
+#include <R_ext/Rdynload.h> 
 
       static int nbasis = 3; 
 
 
 /* C snippet: 'rinit' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define beta1		(__p[__parindex[3]])
-#define beta_sd		(__p[__parindex[4]])
-#define pop		(__p[__parindex[5]])
-#define rho		(__p[__parindex[6]])
-#define k		(__p[__parindex[7]])
-#define S_0		(__p[__parindex[8]])
-#define I_0		(__p[__parindex[9]])
-#define R_0		(__p[__parindex[10]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define cases		(__x[__stateindex[3]])
-#define W		(__x[__stateindex[4]])
 
-void __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define beta1 (__p[__parindex[3]])
+#define beta_sd (__p[__parindex[4]])
+#define pop (__p[__parindex[5]])
+#define rho (__p[__parindex[6]])
+#define k (__p[__parindex[7]])
+#define S_0 (__p[__parindex[8]])
+#define I_0 (__p[__parindex[9]])
+#define R_0 (__p[__parindex[10]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define cases (__x[__stateindex[3]])
+#define W (__x[__stateindex[4]])
  
+void __pomp_rinit (double *__x, const double *__p, double t,
+   const int *__stateindex, const int *__parindex, const int *__covindex,
+   const double *__covars) { 
       double m = pop/(S_0+I_0+R_0);
       S = nearbyint(m*S_0);
       I = nearbyint(m*I_0);
@@ -334,6 +335,7 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
       cases = 0;
       W = 0; 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -354,31 +356,31 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 #undef R
 #undef cases
 #undef W
-
 /* C snippet: 'step.fn' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define beta1		(__p[__parindex[3]])
-#define beta_sd		(__p[__parindex[4]])
-#define pop		(__p[__parindex[5]])
-#define rho		(__p[__parindex[6]])
-#define k		(__p[__parindex[7]])
-#define S_0		(__p[__parindex[8]])
-#define I_0		(__p[__parindex[9]])
-#define R_0		(__p[__parindex[10]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define cases		(__x[__stateindex[3]])
-#define W		(__x[__stateindex[4]])
 
-void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t, double dt)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define beta1 (__p[__parindex[3]])
+#define beta_sd (__p[__parindex[4]])
+#define pop (__p[__parindex[5]])
+#define rho (__p[__parindex[6]])
+#define k (__p[__parindex[7]])
+#define S_0 (__p[__parindex[8]])
+#define I_0 (__p[__parindex[9]])
+#define R_0 (__p[__parindex[10]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define cases (__x[__stateindex[3]])
+#define W (__x[__stateindex[4]])
  
+void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex,
+  const int *__parindex, const int *__covindex, const double *__covars,
+  double t, double dt) { 
         int nrate = 6;
         double rate[nrate];		  // transition rates
         double trans[nrate];		// transition numbers
@@ -411,6 +413,7 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, con
         cases += trans[3];		// cases are cumulative recoveries
         if (beta_sd > 0.0)  W += (dW-dt)/beta_sd; 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -431,34 +434,35 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, con
 #undef R
 #undef cases
 #undef W
-
 /* C snippet: 'rmeasure' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define beta1		(__p[__parindex[3]])
-#define beta_sd		(__p[__parindex[4]])
-#define pop		(__p[__parindex[5]])
-#define rho		(__p[__parindex[6]])
-#define k		(__p[__parindex[7]])
-#define S_0		(__p[__parindex[8]])
-#define I_0		(__p[__parindex[9]])
-#define R_0		(__p[__parindex[10]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define cases		(__x[__stateindex[3]])
-#define W		(__x[__stateindex[4]])
-#define reports		(__y[__obsindex[0]])
 
-void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define beta1 (__p[__parindex[3]])
+#define beta_sd (__p[__parindex[4]])
+#define pop (__p[__parindex[5]])
+#define rho (__p[__parindex[6]])
+#define k (__p[__parindex[7]])
+#define S_0 (__p[__parindex[8]])
+#define I_0 (__p[__parindex[9]])
+#define R_0 (__p[__parindex[10]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define cases (__x[__stateindex[3]])
+#define W (__x[__stateindex[4]])
+#define reports (__y[__obsindex[0]])
  
+void __pomp_rmeasure (double *__y, const double *__x, const double *__p,
+  const int *__obsindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, double t) { 
       reports = rnbinom_mu(1.0/k,cases*rho); 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -480,35 +484,37 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #undef cases
 #undef W
 #undef reports
-
 /* C snippet: 'dmeasure' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define beta1		(__p[__parindex[3]])
-#define beta_sd		(__p[__parindex[4]])
-#define pop		(__p[__parindex[5]])
-#define rho		(__p[__parindex[6]])
-#define k		(__p[__parindex[7]])
-#define S_0		(__p[__parindex[8]])
-#define I_0		(__p[__parindex[9]])
-#define R_0		(__p[__parindex[10]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define cases		(__x[__stateindex[3]])
-#define W		(__x[__stateindex[4]])
-#define reports		(__y[__obsindex[0]])
-#define lik		(__lik[0])
 
-void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define beta1 (__p[__parindex[3]])
+#define beta_sd (__p[__parindex[4]])
+#define pop (__p[__parindex[5]])
+#define rho (__p[__parindex[6]])
+#define k (__p[__parindex[7]])
+#define S_0 (__p[__parindex[8]])
+#define I_0 (__p[__parindex[9]])
+#define R_0 (__p[__parindex[10]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define cases (__x[__stateindex[3]])
+#define W (__x[__stateindex[4]])
+#define reports (__y[__obsindex[0]])
+#define lik (__lik[0])
  
+void __pomp_dmeasure (double *__lik, const double *__y, const double *__x,
+  const double *__p, int give_log, const int *__obsindex,
+  const int *__stateindex, const int *__parindex, const int *__covindex,
+  const double *__covars, double t) { 
       lik = dnbinom_mu(nearbyint(reports),1.0/k,cases*rho,give_log); 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -531,34 +537,35 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #undef W
 #undef reports
 #undef lik
-
 /* C snippet: 'emeasure' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define beta1		(__p[__parindex[3]])
-#define beta_sd		(__p[__parindex[4]])
-#define pop		(__p[__parindex[5]])
-#define rho		(__p[__parindex[6]])
-#define k		(__p[__parindex[7]])
-#define S_0		(__p[__parindex[8]])
-#define I_0		(__p[__parindex[9]])
-#define R_0		(__p[__parindex[10]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define cases		(__x[__stateindex[3]])
-#define W		(__x[__stateindex[4]])
-#define E_reports		(__f[__obsindex[0]])
 
-void __pomp_emeasure (double *__f, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define beta1 (__p[__parindex[3]])
+#define beta_sd (__p[__parindex[4]])
+#define pop (__p[__parindex[5]])
+#define rho (__p[__parindex[6]])
+#define k (__p[__parindex[7]])
+#define S_0 (__p[__parindex[8]])
+#define I_0 (__p[__parindex[9]])
+#define R_0 (__p[__parindex[10]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define cases (__x[__stateindex[3]])
+#define W (__x[__stateindex[4]])
+#define E_reports (__f[__obsindex[0]])
  
+void __pomp_emeasure (double *__f, const double *__x, const double *__p,
+  const int *__obsindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, double t) { 
       E_reports = cases*rho; 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -580,35 +587,36 @@ void __pomp_emeasure (double *__f, const double *__x, const double *__p, const i
 #undef cases
 #undef W
 #undef E_reports
-
 /* C snippet: 'vmeasure' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define beta1		(__p[__parindex[3]])
-#define beta_sd		(__p[__parindex[4]])
-#define pop		(__p[__parindex[5]])
-#define rho		(__p[__parindex[6]])
-#define k		(__p[__parindex[7]])
-#define S_0		(__p[__parindex[8]])
-#define I_0		(__p[__parindex[9]])
-#define R_0		(__p[__parindex[10]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define cases		(__x[__stateindex[3]])
-#define W		(__x[__stateindex[4]])
-#define V_reports_reports		(__f[__vmatindex[0]])
 
-void __pomp_vmeasure (double *__f, const double *__x, const double *__p, const int *__vmatindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, int nobs, double t)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define beta1 (__p[__parindex[3]])
+#define beta_sd (__p[__parindex[4]])
+#define pop (__p[__parindex[5]])
+#define rho (__p[__parindex[6]])
+#define k (__p[__parindex[7]])
+#define S_0 (__p[__parindex[8]])
+#define I_0 (__p[__parindex[9]])
+#define R_0 (__p[__parindex[10]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define cases (__x[__stateindex[3]])
+#define W (__x[__stateindex[4]])
+#define V_reports_reports (__f[__vmatindex[0]])
  
+void __pomp_vmeasure (double *__f, const double *__x, const double *__p,
+  const int *__vmatindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, int nobs, double t) { 
       double mean = cases*rho;
       V_reports_reports = mean*(1+k*mean); 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -630,49 +638,49 @@ void __pomp_vmeasure (double *__f, const double *__x, const double *__p, const i
 #undef cases
 #undef W
 #undef V_reports_reports
-
 /* C snippet: 'toEst' */
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define beta1		(__p[__parindex[3]])
-#define beta_sd		(__p[__parindex[4]])
-#define pop		(__p[__parindex[5]])
-#define rho		(__p[__parindex[6]])
-#define k		(__p[__parindex[7]])
-#define S_0		(__p[__parindex[8]])
-#define I_0		(__p[__parindex[9]])
-#define R_0		(__p[__parindex[10]])
-#define T_gamma		(__pt[__parindex[0]])
-#define T_mu		(__pt[__parindex[1]])
-#define T_iota		(__pt[__parindex[2]])
-#define T_beta1		(__pt[__parindex[3]])
-#define T_beta_sd		(__pt[__parindex[4]])
-#define T_pop		(__pt[__parindex[5]])
-#define T_rho		(__pt[__parindex[6]])
-#define T_k		(__pt[__parindex[7]])
-#define T_S_0		(__pt[__parindex[8]])
-#define T_I_0		(__pt[__parindex[9]])
-#define T_R_0		(__pt[__parindex[10]])
 
-void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
-{
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define beta1 (__p[__parindex[3]])
+#define beta_sd (__p[__parindex[4]])
+#define pop (__p[__parindex[5]])
+#define rho (__p[__parindex[6]])
+#define k (__p[__parindex[7]])
+#define S_0 (__p[__parindex[8]])
+#define I_0 (__p[__parindex[9]])
+#define R_0 (__p[__parindex[10]])
+#define T_gamma (__pt[__parindex[0]])
+#define T_mu (__pt[__parindex[1]])
+#define T_iota (__pt[__parindex[2]])
+#define T_beta1 (__pt[__parindex[3]])
+#define T_beta_sd (__pt[__parindex[4]])
+#define T_pop (__pt[__parindex[5]])
+#define T_rho (__pt[__parindex[6]])
+#define T_k (__pt[__parindex[7]])
+#define T_S_0 (__pt[__parindex[8]])
+#define T_I_0 (__pt[__parindex[9]])
+#define T_R_0 (__pt[__parindex[10]])
  
+void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex) { 
         int j;
         const double *BETA = &beta1;
         double *TBETA = &T_beta1;
         for (j = 0; j < nbasis; j++) TBETA[j] = log(BETA[j]);
-	T_gamma = log(gamma);
-	T_mu = log(mu);
-	T_iota = log(iota);
-	T_beta_sd = log(beta_sd);
-	T_k = log(k);
-	T_rho = logit(rho);
-	to_log_barycentric(&T_S_0,&S_0,3); 
+
+  T_gamma = log(gamma);
+  T_mu = log(mu);
+  T_iota = log(iota);
+  T_beta_sd = log(beta_sd);
+  T_k = log(k);
+  T_rho = logit(rho);
+  to_log_barycentric(&T_S_0,&S_0,3); 
 }
+ 
 
 #undef seas_1
 #undef seas_2
@@ -699,49 +707,49 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 #undef T_S_0
 #undef T_I_0
 #undef T_R_0
-
 /* C snippet: 'fromEst' */
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define beta1		(__p[__parindex[3]])
-#define beta_sd		(__p[__parindex[4]])
-#define pop		(__p[__parindex[5]])
-#define rho		(__p[__parindex[6]])
-#define k		(__p[__parindex[7]])
-#define S_0		(__p[__parindex[8]])
-#define I_0		(__p[__parindex[9]])
-#define R_0		(__p[__parindex[10]])
-#define T_gamma		(__pt[__parindex[0]])
-#define T_mu		(__pt[__parindex[1]])
-#define T_iota		(__pt[__parindex[2]])
-#define T_beta1		(__pt[__parindex[3]])
-#define T_beta_sd		(__pt[__parindex[4]])
-#define T_pop		(__pt[__parindex[5]])
-#define T_rho		(__pt[__parindex[6]])
-#define T_k		(__pt[__parindex[7]])
-#define T_S_0		(__pt[__parindex[8]])
-#define T_I_0		(__pt[__parindex[9]])
-#define T_R_0		(__pt[__parindex[10]])
 
-void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
-{
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define beta1 (__p[__parindex[3]])
+#define beta_sd (__p[__parindex[4]])
+#define pop (__p[__parindex[5]])
+#define rho (__p[__parindex[6]])
+#define k (__p[__parindex[7]])
+#define S_0 (__p[__parindex[8]])
+#define I_0 (__p[__parindex[9]])
+#define R_0 (__p[__parindex[10]])
+#define T_gamma (__pt[__parindex[0]])
+#define T_mu (__pt[__parindex[1]])
+#define T_iota (__pt[__parindex[2]])
+#define T_beta1 (__pt[__parindex[3]])
+#define T_beta_sd (__pt[__parindex[4]])
+#define T_pop (__pt[__parindex[5]])
+#define T_rho (__pt[__parindex[6]])
+#define T_k (__pt[__parindex[7]])
+#define T_S_0 (__pt[__parindex[8]])
+#define T_I_0 (__pt[__parindex[9]])
+#define T_R_0 (__pt[__parindex[10]])
  
+void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex) { 
         int j;
         const double *TBETA = &T_beta1;
         double *BETA = &beta1;
         for (j = 0; j < nbasis; j++) BETA[j] = exp(TBETA[j]);
-	gamma = exp(T_gamma);
-	mu = exp(T_mu);
-	iota = exp(T_iota);
-	beta_sd = exp(T_beta_sd);
-	k = exp(T_k);
-	rho = expit(T_rho);
-	from_log_barycentric(&S_0,&T_S_0,3); 
+
+  gamma = exp(T_gamma);
+  mu = exp(T_mu);
+  iota = exp(T_iota);
+  beta_sd = exp(T_beta_sd);
+  k = exp(T_k);
+  rho = expit(T_rho);
+  from_log_barycentric(&S_0,&T_S_0,3); 
 }
+ 
 
 #undef seas_1
 #undef seas_2
@@ -768,36 +776,36 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
 #undef T_S_0
 #undef T_I_0
 #undef T_R_0
-
 /* C snippet: 'skeleton' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define beta1		(__p[__parindex[3]])
-#define beta_sd		(__p[__parindex[4]])
-#define pop		(__p[__parindex[5]])
-#define rho		(__p[__parindex[6]])
-#define k		(__p[__parindex[7]])
-#define S_0		(__p[__parindex[8]])
-#define I_0		(__p[__parindex[9]])
-#define R_0		(__p[__parindex[10]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define cases		(__x[__stateindex[3]])
-#define W		(__x[__stateindex[4]])
-#define DS		(__f[__stateindex[0]])
-#define DI		(__f[__stateindex[1]])
-#define DR		(__f[__stateindex[2]])
-#define Dcases		(__f[__stateindex[3]])
-#define DW		(__f[__stateindex[4]])
 
-void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define beta1 (__p[__parindex[3]])
+#define beta_sd (__p[__parindex[4]])
+#define pop (__p[__parindex[5]])
+#define rho (__p[__parindex[6]])
+#define k (__p[__parindex[7]])
+#define S_0 (__p[__parindex[8]])
+#define I_0 (__p[__parindex[9]])
+#define R_0 (__p[__parindex[10]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define cases (__x[__stateindex[3]])
+#define W (__x[__stateindex[4]])
+#define DS (__f[__stateindex[0]])
+#define DI (__f[__stateindex[1]])
+#define DR (__f[__stateindex[2]])
+#define Dcases (__f[__stateindex[3]])
+#define DW (__f[__stateindex[4]])
  
+void __pomp_skelfn (double *__f, const double *__x, const double *__p,
+  const int *__stateindex, const int *__parindex, const int *__covindex,
+  const double *__covars, double t) { 
       int nrate = 6;
       double rate[nrate];		  // transition rates
       double term[nrate];		// terms in the equations
@@ -829,6 +837,7 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int
       Dcases = term[3];		// accumulate the new I->R transitions
       DW = 0;			// no noise, so no noise accumulation 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -854,28 +863,27 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int
 #undef DR
 #undef Dcases
 #undef DW
-
 static int __pomp_load_stack = 0;
-
 void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
-void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
+ 
+void R_init_sir_source (DllInfo *info) {
+  R_RegisterCCallable("sir_source", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("sir_source", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("sir_source", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("sir_source", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+  R_RegisterCCallable("sir_source", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+  R_RegisterCCallable("sir_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+  R_RegisterCCallable("sir_source", "__pomp_emeasure", (DL_FUNC) __pomp_emeasure);
+  R_RegisterCCallable("sir_source", "__pomp_vmeasure", (DL_FUNC) __pomp_vmeasure);
+  R_RegisterCCallable("sir_source", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+  R_RegisterCCallable("sir_source", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+  R_RegisterCCallable("sir_source", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
+  
 
-void R_init_sir_source (DllInfo *info)
-{
-R_RegisterCCallable("sir_source", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("sir_source", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("sir_source", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-R_RegisterCCallable("sir_source", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
-R_RegisterCCallable("sir_source", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("sir_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("sir_source", "__pomp_emeasure", (DL_FUNC) __pomp_emeasure);
-R_RegisterCCallable("sir_source", "__pomp_vmeasure", (DL_FUNC) __pomp_vmeasure);
-R_RegisterCCallable("sir_source", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("sir_source", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("sir_source", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
 }
-
+ 
 > 
 > rw2() -> rw2
 > spy(rw2)
@@ -925,53 +933,56 @@ x1_0 x2_0   s1   s2  tau
 
 - C snippet file  1 :
 
+
 /* pomp C snippet file: rw2_source */
-/* Time: 2023-06-26 10:17:47.705 -0400 */
-/* Salt: 87B2BD2900BAA94441DC8A67 */
+/* Time: 2023-07-10 14:49:25.700 -0400 */
+/* Salt: 22E7D1C375C99AECC6BDA6BC */
 
 #include <pomp.h>
-#include <R_ext/Rdynload.h>
-
+#include <R_ext/Rdynload.h> 
  
 
 
 /* C snippet: 'step.fn' */
-#define s1		(__p[__parindex[0]])
-#define s2		(__p[__parindex[1]])
-#define tau		(__p[__parindex[2]])
-#define x1		(__x[__stateindex[0]])
-#define x2		(__x[__stateindex[1]])
 
-void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t, double dt)
-{
+#define s1 (__p[__parindex[0]])
+#define s2 (__p[__parindex[1]])
+#define tau (__p[__parindex[2]])
+#define x1 (__x[__stateindex[0]])
+#define x2 (__x[__stateindex[1]])
  
+void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex,
+  const int *__parindex, const int *__covindex, const double *__covars,
+  double t, double dt) { 
         x1 = rnorm(x1,s1*sqrt(dt));
         x2 = rnorm(x2,s2*sqrt(dt)); 
 }
+ 
 
 #undef s1
 #undef s2
 #undef tau
 #undef x1
 #undef x2
-
 /* C snippet: 'dprocess' */
-#define s1		(__p[__parindex[0]])
-#define s2		(__p[__parindex[1]])
-#define tau		(__p[__parindex[2]])
-#define x1_1		(__x1[__stateindex[0]])
-#define x2_1		(__x1[__stateindex[1]])
-#define x1_2		(__x2[__stateindex[0]])
-#define x2_2		(__x2[__stateindex[1]])
-#define loglik		(__loglik[0])
 
-void __pomp_dproc (double *__loglik, const double *__x1, const double *__x2, double t_1, double t_2, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
-{
+#define s1 (__p[__parindex[0]])
+#define s2 (__p[__parindex[1]])
+#define tau (__p[__parindex[2]])
+#define x1_1 (__x1[__stateindex[0]])
+#define x2_1 (__x1[__stateindex[1]])
+#define x1_2 (__x2[__stateindex[0]])
+#define x2_2 (__x2[__stateindex[1]])
+#define loglik (__loglik[0])
  
+void __pomp_dproc (double *__loglik, const double *__x1, const double *__x2,
+  double t_1, double t_2, const double *__p, const int *__stateindex,
+  const int *__parindex, const int *__covindex, const double *__covars) { 
         double sdt = sqrt(t_2 - t_1);
         loglik = dnorm(x1_2,x1_1,s1*sdt,1)+
         dnorm(x2_2,x2_1,s2*sdt,1); 
 }
+ 
 
 #undef s1
 #undef s2
@@ -981,22 +992,23 @@ void __pomp_dproc (double *__loglik, const double *__x1, const double *__x2, dou
 #undef x1_2
 #undef x2_2
 #undef loglik
-
 /* C snippet: 'rmeasure' */
-#define s1		(__p[__parindex[0]])
-#define s2		(__p[__parindex[1]])
-#define tau		(__p[__parindex[2]])
-#define x1		(__x[__stateindex[0]])
-#define x2		(__x[__stateindex[1]])
-#define y1		(__y[__obsindex[0]])
-#define y2		(__y[__obsindex[1]])
 
-void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define s1 (__p[__parindex[0]])
+#define s2 (__p[__parindex[1]])
+#define tau (__p[__parindex[2]])
+#define x1 (__x[__stateindex[0]])
+#define x2 (__x[__stateindex[1]])
+#define y1 (__y[__obsindex[0]])
+#define y2 (__y[__obsindex[1]])
  
+void __pomp_rmeasure (double *__y, const double *__x, const double *__p,
+  const int *__obsindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, double t) { 
         y1 = rnorm(x1,tau);
         y2 = rnorm(x2,tau); 
 }
+ 
 
 #undef s1
 #undef s2
@@ -1005,23 +1017,25 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #undef x2
 #undef y1
 #undef y2
-
 /* C snippet: 'dmeasure' */
-#define s1		(__p[__parindex[0]])
-#define s2		(__p[__parindex[1]])
-#define tau		(__p[__parindex[2]])
-#define x1		(__x[__stateindex[0]])
-#define x2		(__x[__stateindex[1]])
-#define y1		(__y[__obsindex[0]])
-#define y2		(__y[__obsindex[1]])
-#define lik		(__lik[0])
 
-void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define s1 (__p[__parindex[0]])
+#define s2 (__p[__parindex[1]])
+#define tau (__p[__parindex[2]])
+#define x1 (__x[__stateindex[0]])
+#define x2 (__x[__stateindex[1]])
+#define y1 (__y[__obsindex[0]])
+#define y2 (__y[__obsindex[1]])
+#define lik (__lik[0])
  
+void __pomp_dmeasure (double *__lik, const double *__y, const double *__x,
+  const double *__p, int give_log, const int *__obsindex,
+  const int *__stateindex, const int *__parindex, const int *__covindex,
+  const double *__covars, double t) { 
         lik = dnorm(y1,x1,tau,1)+dnorm(y2,x2,tau,1);
         lik = (give_log) ? lik : exp(lik); 
 }
+ 
 
 #undef s1
 #undef s2
@@ -1031,22 +1045,23 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #undef y1
 #undef y2
 #undef lik
-
 /* C snippet: 'emeasure' */
-#define s1		(__p[__parindex[0]])
-#define s2		(__p[__parindex[1]])
-#define tau		(__p[__parindex[2]])
-#define x1		(__x[__stateindex[0]])
-#define x2		(__x[__stateindex[1]])
-#define E_y1		(__f[__obsindex[0]])
-#define E_y2		(__f[__obsindex[1]])
 
-void __pomp_emeasure (double *__f, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define s1 (__p[__parindex[0]])
+#define s2 (__p[__parindex[1]])
+#define tau (__p[__parindex[2]])
+#define x1 (__x[__stateindex[0]])
+#define x2 (__x[__stateindex[1]])
+#define E_y1 (__f[__obsindex[0]])
+#define E_y2 (__f[__obsindex[1]])
  
+void __pomp_emeasure (double *__f, const double *__x, const double *__p,
+  const int *__obsindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, double t) { 
         E_y1 = x1;
         E_y2 = x2; 
 }
+ 
 
 #undef s1
 #undef s2
@@ -1055,24 +1070,25 @@ void __pomp_emeasure (double *__f, const double *__x, const double *__p, const i
 #undef x2
 #undef E_y1
 #undef E_y2
-
 /* C snippet: 'vmeasure' */
-#define s1		(__p[__parindex[0]])
-#define s2		(__p[__parindex[1]])
-#define tau		(__p[__parindex[2]])
-#define x1		(__x[__stateindex[0]])
-#define x2		(__x[__stateindex[1]])
-#define V_y1_y1		(__f[__vmatindex[0]])
-#define V_y2_y1		(__f[__vmatindex[1]])
-#define V_y1_y2		(__f[__vmatindex[2]])
-#define V_y2_y2		(__f[__vmatindex[3]])
 
-void __pomp_vmeasure (double *__f, const double *__x, const double *__p, const int *__vmatindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, int nobs, double t)
-{
+#define s1 (__p[__parindex[0]])
+#define s2 (__p[__parindex[1]])
+#define tau (__p[__parindex[2]])
+#define x1 (__x[__stateindex[0]])
+#define x2 (__x[__stateindex[1]])
+#define V_y1_y1 (__f[__vmatindex[0]])
+#define V_y2_y1 (__f[__vmatindex[1]])
+#define V_y1_y2 (__f[__vmatindex[2]])
+#define V_y2_y2 (__f[__vmatindex[3]])
  
+void __pomp_vmeasure (double *__f, const double *__x, const double *__p,
+  const int *__vmatindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, int nobs, double t) { 
         V_y1_y1 = V_y2_y2 = tau*tau;
         V_y1_y2 = V_y2_y1 = 0; 
 }
+ 
 
 #undef s1
 #undef s2
@@ -1083,25 +1099,24 @@ void __pomp_vmeasure (double *__f, const double *__x, const double *__p, const i
 #undef V_y2_y1
 #undef V_y1_y2
 #undef V_y2_y2
-
 static int __pomp_load_stack = 0;
-
 void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
-void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
+ 
+void R_init_rw2_source (DllInfo *info) {
+  R_RegisterCCallable("rw2_source", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("rw2_source", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("rw2_source", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+  R_RegisterCCallable("rw2_source", "__pomp_dproc", (DL_FUNC) __pomp_dproc);
+  R_RegisterCCallable("rw2_source", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+  R_RegisterCCallable("rw2_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+  R_RegisterCCallable("rw2_source", "__pomp_emeasure", (DL_FUNC) __pomp_emeasure);
+  R_RegisterCCallable("rw2_source", "__pomp_vmeasure", (DL_FUNC) __pomp_vmeasure);
+  
 
-void R_init_rw2_source (DllInfo *info)
-{
-R_RegisterCCallable("rw2_source", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("rw2_source", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("rw2_source", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
-R_RegisterCCallable("rw2_source", "__pomp_dproc", (DL_FUNC) __pomp_dproc);
-R_RegisterCCallable("rw2_source", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("rw2_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("rw2_source", "__pomp_emeasure", (DL_FUNC) __pomp_emeasure);
-R_RegisterCCallable("rw2_source", "__pomp_vmeasure", (DL_FUNC) __pomp_vmeasure);
 }
-
+ 
 > 
 > sir2() -> sir2
 > spy(sir2)
@@ -1179,41 +1194,42 @@ name    birth susc.death infection inf.death recovery recov.death
 
 - C snippet file  1 :
 
+
 /* pomp C snippet file: sir2_source */
-/* Time: 2023-06-26 10:17:48.079 -0400 */
-/* Salt: D03045B80592352207CAE3F0 */
+/* Time: 2023-07-10 14:49:26.457 -0400 */
+/* Salt: B749C449DD76987DE656C09C */
 
 #include <pomp.h>
-#include <R_ext/Rdynload.h>
-
+#include <R_ext/Rdynload.h> 
 static int nbasis = 3; 
 
 
 /* C snippet: 'rinit' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define pop		(__p[__parindex[3]])
-#define rho		(__p[__parindex[4]])
-#define k		(__p[__parindex[5]])
-#define beta1		(__p[__parindex[6]])
-#define beta2		(__p[__parindex[7]])
-#define beta3		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define N		(__x[__stateindex[3]])
-#define cases		(__x[__stateindex[4]])
 
-void __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define pop (__p[__parindex[3]])
+#define rho (__p[__parindex[4]])
+#define k (__p[__parindex[5]])
+#define beta1 (__p[__parindex[6]])
+#define beta2 (__p[__parindex[7]])
+#define beta3 (__p[__parindex[8]])
+#define S_0 (__p[__parindex[9]])
+#define I_0 (__p[__parindex[10]])
+#define R_0 (__p[__parindex[11]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define N (__x[__stateindex[3]])
+#define cases (__x[__stateindex[4]])
  
+void __pomp_rinit (double *__x, const double *__p, double t,
+   const int *__stateindex, const int *__parindex, const int *__covindex,
+   const double *__covars) { 
       double m;
       m = pop/(S_0+I_0+R_0);
       S = nearbyint(m*S_0);
@@ -1222,6 +1238,7 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
       R = nearbyint(m*R_0);
       cases = 0; 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -1243,33 +1260,33 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 #undef R
 #undef N
 #undef cases
-
 /* C snippet: 'rate.fn' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define pop		(__p[__parindex[3]])
-#define rho		(__p[__parindex[4]])
-#define k		(__p[__parindex[5]])
-#define beta1		(__p[__parindex[6]])
-#define beta2		(__p[__parindex[7]])
-#define beta3		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define N		(__x[__stateindex[3]])
-#define cases		(__x[__stateindex[4]])
 
-double __pomp_ratefn (int j, double t, double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
-{
-  double rate = 0.0;  
- double beta;
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define pop (__p[__parindex[3]])
+#define rho (__p[__parindex[4]])
+#define k (__p[__parindex[5]])
+#define beta1 (__p[__parindex[6]])
+#define beta2 (__p[__parindex[7]])
+#define beta3 (__p[__parindex[8]])
+#define S_0 (__p[__parindex[9]])
+#define I_0 (__p[__parindex[10]])
+#define R_0 (__p[__parindex[11]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define N (__x[__stateindex[3]])
+#define cases (__x[__stateindex[4]])
+ 
+double __pomp_ratefn (int j, double t, double *__x, const double *__p,
+  const int *__stateindex, const int *__parindex, const int *__covindex,
+  const double *__covars) {
+  double rate = 0.0; double beta;
 switch (j) {
 case 1:
 {
@@ -1313,8 +1330,9 @@ default:
 error("unrecognized event %d",j);
 break;
 }
-   return rate;
-}
+ 
+  return rate;
+} 
 
 #undef gamma
 #undef mu
@@ -1336,35 +1354,36 @@ break;
 #undef R
 #undef N
 #undef cases
-
 /* C snippet: 'rmeasure' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define pop		(__p[__parindex[3]])
-#define rho		(__p[__parindex[4]])
-#define k		(__p[__parindex[5]])
-#define beta1		(__p[__parindex[6]])
-#define beta2		(__p[__parindex[7]])
-#define beta3		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define N		(__x[__stateindex[3]])
-#define cases		(__x[__stateindex[4]])
-#define reports		(__y[__obsindex[0]])
 
-void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define pop (__p[__parindex[3]])
+#define rho (__p[__parindex[4]])
+#define k (__p[__parindex[5]])
+#define beta1 (__p[__parindex[6]])
+#define beta2 (__p[__parindex[7]])
+#define beta3 (__p[__parindex[8]])
+#define S_0 (__p[__parindex[9]])
+#define I_0 (__p[__parindex[10]])
+#define R_0 (__p[__parindex[11]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define N (__x[__stateindex[3]])
+#define cases (__x[__stateindex[4]])
+#define reports (__y[__obsindex[0]])
  
+void __pomp_rmeasure (double *__y, const double *__x, const double *__p,
+  const int *__obsindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, double t) { 
       reports = rnbinom_mu(1.0/k,cases*rho); 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -1387,36 +1406,38 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #undef N
 #undef cases
 #undef reports
-
 /* C snippet: 'dmeasure' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define pop		(__p[__parindex[3]])
-#define rho		(__p[__parindex[4]])
-#define k		(__p[__parindex[5]])
-#define beta1		(__p[__parindex[6]])
-#define beta2		(__p[__parindex[7]])
-#define beta3		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define N		(__x[__stateindex[3]])
-#define cases		(__x[__stateindex[4]])
-#define reports		(__y[__obsindex[0]])
-#define lik		(__lik[0])
 
-void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define pop (__p[__parindex[3]])
+#define rho (__p[__parindex[4]])
+#define k (__p[__parindex[5]])
+#define beta1 (__p[__parindex[6]])
+#define beta2 (__p[__parindex[7]])
+#define beta3 (__p[__parindex[8]])
+#define S_0 (__p[__parindex[9]])
+#define I_0 (__p[__parindex[10]])
+#define R_0 (__p[__parindex[11]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define N (__x[__stateindex[3]])
+#define cases (__x[__stateindex[4]])
+#define reports (__y[__obsindex[0]])
+#define lik (__lik[0])
  
+void __pomp_dmeasure (double *__lik, const double *__y, const double *__x,
+  const double *__p, int give_log, const int *__obsindex,
+  const int *__stateindex, const int *__parindex, const int *__covindex,
+  const double *__covars, double t) { 
       lik = dnbinom_mu(nearbyint(reports),1.0/k,cases*rho,give_log); 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -1440,35 +1461,36 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #undef cases
 #undef reports
 #undef lik
-
 /* C snippet: 'emeasure' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define pop		(__p[__parindex[3]])
-#define rho		(__p[__parindex[4]])
-#define k		(__p[__parindex[5]])
-#define beta1		(__p[__parindex[6]])
-#define beta2		(__p[__parindex[7]])
-#define beta3		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define N		(__x[__stateindex[3]])
-#define cases		(__x[__stateindex[4]])
-#define E_reports		(__f[__obsindex[0]])
 
-void __pomp_emeasure (double *__f, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define pop (__p[__parindex[3]])
+#define rho (__p[__parindex[4]])
+#define k (__p[__parindex[5]])
+#define beta1 (__p[__parindex[6]])
+#define beta2 (__p[__parindex[7]])
+#define beta3 (__p[__parindex[8]])
+#define S_0 (__p[__parindex[9]])
+#define I_0 (__p[__parindex[10]])
+#define R_0 (__p[__parindex[11]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define N (__x[__stateindex[3]])
+#define cases (__x[__stateindex[4]])
+#define E_reports (__f[__obsindex[0]])
  
+void __pomp_emeasure (double *__f, const double *__x, const double *__p,
+  const int *__obsindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, double t) { 
       E_reports = cases*rho; 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -1491,36 +1513,37 @@ void __pomp_emeasure (double *__f, const double *__x, const double *__p, const i
 #undef N
 #undef cases
 #undef E_reports
-
 /* C snippet: 'vmeasure' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define pop		(__p[__parindex[3]])
-#define rho		(__p[__parindex[4]])
-#define k		(__p[__parindex[5]])
-#define beta1		(__p[__parindex[6]])
-#define beta2		(__p[__parindex[7]])
-#define beta3		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define N		(__x[__stateindex[3]])
-#define cases		(__x[__stateindex[4]])
-#define V_reports_reports		(__f[__vmatindex[0]])
 
-void __pomp_vmeasure (double *__f, const double *__x, const double *__p, const int *__vmatindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, int nobs, double t)
-{
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define pop (__p[__parindex[3]])
+#define rho (__p[__parindex[4]])
+#define k (__p[__parindex[5]])
+#define beta1 (__p[__parindex[6]])
+#define beta2 (__p[__parindex[7]])
+#define beta3 (__p[__parindex[8]])
+#define S_0 (__p[__parindex[9]])
+#define I_0 (__p[__parindex[10]])
+#define R_0 (__p[__parindex[11]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define N (__x[__stateindex[3]])
+#define cases (__x[__stateindex[4]])
+#define V_reports_reports (__f[__vmatindex[0]])
  
+void __pomp_vmeasure (double *__f, const double *__x, const double *__p,
+  const int *__vmatindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, int nobs, double t) { 
       double mean = cases*rho;
       V_reports_reports = mean*(1+k*mean); 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -1543,177 +1566,177 @@ void __pomp_vmeasure (double *__f, const double *__x, const double *__p, const i
 #undef N
 #undef cases
 #undef V_reports_reports
-
 /* C snippet: 'toEst' */
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define pop		(__p[__parindex[3]])
-#define rho		(__p[__parindex[4]])
-#define k		(__p[__parindex[5]])
-#define beta1		(__p[__parindex[6]])
-#define beta2		(__p[__parindex[7]])
-#define beta3		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
-#define T_gamma		(__pt[__parindex[0]])
-#define T_mu		(__pt[__parindex[1]])
-#define T_iota		(__pt[__parindex[2]])
-#define T_pop		(__pt[__parindex[3]])
-#define T_rho		(__pt[__parindex[4]])
-#define T_k		(__pt[__parindex[5]])
-#define T_beta1		(__pt[__parindex[6]])
-#define T_beta2		(__pt[__parindex[7]])
-#define T_beta3		(__pt[__parindex[8]])
-#define T_S_0		(__pt[__parindex[9]])
-#define T_I_0		(__pt[__parindex[10]])
-#define T_R_0		(__pt[__parindex[11]])
 
-void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
-{
- 	T_gamma = log(gamma);
-	T_mu = log(mu);
-	T_iota = log(iota);
-	T_k = log(k);
-	T_beta1 = log(beta1);
-	T_beta2 = log(beta2);
-	T_beta3 = log(beta3);
-	T_rho = logit(rho);
-	to_log_barycentric(&T_S_0,&S_0,3); 
-}
-
-#undef seas_1
-#undef seas_2
-#undef seas_3
-#undef gamma
-#undef mu
-#undef iota
-#undef pop
-#undef rho
-#undef k
-#undef beta1
-#undef beta2
-#undef beta3
-#undef S_0
-#undef I_0
-#undef R_0
-#undef T_gamma
-#undef T_mu
-#undef T_iota
-#undef T_pop
-#undef T_rho
-#undef T_k
-#undef T_beta1
-#undef T_beta2
-#undef T_beta3
-#undef T_S_0
-#undef T_I_0
-#undef T_R_0
-
-/* C snippet: 'fromEst' */
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define pop		(__p[__parindex[3]])
-#define rho		(__p[__parindex[4]])
-#define k		(__p[__parindex[5]])
-#define beta1		(__p[__parindex[6]])
-#define beta2		(__p[__parindex[7]])
-#define beta3		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
-#define T_gamma		(__pt[__parindex[0]])
-#define T_mu		(__pt[__parindex[1]])
-#define T_iota		(__pt[__parindex[2]])
-#define T_pop		(__pt[__parindex[3]])
-#define T_rho		(__pt[__parindex[4]])
-#define T_k		(__pt[__parindex[5]])
-#define T_beta1		(__pt[__parindex[6]])
-#define T_beta2		(__pt[__parindex[7]])
-#define T_beta3		(__pt[__parindex[8]])
-#define T_S_0		(__pt[__parindex[9]])
-#define T_I_0		(__pt[__parindex[10]])
-#define T_R_0		(__pt[__parindex[11]])
-
-void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
-{
- 	gamma = exp(T_gamma);
-	mu = exp(T_mu);
-	iota = exp(T_iota);
-	k = exp(T_k);
-	beta1 = exp(T_beta1);
-	beta2 = exp(T_beta2);
-	beta3 = exp(T_beta3);
-	rho = expit(T_rho);
-	from_log_barycentric(&S_0,&T_S_0,3); 
-}
-
-#undef seas_1
-#undef seas_2
-#undef seas_3
-#undef gamma
-#undef mu
-#undef iota
-#undef pop
-#undef rho
-#undef k
-#undef beta1
-#undef beta2
-#undef beta3
-#undef S_0
-#undef I_0
-#undef R_0
-#undef T_gamma
-#undef T_mu
-#undef T_iota
-#undef T_pop
-#undef T_rho
-#undef T_k
-#undef T_beta1
-#undef T_beta2
-#undef T_beta3
-#undef T_S_0
-#undef T_I_0
-#undef T_R_0
-
-/* C snippet: 'skeleton' */
-#define gamma		(__p[__parindex[0]])
-#define mu		(__p[__parindex[1]])
-#define iota		(__p[__parindex[2]])
-#define pop		(__p[__parindex[3]])
-#define rho		(__p[__parindex[4]])
-#define k		(__p[__parindex[5]])
-#define beta1		(__p[__parindex[6]])
-#define beta2		(__p[__parindex[7]])
-#define beta3		(__p[__parindex[8]])
-#define S_0		(__p[__parindex[9]])
-#define I_0		(__p[__parindex[10]])
-#define R_0		(__p[__parindex[11]])
-#define seas_1		(__covars[__covindex[0]])
-#define seas_2		(__covars[__covindex[1]])
-#define seas_3		(__covars[__covindex[2]])
-#define S		(__x[__stateindex[0]])
-#define I		(__x[__stateindex[1]])
-#define R		(__x[__stateindex[2]])
-#define N		(__x[__stateindex[3]])
-#define cases		(__x[__stateindex[4]])
-#define DS		(__f[__stateindex[0]])
-#define DI		(__f[__stateindex[1]])
-#define DR		(__f[__stateindex[2]])
-#define DN		(__f[__stateindex[3]])
-#define Dcases		(__f[__stateindex[4]])
-
-void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)
-{
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define pop (__p[__parindex[3]])
+#define rho (__p[__parindex[4]])
+#define k (__p[__parindex[5]])
+#define beta1 (__p[__parindex[6]])
+#define beta2 (__p[__parindex[7]])
+#define beta3 (__p[__parindex[8]])
+#define S_0 (__p[__parindex[9]])
+#define I_0 (__p[__parindex[10]])
+#define R_0 (__p[__parindex[11]])
+#define T_gamma (__pt[__parindex[0]])
+#define T_mu (__pt[__parindex[1]])
+#define T_iota (__pt[__parindex[2]])
+#define T_pop (__pt[__parindex[3]])
+#define T_rho (__pt[__parindex[4]])
+#define T_k (__pt[__parindex[5]])
+#define T_beta1 (__pt[__parindex[6]])
+#define T_beta2 (__pt[__parindex[7]])
+#define T_beta3 (__pt[__parindex[8]])
+#define T_S_0 (__pt[__parindex[9]])
+#define T_I_0 (__pt[__parindex[10]])
+#define T_R_0 (__pt[__parindex[11]])
  
+void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex) { 
+  T_gamma = log(gamma);
+  T_mu = log(mu);
+  T_iota = log(iota);
+  T_k = log(k);
+  T_beta1 = log(beta1);
+  T_beta2 = log(beta2);
+  T_beta3 = log(beta3);
+  T_rho = logit(rho);
+  to_log_barycentric(&T_S_0,&S_0,3); 
+}
+ 
+
+#undef seas_1
+#undef seas_2
+#undef seas_3
+#undef gamma
+#undef mu
+#undef iota
+#undef pop
+#undef rho
+#undef k
+#undef beta1
+#undef beta2
+#undef beta3
+#undef S_0
+#undef I_0
+#undef R_0
+#undef T_gamma
+#undef T_mu
+#undef T_iota
+#undef T_pop
+#undef T_rho
+#undef T_k
+#undef T_beta1
+#undef T_beta2
+#undef T_beta3
+#undef T_S_0
+#undef T_I_0
+#undef T_R_0
+/* C snippet: 'fromEst' */
+
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define pop (__p[__parindex[3]])
+#define rho (__p[__parindex[4]])
+#define k (__p[__parindex[5]])
+#define beta1 (__p[__parindex[6]])
+#define beta2 (__p[__parindex[7]])
+#define beta3 (__p[__parindex[8]])
+#define S_0 (__p[__parindex[9]])
+#define I_0 (__p[__parindex[10]])
+#define R_0 (__p[__parindex[11]])
+#define T_gamma (__pt[__parindex[0]])
+#define T_mu (__pt[__parindex[1]])
+#define T_iota (__pt[__parindex[2]])
+#define T_pop (__pt[__parindex[3]])
+#define T_rho (__pt[__parindex[4]])
+#define T_k (__pt[__parindex[5]])
+#define T_beta1 (__pt[__parindex[6]])
+#define T_beta2 (__pt[__parindex[7]])
+#define T_beta3 (__pt[__parindex[8]])
+#define T_S_0 (__pt[__parindex[9]])
+#define T_I_0 (__pt[__parindex[10]])
+#define T_R_0 (__pt[__parindex[11]])
+ 
+void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex) { 
+  gamma = exp(T_gamma);
+  mu = exp(T_mu);
+  iota = exp(T_iota);
+  k = exp(T_k);
+  beta1 = exp(T_beta1);
+  beta2 = exp(T_beta2);
+  beta3 = exp(T_beta3);
+  rho = expit(T_rho);
+  from_log_barycentric(&S_0,&T_S_0,3); 
+}
+ 
+
+#undef seas_1
+#undef seas_2
+#undef seas_3
+#undef gamma
+#undef mu
+#undef iota
+#undef pop
+#undef rho
+#undef k
+#undef beta1
+#undef beta2
+#undef beta3
+#undef S_0
+#undef I_0
+#undef R_0
+#undef T_gamma
+#undef T_mu
+#undef T_iota
+#undef T_pop
+#undef T_rho
+#undef T_k
+#undef T_beta1
+#undef T_beta2
+#undef T_beta3
+#undef T_S_0
+#undef T_I_0
+#undef T_R_0
+/* C snippet: 'skeleton' */
+
+#define gamma (__p[__parindex[0]])
+#define mu (__p[__parindex[1]])
+#define iota (__p[__parindex[2]])
+#define pop (__p[__parindex[3]])
+#define rho (__p[__parindex[4]])
+#define k (__p[__parindex[5]])
+#define beta1 (__p[__parindex[6]])
+#define beta2 (__p[__parindex[7]])
+#define beta3 (__p[__parindex[8]])
+#define S_0 (__p[__parindex[9]])
+#define I_0 (__p[__parindex[10]])
+#define R_0 (__p[__parindex[11]])
+#define seas_1 (__covars[__covindex[0]])
+#define seas_2 (__covars[__covindex[1]])
+#define seas_3 (__covars[__covindex[2]])
+#define S (__x[__stateindex[0]])
+#define I (__x[__stateindex[1]])
+#define R (__x[__stateindex[2]])
+#define N (__x[__stateindex[3]])
+#define cases (__x[__stateindex[4]])
+#define DS (__f[__stateindex[0]])
+#define DI (__f[__stateindex[1]])
+#define DR (__f[__stateindex[2]])
+#define DN (__f[__stateindex[3]])
+#define Dcases (__f[__stateindex[4]])
+ 
+void __pomp_skelfn (double *__f, const double *__x, const double *__p,
+  const int *__stateindex, const int *__parindex, const int *__covindex,
+  const double *__covars, double t) { 
         int nrate = 6;
         double rate[nrate];
         double term[nrate];
@@ -1741,6 +1764,7 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int
         DN = term[0]-term[2]-term[4]-term[5];
         Dcases = term[3]; 
 }
+ 
 
 #undef gamma
 #undef mu
@@ -1767,28 +1791,27 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int
 #undef DR
 #undef DN
 #undef Dcases
-
 static int __pomp_load_stack = 0;
-
 void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
-void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
+ 
+void R_init_sir2_source (DllInfo *info) {
+  R_RegisterCCallable("sir2_source", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("sir2_source", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("sir2_source", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("sir2_source", "__pomp_ratefn", (DL_FUNC) __pomp_ratefn);
+  R_RegisterCCallable("sir2_source", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+  R_RegisterCCallable("sir2_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+  R_RegisterCCallable("sir2_source", "__pomp_emeasure", (DL_FUNC) __pomp_emeasure);
+  R_RegisterCCallable("sir2_source", "__pomp_vmeasure", (DL_FUNC) __pomp_vmeasure);
+  R_RegisterCCallable("sir2_source", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+  R_RegisterCCallable("sir2_source", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+  R_RegisterCCallable("sir2_source", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
+  
 
-void R_init_sir2_source (DllInfo *info)
-{
-R_RegisterCCallable("sir2_source", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("sir2_source", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("sir2_source", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-R_RegisterCCallable("sir2_source", "__pomp_ratefn", (DL_FUNC) __pomp_ratefn);
-R_RegisterCCallable("sir2_source", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("sir2_source", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("sir2_source", "__pomp_emeasure", (DL_FUNC) __pomp_emeasure);
-R_RegisterCCallable("sir2_source", "__pomp_vmeasure", (DL_FUNC) __pomp_vmeasure);
-R_RegisterCCallable("sir2_source", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("sir2_source", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("sir2_source", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
 }
-
+ 
 > 
 > try(spy())
 Error : in 'spy': 'object' is a required argument.
@@ -1814,7 +1837,7 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params =
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_31280fa4ec1c8869a8091417161da4d5'
+  - defined by a C snippet in library 'pomp_580bddd38974de6664770e9c019a95a5'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: <undefined>
 - process model density, dprocess: <default>
@@ -1834,40 +1857,137 @@ x_0   a
 
 - C snippet file  1 :
 
-/* pomp C snippet file: pomp_31280fa4ec1c8869a8091417161da4d5 */
-/* Time: 2023-06-26 10:17:48.530 -0400 */
-/* Salt: 959323F73815F6CDF24E522B */
+
+/* pomp C snippet file: pomp_580bddd38974de6664770e9c019a95a5 */
+/* Time: 2023-07-10 14:49:27.202 -0400 */
+/* Salt: 7B24E7326A82B8E2B7A27350 */
 
 #include <pomp.h>
-#include <R_ext/Rdynload.h>
-
+#include <R_ext/Rdynload.h> 
  
 
+
 static get_userdata_double_t *__pomp_get_userdata_double;
-#define get_userdata_double(X)	(__pomp_get_userdata_double(X))
-
+#define get_userdata_double(X)  (__pomp_get_userdata_double(X))
 /* C snippet: 'rinit' */
-#define x		(__x[__stateindex[0]])
 
-void __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
-{
- x = *get_userdata_double("x0"); 
+#define x (__x[__stateindex[0]])
+ 
+void __pomp_rinit (double *__x, const double *__p, double t,
+   const int *__stateindex, const int *__parindex, const int *__covindex,
+   const double *__covars) { x = *get_userdata_double("x0"); 
 }
+ 
 
 #undef x
-
 static int __pomp_load_stack = 0;
-
 void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
-void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
+ 
+void R_init_pomp_580bddd38974de6664770e9c019a95a5 (DllInfo *info) {
+  __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
+  R_RegisterCCallable("pomp_580bddd38974de6664770e9c019a95a5", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_580bddd38974de6664770e9c019a95a5", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_580bddd38974de6664770e9c019a95a5", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  
 
-void R_init_pomp_31280fa4ec1c8869a8091417161da4d5 (DllInfo *info)
-{
-__pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-R_RegisterCCallable("pomp_31280fa4ec1c8869a8091417161da4d5", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_31280fa4ec1c8869a8091417161da4d5", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_31280fa4ec1c8869a8091417161da4d5", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
 }
+ 
+> 
+> pomp(
++   data=NULL,
++   t0=0,times=1:10,
++   x0=as.double(1),
++   params=c(x_0=1,a=22),
++   globals=Csnippet("static double X0;"),
++   rinit=Csnippet(r"{x = X0;}"),
++   rprocess=euler(Csnippet(r"(x += rgammawn(0.1,dt);)"),delta.t=0.1),
++   on_load=Csnippet(r"{X0 = *get_userdata_double("x0");}"),
++   statenames="x",
++   compile=FALSE
++ ) |>
++   spy()
+NOTE: The provided object 'x0' is available for use by POMP basic components.
+==================
+pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params = c(x_0 = 1, ''    a = 22), globals = Csnippet("static double X0;"), rinit = Csnippet("x = X0;"), ''    rprocess = euler(Csnippet("x += rgammawn(0.1,dt);"), delta.t = 0.1), ''    on_load = Csnippet("X0 = *get_userdata_double(\"x0\");"), ''    statenames = "x", compile = FALSE)':
 
+- data: <none>
+- zero time, t0 = 0
+- covariates: <none>
+- initial state simulator, rinit: native function
+  - name: '__pomp_rinit'
+  - defined by a C snippet in library 'pomp_d4a4627946fa182607a4caf451e21384'
+- initial state density, dinit: <default>
+- process-model simulator, rprocess: Euler-method process-model simulator
+  - timestep = 0.1 
+  - step.fun: native function
+  - name: '__pomp_stepfn'
+  - defined by a C snippet in library 'pomp_d4a4627946fa182607a4caf451e21384'
+- process model density, dprocess: <default>
+- measurement model simulator, rmeasure: <default>
+- measurement model density, dmeasure: <default>
+- measurement model expectation, emeasure: <default>
+- measurement model covariance, vmeasure: <default>
+- prior simulator, rprior: <default>
+- prior density, dprior: <default>
+- deterministic skeleton: <default>
+
+- parameter vector:
+x_0   a 
+  1  22 
+- extra user-defined variables:
+  - 'x0' (type 'double')
+
+- C snippet file  1 :
+
+
+/* pomp C snippet file: pomp_d4a4627946fa182607a4caf451e21384 */
+/* Time: 2023-07-10 14:49:27.262 -0400 */
+/* Salt: B52C0295DDE4037ED16C7DE9 */
+
+#include <pomp.h>
+#include <R_ext/Rdynload.h> 
+static double X0; 
+
+
+static get_userdata_double_t *__pomp_get_userdata_double;
+#define get_userdata_double(X)  (__pomp_get_userdata_double(X))
+/* C snippet: 'rinit' */
+
+#define x (__x[__stateindex[0]])
+ 
+void __pomp_rinit (double *__x, const double *__p, double t,
+   const int *__stateindex, const int *__parindex, const int *__covindex,
+   const double *__covars) { x = X0; 
+}
+ 
+
+#undef x
+/* C snippet: 'step.fn' */
+
+#define x (__x[__stateindex[0]])
+ 
+void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex,
+  const int *__parindex, const int *__covindex, const double *__covars,
+  double t, double dt) { x += rgammawn(0.1,dt); 
+}
+ 
+
+#undef x
+static int __pomp_load_stack = 0;
+void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
+
+ 
+void R_init_pomp_d4a4627946fa182607a4caf451e21384 (DllInfo *info) {
+  __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
+  R_RegisterCCallable("pomp_d4a4627946fa182607a4caf451e21384", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_d4a4627946fa182607a4caf451e21384", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_d4a4627946fa182607a4caf451e21384", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_d4a4627946fa182607a4caf451e21384", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+ X0 = *get_userdata_double("x0"); 
+
+}
+ 
 > 

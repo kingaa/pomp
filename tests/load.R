@@ -1,10 +1,13 @@
 library(pomp)
 
-gompertz() -> gompertz
-
-pomp(gompertz,rmeasure=Csnippet("
-  Y = rlnorm(log(X),tau);"),
+gompertz() |>
+  pomp(
+    rmeasure=Csnippet(r"{
+  Y = rlnorm(log(X),Tau);
+  }"),
   statenames="X",paramnames="tau",
+  globals=Csnippet("static double Tau = 0;"),
+  on_load=Csnippet("Tau = 4.3;"),
   cdir=getwd(),cfile="sf"
 ) -> po
 

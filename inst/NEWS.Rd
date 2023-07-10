@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.2.5}{
+  \itemize{
+    \item The new option \code{on_load} allows one to specify a C snippet that will be executed at the time the C snippet library is loaded.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.2.4}{
   \itemize{
     \item The data frames returned by \code{cond_logLik} and \code{eff_sample_size} when \code{format="data.frame"} have been improved.

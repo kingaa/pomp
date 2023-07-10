@@ -117,16 +117,16 @@ https://kingaa.github.io/pomp/blog.html.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  7.383   0.084   7.468 
+  7.793   0.085   7.880 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.154   0.005   0.159 
+  0.184   0.004   0.188 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.660   0.006   0.667 
+  0.771   0.001   0.772 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.031   0.000   0.032 
+  0.033   0.000   0.033 
 > 
 > dev.off()
 null device 

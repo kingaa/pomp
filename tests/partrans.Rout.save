@@ -81,11 +81,11 @@ Error : in 'parameter_trans': if one of 'toEst', 'fromEst' is supplied, then so 
 > parameter_trans(logit=c("a","b","c"))
   - to estimation scale: An object of class "Csnippet"
 Slot "text":
-[1] "\tT_a = logit(a);\n\tT_b = logit(b);\n\tT_c = logit(c);"
+[1] "\n  T_a = logit(a);\n  T_b = logit(b);\n  T_c = logit(c);"
 
   - from estimation scale: An object of class "Csnippet"
 Slot "text":
-[1] "\ta = expit(T_a);\n\tb = expit(T_b);\n\tc = expit(T_c);"
+[1] "\n  a = expit(T_a);\n  b = expit(T_b);\n  c = expit(T_c);"
 
 > pomp:::has_partrans(gompertz)
 [1] TRUE
@@ -102,7 +102,6 @@ Slot "text":
 +       params=parmat(coef(gompertz),2),
 +       dir="to"
 +     ) -> p1
-+ 
 +     partrans(
 +       pomp(gompertz,
 +         partrans=parameter_trans(
@@ -113,9 +112,7 @@ Slot "text":
 +       params=p1,
 +       dir="from"
 +     ) -> p2
-+ 
 +     all.equal(p2,parmat(coef(gompertz),2))
-+ 
 +   }
 + )
 > 

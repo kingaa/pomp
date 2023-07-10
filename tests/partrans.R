@@ -51,7 +51,6 @@ stopifnot(
       params=parmat(coef(gompertz),2),
       dir="to"
     ) -> p1
-
     partrans(
       pomp(gompertz,
         partrans=parameter_trans(
@@ -62,9 +61,7 @@ stopifnot(
       params=p1,
       dir="from"
     ) -> p2
-
     all.equal(p2,parmat(coef(gompertz),2))
-
   }
 )
 

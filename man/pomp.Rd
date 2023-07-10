@@ -31,6 +31,7 @@ pomp(
   covarnames,
   PACKAGE,
   globals,
+  on_load,
   cdir = getOption("pomp_cdir", NULL),
   cfile,
   shlib.args,
@@ -153,9 +154,13 @@ This is only useful if one or more of the model components has been specified us
 it is not used for any component specified using C snippets.
 \code{PACKAGE} can name at most one library.}
 
-\item{globals}{optional character;
+\item{globals}{optional character or C snippet;
 arbitrary C code that will be hard-coded into the shared-object library created when C snippets are provided.
 If no C snippets are used, \code{globals} has no effect.}
+
+\item{on_load}{optional character or C snippet:
+arbitrary C code that will be executed when the C snippet file is loaded.
+If no C snippets are used, \code{on_load} has no effect.}
 
 \item{cdir}{optional character variable.
 \code{cdir} specifies the name of the directory within which C snippet code will be compiled.

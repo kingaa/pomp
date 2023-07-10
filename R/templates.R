@@ -1,25 +1,93 @@
 ## default templates for pomp's own C snippets.
 ## This is used in 'pomp.R' and 'builder.R'.
 
+## BASIC TEMPLATES
+
+pomp_templates <- list(
+  define=r"{
+#define {%variable%} ({%cref%})}",
+  undefine=r"{
+#undef {%variable%}}",
+  file=list(
+    header=r"{
+/* pomp C snippet file: {%name%} */
+/* Time: {%timestamp%} */
+/* Salt: {%salt%} */
+
+#include <{%pompheader%}>
+#include <R_ext/Rdynload.h>}"
+  ),
+  utilities=list(
+    periodic_bspline_basis=list(
+      trigger="periodic_bspline_basis_eval",
+      header=r"{
+static periodic_bspline_basis_eval_t *__pomp_periodic_bspline_basis_eval;
+#define periodic_bspline_basis_eval(X,Y,M,N,Z)  (__pomp_periodic_bspline_basis_eval((X),(Y),(M),(N),(Z)))}",
+      reg=r"{
+  __pomp_periodic_bspline_basis_eval = (periodic_bspline_basis_eval_t *) R_GetCCallable("pomp","periodic_bspline_basis_eval");}"
+    ),
+    get_userdata_int=list(
+      trigger="get_userdata_int",
+      header=r"{
+static get_userdata_int_t *__pomp_get_userdata_int;
+#define get_userdata_int(X)  (__pomp_get_userdata_int(X))}",
+      reg=r"{
+  __pomp_get_userdata_int = (get_userdata_t *) R_GetCCallable("pomp","get_userdata_int");}"
+    ),
+    get_userdata_double=list(
+      trigger="get_userdata_double",
+      header=r"{
+static get_userdata_double_t *__pomp_get_userdata_double;
+#define get_userdata_double(X)  (__pomp_get_userdata_double(X))}",
+      reg=r"{
+  __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");}"
+    ),
+    get_userdata=list(
+      trigger=r"{get_userdata(\b|[^_])}",
+      header=r"{
+static get_userdata_t *__pomp_get_userdata;
+#define get_userdata(X)  (__pomp_get_userdata(X))}",
+      reg=r"{
+  __pomp_get_userdata = (get_userdata_t *) R_GetCCallable("pomp","get_userdata");}"
+    )
+  ),
+  stackhandling=r"{
+static int __pomp_load_stack = 0;
+void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}}",
+  registration=list(
+    header=r"{
+void R_init_{%name%} (DllInfo *info) {}",
+    main=r"(
+  R_RegisterCCallable("{%name%}", "{%fun%}", (DL_FUNC) {%fun%});)",
+    footer="\n}\n"
+  )
+)
+
+## WORKHORSE-SPECIFIC TEMPLATES
+
 workhorse_templates <- list(
   rinit=list(
     slotname="rinit",
     Cname="__pomp_rinit",
     proto=quote(rinit(...)),
-    header="\nvoid __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_rinit (double *__x, const double *__p, double t,
+   const int *__stateindex, const int *__parindex, const int *__covindex,
+   const double *__covars) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       states=list(
         names=quote(statenames),
-        cref="__x[__stateindex[{%v%}]]"
+        cref=r"{__x[__stateindex[{%v%}]]}"
       )
     )
   ),
@@ -27,24 +95,27 @@ workhorse_templates <- list(
     slotname="dinit",
     Cname="__pomp_dinit",
     proto=quote(dinit(...)),
-    header="\nvoid __pomp_dinit (double *__loglik, const double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_dinit (double *__loglik, const double *__x, const double *__p,
+  double t, const int *__stateindex, const int *__parindex, const int *__covindex,
+  const double *__covars) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       states=list(
         names=quote(statenames),
-        cref="__x[__stateindex[{%v%}]]"
+        cref=r"{__x[__stateindex[{%v%}]]}"
       ),
       loglik=list(
-        names="loglik",
-        cref="__loglik[0]"
+        names=r"{loglik}",
+        cref=r"{__loglik[0]}"
       )
     )
   ),
@@ -52,24 +123,27 @@ workhorse_templates <- list(
     slotname="rmeasure",
     Cname="__pomp_rmeasure",
     proto=quote(rmeasure(...)),
-    header="\nvoid __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_rmeasure (double *__y, const double *__x, const double *__p,
+  const int *__obsindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, double t) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       states=list(
         names=quote(statenames),
-        cref="__x[__stateindex[{%v%}]]"
+        cref=r"{__x[__stateindex[{%v%}]]}"
       ),
       obs=list(
         names=quote(obsnames),
-        cref="__y[__obsindex[{%v%}]]"
+        cref=r"{__y[__obsindex[{%v%}]]}"
       )
     )
   ),
@@ -77,24 +151,27 @@ workhorse_templates <- list(
     slotname="emeasure",
     Cname="__pomp_emeasure",
     proto=quote(emeasure(...)),
-    header="\nvoid __pomp_emeasure (double *__f, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_emeasure (double *__f, const double *__x, const double *__p,
+  const int *__obsindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, double t) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       states=list(
         names=quote(statenames),
-        cref="__x[__stateindex[{%v%}]]"
+        cref=r"{__x[__stateindex[{%v%}]]}"
       ),
       expectations=list(
         names=quote(paste0("E_",obsnames)),
-        cref="__f[__obsindex[{%v%}]]"
+        cref=r"{__f[__obsindex[{%v%}]]}"
       )
     )
   ),
@@ -102,24 +179,27 @@ workhorse_templates <- list(
     slotname="vmeasure",
     Cname="__pomp_vmeasure",
     proto=quote(vmeasure(...)),
-    header="\nvoid __pomp_vmeasure (double *__f, const double *__x, const double *__p, const int *__vmatindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, int nobs, double t)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_vmeasure (double *__f, const double *__x, const double *__p,
+  const int *__vmatindex, const int *__stateindex, const int *__parindex,
+  const int *__covindex, const double *__covars, int nobs, double t) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       states=list(
         names=quote(statenames),
-        cref="__x[__stateindex[{%v%}]]"
+        cref=r"{__x[__stateindex[{%v%}]]}"
       ),
       variance_matrix=list(
         names=quote(paste0("V_",outer(obsnames,obsnames,paste,sep="_"))),
-        cref="__f[__vmatindex[{%v%}]]"
+        cref=r"{__f[__vmatindex[{%v%}]]}"
       )
     )
   ),
@@ -127,28 +207,32 @@ workhorse_templates <- list(
     slotname="dmeasure",
     Cname= "__pomp_dmeasure",
     proto=quote(dmeasure(log,...)),
-    header="\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_dmeasure (double *__lik, const double *__y, const double *__x,
+  const double *__p, int give_log, const int *__obsindex,
+  const int *__stateindex, const int *__parindex, const int *__covindex,
+  const double *__covars, double t) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       states=list(
         names=quote(statenames),
-        cref="__x[__stateindex[{%v%}]]"
+        cref=r"{__x[__stateindex[{%v%}]]}"
       ),
       obs=list(
         names=quote(obsnames),
-        cref="__y[__obsindex[{%v%}]]"
+        cref=r"{__y[__obsindex[{%v%}]]}"
       ),
       lik=list(
         names="lik",
-        cref="__lik[0]"
+        cref=r"{__lik[0]}"
       )
     )
   ),
@@ -156,20 +240,23 @@ workhorse_templates <- list(
     slotname="step.fun",
     Cname="__pomp_stepfn",
     proto=quote(step.fun(...)),
-    header="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t, double dt)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex,
+  const int *__parindex, const int *__covindex, const double *__covars,
+  double t, double dt) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       states=list(
         names=quote(statenames),
-        cref="__x[__stateindex[{%v%}]]"
+        cref=r"{__x[__stateindex[{%v%}]]}"
       )
     )
   ),
@@ -177,20 +264,26 @@ workhorse_templates <- list(
     slotname="rate.fun",
     Cname="__pomp_ratefn",
     proto=quote(rate.fun(j,...)),
-    header="\ndouble __pomp_ratefn (int j, double t, double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n  double rate = 0.0;  \n",
-    footer="  return rate;\n}\n\n",
+    header=r"{
+double __pomp_ratefn (int j, double t, double *__x, const double *__p,
+  const int *__stateindex, const int *__parindex, const int *__covindex,
+  const double *__covars) {
+  double rate = 0.0;}",
+    footer=r"{
+  return rate;
+}}",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       states=list(
         names=quote(statenames),
-        cref="__x[__stateindex[{%v%}]]"
+        cref=r"{__x[__stateindex[{%v%}]]}"
       )
     )
   ),
@@ -198,28 +291,31 @@ workhorse_templates <- list(
     slotname="dprocess",
     Cname="__pomp_dproc",
     proto=quote(dprocess(...)),
-    header="\nvoid __pomp_dproc (double *__loglik, const double *__x1, const double *__x2, double t_1, double t_2, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_dproc (double *__loglik, const double *__x1, const double *__x2,
+  double t_1, double t_2, const double *__p, const int *__stateindex,
+  const int *__parindex, const int *__covindex, const double *__covars) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       before=list(
         names=quote(paste0(statenames,"_1")),
-        cref="__x1[__stateindex[{%v%}]]"
+        cref=r"{__x1[__stateindex[{%v%}]]}"
       ),
       after=list(
         names=quote(paste0(statenames,"_2")),
-        cref="__x2[__stateindex[{%v%}]]"
+        cref=r"{__x2[__stateindex[{%v%}]]}"
       ),
       loglik=list(
         names="loglik",
-        cref="__loglik[0]"
+        cref=r"{__loglik[0]}"
       )
     )
   ),
@@ -227,24 +323,27 @@ workhorse_templates <- list(
     slotname="skeleton",
     Cname="__pomp_skelfn",
     proto=quote(skeleton(...)),
-    header="\nvoid __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars, double t)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_skelfn (double *__f, const double *__x, const double *__p,
+  const int *__stateindex, const int *__parindex, const int *__covindex,
+  const double *__covars, double t) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       states=list(
         names=quote(statenames),
-        cref="__x[__stateindex[{%v%}]]"
+        cref=r"{__x[__stateindex[{%v%}]]}"
       ),
       derivs=list(
         names=quote(paste0("D",statenames)),
-        cref="__f[__stateindex[{%v%}]]"
+        cref=r"{__f[__stateindex[{%v%}]]}"
       )
     )
   ),
@@ -252,20 +351,21 @@ workhorse_templates <- list(
     slotname="fromEst",
     Cname="__pomp_from_trans",
     proto=quote(from.trans(...)),
-    header="\nvoid __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex) {}",
+    footer="\n}\n",
     vars=list(
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       transforms=list(
         names=quote(paste0("T_",paramnames)),
-        cref="__pt[__parindex[{%v%}]]"
+        cref=r"{__pt[__parindex[{%v%}]]}"
       )
     )
   ),
@@ -273,20 +373,21 @@ workhorse_templates <- list(
     slotname="toEst",
     Cname="__pomp_to_trans",
     proto=quote(to.trans(...)),
-    header="\nvoid __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex) {}",
+    footer="\n}\n",
     vars=list(
       covars=list(
         names=quote(covarnames),
-        cref="__covars[__covindex[{%v%}]]"
+        cref=r"{__covars[__covindex[{%v%}]]}"
       ),
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       transforms=list(
         names=quote(paste0("T_",paramnames)),
-        cref="__pt[__parindex[{%v%}]]"
+        cref=r"{__pt[__parindex[{%v%}]]}"
       )
     )
   ),
@@ -294,12 +395,13 @@ workhorse_templates <- list(
     slotname="rprior",
     Cname="__pomp_rprior",
     proto=quote(rprior(...)),
-    header="\nvoid __pomp_rprior (double *__p, const int *__parindex)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_rprior (double *__p, const int *__parindex) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       )
     )
   ),
@@ -307,16 +409,18 @@ workhorse_templates <- list(
     slotname="dprior",
     Cname="__pomp_dprior",
     proto=quote(dprior(log,...)),
-    header="\nvoid __pomp_dprior (double *__lik, const double *__p, int give_log, const int *__parindex)\n{\n",
-    footer="\n}\n\n",
+    header=r"{
+void __pomp_dprior (double *__lik, const double *__p, int give_log,
+  const int *__parindex) {}",
+    footer="\n}\n",
     vars=list(
       params=list(
         names=quote(paramnames),
-        cref="__p[__parindex[{%v%}]]"
+        cref=r"{__p[__parindex[{%v%}]]}"
       ),
       lik=list(
         names="lik",
-        cref="__lik[0]"
+        cref=r"{__lik[0]}"
       )
     )
   )
