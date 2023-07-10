@@ -14,7 +14,7 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
   SEXP var;
   int v;
 
-  PROTECT(args);
+  PROTECT(args = VectorToPairList(args));
 
   // we construct the call from end to beginning
   // covariates, parameter, states, then time and 'j'
@@ -66,8 +66,8 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 }
 
 static void gillespie (double *t, double tmax, double *f, double *y,
-		       const double *v, int nvar, int nevent, Rboolean hasvname,
-		       const int *ivmat)
+                       const double *v, int nvar, int nevent, Rboolean hasvname,
+                       const int *ivmat)
 {
   double tstep, p;
   double vv;
@@ -118,12 +118,12 @@ static void gillespie (double *t, double tmax, double *f, double *y,
 }
 
 static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
-		 int nvar, int nevent, int npar, int nrep, int ntimes,
-		 double *xstart, double t, const double *times, const double *params, double *xout,
-		 const double *v, int nzero, const int *izero,
-		 const int *istate, const int *ipar, int ncovar, const int *icovar,
-		 Rboolean hasvname, const int *ivmat,
-		 int mcov, lookup_table_t *tab, const double *hmax)
+                 int nvar, int nevent, int npar, int nrep, int ntimes,
+                 double *xstart, double t, const double *times, const double *params, double *xout,
+                 const double *v, int nzero, const int *izero,
+                 const int *istate, const int *ipar, int ncovar, const int *icovar,
+                 Rboolean hasvname, const int *ivmat,
+                 int mcov, lookup_table_t *tab, const double *hmax)
 {
   double tmax;
   double *f = NULL;
@@ -182,12 +182,12 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 
 // these global objects will pass the needed information to the user-defined function (see '__pomp_Rfun_ssa_ratefn')
 // each of these is allocated once, globally, and refilled many times
-static int  __ssa_nvar;	// number of state variables
-static int  __ssa_npar;	// number of parameters
-static int  __ssa_ncov;	// number of covariates
-static SEXP __ssa_args;	// function arguments
-static SEXP __ssa_ratefn;	// function itself
-static int  __ssa_first;	// first evaluation?
+static int  __ssa_nvar; // number of state variables
+static int  __ssa_npar; // number of parameters
+static int  __ssa_ncov; // number of covariates
+static SEXP __ssa_args; // function arguments
+static SEXP __ssa_ratefn;       // function itself
+static int  __ssa_first;        // first evaluation?
 static pomp_ssa_rate_fn *__ssa_rxrate; // function computing reaction rates
 
 #define NVAR    (__ssa_nvar)
@@ -199,7 +199,7 @@ static pomp_ssa_rate_fn *__ssa_rxrate; // function computing reaction rates
 #define RXR     (__ssa_rxrate)
 
 static double __pomp_Rfun_ssa_ratefn (int j, double t, const double *x, const double *p,
-				      int *stateindex, int *parindex, int *covindex, double *c)
+                                      int *stateindex, int *parindex, int *covindex, double *c)
 {
   SEXP var = ARGS, ans, ob;
   int v;
@@ -226,7 +226,7 @@ static double __pomp_Rfun_ssa_ratefn (int j, double t, const double *x, const do
 }
 
 SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params,
-		    SEXP vmatrix, SEXP covar, SEXP accumvars, SEXP hmax, SEXP args, SEXP gnsi)
+                    SEXP vmatrix, SEXP covar, SEXP accumvars, SEXP hmax, SEXP args, SEXP gnsi)
 {
 
   int *dim, xdim[3];
@@ -332,10 +332,10 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params
     int i;
     for (i = 0; i < nrep; i++) {
       SSA(RXR,i,nvar,nevent,npar,nrep,ntimes,
-	  REAL(xstart),t0,REAL(times),REAL(params),
-	  REAL(X),REAL(vmatrix),
-	  nzeros,zidx,sidx,pidx,ncovars,cidx,hasvnames,vidx,
-	  covdim,&covariate_table,REAL(hmax));
+          REAL(xstart),t0,REAL(times),REAL(params),
+          REAL(X),REAL(vmatrix),
+          nzeros,zidx,sidx,pidx,ncovars,cidx,hasvnames,vidx,
+          covdim,&covariate_table,REAL(hmax));
     }
   }
   PutRNGstate();

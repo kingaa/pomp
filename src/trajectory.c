@@ -62,7 +62,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(args = GET_SLOT(object,install("userdata")));
 
   // create array to store results
   PROTECT(X = ret_array(nvars,nreps,ntimes,Snames,repnames));
@@ -166,7 +166,7 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   PROTECT(ob = GET_SLOT(object,install("skeleton")));
   PROTECT(pompfun = GET_SLOT(ob,install("skel.fn")));
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(args = GET_SLOT(object,install("userdata")));
 
   COMMON(object) = object;
   COMMON(params) = params;

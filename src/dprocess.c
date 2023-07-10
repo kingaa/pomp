@@ -21,7 +21,7 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
   PROTECT(S1names = paste0(Snames,mkString("_1")));
   PROTECT(S2names = paste0(Snames,mkString("_2")));
 
-  PROTECT(args);
+  PROTECT(args = VectorToPairList(args));
 
   // Covariates
   for (v = LENGTH(Cnames)-1; v >= 0; v--) {
@@ -233,10 +233,10 @@ static SEXP onestep_density
         if (!give_log) *ft = exp(*ft);
 
       }
-      
+
       x1p = x2p;
       x2p += nrepsx*nvars;
-      
+
     }
 
     unset_pomp_userdata();
@@ -273,7 +273,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
   // extract the process function
   PROTECT(fn = GET_SLOT(object,install("dprocess")));
   // extract other arguments
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(args = GET_SLOT(object,install("userdata")));
   PROTECT(covar = GET_SLOT(object,install("covar")));
   // evaluate the density
   PROTECT(X = onestep_density(fn,x,times,params,covar,log,args,gnsi));

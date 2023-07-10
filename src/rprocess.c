@@ -52,7 +52,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params
 
   int nprotect = 7;
 
-  if (nrepsx > nreps) {		// more ICs than parameters
+  if (nrepsx > nreps) {         // more ICs than parameters
     if (nrepsx % nreps != 0) {
       err("the larger number of replicates is not a multiple of smaller.");
     } else {
@@ -73,7 +73,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params
       }
     }
     nreps = nrepsx;
-  } else if (nrepsx < nreps) {	// more parameters than ICs
+  } else if (nrepsx < nreps) {  // more parameters than ICs
     if (nreps % nrepsx != 0) {
       err("the larger number of replicates is not a multiple of smaller.");
     } else {
@@ -96,7 +96,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params
   }
 
   PROTECT(rproc = GET_SLOT(object,install("rprocess")));
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(args = GET_SLOT(object,install("userdata")));
   PROTECT(accumvars = GET_SLOT(object,install("accumvars")));
   PROTECT(covar = GET_SLOT(object,install("covar")));
 
@@ -106,36 +106,36 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params
   type = *(INTEGER(GET_SLOT(rproc,install("type"))));
   switch (type) {
   case onestep: // one-step simulator
-  {
-    SEXP fn;
-    double deltat = 1.0;
-    PROTECT(fn = GET_SLOT(rproc,install("step.fn")));
-    PROTECT(X = euler_model_simulator(fn,xstart,tstart,times,params,deltat,type,
-      accumvars,covar,args,gnsi));
-    nprotect += 2;
-  }
+    {
+      SEXP fn;
+      double deltat = 1.0;
+      PROTECT(fn = GET_SLOT(rproc,install("step.fn")));
+      PROTECT(X = euler_model_simulator(fn,xstart,tstart,times,params,deltat,type,
+                                        accumvars,covar,args,gnsi));
+      nprotect += 2;
+    }
     break;
   case discrete: case euler: // discrete-time and Euler
-  {
-    SEXP fn;
-    double deltat;
-    PROTECT(fn = GET_SLOT(rproc,install("step.fn")));
-    deltat = *(REAL(AS_NUMERIC(GET_SLOT(rproc,install("delta.t")))));
-    PROTECT(X = euler_model_simulator(fn,xstart,tstart,times,params,deltat,type,
-      accumvars,covar,args,gnsi));
-    nprotect += 2;
-  }
+    {
+      SEXP fn;
+      double deltat;
+      PROTECT(fn = GET_SLOT(rproc,install("step.fn")));
+      deltat = *(REAL(AS_NUMERIC(GET_SLOT(rproc,install("delta.t")))));
+      PROTECT(X = euler_model_simulator(fn,xstart,tstart,times,params,deltat,type,
+                                        accumvars,covar,args,gnsi));
+      nprotect += 2;
+    }
     break;
   case gill: // Gillespie's method
-  {
-    SEXP fn, vmatrix, hmax;
-    PROTECT(fn = GET_SLOT(rproc,install("rate.fn")));
-    PROTECT(vmatrix = GET_SLOT(rproc,install("v")));
-    PROTECT(hmax = GET_SLOT(rproc,install("hmax")));
-    PROTECT(X = SSA_simulator(fn,xstart,tstart,times,params,vmatrix,covar,
-      accumvars,hmax,args,gnsi));
-    nprotect += 4;
-  }
+    {
+      SEXP fn, vmatrix, hmax;
+      PROTECT(fn = GET_SLOT(rproc,install("rate.fn")));
+      PROTECT(vmatrix = GET_SLOT(rproc,install("v")));
+      PROTECT(hmax = GET_SLOT(rproc,install("hmax")));
+      PROTECT(X = SSA_simulator(fn,xstart,tstart,times,params,vmatrix,covar,
+                                accumvars,hmax,args,gnsi));
+      nprotect += 4;
+    }
     break;
   case dflt: default:
     PROTECT(X = pomp_default_rprocess(xstart,nvars,nreps,ntimes));

@@ -12,14 +12,14 @@ static R_INLINE SEXP paste0 (SEXP a, SEXP b, SEXP c) {
 }
 
 static SEXP pomp_default_rinit(SEXP params, SEXP Pnames,
-  int npar, int nrep, int nsim);
+                               int npar, int nrep, int nsim);
 
 static R_INLINE SEXP add_args (SEXP args, SEXP Pnames, SEXP Cnames)
 {
   SEXP var;
   int v;
 
-  PROTECT(args);
+  PROTECT(args = VectorToPairList(args));
 
   // Covariates
   for (v = LENGTH(Cnames)-1; v >= 0; v--) {
@@ -115,7 +115,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
   table_lookup(&covariate_table,*(REAL(t0)),cov);
 
   // extract userdata
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(args = GET_SLOT(object,install("userdata")));
 
   PROTECT(pompfun = GET_SLOT(object,install("rinit")));
   PROTECT(Snames = GET_SLOT(pompfun,install("statenames")));
@@ -209,7 +209,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
   }
 
-  break;
+    break;
 
   }
 
@@ -248,7 +248,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 }
 
 static SEXP pomp_default_rinit (SEXP params, SEXP Pnames,
-  int npar, int nrep, int nsim)
+                                int npar, int nrep, int nsim)
 {
 
   SEXP fcall, pat, ivpnames, statenames, x;

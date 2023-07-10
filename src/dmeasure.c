@@ -19,7 +19,7 @@ static R_INLINE SEXP add_args
   // 'log', covariates, parameter, states, observables, then time
 
   // 'log' is a needed argument
-  PROTECT(args = LCONS(AS_LOGICAL(log),args));
+  PROTECT(args = LCONS(AS_LOGICAL(log),VectorToPairList(args)));
   SET_TAG(args,install("log"));
 
   // Covariates
@@ -71,12 +71,12 @@ static R_INLINE SEXP add_args
 }
 
 static R_INLINE SEXP eval_call (
-    SEXP fn, SEXP args,
-    double *t,
-    double *y, int nobs,
-    double *x, int nvar,
-    double *p, int npar,
-    double *c, int ncov)
+                                SEXP fn, SEXP args,
+                                double *t,
+                                double *y, int nobs,
+                                double *x, int nvar,
+                                double *p, int npar,
+                                double *c, int ncov)
 {
 
   SEXP var = args, ans, ob;
@@ -161,7 +161,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,Onames,Cnames));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(args = GET_SLOT(object,install("userdata")));
 
   // create array to store results
   PROTECT(F = ret_array(nreps,ntimes));
@@ -181,7 +181,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
     for (k = 0; k < ntimes; k++, time++, ys += nobs) { // loop over times
 
-      R_CheckUserInterrupt();	// check for user interrupt
+      R_CheckUserInterrupt();   // check for user interrupt
 
       table_lookup(&covariate_table,*time,cov); // interpolate the covariates
 
@@ -189,15 +189,15 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
         // evaluate the call
         PROTECT(
-          ans = eval_call(
-            fn,args,
-            time,
-            ys,nobs,
-            xs+nvars*((j%nrepsx)+nrepsx*k),nvars,
-            ps+npars*(j%nrepsp),npars,
-            cov,ncovars
-          )
-        );
+                ans = eval_call(
+                                fn,args,
+                                time,
+                                ys,nobs,
+                                xs+nvars*((j%nrepsx)+nrepsx*k),nvars,
+                                ps+npars*(j%nrepsp),npars,
+                                cov,ncovars
+                                )
+                );
 
         if (k == 0 && j == 0 && LENGTH(ans) != 1)
           err("user 'dmeasure' returns a vector of length %d when it should return a scalar.",LENGTH(ans));
@@ -236,7 +236,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
     for (k = 0; k < ntimes; k++, time++, yp += nobs) { // loop over times
 
-      R_CheckUserInterrupt();	// check for user interrupt
+      R_CheckUserInterrupt();   // check for user interrupt
 
       // interpolate the covar functions for the covariates
       table_lookup(&covariate_table,*time,cov);

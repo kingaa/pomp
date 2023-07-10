@@ -13,7 +13,7 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
   SEXP var;
   int v;
 
-  PROTECT(args);
+  PROTECT(args = VectorToPairList(args));
 
   // we construct the call from end to beginning
   // covariates, parameter, states, then time
@@ -58,11 +58,11 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 }
 
 static R_INLINE SEXP eval_call (
-    SEXP fn, SEXP args,
-    double *t,
-    double *x, int nvar,
-    double *p, int npar,
-    double *c, int ncov)
+                                SEXP fn, SEXP args,
+                                double *t,
+                                double *x, int nvar,
+                                double *p, int npar,
+                                double *c, int ncov)
 {
 
   SEXP var = args, ans, ob;
@@ -147,11 +147,11 @@ SEXP do_vmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,Onames,Cnames));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(args = GET_SLOT(object,install("userdata")));
 
   int nprotect = 11;
   int first = 1;
-  
+
   // first do setup
   switch (mode) {
 
@@ -165,7 +165,7 @@ SEXP do_vmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
     for (k = 0; k < ntimes; k++, time++) { // loop over times
 
-      R_CheckUserInterrupt();	// check for user interrupt
+      R_CheckUserInterrupt();   // check for user interrupt
 
       table_lookup(&covariate_table,*time,cov); // interpolate the covariates
 
@@ -174,28 +174,28 @@ SEXP do_vmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
         if (first) {
 
           PROTECT(
-            ans = eval_call(
-              fn,args,
-              time,
-              xs+nvars*((j%nrepsx)+nrepsx*k),nvars,
-              ps+npars*(j%nrepsp),npars,
-              cov,ncovars
-            )
-	  );
+                  ans = eval_call(
+                                  fn,args,
+                                  time,
+                                  xs+nvars*((j%nrepsx)+nrepsx*k),nvars,
+                                  ps+npars*(j%nrepsp),npars,
+                                  cov,ncovars
+                                  )
+                  );
 
           nans = LENGTH(ans);
 
-	  nobs = (int) sqrt(nans);
-	  if (nans != nobs*nobs)
-	    err("'vmeasure' must return a symmetric square matrix.");
-	  
+          nobs = (int) sqrt(nans);
+          if (nans != nobs*nobs)
+            err("'vmeasure' must return a symmetric square matrix.");
+
           PROTECT(Onames = GET_ROWNAMES(GET_DIMNAMES(ans)));
           if (invalid_names(Onames))
             err("'vmeasure' must return a matrix with row-names.");
 
           PROTECT(Y = ret_array(nobs,nreps,ntimes,Onames));
 
-	  nprotect += 3;
+          nprotect += 3;
 
           yt = REAL(Y);
           ys = REAL(AS_NUMERIC(ans));
@@ -203,19 +203,19 @@ SEXP do_vmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
           memcpy(yt,ys,nans*sizeof(double));
           yt += nans;
 
-	  first = 0;
+          first = 0;
 
         } else {
 
           PROTECT(
-            ans = eval_call(
-              fn,args,
-              time,
-              xs+nvars*((j%nrepsx)+nrepsx*k),nvars,
-              ps+npars*(j%nrepsp),npars,
-              cov,ncovars
-            )
-          );
+                  ans = eval_call(
+                                  fn,args,
+                                  time,
+                                  xs+nvars*((j%nrepsx)+nrepsx*k),nvars,
+                                  ps+npars*(j%nrepsp),npars,
+                                  cov,ncovars
+                                  )
+                  );
 
           if (LENGTH(ans) != nans)
             err("'vmeasure' returns variable-length results.");
@@ -256,7 +256,7 @@ SEXP do_vmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     vmidx = INTEGER(vmatindex);
     for (k = 0; k < nobs; k++) {
       for (j = 0; j < nobs; j++) {
-	vmidx[j+nobs*k] = oidx[j]+nobs*oidx[k];
+        vmidx[j+nobs*k] = oidx[j]+nobs*oidx[k];
       }
     }
 
@@ -270,7 +270,7 @@ SEXP do_vmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
     for (k = 0; k < ntimes; k++, time++) { // loop over times
 
-      R_CheckUserInterrupt();	// check for user interrupt
+      R_CheckUserInterrupt();   // check for user interrupt
 
       // interpolate the covar functions for the covariates
       table_lookup(&covariate_table,*time,cov);

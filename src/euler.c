@@ -13,7 +13,7 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
   SEXP var;
   int v;
 
-  PROTECT(args);
+  PROTECT(args = VectorToPairList(args));
 
   // we construct the call from end to beginning
   // delta.t, covariates, parameter, states, then time
@@ -65,11 +65,11 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 }
 
 static R_INLINE SEXP eval_call (
-  SEXP fn, SEXP args,
-  double *t, double *dt,
-  double *x, int nvar,
-  double *p, int npar,
-  double *c, int ncov) 
+                                SEXP fn, SEXP args,
+                                double *t, double *dt,
+                                double *x, int nvar,
+                                double *p, int npar,
+                                double *c, int ncov)
 {
 
   SEXP var = args, ans, ob;
@@ -169,9 +169,9 @@ SEXP euler_model_simulator
     sidx = INTEGER(GET_SLOT(func,install("stateindex")));
     pidx = INTEGER(GET_SLOT(func,install("paramindex")));
     cidx = INTEGER(GET_SLOT(func,install("covarindex")));
-    
+
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
-    
+
     set_pomp_userdata(args);
     GetRNGstate();
     break;
@@ -235,45 +235,45 @@ SEXP euler_model_simulator
         switch (mode) {
 
         case Rfun:
-	  {
-	    SEXP ans, nm;
+          {
+            SEXP ans, nm;
 
-	    if (first) {
+            if (first) {
 
-	      PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
+              PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
 
-	      PROTECT(nm = GET_NAMES(ans));
-	      if (invalid_names(nm))
-		err("'rprocess' must return a named numeric vector.");
-	      pidx = INTEGER(PROTECT(matchnames(nm,Snames,"state variables")));
+              PROTECT(nm = GET_NAMES(ans));
+              if (invalid_names(nm))
+                err("'rprocess' must return a named numeric vector.");
+              pidx = INTEGER(PROTECT(matchnames(nm,Snames,"state variables")));
 
-	      nprotect += 3;
+              nprotect += 3;
 
-	      ap = REAL(AS_NUMERIC(ans));
-	      for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
+              ap = REAL(AS_NUMERIC(ans));
+              for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
 
-	      first = 0;
+              first = 0;
 
-	    } else {
+            } else {
 
-	      PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
+              PROTECT(ans = eval_call(fn,args,&t,&dt,xm,nvars,pm,npars,cov,ncovars));
 
-	      ap = REAL(AS_NUMERIC(ans));
-	      for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
+              ap = REAL(AS_NUMERIC(ans));
+              for (i = 0; i < nvars; i++) xm[pidx[i]] = ap[i];
 
-	      UNPROTECT(1);
+              UNPROTECT(1);
 
-	    }
-	  }
+            }
+          }
           break;
 
         case native: case regNative:
-	  (*ff)(xm,pm,sidx,pidx,cidx,cov,t,dt);
+          (*ff)(xm,pm,sidx,pidx,cidx,cov,t,dt);
           break;
 
-        default:			      // #nocov
+        default:                              // #nocov
           err("unrecognized 'mode' %d",mode); // #nocov
-	  break;			      // #nocov
+          break;                              // #nocov
 
         }
 

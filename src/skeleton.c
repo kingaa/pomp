@@ -13,7 +13,7 @@ SEXP add_skel_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
   SEXP var;
   int v;
 
-  PROTECT(args);
+  PROTECT(args = VectorToPairList(args));
 
   // Covariates
   for (v = LENGTH(Cnames)-1; v >= 0; v--) {
@@ -55,11 +55,11 @@ SEXP add_skel_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 }
 
 static R_INLINE SEXP eval_call (
-    SEXP fn, SEXP args,
-    double *t,
-    double *x, int nvar,
-    double *p, int npar,
-    double *c, int ncov)
+                                SEXP fn, SEXP args,
+                                double *t,
+                                double *x, int nvar,
+                                double *p, int npar,
+                                double *c, int ncov)
 {
 
   SEXP var = args, ans, ob;
@@ -105,7 +105,7 @@ void eval_skeleton_R
   int i, j, k;
   int first = 1;
   int nprotect = 0;
-  
+
   for (k = 0; k < ntimes; k++, time++) {
 
     R_CheckUserInterrupt();
@@ -118,31 +118,31 @@ void eval_skeleton_R
       if (first) {
 
         PROTECT(ans = eval_call(fn,args,time,
-          x+nvars*((j%nrepx)+nrepx*k),nvars,
-          p+npars*(j%nrepp),npars,
-          cov,ncovars));
+                                x+nvars*((j%nrepx)+nrepx*k),nvars,
+                                p+npars*(j%nrepp),npars,
+                                cov,ncovars));
 
-          if (LENGTH(ans)!=nvars)
-            err("'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
+        if (LENGTH(ans)!=nvars)
+          err("'skeleton' returns a vector of %d state variables but %d are expected.",LENGTH(ans),nvars);
 
-          // get name information to fix alignment problems
-          PROTECT(nm = GET_NAMES(ans));
-          if (invalid_names(nm))
-            err("'skeleton' must return a named numeric vector.");
-          posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
+        // get name information to fix alignment problems
+        PROTECT(nm = GET_NAMES(ans));
+        if (invalid_names(nm))
+          err("'skeleton' must return a named numeric vector.");
+        posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables")));
 
-          fs = REAL(AS_NUMERIC(ans));
-          for (i = 0; i < nvars; i++) f[posn[i]] = fs[i];
+        fs = REAL(AS_NUMERIC(ans));
+        for (i = 0; i < nvars; i++) f[posn[i]] = fs[i];
 
-	  nprotect += 3;
-	  first = 0;
+        nprotect += 3;
+        first = 0;
 
       } else {
 
         PROTECT(ans = eval_call(fn,args,time,
-          x+nvars*((j%nrepx)+nrepx*k),nvars,
-          p+npars*(j%nrepp),npars,
-          cov,ncovars));
+                                x+nvars*((j%nrepx)+nrepx*k),nvars,
+                                p+npars*(j%nrepp),npars,
+                                cov,ncovars));
 
         fs = REAL(AS_NUMERIC(ans));
         for (i = 0; i < nvars; i++) f[posn[i]] = fs[i];
@@ -159,13 +159,13 @@ void eval_skeleton_R
 }
 
 void iterate_skeleton_R (
-    double *X, double t, double deltat,
-    double *time, double *x, double *p,
-    SEXP fn, SEXP args, SEXP Snames,
-    int nvars, int npars, int ncovars, int ntimes,
-    int nrepp, int nreps, int nzeros,
-    lookup_table_t *covar_table, int *zeroindex,
-    double *cov)
+                         double *X, double t, double deltat,
+                         double *time, double *x, double *p,
+                         SEXP fn, SEXP args, SEXP Snames,
+                         int nvars, int npars, int ncovars, int ntimes,
+                         int nrepp, int nreps, int nzeros,
+                         lookup_table_t *covar_table, int *zeroindex,
+                         double *cov)
 {
 
   SEXP ans, nm;
@@ -210,7 +210,7 @@ void iterate_skeleton_R (
           ap = REAL(AS_NUMERIC(ans));
           for (i = 0; i < nvars; i++) xs[posn[i]] = ap[i];
 
-	  nprotect += 3;
+          nprotect += 3;
           first = 0;
 
         } else {
@@ -243,12 +243,12 @@ void iterate_skeleton_R (
 }
 
 void eval_skeleton_native (
-    double *f, double *time, double *x, double *p,
-    int nvars, int npars, int ncovars, int ntimes,
-    int nrepx, int nrepp, int nreps,
-    int *sidx, int *pidx, int *cidx,
-    lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args,
-    double *cov)
+                           double *f, double *time, double *x, double *p,
+                           int nvars, int npars, int ncovars, int ntimes,
+                           int nrepx, int nrepp, int nreps,
+                           int *sidx, int *pidx, int *cidx,
+                           lookup_table_t *covar_table, pomp_skeleton *fun, SEXP args,
+                           double *cov)
 {
   double *xp, *pp;
   int j, k;
@@ -276,13 +276,13 @@ void eval_skeleton_native (
 }
 
 void iterate_skeleton_native (
-    double *X, double t, double deltat,
-    double *time, double *x, double *p,
-    int nvars, int npars, int ncovars, int ntimes,
-    int nrepp, int nreps, int nzeros,
-    int *sidx, int *pidx, int *cidx,
-    lookup_table_t *covar_table, int *zeroindex,
-    pomp_skeleton *fun, SEXP args, double *cov)
+                              double *X, double t, double deltat,
+                              double *time, double *x, double *p,
+                              int nvars, int npars, int ncovars, int ntimes,
+                              int nrepp, int nreps, int nzeros,
+                              int *sidx, int *pidx, int *cidx,
+                              lookup_table_t *covar_table, int *zeroindex,
+                              pomp_skeleton *fun, SEXP args, double *cov)
 {
   int nsteps;
   double *xs, *Xs;
@@ -374,12 +374,12 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,Snames,Pnames,NA_STRING,Cnames));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(args = GET_SLOT(object,install("userdata")));
 
   PROTECT(F = ret_array(nvars,nreps,ntimes,Snames));
 
   int nprotect = 12;
-  
+
   switch (mode) {
 
   case Rfun: {
@@ -387,9 +387,9 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     PROTECT(args = add_skel_args(args,Snames,Pnames,Cnames)); nprotect++;
 
     eval_skeleton_R(REAL(F),REAL(t),REAL(x),REAL(params),
-      fn,args,Snames,
-      nvars,npars,ncovars,ntimes,nrepx,nrepp,nreps,
-      &covariate_table,REAL(cov));
+                    fn,args,Snames,
+                    nvars,npars,ncovars,ntimes,nrepx,nrepp,nreps,
+                    &covariate_table,REAL(cov));
 
   }
 
@@ -406,9 +406,9 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
     eval_skeleton_native(
-      REAL(F),REAL(t),REAL(x),REAL(params),
-      nvars,npars,ncovars,ntimes,nrepx,nrepp,nreps,
-      sidx,pidx,cidx,&covariate_table,ff,args,REAL(cov));
+                         REAL(F),REAL(t),REAL(x),REAL(params),
+                         nvars,npars,ncovars,ntimes,nrepx,nrepp,nreps,
+                         sidx,pidx,cidx,&covariate_table,ff,args,REAL(cov));
 
   }
 

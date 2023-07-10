@@ -13,7 +13,7 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
 
   for (i = 0; i < nprobe; i++) {
     SET_ELEMENT(vals,i,eval(PROTECT(lang2(VECTOR_ELT(probes,i),data)),
-      CLOENV(VECTOR_ELT(probes,i))));
+                            CLOENV(VECTOR_ELT(probes,i))));
     if (!IS_NUMERIC(VECTOR_ELT(vals,i))) {
       err("probe %ld returns a non-numeric result",i+1);
     }
@@ -27,7 +27,7 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
 }
 
 SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
-  SEXP probes, SEXP datval, SEXP gnsi) {
+                      SEXP probes, SEXP datval, SEXP gnsi) {
   SEXP x, y, names, sims;
   SEXP returntype, retval, val, valnames;
   int nprobe, nsims, nobs, ntimes, nvals;
@@ -64,7 +64,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
   xdim[0] = nsims; xdim[1] = nvals;
   PROTECT(retval = makearray(2,xdim));
   PROTECT(valnames = NEW_LIST(2));
-  SET_ELEMENT(valnames,1,names);	// set column names
+  SET_ELEMENT(valnames,1,names);        // set column names
   SET_DIMNAMES(retval,valnames);
 
   for (p = 0, k = 0; p < nprobe; p++, k += len) { // loop over probes
@@ -82,7 +82,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
 
       // evaluate the probe on the simulated data
       PROTECT(val = eval(PROTECT(lang2(VECTOR_ELT(probes,p),x)),
-        CLOENV(VECTOR_ELT(probes,p))));
+                         CLOENV(VECTOR_ELT(probes,p))));
       if (!IS_NUMERIC(val)) {
         err("probe %ld returns a non-numeric result.",p+1);
       }

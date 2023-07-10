@@ -13,7 +13,7 @@ static R_INLINE SEXP add_args (SEXP args, SEXP names)
   SEXP var;
   int v;
 
-  PROTECT(args);
+  PROTECT(args = VectorToPairList(args));
 
   for (v = LENGTH(names)-1; v >= 0; v--) {
     var = NEW_NUMERIC(1);
@@ -62,7 +62,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   int npars, nreps;
   SEXP Pnames, pompfun, fn, args;
   int *dim;
-  
+
   PROTECT(params = ret_array(params));
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nreps = dim[1];
@@ -74,13 +74,13 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode,NA_STRING,Pnames,NA_STRING,NA_STRING));
 
   // extract 'userdata' as pairlist
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(args = GET_SLOT(object,install("userdata")));
 
   int nprotect = 5;
   int first = 1;
-  
+
   switch (mode) {
-    
+
   case Rfun: {
 
     SEXP ans, nm;
@@ -101,13 +101,13 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
         if (invalid_names(nm))
           err("'rprior' must return a named numeric vector.");
         posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters")));
-	
-	nprotect += 3;
+
+        nprotect += 3;
 
         pa = REAL(ans);
         for (i = 0; i < LENGTH(ans); i++) p[posn[i]] = pa[i];
 
-	first = 0;
+        first = 0;
 
       } else {
 
@@ -137,7 +137,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
     // address of native routine
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
-    R_CheckUserInterrupt();	// check for user interrupt
+    R_CheckUserInterrupt();     // check for user interrupt
 
     set_pomp_userdata(args);
     GetRNGstate();

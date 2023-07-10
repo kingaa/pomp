@@ -15,7 +15,7 @@ static R_INLINE SEXP add_args
   SEXP var;
   int v;
 
-  PROTECT(args);
+  PROTECT(args = VectorToPairList(args));
 
   // Covariates
   for (v = LENGTH(Cnames)-1; v >= 0; v--) {
@@ -154,9 +154,9 @@ static SEXP init_density
       double *ps = REAL(params)+npars*(j%nrepsp);
 
       *ft = *REAL(AS_NUMERIC(eval_call(fn,args,t,xs,nvars,ps,npars,cov,ncovars)));
-      
+
       if (!give_log) *ft = exp(*ft);
-      
+
     }
 
 
@@ -227,7 +227,7 @@ SEXP do_dinit
   // extract the process function
   PROTECT(fn = GET_SLOT(object,install("dinit")));
   // extract other arguments
-  PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata"))));
+  PROTECT(args = GET_SLOT(object,install("userdata")));
   PROTECT(covar = GET_SLOT(object,install("covar")));
   // evaluate the density
   PROTECT(F = init_density(fn,x,t0,params,covar,log,args,gnsi));
