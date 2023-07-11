@@ -153,8 +153,6 @@ hitch <- function (..., templates,
   funs <- vector(mode="list",length=length(horses))
   names(funs) <- names(horses)
 
-  has_dll <- FALSE
-
   for (s in names(funs)) {
     funs[[s]] <- pomp_fun(
       f=horses[[s]],
@@ -168,11 +166,9 @@ hitch <- function (..., templates,
       obsnames=obsnames,
       covarnames=covarnames
     )
-    has_dll <- has_dll ||
-      (funs[[s]]@mode == pompfunmode$native)
   }
 
-  list(funs=funs,lib=lib,has_dll=has_dll)
+  list(funs=funs,lib=lib)
 }
 
 Cbuilder <- function (..., templates, name = NULL, dir = NULL,

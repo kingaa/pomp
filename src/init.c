@@ -3,7 +3,6 @@
 
 static const R_CallMethodDef callMethods[] = {
   {"set_userdata", (DL_FUNC) &set_pomp_userdata, 1},
-  {"unset_userdata", (DL_FUNC) &unset_pomp_userdata, 0},
   {"logmeanexp", (DL_FUNC) &logmeanexp, 2},
   {"bspline_basis", (DL_FUNC) &bspline_basis, 5},
   {"periodic_bspline_basis", (DL_FUNC) &periodic_bspline_basis, 5},
@@ -64,7 +63,6 @@ void R_init_pomp (DllInfo *info) {
   R_RegisterCCallable("pomp","load_stack_incr",(DL_FUNC) &load_stack_incr);
   R_RegisterCCallable("pomp","load_stack_decr",(DL_FUNC) &load_stack_decr);
   R_RegisterCCallable("pomp","set_pomp_userdata",(DL_FUNC) &set_pomp_userdata);
-  R_RegisterCCallable("pomp","unset_pomp_userdata",(DL_FUNC) &unset_pomp_userdata);
   R_RegisterCCallable("pomp","make_covariate_table",(DL_FUNC) &make_covariate_table);
   R_RegisterCCallable("pomp","get_covariate_names",(DL_FUNC) &get_covariate_names);
   R_RegisterCCallable("pomp","table_lookup",(DL_FUNC) &table_lookup);

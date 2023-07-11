@@ -28,7 +28,3 @@ const double *get_userdata_double (const char *name) {
   if (!isReal(elt)) err("user-data element '%s' is not a numeric vector.",name);
   return REAL(elt);
 }
-
-void unset_pomp_userdata (void) {
-  USERDATA = R_NilValue;
-}

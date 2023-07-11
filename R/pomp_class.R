@@ -35,7 +35,6 @@ setClass(
     covar = "covartable",
     accumvars = "character",
     nstatevars = "integer",
-    has_dll = "logical",
     solibs = "list",
     userdata = "list"
   ),
@@ -60,7 +59,6 @@ setClass(
     states=array(data=numeric(),dim=c(0,0)),
     covar=covariate_table(),
     nstatevars=0L,
-    has_dll=FALSE,
     accumvars=character(),
     solibs=list(),
     userdata=list()

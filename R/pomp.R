@@ -417,7 +417,6 @@ setMethod(
       accumvars=accumvars,
       nstatevars=nstatevars,
       params=params,
-      .has_dll=data@has_dll,
       .solibs=data@solibs,
       .userdata=data@userdata,
       cfile=cfile,
@@ -434,7 +433,7 @@ pomp_internal <- function (data, times, t0, timename, ...,
   partrans, params, covar, accumvars, obsnames, statenames,
   paramnames, covarnames, nstatevars,
   PACKAGE, globals, on_load, cdir, cfile, shlib.args,
-  compile, .has_dll = FALSE, .userdata, .solibs = list(),
+  compile, .userdata, .solibs = list(),
   verbose = getOption("verbose", FALSE)) {
 
   ## check times
@@ -607,7 +606,6 @@ pomp_internal <- function (data, times, t0, timename, ...,
     covar=covar,
     accumvars=accumvars,
     nstatevars=nstatevars,
-    has_dll=(.has_dll || hitches$has_dll),
     solibs=if (is.null(hitches$lib)) {
              .solibs
            } else {
