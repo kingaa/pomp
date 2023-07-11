@@ -76,4 +76,3 @@ void table_lookup (lookup_table_t *tab, double x, double *y)
     break;
   }
 }
-

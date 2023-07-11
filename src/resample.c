@@ -42,7 +42,7 @@ void nosort_resamp (int nw, double *w, int np, int *p, int offset)
     while ((u > w[i]) && (i < nw-1)) i++;
     p[j] = i;
   }
-  if (offset)			// add offset if needed
+  if (offset)                   // add offset if needed
     for (j = 0; j < np; j++) p[j] += offset;
 
 }

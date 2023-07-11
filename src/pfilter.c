@@ -14,9 +14,9 @@ static void filt_mean (int, int, int, long double, const double *, const double 
 // tracks ancestry of particles if desired.
 // returns all of the above in a named list.
 SEXP pfilter (SEXP x, SEXP params, SEXP Np,
-	      SEXP predmean, SEXP predvar,
-	      SEXP filtmean, SEXP trackancestry, SEXP doparRS,
-	      SEXP weights, SEXP wave)
+              SEXP predmean, SEXP predvar,
+              SEXP filtmean, SEXP trackancestry, SEXP doparRS,
+              SEXP weights, SEXP wave)
 {
 
   SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue;
@@ -71,7 +71,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
   int nprotect = 8;
 
   xw = REAL(weights);
-  
+
   // check and normalize the weights
   for (k = 0, maxw = R_NegInf; k < nreps; k++) {
 
@@ -80,7 +80,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
       *INTEGER(retval) = k+1; // return the index of the peccant particle
       UNPROTECT(nprotect);
       return retval;
-    }    
+    }
 
     if (maxw < xw[k]) maxw = xw[k];
 
@@ -89,7 +89,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
   if (maxw == R_NegInf) all_fail = 1;
 
   if (all_fail) {
-    
+
     *(REAL(loglik)) = R_NegInf;
     *(REAL(ess)) = 0;             // zero effective sample size
 
@@ -99,8 +99,8 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
     for (k = 0, w = 0, ws = 0; k < nreps; k++) {
       xw[k] = exp(xw[k]-maxw);
       if (xw[k] != 0) {
-	w += xw[k];
-	ws += xw[k]*xw[k];
+        w += xw[k];
+        ws += xw[k]*xw[k];
       }
     }
 
@@ -134,7 +134,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
     double *tmp = (do_pv) ? REAL(pv) : 0;
     pred_mean_var(nvars,nreps,do_pv,REAL(x),REAL(pm),tmp);
   }
-  
+
   //  compute filter mean
   if (do_fm) {
     filt_mean(nvars,nreps,all_fail,w,xw,REAL(x),REAL(fm));
@@ -144,7 +144,7 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
   if (do_wave) {
     if (all_fail)
       warn("%s %s","filtering failure at last filter iteration:",
-	   "using unweighted mean for point estimate.");
+           "using unweighted mean for point estimate.");
     double *xwm = REAL(wmean);
     for (j = 0; j < npars; j++, xwm++) {
       double *xp = REAL(params)+j;
@@ -153,8 +153,8 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
         *xwm = sum/((long double) nreps);
       } else {
         for (k = 0, sum = 0; k < nreps; k++, xp += npars) {
-	  if (xw[k]!=0) sum += xw[k]*(*xp);
-	}
+          if (xw[k]!=0) sum += xw[k]*(*xp);
+        }
         *xwm = sum/w;
       }
     }
@@ -264,8 +264,8 @@ SEXP pfilter (SEXP x, SEXP params, SEXP Np,
 }
 
 static void pred_mean_var (int nvars, int nreps, int do_pv,
-			   const double *x,
-			   double *pm, double *pv)
+                           const double *x,
+                           double *pm, double *pv)
 {
   long double sum, sumsq, vsq;
   const double *xx;
@@ -274,17 +274,17 @@ static void pred_mean_var (int nvars, int nreps, int do_pv,
   for (j = 0; j < nvars; j++, pm++, pv++) {
 
     xx = x+j;
-    
+
     // compute prediction mean
     for (k = 0, sum = 0; k < nreps; k++, xx += nvars) sum += *xx;
     *pm = sum/((long double) nreps);
-    
+
     // compute prediction variance
     if (do_pv) {
       xx = x+j;
       for (k = 0, sumsq = 0; k < nreps; k++, xx += nvars) {
-	vsq = *xx - sum;
-	sumsq += vsq*vsq;
+        vsq = *xx - sum;
+        sumsq += vsq*vsq;
       }
       *pv = sumsq/((long double) (nreps - 1));
     }
@@ -292,7 +292,7 @@ static void pred_mean_var (int nvars, int nreps, int do_pv,
 }
 
 static void filt_mean (int nvars, int nreps, int all_fail, long double wsum,
-		       const double *w, const double *x, double *fm)
+                       const double *w, const double *x, double *fm)
 {
   long double sum;
   const double *xx;

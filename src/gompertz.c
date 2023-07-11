@@ -17,49 +17,62 @@
 #define VY          (f[vmatindex[0]])  // variance
 
 // normal measurement model density
-void _gompertz_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
-  int *obsindex, int *stateindex, int *parindex, int *covindex,
-  double *covars, double t) {
+void _gompertz_normal_dmeasure
+(
+ double *lik, double *y, double *x, double *p, int give_log,
+ int *obsindex, int *stateindex, int *parindex, int *covindex,
+ double *covars, double t
+ ) {
   *lik = dlnorm(Y,log(X),TAU,give_log);
 }
 
 // normal measurement model simulator
-void _gompertz_normal_rmeasure (double *y, double *x, double *p,
-  int *obsindex, int *stateindex, int *parindex, int *covindex,
-  double *covars, double t) {
+void _gompertz_normal_rmeasure
+(
+ double *y, double *x, double *p,
+ int *obsindex, int *stateindex, int *parindex, int *covindex,
+ double *covars, double t
+ ) {
   Y = rlnorm(log(X),TAU);
 }
 
 // measurement model expectation
-void _gompertz_normal_emeasure (double *f, double *x, double *p,
-  int *obsindex, int *stateindex, int *parindex, int *covindex,
-  double *covars, double t) {
+void _gompertz_normal_emeasure
+(
+ double *f, double *x, double *p,
+ int *obsindex, int *stateindex, int *parindex, int *covindex,
+ double *covars, double t
+ ) {
   EY = X*exp(TAU*TAU/2);
 }
 
 // measurement model variance
 void _gompertz_normal_vmeasure (double *f, double *x, double *p,
-  int *vmatindex, int *stateindex, int *parindex, int *covindex,
-  double *covars, double t) {
+                                int *vmatindex, int *stateindex, int *parindex, int *covindex,
+                                double *covars, double t) {
   double et = exp(TAU*TAU);
   VY = X*X*et*(et-1);
 }
 
 // stochastic Gompertz model with log-normal process noise
-void _gompertz_step (double *x, const double *p,
-  const int *stateindex, const int *parindex, const int *covindex,
-  const double *covar, double t, double deltat)
-{
+void _gompertz_step
+(
+ double *x, const double *p,
+ const int *stateindex, const int *parindex, const int *covindex,
+ const double *covar, double t, double deltat
+ ) {
   double S = exp(-R*deltat);
   double eps = (SIGMA > 0.0) ? exp(rnorm(0,SIGMA)) : 1.0;
   X = R_pow(K,1-S)*R_pow(X,S)*eps; // note X is over-written by this line
 }
 
 // the deterministic skeleton
-void _gompertz_skeleton (double *f, double *x, const double *p,
-  const int *stateindex, const int *parindex, const int *covindex,
-  const double *covar, double t)
-{
+void _gompertz_skeleton
+(
+ double *f, double *x, const double *p,
+ const int *stateindex, const int *parindex, const int *covindex,
+ const double *covar, double t
+ ) {
   double deltat = 1.0;
   double S = exp(-R*deltat);
   XPRIME = R_pow(K,1-S)*R_pow(X,S); // X is not over-written in the skeleton function
@@ -75,19 +88,21 @@ void _gompertz_skeleton (double *f, double *x, const double *p,
 #undef EY
 #undef VY
 
-#define r		(__p[__parindex[0]])
-#define K		(__p[__parindex[1]])
-#define sigma		(__p[__parindex[2]])
-#define tau		(__p[__parindex[3]])
-#define X_0		(__p[__parindex[4]])
-#define T_r		(__pt[__parindex[0]])
-#define T_K		(__pt[__parindex[1]])
-#define T_sigma		(__pt[__parindex[2]])
-#define T_tau		(__pt[__parindex[3]])
-#define T_X_0		(__pt[__parindex[4]])
+#define r               (__p[__parindex[0]])
+#define K               (__p[__parindex[1]])
+#define sigma           (__p[__parindex[2]])
+#define tau             (__p[__parindex[3]])
+#define X_0             (__p[__parindex[4]])
+#define T_r             (__pt[__parindex[0]])
+#define T_K             (__pt[__parindex[1]])
+#define T_sigma         (__pt[__parindex[2]])
+#define T_tau           (__pt[__parindex[3]])
+#define T_X_0           (__pt[__parindex[4]])
 
-void _gompertz_to_trans (double *__pt, const double *__p, const int *__parindex)
-{
+void _gompertz_to_trans
+(
+ double *__pt, const double *__p, const int *__parindex
+ ) {
   T_r = log(r);
   T_K = log(K);
   T_sigma = log(sigma);
@@ -95,8 +110,10 @@ void _gompertz_to_trans (double *__pt, const double *__p, const int *__parindex)
   T_X_0 = log(X_0);
 }
 
-void _gompertz_from_trans (double *__p, const double *__pt, const int *__parindex)
-{
+void _gompertz_from_trans
+(
+ double *__p, const double *__pt, const int *__parindex
+ ) {
   r = exp(T_r);
   K = exp(T_K);
   sigma = exp(T_sigma);

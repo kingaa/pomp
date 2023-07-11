@@ -28,7 +28,7 @@ static R_INLINE SEXP name_index (SEXP provided, SEXP object, const char *slot, c
 // names in the corresponding 'pomp_fun' slots and storing the corresponding index
 // inside the 'pomp_fun'.
 SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
-  SEXP S, SEXP P, SEXP O, SEXP C)
+                       SEXP S, SEXP P, SEXP O, SEXP C)
 {
   int nprotect = 0;
   SEXP f = R_NilValue;
@@ -38,41 +38,41 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
 
   switch (*mode) {
 
-  case Rfun:			// R function
+  case Rfun:                    // R function
 
     PROTECT(f = GET_SLOT(pfun,install("R.fun"))); nprotect++;
 
     break;
 
-  case native: case regNative:	// native code
+  case native: case regNative:  // native code
 
-    if (*(LOGICAL(gnsi))) {	// get native symbol information?
+    if (*(LOGICAL(gnsi))) {     // get native symbol information?
 
       SEXP nf, pack;
       PROTECT(nf = GET_SLOT(pfun,install("native.fun")));
       PROTECT(pack = GET_SLOT(pfun,install("PACKAGE")));
       nprotect += 2;
-      
+
       if (LENGTH(pack) < 1) {
         PROTECT(pack = mkString("")); nprotect++; // #nocov
       }
 
       if (*mode == native) {
-	
+
         SEXP nsi;
         PROTECT(nsi = eval(PROTECT(lang3(install("getNativeSymbolInfo"),nf,pack)),R_BaseEnv));
         PROTECT(f = getListElement(nsi,"address"));
-	nprotect += 3;
-	
+        nprotect += 3;
+
       } else if (*mode == regNative) {
-	
+
         const char *fname, *pkg;
         fname = (const char *) CHAR(STRING_ELT(nf,0));
         pkg = (const char *) CHAR(STRING_ELT(pack,0));
         DL_FUNC fn;
         fn = R_GetCCallable(pkg,fname);
         PROTECT(f = R_MakeExternalPtrFn(fn,R_NilValue,R_NilValue)); nprotect++;
-	
+
       }
 
       SET_SLOT(pfun,install("address"),f);
@@ -97,7 +97,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
         SET_SLOT(pfun,install("covarindex"),cidx);
       }
 
-    } else {			// native symbol info is stored
+    } else {                    // native symbol info is stored
 
       PROTECT(f = GET_SLOT(pfun,install("address"))); nprotect++;
 
@@ -106,12 +106,12 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode,
     break;
 
   case undef: default:
-    
+
     PROTECT(f = R_NilValue); nprotect++;
     *mode = undef;
 
     break;
-    
+
   }
 
   UNPROTECT(nprotect);

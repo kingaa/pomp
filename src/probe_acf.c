@@ -22,7 +22,7 @@ static void pomp_acf_compute (double *acf, double *x, int n, int nvars, int *lag
       }
     }
     if (ct < 1) err("series %ld has no data",j+1);
-    xx /= ct;			// mean of x[j,]
+    xx /= ct;                   // mean of x[j,]
     for (k = 0, p0 = p; k < n; p0 += nvars, k++)
       if (R_FINITE(*p0)) *p0 -= xx;
   }
@@ -30,7 +30,7 @@ static void pomp_acf_compute (double *acf, double *x, int n, int nvars, int *lag
   // compute covariances
   for (j = 0, p0 = x, p = acf; j < nvars; j++, p0++) { // loop over series
     for (i = 0; i < nlag; i++, p++) { // loop over lags
-      lag = lags[i];		      // i-th lag
+      lag = lags[i];                  // i-th lag
       for (k = 0, ct = 0, xx = 0, p1 = p0, p2 = p0+lag*nvars; k < n-lag; k++, p1 += nvars, p2 += nvars)
         if (R_FINITE(*p1) && R_FINITE(*p2)) {
           xx += (*p1)*(*p2);
@@ -39,7 +39,7 @@ static void pomp_acf_compute (double *acf, double *x, int n, int nvars, int *lag
       *p = (ct > 0) ? xx/ct : R_NaReal;
     }
   }
-  
+
 }
 
 // vectorized routine for CCF calculation
@@ -57,7 +57,7 @@ static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lag
     }
   }
   if (ct < 1) err("series 1 has no data");
-  xx /= ct;			// mean of x[j]
+  xx /= ct;                     // mean of x[j]
   for (k = 0, p = x; k < n; k++, p++) {
     if (R_FINITE(*p)) *p -= xx;
   }
@@ -70,7 +70,7 @@ static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lag
     }
   }
   if (ct < 1) err("series 2 has no data");
-  xx /= ct;			// mean of y[j]
+  xx /= ct;                     // mean of y[j]
   for (k = 0, p = y; k < n; k++, p++) {
     if (R_FINITE(*p)) *p -= xx;
   }
@@ -106,13 +106,13 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   int *lag;
   char tmp[BUFSIZ];
 
-  nlag = LENGTH(lags);			      // number of lags
+  nlag = LENGTH(lags);                        // number of lags
   PROTECT(lags = AS_INTEGER(lags));
   lag = INTEGER(lags);
   correlation = *(INTEGER(AS_INTEGER(corr))); // correlation, or covariance?
 
-  nvars = INTEGER(GET_DIM(x))[0]; 	// number of variables
-  n = INTEGER(GET_DIM(x))[1];		    // number of observations
+  nvars = INTEGER(GET_DIM(x))[0];       // number of variables
+  n = INTEGER(GET_DIM(x))[1];               // number of observations
 
   PROTECT(X = duplicate(AS_NUMERIC(x)));
 
@@ -154,7 +154,7 @@ SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr) {
   PROTECT(lags = AS_INTEGER(lags));
   correlation = *(INTEGER(AS_INTEGER(corr))); // correlation, or covariance?
 
-  n = LENGTH(x);		// n = # of observations
+  n = LENGTH(x);                // n = # of observations
   if (n != LENGTH(y)) err("'x' and 'y' must have equal lengths"); // #nocov
 
   PROTECT(X = duplicate(AS_NUMERIC(x)));
