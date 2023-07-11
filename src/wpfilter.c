@@ -27,13 +27,13 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
   PROTECT(dimP = GET_DIM(Params));
   dim = INTEGER(dimP);
   //  npars = dim[0];
-  if (dim[1] > 1 && nreps != dim[1])
-    err("ncol('params') does not match ncol('states')"); // # nocov
+  if (dim[1] > 1 && nreps != dim[1])                     // #nocov
+    err("ncol('params') does not match ncol('states')"); // #nocov
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(Params)));
 
   np = *INTEGER(AS_INTEGER(Np));
   // REVISIT THIS IF PARAMETER RESAMPLING IS IMPLEMENTED
-  //  do_pr = (dim[1] > 1);	      // resample parameters as well as states
+  //  do_pr = (dim[1] > 1);           // resample parameters as well as states
 
   PROTECT(Weights = duplicate(AS_NUMERIC(Weights)));
   PROTECT(W = duplicate(AS_NUMERIC(W)));
@@ -66,31 +66,31 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
 
   // set up return list
   SEXP retval, retvalnames, newdim;
-  
+
   PROTECT(retval = NEW_LIST(5));
   PROTECT(retvalnames = NEW_CHARACTER(5));
   PROTECT(newdim = NEW_INTEGER(2));
   nprotect += 3;
-    
+
   dim = INTEGER(newdim);
   dim[0] = nvars; dim[1] = nreps;
   SET_DIM(X,newdim);
   setrownames(X,Xnames,2);
   fixdimnames(X,dimnm,2);
-  
+
   SET_STRING_ELT(retvalnames,0,mkChar("states"));
   SET_STRING_ELT(retvalnames,1,mkChar("params"));
   SET_STRING_ELT(retvalnames,2,mkChar("weights"));
   SET_STRING_ELT(retvalnames,3,mkChar("ess"));
   SET_STRING_ELT(retvalnames,4,mkChar("loglik"));
   SET_NAMES(retval,retvalnames);
-  
+
   SEXP ess, loglik;
   PROTECT(ess = NEW_NUMERIC(1));    // effective sample size
   PROTECT(loglik = NEW_NUMERIC(1)); // conditional log likelihood
   nprotect += 2;
 
-  if (maxlogw == R_NegInf) {	// all particles have zero likelihood
+  if (maxlogw == R_NegInf) {    // all particles have zero likelihood
     *REAL(ess) = 0;
     *REAL(loglik) = R_NegInf;
   } else {
@@ -112,13 +112,13 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
 
   SET_ELEMENT(retval,3,ess);
   SET_ELEMENT(retval,4,loglik);
-  
+
   if (maxlogw == R_NegInf || (*REAL(ess) >= nreps*trigger && np == nreps)) { // do not resample
-    
+
     SET_ELEMENT(retval,0,X);
     SET_ELEMENT(retval,1,Params);
     SET_ELEMENT(retval,2,Weights);
-    
+
   } else {                      // no resampling
 
     // create storage for new states
@@ -133,7 +133,7 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
       st = REAL(newstates);
     }
     SET_ELEMENT(retval,0,newstates);
-      
+
     // REVISIT THIS IF PARAMETER RESAMPLING IS IMPLEMENTED
     // create storage for new parameters
     //    SEXP newparams = R_NilValue;
@@ -149,7 +149,7 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
     // } else {
     SET_ELEMENT(retval,1,Params);
     // }
-      
+
     // create storage for new weights
     SEXP newweights = R_NilValue;
     double *ws = 0, *wt = 0;
@@ -159,33 +159,33 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
       wt = REAL(newweights);
     }
     SET_ELEMENT(retval,2,newweights);
-      
+
     // compute target resampling weights
     for (k = 0, xw = REAL(W), xW = REAL(Weights); k < nreps; k++, xw++, xW++) {
       *xw = *xW;
       *xW *= target;
       *xw = exp(*xw - *xW);
     }
-    
+
     // do resampling
     {
       int sample[np];
       GetRNGstate();
       nosort_resamp(nreps,REAL(W),np,sample,0);
       PutRNGstate();
-      
+
       for (k = 0; k < np; k++) { // copy the particles
-	int sp = sample[k], j;
-	double *xx;
-	//	double *xp;
-	for (j = 0, xx = ss+nvars*sp; j < nvars; j++, st++, xx++)
-	  *st = *xx;
-	// REVISIT THIS IF PARAMETER RESAMPLING IS IMPLEMENTED
-	// if (do_pr) {
-	//   for (j = 0, xp = ps+npars*sp; j < npars; j++, pt++, xp++)
-	//     *pt = *xp;
-	// }
-	wt[k] = ws[sp];
+        int sp = sample[k], j;
+        double *xx;
+        //      double *xp;
+        for (j = 0, xx = ss+nvars*sp; j < nvars; j++, st++, xx++)
+          *st = *xx;
+        // REVISIT THIS IF PARAMETER RESAMPLING IS IMPLEMENTED
+        // if (do_pr) {
+        //   for (j = 0, xp = ps+npars*sp; j < npars; j++, pt++, xp++)
+        //     *pt = *xp;
+        // }
+        wt[k] = ws[sp];
       }
     }
   }
