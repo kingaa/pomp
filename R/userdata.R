@@ -2,7 +2,7 @@
 ##'
 ##' When \acronym{POMP} basic components need information they can't get from parameters or covariates.
 ##'
-##' It can happen that one desires to pass information to one of the \acronym{POMP} model \dfn{basic components} (see \link[=pomp]{here for a definition of this term}) outside of the standard routes (i.e., via model parameters or covariates).
+##' It can happen that one desires to pass information to one of the \acronym{POMP} model \dfn{basic components} (see \link[=basic_components]{here for a definition of this term}) outside of the standard routes (i.e., via model parameters or covariates).
 ##' \pkg{pomp} provides facilities for this purpose.
 ##' We refer to the objects one wishes to pass in this way as \dfn{user data}.
 ##'
@@ -46,7 +46,7 @@
 ##'      y1 = rpois(x1+theta); y2 = rpois(x2+theta);
 ##'     }")}
 ##' Here, the call to \code{get_userdata_double} retrieves a \emph{pointer} to the stored value of \code{theta}.
-##' Note the need to escape the quotes in the C snippet text.
+##' Note that, by using \R string literals (\code{r"{}"}) we avoid the need to escape the quotes in the C snippet text.
 ##'
 ##' It is possible to store and retrieve integer objects also, using \code{get_userdata_int}.
 ##'
@@ -70,7 +70,7 @@
 ##' @section Setting \code{globals}:
 ##'
 ##' The use of the userdata facilities incurs a run-time cost.
-##' It is faster and more elegant, when using C snippets, to put the needed objects directly into the C snippet library.
+##' It is often more efficient, when using C snippets, to put the needed objects directly into the C snippet library.
 ##' The \code{globals} argument does this.
 ##' See the example below.
 ##'

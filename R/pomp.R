@@ -38,7 +38,7 @@
 ##' @param data either a data frame holding the time series data,
 ##' or an object of class \sQuote{pomp},
 ##' i.e., the output of another \pkg{pomp} calculation.
-##' Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.
+##' Internally, \code{data} will be coerced to an array with storage-mode \code{double}.
 ##' @param times the sequence of observation times.
 ##' \code{times} must indicate the column of observation times by name or index.
 ##' The time vector must be numeric and non-decreasing.

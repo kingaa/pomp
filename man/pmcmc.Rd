@@ -48,7 +48,7 @@
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
-Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.}
+Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
 
 \item{Nmcmc}{The number of PMCMC iterations to perform.}
 

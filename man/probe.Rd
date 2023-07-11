@@ -51,7 +51,7 @@
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
-Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.}
+Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
 
 \item{probes}{a single probe or a list of one or more probes.
 A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
