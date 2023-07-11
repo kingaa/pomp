@@ -62,7 +62,6 @@ void R_init_pomp (DllInfo *info) {
   R_RegisterCCallable("pomp","pomp_fun_handler",(DL_FUNC) &pomp_fun_handler);
   R_RegisterCCallable("pomp","load_stack_incr",(DL_FUNC) &load_stack_incr);
   R_RegisterCCallable("pomp","load_stack_decr",(DL_FUNC) &load_stack_decr);
-  R_RegisterCCallable("pomp","set_pomp_userdata",(DL_FUNC) &set_pomp_userdata);
   R_RegisterCCallable("pomp","make_covariate_table",(DL_FUNC) &make_covariate_table);
   R_RegisterCCallable("pomp","get_covariate_names",(DL_FUNC) &get_covariate_names);
   R_RegisterCCallable("pomp","table_lookup",(DL_FUNC) &table_lookup);
@@ -71,6 +70,9 @@ void R_init_pomp (DllInfo *info) {
   R_RegisterCCallable("pomp","apply_probe_sim",(DL_FUNC) &apply_probe_sim);
   R_RegisterCCallable("pomp","systematic_resampling",(DL_FUNC) &systematic_resampling);
   R_RegisterCCallable("pomp","randwalk_perturbation", (DL_FUNC) &randwalk_perturbation);
+  // THE FOLLOWING TWO FUNCTIONS WILL GO AWAY SOON
+  R_RegisterCCallable("pomp","set_pomp_userdata",(DL_FUNC) &set_pomp_userdata);
+  R_RegisterCCallable("pomp","unset_pomp_userdata",(DL_FUNC) &unset_pomp_userdata);
 
   // Register routines
   R_registerRoutines(info,NULL,callMethods,NULL,NULL);
