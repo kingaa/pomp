@@ -232,8 +232,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     // address of native routine
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
-    set_pomp_userdata(args);
-
     for (k = 0; k < ntimes; k++, time++, yp += nobs) { // loop over times
 
       R_CheckUserInterrupt();   // check for user interrupt
@@ -250,8 +248,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
       }
     }
-
-    unset_pomp_userdata();
 
   }
 

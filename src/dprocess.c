@@ -213,8 +213,6 @@ static SEXP onestep_density
 
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
-    set_pomp_userdata(args);
-
     for (int k = 0; k < ntimes-1; k++, t1++, t2++) {
 
       R_CheckUserInterrupt();
@@ -239,7 +237,6 @@ static SEXP onestep_density
 
     }
 
-    unset_pomp_userdata();
   }
 
     break;

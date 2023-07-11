@@ -25,7 +25,6 @@
 ##' In any case, the effect is the same: to add, remove, or modify the basic component.
 ##'
 ##' Each basic component can be furnished using C snippets, \R functions, or pre-compiled native routine available in user-provided dynamically loaded libraries.
-##'
 ##' @name pomp_constructor
 ##' @aliases pomp
 ##' @rdname pomp
@@ -115,7 +114,7 @@
 ##' @param accumvars optional character vector;
 ##' contains the names of accumulator variables.
 ##' See \link{accumvars} for a definition and discussion of accumulator variables.
-##' @param \dots additional arguments supply new or modify existing model characteristics or components.
+##' @param ... additional arguments supply new or modify existing model characteristics or components.
 ##' See \code{\link{pomp}} for a full list of recognized arguments.
 ##'
 ##' When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
@@ -133,15 +132,15 @@
 ##' However, each \pkg{pomp} algorithm makes use of only a subset of these components.
 ##' When an algorithm requires a basic component that has not been furnished, an error is generated to let you know that you must provide the needed component to use the algorithm.
 ##' @section Note for Windows users:
-##' 
+##'
 ##' Some Windows users report problems when using C snippets in parallel computations.
 ##' These appear to arise when the temporary files created during the C snippet compilation process are not handled properly by the operating system.
-##' To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=pomp]{cfile}} options to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether. 
+##' To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=pomp]{cfile}} options to cause the C snippets to be written to a file of your choice, thus avoiding the use of temporary files altogether.
 ##' @author Aaron A. King
 ##' @references
 ##'
 ##' \King2016
-##' 
+##'
 NULL
 
 ##' @rdname pomp
@@ -418,6 +417,7 @@ setMethod(
       accumvars=accumvars,
       nstatevars=nstatevars,
       params=params,
+      .has_dll=data@has_dll,
       .solibs=data@solibs,
       .userdata=data@userdata,
       cfile=cfile,
@@ -434,7 +434,8 @@ pomp_internal <- function (data, times, t0, timename, ...,
   partrans, params, covar, accumvars, obsnames, statenames,
   paramnames, covarnames, nstatevars,
   PACKAGE, globals, on_load, cdir, cfile, shlib.args,
-  compile, .userdata, .solibs = list(), verbose = getOption("verbose", FALSE)) {
+  compile, .has_dll = FALSE, .userdata, .solibs = list(),
+  verbose = getOption("verbose", FALSE)) {
 
   ## check times
   if (missing(times) || !is.numeric(times) || !all(is.finite(times)) ||
@@ -606,6 +607,7 @@ pomp_internal <- function (data, times, t0, timename, ...,
     covar=covar,
     accumvars=accumvars,
     nstatevars=nstatevars,
+    has_dll=(.has_dll || hitches$has_dll),
     solibs=if (is.null(hitches$lib)) {
              .solibs
            } else {

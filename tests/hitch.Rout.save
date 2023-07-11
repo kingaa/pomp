@@ -39,6 +39,9 @@ list()
 $lib
 NULL
 
+$has_dll
+[1] FALSE
+
 > 
 > try(hitch(templates=pomp:::workhorse_templates,
 +   statenames=c("a","b"),paramnames=c("b","c")))
@@ -47,6 +50,6 @@ Error : in 'hitch': the variable names in 'statenames', 'paramnames', 'covarname
 > hitch(step.fn=Csnippet("int bob; bob = 3"),
 +   templates=pomp:::workhorse_templates,
 +   compile=FALSE,cfile="bob") |> names()
-[1] "funs" "lib" 
+[1] "funs"    "lib"     "has_dll"
 > 
 > 

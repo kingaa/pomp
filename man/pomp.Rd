@@ -52,7 +52,7 @@ The time vector must be numeric and non-decreasing.}
 \item{t0}{The zero-time, i.e., the time of the initial state.
 This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
 
-\item{\dots}{additional arguments supply new or modify existing model characteristics or components.
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
 
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.

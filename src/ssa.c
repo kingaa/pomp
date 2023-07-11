@@ -286,8 +286,6 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params
 
     *((void **) (&(RXR))) = R_ExternalPtrAddr(fn);
 
-    set_pomp_userdata(args);
-
     break;
 
   case Rfun:
@@ -339,10 +337,6 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params
     }
   }
   PutRNGstate();
-
-  if (mode == native || mode == regNative) {
-    unset_pomp_userdata();
-  }
 
   UNPROTECT(nprotect);
   return X;

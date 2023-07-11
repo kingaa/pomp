@@ -172,7 +172,6 @@ SEXP euler_model_simulator
 
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
-    set_pomp_userdata(args);
     GetRNGstate();
     break;
 
@@ -299,7 +298,6 @@ SEXP euler_model_simulator
   case native: case regNative: {
 
     PutRNGstate();
-    unset_pomp_userdata();
 
   }
 

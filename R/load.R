@@ -68,6 +68,7 @@ setMethod(
 
 pompLoad_internal <- function (object, ...,
   verbose = getOption("verbose", FALSE)) {
+  .Call(P_set_userdata,object@userdata)    
   for (lib in object@solibs) {
     if (!is.loaded("__pomp_load_stack_incr",PACKAGE=lib$name)) {
       dir <- srcDir(lib$dir,verbose=verbose)
@@ -95,6 +96,7 @@ pompUnload_internal <- function (object, ...,
         solib <- file.path(dir,paste0(lib$name,.Platform$dynlib.ext))
         dyn.unload(solib)
         if (verbose) cat("unloading",sQuote(solib),"\n")
+        if (!object@has_dll) .Call(P_unset_userdata)
       }
     }
   }

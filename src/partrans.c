@@ -134,12 +134,8 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
     idx = INTEGER(GET_SLOT(pompfun,install("paramindex")));
 
-    set_pomp_userdata(args);
-
     for (j = 0, ps = REAL(params), pt = REAL(tparams); j < nreps; j++, ps += npars, pt += npars)
       (*ff)(pt,ps,idx);
-
-    unset_pomp_userdata();
 
   }
 

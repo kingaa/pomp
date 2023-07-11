@@ -253,8 +253,6 @@ void eval_skeleton_native (
   double *xp, *pp;
   int j, k;
 
-  set_pomp_userdata(args);
-
   for (k = 0; k < ntimes; k++, time++) {
 
     R_CheckUserInterrupt();
@@ -271,8 +269,6 @@ void eval_skeleton_native (
     }
   }
 
-  unset_pomp_userdata();
-
 }
 
 void iterate_skeleton_native (
@@ -287,8 +283,6 @@ void iterate_skeleton_native (
   int nsteps;
   double *xs, *Xs;
   int h, i, j, k;
-
-  set_pomp_userdata(args);
 
   for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
 
@@ -326,8 +320,6 @@ void iterate_skeleton_native (
     if (nsteps == 0) memcpy(X,x,nvars*nreps*sizeof(double));
 
   }
-
-  unset_pomp_userdata();
 
 }
 

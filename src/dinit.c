@@ -177,8 +177,6 @@ static SEXP init_density
 
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
-    set_pomp_userdata(args);
-
     // interpolate the covariates
     table_lookup(&covariate_table,*t,cov);
 
@@ -193,7 +191,6 @@ static SEXP init_density
 
     }
 
-    unset_pomp_userdata();
   }
 
     break;

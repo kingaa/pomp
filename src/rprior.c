@@ -139,7 +139,6 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
     R_CheckUserInterrupt();     // check for user interrupt
 
-    set_pomp_userdata(args);
     GetRNGstate();
 
     // loop over replicates
@@ -147,7 +146,6 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
       (*ff)(p,pidx);
 
     PutRNGstate();
-    unset_pomp_userdata();
 
   }
 

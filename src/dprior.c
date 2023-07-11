@@ -107,13 +107,10 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 
     R_CheckUserInterrupt();     // check for user interrupt
 
-    set_pomp_userdata(args);
-
     // loop over replicates
     for (j = 0, pt = REAL(F), ps = REAL(params); j < nreps; j++, ps += npars, pt++)
       (*ff)(pt,ps,give_log,pidx);
 
-    unset_pomp_userdata();
   }
 
     break;

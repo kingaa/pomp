@@ -10,7 +10,7 @@
 ##' which conceptually \dQuote{hitches} the workhorses to the user-defined procedures.
 ##' @name hitch
 ##' @docType methods
-##' @include pomp_class.R csnippet.R safecall.R templates.R
+##' @include pomp_class.R csnippet.R safecall.R templates.R pomp_fun.R
 ##' @importFrom digest digest
 ##' @importFrom stats runif
 ##' @param \dots named arguments representing the user procedures to be hitched.
@@ -153,6 +153,8 @@ hitch <- function (..., templates,
   funs <- vector(mode="list",length=length(horses))
   names(funs) <- names(horses)
 
+  has_dll <- FALSE
+
   for (s in names(funs)) {
     funs[[s]] <- pomp_fun(
       f=horses[[s]],
@@ -166,9 +168,11 @@ hitch <- function (..., templates,
       obsnames=obsnames,
       covarnames=covarnames
     )
+    has_dll <- has_dll ||
+      (funs[[s]]@mode == pompfunmode$native)
   }
 
-  list(funs=funs,lib=lib)
+  list(funs=funs,lib=lib,has_dll=has_dll)
 }
 
 Cbuilder <- function (..., templates, name = NULL, dir = NULL,

@@ -3,6 +3,7 @@
 \section{Changes in \pkg{pomp} version 5.2.5}{
   \itemize{
     \item The new option \code{on_load} allows one to specify a C snippet that will be executed at the time the C snippet library is loaded.
+    \item Internally, the \code{userdata} are made available via calls to \code{pompLoad} rather than within each call to a \pkg{pomp} workhorse.
   }
 }
 \section{Changes in \pkg{pomp} version 5.2.4}{

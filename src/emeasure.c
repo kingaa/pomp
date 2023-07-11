@@ -251,8 +251,6 @@ SEXP do_emeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     PROTECT(Y = ret_array(nobs,nreps,ntimes,Onames)); nprotect++;
     yt = REAL(Y);
 
-    set_pomp_userdata(args);
-
     for (k = 0; k < ntimes; k++, time++) { // loop over times
 
       R_CheckUserInterrupt();   // check for user interrupt
@@ -269,8 +267,6 @@ SEXP do_emeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
       }
     }
-
-    unset_pomp_userdata();
 
   }
 

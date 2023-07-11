@@ -6,6 +6,10 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._2._5:
           that will be executed at the time the C snippet library is
           loaded.
 
+        • Internally, the ‘userdata’ are made available via calls to
+          ‘pompLoad’ rather than within each call to a ‘pomp’
+          workhorse.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._2._4:
 
         • The data frames returned by ‘cond_logLik’ and

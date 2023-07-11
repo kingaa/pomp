@@ -187,7 +187,6 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     // address of native routine
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
-    set_pomp_userdata(args);
     GetRNGstate();
 
     time = *(REAL(t0));
@@ -197,7 +196,6 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       (*ff)(xt,ps+npar*(j%nrep),time,sidx,pidx,cidx,cov);
 
     PutRNGstate();
-    unset_pomp_userdata();
 
   }
 
