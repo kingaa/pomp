@@ -1,4 +1,4 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/CollocInfer.Rcheck'
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/CollocInfer.Rcheck'
 * using R version 4.3.1 (2023-06-16)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
@@ -18,7 +18,7 @@
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
 * checking serialization versions ... OK
-* checking whether package 'CollocInfer' can be installed ... [16s/16s] OK
+* checking whether package 'CollocInfer' can be installed ... [31s/20s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -40,7 +40,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [34s/27s] NOTE
+* checking R code for possible problems ... [72s/22s] NOTE
 Profile.GausNewt: local variable ‘dcdp’ assigned but may not be used
 Profile.GausNewt: local variable ‘gradnorm0’ assigned but may not be
   used
@@ -83,9 +83,8 @@ Variables with usage in documentation object 'FhNest' but not in code:
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
            user system elapsed
-Profile   3.412 13.860   1.586
-FitMatch  7.402  5.062   1.270
-ParsMatch 6.758  4.088   1.075
+Profile  18.309 71.221   1.575
+FitMatch  4.877 12.542   0.419
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

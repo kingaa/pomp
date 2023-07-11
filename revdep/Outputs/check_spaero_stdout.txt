@@ -1,4 +1,4 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck'
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck'
 * using R version 4.3.1 (2023-06-16)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
@@ -60,12 +60,15 @@ Namespace in Imports field not imported from: ‘utils’
 * checking installed files from 'inst/doc' ... OK
 * checking files in 'vignettes' ... OK
 * checking examples ... OK
+Examples with CPU (user + system) or elapsed time > 5s
+                  user system elapsed
+create_simulator 2.691  8.587   1.217
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [15s/12s] OK
+ OK
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK
-* checking re-building of vignette outputs ... [22s/22s] OK
+* checking re-building of vignette outputs ... [40s/21s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

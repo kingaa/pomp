@@ -1,4 +1,4 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
 * using R version 4.3.1 (2023-06-16)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
@@ -51,7 +51,22 @@
 * checking Rd \usage sections ... OK
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
-* checking examples ... [32s/15s] OK
+* checking examples ... [108s/13s] OK
+Examples with CPU (user + system) or elapsed time > 5s
+                         user system elapsed
+simulate                2.084  8.278   0.710
+panelGompertz           2.143  7.645   0.827
+unitobjects             1.942  6.978   0.761
+mif2                    1.722  7.015   0.964
+pfilter                 1.625  6.947   0.840
+pparams                 1.776  6.656   0.864
+panelPomp               1.758  6.361   0.864
+plot                    1.642  5.940   0.649
+params                  1.605  5.622   0.820
+panelGompertzLikelihood 1.380  5.839   0.808
+panelRandomWalk         1.274  4.683   0.730
+unitlogLik              1.156  4.503   0.705
+panelPomp_methods       1.225  4.285   0.725
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
@@ -91,7 +106,7 @@
 < name     [,1]     [,2]     [,3]     [,4]      [,5]
 ---
 > variable     [,1]     [,2]     [,3]     [,4]      [,5]
- [96s/49s] OK
+ [281s/42s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

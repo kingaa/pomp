@@ -1,6 +1,6 @@
 
 See
-  '/home/kingaa/projects/Rpkg/pomp/revdep/epimdr2.Rcheck/00check.log'
+  '/userdata/kingaa/projects/Rpkg/pomp/revdep/epimdr2.Rcheck/00check.log'
 for details.
 
 

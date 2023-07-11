@@ -1,4 +1,4 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck'
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck'
 * using R version 4.3.1 (2023-06-16)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
@@ -18,7 +18,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'stops' can be installed ... [19s/22s] OK
+* checking whether package 'stops' can be installed ... [31s/21s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -41,7 +41,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [36s/26s] NOTE
+* checking R code for possible problems ... [78s/24s] NOTE
 bcStressMin: local variable ‘lambdaorig’ assigned but may not be used
 bcStressMin: local variable ‘t’ assigned but may not be used
 c_inequality: local variable ‘out’ assigned but may not be used
@@ -89,7 +89,7 @@ tgpoptim: local variable ‘valsorig’ assigned but may not be used
 * checking data for ASCII and uncompressed saves ... OK
 * checking installed files from 'inst/doc' ... OK
 * checking files in 'vignettes' ... OK
-* checking examples ... [32s/11s] OK
+* checking examples ... [32s/13s] OK
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK

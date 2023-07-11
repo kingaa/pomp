@@ -1,4 +1,4 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck'
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck'
 * using R version 4.3.1 (2023-06-16)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
@@ -9,7 +9,7 @@
 * using option '--as-cran'
 * checking for file 'phylopomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'phylopomp' version '0.7.5.1'
+* this is package 'phylopomp' version '0.10.1.1'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -19,13 +19,13 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'phylopomp' can be installed ... [45s/52s] OK
+* checking whether package 'phylopomp' can be installed ... [62s/40s] OK
 * used C compiler: 'gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0'
 * used C++ compiler: 'g++ (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0'
 * checking installed package size ... NOTE
-  installed size is  8.6Mb
+  installed size is  8.5Mb
   sub-directories of 1Mb or more:
-    libs   7.8Mb
+    libs   7.7Mb
 * checking package directory ... OK
 * checking for future file timestamps ... OK
 * checking DESCRIPTION meta-information ... OK
@@ -47,7 +47,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [21s/11s] OK
+* checking R code for possible problems ... [60s/10s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -62,13 +62,14 @@
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [14s/14s] OK
+* checking examples ... [16s/13s] OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [96s/70s] OK
+ [204s/109s] OK
 * checking PDF version of manual ... OK
-* checking HTML version of manual ... OK
+* checking HTML version of manual ... NOTE
+Skipping checking math rendering: package 'V8' unavailable
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 1 NOTE
+Status: 2 NOTEs
