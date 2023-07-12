@@ -6,7 +6,7 @@
 ##' @rdname vmeasure_spec
 ##' @family implementation information
 ##' @seealso \code{\link{vmeasure}}
-##' 
+##'
 ##' @details
 ##' The measurement model is the link between the data and the unobserved state process.
 ##' Some algorithms require the conditional covariance of the measurement model, given the latent state and parameters.
@@ -43,7 +43,7 @@
 ##' @section Default behavior:
 ##' The default \code{vmeasure} is undefined.
 ##' It will yield missing values (\code{NA}).
-##' 
+##'
 ##' @inheritSection pomp Note for Windows users
 ##'
 NULL

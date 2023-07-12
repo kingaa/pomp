@@ -41,5 +41,5 @@
 ##' @inheritSection pomp Note for Windows users
 ##'
 ##' @example examples/rinit_spec.R
-##' 
+##'
 NULL

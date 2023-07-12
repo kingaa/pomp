@@ -8,7 +8,7 @@
 ##' @include pomp_fun.R csnippet.R
 ##' @family implementation information
 ##' @seealso \code{\link{rprocess}}
-##' 
+##'
 ##' @section Discrete-time processes:
 ##' If the state process evolves in discrete time, specify \code{rprocess} using the \code{discrete_time} plug-in.
 ##' Specifically, provide
@@ -303,7 +303,7 @@ gillespie_hl <- function (..., .pre = "", .post = "", hmax = Inf) {
   args <- list(...)
 
   if (!all(vapply(args,inherits,what="list",logical(1L))) ||
-      !all(vapply(args,length,integer(1L)) == 2L))
+        !all(vapply(args,length,integer(1L)) == 2L))
     pStop("each event should be specified using a length-2 list.")
 
   codeChunks <- lapply(args,"[[",1)
@@ -319,14 +319,14 @@ gillespie_hl <- function (..., .pre = "", .post = "", hmax = Inf) {
   codeChunks <- lapply(codeChunks,checkCode)
 
   if (!inherits(.pre,what=c("character","Csnippet")) ||
-      !inherits(.post,what=c("character","Csnippet")))
+        !inherits(.post,what=c("character","Csnippet")))
     pStop(sQuote(".pre")," and ",sQuote(".post")," must be C snippets or strings.")
 
   .pre <- paste(as(.pre,"character"),collapse="\n")
   .post <- paste(as(.post,"character"),collapse="\n")
 
   if (!all(vapply(stoich,is.numeric,logical(1L))) ||
-      any(vapply(stoich,\(x)invalid_names(names(x)),logical(1L))))
+        any(vapply(stoich,\(x)invalid_names(names(x)),logical(1L))))
     pStop("for each event, the second list-element should be ",
       "a named numeric vector (without duplicate names).")
 

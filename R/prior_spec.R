@@ -28,13 +28,13 @@
 ##'   \item Hyperparameters can be included in the ordinary parameter list.
 ##' }
 ##' \link[=Csnippet]{General rules for writing C snippets can be found here}.
-##' 
+##'
 ##' Alternatively, one can furnish \R functions for one or both of these arguments.
 ##' In this case, \code{rprior} must be a function that makes a draw from
 ##' the prior distribution of the parameters and returns a named vector
 ##' containing all the parameters.
 ##' The only required argument of this function is \code{...}.
-##' 
+##'
 ##' Similarly, the \code{dprior} function must evaluate the prior probability
 ##' density (or log density if \code{log == TRUE}) and return that single
 ##' scalar value.

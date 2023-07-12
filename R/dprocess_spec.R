@@ -6,7 +6,7 @@
 ##' @rdname dprocess_spec
 ##' @family implementation information
 ##' @seealso \code{\link{dprocess}}
-##' 
+##'
 ##' @details
 ##' Suppose you have a procedure that allows you to compute the probability density
 ##' of an arbitrary transition from state \eqn{x_1}{x1} at time \eqn{t_1}{t1}
@@ -44,5 +44,5 @@
 ##' By default, \code{dprocess} returns missing values (\code{NA}).
 ##'
 ##' @inheritSection pomp Note for Windows users
-##' 
+##'
 NULL

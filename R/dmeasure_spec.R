@@ -43,7 +43,7 @@
 ##'
 ##' @section Default behavior:
 ##' If \code{dmeasure} is left unspecified, calls to \code{\link{dmeasure}} will return missing values (\code{NA}).
-##' 
+##'
 ##' @inheritSection pomp Note for Windows users
-##' 
+##'
 NULL

@@ -131,7 +131,7 @@ SEXP load_stack_decr (SEXP pack) {
   SEXP s;
   const char *pkg;
   void (*ff)(int *);
-  PROTECT(s = NEW_INTEGER(1));
+  PROTECT(s = ScalarInteger(NA_INTEGER));
   pkg = (const char *) CHAR(STRING_ELT(pack,0));
   ff = (void (*)(int *)) R_GetCCallable(pkg,"__pomp_load_stack_decr");
   ff(INTEGER(s));

@@ -56,19 +56,20 @@ static R_INLINE int invalid_names (SEXP names) {
   return isNull(names);
 }
 
-static R_INLINE SEXP matchnames (SEXP provided, SEXP needed, const char *where) {
+static R_INLINE SEXP matchnames
+(
+ SEXP provided, SEXP needed, const char *where
+ ) {
   int m = LENGTH(provided);
   int n = length(needed);
   SEXP index;
   int *idx, i, j;
-
   PROTECT(provided = AS_CHARACTER(provided));
   PROTECT(needed = AS_CHARACTER(needed));
   if (invalid_names(provided))
-    errorcall(R_NilValue,"invalid variable names among the %s.",where); // #nocov
+    err("invalid variable names among the %s.",where); // #nocov
   PROTECT(index = NEW_INTEGER(n));
   idx = INTEGER(index);
-
   for (i = 0; i < n; i++) {
     for (j = 0; j < m; j++) {
       if (!strcmp(CHAR(STRING_ELT(provided,j)),CHAR(STRING_ELT(needed,i)))) {
@@ -76,7 +77,8 @@ static R_INLINE SEXP matchnames (SEXP provided, SEXP needed, const char *where) 
         break;
       }
     }
-    if (j==m) errorcall(R_NilValue,"variable '%s' not found among the %s.",CHAR(STRING_ELT(needed,i)),where);
+    if (j==m)
+      err("variable '%s' not found among the %s.",CHAR(STRING_ELT(needed,i)),where);
   }
   UNPROTECT(3);
   return index;
@@ -109,7 +111,7 @@ static R_INLINE void setrownames (SEXP x, SEXP names, int rank) {
   SEXP dimnms, nm;
   PROTECT(nm = AS_CHARACTER(names));
   PROTECT(dimnms = allocVector(VECSXP,rank));
-  SET_ELEMENT(dimnms,0,nm);	// set row names
+  SET_ELEMENT(dimnms,0,nm);     // set row names
   SET_DIMNAMES(x,dimnms);
   UNPROTECT(2);
 }
