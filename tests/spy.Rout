@@ -172,12 +172,13 @@ params
 
 
 /* pomp C snippet file: nancy */
-/* Time: 2023-07-10 14:49:24.803 -0400 */
-/* Salt: F833BDA4890A96F96CB897C1 */
+/* Time: 2023-07-12 12:11:17.745 -0400 */
+/* Salt: 7168FBC50507CE069EB98548 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
  
+
 
 
 /* C snippet: 'toEst' */
@@ -194,6 +195,7 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex) {
 #undef b
 #undef r
 #undef T_r
+
 /* C snippet: 'fromEst' */
 
 #define b (__covars[__covindex[0]])
@@ -294,13 +296,14 @@ pomp object 'sir':
 
 
 /* pomp C snippet file: sir_source */
-/* Time: 2023-07-10 14:49:24.921 -0400 */
-/* Salt: 53DDBDC52ED06AC4EACC37C4 */
+/* Time: 2023-07-12 12:11:17.901 -0400 */
+/* Salt: 20F38BE050175DA07CC38FF8 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
 
       static int nbasis = 3; 
+
 
 
 /* C snippet: 'rinit' */
@@ -356,6 +359,7 @@ void __pomp_rinit (double *__x, const double *__p, double t,
 #undef R
 #undef cases
 #undef W
+
 /* C snippet: 'step.fn' */
 
 #define gamma (__p[__parindex[0]])
@@ -434,6 +438,7 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex,
 #undef R
 #undef cases
 #undef W
+
 /* C snippet: 'rmeasure' */
 
 #define gamma (__p[__parindex[0]])
@@ -484,6 +489,7 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p,
 #undef cases
 #undef W
 #undef reports
+
 /* C snippet: 'dmeasure' */
 
 #define gamma (__p[__parindex[0]])
@@ -537,6 +543,7 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x,
 #undef W
 #undef reports
 #undef lik
+
 /* C snippet: 'emeasure' */
 
 #define gamma (__p[__parindex[0]])
@@ -587,6 +594,7 @@ void __pomp_emeasure (double *__f, const double *__x, const double *__p,
 #undef cases
 #undef W
 #undef E_reports
+
 /* C snippet: 'vmeasure' */
 
 #define gamma (__p[__parindex[0]])
@@ -638,6 +646,7 @@ void __pomp_vmeasure (double *__f, const double *__x, const double *__p,
 #undef cases
 #undef W
 #undef V_reports_reports
+
 /* C snippet: 'toEst' */
 
 #define seas_1 (__covars[__covindex[0]])
@@ -707,6 +716,7 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex) {
 #undef T_S_0
 #undef T_I_0
 #undef T_R_0
+
 /* C snippet: 'fromEst' */
 
 #define seas_1 (__covars[__covindex[0]])
@@ -776,6 +786,7 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex) 
 #undef T_S_0
 #undef T_I_0
 #undef T_R_0
+
 /* C snippet: 'skeleton' */
 
 #define gamma (__p[__parindex[0]])
@@ -935,12 +946,13 @@ x1_0 x2_0   s1   s2  tau
 
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2023-07-10 14:49:25.700 -0400 */
-/* Salt: 22E7D1C375C99AECC6BDA6BC */
+/* Time: 2023-07-12 12:11:18.616 -0400 */
+/* Salt: D0E9A5443D80B32F07072CD1 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
  
+
 
 
 /* C snippet: 'step.fn' */
@@ -964,6 +976,7 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex,
 #undef tau
 #undef x1
 #undef x2
+
 /* C snippet: 'dprocess' */
 
 #define s1 (__p[__parindex[0]])
@@ -992,6 +1005,7 @@ void __pomp_dproc (double *__loglik, const double *__x1, const double *__x2,
 #undef x1_2
 #undef x2_2
 #undef loglik
+
 /* C snippet: 'rmeasure' */
 
 #define s1 (__p[__parindex[0]])
@@ -1017,6 +1031,7 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p,
 #undef x2
 #undef y1
 #undef y2
+
 /* C snippet: 'dmeasure' */
 
 #define s1 (__p[__parindex[0]])
@@ -1045,6 +1060,7 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x,
 #undef y1
 #undef y2
 #undef lik
+
 /* C snippet: 'emeasure' */
 
 #define s1 (__p[__parindex[0]])
@@ -1070,6 +1086,7 @@ void __pomp_emeasure (double *__f, const double *__x, const double *__p,
 #undef x2
 #undef E_y1
 #undef E_y2
+
 /* C snippet: 'vmeasure' */
 
 #define s1 (__p[__parindex[0]])
@@ -1196,12 +1213,13 @@ name    birth susc.death infection inf.death recovery recov.death
 
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2023-07-10 14:49:26.457 -0400 */
-/* Salt: B749C449DD76987DE656C09C */
+/* Time: 2023-07-12 12:11:19.274 -0400 */
+/* Salt: C7ED0CAA1E11774F83B3CC85 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
 static int nbasis = 3; 
+
 
 
 /* C snippet: 'rinit' */
@@ -1260,6 +1278,7 @@ void __pomp_rinit (double *__x, const double *__p, double t,
 #undef R
 #undef N
 #undef cases
+
 /* C snippet: 'rate.fn' */
 
 #define gamma (__p[__parindex[0]])
@@ -1354,6 +1373,7 @@ break;
 #undef R
 #undef N
 #undef cases
+
 /* C snippet: 'rmeasure' */
 
 #define gamma (__p[__parindex[0]])
@@ -1406,6 +1426,7 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p,
 #undef N
 #undef cases
 #undef reports
+
 /* C snippet: 'dmeasure' */
 
 #define gamma (__p[__parindex[0]])
@@ -1461,6 +1482,7 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x,
 #undef cases
 #undef reports
 #undef lik
+
 /* C snippet: 'emeasure' */
 
 #define gamma (__p[__parindex[0]])
@@ -1513,6 +1535,7 @@ void __pomp_emeasure (double *__f, const double *__x, const double *__p,
 #undef N
 #undef cases
 #undef E_reports
+
 /* C snippet: 'vmeasure' */
 
 #define gamma (__p[__parindex[0]])
@@ -1566,6 +1589,7 @@ void __pomp_vmeasure (double *__f, const double *__x, const double *__p,
 #undef N
 #undef cases
 #undef V_reports_reports
+
 /* C snippet: 'toEst' */
 
 #define seas_1 (__covars[__covindex[0]])
@@ -1636,6 +1660,7 @@ void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex) {
 #undef T_S_0
 #undef T_I_0
 #undef T_R_0
+
 /* C snippet: 'fromEst' */
 
 #define seas_1 (__covars[__covindex[0]])
@@ -1706,6 +1731,7 @@ void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex) 
 #undef T_S_0
 #undef T_I_0
 #undef T_R_0
+
 /* C snippet: 'skeleton' */
 
 #define gamma (__p[__parindex[0]])
@@ -1837,7 +1863,7 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params =
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_580bddd38974de6664770e9c019a95a5'
+  - defined by a C snippet in library 'pomp_51aa1b2d45d73a80ec7666f6d14bde74'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: <undefined>
 - process model density, dprocess: <default>
@@ -1858,9 +1884,9 @@ x_0   a
 - C snippet file  1 :
 
 
-/* pomp C snippet file: pomp_580bddd38974de6664770e9c019a95a5 */
-/* Time: 2023-07-10 14:49:27.202 -0400 */
-/* Salt: 7B24E7326A82B8E2B7A27350 */
+/* pomp C snippet file: pomp_51aa1b2d45d73a80ec7666f6d14bde74 */
+/* Time: 2023-07-12 12:11:20.012 -0400 */
+/* Salt: F9A6B9AE18549AD2F4F17E5F */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1869,6 +1895,7 @@ x_0   a
 
 static get_userdata_double_t *__pomp_get_userdata_double;
 #define get_userdata_double(X)  (__pomp_get_userdata_double(X))
+
 /* C snippet: 'rinit' */
 
 #define x (__x[__stateindex[0]])
@@ -1885,11 +1912,11 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
  
-void R_init_pomp_580bddd38974de6664770e9c019a95a5 (DllInfo *info) {
+void R_init_pomp_51aa1b2d45d73a80ec7666f6d14bde74 (DllInfo *info) {
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-  R_RegisterCCallable("pomp_580bddd38974de6664770e9c019a95a5", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable("pomp_580bddd38974de6664770e9c019a95a5", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-  R_RegisterCCallable("pomp_580bddd38974de6664770e9c019a95a5", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_51aa1b2d45d73a80ec7666f6d14bde74", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_51aa1b2d45d73a80ec7666f6d14bde74", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_51aa1b2d45d73a80ec7666f6d14bde74", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
   
 
 }
@@ -1917,13 +1944,13 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params =
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_d4a4627946fa182607a4caf451e21384'
+  - defined by a C snippet in library 'pomp_d680c3fd5abb603b419c433f05798b06'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: Euler-method process-model simulator
   - timestep = 0.1 
   - step.fun: native function
   - name: '__pomp_stepfn'
-  - defined by a C snippet in library 'pomp_d4a4627946fa182607a4caf451e21384'
+  - defined by a C snippet in library 'pomp_d680c3fd5abb603b419c433f05798b06'
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: <default>
 - measurement model density, dmeasure: <default>
@@ -1942,9 +1969,9 @@ x_0   a
 - C snippet file  1 :
 
 
-/* pomp C snippet file: pomp_d4a4627946fa182607a4caf451e21384 */
-/* Time: 2023-07-10 14:49:27.262 -0400 */
-/* Salt: B52C0295DDE4037ED16C7DE9 */
+/* pomp C snippet file: pomp_d680c3fd5abb603b419c433f05798b06 */
+/* Time: 2023-07-12 12:11:20.077 -0400 */
+/* Salt: D2612DAA35F718C2E8D41056 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1953,6 +1980,7 @@ static double X0;
 
 static get_userdata_double_t *__pomp_get_userdata_double;
 #define get_userdata_double(X)  (__pomp_get_userdata_double(X))
+
 /* C snippet: 'rinit' */
 
 #define x (__x[__stateindex[0]])
@@ -1964,6 +1992,7 @@ void __pomp_rinit (double *__x, const double *__p, double t,
  
 
 #undef x
+
 /* C snippet: 'step.fn' */
 
 #define x (__x[__stateindex[0]])
@@ -1980,12 +2009,12 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
  
-void R_init_pomp_d4a4627946fa182607a4caf451e21384 (DllInfo *info) {
+void R_init_pomp_d680c3fd5abb603b419c433f05798b06 (DllInfo *info) {
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-  R_RegisterCCallable("pomp_d4a4627946fa182607a4caf451e21384", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable("pomp_d4a4627946fa182607a4caf451e21384", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-  R_RegisterCCallable("pomp_d4a4627946fa182607a4caf451e21384", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-  R_RegisterCCallable("pomp_d4a4627946fa182607a4caf451e21384", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+  R_RegisterCCallable("pomp_d680c3fd5abb603b419c433f05798b06", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_d680c3fd5abb603b419c433f05798b06", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_d680c3fd5abb603b419c433f05798b06", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_d680c3fd5abb603b419c433f05798b06", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
  X0 = *get_userdata_double("x0"); 
 
 }

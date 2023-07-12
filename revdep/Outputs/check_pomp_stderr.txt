@@ -1,4 +1,4 @@
-  Running ‘R_v_C.R’ [22s/14s]
+  Running ‘R_v_C.R’ [28s/12s]
   Running ‘abc.R’
   Comparing ‘abc.Rout’ to ‘abc.Rout.save’ ... OK
   Running ‘baddm.R’
@@ -27,7 +27,7 @@
   Comparing ‘defunct.Rout’ to ‘defunct.Rout.save’ ... OK
   Running ‘dinit.R’
   Comparing ‘dinit.Rout’ to ‘dinit.Rout.save’ ... OK
-  Running ‘dp.R’ [157s/13s]
+  Running ‘dp.R’ [158s/14s]
   Comparing ‘dp.Rout’ to ‘dp.Rout.save’ ... OK
   Running ‘dprocess.R’
   Comparing ‘dprocess.Rout’ to ‘dprocess.Rout.save’ ... OK
@@ -164,9 +164,5 @@
   Comparing ‘wpfilter.Rout’ to ‘wpfilter.Rout.save’ ... OK
   Running ‘wquant.R’
   Comparing ‘wquant.Rout’ to ‘wquant.Rout.save’ ... OK
-
-See
-  '/userdata/kingaa/projects/Rpkg/pomp/revdep/pomp.Rcheck/00check.log'
-for details.
 
 

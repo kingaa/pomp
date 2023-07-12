@@ -9,7 +9,7 @@
 * using option '--as-cran'
 * checking for file 'pomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'pomp' version '5.2.5.1'
+* this is package 'pomp' version '5.2.5.4'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -19,7 +19,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'pomp' can be installed ... [48s/30s] OK
+* checking whether package 'pomp' can be installed ... [49s/36s] OK
 * used C compiler: 'gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0'
 * checking installed package size ... OK
 * checking package directory ... OK
@@ -43,7 +43,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [55s/17s] OK
+* checking R code for possible problems ... [75s/17s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -68,18 +68,17 @@
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... OK
+* checking examples ... [24s/11s] OK
 Examples with CPU (user + system) or elapsed time > 5s
         user system elapsed
-ricker 1.873  7.121   0.882
+ricker 2.184  7.627   0.918
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [1988s/227s] OK
-* checking PDF version of manual ... [15s/10s] OK
-* checking HTML version of manual ... NOTE
-Skipping checking math rendering: package 'V8' unavailable
+ [2002s/234s] OK
+* checking PDF version of manual ... OK
+* checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 1 NOTE
+Status: OK

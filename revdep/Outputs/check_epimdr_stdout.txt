@@ -19,7 +19,7 @@
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
 * checking serialization versions ... OK
-* checking whether package 'epimdr' can be installed ... [22s/12s] OK
+* checking whether package 'epimdr' can be installed ... [32s/11s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK

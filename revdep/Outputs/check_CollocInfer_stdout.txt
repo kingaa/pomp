@@ -18,7 +18,7 @@
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
 * checking serialization versions ... OK
-* checking whether package 'CollocInfer' can be installed ... [31s/20s] OK
+* checking whether package 'CollocInfer' can be installed ... [29s/19s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -40,7 +40,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [72s/22s] NOTE
+* checking R code for possible problems ... [74s/21s] NOTE
 Profile.GausNewt: local variable ‘dcdp’ assigned but may not be used
 Profile.GausNewt: local variable ‘gradnorm0’ assigned but may not be
   used
@@ -83,8 +83,8 @@ Variables with usage in documentation object 'FhNest' but not in code:
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
            user system elapsed
-Profile  18.309 71.221   1.575
-FitMatch  4.877 12.542   0.419
+Profile  14.063 49.921   1.204
+FitMatch  7.478 13.753   0.485
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
