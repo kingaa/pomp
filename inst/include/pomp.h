@@ -7,8 +7,7 @@
 
 #include <R.h>
 #include <Rmath.h>
-#include <Rinternals.h>
-#include <R_ext/Rdynload.h>
+#include <Rdefines.h>
 
 #define err(...) errorcall(R_NilValue,__VA_ARGS__)
 #define warn(...) warningcall(R_NilValue,__VA_ARGS__)
