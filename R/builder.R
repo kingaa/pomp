@@ -233,7 +233,7 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
     ## we add each 'Cname' to the 'registry'
     registry <- c(registry,templates[[snip]]$Cname)
     ## define variables
-    cat(file=out,render("\n/* C snippet: '{%snip%}' */\n",snip=snip))
+    cat(file=out,render("\n\n/* C snippet: '{%snip%}' */\n",snip=snip))
     for (k in seq_along(templates[[snip]]$vars)) {
       vtpl <- templates[[snip]]$vars[[k]]
       nm <- eval(vtpl$names)

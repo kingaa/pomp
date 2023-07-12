@@ -1,6 +1,15 @@
 // -*- C++ -*-
 // Header for the C API for pomp.
-// Documentation: https://kingaa.github.io/pomp/vignettes/C_API.html
+// Documentation: https://kingaa.github.io/pomp/C_API.html
+
+//! \mainpage C source codes for **pomp**
+//!
+//! These codes are part of **pomp**, an **R** package for partially observed Markov processes, described in a [2016 *Journal of Statistical Software* paper](https://doi.org/10.18637/jss.v069.i12).
+//!
+//! See the [package homepage](https://kingaa.github.io/pomp/) and the [manual](https://kingaa.github.io/manuals/pomp/) for more information.
+//!
+//! The **pomp** C API is [documented here](https://kingaa.github.io/pomp/C_API.html).
+//!
 
 #ifndef _POMP_H_
 #define _POMP_H_
