@@ -17,8 +17,8 @@ bigtick <- Sys.time()
 ## ----packages-----------------------------------------------------------------
 library(tidyverse)
 library(foreach)
-library(doRNG)
-registerDoRNG(348885445L)
+library(doFuture)
+set.seed(348885445L)
 library(pomp)
 
 
@@ -440,10 +440,7 @@ vpM |> pfilter() |> logLik() |> replicate(n=5) |> logmeanexp(se=TRUE,ess=TRUE)
 
 ## ----mf_pfilter1a-------------------------------------------------------------
 library(doFuture)
-library(doRNG)
 library(circumstance)
-registerDoFuture()
-registerDoRNG(58582004)
 plan(multicore)
 
 ## ----pfilter1b----------------------------------------------------------------
@@ -458,7 +455,6 @@ if (file.exists("CLUSTER.R")) {
   source("CLUSTER.R")
 } else {
   library(doFuture)
-  registerDoFuture()
   plan(multicore)
 }
 
@@ -688,8 +684,7 @@ r_prof |>
   pivot_wider() |>
   bind_cols(r=2) -> theta
 
-bake(file="hindcast1.rds",{
-  registerDoRNG(174423157)
+bake(file="hindcast1.rds",seed=174423157,{
   vpM |>
     pfilter(params=theta,Np=500,Nrep=200,filter.traj=TRUE) -> pf
   list(
@@ -753,8 +748,6 @@ starts
 
 ## ----parus-pmcmc-eval---------------------------------------------------------
 bake(file="parus_pmcmc.rds",dependson=starts,{
-  registerDoRNG(1360273392)
-  
   vpM |>
     pmcmc(
       starts=starts,

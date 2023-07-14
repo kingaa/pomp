@@ -30,6 +30,7 @@ Please share and remix noncommercially, mentioning its origin.
 #| cache: false
 params <- list(prefix="getting_started")
 source("setup.R", local = knitr::knit_global())
+stopifnot(packageVersion("circumstance")>="0.0.9.1")
 ```
 ```{r prelims}
 #| echo: false
@@ -55,8 +56,8 @@ bigtick <- Sys.time()
 #| cache: false
 library(tidyverse)
 library(foreach)
-library(doRNG)
-registerDoRNG(348885445L)
+library(doFuture)
+set.seed(348885445L)
 library(pomp)
 ```
 
@@ -1192,10 +1193,7 @@ Modern computers have multiple processors (cores).
 To take advantage of these, we can parallelize the above particle-filter computation using the **circumstance** and **doFuture** packages:
 ```{r mf_pfilter1a}
 library(doFuture)
-library(doRNG)
 library(circumstance)
-registerDoFuture()
-registerDoRNG(58582004)
 plan(multicore)
 ```
 ```{r pfilter1b}
@@ -1207,7 +1205,7 @@ vpM |> pfilter(Nrep=5) |> logLik() |> logmeanexp(se=TRUE,ess=TRUE)
 ```
 In the above, the `pfilter` function is provided by **circumstance**.
 It causes the particle filters to be run in parallel, each using a different core.
-The **doRNG** package provides parallel random-number generators, so that we can consider each of the parallel computations to be independent.
+The **doFuture** package provides parallel random-number generators, so that we can consider each of the parallel computations to be independent.
 **doFuture** provides a number of other ways of parallelizing computations, inclusing `multisession` (needed on Windows computers) and `cluster` (for parallelizing across multiple machines).
 
 ---------------------------------------
@@ -1234,7 +1232,6 @@ if (file.exists("CLUSTER.R")) {
   source("CLUSTER.R")
 } else {
   library(doFuture)
-  registerDoFuture()
   plan(multicore)
 }
 ```
@@ -1577,8 +1574,7 @@ r_prof |>
   pivot_wider() |>
   bind_cols(r=2) -> theta
 
-bake(file="hindcast1.rds",{
-  registerDoRNG(174423157)
+bake(file="hindcast1.rds",seed=174423157,{
   vpM |>
     pfilter(params=theta,Np=500,Nrep=200,filter.traj=TRUE) -> pf
   list(
@@ -1650,8 +1646,6 @@ starts
 ```{r parus-pmcmc}
 #| eval: false
 #| purl: false
-registerDoRNG(1360273392)
-
 vpM |>
   pmcmc(
     starts=starts,
@@ -1930,7 +1924,6 @@ This document was produced with the following software versions:
 | **coda**         | `r packageVersion("coda")`         |
 | **foreach**      | `r packageVersion("foreach")`      |
 | **doFuture**     | `r packageVersion("doFuture")`     |
-| **doRNG**        | `r packageVersion("doRNG")`        |
 | **subplex**      | `r packageVersion("subplex")`      |
 | **tidyverse**    | `r packageVersion("tidyverse")`    |
 

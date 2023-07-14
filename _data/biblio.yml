@@ -260,6 +260,16 @@
   pages: "1178&#x2013;1188"
   doi: "https://doi.org/10.1080/01621459.2019.1604367"
 
+- key: Brett2023
+  author: "T. S. Brett, S. Bansal, and P. Rohani"
+  year: "2023"
+  title: "Charting the spatial dynamics of early SARS-CoV-2 transmission in Washington state"
+  journal: "PLoS Computational Biology"
+  volume: "19"
+  pages: "e1011263"
+  editor: "D. B. Larremore"
+  doi: "https://doi.org/10.1371/journal.pcbi.1011263"
+
 - key: Buhnerkempe2017
   author: "M. G. Buhnerkempe, K. C. Prager, C. C. Strelioff, D. J. Greig, J. L. Laake, S. R. Melin, R. L. DeLong, F. M. D. Gulland, and J. O. Lloyd-Smith"
   year: "2017"
@@ -522,6 +532,13 @@
   volume: "120"
   pages: "e2216667120"
   doi: "https://doi.org/10.1073/pnas.2216667120"
+
+- key: Guevara2023
+  author: "L. A. B. Guevara, E. Goult, D. Rodriguez, L. J. Hernandez, B. Kaufer, T. Kurth, and M. Domenech de Cell&egrave;s"
+  year: "2023"
+  title: "Delineating the seasonality of varicella and its association with climate in the tropical country of Colombia"
+  journal: "Journal of Infectious Diseases"
+  doi: "https://doi.org/10.1093/infdis/jiad244"
 
 - key: Hayman2015
   author: "D. T. S. Hayman"
