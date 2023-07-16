@@ -6,7 +6,7 @@
 ##' @rdname bake
 ##' @include package.R
 ##' @concept reproducibility
-##'
+##' @author Aaron A. King
 ##' @details
 ##' On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.
 ##' The \code{bake} and \code{stew} functions perform analogously:
@@ -29,12 +29,10 @@
 ##' By contrast, \code{stew} creates a local environment within which \code{expr} is evaluated; all objects in that environment are saved (by name) in \code{file}.
 ##' \code{bake} and \code{stew} also store information about the code executed, the dependencies, and the state of the random-number generator (if the latter is controlled) in the archive file.
 ##' Re-computation is triggered if any of these things change.
-##'
 ##' @section Avoid using \sQuote{pomp} objects as dependencies:
 ##' Note that when a \sQuote{pomp} object is built with one or more \link[=Csnippet]{C snippets}, the resulting code is \dQuote{salted} with a random element to prevent collisions in parallel computations.
 ##' As a result, two such \sQuote{pomp} objects will never match perfectly, even if the codes and data used to construct them are identical.
 ##' Therefore, avoid using \sQuote{pomp} objects as dependencies in \code{bake} and \code{stew}.
-##'
 ##' @param file Name of the archive file in which the result will be stored or retrieved, as appropriate.
 ##' For \code{bake}, this will contain a single object and hence be an RDS file (extension \sQuote{rds});
 ##' for \code{stew}, this will contain one or more named objects and hence be an RDA file (extension \sQuote{rda}).
@@ -63,9 +61,7 @@
 ##' If \code{TRUE}, the \dQuote{ingredients} of the calculation are returned as a list.
 ##' In the case of \code{bake}, this list is the \dQuote{ingredients} attribute of the returned object.
 ##' In the case of \code{stew}, this list is a hidden object named \dQuote{.ingredients}, located in the environment within which \code{stew} was called.
-##'
 ##' @inheritParams base::eval
-##'
 ##' @section Compatibility with older versions:
 ##' With \pkg{pomp} version 3.4.4.2, the behavior of \code{bake} and \code{stew} changed.
 ##' In particular, older versions did no dependency checking, and did not check to see whether \code{expr} had changed.
@@ -73,7 +69,6 @@
 ##' When an archive file in the old format is encountered, it will be updated to the new format, with a warning message.
 ##' \strong{Note that this will overwrite existing archive files!}
 ##' However, there will be no loss of information.
-##' 
 ##' @return \code{bake} returns the value of the evaluated expression \code{expr}.
 ##' Other objects created in the evaluation of \code{expr} are discarded along with the temporary, local environment created for the evaluation.
 ##'
@@ -92,8 +87,6 @@
 ##' \code{bake} stores this in the \dQuote{system.time} attribute of the archived \R object;
 ##' \code{stew} does so in a hidden variable named \code{.system.time}.
 ##' The timing is obtained using \code{\link{system.time}}.
-##' 
-##' @author Aaron A. King
 ##'
 ##' @example examples/bake.R
 ##'
@@ -253,7 +246,7 @@ update_stew_archive <- function (
 stew <- function (
   file, expr,
   seed = NULL, kind = NULL, normal.kind = NULL,
-  dependson = NULL, info = FALSE,
+  dependson = NULL, info = FALSE, timing = TRUE,
   dir = getOption("pomp_archive_dir",getwd())
 ) {
   expr <- substitute(expr)
@@ -265,6 +258,7 @@ stew <- function (
     ep="stew"
   )
   info <- as.logical(info)
+  timing <- as.logical(timing)
   file <- create_path(dir,file)
   reload <- file.exists(file)
   e <- new.env(parent=pf)
@@ -305,12 +299,15 @@ stew <- function (
     e$.system.time <- tmg
     save(list=objects(envir=e,all.names=TRUE),file=file,envir=e)
   }
-  objlist <- objects(envir=e,all.names=info)
+  objlist <- objects(envir=e,all.names=FALSE)
   for (obj in objlist) {
     assign(obj,get(obj,envir=e),envir=pf)
   }
-  if (!info) {
-    assign(".system.time",e$.systemtime,envir=pf)
+  if (info) {
+    assign(".ingredients",e$.ingredients,envir=pf)
+  }
+  if (timing) {
+    assign(".system.time",e$.system.time,envir=pf)
   }
   invisible(objlist)
 }

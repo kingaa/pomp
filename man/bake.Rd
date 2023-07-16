@@ -27,6 +27,7 @@ stew(
   normal.kind = NULL,
   dependson = NULL,
   info = FALSE,
+  timing = TRUE,
   dir = getOption("pomp_archive_dir", getwd())
 )
 

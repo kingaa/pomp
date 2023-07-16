@@ -1,5 +1,9 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._3._1:
+
+        • ‘stew’ now returns timing information by default.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._2._5:
 
         • The new option ‘on_load’ allows one to specify a C snippet
