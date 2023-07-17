@@ -30,7 +30,7 @@ Please share and remix noncommercially, mentioning its origin.
 #| cache: false
 params <- list(prefix="getting_started")
 source("setup.R", local = knitr::knit_global())
-stopifnot(packageVersion("circumstance")>="0.0.9.1")
+stopifnot(packageVersion("circumstance")>="0.0.10")
 ```
 ```{r prelims}
 #| echo: false
@@ -55,10 +55,8 @@ bigtick <- Sys.time()
 #| purl: true
 #| cache: false
 library(tidyverse)
-library(foreach)
-library(doFuture)
-set.seed(348885445L)
 library(pomp)
+set.seed(348885445L)
 ```
 
 ## Introduction
@@ -1192,27 +1190,24 @@ vpM |> pfilter() |> logLik() |> replicate(n=5) |> logmeanexp(se=TRUE,ess=TRUE)
 Modern computers have multiple processors (cores).
 To take advantage of these, we can parallelize the above particle-filter computation using the **circumstance** and **doFuture** packages:
 ```{r mf_pfilter1a}
+library(circumstance)
 library(doFuture)
-library(circumstance)
 plan(multicore)
-```
-```{r pfilter1b}
-#| echo: FALSE
-library(circumstance)
-```
-```{r mf_pfilter1c}
+
 vpM |> pfilter(Nrep=5) |> logLik() |> logmeanexp(se=TRUE,ess=TRUE)
 ```
 In the above, the `pfilter` function is provided by **circumstance**.
 It causes the particle filters to be run in parallel, each using a different core.
-The **doFuture** package provides parallel random-number generators, so that we can consider each of the parallel computations to be independent.
+Internally, **circumstance** uses the **doFuture** package to parallelize computations.
 **doFuture** provides a number of other ways of parallelizing computations, inclusing `multisession` (needed on Windows computers) and `cluster` (for parallelizing across multiple machines).
+These are set using the `plan()` function.
+**doFuture** also provides parallel random-number generators, so that we can consider each of the parallel computations to be independent.
 
 ---------------------------------------
 
 #### Exercise
 
-Use **doFuture** and `circumstance::pfilter()` to parallelize the estimation of likelihood for your negative-binomial model.
+Use `circumstance::pfilter()` to parallelize the estimation of likelihood for your negative-binomial model.
 
 ---------------------------------------
 
@@ -1232,7 +1227,7 @@ if (file.exists("CLUSTER.R")) {
   source("CLUSTER.R")
 } else {
   library(doFuture)
-  plan(multicore)
+  plan(multisession)
 }
 ```
 ```{r parus_mif1}

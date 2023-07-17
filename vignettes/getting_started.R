@@ -16,10 +16,8 @@ bigtick <- Sys.time()
 
 ## ----packages-----------------------------------------------------------------
 library(tidyverse)
-library(foreach)
-library(doFuture)
-set.seed(348885445L)
 library(pomp)
+set.seed(348885445L)
 
 
 
@@ -439,14 +437,10 @@ vpM |> pfilter() |> logLik() |> replicate(n=5) |> logmeanexp(se=TRUE,ess=TRUE)
 
 
 ## ----mf_pfilter1a-------------------------------------------------------------
-library(doFuture)
 library(circumstance)
+library(doFuture)
 plan(multicore)
 
-## ----pfilter1b----------------------------------------------------------------
-library(circumstance)
-
-## ----mf_pfilter1c-------------------------------------------------------------
 vpM |> pfilter(Nrep=5) |> logLik() |> logmeanexp(se=TRUE,ess=TRUE)
 
 
@@ -455,7 +449,7 @@ if (file.exists("CLUSTER.R")) {
   source("CLUSTER.R")
 } else {
   library(doFuture)
-  plan(multicore)
+  plan(multisession)
 }
 
 
