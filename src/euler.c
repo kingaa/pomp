@@ -104,7 +104,7 @@ static R_INLINE SEXP ret_array (int n, int nreps, int ntimes, SEXP names)
 
 }
 
-SEXP euler_model_simulator
+SEXP euler_simulator
 (
  SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params,
  double deltat, rprocmode method, SEXP accumvars, SEXP covar,

@@ -110,7 +110,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params
       SEXP fn;
       double deltat = 1.0;
       PROTECT(fn = GET_SLOT(rproc,install("step.fn")));
-      PROTECT(X = euler_model_simulator(fn,xstart,tstart,times,params,deltat,type,
+      PROTECT(X = euler_simulator(fn,xstart,tstart,times,params,deltat,type,
                                         accumvars,covar,args,gnsi));
       nprotect += 2;
     }
@@ -121,7 +121,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP tstart, SEXP times, SEXP params
       double deltat;
       PROTECT(fn = GET_SLOT(rproc,install("step.fn")));
       deltat = *(REAL(AS_NUMERIC(GET_SLOT(rproc,install("delta.t")))));
-      PROTECT(X = euler_model_simulator(fn,xstart,tstart,times,params,deltat,type,
+      PROTECT(X = euler_simulator(fn,xstart,tstart,times,params,deltat,type,
                                         accumvars,covar,args,gnsi));
       nprotect += 2;
     }

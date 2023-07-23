@@ -21,7 +21,7 @@ extern SEXP do_dprocess(SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, 
 /* src/emeasure.c */
 extern SEXP do_emeasure(SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi);
 /* src/euler.c */
-extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params, double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi);
+extern SEXP euler_simulator(SEXP func, SEXP xstart, SEXP tstart, SEXP times, SEXP params, double deltat, rprocmode method, SEXP accumvars, SEXP covar, SEXP args, SEXP gnsi);
 extern int num_euler_steps(double t1, double t2, double *deltat);
 extern int num_map_steps(double t1, double t2, double deltat);
 /* src/gompertz.c */
