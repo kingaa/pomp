@@ -6,15 +6,11 @@ static SEXP __pomp_ptr_userdata;
 #define USERDATA  (__pomp_ptr_userdata)
 
 void set_pomp_userdata (SEXP userdata) {
-#if (R_VERSION < 262659) // before 4.2.3
   if (LENGTH(userdata) > 0) {
     USERDATA = userdata;
   } else {
     USERDATA = R_NilValue;
   }
-#else
-  USERDATA = userdata;
-#endif
 }
 
 const SEXP get_userdata (const char *name) {
