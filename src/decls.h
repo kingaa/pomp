@@ -108,7 +108,7 @@ extern SEXP ExpitTransform(SEXP X);
 extern SEXP LogBarycentricTransform(SEXP X);
 extern SEXP InverseLogBarycentricTransform(SEXP Y);
 /* src/userdata.c */
-extern void set_pomp_userdata(SEXP userdata);
+extern SEXP set_pomp_userdata(SEXP userdata);
 extern const SEXP get_userdata(const char *name);
 extern const int *get_userdata_int(const char *name);
 extern const double *get_userdata_double(const char *name);

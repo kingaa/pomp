@@ -3,6 +3,7 @@
 \section{Changes in \pkg{pomp} version 5.3.1}{
   \itemize{
     \item \code{stew} now returns timing information by default.
+    \item The spurious warnings associated with NULL \code{userdata} have been eliminated.
   }
 }
 \section{Changes in \pkg{pomp} version 5.2.5}{
