@@ -1,4 +1,4 @@
-  Running ‘fakery.R’ [18s/13s]
+  Running ‘fakery.R’ [16s/13s]
   Comparing ‘fakery.Rout’ to ‘fakery.Rout.save’ ... OK
   Running ‘filter.R’
   Comparing ‘filter.Rout’ to ‘filter.Rout.save’ ... OK
@@ -6,7 +6,7 @@
   Comparing ‘indep.Rout’ to ‘indep.Rout.save’ ... OK
   Running ‘stobfun.R’
   Comparing ‘stobfun.Rout’ to ‘stobfun.Rout.save’ ... OK
-  Running ‘transmiss.R’ [26s/21s]
+  Running ‘transmiss.R’ [27s/22s]
   Comparing ‘transmiss.Rout’ to ‘transmiss.Rout.save’ ... OK
 
 See

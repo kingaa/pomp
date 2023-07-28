@@ -9,7 +9,7 @@
 * using option '--as-cran'
 * checking for file 'circumstance/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'circumstance' version '0.0.8.0'
+* this is package 'circumstance' version '0.0.10.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -55,11 +55,11 @@
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
          user system elapsed
-pfilter 5.567  0.486   5.033
+pfilter 5.598  0.288   4.562
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [43s/25s] OK
+ [42s/26s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

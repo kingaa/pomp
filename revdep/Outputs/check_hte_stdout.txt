@@ -64,14 +64,14 @@ stobfun : ofun: local variable ‘theta’ assigned but may not be used
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [257s/34s] OK
+* checking examples ... [237s/34s] OK
 Examples with CPU (user + system) or elapsed time > 5s
             user system elapsed
-fake_data 30.800 93.086  12.176
-simuldat  28.346 88.945  10.588
+fake_data 29.910 85.907  11.964
+simuldat  27.004 81.279  10.529
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [71s/45s] OK
+ [67s/46s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

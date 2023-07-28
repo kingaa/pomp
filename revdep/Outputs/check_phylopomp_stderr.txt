@@ -10,7 +10,7 @@
   Comparing ‘lbdp3.Rout’ to ‘lbdp3.Rout.save’ ... OK
   Running ‘lineages.R’
   Comparing ‘lineages.Rout’ to ‘lineages.Rout.save’ ... OK
-  Running ‘moran1.R’ [40s/29s]
+  Running ‘moran1.R’ [41s/29s]
   Comparing ‘moran1.Rout’ to ‘moran1.Rout.save’ ... OK
   Running ‘parse.R’
   Comparing ‘parse.Rout’ to ‘parse.Rout.save’ ... OK

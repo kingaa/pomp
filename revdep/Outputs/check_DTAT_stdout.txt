@@ -19,7 +19,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'DTAT' can be installed ... [32s/14s] OK
+* checking whether package 'DTAT' can be installed ... [36s/13s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -42,7 +42,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [58s/14s] NOTE
+* checking R code for possible problems ... [57s/14s] NOTE
 dose.survfit: local variable ‘S’ assigned but may not be used
 as_d3_data,DE : rel_dose: local variable ‘where_na’ assigned but may
   not be used
@@ -65,11 +65,11 @@ initialize,DE: local variable ‘Q1’ assigned but may not be used
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
                user system elapsed
-Onoue.Friberg 3.194   7.17    2.41
+Onoue.Friberg 3.028  7.867   2.106
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK
-* checking re-building of vignette outputs ... [46s/27s] OK
+* checking re-building of vignette outputs ... [49s/27s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
