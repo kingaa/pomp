@@ -639,12 +639,13 @@
   pages: "20170126"
   doi: "https://doi.org/10.1098/rsif.2017.0126"
 
-- key: Ionides2021
+- key: Ionides2023
   author: "E. L. Ionides, K. Asfaw, J. Park, and A. A. King"
-  year: "2021"
+  year: "2023"
   title: "Bagged filters for partially observed interacting systems"
-  journal: "J Am Stat Assoc"
-  pages: "1&#x2013;12"
+  journal: "Journal of the American Statistical Association"
+  volume: "118"
+  pages: "1078&#x2013;1089"
   doi: "https://doi.org/10.1080/01621459.2021.1974867"
 
 - key: Kain2021
