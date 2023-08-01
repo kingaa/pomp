@@ -21,6 +21,9 @@ title: references to the POMP literature
 {% if rec.volume %}
     <b>{{ rec.volume }}</b>:
 {% endif %}
+{% if rec.eid %}
+    {{ rec.eid }}
+{% endif %}
 {% if rec.booktitle %}
     In: <i>{{ rec.booktitle }}</i>
 {% endif %}
