@@ -6,42 +6,19 @@ title: references to the POMP literature
 <h1>Bibliography</h1>
 
 <dl>
-{% assign sorted = site.data.biblio | sort:'year' | reverse %}
-{% for rec in sorted %}
+  {% assign sorted = site.data.biblio | sort:'year' | reverse %}
+  {% for rec in sorted %}
 
   <dt>&nbsp;</dt>
   <dd>
-    {{ rec.author }} ({{ rec.year }})
+    {{ rec.author }} ({{ rec.year }}).
     {{ rec.title }}.
-{% if rec.journal %}
-    <i>{{ rec.journal }}</i>
-{% elsif rec.school %}
-    Thesis: {{ rec.school }}.
-{% endif %}
-{% if rec.volume %}
-    <b>{{ rec.volume }}</b>:
-{% endif %}
-{% if rec.eid %}
-    {{ rec.eid }}
-{% endif %}
-{% if rec.booktitle %}
-    In: <i>{{ rec.booktitle }}</i>
-{% endif %}
-{% if rec.editor %}
-    (edited by {{ rec.editor }})
-{% endif %}
-{% if rec.pages %}
-    {{ rec.pages }}.
-{% endif %}
-{% if rec.publisher %}
-    {{ rec.publisher }}.
-{% endif %}
-{% if rec.doi %}
-    <a target="_blank" href="{{ rec.doi }}">Link</a>
-{% elsif rec.url %}
-    <a target="_blank" href="{{ rec.url }}">Link</a>
-{% endif %}
+    {% if rec.journal %}<i>{{ rec.journal }}</i>{% if rec.volume %} <b>{{ rec.volume }}</b>:{% endif %}{% if rec.pages %}&nbsp;{{ rec.pages }}{% elsif rec.eid %}&nbsp;{{ rec.eid }}{% endif %}.
+    {% elsif rec.school %} Thesis: {{ rec.school }}.
+    {% elsif rec.booktitle %} In: <i>{{ rec.booktitle }}</i>{% if rec.editor %} (edited by {{ rec.editor }}){% endif %}{% if rec.publisher %} {{ rec.publisher }}{% if rec.address %}, {{ rec.address }}{% endif %}{% endif %}.
+    {% elsif rec.publisher %} {{ rec.publisher }}{% if rec.address %}, {{ rec.address }}{% endif %}.{% endif %}
+    {% if rec.doi %}<a target="_blank" href="{{ rec.doi }}">(Link)</a>{% elsif rec.url %}<a target="_blank" href="{{ rec.url }}">(Link)</a>{% endif %}
   </dd>
 
-{% endfor %}
+  {% endfor %}
 </dl>

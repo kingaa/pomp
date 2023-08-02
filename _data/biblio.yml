@@ -166,6 +166,17 @@
   pages: "393&#x2013;407"
   doi: "https://doi.org/10.1007/s11222-014-9513-x"
 
+- key: Bjornstad2019
+  author: "O. N. Bjornstad"
+  year: "2019"
+  title: "Population dynamics of pathogens"
+  pages: "13&#x2013;36"
+  booktitle: "Handbook of Infectious Disease Data Analysis"
+  editor: "L. Held, N. Hens, P. O&rsquo;Neill, and J. Wallinga"
+  publisher: "Chapman and Hall/CRC"
+  address: "New York"
+  doi: "https://doi.org/10.1201/9781315222912"
+
 - key: Bjornstad2023
   author: "O. N. Bj&oslash;rnstad"
   year: "2023"
@@ -501,7 +512,8 @@
   year: "2009"
   title: "Data Assimilation: The Ensemble Kalman Filter"
   publisher: "Springer"
-  url: "http://www.isbnsearch.org/isbn/3642037100"
+  address: "Dordrecht New York"
+  doi: "https://doi.org/10.1007/978-3-642-03711-5"
 
 - key: Fasiolo2016
   author: "M. Fasiolo, N. Pya, and S. N. Wood"
@@ -561,12 +573,13 @@
   pages: "e2207595120"
   doi: "https://doi.org/10.1073/pnas.2207595120"
 
-- key: Gourieroux1996
+- key: Gourieroux1997
   author: "C. Gouri&eacute;roux and A. Monfort"
   year: "1997"
   title: "Simulation-based Econometric Methods"
   publisher: "Oxford University Press"
-  url: "http://www.isbnsearch.org/isbn/9780198774754"
+  address: "Oxford"
+  url: "https://isbnsearch.org/isbn/9780198774754"
 
 - key: Griffiths2023
   author: "M. E. Griffiths, D. K. Meza, D. T. Haydon, and D. G. Streicker"
@@ -583,6 +596,7 @@
   year: "2023"
   title: "Delineating the seasonality of varicella and its association with climate in the tropical country of Colombia"
   journal: "J Infect Dis"
+  pages: "jiad244"
   doi: "https://doi.org/10.1093/infdis/jiad244"
 
 - key: Hayman2015
@@ -873,6 +887,8 @@
   booktitle: "Sequential Monte Carlo Methods in Practice"
   editor: "A. Doucet, N. de Freitas, and N. J. Gordon"
   publisher: "Springer"
+  address: "New York"
+  doi: "https://doi.org/10.1007/978-1-4757-3437-9"
 
 - key: Liu2022
   author: "Y. Liu, Y. Yu, Y. Zhao, and D. He"
@@ -1002,9 +1018,10 @@
   year: "2022"
   title: "Incorporating diapause to predict the interannual dynamics of an important agricultural pest"
   journal: "Popul Ecol"
-  volume: "n/a"
-  number: "n/a"
-  doi: "https://doi.org/10.1002/1438-390X.12117"
+  volume: "64"
+  number: "3"
+  pages: "267&#x2013;279"
+  doi: "https://doi.org/10.1002/1438-390x.12117"
 
 - key: Park2020
   author: "J. Park and E. L. Ionides"
@@ -1181,6 +1198,17 @@
   pages: "400&#x2013;416"
   doi: "https://doi.org/10.1093/biostatistics/kxy057"
 
+- key: Stocks2019
+  author: "T. Stocks"
+  year: "2019"
+  title: "Iterated filtering methods for Markov process epidemic models"
+  pages: "199&#x2013;219"
+  booktitle: "Handbook of Infectious Disease Data Analysis"
+  editor: "L. Held, N. Hens, P. O&rsquo;Neill, and J. Wallinga"
+  publisher: "Chapman and Hall/CRC"
+  address: "New York"
+  doi: "https://doi.org/10.1201/9781315222912"
+
 - key: Stocks2020
   author: "T. Stocks, L. J. Martin, S. K&uuml;hlmann-Berenzon, and T. Britton"
   year: "2020"
@@ -1189,15 +1217,6 @@
   volume: "30"
   pages: "100378"
   doi: "https://doi.org/10.1016/j.epidem.2019.100378"
-
-- key: Stocks2020a
-  author: "T. Stocks"
-  year: "2020"
-  title: "Iterated filtering methods for Markov process epidemic models"
-  pages: "199&#x2013;219"
-  editor: "L. Held, N. Hens, P. O&rsquo;Neill, and J. Wallinga"
-  publisher: "Chapman and Hall/CRC"
-  doi: "https://doi.org/10.1201/9781315222912"
 
 - key: Stone2020
   author: "L. Stone, D. H. He, S. Lehnstaedt, and Y. Artzy-Randrup"
