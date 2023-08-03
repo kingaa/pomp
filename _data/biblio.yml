@@ -318,7 +318,10 @@
   year: "2022"
   title: "COVID-19 in the 47 countries of the WHO African region: a modelling analysis of past trends and future patterns"
   journal: "Lancet Global Health"
-  doi: "https://doi.org/10.1016/S2214-109X(22)00233-9"
+  volume: "10"
+  number: "8"
+  pages: "e1099&#x2013;e1114"
+  doi: "https://doi.org/10.1016/s2214-109x(22)00233-9"
 
 - key: Cai2007
   author: "X. Cai and Z. Xu"
@@ -918,6 +921,15 @@
   pages: "20190151"
   doi: "https://doi.org/10.1098/rsif.2019.0151"
 
+- key: Magpantay2023
+  author: "F. M. G. Magpantay, J. Mao, S. Ren, S. Zhao, and T. Meadows"
+  year: "2023"
+  title: "The reinfection threshold, revisited"
+  journal: "Mathematical Biosciences"
+  volume: "363"
+  pages: "109045"
+  doi: "https://doi.org/10.1016/j.mbs.2023.109045"
+
 - key: Marin2012
   author: "J.-M. Marin, P. Pudlo, C. P. Robert, and R. J. Ryder"
   year: "2012"
@@ -967,11 +979,13 @@
   pages: "e1002172"
   doi: "https://doi.org/10.1371/journal.pbio.1002172"
 
-- key: Molodecky2021
+- key: Molodecky2023
   author: "N. A. Molodecky, H. Jafari, R. M. Safdar, J. A. Ahmed, A. Mahamud, A. S. Bandyopadhyay, H. Shukla, A. Quddus, M. Zaffran, R. W. Sutter, N. C. Grassly, and I. M. Blake"
-  year: "2021"
+  year: "2023"
   title: "Modelling the spread of serotype-2 vaccine derived-poliovirus outbreak in Pakistan and Afghanistan to inform outbreak control strategies in the context of the COVID-19 pandemic"
   journal: "Vaccine"
+  volume: "41"
+  pages: "A93&#x2013;A104"
   doi: "https://doi.org/10.1016/j.vaccine.2021.09.037"
 
 - key: Musa2020
@@ -1347,6 +1361,16 @@
   volume: "466"
   pages: "1102&#x2013;1104"
   doi: "https://doi.org/10.1038/nature09319"
+
+- key: Wu2023
+  author: "D. Wu, H. Petousis-Harris, J. Paynter, V. Suresh, and O. J. Maclaren"
+  year: "2023"
+  title: "Likelihood-based estimation and prediction for a measles outbreak in Samoa"
+  journal: "Infectious Disease Modelling"
+  volume: "8"
+  number: "1"
+  pages: "212&#x2013;227"
+  doi: "https://doi.org/10.1016/j.idm.2023.01.007"
 
 - key: Xia2011
   author: "Y. Xia and H. Tong"
