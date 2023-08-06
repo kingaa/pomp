@@ -2,13 +2,14 @@
 
 ## For pomp:
 
+- "Getting Started" vignette:
+  - ~~finish discussion of smoothing and hindcasting~~
+  - include discussion of forecasting
 - ARMA benchmarking (a la **spatPomp**)?
-- `pomp_fun` should be able to take symbols
-- vignette on sampling from the smoothing distribution using `pfilter` and/or `pmcmc` and `filter_traj`:
-  skeleton is in place; needs text.
 - make `mcap` into a generic, provide a method for data frames and a plotting method
 - overriding C snippets should overwrite/delete old C snippets, keep one C snippet file
 - `options(pomp_cdir)` should take effect *at run time* and not at initial compile time as currently
+- `pomp_fun` should be able to take symbols
 
 - in `pfilter`, perhaps filter trajectory (one sample from the smoothing distribution) should go into `states` slot (??)
 
