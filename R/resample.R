@@ -11,7 +11,7 @@
 ##' @concept sampling
 ##'
 ##' @param weights numeric; vector of weights.
-##' @param np integer scalar; number of samples to draw.
+##' @param Np integer scalar; number of samples to draw.
 ##'
 NULL
 

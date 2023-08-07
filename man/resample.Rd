@@ -10,7 +10,7 @@ systematic_resample(weights, Np = length(weights))
 \arguments{
 \item{weights}{numeric; vector of weights.}
 
-\item{np}{integer scalar; number of samples to draw.}
+\item{Np}{integer scalar; number of samples to draw.}
 }
 \value{
 A vector of integers containing the indices of the resample.

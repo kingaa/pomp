@@ -17,7 +17,6 @@
 ##' which the native function \code{f} can be found.
 ##' @param proto optional string; a prototype against which \code{f} will be
 ##' checked.
-##' @param object,x the \sQuote{pomp_fun} object.
 ##' @author Aaron A. King
 ##' @seealso \code{\link{pomp}}
 NULL

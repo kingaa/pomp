@@ -54,8 +54,6 @@ checked.}
 
 \item{PACKAGE}{optional; the name of the dynamically-loadable library in
 which the native function \code{f} can be found.}
-
-\item{object, x}{the \sQuote{pomp_fun} object.}
 }
 \description{
 Definition and methods of the \sQuote{pomp_fun} class.
