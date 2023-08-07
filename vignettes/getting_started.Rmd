@@ -1556,6 +1556,23 @@ Comment on your findings.
 
 ## Hindcast and smoothing
 
+To this point, we have focused on the particle filter as a means of computing the likelihood, for use in estimation of unknown parameters.
+It also gives us a way of estimating the likely trajectories of the latent state process.
+The `filter_mean`, `pred_mean`, and `pred_var` functions give access to the *filtering* and *prediction* distributions of the latent state at each observation time.
+The prediction distribution is that of $X_n\;\vert\;Y_1,\dots,Y_{n-1}$, i.e., the distribution of the latent state *conditional on* the observations at all times up to *but not including* $t_n$.
+The filter distribution, by contrast, incorporates the information of the $n$-th observation:
+it is the distribution of $X_n\;\vert\;Y_1,\dots,Y_n$.
+
+One can think of the filtering distribution as a kind of *hindcast*, i.e., an estimate of the state of the latent process at earlier times.
+Although it is computed essentially at no additional cost, it is typically of limited value as a hindcast, since the amount of information used in the estimate decreases as one goes farther back into the past.
+A better hindcast is afforded by the *smoothing distribution*, which is the distribution of $X_n\;\vert\;Y_1,\dots,Y_N$, i.e., that of the latent state conditional on *all* the data.
+
+Computation of the smoothing distribution requires more work.
+Specifically, a single particle chosen at random from a particle fitler, with its entire history, is a draw from the sampling distribution [@Andrieu2010].
+To build up a picture of the sampling distribution, therefore, one can run some number of independent particle filters, sampling a single particle's trajectory from each.
+The following codes accomplish this.
+Note the use of the `filter_traj` function, which extracts the trajectory of a single, randomly chosen, particle.
+
 ```{r hindcast1}
 r_prof |>
   group_by(r) |>
@@ -1610,6 +1627,14 @@ quants1 |>
   geom_point(data=parus,aes(x=year,y=pop))+
   labs(y="N")
 ```
+
+Note also that the individual trajectories must we weighted by their Monte Carlo likelihoods (see the use of `wquant` in the above).
+
+The plot above shows the uncertainty surrounding the hindcast.
+Importantly, this includes uncertainty due to both measurement error and process noise.
+It does not, however, incorporate parametric uncertainty.
+To fold this additional uncertainty into the estimates requires further work.
+We discuss this [in a later section](#hindcast-and-smoothing-with-parametric-uncertainty).
 
 ## Sampling the posterior using particle Markov chain Monte Carlo
 
@@ -1767,6 +1792,15 @@ traces |>
 ```
 
 ### Hindcast and smoothing with parametric uncertainty
+
+Let us revisit the matter of hindcasting.
+In a [preceding section](#hindcast-and-smoothing), using an ensemble of particle filters, we were able to estimate the likely trajectory that the latent state process followed in generating the data we see, *conditional on a given parameter vector*.
+Naturally, since our estimate of the parameters is itself uncertain, our actual uncertainty regarding the hindcast is somewhat larger.
+We can use particle Markov chain Monte Carlo to fold in the parametric uncertainty.
+The following codes select one randomly-chosen particle trajectory from each iteration of our pMCMC chains.
+The chains are thinned and the burn-in period is discarded, of course.
+Note that it is not necessary to weight the samples by the likelihood:
+if the pMCMC chains have converged, the samples can be taken to be equally weighted samples from the smoothing distribution.
 
 ```{r hindcast2}
 chains |>
