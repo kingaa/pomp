@@ -890,7 +890,6 @@ dmeas <- Csnippet("
 ")
 ```
 
-
 ```{r include=FALSE}
 ## Check the above C snippet.
   pomp(data.frame(t=1:10,D1=1:10,D2=2),time='t',t0=0,dmeasure=dmeas,
@@ -898,6 +897,19 @@ dmeas <- Csnippet("
 ```
 
 More generally, one can make use of [any aspect of **R**'s C API](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API) in writing C snippets.
+
+Note that a call to `Rprintf` involves passing a quoted string.
+To avoid having to escape those quotes, and the linefeed character `"\n"`, as in the above code, one can use [**R**'s raw string literals](https://r4ds.hadley.nz/strings.html#sec-raw-strings), as in the following.
+
+```{r}
+dmeas <- Csnippet(r"{
+   lik = dnbinom_mu(D1,1/k,rho1*N1,1) + dbinom(D2,N2,rho2,1);
+   if (!R_FINITE(lik)) {
+       Rprintf("t = %lg, D1 = %lg, loglik = %lg\n",t,D1,lik);
+   }
+   lik = (log) ? lik : exp(lik);
+}")
+```
 
 # References
 
