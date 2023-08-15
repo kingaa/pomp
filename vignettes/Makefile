@@ -13,7 +13,7 @@ RM = rm -f
 default: vignettes clean
 
 vignettes: FAQ.html He2010.R He2010.html oaxaca.R oaxaca.html \
-R_v_C.R R_v_C.html upgradeGuide.html C_API.html \
+R_v_C.R R_v_C.html upgrade_guide.html C_API.html \
 pompjss.R pompjss.pdf getting_started.R getting_started.html
 
 %.Rout: %.R
