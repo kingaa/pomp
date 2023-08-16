@@ -925,7 +925,7 @@
   author: "F. M. G. Magpantay, J. Mao, S. Ren, S. Zhao, and T. Meadows"
   year: "2023"
   title: "The reinfection threshold, revisited"
-  journal: "Mathematical Biosciences"
+  journal: "Math Biosci"
   volume: "363"
   pages: "109045"
   doi: "https://doi.org/10.1016/j.mbs.2023.109045"
@@ -1301,6 +1301,15 @@
   volume: "19"
   pages: "20220123"
   doi: "https://doi.org/10.1098/rsif.2022.0123"
+
+- key: Trevisin2023
+  author: "C. Trevisin, E. Bertuzzo, D. Pasetto, L. Mari, S. Miccoli, R. Casagrandi, M. Gatto, and A. Rinaldo"
+  year: "2023"
+  title: "Spatially explicit effective reproduction numbers from incidence and mobility data"
+  journal: "Proc Natl Acad Sci"
+  volume: "120"
+  number: "20"
+  doi: "https://doi.org/10.1073/pnas.2219816120"
 
 - key: Wale2019
   author: "N. Wale, M. J. Jones, D. G. Sim, A. F. Read, and A. A. King"
