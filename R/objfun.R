@@ -66,10 +66,10 @@ setMethod(
   }
 )
 
-setAs(
-  from="objfun",
-  to="pomp",
-  def = function (from) {
+setIs(
+  class1="objfun",
+  class2="pomp",
+  coerce = function (from) {
     as(from@env$object,"pomp")
   }
 )
