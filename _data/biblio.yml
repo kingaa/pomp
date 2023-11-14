@@ -89,6 +89,17 @@
   pages: "1102&#x2013;1104"
   doi: "https://doi.org/10.1038/nature09319"
 
+- key: Drake2023
+  author: "J. M. Drake, A. Handel, &Eacute;. Marty, E. B. O'Dea, T. O'Sullivan, G. Righi, and A. T. Tredennick"
+  year: "2023"
+  title: "A data-driven semi-parametric model of SARS-CoV-2 transmission in the United States"
+  journal: "PLOS Computational Biology"
+  volume: "19"
+  number: "11"
+  pages: "e1011610"
+  editor: "G. Chowell"
+  doi: "https://doi.org/10.1371/journal.pcbi.1011610"
+
 - key: Courson2023
   author: "B. de Courson, V. Thouzeau, and N. Baumard"
   year: "2023"
