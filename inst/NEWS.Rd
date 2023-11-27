@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.4.3}{
+  \itemize{
+    \item Modify formatting of printed messages to forestall warnings in latest R-devel.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.4.2}{
   \itemize{
     \item State objective functions (class \sQuote{objfun}) now behave as if they are \sQuote{pomp} objects.

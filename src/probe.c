@@ -15,7 +15,7 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
     SET_ELEMENT(vals,i,eval(PROTECT(lang2(VECTOR_ELT(probes,i),data)),
                             CLOENV(VECTOR_ELT(probes,i))));
     if (!IS_NUMERIC(VECTOR_ELT(vals,i))) {
-      err("probe %ld returns a non-numeric result",i+1);
+      err("probe %d returns a non-numeric result",i+1);
     }
     UNPROTECT(1);
   }
@@ -84,14 +84,14 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
       PROTECT(val = eval(PROTECT(lang2(VECTOR_ELT(probes,p),x)),
                          CLOENV(VECTOR_ELT(probes,p))));
       if (!IS_NUMERIC(val)) {
-        err("probe %ld returns a non-numeric result.",p+1);
+        err("probe %d returns a non-numeric result.",p+1);
       }
 
       len = LENGTH(val);
       if (s == 0)
         len0 = len;
       else if (len != len0) {
-        err("variable-sized results returned by probe %ld.",p+1);
+        err("variable-sized results returned by probe %d.",p+1);
       }
       if (k+len > nvals)
         err("probes return different number of values on different datasets.");

@@ -75,7 +75,8 @@ setMethod(
 setMethod(
   "traj_objfun",
   signature=signature(data="data.frame"),
-  definition=function(data,
+  definition=function(
+    data,
     est = character(0), fail.value = NA,
     ode_control = list(),
     params, rinit, skeleton, dmeasure, partrans,
@@ -106,7 +107,8 @@ setMethod(
 setMethod(
   "traj_objfun",
   signature=signature(data="pomp"),
-  function (data,
+  definition=function (
+    data,
     est = character(0), fail.value = NA, ode_control = list(),
     ..., verbose = getOption("verbose", FALSE)) {
 
@@ -130,7 +132,8 @@ setMethod(
 setMethod(
   "traj_objfun",
   signature=signature(data="traj_match_objfun"),
-  definition=function (data,
+  definition=function (
+    data,
     est, fail.value, ode_control,
     ..., verbose = getOption("verbose", FALSE)) {
 

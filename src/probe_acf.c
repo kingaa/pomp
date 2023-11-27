@@ -21,7 +21,7 @@ static void pomp_acf_compute (double *acf, double *x, int n, int nvars, int *lag
         ct++;
       }
     }
-    if (ct < 1) err("series %ld has no data",j+1);
+    if (ct < 1) err("series %d has no data",j+1);
     xx /= ct;                   // mean of x[j,]
     for (k = 0, p0 = p; k < n; p0 += nvars, k++)
       if (R_FINITE(*p0)) *p0 -= xx;
