@@ -1,5 +1,5 @@
 options(digits=3)
-png(filename="bsplines-%02d.png",res=100)
+png(filename="bsplines1-%02d.png",res=100)
 library(pomp)
 
 x <- seq(0,2,by=0.01)

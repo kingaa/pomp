@@ -26,6 +26,14 @@ static periodic_bspline_basis_eval_t *__pomp_periodic_bspline_basis_eval;
       reg=r"{
   __pomp_periodic_bspline_basis_eval = (periodic_bspline_basis_eval_t *) R_GetCCallable("pomp","periodic_bspline_basis_eval");}"
     ),
+    bspline_basis=list(
+      trigger=r"{(?<!periodic_)bspline_basis_eval}",
+      header=r"{
+static bspline_basis_eval_t *__pomp_bspline_basis_eval;
+#define bspline_basis_eval(X,K,D,N,Y)  (__pomp_bspline_basis_eval((X),(K),(D),(N),(Y)))}",
+      reg=r"{
+  __pomp_bspline_basis_eval = (bspline_basis_eval_t *) R_GetCCallable("pomp","bspline_basis_eval");}"
+    ),
     get_userdata_int=list(
       trigger="get_userdata_int",
       header=r"{
@@ -43,7 +51,7 @@ static get_userdata_double_t *__pomp_get_userdata_double;
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");}"
     ),
     get_userdata=list(
-      trigger=r"{get_userdata(\b|[^_])}",
+      trigger=r"{get_userdata(?!_)}",
       header=r"{
 static get_userdata_t *__pomp_get_userdata;
 #define get_userdata(X)  (__pomp_get_userdata(X))}",

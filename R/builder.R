@@ -197,7 +197,8 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
       \(x) any(
              grepl(
                pomp_templates$utilities[[x]]$trigger,
-               c(snippets,on_load)
+               c(snippets,on_load),
+               perl=TRUE
              )
            ),
       logical(1L)

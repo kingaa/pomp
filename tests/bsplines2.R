@@ -1,0 +1,32 @@
+options(digits=3)
+png(filename="bsplines2-%02d.png",res=100)
+library(pomp)
+
+trajectory(
+  t0=0, times=seq(0,2,by=0.02),
+  skeleton=vectorfield(Csnippet(r"{
+    const double *a = &a1;
+    double knots[] = {-3, -2, -1, 0, 1, 2, 3, 4, 5};
+    double s[5], p[5];
+    bspline_basis_eval(t,knots,3,5,s);
+    periodic_bspline_basis_eval(t,1,3,5,p);
+    Dx = dot_product(5,a,s);
+    Dy = dot_product(5,a,&trend_1);
+    Dz = dot_product(5,a,p);
+    Dw = dot_product(5,a,&seas_1);
+  }")),
+  params = c(
+    a1=-1,a2=1,a3=0,a4=-3,a5=18,
+    x_0=0,y_0=0,z_0=0,w_0=0
+  ),
+  paramnames=c("a1","a2","a3"),
+  statenames=c("x","y","w","z"),
+  covar=covariate_table(
+    times=seq(0,2.1,by=0.001),
+    trend=bspline_basis(x=times,nbasis=5,degree=3,rg=c(0,2)),
+    seas=periodic_bspline_basis(x=times,period=1,nbasis=5,degree=3)
+  )
+) |>
+  plot()
+
+dev.off()

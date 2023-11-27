@@ -52,6 +52,7 @@ static const R_CallMethodDef callMethods[] = {
 
 void R_init_pomp (DllInfo *info) {
   // C functions provided for users
+  R_RegisterCCallable("pomp","bspline_basis_eval",(DL_FUNC) &bspline_basis_eval);
   R_RegisterCCallable("pomp","bspline_eval",(DL_FUNC) &bspline_eval);
   R_RegisterCCallable("pomp","periodic_bspline_basis_eval",(DL_FUNC) &periodic_bspline_basis_eval);
   R_RegisterCCallable("pomp","get_userdata",(DL_FUNC) &get_userdata);

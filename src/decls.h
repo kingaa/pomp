@@ -2,6 +2,8 @@
 extern void bspline_eval(double *y, const double *x, int nx, int i, int degree, int deriv, const double *knots);
 extern SEXP bspline_basis(SEXP range, SEXP x, SEXP nbasis, SEXP degree, SEXP deriv);
 extern SEXP periodic_bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP period, SEXP deriv);
+extern void bspline_basis_eval(double x, double *knots, int degree, int nbasis, double *y);
+extern void bspline_basis_eval_deriv(double x, double *knots, int degree, int nbasis, int deriv, double *y);
 extern void periodic_bspline_basis_eval(double x, double period, int degree, int nbasis, double *y);
 extern void periodic_bspline_basis_eval_deriv(double x, double period, int degree, int nbasis, int deriv, double *y);
 /* src/dinit.c */

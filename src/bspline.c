@@ -4,10 +4,10 @@
 
 // The following function computes the derivative of order 'deriv' of the i-th
 // B-spline of given degree with given knots at each of the nx points in x.
-// knots must point to an array of length nbasis+p+1
+// knots must point to an array of length nbasis+degree+1
 // The results are stored in y.
 void bspline_eval (double *y, const double *x, int nx, int i,
-		   int degree, int deriv, const double *knots)
+                   int degree, int deriv, const double *knots)
 {
   int j;
   if (deriv > degree) {
@@ -105,15 +105,21 @@ SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period,
   return y;
 }
 
-/*
-void bspline_basis_eval (double x, int degree, int nbasis, double *y) {
+// The following function computes value at x of all the nbasis
+// B-spline basis functions of the specified degree with the given knots.
+// 'knots' must point to an array of length nbasis+degree+1
+// The results are stored in y.
+void bspline_basis_eval (double x, double *knots, int degree,
+                         int nbasis, double *y) {
   bspline_basis_eval_deriv(x,knots,degree,nbasis,0,y);
 }
 
-void bspline_basis_eval_deriv (double x, double period, int degree,
-                                        int nbasis, int deriv, double *y)
-{}
-*/
+void bspline_basis_eval_deriv (double x, double *knots, int degree,
+                               int nbasis, int deriv, double *y) {
+  for (int i = 0; i < nbasis; i++) {
+    bspline_eval(&y[i],&x,1,i,degree,deriv,knots);
+  }
+}
 
 void periodic_bspline_basis_eval (double x, double period, int degree,
                                   int nbasis, double *y) {
