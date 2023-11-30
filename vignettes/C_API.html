@@ -311,15 +311,15 @@ code {
 </div>
 <div id="splines" class="section level2">
 <h2>Splines</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">void</span> bspline_eval(<span class="dt">double</span> *y, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">int</span> nx, <span class="dt">int</span> i,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  <span class="dt">int</span> degree, <span class="dt">int</span> deriv, <span class="dt">const</span> <span class="dt">double</span> *knots);</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">void</span> bspline_basis_eval(<span class="dt">double</span> x, <span class="dt">double</span> *knots, <span class="dt">int</span> degree,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  <span class="dt">int</span> nbasis, <span class="dt">double</span> *y);</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="dt">void</span> periodic_bspline_basis_eval(<span class="dt">double</span> x, <span class="dt">double</span> period, <span class="dt">int</span> degree,</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>  <span class="dt">int</span> nbasis, <span class="dt">double</span> *y);</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="dt">void</span> periodic_bspline_basis_eval_deriv(<span class="dt">double</span> x, <span class="dt">double</span> period,</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>  <span class="dt">int</span> degree, <span class="dt">int</span> nbasis, <span class="dt">int</span> deriv, <span class="dt">double</span> *y);</span></code></pre></div>
-<p>These functions work with ordinary and periodic B-spline basis functions. For ordinary splines, one passes the spline knots in <code>knots</code>, together with the degree (<code>degree</code>) and order of derivative (<code>deriv</code>) desired. Then the value of the (order-<code>deriv</code> derivative of) the <code>i</code>-th spline at each of the values in <code>x</code> (an array of length <code>nx</code>) are passed into the array pointed to by <code>y</code>.</p>
+<p>These functions work with ordinary and periodic B-spline basis functions. For ordinary splines, one passes the spline knots in <code>knots</code>, together with the degree (<code>degree</code>) desired. Then each of the <code>nbasis</code> splines is evaluated at <code>x</code>, the values being returned in the array pointed to by <code>y</code>. Note that <code>knots</code> must point to an array of length at least <code>nbasis + degree + 1</code>.</p>
 <p>For periodic splines, the period and smoothness of the functions are given by <code>period</code> and <code>degree</code>, respectively. The fundamental domain is always assumed to be <span class="math inline">\([0,T]\)</span>, where <span class="math inline">\(T=\)</span><code>period</code>. The first function evaluates <code>nbasis</code> periodic B-spline basis functions at <code>x</code>. The second evaluates the order-<code>deriv</code> derivative of each basis function.</p>
 </div>
 <div id="transformations" class="section level2">

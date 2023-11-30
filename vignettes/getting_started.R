@@ -1,4 +1,6 @@
 ## ----prelims------------------------------------------------------------------
+#| echo: false
+#| cache: false
 ## GETTING STARTED WITH POMP
 options(
   keep.source=TRUE,
@@ -15,6 +17,9 @@ bigtick <- Sys.time()
 
 
 ## ----packages-----------------------------------------------------------------
+#| include: false
+#| purl: true
+#| cache: false
 library(tidyverse)
 library(pomp)
 set.seed(348885445L)
@@ -23,9 +28,12 @@ set.seed(348885445L)
 
 
 ## ----sim1a--------------------------------------------------------------------
+#| eval: FALSE
 ## library(pomp)
 
 ## ----sim1b--------------------------------------------------------------------
+#| warning: true
+
 simulate(t0=0, times=1:20,
   params=c(r=1.2,K=200,sigma=0.1,N_0=50),
   rinit=function (N_0, ...) {
@@ -129,6 +137,7 @@ ggplot(data=sims,aes(x=time,y=value,color=name,
 
 
 ## ----sim2_sim3----------------------------------------------------------------
+#| message: false
 simulate(sim2,params=p,
   times=seq(0,3),
   nsim=500,format="data.frame") -> sims
@@ -273,6 +282,8 @@ ll_rick1
 
 
 ## ----vp_loglik_eval-----------------------------------------------------------
+#| include: false
+#| purl: true
 bake("vp_loglik.rds",{
   vpC |>
     pfilter(Np=1000,dmeasure=dmeas,
@@ -397,6 +408,8 @@ coef(ofun2)
 
 
 ## ----mif_guesses--------------------------------------------------------------
+#| fig.width: 5
+#| fig.height: 5
 sobol_design(
   lower=c(r=0,K=100,sigma=0,N_0=150,b=1),
   upper=c(r=5,K=600,sigma=2,N_0=150,b=1),
@@ -408,6 +421,8 @@ plot(guesses,pch=16)
 
 
 ## ----vp_mif1_eval-------------------------------------------------------------
+#| include: false
+#| purl: true
 bake("vp_mif1.rds",{
   vpC |>
     mif2(
@@ -445,6 +460,9 @@ vpM |> pfilter(Nrep=5) |> logLik() |> logmeanexp(se=TRUE,ess=TRUE)
 
 
 ## ----parallel_setup-----------------------------------------------------------
+#| include: false
+#| purl: true
+#| cache: false
 if (file.exists("CLUSTER.R")) {
   source("CLUSTER.R")
 } else {
@@ -454,6 +472,9 @@ if (file.exists("CLUSTER.R")) {
 
 
 ## ----parus_mif1_eval----------------------------------------------------------
+#| include: false
+#| eval: true
+#| purl: true
 bake("parus_mif1.rds",{
   vpM |> mif2(starts=guesses) -> mifs
 }) -> mifs
@@ -473,6 +494,7 @@ mifs |>
 
 
 ## ----mif_plot2a---------------------------------------------------------------
+#| include: false
 mifs |> plot()
 
 
@@ -488,6 +510,9 @@ mifs |>
 
 
 ## ----parus_pf1_eval-----------------------------------------------------------
+#| include: false
+#| eval: true
+#| purl: true
 bake(file="parus_pf1.rds",{
   mifs |>
     pfilter(Nrep=5) |>
@@ -509,6 +534,10 @@ bake(file="parus_pf1.rds",{
 
 
 ## ----mif_plot4----------------------------------------------------------------
+#| warning: false
+#| fig.width: 8
+#| fig.height: 8
+#| out.width: 95%
 estimates |>
   bind_rows(guesses) |>
   filter(is.na(loglik) | loglik>max(loglik,na.rm=TRUE)-30) |>
@@ -520,6 +549,9 @@ estimates |>
 
 
 ## ----parus_mif2_eval----------------------------------------------------------
+#| include: false
+#| eval: true
+#| purl: true
 bake(file="parus_mif2.rds",{
   estimates |>
     filter(!is.na(loglik)) |>
@@ -556,6 +588,9 @@ estimates |> arrange(-loglik) |> head()
 
 
 ## ----mif2_plot1---------------------------------------------------------------
+#| fig.width: 8
+#| fig.height: 8
+#| out.width: 95%
 estimates |>
   filter(loglik>max(loglik,na.rm=TRUE)-4) |>
   select(loglik,r,sigma,K,N_0) |>
@@ -563,6 +598,9 @@ estimates |>
 
 
 ## ----parus_pd-----------------------------------------------------------------
+#| fig.width: 8
+#| fig.height: 8
+#| out.width: 95%
 estimates |>
   filter(loglik>max(loglik)-10) |>
   select(r,K,sigma,N_0,b) |>
@@ -588,6 +626,9 @@ starts |>
 
 
 ## ----parus_profile_eval-------------------------------------------------------
+#| include: false
+#| purl: true
+#| eval: true
 bake(file="parus_profile.rds",{
   vpM |>
     mif2(
@@ -637,6 +678,7 @@ r_prof |>
 
 
 ## ----r_prof_lrt---------------------------------------------------------------
+#| echo: false
 r_prof |>
   group_by(r) |>
   filter(rank(-loglik)<=2) |>
@@ -741,6 +783,9 @@ starts
 
 
 ## ----parus-pmcmc-eval---------------------------------------------------------
+#| eval: true
+#| purl: true
+#| include: false
 bake(file="parus_pmcmc.rds",dependson=starts,{
   vpM |>
     pmcmc(
@@ -779,6 +824,9 @@ traces |> effectiveSize()
 
 
 ## ----pmcmc-diagnostics3-------------------------------------------------------
+#| fig.width: 8
+#| fig.height: 6
+#| out.width: 95%
 traces |>
   lapply(as.data.frame) |>
   lapply(rowid_to_column,"iter") |>
@@ -799,6 +847,9 @@ gelman.diag(traces[,c("r","sigma","K","N_0")])
 
 
 ## ----parus_posterior1---------------------------------------------------------
+#| fig.width: 8
+#| fig.height: 4
+#| out.width: 95%
 traces |>
   lapply(as.data.frame) |>
   lapply(rowid_to_column,"iter") |>
@@ -818,6 +869,9 @@ traces |>
 traces |> summary()
 
 ## ----parus_posterior2---------------------------------------------------------
+#| fig.width: 8
+#| fig.height: 8
+#| out.width: 95%
 traces |>
   lapply(as.data.frame) |>
   lapply(rowid_to_column,"iter") |>
@@ -900,6 +954,8 @@ summary(vp_probe)
 
 
 ## ----probe1_plot--------------------------------------------------------------
+#| fig.width: 6.8
+#| fig.height: 6.8
 plot(vp_probe)
 
 

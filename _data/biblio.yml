@@ -89,6 +89,15 @@
   pages: "1102&#x2013;1104"
   doi: "https://doi.org/10.1038/nature09319"
 
+- key: Aogo2023
+  author: "R. A. Aogo, J. V. Zambrana, N. Sanchez, S. Ojeda, G. Kuan, A. Balmaseda, A. Gordon, E. Harris, and L. C. Katzelnick"
+  year: "2023"
+  title: "Effects of boosting and waning in highly exposed populations on dengue epidemic dynamics"
+  journal: "Science Translational Medicine"
+  volume: "15"
+  number: "722"
+  doi: "https://doi.org/10.1126/scitranslmed.adi1734"
+
 - key: Drake2023
   author: "J. M. Drake, A. Handel, &Eacute;. Marty, E. B. O'Dea, T. O'Sullivan, G. Righi, and A. T. Tredennick"
   year: "2023"

@@ -143,8 +143,8 @@ i.e., `mu*dW` will have expectation `mu*dt` and variance `mu*sigma^2*dt`.
 ## Splines
 
 ```{c eval=FALSE}
-void bspline_eval(double *y, const double *x, int nx, int i,
-  int degree, int deriv, const double *knots);
+void bspline_basis_eval(double x, double *knots, int degree,
+  int nbasis, double *y);
 
 void periodic_bspline_basis_eval(double x, double period, int degree,
   int nbasis, double *y);
@@ -154,8 +154,9 @@ void periodic_bspline_basis_eval_deriv(double x, double period,
 ```
 
 These functions work with ordinary and periodic B-spline basis functions.
-For ordinary splines, one passes the spline knots in `knots`, together with the degree (`degree`) and order of derivative (`deriv`) desired.
-Then the value of the (order-`deriv` derivative of) the `i`-th spline at each of the values in `x` (an array of length `nx`) are passed into the array pointed to by `y`.
+For ordinary splines, one passes the spline knots in `knots`, together with the degree (`degree`) desired.
+Then each of the `nbasis` splines is evaluated at `x`, the values being returned in the array pointed to by `y`.
+Note that `knots` must point to an array of length at least `nbasis + degree + 1`.
 
 For periodic splines, the period and smoothness of the functions are given by `period` and `degree`, respectively.
 The fundamental domain is always assumed to be $[0,T]$, where $T=$`period`.
