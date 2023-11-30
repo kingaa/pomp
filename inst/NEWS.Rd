@@ -2,7 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 5.4.3}{
   \itemize{
-    \item There is now access to ordinary B-spline basis functions at the C snippet level.
+    \item There is now access to ordinary B-spline basis functions (and their derivatives) at the C snippet level.
     It will still almost always be preferable to construct a spline basis once and pass it to \pkg{pomp} functions as part of a \code{covariate_table}, but this functionality may occasionally be useful.
     \item \code{bspline_eval} is now deprecated as part of the \pkg{pomp} C API.
     \item The formatting of some printed messages has been modified to forestall warnings in the latest R-devel.
@@ -10,7 +10,7 @@
 }
 \section{Changes in \pkg{pomp} version 5.4.2}{
   \itemize{
-    \item State objective functions (class \sQuote{objfun}) now behave as if they are \sQuote{pomp} objects.
+    \item Stateful objective functions (class \sQuote{objfun}) now behave as if they are \sQuote{pomp} objects.
   }
 }
 \section{Changes in \pkg{pomp} version 5.4.1}{
