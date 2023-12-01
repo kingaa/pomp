@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.4.4}{
+  \itemize{
+    \item C-level functions \code{set_pomp_userdata} and \code{unset_pomp_userdata} have been temporarily restored.
+    The latter generates a warning.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.4.3}{
   \itemize{
     \item There is now access to ordinary B-spline basis functions (and their derivatives) at the C snippet level.
