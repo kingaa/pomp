@@ -22,18 +22,9 @@
 #define warn(...) warningcall(R_NilValue,__VA_ARGS__)
 
 typedef
-void bspline_basis_eval_t
-(double x, double *knots, int degree, int nbasis, double *y);
-
-typedef
 void bspline_basis_eval_deriv_t
 (double x, double *knots, int degree,
  int nbasis, int deriv, double *y);
-
-typedef
-void periodic_bspline_basis_eval_t
-(double x, double period, int degree,
- int nbasis, double *y);
 
 typedef
 void periodic_bspline_basis_eval_deriv_t
