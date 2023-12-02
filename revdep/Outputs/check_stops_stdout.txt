@@ -1,10 +1,10 @@
 * using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck'
-* using R version 4.3.1 (2023-06-16)
+* using R version 4.3.2 (2023-10-31)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
-    gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
-    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
-* running under: Ubuntu 22.04.2 LTS
+    gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+* running under: Ubuntu 22.04.3 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'stops/DESCRIPTION' ... OK
@@ -18,7 +18,10 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'stops' can be installed ... [34s/20s] OK
+* checking whether package 'stops' can be installed ... [41s/22s] WARNING
+Found the following significant warnings:
+  Warning: 'rgl.init' failed, running with 'rgl.useNULL = TRUE'.
+See '/userdata/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck/00install.out' for details.
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -41,7 +44,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [75s/23s] NOTE
+* checking R code for possible problems ... [89s/261s] NOTE
 bcStressMin: local variable ‘lambdaorig’ assigned but may not be used
 bcStressMin: local variable ‘t’ assigned but may not be used
 c_inequality: local variable ‘out’ assigned but may not be used
@@ -74,7 +77,7 @@ stoploss: local variable ‘cstriatedness’ assigned but may not be used
 stoploss: local variable ‘cstringiness’ assigned but may not be used
 tgpoptim: local variable ‘fold’ assigned but may not be used
 tgpoptim: local variable ‘valsorig’ assigned but may not be used
-* checking Rd files ... OK
+* checking Rd files ... [5s/20s] OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
 * checking Rd cross-references ... OK
@@ -89,7 +92,7 @@ tgpoptim: local variable ‘valsorig’ assigned but may not be used
 * checking data for ASCII and uncompressed saves ... OK
 * checking installed files from 'inst/doc' ... OK
 * checking files in 'vignettes' ... OK
-* checking examples ... [36s/12s] OK
+* checking examples ... [34s/13s] OK
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK
@@ -99,4 +102,4 @@ tgpoptim: local variable ‘valsorig’ assigned but may not be used
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 1 NOTE
+Status: 1 WARNING, 1 NOTE

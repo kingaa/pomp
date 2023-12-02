@@ -1,14 +1,10 @@
-  Running ‘fakery.R’ [16s/13s]
-  Comparing ‘fakery.Rout’ to ‘fakery.Rout.save’ ... OK
-  Running ‘filter.R’
-  Comparing ‘filter.Rout’ to ‘filter.Rout.save’ ... OK
-  Running ‘indep.R’
-  Comparing ‘indep.Rout’ to ‘indep.Rout.save’ ... OK
-  Running ‘stobfun.R’
+  Running ‘fakery.R’ [16s/38s]
+  Comparing ‘fakery.Rout’ to ‘fakery.Rout.save’ ...  Running ‘filter.R’
+  Comparing ‘filter.Rout’ to ‘filter.Rout.save’ ...  Running ‘indep.R’ [9s/10s]
+  Comparing ‘indep.Rout’ to ‘indep.Rout.save’ ...  Running ‘stobfun.R’ [6s/19s]
   Comparing ‘stobfun.Rout’ to ‘stobfun.Rout.save’ ... OK
-  Running ‘transmiss.R’ [27s/22s]
-  Comparing ‘transmiss.Rout’ to ‘transmiss.Rout.save’ ... OK
-
+  Running ‘transmiss.R’ [26s/28s]
+  Comparing ‘transmiss.Rout’ to ‘transmiss.Rout.save’ ...
 See
   '/userdata/kingaa/projects/Rpkg/pomp/revdep/hte.Rcheck/00check.log'
 for details.

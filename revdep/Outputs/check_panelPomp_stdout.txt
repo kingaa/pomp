@@ -1,10 +1,10 @@
 * using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
-* using R version 4.3.1 (2023-06-16)
+* using R version 4.3.2 (2023-10-31)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
-    gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
-    GNU Fortran (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
-* running under: Ubuntu 22.04.2 LTS
+    gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+* running under: Ubuntu 22.04.3 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'panelPomp/DESCRIPTION' ... OK
@@ -51,22 +51,21 @@
 * checking Rd \usage sections ... OK
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
-* checking examples ... [111s/13s] OK
+* checking examples ... [102s/14s] OK
 Examples with CPU (user + system) or elapsed time > 5s
                          user system elapsed
-unitlogLik              2.432  8.376   0.791
-pfilter                 2.327  7.685   0.731
-params                  1.924  7.278   0.747
-pparams                 1.939  6.973   0.667
-simulate                1.623  7.282   0.809
-unitobjects             1.668  6.802   0.752
-plot                    1.859  6.562   0.736
-panelGompertz           1.857  6.510   0.772
-panelGompertzLikelihood 1.444  5.763   0.888
-panelPomp               1.464  5.436   0.765
-panelPomp_methods       1.211  4.968   0.867
-panelRandomWalk         1.385  4.659   0.789
-mif2                    1.510  4.407   0.999
+panelPomp               2.409  8.250   0.779
+plot                    1.778  7.277   0.796
+pfilter                 1.812  6.925   0.865
+unitlogLik              1.464  6.589   0.921
+mif2                    1.525  6.305   1.020
+unitobjects             1.323  6.075   0.805
+panelGompertzLikelihood 1.382  5.818   0.874
+panelGompertz           1.342  5.367   0.839
+params                  1.238  5.147   0.752
+pparams                 0.876  5.470   0.862
+simulate                0.967  4.892   0.887
+panelPomp_methods       1.285  4.458   0.854
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
@@ -106,8 +105,8 @@ mif2                    1.510  4.407   0.999
 < name     [,1]     [,2]     [,3]     [,4]      [,5]
 ---
 > variable     [,1]     [,2]     [,3]     [,4]      [,5]
- [291s/43s] OK
-* checking PDF version of manual ... OK
+ [313s/143s] OK
+* checking PDF version of manual ... [9s/261s] OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK

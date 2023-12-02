@@ -9,10 +9,10 @@
   Comparing ‘mif2.Rout’ to ‘mif2.Rout.save’ ... OK
   Running ‘mif2_intern.R’
   Comparing ‘mif2_intern.Rout’ to ‘mif2_intern.Rout.save’ ... OK
-  Running ‘mif2_methods.R’
+  Running ‘mif2_methods.R’ [15s/25s]
   Comparing ‘mif2_methods.Rout’ to ‘mif2_methods.Rout.save’ ... OK
   Running ‘panelGompertz.R’
-  Comparing ‘panelGompertz.Rout’ to ‘panelGompertz.Rout.save’ ...  Running ‘panelGompertzLikelihood.R’
+  Comparing ‘panelGompertz.Rout’ to ‘panelGompertz.Rout.save’ ...  Running ‘panelGompertzLikelihood.R’ [17s/17s]
   Comparing ‘panelGompertzLikelihood.Rout’ to ‘panelGompertzLikelihood.Rout.save’ ... OK
   Running ‘panelPomp.R’
   Comparing ‘panelPomp.Rout’ to ‘panelPomp.Rout.save’ ... OK
@@ -32,6 +32,6 @@
   Running ‘print-results.R’
   Comparing ‘print-results.Rout’ to ‘print-results.Rout.save’ ...  Running ‘seeded-results.R’
   Comparing ‘seeded-results.Rout’ to ‘seeded-results.Rout.save’ ... OK
-  Running ‘simulate.R’
+  Running ‘simulate.R’ [16s/13s]
   Comparing ‘simulate.Rout’ to ‘simulate.Rout.save’ ...
 

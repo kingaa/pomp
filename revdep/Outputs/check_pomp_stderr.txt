@@ -1,5 +1,5 @@
-  Running ‘R_v_C.R’ [25s/13s]
-  Running ‘abc.R’
+  Running ‘R_v_C.R’ [29s/58s]
+  Running ‘abc.R’ [30s/12s]
   Comparing ‘abc.Rout’ to ‘abc.Rout.save’ ... OK
   Running ‘baddm.R’
   Comparing ‘baddm.Rout’ to ‘baddm.Rout.save’ ... OK
@@ -13,8 +13,10 @@
   Comparing ‘blowflies.Rout’ to ‘blowflies.Rout.save’ ... OK
   Running ‘bsmc2.R’
   Comparing ‘bsmc2.Rout’ to ‘bsmc2.Rout.save’ ... OK
-  Running ‘bsplines.R’
-  Comparing ‘bsplines.Rout’ to ‘bsplines.Rout.save’ ... OK
+  Running ‘bsplines1.R’
+  Comparing ‘bsplines1.Rout’ to ‘bsplines1.Rout.save’ ... OK
+  Running ‘bsplines2.R’
+  Comparing ‘bsplines2.Rout’ to ‘bsplines2.Rout.save’ ... OK
   Running ‘concat.R’
   Comparing ‘concat.Rout’ to ‘concat.Rout.save’ ... OK
   Running ‘covmat.R’
@@ -27,7 +29,7 @@
   Comparing ‘defunct.Rout’ to ‘defunct.Rout.save’ ... OK
   Running ‘dinit.R’
   Comparing ‘dinit.Rout’ to ‘dinit.Rout.save’ ... OK
-  Running ‘dp.R’ [155s/13s]
+  Running ‘dp.R’ [144s/14s]
   Comparing ‘dp.Rout’ to ‘dp.Rout.save’ ... OK
   Running ‘dprocess.R’
   Comparing ‘dprocess.Rout’ to ‘dprocess.Rout.save’ ... OK
@@ -39,7 +41,7 @@
   Comparing ‘eulermultinom.Rout’ to ‘eulermultinom.Rout.save’ ... OK
   Running ‘flow.R’
   Comparing ‘flow.Rout’ to ‘flow.Rout.save’ ... OK
-  Running ‘gillespie.R’ [39s/15s]
+  Running ‘gillespie.R’ [41s/15s]
   Comparing ‘gillespie.Rout’ to ‘gillespie.Rout.save’ ... OK
   Running ‘gompertz.R’
   Comparing ‘gompertz.Rout’ to ‘gompertz.Rout.save’ ... OK

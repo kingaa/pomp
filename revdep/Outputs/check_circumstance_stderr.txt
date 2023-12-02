@@ -4,7 +4,7 @@
   Comparing ‘pfilter.Rout’ to ‘pfilter.Rout.save’ ... OK
   Running ‘plot_matrix.R’
   Comparing ‘plot_matrix.Rout’ to ‘plot_matrix.Rout.save’ ... OK
-  Running ‘pmcmc.R’ [13s/10s]
+  Running ‘pmcmc.R’ [16s/11s]
   Comparing ‘pmcmc.Rout’ to ‘pmcmc.Rout.save’ ... OK
 
 
