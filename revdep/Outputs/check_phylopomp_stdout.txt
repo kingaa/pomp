@@ -19,7 +19,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'phylopomp' can be installed ... [59s/43s] OK
+* checking whether package 'phylopomp' can be installed ... [58s/42s] OK
 * used C compiler: 'gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
 * used C++ compiler: 'g++ (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
 * checking installed package size ... NOTE
@@ -47,7 +47,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [59s/65s] OK
+* checking R code for possible problems ... [52s/11s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -62,11 +62,11 @@
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [18s/30s] OK
+* checking examples ... [19s/14s] OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [208s/271s] OK
-* checking PDF version of manual ... OK
+ [202s/115s] OK
+* checking PDF version of manual ... [11s/79s] OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK

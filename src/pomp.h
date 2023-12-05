@@ -31,12 +31,6 @@ void periodic_bspline_basis_eval_deriv_t
 (double x, double period, int degree,
  int nbasis, int deriv, double *y);
 
-// The following is deprecated and will be removed from the API.
-typedef
-void bspline_eval_t
-(double *y, const double *x, int nx, int i, int p,
- int d, const double *knots);
-
 typedef const SEXP get_userdata_t (const char *name);
 typedef const int *get_userdata_int_t (const char *name);
 typedef const double *get_userdata_double_t (const char *name);

@@ -64,12 +64,11 @@ stobfun : ofun: local variable ‘theta’ assigned but may not be used
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [266s/54s] OK
+* checking examples ... [277s/36s] OK
 Examples with CPU (user + system) or elapsed time > 5s
-               user  system elapsed
-fake_data    33.445 103.801  13.000
-simuldat     27.836  87.526   9.747
-transmission  2.196   0.051  12.139
+            user  system elapsed
+fake_data 34.086 104.419  12.761
+simuldat  30.314  94.112  11.228
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
 5,9c5,9
@@ -120,8 +119,8 @@ transmission  2.196   0.051  12.139
 > ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
 > ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
 > ✔ purrr     1.0.1     
- [71s/107s] OK
-* checking PDF version of manual ... [11s/236s] OK
+ [74s/49s] OK
+* checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK

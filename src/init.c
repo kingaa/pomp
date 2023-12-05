@@ -54,7 +54,6 @@ void R_init_pomp (DllInfo *info) {
   // C functions provided for users
   R_RegisterCCallable("pomp","bspline_basis_eval_deriv",(DL_FUNC) &bspline_basis_eval_deriv);
   R_RegisterCCallable("pomp","periodic_bspline_basis_eval_deriv",(DL_FUNC) &periodic_bspline_basis_eval_deriv);
-  R_RegisterCCallable("pomp","bspline_eval",(DL_FUNC) &bspline_eval); /* DEPRECATED */
   R_RegisterCCallable("pomp","get_userdata",(DL_FUNC) &get_userdata);
   R_RegisterCCallable("pomp","get_userdata_int",(DL_FUNC) &get_userdata_int);
   R_RegisterCCallable("pomp","get_userdata_double",(DL_FUNC) &get_userdata_double);
@@ -69,9 +68,6 @@ void R_init_pomp (DllInfo *info) {
   R_RegisterCCallable("pomp","apply_probe_sim",(DL_FUNC) &apply_probe_sim);
   R_RegisterCCallable("pomp","systematic_resampling",(DL_FUNC) &systematic_resampling);
   R_RegisterCCallable("pomp","randwalk_perturbation", (DL_FUNC) &randwalk_perturbation);
-  // THE FOLLOWING TWO FUNCTIONS WILL GO AWAY SOON
-  R_RegisterCCallable("pomp","set_pomp_userdata",(DL_FUNC) &set_pomp_userdata);
-  R_RegisterCCallable("pomp","unset_pomp_userdata",(DL_FUNC) &unset_pomp_userdata);
 
   // Register routines
   R_registerRoutines(info,NULL,callMethods,NULL,NULL);

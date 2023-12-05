@@ -9,7 +9,7 @@
 * using option '--as-cran'
 * checking for file 'spatPomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'spatPomp' version '0.33.0'
+* this is package 'spatPomp' version '0.34.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -19,7 +19,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'spatPomp' can be installed ... [43s/21s] OK
+* checking whether package 'spatPomp' can be installed ... [40s/20s] OK
 * used C compiler: 'gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
 * checking installed package size ... OK
 * checking package directory ... OK
@@ -42,7 +42,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [57s/18s] OK
+* checking R code for possible problems ... [62s/18s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -60,205 +60,11 @@
 * checking pragmas in C/C++ headers and code ... OK
 * checking compilation flags used ... OK
 * checking compiled code ... OK
-* checking examples ... [6s/22s] OK
+* checking examples ... OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
-84,93c84,85
-< Warning messages:
-< 1: executing %dopar% sequentially: no parallel backend registered 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 5: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 6: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 7: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 8: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 9: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
----
-> Warning message:
-> executing %dopar% sequentially: no parallel backend registered 
-99,107d90
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 5: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 6: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 7: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 8: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-117d99
-< There were 44 warnings (use warnings() to see them)
-127,131d108
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-136,140d112
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-150,154d121
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-165d131
-< There were 18 warnings (use warnings() to see them)
-173,181d138
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 5: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 6: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 7: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 8: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-187,195d143
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 5: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 6: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 7: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 8: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-228d175
-< There were 36 warnings (use warnings() to see them)
-234d180
-< There were 16 warnings (use warnings() to see them)
-258d203
-< There were 36 warnings (use warnings() to see them)
-284,292d228
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 5: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 6: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 7: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 8: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-306,314d241
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 5: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 6: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 7: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 8: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-333d259
-< There were 40 warnings (use warnings() to see them)
-359d284
-< There were 40 warnings (use warnings() to see them)
-427,428d351
-< Warning message:
-< 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-437,438d359
-< Warning message:
-< 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-458,459d378
-< Warning message:
-< 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-466,467d384
-< Warning message:
-< 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-476,477d392
-< Warning message:
-< 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-486,488d400
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-517,518d428
-< Warning message:
-< 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-526,527d435
-< Warning message:
-< 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-539,540d446
-< Warning message:
-< 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-545,546d450
-< Warning message:
-< 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-554,555d457
-< Warning message:
-< 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-621,623d522
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-628d526
-< There were 18 warnings (use warnings() to see them)
-636,644d533
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 5: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 6: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 7: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 8: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-650,654d538
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-18,26d17
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 5: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 6: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 7: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 8: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-51d41
-< There were 16 warnings (use warnings() to see them)
-69d58
-< There were 16 warnings (use warnings() to see them)
-77d65
-< There were 16 warnings (use warnings() to see them)
-87d74
-< There were 16 warnings (use warnings() to see them)
-35d34
-< There were 44 warnings (use warnings() to see them)
-68d67
-< There were 50 or more warnings (use warnings() to see the first 50)
-107d105
-< There were 50 or more warnings (use warnings() to see the first 50)
-111d108
-< There were 50 or more warnings (use warnings() to see the first 50)
-143d139
-< There were 50 or more warnings (use warnings() to see the first 50)
-35d34
-< There were 50 or more warnings (use warnings() to see the first 50)
-78c78,80
-< There were 50 or more warnings (use warnings() to see the first 50)
----
-> Warning messages:
-> 1: in 'table_lookup': extrapolating at 1.965000e+03. 
-> 2: in 'table_lookup': extrapolating at 1.965002e+03. 
-120,124d119
-< Warning messages:
-< 1: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 2: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 3: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
-< 4: 'unset_pomp_userdata' is now deprecated and will be removed in a future release. 
- [553s/255s] OK
-* checking PDF version of manual ... [12s/49s] OK
+ [451s/57s] OK
+* checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK

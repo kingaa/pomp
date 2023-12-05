@@ -55,12 +55,12 @@
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
          user system elapsed
-pfilter 6.056  0.405   5.267
+pfilter 5.781  0.372   5.103
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [47s/28s] OK
-* checking PDF version of manual ... [7s/388s] OK
+ [46s/27s] OK
+* checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK

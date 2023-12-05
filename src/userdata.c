@@ -29,9 +29,3 @@ const double *get_userdata_double (const char *name) {
   if (!isReal(elt)) err("user-data element '%s' is not a numeric vector.",name);
   return REAL(elt);
 }
-
-// WILL GO AWAY SOON
-void unset_pomp_userdata (void) { // #nocov
-  warn("'unset_pomp_userdata' is now deprecated and will be removed in a future release."); // #nocov
-  USERDATA = R_NilValue;          // #nocov
-}

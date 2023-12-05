@@ -18,7 +18,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'epimdr2' can be installed ... [34s/19s] OK
+* checking whether package 'epimdr2' can be installed ... [31s/18s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -40,7 +40,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [52s/12s] NOTE
+* checking R code for possible problems ... [51s/12s] NOTE
 coyne: local variable ‘H1’ assigned but may not be used
 coyne: local variable ‘H2’ assigned but may not be used
 coyne: local variable ‘I’ assigned but may not be used
@@ -152,9 +152,9 @@ twostrain: local variable ‘res’ assigned but may not be used
 * checking data for non-ASCII characters ... OK
 * checking LazyData ... OK
 * checking data for ASCII and uncompressed saves ... OK
-* checking examples ... [20s/53s] OK
+* checking examples ... [23s/13s] OK
 ** found \donttest examples: check also with --run-donttest
-* checking PDF version of manual ... [12s/335s] OK
+* checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK

@@ -9,7 +9,7 @@
 * using option '--as-cran'
 * checking for file 'pomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'pomp' version '5.4.4.0'
+* this is package 'pomp' version '5.5.1.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -19,7 +19,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'pomp' can be installed ... [44s/34s] OK
+* checking whether package 'pomp' can be installed ... [38s/31s] OK
 * used C compiler: 'gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
 * checking installed package size ... OK
 * checking package directory ... OK
@@ -43,7 +43,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [71s/37s] OK
+* checking R code for possible problems ... [55s/20s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -68,14 +68,14 @@
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [21s/40s] OK
+* checking examples ... [22s/10s] OK
 Examples with CPU (user + system) or elapsed time > 5s
         user system elapsed
-ricker 2.026  7.006  14.904
+ricker 2.045  7.776   0.822
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [1764s/322s] OK
+ [1781s/274s] OK
 * checking PDF version of manual ... [15s/11s] OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

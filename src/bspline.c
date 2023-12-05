@@ -6,8 +6,9 @@
 // B-spline of given degree with given knots at each of the nx points in x.
 // knots must point to an array of length nbasis+degree+1
 // The results are stored in y.
-void bspline_eval (double *y, const double *x, int nx, int i,
-                   int degree, int deriv, const double *knots)
+static void bspline_eval
+(double *y, const double *x, int nx, int i,
+ int degree, int deriv, const double *knots)
 {
   int j;
   if (deriv > degree) {

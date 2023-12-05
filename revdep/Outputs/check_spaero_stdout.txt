@@ -62,13 +62,13 @@ Namespace in Imports field not imported from: ‘utils’
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
                   user system elapsed
-create_simulator 1.766  5.521    1.32
+create_simulator 2.471  7.934    1.39
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [31s/10s] OK
+ OK
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK
-* checking re-building of vignette outputs ... [38s/21s] OK
+* checking re-building of vignette outputs ... [44s/21s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
