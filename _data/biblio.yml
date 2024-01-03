@@ -1,3 +1,92 @@
+- key: Kendall1999
+  author: "B. E. Kendall, C. J. Briggs, W. W. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, and S. N. Wood"
+  year: "1999"
+  title: "Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches"
+  journal: "Ecology"
+  volume: "80"
+  number: "6"
+  pages: "1789&#x2013;1805"
+  doi: "https://doi.org/10.1890/0012-9658(1999)080%5B1789:wdpcas%5D2.0.co;2"
+
+- key: Toni2010
+  author: "T. Toni and M. P. H. Stumpf"
+  year: "2010"
+  title: "Simulation-based model selection for dynamical systems in systems and population biology"
+  journal: "Bioinformatics"
+  volume: "26"
+  number: "1"
+  pages: "104&#x2013;110"
+  doi: "https://doi.org/10.1093/bioinformatics/btp619"
+
+- key: King2008
+  author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
+  year: "2008"
+  title: "Inapparent infections and cholera dynamics"
+  journal: "Nature"
+  volume: "454"
+  number: "7206"
+  pages: "877&#x2013;880"
+  doi: "https://doi.org/10.1038/nature07084"
+
+- key: Funk2020
+  author: "S. Funk and A. A. King"
+  year: "2020"
+  title: "Choices and trade-offs in inference with infectious disease models"
+  journal: "Epidemics"
+  volume: "30"
+  pages: "100383"
+  doi: "https://doi.org/10.1016/j.epidem.2019.100383"
+
+- key: Wood2010
+  author: "S. N. Wood"
+  year: "2010"
+  title: "Statistical inference for noisy nonlinear ecological dynamic systems"
+  journal: "Nature"
+  volume: "466"
+  number: "7310"
+  pages: "1102&#x2013;1104"
+  doi: "https://doi.org/10.1038/nature09319"
+
+- key: Stocks2020
+  author: "T. Stocks, L. J. Martin, S. K&uuml;hlmann-Berenzon, and T. Britton"
+  year: "2020"
+  title: "Dynamic modeling of hepatitis C transmission among people who inject drugs"
+  journal: "Epidemics"
+  volume: "30"
+  pages: "100378"
+  doi: "https://doi.org/10.1016/j.epidem.2019.100378"
+
+- key: Magpantay2016
+  author: "F. M. G. Magpantay, M. Domenech de Cell&egrave;s, P. Rohani, and A. A. King"
+  year: "2016"
+  title: "Pertussis immunity and epidemiology: mode and duration of vaccine-induced immunity"
+  journal: "Parasitology"
+  volume: "143"
+  number: "7"
+  pages: "835&#x2013;849"
+  doi: "https://doi.org/10.1017/s0031182015000979"
+
+- key: Knape2012
+  author: "J. Knape and P. de Valpine"
+  year: "2012"
+  title: "Fitting complex population models by combining particle filters with Markov chain Monte Carlo"
+  journal: "Ecology"
+  volume: "93"
+  number: "2"
+  pages: "256&#x2013;263"
+  doi: "https://doi.org/10.1890/11-0797.1"
+
+- key: Liu2001b
+  author: "J. Liu and M. West"
+  year: "2001"
+  title: "Combining parameter and state estimation in simulation-based filtering"
+  pages: "197&#x2013;224"
+  booktitle: "Sequential Monte Carlo Methods in Practice"
+  editor: "A. Doucet, N. de Freitas, and N. J. Gordon"
+  publisher: "Springer"
+  address: "New York"
+  doi: "https://doi.org/10.1007/978-1-4757-3437-9"
+
 - key: Andrade2022
   author: "J. Andrade and J. Duggan"
   year: "2022"
@@ -112,26 +201,6 @@
   pages: "S546&#x2013;S553"
   doi: "https://doi.org/10.1093/infdis/jiz644"
 
-- key: Cooch2012
-  author: "E. G. Cooch, P. B. Conn, S. P. Ellner, A. P. Dobson, and K. H. Pollock"
-  year: "2012"
-  title: "Disease dynamics in wild populations: modeling and estimation: a review"
-  journal: "J. Ornithol."
-  volume: "152"
-  number: "2"
-  pages: "485&#x2013;509"
-  doi: "https://doi.org/10.1007/s10336-010-0636-3"
-
-- key: Dattner2020
-  author: "I. Dattner"
-  year: "2020"
-  title: "Differential equations in data analysis"
-  journal: "WIREs Comput. Stat."
-  volume: "13"
-  number: "6"
-  pages: "e1534"
-  doi: "https://doi.org/10.1002/wics.1534"
-
 - key: DomenechdeCelles2018
   author: "M. Domenech de Cell&egrave;s, F. M. G. Magpantay, A. A. King, and P. Rohani"
   year: "2018"
@@ -169,15 +238,6 @@
   volume: "161"
   pages: "104624"
   doi: "https://doi.org/10.1016/j.euroecorev.2023.104624"
-
-- key: Ganusov2016
-  author: "V. V. Ganusov"
-  year: "2016"
-  title: "Strong inference in mathematical modeling: a method for robust science in the twenty-first century"
-  journal: "Front. Microbiol."
-  volume: "7"
-  pages: "1131"
-  doi: "https://doi.org/10.3389/fmicb.2016.01131"
 
 - key: Ganyani2021
   author: "T. Ganyani, C. Faes, and N. Hens"
@@ -312,15 +372,6 @@
   pages: "26&#x2013;42"
   doi: "https://doi.org/10.1111/2041-210x.13833"
 
-- key: ONeill2010
-  author: "P. D. O'Neill"
-  year: "2010"
-  title: "Introduction and snapshot review: relating infectious disease transmission models to data"
-  journal: "Stat. Med."
-  volume: "29"
-  pages: "2069&#x2013;2077"
-  doi: "https://doi.org/10.1002/sim.3968"
-
 - key: Pak2022
   author: "D. Pak, S. Carran, D. Biddinger, B. Nelson, and O. N. Bj&oslash;rnstad"
   year: "2022"
@@ -359,26 +410,6 @@
   number: "51"
   pages: "13573&#x2013;13578"
   doi: "https://doi.org/10.1073/pnas.1714712114"
-
-- key: Ricker1954
-  author: "W. E. Ricker"
-  year: "1954"
-  title: "Stock and recruitment"
-  journal: "J. Fish. Res. Board Can."
-  volume: "11"
-  pages: "559&#x2013;623"
-  doi: "https://doi.org/10.1139/f54-039"
-
-- key: Roberts2009
-  author: "G. O. Roberts and J. S. Rosenthal"
-  year: "2009"
-  title: "Examples of adaptive MCMC"
-  journal: "J. Comput. Graph. Statist."
-  volume: "18"
-  number: "2"
-  pages: "349&#x2013;367"
-  booktitle: "Journal of Computational and Graphical Statistics"
-  doi: "https://doi.org/10.1198/jcgs.2009.06134"
 
 - key: Romero-Severson2015
   author: "E. O. Romero-Severson, E. Volz, J. S. Koopman, T. Leitner, and E. L. Ionides"
@@ -428,15 +459,6 @@
   number: "30"
   pages: "eabc0927"
   doi: "https://doi.org/10.1126/sciadv.abc0927"
-
-- key: Tidd1993
-  author: "C. W. Tidd, L. F. Olsen, and W. M. Schaffer"
-  year: "1993"
-  title: "The case for chaos in childhood epidemics. II. Predicting historical epidemics from mathematical models"
-  journal: "Proc. R. Soc. Lond. B"
-  volume: "254"
-  number: "1341"
-  pages: "257&#x2013;273"
 
 - key: Trevisin2023
   author: "C. Trevisin, E. Bertuzzo, D. Pasetto, L. Mari, S. Miccoli, R. Casagrandi, M. Gatto, and A. Rinaldo"
@@ -784,16 +806,6 @@
   pages: "20131174"
   doi: "https://doi.org/10.1098/rspb.2013.1174"
 
-- key: Hyndman1996
-  author: "R. J. Hyndman and Y. Fan"
-  year: "1996"
-  title: "Sample quantiles in statistical packages"
-  journal: "Amer. Statist."
-  volume: "50"
-  number: "4"
-  pages: "361"
-  doi: "https://doi.org/10.2307/2684934"
-
 - key: Ionides2011
   author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
   year: "2011"
@@ -813,15 +825,6 @@
   number: "3"
   pages: "719&#x2013;724"
   doi: "https://doi.org/10.1073/pnas.1410597112"
-
-- key: Kermack1927
-  author: "W. Kermack and A. McKendrick"
-  year: "1927"
-  title: "A contribution to the mathematical theory of epidemics"
-  journal: "Proc. R. Soc. Lond. A"
-  volume: "115"
-  pages: "700&#x2013;721"
-  doi: "https://doi.org/10.1098/rspa.1927.0118"
 
 - key: King2015
   author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
@@ -843,16 +846,6 @@
   pages: "1&#x2013;43"
   doi: "https://doi.org/10.18637/jss.v069.i12"
 
-- key: Krylova2020
-  author: "O. Krylova and D. J. D. Earn"
-  year: "2020"
-  title: "Patterns of smallpox mortality in London, England, over three centuries"
-  journal: "PLoS Biol."
-  volume: "18"
-  number: "12"
-  pages: "e3000506"
-  doi: "https://doi.org/10.1371/journal.pbio.3000506"
-
 - key: Laneri2010
   author: "K. Laneri, A. Bhadra, E. L. Ionides, M. Bouma, R. C. Dhiman, R. S. Yadav, and M. Pascual"
   year: "2010"
@@ -862,16 +855,6 @@
   number: "9"
   pages: "e1000898"
   doi: "https://doi.org/10.1371/journal.pcbi.1000898"
-
-- key: Li2018
-  author: "M. Li, J. Dushoff, and B. M. Bolker"
-  year: "2018"
-  title: "Fitting mechanistic epidemic models to data: A comparison of simple Markov chain Monte Carlo approaches"
-  journal: "Stat. Methods Med. Res."
-  volume: "27"
-  number: "7"
-  pages: "1956&#x2013;1967"
-  doi: "https://doi.org/10.1177/0962280217747054"
 
 - key: Magpantay2019
   author: "F. M. G. Magpantay, A. King A., and P. Rohani"
@@ -912,16 +895,6 @@
   number: "6"
   pages: "e1002172"
   doi: "https://doi.org/10.1371/journal.pbio.1002172"
-
-- key: Murphy2022
-  author: "R. J. Murphy, O. J. Maclaren, A. R. Calabrese, P. B. Thomas, D. J. Warne, E. D. Williams, and M. J. Simpson"
-  year: "2022"
-  title: "Computationally efficient framework for diagnosing, understanding and predicting biphasic population growth"
-  journal: "J. R. Soc. Interface"
-  volume: "19"
-  number: "197"
-  pages: "20220560"
-  doi: "https://doi.org/10.1098/rsif.2022.0560"
 
 - key: Musa2020
   author: "S. S. Musa, S. Zhao, D. Gao, Q. Lin, G. Chowell, and D. He"
@@ -1041,16 +1014,6 @@
   pages: "20220123"
   doi: "https://doi.org/10.1098/rsif.2022.0123"
 
-- key: Wearing2009
-  author: "H. J. Wearing and P. Rohani"
-  year: "2009"
-  title: "Estimating the duration of pertussis immunity using epidemiological signatures"
-  journal: "PLoS Pathog."
-  volume: "5"
-  number: "10"
-  pages: "e1000647"
-  doi: "https://doi.org/10.1371/journal.ppat.1000647"
-
 - key: Drake2023
   author: "J. M. Drake, A. Handel, &Eacute;. Marty, E. B. O'Dea, T. O'Sullivan, G. Righi, and A. T. Tredennick"
   year: "2023"
@@ -1115,17 +1078,6 @@
   publisher: "Springer"
   address: "Dordrecht New York"
   doi: "https://doi.org/10.1007/978-3-642-03711-5"
-
-- key: Liu2001b
-  author: "J. Liu and M. West"
-  year: "2001"
-  title: "Combining parameter and state estimation in simulation-based filtering"
-  pages: "197&#x2013;224"
-  booktitle: "Sequential Monte Carlo Methods in Practice"
-  editor: "A. Doucet, N. de Freitas, and N. J. Gordon"
-  publisher: "Springer"
-  address: "New York"
-  doi: "https://doi.org/10.1007/978-1-4757-3437-9"
 
 - key: Stocks2019
   author: "T. Stocks"
@@ -1238,16 +1190,6 @@
   pages: "96&#x2013;118"
   doi: "https://doi.org/10.1214/15-sts534"
 
-- key: Gibson2018
-  author: "G. J. Gibson, G. Streftaris, and D. Thong"
-  year: "2018"
-  title: "Comparison and assessment of epidemic models"
-  journal: "Stat Sci"
-  volume: "33"
-  number: "1"
-  pages: "19&#x2013;33"
-  doi: "https://doi.org/10.1214/17-STS615"
-
 - key: He2011
   author: "D. He, J. Dushoff, T. Day, J. Ma, and D. Earn"
   year: "2011"
@@ -1266,16 +1208,6 @@
   number: "4"
   pages: "e0007502"
   doi: "https://doi.org/10.1371/journal.pntd.0007502"
-
-- key: Houtekamer1998
-  author: "P. L. Houtekamer and H. L. Mitchell"
-  year: "1998"
-  title: "Data assimilation using an ensemble Kalman filter technique"
-  journal: "Mon Weather Rev"
-  volume: "126"
-  number: "3"
-  pages: "796&#x2013;811"
-  doi: "https://doi.org/10.1175/1520-0493(1998)126%3C0796:DAUAEK%3E2.0.CO;2"
 
 - key: Ionides2011a
   author: "E. L. Ionides"
@@ -1307,16 +1239,6 @@
   pages: "259&#x2013;276"
   doi: "https://doi.org/10.1890/03-4056"
 
-- key: McKinley2018
-  author: "T. J. McKinley, I. Vernon, I. Andrianakis, N. McCreesh, J. E. Oakley, R. N. Nsubuga, M. Goldstein, and R. G. White"
-  year: "2018"
-  title: "Approximate Bayesian computation and simulation-based inference for complex stochastic epidemic models"
-  journal: "Stat Sci"
-  volume: "33"
-  number: "1"
-  pages: "4&#x2013;18"
-  doi: "https://doi.org/10.1214/17-STS618"
-
 - key: ODea2019
   author: "E. B. O'Dea and J. M. Drake"
   year: "2019"
@@ -1336,16 +1258,6 @@
   number: "6404"
   pages: "800"
   doi: "https://doi.org/10.1126/science.aat6777"
-
-- key: Roberts2001a
-  author: "G. O. Roberts and J. S. Rosenthal"
-  year: "2001"
-  title: "Optimal scaling for various Metropolis-Hastings algorithms"
-  journal: "Stat Sci"
-  volume: "16"
-  number: "4"
-  pages: "351&#x2013;367"
-  url: "http://www.jstor.org/stable/3182776"
 
 - key: Roy2012
   author: "M. Roy, M. J. Bouma, E. L. Ionides, R. C. Dhiman, and M. Pascual"
@@ -1394,16 +1306,6 @@
   pages: "e0006158"
   doi: "https://doi.org/10.1371/journal.pntd.0006158"
 
-- key: Wills2023
-  author: "A. G. Wills and T. B. Sch&ouml;n"
-  year: "2023"
-  title: "Sequential Monte Carlo: a unified review"
-  journal: "Annual Review of Control, Robotics, and Autonomous Systems"
-  volume: "6"
-  number: "1"
-  pages: "159&#x2013;182"
-  doi: "https://doi.org/10.1146/annurev-control-042920-015119"
-
 - key: Wheeler2023
   author: "J. Wheeler, A. Rosengart, Z. Jiang, K. Tan, N. Treutle, and E. Ionides"
   year: "2023"
@@ -1440,39 +1342,12 @@
   pages: "173&#x2013;187"
   doi: "https://doi.org/10.21307/stattrans-2020-019"
 
-- key: Nguyen2023
-  author: "D. Nguyen"
-  year: "2023"
-  title: "Accelerated iterated filtering"
-  journal: "Austrian Journal of Statistics"
-  volume: "52"
-  number: "4"
-  pages: "117&#x2013;142"
-  doi: "https://doi.org/10.17713/ajs.v52i4.1503"
-
 - key: Bjornstad2023
   author: "O. N. Bj&oslash;rnstad"
   year: "2023"
   title: "Epidemics"
   publisher: "Springer"
   doi: "https://doi.org/10.1007/978-3-031-12056-5"
-
-- key: Harrell1982
-  author: "F. E. Harrell and C. E. Davis"
-  year: "1982"
-  title: "A new distribution-free quantile estimator"
-  journal: "Biometrika"
-  volume: "69"
-  number: "3"
-  pages: "635&#x2013;640"
-  doi: "https://doi.org/10.1093/biomet/69.3.635"
-
-- key: Kish1965
-  author: "L. Kish"
-  year: "1965"
-  title: "Survey Sampling"
-  publisher: "John Wiley &amp; Sons, Inc."
-  address: "New York"
 
 - key: Lin2016
   author: "Q. Lin, Z. Lin, A. P. Y. Chiu, and D. He"
@@ -1571,14 +1446,6 @@
   pages: "e41&#x2013;e50"
   doi: "https://doi.org/10.1016/S2589-7500(20)30268-5"
 
-- key: Smith1993
-  author: "A. A. Smith"
-  year: "1993"
-  title: "Estimating nonlinear time-series models using simulated vector autoregression"
-  journal: "J Appl Econom"
-  volume: "8"
-  pages: "S63&#x2013;S84"
-
 - key: Yang2021
   author: "W. Yang, D. Zhang, L. Peng, C. Zhuge, and L. Hong"
   year: "2021"
@@ -1598,43 +1465,12 @@
   pages: "e02583"
   doi: "https://doi.org/10.1002/ecy.2583"
 
-- key: Anderson1991
-  author: "R. M. Anderson and R. M. May"
-  year: "1991"
-  title: "Infectious Diseases of Humans"
-  publisher: "#OUP#"
-  address: "Oxford"
-
 - key: Barrows2016
   author: "D. Barrows"
   year: "2016"
   title: "A comparative study of techniques for estimation and inference of nonlinear stochastic time series"
   school: "McMaster University"
   url: "http://hdl.handle.net/11375/19103"
-
-- key: Bracher
-  author: "J. Bracher and L. Held"
-  year: ""
-  title: "A marginal moment matching approach for fitting endemic-epidemic models to underreported disease surveillance counts"
-  journal: "Biometrics"
-  doi: "https://doi.org/10.1111/biom.13371"
-
-- key: Davison1999
-  author: "A. C. Davison and D. V. Hinkley"
-  year: "1999"
-  title: "Bootstrap Methods and their Application"
-  publisher: "Cambridge University Press"
-  address: "Cambridge New York"
-  url: "http://www.isbnsearch.org/isbn/0521574714"
-
-- key: Funk2020
-  author: "S. Funk and A. A. King"
-  year: "2020"
-  title: "Choices and trade-offs in inference with infectious disease models"
-  journal: "Epidemics"
-  volume: "30"
-  pages: "100383"
-  doi: "https://doi.org/10.1016/j.epidem.2019.100383"
 
 - key: Kain2021
   author: "M. P. Kain, M. L. Childs, A. D. Becker, and E. A. Mordecai"
@@ -1644,86 +1480,4 @@
   volume: "34"
   pages: "100430"
   doi: "https://doi.org/10.1016/j.epidem.2020.100430"
-
-- key: Keeling2009
-  author: "M. Keeling and P. Rohani"
-  year: "2009"
-  title: "Modeling Infectious Diseases in Humans and Animals"
-  publisher: "Princeton University Press"
-  address: "Princeton, NJ"
-
-- key: Kendall1999
-  author: "B. E. Kendall, C. J. Briggs, W. W. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, and S. N. Wood"
-  year: "1999"
-  title: "Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches"
-  journal: "Ecology"
-  volume: "80"
-  pages: "1789&#x2013;1805"
-  doi: "https://doi.org/10.1890/0012-9658(1999)080%5B1789:wdpcas%5D2.0.co;2"
-
-- key: King2008
-  author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
-  year: "2008"
-  title: "Inapparent infections and cholera dynamics"
-  journal: "Nature"
-  volume: "454"
-  number: "7206"
-  pages: "877&#x2013;880"
-  doi: "https://doi.org/10.1038/nature07084"
-
-- key: Knape2011
-  author: "J. Knape and P. de Valpine"
-  year: "2011"
-  title: "Fitting complex population models by combining particle filters with Markov chain Monte Carlo"
-  journal: "Ecology"
-  volume: "93"
-  number: "2"
-  pages: "256&#x2013;263"
-  doi: "https://doi.org/10.1890/11-0797.1"
-
-- key: Magpantay2016
-  author: "F. M. G. Magpantay, M. Domenech de Cell&egrave;s, P. Rohani, and A. A. King"
-  year: "2016"
-  title: "Pertussis immunity and epidemiology: mode and duration of vaccine-induced immunity"
-  journal: "Parasitology"
-  volume: "143"
-  pages: "835&#x2013;849"
-  doi: "https://doi.org/10.1017/S0031182015000979"
-
-- key: McCleery1991
-  author: "R. H. McCleery and C. M. Perrins"
-  year: "1991"
-  title: "Effects of predation on the numbers of great tits <em>Parus major</em>"
-  pages: "129&#x2013;147"
-  booktitle: "Bird population studies. Relevence to Conservation and Management"
-  publisher: "Oxford University Press"
-  address: "Oxford"
-
-- key: Stocks2020
-  author: "T. Stocks, L. J. Martin, S. K&uuml;hlmann-Berenzon, and T. Britton"
-  year: "2020"
-  title: "Dynamic modeling of hepatitis C transmission among people who inject drugs"
-  journal: "Epidemics"
-  volume: "30"
-  pages: "100378"
-  doi: "https://doi.org/10.1016/j.epidem.2019.100378"
-
-- key: Toni2010
-  author: "T. Toni and M. P. H. Stumpf"
-  year: "2010"
-  title: "Simulation-based model selection for dynamical systems in systems and population biology"
-  journal: "Bioinformatics"
-  volume: "26"
-  number: "1"
-  pages: "104&#x2013;110"
-  doi: "https://doi.org/10.1093/bioinformatics/btp619"
-
-- key: Wood2010
-  author: "S. N. Wood"
-  year: "2010"
-  title: "Statistical inference for noisy nonlinear ecological dynamic systems"
-  journal: "Nature"
-  volume: "466"
-  pages: "1102&#x2013;1104"
-  doi: "https://doi.org/10.1038/nature09319"
 
