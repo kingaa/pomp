@@ -71,6 +71,9 @@ setIs(
   class2="pomp",
   coerce = function (from) {
     as(from@env$object,"pomp")
+  },
+  replace= function (from, to, value) {
+    pStop(who=-2L,"cannot replace the pomp object in a stateful objective function.")
   }
 )
 

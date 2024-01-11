@@ -31,6 +31,8 @@ dat |>
 
 plot(f)
 
+try(as(f,"pomp") <- po)
+
 f()
 stopifnot(f(0)==f(1))
 stopifnot(logLik(f)==-f(0))
