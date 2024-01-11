@@ -1,4 +1,4 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck'
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/circumstance.Rcheck'
 * using R version 4.3.2 (2023-10-31)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
@@ -55,11 +55,11 @@
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
          user system elapsed
-pfilter 5.781  0.372   5.103
+pfilter 7.026  0.158   6.821
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [46s/27s] OK
+ [34s/36s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

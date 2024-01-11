@@ -1,4 +1,4 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/hte.Rcheck'
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/hte.Rcheck'
 * using R version 4.3.2 (2023-10-31)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
@@ -9,7 +9,7 @@
 * using option '--as-cran'
 * checking for file 'hte/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'hte' version '0.0.14.0'
+* this is package 'hte' version '0.0.15.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -43,7 +43,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... NOTE
+* checking R code for possible problems ... [18s/11s] NOTE
 filterfun : fun: local variable ‘theta’ assigned but may not be used
 stobfun : ofun: local variable ‘theta’ assigned but may not be used
 * checking Rd files ... OK
@@ -64,62 +64,15 @@ stobfun : ofun: local variable ‘theta’ assigned but may not be used
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [277s/36s] OK
+* checking examples ... [94s/49s] OK
 Examples with CPU (user + system) or elapsed time > 5s
-            user  system elapsed
-fake_data 34.086 104.419  12.761
-simuldat  30.314  94.112  11.228
+                   user system elapsed
+fake_data        20.187 23.818  17.923
+simuldat         16.936 18.546  15.764
+bernoulli_filter  4.686  0.117   5.816
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
-5,9c5,9
-< ✔ dplyr     1.1.4     ✔ readr     2.1.4
-< ✔ forcats   1.0.0     ✔ stringr   1.5.1
-< ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
-< ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
-< ✔ purrr     1.0.2     
----
-> ✔ dplyr     1.1.2     ✔ readr     2.1.4
-> ✔ forcats   1.0.0     ✔ stringr   1.5.0
-> ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-> ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-> ✔ purrr     1.0.1     
-5,9c5,9
-< ✔ dplyr     1.1.4     ✔ readr     2.1.4
-< ✔ forcats   1.0.0     ✔ stringr   1.5.1
-< ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
-< ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
-< ✔ purrr     1.0.2     
----
-> ✔ dplyr     1.1.2     ✔ readr     2.1.4
-> ✔ forcats   1.0.0     ✔ stringr   1.5.0
-> ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-> ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-> ✔ purrr     1.0.1     
-5,9c5,9
-< ✔ dplyr     1.1.4     ✔ readr     2.1.4
-< ✔ forcats   1.0.0     ✔ stringr   1.5.1
-< ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
-< ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
-< ✔ purrr     1.0.2     
----
-> ✔ dplyr     1.1.2     ✔ readr     2.1.4
-> ✔ forcats   1.0.0     ✔ stringr   1.5.0
-> ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-> ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-> ✔ purrr     1.0.1     
-5,9c5,9
-< ✔ dplyr     1.1.4     ✔ readr     2.1.4
-< ✔ forcats   1.0.0     ✔ stringr   1.5.1
-< ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
-< ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
-< ✔ purrr     1.0.2     
----
-> ✔ dplyr     1.1.2     ✔ readr     2.1.4
-> ✔ forcats   1.0.0     ✔ stringr   1.5.0
-> ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-> ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-> ✔ purrr     1.0.1     
- [74s/49s] OK
+ [57s/53s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

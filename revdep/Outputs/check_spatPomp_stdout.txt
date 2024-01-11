@@ -1,4 +1,4 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/spatPomp.Rcheck'
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/spatPomp.Rcheck'
 * using R version 4.3.2 (2023-10-31)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
@@ -19,7 +19,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'spatPomp' can be installed ... [40s/20s] OK
+* checking whether package 'spatPomp' can be installed ... [19s/20s] OK
 * used C compiler: 'gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
 * checking installed package size ... OK
 * checking package directory ... OK
@@ -42,7 +42,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [62s/18s] OK
+* checking R code for possible problems ... [31s/25s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -63,7 +63,7 @@
 * checking examples ... OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [451s/57s] OK
+ [140s/56s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

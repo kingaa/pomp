@@ -1,4 +1,4 @@
-* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
 * using R version 4.3.2 (2023-10-31)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
@@ -41,7 +41,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... OK
+* checking R code for possible problems ... [18s/11s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -51,22 +51,7 @@
 * checking Rd \usage sections ... OK
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
-* checking examples ... [115s/14s] OK
-Examples with CPU (user + system) or elapsed time > 5s
-                         user system elapsed
-plot                    2.309  8.396   0.831
-simulate                2.324  8.378   0.797
-pfilter                 2.306  8.360   0.852
-pparams                 2.107  7.999   0.741
-panelRandomWalk         1.545  7.080   0.785
-unitlogLik              1.774  6.783   0.725
-panelGompertz           1.904  6.538   0.956
-panelPomp               1.843  6.583   0.902
-panelGompertzLikelihood 1.596  5.808   0.887
-mif2                    1.516  5.798   1.129
-unitobjects             1.426  5.828   0.765
-params                  1.107  4.944   0.740
-panelPomp_methods       1.044  4.008   1.001
+* checking examples ... [33s/16s] OK
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
@@ -106,7 +91,7 @@ panelPomp_methods       1.044  4.008   1.001
 < name     [,1]     [,2]     [,3]     [,4]      [,5]
 ---
 > variable     [,1]     [,2]     [,3]     [,4]      [,5]
- [277s/45s] OK
+ [96s/54s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
