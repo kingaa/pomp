@@ -110,11 +110,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 
 \references{
-Liu, J. and M. West.
-Combining Parameter and State Estimation in Simulation-Based Filtering.
-In A. Doucet, N. de Freitas, and N. J. Gordon, editors,
-Sequential Monte Carlo Methods in Practice, pages 197-224.
-Springer, New York, 2001.
+\Liu2001b
 }
 \seealso{
 More on Bayesian methods:

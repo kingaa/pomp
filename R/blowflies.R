@@ -45,7 +45,7 @@
 ##'
 ##' \Wood2010
 ##'
-##' \Gurney1980
+##' \Gurney1980a
 ##'
 ##' \Brillinger1980
 ##'

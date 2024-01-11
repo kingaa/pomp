@@ -43,11 +43,8 @@
 ##' @author Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
 ##'
 ##' @references
-##' Liu, J. and M. West.
-##' Combining Parameter and State Estimation in Simulation-Based Filtering.
-##' In A. Doucet, N. de Freitas, and N. J. Gordon, editors,
-##' Sequential Monte Carlo Methods in Practice, pages 197-224.
-##' Springer, New York, 2001.
+##'
+##' \Liu2001b
 NULL
 
 ## In annotation, L&W AGM == Liu & West "A General Algorithm"

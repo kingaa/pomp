@@ -24,9 +24,13 @@
 
 \newcommand{\Evensen2009}{G. Evensen. \emph{Data assimilation: the ensemble Kalman filter}. Springer-Verlag, 2009.}
 
-\newcommand{\Gurney1980}{W.S.C. Gurney, S.P. Blythe, and R.M. Nisbet. Nicholson's blowflies revisited. \emph{Nature} \bold{287}, 17--21, 1980.}
+\newcommand{\Gurney1980a}{W.S.C. Gurney, S.P. Blythe, and R.M. Nisbet. Nicholson's blowflies revisited. \emph{Nature} \bold{287}, 17--21, 1980.}
+
+\newcommand{\Harrell1982}{F. E. Harrell and C. E. Davis. A new distribution-free quantile estimator. \emph{Biometrika} \bold{69}, 635--640, 1982.}
 
 \newcommand{\He2010}{D. He, E.L. Ionides, and A.A. King. Plug-and-play inference for disease dynamics: measles in large and small populations as a case study.  \emph{Journal of the Royal Society Interface} \bold{7}, 271--283, 2010.}
+
+\newcommand{\Hyndman1996}{R. J. Hyndman and Y. Fan. Sample quantiles in statistical packages. \emph{American Statistician} \bold{50}, 361--365, 1996.}
 
 \newcommand{\Ionides2011}{E.L. Ionides. Discussion of \dQuote{Feature matching in time series modeling} by Y. Xia and H. Tong. \emph{Statistical Science} \bold{26}, 49--52, 2011.}
 
@@ -48,7 +52,7 @@
 
 \newcommand{\Kucherenko2005}{S. Kucherenko and Y. Sytsko. Application of deterministic low-discrepancy sequences in global optimization. \emph{Computational Optimization and Applications} \bold{30}, 297--318, 2005. \doi{10.1007/s10589-005-4615-1}.}
 
-\newcommand{\Liu2001}{J. Liu and M. West. Combining Parameter and State Estimation in Simulation-Based Filtering. In A. Doucet, N. de Freitas, and N. J. Gordon, (eds.), \emph{Sequential Monte Carlo Methods in Practice}, pp. 197--224. Springer, New York, 2001.}
+\newcommand{\Liu2001b}{J. Liu and M. West. Combining parameter and state estimation in simulation-based filtering. In A. Doucet, N. de Freitas, and N. J. Gordon, (eds.), \emph{Sequential Monte Carlo Methods in Practice}, pp. 197--224. Springer, New York, 2001.}
 
 \newcommand{\London1973}{W. P. London and J. A. Yorke, Recurrent outbreaks of measles, chickenpox and mumps: I. Seasonal variation in contact rates. \emph{American Journal of Epidemiology} \bold{98}, 453--468, 1973.}
 
@@ -75,7 +79,3 @@
 \newcommand{\Wood2010}{S. N. Wood Statistical inference for noisy nonlinear ecological dynamic systems. \emph{Nature} \bold{466}, 1102--1104, 2010.}
 
 \newcommand{\Xia2011}{Y. Xia and H. Tong. Feature matching in time series modeling. \emph{Statistical Science} \bold{26}, 21--46, 2011.}
-
-\newcommand{\Hyndman1996}{R. J. Hyndman and Y. Fan. Sample quantiles in statistical packages. \emph{American Statistician} \bold{50}, 361--365, 1996.}
-
-\newcommand{\Harrell1982}{F. E. Harrell and C. E. Davis. A new distribution-free quantile estimator. \emph{Biometrika} \bold{69}, 635--640, 1982.}
