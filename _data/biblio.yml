@@ -79,7 +79,7 @@
   year: "2021"
   title: "Statistical inference for spatiotemporal partially observed Markov processes via the R package spatPomp"
   journal: "arXiv"
-  eid: "2101.01157"
+  eprint: "2101.01157"
   doi: "https://doi.org/10.48550/arXiv.2101.01157"
 
 - key: AugerMethe2021
@@ -1460,7 +1460,7 @@
   year: "2023"
   title: "Informing policy via dynamic models: cholera in Haiti"
   journal: "arXiv"
-  eid: "2301.08979"
+  eprint: "2301.08979"
   doi: "https://doi.org/10.48550/arXiv.2301.08979"
 
 - key: Whittles2017

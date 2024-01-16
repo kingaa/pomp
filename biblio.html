@@ -13,7 +13,7 @@ title: references to the POMP literature
   <dd>
     {{ rec.author }} ({{ rec.year }}).
     {{ rec.title }}.
-    {% if rec.journal %}<i>{{ rec.journal }}</i>{% if rec.volume %} <b>{{ rec.volume }}</b>:{% endif %}{% if rec.pages %}&nbsp;{{ rec.pages }}{% elsif rec.eid %}&nbsp;{{ rec.eid }}{% endif %}.
+    {% if rec.journal %}<i>{{ rec.journal }}</i>{% if rec.volume %} <b>{{ rec.volume }}</b>:{% endif %}{% if rec.pages %}&nbsp;{{ rec.pages }}{% elsif rec.eprint %}&nbsp;{{ rec.eprint }}{% endif %}.
     {% elsif rec.school %} Thesis: {{ rec.school }}.
     {% elsif rec.booktitle %} In: <i>{{ rec.booktitle }}</i>{% if rec.editor %} (edited by {{ rec.editor }}){% endif %}{% if rec.publisher %} {{ rec.publisher }}{% if rec.address %}, {{ rec.address }}{% endif %}{% endif %}.
     {% elsif rec.publisher %} {{ rec.publisher }}{% if rec.address %}, {{ rec.address }}{% endif %}.{% endif %}
