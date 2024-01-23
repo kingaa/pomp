@@ -294,18 +294,18 @@ code {
 <p>Using each implementation, we’ll now run a number of simulations and compare the amount of time required.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">system.time</span>(<span class="kw">simulate</span>(gompertz,<span class="dt">nsim=</span><span class="dv">10000</span>,<span class="dt">format=</span><span class="st">&quot;arrays&quot;</span>))</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   8.194   0.013   8.209</code></pre>
+##   8.010   0.012   8.025</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">system.time</span>(<span class="kw">simulate</span>(Gompertz,<span class="dt">nsim=</span><span class="dv">10000</span>,<span class="dt">format=</span><span class="st">&quot;arrays&quot;</span>))</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.172   0.000   0.172</code></pre>
+##   0.172   0.000   0.173</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">system.time</span>(<span class="kw">pfilter</span>(gompertz,<span class="dt">Np=</span><span class="dv">10000</span>))</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   7.373   0.000   7.374</code></pre>
+##   6.922   0.005   6.931</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">system.time</span>(<span class="kw">pfilter</span>(Gompertz,<span class="dt">Np=</span><span class="dv">10000</span>))</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.219   0.000   0.219</code></pre>
+##   0.210   0.001   0.209</code></pre>
 <hr />
-<p>This document was produced using <strong>pomp</strong> version 5.4.1.0 and <strong>R</strong> version 4.3.1.</p>
+<p>This document was produced using <strong>pomp</strong> version 5.5.2.0 and <strong>R</strong> version 4.3.2.</p>
 </div>
 
 
