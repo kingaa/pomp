@@ -161,10 +161,10 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 More on methods based on summary statistics: 
 \code{\link{basic_probes}},
 \code{\link{nlf}},
-\code{\link{probe_match}},
 \code{\link{probe}()},
-\code{\link{spect_match}},
-\code{\link{spect}()}
+\code{\link{probe_match}},
+\code{\link{spect}()},
+\code{\link{spect_match}}
 
 More on \pkg{pomp} estimation algorithms:
 \code{\link{bsmc2}()},

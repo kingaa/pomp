@@ -16,7 +16,7 @@
 \usage{
 parameter_trans(toEst, fromEst, ...)
 
-\S4method{parameter_trans}{`NULL`,`NULL`}(toEst, fromEst, ...)
+\S4method{parameter_trans}{NULL,NULL}(toEst, fromEst, ...)
 
 \S4method{parameter_trans}{pomp_fun,pomp_fun}(toEst, fromEst, ...)
 
@@ -24,7 +24,7 @@ parameter_trans(toEst, fromEst, ...)
 
 \S4method{parameter_trans}{character,character}(toEst, fromEst, ...)
 
-\S4method{parameter_trans}{`function`,`function`}(toEst, fromEst, ...)
+\S4method{parameter_trans}{function,function}(toEst, fromEst, ...)
 }
 \arguments{
 \item{toEst, fromEst}{procedures that perform transformation of model parameters to and from the estimation scale, respectively.

@@ -98,6 +98,13 @@ Execute \code{citation("pomp")} to view the correct citation for publications.
 See \href{https://kingaa.github.io/pomp/biblio.html}{the package website for more references}, including many publications that use \pkg{pomp}.
 }
 \seealso{
+Useful links:
+\itemize{
+  \item \url{https://kingaa.github.io/pomp/}
+  \item Report bugs at \url{https://github.com/kingaa/pomp/issues/}
+}
+
+
 More on implementing POMP models: 
 \code{\link{Csnippet}},
 \code{\link{accumvars}},

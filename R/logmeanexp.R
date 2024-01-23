@@ -1,7 +1,7 @@
 ##' The log-mean-exp trick
 ##'
-##' \code{logmeanexp} computes \deqn{\log\frac{1}{N}\sum_{n=1}^N\!e^x_i,}{log
-##' mean exp(x_i),} avoiding over- and under-flow in doing so.  It can
+##' \code{logmeanexp} computes \deqn{\log\frac{1}{n}\sum_{i=1}^n\!e^{x_i},}{log
+##' mean exp(x),} avoiding over- and under-flow in doing so.  It can
 ##' optionally return an estimate of the standard error in this quantity.
 ##'
 ##' When \code{se = TRUE}, \code{logmeanexp} uses a jackknife estimate of the

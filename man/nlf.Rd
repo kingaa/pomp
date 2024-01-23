@@ -241,10 +241,10 @@ More on \pkg{pomp} estimation algorithms:
 More on methods based on summary statistics: 
 \code{\link{abc}()},
 \code{\link{basic_probes}},
-\code{\link{probe_match}},
 \code{\link{probe}()},
-\code{\link{spect_match}},
-\code{\link{spect}()}
+\code{\link{probe_match}},
+\code{\link{spect}()},
+\code{\link{spect_match}}
 
 More on maximization-based estimation methods:
 \code{\link{mif2}()},

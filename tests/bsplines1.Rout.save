@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -18,14 +20,6 @@ Type 'q()' to quit R.
 > options(digits=3)
 > png(filename="bsplines1-%02d.png",res=100)
 > library(pomp)
-
-Welcome to pomp!
-
-As of version 4.6, no user-visible pomp function has a name that
-includes a dot ('.'). Function names have been changed to replace the
-dot with an underscore ('_'). For more information, see the pomp blog:
-https://kingaa.github.io/pomp/blog.html.
-
 > 
 > x <- seq(0,2,by=0.01)
 > try(y <- bspline_basis(x,degree=3,nbasis=9,names=c("basis1","basis2")))

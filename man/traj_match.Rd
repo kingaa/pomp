@@ -171,8 +171,8 @@ On the other hand, if one retrieves a stored objective function from a file, or 
 
 More on methods for deterministic process models: 
 \code{\link{flow}()},
-\code{\link{skeleton_spec}},
 \code{\link{skeleton}()},
+\code{\link{skeleton_spec}},
 \code{\link{trajectory}()}
 
 More on maximization-based estimation methods:

@@ -9,8 +9,7 @@
 ##' inference methods for \acronym{POMP} models can be implemented.
 ##'
 ##' @name pomp-package
-##' @aliases pomp,package
-##' @docType package
+##' @aliases pomp,package pomp-package
 ##' @author Aaron A. King
 ##' @family implementation information
 ##' @family pomp workhorses
@@ -92,20 +91,15 @@
 ##'
 ##' @useDynLib pomp, .registration = TRUE, .fixes="P_"
 ##' @import methods
-NULL
+"_PACKAGE"
 
-.onAttach <- function (...) {
-  .banner()
-}
+## .onAttach <- function (...) {
+##   .banner()
+## }
 
-.banner <- function (...) {
-  msg <- r"{
-Welcome to pomp!
-
-As of version 4.6, no user-visible pomp function has a name that
-includes a dot ('.'). Function names have been changed to replace the dot
-with an underscore ('_'). For more information, see the pomp blog:
-https://kingaa.github.io/pomp/blog.html.
-}"
-  packageStartupMessage("\n",paste(strwrap(msg),collapse="\n"),"\n")
-}
+## .banner <- function (...) {
+##   msg <- r"{
+## Welcome to pomp!
+## }"
+##  packageStartupMessage("\n",paste(strwrap(msg),collapse="\n"),"\n")
+## }

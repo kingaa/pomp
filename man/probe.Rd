@@ -161,8 +161,8 @@ More on methods based on summary statistics:
 \code{\link{basic_probes}},
 \code{\link{nlf}},
 \code{\link{probe_match}},
-\code{\link{spect_match}},
-\code{\link{spect}()}
+\code{\link{spect}()},
+\code{\link{spect_match}}
 }
 \author{
 Daniel C. Reuman, Aaron A. King

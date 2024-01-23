@@ -154,8 +154,8 @@ More on methods based on summary statistics:
 \code{\link{abc}()},
 \code{\link{basic_probes}},
 \code{\link{nlf}},
-\code{\link{probe_match}},
 \code{\link{probe}()},
+\code{\link{probe_match}},
 \code{\link{spect_match}}
 
 More on \pkg{pomp} elementary algorithms: 

@@ -41,8 +41,8 @@ Other extraction methods:
 \code{\link{saved_states}()},
 \code{\link{spy}()},
 \code{\link{summary}()},
-\code{\link{timezero}()},
 \code{\link{time}()},
+\code{\link{timezero}()},
 \code{\link{traces}()}
 }
 \concept{extraction methods}

@@ -185,8 +185,8 @@ More on \pkg{pomp} elementary algorithms:
 
 More on methods for deterministic process models: 
 \code{\link{flow}()},
-\code{\link{skeleton_spec}},
 \code{\link{skeleton}()},
+\code{\link{skeleton_spec}},
 \code{\link{traj_match}}
 }
 \concept{deterministic methods}

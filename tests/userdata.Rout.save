@@ -1,5 +1,5 @@
 
-R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
+R version 4.3.2 (2023-10-31) -- "Eye Holes"
 Copyright (C) 2023 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -21,14 +21,6 @@ Type 'q()' to quit R.
 > set.seed(58668844L)
 > 
 > library(pomp)
-
-Welcome to pomp!
-
-As of version 4.6, no user-visible pomp function has a name that
-includes a dot ('.'). Function names have been changed to replace the
-dot with an underscore ('_'). For more information, see the pomp blog:
-https://kingaa.github.io/pomp/blog.html.
-
 > 
 > simulate(times=seq(1,100),t0=0,
 +   nbasis=9L,

@@ -19,7 +19,7 @@
   ...
 )
 
-\S4method{pomp_fun}{`function`}(f, proto = NULL, slotname = NULL, ...)
+\S4method{pomp_fun}{function}(f, proto = NULL, slotname = NULL, ...)
 
 \S4method{pomp_fun}{character}(
   f,

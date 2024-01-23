@@ -74,7 +74,7 @@ Other extraction methods:
 \code{\link{spy}()},
 \code{\link{states}()},
 \code{\link{summary}()},
-\code{\link{timezero}()},
-\code{\link{time}()}
+\code{\link{time}()},
+\code{\link{timezero}()}
 }
 \concept{extraction methods}
