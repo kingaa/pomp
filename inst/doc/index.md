@@ -124,10 +124,6 @@ dt {
 
 - [Report issues with the package](https://github.com/kingaa/pomp/issues)
 
-- <a href="#" onclick="goBack()">Back to the previous page</a>
+- <a href="#" onclick="window.history.back()">Back to the previous page</a>
 
-<script>
-function goBack() {
-  window.history.back();
-}
-</script>
+- <a href="#" onclick="window.close()">Close window</a>

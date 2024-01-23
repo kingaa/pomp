@@ -37,11 +37,12 @@ It maps the unit interval \eqn{[0,1]} into the extended real line \eqn{[-\infty,
 
 The inverse of the logit transformation is the expit transformation.
 
-The log-barycentric transformation takes a vector \eqn{X_i}{Xi}, \eqn{i=1,\dots,n}, to a vector \eqn{Y_i}{Yi}, where \deqn{Y_i = \log\frac{X_i}{\sum_j X_j}.}{Yi = log(Xi/sum(Xj)).}
-If \eqn{X} is an \eqn{n}-vector, it takes every simplex defined by \eqn{\sum_i X_i = c}{sum(Xi)=c}, \eqn{c} constant, to n-dimensional Euclidean space \eqn{R^n}{R^n}.
+The log-barycentric transformation takes a vector \eqn{X\in{R^{n}_+}}{X in the non-negative cone of R^n}, to a vector \eqn{Y\in{R^n}}{Y in R^n}, where \deqn{Y_i = \log\frac{X_i}{\sum_j X_j}.}{Yi = log(Xi/sum(X)).}
+The transformation is not one-to-one.
+However, for each \eqn{c>0}, it maps the simplex \eqn{\{X\in{R^n_+}:\sum_i X_i = c\}}{sum(X)=c} bijectively onto \eqn{n}-dimensional Euclidean space \eqn{R^n}.
 
 The inverse of the log-barycentric transformation is implemented as \code{inv_log_barycentric}.
-Note that it is not a true inverse, in the sense that it takes \eqn{R^n} to the \emph{unit} simplex, \eqn{\sum_i X_i = 1}{sum(Xi)=1}.
+Note that it is not a true inverse, in the sense that it takes \eqn{R^n} to the \emph{unit} simplex, \eqn{\{X\in{R^n_+}:\sum_i X_i = 1\}}{sum(X)=1}.
 Thus, \preformatted{
     log_barycentric(inv_log_barycentric(Y)) == Y,
 } but \preformatted{
