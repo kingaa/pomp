@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.5.2}{
+  \itemize{
+    \item Minor corrections to documentation.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.5.1}{
   \itemize{
     \item C-level functions \code{set_pomp_userdata} and \code{unset_pomp_userdata} are no longer exported.
