@@ -6,6 +6,7 @@ params:
 output:
   html_document:
     theme: null
+    highlight: haddock
     toc: yes
     toc_depth: 4
     number_sections: true
@@ -22,7 +23,6 @@ require(ggplot2)
 theme_set(theme_bw())
 set.seed(1810027260)
 ```
-
 ```{css echo=FALSE}
 #TOC ul li {
     list-style: none;
@@ -54,7 +54,7 @@ Better still, construct a minimal example that will reproduce the error: this al
 
 Make sure to include the output of following, so that I can see what version of **pomp** you are using, what version of **R**, what kind of machine you have, any customizations you have that might be affecting performance, etc.
 
-```
+```{r eval=FALSE}
 source("https://kingaa.github.io/scripts/diagnostics.R")
 ```
 
@@ -497,7 +497,7 @@ One chooses the time step using the `delta.t` argument.
 In writing the `step.fun` C snippet, one needs *exactly one* call to `reulermultinom` for each compartment of the model.
 Using the notation above, one has to pack the $K$ rates $\mu_1,\dots,\mu_K$ into contiguous memory locations and retrieve the results in (a different set of) contiguous memory locations.
 For example, if `rate` is a [pointer](https://www.tutorialspoint.com/cprogramming/c_pointers) to $K$ contiguous memory locations holding the rates and `dn` is a pointer to $K$ contiguous memory locations ready to hold the results, then
-```
+```{c eval=FALSE}
 reulermultinom(K,N,rate,dt,dn);
 ```
 will result in a random sample from the Euler multinomial distribution (with timestep dt) being stored in `dn[0]`, ..., `dn[K-1]`.
@@ -506,7 +506,7 @@ Note that the rules for `step.fun` C snippets guarantee that the operative time 
 See [`?rprocess_spec`](https://kingaa.github.io/manuals/pomp/html/rprocess_spec.html) and [`?Csnippet`](https://kingaa.github.io/manuals/pomp/html/csnippet.html) for more information.
 
 When the step function is provided as an **R** function, the corresponding call is
-```
+```{r eval=FALSE}
 dn <- reulermultinom(n=1,size=N,rate=mu,dt=delta.t)
 ```
 where `mu` is a vector containing the rates.
@@ -524,7 +524,7 @@ If one wishes to call functions defined in a precompiled C library, one can incl
 
 Any text passed to the `shlib.args` argument is included in the command-line call to `R CMD SHLIB`.
 To link to a precompiled library, then, one can do something like
-```
+```{r eval=FALSE}
   shlib.args = "<library>"
 ```
 where `<library>` is the path of the library.
@@ -580,7 +580,7 @@ In [Discussion #156](https://github.com/kingaa/pomp/discussions/156) there is an
 ## I see an error about `dmeasure` returning illegal values.  What does it mean? {#illegal-dmeasure}
 
 A common error message is 
-```
+```{r eval=FALSE}
 Error : in ‘pfilter’: ‘dmeasure’ returns illegal value
 ```
 
@@ -619,7 +619,7 @@ dyn.load(paste0("hello",.Platform$dynlib.ext))
 .C("hello",PACKAGE="hello")
 ```
 If it works, you should see
-```
+```{r eval=FALSE}
 hello world!
 list()
 ```
@@ -698,7 +698,7 @@ The standard choice is to substitute the underscore "_" for whitespace.
 
 Error messages containing the following elements often arise.
 
-```
+```{r eval=FALSE}
 ...
 Error: error in building shared-object library from C snippets:
 in ‘Cbuilder’: compilation error: cannot compile shared-object library 
@@ -717,14 +717,14 @@ For example, it could be called `Beta` instead.
 
 The error message displays the "prototype" of the function **pomp** expects.
 For example, in the message
-```
+```{r eval=FALSE}
 Error : in 'sannbox': 'candidate.dist' must be a function of the form 'candidate.dist(par, temp, scale, ...)'.
 ```
 the prototype expected is `candidate.dist(par, temp, scale, ...)`.
 This means that a function supplied to the `candidate.dist` argument must have at least the arguments `par`, `temp`, `scale`, and `...`.
 Note that the ellipses (`...`) are necessary.
 Similarly, the error message
-```
+```{r eval=FALSE}
 Error: in ‘rmeasure’: ‘rmeasure’ must be a function of the form ‘rmeasure(...)’
 ```
 tells us that we have left the `...` out of the argument list in the function we supplied for `rmeasure`.
@@ -732,11 +732,11 @@ tells us that we have left the `...` out of the argument list in the function we
 ## What does it mean when a variable is not found among the parameters, or state variables, or covariates, or observables?
 
 Error messages like the following
-```
+```{r eval=FALSE}
 Error : in 'pmcmc': in 'dprior': variable 'r' not found among the parameters.
 ```
 or
-```
+```{r eval=FALSE}
 Error : in 'dmeasure': variable 'y2' not found among the observables.
 ```
 or similar messages, wherein a named variable is not found among the parameters, state variables, covariates, or observables, arise when a C snippet-based [workhorse function](https://kingaa.github.io/manuals/pomp/html/workhorses.html), i.e., one that executes a basic model component, cannot find the named variable among the supplied parameters, state variables, covariates, or observables.
@@ -910,6 +910,8 @@ dmeas <- Csnippet(r"{
    lik = (log) ? lik : exp(lik);
 }")
 ```
+
+--------------
 
 # References
 

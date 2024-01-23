@@ -3,24 +3,10 @@ title: 'Coding POMP models: R vs C snippets'
 output: 
   html_document:
     theme: null
-    highlight: kate
+    highlight: haddock
     toc: yes
     toc_depth: 3
 ---
-
-```{css echo=FALSE,purl=FALSE}
-a:link, a:visited {
-  color: #0000ff;
-  text-decoration: none;
-}
-a:hover, a:active {
-  color: #cc3333;
-  text-decoration: none;
-}
-code {
-  font-size: 110%;
-}
-```
 
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
 params <- list(prefix="R_v_C")

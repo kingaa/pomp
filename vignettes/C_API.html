@@ -89,46 +89,38 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    background-color: #ffffff;
-    color: #a0a0a0;
+    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #a0a0a0;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  { color: #1f1c1b; background-color: #ffffff; }
+  {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span { color: #1f1c1b; } /* Normal */
-code span.al { color: #bf0303; background-color: #f7e6e6; font-weight: bold; } /* Alert */
-code span.an { color: #ca60ca; } /* Annotation */
-code span.at { color: #0057ae; } /* Attribute */
-code span.bn { color: #b08000; } /* BaseN */
-code span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
-code span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #924c9d; } /* Char */
-code span.cn { color: #aa5500; } /* Constant */
-code span.co { color: #898887; } /* Comment */
-code span.cv { color: #0095ff; } /* CommentVar */
-code span.do { color: #607880; } /* Documentation */
-code span.dt { color: #0057ae; } /* DataType */
-code span.dv { color: #b08000; } /* DecVal */
-code span.er { color: #bf0303; text-decoration: underline; } /* Error */
-code span.ex { color: #0095ff; font-weight: bold; } /* Extension */
-code span.fl { color: #b08000; } /* Float */
-code span.fu { color: #644a9b; } /* Function */
-code span.im { color: #ff5500; } /* Import */
-code span.in { color: #b08000; } /* Information */
-code span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
-code span.op { color: #1f1c1b; } /* Operator */
-code span.ot { color: #006e28; } /* Other */
-code span.pp { color: #006e28; } /* Preprocessor */
-code span.re { color: #0057ae; background-color: #e0e9f8; } /* RegionMarker */
-code span.sc { color: #3daee9; } /* SpecialChar */
-code span.ss { color: #ff5500; } /* SpecialString */
-code span.st { color: #bf0303; } /* String */
-code span.va { color: #0057ae; } /* Variable */
-code span.vs { color: #bf0303; } /* VerbatimString */
-code span.wa { color: #bf0303; } /* Warning */
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
 
 </style>
 <script>
@@ -218,19 +210,6 @@ code span.wa { color: #bf0303; } /* Warning */
 </ul>
 </div>
 
-<style type="text/css">
-a:link, a:visited {
-  color: #0000ff;
-  text-decoration: none;
-}
-a:hover, a:active {
-  color: #cc3333;
-  text-decoration: none;
-}
-code {
-  font-size: 110%;
-}
-</style>
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
@@ -337,9 +316,9 @@ code {
 <h3>Log-barycentric transformation</h3>
 <div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="dt">void</span> to_log_barycentric(<span class="dt">double</span> *xt, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">int</span> n);</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="dt">void</span> from_log_barycentric(<span class="dt">double</span> *xt, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">int</span> n);</span></code></pre></div>
-<p>The log-barycentric transformation takes a vector <span class="math inline">\(X_i\in\mathbb{R}^n_+\)</span>, <span class="math inline">\(i=1,\dots,n\)</span>, to a vector <span class="math inline">\(Y_i\in\mathbb{R}^n\)</span>, where <span class="math display">\[Y_i = \log\frac{X_i}{\sum_j\!X_j}.\]</span> The log-barycentric transformation takes every simplex defined by <span class="math inline">\(\sum_i\!X_i = c\)</span>, <span class="math inline">\(c\)</span> constant, to <span class="math inline">\(n\)</span>-dimensional Euclidean space <span class="math inline">\(\mathbb{R}^n\)</span>.</p>
+<p>The log-barycentric transformation takes a vector <span class="math inline">\(X\in\mathbb{R}^n_+\)</span> to a vector <span class="math inline">\(Y\in\mathbb{R}^n\)</span>, where <span class="math display">\[Y_i = \log\frac{X_i}{\sum_j\!X_j}.\]</span> For every <span class="math inline">\(c&gt;0\)</span>, this transformation maps the simplex <span class="math inline">\(\{X\in\mathbb{R}^n_+\;\vert\;\sum_i\!X_i = c\}\)</span> bijectively onto <span class="math inline">\(\mathbb{R}^n\)</span>.</p>
 <p>The pseudo-inverse transformation takes <span class="math inline">\(\mathbb{R}^n\)</span> to the unit simplex <span class="math inline">\(S=\{X\in\mathbb{R}^n_+\;\vert\;\sum_i\!X_i=1\}\)</span>. Specifically, <span class="math display">\[X_i = \frac{e^{Y_i}}{\sum_j\!e^{Y_j}}.\]</span></p>
-<p>Note that if <span class="math inline">\(T:\mathbb{R}^n_+\to\mathbb{R}^n\)</span> is the log-barycentric transformation so defined, <span class="math inline">\(U\)</span> is the pseudo-inverse, and <span class="math inline">\(Id\)</span> denotes the identity map, then <span class="math inline">\(T\circ U=Id:\mathbb{R}^n\to\mathbb{R}^n\)</span> but <span class="math inline">\(U\circ T\ne Id\)</span>. However, if <span class="math inline">\(T\)</span> is restricted to the unit simplex, then <span class="math inline">\(U\circ T=Id:S\to S\)</span>.</p>
+<p>Note that if <span class="math inline">\(T:\mathbb{R}^n_+\to\mathbb{R}^n\)</span> is the log-barycentric transformation so defined, <span class="math inline">\(U\)</span> is the pseudo-inverse, and <span class="math inline">\(Id\)</span> denotes the identity map, then <span class="math inline">\(T\circ U=Id:\mathbb{R}^n\to\mathbb{R}^n\)</span> but <span class="math inline">\(U\circ T\ne Id\)</span>. However, if <span class="math inline">\(T\)</span> is restricted to the unit simplex S, then <span class="math inline">\(U\circ{T\vert_{S}}=Id:S\to S\)</span>.</p>
 <p>Input:</p>
 <ul>
 <li><code>x</code> is a pointer to vector of parameters to be tranformed either to or from log barycentric coordinates.</li>

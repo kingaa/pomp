@@ -3,26 +3,12 @@ title: 'pomp C API'
 output: 
   html_document:
     theme: null
-    highlight: kate
+    highlight: haddock
     toc: yes
     toc_depth: 3
 params:
   prefix: "c_api"
 ---
-
-```{css echo=FALSE}
-a:link, a:visited {
-  color: #0000ff;
-  text-decoration: none;
-}
-a:hover, a:active {
-  color: #cc3333;
-  text-decoration: none;
-}
-code {
-  font-size: 110%;
-}
-```
 
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
 source("setup.R", local = knitr::knit_global())
@@ -189,16 +175,16 @@ void to_log_barycentric(double *xt, const double *x, int n);
 void from_log_barycentric(double *xt, const double *x, int n);
 ```
 
-The log-barycentric transformation takes a vector $X_i\in\mathbb{R}^n_+$, $i=1,\dots,n$, to a vector $Y_i\in\mathbb{R}^n$, where 
+The log-barycentric transformation takes a vector $X\in\mathbb{R}^n_+$ to a vector $Y\in\mathbb{R}^n$, where 
 $$Y_i = \log\frac{X_i}{\sum_j\!X_j}.$$
-The log-barycentric transformation takes every simplex defined by $\sum_i\!X_i = c$, $c$ constant, to $n$-dimensional Euclidean space $\mathbb{R}^n$.
+For every $c>0$, this transformation maps the simplex $\{X\in\mathbb{R}^n_+\;\vert\;\sum_i\!X_i = c\}$ bijectively onto $\mathbb{R}^n$.
 
 The pseudo-inverse transformation takes $\mathbb{R}^n$ to the unit simplex $S=\{X\in\mathbb{R}^n_+\;\vert\;\sum_i\!X_i=1\}$.
 Specifically,
 $$X_i = \frac{e^{Y_i}}{\sum_j\!e^{Y_j}}.$$
 
 Note that if $T:\mathbb{R}^n_+\to\mathbb{R}^n$ is the log-barycentric transformation so defined, $U$ is the pseudo-inverse, and $Id$ denotes the identity map, then $T\circ U=Id:\mathbb{R}^n\to\mathbb{R}^n$ but $U\circ T\ne Id$.
-However, if $T$ is restricted to the unit simplex, then $U\circ T=Id:S\to S$.
+However, if $T$ is restricted to the unit simplex S, then $U\circ{T\vert_{S}}=Id:S\to S$.
 
 Input:
 

@@ -3,26 +3,12 @@ title: 'version 2 upgrade guide'
 output: 
   html_document:
     theme: null
-    highlight: kate
+    highlight: haddock
     toc: yes
     toc_depth: 3
 params:
   prefix: "upgrade_guide"
 ---
-
-```{css echo=FALSE}
-a:link, a:visited {
-  color: #0000ff;
-  text-decoration: none;
-}
-a:hover, a:active {
-  color: #cc3333;
-  text-decoration: none;
-}
-code {
-  font-size: 110%;
-}
-```
 
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
 source("setup.R", local = knitr::knit_global())
