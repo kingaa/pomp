@@ -3,7 +3,7 @@ title: 'version 2 upgrade guide'
 output: 
   html_document:
     theme: null
-    highlight: haddock
+    highlight: tango
     toc: yes
     toc_depth: 3
 params:

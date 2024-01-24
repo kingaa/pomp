@@ -3,7 +3,7 @@ title: 'pomp C API'
 output: 
   html_document:
     theme: null
-    highlight: haddock
+    highlight: tango
     toc: yes
     toc_depth: 3
 params:
@@ -48,7 +48,7 @@ $$\mathbb{E}\left[X\right]=n\,p\qquad\text{and}\qquad\mathrm{Var}\left[X\right]=
 double dmultinom(int m, const double *prob, double *x, int give_log);
 ```
 
-The **R** C API provides a simulator for the multinomial distribution, `rmultinom`.
+The [**R** C API](https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API) provides a [simulator for the multinomial distribution, `rmultinom`](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
 See the "Rmath.h" header file for information on this facility.
 **pomp** provides an evaluator for the probability mass function (`dmultinom`) for this distribution.
 
@@ -83,7 +83,7 @@ Input:
 
 On return, `trans[0]`, ..., `trans[m-1]` will be the numbers of individuals making each of the respective transitions.
 
-See [`?reulermultinom`](https://kingaa.github.io/manuals/pomp/html/distributions.html) and [FAQ 3.6](./FAQ.html#eulermultinomial-approximation) for more on the Euler-multinomial distributions.
+See [`?reulermultinom`](https://kingaa.github.io/manuals/pomp/html/eulermultinom.html) and [FAQ 3.6](./FAQ.html#eulermultinomial-approximation) for more on the Euler-multinomial distributions.
 
 **NB:** `reulermultinom` does not call `GetRNGstate()` or `PutRNGstate()` internally.
 This must be done by the calling program.
@@ -110,7 +110,7 @@ Input:
 
 The value returned is the probability or log probability (as requested).
 
-See [`?deulermultinom`](https://kingaa.github.io/manuals/pomp/html/distributions.html) and [FAQ 3.6](./FAQ.html#eulermultinomial-approximation) for more on the Euler-multinomial distributions.
+See [`?deulermultinom`](https://kingaa.github.io/manuals/pomp/html/eulermultinom.html) and [FAQ 3.6](./FAQ.html#eulermultinomial-approximation) for more on the Euler-multinomial distributions.
 
 
 ### Gamma white noise

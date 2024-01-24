@@ -6,7 +6,7 @@ params:
 output:
   html_document:
     theme: null
-    highlight: haddock
+    highlight: tango
     toc: yes
     toc_depth: 4
     number_sections: true

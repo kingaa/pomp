@@ -11,7 +11,7 @@ output:
       collapsed: TRUE
       smooth_scroll: TRUE
     code_folding: show
-    highlight: haddock
+    highlight: tango
     number_sections: FALSE
     df_print: kable
     includes:

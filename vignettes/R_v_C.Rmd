@@ -3,7 +3,7 @@ title: 'Coding POMP models: R vs C snippets'
 output: 
   html_document:
     theme: null
-    highlight: haddock
+    highlight: tango
     toc: yes
     toc_depth: 3
 ---
