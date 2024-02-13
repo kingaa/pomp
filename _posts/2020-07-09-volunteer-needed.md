@@ -1,5 +1,4 @@
 ---
-date: 09 July 2020
 layout: pomp
 title: volunteer needed
 ---

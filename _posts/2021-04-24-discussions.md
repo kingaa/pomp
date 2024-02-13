@@ -1,5 +1,4 @@
 ---
-date: 24 April 2021
 layout: pomp
 title: new pomp discussions page
 ---

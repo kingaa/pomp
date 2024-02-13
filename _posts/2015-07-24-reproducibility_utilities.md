@@ -1,5 +1,4 @@
 ---
-date: 24 Jul 2015
 title: Reproducibility utilities
 layout: pomp
 ---

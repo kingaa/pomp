@@ -1,5 +1,4 @@
 ---
-date: 25 Jul 2015
 title: Better caching
 layout: pomp
 ---

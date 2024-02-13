@@ -1,5 +1,4 @@
 ---
-date: 16 July 2023
 layout: pomp
 title: pomp version 5.3 released
 ---

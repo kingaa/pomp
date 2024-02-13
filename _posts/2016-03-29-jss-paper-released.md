@@ -1,5 +1,4 @@
 ---
-date: 29 Mar 2016
 title: Journal of Statistical Software paper on pomp released!
 layout: pomp
 ---

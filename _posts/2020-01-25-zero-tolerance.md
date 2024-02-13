@@ -1,5 +1,4 @@
 ---
-date: 25 January 2020
 layout: pomp
 title: Phasing out the particle filter tolerance parameter
 ---

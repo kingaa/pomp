@@ -1,5 +1,4 @@
 ---
-date: 6 Aug 2015
 title: Deprecated arguments removed
 layout: pomp
 ---

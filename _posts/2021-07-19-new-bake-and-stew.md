@@ -1,5 +1,4 @@
 ---
-date: 19 July 2021
 layout: pomp
 title: new versions of 'bake' and 'stew'
 ---

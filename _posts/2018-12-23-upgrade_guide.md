@@ -1,10 +1,9 @@
 ---
-date: 23 December 2018
 layout: pomp
 title: Upgrade Guide updates
 ---
 
-[The **pomp** Version 2 Upgrade Guide](https://kingaa.github.io/pomp/vignettes/upgrade_guide.html) has been revised.
+[The **pomp** Version 2 Upgrade Guide](https://kingaa.github.io/pomp/upgrade_guide.html) has been revised.
 It now includes before-and-after examples of codes rewritten for **pomp** version 2.
 This is meant to help you revise **pomp** version <2 codes to take advantage of the new features.
 

@@ -1,5 +1,4 @@
 ---
-date: 16 June 2022
 layout: pomp
 title: revised version of pomp JSS paper
 ---

@@ -1,5 +1,4 @@
 ---
-date: 24 May 2016
 title: panelPomp package alpha release
 layout: pomp
 ---

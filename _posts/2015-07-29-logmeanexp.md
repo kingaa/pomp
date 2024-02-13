@@ -1,5 +1,4 @@
 ---
-date: 29 Jul 2015
 title: Bug fix for logmeanexp
 layout: pomp
 ---

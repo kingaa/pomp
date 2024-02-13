@@ -1,5 +1,4 @@
 ---
-date: 22 February 2020
 layout: pomp
 title: new online help pages
 ---

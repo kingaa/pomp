@@ -6,6 +6,7 @@ title: pomp news blog
 <h1>News blog</h1>
 
 <p style="text-align: right; padding-right: 40px;"/>
+  <a href="./archive.html">Blog archive</a><br>
   <a href="./pomp.atom">Subscribe to this newsfeed</a>&nbsp;
   <a style="vertical-align: top;" href="https://kingaa.github.io/pomp/pomp.atom">
     <img style="vertical-align: top;" src="https://kingaa.github.io/images/rss.png">
@@ -13,10 +14,10 @@ title: pomp news blog
 </p>
 
 <hr style="size: 1px; color: #eeeeee;"/>
-{% for post in site.posts limit:5 %}
+{% for post in site.posts limit:4 %}
 <a id="{{ post.title | slugify }}"></a>
 <h2>{{ post.title }}</h2>
-<h5>{{ post.date | date_to_long_string }}</h5>
+<h5>{{post.date | date: "%-d %B %Y"}}</h5>
 {{ post.content }}
 <hr style="size: 1px; color: #eeeeee;"/>
 {% endfor %}

@@ -1,5 +1,4 @@
 ---
-date: 7 Aug 2015
 title: Adaptive PMCMC proposals
 layout: pomp
 ---

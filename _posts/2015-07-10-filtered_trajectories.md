@@ -1,5 +1,4 @@
 ---
-date: 10 Jul 2015
 title: Smoothed trajectories via PMCMC
 layout: pomp
 ---

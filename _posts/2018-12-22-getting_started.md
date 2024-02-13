@@ -1,5 +1,4 @@
 ---
-date: 22 December 2018
 layout: pomp
 title: Getting Started with pomp2
 ---

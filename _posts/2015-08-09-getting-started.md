@@ -1,5 +1,4 @@
 ---
-date: 9 Aug 2015
 title: Improved "getting started" tutorial
 layout: pomp
 ---

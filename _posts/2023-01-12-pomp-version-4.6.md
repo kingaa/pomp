@@ -1,5 +1,4 @@
 ---
-date: 12 January 2023
 layout: pomp
 title: version 4.6 released to CRAN
 ---

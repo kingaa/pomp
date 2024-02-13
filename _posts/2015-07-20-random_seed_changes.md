@@ -1,5 +1,4 @@
 ---
-date: 20 Jul 2015
 title: Changes to the way certain functions manipulate the RNG seed
 layout: pomp
 ---

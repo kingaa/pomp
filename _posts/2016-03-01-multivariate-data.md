@@ -1,5 +1,4 @@
 ---
-date: 01 Mar 2016
 title: Can I write a pomp for multivariate data?
 layout: pomp
 ---

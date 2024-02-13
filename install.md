@@ -8,7 +8,7 @@ layout: pomp
 
 ### From CRAN:
 
-Source and binaries for the [CRAN version are available on CRAN](http://cran.r-project.org/package=pomp){:target="_blank"}.
+Source and binaries are [available on CRAN](http://cran.r-project.org/package=pomp){:target="_blank"}.
 
 Install **pomp** from CRAN just like any other **R** package:
 ```r
@@ -17,7 +17,7 @@ install.packages("pomp")
 
 ### From Github:
 
-The Github version is usually several weeks ahead of the version on CRAN.
+The latest development release is usually several weeks ahead of the version on CRAN.
 You can install it from the Github repository by executing the following in an **R** session:  
 ```r
 install.packages("pomp",repos="https://kingaa.github.io/")
@@ -26,7 +26,7 @@ On Windows and MacOS systems, this will cause a precompiled version of the lates
 
 ### Download and install locally
 
-You can also [download the latest release](https://github.com/kingaa/pomp/releases/) and install it locally as you would any **R** package.
+You can also [download the latest release](https://github.com/kingaa/pomp/releases/) and install it locally [as you would any **R** package](https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Installing-packages).
 
 ---------------------------
 

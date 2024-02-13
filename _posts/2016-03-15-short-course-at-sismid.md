@@ -1,5 +1,4 @@
 ---
-date: 15 Mar 2016
 title: Short course on pomp at SISMID, Seattle
 layout: pomp
 ---
