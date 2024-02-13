@@ -27,7 +27,9 @@ git push github v4.6
   - `^\.travis\.yml$`
   - `^codecov\.yml$`
 - perform extra checks:
-  - `make xxcheck`
+  - `make xcheck`
+  - `make ycheck`
+  - `make vcheck`
   - examine `pomp-Ex.Rout` for `valgrind` output
 
 ## Submitting
