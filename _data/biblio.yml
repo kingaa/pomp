@@ -38,16 +38,6 @@
   pages: "269&#x2013;342"
   doi: "https://doi.org/10.1111/j.1467-9868.2009.00736.x"
 
-- key: Andrieu2010
-  author: "C. Andrieu, A. Doucet, and R. Holenstein"
-  year: "2010"
-  title: "Particle Markov chain Monte Carlo methods"
-  journal: "J R Stat Soc B"
-  volume: "72"
-  number: "3"
-  pages: "269&#x2013;342"
-  doi: "https://doi.org/10.1111/j.1467-9868.2009.00736.x"
-
 - key: Anonymous1978
   author: "Anonymous"
   year: "1978"
@@ -735,6 +725,16 @@
   number: "4"
   pages: "e0007502"
   doi: "https://doi.org/10.1371/journal.pntd.0007502"
+
+- key: He2023
+  author: "D. He, L. Lin, Y. Artzy-Randrup, H. Demirhan, B. J. Cowling, and L. Stone"
+  year: "2023"
+  title: "Resolving the enigma of Iquitos and Manaus: A modeling analysis of multiple COVID-19 epidemic waves in two Amazonian cities"
+  journal: "Proceedings of the National Academy of Sciences"
+  volume: "120"
+  number: "10"
+  pages: "e2211422120"
+  doi: "https://doi.org/10.1073/pnas.2211422120"
 
 - key: Ionides2006
   author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
