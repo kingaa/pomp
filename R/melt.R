@@ -7,9 +7,9 @@
 ##'
 ##' @name melt
 ##' @rdname melt
-##' @keywords internal
 ##' @aliases melt,ANY-method melt,missing-method
 ##' @param data object to convert
+##' @param level integer; level of recursion
 ##' @param ... ignored
 ##'
 NULL

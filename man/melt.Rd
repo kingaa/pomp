@@ -18,6 +18,8 @@
 \item{data}{object to convert}
 
 \item{...}{ignored}
+
+\item{level}{integer; level of recursion}
 }
 \description{
 Convert arrays, lists, and other objects to data frames.
@@ -33,4 +35,3 @@ A list can be melted into a data frame.
 This operation is recursive.
 A variable will be appended to distinguish the separate list entries.
 }
-\keyword{internal}
