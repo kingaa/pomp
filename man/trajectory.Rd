@@ -55,8 +55,8 @@ This must be no later than the time of the first observation, i.e., \code{t0 <= 
 \code{times} must indicate the column of observation times by name or index.
 The time vector must be numeric and non-decreasing.}
 
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
+\item{params}{a named numeric vector or a matrix with rownames
+containing the parameters at which the simulations are to be performed.}
 
 \item{skeleton}{optional; the deterministic skeleton of the unobserved state process.
 Depending on whether the model operates in continuous or discrete time, this is either a vectorfield or a map.

@@ -16,6 +16,7 @@
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames
 ##'
+##' @inheritParams simulate
 ##' @inheritParams pomp
 ##'
 ##' @param object optional;
