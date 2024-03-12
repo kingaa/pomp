@@ -736,6 +736,13 @@
   pages: "e2211422120"
   doi: "https://doi.org/10.1073/pnas.2211422120"
 
+- key: He2024
+  author: "D. He, Y. Artzy-Randrup, S. S. Musa, T. Gr&auml;f, F. Naveca, and L. Stone"
+  year: "2024"
+  title: "Modelling the unexpected dynamics of COVID-19 in Manaus, Brazil"
+  journal: "Infectious Disease Modelling"
+  doi: "https://doi.org/10.1016/j.idm.2024.02.012"
+
 - key: Ionides2006
   author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
   year: "2006"
@@ -1388,6 +1395,16 @@
   number: "2"
   pages: "173&#x2013;187"
   doi: "https://doi.org/10.21307/stattrans-2020-019"
+
+- key: Szczepocki2023
+  author: "P. Szczepocki"
+  year: "2023"
+  title: "Estimation of the Cholesky multivariate stochastic volatility model using iterated filtering"
+  journal: "Econometrics"
+  volume: "27"
+  number: "4"
+  pages: "44&#x2013;58"
+  doi: "https://doi.org/10.15611/eada.2023.4.04"
 
 - key: Tavakoli2016
   author: "S. Tavakoli and V. M. Panaretos"
