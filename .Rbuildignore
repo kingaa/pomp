@@ -19,6 +19,7 @@ LICENSE\.md$
 README\.md$
 CRAN\.md$
 TODO\.md$
+BUILD\.md$
 ^\.gitignore$
 \.github
 ^\.travis\.yml$

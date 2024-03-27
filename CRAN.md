@@ -1,3 +1,5 @@
+-------------------------
+
 # Preparing a CRAN submission
 
 ## Checks
@@ -29,13 +31,13 @@ git push github v4.6
 - perform extra checks:
   - `make xcheck`
   - `make ycheck`
-  - `make vcheck`
-  - examine `pomp-Ex.Rout` for `valgrind` output
+  - `make vcheck` and examine `valgrind` output in `pomp-Ex.Rout` for evidence of memory leaks.
+  - `make revdeps`
 
 ## Submitting
 
 - Use the [webform](https://xmpalantir.wu.ac.at/cransubmit/) for submission.
-- **Submission note text:**  
+- **Example submission note text:**  
   The package has been checked under R-4.1.0, R-release, and R-devel on linux, osx, and windows.
   I have checked for memory leaks using 'valgrind'.
   There are two new NOTEs generated, concerning S3 generic/method consistency.
@@ -53,3 +55,5 @@ git push github v4.6
   - `make publish`
   - Then push changes to `kingaa.github.io`
 - Make `X.X.0.0` release for Github site.
+
+-------------------------
