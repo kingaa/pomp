@@ -8,18 +8,25 @@
 #include "internal.h"
 
 static R_INLINE SEXP paste0 (SEXP a, SEXP b) {
-  return eval(lang3(install("paste0"),a,b),R_BaseEnv);
+  SEXP p, v;
+  PROTECT(p = lang3(install("paste0"),a,b));
+  PROTECT(v = eval(p,R_BaseEnv));
+  UNPROTECT(2);
+  return v;
 }
 
 static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 {
 
   SEXP S1names, S2names;
+  SEXP s1, s2;
   SEXP var;
   int v;
 
-  PROTECT(S1names = paste0(Snames,mkString("_1")));
-  PROTECT(S2names = paste0(Snames,mkString("_2")));
+  PROTECT(s1 = mkString("_1"));
+  PROTECT(s2 = mkString("_2"));
+  PROTECT(S1names = paste0(Snames,s1));
+  PROTECT(S2names = paste0(Snames,s2));
 
   PROTECT(args = VectorToPairList(args));
 
@@ -71,7 +78,7 @@ static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
   PROTECT(args);
   SET_TAG(args,install("t_1"));
 
-  UNPROTECT(3);
+  UNPROTECT(5);
   return args;
 
 }

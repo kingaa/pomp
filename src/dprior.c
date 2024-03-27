@@ -13,7 +13,9 @@ static R_INLINE SEXP add_args (SEXP names, SEXP log, SEXP args)
   SEXP var;
   int v;
 
-  PROTECT(args = LCONS(AS_LOGICAL(log),VectorToPairList(args)));
+  PROTECT(log = AS_LOGICAL(log));
+  PROTECT(args = VectorToPairList(args));
+  PROTECT(args = LCONS(log,args));
   SET_TAG(args,install("log"));
 
   for (v = LENGTH(names)-1; v >= 0; v--) {
@@ -24,7 +26,7 @@ static R_INLINE SEXP add_args (SEXP names, SEXP log, SEXP args)
     SET_TAG(args,installChar(STRING_ELT(names,v)));
   }
 
-  UNPROTECT(1);
+  UNPROTECT(3);
   return args;
 
 }

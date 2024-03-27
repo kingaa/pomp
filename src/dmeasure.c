@@ -19,7 +19,9 @@ static R_INLINE SEXP add_args
   // 'log', covariates, parameter, states, observables, then time
 
   // 'log' is a needed argument
-  PROTECT(args = LCONS(AS_LOGICAL(log),VectorToPairList(args)));
+  PROTECT(log = AS_LOGICAL(log));
+  PROTECT(args = VectorToPairList(args));
+  PROTECT(args = LCONS(log,args));
   SET_TAG(args,install("log"));
 
   // Covariates
@@ -65,7 +67,7 @@ static R_INLINE SEXP add_args
   PROTECT(args);
   SET_TAG(args,install("t"));
 
-  UNPROTECT(1);
+  UNPROTECT(3);
   return args;
 
 }

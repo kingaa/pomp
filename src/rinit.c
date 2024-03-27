@@ -8,7 +8,11 @@
 #include "internal.h"
 
 static R_INLINE SEXP paste0 (SEXP a, SEXP b, SEXP c) {
-  return eval(lang4(install("paste0"),a,b,c),R_BaseEnv);
+  SEXP p, v;
+  PROTECT(p = lang4(install("paste0"),a,b,c));
+  PROTECT(v = eval(p,R_BaseEnv));
+  UNPROTECT(2);
+  return v;
 }
 
 static SEXP pomp_default_rinit(SEXP params, SEXP Pnames,
@@ -223,12 +227,13 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
     if (nsims > 1) {
       int k, *sp;
-
+      SEXP us;
+      PROTECT(us = mkString("_"));
       PROTECT(xn = NEW_INTEGER(ns));
       for (k = 0, sp = INTEGER(xn); k < ns; k++, sp++) *sp = (k/nrep)+1;
-      PROTECT(xn = paste0(pcnames,mkString("_"),xn));
+      PROTECT(xn = paste0(pcnames,us,xn));
       PROTECT(dn = GET_DIMNAMES(x));
-      nprotect += 3;
+      nprotect += 4;
       SET_ELEMENT(dn,1,xn);
       SET_DIMNAMES(x,dn);
 
