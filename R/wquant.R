@@ -59,6 +59,7 @@ wquant <- function (
   b <- (1-probs)*(ess+1)
   for (j in seq_along(probs)) {
     W <- pbeta(q=w,shape1=a[j],shape2=b[j])
+    W[w==0] <- 0
     W[w==1] <- 1
     q[j] <- sum(diff(W)*x)
   }
