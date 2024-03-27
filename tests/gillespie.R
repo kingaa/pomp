@@ -133,7 +133,11 @@ bind_rows(
   ggplot(aes(x=time,y=value,color=model))+
   labs(color="",y="reports",title="comparison of implementations")+
   geom_line()+
-  theme_bw()+theme(legend.position=c(0.2,0.8))
+  theme_bw()+
+  theme(
+    legend.position="inside",
+    legend.position.inside=c(0.2,0.8)
+  )
 
 try(gillespie(rate.fun=rate.fun,v=as.numeric(Vmatrix)))
 w <- Vmatrix

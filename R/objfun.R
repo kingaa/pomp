@@ -73,7 +73,7 @@ setIs(
     as(from@env$object,"pomp")
   },
   replace= function (from, to, value) {
-    pStop(who=-2L,"cannot replace the pomp object in a stateful objective function.")
+    pStop(who=-4L,"cannot replace the pomp object in a stateful objective function.")
   }
 )
 

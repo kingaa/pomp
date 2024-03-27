@@ -1,6 +1,6 @@
 
-R version 4.3.2 (2023-10-31) -- "Eye Holes"
-Copyright (C) 2023 The R Foundation for Statistical Computing
+R version 4.3.3 (2024-02-29) -- "Angel Food Cake"
+Copyright (C) 2024 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -109,16 +109,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  7.361   0.042   7.403 
+  6.806   0.114   6.921 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.160   0.004   0.165 
+  0.161   0.001   0.162 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.660   0.012   0.671 
+  0.642   0.013   0.655 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.029   0.000   0.029 
+  0.029   0.001   0.029 
 > 
 > dev.off()
 null device 

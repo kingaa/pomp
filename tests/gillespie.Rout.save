@@ -1,6 +1,6 @@
 
-R version 4.3.2 (2023-10-31) -- "Eye Holes"
-Copyright (C) 2023 The R Foundation for Statistical Computing
+R version 4.3.3 (2024-02-29) -- "Angel Food Cake"
+Copyright (C) 2024 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -153,7 +153,11 @@ NOTE: The provided object 'nbasis' is available for use by POMP basic components
 +   ggplot(aes(x=time,y=value,color=model))+
 +   labs(color="",y="reports",title="comparison of implementations")+
 +   geom_line()+
-+   theme_bw()+theme(legend.position=c(0.2,0.8))
++   theme_bw()+
++   theme(
++     legend.position="inside",
++     legend.position.inside=c(0.2,0.8)
++   )
 > 
 > try(gillespie(rate.fun=rate.fun,v=as.numeric(Vmatrix)))
 Error : in 'gillespie': 'v' must be a matrix.
