@@ -3,6 +3,8 @@
 \section{Changes in \pkg{pomp} version 5.6.1}{
   \itemize{
     \item Minor corrections to documentation.
+    \item Changes in some C codes to avoid issues detected by \pkg{rchk}.
+    \item Fixed bug in \code{wquant} introduced by changes in \code{pbeta} with \R version 4.3.3.
   }
 }
 \section{Changes in \pkg{pomp} version 5.5.2}{
