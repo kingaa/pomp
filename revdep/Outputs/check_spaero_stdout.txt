@@ -1,10 +1,10 @@
 * using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck'
-* using R version 4.3.2 (2023-10-31)
+* using R version 4.3.3 (2024-02-29)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
     gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
     GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
-* running under: Ubuntu 22.04.3 LTS
+* running under: Ubuntu 22.04.4 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'spaero/DESCRIPTION' ... OK
@@ -62,10 +62,10 @@ Namespace in Imports field not imported from: ‘utils’
 * checking examples ... OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [15s/13s] OK
+ [15s/14s] OK
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in 'inst/doc' ... OK
-* checking re-building of vignette outputs ... [23s/23s] OK
+* checking re-building of vignette outputs ... [23s/24s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

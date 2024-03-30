@@ -31,6 +31,11 @@
 ##' When called, it will return the (optionally weighted) \eqn{L^2}{L2} distance between the data spectrum and simulated spectra.
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and the discrepancy measure.
+##' @references
+##'
+##' \Reuman2006
+##'
+##' \Reuman2008
 ##' @inheritSection pomp Note for Windows users
 ##' @inheritSection objfun Important Note
 ##' @inheritSection objfun Warning! Objective functions based on C snippets

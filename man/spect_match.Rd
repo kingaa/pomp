@@ -218,6 +218,11 @@ On the other hand, if one retrieves a stored objective function from a file, or 
 
 }
 }
+\references{
+\Reuman2006
+
+\Reuman2008
+}
 \seealso{
 \code{\link{spect}} \code{\link[stats]{optim}}
 \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}

@@ -1,15 +1,15 @@
 * using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck'
-* using R version 4.3.2 (2023-10-31)
+* using R version 4.3.3 (2024-02-29)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
     gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
     GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
-* running under: Ubuntu 22.04.3 LTS
+* running under: Ubuntu 22.04.4 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'phylopomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'phylopomp' version '0.10.1.4'
+* this is package 'phylopomp' version '0.10.3.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -19,7 +19,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'phylopomp' can be installed ... [48s/57s] OK
+* checking whether package 'phylopomp' can be installed ... [52s/63s] OK
 * used C compiler: 'gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
 * used C++ compiler: 'g++ (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
 * checking installed package size ... NOTE
@@ -62,10 +62,103 @@
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [15s/16s] OK
+* checking examples ... [16s/16s] OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [142s/118s] OK
+3a4,33
+> Registered S3 methods overwritten by 'treeio':
+>   method              from    
+>   MRCA.phylo          tidytree
+>   MRCA.treedata       tidytree
+>   Nnode.treedata      tidytree
+>   Ntip.treedata       tidytree
+>   ancestor.phylo      tidytree
+>   ancestor.treedata   tidytree
+>   child.phylo         tidytree
+>   child.treedata      tidytree
+>   full_join.phylo     tidytree
+>   full_join.treedata  tidytree
+>   groupClade.phylo    tidytree
+>   groupClade.treedata tidytree
+>   groupOTU.phylo      tidytree
+>   groupOTU.treedata   tidytree
+>   inner_join.phylo    tidytree
+>   inner_join.treedata tidytree
+>   is.rooted.treedata  tidytree
+>   nodeid.phylo        tidytree
+>   nodeid.treedata     tidytree
+>   nodelab.phylo       tidytree
+>   nodelab.treedata    tidytree
+>   offspring.phylo     tidytree
+>   offspring.treedata  tidytree
+>   parent.phylo        tidytree
+>   parent.treedata     tidytree
+>   root.treedata       tidytree
+>   rootnode.phylo      tidytree
+>   sibling.phylo       tidytree
+5a6,35
+> Registered S3 methods overwritten by 'treeio':
+>   method              from    
+>   MRCA.phylo          tidytree
+>   MRCA.treedata       tidytree
+>   Nnode.treedata      tidytree
+>   Ntip.treedata       tidytree
+>   ancestor.phylo      tidytree
+>   ancestor.treedata   tidytree
+>   child.phylo         tidytree
+>   child.treedata      tidytree
+>   full_join.phylo     tidytree
+>   full_join.treedata  tidytree
+>   groupClade.phylo    tidytree
+>   groupClade.treedata tidytree
+>   groupOTU.phylo      tidytree
+>   groupOTU.treedata   tidytree
+>   inner_join.phylo    tidytree
+>   inner_join.treedata tidytree
+>   is.rooted.treedata  tidytree
+>   nodeid.phylo        tidytree
+>   nodeid.treedata     tidytree
+>   nodelab.phylo       tidytree
+>   nodelab.treedata    tidytree
+>   offspring.phylo     tidytree
+>   offspring.treedata  tidytree
+>   parent.phylo        tidytree
+>   parent.treedata     tidytree
+>   root.treedata       tidytree
+>   rootnode.phylo      tidytree
+>   sibling.phylo       tidytree
+3a4,33
+> Registered S3 methods overwritten by 'treeio':
+>   method              from    
+>   MRCA.phylo          tidytree
+>   MRCA.treedata       tidytree
+>   Nnode.treedata      tidytree
+>   Ntip.treedata       tidytree
+>   ancestor.phylo      tidytree
+>   ancestor.treedata   tidytree
+>   child.phylo         tidytree
+>   child.treedata      tidytree
+>   full_join.phylo     tidytree
+>   full_join.treedata  tidytree
+>   groupClade.phylo    tidytree
+>   groupClade.treedata tidytree
+>   groupOTU.phylo      tidytree
+>   groupOTU.treedata   tidytree
+>   inner_join.phylo    tidytree
+>   inner_join.treedata tidytree
+>   is.rooted.treedata  tidytree
+>   nodeid.phylo        tidytree
+>   nodeid.treedata     tidytree
+>   nodelab.phylo       tidytree
+>   nodelab.treedata    tidytree
+>   offspring.phylo     tidytree
+>   offspring.treedata  tidytree
+>   parent.phylo        tidytree
+>   parent.treedata     tidytree
+>   root.treedata       tidytree
+>   rootnode.phylo      tidytree
+>   sibling.phylo       tidytree
+ [117s/90s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

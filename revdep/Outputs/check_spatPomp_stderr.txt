@@ -1,7 +1,7 @@
   Running ‘abf.R’
   Running ‘abfir.R’
   Running ‘arma_benchmark.R’
-  Running ‘bm.R’
+  Running ‘bm.R’ [19s/10s]
   Comparing ‘bm.Rout’ to ‘bm.Rout.save’ ... OK
   Running ‘bm2.R’
   Comparing ‘bm2.Rout’ to ‘bm2.Rout.save’ ... OK

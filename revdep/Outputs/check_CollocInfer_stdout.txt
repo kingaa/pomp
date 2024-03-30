@@ -1,10 +1,10 @@
 * using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/CollocInfer.Rcheck'
-* using R version 4.3.2 (2023-10-31)
+* using R version 4.3.3 (2024-02-29)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
     gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
     GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
-* running under: Ubuntu 22.04.3 LTS
+* running under: Ubuntu 22.04.4 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'CollocInfer/DESCRIPTION' ... OK
@@ -18,7 +18,7 @@
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
 * checking serialization versions ... OK
-* checking whether package 'CollocInfer' can be installed ... [16s/17s] OK
+* checking whether package 'CollocInfer' can be installed ... [18s/19s] OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -83,9 +83,9 @@ Variables with usage in documentation object 'FhNest' but not in code:
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
            user system elapsed
-Profile   2.867 10.974   1.401
-FitMatch  6.497  6.088   1.252
-ParsMatch 6.370  4.570   1.106
+Profile   4.790 20.101   2.358
+FitMatch  6.521  5.813   1.299
+ParsMatch 5.609  3.346   0.865
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

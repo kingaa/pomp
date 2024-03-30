@@ -1,15 +1,15 @@
 * using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/spatPomp.Rcheck'
-* using R version 4.3.2 (2023-10-31)
+* using R version 4.3.3 (2024-02-29)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
     gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
     GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
-* running under: Ubuntu 22.04.3 LTS
+* running under: Ubuntu 22.04.4 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'spatPomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'spatPomp' version '0.34.0'
+* this is package 'spatPomp' version '0.34.2'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -19,7 +19,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'spatPomp' can be installed ... [19s/20s] OK
+* checking whether package 'spatPomp' can be installed ... [22s/24s] OK
 * used C compiler: 'gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
 * checking installed package size ... OK
 * checking package directory ... OK
@@ -42,7 +42,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [31s/25s] OK
+* checking R code for possible problems ... [30s/25s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -63,7 +63,7 @@
 * checking examples ... OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [140s/56s] OK
+ [142s/54s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
