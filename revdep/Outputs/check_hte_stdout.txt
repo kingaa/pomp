@@ -1,15 +1,15 @@
 * using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/hte.Rcheck'
-* using R version 4.3.2 (2023-10-31)
+* using R version 4.3.3 (2024-02-29)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
     gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
     GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
-* running under: Ubuntu 22.04.3 LTS
+* running under: Ubuntu 22.04.4 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'hte/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'hte' version '0.0.15.0'
+* this is package 'hte' version '0.0.16.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -43,7 +43,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [18s/11s] NOTE
+* checking R code for possible problems ... [18s/12s] NOTE
 filterfun : fun: local variable ‘theta’ assigned but may not be used
 stobfun : ofun: local variable ‘theta’ assigned but may not be used
 * checking Rd files ... OK
@@ -64,15 +64,15 @@ stobfun : ofun: local variable ‘theta’ assigned but may not be used
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [94s/49s] OK
+* checking examples ... [96s/49s] OK
 Examples with CPU (user + system) or elapsed time > 5s
                    user system elapsed
-fake_data        20.187 23.818  17.923
-simuldat         16.936 18.546  15.764
-bernoulli_filter  4.686  0.117   5.816
+fake_data        18.967 24.513  17.851
+simuldat         16.912 21.792  15.537
+bernoulli_filter  4.716  0.104   5.665
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [57s/53s] OK
+ [50s/48s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

@@ -1,10 +1,10 @@
 * using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
-* using R version 4.3.2 (2023-10-31)
+* using R version 4.3.3 (2024-02-29)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
     gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
     GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
-* running under: Ubuntu 22.04.3 LTS
+* running under: Ubuntu 22.04.4 LTS
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'panelPomp/DESCRIPTION' ... OK
@@ -41,7 +41,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [18s/11s] OK
+* checking R code for possible problems ... [18s/12s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -51,7 +51,7 @@
 * checking Rd \usage sections ... OK
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
-* checking examples ... [33s/16s] OK
+* checking examples ... [32s/16s] OK
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
@@ -91,7 +91,7 @@
 < name     [,1]     [,2]     [,3]     [,4]      [,5]
 ---
 > variable     [,1]     [,2]     [,3]     [,4]      [,5]
- [96s/54s] OK
+ [96s/53s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
