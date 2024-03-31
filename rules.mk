@@ -22,9 +22,8 @@ INSTDOCS = $(sort $(wildcard inst/doc/*))
 SESSION_PKGS = datasets,utils,grDevices,graphics,stats,methods,tidyverse,$(PKG)
 
 .PHONY: .check check clean covr debug default fresh \
-htmlhelp manual publish qcheck qqcheck \
-revdeps rhub rsession session www win wind xcheck \
-xcovr vcheck ycheck
+htmlhelp manual publish qcheck qqcheck rchk revdeps \
+rhub rsession session www win wind xcheck xcovr vcheck ycheck
 
 .dist manual www: export R_QPDF=qpdf
 .headers: export LC_COLLATE=C
@@ -131,6 +130,12 @@ www: install
 
 session debug rsession: .session
 
+rchk: .rchk
+
+.rchk: .dist
+	$(CP) $(TARBALL) rchk
+	make -C rchk
+
 revdeps: .dist
 	mkdir -p revdep
 	$(CP) $(TARBALL) revdep
@@ -219,6 +224,7 @@ clean:
 	$(MAKE) -C inst/doc clean
 	$(MAKE) -C tests clean
 	$(MAKE) -C revdep clean
+	$(MAKE) -C rchk clean
 	$(RM) .dist
 
 fresh: clean

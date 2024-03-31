@@ -18,6 +18,7 @@
 *.gcda
 *.gcno
 *.pdf
+*.sif
 /scripts
 lib
 library

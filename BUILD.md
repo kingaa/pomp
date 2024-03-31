@@ -37,6 +37,7 @@ The key targets are:
   One must examine the output (printed to the console and also stored in a file, the name of which ends in `-Ex.Rout`.
 - `revdeps`: causes checks of reverse-dependent packages to run.
   The outputs are stored under the `revdep` directory.
+- `rchk`: runs Kalibera's `rchk` utility.
 
 - `session`: installs the package locally and then runs an **R** session for interactive testing.
   This session is controlled by the `RSESSION` environment variable.
