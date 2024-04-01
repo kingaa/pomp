@@ -289,7 +289,7 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
   }
 }
 
-void pomp_desolve_takedown (void) {
+SEXP pomp_desolve_takedown (void) {
   R_ReleaseObject(COMMON(object));
   R_ReleaseObject(COMMON(params));
   R_ReleaseObject(COMMON(cov));
@@ -342,6 +342,7 @@ void pomp_desolve_takedown (void) {
 
   COMMON(mode) = undef;
 
+  return R_NilValue;
 }
 
 #undef COMMON

@@ -139,7 +139,8 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     int j;
 
     PROTECT(args = add_args(args,Pnames,Cnames));
-    PROTECT(ans = AS_NUMERIC(eval_call(fn,args,time,ps,npar,cov,ncovars)));
+    PROTECT(ans = eval_call(fn,args,time,ps,npar,cov,ncovars));
+    PROTECT(ans = AS_NUMERIC(ans));
     PROTECT(Snames = GET_NAMES(ans));
 
     if (invalid_names(Snames))
@@ -159,7 +160,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
     memcpy(xt,xs,nvar*sizeof(double));
 
-    nprotect += 5;
+    nprotect += 6;
 
     for (j = 1, xt += nvar; j < ns; j++, xt += nvar) {
       PROTECT(ans = eval_call(fn,args,time,ps+npar*(j%nrep),npar,cov,ncovars));

@@ -104,7 +104,7 @@ static SEXP init_density
   int give_log;
   int nvars, npars, nrepsx, nrepsp, nreps, ncovars;
   SEXP Snames, Pnames, Cnames;
-  SEXP fn;
+  SEXP fn, ans;
   SEXP F, cvec;
   double *cov;
   int *dim;
@@ -153,7 +153,11 @@ static SEXP init_density
       double *xs = REAL(X)+nvars*(j%nrepsx);
       double *ps = REAL(params)+npars*(j%nrepsp);
 
-      *ft = *REAL(AS_NUMERIC(eval_call(fn,args,t,xs,nvars,ps,npars,cov,ncovars)));
+      PROTECT(ans = eval_call(fn,args,t,xs,nvars,ps,npars,cov,ncovars));
+
+      *ft = *REAL(AS_NUMERIC(ans));
+
+      UNPROTECT(1);
 
       if (!give_log) *ft = exp(*ft);
 

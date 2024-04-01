@@ -100,7 +100,7 @@ extern SEXP synth_loglik(SEXP ysim, SEXP ydat);
 extern SEXP iterate_map(SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP gnsi);
 extern SEXP pomp_desolve_setup(SEXP object, SEXP x0, SEXP params, SEXP gnsi);
 extern void pomp_vf_eval(int *neq, double *t, double *y, double *ydot, double *yout, int *ip);
-extern void pomp_desolve_takedown(void);
+extern SEXP pomp_desolve_takedown(void);
 /* src/transformations.c */
 extern SEXP LogitTransform(SEXP P);
 extern SEXP ExpitTransform(SEXP X);

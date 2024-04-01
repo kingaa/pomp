@@ -134,7 +134,7 @@ static SEXP onestep_density
   int give_log;
   int nvars, npars, nrepsx, nrepsp, nreps, ntimes, ncovars;
   SEXP Snames, Pnames, Cnames;
-  SEXP fn;
+  SEXP fn, ans;
   SEXP F, cvec;
   double *cov;
   int *dim;
@@ -194,7 +194,9 @@ static SEXP onestep_density
         double *x1 = x1p+nvars*(j%nrepsx);
         double *x2 = x2p+nvars*(j%nrepsx);
 
-        *ft = *REAL(AS_NUMERIC(eval_call(fn,args,t1,t2,x1,x2,nvars,p,npars,cov,ncovars)));
+        PROTECT(ans = eval_call(fn,args,t1,t2,x1,x2,nvars,p,npars,cov,ncovars));
+        *ft = *REAL(AS_NUMERIC(ans));
+        UNPROTECT(1);
 
         if (!give_log) *ft = exp(*ft);
 

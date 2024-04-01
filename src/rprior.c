@@ -95,14 +95,15 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
       if (first) {
 
-        PROTECT(ans = AS_NUMERIC(eval_call(fn,args,p,npars)));
+        PROTECT(ans = eval_call(fn,args,p,npars));
+        PROTECT(ans = AS_NUMERIC(ans));
 
         PROTECT(nm = GET_NAMES(ans));
         if (invalid_names(nm))
           err("'rprior' must return a named numeric vector.");
         posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters")));
 
-        nprotect += 3;
+        nprotect += 4;
 
         pa = REAL(ans);
         for (i = 0; i < LENGTH(ans); i++) p[posn[i]] = pa[i];
@@ -111,12 +112,13 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
       } else {
 
-        PROTECT(ans = AS_NUMERIC(eval_call(fn,args,p,npars)));
+        PROTECT(ans = eval_call(fn,args,p,npars));
+        PROTECT(ans = AS_NUMERIC(ans));
 
         pa = REAL(ans);
         for (i = 0; i < LENGTH(ans); i++) p[posn[i]] = pa[i];
 
-        UNPROTECT(1);
+        UNPROTECT(2);
 
       }
     }
