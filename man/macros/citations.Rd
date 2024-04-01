@@ -1,5 +1,7 @@
 % unlike in latex, new lines within \newcommand end the command (even using %)
 
+\newcommand{\Akinshin2023}{A. Akinshin. Weighted quantile estimators. arXiv:2304.07265 [stat.ME], 2023.}
+
 \newcommand{\Anderson2001}{J.L. Anderson. An ensemble adjustment Kalman filter for data assimilation. \emph{Monthly Weather Review} \bold{129}, 2884--2903, 2001.}
 
 \newcommand{\Andrieu2009}{C. Andrieu and G.O. Roberts. The pseudo-marginal approach for computation. \emph{Annals of Statistics} \bold{37}, 697--725, 2009.}

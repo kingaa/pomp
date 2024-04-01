@@ -36,6 +36,8 @@ wquant(c(1,2,3,4,5),c(1,0,0,1,1))
 }
 \references{
 \Harrell1982
+
+\Akinshin2023
 }
 \author{
 Aaron A. King
