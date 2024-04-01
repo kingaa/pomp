@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.7.0}{
+  \itemize{
+    \item More changes in C codes to forestall issues detected by \pkg{rchk}.
+    \item Minor corrections to documentation.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.6.1}{
   \itemize{
     \item Minor corrections to documentation.

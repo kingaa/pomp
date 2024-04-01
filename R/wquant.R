@@ -2,7 +2,7 @@
 ##'
 ##' Estimate weighted quantiles.
 ##'
-##' \code{wquant} estimates quantiles of weighted data using the estimator of Harrell & Davis (1982), with improvements recommended by Andrey Akinshin.
+##' \code{wquant} estimates quantiles of weighted data using the estimator of Harrell & Davis (1982), with improvements recommended by Andrey Akinshin (2023).
 ##'
 ##' @param x numeric; a vector of data.
 ##' @param weights numeric; vector of weights.
@@ -22,6 +22,8 @@
 ##' wquant(c(1,2,3,4,5),c(1,0,0,1,1))
 ##' @references
 ##' \Harrell1982
+##'
+##' \Akinshin2023
 ##'
 ## The discussion in Andrey Akinshin's blog post
 ## https://aakinshin.net/posts/weighted-quantiles/

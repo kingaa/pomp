@@ -25,7 +25,7 @@ If \code{probs} has names, these are inherited.
 Estimate weighted quantiles.
 }
 \details{
-\code{wquant} estimates quantiles of weighted data using the estimator of Harrell & Davis (1982), with improvements recommended by Andrey Akinshin.
+\code{wquant} estimates quantiles of weighted data using the estimator of Harrell & Davis (1982), with improvements recommended by Andrey Akinshin (2023).
 }
 \examples{
 x <- c(1,1,1,2,2,3,3,3,3,4,5,5,6,6,6)
@@ -36,6 +36,8 @@ wquant(c(1,2,3,4,5),c(1,0,0,1,1))
 }
 \references{
 \Harrell1982
+
+\Akinshin2023
 }
 \author{
 Aaron A. King

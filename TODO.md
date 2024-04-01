@@ -4,6 +4,7 @@
 
 ## For pomp:
 
+- YAML interface
 - "Getting Started" vignette:
   - ~~finish discussion of smoothing and hindcasting~~
   - include discussion of forecasting
