@@ -133,8 +133,9 @@ session debug rsession: .session
 rchk: .rchk
 
 .rchk: .dist
+	mkdir -p rchk
 	$(CP) $(TARBALL) rchk
-	make -C rchk
+	docker run -v $(PWD)/rchk:/rchk/packages kalibera/rchk:latest /rchk/packages/$(TARBALL) | tee rchk.out
 
 revdeps: .dist
 	mkdir -p revdep
@@ -224,10 +225,9 @@ clean:
 	$(MAKE) -C inst/doc clean
 	$(MAKE) -C tests clean
 	$(MAKE) -C revdep clean
-	$(MAKE) -C rchk clean
 	$(RM) .dist
 
 fresh: clean
 	$(RM) .headers .includes .NEWS .instdocs
 	$(RM) .install .roxy .source .testsource .roxy .tests
-	$(RM) -r library
+	$(RM) -r library rchk

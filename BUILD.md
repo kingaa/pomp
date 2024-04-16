@@ -38,6 +38,8 @@ The key targets are:
 - `revdeps`: causes checks of reverse-dependent packages to run.
   The outputs are stored under the `revdep` directory.
 - `rchk`: runs Kalibera's `rchk` utility.
+  This uses `docker` to download and run a Docker container.
+  The stdout for this is stored in `rchk.out`.
 
 - `session`: installs the package locally and then runs an **R** session for interactive testing.
   This session is controlled by the `RSESSION` environment variable.

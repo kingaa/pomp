@@ -25,6 +25,7 @@ BUILD\.md$
 \.github
 ^\.travis\.yml$
 ^codecov\.yml$
+^rchk\.out$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 \.Rprofile
