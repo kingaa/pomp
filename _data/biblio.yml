@@ -331,6 +331,15 @@
   pages: "e1011263"
   doi: "https://doi.org/10.1371/journal.pcbi.1011263"
 
+- key: Briga2024
+  author: "M. Briga, E. Goult, T. S. Brett, P. Rohani, and M. Domenech de Cell&egrave;s"
+  year: "2024"
+  title: "Maternal pertussis immunization and the blunting of routine vaccine effectiveness: a meta-analysis and modeling study"
+  journal: "Nature Communications"
+  volume: "15"
+  number: "1"
+  doi: "https://doi.org/10.1038/s41467-024-44943-7"
+
 - key: Brillinger1980
   author: "D. R. Brillinger, J. Guckenheimer, P. Guttorp, and G. Oster"
   year: "1980"
@@ -349,6 +358,14 @@
   volume: "86"
   pages: "460&#x2013;472"
   doi: "https://doi.org/10.1111/1365-2656.12656"
+
+- key: Byrne2024
+  author: "C. Byrne, A. C. M&aacute;rquez, B. Cai, D. Coombs, and S. Gantt"
+  year: "2024"
+  title: "Spatial kinetics and immune control of murine cytomegalovirus infection in the salivary glands"
+  journal: "bioRxiv"
+  eprint: "2024.02.22.581694"
+  doi: "https://doi.org/10.1101/2024.02.22.581694"
 
 - key: Cabore2022
   author: "J. W. Cabore, H. C. Karamagi, H. K. Kipruto, J. K. Mungatu, J. A. Asamani, B. Droti, R. Titi-ofei, A. B. W. Seydi, S. N. Kidane, T. Balde, A. S. Gueye, L. Makubalo, and M. R. Moeti"
@@ -819,7 +836,7 @@
   volume: "80"
   number: "6"
   pages: "1789&#x2013;1805"
-  doi: "https://doi.org/10.1890/0012-9658(1999)080%5B1789:wdpcas%5D2.0.co;2"
+  doi: "https://doi.org/10.1890/0012-9658(1999)0801789:wdpcas2.0.co;2"
 
 - key: Kendall2005
   author: "B. E. Kendall, S. P. Ellner, E. McCauley, S. N. Wood, C. J. Briggs, W. M. Murdoch, and P. Turchin"
@@ -1084,6 +1101,14 @@
   address: "Oxford"
   doi: "https://doi.org/10.1093/oso/9780198577300.003.0006"
 
+- key: Mietchen2024
+  author: "M. S. Mietchen, E. Clancey, C. McMichael, and E. T. Lofgren"
+  year: "2024"
+  title: "Estimating SARS-CoV-2 transmission parameters between coinciding outbreaks in a university population and the surrounding community"
+  journal: "medRxiv"
+  eprint: "2024.01.10.24301116"
+  doi: "https://doi.org/10.1101/2024.01.10.24301116"
+
 - key: Molodecky2023
   author: "N. A. Molodecky, H. Jafari, R. M. Safdar, J. A. Ahmed, A. Mahamud, A. S. Bandyopadhyay, H. Shukla, A. Quddus, M. Zaffran, R. W. Sutter, N. C. Grassly, and I. M. Blake"
   year: "2023"
@@ -1092,6 +1117,15 @@
   volume: "41"
   pages: "A93&#x2013;A104"
   doi: "https://doi.org/10.1016/j.vaccine.2021.09.037"
+
+- key: Moore2024
+  author: "S. Moore, S. Cavany, T. A. Perkins, and G. F. C. Espa&ntilde;a"
+  year: "2024"
+  title: "Projecting the future impact of emerging SARS-CoV-2 variants under uncertainty: Modeling the initial Omicron outbreak"
+  journal: "Epidemics"
+  volume: "47"
+  pages: "100759"
+  doi: "https://doi.org/10.1016/j.epidem.2024.100759"
 
 - key: Musa2020
   author: "S. S. Musa, S. Zhao, D. Gao, Q. Lin, G. Chowell, and D. He"
