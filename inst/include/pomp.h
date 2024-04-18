@@ -18,8 +18,8 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 
-#define err(...) errorcall(R_NilValue,__VA_ARGS__)
-#define warn(...) warningcall(R_NilValue,__VA_ARGS__)
+#define err(...) Rf_errorcall(R_NilValue,__VA_ARGS__)
+#define warn(...) Rf_warningcall(R_NilValue,__VA_ARGS__)
 
 typedef
 void bspline_basis_eval_deriv_t

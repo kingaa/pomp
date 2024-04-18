@@ -1,7 +1,8 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 5.7.0}{
+\section{Changes in \pkg{pomp} version 5.7.1}{
   \itemize{
+    \item The \code{err()} and \code{warn()} C-level macros have been redefined to forestall problems that would arise when these macros are included in C++ code under forthcoming versions of \R.
     \item More changes in C codes to forestall issues detected by \pkg{rchk}.
     \item Minor corrections to documentation.
   }
