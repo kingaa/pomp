@@ -277,18 +277,18 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>Using each implementation, we’ll now run a number of simulations and compare the amount of time required.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">system.time</span>(<span class="kw">simulate</span>(gompertz,<span class="dt">nsim=</span><span class="dv">10000</span>,<span class="dt">format=</span><span class="st">&quot;arrays&quot;</span>))</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   7.787   0.015   7.803</code></pre>
+##   7.387   0.087   7.473</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">system.time</span>(<span class="kw">simulate</span>(Gompertz,<span class="dt">nsim=</span><span class="dv">10000</span>,<span class="dt">format=</span><span class="st">&quot;arrays&quot;</span>))</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   0.173   0.004   0.177</code></pre>
+##   0.167   0.000   0.167</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">system.time</span>(<span class="kw">pfilter</span>(gompertz,<span class="dt">Np=</span><span class="dv">10000</span>))</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   6.837   0.010   6.847</code></pre>
+##   6.478   0.054   6.532</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">system.time</span>(<span class="kw">pfilter</span>(Gompertz,<span class="dt">Np=</span><span class="dv">10000</span>))</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##    0.22    0.00    0.22</code></pre>
+##   0.199   0.007   0.207</code></pre>
 <hr />
-<p>This document was produced using <strong>pomp</strong> version 5.5.2.0 and <strong>R</strong> version 4.3.2.</p>
+<p>This document was produced using <strong>pomp</strong> version 5.7.1.0 and <strong>R</strong> version 4.3.3.</p>
 </div>
 
 
