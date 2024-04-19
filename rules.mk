@@ -15,7 +15,7 @@ PKG = $(shell perl -ne 'print $$1 if /Package:\s+((\w+[-\.]?)+)/;' DESCRIPTION)
 VERSION = $(shell perl -ne 'print $$1 if /Version:\s+((\d+[-\.]?)+)/;' DESCRIPTION)
 PKGVERS = $(PKG)_$(VERSION)
 TARBALL = $(PKGVERS).tar.gz
-SOURCE = $(sort $(wildcard R/*R src/*.c src/*.h data/* examples/*))
+SOURCE = $(sort $(wildcard R/*R src/*.c src/*.cc src/*.h data/* examples/*))
 CSOURCE = $(sort $(wildcard src/*.c))
 TESTS = $(sort $(wildcard tests/*R))
 INSTDOCS = $(sort $(wildcard inst/doc/*))
@@ -58,8 +58,7 @@ qcheck: CHECK = devtools::check($(COMMON_CHECK_ARGS),cran=FALSE,\
 args=c("--no-tests"))
 qqcheck: CHECK = devtools::check($(COMMON_CHECK_ARGS),cran=FALSE,\
 args=c("--no-tests","--no-codoc","--no-examples"))
-xcheck: CHECK = devtools::check($(COMMON_CHECK_ARGS),cran=TRUE,\
-env_vars=c("_R_CHECK_DEPENDS_ONLY_"="TRUE"))
+xcheck: CHECK = devtools::check($(COMMON_CHECK_ARGS),cran=TRUE)
 ycheck: CHECK = devtools::check($(COMMON_CHECK_ARGS),cran=TRUE,\
 args=c("--run-dontrun","--run-donttest"))
 
