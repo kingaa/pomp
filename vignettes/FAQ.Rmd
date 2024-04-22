@@ -153,7 +153,8 @@ library(ggplot2)
 library(tidyr)
 
 simulate(
-  times=1:20,t0=0,
+  t0=0,
+  times=1:20,
   rprocess=euler(rSim,delta.t=1),
   rmeasure=rMeas,
   rinit=rInit,
@@ -179,20 +180,20 @@ The following example illustrates this for a multivariate Ornstein-Uhlenbeck pro
 simulate(
   times=1:100, t0=0,
   rmeasure=Csnippet("
-        y1 = rnorm(x1+x2,sigma1);
-        y2 = rnorm(x2-x1,sigma2);
-        "),
+      y1 = rnorm(x1+x2,sigma1);
+      y2 = rnorm(x2-x1,sigma2);"
+  ),
   dmeasure=Csnippet("
-        lik = dnorm(y1,x1+x2,sigma1,1)+dnorm(y2,x2-x1,sigma2,1);
-        lik = (give_log) ? lik : exp(lik);
-        "),
+      lik = dnorm(y1,x1+x2,sigma1,1)+dnorm(y2,x2-x1,sigma2,1);
+      lik = (give_log) ? lik : exp(lik);"
+  ),
   rprocess=discrete_time(
     step.fun=Csnippet("
-        double tx1, tx2;
-        tx1 = rnorm(a11*x1 + a12*x2,nu1);
-        tx2 = rnorm(a21*x1 + a22*x2,nu2);
-        x1 = tx1; x2 = tx2;
-      "),
+      double tx1, tx2;
+      tx1 = rnorm(a11*x1 + a12*x2,nu1);
+      tx2 = rnorm(a21*x1 + a22*x2,nu2);
+      x1 = tx1; x2 = tx2;"
+    ),
     delta.t=1),
   rinit=Csnippet("
         x1 = 0;
@@ -277,14 +278,15 @@ dmeas <- Csnippet("
 ")
 
 dat |>
-  pomp(time="day",t0=0,
-       rprocess=euler(sir_step,delta.t=1/12),
-       rinit=sir_init,
-       rmeasure=rmeas,
-       dmeasure=dmeas,
-       accumvars="H",
-       paramnames=c("Beta","gamma","N", "rho"),
-       statenames=c("S","I","R","H")
+  pomp(
+    time="day",t0=0,
+    rprocess=euler(sir_step,delta.t=1/12),
+    rinit=sir_init,
+    rmeasure=rmeas,
+    dmeasure=dmeas,
+    accumvars="H",
+    paramnames=c("Beta","gamma","N", "rho"),
+    statenames=c("S","I","R","H")
   ) -> sir_na
 ```
 
@@ -359,11 +361,12 @@ sir_init <- Csnippet("
 
 rmeas <- Csnippet("B = rbinom(H,rho);")
 
-dmeas <- Csnippet("if (ISNA(B)) {
-                  lik = (give_log) ? 0 : 1;
-} else {
-                  lik = dbinom(B,H,rho,give_log);
-}")
+dmeas <- Csnippet("
+  if (ISNA(B)) {
+    lik = (give_log) ? 0 : 1;
+  } else {
+    lik = dbinom(B,H,rho,give_log);
+  }")
 
 read.csv(text="
 day,B
@@ -384,14 +387,15 @@ day,B
 ") -> dat
 
 dat |>
-  pomp(time="day",t0=-8,
-       rprocess=euler(sir_step,delta.t=1/12),
-       rinit=sir_init,
-       rmeasure=rmeas,
-       dmeasure=dmeas,
-       accumvars="H",
-       paramnames=c("Beta","gamma","N", "rho"),
-       statenames=c("S","I","R","H")
+  pomp(
+    time="day",t0=-8,
+    rprocess=euler(sir_step,delta.t=1/12),
+    rinit=sir_init,
+    rmeasure=rmeas,
+    dmeasure=dmeas,
+    accumvars="H",
+    paramnames=c("Beta","gamma","N", "rho"),
+    statenames=c("S","I","R","H")
   ) -> bsflu
 ```
 
@@ -409,8 +413,10 @@ bsflu |>
   theme_bw()
 
 bsflu |>
-  simulate(params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
-           nsim=10,format="d",include.data=TRUE) |>
+  simulate(
+    params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
+    nsim=10,format="d",include.data=TRUE
+  ) |>
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
   guides(color="none")+
@@ -430,19 +436,22 @@ library(dplyr)
 dat |>
   bind_rows(c(day=0,B=NA)) |>
   arrange(day) |>
-  pomp(time="day",t0=-8,
-       rprocess=euler(sir_step,delta.t=1/12),
-       rinit=sir_init,
-       rmeasure=rmeas,
-       dmeasure=dmeas,
-       accumvars="H",
-       paramnames=c("Beta","gamma","N", "rho"),
-       statenames=c("S","I","R","H")
+  pomp(
+    time="day",t0=-8,
+    rprocess=euler(sir_step,delta.t=1/12),
+    rinit=sir_init,
+    rmeasure=rmeas,
+    dmeasure=dmeas,
+    accumvars="H",
+    paramnames=c("Beta","gamma","N", "rho"),
+    statenames=c("S","I","R","H")
   ) -> bsflu
 
 bsflu |>
-  simulate(params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
-    nsim=10,format="d",include.data=TRUE) |>
+  simulate(
+    params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
+    nsim=10,format="d",include.data=TRUE
+  ) |>
   filter(day>0) |>
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
   geom_line()+
@@ -882,18 +891,18 @@ Whenever a non-finite log likelihood results (i.e., `-Inf`, `Inf`, `NA`, or `NaN
 
 ```{r}
 dmeas <- Csnippet("
-   lik = dnbinom_mu(D1,1/k,rho1*N1,1) + dbinom(D2,N2,rho2,1);
-   if (!R_FINITE(lik)) {
-       Rprintf(\"t = %lg, D1 = %lg, loglik = %lg\\n\",t,D1,lik);
-   }
-   lik = (log) ? lik : exp(lik);
+  lik = dnbinom_mu(D1,1/k,rho1*N1,1) + dbinom(D2,N2,rho2,1);
+  if (!R_FINITE(lik)) {
+    Rprintf(\"t = %lg, D1 = %lg, loglik = %lg\\n\",t,D1,lik);
+  }
+  lik = (log) ? lik : exp(lik);
 ")
 ```
 
 ```{r include=FALSE}
 ## Check the above C snippet.
-  pomp(data.frame(t=1:10,D1=1:10,D2=2),time='t',t0=0,dmeasure=dmeas,
-       statenames=c("N1","N2"),paramnames=c("rho1","rho2","k"))
+pomp(data.frame(t=1:10,D1=1:10,D2=2),time='t',t0=0,dmeasure=dmeas,
+  statenames=c("N1","N2"),paramnames=c("rho1","rho2","k"))
 ```
 
 More generally, one can make use of [any aspect of **R**'s C API](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API) in writing C snippets.
@@ -903,15 +912,14 @@ To avoid having to escape those quotes, and the linefeed character `"\n"`, as in
 
 ```{r}
 dmeas <- Csnippet(r"{
-   lik = dnbinom_mu(D1,1/k,rho1*N1,1) + dbinom(D2,N2,rho2,1);
-   if (!R_FINITE(lik)) {
-       Rprintf("t = %lg, D1 = %lg, loglik = %lg\n",t,D1,lik);
-   }
-   lik = (log) ? lik : exp(lik);
+  lik = dnbinom_mu(D1,1/k,rho1*N1,1) + dbinom(D2,N2,rho2,1);
+  if (!R_FINITE(lik)) {
+    Rprintf("t = %lg, D1 = %lg, loglik = %lg\n",t,D1,lik);
+  }
+  lik = (log) ? lik : exp(lik);
 }")
 ```
 
 --------------
 
 # References
-
