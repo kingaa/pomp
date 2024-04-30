@@ -31,6 +31,7 @@ git push github v4.6
 - perform extra checks:
   - `make xcheck`
   - `make ycheck`
+  - `make rchk`
   - `make vcheck` and examine `valgrind` output in `pomp-Ex.Rout` for evidence of memory leaks.
   - `make revdeps`
 
@@ -50,7 +51,7 @@ git push github v4.6
 
 ## Announcement
 
-- Prepare an announcement for the blog: `www/vignettes/_post/`
+- Prepare an announcement for the blog: `www/_posts/`
 - Update manual pages:
   - `make publish`
   - Then push changes to `kingaa.github.io`
