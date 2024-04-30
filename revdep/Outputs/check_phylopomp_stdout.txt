@@ -1,6 +1,6 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck'
-* using R version 4.3.3 (2024-02-29)
-* using platform: x86_64-pc-linux-gnu (64-bit)
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck'
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
 * R was compiled by
     gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
     GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
@@ -9,7 +9,7 @@
 * using option '--as-cran'
 * checking for file 'phylopomp/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'phylopomp' version '0.10.3.0'
+* this is package 'phylopomp' version '0.10.6.0'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -19,7 +19,7 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'phylopomp' can be installed ... [52s/63s] OK
+* checking whether package 'phylopomp' can be installed ... [57s/44s] OK
 * used C compiler: 'gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
 * used C++ compiler: 'g++ (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
 * checking installed package size ... NOTE
@@ -33,7 +33,7 @@
 * checking for left-over files ... OK
 * checking index information ... OK
 * checking package subdirectories ... OK
-* checking R files for non-ASCII characters ... OK
+* checking code files for non-ASCII characters ... OK
 * checking R files for syntax errors ... OK
 * checking whether the package can be loaded ... OK
 * checking whether the package can be loaded with stated dependencies ... OK
@@ -41,13 +41,13 @@
 * checking whether the namespace can be loaded with stated dependencies ... OK
 * checking whether the namespace can be unloaded cleanly ... OK
 * checking loading without being on the library search path ... OK
-* checking startup messages can be suppressed ... OK
+* checking whether startup messages can be suppressed ... OK
 * checking use of S3 registration ... OK
 * checking dependencies in R code ... OK
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [21s/13s] OK
+* checking R code for possible problems ... [49s/11s] OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -62,7 +62,7 @@
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [16s/16s] OK
+* checking examples ... [17s/14s] OK
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
 3a4,33
@@ -158,7 +158,7 @@
 >   root.treedata       tidytree
 >   rootnode.phylo      tidytree
 >   sibling.phylo       tidytree
- [117s/90s] OK
+ [196s/104s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

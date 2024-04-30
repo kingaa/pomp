@@ -1,6 +1,6 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/hte.Rcheck'
-* using R version 4.3.3 (2024-02-29)
-* using platform: x86_64-pc-linux-gnu (64-bit)
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/hte.Rcheck'
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
 * R was compiled by
     gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
     GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
@@ -29,7 +29,7 @@
 * checking for left-over files ... OK
 * checking index information ... OK
 * checking package subdirectories ... OK
-* checking R files for non-ASCII characters ... OK
+* checking code files for non-ASCII characters ... OK
 * checking R files for syntax errors ... OK
 * checking whether the package can be loaded ... OK
 * checking whether the package can be loaded with stated dependencies ... OK
@@ -37,13 +37,13 @@
 * checking whether the namespace can be loaded with stated dependencies ... OK
 * checking whether the namespace can be unloaded cleanly ... OK
 * checking loading without being on the library search path ... OK
-* checking startup messages can be suppressed ... OK
+* checking whether startup messages can be suppressed ... OK
 * checking use of S3 registration ... OK
 * checking dependencies in R code ... OK
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [18s/12s] NOTE
+* checking R code for possible problems ... NOTE
 filterfun : fun: local variable ‘theta’ assigned but may not be used
 stobfun : ofun: local variable ‘theta’ assigned but may not be used
 * checking Rd files ... OK
@@ -64,15 +64,30 @@ stobfun : ofun: local variable ‘theta’ assigned but may not be used
 * checking compilation flags used ... OK
 * checking compiled code ... OK
 * checking installed files from 'inst/doc' ... OK
-* checking examples ... [96s/49s] OK
+* checking examples ... [249s/34s] OK
 Examples with CPU (user + system) or elapsed time > 5s
-                   user system elapsed
-fake_data        18.967 24.513  17.851
-simuldat         16.912 21.792  15.537
-bernoulli_filter  4.716  0.104   5.665
+            user system elapsed
+fake_data 32.427 99.903  12.371
+simuldat  24.851 76.568  10.147
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
- [50s/48s] OK
+7c7
+< ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+---
+> ✔ ggplot2   3.5.0     ✔ tibble    3.2.1
+7c7
+< ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+---
+> ✔ ggplot2   3.5.0     ✔ tibble    3.2.1
+7c7
+< ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+---
+> ✔ ggplot2   3.5.0     ✔ tibble    3.2.1
+7c7
+< ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+---
+> ✔ ggplot2   3.5.0     ✔ tibble    3.2.1
+ [58s/46s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
