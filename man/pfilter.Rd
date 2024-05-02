@@ -87,7 +87,7 @@ If \code{save.states="unweighted"}, the state-vector for each unweighted particl
 If \code{save.states="weighted"}, the state-vector for each weighted particle at each time is saved, along with the corresponding weight.
 If \code{save.states="no"}, information on the latent states is not saved.
 \code{"FALSE"} is a synonym for \code{"no"} and \code{"TRUE"} is a synonym for \code{"unweighted"}.
-To retrieve the saved states, applying \code{\link{saved.states}} to the result of the \code{pfilter} computation.}
+To retrieve the saved states, applying \code{\link{saved_states}} to the result of the \code{pfilter} computation.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

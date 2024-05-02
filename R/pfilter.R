@@ -37,7 +37,7 @@
 ##' If \code{save.states="weighted"}, the state-vector for each weighted particle at each time is saved, along with the corresponding weight.
 ##' If \code{save.states="no"}, information on the latent states is not saved.
 ##' \code{"FALSE"} is a synonym for \code{"no"} and \code{"TRUE"} is a synonym for \code{"unweighted"}.
-##' To retrieve the saved states, applying \code{\link{saved.states}} to the result of the \code{pfilter} computation.
+##' To retrieve the saved states, applying \code{\link{saved_states}} to the result of the \code{pfilter} computation.
 ##'
 ##' @return
 ##' An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.

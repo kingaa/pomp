@@ -59,7 +59,7 @@ Internally, \code{data} will be coerced to an array with storage-mode \code{doub
 
 \item{rw.sd}{specification of the magnitude of the random-walk perturbations that will be applied to some or all model parameters.
 Parameters that are to be estimated should have positive perturbations specified here.
-The specification is given using the \code{\link{rw.sd}} function, which creates a list of unevaluated expressions.
+The specification is given using the \code{\link{rw_sd}} function, which creates a list of unevaluated expressions.
 The latter are evaluated in a context where the model time variable is defined (as \code{time}).
 The expression \code{ivp(s)} can be used in this context as shorthand for \preformatted{ifelse(time==time[1],s,0).}
 Likewise, \code{ivp(s,lag)} is equivalent to \preformatted{ifelse(time==time[lag],s,0).}
@@ -141,14 +141,14 @@ The following methods are available for such an object:
 \item{\code{\link{logLik}}}{ returns the so-called \dfn{mif log likelihood} which is the log likelihood of the perturbed model, not of the focal model itself.
 To obtain the latter, it is advisable to run several \code{\link{pfilter}} operations on the result of a \code{mif2} computatation.}
 \item{\code{\link{coef}}}{ extracts the point estimate }
-\item{\code{\link{eff.sample.size}}}{ extracts the effective sample size of the final filtering iteration}
+\item{\code{\link{eff_sample_size}}}{ extracts the effective sample size of the final filtering iteration}
 }
 Various other methods can be applied, including all the methods applicable to a \code{\link[=pfilter]{pfilterd_pomp}} object and all other \pkg{pomp} estimation algorithms and diagnostic methods.
 }
 
 \section{Specifying the perturbations}{
 
-The \code{rw.sd} function simply returns a list containing its arguments as unevaluated expressions.
+The \code{rw_sd} function simply returns a list containing its arguments as unevaluated expressions.
 These are then evaluated in a context containing the model \code{time} variable.
 This allows for easy specification of the structure of the perturbations that are to be applied.
 For example,
