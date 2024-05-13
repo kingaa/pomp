@@ -38,6 +38,12 @@ An exception to this rule is the prior (\code{rprior} and \code{dprior}):
 covariate-dependent priors are not allowed.
 Nor are parameter transformations permitted to depend upon covariates.
 }
+\section{Extrapolation}{
+
+If \code{t} is outside the range of the lookup table, the values will be extrapolated, and a warning will be issued.
+The type of extrapolation performed will be constant or linear according to the \code{order} flag used when creating the table.
+}
+
 \seealso{
 More on implementing POMP models: 
 \code{\link{Csnippet}},

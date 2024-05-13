@@ -17,19 +17,19 @@
 ##' @concept covariates
 ##' @family implementation information
 ##' @family interpolation
-##'
 ##' @param times the times corresponding to the covariates.
 ##' This may be given as a vector of (non-decreasing, finite) numerical values.
 ##' Alternatively, one can specify by name which of the given variables is the time variable.
-##'
 ##' @param order the order of interpolation to be used.
 ##' Options are \dQuote{linear} (the default) and \dQuote{constant}.
 ##' Setting \code{order="linear"} treats the covariates as piecewise linear functions of time;
 ##' \code{order="constant"} treats them as right-continuous piecewise constant functions.
-##'
 ##' @param \dots numeric vectors or data frames containing time-varying covariates.
 ##' It must be possible to bind these into a data frame.
 ##'
+##' @section Extrapolation:
+##' If \code{t} is outside the range of the lookup table, the values will be extrapolated, and a warning will be issued.
+##' The type of extrapolation performed will be constant or linear according to the \code{order} flag used when creating the table.
 NULL
 
 setClass(

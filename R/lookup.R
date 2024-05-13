@@ -5,17 +5,14 @@
 ##' @rdname lookup
 ##' @name lookup
 ##' @family interpolation
-##'
+##' @include covariate_table.R
 ##' @param table a \sQuote{covartable} object created by a call to \code{\link{covariate_table}}
 ##' @param t numeric vector; times at which interpolated values of the covariates in \code{table} are required.
-##'
 ##' @return
 ##' A numeric vector or matrix of the interpolated values.
-##'
-##' @details
-##' A warning will be generated if extrapolation is performed.
+##' @inheritSection covariates Extrapolation
 ##' @export
-##'
+
 lookup <- function (table, t) {
   d <- .Call(P_lookup_in_table,table,t)
   data.frame(t=t,t(d))

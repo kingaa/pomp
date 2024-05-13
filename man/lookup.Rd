@@ -17,9 +17,12 @@ A numeric vector or matrix of the interpolated values.
 \description{
 Interpolate values from a lookup table
 }
-\details{
-A warning will be generated if extrapolation is performed.
+\section{Extrapolation}{
+
+If \code{t} is outside the range of the lookup table, the values will be extrapolated, and a warning will be issued.
+The type of extrapolation performed will be constant or linear according to the \code{order} flag used when creating the table.
 }
+
 \seealso{
 More on interpolation:
 \code{\link{bsplines}},
