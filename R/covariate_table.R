@@ -27,6 +27,9 @@
 ##' @param \dots numeric vectors or data frames containing time-varying covariates.
 ##' It must be possible to bind these into a data frame.
 ##'
+##' @return
+##' \code{covariate_table} returns a lookup table suitable for inclusion of covariates in a \sQuote{pomp} object.
+##' Specifically, this is an object of class \sQuote{covartable}.
 ##' @section Extrapolation:
 ##' If \code{t} is outside the range of the lookup table, the values will be extrapolated, and a warning will be issued.
 ##' The type of extrapolation performed will be constant or linear according to the \code{order} flag used when creating the table.

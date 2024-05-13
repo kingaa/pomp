@@ -52,4 +52,25 @@ covariate_table(
     labeller=labeller(variable=c(f1="derivative",f0="function")))+
   theme_bw()
 
+covariate_table(
+  x=seq(1,10,by=1),
+  y=seq(2,20,by=2),
+  times="x"
+) -> tab
+lookup(tab,c(0,2.5,3.6,10,20))
+
+repair_lookup_table(tab,t=c(seq(0,10),20)) -> tab2
+lookup(tab2,c(0,2.5,3.6,10,20))
+
+covariate_table(
+  x=seq(1,10,by=1),
+  y=seq(1,10,by=1),
+  order="const",
+  times="x"
+) -> tab
+lookup(tab,c(0,2.5,3.6,10,20))
+
+repair_lookup_table(tab,t=c(seq(0,10,by=1),20)) -> tab2
+lookup(tab2,c(0,2.5,3.6,10,20))
+
 dev.off()

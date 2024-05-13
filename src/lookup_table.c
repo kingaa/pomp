@@ -53,25 +53,26 @@ SEXP lookup_in_table (SEXP covar, SEXP t) {
 void table_lookup (lookup_table_t *tab, double x, double *y)
 {
   int flag = 0;
-  int j, k;
+  int j, k, n;
   double e;
   if ((tab == 0) || (tab->length < 1) || (tab->width < 1)) return;
-  tab->index = findInterval(tab->x,tab->length,x,TRUE,TRUE,tab->index,&flag);
+  tab->index = findInterval(tab->x,tab->length,x,1,1,tab->index,&flag);
   // warn only if we are *outside* the interval
-  if ((x < tab->x[0]) || (x > tab->x[(tab->length)-1]))
+  if ((x < tab->x[0]) || (x > tab->x[tab->length-1]))
     warn("in 'table_lookup': extrapolating at %le.", x);
   switch (tab->order) {
   case 1: default: // linear interpolation
     e = (x - tab->x[tab->index-1]) / (tab->x[tab->index] - tab->x[tab->index-1]);
-    for (j = 0; j < tab->width; j++) {
-      k = j+(tab->width)*(tab->index);
-      y[j] = e*(tab->y[k])+(1-e)*(tab->y[k-tab->width]);
+    for (j = 0, k = tab->index*tab->width, n = k-tab->width; j < tab->width; j++, k++, n++) {
+      y[j] = e*(tab->y[k])+(1-e)*(tab->y[n]);
     }
     break;
   case 0: // piecewise constant
-    for (j = 0; j < tab->width; j++) {
-      k = j+(tab->width)*(tab->index);
-      y[j] = tab->y[k-tab->width];
+    if (flag < 0) n = 0;
+    else if (flag > 0) n = tab->index;
+    else n = tab->index-1;
+    for (j = 0, k = n*tab->width; j < tab->width; j++, k++) {
+      y[j] = tab->y[k];
     }
     break;
   }

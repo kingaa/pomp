@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.8.2}{
+  \itemize{
+    \item A bug in covariate-table extrapolation for the case \code{order="constant"} has been fixed.
+    \item A new experimental function \code{repair_lookup_table} is provided to help eliminate unnecessary warnings about extrapolation.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.8.1}{
   \itemize{
     \item Functions with names that include dots (\code{.}), which have been defunct since version 4.7, have been expunged.

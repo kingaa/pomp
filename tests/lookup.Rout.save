@@ -127,6 +127,63 @@ Error : 'covariate_table' is undefined for 'times' of class 'logical'.
 +     labeller=labeller(variable=c(f1="derivative",f0="function")))+
 +   theme_bw()
 > 
+> covariate_table(
++   x=seq(1,10,by=1),
++   y=seq(2,20,by=2),
++   times="x"
++ ) -> tab
+> lookup(tab,c(0,2.5,3.6,10,20))
+     t    y
+1  0.0  0.0
+2  2.5  5.0
+3  3.6  7.2
+4 10.0 20.0
+5 20.0 40.0
+Warning messages:
+1: in 'table_lookup': extrapolating at 0.000000e+00. 
+2: in 'table_lookup': extrapolating at 2.000000e+01. 
+> 
+> repair_lookup_table(tab,t=c(seq(0,10),20)) -> tab2
+Warning messages:
+1: in 'table_lookup': extrapolating at 0.000000e+00. 
+2: in 'table_lookup': extrapolating at 2.000000e+01. 
+> lookup(tab2,c(0,2.5,3.6,10,20))
+     t    y
+1  0.0  0.0
+2  2.5  5.0
+3  3.6  7.2
+4 10.0 20.0
+5 20.0 40.0
+> 
+> covariate_table(
++   x=seq(1,10,by=1),
++   y=seq(1,10,by=1),
++   order="const",
++   times="x"
++ ) -> tab
+> lookup(tab,c(0,2.5,3.6,10,20))
+     t  y
+1  0.0  1
+2  2.5  2
+3  3.6  3
+4 10.0 10
+5 20.0 10
+Warning messages:
+1: in 'table_lookup': extrapolating at 0.000000e+00. 
+2: in 'table_lookup': extrapolating at 2.000000e+01. 
+> 
+> repair_lookup_table(tab,t=c(seq(0,10,by=1),20)) -> tab2
+Warning messages:
+1: in 'table_lookup': extrapolating at 0.000000e+00. 
+2: in 'table_lookup': extrapolating at 2.000000e+01. 
+> lookup(tab2,c(0,2.5,3.6,10,20))
+     t  y
+1  0.0  1
+2  2.5  2
+3  3.6  3
+4 10.0 10
+5 20.0 10
+> 
 > dev.off()
 null device 
           1 
