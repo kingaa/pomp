@@ -14,7 +14,7 @@
 
 \S4method{covariate_table}{character}(..., order = c("linear", "constant"), times)
 
-repair_lookup_table(table, t)
+repair_lookup_table(table, t, order)
 }
 \arguments{
 \item{\dots}{numeric vectors or data frames containing time-varying covariates.
@@ -53,6 +53,7 @@ covariate-dependent priors are not allowed.
 Nor are parameter transformations permitted to depend upon covariates.
 
 \code{repair_lookup_table} applies \code{\link{lookup}} at the provided values of \code{t} and returns the resulting lookup table.
+If \code{order} is unsupplied, the interpolation-order from \code{table} is preserved.
 \strong{\code{repair_lookup_table} should be considered experimental: its interface may change without notice}.
 }
 \section{Extrapolation}{

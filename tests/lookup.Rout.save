@@ -184,6 +184,37 @@ Warning messages:
 4 10.0 10
 5 20.0 10
 > 
+> covariate_table(
++   x=seq(1,10,by=1),
++   y=seq(1,10,by=1),
++   order="const",
++   times="x"
++ ) -> tab
+> 
+> repair_lookup_table(tab,t=c(seq(0,10,by=1),20),order="lin") -> tab2
+Warning messages:
+1: in 'table_lookup': extrapolating at 0.000000e+00. 
+2: in 'table_lookup': extrapolating at 2.000000e+01. 
+> lookup(tab2,c(0,2.5,3.6,10,20))
+     t    y
+1  0.0  1.0
+2  2.5  2.5
+3  3.6  3.6
+4 10.0 10.0
+5 20.0 10.0
+> 
+> repair_lookup_table(tab,t=c(seq(0,10,by=1),20),order="const") -> tab2
+Warning messages:
+1: in 'table_lookup': extrapolating at 0.000000e+00. 
+2: in 'table_lookup': extrapolating at 2.000000e+01. 
+> lookup(tab2,c(0,2.5,3.6,10,20))
+     t  y
+1  0.0  1
+2  2.5  2
+3  3.6  3
+4 10.0 10
+5 20.0 10
+> 
 > dev.off()
 null device 
           1 
