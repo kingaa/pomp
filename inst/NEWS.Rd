@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.8.3}{
+  \itemize{
+    \item Internally, \pkg{pomp} codes no longer include \file{Rinternal.h}.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.8.2}{
   \itemize{
     \item A bug in covariate-table extrapolation for the case \code{order="constant"} has been fixed.

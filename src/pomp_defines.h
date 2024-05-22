@@ -6,7 +6,7 @@
 #include <R.h>
 #include <Rmath.h>
 #include <Rdefines.h>
-#include <Rinternals.h>
+
 
 #include "pomp.h"
 

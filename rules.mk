@@ -181,7 +181,7 @@ tests: .tests
 install: .install
 
 inst/include/%.h: src/%.h
-	$(CP) $^ $@
+	perl -ne 'print if not /^\/\/\!/' $^ > $@
 
 %.tex: %.Rnw
 	$(REXE) -e "library(knitr); knit(\"$*.Rnw\")"
