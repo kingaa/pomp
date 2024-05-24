@@ -6,7 +6,6 @@
 ##' This extra variability effectively smooths the likelihood surface and combats particle depletion by introducing diversity into particle population.
 ##' As the iterations progress, the magnitude of the perturbations is diminished according to a user-specified cooling schedule.
 ##' The algorithm is presented and justified in Ionides et al. (2015).
-##'
 ##' @name mif2
 ##' @rdname mif2
 ##' @include pfilter.R workhorses.R pomp_class.R safecall.R continue.R
@@ -17,8 +16,8 @@
 ##' @family estimation methods
 ##' @family methods based on maximization
 ##' @importFrom utils head
-##' @inheritParams pomp
 ##' @inheritParams pfilter
+##' @inheritParams pomp
 ##' @param Nmif The number of filtering iterations to perform.
 ##' @param rw.sd specification of the magnitude of the random-walk perturbations that will be applied to some or all model parameters.
 ##' Parameters that are to be estimated should have positive perturbations specified here.

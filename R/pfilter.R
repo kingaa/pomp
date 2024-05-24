@@ -22,27 +22,21 @@
 ##' \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
 ##' and so on,
 ##' while when \code{T=length(time(object))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.
-##'
 ##' @param pred.mean logical; if \code{TRUE}, the prediction means are calculated for the state variables and parameters.
-##'
 ##' @param pred.var logical; if \code{TRUE}, the prediction variances are calculated for the state variables and parameters.
-##'
 ##' @param filter.mean logical; if \code{TRUE}, the filtering means are calculated for the state variables and parameters.
-##'
 ##' @param filter.traj logical; if \code{TRUE}, a filtered trajectory is returned for the state variables and parameters.
 ##' See \code{\link{filter_traj}} for more information.
-##'
 ##' @param save.states character;
 ##' If \code{save.states="unweighted"}, the state-vector for each unweighted particle at each time is saved.
 ##' If \code{save.states="weighted"}, the state-vector for each weighted particle at each time is saved, along with the corresponding weight.
 ##' If \code{save.states="no"}, information on the latent states is not saved.
 ##' \code{"FALSE"} is a synonym for \code{"no"} and \code{"TRUE"} is a synonym for \code{"unweighted"}.
 ##' To retrieve the saved states, applying \code{\link{saved_states}} to the result of the \code{pfilter} computation.
-##'
+##' @param ... additional arguments are passed to \code{\link{pomp}}.
 ##' @return
 ##' An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
 ##' Information can be extracted from this object using the methods documented below.
-##' 
 ##' @section Methods:
 ##' \describe{
 ##' \item{\code{\link{logLik}}}{ the estimated log likelihood  }
@@ -59,15 +53,12 @@
 ##' \item{\code{\link{as.data.frame}}}{coerce to a data frame}
 ##' \item{\code{\link{plot}}}{diagnostic plots}
 ##' }
-##'
 ##' @references
 ##'
 ##' \Arulampalam2002
 ##'
 ##' \Bhadra2016
-##'
 ##' @example examples/pfilter.R
-##'
 NULL
 
 setClass(

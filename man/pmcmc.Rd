@@ -87,12 +87,7 @@ For more information, see \link[=dmeasure_spec]{dmeasure specification}.}
 For more information, see \link[=prior_spec]{prior specification}.
 Setting \code{dprior=NULL} resets the prior distribution to its default, which is a flat improper prior.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components.
-See \code{\link{pomp}} for a full list of recognized arguments.
-
-When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
-See \link[=userdata]{userdata} for information on how to use this facility.}
+\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

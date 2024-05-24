@@ -17,8 +17,8 @@
 ##' @family Bayesian methods
 ##' 
 ##' @importFrom stats runif
-##' @inheritParams pomp
 ##' @inheritParams pfilter
+##' @inheritParams pomp
 ##' @param Nmcmc The number of PMCMC iterations to perform.
 ##' @param proposal optional function that draws from the proposal
 ##' distribution.  Currently, the proposal distribution must be symmetric for

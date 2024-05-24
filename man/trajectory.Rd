@@ -69,19 +69,14 @@ This can be furnished either as a C snippet, an \R function, or the name of a pr
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
 For more information, see \link[=rinit_spec]{rinit specification}.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components.
-See \code{\link{pomp}} for a full list of recognized arguments.
-
-When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
-See \link[=userdata]{userdata} for information on how to use this facility.}
+\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{ode_control}{optional list;
 the elements of this list will be passed to \code{\link[deSolve]{ode}} if the skeleton is a vectorfield, and ignored if it is a map.}
 
 \item{format}{the format in which to return the results.
 
-\code{format = "pomps"} causes the trajectories to be returned as a single \sQuote{pomp} object (if a single parameter vector have been furnished to \code{trajectory}) or as a \sQuote{pompList} object (if multiple parameters have been furnished).
+\code{format = "pomps"} causes the trajectories to be returned as a single \sQuote{pomp} object (if a single parameter vector has been furnished to \code{trajectory}) or as a \sQuote{pompList} object (if a matrix of parameters have been furnished).
 In each of these, the \code{states} slot will have been replaced by the computed trajectory.
 Use \code{\link{states}} to view these.
 

@@ -50,7 +50,7 @@ dat |>
     ),
     vmeasure=function(R, ...) R,
     emeasure=function(x,...) c(Y=0.01*x),
-    R=matrix(0.01,1,1,dimnames=list("Y","Y"))
+    userdata=list(R=matrix(0.01,1,1,dimnames=list("Y","Y")))
   ) -> kf
 
 kf |> plot()

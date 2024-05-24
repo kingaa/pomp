@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.8.4}{
+  \itemize{
+    \item To add additional elements for use by the basic model components (i.e., \dQuote{userdata}), the \code{userdata} argument should now be used.
+    The old behavior will still work, but will generate a warning.
+    In a future release, this will become an error.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.8.3}{
   \itemize{
     \item Internally, \pkg{pomp} codes no longer include \file{Rinternal.h}.

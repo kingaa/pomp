@@ -56,7 +56,7 @@ y |>
   as.data.frame() |>
   pfilter(
     times=t,t0=0,
-    A=A,C=C,R=R,sqrtQ=sqrtQ,sqrtR=sqrtR,X0=X0,
+    userdata=list(A=A,C=C,R=R,sqrtQ=sqrtQ,sqrtR=sqrtR,X0=X0),
     rprocess=discrete_time(
       step.fun=function(x1,x2,x3,x4,delta.t,...){
         x <- c(x1,x2,x3,x4)

@@ -18,18 +18,14 @@
 ##' @family full-information methods
 ##' @family particle filter methods
 ##' @family estimation methods
-##'
 ##' @importFrom mvtnorm rmvnorm
 ##' @importFrom stats median cov
-##'
-##' @inheritParams pomp
 ##' @inheritParams pfilter
-##'
+##' @inheritParams pomp
 ##' @param smooth Kernel density smoothing parameter.
 ##' The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
 ##' Thus, \code{smooth=0} means that no noise will be added to parameters.
 ##' The general recommendation is that the value of \code{smooth} should be chosen close to 0 (e.g., \code{shrink} ~ 0.1).
-##'
 ##' @return
 ##' An object of class \sQuote{bsmcd_pomp}.
 ##' The following methods are avaiable:
@@ -37,11 +33,8 @@
 ##' \item{\code{\link[=plot,bsmcd_pomp-method]{plot}}}{produces diagnostic plots}
 ##' \item{\code{\link{as.data.frame}}}{puts the prior and posterior samples into a data frame}
 ##' }
-##'
 ##' @inheritSection pomp Note for Windows users
-##' 
 ##' @author Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
-##'
 ##' @references
 ##'
 ##' \Liu2001b

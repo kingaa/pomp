@@ -106,7 +106,7 @@ coef(po)
 po |>
   window(start=5,end=20) |>
   pomp(covar=covariate_table(times=0:20,q=0:20),
-    larry=3L) -> po1
+    userdata=list(larry=3L)) -> po1
 as(po1,"data.frame") |> head()
 
 dim(as.data.frame(c(a=po1,b=po1)))

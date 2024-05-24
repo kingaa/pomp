@@ -183,7 +183,10 @@ loglik:           NA
 +   cooling.type="hyper",cooling.fraction.50=0.1,
 +   drpocess="oops",
 +   dmeasure=function(log,...)0) -> mf3
-NOTE: The provided object 'drpocess' is available for use by POMP basic components.
+Warning message:
+The provided object 'drpocess' is available for use by POMP basic components.
+This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
+In a future release, this warning will become an error. 
 > try(mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),cooling.fraction.50=0.1,dmeasure=NULL))
 Error : in 'mif2': 'rprocess', 'dmeasure' are needed basic components.
 > try(mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),cooling.fraction.50=0.1,rprocess=NULL))

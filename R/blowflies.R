@@ -117,9 +117,11 @@ blowflies1 <- function (
     ),
     paramnames=c("P","N0","delta","sigma.P","sigma.d","sigma.y"),
     statenames=c("N1","R","S","e","eps"),
-    y.init=with( ## initial data
-      dat,
-      approx(x=day,y=y,xout=seq(from=0,to=14,by=1),rule=2)$y
+    userdata=list(
+      y.init=with( ## initial data
+        dat,
+        approx(x=day,y=y,xout=seq(from=0,to=14,by=1),rule=2)$y
+      )
     ),
     ## y.init=c(948, 948, 942, 930, 911, 885, 858, 833.7, 801, 748.3, 676, 589.8, 504, 434.9, 397),
     rinit=function (params, t0, y.init, ...) {
@@ -173,11 +175,13 @@ blowflies2 <- function (
     partrans=parameter_trans(
       log=c("P","delta","N0","sigma.P","sigma.d","sigma.y")
     ),
-    y.init=with( ## initial data
-      dat,
-      approx(x=day,y=y,xout=seq(from=0,to=14,by=2),rule=2)$y
+    userdata=list(
+      y.init=with( ## initial data
+        dat,
+        approx(x=day,y=y,xout=seq(from=0,to=14,by=2),rule=2)$y
+      )
+      ## y.init=c(948, 942, 911, 858, 801, 676, 504, 397),
     ),
-    ## y.init=c(948, 942, 911, 858, 801, 676, 504, 397),
     paramnames=c("P","N0","delta","sigma.P","sigma.d","sigma.y"),
     statenames=c("N1","R","S","e","eps"),
     rinit=function (params, t0, y.init, ...) {

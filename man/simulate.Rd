@@ -56,8 +56,8 @@
 \item{nsim}{The number of simulations to perform.
 Note that the number of replicates will be \code{nsim} times \code{ncol(params)}.}
 
-\item{seed}{optional;
-if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.  the random seed to use.
+\item{seed}{optional integer;
+if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.
 The RNG will be restored to its original state afterward.}
 
 \item{times}{the sequence of observation times.
@@ -85,9 +85,8 @@ For more information, see \link[=rmeasure_spec]{rmeasure specification}.}
 
 \item{format}{the format in which to return the results.
 
-\code{format = "pomps"} causes the results to be returned as a single \dQuote{pomp} object,
-identical to \code{object} except for the latent states and observations,
-which have been replaced by the simulated values.
+\code{format = "pomps"} causes the results to be returned as a single \dQuote{pomp} object, if \code{params} is a vector, or a list of \dQuote{pomp} objects, if \code{params} is a matrix with more than one column.
+Each of these will be identical to \code{object} except in that the latent states and observations will have been replaced by their simulated values.
 
 \code{format = "arrays"} causes the results to be returned as a list of two arrays.
 The \dQuote{states} element will contain the simulated state trajectories in a rank-3 array with dimensions
@@ -104,12 +103,7 @@ An ordered factor variable, \sQuote{.id}, distinguishes one simulation from anot
 \item{include.data}{if \code{TRUE}, the original data and covariates (if any) are included (with \code{.id = "data"}).
 This option is ignored unless \code{format = "data.frame"}.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components.
-See \code{\link{pomp}} for a full list of recognized arguments.
-
-When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
-See \link[=userdata]{userdata} for information on how to use this facility.}
+\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 

@@ -25,9 +25,11 @@ Type 'q()' to quit R.
 > 
 > pomp(po,partrans=NULL,bob=3,
 +   covar=covariate_table(a=0:20,b=0:20,times="a")) -> po1
-NOTE: The provided object 'bob' is available for use by POMP basic components.
-Warning message:
-in 'pomp': the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
+Warning messages:
+1: The provided object 'bob' is available for use by POMP basic components.
+This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
+In a future release, this warning will become an error. 
+2: in 'pomp': the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > spy(po1)
 ==================
 pomp object 'po1':
@@ -164,8 +166,8 @@ params
 
 
 /* pomp C snippet file: nancy */
-/* Time: 2024-04-30 08:11:15.392 -0400 */
-/* Salt: 9DAA8D5E59418992A0EAF24D */
+/* Time: 2024-05-24 16:07:40.839 -0400 */
+/* Salt: 0126BA7A968070B09ADA7541 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -288,8 +290,8 @@ pomp object 'sir':
 
 
 /* pomp C snippet file: sir_source */
-/* Time: 2024-04-30 08:11:15.534 -0400 */
-/* Salt: 1914EAA2FC08263B6B35F012 */
+/* Time: 2024-05-24 16:07:40.957 -0400 */
+/* Salt: AA6C60DA16990DC34AE2FBFE */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -938,8 +940,8 @@ x1_0 x2_0   s1   s2  tau
 
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2024-04-30 08:11:16.276 -0400 */
-/* Salt: A38A303EEFC617D84B031F01 */
+/* Time: 2024-05-24 16:07:41.744 -0400 */
+/* Salt: D2DA73368E7C6F3403335BF6 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1205,8 +1207,8 @@ name    birth susc.death infection inf.death recovery recov.death
 
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2024-04-30 08:11:16.942 -0400 */
-/* Salt: A84F6E43E37D60B24FCF12A3 */
+/* Time: 2024-05-24 16:07:42.368 -0400 */
+/* Salt: 93BDD69202DE9561A7463207 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1846,7 +1848,6 @@ Error : 'spy' is undefined for 'object' of class 'list'.
 +   compile=FALSE
 + ) |>
 +   spy()
-NOTE: The provided object 'x0' is available for use by POMP basic components.
 ==================
 pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params = c(x_0 = 1, ''    a = 22), rinit = Csnippet("x = *get_userdata_double(\"x0\");"), ''    statenames = "x", compile = FALSE)':
 
@@ -1855,7 +1856,7 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params =
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_7593eefc78309496b4fd8edac45a6d5b'
+  - defined by a C snippet in library 'pomp_76f078570f92c6b269c1ac523812abd7'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: <undefined>
 - process model density, dprocess: <default>
@@ -1876,9 +1877,9 @@ x_0   a
 - C snippet file  1 :
 
 
-/* pomp C snippet file: pomp_7593eefc78309496b4fd8edac45a6d5b */
-/* Time: 2024-04-30 08:11:17.693 -0400 */
-/* Salt: F4C2DD06FA27C30274EA1C20 */
+/* pomp C snippet file: pomp_76f078570f92c6b269c1ac523812abd7 */
+/* Time: 2024-05-24 16:07:43.110 -0400 */
+/* Salt: 1AB87353DE06A60B91580677 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1904,15 +1905,19 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
  
-void R_init_pomp_7593eefc78309496b4fd8edac45a6d5b (DllInfo *info) {
+void R_init_pomp_76f078570f92c6b269c1ac523812abd7 (DllInfo *info) {
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-  R_RegisterCCallable("pomp_7593eefc78309496b4fd8edac45a6d5b", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable("pomp_7593eefc78309496b4fd8edac45a6d5b", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-  R_RegisterCCallable("pomp_7593eefc78309496b4fd8edac45a6d5b", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_76f078570f92c6b269c1ac523812abd7", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_76f078570f92c6b269c1ac523812abd7", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_76f078570f92c6b269c1ac523812abd7", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
   
 
 }
  
+Warning message:
+The provided object 'x0' is available for use by POMP basic components.
+This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
+In a future release, this warning will become an error. 
 > 
 > pomp(
 +   data=NULL,
@@ -1927,7 +1932,6 @@ void R_init_pomp_7593eefc78309496b4fd8edac45a6d5b (DllInfo *info) {
 +   compile=FALSE
 + ) |>
 +   spy()
-NOTE: The provided object 'x0' is available for use by POMP basic components.
 ==================
 pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params = c(x_0 = 1, ''    a = 22), globals = Csnippet("static double X0;"), rinit = Csnippet("x = X0;"), ''    rprocess = euler(Csnippet("x += rgammawn(0.1,dt);"), delta.t = 0.1), ''    on_load = Csnippet("X0 = *get_userdata_double(\"x0\");"), ''    statenames = "x", compile = FALSE)':
 
@@ -1936,13 +1940,13 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params =
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_15209364fa46c0260cceddeb3a7b755f'
+  - defined by a C snippet in library 'pomp_472239922ec0d83afeb4fa1f3189779b'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: Euler-method process-model simulator
   - timestep = 0.1 
   - step.fun: native function
   - name: '__pomp_stepfn'
-  - defined by a C snippet in library 'pomp_15209364fa46c0260cceddeb3a7b755f'
+  - defined by a C snippet in library 'pomp_472239922ec0d83afeb4fa1f3189779b'
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: <default>
 - measurement model density, dmeasure: <default>
@@ -1961,9 +1965,9 @@ x_0   a
 - C snippet file  1 :
 
 
-/* pomp C snippet file: pomp_15209364fa46c0260cceddeb3a7b755f */
-/* Time: 2024-04-30 08:11:17.757 -0400 */
-/* Salt: 5D262BD7C9FFE34612D44BBD */
+/* pomp C snippet file: pomp_472239922ec0d83afeb4fa1f3189779b */
+/* Time: 2024-05-24 16:07:43.173 -0400 */
+/* Salt: 294E37C4F406AB4253443A6B */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -2001,14 +2005,18 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
  
-void R_init_pomp_15209364fa46c0260cceddeb3a7b755f (DllInfo *info) {
+void R_init_pomp_472239922ec0d83afeb4fa1f3189779b (DllInfo *info) {
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-  R_RegisterCCallable("pomp_15209364fa46c0260cceddeb3a7b755f", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable("pomp_15209364fa46c0260cceddeb3a7b755f", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-  R_RegisterCCallable("pomp_15209364fa46c0260cceddeb3a7b755f", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-  R_RegisterCCallable("pomp_15209364fa46c0260cceddeb3a7b755f", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+  R_RegisterCCallable("pomp_472239922ec0d83afeb4fa1f3189779b", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_472239922ec0d83afeb4fa1f3189779b", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_472239922ec0d83afeb4fa1f3189779b", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_472239922ec0d83afeb4fa1f3189779b", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
  X0 = *get_userdata_double("x0"); 
 
 }
  
+Warning message:
+The provided object 'x0' is available for use by POMP basic components.
+This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
+In a future release, this warning will become an error. 
 > 

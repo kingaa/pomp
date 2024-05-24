@@ -40,6 +40,7 @@
 ##' detrending, and subtraction of constant, linear, and quadratic trends from
 ##' the data.  Detrending is applied to each data series and to each model
 ##' simulation independently.
+##' @inheritParams probe
 ##' @inheritParams pomp
 ##'
 ##' @return

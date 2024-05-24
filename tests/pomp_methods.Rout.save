@@ -268,8 +268,7 @@ numeric(0)
 > po |>
 +   window(start=5,end=20) |>
 +   pomp(covar=covariate_table(times=0:20,q=0:20),
-+     larry=3L) -> po1
-NOTE: The provided object 'larry' is available for use by POMP basic components.
++     userdata=list(larry=3L)) -> po1
 > as(po1,"data.frame") |> head()
   time         Y  q
 1    5 0.7408867  5

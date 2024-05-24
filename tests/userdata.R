@@ -3,10 +3,13 @@ set.seed(58668844L)
 
 library(pomp)
 
-simulate(times=seq(1,100),t0=0,
-  nbasis=9L,
-  period=50.0,
-  msg="hello!",
+simulate(
+  times=seq(1,100),t0=0,
+  userdata=list(
+    nbasis=9L,
+    period=50.0,
+    msg="hello!"
+  ),
   params=setNames(runif(n=9,min=-5,max=5),sprintf("beta%d",1:9)),
   rprocess=euler(
     Csnippet(r"{
@@ -51,8 +54,8 @@ try(po |>
 try(po |>
     simulate(rprocess=onestep(
       Csnippet(r"{int nbasis = *(get_userdata_int("bob"));}")),
-      bob=3))
+      userdata=list(bob=3)))
 stopifnot(po |>
     simulate(rprocess=onestep(
       Csnippet(r"{int nbasis = *(get_userdata_int("bob"));}")),
-      bob=3L) |> class() == "pomp")
+      userdata=list(bob=3L)) |> class() == "pomp")

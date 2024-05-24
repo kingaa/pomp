@@ -12,20 +12,17 @@
 ##' @aliases trajectory,missing-method trajectory,ANY-method
 ##' @family elementary algorithms
 ##' @family deterministic methods
-##'
 ##' @importFrom deSolve ode diagnostics
 ##' @importFrom stats setNames
-##'
 ##' @inheritParams simulate
 ##' @inheritParams pomp
-##'
 ##' @param object optional;
 ##' if present, it should be a data frame or a \sQuote{pomp} object.
 ##' @param ode_control optional list;
 ##' the elements of this list will be passed to \code{\link[deSolve]{ode}} if the skeleton is a vectorfield, and ignored if it is a map.
 ##' @param format the format in which to return the results.
 ##'
-##' \code{format = "pomps"} causes the trajectories to be returned as a single \sQuote{pomp} object (if a single parameter vector have been furnished to \code{trajectory}) or as a \sQuote{pompList} object (if multiple parameters have been furnished).
+##' \code{format = "pomps"} causes the trajectories to be returned as a single \sQuote{pomp} object (if a single parameter vector has been furnished to \code{trajectory}) or as a \sQuote{pompList} object (if a matrix of parameters have been furnished).
 ##' In each of these, the \code{states} slot will have been replaced by the computed trajectory.
 ##' Use \code{\link{states}} to view these.
 ##' 
@@ -41,10 +38,8 @@
 ##' @return
 ##' The \code{format} option controls the nature of the return value of \code{trajectory}.
 ##' See above for details.
-##'
 ##' @example examples/trajectory.R
 ##' @example examples/ricker-bifdiag.R
-##'
 NULL
 
 setGeneric(

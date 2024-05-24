@@ -33,6 +33,7 @@ pomp(
   PACKAGE,
   globals,
   on_load,
+  userdata,
   cdir = getOption("pomp_cdir", NULL),
   cfile,
   shlib.args,
@@ -53,12 +54,8 @@ The time vector must be numeric and non-decreasing.}
 \item{t0}{The zero-time, i.e., the time of the initial state.
 This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components.
-See \code{\link{pomp}} for a full list of recognized arguments.
-
-When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
-See \link[=userdata]{userdata} for information on how to use this facility.}
+\item{...}{additional arguments will be added to the \code{userdata} list, with a warning.
+In a future release, this warning will become an error.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
@@ -168,6 +165,10 @@ If no C snippets are used, \code{globals} has no effect.}
 arbitrary C code that will be executed when the C snippet file is loaded.
 If no C snippets are used, \code{on_load} has no effect.}
 
+\item{userdata}{optional list; the elements of this list will be available to basic model components.
+This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
+See \link[=userdata]{userdata} for information on how to use this facility.}
+
 \item{cdir}{optional character variable.
 \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
 By default, this is in a temporary directory specific to the \R session.
@@ -201,18 +202,18 @@ As such, it is central to all the package's functionality.
 One implements the \acronym{POMP} model by specifying some or all of its \emph{basic components}.
 These comprise:
 \describe{
-\item{rinit,}{which samples from the distribution of the state process at the zero-time;}
-\item{dinit,}{which evaluates the density of the state process at the zero-time;}
-\item{rprocess,}{the simulator of the unobserved Markov state process;}
-\item{dprocess,}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
-\item{rmeasure,}{the simulator of the observed process, conditional on the unobserved state;}
-\item{dmeasure,}{the evaluator of the measurement model probability density function;}
-\item{emeasure,}{the expectation of the measurements, conditional on the latent state;}
-\item{vmeasure,}{the covariance matrix of the measurements, conditional on the latent state;}
-\item{rprior,}{which samples from a prior probability distribution on the parameters;}
-\item{dprior,}{which evaluates the prior probability density function;}
-\item{skeleton,}{which computes the deterministic skeleton of the unobserved state process;}
-\item{partrans,}{which performs parameter transformations.}
+\item{rinit}{which samples from the distribution of the state process at the zero-time;}
+\item{dinit}{which evaluates the density of the state process at the zero-time;}
+\item{rprocess}{the simulator of the unobserved Markov state process;}
+\item{dprocess}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
+\item{rmeasure}{the simulator of the observed process, conditional on the unobserved state;}
+\item{dmeasure}{the evaluator of the measurement model probability density function;}
+\item{emeasure}{the expectation of the measurements, conditional on the latent state;}
+\item{vmeasure}{the covariance matrix of the measurements, conditional on the latent state;}
+\item{rprior}{which samples from a prior probability distribution on the parameters;}
+\item{dprior}{which evaluates the prior probability density function;}
+\item{skeleton}{which computes the deterministic skeleton of the unobserved state process;}
+\item{partrans}{which performs parameter transformations.}
 }
 The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{https://kingaa.github.io/pomp/}{package website}.
 }

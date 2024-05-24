@@ -5,18 +5,18 @@
 ##' One implements the \acronym{POMP} model by specifying some or all of its \emph{basic components}.
 ##' These comprise:
 ##' \describe{
-##' \item{rinit,}{which samples from the distribution of the state process at the zero-time;}
-##' \item{dinit,}{which evaluates the density of the state process at the zero-time;}
-##' \item{rprocess,}{the simulator of the unobserved Markov state process;}
-##' \item{dprocess,}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
-##' \item{rmeasure,}{the simulator of the observed process, conditional on the unobserved state;}
-##' \item{dmeasure,}{the evaluator of the measurement model probability density function;}
-##' \item{emeasure,}{the expectation of the measurements, conditional on the latent state;}
-##' \item{vmeasure,}{the covariance matrix of the measurements, conditional on the latent state;}
-##' \item{rprior,}{which samples from a prior probability distribution on the parameters;}
-##' \item{dprior,}{which evaluates the prior probability density function;}
-##' \item{skeleton,}{which computes the deterministic skeleton of the unobserved state process;}
-##' \item{partrans,}{which performs parameter transformations.}
+##' \item{rinit}{which samples from the distribution of the state process at the zero-time;}
+##' \item{dinit}{which evaluates the density of the state process at the zero-time;}
+##' \item{rprocess}{the simulator of the unobserved Markov state process;}
+##' \item{dprocess}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
+##' \item{rmeasure}{the simulator of the observed process, conditional on the unobserved state;}
+##' \item{dmeasure}{the evaluator of the measurement model probability density function;}
+##' \item{emeasure}{the expectation of the measurements, conditional on the latent state;}
+##' \item{vmeasure}{the covariance matrix of the measurements, conditional on the latent state;}
+##' \item{rprior}{which samples from a prior probability distribution on the parameters;}
+##' \item{dprior}{which evaluates the prior probability density function;}
+##' \item{skeleton}{which computes the deterministic skeleton of the unobserved state process;}
+##' \item{partrans}{which performs parameter transformations.}
 ##' }
 ##' The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
@@ -118,12 +118,11 @@
 ##' @param accumvars optional character vector;
 ##' contains the names of accumulator variables.
 ##' See \link{accumvars} for a definition and discussion of accumulator variables.
-##' @param ... additional arguments supply new or modify existing model characteristics or components.
-##' See \code{\link{pomp}} for a full list of recognized arguments.
-##'
-##' When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
+##' @param userdata optional list; the elements of this list will be available to basic model components.
 ##' This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
 ##' See \link[=userdata]{userdata} for information on how to use this facility.
+##' @param ... additional arguments will be added to the \code{userdata} list, with a warning.
+##' In a future release, this warning will become an error.
 ##' @param verbose logical; if \code{TRUE}, diagnostic messages will be printed to the console.
 ##' @return
 ##' The \code{pomp} constructor function returns an object, call it \code{P}, of class \sQuote{pomp}.
@@ -159,6 +158,7 @@ pomp <- function (data, times, t0, ...,
   covar, params, accumvars,
   obsnames, statenames, paramnames, covarnames,
   nstatevars, PACKAGE, globals, on_load,
+  userdata,
   cdir = getOption("pomp_cdir", NULL), cfile,
   shlib.args, compile = TRUE,
   verbose = getOption("verbose", FALSE)) {
@@ -180,7 +180,7 @@ pomp <- function (data, times, t0, ...,
       missing(rprior) && missing(dprior) && missing(partrans) &&
       missing(covar) && missing(params) && missing(accumvars) &&
       missing(nstatevars) &&
-      ...length() == 0
+      missing(userdata) && ...length() == 0
   )
     return(as(data,"pomp"))
 
@@ -197,7 +197,7 @@ pomp <- function (data, times, t0, ...,
       params=params,covar=covar,accumvars=accumvars,
       obsnames=obsnames,statenames=statenames,paramnames=paramnames,
       covarnames=covarnames,nstatevars=nstatevars,PACKAGE=PACKAGE,
-      globals=globals,on_load=on_load,
+      globals=globals,on_load=on_load,userdata=userdata,
       cdir=cdir,cfile=cfile,shlib.args=shlib.args,
       compile=compile,verbose=verbose
     ),
@@ -284,11 +284,14 @@ setMethod(
 setMethod(
   "construct_pomp",
   signature=signature(data="array", times="numeric"),
-  definition = function (data, times, ...,
+  definition = function (
+    data, times,
+    ..., userdata,
     rinit, dinit, rprocess, dprocess,
     rmeasure, dmeasure, emeasure, vmeasure,
     skeleton, rprior, dprior,
-    partrans, params, covar) {
+    partrans, params, covar
+  ) {
 
     if (missing(rinit)) rinit <- NULL
     if (missing(dinit)) dinit <- NULL
@@ -318,6 +321,7 @@ setMethod(
     if (is.list(params)) params <- unlist(params)
 
     if (missing(covar)) covar <- covariate_table()
+    if (missing(userdata)) userdata <- list()
 
     pomp_internal(
       data=data,
@@ -336,6 +340,7 @@ setMethod(
       partrans=partrans,
       params=params,
       covar=covar,
+      userdata=userdata,
       ...
     )
 
@@ -354,11 +359,14 @@ setMethod(
 setMethod(
   "construct_pomp",
   signature=signature(data="pomp", times="NULL"),
-  definition = function (data, times, t0, timename, ...,
+  definition = function (
+    data, times, t0, timename,
+    ..., userdata,
     rinit, dinit, rprocess, dprocess,
     rmeasure, dmeasure, emeasure, vmeasure,
     skeleton, rprior, dprior, partrans, params, covar,
-    accumvars, nstatevars, cfile) {
+    accumvars, nstatevars, cfile
+  ) {
 
     times <- data@times
     if (missing(t0)) t0 <- data@t0
@@ -392,6 +400,8 @@ setMethod(
     if (missing(nstatevars)) nstatevars <- data@nstatevars
     else nstatevars <- max(nstatevars[1L],data@nstatevars,na.rm=TRUE)
 
+    if (missing(userdata)) userdata <- list()
+
     if (missing(cfile)) cfile <- NULL
     if (!is.null(cfile)) {
       cfile <- as.character(cfile)
@@ -421,6 +431,7 @@ setMethod(
       covar=covar,
       accumvars=accumvars,
       nstatevars=nstatevars,
+      userdata=userdata,
       params=params,
       .solibs=data@solibs,
       .userdata=data@userdata,
@@ -431,15 +442,20 @@ setMethod(
   }
 )
 
-pomp_internal <- function (data, times, t0, timename, ...,
+pomp_internal <- function (
+  data, times, t0, timename,
+  ...,
   rinit, dinit, rprocess, dprocess,
   rmeasure, dmeasure, emeasure, vmeasure,
   skeleton, rprior, dprior,
   partrans, params, covar, accumvars, obsnames, statenames,
   paramnames, covarnames, nstatevars,
   PACKAGE, globals, on_load, cdir, cfile, shlib.args,
-  compile, .userdata, .solibs = list(),
-  verbose = getOption("verbose", FALSE)) {
+  compile,
+  userdata = list(), .userdata = list(),
+  .solibs = list(),
+  verbose = getOption("verbose", FALSE)
+) {
 
   ## check times
   if (missing(times) || !is.numeric(times) || !all(is.finite(times)) ||
@@ -459,17 +475,20 @@ pomp_internal <- function (data, times, t0, timename, ...,
   else
     timename <- as.character(timename)
 
-  if (missing(.userdata)) .userdata <- list()
   added.userdata <- list(...)
-  if (length(added.userdata)>0) {
-    pMess_("The provided ",
+  if (length(added.userdata)>0L) {
+    pWarn_("The provided ",
       ngettext(length(added.userdata),"object","objects")," ",
       paste(sQuote(names(added.userdata)),collapse=","),
       ngettext(length(added.userdata)," is"," are"),
-      " available for use by POMP basic components."
+      " available for use by POMP basic components.\n",
+      "This option is deprecated: use ",sQuote("userdata"),
+      " to specify the list of such objects explicitly.\n",
+      "In a future release, this warning will become an error."
     )
     .userdata[names(added.userdata)] <- added.userdata
   }
+  .userdata[names(userdata)] <- userdata
 
   if (!is(rprocess,"rprocPlugin")) {
     pStop_(sQuote("rprocess"),

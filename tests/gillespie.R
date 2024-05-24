@@ -109,7 +109,7 @@ gsir |>
       v=Vmatrix,
       hmax=1/52/10
     ),
-    nbasis=3L,
+    userdata=list(nbasis=3L),
     seed=806867104L,
     paramnames=c("gamma","mu","iota","beta1","beta2","beta3","pop","rho"),
     statenames=c("S","I","R","N","cases")

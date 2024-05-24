@@ -14,10 +14,9 @@
 ##' @family MCMC methods
 ##' @family Bayesian methods
 ##' @concept approximate Bayesian computation
-##'
-##' @inheritParams pomp
 ##' @inheritParams probe
 ##' @inheritParams pmcmc
+##' @inheritParams pomp
 ##' @param Nabc the number of ABC iterations to perform.
 ##' @param scale named numeric vector of scales.
 ##' @param epsilon ABC tolerance.

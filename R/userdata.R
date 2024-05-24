@@ -32,11 +32,9 @@
 ##' We simply provide an additional argument to whichever \pkg{pomp} algorithm we are employing (e.g., \code{\link{simulate}}, \code{\link{pfilter}}, \code{\link{mif2}}, \code{\link{abc}}, etc.).
 ##' For example:
 ##' \preformatted{
-##'     simulate(..., rmeasure = f, theta = 42, ...)
+##'     simulate(..., rmeasure = f, userdata = list(theta = 42), ...)
 ##' }
 ##' where the \code{\dots} represent the other \code{simulate} arguments we might want to supply.
-##' When we do so, a message will be generated, informing us that \code{theta} is available for use by the \acronym{POMP} basic components.
-##' This warning helps forestall accidental triggering of this facility due to typographical error.
 ##'
 ##' @section When the basic component is specified via a C snippet:
 ##' A C snippet implementation of the aforementioned measurement model is:
@@ -54,7 +52,7 @@
 ##' For example, it is wise to wrap floating point scalars and vectors with \code{as.double} and integers with \code{as.integer}.
 ##' In the present example, our call to simulate might look like
 ##' \preformatted{
-##'     simulate(..., rmeasure = f, theta = as.double(42), ...)
+##'     simulate(..., rmeasure = f, userdata = list(theta = as.double(42)), ...)
 ##' }
 ##'
 ##' Since the two functions \code{get_userdata_double} and \code{get_userdata_int} return pointers, it is trivial to pass vectors of double-precision and integers.

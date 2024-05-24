@@ -17,14 +17,13 @@
 ##' containing the parameters at which the simulations are to be performed.
 ##' @param nsim The number of simulations to perform.
 ##' Note that the number of replicates will be \code{nsim} times \code{ncol(params)}.
-##' @param seed optional;
-##' if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.  the random seed to use.
+##' @param seed optional integer;
+##' if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.
 ##' The RNG will be restored to its original state afterward.
 ##' @param format the format in which to return the results.
 ##'
-##' \code{format = "pomps"} causes the results to be returned as a single \dQuote{pomp} object,
-##' identical to \code{object} except for the latent states and observations,
-##' which have been replaced by the simulated values.
+##' \code{format = "pomps"} causes the results to be returned as a single \dQuote{pomp} object, if \code{params} is a vector, or a list of \dQuote{pomp} objects, if \code{params} is a matrix with more than one column.
+##' Each of these will be identical to \code{object} except in that the latent states and observations will have been replaced by their simulated values.
 ##'
 ##' \code{format = "arrays"} causes the results to be returned as a list of two arrays.
 ##' The \dQuote{states} element will contain the simulated state trajectories in a rank-3 array with dimensions
@@ -40,6 +39,7 @@
 ##'
 ##' @param include.data if \code{TRUE}, the original data and covariates (if any) are included (with \code{.id = "data"}).
 ##' This option is ignored unless \code{format = "data.frame"}.
+##' @param ... additional arguments are passed to \code{\link{pomp}}.
 ##'
 ##' @return
 ##' A single \dQuote{pomp} object,
@@ -191,7 +191,7 @@ simulate_internal <- function (
   params <- as.matrix(params)
   storage.mode(params) <- "double"
 
-  if (ncol(params) == 1) coef(object) <- params[,1L]
+  if (ncol(params) == 1L) coef(object) <- params[,1L]
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))

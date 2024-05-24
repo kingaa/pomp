@@ -3,14 +3,7 @@ set.seed(599688L)
 
 library(pomp)
 
-capture.output(
-  list(blowflies1(),blowflies2()) -> flies,
-  type="message"
-) -> out
-stopifnot(
-  sum(grepl("provided object",out))==2,
-  sum(grepl("y.init",out))==2
-)
+list(blowflies1(),blowflies2()) -> flies
 
 plot(flies[[1]])
 rinit(flies[[1]])

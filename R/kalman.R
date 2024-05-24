@@ -14,13 +14,12 @@
 ##' @family particle filter methods
 ##' @family elementary algorithms
 ##' @inheritSection pomp Note for Windows users
-##' 
+##' @inheritParams pfilter
 ##' @inheritParams pomp
 ##' @param Np integer; the number of particles to use, i.e., the size of the ensemble.
 ##' 
 ##' @return
 ##' An object of class \sQuote{kalmand_pomp}.
-##'
 ##' @references
 ##'
 ##' \Evensen1994
