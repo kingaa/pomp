@@ -896,6 +896,14 @@
   pages: "77&#x2013;91"
   doi: "https://doi.org/10.1016/j.tpb.2021.11.003"
 
+- key: King2024
+  author: "A. A. King, Q. Lin, and E. L. Ionides"
+  year: "2024"
+  title: "Exact phylodynamic likelihood via structured Markov genealogy processes"
+  journal: "arXiv"
+  eprint: "2405.17032"
+  doi: "https://doi.org/10.48550/arxiv.2405.17032"
+
 - key: Knape2012
   author: "J. Knape and P. de Valpine"
   year: "2012"
