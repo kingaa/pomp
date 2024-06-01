@@ -31,6 +31,7 @@ rhub rsession session www win wind xcheck xcovr vcheck ycheck
 .dist .tests .session .check: export R_KEEP_PKG_SOURCE=yes
 revdeps .session .tests .check: export R_PROFILE_USER=$(CURDIR)/.Rprofile
 .tests .session vcheck www manual: export R_LIBS=$(CURDIR)/library
+debug .check: export PKG_CPPFLAGS=-UNDEBUG
 .check: export R_CHECK_ENVIRON=$(CURDIR)/tools/check.env
 session: RSESSION = emacs -f R
 debug: RSESSION = R -d gdb
