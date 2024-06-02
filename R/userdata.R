@@ -34,7 +34,7 @@
 ##' \preformatted{
 ##'     simulate(..., rmeasure = f, userdata = list(theta = 42), ...)
 ##' }
-##' where the \code{\dots} represent the other \code{simulate} arguments we might want to supply.
+##' where the \code{\dots} represent other arguments.
 ##'
 ##' @section When the basic component is specified via a C snippet:
 ##' A C snippet implementation of the aforementioned measurement model is:
