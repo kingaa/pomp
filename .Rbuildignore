@@ -13,10 +13,7 @@
 ^yaml
 ^Makefile
 ^rules.mk
-^tests/Makefile
-^tests/(.+?)\.png$
-^tests/(.+?)\.pdf$
-^tests/(.+?)\.Rout$
+^tests
 ^inst/doc/Makefile
 ^inst/doc/(.+?).md
 ^inst/doc/(.+?).Rmd

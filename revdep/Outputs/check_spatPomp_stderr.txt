@@ -1,12 +1,13 @@
   Running ‘abf.R’
   Running ‘abfir.R’
   Running ‘arma_benchmark.R’
-  Running ‘bm.R’ [19s/10s]
+  Running ‘bm.R’ [79s/15s]
   Comparing ‘bm.Rout’ to ‘bm.Rout.save’ ... OK
   Running ‘bm2.R’
   Comparing ‘bm2.Rout’ to ‘bm2.Rout.save’ ... OK
   Running ‘bpfilter.R’
   Running ‘concat.R’
+  Comparing ‘concat.Rout’ to ‘concat.Rout.save’ ... OK
   Running ‘enkf.R’
   Running ‘gbm.R’
   Comparing ‘gbm.Rout’ to ‘gbm.Rout.save’ ... OK
@@ -31,5 +32,6 @@
   Running ‘plot.R’
   Running ‘simulate.R’
   Running ‘spatPomp.R’
+  Running ‘undefined.R’
 
 
