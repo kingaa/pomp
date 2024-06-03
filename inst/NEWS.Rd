@@ -1,5 +1,13 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 6.0.0}{
+  \itemize{
+    \item From version 5.8.4, the manner in which extra model elements (\code{userdata}) are supplied has changed.
+    As of that version, use of the old method generated a warning.
+    As of this version, an error will be generated.
+    To supply additional elements (i.e., beyond parameters, latent-state variables, observations, and covariates) to the basic model components, provide them as a list via the \code{userdata} argument.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.11.1}{
   \itemize{
     \item A new addition to the C API allows one to easily compute the expectation of the Euler-multinomial.

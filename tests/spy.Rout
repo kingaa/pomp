@@ -23,13 +23,10 @@ Type 'q()' to quit R.
 > 
 > gompertz() -> po
 > 
-> pomp(po,partrans=NULL,bob=3,
+> pomp(po,partrans=NULL,userdata=list(bob=3),
 +   covar=covariate_table(a=0:20,b=0:20,times="a")) -> po1
-Warning messages:
-1: The provided object 'bob' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-2: in 'pomp': the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
+Warning message:
+in 'pomp': the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > spy(po1)
 ==================
 pomp object 'po1':
@@ -1841,7 +1838,7 @@ Error : 'spy' is undefined for 'object' of class 'list'.
 > pomp(
 +   data=NULL,
 +   t0=0,times=1:10,
-+   x0=as.double(1),
++   userdata=list(x0=as.double(1)),
 +   params=c(x_0=1,a=22),
 +   rinit=Csnippet(r"{x = *get_userdata_double("x0");}"),
 +   statenames="x",
@@ -1849,7 +1846,7 @@ Error : 'spy' is undefined for 'object' of class 'list'.
 + ) |>
 +   spy()
 ==================
-pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params = c(x_0 = 1, ''    a = 22), rinit = Csnippet("x = *get_userdata_double(\"x0\");"), ''    statenames = "x", compile = FALSE)':
+pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, userdata = list(x0 = as.double(1)), ''    params = c(x_0 = 1, a = 22), rinit = Csnippet("x = *get_userdata_double(\"x0\");"), ''    statenames = "x", compile = FALSE)':
 
 - data: <none>
 - zero time, t0 = 0
@@ -1914,15 +1911,11 @@ void R_init_pomp_a608e159be2024f94cfad9d41a839f69 (DllInfo *info) {
 
 }
  
-Warning message:
-The provided object 'x0' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
 > 
 > pomp(
 +   data=NULL,
 +   t0=0,times=1:10,
-+   x0=as.double(1),
++   userdata=list(x0=as.double(1)),
 +   params=c(x_0=1,a=22),
 +   globals=Csnippet("static double X0;"),
 +   rinit=Csnippet(r"{x = X0;}"),
@@ -1933,7 +1926,7 @@ In a future release, this warning will become an error.
 + ) |>
 +   spy()
 ==================
-pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params = c(x_0 = 1, ''    a = 22), globals = Csnippet("static double X0;"), rinit = Csnippet("x = X0;"), ''    rprocess = euler(Csnippet("x += rgammawn(0.1,dt);"), delta.t = 0.1), ''    on_load = Csnippet("X0 = *get_userdata_double(\"x0\");"), ''    statenames = "x", compile = FALSE)':
+pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, userdata = list(x0 = as.double(1)), ''    params = c(x_0 = 1, a = 22), globals = Csnippet("static double X0;"), ''    rinit = Csnippet("x = X0;"), rprocess = euler(Csnippet("x += rgammawn(0.1,dt);"), ''        delta.t = 0.1), on_load = Csnippet("X0 = *get_userdata_double(\"x0\");"), ''    statenames = "x", compile = FALSE)':
 
 - data: <none>
 - zero time, t0 = 0
@@ -2015,8 +2008,4 @@ void R_init_pomp_6919b366bd6febc3677afee4acec38ba (DllInfo *info) {
 
 }
  
-Warning message:
-The provided object 'x0' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
 > 

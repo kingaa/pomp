@@ -1,5 +1,15 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _6._0._0:
+
+        • From version 5.8.4, the manner in which extra model elements
+          (‘userdata’) are supplied has changed.  As of that version,
+          use of the old method generated a warning.  As of this
+          version, an error will be generated.  To supply additional
+          elements (i.e., beyond parameters, latent-state variables,
+          observations, and covariates) to the basic model components,
+          provide them as a list via the ‘userdata’ argument.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._1_1._1:
 
         • A new addition to the C API allows one to easily compute the

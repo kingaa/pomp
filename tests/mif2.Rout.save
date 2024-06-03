@@ -179,14 +179,17 @@ loglik:           NA
  sigma:    0.0996772
    tau:          0.1
    X_0:     0.990808
+> try(
++   mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),
++     cooling.type="hyper",cooling.fraction.50=0.1,
++     drpocess="oops",
++     dmeasure=function(log,...)0) -> mf3
++ )
+Error : in 'mif2': The argument 'drpocess'is not recognized.
+Use the 'userdata' argument to supply extra objects to basic model components. See '?userdata'.
 > mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),
 +   cooling.type="hyper",cooling.fraction.50=0.1,
-+   drpocess="oops",
 +   dmeasure=function(log,...)0) -> mf3
-Warning message:
-The provided object 'drpocess' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
 > try(mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),cooling.fraction.50=0.1,dmeasure=NULL))
 Error : in 'mif2': 'rprocess', 'dmeasure' are needed basic components.
 > try(mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),cooling.fraction.50=0.1,rprocess=NULL))

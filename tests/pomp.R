@@ -26,9 +26,6 @@ try(data.frame(a=1:10,b=1:10) |> pomp(times="b",t0=NULL))
 try(data.frame(a=1:10,b=1:10) |> pomp(times="a",t0=NA))
 stopifnot(data.frame(a=1:10,b=1:10) |>
     pomp(covar=covariate_table(c=0:10,d=0:10,times="c"),
-      covarnames="d",times="a",t0=0,bob=3) |> class() == "pomp")
-stopifnot(data.frame(a=1:10,b=1:10) |>
-    pomp(covar=covariate_table(c=0:10,d=0:10,times="c"),
       covarnames="d",times="a",t0=0,userdata=list(bob=3)) |> class() == "pomp")
 try(data.frame(a=1:10,b=1:10) |>
     pomp(covar=covariate_table(c=1:10,d=1:10,d=1:10,times="c"),

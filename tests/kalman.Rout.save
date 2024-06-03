@@ -140,42 +140,18 @@ In enkf_internal(data, Np = Np, ..., verbose = verbose) :
 Error : in 'enkf': 'emeasure' is a needed basic component.
 > try(enkf(enkf,Np=100,vmeasure=NULL))
 Error : in 'enkf': 'vmeasure' is a needed basic component.
-> try(enkf(enkf,C=matrix(1,2,4,dimnames=list(c("y2","y1"),NULL)),Np=100))
+> try(enkf(enkf,userdata=list(C=matrix(1,2,4,dimnames=list(c("y2","y1"),NULL))),Np=100))
 Error : in 'enkf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
-In addition: Warning message:
-The provided object 'C' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-> try(enkf(enkf,C=matrix(1,3,4,dimnames=list(c("a","b","c"),NULL)),Np=100))
+> try(enkf(enkf,userdata=list(C=matrix(1,3,4,dimnames=list(c("a","b","c"),NULL))),Np=100))
 Error : in 'enkf': number of observables returned by 'emeasure' does not match data.
-In addition: Warning message:
-The provided object 'C' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-> try(enkf(enkf,R=matrix(1,1,1,dimnames=list(c("y1"),NULL)),Np=100))
+> try(enkf(enkf,userdata=list(R=matrix(1,1,1,dimnames=list(c("y1"),NULL))),Np=100))
 Error : in 'enkf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
-In addition: Warning message:
-The provided object 'R' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-> try(enkf(enkf,R=matrix(1,2,2,dimnames=list(c("y2","y1"),NULL)),Np=100))
+> try(enkf(enkf,userdata=list(R=matrix(1,2,2,dimnames=list(c("y2","y1"),NULL))),Np=100))
 Error : in 'enkf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
-In addition: Warning message:
-The provided object 'R' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-> try(enkf(enkf,R=matrix(1,2,2,dimnames=list(c("a","b"),NULL)),Np=100))
+> try(enkf(enkf,userdata=list(R=matrix(1,2,2,dimnames=list(c("a","b"),NULL))),Np=100))
 Error : in 'enkf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
-In addition: Warning message:
-The provided object 'R' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-> try(enkf(enkf,R=matrix(1,3,3,dimnames=list(c("a","b","c"),NULL)),Np=100))
+> try(enkf(enkf,userdata=list(R=matrix(1,3,3,dimnames=list(c("a","b","c"),NULL))),Np=100))
 Error : in 'enkf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
-In addition: Warning message:
-The provided object 'R' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
 > enkf(enkf)
 <object of class 'kalmand_pomp'>
 > enkf(enkf,Np=100)
@@ -194,42 +170,18 @@ In eakf_internal(data, Np = Np, ..., verbose = verbose) :
 Error : in 'eakf': 'emeasure' is a needed basic component.
 > try(eakf(enkf,Np=100,vmeasure=NULL))
 Error : in 'eakf': 'vmeasure' is a needed basic component.
-> try(eakf(enkf,C=matrix(1,2,4,dimnames=list(c("y2","y1"),NULL)),Np=100))
+> try(eakf(enkf,userdata=list(C=matrix(1,2,4,dimnames=list(c("y2","y1"),NULL))),Np=100))
 Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
-In addition: Warning message:
-The provided object 'C' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-> try(eakf(enkf,C=matrix(1,3,4,dimnames=list(c("a","b","c"),NULL)),Np=100))
+> try(eakf(enkf,userdata=list(C=matrix(1,3,4,dimnames=list(c("a","b","c"),NULL))),Np=100))
 Error : in 'eakf': number of observables returned by 'emeasure' does not match data.
-In addition: Warning message:
-The provided object 'C' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-> try(eakf(enkf,R=matrix(1,1,1,dimnames=list(c("y1"),NULL)),Np=100))
+> try(eakf(enkf,userdata=list(R=matrix(1,1,1,dimnames=list(c("y1"),NULL))),Np=100))
 Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
-In addition: Warning message:
-The provided object 'R' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-> try(eakf(enkf,R=matrix(1,2,2,dimnames=list(c("y2","y1"),NULL)),Np=100))
+> try(eakf(enkf,userdata=list(R=matrix(1,2,2,dimnames=list(c("y2","y1"),NULL))),Np=100))
 Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
-In addition: Warning message:
-The provided object 'R' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-> try(eakf(enkf,R=matrix(1,2,2,dimnames=list(c("a","b"),NULL)),Np=100))
+> try(eakf(enkf,userdata=list(R=matrix(1,2,2,dimnames=list(c("a","b"),NULL)),Np=100)))
+Error : in 'eakf': argument "Np" is missing, with no default
+> try(eakf(enkf,userdata=list(R=matrix(1,3,3,dimnames=list(c("a","b","c"),NULL))),Np=100))
 Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
-In addition: Warning message:
-The provided object 'R' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
-> try(eakf(enkf,R=matrix(1,3,3,dimnames=list(c("a","b","c"),NULL)),Np=100))
-Error : in 'eakf': rownames of matrix returned by 'vmeasure' do not match those returned by 'emeasure'.
-In addition: Warning message:
-The provided object 'R' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
 > 
 > invisible(enkf(pf,Np=1000,params=as.list(coef(pf))))
 > invisible(eakf(pf,Np=1000,params=as.list(coef(pf))))
@@ -292,22 +244,14 @@ In a future release, this warning will become an error.
 > try({
 +   R <- matrix(c(1,0,1,0),2,2)
 +   rownames(R) <- rownames(C)
-+   enkf(pf,Np=1000,R=R)
++   enkf(pf,Np=1000,userdata=list(R=R))
 + })
 Error : in 'enkf': degenerate 'vmeasure': the leading minor of order 2 is not positive
-In addition: Warning message:
-The provided object 'R' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
 > 
 > try({
-+   eakf(pf,Np=1000,R=R)
++   eakf(pf,Np=1000,userdata=list(R=R))
 + })
 Error : in 'eakf': degenerate 'vmeasure': Lapack routine dgesv: system is exactly singular: U[2,2] = 0
-In addition: Warning message:
-The provided object 'R' is available for use by POMP basic components.
-This option is deprecated: use 'userdata' to specify the list of such objects explicitly.
-In a future release, this warning will become an error. 
 > 
 > try(enkf())
 Error : in 'enkf': 'data' is a required argument.

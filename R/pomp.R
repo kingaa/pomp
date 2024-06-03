@@ -477,16 +477,14 @@ pomp_internal <- function (
 
   added.userdata <- list(...)
   if (length(added.userdata)>0L) {
-    pWarn_("The provided ",
-      ngettext(length(added.userdata),"object","objects")," ",
+    pStop_("The ",
+      ngettext(length(added.userdata),"argument","arguments")," ",
       paste(sQuote(names(added.userdata)),collapse=","),
-      ngettext(length(added.userdata)," is"," are"),
-      " available for use by POMP basic components.\n",
-      "This option is deprecated: use ",sQuote("userdata"),
-      " to specify the list of such objects explicitly.\n",
-      "In a future release, this warning will become an error."
+      ngettext(length(added.userdata),"is","are"),
+      " not recognized.\nUse the ",sQuote("userdata"),
+      " argument to supply extra objects to basic model components.",
+      " See ",sQuote("?userdata"),"."
     )
-    .userdata[names(added.userdata)] <- added.userdata
   }
   .userdata[names(userdata)] <- userdata
 
