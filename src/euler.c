@@ -208,7 +208,7 @@ SEXP euler_simulator
     switch (method) {
     case onestep: default:      // one step
       dt = time[step]-t;
-      nstep = (dt > 0) ? 1 : 0;
+      nstep = 1;
       break;
     case discrete:              // fixed step
       dt = deltat;

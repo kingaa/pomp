@@ -100,7 +100,7 @@ The simulator plug-ins \code{discrete_time}, \code{euler}, and \code{onestep} al
 They differ as to how this is done.
 Specifically,
 \enumerate{
-\item \code{onestep} takes a single step to go from any given time \code{t1} to any later time \code{t2} (\code{t1 < t2}).
+\item \code{onestep} takes a single step to go from any given time \code{t1} to any later time \code{t2} (\code{t1 <= t2}).
 Thus, this plug-in is designed for use in situations where a closed-form solution to the process exists.
 \item To go from \code{t1} to \code{t2}, \code{euler} takes \code{n} steps of equal size, where
 \preformatted{

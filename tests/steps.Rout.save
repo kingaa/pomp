@@ -19,10 +19,11 @@ Type 'q()' to quit R.
 
 > options(digits=3)
 > 
-> library(pomp)
 > suppressPackageStartupMessages({
++   library(tidyr)
 +   library(dplyr)
 + })
+> library(pomp)
 > 
 > tm <- freeze(sort(runif(n=20,max=50)),seed=1930502785L)
 > simulate(
@@ -119,4 +120,46 @@ Warning message:
 +     as.numeric(states(sm,"steps"))
 +   )
 + )
+> 
+> simulate(
++   t0=0,
++   times=c(0,0,0,1,3,3,7),
++   rinit=\(t0,...)c(x=t0,n=0),
++   rprocess=onestep(\(t,x,n,delta.t,...) c(x=t+delta.t,n=n+1)),
++   rmeasure=\(x,n,...) c(y1=x,y2=n),
++   dmeasure=\(...,log) if (log) 0 else 1
++ ) -> s1
+> 
+> simulate(
++   t0=0,
++   times=c(0,0,0,1,3,3,7),
++   rinit=Csnippet("x=t; n=0;"),
++   rprocess=onestep(Csnippet("x=t+dt; n=n+1;")),
++   rmeasure=Csnippet("y1 = x; y2 = n;"),
++   dmeasure=Csnippet("lik = (give_log) ? 0 : 1;"),
++   statenames=c("x","n"),
++   obsnames=c("y1","y2")
++ ) -> s2
+> 
+> s1 |>
++   as.data.frame() |>
++   with(
++     stopifnot(
++       time==x,
++       n==seq_along(time)
++     )
++   )
+> 
+> s2 |>
++   pfilter(Np=1,save.states=TRUE) |>
++   saved_states(format="list") |>
++   melt() |>
++   pivot_wider() |>
++   mutate(time=time(s2)[.L1]) |>
++   with(
++     stopifnot(
++       time==x,
++       n==seq_along(time)
++     )
++   )
 > 

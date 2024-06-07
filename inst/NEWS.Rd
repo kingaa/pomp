@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.9.1}{
+  \itemize{
+    \item The rprocess plugin \code{onestep} now always takes exactly one step to get from one observation time to the next, even when the interval between them is zero.
+    That is, if \code{P} is a \sQuote{pomp} object with an rprocess built using \code{rprocess=onestep(f)}, \code{t0=timezero(P)}, and \code{t=time(P)}, then \code{f} will be called exactly once for the interval (\code{t0},\code{t[1]}) and once for each of the intervals (\code{t[i-1]},\code{t[i]}), \code{i=2,...,length(t)}.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.8.4}{
   \itemize{
     \item To add additional elements for use by the basic model components (i.e., \dQuote{userdata}), the \code{userdata} argument should now be used.

@@ -1,5 +1,16 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._9._1:
+
+        • The rprocess plugin ‘onestep’ now always takes exactly one
+          step to get from one observation time to the next, even when
+          the interval between them is zero.  That is, if ‘P’ is a
+          ‘pomp’ object with an rprocess built using
+          ‘rprocess=onestep(f)’, ‘t0=timezero(P)’, and ‘t=time(P)’,
+          then ‘f’ will be called exactly once for the interval
+          (‘t0’,‘t[1]’) and once for each of the intervals
+          (‘t[i-1]’,‘t[i]’), ‘i=2,...,length(t)’.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._8._4:
 
         • To add additional elements for use by the basic model
