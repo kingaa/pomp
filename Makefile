@@ -7,5 +7,5 @@ include rules.mk
 
 src/decls.h: $(CSOURCE)
 	file=`mktemp tmpXXXXXXX.h` && \
-	cproto -I $(R_HOME)/include -e $(CSOURCE) > $$file && \
+	cproto -f2 -I $(R_HOME)/include -e $(CSOURCE) > $$file && \
 	mv $$file $@
