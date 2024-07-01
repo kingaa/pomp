@@ -1,6 +1,6 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
-* using R version 4.3.3 (2024-02-29)
-* using platform: x86_64-pc-linux-gnu (64-bit)
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
+* using R version 4.4.1 (2024-06-14)
+* using platform: x86_64-pc-linux-gnu
 * R was compiled by
     gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
     GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
@@ -28,7 +28,7 @@
 * checking for left-over files ... OK
 * checking index information ... OK
 * checking package subdirectories ... OK
-* checking R files for non-ASCII characters ... OK
+* checking code files for non-ASCII characters ... OK
 * checking R files for syntax errors ... OK
 * checking whether the package can be loaded ... OK
 * checking whether the package can be loaded with stated dependencies ... OK
@@ -41,7 +41,7 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [18s/12s] OK
+* checking R code for possible problems ... OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -51,7 +51,21 @@
 * checking Rd \usage sections ... OK
 * checking Rd contents ... OK
 * checking for unstated dependencies in examples ... OK
-* checking examples ... [32s/16s] OK
+* checking examples ... [112s/15s] OK
+Examples with CPU (user + system) or elapsed time > 5s
+                         user system elapsed
+unitlogLik              2.187  8.532   0.897
+pparams                 2.140  8.548   0.902
+mif2                    2.226  8.096   1.029
+params                  2.110  8.095   0.881
+simulate                1.846  7.169   0.895
+panelPomp_methods       1.797  7.162   0.997
+unitobjects             1.787  6.857   0.848
+plot                    1.596  6.982   0.932
+panelGompertzLikelihood 1.627  6.302   0.966
+panelPomp               1.390  5.321   0.933
+panelRandomWalk         1.035  4.360   0.918
+pfilter                 1.060  4.240   0.955
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in 'tests' ... OK
 * checking tests ...
@@ -91,7 +105,7 @@
 < name     [,1]     [,2]     [,3]     [,4]      [,5]
 ---
 > variable     [,1]     [,2]     [,3]     [,4]      [,5]
- [96s/53s] OK
+ [270s/47s] OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

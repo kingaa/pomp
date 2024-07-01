@@ -1,6 +1,6 @@
-* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck'
-* using R version 4.3.3 (2024-02-29)
-* using platform: x86_64-pc-linux-gnu (64-bit)
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck'
+* using R version 4.4.1 (2024-06-14)
+* using platform: x86_64-pc-linux-gnu
 * R was compiled by
     gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
     GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
@@ -8,7 +8,7 @@
 * using session charset: UTF-8
 * using option '--as-cran'
 * checking for file 'stops/DESCRIPTION' ... OK
-* this is package 'stops' version '1.0-1'
+* this is package 'stops' version '1.6-2'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -18,7 +18,10 @@
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package 'stops' can be installed ... [23s/27s] OK
+* checking whether package 'stops' can be installed ... [37s/22s] WARNING
+Found the following significant warnings:
+  Warning: 'rgl.init' failed, running with 'rgl.useNULL = TRUE'.
+See '/userdata/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck/00install.out' for details.
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... OK
@@ -28,7 +31,7 @@
 * checking for left-over files ... OK
 * checking index information ... OK
 * checking package subdirectories ... OK
-* checking R files for non-ASCII characters ... OK
+* checking code files for non-ASCII characters ... OK
 * checking R files for syntax errors ... OK
 * checking whether the package can be loaded ... OK
 * checking whether the package can be loaded with stated dependencies ... OK
@@ -41,17 +44,20 @@
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [34s/28s] NOTE
-bcStressMin: local variable ‘lambdaorig’ assigned but may not be used
-bcStressMin: local variable ‘t’ assigned but may not be used
+* checking R code for possible problems ... [75s/24s] NOTE
 c_inequality: local variable ‘out’ assigned but may not be used
 c_linearity: local variable ‘x’ assigned but may not be used
 c_linearity: local variable ‘y’ assigned but may not be used
-conf_adjust: local variable ‘bb’ assigned but may not be used
-conf_adjust: local variable ‘cc’ assigned but may not be used
-conf_adjust: local variable ‘metric’ assigned but may not be used
+c_shepardness: local variable ‘confd1’ assigned but may not be used
+c_shepardness: local variable ‘delts1’ assigned but may not be used
+c_shepardness: local variable ‘dhats1’ assigned but may not be used
+c_shepardness: local variable ‘expo’ assigned but may not be used
+c_shepardness: local variable ‘notmiss.iord’ assigned but may not be
+  used
+c_shepardness: local variable ‘wm1’ assigned but may not be used
 ljoptim: local variable ‘n’ assigned but may not be used
-powerStressMin: local variable ‘deltam’ assigned but may not be used
+stop_powermds: local variable ‘nu’ assigned but may not be used
+stop_spmddae: local variable ‘ncall’ assigned but may not be used
 stoploss: local variable ‘cassociation’ assigned but may not be used
 stoploss: local variable ‘cclumpiness’ assigned but may not be used
 stoploss: local variable ‘cclusteredness’ assigned but may not be used
@@ -68,6 +74,7 @@ stoploss: local variable ‘cnonmonotonicity’ assigned but may not be
   used
 stoploss: local variable ‘coutlying’ assigned but may not be used
 stoploss: local variable ‘cregularity’ assigned but may not be used
+stoploss: local variable ‘cshepardness’ assigned but may not be used
 stoploss: local variable ‘cskinniness’ assigned but may not be used
 stoploss: local variable ‘csparsity’ assigned but may not be used
 stoploss: local variable ‘cstriatedness’ assigned but may not be used
@@ -89,14 +96,18 @@ tgpoptim: local variable ‘valsorig’ assigned but may not be used
 * checking data for ASCII and uncompressed saves ... OK
 * checking installed files from 'inst/doc' ... OK
 * checking files in 'vignettes' ... OK
-* checking examples ... [32s/11s] OK
+* checking examples ... [52s/17s] OK
+Examples with CPU (user + system) or elapsed time > 5s
+               user system elapsed
+stops-package 1.823  6.416   0.298
+jackmds.stops 4.109  3.241   3.242
 ** found \donttest examples: check also with --run-donttest
 * checking for unstated dependencies in vignettes ... OK
-* checking package vignettes in 'inst/doc' ... OK
+* checking package vignettes ... OK
 * checking re-building of vignette outputs ... OK
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 1 NOTE
+Status: 1 WARNING, 1 NOTE
