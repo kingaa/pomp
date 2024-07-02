@@ -207,6 +207,11 @@ On the other hand, if one retrieves a stored objective function from a file, or 
   coef(f1)
 }
 }
+\references{
+\Kendall1999
+
+\Wood2010
+}
 \seealso{
 \code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 

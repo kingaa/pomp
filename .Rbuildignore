@@ -12,6 +12,7 @@
 ^www
 ^yaml
 ^Makefile
+^TAGS
 ^rules.mk
 ^tests/Makefile
 ^tests/(.+?)\.png$

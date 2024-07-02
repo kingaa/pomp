@@ -17,7 +17,6 @@
 ##' @inheritParams pfilter
 ##' @inheritParams pomp
 ##' @param Np integer; the number of particles to use, i.e., the size of the ensemble.
-##' 
 ##' @return
 ##' An object of class \sQuote{kalmand_pomp}.
 ##' @references
@@ -186,7 +185,7 @@ enkf_internal <- function (object, Np, ..., verbose) {
   Np <- as.integer(Np)
   if (length(Np)>1 || !is.finite(Np) || isTRUE(Np<=0))
     pStop_(sQuote("Np")," should be a single positive integer.")
-  
+
   params <- coef(object)
 
   t <- time(object)
@@ -213,7 +212,7 @@ enkf_internal <- function (object, Np, ..., verbose) {
     ## advance ensemble according to state process
     X <- rprocess(object,x0=X,t0=tt[k],times=tt[k+1],params=params,.gnsi=first)
     rn <- rownames(X)
-    
+
     predMeans[,k] <- pm <- rowMeans(X) # prediction mean
     Y <- emeasure(object,x=X,times=tt[k+1],params=params,.gnsi=first)
     ym <- rowMeans(Y)                  # forecast mean
@@ -236,7 +235,7 @@ enkf_internal <- function (object, Np, ..., verbose) {
 
     dn <- dim(R)[c(1L,2L)]
     dim(R) <- dn
-    
+
     sqrtR <- tryCatch(
       t(chol(R)), ## t(sqrtR)%*%sqrtR == R
       error = function (e) {
@@ -380,7 +379,7 @@ eakf_internal <- function (object, Np, ..., verbose) {
   Np <- as.integer(Np)
   if (length(Np)>1 || !is.finite(Np) || isTRUE(Np<=0))
     pStop_(sQuote("Np")," should be a single positive integer.")
-  
+
   params <- coef(object)
 
   t <- time(object)

@@ -16,8 +16,13 @@
 ##' @family summary statistic-based methods
 ##' @family estimation methods
 ##' @family methods based on maximization
-##' @seealso \code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
+##' @references
 ##'
+##' \Kendall1999
+##'
+##' \Wood2010
+##'
+##' @seealso \code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##' @param est character vector; the names of parameters to be estimated.
 ##' @param fail.value optional numeric scalar;
 ##' if non-\code{NA}, this value is substituted for non-finite values of the objective function.
@@ -26,10 +31,8 @@
 ##' When fitting, it is often best to fix the seed of the random-number generator (RNG).
 ##' This is accomplished by setting \code{seed} to an integer.
 ##' By default, \code{seed = NULL}, which does not alter the RNG state.
-##' 
 ##' @inheritParams probe
 ##' @inheritParams pomp
-##'
 ##' @return
 ##' \code{probe_objfun} constructs a stateful objective function for probe matching.
 ##' Specifically, \code{probe_objfun} returns an object of class \sQuote{probe_match_objfun}, which is a function suitable for use in an \code{\link[stats]{optim}}-like optimizer.
@@ -37,11 +40,9 @@
 ##' When called, it will return the negative synthetic log likelihood for the probes specified.
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
-##'
 ##' @inheritSection pomp Note for Windows users
 ##' @inheritSection objfun Important Note
 ##' @inheritSection objfun Warning! Objective functions based on C snippets
-##'
 ##' @example examples/probe_match.R
 ##'
 NULL
@@ -293,4 +294,3 @@ setMethod(
     plot(as(x,"probed_pomp"),...)
   }
 )
-
