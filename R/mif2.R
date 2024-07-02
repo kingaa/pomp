@@ -79,11 +79,11 @@
 ##' If one does specify additional arguments, these will override the defaults.
 ##'
 ##' @inheritSection pomp Note for Windows users
-##' 
+##'
 ##' @references
 ##'
 ##' \Ionides2015
-##' 
+##'
 NULL
 
 setClass(
@@ -297,8 +297,8 @@ mif2_internal <- function (object, Nmif, rw.sd,
   if (missing(cooling.fraction.50))
     pStop_(sQuote("cooling.fraction.50")," is a required argument.")
   if (length(cooling.fraction.50) != 1 || !is.numeric(cooling.fraction.50) ||
-      !is.finite(cooling.fraction.50) || cooling.fraction.50 <= 0 ||
-      cooling.fraction.50 > 1)
+        !is.finite(cooling.fraction.50) || cooling.fraction.50 <= 0 ||
+          cooling.fraction.50 > 1)
     pStop_(sQuote("cooling.fraction.50")," must be in (0,1].")
   cooling.fraction.50 <- as.numeric(cooling.fraction.50)
 

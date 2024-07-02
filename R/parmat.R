@@ -34,7 +34,7 @@ setMethod(
 ##' @return \code{parmat} returns a matrix consisting of \code{nrep} copies of
 ##' \code{params}.
 ##' @example examples/ricker-bifdiag.R
-##' 
+##'
 ##' @rdname parmat
 ##' @export
 setMethod(

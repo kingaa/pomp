@@ -70,9 +70,9 @@ SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP deltat, SEXP log) {
 
 // This function draws a random increment of a gamma whitenoise process.
 // This will have expectation=dt and variance=(sigma^2*dt)
-// If dW = rgammawn(sigma,dt), then 
+// If dW = rgammawn(sigma,dt), then
 // mu dW/dt is a candidate for a random rate process within an
-// Euler-multinomial context, i.e., 
+// Euler-multinomial context, i.e.,
 // E[mu*dW] = mu*dt and Var[mu*dW] = mu*sigma^2*dt
 SEXP R_GammaWN (SEXP n, SEXP sigma, SEXP deltat) {
   int k, nval, nsig, ndt;
@@ -99,7 +99,7 @@ SEXP R_GammaWN (SEXP n, SEXP sigma, SEXP deltat) {
 
 // This function draws a random variate from a beta-binomial distribution.
 // The binomial has size n and probability P ~ Beta(mu,theta).
-// That is, E[P] = mu and Var[P] = 
+// That is, E[P] = mu and Var[P] =
 SEXP R_BetaBinom (SEXP n, SEXP size, SEXP prob, SEXP theta) {
   int k, nval, ns, np, nt;
   double *X, *S, *P, *T;

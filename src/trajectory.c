@@ -72,7 +72,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   nzeros = LENGTH(accumvars);
 
   int nprotect = 15;
-  
+
   if (nzeros > 0) {
     zidx = INTEGER(PROTECT(matchnames(Snames,accumvars,"state variables"))); nprotect++;
   }
@@ -85,8 +85,8 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
     PROTECT(args = add_skel_args(args,Snames,Pnames,Cnames)); nprotect++;
 
     iterate_skeleton_R(REAL(X),t,deltat,REAL(times),REAL(x0),REAL(params),
-      fn,args,Snames,nvars,npars,ncovars,ntimes,nrepp,nreps,nzeros,
-      &covariate_table,zidx,REAL(cov));
+                       fn,args,Snames,nvars,npars,ncovars,ntimes,nrepp,nreps,nzeros,
+                       &covariate_table,zidx,REAL(cov));
 
   }
 
@@ -104,8 +104,8 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
     cidx = INTEGER(GET_SLOT(pompfun,install("covarindex")));
 
     iterate_skeleton_native(REAL(X),t,deltat,REAL(times),REAL(x0),REAL(params),
-      nvars,npars,ncovars,ntimes,nrepp,nreps,nzeros,sidx,pidx,cidx,
-      &covariate_table,zidx,ff,args,REAL(cov));
+                            nvars,npars,ncovars,ntimes,nrepp,nreps,nzeros,sidx,pidx,cidx,
+                            &covariate_table,zidx,ff,args,REAL(cov));
 
   }
 
@@ -261,22 +261,22 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
 {
   switch (COMMON(mode)) {
 
-  case Rfun:			// R function
+  case Rfun:                    // R function
 
     eval_skeleton_R(ydot,t,y,REAL(COMMON(params)),
-      RFUN(fn),RFUN(args),RFUN(Snames),
-      COMMON(nvars),COMMON(npars),COMMON(ncovars),1,
-      COMMON(nreps),COMMON(nreps),COMMON(nreps),
-      &COMMON(covar_table),REAL(COMMON(cov)));
+                    RFUN(fn),RFUN(args),RFUN(Snames),
+                    COMMON(nvars),COMMON(npars),COMMON(ncovars),1,
+                    COMMON(nreps),COMMON(nreps),COMMON(nreps),
+                    &COMMON(covar_table),REAL(COMMON(cov)));
 
     break;
 
-  case native: case regNative:		// native code
+  case native: case regNative:          // native code
     eval_skeleton_native(ydot,t,y,REAL(COMMON(params)),
-      COMMON(nvars),COMMON(npars),COMMON(ncovars),1,
-      COMMON(nreps),COMMON(nreps),COMMON(nreps),
-      INTEGER(NAT(sindex)),INTEGER(NAT(pindex)),INTEGER(NAT(cindex)),
-      &COMMON(covar_table),NAT(fun),NAT(args),REAL(COMMON(cov)));
+                         COMMON(nvars),COMMON(npars),COMMON(ncovars),1,
+                         COMMON(nreps),COMMON(nreps),COMMON(nreps),
+                         INTEGER(NAT(sindex)),INTEGER(NAT(pindex)),INTEGER(NAT(cindex)),
+                         &COMMON(covar_table),NAT(fun),NAT(args),REAL(COMMON(cov)));
 
     break;
 
@@ -284,7 +284,7 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
 
     err("in 'pomp_vf_eval': unrecognized 'mode'"); // # nocov
 
-  break;
+    break;
 
   }
 }
@@ -336,7 +336,7 @@ SEXP pomp_desolve_takedown (void) {
 
     err("in 'pomp_desolve_takedown': unrecognized 'mode'"); // # nocov
 
-  break;
+    break;
 
   }
 

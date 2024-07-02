@@ -24,7 +24,7 @@ setMethod(
     if (missing(start)) start <- tm[1L]
     if (missing(end)) end <- tm[length(tm)]
     if (!(is.numeric(start) && is.finite(start) && length(start)==1 &&
-        is.numeric(end) && is.finite(end) && length(end)==1))
+            is.numeric(end) && is.finite(end) && length(end)==1))
       pStop(who="window",sQuote("start")," and ",sQuote("end"),
         " must be finite times.")
     if (!isTRUE(start <= end))

@@ -19,7 +19,7 @@
 ##' @references
 ##'
 ##' \London1973
-##' 
+##'
 ##' @family pomp datasets
 ##' @family pomp examples
 ##'

@@ -5,7 +5,7 @@
 ##' When one calls \code{\link{pfilter}} with \code{save.states=TRUE}, the latent state vector associated with each particle is saved.
 ##' This can be extracted by calling \code{saved_states} on the \sQuote{pfilterd.pomp} object.
 ##' These are the \emph{unweighted} particles, saved \emph{after} resampling.
-##' 
+##'
 ##' @name saved_states
 ##' @aliases saved_states,ANY-method saved_states,missing-method
 ##' @include pfilter.R pmcmc.R melt.R
@@ -17,7 +17,7 @@
 ##' format of the returned object (see below).
 ##'
 ##' @return According to the \code{format} argument, the saved states are returned either as a list or a data frame.
-##' 
+##'
 ##' If \code{format="data.frame"}, then the returned data frame holds the state variables and (optionally) the unnormalized log weight of each particle at each observation time.
 ##' The \code{.id} variable distinguishes particles.
 ##'

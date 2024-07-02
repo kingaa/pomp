@@ -13,9 +13,9 @@ SEXP probe_marginal_setup (SEXP ref, SEXP order, SEXP diff) {
 
   np = *(INTEGER(AS_INTEGER(order))); // order of polynomial regression
   df = *(INTEGER(AS_INTEGER(diff)));  // order of differencing
-  n = LENGTH(ref);		      // n = number of observations
-  nx = n - df;			      // nx = rows in model matrix
-  dim[0] = nx; dim[1] = np;	      // dimensions of model matrix
+  n = LENGTH(ref);                    // n = number of observations
+  nx = n - df;                        // nx = rows in model matrix
+  dim[0] = nx; dim[1] = np;           // dimensions of model matrix
 
   if (nx < 1) err("must have diff < number of observations");
 
@@ -35,7 +35,7 @@ SEXP probe_marginal_setup (SEXP ref, SEXP order, SEXP diff) {
   SET_NAMES(retval,retvalnames);
 
   order_reg_model_matrix(REAL(z),REAL(mm),REAL(tau),INTEGER(pivot),n,np,df);
-  
+
   UNPROTECT(6);
   return(retval);
 }
@@ -47,19 +47,19 @@ SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff) {
   char tmp[BUFSIZ];
 
   df = *(INTEGER(AS_INTEGER(diff)));  // order of differencing
-  n = LENGTH(x);		      // n = number of observations
+  n = LENGTH(x);                      // n = number of observations
 
   // unpack the setup information
   PROTECT(mm = VECTOR_ELT(setup,0));    //  QR-decomposed model matrix
   PROTECT(tau = VECTOR_ELT(setup,1));   // diagonals
   PROTECT(pivot = VECTOR_ELT(setup,2)); // pivots
 
-  nx = INTEGER(GET_DIM(mm))[0];	// nx = number of rows in model matrix
-  np = INTEGER(GET_DIM(mm))[1];	// np = order of polynomial
-  
+  nx = INTEGER(GET_DIM(mm))[0]; // nx = number of rows in model matrix
+  np = INTEGER(GET_DIM(mm))[1]; // np = order of polynomial
+
   if (n-df != nx) err("length of 'ref' must equal length of data");
   PROTECT(X = duplicate(AS_NUMERIC(x)));
-   
+
   PROTECT(beta = NEW_NUMERIC(np));
   PROTECT(beta_names = NEW_STRING(np));
   for (i = 0; i < np; i++) {
@@ -95,22 +95,22 @@ static void order_reg_model_matrix (double *z, double *X, double *tau, int *pivo
   // z is now an nx-vector
 
   // center z
-  for (j = 0, xx = 0.0; j < nx; j++) xx += z[j]; 
+  for (j = 0, xx = 0.0; j < nx; j++) xx += z[j];
   xx /= nx; // xx = mean(z)
   for (j = 0; j < nx; j++) z[j] -= xx;
 
   // now sort
   R_qsort(z,1,nx);
 
-  // Now create the model matrix, using contents of z 
+  // Now create the model matrix, using contents of z
   if (np < 1) np = 1;
   for (j = 0; j < nx; j++) X[j] = z[j]; // first column
-  for (i = 1, X1 = X, X2 = X+nx; i < np; i++, X1 += nx, X2 += nx) 
+  for (i = 1, X1 = X, X2 = X+nx; i < np; i++, X1 += nx, X2 += nx)
     for (j = 0; j < nx; j++) X2[j] = X1[j]*z[j];
 
-  // QR decompose the model matrix 
+  // QR decompose the model matrix
   pomp_qr(X,nx,np,pivot,tau);
-  
+
 }
 
 // thanks to Simon N. Wood for the original version of the following code
@@ -127,7 +127,7 @@ static void order_reg_solve (double *beta, double *x, double *mm, double *tau, i
   // x is now an nx-vector
 
   // center x
-  for (j = 0, xx = 0.0; j < nx; j++) xx += x[j]; 
+  for (j = 0, xx = 0.0; j < nx; j++) xx += x[j];
   xx /= nx; // xx = mean(x)
   for (j = 0; j < nx; j++) x[j] -= xx;
 

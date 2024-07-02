@@ -72,7 +72,7 @@ setMethod(
         ...,verbose=verbose),
       error = function (e) pStop(who="flow",conditionMessage(e))
     )
-    
+
   }
 )
 

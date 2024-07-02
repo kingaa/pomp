@@ -12,7 +12,7 @@
 ##' One accomplishes this by setting \code{filter.traj = TRUE} in each \code{\link{pfilter}} computation and extracting the trajectory using the \code{filter_traj} command.
 ##'
 ##' In particle MCMC (\code{\link{pmcmc}}), the tracking of an individual trajectory is performed automatically.
-##' 
+##'
 ##' @name filter_traj
 ##' @aliases filter_traj,ANY-method filter_traj,missing-method
 ##' @include pfilter.R pmcmc.R melt.R

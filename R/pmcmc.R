@@ -15,7 +15,7 @@
 ##' @family full-information methods
 ##' @family MCMC methods
 ##' @family Bayesian methods
-##' 
+##'
 ##' @importFrom stats runif
 ##' @inheritParams pfilter
 ##' @inheritParams pomp
@@ -39,7 +39,7 @@
 ##' @return An object of class \sQuote{pmcmcd_pomp}.
 ##'
 ##' @inheritSection pomp Note for Windows users
-##' 
+##'
 ##' @section Re-running PMCMC Iterations:
 ##' To re-run a sequence of PMCMC
 ##' iterations, one can use the \code{pmcmc} method on a \sQuote{pmcmc} object.
@@ -50,7 +50,7 @@
 ##' @references
 ##'
 ##' \Andrieu2010
-##' 
+##'
 NULL
 
 setClass(
@@ -164,7 +164,7 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     if (missing(Np)) Np <- data@Np
-    
+
     pmcmc(
       as(data,"pomp"),
       Nmcmc=Nmcmc,

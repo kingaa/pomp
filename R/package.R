@@ -70,7 +70,7 @@
 ##' Some of these are included in the help pages.
 ##' In addition, \link[=pomp_examples]{several pre-built POMP models} are included with the package.
 ##' Tutorials and other documentation, including a \href{https://kingaa.github.io/pomp/FAQ.html}{package FAQ}, are available from the \href{https://kingaa.github.io/pomp/}{package website}.
-##' 
+##'
 ##' @section Useful links:
 ##' \itemize{
 ##'  \item{\pkg{pomp} homepage: \url{https://kingaa.github.io/pomp/}}
@@ -79,7 +79,7 @@
 ##'  \item{User guides and tutorials: \url{https://kingaa.github.io/pomp/docs.html}}
 ##'  \item{\pkg{pomp} news: \url{https://kingaa.github.io/pomp/blog.html}}
 ##' }
-##' 
+##'
 ##' @section Citing \pkg{pomp}:
 ##' Execute \code{citation("pomp")} to view the correct citation for publications.
 ##'

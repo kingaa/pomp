@@ -7,7 +7,7 @@
 ##' @include listie.R
 ##' @importFrom stats setNames
 ##' @keywords internal
-##' 
+##'
 NULL
 
 setGeneric(

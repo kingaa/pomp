@@ -1,11 +1,11 @@
 ##' Monte Carlo adjusted profile
 ##'
 ##' Given a collection of points maximizing the likelihood over a range
-##' of fixed values of a focal parameter, this function constructs 
+##' of fixed values of a focal parameter, this function constructs
 ##' a profile likelihood confidence interval accommodating both
 ##' Monte Carlo error in the profile and statistical uncertainty present
 ##' in the likelihood function.
-##' 
+##'
 ##' @param logLik numeric; a vector of profile log likelihood evaluations.
 ##' @param parameter numeric; the corresponding values of the focal parameter.
 ##' @param level numeric; the confidence level required.
@@ -15,16 +15,16 @@
 ##' @references
 ##'
 ##' \Ionides2017
-##' 
+##'
 ##' @return
 ##' \code{mcap} returns a list including the \code{\link[stats]{loess}}-smoothed
 ##' profile, a quadratic approximation, and the constructed confidence interval.
-##' 
+##'
 ##' @author Edward L. Ionides
 ##' @concept profile likelihood
 ##' @importFrom stats loess predict lm vcov qchisq
 ##' @include package.R design.R
-##' 
+##'
 ##' @rdname mcap
 ##' @export
 mcap <- function (
@@ -71,7 +71,7 @@ mcap <- function (
       parameter=parameter_grid,
       smoothed=smoothed_logLik,
       quadratic=predict(
-        quadratic_fit, 
+        quadratic_fit,
         newdata=list(
           b=parameter_grid,
           a=-parameter_grid^2
@@ -81,8 +81,8 @@ mcap <- function (
     mle=smooth_arg_max,
     ci=ci,
     delta=delta,
-    se_stat=sqrt(se_stat_squared), 
-    se_mc=sqrt(se_mc_squared), 
+    se_stat=sqrt(se_stat_squared),
+    se_mc=sqrt(se_mc_squared),
     se=sqrt(se_total_squared)
   )
 }

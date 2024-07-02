@@ -36,5 +36,5 @@
 ##' @seealso \link[=workhorses]{workhorse functions},
 ##' \link[=elementary_algorithms]{elementary algorithms},
 ##' \link[=estimation_algorithms]{estimation algorithms}.
-##' 
+##'
 NULL

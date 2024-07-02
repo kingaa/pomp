@@ -10,9 +10,9 @@
 ##' @details
 ##' \code{concat} applied to one or more \sQuote{pomp} objects or lists of \sQuote{pomp} objects converts the list into a \sQuote{listie}.
 ##' In particular, \code{concat(A,B,C)} is equivalent to \code{do.call(c,unlist(list(A,B,C)))}.
-##' 
+##'
 ##' @example examples/concat.R
-##' 
+##'
 NULL
 
 ##' @rdname concat

@@ -6,7 +6,7 @@
 // optionally with one element dropped
 SEXP logmeanexp (const SEXP X, const SEXP Drop) {
   int j, n = LENGTH(X);
-  int k = *INTEGER(Drop)-1;	// zero-based index
+  int k = *INTEGER(Drop)-1;     // zero-based index
   double *x = REAL(X);
   long double m = R_NegInf;
   long double s = 0;

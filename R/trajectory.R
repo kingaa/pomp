@@ -25,7 +25,7 @@
 ##' \code{format = "pomps"} causes the trajectories to be returned as a single \sQuote{pomp} object (if a single parameter vector has been furnished to \code{trajectory}) or as a \sQuote{pompList} object (if a matrix of parameters have been furnished).
 ##' In each of these, the \code{states} slot will have been replaced by the computed trajectory.
 ##' Use \code{\link{states}} to view these.
-##' 
+##'
 ##' \code{format = "array"} causes the trajectories to be returned
 ##' in a rank-3 array with dimensions
 ##' \code{nvar} x \code{ncol(params)} x \code{ntimes}.
@@ -125,7 +125,7 @@ setMethod(
       ),
       error = function (e) pStop(who="trajectory",conditionMessage(e))
     )
-    
+
   }
 )
 

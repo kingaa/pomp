@@ -34,9 +34,9 @@
 ##' @inheritSection objfun Important Note
 ##' @inheritSection objfun Warning! Objective functions based on C snippets
 ##' @seealso \code{\link[stats]{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
-##' 
+##'
 ##' @example examples/traj_match.R
-##' 
+##'
 NULL
 
 setClass(

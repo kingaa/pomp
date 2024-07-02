@@ -176,7 +176,7 @@ bsmc2_internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
   params <- parmat(coef(object),Np[1L])
 
   if (!is.numeric(smooth) || length(smooth) != 1 || (!is.finite(smooth)) ||
-      (smooth>1) || (smooth<=0))
+        (smooth>1) || (smooth<=0))
     pStop_(sQuote("smooth")," must be a scalar in (0,1]")
   smooth <- as.numeric(smooth)
 

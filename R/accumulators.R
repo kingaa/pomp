@@ -14,5 +14,5 @@
 ##' See \code{\link{sir}} and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website} for examples.
 ##'
 ##' @example examples/accumulators.R
-##' 
+##'
 NULL

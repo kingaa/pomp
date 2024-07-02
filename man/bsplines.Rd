@@ -57,7 +57,7 @@ basis of periodic spline functions.
 }
 \section{C API}{
 
-Access to the underlying C routines is available: see 
+Access to the underlying C routines is available: see
 \href{https://kingaa.github.io/pomp/C_API.html}{the \pkg{pomp} C API document}.
 for definition and documentation of the C API.
 }

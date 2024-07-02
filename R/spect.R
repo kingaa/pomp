@@ -21,7 +21,7 @@
 ##' @family elementary algorithms
 ##'
 ##' @inheritSection pomp Note for Windows users
-##' 
+##'
 ##' @include simulate.R pomp.R
 ##' @importFrom stats spec.pgram kernel .lm.fit
 ##'
@@ -59,7 +59,7 @@
 ##' \Reuman2006
 ##'
 ##' \Reuman2008
-##' 
+##'
 NULL
 
 setClass(
@@ -205,12 +205,12 @@ spect_internal <- function (object, vars, kernel.width, nsim, seed = NULL,
   if (missing(vars)) vars <- rownames(object@data)
 
   if (missing(kernel.width) || length(kernel.width) > 1 ||
-      !is.numeric(kernel.width) ||
-      !is.finite(kernel.width) || kernel.width < 0)
+        !is.numeric(kernel.width) ||
+        !is.finite(kernel.width) || kernel.width < 0)
     pStop_(sQuote("kernel.width")," must be a positive integer.")
 
   if (missing(nsim) || length(nsim) > 1 || !is.numeric(nsim)||
-      !is.finite(nsim) || (nsim<1))
+        !is.finite(nsim) || (nsim<1))
     pStop_(sQuote("nsim")," must be a positive integer.")
 
   nsim <- as.integer(nsim)
@@ -317,15 +317,15 @@ compute_spect_sim <- function (object, params, vars, nsim, seed,
   transform.data, detrend, ker, .gnsi = TRUE) {
 
   sims <- tryCatch(
-    {
-      s <- freeze(
-        .Call(P_do_simulate,object,params,nsim,0L,gnsi=.gnsi),
-        seed=seed
-      )
-      s$obs[vars,,,drop=FALSE]
-    },
-    error = function (e) pStop_("in simulation: ",
-      conditionMessage(e))
+  {
+    s <- freeze(
+      .Call(P_do_simulate,object,params,nsim,0L,gnsi=.gnsi),
+      seed=seed
+    )
+    s$obs[vars,,,drop=FALSE]
+  },
+  error = function (e) pStop_("in simulation: ",
+    conditionMessage(e))
   )
 
   if (any(!is.finite(sims)))

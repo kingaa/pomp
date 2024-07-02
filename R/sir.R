@@ -52,7 +52,7 @@ sir <- function (
   times = seq(from = t0 + 1/52, to = t0 + 4, by = 1/52),
   seed=329343545, delta.t = 1/52/20
 ) {
-  
+
   tt0 <- t0
   tt <- times
 
@@ -91,8 +91,8 @@ sir <- function (
     rprocess=euler(
       step.fun=Csnippet("
         int nrate = 6;
-        double rate[nrate];		  // transition rates
-        double trans[nrate];		// transition numbers
+        double rate[nrate];               // transition rates
+        double trans[nrate];            // transition numbers
         double beta;
         double dW;
 
@@ -102,15 +102,15 @@ sir <- function (
         dW = rgammawn(beta_sd,dt);
 
         // compute the transition rates
-        rate[0] = mu*pop;		// birth into susceptible class
+        rate[0] = mu*pop;               // birth into susceptible class
         rate[1] = (iota+beta*I*dW/dt)/pop; // force of infection
-        rate[2] = mu;			// death from susceptible class
-        rate[3] = gamma;	// recovery
-        rate[4] = mu;			// death from infectious class
-        rate[5] = mu; 		// death from recovered class
+        rate[2] = mu;                   // death from susceptible class
+        rate[3] = gamma;        // recovery
+        rate[4] = mu;                   // death from infectious class
+        rate[5] = mu;           // death from recovered class
 
         // compute the transition numbers
-        trans[0] = rpois(rate[0]*dt);	// births are Poisson
+        trans[0] = rpois(rate[0]*dt);   // births are Poisson
         reulermultinom(2,S,&rate[1],dt,&trans[1]);
         reulermultinom(2,I,&rate[3],dt,&trans[3]);
         reulermultinom(1,R,&rate[5],dt,&trans[5]);
@@ -119,27 +119,27 @@ sir <- function (
         S += trans[0]-trans[1]-trans[2];
         I += trans[1]-trans[3]-trans[4];
         R += trans[3]-trans[5];
-        cases += trans[3];		// cases are cumulative recoveries
+        cases += trans[3];              // cases are cumulative recoveries
         if (beta_sd > 0.0)  W += (dW-dt)/beta_sd;"
       ),
       delta.t=delta.t
     ),
     skeleton=vectorfield(Csnippet("
       int nrate = 6;
-      double rate[nrate];		  // transition rates
-      double term[nrate];		// terms in the equations
+      double rate[nrate];                 // transition rates
+      double term[nrate];               // terms in the equations
       double beta;
       double dW;
 
       beta = dot_product(nbasis,&beta1,&seas_1);
 
       // compute the transition rates
-      rate[0] = mu*pop;		// birth into susceptible class
+      rate[0] = mu*pop;         // birth into susceptible class
       rate[1] = (iota+beta*I)/pop; // force of infection
-      rate[2] = mu;			// death from susceptible class
-      rate[3] = gamma;	// recovery
-      rate[4] = mu;			// death from infectious class
-      rate[5] = mu; 		// death from recovered class
+      rate[2] = mu;                     // death from susceptible class
+      rate[3] = gamma;  // recovery
+      rate[4] = mu;                     // death from infectious class
+      rate[5] = mu;             // death from recovered class
 
       // compute the several terms
       term[0] = rate[0];
@@ -153,9 +153,9 @@ sir <- function (
       DS = term[0]-term[1]-term[2];
       DI = term[1]-term[3]-term[4];
       DR = term[3]-term[5];
-      Dcases = term[3];		// accumulate the new I->R transitions
-      DW = 0;			// no noise, so no noise accumulation"
-      )
+      Dcases = term[3];         // accumulate the new I->R transitions
+      DW = 0;                   // no noise, so no noise accumulation"
+    )
     ),
     emeasure=Csnippet("
       E_reports = cases*rho;"
@@ -246,7 +246,7 @@ sir2 <- function (
       infection=list("
       beta = dot_product(nbasis,&beta1,&seas_1);
       rate = (beta*I+iota)*S/pop;",
-        c(S=-1,I=1,N=0,R=0,cases=0)),
+      c(S=-1,I=1,N=0,R=0,cases=0)),
       inf.death=list(
         "rate = mu*I;",
         c(S=0,I=-1,R=0,N=-1,cases=0)),

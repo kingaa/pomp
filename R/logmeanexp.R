@@ -6,7 +6,7 @@
 ##' It can optionally return an estimate of the standard error in this quantity.
 ##'
 ##' When \code{se = TRUE}, \code{logmeanexp} uses a jackknife estimate of the variance in \eqn{log(x)}.
-##' 
+##'
 ##' When \code{ess = TRUE}, \code{logmeanexp} returns an estimate of the effective sample size.
 ##'
 ##' @importFrom stats sd

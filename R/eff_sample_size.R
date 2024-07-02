@@ -17,9 +17,9 @@
 NULL
 
 setGeneric(
-    "eff_sample_size",
-    function (object, ...)
-        standardGeneric("eff_sample_size")
+  "eff_sample_size",
+  function (object, ...)
+    standardGeneric("eff_sample_size")
 )
 
 setMethod(

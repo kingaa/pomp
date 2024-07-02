@@ -271,7 +271,7 @@ nlfof_internal <- function (object,
   nrbf <- as.integer(nrbf)
 
   if (!(is.logical(period) || is.numeric(period)) ||
-      length(period) != 1 || is.infinite(period))
+        length(period) != 1 || is.infinite(period))
     pStop_(sQuote("period")," must be single finite number or NA.")
   period <- as.numeric(period)
   if (!is.na(period) && period <= 0) period <- NA_real_
@@ -376,11 +376,11 @@ nlf_lql <- function (object, times, lags, nrbf, period, tensor,
   dat.mat <- obs(object)
   mod.mat <- array(dim=dim(y)[c(1L,3L)],dimnames=list(rownames(dat.mat),NULL))
   tryCatch(
-    {
-      dat.mat[,] <- apply(dat.mat,2L,transform.data)
-      mod.mat[,] <- apply(y[,1L,,drop=FALSE],c(2L,3L),transform.data)
-    },
-    error = function (e) pStop(who="transform.data",conditionMessage(e))
+  {
+    dat.mat[,] <- apply(dat.mat,2L,transform.data)
+    mod.mat[,] <- apply(y[,1L,,drop=FALSE],c(2L,3L),transform.data)
+  },
+  error = function (e) pStop(who="transform.data",conditionMessage(e))
   )
 
   tryCatch(
@@ -552,20 +552,20 @@ rbf_basis <- function (X, knots) {
 ## GAUSS trimr function:
 ## trims n1 rows from the start,
 ## n2 rows from the end of a matrix or vector
-# trimr <- function (a, n1, n2) {
-#   a[seq.int(from=n1+1,to=NROW(a)-n2,by=1)]
-# }
+## trimr <- function (a, n1, n2) {
+##   a[seq.int(from=n1+1,to=NROW(a)-n2,by=1)]
+## }
 
-# Newey.West <- function (x, y, maxlag) {
-#   w <- 1-seq_len(maxlag)/(maxlag+1)
-#   out <- mean(x*y,na.rm=TRUE)
-#   for (i in seq_len(maxlag)) {
-#     out <- out+
-#       w[i]*mean(trimr(x,i,0)*trimr(y,0,i),na.rm=TRUE)+
-#       w[i]*mean(trimr(y,i,0)*trimr(x,0,i),na.rm=TRUE)
-#   }
-#   out
-# }
+## Newey.West <- function (x, y, maxlag) {
+##   w <- 1-seq_len(maxlag)/(maxlag+1)
+##   out <- mean(x*y,na.rm=TRUE)
+##   for (i in seq_len(maxlag)) {
+##     out <- out+
+##       w[i]*mean(trimr(x,i,0)*trimr(y,0,i),na.rm=TRUE)+
+##       w[i]*mean(trimr(y,i,0)*trimr(x,0,i),na.rm=TRUE)
+##   }
+##   out
+## }
 
 make_tensorbasis <- function(A,B) {
   if (nrow(A) != nrow(B))

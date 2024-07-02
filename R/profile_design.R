@@ -1,16 +1,16 @@
 ##' @description
 ##' \code{profile_design} generates a data-frame where each row can be used as the starting point for a profile likelihood calculation.
 ##' @concept profile likelihood
-##' 
+##'
 ##' @rdname design
-##' @return 
+##' @return
 ##' \code{profile_design} returns a data frame with \code{nprof} points per profile point.
 ##' @param nprof The number of points per profile point.
 ##' @param type the type of design to use.
 ##' \code{type="runif"} uses \code{\link{runif_design}}.
 ##' \code{type="sobol"} uses \code{\link{sobol_design}};
 ##' @param stringsAsFactors should character vectors be converted to factors?
-##' 
+##'
 ##' @export
 profile_design <- function (...,
   lower, upper, nprof,

@@ -215,31 +215,31 @@ dacca <- function (
     beta = exp(dot_product(nbasis,&seas_1,&logbeta1)+beta_trend*trend);
     omega = exp(dot_product(nbasis,&seas_1,&logomega1));
 
-    dw = rnorm(0,sqrt(dt));	// white noise
+    dw = rnorm(0,sqrt(dt));     // white noise
 
     effI = pow(I/pop,alpha);
-    births = dpopdt + delta*pop;	// births
+    births = dpopdt + delta*pop;        // births
 
-    passages[0] = gamma*I;	// recovery
-    ideaths = delta*I;	        // natural i deaths
-    disease = deltaI*I;	        // disease death
-    ydeaths = delta*Y;     	// natural rs deaths
-    wanings = rho*Y;		// loss of immunity
+    passages[0] = gamma*I;      // recovery
+    ideaths = delta*I;          // natural i deaths
+    disease = deltaI*I;         // disease death
+    ydeaths = delta*Y;          // natural rs deaths
+    wanings = rho*Y;            // loss of immunity
 
     for (pt = &R1, j = 0; j < nrstage; j++, pt++) {
-    rdeaths[j] = *pt*delta;	// natural R deaths
-    passages[j+1] = *pt*neps;	// passage to the next immunity class
+    rdeaths[j] = *pt*delta;     // natural R deaths
+    passages[j+1] = *pt*neps;   // passage to the next immunity class
     }
 
     infections = (omega+(beta+sd_beta*dw/dt)*effI)*S; // infection
-    sdeaths = delta*S;	        // natural S deaths
+    sdeaths = delta*S;          // natural S deaths
 
     S += (births - infections - sdeaths + passages[nrstage] + wanings)*dt;
     I += (clin*infections - disease - ideaths - passages[0])*dt;
     Y += ((1-clin)*infections - ydeaths - wanings)*dt;
     for (pt = &R1, j = 0; j < nrstage; j++, pt++)
     *pt += (passages[j] - passages[j+1] - rdeaths[j])*dt;
-    deaths += disease*dt;		// cumulative deaths due to disease
+    deaths += disease*dt;               // cumulative deaths due to disease
     W += dw;
 
     // check for violations of positivity constraints

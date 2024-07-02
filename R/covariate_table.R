@@ -166,7 +166,7 @@ get_covariate_names <- function (object) {
 
 covar_time_warning <- function (object, times, t0, wp) {
   if ((length(object@times)>0) &&
-      ((min(object@times)>t0) || (max(object@times)<max(times))))
+        ((min(object@times)>t0) || (max(object@times)<max(times))))
     pWarn(who=wp,"the supplied covariate times do not embrace the ",
       "data times: covariates may be extrapolated.")
 }

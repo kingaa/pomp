@@ -1,7 +1,7 @@
 ##' @description
 ##' \code{sobol_design} generates a Latin hypercube design based on the Sobol' low-discrepancy sequence.
 ##' @rdname design
-##' 
+##'
 ##' @details
 ##' The Sobol' sequence generation is performed using codes from the \pkg{NLopt} library by S. Johnson.
 ##' @return
@@ -11,7 +11,7 @@
 ##' @param nseq Total number of points requested.
 ##' @references
 ##' \Kucherenko2005
-##' 
+##'
 ##' \NLopt
 ##'
 ##' \Bratley1988

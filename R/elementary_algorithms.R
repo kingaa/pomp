@@ -2,7 +2,7 @@
 ##'
 ##' In \pkg{pomp}, elementary algorithms perform POMP model operations.
 ##' These operations do not themselves estimate parameters, though they may be instrumental in inference methods.
-##' 
+##'
 ##' There are six elementary algorithms in \pkg{pomp}:
 ##' \itemize{
 ##' \item \code{\link{simulate}} which simulates from the joint distribution of latent and observed variables,
@@ -20,5 +20,5 @@
 ##' @seealso \link[=basic_components]{basic model components},
 ##' \link[=workhorses]{workhorse functions},
 ##' \link[=estimation_algorithms]{estimation algorithms}.
-##' 
+##'
 NULL

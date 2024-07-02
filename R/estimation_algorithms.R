@@ -20,5 +20,5 @@
 ##' @seealso \link[=basic_components]{basic model components},
 ##' \link[=workhorses]{workhorse functions},
 ##' \link[=elementary_algorithms]{elementary algorithms}.
-##' 
+##'
 NULL

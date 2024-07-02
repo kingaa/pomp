@@ -21,7 +21,7 @@
 ##' therefore, within a single \R session, if one creates a stateful objective function, one can freely call that objective function and (more to the point) pass it to an optimizer that calls it freely, without needing to call \code{\link{pompLoad}}.
 ##' On the other hand, if one retrieves a stored objective function from a file, or passes one to another \R session, one must call \code{\link{pompLoad}} before using it.
 ##' \strong{Failure to do this will typically result in a segmentation fault (i.e., it will crash the \R session).}
-##' 
+##'
 NULL
 
 setClassUnion(

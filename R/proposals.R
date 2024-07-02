@@ -36,7 +36,7 @@
 ##' @references
 ##'
 ##' \Roberts2009
-##' 
+##'
 NULL
 
 ##' @rdname proposals
@@ -134,10 +134,10 @@ mvn_rw_adaptive <- function (rw.sd, rw.var, scale.start = NA,
     if (.n == 0) return(theta) ## handle initial test run by pmcmc
     if (is.null(theta.mean)) theta.mean <<- theta[parnm]
     if (!is.na(scale.start) && .n >= scale.start &&
-        (is.na(shape.start) || .accepts < shape.start)) {
+          (is.na(shape.start) || .accepts < shape.start)) {
       ## adapt size of covmat until we get enough accepted jumps
       scaling <<- min(scaling*exp(scale.cooling^(.n-scale.start)*
-          (.accepts/.n-target)),
+                                    (.accepts/.n-target)),
         max.scaling)
       covmat <- scaling^2*rw.var
     } else if (!is.na(shape.start) && .accepts >= shape.start) {

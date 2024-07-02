@@ -33,10 +33,10 @@
 ##' \item{periodic_bspline_basis}{ Returns a matrix with \code{length(x)} rows
 ##' and \code{nbasis} columns.  The basis functions returned are periodic with
 ##' period \code{period}.}
-##' If \code{deriv>0}, the derivative of that order of each of the corresponding spline basis functions are returned.  
+##' If \code{deriv>0}, the derivative of that order of each of the corresponding spline basis functions are returned.
 ##'
 ##' @section C API:
-##' Access to the underlying C routines is available: see 
+##' Access to the underlying C routines is available: see
 ##' \href{https://kingaa.github.io/pomp/C_API.html}{the \pkg{pomp} C API document}.
 ##' for definition and documentation of the C API.
 ##'

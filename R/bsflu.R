@@ -12,9 +12,9 @@
 ##' @family pomp datasets
 ##' @seealso \link[=compartmental_models]{compartmental models}
 ##' @references
-##' 
+##'
 ##' \Anonymous1978
-##' 
+##'
 ##' @example examples/bsflu.R
-##' 
+##'
 NULL

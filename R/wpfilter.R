@@ -25,7 +25,7 @@
 ##' @return
 ##' An object of class \sQuote{wpfilterd_pomp}, which extends class \sQuote{pomp}.
 ##' Information can be extracted from this object using the methods documented below.
-##' 
+##'
 ##' @section Methods:
 ##' \describe{
 ##' \item{\code{\link{logLik}}}{ the estimated log likelihood}
@@ -34,7 +34,7 @@
 ##' \item{\code{\link{as.data.frame}}}{ coerce to a data frame}
 ##' \item{\code{\link{plot}}}{diagnostic plots}
 ##' }
-##' 
+##'
 ##' @references
 ##'
 ##' \Arulampalam2002
@@ -171,7 +171,7 @@ wpfilter_internal <- function (object, Np, trigger, target, ...,
   ntimes <- length(times)-1
 
   Np <- np_check(Np,ntimes)
-    
+
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
@@ -217,7 +217,7 @@ wpfilter_internal <- function (object, Np, trigger, target, ...,
     W <- xx$weights
     loglik[nt] <- xx$loglik
     eff.sample.size[nt] <- xx$ess
-    
+
   } ## end of main loop
 
   new(

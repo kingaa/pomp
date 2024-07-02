@@ -9,7 +9,7 @@
 ##' where \eqn{\mathrm{MVN}(M,V)} denotes the multivariate normal distribution with mean \eqn{M} and variance \eqn{V}.
 ##' Then the Kalman filter computes the exact likelihood of \eqn{Y}
 ##' given \eqn{A}, \eqn{C}, \eqn{Q}, and \eqn{R}.
-##' 
+##'
 ##' @rdname kf
 ##' @concept Kalman filter
 ##' @seealso \code{\link{enkf}}, \code{\link{eakf}}

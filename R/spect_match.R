@@ -6,7 +6,7 @@
 ##'
 ##' \code{spect_objfun} constructs an objective function that measures the discrepancy.
 ##' It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
-##' 
+##'
 ##' @docType methods
 ##' @name spect_match
 ##' @rdname spect_match
@@ -41,7 +41,7 @@
 ##' @inheritSection objfun Warning! Objective functions based on C snippets
 ##' @seealso \code{\link{spect}} \code{\link[stats]{optim}}
 ##' \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
-##' 
+##'
 ##' @example examples/spect_match.R
 ##'
 NULL

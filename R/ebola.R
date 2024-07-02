@@ -24,7 +24,7 @@
 ##' \He2010
 ##'
 ##' @example examples/ebola.R
-##' 
+##'
 NULL
 
 ##' @rdname ebola
@@ -43,7 +43,7 @@ NULL
 ##' @section Model structure:
 ##' The default incubation period is supposed to be Gamma distributed with shape parameter \code{nstageE} and mean 11.4 days and the case-fatality ratio (`cfr`) is taken to be 0.7 (cf. WHO Ebola Response Team 2014).
 ##' The discrete-time formula is used to calculate the corresponding \code{alpha} (cf. He et al. 2010).
-##' 
+##'
 ##' The observation model is a hierarchical model for cases and deaths:
 ##'   \deqn{p(R_t, D_t| C_t) = p(R_t | C_t) p(D_t | C_t, R_t).}
 ##' Here, \eqn{p(R_t | C_t)} is negative binomial with mean \eqn{\rho C_t} and dispersion parameter \eqn{1/k};
@@ -209,7 +209,7 @@ ebolaModel <- function (
 ## These data were accessed from
 ## https://www.cdc.gov/vhf/ebola/history/2014-2016-outbreak/case-counts.html
 ## on 2019-03-09 and are included below.
-## 
+##
 ## Variables are:
 ## - WHO report date
 ## - Total Cases, Guinea

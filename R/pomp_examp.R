@@ -29,9 +29,9 @@
 ##' \item{\code{\link{sir2}()}}{A simple continuous-time Markov chain SIR model, coded using Gillespie's algorithm, with simulated data.}
 ##' \item{\code{\link{verhulst}()}}{The Verhulst-Pearl (logistic) model, a continuous-time model of population dynamics, with simulated data}
 ##' }
-##' 
+##'
 ##' See also the tutorials on the \href{https://kingaa.github.io/pomp/}{package website} for more examples.
-##' 
+##'
 ##' @references
 ##'
 ##' \Anonymous1978
@@ -41,7 +41,7 @@
 ##' \King2015
 ##'
 ##' \London1973
-##' 
+##'
 ##' \Nicholson1957
 ##'
 NULL

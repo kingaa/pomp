@@ -22,7 +22,7 @@
 ##' @param epsilon ABC tolerance.
 ##'
 ##' @inheritSection pomp Note for Windows users
-##' 
+##'
 ##' @section Running ABC:
 ##'
 ##' \code{abc} returns an object of class \sQuote{abcd_pomp}.
@@ -51,7 +51,7 @@
 ##' }
 ##'
 ##' @references
-##' 
+##'
 ##' \Marin2012
 ##'
 ##' \Toni2010

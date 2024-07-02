@@ -36,7 +36,7 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
     x /= nrow;
     for (i = 0; i < nrow; i++) yp[i] -= x; // center the column
     for (x = 0, i = 0; i < nrow; i++) x += yp[i]*yp[i];
-    d = sqrt(x/(nrow-1));		   // column SD
+    d = sqrt(x/(nrow-1));                  // column SD
     for (i = 0; i < nrow; i++) yp[i] /= d; // precondition
   }
 
@@ -73,9 +73,9 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
       x += w[i];
       xx += w[i]*yp[i];
     }
-    xx /= x;			// column mean
+    xx /= x;                    // column mean
     for (i = 0; i < nrow; i++) yp[i] -= xx; // center the column
-    ydat[j] -= xx;		// subtract mean from realized probe
+    ydat[j] -= xx;              // subtract mean from realized probe
     for (xx = 0, i = 0; i < nrow; i++) {
       xx += yp[i]*yp[i];
       yp[i] /= wbar;

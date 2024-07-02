@@ -58,7 +58,7 @@
 ##' \Kendall1999
 ##'
 ##' \Wood2010
-##' 
+##'
 NULL
 
 setClass(

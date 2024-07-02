@@ -12,7 +12,7 @@
 ##' @rdname parus
 ##' @docType data
 ##' @family pomp datasets
-##' 
+##'
 ##' @example examples/parus.R
 ##'
 ##' @references
@@ -20,4 +20,3 @@
 ##' \McCleery1991
 ##'
 NULL
-

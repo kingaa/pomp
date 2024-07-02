@@ -6,7 +6,7 @@
 ##' The \sQuote{slice} variable indicates which slice the point belongs to.
 ##' @param center \code{center} is a named numeric vector specifying the point
 ##' through which the slice(s) is (are) to be taken.
-##' 
+##'
 ##' @export
 slice_design <- function (center, ...) {
   slices <- list(...)
