@@ -528,7 +528,7 @@
   author: "M. Domenech de Cell&egrave;s and P. Rohani"
   year: "2024"
   title: "Pertussis vaccines, epidemiology and evolution"
-  journal: "Nature Reviews Microbiology"
+  journal: "Nat Rev Microbiol"
   doi: "https://doi.org/10.1038/s41579-024-01064-8"
 
 - key: Domeyer2022
@@ -765,6 +765,9 @@
   year: "2024"
   title: "Modelling the unexpected dynamics of COVID-19 in Manaus, Brazil"
   journal: "Infectious Disease Modelling"
+  volume: "9"
+  number: "2"
+  pages: "557&#x2013;568"
   doi: "https://doi.org/10.1016/j.idm.2024.02.012"
 
 - key: Ionides2006

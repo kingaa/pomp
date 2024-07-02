@@ -6,6 +6,15 @@ layout: pomp
 
 # Installation instructions
 
+There are several easy ways to install the package.
+One can install from CRAN in the usual way or install a usually slightly more up-to-date version from Github.
+Once you've installed the package, follow the instructions below to test the installation.
+On some systems, additional steps may be needed to actualize the full capabilities of the package.
+
+-------------------
+
+## Install **pomp**
+
 ### From CRAN:
 
 Source and binaries are [available on CRAN](http://cran.r-project.org/package=pomp){:target="_blank"}.
@@ -26,11 +35,16 @@ On Windows and MacOS systems, this will cause a precompiled version of the lates
 
 ### Download and install locally
 
-You can also [download the latest release](https://github.com/kingaa/pomp/releases/) and install it locally [as you would any **R** package](https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Installing-packages).
+You can also download the [latest release](https://github.com/kingaa/pomp/releases/) as a source or binary archive and install it locally [as you would any **R** package](https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Installing-packages).
+
+Alternatively, if the **devtools** package is installed on your system, to build the package from source, you can run:
+```r
+devtools::install_github("kingaa/pomp")
+```
 
 ---------------------------
 
-### Testing your installation
+## Test your installation
 
 To make use of **pomp**'s facilities for accelerated computation using compiled C code, and to compile the package from source, you will want the ability to compile C code and dynamically link it into an **R** session.
 To test this, run the following in an **R** session:
@@ -40,13 +54,11 @@ source("https://kingaa.github.io/scripts/helloC.R",echo=TRUE)
 This script attempts to compile a simple C program.
 Upon success, you'll see a "Hello!" message.
 
-<i>If this fails, consult the instructions below, according to your operating system.</i>
-
---------------------------
+*If this fails, consult the instructions below, according to your operating system.*
 
 ### Important note for Windows users
 
-To use **pomp**'s compilation facility, you need to have the **Rtools** suite installed.
+To use **pomp**'s compilation facility under Windows, you need to have the **Rtools** suite installed.
 This can be [downloaded from CRAN](http://cran.r-project.org/bin/windows/Rtools){:target="_blank"}.
 **Rtools** is needed to obtain full value from **pomp**, but also to compile **R** packages from source, if you ever want to do that.
 
@@ -58,11 +70,9 @@ source("https://kingaa.github.io/scripts/hello.R",echo=TRUE)
 ```
 On success, you will see two "Hello!" messages.
 
-------------------------
-
 ### Important note for Mac OS users
 
-To use **pomp**'s compilation facility, you need to have the <code>Xcode</code> app installed.
+To use **pomp**'s compilation facility under MacOS, you need to have the <code>Xcode</code> app installed.
 <code>Xcode</code> is free and can be installed according to [these instructions](https://mac.r-project.org/tools/){:target="_blank"}.
 
 In addition, some users report problems installing **pomp** from source due to lack of an appropriate **gfortran** installation, which is not included by default in all versions of **Xcode**.
@@ -73,11 +83,9 @@ source("https://kingaa.github.io/scripts/hello.R",echo=TRUE)
 ```
 On success, you will see two "Hello!" messages.
 
-------------------------
-
 ### Important note for Linux users
 
-To install **pomp** from source, you will need the `gfortran` compiler on your machine and will therefore may need to install it.
+To install **pomp** from source, you will need the `gfortran` compiler on your machine and may therefore need to install it.
 To do so on a Debian-based system (e.g., Ubuntu), for example, run:
 ```sh
 sudo apt install gfortran

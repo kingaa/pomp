@@ -6,7 +6,7 @@ layout: pomp
 
 <span class="firstcharacter">**pomp**</span> provides a very general realization of nonlinear partially-observed Markov processes (also known as nonlinear stochastic dynamical systems, hidden Markov models, and state space models).
 These are a generalization of linear state-space and hidden Markov models to nonlinear, non-Gaussian processes in either discrete or continuous time.
-In **pomp**, one can implement a model by specifying its unobserved process and measurement components;
+Using **pomp**, one can implement a model by specifying its latent-state process and measurement components;
 the package uses these functions in algorithms to simulate, analyze, and fit the model to data.
 
 Currently, **pomp** provides support for
@@ -15,11 +15,11 @@ Currently, **pomp** provides support for
 - trajectory matching,
 - the approximate Bayesian sequential Monte Carlo algorithm of Liu&nbsp;&amp;&nbsp;West&nbsp;(2001),
 - the particle Markov chain Monte Carlo method of Andrieu et al.&nbsp;(2010),
-- approximate Bayesian computation (ABC; Toni et al.&nbsp;2009)
+- approximate Bayesian computation (ABC; Toni et al.&nbsp;2009),
 - the improved iterated filtering method (Ionides et al. 2015),
-- probe-matching methods based on synthetic likelihood (e.g., Kendall et al. 1999, Wood et al. 2010)
-- the nonlinear forecasting method of Ellner&nbsp;&amp;&nbsp;Kendall,
-- the ensemble Kalman filter of Evensen (1994, 2009), and
+- probe-matching methods based on synthetic likelihood (e.g., Kendall et al. 1999, Wood et al. 2010),
+- the nonlinear forecasting method of Ellner et al. (1998),
+- the ensemble Kalman filter of Evensen (1994, 2009),
 - the ensemble adjustment Kalman filter of Anderson (2001), and
 - power-spectrum-matching methods of Reuman et al. (2006).
 
