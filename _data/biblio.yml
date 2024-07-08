@@ -1458,6 +1458,14 @@
   pages: "44&#x2013;58"
   doi: "https://doi.org/10.15611/eada.2023.4.04"
 
+- key: Tan2024
+  author: "K. Tan, G. Hooker, and E. L. Ionides"
+  year: "2024"
+  title: "Accelerated inference for partially observed Markov processes using automatic differentiation"
+  journal: "arXiv"
+  eprint: "2407.03085"
+  doi: "https://doi.org/10.48550/ARXIV.2407.03085"
+
 - key: Tavakoli2016
   author: "S. Tavakoli and V. M. Panaretos"
   year: "2016"
