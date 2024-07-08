@@ -50,7 +50,7 @@
 
 \newcommand{\King2015}{A.A. King, M. Domenech de Cellès, F.M.G. Magpantay, and P. Rohani. Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola. \emph{Proceedings of the Royal Society of London, Series B} \bold{282}, 20150347, 2015. \doi{10.1098/rspb.2015.0347}.}
 
-\newcommand{\King2016}{A. A. King, D. Nguyen, and E. L. Ionides. Statistical inference for partially observed Markov processes via the package \pkg{pomp}. \emph{Journal of Statistical Software} \bold{69}(12), 1--43, 2016.  An updated version of this paper is available on the \href{https://kingaa.github.io/pomp/docs.html}{package website}.}
+\newcommand{\King2016}{A. A. King, D. Nguyen, and E. L. Ionides. Statistical inference for partially observed Markov processes via the R package \pkg{pomp}. \emph{Journal of Statistical Software} \bold{69}(12), 1--43, 2016. \doi{10.18637/jss.v069.i12}. An updated version of this paper is available on the \href{https://kingaa.github.io/pomp/docs.html}{\pkg{pomp} package website}.}
 
 \newcommand{\Kucherenko2005}{S. Kucherenko and Y. Sytsko. Application of deterministic low-discrepancy sequences in global optimization. \emph{Computational Optimization and Applications} \bold{30}, 297--318, 2005. \doi{10.1007/s10589-005-4615-1}.}
 
