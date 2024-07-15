@@ -983,6 +983,15 @@
   pages: "235&#x2013;243"
   doi: "https://doi.org/10.1016/j.actatropica.2018.11.013"
 
+- key: Li2024
+  author: "J. Li, E. L. Ionides, A. A. King, M. Pascual, and N. Ning"
+  year: "2024"
+  title: "Inference on spatiotemporal dynamics for coupled biological populations"
+  journal: "Journal of The Royal Society Interface"
+  volume: "21"
+  pages: "20240217"
+  doi: "https://doi.org/10.1098/rsif.2024.0217"
+
 - key: Lin2016
   author: "Q. Lin, Z. Lin, A. P. Y. Chiu, and D. He"
   year: "2016"
@@ -1231,6 +1240,14 @@
   volume: "538"
   pages: "253&#x2013;258"
   doi: "https://doi.org/10.1016/j.bbrc.2020.12.003"
+
+- key: Peters2024
+  author: "M. A. E. Peters, A. A. King, and N. Wale"
+  year: "2024"
+  title: "Red blood cell dynamics during malaria infection challenge the assumptions of mathematical models of infection dynamics"
+  journal: "bioRxiv"
+  eprint: "2024.01.10.575051"
+  doi: "https://doi.org/10.1101/2024.01.10.575051"
 
 - key: PonsSalort2018a
   author: "M. Pons-Salort and N. C. Grassly"
