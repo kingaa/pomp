@@ -4,6 +4,7 @@
 
 ## For pomp:
 
+- replace `melt` with `data.table::melt`?
 - YAML interface
 - "Getting Started" vignette:
   - ~~finish discussion of smoothing and hindcasting~~
