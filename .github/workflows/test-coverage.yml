@@ -5,15 +5,23 @@ on:
   push:
     branches: [master]
     paths:
-      - Rpkg/DESCRIPTION
-      - Rpkg/NAMESPACE
-      - Rpkg/R/**
-      - Rpkg/src/**
-      - Rpkg/tests/**
-      - Rpkg/man/**
-      - Rpkg/data/**
+      - DESCRIPTION
+      - NAMESPACE
+      - R/**
+      - src/**
+      - tests/**
+      - man/**
+      - data/**
   pull_request:
     branches: [master]
+    paths:
+      - DESCRIPTION
+      - NAMESPACE
+      - R/**
+      - src/**
+      - tests/**
+      - man/**
+      - data/**
     
 name: test-coverage
 

@@ -5,14 +5,22 @@ on:
     branches:
       - '*'
     paths:
-      - Rpkg/DESCRIPTION
-      - Rpkg/NAMESPACE
-      - Rpkg/R/**
-      - Rpkg/src/**
-      - Rpkg/tests/**
-      - Rpkg/man/**
-      - Rpkg/data/**
+      - DESCRIPTION
+      - NAMESPACE
+      - R/**
+      - src/**
+      - tests/**
+      - man/**
+      - data/**
   pull_request:
+    paths:
+      - DESCRIPTION
+      - NAMESPACE
+      - R/**
+      - src/**
+      - tests/**
+      - man/**
+      - data/**
   workflow_dispatch:
 
 name: R-CMD-check
@@ -45,6 +53,8 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
+          extra-repositories: |
+            https://kingaa.github.io/
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -62,4 +72,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.config.os }}-${{ matrix.config.r }}-results
-          path: check/${{ vars.repo_name }}.Rcheck
+          path: check/${{ vars.repo_name }}.Rcheck/00check.log
