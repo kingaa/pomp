@@ -15,6 +15,13 @@
 \description{
 Peek into the inside of one of \pkg{pomp}'s objects.
 }
+\examples{
+ricker() |> spy()
+
+sir() |> spy()
+
+sir2() |> spy()
+}
 \seealso{
 Csnippet
 
