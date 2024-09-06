@@ -82,7 +82,6 @@ gsir |>
       rate.fun=Csnippet("
         double beta;
         int nbasis = *get_userdata_int(\"nbasis\");
-        int k;
 
         switch (j) {
         case 1:                       // birth

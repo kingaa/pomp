@@ -42,7 +42,7 @@ static periodic_bspline_basis_eval_deriv_t *__pomp_periodic_bspline_basis_eval_d
 static get_userdata_int_t *__pomp_get_userdata_int;
 #define get_userdata_int(X)  (__pomp_get_userdata_int(X))}",
       reg=r"{
-  __pomp_get_userdata_int = (get_userdata_t *) R_GetCCallable("pomp","get_userdata_int");}"
+  __pomp_get_userdata_int = (get_userdata_int_t *) R_GetCCallable("pomp","get_userdata_int");}"
     ),
     get_userdata_double=list(
       trigger="get_userdata_double",
