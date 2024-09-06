@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.10.1}{
+  \itemize{
+    \item An improper typecast in the C snippet system, which was resolvable by many compilers but threw an error under recent versions of \pkg{clang} on MacOS, has been repaired.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.9.1}{
   \itemize{
     \item The rprocess plugin \code{onestep} now always takes exactly one step to get from one observation time to the next, even when the interval between them is zero.

@@ -1,5 +1,11 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._1_0._1:
+
+        • An improper typecast in the C snippet system, which was
+          resolvable by many compilers but threw an error under recent
+          versions of ‘clang’ on MacOS, has been repaired.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _5._9._1:
 
         • The rprocess plugin ‘onestep’ now always takes exactly one
