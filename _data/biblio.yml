@@ -987,8 +987,9 @@
   author: "J. Li, E. L. Ionides, A. A. King, M. Pascual, and N. Ning"
   year: "2024"
   title: "Inference on spatiotemporal dynamics for coupled biological populations"
-  journal: "Journal of The Royal Society Interface"
+  journal: "J R Soc Interface"
   volume: "21"
+  number: "216"
   pages: "20240217"
   doi: "https://doi.org/10.1098/rsif.2024.0217"
 
@@ -1245,9 +1246,9 @@
   author: "M. A. E. Peters, A. A. King, and N. Wale"
   year: "2024"
   title: "Red blood cell dynamics during malaria infection challenge the assumptions of mathematical models of infection dynamics"
-  journal: "bioRxiv"
-  eprint: "2024.01.10.575051"
-  doi: "https://doi.org/10.1101/2024.01.10.575051"
+  journal: "Frontiers in Malaria"
+  volume: "2"
+  doi: "https://doi.org/10.3389/fmala.2024.1365770"
 
 - key: PonsSalort2018a
   author: "M. Pons-Salort and N. C. Grassly"
@@ -1548,6 +1549,15 @@
   number: "7"
   pages: "1976"
   doi: "https://doi.org/10.3201/eid2707.210118"
+
+- key: Wen2024
+  author: "L. Wen, Y. Yin, Q. Li, Z. Peng, and D. He"
+  year: "2024"
+  title: "Modeling the co-circulation of influenza and COVID-19 in Hong Kong, China"
+  journal: "Advances in Continuous and Discrete Models"
+  volume: "2024"
+  number: "1"
+  doi: "https://doi.org/10.1186/s13662-024-03830-7"
 
 - key: Wheeler2023
   author: "J. Wheeler, A. Rosengart, Z. Jiang, K. Tan, N. Treutle, and E. Ionides"

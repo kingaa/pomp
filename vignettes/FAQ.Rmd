@@ -61,7 +61,7 @@ source("https://kingaa.github.io/scripts/diagnostics.R")
 ## What's the proper way to cite **pomp**? {#cite-pomp}
 
 ```{r echo=FALSE,results="asis"}
-print(citation("pomp"),bibtex=FALSE)
+citation("pomp") |> print(bibtex=FALSE)
 ```
 
 You can get this information by executing `citation("pomp")` in an **R** session.
