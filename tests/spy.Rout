@@ -166,8 +166,8 @@ params
 
 
 /* pomp C snippet file: nancy */
-/* Time: 2024-07-01 11:07:49.634 -0400 */
-/* Salt: 9D1288EDBAB9F6EBC4E25FC0 */
+/* Time: 2024-09-09 07:24:28.172 -0400 */
+/* Salt: 171B4BD1E0597FC4027CAEC6 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -290,8 +290,8 @@ pomp object 'sir':
 
 
 /* pomp C snippet file: sir_source */
-/* Time: 2024-07-01 11:07:49.756 -0400 */
-/* Salt: 8FFA4A04D23AADD16ED8CD2D */
+/* Time: 2024-09-09 07:24:28.272 -0400 */
+/* Salt: F25A3EDD01CD602E7B9022C4 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -380,8 +380,8 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex,
   const int *__parindex, const int *__covindex, const double *__covars,
   double t, double dt) { 
         int nrate = 6;
-        double rate[nrate];		  // transition rates
-        double trans[nrate];		// transition numbers
+        double rate[nrate];               // transition rates
+        double trans[nrate];            // transition numbers
         double beta;
         double dW;
 
@@ -391,15 +391,15 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex,
         dW = rgammawn(beta_sd,dt);
 
         // compute the transition rates
-        rate[0] = mu*pop;		// birth into susceptible class
+        rate[0] = mu*pop;               // birth into susceptible class
         rate[1] = (iota+beta*I*dW/dt)/pop; // force of infection
-        rate[2] = mu;			// death from susceptible class
-        rate[3] = gamma;	// recovery
-        rate[4] = mu;			// death from infectious class
-        rate[5] = mu; 		// death from recovered class
+        rate[2] = mu;                   // death from susceptible class
+        rate[3] = gamma;        // recovery
+        rate[4] = mu;                   // death from infectious class
+        rate[5] = mu;           // death from recovered class
 
         // compute the transition numbers
-        trans[0] = rpois(rate[0]*dt);	// births are Poisson
+        trans[0] = rpois(rate[0]*dt);   // births are Poisson
         reulermultinom(2,S,&rate[1],dt,&trans[1]);
         reulermultinom(2,I,&rate[3],dt,&trans[3]);
         reulermultinom(1,R,&rate[5],dt,&trans[5]);
@@ -408,7 +408,7 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex,
         S += trans[0]-trans[1]-trans[2];
         I += trans[1]-trans[3]-trans[4];
         R += trans[3]-trans[5];
-        cases += trans[3];		// cases are cumulative recoveries
+        cases += trans[3];              // cases are cumulative recoveries
         if (beta_sd > 0.0)  W += (dW-dt)/beta_sd; 
 }
  
@@ -812,20 +812,20 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p,
   const int *__stateindex, const int *__parindex, const int *__covindex,
   const double *__covars, double t) { 
       int nrate = 6;
-      double rate[nrate];		  // transition rates
-      double term[nrate];		// terms in the equations
+      double rate[nrate];                 // transition rates
+      double term[nrate];               // terms in the equations
       double beta;
       double dW;
 
       beta = dot_product(nbasis,&beta1,&seas_1);
 
       // compute the transition rates
-      rate[0] = mu*pop;		// birth into susceptible class
+      rate[0] = mu*pop;         // birth into susceptible class
       rate[1] = (iota+beta*I)/pop; // force of infection
-      rate[2] = mu;			// death from susceptible class
-      rate[3] = gamma;	// recovery
-      rate[4] = mu;			// death from infectious class
-      rate[5] = mu; 		// death from recovered class
+      rate[2] = mu;                     // death from susceptible class
+      rate[3] = gamma;  // recovery
+      rate[4] = mu;                     // death from infectious class
+      rate[5] = mu;             // death from recovered class
 
       // compute the several terms
       term[0] = rate[0];
@@ -839,8 +839,8 @@ void __pomp_skelfn (double *__f, const double *__x, const double *__p,
       DS = term[0]-term[1]-term[2];
       DI = term[1]-term[3]-term[4];
       DR = term[3]-term[5];
-      Dcases = term[3];		// accumulate the new I->R transitions
-      DW = 0;			// no noise, so no noise accumulation 
+      Dcases = term[3];         // accumulate the new I->R transitions
+      DW = 0;                   // no noise, so no noise accumulation 
 }
  
 
@@ -940,8 +940,8 @@ x1_0 x2_0   s1   s2  tau
 
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2024-07-01 11:07:50.536 -0400 */
-/* Salt: 3FF1A42EE7957603AAAEEAF7 */
+/* Time: 2024-09-09 07:24:29.033 -0400 */
+/* Salt: B78D7C47DF31EB19405F1673 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1207,8 +1207,8 @@ name    birth susc.death infection inf.death recovery recov.death
 
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2024-07-01 11:07:51.257 -0400 */
-/* Salt: F36DFAD35B8291CD1879206C */
+/* Time: 2024-09-09 07:24:29.705 -0400 */
+/* Salt: B32D89049CFB21A936A21233 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1856,7 +1856,7 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params =
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_00e94ec3308fbabeb54d4ef8a6b9b34c'
+  - defined by a C snippet in library 'pomp_b14f0149815695506dbe0600438bc8fd'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: <undefined>
 - process model density, dprocess: <default>
@@ -1877,9 +1877,9 @@ x_0   a
 - C snippet file  1 :
 
 
-/* pomp C snippet file: pomp_00e94ec3308fbabeb54d4ef8a6b9b34c */
-/* Time: 2024-07-01 11:07:52.041 -0400 */
-/* Salt: A174D7A7B791DCAD438DC8A6 */
+/* pomp C snippet file: pomp_b14f0149815695506dbe0600438bc8fd */
+/* Time: 2024-09-09 07:24:30.467 -0400 */
+/* Salt: C5ACDCD03ED56B64D1D5530C */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1905,11 +1905,11 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
  
-void R_init_pomp_00e94ec3308fbabeb54d4ef8a6b9b34c (DllInfo *info) {
+void R_init_pomp_b14f0149815695506dbe0600438bc8fd (DllInfo *info) {
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-  R_RegisterCCallable("pomp_00e94ec3308fbabeb54d4ef8a6b9b34c", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable("pomp_00e94ec3308fbabeb54d4ef8a6b9b34c", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-  R_RegisterCCallable("pomp_00e94ec3308fbabeb54d4ef8a6b9b34c", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_b14f0149815695506dbe0600438bc8fd", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_b14f0149815695506dbe0600438bc8fd", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_b14f0149815695506dbe0600438bc8fd", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
   
 
 }
@@ -1940,13 +1940,13 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, x0 = as.double(1), params =
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_6df83833c5218fcb43b2e2d66d9e607e'
+  - defined by a C snippet in library 'pomp_41dbb362f1e8852c908ad87d151db1dc'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: Euler-method process-model simulator
   - timestep = 0.1 
   - step.fun: native function
   - name: '__pomp_stepfn'
-  - defined by a C snippet in library 'pomp_6df83833c5218fcb43b2e2d66d9e607e'
+  - defined by a C snippet in library 'pomp_41dbb362f1e8852c908ad87d151db1dc'
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: <default>
 - measurement model density, dmeasure: <default>
@@ -1965,9 +1965,9 @@ x_0   a
 - C snippet file  1 :
 
 
-/* pomp C snippet file: pomp_6df83833c5218fcb43b2e2d66d9e607e */
-/* Time: 2024-07-01 11:07:52.107 -0400 */
-/* Salt: 273B0AEB969EE4570DB37000 */
+/* pomp C snippet file: pomp_41dbb362f1e8852c908ad87d151db1dc */
+/* Time: 2024-09-09 07:24:30.533 -0400 */
+/* Salt: 328465329120CE45E54CB5BF */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -2005,12 +2005,12 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
  
-void R_init_pomp_6df83833c5218fcb43b2e2d66d9e607e (DllInfo *info) {
+void R_init_pomp_41dbb362f1e8852c908ad87d151db1dc (DllInfo *info) {
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-  R_RegisterCCallable("pomp_6df83833c5218fcb43b2e2d66d9e607e", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable("pomp_6df83833c5218fcb43b2e2d66d9e607e", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-  R_RegisterCCallable("pomp_6df83833c5218fcb43b2e2d66d9e607e", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-  R_RegisterCCallable("pomp_6df83833c5218fcb43b2e2d66d9e607e", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+  R_RegisterCCallable("pomp_41dbb362f1e8852c908ad87d151db1dc", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_41dbb362f1e8852c908ad87d151db1dc", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_41dbb362f1e8852c908ad87d151db1dc", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_41dbb362f1e8852c908ad87d151db1dc", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
  X0 = *get_userdata_double("x0"); 
 
 }
