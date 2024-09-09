@@ -23,6 +23,6 @@ Related packages:
 
 - [**phylopomp**](https://github.com/kingaa/phylopomp/)
 - [**spatPomp**](https://github.com/kidusasfaw/spatPomp)
-- [**panelPomp**](https://github.com/cbreto/panelPomp/)
+- [**panelPomp**](https://github.com/panelPomp-org/panelPomp/)
 - [**circumstance**](https://github.com/kingaa/circumstance/)
 - [**subplex**](https://github.com/kingaa/subplex/)
