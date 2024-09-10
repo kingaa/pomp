@@ -1,0 +1,162 @@
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/epimdr2.Rcheck'
+* using R version 4.4.1 (2024-06-14)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+* running under: Ubuntu 22.04.4 LTS
+* using session charset: UTF-8
+* using options '--ignore-vignettes --as-cran'
+* checking for file 'epimdr2/DESCRIPTION' ... OK
+* this is package 'epimdr2' version '1.0-9'
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package 'epimdr2' can be installed ... [35s/15s] OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... [65s/11s] NOTE
+coyne: local variable ‘H1’ assigned but may not be used
+coyne: local variable ‘H2’ assigned but may not be used
+coyne: local variable ‘I’ assigned but may not be used
+coyne: local variable ‘N’ assigned but may not be used
+coyne: local variable ‘X’ assigned but may not be used
+coyne: local variable ‘Y’ assigned but may not be used
+coyne: local variable ‘dH1’ assigned but may not be used
+coyne: local variable ‘dH2’ assigned but may not be used
+coyne: local variable ‘dI’ assigned but may not be used
+coyne: local variable ‘dX’ assigned but may not be used
+coyne: local variable ‘dY’ assigned but may not be used
+coyne: local variable ‘res’ assigned but may not be used
+coyne2: local variable ‘E1’ assigned but may not be used
+coyne2: local variable ‘E2’ assigned but may not be used
+coyne2: local variable ‘I’ assigned but may not be used
+coyne2: local variable ‘N’ assigned but may not be used
+coyne2: local variable ‘R’ assigned but may not be used
+coyne2: local variable ‘S’ assigned but may not be used
+coyne2: local variable ‘dE1’ assigned but may not be used
+coyne2: local variable ‘dE2’ assigned but may not be used
+coyne2: local variable ‘dI’ assigned but may not be used
+coyne2: local variable ‘dR’ assigned but may not be used
+coyne2: local variable ‘dS’ assigned but may not be used
+coyne2: local variable ‘res’ assigned but may not be used
+retrospec: local variable ‘out’ assigned but may not be used
+seirmod2: local variable ‘E’ assigned but may not be used
+seirmod2: local variable ‘I’ assigned but may not be used
+seirmod2: local variable ‘R’ assigned but may not be used
+seirmod2: local variable ‘S’ assigned but may not be used
+seirmod2: local variable ‘dE’ assigned but may not be used
+seirmod2: local variable ‘dI’ assigned but may not be used
+seirmod2: local variable ‘dR’ assigned but may not be used
+seirmod2: local variable ‘dS’ assigned but may not be used
+seirmod2: local variable ‘res’ assigned but may not be used
+server: local variable ‘fld’ assigned but may not be used
+sirAgemod: local variable ‘I’ assigned but may not be used
+sirAgemod: local variable ‘R’ assigned but may not be used
+sirAgemod: local variable ‘S’ assigned but may not be used
+sirAgemod: local variable ‘dI’ assigned but may not be used
+sirAgemod: local variable ‘dR’ assigned but may not be used
+sirAgemod: local variable ‘dS’ assigned but may not be used
+sirAgemod: local variable ‘phi’ assigned but may not be used
+sirAgemod: local variable ‘res’ assigned but may not be used
+sirChainmod: local variable ‘I’ assigned but may not be used
+sirChainmod: local variable ‘R’ assigned but may not be used
+sirChainmod: local variable ‘S’ assigned but may not be used
+sirChainmod: local variable ‘dI’ assigned but may not be used
+sirChainmod: local variable ‘dR’ assigned but may not be used
+sirChainmod: local variable ‘dS’ assigned but may not be used
+sirChainmod: local variable ‘i’ assigned but may not be used
+sirChainmod: local variable ‘res’ assigned but may not be used
+sirSpatmod: local variable ‘I’ assigned but may not be used
+sirSpatmod: local variable ‘R’ assigned but may not be used
+sirSpatmod: local variable ‘S’ assigned but may not be used
+sirSpatmod: local variable ‘beta’ assigned but may not be used
+sirSpatmod: local variable ‘dI’ assigned but may not be used
+sirSpatmod: local variable ‘dR’ assigned but may not be used
+sirSpatmod: local variable ‘dS’ assigned but may not be used
+sirvmod: local variable ‘E’ assigned but may not be used
+sirvmod: local variable ‘I’ assigned but may not be used
+sirvmod: local variable ‘K’ assigned but may not be used
+sirvmod: local variable ‘Q’ assigned but may not be used
+sirvmod: local variable ‘R’ assigned but may not be used
+sirvmod: local variable ‘S’ assigned but may not be used
+sirvmod: local variable ‘dE’ assigned but may not be used
+sirvmod: local variable ‘dI’ assigned but may not be used
+sirvmod: local variable ‘dK’ assigned but may not be used
+sirvmod: local variable ‘dR’ assigned but may not be used
+sirvmod: local variable ‘dS’ assigned but may not be used
+sirvmod: local variable ‘res’ assigned but may not be used
+sirwmod: local variable ‘I’ assigned but may not be used
+sirwmod: local variable ‘R’ assigned but may not be used
+sirwmod: local variable ‘S’ assigned but may not be used
+sirwmod: local variable ‘W’ assigned but may not be used
+sirwmod: local variable ‘dI’ assigned but may not be used
+sirwmod: local variable ‘dR’ assigned but may not be used
+sirwmod: local variable ‘dS’ assigned but may not be used
+sirwmod: local variable ‘dW’ assigned but may not be used
+sirwmod: local variable ‘res’ assigned but may not be used
+summary.netSir: local variable ‘t’ assigned but may not be used
+twostrain: local variable ‘I1’ assigned but may not be used
+twostrain: local variable ‘I2’ assigned but may not be used
+twostrain: local variable ‘J1’ assigned but may not be used
+twostrain: local variable ‘J2’ assigned but may not be used
+twostrain: local variable ‘R’ assigned but may not be used
+twostrain: local variable ‘R1’ assigned but may not be used
+twostrain: local variable ‘R2’ assigned but may not be used
+twostrain: local variable ‘S’ assigned but may not be used
+twostrain: local variable ‘dI1’ assigned but may not be used
+twostrain: local variable ‘dI2’ assigned but may not be used
+twostrain: local variable ‘dJ1’ assigned but may not be used
+twostrain: local variable ‘dJ2’ assigned but may not be used
+twostrain: local variable ‘dR’ assigned but may not be used
+twostrain: local variable ‘dR1’ assigned but may not be used
+twostrain: local variable ‘dR2’ assigned but may not be used
+twostrain: local variable ‘dS’ assigned but may not be used
+twostrain: local variable ‘phi’ assigned but may not be used
+twostrain: local variable ‘res’ assigned but may not be used
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of 'data' directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... [23s/12s] OK
+** found \donttest examples: check also with --run-donttest
+* checking PDF version of manual ... OK
+* checking HTML version of manual ... OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 NOTE

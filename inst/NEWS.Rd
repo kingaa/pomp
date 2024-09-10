@@ -1,116 +1,75 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 5.10.1}{
+\section{Changes in \pkg{pomp} version 5.11}{
   \itemize{
     \item An improper typecast in the C snippet system, which was resolvable by many compilers but threw an error under recent versions of \pkg{clang} on MacOS, has been repaired.
   }
 }
-\section{Changes in \pkg{pomp} version 5.9.1}{
+\section{Changes in \pkg{pomp} version 5.10}{
   \itemize{
     \item The rprocess plugin \code{onestep} now always takes exactly one step to get from one observation time to the next, even when the interval between them is zero.
     That is, if \code{P} is a \sQuote{pomp} object with an rprocess built using \code{rprocess=onestep(f)}, \code{t0=timezero(P)}, and \code{t=time(P)}, then \code{f} will be called exactly once for the interval (\code{t0},\code{t[1]}) and once for each of the intervals (\code{t[i-1]},\code{t[i]}), \code{i=2,...,length(t)}.
   }
 }
-\section{Changes in \pkg{pomp} version 5.8.4}{
+\section{Changes in \pkg{pomp} version 5.9}{
   \itemize{
     \item To add additional elements for use by the basic model components (i.e., \dQuote{userdata}), the \code{userdata} argument should now be used.
     The old behavior will still work, but will generate a warning.
     In a future release, this will become an error.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.8.3}{
-  \itemize{
     \item Internally, \pkg{pomp} codes no longer include \file{Rinternal.h}.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.8.2}{
-  \itemize{
     \item A bug in covariate-table extrapolation for the case \code{order="constant"} has been fixed.
     \item A new experimental function \code{repair_lookup_table} is provided to help eliminate unnecessary warnings about extrapolation.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.8.1}{
-  \itemize{
     \item Functions with names that include dots (\code{.}), which have been defunct since version 4.7, have been expunged.
   }
 }
-\section{Changes in \pkg{pomp} version 5.7.1}{
+\section{Changes in \pkg{pomp} version 5.8}{
   \itemize{
     \item The \code{err()} and \code{warn()} C-level macros have been redefined to forestall problems that would arise when these macros are included in C++ code under forthcoming versions of \R.
     \item More changes in C codes to forestall issues detected by \pkg{rchk}.
     \item Minor corrections to documentation.
   }
 }
-\section{Changes in \pkg{pomp} version 5.6.1}{
+\section{Changes in \pkg{pomp} version 5.7}{
   \itemize{
     \item Minor corrections to documentation.
     \item Changes in some C codes to avoid issues detected by \pkg{rchk}.
     \item Fixed bug in \code{wquant} introduced by changes in \code{pbeta} with \R version 4.3.3.
   }
 }
-\section{Changes in \pkg{pomp} version 5.5.2}{
+\section{Changes in \pkg{pomp} version 5.6}{
   \itemize{
     \item Minor corrections to documentation.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.5.1}{
-  \itemize{
     \item C-level functions \code{set_pomp_userdata} and \code{unset_pomp_userdata} are no longer exported.
     \item \code{bspline_eval} is no longer exported.
   }
 }
-\section{Changes in \pkg{pomp} version 5.4.4}{
-  \itemize{
-    \item C-level functions \code{set_pomp_userdata} and \code{unset_pomp_userdata} have been temporarily restored.
-    The latter generates a warning.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.4.3}{
+\section{Changes in \pkg{pomp} version 5.5}{
   \itemize{
     \item There is now access to ordinary B-spline basis functions (and their derivatives) at the C snippet level.
     It will still almost always be preferable to construct a spline basis once and pass it to \pkg{pomp} functions as part of a \code{covariate_table}, but this functionality may occasionally be useful.
     \item \code{bspline_eval} is now deprecated as part of the \pkg{pomp} C API.
     \item The formatting of some printed messages has been modified to forestall warnings in the latest R-devel.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.4.2}{
-  \itemize{
     \item Stateful objective functions (class \sQuote{objfun}) now behave as if they are \sQuote{pomp} objects.
+    \item C-level functions \code{set_pomp_userdata} and \code{unset_pomp_userdata} are deprecated.
+    The latter now generates a warning.
   }
 }
-\section{Changes in \pkg{pomp} version 5.4.1}{
-  \itemize{
-    \item C-level functions \code{set_pomp_userdata} and \code{unset_pomp_userdata} are no longer exported.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.3.1}{
+\section{Changes in \pkg{pomp} version 5.4}{
   \itemize{
     \item \code{stew} now returns timing information by default.
     \item The spurious warnings associated with NULL \code{userdata} have been eliminated.
   }
 }
-\section{Changes in \pkg{pomp} version 5.2.5}{
+\section{Changes in \pkg{pomp} version 5.3}{
   \itemize{
     \item The new option \code{on_load} allows one to specify a C snippet that will be executed at the time the C snippet library is loaded.
     \item Internally, the \code{userdata} are made available via calls to \code{pompLoad} rather than within each call to a \pkg{pomp} workhorse.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.2.4}{
-  \itemize{
     \item The data frames returned by \code{cond_logLik} and \code{eff_sample_size} when \code{format="data.frame"} have been improved.
     In particular, they contain (as variable \code{time}) the times (rather than the index of the time vector as before).
     \item Changes to the report generated by \code{spy}.
     \item Some documentation improvements.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.2.3}{
-  \itemize{
     \item The manual pages have been reorganized, with improved cross-linking.
     \item A bug in \code{filter_traj} etc. arising when not all state variables have names was fixed.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.2.2}{
-  \itemize{
     \item This version adds the new basic component \code{dinit} for evaluating the probability density function of the initial-state distribution.
     There is a corresponding workhorse function, \code{dinit()}.
     \item The constructor \code{pomp} now takes the optional argument \code{nstatevars}, which can be used to increase the dimension of the latent state-vectors created by \code{rinit}.
@@ -118,15 +77,11 @@
     Moreover, \code{nstatevars} has no effect if the \code{rinit} basic component is furnished as an \R function.
     \item Name checking on internally-created vectors and arrays is less strict than previously.
     In particular, it is possible to have variables without names (i.e., \code{""}).
-  }
-}
-\section{Changes in \pkg{pomp} version 5.2.1}{
-  \itemize{
     \item \code{reulermultinom} now returns \code{NA} rather than \code{NaN}, in keeping with the behavior of \code{rbinom}.
     Thanks to John Drake for calling attention to this issue.
   }
 }
-\section{Changes in \pkg{pomp} version 5.1.1}{
+\section{Changes in \pkg{pomp} version 5.2}{
   \itemize{
     \item A bug in \code{stew} resulting in namespace conflicts has been repaired.
     \item We no longer import directly from \pkg{tidyverse} functions.
@@ -134,13 +89,9 @@
     This does introduce a dependency on the \pkg{data.table} package.
   }
 }
-\section{Changes in \pkg{pomp} version 5.0.1}{
+\section{Changes in \pkg{pomp} version 5.1}{
   \itemize{
     \item When the archive directory does not exist, \code{bake} and \code{stew} now create it.
-  }
-}
-\section{Changes in \pkg{pomp} version 5.0.0}{
-  \itemize{
     \item We no longer import from \pkg{plyr}.
     \item The \code{dimnames} attributes of various arrays that appear in \pkg{pomp}, including arrays of observables, state variables, parameters, covariates, and so on, have been made uniform.
     In particular, when a dimension of an array corresponds to variables with different names, this dimension is itself named \dQuote{name}.
@@ -149,45 +100,25 @@
     \item Some minor bugfixes.
   }
 }
-\section{Changes in \pkg{pomp} version 4.7.0}{
+\section{Changes in \pkg{pomp} version 4.7}{
   \itemize{
     \item Functions with names.that.contain.dots that have been deprecated since version 4.5.1 are now defunct.
     Attempts to use such functions will generate an error with a message indicating the replacement function.
     \item \code{plot} now removes \code{NA}.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.6.4}{
-  \itemize{
     \item Better handling of \sQuote{listie}s (lists of \sQuote{pomp} objects).
     \item New \code{concat} function to turn lists of \sQuote{pomp} objects into \sQuote{listies}.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.6.3}{
-  \itemize{
     \item Bug fix in \code{filter_traj} applied to \sQuote{pfilterList} and \sQuote{pmcmcList} objects.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.6.2}{
-  \itemize{
     \item The \code{states} and \code{obs} methods take a new optional argument, \code{format}.
     Setting \code{format="data.frame"} causes the method to return the states or data in a convenient data-frame format.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.6.1}{
-  \itemize{
     \item When \code{melt} is applied to a list, the identifier variable is now \dQuote{\code{.Lx}}, where \code{x} denotes the level.
     This applies when \code{as.data.frame} is used to coerce a list of \sQuote{pomp} objects, and when \code{saved_states} is used to extract the particles from a list of \sQuote{pfilterd_pomp} objects.
   }
 }
-\section{Changes in \pkg{pomp} version 4.5.3}{
+\section{Changes in \pkg{pomp} version 4.6}{
   \itemize{
     \item \code{logmeanexp} can now compute the effective sample size, which can be useful in determining the reliability of its estimate.
     To do so, set \code{ess=TRUE} in a call to \code{logmeanexp}.
     \item \code{logmeanexp} now returns a fully-named vector when either \code{se=TRUE} or \code{ess=TRUE}.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.5.2}{
-  \itemize{
     \item A new \code{format} argument has been added to the extractor functions \code{cond_logLik}, \code{eff_sample_size}, \code{filter_mean}, \code{filter_traj}, \code{forecast}, \code{pred_mean}, \code{pred_var}, and \code{saved_states}.
     This allows the user to extract the relevant elements in data-frame format if desired.
     \item \pkg{pomp} no longer depends on the superseded package \pkg{reshape2}.
@@ -196,10 +127,6 @@
 
     \item The \pkg{magrittr} pipe \code{\%>\%} is no longer re-exported by \pkg{pomp}: use the native \R pipe \code{|>} instead.
     \item The package now requires \R version 4.1 at least.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.5.1}{
-  \itemize{
     \item All \pkg{pomp} functions with names.that.contain.dots have been deprecated in favor of functions in \sQuote{snake_case}.
     This is to avoid anticipated problems with CRAN checks, which (falsely) assume that certain functions with dotted.names are S3 methods.
     From this point, no exported \pkg{pomp} function has such a name.
@@ -208,133 +135,69 @@
     \item A bug that resulted in \code{gompertz} giving different simulations on Windows machines has been fixed.
   }
 }
-\section{Changes in \pkg{pomp} version 4.4.3}{
+\section{Changes in \pkg{pomp} version 4.5}{
   \itemize{
     \item A bug in trajectory computation for maps (discrete-time dynamical systems) has been fixed.
     Thanks to Felicia Magpantay for noticing it and tracking it down.
     \item Minor documentation improvements.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.4.2}{
-  \itemize{
     \item The weighted quantile function \code{wquant} now uses the Harrell-Davis estimator instead of the type-7 estimator used previously.
     This eliminates bugs associated with non-integer weights.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.4.1}{
-  \itemize{
     \item It is now possible to retrieve the weighted particles computed in the course of a \code{pfilter} computation.
     To accomplish this, set \code{save.states="weighted"} in the call to \code{pfilter} and retrieve the particles and their weights using \code{saved.states}.
     Previously, one could obtain only the unweighted particles.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.4.0}{
-  \itemize{
     \item Some documentation improvements.
   }
 }
-\section{Changes in \pkg{pomp} version 4.3.4}{
+\section{Changes in \pkg{pomp} version 4.4}{
   \itemize{
     \item The new function \code{wquant} computes weighted quantiles.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.3.3}{
-  \itemize{
     \item The precise order in which the \code{pmcmc} function computes prior and likelihood of furnished and proposed parameters has changed slightly.
     This prevents proposals that are incompatible with the prior from being passed to \code{pfilter} and forestalls an associated class of errors.
     A consequence of this change, \code{pmcmc} computations using the new version will differ very slightly from previous computations, even with the RNG seed fixed at its previous values.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.3.2}{
-  \itemize{
     \item There is now a \proglang{C} interface to the \code{bspline_eval} function.
     See the \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{\pkg{pomp} \proglang{C} API documentation} for details.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.3.1}{
-  \itemize{
     \item The \code{bspline.basis} function now takes the optional argument \code{rg} which allows one to specify the range over which the basis will be constructed.
     By default, this is \code{range(x)}, which agrees with the behavior in earlier versions.
     \item Documentation improvements.
   }
 }
-\section{Changes in \pkg{pomp} version 4.2.2}{
+\section{Changes in \pkg{pomp} version 4.3}{
   \itemize{
     \item The archiving functions \code{bake} and \code{stew} now use a slightly less exacting comparison of the expression, \code{expr}, they are furnished.
     \strong{NB:} Running \code{bake} or \code{stew} with archives created by earlier versions may result in recomputation.
     \item The \code{time} method has been extended to \code{pompList} and related objects.
     \item All workhorse functions except \code{partrans} have new default arguments.
     \item Some documentation improvements.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.2.1}{
-  \itemize{
     \item The archiving functions \code{bake} and \code{stew} now take the argument \code{dir}, which is the directory holding the archive files.
     By default, this is the current working directory or the value of the global option \code{pomp.archive.dir}.
     \item A new global option, \code{pomp_archive_dir}, can be used to specify the locations of archive files used by \code{bake} and \code{stew}.
     \item Documentation repair of issue flagged by Kurt Hornik (9 June 2022).
   }
 }
-\section{Changes in \pkg{pomp} version 4.2.0}{
+\section{Changes in \pkg{pomp} version 4.2}{
   \itemize{
     \item Minor changes, invisible to the user.
-    \item Minor changes to the \proglang{C} codes to keep up with R-devel.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.1.0}{
-  \itemize{
     \item Minor changes to the \proglang{C} codes to keep up with R-devel.
     \item Minor changes in the implementation of \code{bake} and \code{stew}.
   }
 }
-\section{Changes in \pkg{pomp} version 4.0.11}{
+\section{Changes in \pkg{pomp} version 4.1}{
   \itemize{
     \item Change in the names of the variables returned by \code{as.data.frame} applied to a \sQuote{pfilterd.pomp} object.
     \item Fixed bug found by Jesse Wheeler and Ed Ionides, to do with `simulate()` with `include.data=TRUE`.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.0.10}{
-  \itemize{
     \item It is now possible to plot lists of \sQuote{pomp} and \sQuote{pomp}-derived objects using a single call to \code{plot}.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.0.9}{
-  \itemize{
     \item The \code{rbetabinom} and \code{dbetabinom} functions, long present as part of the \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{\proglang{C} API}, are now available as \R functions.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.0.8}{
-  \itemize{
     \item The SIR examples \code{sir()} and \code{sir2()} now use a negative binomial measurement model.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.0.7}{
-  \itemize{
     \item \code{parmat} can now take a data frame of parameters and convert it into a matrix suitable for furnishing to the \code{params} argument of any \pkg{pomp} function.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.0.6}{
-  \itemize{
     \item It is now possible to change the parameters in an \sQuote{objfun} (objective function) object using \code{coef(object)<-value}.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.0.5}{
-  \itemize{
     \item \code{parmat} now takes an optional argument, \code{names}, which allows the user to name the parameter sets.
     \item Independent realizations of the stochastic processes modeled in \pkg{pomp} are now distinguished by different values of \code{.id}.
     This behavior is now uniform throughout.
     \item \code{bake} and \code{stew} now send messages instead of warnings when they recompute an archive due to a change in code or dependencies.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.0.4}{
-  \itemize{
+    \item It is now possible to change the parameters in an \sQuote{objfun} (objective function) object using \code{coef(object)<-value}.
     \item The ensemble adjusted Kalman filter (\code{eakf}) has been refactored.
     It now makes use of the \code{emeasure} and \code{vmeasure} basic components to compute an approximation of the linear relationship between the latent state and the observed variables.
     \item The \code{forecast} method now works for \code{pfiterd_pomp} objects (i.e., results of \code{pfilter}, \code{pmcmc}, or \code{mif2} computations).
-  }
-}
-\section{Changes in \pkg{pomp} version 4.0.3}{
-  \itemize{
     \item Two new basic model components have been introduced.
     These are:
     \describe{
@@ -343,19 +206,11 @@
     }
     These are used by the newly refactored ensemble Kalman filter, \code{enkf}.
     \item The basic (linear, Gaussian) Kalman filter is now available as \code{kalmanFilter}.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.0.2}{
-  \itemize{
     \item Computation of Monte Carlo-adjusted profile likelihood is now facilitated by the new \code{mcap} function.
-  }
-}
-\section{Changes in \pkg{pomp} version 4.0.1}{
-  \itemize{
     \item The default return-value format for \code{trajectory} now matches that of \code{simulate}.
   }
 }
-\section{Changes in \pkg{pomp} version 4.0.0}{
+\section{Changes in \pkg{pomp} version 4.0}{
   Version 4 contains a few changes that are not backward compatible.
   These are all to do with the elementary function \code{trajectory}, which computes trajectories of the deterministic dynamical skeleton.
   See below for details.
@@ -372,55 +227,27 @@
     In this regard, its behavior matches that of \code{simulate}.
   }
 }
-\section{Changes in \pkg{pomp} version 3.5.6}{
+\section{Changes in \pkg{pomp} version 3.6}{
   \itemize{
     \item The \code{states} and \code{obs} methods now work for lists of \sQuote{pomp} objects (\sQuote{listies}).
-  }
-}
-\section{Changes in \pkg{pomp} version 3.5.5}{
-  \itemize{
     \item The workhorse function \code{flow} now has default arguments.
     \item The stateful objective function created by \code{traj_objfun} has been refactored so that it is independent of \code{trajectory}.
     This change is invisible to the user, but lays the groundwork for future changes in \code{trajectory}.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.5.4}{
-  \itemize{
     \item Stateful objective functions created by \code{traj_objfun}, \code{nlf_objfun}, \code{probe_objfun}, and \code{spect_objfun} now have default arguments.
     In particular, the default is argument is a zero-length numeric vector.
     Calling such a function with no arguments is valid if and only if the objective function was created with no variables to estimate (empty \code{est}).
-  }
-}
-\section{Changes in \pkg{pomp} version 3.5.3}{
-  \itemize{
     \item Fixed bug in \code{rprior} arising with integer-valued return vectors.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.5.2}{
-  \itemize{
     \item Major improvements to the package manual, including richer cross-linking and better organization.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.5.1}{
-  \itemize{
     \item When \code{simulate} is called with \code{format="data.frame"} and \code{include.data=TRUE}, the interpolated covariates are now included in the data frame that is returned.
   }
 }
-\section{Changes in \pkg{pomp} version 3.4.6}{
+\section{Changes in \pkg{pomp} version 3.5}{
   \itemize{
     \item \code{bake} takes a new option, \code{timing}, that controls whether information on the timing is returned or merely stored.
     By default, this is set to \code{TRUE}, though this default behavior may change in future.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.4.5}{
-  \itemize{
     \item When they encounter an archive produced by an older version, \code{bake} and \code{stew} now update the archive in the new format.
     Recomputation should never be triggered in this case:
     If recomputation is desired, delete the archive file.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.4.4}{
-  \itemize{
     \item \code{bake} and \code{stew} now archive a digest of the code in \code{expr} and on subsequent calls check to see if the archived version matches the current version.
     Thus, changes to the code automatically trigger recomputation.
     \item \code{bake} and \code{stew} take the new argument \code{dependson}.
@@ -435,39 +262,27 @@
     In the \code{stew} case, unlike all the other objects that are created by \code{expr}, this list is \emph{not} by default loaded into the calling environment (e.g., the user's workspace).
     It will be loaded if the \code{info} flag is set to \code{TRUE}.
     \item \code{freeze} no longer stores the details of the RNG seed and kind as an attribute of the returned object.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.4.2}{
-  \itemize{
     \item Fix bug in \code{bsmc2} arising when some particles have zero likelihood.
     This is Issue #152.
     Thanks to Hola-Kwame Adrakey for reporting it.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.4.1}{
-  \itemize{
     \item It is now possible to call \code{partrans} directly on an objective function, such as those created by \code{traj_objfun}, \code{nlf_objfun}, \code{probe_objfun}, or \code{spect_objfun}.
   }
 }
-\section{Changes in \pkg{pomp} version 3.3.1}{
+\section{Changes in \pkg{pomp} version 3.4}{
   \itemize{
     \item The package manual and help pages has been streamlined.
     \item The \code{mif2} diagnostic plots have been made more flexible.
     \item Some deprecated functions have been removed.
     These include \code{cond.loglik}, \code{sliceDesign}, \code{runifDesign}, \code{sobolDesign}, and \code{profileDesign}, which have been replaced by \code{code.logLik}, \code{slice_design}, \code{runif_design}, \code{sobol_design}, and \code{profile_design}, respectively.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.3.0}{
-  \itemize{
     \item A bug in \code{rgammawn} has been fixed.
   }
 }
-\section{Changes in \pkg{pomp} version 3.2.0}{
+\section{Changes in \pkg{pomp} version 3.3}{
   \itemize{
     \item The \pkg{pomp} \proglang{C} API has been expanded a bit, to facilitate other packages' linking to the \pkg{pomp} library.
   }
 }
-\section{Changes in \pkg{pomp} version 3.1.1}{
+\section{Changes in \pkg{pomp} version 3.2}{
   \itemize{
     \item The help pages have been improved, with an description of the overall package structure and pages on basic model components, elementary algorithms, and estimation algorithms.
     \item A note to Windows users on avoiding certain \proglang{C} snippet compilation errors has been added to the help pages.
@@ -478,24 +293,12 @@
     They are replaced by \code{profile_design}, \code{slice_design}, \code{runif_design}, and \code{sobol_design}, respectively.
   }
 }
-\section{Changes in \pkg{pomp} version 3.0.3}{
+\section{Changes in \pkg{pomp} version 3.1}{
   \itemize{
     \item A new \code{saved.states} method allows one to extract the saved states from a particle filter computation.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.0.2}{
-  \itemize{
     \item All instances of \code{cond.loglik} have been changed to \code{cond.logLik}, to remove a common source of typographical error.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.0.1}{
-  \itemize{
     \item A new sequential importance sampling algorithm has been implemented as \code{wpfilter}.
     This is a generalization of the algorithm in \code{pfilter} in that it tracks the weights of the particles and allows the user to customize the resampling scheme.
-  }
-}
-\section{Changes in \pkg{pomp} version 3.0.0}{
-  \itemize{
     \item In \code{mif2}, the specification of particle numbers, \code{Np}, has changed.
     When \code{Np} is supplied as a function, \code{Np(0)} is the requested number of particles at the beginning of the time series.
     The previous behavior was that \code{Np(1)} specified the requested number of particles.
@@ -517,39 +320,31 @@
       \code{conv.rec} \tab \code{traces} \cr
       \code{values} \tab \code{as.data.frame} or \code{as(x,"data.frame")} \cr
     }
-  }
-}
-\section{Changes in \pkg{pomp} version 2.8.0}{
-  \itemize{
     \item Trap error from non-finite likelihoods in \code{pmcmc}.
     \item New test of \code{pmcmc} codes in \file{tests/issue109.R}.
     \item Trap error from missing accumulator variables in \code{trajectory}.
   }
 }
-\section{Changes in \pkg{pomp} version 2.7.2}{
-  \itemize{
-    \item The Euler step size in \code{sir} is now adjustable.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.7.1}{
+\section{Changes in \pkg{pomp} version 2.8}{
   \itemize{
     \item As promised, the default value of \code{tol} in the particle-filtering algorithms \code{pfilter}, \code{pmcmc}, \code{mif2}, and \code{bsmc2} has been changed to zero.
     A warning continues to be issued if \code{tol} is set to anything other than 0.
     In a future release, the option to choose a nonzero tolerance will be removed entirely.
+    \item The Euler step size in \code{sir} is now adjustable.
     \item In traces and diagnostic plotting methods, the \code{nfail} variable (tracking numbers of filtering failures) has been dropped.
   }
 }
-\section{Changes in \pkg{pomp} version 2.6.0}{
+\section{Changes in \pkg{pomp} version 2.7}{
   \itemize{
     \item Another documentation bug was fixed.
   }
 }
-\section{Changes in \pkg{pomp} version 2.5.0}{
+\section{Changes in \pkg{pomp} version 2.6}{
   \itemize{
     \item A documentation bug, identified by K. Hornik, was fixed.
   }
 }
-\section{Changes in \pkg{pomp} version 2.4.1}{
+\section{Changes in \pkg{pomp} version 2.5}{
   \itemize{
     \item In anticipation of forthcoming algorithmic changes, the \code{tol} and \code{max.fail} arguments of \code{pfilter}, \code{bsmc2}, \code{pmcmc}, and \code{mif2} are now deprecated.
     A warning is issued if \code{tol} is set to anything other than 0.
@@ -559,134 +354,61 @@
     \item A new help page, \code{pomp_examples}, lists the various example datasets and pomp objects provided with the package.
   }
 }
-\section{Changes in \pkg{pomp} version 2.3.0}{
+\section{Changes in \pkg{pomp} version 2.4}{
   \itemize{
     \item The source codes underlying specification of basic model components via \R functions has been reworked to remove reliance on deep \code{PROTECT} stacks.
     Thanks to Thomas Kalibera for showing the way!
     \item A bug in the documentation for \code{filter.traj}, pointed out by Pierre Jacob, has been fixed.
   }
 }
-\section{Changes in \pkg{pomp} version 2.2.2}{
+\section{Changes in \pkg{pomp} version 2.3}{
   \itemize{
     \item The \proglang{C} API for \pkg{pomp} is no longer explained only in comments in the \dQuote{pomp.h} header file.
     It is now described and explained in the new \href{https://kingaa.github.io/pomp/vignettes/C_API.html}{\proglang{C} API vignette}.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.2.1}{
-  \itemize{
     \item The new \code{pomp_cdir} global option allows one to set the directory holding \proglang{C} snippet files globally.
     \item A bug caused by re-use of the \code{cfile} argument has been fixed.
     Re-use now triggers an error, with an informative message.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.2.0}{
-  \itemize{
     \item Some documentation improvements.
   }
 }
-\section{Changes in \pkg{pomp} version 2.1.2}{
+\section{Changes in \pkg{pomp} version 2.2}{
   \itemize{
     \item A bug in \code{runifDesign} (and therefore \code{profileDesign} when \code{type="runif"}) has been fixed.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.1.1}{
-  \itemize{
     \item There are now \code{plot} methods for objects of classes \sQuote{probe_match_objfun} and \sQuote{spect_match_objfun}.
   }
 }
-\section{Changes in \pkg{pomp} version 2.1.0}{
-  \itemize{
-    \item Released to CRAN.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.14}{
+\section{Changes in \pkg{pomp} version 2.1}{
   \itemize{
     \item The \code{melt} function can now be applied to arbitrary \sQuote{pomp} objects.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.13}{
-  \itemize{
     \item A new function, \code{runifDesign} allows construction of design matrices using samples from multivariate uniform distributions.
     \item The \code{profileDesign} function takes a new argument, \code{type}, with two options:
     \code{"sobol"}, the default, constructs the design using \code{sobolDesign}, as before.
     \code{"runif"} uses the new \code{runifDesign} function.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.12}{
-  \itemize{
     \item A new example, comprising models and data for the 2014--2016 west African Ebola virus disease outbreak, is included.
     See \code{?ebola} for details.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.11}{
-  \itemize{
     \item It is now possible to adjust the observation times and zero-time in the \code{sir} and \code{sir2} examples.
     One can also change the default RNG seed used in generating the simulated data.
     \item The codes underlying the \code{rprocess} workhorse have been streamlined to obviate an unnecessary copy operation.
     As a result, the interface to the \code{rprocess} workhorse has been changed.
     \item The interface to the new \code{flow} workhorse has been changed to match.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.10}{
-  \itemize{
     \item The new \code{flow} workhorse allows integration/iteration of the deterministic skeleton at arbitrary times from an arbitrary initial condition.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.9}{
-  \itemize{
     \item When \code{coef} is applied to a \sQuote{listie}, the result can be more usefully \code{melt}ed.
     \item The probe-names returned by \code{probe.acf} and \code{probe.ccf} have changed.
     \item A bug, whereby the \sQuote{coef} method from other packages was masked, has been fixed.
     \item Errors in the documentation have been corrected.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.8}{
-  \itemize{
     \item There is a new \code{as.data.frame} method for \sQuote{listie}s.
     \item Some problems with the exposure of internal objects for package developers have been corrected.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.7}{
-  \itemize{
     \item The \pkg{magrittr} pipe operator, \code{\%>\%}, is now re-exported.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.6}{
-  \itemize{
     \item More examples have been included.
     \item Minor changes to error messages.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.5}{
-  \itemize{
     \item The names of the \sQuote{objfun} methods have been changed to \code{probe_objfun}, \code{spect_objfun}, \code{traj_objfun}, and \code{nlf_objfun}.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.4}{
-  \itemize{
     \item The package directory structure has been modified to include a new \file{examples} directory, which holds the examples used in the documentation.
     \item The names of the \sQuote{objfun} methods have been shortened.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.3}{
-  \itemize{
     \item It is now permissible that the sequence of observation times (and sequences of covariate times) be merely non-decreasing sequences.
     Previously, \pkg{pomp} insisted on strictly increasing time sequences.
     \item The default cooling schedule (\code{cooling.type}) in \code{mif2} is now \dQuote{geometric}, in contrast to \dQuote{hyperbolic}, as before.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.2}{
-  \itemize{
     \item \pkg{pomp} now requires at least \R version 3.5.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.1}{
-  \itemize{
     \item The \code{zeronames} argument has been renamed \code{accumvars}.
-  }
-}
-\section{Changes in \pkg{pomp} version 2.0.0}{
-  \itemize{
     \item In the course of ordinary work, one should never need to interact with the low-level \code{pomp} constructor function now.
     \item The \code{pompExample} function has been dropped.
     The various examples are now included as regular functions that construct \sQuote{pomp} objects.
@@ -765,43 +487,23 @@
     \item The old and deprecated \code{mif} and \code{bsmc} methods have been removed.
   }
 }
-\section{Changes in \pkg{pomp} version 1.18.8}{
+\section{Changes in \pkg{pomp} version 1.19}{
   \itemize{
     \item The \code{obs} and \code{states} arguments of \code{simulate} are deprecated and will be removed in a forthcoming release.
     \item The C-level interface for \code{apply_probe_sims} has changed: the new argument \code{rho} must be the \dQuote{package:pomp} environment.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.18.7}{
-  \itemize{
     \item A bug in \code{pfilter} (and hence \code{pmcmc}) when \code{filter.traj=TRUE} was discovered and fixed.
     In the buggy version, the filter trajectory was sampled with incorrect weights.
     \item Timo Voipio contributed a pull request that traps the error resulting from \code{sannbox} being passed a \code{candidate.dist} that is not a function.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.18.6}{
-  \itemize{
     \item \code{show} and \code{print} methods have been made very terse:
     they simply report on the class of the object in question.
     To see more detailed information about a \sQuote{pomp} object, use \code{spy}.
     \item New (unexported) \code{solibs<-} method allows developers of packages extending \pkg{pomp} to incorporate \proglang{C} snippets into object that contain \sQuote{pomp} objects.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.18.5}{
-  \itemize{
     \item New \code{verbose} option in \code{trajectory} gives diagnostic information from \pkg{deSolve} integration routines.
     Of course, this is pertinent only if the model skeleton is a vectorfield.
     \item Bug in the display of \code{istate} when \code{deSolve::ode} errors has been fixed.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.18.4}{
-  \itemize{
     \item New \code{hitch} function facilitates construction of \code{pomp.fun} objects from \R functions, \proglang{C} snippets, and links to external libraries.
     \item Native routines needed to access \code{pomp.fun} objects in \proglang{C} are now registered for use by other packages.
     \item \code{coef(object) <- NULL}, where \code{object} is of class \sQuote{pomp}, erases any parameters stored in \code{object}.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.18.3}{
-  \itemize{
     \item The \code{euler.sir}, \code{gillespie.sir}, \code{blowflies}, \code{ricker}, \code{bbs}, \code{dacca}, and \code{rw2} examples are all now implemented using \proglang{C} snippets.
     \item A new \file{pomp_defines.h} header is provided for developers of packages that depend on \pkg{pomp}.
     \item Internally, \code{rprocess} is no longer stored as an \R function.
@@ -814,113 +516,65 @@
     \code{dprocess} is now specified directly using either a \proglang{C} snippet or an \R function, in much the same way that, for example, \code{dmeasure} is specified.
     \item The old \sQuote{forward} and \sQuote{inverse} options for the \code{dir} argument of \code{partrans} have been dispensed with.
     The much more descriptive options \sQuote{toEstimationScale} and \sQuote{fromEstimationScale} remain.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.18.2}{
-  \itemize{
     \item The \proglang{C} snippet compiling facilities have been thoroughly reworked.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.18.1}{
-  \itemize{
     \item \code{onestep.dens} can now take a \code{Csnippet} specification of the process-model transition density.
   }
 }
-\section{Changes in \pkg{pomp} version 1.17.4}{
+\section{Changes in \pkg{pomp} version 1.18}{
   \itemize{
     \item All inference functions can now take a list in the \code{start} or \code{params} arguments.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.17.3}{
-  \itemize{
     \item When altering parameters in a call to \code{probe} on a \code{probed.pomp} object, the new parameters were ignored.
     This bug has been fixed.
     \item \code{mif2}, \code{pfilter}, \code{probe}, \code{probe.match}, and \code{probe.match.objfun} can now gracefully handle a list in the \code{start} or \code{params} arguments.
     \item New \code{spy} method displays the \proglang{C} snippet file(s) associated with a \code{pomp} object.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.17.2}{
-  \itemize{
     \item The long-deprecated \code{seed} argument to \code{bsmc} and \code{bsmc2} has been removed.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.17.1}{
-  \itemize{
     \item More work to obviate warnings generated by T. Kalibera's latest \code{rchk} checks.
   }
 }
-\section{Changes in \pkg{pomp} version 1.16.4}{
+\section{Changes in \pkg{pomp} version 1.17}{
   \itemize{
     \item Messages from the compiler resulting from attempts to compile \proglang{C} snippets are now suppressed on all platforms except in case of failure.
     Setting \code{verbose=TRUE} forces display of these messages.
     \item Source codes have been revisited to obviate warnings generated by T. Kalibera's latest \code{rchk} checks.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.16.3}{
-  \itemize{
     \item Fix a minor bugs in \code{spect}.
     \item Improve test coverage.
     \item \code{spect.match} has been refactored, with small changes to the interface.
     \item \code{pomp} now handles specification of workhorse functions (i.e., \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{initializer}, \code{skeleton}, \code{rprior}, \code{dprior}, \code{fromEstimationScale}, \code{toEstimationScale}) as \code{NULL} more consistently.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.16.2}{
-  \itemize{
     \item Fix bug in systematic resampler when \code{np != nw}.
     \item Fix bug in \code{conv.rec} when only one parameter is requested.
     \item Correct and improve documentation for \code{conv.rec}.
     \item \code{coef<-} can now take a list of parameters:
     it simply applies \code{unlist} to turn the list into a numeric vector.
     \item Simplify \code{conv.rec}.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.16.1}{
-  \itemize{
     \item In \code{pfilter}, \code{Np} is now a required argument unless \code{params} is specified as a matrix of particles.
     Thanks to Carles Breto for catching the unintended behavior.
   }
 }
-\section{Changes in \pkg{pomp} version 1.15.4}{
+\section{Changes in \pkg{pomp} version 1.16}{
   \itemize{
     \item The bug reported in issue #57 has been fixed.
     \item A bug arising when building pomp objects with Csnippets in certain Windows configurations has been fixed.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.15.3}{
-  \itemize{
     \item Issue #56, in which covariate names are discarded when coercing a pomp object to a data frame, has been fixed.
     Thanks to Eamon O'Dea for reporting this bug.
     \item More informative error messages are given when \code{bake} or \code{freeze} return \code{NULL}.
     In such a case, these functions now generate a warning and return a character-string message, with attributes.
     \item Improve documentation of \code{traj.match}, in response to Issue #57.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.15.2}{
-  \itemize{
     \item A new facility, \code{gillespie.hl.sim}, allows implementation of Gillespie's algorithm for exact stochastic simulation of continuous-time Markov processes via a streamlined \proglang{C} snippet interface.
     \item The old facility for Gillespie simulations, \code{gillespie.sim}, now accepts \proglang{C} snippets for faster calculation of event rates.
     \item The old \code{skeleton.type} and \code{skelmap.delta.t} arguments of the \code{pomp} constructor, which have generated error messages since version 1.9.2, have been done away with completely.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.15.1}{
-  \itemize{
     \item Eamon O'Dea identified a bug (Issue #54) occurring when \code{pomp} is called with a single-row data frame.
     This has been fixed using his contributed patch.
   }
 }
-\section{Changes in \pkg{pomp} version 1.14.2}{
+\section{Changes in \pkg{pomp} version 1.15}{
   \itemize{
     \item A new \code{dmultinom} function is provided in \sQuote{pomp.h}.
     This provides the probability distribution function for the multinomial distribution.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.14.1}{
-  \itemize{
     \item Improved tests.
     \item Fixed bugs emerging in R-devel due to refactoring of underlying \R source code.
   }
 }
-\section{Changes in \pkg{pomp} version 1.13.4}{
+\section{Changes in \pkg{pomp} version 1.14}{
   \itemize{
     \item Eamon O'Dea pointed out that the bug in \code{gillespie.sim}, addressed by version 1.12.3, was not completely fixed.
     This problem has now been resolved.
@@ -929,284 +583,124 @@
     \item The K-leap method has been removed.
     Its accuracy is low on test problems and it is difficult to make it compatible with the pomp paradigm.
     In particular, it does not readily accomodate time-varying covariates in a sensible way, nor does it lend itself to simulations at pre-specified times.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.13.3}{
-  \itemize{
     \item \code{bspline.basis} and \code{periodic.bspline.basis} now take an optional non-negative integer argument \code{deriv}.
     When \code{deriv > 0}, the order-\code{deriv} derivative of each basis function is returned.
     \item A new function, \code{periodic_bspline_basis_eval_deriv}, has been added to the \proglang{C} API.
     This function gives access, at the \proglang{C} level, to evaluation of the derivatives of periodic B-splines.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.13.2}{
-  \itemize{
     \item Upgrade license to GPL version 3.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.13.1}{
-  \itemize{
     \item Fix buffer-flow problem identified by \code{valgrind}.
   }
 }
-\section{Changes in \pkg{pomp} version 1.12.3}{
+\section{Changes in \pkg{pomp} version 1.13}{
   \itemize{
     \item Fix bug found by Eamon O'Dea in \code{gillespie.sim}.
     \item Fix bug in \code{onestep.sim}.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.12.2}{
-  \itemize{
     \item The Ricker example has a new parameter, \eqn{c}, which scales the (unobserved) population size.
     By default, \eqn{c=1}, so that the behavior is as before.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.12.1}{
-  \itemize{
     \item Improved error trapping.
   }
 }
-\section{Changes in \pkg{pomp} version 1.11.3}{
+\section{Changes in \pkg{pomp} version 1.12}{
   \itemize{
     \item Some changes have been made to the use of random numbers in some codes (the stochastic simulations in \code{gillespie.sim} and the resampling in the particle-filtering codes).
     These changes will mean that calculations performed before will not be reproducible in perfect detail, but will be statistically equivalent.
     \item Minor changes in \proglang{C} codes to obviate warnings generated by T. Kalibera's \code{rchk} checks.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.11.2}{
-  \itemize{
     \item The rare and fascinating \dQuote{Bug of St. Patrick} has been fixed.
     Thanks to Carles Breto for finding the bug and helping to isolate it.
     \item More informative error messages are generated when \code{dmeasure} returns a non-finite likelihood in any of the particle filtering codes.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.11.1}{
-  \itemize{
     \item Some streamlining of codes.
   }
 }
-\section{Changes in \pkg{pomp} version 1.10.6}{
+\section{Changes in \pkg{pomp} version 1.11}{
   \itemize{
     \item Callable routines are now registered.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.10.5}{
-  \itemize{
-    \item More verbosity is provided with \code{verbose=TRUE}.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.10.4}{
-  \itemize{
     \item The functions \code{bake}, \code{stew}, and \code{freeze} now preserve information about the system time used in computation as an attribute of the returned object.
     In addition, these functions store information about the RNG settings.
     \item Some documentation improvements, courtesy of Sebastian Funk.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.10.3}{
-  \itemize{
-    \item Documentation improvements.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.10.2}{
-  \itemize{
-    \item More verbosity in building of Csnippets.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.10.1}{
-  \itemize{
+    \item Various documentation improvements.
+    \item More verbosity is provided with \code{verbose=TRUE}.
     \item Better handling of \code{pomp}'s \code{times} argument.
   }
 }
-\section{Changes in \pkg{pomp} version 1.9.3}{
+\section{Changes in \pkg{pomp} version 1.10}{
   \itemize{
     \item New \code{logLik} method for \code{pmcmcList} objects.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.9.2}{
-  \itemize{
-    \item The deprecated options to supply a matrix or numeric vector as the \code{data} argument to \code{pomp} have been removed and doing so now generates an error.
-    The first argument to \code{pomp}, \code{data}, must now be provided either as a data frame or as an object of class \code{pomp}.
+    \item The deprecated option to supply a matrix or numeric vector as the \code{data} argument to \code{pomp} have been removed and an error is now generated.
+    \code{data} must be provided as either a data frame or an object of class \code{pomp}.
     See \code{?pomp} for details.
     \item The deprecated \code{skeleton.type} and \code{skelmap.delta.t} arguments to \code{pomp} have been removed.
     Using these arguments will now generate an error message.
-    The correct method of specifying the deterministic skeleton is now explained in the help pages (\code{?pomp}).
-  }
-}
-\section{Changes in \pkg{pomp} version 1.9.1}{
-  \itemize{
+    The correct method of specifiying the deterministic skeleton is now explained in the help pages (\code{?pomp}).
     \item Source code fixes to eliminate warnings during compilation.
     \item Improved test suite.
     \item Minor documentation correction.
   }
 }
-\section{Changes in \pkg{pomp} version 1.8.11}{
+\section{Changes in \pkg{pomp} version 1.9}{
   \itemize{
     \item During particle filtering, when non-finite \code{dmeasure} values are generated, an error is generated and the offending parameters, states, data, and time are reported.
     In methods that use parameter transformations (\code{transform=TRUE}), the reported parameters were on the transformed (estimation) scale, which can be confusing.
     The error message now gives the parameters on the natural (model) scale.
     \item Modified \file{src/ssa.c} to fix UBSAN errors.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.8.10}{
-  \itemize{
     \item \proglang{C} codes have been modified to take advantage of changes to the \R API (R SVN REVISION 71180).
-  }
-}
-\section{Changes in \pkg{pomp} version 1.8.9}{
-  \itemize{
     \item A bug in \code{mif2} arising when filtering fails in the final timestep has been fixed.
     In this case, when all particles are deemed inconsistent with the data, we use an unweighted mean (with a warning) in place of the default weighted mean.
+    \item C codes have been modified to take advantage of changes to the \pkg{R} API (R SVN REVISION 71180).
+    \item Modified \file{src/ssa.c} to fix UBSAN errors.
   }
 }
-\section{Changes in \pkg{pomp} version 1.7.7}{
+\section{Changes in \pkg{pomp} version 1.8}{
   \itemize{
+    \item There is a new option, \code{shlib.args}, to \code{pomp}.
+    This allows arbitrary options to be passed to the compiler when C snippets are used.
+    In particular, one can link a library of C snippets against a precompiled static library.
+    \item In Sobol' sequence generation (\code{sobolDesign}, \code{profileDesign}), we now use the suggestion of Joe & Kuo (2003) to choose a better sequence start point.
+    \item The generation of Sobol' sequences (\code{sobolDesign}, \code{profileDesign}) is now performed using the \pkg{NLopt} routines written in \proglang{C} instead of the original \acronym{TOMS} 659 \proglang{FORTRAN} codes.
+    The copyright notices are located in the source code.
     \item The stochastic simulation algorithms underlying the Gillespie and K-leap methods (\code{gillespie.sim}, \code{kleap.sim}) have been refactored in C.
     In addition, errors due to accumulation of round-off error have been repaired.
     The result will be more accurate, but somewhat slower when there are a very large number of reactions.
-    \item Further improvements to the test suite.
-    Code coverage is now 100\%.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.7.6}{
-  \itemize{
-    \item In Sobol' sequence generation (\code{sobolDesign}, \code{profileDesign}), we now use the suggestion of Joe & Kuo (2003) to choose a better sequence start point.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.7.5}{
-  \itemize{
-    \item The generation of Sobol' sequences (\code{sobolDesign}, \code{profileDesign}) is now performed using the \pkg{NLopt} routines written in \proglang{C} instead of the original \acronym{TOMS} 659 \proglang{FORTRAN} codes.
-    The copyright notices are located in the source code.
-    \item Improved testing suite.
-    \item Made \code{rw.sd} even more robust via new \code{safecall} class.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.7.4}{
-  \itemize{
-    \item Refactored \code{rw.sd} for greater stability.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.7.3}{
-  \itemize{
     \item Fixed a bug in \code{plot} on \code{pomp} objects with more than 10 variables to plot.
     \item Added the \code{shlib.args} option to \code{pomp}, allowing arbitrary options to be passed to the compiler when \proglang{C} snippets are used.
     \item Modified the \dQuote{dacca} example to use \proglang{C} snippets.
     \item Refactored \code{rw.sd} for greater stability.
+    \item Modified the \dQuote{dacca} example to use C snippets.
     \item Made Sobol' codes more robust.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.7.2}{
-  \itemize{
     \item Modified the demos to use best practices.
+    \item Further improvements to the test suite.
+    Code coverage is now 100\%.
   }
 }
-\section{Changes in \pkg{pomp} version 1.7.1}{
+\section{Changes in \pkg{pomp} version 1.7}{
   \itemize{
-    \item Improved the test suite.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.6.7}{
-  \itemize{
-    \item Improve the test suite and error messages.
-    \item Replace the automatic \dQuote{verbose} setting during compilation under Windows.
-    This was dropped in version 1.6.4.3, when it no longer appeared to be necessary.
-    Apparently, it is, at least under some Windows OS/R combinations.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.6.6}{
-  \itemize{
-    \item Fix \code{probe} bug introduced in version 1.6.5.9.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.6.5}{
-  \itemize{
-    \item Several obscure bug-fixes.
     \item Improvement of the test suite and of error messages.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.6.4}{
-  \itemize{
-    \item Remove the automatic \dQuote{verbose} setting during compilation under Windows.
-    This was introduced in version 0.63-6 as a workaround.
-    It appears no longer to be necessary.
-    \item Improve the \code{show} method for \code{pomp} objects.
-    \item Change the \code{print} method for \code{pomp} objects.
-    \item Improve messages for plugin errors.
+    \item Improve the \code{show} and \code{print} methods for \code{pomp} objects.
     \item Some internal refactoring.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.6.3}{
-  \itemize{
     \item Improve error messages for missing basic components.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.6.2}{
-  \itemize{
     \item Fix typos in one of the help-page examples.
+    \item Several obscure bug-fixes.
     \item Add some references.
   }
 }
-\section{Changes in \pkg{pomp} version 1.6.1}{
+\section{Changes in \pkg{pomp} version 1.6}{
   \itemize{
     \item Major revisions to the package help pages and manual.
     The separate documentation on \proglang{C} snippets and process-model plugins has been merged into the main \code{pomp} help page, which now has comprehensive instructions on building a \code{pomp} object.
     \item Update to the package help page.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.5.10}{
-  \itemize{
-    \item The matrix and numeric vector options for the \code{data} argument to \code{pomp} are now deprecated and will be removed in a future release.
-    In calls to \code{pomp}, \code{data} should be either a data frame or a \code{pomp}-class object.
-    \item Many more errors are now trapped and reported with more informative messages.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.5.9}{
-  \itemize{
-    \item Redundant \code{bootstrap} argument to \code{nlf} has been removed.
-    \item More improvements to the testing suite.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.5.8}{
-  \itemize{
-    \item Major improvements to error and warning handling.
-    \item Fix bugs that might arise in rare circumstances in \code{simulate} and \code{eulermultinom} functions.
-    \item More improvements to the testing suite.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.5.7}{
-  \itemize{
-    \item Many improvements to the test suite.
-    \item Fixed a bug in \code{pompExample}.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.5.6}{
-  \itemize{
-    \item Major overhaul of error handling system and error messages.
+    \item New methods for the Ensemble Kalman Filter (\code{enkf}) and Ensemble Adjustment Kalman Filter (\code{eakf}) have been added to the package.
     \item There is a new plugin for \code{rprocess} called \code{kleap.sim}.
     This implements the so-called \dQuote{K-leap method} of Cai & Xu (2007).
-  }
-}
-\section{Changes in \pkg{pomp} version 1.5.5}{
-  \itemize{
-    \item Many improvements to the test suite.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.5.4}{
-  \itemize{
-    \item More improvements to the test suite.
-    \item Fixed bugs found as a result of improved testing.
+    \item Major overhaul of error handling system and to error and warning messages.
+    Many more errors are now trapped and reported with more informative messages.
+    \item The matrix and numeric vector options for the \code{data} argument to \code{pomp} are now deprecated and will be removed in a future release.
+    In calls to \code{pomp}, \code{data} should be either a data frame or a \code{pomp}-class object.
     \item In \code{mif2}, it is now required that \code{Nmif>0}.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.5.3}{
-  \itemize{
-    \item More improvements to the test suite.
-    \item Fixed bugs found as a result of improved testing.
+    \item Redundant \code{bootstrap} argument to \code{nlf} has been removed.
+    \item Many improvements to the test suite to obtain better code coverage.
+    \item Fixed bugs that might arise in rare circumstances in \code{simulate} and \code{eulermultinom} functions.
+    \item Fixed a bug in \code{pompExample}.
+    \item Fixed several small, rare bugs found as a result of improved testing.
     \item Fixed bug in specification of skeleton in pompExamples.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.5.2}{
-  \itemize{
-    \item Improved the test suite to obtain better code coverage.
     \item \code{pomp} is no longer an S4 method.
     Its new status as an ordinary function abbreviates and consolidates the code and simplifies the documentation.
     \item Some minor improvements to error messages.
@@ -1214,12 +708,7 @@
     \item Fixed bug in \code{pompExample(...,show=TRUE)}.
   }
 }
-\section{Changes in \pkg{pomp} version 1.5.1}{
-  \itemize{
-    \item New methods for the Ensemble Kalman Filter (\code{enkf}) and Ensemble Adjustment Kalman Filter (\code{eakf}) have been added to the package.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.4.9}{
+\section{Changes in \pkg{pomp} version 1.5}{
   \itemize{
     \item A better interface for specifying a model's deterministic skeleton is provided.
     One specifies \code{skeleton=map(f,delta.t)} for a discrete-time skeleton (a map) and \code{skeleton=vectorfield(f)} for a continuous-time skeleton (a vectorfield).
@@ -1227,73 +716,33 @@
     \item The \code{pfilter} help page has been improved.
     Specifically, the discussion of filtering failures is better.
     \item Miscellaneous improvements to the help pages.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.4.8}{
-  \itemize{
     \item \code{mif2} no longer computes filter means.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.4.7}{
-  \itemize{
     \item The new argument \code{show} of \code{pompExamples} allows one to display the example code instead of executing it.
     \item The minimum version of \R supported is now 3.1.2.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.4.6}{
-  \itemize{
     \item \code{init.state} now has the optional argument \code{nsim}.
     Using this, one can request multiple initial state vectors per parameter vector.
     \item \code{pfilter} now uses less memory when it is asked to run at a single point in parameter space.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.4.5}{
-  \itemize{
     \item A bug associated with the \code{rw.sd} argument to \code{mif2} on Windows platforms has been fixed.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.4.4}{
-  \itemize{
     \item The \code{method="mif2"} option to \code{mif} has been removed.
     Use \code{mif2} instead.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.4.3}{
-  \itemize{
     \item The \code{particles} method (rarely if ever used), has been removed to streamline the \code{mif} codes.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.4.2}{
-  \itemize{
     \item The \code{method="mif2"} option to \code{mif} is now deprecated.
     It will be removed in a future release.
     Use \code{mif2} instead.
   }
 }
-\section{Changes in \pkg{pomp} version 1.4.1}{
+\section{Changes in \pkg{pomp} version 1.4}{
   \itemize{
     \item Following the publication of the Journal of Statistical Software announcement paper, the \file{CITATION} has been modified to include the appropriate citation.
     Please use \code{citation("pomp")} to learn about how to cite \pkg{pomp} correctly.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.3.4}{
-  \itemize{
     \item \code{conv.rec} on the results of a \code{mif2} computation now play nicely with \code{reshape2::melt}.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.3.3}{
-  \itemize{
     \item It is now possible to direct \code{pomp} to place \code{Csnippet} codes in a specified location.
     This is accomplished via the new \code{cdir} and \code{cfile} arguments to \code{pomp}.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.3.2}{
-  \itemize{
     \item When several concurrent \R processes attempt to simultaneously compile \code{Csnipet} code from copies of a \code{pomp} object on the same machine, a race condition exists.
     This release fixes this by ensuring that \code{Csnippet} codes are written and compiled in a process-specific directory.
   }
 }
-\section{Changes in \pkg{pomp} version 1.3.1}{
+\section{Changes in \pkg{pomp} version 1.3}{
   This release removes several long-deprecated features.
   \itemize{
     \item The \code{seed} argument to \code{pfilter} has been removed.
@@ -1303,33 +752,17 @@
     Initial-value parameters are designated using the \code{ivps} argument.
     \item The old \code{parameter.transform} and \code{parameter.inv.transform} arguments to \code{pomp} have been removed.
     They were superseded by the arguments \code{fromEstimationScale} and \code{toEstimationScale} in version 0.65-1.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.2.2}{
-  \itemize{
     \item Some internal changes to \code{mif2} by C. Breto, in support of panel methods under development.
   }
 }
-\section{Changes in \pkg{pomp} version 1.2.1}{
+\section{Changes in \pkg{pomp} version 1.2}{
   \itemize{
     \item Bug fix: for POMPs with a scalar state variable, the \code{filter.mean}, \code{pred.mean}, and \code{pred.var} methods dropped the singleton dimension of the respective arrays, in conflict with the assumptions of certain \code{plot} methods.
     This resolves issue #3.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.1.4}{
-  \itemize{
     \item Documentation improvements.
     Specifically, the details of how step-sizes are chosen in the \code{euler.sim}, \code{discrete.time.sim}, and \code{onestep.sim} plugins has been spelled out explicitly.
     Also, incompleteness in the \code{sannbox} documentation has been corrected.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.1.3}{
-  \itemize{
     \item Provide \code{filter.traj} method for \code{pmcmcList} objects.
-  }
-}
-\section{Changes in \pkg{pomp} version 1.1.2}{
-  \itemize{
     \item Fixed a bug in \code{mif} and \code{mif2} when \code{cooling.type="hyperbolic"} and \code{cooling.fraction.50=1}.
   }
 }

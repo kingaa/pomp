@@ -1,0 +1,5 @@
+
+See
+  '/userdata/kingaa/projects/Rpkg/pomp/revdep/epimdr.Rcheck/00check.log'
+for details.
+

@@ -1,0 +1,36 @@
+  Running ‘abf.R’
+  Running ‘abfir.R’
+  Running ‘arma_benchmark.R’
+  Running ‘bm.R’ [72s/17s]
+  Comparing ‘bm.Rout’ to ‘bm.Rout.save’ ... OK
+  Running ‘bm2.R’
+  Comparing ‘bm2.Rout’ to ‘bm2.Rout.save’ ... OK
+  Running ‘bpfilter.R’
+  Running ‘concat.R’
+  Running ‘enkf.R’
+  Running ‘gbm.R’
+  Comparing ‘gbm.Rout’ to ‘gbm.Rout.save’ ... OK
+  Running ‘girf.R’
+  Running ‘he10.R’ [29s/10s]
+  Comparing ‘he10.Rout’ to ‘he10.Rout.save’ ... OK
+  Running ‘ibpf.R’
+  Running ‘ienkf.R’
+  Running ‘igirf.R’
+  Running ‘iter_filter.R’
+  Comparing ‘iter_filter.Rout’ to ‘iter_filter.Rout.save’ ... OK
+  Running ‘iubf.R’
+  Running ‘lorenz.R’ [30s/11s]
+  Comparing ‘lorenz.Rout’ to ‘lorenz.Rout.save’ ... OK
+  Running ‘measles.R’ [55s/14s]
+  Comparing ‘measles.Rout’ to ‘measles.Rout.save’ ... OK
+  Running ‘measles2.R’ [91s/27s]
+  Comparing ‘measles2.Rout’ to ‘measles2.Rout.save’ ... OK
+  Running ‘param_formats.R’
+  Comparing ‘param_formats.Rout’ to ‘param_formats.Rout.save’ ... OK
+  Running ‘pfilter.R’
+  Running ‘plot.R’
+  Running ‘simulate.R’
+  Running ‘spatPomp.R’
+  Running ‘undefined.R’
+
+

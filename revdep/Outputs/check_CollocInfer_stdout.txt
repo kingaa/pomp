@@ -1,0 +1,222 @@
+* using log directory '/userdata/kingaa/projects/Rpkg/pomp/revdep/CollocInfer.Rcheck'
+* using R version 4.4.1 (2024-06-14)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+* running under: Ubuntu 22.04.4 LTS
+* using session charset: UTF-8
+* using options '--ignore-vignettes --as-cran'
+* checking for file 'CollocInfer/DESCRIPTION' ... OK
+* this is package 'CollocInfer' version '1.0.4'
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking serialization versions ... OK
+* checking whether package 'CollocInfer' can be installed ... [32s/18s] OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... [55s/24s] NOTE
+Profile.GausNewt: local variable ‘dcdp’ assigned but may not be used
+Profile.GausNewt: local variable ‘gradnorm0’ assigned but may not be
+  used
+Profile.LS: local variable ‘g’ assigned but may not be used
+Profile.LS: local variable ‘resid’ assigned but may not be used
+Profile.covariance: local variable ‘tf’ assigned but may not be used
+chemo.ode: local variable ‘C’ assigned but may not be used
+forward.prediction.error: local variable ‘ptimes’ assigned but may not
+  be used
+make.Cproc : dCproc.dp: local variable ‘gg’ assigned but may not be
+  used
+make.exptrans: local variable ‘more’ assigned but may not be used
+make.findif.loglik : findif.loglik.fun: local variable ‘x’ assigned but
+  may not be used
+make.findif.ode : <anonymous>: local variable ‘x’ assigned but may not
+  be used
+make.findif.var : findif.var.fun: local variable ‘x’ assigned but may
+  not be used
+make.genlin : <anonymous>: local variable ‘r’ assigned but may not be
+  used
+make.logtrans: local variable ‘more’ assigned but may not be used
+outeropt: local variable ‘g’ assigned but may not be used
+outeropt: local variable ‘resid’ assigned but may not be used
+* checking Rd files ... NOTE
+checkRd: (-1) ChemoData.rd:14: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ChemoData.rd:15: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ChemoData.rd:16: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ChemoData.rd:17: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ChemoData.rd:18: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ChemoRMData.rd:14: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ChemoRMData.rd:15: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ChemoRMData.rd:16: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ChemoRMData.rd:17: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ChemoRMData.rd:18: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) FhNdata.rd:14: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) FhNdata.rd:15: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) FhNdata.rd:16: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) FhNdata.rd:17: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) FhNdata.rd:18: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) FhNest.rd:11: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) FhNest.rd:12: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) FitMatch.rd:33: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) FitMatch.rd:34: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) IntegrateForward.rd:20: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) IntegrateForward.rd:21: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) NSdata.rd:12: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) NSdata.rd:13: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) NSdata.rd:14: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ParsMatch.rd:30: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) ParsMatch.rd:31: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) Profile.rd:24: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:25: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:26: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:27-28: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:34: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:35: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:36: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:37: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:38: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:50: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:51: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:52: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:61: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:62: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:68-69: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) Profile.rd:70-71: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ProfileObjective.rd:47: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ProfileObjective.rd:48: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ProfileObjective.rd:49: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ProfileObjective.rd:50-51: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ProfileObjective.rd:81: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ProfileObjective.rd:82: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ProfileObjective.rd:83: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) ProfileObjective.rd:58: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) ProfileObjective.rd:59: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) ProfileObjective.rd:60: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) ProfileObjective.rd:65: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) ProfileObjective.rd:66: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) ProfileObjective.rd:67: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) ProfileObjective.rd:68: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) SEIRdata.rd:14: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) SEIRdata.rd:15: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) SEIRdata.rd:16: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) SEIRdata.rd:17: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) SEIRdata.rd:18: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) SplineCoefs.Rd:37: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) SplineCoefs.Rd:38: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) SplineCoefs.Rd:39: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) SplineCoefs.Rd:40-41: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) SplineCoefs.Rd:47: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) SplineCoefs.Rd:48: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) SplineCoefs.Rd:49: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) SplineCoefs.Rd:50: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) SplineCoefs.Rd:54: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) SplineCoefs.Rd:55: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) SplineCoefs.Rd:56: Lost braces in \itemize; \value handles \item{}{} directly
+checkRd: (-1) make.lik.rd:21: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.lik.rd:22: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.lik.rd:23: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.lik.rd:24: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.lik.rd:25: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.lik.rd:30: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.lik.rd:31: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.lik.rd:32: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.lik.rd:33: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.lik.rd:34: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.proc.rd:24: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.proc.rd:25: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.proc.rd:26: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.proc.rd:27: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.proc.rd:28: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:58-59: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:60-63: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:64: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:65-66: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:67-68: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:74: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:75: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:76-77: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:78: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:85-87: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:88-90: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) make.transform.rd:91: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:23: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:24: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:25: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:26: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:32: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:33: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:34: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:35: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:36-37: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:48: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:49: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:50: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:68: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:69: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:99: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) setup.rd:100: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:21: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:22: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:23: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:24: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:31: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:32: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:33: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:34: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:35-36: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:47: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:48: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:49: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:58: Lost braces in \itemize; meant \describe ?
+checkRd: (-1) smooth.rd:59: Lost braces in \itemize; meant \describe ?
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... WARNING
+Variables with usage in Rd file 'FhNest.rd' but not in code:
+  ‘FhNest’
+
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of 'data' directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... OK
+Examples with CPU (user + system) or elapsed time > 5s
+           user system elapsed
+Profile  12.401 61.279   1.504
+FitMatch  2.318  9.899   0.291
+* checking PDF version of manual ... [9s/128s] OK
+* checking HTML version of manual ... OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 WARNING, 2 NOTEs

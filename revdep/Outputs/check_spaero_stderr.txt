@@ -1,0 +1,6 @@
+  Running ‘testthat.R’
+
+See
+  '/userdata/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck/00check.log'
+for details.
+
