@@ -139,7 +139,7 @@ rchk: .rchk
 revdeps: .dist
 	mkdir -p revdep
 	$(CP) $(TARBALL) revdep
-	$(REXE) -e "tools::check_packages_in_dir(\"revdep\",check_args=\"--as-cran\",reverse=list(which=\"most\"))"
+	$(REXE) -e "tools::check_packages_in_dir(\"revdep\",check_args=\"--as-cran --no-vignettes --ignore-vignettes\",reverse=list(which=\"most\"))"
 
 publish: dist manual htmlhelp
 	$(REXE) -e 'drat::insertPackage("$(PKGVERS).tar.gz",repodir="$(REPODIR)",action="prune")'
