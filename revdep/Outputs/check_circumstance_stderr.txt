@@ -1,6 +1,0 @@
-  Running ‘mif2.R’ [11s/12s]
-  Comparing ‘mif2.Rout’ to ‘mif2.Rout.save’ ...  Running ‘pfilter.R’
-  Comparing ‘pfilter.Rout’ to ‘pfilter.Rout.save’ ...  Running ‘plot_matrix.R’
-  Comparing ‘plot_matrix.Rout’ to ‘plot_matrix.Rout.save’ ...  Running ‘pmcmc.R’ [14s/14s]
-  Comparing ‘pmcmc.Rout’ to ‘pmcmc.Rout.save’ ...
-

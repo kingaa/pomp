@@ -1,6 +1,0 @@
-
-See
-  '/home/kingaa/projects/Rpkg/pomp/revdep/CollocInfer.Rcheck/00check.log'
-for details.
-
-
