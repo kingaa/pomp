@@ -56,7 +56,7 @@
 
 \newcommand{\Liu2001b}{J. Liu and M. West. Combining parameter and state estimation in simulation-based filtering. In A. Doucet, N. de Freitas, and N. J. Gordon, (eds.), \emph{Sequential Monte Carlo Methods in Practice}, pp. 197--224. Springer, New York, 2001. \doi{10.1007/978-1-4757-3437-9_10}.}
 
-\newcommand{\London1973}{W. P. London and J. A. Yorke, Recurrent outbreaks of measles, chickenpox and mumps: I. Seasonal variation in contact rates. \emph{American Journal of Epidemiology} \bold{98}, 453--468, 1973. \doi{http://aje.oxfordjournals.org/cgi/content/abstract/98/6/453}.}
+\newcommand{\London1973}{W. P. London and J. A. Yorke, Recurrent outbreaks of measles, chickenpox and mumps: I. Seasonal variation in contact rates. \emph{American Journal of Epidemiology} \bold{98}, 453--468, 1973. \doi{10.1093/oxfordjournals.aje.a121575}.}
 
 \newcommand{\Marin2012}{J.-M. Marin, P. Pudlo, C. P. Robert, and R. J. Ryder. Approximate Bayesian computational methods. \emph{Statistics and Computing} \bold{22}, 1167--1180, 2012. \doi{10.1007/s11222-011-9288-2}.}
 
