@@ -1034,12 +1034,12 @@
 - key: London1973
   author: "W. P. London and J. A. Yorke"
   year: "1973"
-  title: "Recurrent Outbreaks of Measles, Chickenpox and Mumps: I. Seasonal Variation in Contact Rates"
+  title: "Recurrent outbreaks of measles, chickenpox and mumps: I. Seasonal variation in contact rates"
   journal: "Am J Epidemiol"
   volume: "98"
   number: "6"
   pages: "453&#x2013;468"
-  url: "http://aje.oxfordjournals.org/cgi/content/abstract/98/6/453"
+  doi: "https://doi.org/10.1093/oxfordjournals.aje.a121575"
 
 - key: Magpantay2016
   author: "F. M. G. Magpantay, M. Domenech de Cell&egrave;s, P. Rohani, and A. A. King"
