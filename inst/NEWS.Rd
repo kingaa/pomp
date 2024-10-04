@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 5.11.1}{
+  \itemize{
+    \item The help-page discussion of accumulator variables has been expanded and clarified.
+  }
+}
 \section{Changes in \pkg{pomp} version 5.10.1}{
   \itemize{
     \item An improper typecast in the C snippet system, which was resolvable by many compilers but threw an error under recent versions of \pkg{clang} on MacOS, has been repaired.

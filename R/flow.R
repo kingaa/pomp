@@ -29,7 +29,11 @@
 ##' @return
 ##' \code{flow} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
 ##' If \code{x} is the returned matrix, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k]} given parameters \code{params[,j]}.
-##'
+##' @section Accumulator variables:
+##' When there are accumulator variables (as determined by the \code{\link{accumvars}} argument), their handling in the continuous-time (vectorfield) case differs from that in the discrete-time (map) case.
+##' In the latter, accumulator variables are set to zero at the beginning of each interval \eqn{(t_k,t_{k+1})}{(t[k],t[k+1])}, \eqn{k=0,1,2,\dots} over which flow computation is required.
+##' In the former, the flow computation proceeds over the entire set of intervals required, and accumulator variables are then differenced.
+##' That is, the value \eqn{a_k}{a[k]} of accumulator variable \eqn{a} at times \eqn{t_k}{t[k]}, \eqn{k=1,2,\dots} will be \eqn{A_k-A_{k-1}}{A[k]-A[k-1]}, where \eqn{A_k}{A[k]} is the solution of the corresponding differential equation at \eqn{t_k}{t[k]}.
 NULL
 
 setGeneric(
