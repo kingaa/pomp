@@ -311,15 +311,22 @@
   pages: "57&#x2013;69"
   doi: "https://doi.org/10.1214/17-STS636"
 
-- key: Breto2020
+- key: Breto2019
   author: "C. Bret&oacute;, E. L. Ionides, and A. A. King"
-  year: "2020"
+  year: "2019"
   title: "Panel data analysis via mechanistic models"
   journal: "J Am Stat Assoc"
   volume: "115"
   number: "531"
   pages: "1178&#x2013;1188"
   doi: "https://doi.org/10.1080/01621459.2019.1604367"
+
+- key: Breto2023
+  author: "C. Breto, E. L. Ionides, A. A. King, and J. Wheeler"
+  year: "2023"
+  title: "panelPomp: Inference for Panel Partially Observed Markov Processes"
+  journal: "CRAN: Contributed Packages"
+  doi: "https://doi.org/10.32614/cran.package.panelpomp"
 
 - key: Brett2023
   author: "T. S. Brett, S. Bansal, and P. Rohani"
