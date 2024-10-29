@@ -20,15 +20,11 @@ rchk\.out
 *.gcno
 *.pdf
 *.sif
-/TAGS
-/scripts
 check
 lib
 library
 rchk
-repo
 wiki
-www
 tmp
 covr.html
 covr.rds

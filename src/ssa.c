@@ -4,9 +4,7 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 
-
 #include "internal.h"
-
 
 static R_INLINE SEXP add_args (SEXP args, SEXP Snames, SEXP Pnames, SEXP Cnames)
 {
