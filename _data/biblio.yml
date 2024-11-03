@@ -1171,6 +1171,16 @@
   pages: "110209"
   doi: "https://doi.org/10.1016/j.jtbi.2020.110209"
 
+- key: Musa2024
+  author: "S. S. Musa, S. Zhao, W. Mkandawire, A. Colubri, and D. He"
+  year: "2024"
+  title: "An epidemiological modeling investigation of the long-term changing dynamics of the plague epidemics in Hong Kong"
+  journal: "Math Biosci Eng"
+  volume: "21"
+  number: "10"
+  pages: "7435&#x2013;7453"
+  doi: "https://doi.org/10.3934/mbe.2024327"
+
 - key: Navideh2019
   author: "N. Noori and P. Rohani"
   year: "2019"
@@ -1563,7 +1573,7 @@
   title: "Modeling the co-circulation of influenza and COVID-19 in Hong Kong, China"
   journal: "Advances in Continuous and Discrete Models"
   volume: "2024"
-  number: "1"
+  number: "32"
   doi: "https://doi.org/10.1186/s13662-024-03830-7"
 
 - key: Wheeler2023
