@@ -38,6 +38,16 @@
   pages: "269&#x2013;342"
   doi: "https://doi.org/10.1111/j.1467-9868.2009.00736.x"
 
+- key: Andronico2024
+  author: "A. Andronico, J. Paireau, and S. Cauchemez"
+  year: "2024"
+  title: "Integrating information from historical data into mechanistic models for influenza forecasting"
+  journal: "PLOS Computational Biology"
+  volume: "20"
+  number: "10"
+  pages: "e1012523"
+  doi: "https://doi.org/10.1371/journal.pcbi.1012523"
+
 - key: Anonymous1978
   author: "Anonymous"
   year: "1978"
@@ -449,6 +459,16 @@
   number: "Supplement_5"
   pages: "S546&#x2013;S553"
   doi: "https://doi.org/10.1093/infdis/jiz644"
+
+- key: Coffeng2024
+  author: "L. E. Coffeng, S. J. de Vlas, R. P. Singh, A. James, J. Bindroo, N. K. Sharma, A. Ali, C. Singh, S. Sharma, and M. Coleman"
+  year: "2024"
+  title: "Effect of indoor residual spraying on sandfly abundance and incidence of visceral leishmaniasis in India, 2016&#x2013;22: an interrupted time-series analysis and modelling study"
+  journal: "Lancet Infectious Diseases"
+  volume: "24"
+  number: "11"
+  pages: "1266&#x2013;1274"
+  doi: "https://doi.org/10.1016/s1473-3099(24)00420-1"
 
 - key: Colubri2020
   author: "A. Colubri, M. Kemball, K. Sani, C. Boehm, K. Mutch-Jones, B. Fry, T. Brown, and P. C. Sabeti"
