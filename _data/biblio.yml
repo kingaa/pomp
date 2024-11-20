@@ -75,6 +75,13 @@
   doi: "https://doi.org/10.1109/78.978374"
 
 - key: Asfaw2021
+  author: "K. Asfaw, E. Ionides, and A. A. King"
+  year: "2021"
+  title: "spatPomp: inference for spatiotemporal partially observed Markov processes"
+  journal: "CRAN: Contributed Packages"
+  doi: "https://doi.org/10.32614/cran.package.spatpomp"
+
+- key: Asfaw2021
   author: "K. Asfaw, J. Park, A. Ho, A. A. King, and E. L. Ionides"
   year: "2021"
   title: "Statistical inference for spatiotemporal partially observed Markov processes via the R package spatPomp"
