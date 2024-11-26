@@ -566,13 +566,6 @@
   pages: "20212358"
   doi: "https://doi.org/10.1098/rspb.2021.2358"
 
-- key: DomenechdeCelles2024
-  author: "M. Domenech de Cell&egrave;s and P. Rohani"
-  year: "2024"
-  title: "Pertussis vaccines, epidemiology and evolution"
-  journal: "Nature Reviews Microbiology"
-  doi: "https://doi.org/10.1038/s41579-024-01064-8"
-
 - key: Domeyer2022
   author: "J. E. Domeyer, J. D. Lee, H. Toyoda, B. Mehler, and B. Reimer"
   year: "2022"
@@ -612,6 +605,15 @@
   number: "413"
   pages: "eaan5325"
   doi: "https://doi.org/10.1126/scitranslmed.aan5325"
+
+- key: Earn2024
+  author: "D. J. D. Earn, S. W. Park, and B. M. Bolker"
+  year: "2024"
+  title: "Fitting epidemic models to data: a tutorial in memory of Fred Brauer"
+  journal: "Bulletin of Mathematical Biology"
+  volume: "86"
+  number: "9"
+  doi: "https://doi.org/10.1007/s11538-024-01326-9"
 
 - key: Ellner1998
   author: "S. P. Ellner, B. A. Bailey, G. V. Bobashev, A. R. Gallant, B. T. Grenfell, and D. W. Nychka"
@@ -965,6 +967,15 @@
   pages: "256&#x2013;263"
   doi: "https://doi.org/10.1890/11-0797.1"
 
+- key: Kramer2024
+  author: "S. C. Kramer, S. Pirikahu, J.-S. Casalegno, and M. Domenech de Cell&egrave;s"
+  year: "2024"
+  title: "Characterizing the interactions between influenza and respiratory syncytial viruses and their implications for epidemic control"
+  journal: "Nature Communications"
+  volume: "15"
+  number: "1"
+  doi: "https://doi.org/10.1038/s41467-024-53872-4"
+
 - key: Kucherenko2005
   author: "S. Kucherenko and Y. Sytsko"
   year: "2005"
@@ -994,6 +1005,15 @@
   number: "28"
   pages: "8786&#x2013;8791"
   doi: "https://doi.org/10.1073/pnas.1419047112"
+
+- key: Lau2024
+  author: "Y. C. Lau, S. Ryu, Z. Du, L. Wang, P. Wu, E. H. Y. Lau, B. J. Cowling, and S. T. Ali"
+  year: "2024"
+  title: "Impact of COVID-19 control measures on respiratory syncytial virus and hand-foot-and-mouth disease transmission in Hong Kong and South Korea"
+  journal: "Epidemics"
+  volume: "49"
+  pages: "100797"
+  doi: "https://doi.org/10.1016/j.epidem.2024.100797"
 
 - key: Lavine2013
   author: "J. S. Lavine, A. A. King, V. Andreasen, and O. N. Bj&oslash;rnstad"
