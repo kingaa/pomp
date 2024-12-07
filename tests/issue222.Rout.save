@@ -1,0 +1,89 @@
+
+R version 4.4.2 (2024-10-31) -- "Pile of Leaves"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> png(filename="issue222-%02d.png",res=100)
+> 
+> set.seed(974650257)
+> 
+> simulate(
++   t0=-1/52,
++   times=seq(0,10,by=1/52),
++   params=c(
++     gamma = 26, mu = 0.02, iota = 0.1,
++     Beta = 400, Beta_sd = 0.01,
++     rho = 0.6, k = 10,
++     pop = 1e6,
++     S_0 = 25/400, I_0 = 0.001, R_0 = 375/400
++   ),
++   rprocess = euler(
++     step.fun=Csnippet(r"{
++       double dW = rgammawn(Beta_sd,dt);
++       double rate[6];
++       double trans[6];
++       rate[0] = mu*pop;
++       rate[1] = Beta*(I+iota)/pop*dW/dt;
++       rate[2] = mu;
++       rate[3] = gamma;
++       rate[4] = mu;
++       rate[5] = mu;
++       trans[0] = rate[0]*dt;
++       eeulermultinom(2,S,&rate[1],dt,&trans[1]);
++       eeulermultinom(2,I,&rate[3],dt,&trans[3]);
++       eeulermultinom(1,R,&rate[5],dt,&trans[5]);
++       // balance equations
++       S += trans[0] - trans[1] - trans[2];
++       I += trans[1] - trans[3] - trans[4];
++       R += trans[3] - trans[5];
++       C += trans[3];
++       W += (dW-dt)/Beta_sd;}"
++     ),
++     delta.t=1/365
++   ),
++   rmeasure = Csnippet(r"{
++       reports = rnbinom_mu(k,rho*C);}"
++   ),
++   rinit=initlz_pf <- Csnippet(r"{
++       double m = pop/(S_0+I_0+R_0);
++       S = m*S_0;
++       I = m*I_0;
++       R = m*R_0;
++       C = 0;
++       W = 0;}"
++   ),
++   partrans=parameter_trans(
++     logit=c("rho"),
++     log=c("gamma","mu","k","Beta","Beta_sd","iota"),
++     barycentric=c("S_0","I_0","R_0")
++   ),
++   obsnames = "reports",
++   accumvars = c("W","C"),
++   statenames = c("S","I","R","C","W"),
++   paramnames = c(
++     "pop","rho","k","gamma","mu","Beta","Beta_sd","iota",
++     "S_0","I_0","R_0"
++   )
++ ) |>
++   plot()
+> 
+> dev.off()
+null device 
+          1 
+> 

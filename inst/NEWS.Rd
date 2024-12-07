@@ -2,6 +2,8 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 5.11.1}{
   \itemize{
+    \item A new addition to the C API allows one to easily compute the expectation of the Euler-multinomial.
+    The function is \code{eeulermultinom}.
     \item The help-page discussion of accumulator variables has been expanded and clarified.
   }
 }

@@ -126,6 +126,34 @@ double rgammawn
 }
 
 static R_INLINE
+void eeulermultinom
+(int m, double size, const double *rate, double dt, double *trans)
+{
+  double lambda = 0.0;
+  int j, k;
+  if ( !R_FINITE(size) || size < 0.0 || !R_FINITE(dt) || dt < 0.0) {
+    for (k = 0; k < m; k++) trans[k] = R_NaReal;
+    warn("in 'eeulermultinom': NAs produced.");
+    return;
+  }
+  for (k = 0; k < m; k++) {
+    if (!R_FINITE(rate[k]) || rate[k] < 0.0) {
+      for (j = 0; j < m; j++) trans[j] = R_NaReal;
+      warn("in 'eeulermultinom': NAs produced.");
+      return;
+    }
+    lambda += rate[k];
+  }
+  if (lambda > 0.0) {
+    size = size*(1-exp(-lambda*dt));
+    for (k = 0; k < m; k++)
+      trans[k] = size*rate[k]/lambda;
+  } else {
+    for (k = 0; k < m; k++) trans[k] = 0.0;
+  }
+}
+
+static R_INLINE
 void reulermultinom
 (int m, double size, const double *rate, double dt, double *trans)
 {

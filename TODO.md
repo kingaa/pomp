@@ -4,6 +4,7 @@
 
 ## For pomp:
 
+- Rosenzweig-MacArthur example
 - replace `melt` with `data.table::melt`?
 - YAML interface
 - "Getting Started" vignette:
