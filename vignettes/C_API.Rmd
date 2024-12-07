@@ -90,6 +90,16 @@ This must be done by the calling program.
 But note that when `reulermultinom` is called inside a **pomp** rprocess, there is no need to call either `GetRNGState()` or `PutRNGState()`;
 this is handled by **pomp**.
 
+#### Expectation of an Euler-multinomial random variable
+
+```{c eval=FALSE}
+void eeulermultinom(int m, double size, const double *rate,
+  double dt, double *trans);
+```
+
+The parameters `m`, `size`, `rate`, and `dt` have the same meaning as above.
+After a call to `eeulermultinom`, `trans` points to an array of `double`s holding the *expected values* of the Euler-multinomial random variables.
+
 #### Compute probabilities of Euler-multinomial transitions
 
 ```{c eval=FALSE}
