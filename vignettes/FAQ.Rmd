@@ -492,14 +492,14 @@ popViewport()
 
 -----
 
-To make the Euler multinomial approximation, we approximate the total exit rates as constant over a small interval $[t,t+{\Delta}t)$.
-Let the random variable ${\Delta}n_k$, $k=1,\dots,K$, be the number that exit by path $k$ in this time interval and ${\Delta}n_0$ be the number that remain.
-Under this assumption, the vector of numbers of exits, $({\Delta}n_{0},{\Delta}n_{1},\dots,{\Delta}n_{K})$ is multinomially distributed with size $N_t$ and probabilities $(p_k)_{k=0}^K$, where 
-$$p_0 = \exp\left(-\sum\!\mu_i\,{\Delta}t\right),$$
+To make the Euler multinomial approximation, we approximate the total exit rate as constant over a small interval $[t,t+\Delta{t})$.
+Let the random variable $\Delta{n_k}$, $k=1,\dots,K$, be the number that exit by path $k$ in this time interval and $\Delta{n_0}$ be the number that remain.
+Under this assumption, the vector of numbers of exits, $(\Delta{n_{0}},\Delta{n_{1}},\dots,\Delta{n_{K}})$ is multinomially distributed with size $N_t$ and probabilities $(p_k)_{k=0}^K$, where 
+$$p_0 = \exp\left(-\sum\!\mu_i\,\Delta{t}\right),$$
 and
 $$p_k = \frac{\mu_k}{\sum\!\mu_i}\,\left(1-p_0\right),\qquad k=1,\dots,K.$$
-By way of shorthand, we say that ${\Delta}n=({\Delta}n_k)_{k=1}^K$ is *Euler-multinomially distributed* with size $N_t$, rates $\mu=(\mu_k)_{k=1}^K$, and time-step ${\Delta}t$ and we write
-$${\Delta}n \sim \mathrm{Eulermultinom}\left(N_t,\mu,{\Delta}t\right).$$
+By way of shorthand, we say that $\Delta{n}=(\Delta{n_k})_{k=1}^K$ is *Euler-multinomially distributed* with size $N_t$, rates $\mu=(\mu_k)_{k=1}^K$, and time-step $\Delta{t}$ and we write
+$$\Delta{n} \sim \mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right).$$
 
 When constructing a POMP for a compartmental model using the Euler multinomial approximation, to write the rprocess basic component, one uses the `euler` plugin.
 One chooses the time step using the `delta.t` argument.
@@ -510,9 +510,10 @@ For example, if `rate` is a [pointer](https://www.tutorialspoint.com/cprogrammin
 reulermultinom(K,N,rate,dt,dn);
 ```
 will result in a random sample from the Euler multinomial distribution (with timestep dt) being stored in `dn[0]`, ..., `dn[K-1]`.
-In the foregoing, we've assumed that the quantities $N_t$ and $K$ are stored in the memory locations denoted `N` and `K`, respectively.
-Note that the rules for `step.fun` C snippets guarantee that the operative time step (${\Delta}t$) is stored in `dt` and that this will not exceed the user-specified `delta.t`.
+In the foregoing, we've assumed that the quantities $N_t$ and $K$ are stored in the integer variables `N` and `K`, respectively, and that the double precision variable `dt` holds the timestep.
+Note that the rules for `step.fun` C snippets guarantee that `dt` will be the operative time step ($\Delta{t}$).
 See [`?rprocess_spec`](https://kingaa.github.io/manuals/pomp/html/rprocess_spec.html) and [`?Csnippet`](https://kingaa.github.io/manuals/pomp/html/csnippet.html) for more information.
+See also the documentation for the [**pomp** C API](https://kingaa.github.io/pomp/C_API.html).
 
 When the step function is provided as an **R** function, the corresponding call is
 ```{r eval=FALSE}

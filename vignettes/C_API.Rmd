@@ -65,8 +65,52 @@ The return value is the probability or log probability (as requested).
 
 ### Euler-multinomial distribution
 
-#### Simulate Euler-multinomial transitions
+The Euler multinomial approximation of a continuous-time, stochastic compartmental model is as follows.
+Suppose a compartment has occupancy $N_t$ at time $t$ and that there are $K$ ways of exiting the compartment, with per capita rates (hazards) $\mu_1,\dots,\mu_K$, respectively.
 
+-----
+
+```{r compartment-diagram,echo=FALSE,purl=FALSE,out.width="200px",out.height="200px",dpi=100,fig.height=3,fig.width=3,fig.align="center",fig.cap="**Diagram:** *A single compartment within a compartmental model.  Here, there are $K=2$ paths out of the compartment.*"}
+library(grid)
+vp <- viewport(width=unit(0.95,"npc"),height=unit(0.95,"npc"))
+pushViewport(vp)
+grid.rect(x=c(1/4),y=3/4,width=1/2,height=1/2,just=c(0.5,0.5),gp=gpar(fill="white",lwd=3))
+grid.text(x=c(1/4),y=3/4,label=c(expression(N[t])),gp=gpar(fontsize=36))
+grid.text(x=unit(c(3/4,1/4),"npc")+unit(c(0,18),"point"),y=unit(c(3/4,1/4),"npc")+unit(c(18,0),"point"),
+          label=c(expression(mu[1]),expression(mu[2])),gp=gpar(fontsize=24))
+grid.lines(x=c(1/2,1),y=3/4,arrow=arrow(length=unit(0.04,"npc")),gp=gpar(lwd=3))
+grid.lines(x=c(1/4),y=c(1/2,0),arrow=arrow(length=unit(0.04,"npc")),gp=gpar(lwd=3))
+popViewport()
+```
+
+-----
+
+<a id="eulermultinomial-definition"></a>
+To make the Euler multinomial approximation, we approximate the total exit rate as constant over a small interval $[t,t+\Delta{t})$.
+Let the random variable $\Delta{n_k}$, $k=1,\dots,K$, be the number that exit by path $k$ in this time interval and $\Delta{n_0}$ be the number that remain.
+Under this assumption, the vector of numbers of exits, $(\Delta{n_{0}},\Delta{n_{1}},\dots,\Delta{n_{K}})$ is multinomially distributed with size $N_t$ and probabilities $(p_k)_{k=0}^K$, where 
+$$p_0 = \exp\left(-\sum\!\mu_i\,\Delta{t}\right),$$
+and
+$$p_k = \frac{\mu_k}{\sum\!\mu_i}\,\left(1-p_0\right),\qquad k=1,\dots,K.$$
+By way of shorthand, we say that $\Delta{n}=(\Delta{n_k})_{k=1}^K$ is *Euler-multinomially distributed* with size $N_t$, rates $\mu=(\mu_k)_{k=1}^K$, and time-step $\Delta{t}$ and we write
+$$\Delta{n} \sim \mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right).$$
+
+The **pomp** C API provides three functions that relate to the Euler-multinomial distribution.
+Their descriptions follow.
+
+#### Simulate an Euler-multinomial random variable
+
+The `reulermultinom` function draws a random sample from this distribution.
+Using the notation above, one has to pack the $K$ rates $\mu_1,\dots,\mu_K$ into contiguous memory locations and retrieve the results in (a different set of) contiguous memory locations.
+For example, if `rate` is a [pointer](https://www.tutorialspoint.com/cprogramming/c_pointers) to $K$ contiguous memory locations holding the rates and `dn` is a pointer to $K$ contiguous memory locations ready to hold the results, then
+```{c eval=FALSE}
+reulermultinom(K,N,rate,dt,dn);
+```
+will result in a random sample from the Euler multinomial distribution (with timestep dt) being stored in `dn[0]`, ..., `dn[K-1]`.
+In the foregoing, we've assumed that the quantities $N_t$ and $K$ are stored in the integer variables `N` and `K`, respectively, and that the double precision variable `dt` holds the timestep.
+
+<a id="reulermultinom-prototype"></a>
+The prototype is:
 
 ```{c eval=FALSE}
 void reulermultinom(int m, double size, const double *rate,
@@ -81,26 +125,21 @@ Input:
 - `dt`, a positive real number, is the duration of time interval.
 - `trans` is a pointer to the vector that will hold the random deviate.
 
+Output:
+
 On return, `trans[0]`, ..., `trans[m-1]` will be the numbers of individuals making each of the respective transitions.
 
-See [`?reulermultinom`](https://kingaa.github.io/manuals/pomp/html/eulermultinom.html) and [FAQ 3.6](./FAQ.html#eulermultinomial-approximation) for more on the Euler-multinomial distributions.
+See [`?reulermultinom`](https://kingaa.github.io/manuals/pomp/html/eulermultinom.html) for more on the Euler-multinomial distributions.
 
 **NB:** `reulermultinom` does not call `GetRNGstate()` or `PutRNGstate()` internally.
 This must be done by the calling program.
 But note that when `reulermultinom` is called inside a **pomp** rprocess, there is no need to call either `GetRNGState()` or `PutRNGState()`;
 this is handled by **pomp**.
 
-#### Expectation of an Euler-multinomial random variable
+#### Probability distribution of an Euler-multinomial random variable
 
-```{c eval=FALSE}
-void eeulermultinom(int m, double size, const double *rate,
-  double dt, double *trans);
-```
-
-The parameters `m`, `size`, `rate`, and `dt` have the same meaning as above.
-After a call to `eeulermultinom`, `trans` points to an array of `double`s holding the *expected values* of the Euler-multinomial random variables.
-
-#### Compute probabilities of Euler-multinomial transitions
+If $\Delta{n} \sim \mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right)$, then the probability it takes a specific value can be computed using the C function `deulermultinom`.
+Its prototype is:
 
 ```{c eval=FALSE}
 double deulermultinom(int m, double size, const double *rate,
@@ -115,13 +154,35 @@ Input:
 - `dt`, a positive real number, is the duration of time interval.
 - `trans` is pointer to vector containing the data, which are numbers of individuals making the respective transitions.
 - `give_log` is an integer:
-	- `give_log=1` if log probability is desired;
-	- `give_log=0` if probability is desired.
+	- `give_log=0` requests that the probability be returned.
+	- `give_log=1` requests that the log probability to be returned.
+
+Output:
 
 The value returned is the probability or log probability (as requested).
 
-See [`?deulermultinom`](https://kingaa.github.io/manuals/pomp/html/eulermultinom.html) and [FAQ 3.6](./FAQ.html#eulermultinomial-approximation) for more on the Euler-multinomial distributions.
+See also [`?deulermultinom`](https://kingaa.github.io/manuals/pomp/html/eulermultinom.html).
 
+#### Expectation of an Euler-multinomial random variable
+
+If $\Delta{n} \sim \mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right)$, then the expectation of its $i$-th component is
+$$\mathbb{E}\left[\Delta{n}_i\right]=p_k N_t,$$
+where $p_k$ is as [defined above](#eulermultinomial-definition).
+The C function `eeulermultinom` computes this.
+Its prototype is:
+
+```{c eval=FALSE}
+void eeulermultinom(int m, double size, const double *rate,
+  double dt, double *trans);
+```
+
+Input:
+
+The parameters `m`, `size`, `rate`, and `dt` have the same meaning [as above](#reulermultinom-prototype).
+
+Output:
+
+After a call to `eeulermultinom`, `trans` points to an array of `double`s holding the *expected values* of the Euler-multinomial random variables.
 
 ### Gamma white noise
 
@@ -224,12 +285,12 @@ double exp2geom_rate_correction(double R, double dt);
 ```
 
 This function computes $r$ such that if
-$$N \sim \mathrm{Geometric}\left(p=1-e^{-r\,{\Delta}t}\right)$$
+$$N \sim \mathrm{Geometric}\left(p=1-e^{-r\,\Delta{t}}\right)$$
 and 
 $$T \sim \mathrm{Exponential}\left(\mathrm{rate}=R\right),$$
-then $\mathbb{E}\left[N\,{\Delta}t\right] = \mathbb{E}\left[T\right]$.
+then $\mathbb{E}\left[N\,\Delta{t}\right] = \mathbb{E}\left[T\right]$.
 That is, $r$ is the rate for an Euler process that gives the same expected waiting time as the exponential process it approximates.
-In particular $r \to R$ as ${\Delta}t \to 0$.
+In particular $r \to R$ as $\Delta{t} \to 0$.
 
 
 ## Access to the userdata
