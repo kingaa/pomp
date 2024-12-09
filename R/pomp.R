@@ -121,8 +121,7 @@
 ##' @param userdata optional list; the elements of this list will be available to basic model components.
 ##' This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
 ##' See \link[=userdata]{userdata} for information on how to use this facility.
-##' @param ... additional arguments will be added to the \code{userdata} list, with a warning.
-##' In a future release, this warning will become an error.
+##' @param ... additional arguments will generate an error.
 ##' @param verbose logical; if \code{TRUE}, diagnostic messages will be printed to the console.
 ##' @return
 ##' The \code{pomp} constructor function returns an object, call it \code{P}, of class \sQuote{pomp}.
@@ -148,7 +147,10 @@ NULL
 
 ##' @rdname pomp
 ##' @export
-pomp <- function (data, times, t0, ...,
+pomp <- function (
+  data,
+  ...,
+  times, t0,
   rinit, dinit,
   rprocess, dprocess,
   rmeasure, dmeasure, emeasure, vmeasure,
@@ -161,7 +163,8 @@ pomp <- function (data, times, t0, ...,
   userdata,
   cdir = getOption("pomp_cdir", NULL), cfile,
   shlib.args, compile = TRUE,
-  verbose = getOption("verbose", FALSE)) {
+  verbose = getOption("verbose", FALSE)
+) {
 
   if (missing(data))
     reqd_arg("pomp","data")
@@ -286,7 +289,8 @@ setMethod(
   signature=signature(data="array", times="numeric"),
   definition = function (
     data, times,
-    ..., userdata,
+    ...,
+    userdata,
     rinit, dinit, rprocess, dprocess,
     rmeasure, dmeasure, emeasure, vmeasure,
     skeleton, rprior, dprior,
@@ -325,6 +329,7 @@ setMethod(
 
     pomp_internal(
       data=data,
+      ...,
       times=times,
       rinit=rinit,
       dinit=dinit,
@@ -340,8 +345,7 @@ setMethod(
       partrans=partrans,
       params=params,
       covar=covar,
-      userdata=userdata,
-      ...
+      userdata=userdata
     )
 
   }
@@ -360,8 +364,10 @@ setMethod(
   "construct_pomp",
   signature=signature(data="pomp", times="NULL"),
   definition = function (
-    data, times, t0, timename,
-    ..., userdata,
+    data, times, t0,
+    ...,
+    timename,
+    userdata,
     rinit, dinit, rprocess, dprocess,
     rmeasure, dmeasure, emeasure, vmeasure,
     skeleton, rprior, dprior, partrans, params, covar,
@@ -413,6 +419,7 @@ setMethod(
 
     pomp_internal(
       data=data@data,
+      ...,
       times=times,
       t0=t0,
       timename=timename,
@@ -435,16 +442,16 @@ setMethod(
       params=params,
       .solibs=data@solibs,
       .userdata=data@userdata,
-      cfile=cfile,
-      ...
+      cfile=cfile
     )
 
   }
 )
 
 pomp_internal <- function (
-  data, times, t0, timename,
+  data,
   ...,
+  times, t0, timename,
   rinit, dinit, rprocess, dprocess,
   rmeasure, dmeasure, emeasure, vmeasure,
   skeleton, rprior, dprior,

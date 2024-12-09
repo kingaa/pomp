@@ -103,10 +103,13 @@ setMethod(
 setMethod(
   "probe",
   signature=signature(data="data.frame"),
-  definition=function (data,
+  definition=function (
+    data,
+    ...,
     probes, nsim, seed = NULL,
     params, rinit, rprocess, rmeasure,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       probe_internal(data,probes=probes,nsim=nsim,seed=seed,
@@ -124,14 +127,16 @@ setMethod(
 setMethod(
   "probe",
   signature=signature(data="pomp"),
-  definition=function (data,
-    probes, nsim, seed = NULL, ...,
-    verbose = getOption("verbose", FALSE))
-  {
+  definition=function (
+    data,
+    ...,
+    probes,
+    nsim, seed = NULL,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
-      probe_internal(data,probes=probes,nsim=nsim,seed=seed,
-        ...,verbose=verbose),
+      probe_internal(data,...,probes=probes,nsim=nsim,seed=seed,verbose=verbose),
       error = function (e) pStop(who="probe",conditionMessage(e))
     )
 
@@ -143,9 +148,14 @@ setMethod(
 setMethod(
   "probe",
   signature=signature(data="probed_pomp"),
-  definition=function (data,
-    probes, nsim, seed = NULL, ...,
-    verbose = getOption("verbose", FALSE)) {
+  definition=function (
+    data,
+    ...,
+    probes,
+    nsim,
+    seed = NULL,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(probes)) probes <- data@probes
     if (missing(nsim)) nsim <- data@nsim
@@ -156,8 +166,12 @@ setMethod(
   }
 )
 
-probe_internal <- function (object, probes, nsim, seed, ...,
-  .gnsi = TRUE, verbose) {
+probe_internal <- function (
+  object,
+  ...,
+  probes, nsim, seed,
+  .gnsi = TRUE, verbose
+) {
 
   verbose <- as.logical(verbose)
 

@@ -12,6 +12,7 @@
 \usage{
 \S4method{pmcmc}{data.frame}(
   data,
+  ...,
   Nmcmc = 1,
   proposal,
   Np,
@@ -20,35 +21,37 @@
   rprocess,
   dmeasure,
   dprior,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{pmcmc}{pomp}(
   data,
+  ...,
   Nmcmc = 1,
   proposal,
   Np,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{pmcmc}{pfilterd_pomp}(
   data,
+  ...,
   Nmcmc = 1,
   proposal,
   Np,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{pmcmc}{pmcmcd_pomp}(data, Nmcmc, proposal, ..., verbose = getOption("verbose", FALSE))
+\S4method{pmcmc}{pmcmcd_pomp}(data, ..., Nmcmc, proposal, verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
+
+\item{...}{additional arguments are passed to \code{\link{pomp}}.
+This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
 
 \item{Nmcmc}{The number of PMCMC iterations to perform.}
 
@@ -86,8 +89,6 @@ For more information, see \link[=dmeasure_spec]{dmeasure specification}.}
 \item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 For more information, see \link[=prior_spec]{prior specification}.
 Setting \code{dprior=NULL} resets the prior distribution to its default, which is a flat improper prior.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

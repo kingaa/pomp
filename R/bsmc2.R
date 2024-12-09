@@ -88,14 +88,18 @@ setMethod(
 setMethod(
   "bsmc2",
   signature=signature(data="data.frame"),
-  definition = function (data,
+  definition = function (
+    data,
+    ...,
     Np, smooth = 0.1,
     params, rprior, rinit, rprocess, dmeasure, partrans,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       bsmc2_internal(
         data,
+        ...,
         Np=Np,
         smooth=smooth,
         params=params,
@@ -104,7 +108,6 @@ setMethod(
         rprocess=rprocess,
         dmeasure=dmeasure,
         partrans=partrans,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="bsmc2",conditionMessage(e))
@@ -118,16 +121,19 @@ setMethod(
 setMethod(
   "bsmc2",
   signature=signature(data="pomp"),
-  definition = function (data,
+  definition = function (
+    data,
+    ...,
     Np, smooth = 0.1,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       bsmc2_internal(
         data,
+        ...,
         Np=Np,
         smooth=smooth,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="bsmc2",conditionMessage(e))
@@ -158,7 +164,12 @@ setMethod(
   }
 )
 
-bsmc2_internal <- function (object, Np, smooth, ..., verbose, .gnsi = TRUE) {
+bsmc2_internal <- function (
+  object,
+  ...,
+  Np, smooth,
+  verbose, .gnsi = TRUE
+) {
 
   verbose <- as.logical(verbose)
 

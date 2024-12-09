@@ -5,6 +5,8 @@
 ## For pomp:
 
 - Rosenzweig-MacArthur example
+- Make certain error checks in inline codes depend on NDEBUG flag
+- **R** interface to `eeulermultinom`
 - replace `melt` with `data.table::melt`?
 - YAML interface
 - "Getting Started" vignette:
@@ -12,6 +14,7 @@
   - include discussion of forecasting
 - ARMA benchmarking (a la **spatPomp**)?
 - make `mcap` into a generic, provide a method for data frames and a plotting method
+
 - overriding C snippets should overwrite/delete old C snippets, keep one C snippet file
 - `options(pomp_cdir)` should take effect *at run time* and not at initial compile time as currently
 - `pomp_fun` should be able to take symbols

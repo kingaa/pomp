@@ -10,8 +10,10 @@
 \title{Simulations of a partially-observed Markov process}
 \usage{
 \S4method{simulate}{missing}(
+  object,
   nsim = 1,
   seed = NULL,
+  ...,
   times,
   t0,
   params,
@@ -20,7 +22,6 @@
   rmeasure,
   format = c("pomps", "arrays", "data.frame"),
   include.data = FALSE,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
@@ -28,6 +29,7 @@
   object,
   nsim = 1,
   seed = NULL,
+  ...,
   times,
   t0,
   params,
@@ -36,7 +38,6 @@
   rmeasure,
   format = c("pomps", "arrays", "data.frame"),
   include.data = FALSE,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
@@ -44,21 +45,26 @@
   object,
   nsim = 1,
   seed = NULL,
+  ...,
   format = c("pomps", "arrays", "data.frame"),
   include.data = FALSE,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{simulate}{objfun}(object, nsim = 1, seed = NULL, ...)
 }
 \arguments{
+\item{object}{optional;
+if present, it should be a data frame or a \sQuote{pomp} object.}
+
 \item{nsim}{The number of simulations to perform.
 Note that the number of replicates will be \code{nsim} times \code{ncol(params)}.}
 
 \item{seed}{optional integer;
 if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.
 The RNG will be restored to its original state afterward.}
+
+\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{times}{the sequence of observation times.
 \code{times} must indicate the column of observation times by name or index.
@@ -103,12 +109,7 @@ An ordered factor variable, \sQuote{.id}, distinguishes one simulation from anot
 \item{include.data}{if \code{TRUE}, the original data and covariates (if any) are included (with \code{.id = "data"}).
 This option is ignored unless \code{format = "data.frame"}.}
 
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
-
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
-
-\item{object}{optional;
-if present, it should be a data frame or a \sQuote{pomp} object.}
 }
 \value{
 A single \dQuote{pomp} object,

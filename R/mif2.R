@@ -125,16 +125,21 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="data.frame"),
-  definition = function (data,
-    Nmif = 1, rw.sd,
+  definition = function (
+    data,
+    ...,
+    Nmif = 1,
+    rw.sd,
     cooling.type = c("geometric", "hyperbolic"), cooling.fraction.50,
     Np,
     params, rinit, rprocess, dmeasure, partrans,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       mif2_internal(
         data,
+        ...,
         Nmif=Nmif,
         rw.sd=rw.sd,
         cooling.type=match.arg(cooling.type),
@@ -145,7 +150,6 @@ setMethod(
         rprocess=rprocess,
         dmeasure=dmeasure,
         partrans=partrans,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="mif2",conditionMessage(e))
@@ -159,20 +163,26 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="pomp"),
-  definition = function (data,
-    Nmif = 1, rw.sd,
-    cooling.type = c("geometric", "hyperbolic"), cooling.fraction.50,
-    Np, ..., verbose = getOption("verbose", FALSE)) {
+  definition = function (
+    data,
+    ...,
+    Nmif = 1,
+    rw.sd,
+    cooling.type = c("geometric", "hyperbolic"),
+    cooling.fraction.50,
+    Np,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       mif2_internal(
         data,
+        ...,
         Nmif=Nmif,
         rw.sd=rw.sd,
         cooling.type=match.arg(cooling.type),
         cooling.fraction.50=cooling.fraction.50,
         Np=Np,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="mif2",conditionMessage(e))
@@ -186,17 +196,20 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="pfilterd_pomp"),
-  definition = function (data,
+  definition = function (
+    data,
+    ...,
     Nmif = 1, Np,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(Np)) Np <- data@Np
 
     mif2(
       as(data,"pomp"),
+      ...,
       Nmif=Nmif,
       Np=Np,
-      ...,
       verbose=verbose
     )
   }
@@ -207,10 +220,15 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="mif2d_pomp"),
-  definition = function (data,
-    Nmif, rw.sd,
-    cooling.type, cooling.fraction.50,
-    ..., verbose = getOption("verbose", FALSE)) {
+  definition = function (
+    data,
+    ...,
+    Nmif,
+    rw.sd,
+    cooling.type,
+    cooling.fraction.50,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(Nmif)) Nmif <- data@Nmif
     if (missing(rw.sd)) rw.sd <- data@rw.sd
@@ -219,11 +237,11 @@ setMethod(
 
     mif2(
       as(data,"pfilterd_pomp"),
+      ...,
       Nmif=Nmif,
       rw.sd=rw.sd,
       cooling.type=cooling.type,
       cooling.fraction.50=cooling.fraction.50,
-      ...,
       verbose=verbose
     )
 
@@ -236,14 +254,18 @@ setMethod(
 setMethod(
   "continue",
   signature=signature(object="mif2d_pomp"),
-  definition = function (object, Nmif = 1, ...) {
+  definition = function (
+    object,
+    ...,
+    Nmif = 1
+  ) {
 
     ndone <- object@Nmif
 
     obj <- mif2(
       object,
-      Nmif=Nmif,
       ...,
+      Nmif=Nmif,
       .ndone=ndone,
       .paramMatrix=object@paramMatrix
     )
@@ -260,10 +282,19 @@ setMethod(
   }
 )
 
-mif2_internal <- function (object, Nmif, rw.sd,
-  cooling.type, cooling.fraction.50, Np, ..., verbose,
-  .ndone = 0L, .indices = integer(0), .paramMatrix = NULL,
-  .gnsi = TRUE) {
+mif2_internal <- function (
+  object,
+  ...,
+  Nmif, rw.sd,
+  cooling.type,
+  cooling.fraction.50,
+  Np,
+  verbose,
+  .ndone = 0L,
+  .indices = integer(0),
+  .paramMatrix = NULL,
+  .gnsi = TRUE
+) {
 
   verbose <- as.logical(verbose)
 
@@ -396,8 +427,13 @@ mif2_cooling <- function (type, fraction, ntimes) {
   )
 }
 
-mif2_pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
-  verbose, .indices = integer(0), .gnsi = TRUE) {
+mif2_pfilter <- function (
+  object,
+  params, Np, mifiter, rw.sd, cooling.fn,
+  verbose,
+  .indices = integer(0),
+  .gnsi = TRUE
+) {
 
   gnsi <- as.logical(.gnsi)
   verbose <- as.logical(verbose)

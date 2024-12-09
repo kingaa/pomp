@@ -84,14 +84,16 @@ setMethod(
   definition=function (
     data,
     Np,
+    ...,
     params, rinit, rprocess, dmeasure,
     trigger = 1, target = 0.5,
-    ...,
-    verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       wpfilter_internal(
         data,
+        ...,
         Np=Np,
         rinit=rinit,
         rprocess=rprocess,
@@ -99,7 +101,6 @@ setMethod(
         params=params,
         trigger=trigger,
         target=target,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="wpfilter",conditionMessage(e))
@@ -116,17 +117,18 @@ setMethod(
   definition=function (
     data,
     Np,
-    trigger = 1, target = 0.5,
     ...,
-    verbose = getOption("verbose", FALSE)) {
+    trigger = 1, target = 0.5,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       wpfilter_internal(
         data,
+        ...,
         Np=Np,
         trigger=trigger,
         target=target,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="wpfilter",conditionMessage(e))
@@ -140,22 +142,35 @@ setMethod(
 setMethod(
   "wpfilter",
   signature=signature(data="wpfilterd_pomp"),
-  function (data, Np, trigger, target,
-    ..., verbose = getOption("verbose", FALSE)) {
+  function (
+    data,
+    ...,
+    Np, trigger, target,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(Np)) Np <- data@Np
     if (missing(trigger)) trigger <- data@trigger
     if (missing(target)) target <- data@target
 
-    wpfilter(as(data,"pomp"),Np=Np,
-      trigger=trigger,target=target,
-      ...,verbose=verbose)
+    wpfilter(
+      as(data,"pomp"),
+      ...,
+      Np=Np,
+      trigger=trigger,
+      target=target,
+      verbose=verbose
+    )
 
   }
 )
 
-wpfilter_internal <- function (object, Np, trigger, target, ...,
-  .gnsi = TRUE, verbose = FALSE) {
+wpfilter_internal <- function (
+  object,
+  ...,
+  Np, trigger, target,
+  .gnsi = TRUE, verbose = FALSE
+) {
 
   verbose <- as.logical(verbose)
 

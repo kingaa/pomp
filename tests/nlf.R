@@ -93,7 +93,7 @@ stopifnot(sum(grepl("logql = ",out))==1)
 
 po <- ou2
 time(po) <- c(1:5,8:10)
-try(po |> nlf_objfun(lags=c(1,2,3),period=5,,ti=100,tf=500))
+try(po |> nlf_objfun(lags=c(1,2,3),period=5,ti=100,tf=500))
 
 po <- ou2
 po@data[2,15] <- NA

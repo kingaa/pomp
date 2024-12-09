@@ -12,6 +12,7 @@
 \usage{
 \S4method{mif2}{data.frame}(
   data,
+  ...,
   Nmif = 1,
   rw.sd,
   cooling.type = c("geometric", "hyperbolic"),
@@ -22,30 +23,29 @@
   rprocess,
   dmeasure,
   partrans,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{mif2}{pomp}(
   data,
+  ...,
   Nmif = 1,
   rw.sd,
   cooling.type = c("geometric", "hyperbolic"),
   cooling.fraction.50,
   Np,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{mif2}{pfilterd_pomp}(data, Nmif = 1, Np, ..., verbose = getOption("verbose", FALSE))
+\S4method{mif2}{pfilterd_pomp}(data, ..., Nmif = 1, Np, verbose = getOption("verbose", FALSE))
 
 \S4method{mif2}{mif2d_pomp}(
   data,
+  ...,
   Nmif,
   rw.sd,
   cooling.type,
   cooling.fraction.50,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 }
@@ -54,6 +54,9 @@
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
+
+\item{...}{additional arguments are passed to \code{\link{pomp}}.
+This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
 
 \item{Nmif}{The number of filtering iterations to perform.}
 
@@ -105,8 +108,6 @@ When working with such an algorithm and a model for which the parameters are con
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{parameter_trans}.
 Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

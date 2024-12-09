@@ -10,12 +10,12 @@
 \title{Trajectory of a deterministic model}
 \usage{
 \S4method{trajectory}{missing}(
+  ...,
   t0,
   times,
   params,
   skeleton,
   rinit,
-  ...,
   ode_control = list(),
   format = c("pomps", "array", "data.frame"),
   verbose = getOption("verbose", FALSE)
@@ -36,8 +36,8 @@
 
 \S4method{trajectory}{pomp}(
   object,
-  params,
   ...,
+  params,
   skeleton,
   rinit,
   ode_control = list(),
@@ -48,6 +48,8 @@
 \S4method{trajectory}{traj_match_objfun}(object, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
+\item{...}{additional arguments are passed to \code{\link{pomp}}.}
+
 \item{t0}{The zero-time, i.e., the time of the initial state.
 This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
 
@@ -68,8 +70,6 @@ Setting \code{skeleton=NULL} removes the deterministic skeleton.}
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rinit=NULL} sets the initial-state simulator to its default.
 For more information, see \link[=rinit_spec]{rinit specification}.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{ode_control}{optional list;
 the elements of this list will be passed to \code{\link[deSolve]{ode}} if the skeleton is a vectorfield, and ignored if it is a map.}

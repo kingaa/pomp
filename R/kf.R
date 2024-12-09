@@ -63,7 +63,8 @@
 ##
 ##' @export
 kalmanFilter <- function (
-  object, X0 = rinit(object),
+  object,
+  X0 = rinit(object),
   A, Q, C, R, tol = 1e-6
 ) {
 

@@ -17,39 +17,42 @@
 \usage{
 \S4method{enkf}{data.frame}(
   data,
+  ...,
   Np,
   params,
   rinit,
   rprocess,
   emeasure,
   vmeasure,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{enkf}{pomp}(data, Np, ..., verbose = getOption("verbose", FALSE))
+\S4method{enkf}{pomp}(data, ..., Np, verbose = getOption("verbose", FALSE))
 
-\S4method{enkf}{kalmand_pomp}(data, Np, ..., verbose = getOption("verbose", FALSE))
+\S4method{enkf}{kalmand_pomp}(data, ..., Np, verbose = getOption("verbose", FALSE))
 
 \S4method{eakf}{data.frame}(
   data,
+  ...,
   Np,
   params,
   rinit,
   rprocess,
   emeasure,
   vmeasure,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{eakf}{pomp}(data, Np, ..., verbose = getOption("verbose", FALSE))
+\S4method{eakf}{pomp}(data, ..., Np, verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
+
+\item{...}{additional arguments are passed to \code{\link{pomp}}.
+This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
 
 \item{Np}{integer; the number of particles to use, i.e., the size of the ensemble.}
 
@@ -74,8 +77,6 @@ For more information, see \link[=emeasure_spec]{emeasure specification}.}
 This can be specified as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{vmeasure=NULL} removes the vmeasure component.
 For more information, see \link[=vmeasure_spec]{vmeasure specification}.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

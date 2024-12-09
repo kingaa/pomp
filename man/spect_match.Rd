@@ -14,6 +14,7 @@
 \usage{
 \S4method{spect_objfun}{data.frame}(
   data,
+  ...,
   est = character(0),
   weights = 1,
   fail.value = NA,
@@ -28,12 +29,12 @@
   rprocess,
   rmeasure,
   partrans,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{spect_objfun}{pomp}(
   data,
+  ...,
   est = character(0),
   weights = 1,
   fail.value = NA,
@@ -43,12 +44,12 @@
   seed = NULL,
   transform.data = identity,
   detrend = c("none", "mean", "linear", "quadratic"),
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{spect_objfun}{spectd_pomp}(
   data,
+  ...,
   est = character(0),
   weights = 1,
   fail.value = NA,
@@ -58,17 +59,16 @@
   seed = NULL,
   transform.data = identity,
   detrend,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{spect_objfun}{spect_match_objfun}(
   data,
+  ...,
   est,
   weights,
   fail.value,
   seed = NULL,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 }
@@ -77,6 +77,9 @@
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
+
+\item{...}{additional arguments are passed to \code{\link{pomp}}.
+This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
 
 \item{est}{character vector; the names of parameters to be estimated.}
 
@@ -135,8 +138,6 @@ When working with such an algorithm and a model for which the parameters are con
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{parameter_trans}.
 Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

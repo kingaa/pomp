@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 6.0.1}{
+  \itemize{
+    \item In calls to \pkg{pomp} elementary and inference algorithms, it is now necessary to pass all arguments by name.
+    This has always been good practice, but from this release, calls that rely on the position of arguments will typically generate errors.
+  }
+}
 \section{Changes in \pkg{pomp} version 6.0.0}{
   \itemize{
     \item From version 5.8.4, the manner in which extra model elements (\code{userdata}) are supplied has changed.

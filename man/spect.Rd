@@ -14,6 +14,7 @@
 \usage{
 \S4method{spect}{data.frame}(
   data,
+  ...,
   vars,
   kernel.width,
   nsim,
@@ -24,35 +25,34 @@
   rinit,
   rprocess,
   rmeasure,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{spect}{pomp}(
   data,
+  ...,
   vars,
   kernel.width,
   nsim,
   seed = NULL,
   transform.data = identity,
   detrend = c("none", "mean", "linear", "quadratic"),
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{spect}{spectd_pomp}(
   data,
+  ...,
   vars,
   kernel.width,
   nsim,
   seed = NULL,
   transform.data,
   detrend,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{spect}{spect_match_objfun}(data, seed, ..., verbose = getOption("verbose", FALSE))
+\S4method{spect}{spect_match_objfun}(data, ..., seed, verbose = getOption("verbose", FALSE))
 
 \S4method{spect}{objfun}(data, seed = NULL, ...)
 }
@@ -61,6 +61,9 @@
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
+
+\item{...}{additional arguments are passed to \code{\link{pomp}}.
+This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
 
 \item{vars}{optional; names of observed variables for which the power spectrum will be computed.
 By default, the spectrum will be computed for all observables.}
@@ -98,8 +101,6 @@ For more information, see \link[=rprocess_spec]{rprocess specification for the d
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 Setting \code{rmeasure=NULL} removes the measurement model simulator.
 For more information, see \link[=rmeasure_spec]{rmeasure specification}.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

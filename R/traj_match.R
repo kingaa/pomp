@@ -77,14 +77,18 @@ setMethod(
   signature=signature(data="data.frame"),
   definition=function(
     data,
-    est = character(0), fail.value = NA,
+    ...,
+    est = character(0),
+    fail.value = NA,
     ode_control = list(),
     params, rinit, skeleton, dmeasure, partrans,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       tmof_internal(
         data,
+        ...,
         est=est,
         fail.value=fail.value,
         ode_control=ode_control,
@@ -93,7 +97,6 @@ setMethod(
         skeleton=skeleton,
         dmeasure=dmeasure,
         partrans=partrans,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="traj_objfun",conditionMessage(e))
@@ -109,16 +112,20 @@ setMethod(
   signature=signature(data="pomp"),
   definition=function (
     data,
-    est = character(0), fail.value = NA, ode_control = list(),
-    ..., verbose = getOption("verbose", FALSE)) {
+    ...,
+    est = character(0),
+    fail.value = NA,
+    ode_control = list(),
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       tmof_internal(
         data,
+        ...,
         est=est,
         fail.value=fail.value,
         ode_control=ode_control,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="traj_objfun",conditionMessage(e))
@@ -134,8 +141,12 @@ setMethod(
   signature=signature(data="traj_match_objfun"),
   definition=function (
     data,
-    est, fail.value, ode_control,
-    ..., verbose = getOption("verbose", FALSE)) {
+    ...,
+    est,
+    fail.value,
+    ode_control,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(est)) est <- data@est
     if (missing(fail.value)) fail.value <- data@env$fail.value
@@ -143,10 +154,10 @@ setMethod(
 
     traj_objfun(
       data@env$object,
+      ...,
       est=est,
       fail.value=fail.value,
       ode_control=ode_control,
-      ...,
       verbose=verbose
     )
 
@@ -154,7 +165,12 @@ setMethod(
 )
 
 tmof_internal <- function (
-  object, est, fail.value, ode_control, ..., verbose
+  object,
+  ...,
+  est,
+  fail.value,
+  ode_control,
+  verbose
 ) {
 
   verbose <- as.logical(verbose)
@@ -224,8 +240,11 @@ traj_match_logLik <- function (object, ode_control, .gnsi = TRUE) {
 setMethod(
   "trajectory",
   signature=signature(object="traj_match_objfun"),
-  definition=function (object,
-    ..., verbose = getOption("verbose", FALSE)) {
+  definition=function (
+    object,
+    ...,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     trajectory(
       object@env$object,

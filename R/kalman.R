@@ -89,20 +89,24 @@ setMethod(
 setMethod(
   "enkf",
   signature=signature(data="data.frame"),
-  function (data, Np,
+  function (
+    data,
+    ...,
+    Np,
     params, rinit, rprocess, emeasure, vmeasure,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       enkf_internal(
         data,
+        ...,
         Np=Np,
         params=params,
         rinit=rinit,
         rprocess=rprocess,
         emeasure=emeasure,
         vmeasure=vmeasure,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="enkf",conditionMessage(e))
@@ -116,14 +120,18 @@ setMethod(
 setMethod(
   "enkf",
   signature=signature(data="pomp"),
-  function (data, Np,
-    ..., verbose = getOption("verbose", FALSE)) {
+  function (
+    data,
+    ...,
+    Np,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       enkf_internal(
         data,
-        Np=Np,
         ...,
+        Np=Np,
         verbose=verbose
       ),
       error = function (e) pStop(who="enkf",conditionMessage(e))
@@ -137,14 +145,18 @@ setMethod(
 setMethod(
   "enkf",
   signature=signature(data="kalmand_pomp"),
-  function (data, Np,
-    ..., verbose = getOption("verbose", FALSE)) {
+  function (
+    data,
+    ...,
+    Np,
+    verbose = getOption("verbose", FALSE)
+  ) {
     if (missing(Np)) Np <- data@Np
     tryCatch(
       enkf_internal(
         as(data,"pomp"),
-        Np=Np,
         ...,
+        Np=Np,
         verbose=verbose
       ),
       error = function (e) pStop(who="enkf",conditionMessage(e))
@@ -167,7 +179,12 @@ setMethod(
 ## Updated ensemble: $X^u_{t}=X_t + K_t\,(O_t - Y_t)$
 ## Filter mean: $m_t=\langle X^u_t \rangle = \frac{1}{q} \sum\limits_{i=1}^q x^{u_i}_t$
 
-enkf_internal <- function (object, Np, ..., verbose) {
+enkf_internal <- function (
+  object,
+  ...,
+  Np,
+  verbose
+) {
 
   verbose <- as.logical(verbose)
 
@@ -306,20 +323,24 @@ setMethod(
 setMethod(
   "eakf",
   signature=signature(data="data.frame"),
-  function (data,
-    Np, params, rinit, rprocess, emeasure, vmeasure,
-    ...,verbose = getOption("verbose", FALSE)) {
+  function (
+    data,
+    ...,
+    Np,
+    params, rinit, rprocess, emeasure, vmeasure,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       eakf_internal(
         data,
+        ...,
         Np=Np,
         params=params,
         rinit=rinit,
         rprocess=rprocess,
         emeasure=emeasure,
         vmeasure=vmeasure,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="eakf",conditionMessage(e))
@@ -333,14 +354,18 @@ setMethod(
 setMethod(
   "eakf",
   signature=signature(data="pomp"),
-  function (data,
-    Np, ..., verbose = getOption("verbose", FALSE)) {
+  function (
+    data,
+    ...,
+    Np,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       eakf_internal(
         data,
-        Np=Np,
         ...,
+        Np=Np,
         verbose=verbose
       ),
       error = function (e) pStop(who="eakf",conditionMessage(e))
@@ -361,7 +386,12 @@ setMethod(
 ## Filter mean: $m_t=M_t+K_t\,(y_t-C\,M_t)$
 ## Updated ensemble: $x_{t}=B\,(X_t-M_t\,\mathbb{1})+m_t\,\mathbb{1}$
 
-eakf_internal <- function (object, Np, ..., verbose) {
+eakf_internal <- function (
+  object,
+  ...,
+  Np,
+  verbose
+) {
 
   verbose <- as.logical(verbose)
 

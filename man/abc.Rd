@@ -13,6 +13,7 @@
 \usage{
 \S4method{abc}{data.frame}(
   data,
+  ...,
   Nabc = 1,
   proposal,
   scale,
@@ -23,31 +24,30 @@
   rprocess,
   rmeasure,
   dprior,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{abc}{pomp}(
   data,
+  ...,
   Nabc = 1,
   proposal,
   scale,
   epsilon,
   probes,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{abc}{probed_pomp}(data, probes, ..., verbose = getOption("verbose", FALSE))
+\S4method{abc}{probed_pomp}(data, ..., probes, verbose = getOption("verbose", FALSE))
 
 \S4method{abc}{abcd_pomp}(
   data,
+  ...,
   Nabc,
   proposal,
   scale,
   epsilon,
   probes,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 }
@@ -56,6 +56,9 @@
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
+
+\item{...}{additional arguments are passed to \code{\link{pomp}}.
+This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
 
 \item{Nabc}{the number of ABC iterations to perform.}
 
@@ -94,8 +97,6 @@ For more information, see \link[=rmeasure_spec]{rmeasure specification}.}
 \item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 For more information, see \link[=prior_spec]{prior specification}.
 Setting \code{dprior=NULL} resets the prior distribution to its default, which is a flat improper prior.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

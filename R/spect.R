@@ -106,15 +106,20 @@ setMethod(
 setMethod(
   "spect",
   signature(data="data.frame"),
-  function (data,
-    vars, kernel.width, nsim, seed = NULL, transform.data = identity,
+  function (
+    data,
+    ...,
+    vars, kernel.width, nsim, seed = NULL,
+    transform.data = identity,
     detrend = c("none","mean","linear","quadratic"),
     params, rinit, rprocess, rmeasure,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       spect_internal(
         data,
+        ...,
         vars=vars,
         kernel.width=kernel.width,
         nsim=nsim,
@@ -125,7 +130,6 @@ setMethod(
         rinit=rinit,
         rprocess=rprocess,
         rmeasure=rmeasure,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="spect",conditionMessage(e))
@@ -138,21 +142,25 @@ setMethod(
 setMethod(
   "spect",
   signature(data="pomp"),
-  function (data,
-    vars, kernel.width, nsim, seed = NULL, transform.data = identity,
+  function (
+    data,
+    ...,
+    vars, kernel.width, nsim, seed = NULL,
+    transform.data = identity,
     detrend = c("none","mean","linear","quadratic"),
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       spect_internal(
         data,
+        ...,
         vars=vars,
         kernel.width=kernel.width,
         nsim=nsim,
         seed=seed,
         transform.data=match.fun(transform.data),
         detrend=match.arg(detrend),
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="spect",conditionMessage(e))
@@ -166,10 +174,14 @@ setMethod(
 setMethod(
   "spect",
   signature=signature(data="spectd_pomp"),
-  definition=function (data,
-    vars, kernel.width, nsim, seed = NULL, transform.data,
+  definition=function (
+    data,
+    ...,
+    vars, kernel.width, nsim, seed = NULL,
+    transform.data,
     detrend,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(vars)) vars <- colnames(data@datspec)
     if (missing(kernel.width)) kernel.width <- data@kernel.width
@@ -179,21 +191,26 @@ setMethod(
 
     spect(
       as(data,"pomp"),
+      ...,
       vars=vars,
       kernel.width=kernel.width,
       nsim=nsim,
       seed=seed,
       transform.data=transform.data,
       detrend=detrend,
-      ...,
       verbose=verbose
     )
 
   }
 )
 
-spect_internal <- function (object, vars, kernel.width, nsim, seed = NULL,
-  transform.data, detrend, ..., .gnsi = TRUE, verbose) {
+spect_internal <- function (
+  object,
+  ...,
+  vars, kernel.width, nsim, seed = NULL,
+  transform.data, detrend,
+  .gnsi = TRUE, verbose
+) {
 
   verbose <- as.logical(verbose)
 

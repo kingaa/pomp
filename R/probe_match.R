@@ -83,15 +83,19 @@ setMethod(
 setMethod(
   "probe_objfun",
   signature=signature(data="data.frame"),
-  definition=function (data,
+  definition=function (
+    data,
+    ...,
     est = character(0), fail.value = NA,
     probes, nsim, seed = NULL,
     params, rinit, rprocess, rmeasure, partrans,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       pmof_internal(
         data,
+        ...,
         est=est,
         fail.value=fail.value,
         probes=probes,
@@ -102,7 +106,6 @@ setMethod(
         rprocess=rprocess,
         rmeasure=rmeasure,
         partrans=partrans,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="probe_objfun",conditionMessage(e))
@@ -116,20 +119,24 @@ setMethod(
 setMethod(
   "probe_objfun",
   signature=signature(data="pomp"),
-  definition=function (data,
-    est = character(0), fail.value = NA,
+  definition=function (
+    data,
+    ...,
+    est = character(0),
+    fail.value = NA,
     probes, nsim, seed = NULL,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       pmof_internal(
         data,
+        ...,
         est=est,
         fail.value=fail.value,
         probes=probes,
         nsim=nsim,
         seed=seed,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="probe_objfun",conditionMessage(e))
@@ -143,22 +150,26 @@ setMethod(
 setMethod(
   "probe_objfun",
   signature=signature(data="probed_pomp"),
-  definition=function (data,
-    est = character(0), fail.value = NA,
+  definition=function (
+    data,
+    ...,
+    est = character(0),
+    fail.value = NA,
     probes, nsim, seed = NULL,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(probes)) probes <- data@probes
     if (missing(nsim)) nsim <- data@nsim
 
     probe_objfun(
       as(data,"pomp"),
+      ...,
       est=est,
       fail.value=fail.value,
       probes=probes,
       nsim=nsim,
       seed=seed,
-      ...,
       verbose=verbose
     )
 
@@ -170,29 +181,35 @@ setMethod(
 setMethod(
   "probe_objfun",
   signature=signature(data="probe_match_objfun"),
-  definition=function (data,
+  definition=function (
+    data,
+    ...,
     est, fail.value, seed = NULL,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(est)) est <- data@est
     if (missing(fail.value)) fail.value <- data@env$fail.value
 
     probe_objfun(
       data@env$object,
+      ...,
       est=est,
       fail.value=fail.value,
       seed=seed,
-      ...,
       verbose=verbose
     )
 
   }
 )
 
-pmof_internal <- function (object,
+pmof_internal <- function (
+  object,
+  ...,
   est, fail.value = NA,
   probes, nsim, seed = NULL,
-  ..., verbose) {
+  verbose
+) {
 
   verbose <- as.logical(verbose)
 
@@ -262,15 +279,19 @@ probe.eval <- function (object, .gnsi = TRUE) {
 setMethod(
   "probe",
   signature=signature(data="probe_match_objfun"),
-  definition=function (data, seed,
-    ..., verbose = getOption("verbose", FALSE)) {
+  definition=function (
+    data,
+    ...,
+    seed,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(seed)) seed <- data@env$seed
 
     probe(
       data@env$object,
-      seed=seed,
       ...,
+      seed=seed,
       verbose=verbose
     )
 

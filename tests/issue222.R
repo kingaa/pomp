@@ -61,7 +61,27 @@ simulate(
     "pop","rho","k","gamma","mu","Beta","Beta_sd","iota",
     "S_0","I_0","R_0"
   )
-) |>
+) -> po
+
+po |>
   plot()
+
+try(
+  po |>
+    simulate(nsim=1,seed=49986,)
+)
+
+try(
+  po |>
+    simulate(
+      nsim=1,
+      seed=49986,
+      parameter_trans(
+        logit=c("rho"),
+        log=c("gamma","mu","k","Beta","Beta_sd","iota"),
+        barycentric=c("S_0","I_0","R_0")
+      )
+    )
+)
 
 dev.off()

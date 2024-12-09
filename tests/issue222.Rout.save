@@ -80,8 +80,31 @@ Type 'q()' to quit R.
 +     "pop","rho","k","gamma","mu","Beta","Beta_sd","iota",
 +     "S_0","I_0","R_0"
 +   )
-+ ) |>
++ ) -> po
+> 
+> po |>
 +   plot()
+> 
+> try(
++   po |>
++     simulate(nsim=1,seed=49986,)
++ )
+Error : in 'simulate': argument is missing, with no default
+> 
+> try(
++   po |>
++     simulate(
++       nsim=1,
++       seed=49986,
++       parameter_trans(
++         logit=c("rho"),
++         log=c("gamma","mu","k","Beta","Beta_sd","iota"),
++         barycentric=c("S_0","I_0","R_0")
++       )
++     )
++ )
+Error : in 'simulate': The argument is not recognized.
+Use the 'userdata' argument to supply extra objects to basic model components. See '?userdata'.
 > 
 > dev.off()
 null device 

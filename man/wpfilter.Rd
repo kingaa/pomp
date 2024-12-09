@@ -12,26 +12,26 @@
 \S4method{wpfilter}{data.frame}(
   data,
   Np,
+  ...,
   params,
   rinit,
   rprocess,
   dmeasure,
   trigger = 1,
   target = 0.5,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{wpfilter}{pomp}(
   data,
   Np,
+  ...,
   trigger = 1,
   target = 0.5,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{wpfilter}{wpfilterd_pomp}(data, Np, trigger, target, ..., verbose = getOption("verbose", FALSE))
+\S4method{wpfilter}{wpfilterd_pomp}(data, ..., Np, trigger, target, verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
@@ -47,6 +47,9 @@ In the latter case, \code{Np(k)} must be a single positive integer, representing
 \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
 and so on,
 while when \code{T=length(time(object))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.}
+
+\item{...}{additional arguments are passed to \code{\link{pomp}}.
+This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -67,8 +70,6 @@ For more information, see \link[=dmeasure_spec]{dmeasure specification}.}
 \item{trigger}{numeric; if the effective sample size becomes smaller than \code{trigger * Np}, resampling is triggered.}
 
 \item{target}{numeric; target power.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

@@ -70,16 +70,22 @@ setGeneric("simulate")
 setMethod(
   "simulate",
   signature=signature(object="missing"),
-  definition=function (nsim = 1, seed = NULL,
+  definition=function (
+    object,
+    nsim = 1,
+    seed = NULL,
+    ...,
     times, t0,
     params, rinit, rprocess, rmeasure,
     format = c("pomps", "arrays", "data.frame"),
     include.data = FALSE,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       simulate_internal(
         object=NULL,
+        ...,
         nsim=nsim,
         seed=seed,
         times=times,
@@ -90,7 +96,6 @@ setMethod(
         rmeasure=rmeasure,
         format=match.arg(format),
         include.data=include.data,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="simulate",conditionMessage(e))
@@ -104,17 +109,22 @@ setMethod(
 setMethod(
   "simulate",
   signature=signature(object="data.frame"),
-  definition=function (object,
-    nsim = 1, seed = NULL,
+  definition=function (
+    object,
+    nsim = 1,
+    seed = NULL,
+    ...,
     times, t0,
     params, rinit, rprocess, rmeasure,
     format = c("pomps", "arrays", "data.frame"),
     include.data = FALSE,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       simulate_internal(
         object,
+        ...,
         nsim=nsim,
         seed=seed,
         times=times,
@@ -125,7 +135,6 @@ setMethod(
         rmeasure=rmeasure,
         format=match.arg(format),
         include.data=include.data,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="simulate",conditionMessage(e))
@@ -139,20 +148,24 @@ setMethod(
 setMethod(
   "simulate",
   signature=signature(object="pomp"),
-  definition=function (object,
-    nsim = 1, seed = NULL,
+  definition=function (
+    object,
+    nsim = 1,
+    seed = NULL,
+    ...,
     format = c("pomps", "arrays", "data.frame"),
     include.data = FALSE,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       simulate_internal(
         object,
+        ...,
         nsim=nsim,
         seed=seed,
         format=match.arg(format),
         include.data=include.data,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="simulate",conditionMessage(e))
@@ -163,12 +176,12 @@ setMethod(
 
 simulate_internal <- function (
   object,
+  ...,
   nsim = 1L,
   seed = NULL,
   params,
   format,
   include.data = FALSE,
-  ...,
   .gnsi = TRUE,
   verbose
 ) {

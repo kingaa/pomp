@@ -10,7 +10,7 @@ gompertz |>
   mif2(Nmif=4,Np=1000,
     .indices=seq.int(1000),
     rw.sd=rw_sd(r=0.02,K=0.02,sigma=0.02),
-    cooling.fraction=0.5) |>
+    cooling.fraction.50=0.5) |>
   slot("indices") -> idx
 stopifnot(
   length(idx)==1000,
@@ -23,7 +23,7 @@ gompertz |>
   mif2(Nmif=4,Np=100,
     .indices=as.list(seq.int(100)),
     rw.sd=rw_sd(r=0.02,K=0.02,sigma=0.02),
-    cooling.fraction=0.5) |>
+    cooling.fraction.50=0.5) |>
   slot("indices") -> idx
 stopifnot(
   length(idx)==100,

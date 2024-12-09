@@ -59,8 +59,8 @@ try(mif2(po,Nmif=1,Np=Inf))
 try(mif2(po,Nmif=1,Np=100))
 try(mif2(po,Nmif=1,Np=NULL))
 try(mif2(po,Nmif=1,Np=c(3,4)))
-try(mif2(po,Nmif=1,Np=c(rep(100,10),40),rw.sd=rw_sd(sigma=0.1),cooling.frac=0.5))
-mif2(po,Nmif=1,Np=c(rep(100,9),40,100),rw.sd=rw_sd(sigma=0.1),cooling.frac=0.5)
+try(mif2(po,Nmif=1,Np=c(rep(100,10),40),rw.sd=rw_sd(sigma=0.1),cooling.fraction.50=0.5))
+mif2(po,Nmif=1,Np=c(rep(100,9),40,100),rw.sd=rw_sd(sigma=0.1),cooling.fraction.50=0.5)
 try(mif2(po,Nmif=1,Np=100,rw.sd=3))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd()))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw_sd(a=9)))
@@ -131,6 +131,5 @@ po |>
 
 mf3 |>
   continue(dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"))
-
 
 dev.off()

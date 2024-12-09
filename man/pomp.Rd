@@ -7,9 +7,9 @@
 \usage{
 pomp(
   data,
+  ...,
   times,
   t0,
-  ...,
   rinit,
   dinit,
   rprocess,
@@ -47,15 +47,14 @@ or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
 
+\item{...}{additional arguments will generate an error.}
+
 \item{times}{the sequence of observation times.
 \code{times} must indicate the column of observation times by name or index.
 The time vector must be numeric and non-decreasing.}
 
 \item{t0}{The zero-time, i.e., the time of the initial state.
 This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
-
-\item{...}{additional arguments will be added to the \code{userdata} list, with a warning.
-In a future release, this warning will become an error.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.

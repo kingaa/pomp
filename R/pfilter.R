@@ -34,6 +34,7 @@
 ##' \code{"FALSE"} is a synonym for \code{"no"} and \code{"TRUE"} is a synonym for \code{"unweighted"}.
 ##' To retrieve the saved states, apply \code{\link{saved_states}} to the result of the \code{pfilter} computation.
 ##' @param ... additional arguments are passed to \code{\link{pomp}}.
+##' This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.
 ##' @return
 ##' An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
 ##' Information can be extracted from this object using the methods documented below.
@@ -122,14 +123,15 @@ setMethod(
   definition=function (
     data,
     Np,
+    ...,
     params, rinit, rprocess, dmeasure,
     pred.mean = FALSE,
     pred.var = FALSE,
     filter.mean = FALSE,
     filter.traj = FALSE,
     save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
-    ...,
-    verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       pfilter_internal(
@@ -160,14 +162,15 @@ setMethod(
   signature=signature(data="pomp"),
   definition=function (
     data,
+    ...,
     Np,
     pred.mean = FALSE,
     pred.var = FALSE,
     filter.mean = FALSE,
     filter.traj = FALSE,
     save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
-    ...,
-    verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       pfilter_internal(
@@ -192,8 +195,11 @@ setMethod(
 setMethod(
   "pfilter",
   signature=signature(data="pfilterd_pomp"),
-  function (data, Np,
-    ..., verbose = getOption("verbose", FALSE)) {
+  function (
+    data, Np,
+    ...,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(Np)) Np <- data@Np
 
@@ -202,11 +208,14 @@ setMethod(
   }
 )
 
-pfilter_internal <- function (object, Np,
+pfilter_internal <- function (
+  object, Np,
+  ...,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
   filter.traj = FALSE, cooling, cooling.m,
   save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
-  ..., .gnsi = TRUE, verbose = FALSE) {
+  .gnsi = TRUE, verbose = FALSE
+) {
 
   verbose <- as.logical(verbose)
 

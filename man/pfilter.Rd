@@ -13,6 +13,7 @@
 \S4method{pfilter}{data.frame}(
   data,
   Np,
+  ...,
   params,
   rinit,
   rprocess,
@@ -22,19 +23,18 @@
   filter.mean = FALSE,
   filter.traj = FALSE,
   save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
 \S4method{pfilter}{pomp}(
   data,
+  ...,
   Np,
   pred.mean = FALSE,
   pred.var = FALSE,
   filter.mean = FALSE,
   filter.traj = FALSE,
   save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
@@ -56,6 +56,9 @@ In the latter case, \code{Np(k)} must be a single positive integer, representing
 \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
 and so on,
 while when \code{T=length(time(object))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.}
+
+\item{...}{additional arguments are passed to \code{\link{pomp}}.
+This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
@@ -88,8 +91,6 @@ If \code{save.states="weighted"}, the state-vector for each weighted particle at
 If \code{save.states="no"}, information on the latent states is not saved.
 \code{"FALSE"} is a synonym for \code{"no"} and \code{"TRUE"} is a synonym for \code{"unweighted"}.
 To retrieve the saved states, apply \code{\link{saved_states}} to the result of the \code{pfilter} computation.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

@@ -82,16 +82,22 @@ setMethod(
 setMethod(
   "spect_objfun",
   signature=signature(data="data.frame"),
-  definition=function(data, est = character(0),
+  definition=function(
+    data,
+    ...,
+    est = character(0),
     weights = 1, fail.value = NA,
-    vars, kernel.width, nsim, seed = NULL, transform.data = identity,
+    vars, kernel.width, nsim, seed = NULL,
+    transform.data = identity,
     detrend = c("none","mean","linear","quadratic"),
     params, rinit, rprocess, rmeasure, partrans,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       smof_internal(
         data,
+        ...,
         est=est,
         weights=weights,
         fail.value=fail.value,
@@ -106,7 +112,6 @@ setMethod(
         rprocess=rprocess,
         rmeasure=rmeasure,
         partrans=partrans,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="spect_objfun",conditionMessage(e))
@@ -120,15 +125,21 @@ setMethod(
 setMethod(
   "spect_objfun",
   signature=signature(data="pomp"),
-  definition=function(data, est = character(0),
+  definition=function(
+    data,
+    ...,
+    est = character(0),
     weights = 1, fail.value = NA,
-    vars, kernel.width, nsim, seed = NULL, transform.data = identity,
+    vars, kernel.width, nsim, seed = NULL,
+    transform.data = identity,
     detrend = c("none","mean","linear","quadratic"),
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       smof_internal(
         data,
+        ...,
         est=est,
         weights=weights,
         fail.value=fail.value,
@@ -138,7 +149,6 @@ setMethod(
         seed=seed,
         transform.data=transform.data,
         detrend=detrend,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="spect_objfun",conditionMessage(e))
@@ -152,11 +162,16 @@ setMethod(
 setMethod(
   "spect_objfun",
   signature=signature(data="spectd_pomp"),
-  definition=function(data, est = character(0),
+  definition=function(
+    data,
+    ...,
+    est = character(0),
     weights = 1, fail.value = NA,
-    vars, kernel.width, nsim, seed = NULL, transform.data = identity,
+    vars, kernel.width, nsim, seed = NULL,
+    transform.data = identity,
     detrend,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(vars)) vars <- data@vars
     if (missing(kernel.width)) kernel.width <- data@kernel.width
@@ -166,6 +181,7 @@ setMethod(
 
     spect_objfun(
       as(data,"pomp"),
+      ...,
       est=est,
       weights=weights,
       fail.value=fail.value,
@@ -175,7 +191,6 @@ setMethod(
       seed=seed,
       transform.data=transform.data,
       detrend=detrend,
-      ...,
       verbose=verbose
     )
 
@@ -187,8 +202,13 @@ setMethod(
 setMethod(
   "spect_objfun",
   signature=signature(data="spect_match_objfun"),
-  definition=function(data, est, weights, fail.value,
-    seed = NULL, ..., verbose = getOption("verbose", FALSE)) {
+  definition=function(
+    data,
+    ...,
+    est, weights, fail.value,
+    seed = NULL,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(est)) est <- data@est
     if (missing(weights)) weights <-data@env$weights
@@ -196,21 +216,25 @@ setMethod(
 
     spect_objfun(
       data@env$object,
+      ...,
       est=est,
       weights=weights,
       fail.value=fail.value,
       seed=seed,
-      ...,
       verbose=verbose
     )
 
   }
 )
 
-smof_internal <- function (object,
+smof_internal <- function (
+  object,
+  ...,
   est, weights, fail.value,
-  vars, kernel.width, nsim, seed, transform.data, detrend,
-  ..., verbose) {
+  vars, kernel.width, nsim, seed,
+  transform.data, detrend,
+  verbose
+) {
 
   verbose <- as.logical(verbose)
 
@@ -314,15 +338,19 @@ spect_discrep <- function (object, ker, weights) {
 setMethod(
   "spect",
   signature=signature(data="spect_match_objfun"),
-  definition=function (data, seed,
-    ..., verbose=getOption("verbose", FALSE)) {
+  definition=function (
+    data,
+    ...,
+    seed,
+    verbose=getOption("verbose", FALSE)
+  ) {
 
     if (missing(seed)) seed <- data@env$seed
 
     spect(
       data@env$object,
-      seed=seed,
       ...,
+      seed=seed,
       verbose=verbose
     )
 

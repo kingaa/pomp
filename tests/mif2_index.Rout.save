@@ -29,7 +29,7 @@ Type 'q()' to quit R.
 +   mif2(Nmif=4,Np=1000,
 +     .indices=seq.int(1000),
 +     rw.sd=rw_sd(r=0.02,K=0.02,sigma=0.02),
-+     cooling.fraction=0.5) |>
++     cooling.fraction.50=0.5) |>
 +   slot("indices") -> idx
 > stopifnot(
 +   length(idx)==1000,
@@ -42,7 +42,7 @@ Type 'q()' to quit R.
 +   mif2(Nmif=4,Np=100,
 +     .indices=as.list(seq.int(100)),
 +     rw.sd=rw_sd(r=0.02,K=0.02,sigma=0.02),
-+     cooling.fraction=0.5) |>
++     cooling.fraction.50=0.5) |>
 +   slot("indices") -> idx
 > stopifnot(
 +   length(idx)==100,
@@ -52,5 +52,6 @@ Type 'q()' to quit R.
 > try(mif2(gompertz,Nmif=1,Np=100,
 +   .indices=1:5,rw.sd=rw_sd(r=0.02,K=0.02,sigma=0.02),
 +   cooling.fraction=0.5))
-Error : in 'mif2': '.indices' has improper length.
+Error : in 'mif2': The argument 'cooling.fraction'is not recognized.
+Use the 'userdata' argument to supply extra objects to basic model components. See '?userdata'.
 > 

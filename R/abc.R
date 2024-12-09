@@ -112,15 +112,19 @@ setMethod(
 setMethod(
   "abc",
   signature=signature(data="data.frame"),
-  definition=function (data,
+  definition=function (
+    data,
+    ...,
     Nabc = 1, proposal, scale, epsilon,
     probes,
     params, rinit, rprocess, rmeasure, dprior,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       abc_internal(
         data,
+        ...,
         Nabc=Nabc,
         proposal=proposal,
         scale=scale,
@@ -131,7 +135,6 @@ setMethod(
         rprocess=rprocess,
         rmeasure=rmeasure,
         dprior=dprior,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="abc",conditionMessage(e))
@@ -145,20 +148,23 @@ setMethod(
 setMethod(
   "abc",
   signature=signature(data="pomp"),
-  definition=function (data,
+  definition=function (
+    data,
+    ...,
     Nabc = 1, proposal, scale, epsilon,
     probes,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       abc_internal(
         data,
+        ...,
         Nabc=Nabc,
         proposal=proposal,
         scale=scale,
         epsilon=epsilon,
         probes=probes,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="abc",conditionMessage(e))
@@ -172,15 +178,19 @@ setMethod(
 setMethod(
   "abc",
   signature=signature(data="probed_pomp"),
-  definition=function (data, probes, ...,
-    verbose = getOption("verbose", FALSE)) {
+  definition=function (
+    data,
+    ...,
+    probes,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(probes)) probes <- data@probes
 
     abc(
       as(data,"pomp"),
-      probes=probes,
       ...,
+      probes=probes,
       verbose=verbose
     )
 
@@ -192,10 +202,13 @@ setMethod(
 setMethod(
   "abc",
   signature=signature(data="abcd_pomp"),
-  definition=function (data,
+  definition=function (
+    data,
+    ...,
     Nabc, proposal, scale, epsilon,
     probes,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(Nabc)) Nabc <- data@Nabc
     if (missing(proposal)) proposal <- data@proposal
@@ -205,12 +218,12 @@ setMethod(
 
     abc(
       as(data,"pomp"),
+      ...,
       Nabc=Nabc,
       proposal=proposal,
       scale=scale,
       epsilon=epsilon,
       probes=probes,
-      ...,
       verbose=verbose
     )
 
@@ -223,12 +236,16 @@ setMethod(
 setMethod(
   "continue",
   signature=signature(object="abcd_pomp"),
-  definition=function (object, Nabc = 1, ...) {
+  definition=function (
+    object,
+    ...,
+    Nabc = 1
+  ) {
 
     ndone <- object@Nabc
     accepts <- object@accepts
 
-    obj <- abc(object,Nabc=Nabc,.ndone=ndone,.accepts=accepts,...)
+    obj <- abc(object,...,Nabc=Nabc,.ndone=ndone,.accepts=accepts)
 
     obj@traces <- rbind(
       object@traces[,colnames(obj@traces)],
@@ -242,11 +259,13 @@ setMethod(
   }
 )
 
-abc_internal <- function (object,
-  Nabc, proposal, scale, epsilon, probes,
+abc_internal <- function (
+  object,
   ...,
+  Nabc, proposal, scale, epsilon, probes,
   verbose,
-  .ndone = 0L, .accepts = 0L, .gnsi = TRUE) {
+  .ndone = 0L, .accepts = 0L, .gnsi = TRUE
+) {
 
   verbose <- as.logical(verbose)
 

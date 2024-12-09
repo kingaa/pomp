@@ -11,6 +11,7 @@
 \usage{
 \S4method{bsmc2}{data.frame}(
   data,
+  ...,
   Np,
   smooth = 0.1,
   params,
@@ -19,17 +20,19 @@
   rprocess,
   dmeasure,
   partrans,
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{bsmc2}{pomp}(data, Np, smooth = 0.1, ..., verbose = getOption("verbose", FALSE))
+\S4method{bsmc2}{pomp}(data, ..., Np, smooth = 0.1, verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,
 or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
+
+\item{...}{additional arguments are passed to \code{\link{pomp}}.
+This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
 
 \item{Np}{the number of particles to use.
 This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
@@ -72,8 +75,6 @@ When working with such an algorithm and a model for which the parameters are con
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{parameter_trans}.
 Setting \code{partrans=NULL} removes the parameter transformations, i.e., sets them to the identity transformation.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

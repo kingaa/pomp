@@ -122,9 +122,9 @@ Error : in 'mif2': 'rw.sd' must be specified!
 Error : in 'mif2': 'Np' must be specified.
 > try(mif2(po,Nmif=1,Np=c(3,4)))
 Error : in 'mif2': 'Np' must have length 1 or length 11.
-> try(mif2(po,Nmif=1,Np=c(rep(100,10),40),rw.sd=rw_sd(sigma=0.1),cooling.frac=0.5))
+> try(mif2(po,Nmif=1,Np=c(rep(100,10),40),rw.sd=rw_sd(sigma=0.1),cooling.fraction.50=0.5))
 Error : in 'mif2': Np[1] must equal Np[11].
-> mif2(po,Nmif=1,Np=c(rep(100,9),40,100),rw.sd=rw_sd(sigma=0.1),cooling.frac=0.5)
+> mif2(po,Nmif=1,Np=c(rep(100,9),40,100),rw.sd=rw_sd(sigma=0.1),cooling.fraction.50=0.5)
 <object of class 'mif2d_pomp'>
 > try(mif2(po,Nmif=1,Np=100,rw.sd=3))
 Error : in 'mif2': 'rw.sd' should be specified using the 'rw_sd' function. See '?mif2'.
@@ -234,7 +234,6 @@ Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', ar
 <object of class 'mif2d_pomp'>
 Warning message:
 filtering failure at last filter iteration: using unweighted mean for point estimate. 
-> 
 > 
 > dev.off()
 null device 

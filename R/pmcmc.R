@@ -102,15 +102,20 @@ setMethod(
 setMethod(
   "pmcmc",
   signature=signature(data="data.frame"),
-  function (data,
-    Nmcmc = 1, proposal,
+  function (
+    data,
+    ...,
+    Nmcmc = 1,
+    proposal,
     Np,
     params, rinit, rprocess, dmeasure, dprior,
-    ..., verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       pmcmc_internal(
         data,
+        ...,
         Nmcmc=Nmcmc,
         proposal=proposal,
         Np=Np,
@@ -119,7 +124,6 @@ setMethod(
         rprocess=rprocess,
         dmeasure=dmeasure,
         dprior=dprior,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="pmcmc",conditionMessage(e))
@@ -133,18 +137,22 @@ setMethod(
 setMethod(
   "pmcmc",
   signature=signature(data="pomp"),
-  function (data,
-    Nmcmc = 1, proposal,
-    Np, ...,
-    verbose = getOption("verbose", FALSE)) {
+  function (
+    data,
+    ...,
+    Nmcmc = 1,
+    proposal,
+    Np,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       pmcmc_internal(
         data,
+        ...,
         Nmcmc=Nmcmc,
         proposal=proposal,
         Np=Np,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="pmcmc",conditionMessage(e))
@@ -158,19 +166,23 @@ setMethod(
 setMethod(
   "pmcmc",
   signature=signature(data="pfilterd_pomp"),
-  function (data,
-    Nmcmc = 1, proposal,
-    Np, ...,
-    verbose = getOption("verbose", FALSE)) {
+  function (
+    data,
+    ...,
+    Nmcmc = 1,
+    proposal,
+    Np,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(Np)) Np <- data@Np
 
     pmcmc(
       as(data,"pomp"),
+      ...,
       Nmcmc=Nmcmc,
       proposal=proposal,
       Np=Np,
-      ...,
       verbose=verbose
     )
 
@@ -182,18 +194,22 @@ setMethod(
 setMethod(
   "pmcmc",
   signature=signature(data="pmcmcd_pomp"),
-  function (data,
-    Nmcmc, proposal,
-    ..., verbose = getOption("verbose", FALSE)) {
+  function (
+    data,
+    ...,
+    Nmcmc,
+    proposal,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(Nmcmc)) Nmcmc <- data@Nmcmc
     if (missing(proposal)) proposal <- data@proposal
 
     pmcmc(
       as(data,"pfilterd_pomp"),
+      ...,
       Nmcmc=Nmcmc,
       proposal=proposal,
-      ...,
       verbose=verbose
     )
 
@@ -213,8 +229,8 @@ setMethod(
 
     obj <- pmcmc(
       object,
-      Nmcmc=Nmcmc,
       ...,
+      Nmcmc=Nmcmc,
       .ndone=ndone,
       .accepts=accepts,
       .prev.pfp=as(object,"pfilterd_pomp"),
@@ -244,9 +260,17 @@ setMethod(
   }
 )
 
-pmcmc_internal <- function (object, Nmcmc, proposal, Np, ...,
-  verbose, .ndone = 0L, .accepts = 0L, .prev.pfp = NULL, .prev.log.prior = NULL,
-  .gnsi = TRUE) {
+pmcmc_internal <- function (
+  object,
+  ...,
+  Nmcmc, proposal, Np,
+  verbose,
+  .ndone = 0L,
+  .accepts = 0L,
+  .prev.pfp = NULL,
+  .prev.log.prior = NULL,
+  .gnsi = TRUE
+) {
 
   verbose <- as.logical(verbose)
 

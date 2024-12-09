@@ -37,7 +37,7 @@ Type 'q()' to quit R.
 +     filter.mean=TRUE,
 +     pred.mean=TRUE,
 +     pred.var=TRUE,
-+     filter.traj=TRUE,
++     filter.traj=TRUE
 +   ) -> pf
 > 
 > pf |> as.data.frame() |> names()

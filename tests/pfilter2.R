@@ -18,7 +18,7 @@ ou2(tau=5) |>
     filter.mean=TRUE,
     pred.mean=TRUE,
     pred.var=TRUE,
-    filter.traj=TRUE,
+    filter.traj=TRUE
   ) -> pf
 
 pf |> as.data.frame() |> names()

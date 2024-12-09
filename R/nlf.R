@@ -141,16 +141,24 @@ setMethod(
 setMethod(
   "nlf_objfun",
   signature=signature(data="data.frame"),
-  definition=function (data,
-    est = character(0), lags, nrbf = 4, ti, tf,
-    seed = NULL, transform.data = identity,
-    period = NA, tensor = TRUE, fail.value = NA_real_,
+  definition=function (
+    data,
+    ...,
+    est = character(0),
+    lags, nrbf = 4, ti, tf,
+    seed = NULL,
+    transform.data = identity,
+    period = NA,
+    tensor = TRUE,
+    fail.value = NA_real_,
     params, rinit, rprocess, rmeasure,
-    ..., verbose = getOption("verbose")) {
+    verbose = getOption("verbose")
+  ) {
 
     tryCatch(
       nlfof_internal(
         object=data,
+        ...,
         est=est,
         lags=lags,
         nrbf=nrbf,
@@ -165,7 +173,6 @@ setMethod(
         rinit=rinit,
         rprocess=rprocess,
         rmeasure=rmeasure,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="nlf_objfun",conditionMessage(e))
@@ -179,15 +186,23 @@ setMethod(
 setMethod(
   "nlf_objfun",
   signature=signature(data="pomp"),
-  definition=function (data,
-    est = character(0), lags, nrbf = 4, ti, tf,
-    seed = NULL, transform.data = identity,
-    period = NA, tensor = TRUE, fail.value = NA,
-    ..., verbose = getOption("verbose")) {
+  definition=function (
+    data,
+    ...,
+    est = character(0),
+    lags, nrbf = 4, ti, tf,
+    seed = NULL,
+    transform.data = identity,
+    period = NA,
+    tensor = TRUE,
+    fail.value = NA,
+    verbose = getOption("verbose")
+  ) {
 
     tryCatch(
       nlfof_internal(
         object=data,
+        ...,
         est=est,
         lags=lags,
         nrbf=nrbf,
@@ -198,7 +213,6 @@ setMethod(
         tensor=tensor,
         transform.data=transform.data,
         fail.value=fail.value,
-        ...,
         verbose=verbose
       ),
       error = function (e) pStop(who="nlf_objfun",conditionMessage(e))
@@ -212,10 +226,17 @@ setMethod(
 setMethod(
   "nlf_objfun",
   signature=signature(data="nlf_objfun"),
-  definition=function (data,
-    est, lags, nrbf, ti, tf, seed = NULL,
-    period, tensor, transform.data, fail.value,
-    ..., verbose = getOption("verbose", FALSE)) {
+  definition=function (
+    data,
+    ...,
+    est,
+    lags, nrbf, ti, tf,
+    seed = NULL,
+    period, tensor,
+    transform.data,
+    fail.value,
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     if (missing(est)) est <- data@est
     if (missing(lags)) lags <- data@env$lags
@@ -246,10 +267,13 @@ setMethod(
   }
 )
 
-nlfof_internal <- function (object,
+nlfof_internal <- function (
+  object,
+  ...,
   est, lags, nrbf, ti, tf, seed, period, tensor,
   transform.data, fail.value,
-  ..., verbose)
+  verbose
+)
 {
 
   verbose <- as.logical(verbose)

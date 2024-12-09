@@ -70,22 +70,23 @@ setMethod(
   "trajectory",
   signature=signature(object="missing"),
   definition=function (
+    ...,
     t0, times, params,
     skeleton, rinit,
-    ...,
     ode_control = list(),
     format = c("pomps", "array", "data.frame"),
-    verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       trajectory_internal(
         object=NULL,
+        ...,
         t0=t0,
         times=times,
         params=params,
         skeleton=skeleton,
         rinit=rinit,
-        ...,
         ode_control=ode_control,
         format=format,
         verbose=verbose
@@ -108,17 +109,18 @@ setMethod(
     skeleton, rinit,
     ode_control = list(),
     format = c("pomps", "array", "data.frame"),
-    verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       trajectory_internal(
         object=object,
+        ...,
         t0=t0,
         times=times,
         params=params,
         skeleton=skeleton,
         rinit=rinit,
-        ...,
         ode_control=ode_control,
         format=format,
         verbose=verbose
@@ -136,20 +138,21 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (
     object,
-    params,
     ...,
+    params,
     skeleton, rinit,
     ode_control = list(),
     format = c("pomps", "array", "data.frame"),
-    verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       trajectory_internal(
         object=object,
+        ...,
         params=params,
         skeleton=skeleton,
         rinit=rinit,
-        ...,
         ode_control=ode_control,
         format=format,
         verbose=verbose
@@ -161,8 +164,9 @@ setMethod(
 )
 
 trajectory_internal <- function (
-  object, params,
+  object,
   ...,
+  params,
   format = c("pomps", "array", "data.frame"),
   ode_control = list(),
   .gnsi = TRUE,
