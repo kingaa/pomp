@@ -21,8 +21,15 @@ For installation instructions and user guides, see [the package website](https:/
 
 Related packages:
 
-- [**phylopomp**](https://github.com/kingaa/phylopomp/)
-- [**spatPomp**](https://github.com/spatPomp-org/spatPomp/)
-- [**panelPomp**](https://github.com/panelPomp-org/panelPomp/)
-- [**circumstance**](https://github.com/kingaa/circumstance/)
-- [**subplex**](https://github.com/kingaa/subplex/)
+- [**POMP.jl**](https://github.com/kingaa/POMP.jl):
+  Experimental port of **pomp** to Julia
+- [**phylopomp**](https://github.com/kingaa/phylopomp/):
+  **pomp** for phylodynamics
+- [**panelPomp**](https://github.com/panelPomp-org/panelPomp/):
+  **pomp** for panel data
+- [**spatPomp**](https://github.com/spatPomp-org/spatPomp/):
+  Spatiotemporal dynamics
+- [**circumstance**](https://github.com/kingaa/circumstance/):
+  Experimental parallelization tools
+- [**subplex**](https://github.com/kingaa/subplex/): 
+  The *subplex* optimization algorithm
