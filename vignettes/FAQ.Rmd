@@ -84,7 +84,7 @@ Please [follow the instructions in FAQ 1.1 above](#effective-request).
 The pomp developers have a goal of replacing all unhelpful error messages with helpful ones.
 By letting us know when messages are confusing or uninformative, you help us to make the package more usable.
 
-## I am running a piece of **pomp** code I found on the web, but I get errors. What is going on? {#old-code}
+## I am running a piece of **pomp** code I got from a guy, but I get errors. What is going on? {#old-code}
 
 Of course, there could be many reasons for this.
 However, you should know that **pomp** version 2 made many changes to the **pomp** interface so that older code will not run under versions &ge; 2.
