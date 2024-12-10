@@ -87,8 +87,11 @@ By letting us know when messages are confusing or uninformative, you help us to 
 ## I am running a piece of **pomp** code I got from a guy, but I get errors. What is going on? {#old-code}
 
 Of course, there could be many reasons for this.
-However, you should know that **pomp** version 2 made many changes to the **pomp** interface so that older code will not run under versions &ge; 2.
-See the [**pomp** version 2 upgrade guide](./upgrade_guide.html) for information on how to fix broken code from earlier versions.
+However, you should know that each time the major version number for the packageincreases (e.g., from 5.11 to 6.1), at least one change has been introduced that has the potential to break existing code.
+Consult the [news blog](./blog.html) (including the [blog archive](./archive.html) if the code you are testing is more than a few months old):
+these contain succinct summaries of the changes associated with each release.
+Note also that the [online manual](https://kingaa.github.io/manuals/pomp/) is kept up to date.
+There is also the [**pomp** version 2 upgrade guide](./upgrade_guide.html) which gives information on how to update codes from versions <2.
 
 ## Where in the peer-reviewed literature is **pomp** described?
 
@@ -279,7 +282,7 @@ dmeas <- Csnippet("
 
 dat |>
   pomp(
-    time="day",t0=0,
+    times="day",t0=0,
     rprocess=euler(sir_step,delta.t=1/12),
     rinit=sir_init,
     rmeasure=rmeas,
@@ -388,7 +391,7 @@ day,B
 
 dat |>
   pomp(
-    time="day",t0=-8,
+    times="day",t0=-8,
     rprocess=euler(sir_step,delta.t=1/12),
     rinit=sir_init,
     rmeasure=rmeas,
@@ -437,7 +440,7 @@ dat |>
   bind_rows(c(day=0,B=NA)) |>
   arrange(day) |>
   pomp(
-    time="day",t0=-8,
+    times="day",t0=-8,
     rprocess=euler(sir_step,delta.t=1/12),
     rinit=sir_init,
     rmeasure=rmeas,
@@ -902,7 +905,7 @@ dmeas <- Csnippet("
 
 ```{r include=FALSE}
 ## Check the above C snippet.
-pomp(data.frame(t=1:10,D1=1:10,D2=2),time='t',t0=0,dmeasure=dmeas,
+pomp(data.frame(t=1:10,D1=1:10,D2=2),times='t',t0=0,dmeasure=dmeas,
   statenames=c("N1","N2"),paramnames=c("rho1","rho2","k"))
 ```
 

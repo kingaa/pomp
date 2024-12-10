@@ -260,7 +260,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <p>To cite the ‘pomp’ package in publications, use:</p>
 <p>A. A. King, D. Nguyen, E. L. Ionides (2016). Statistical Inference for Partially Observed Markov Processes via the R Package pomp. Journal of Statistical Software 69(12): 1–43. <a href="DOI:10.18637/jss.v069.i12" class="uri">DOI:10.18637/jss.v069.i12</a>.</p>
 <p>Additionally, consider citing the package itself:</p>
-<p>A. A. King, E. L. Ionides, C. M. Breto, S. P. Ellner, M. J. Ferrari, S. Funk, S. G. Johnson, B. E. Kendall, M. Lavine, D. Nguyen, E. B. O’Dea, D. C. Reuman, H. Wearing, and S. N. Wood (2024). pomp: Statistical Inference for Partially Observed Markov Processes. (R package, version 5.11.1.0). <a href="https://kingaa.github.io/pomp/" class="uri">https://kingaa.github.io/pomp/</a></p>
+<p>A. A. King, E. L. Ionides, C. M. Breto, S. P. Ellner, M. J. Ferrari, S. Funk, S. G. Johnson, B. E. Kendall, M. Lavine, D. Nguyen, E. B. O’Dea, D. C. Reuman, H. Wearing, and S. N. Wood (2024). pomp: Statistical Inference for Partially Observed Markov Processes. (R package, version 6.0.1.0). <a href="https://kingaa.github.io/pomp/" class="uri">https://kingaa.github.io/pomp/</a></p>
 <p>You can get this information by executing <code>citation(&quot;pomp&quot;)</code> in an <strong>R</strong> session. LaTeX users can get a BibTeX entry for these publications by executing <code>toBibtex(citation(&quot;pomp&quot;))</code>.</p>
 <p>If you use <strong>pomp</strong> in a publication, please take a moment to let us know! Send an email with the citation, and we’ll include it in <a href="./biblio.html">the bibliography</a>.</p>
 </div>
@@ -271,7 +271,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="old-code" class="section level2" number="1.4">
 <h2 number="1.4"><span class="header-section-number">1.4</span> I am running a piece of <strong>pomp</strong> code I got from a guy, but I get errors. What is going on?</h2>
-<p>Of course, there could be many reasons for this. However, you should know that <strong>pomp</strong> version 2 made many changes to the <strong>pomp</strong> interface so that older code will not run under versions ≥ 2. See the <a href="./upgrade_guide.html"><strong>pomp</strong> version 2 upgrade guide</a> for information on how to fix broken code from earlier versions.</p>
+<p>Of course, there could be many reasons for this. However, you should know that each time the major version number for the packageincreases (e.g., from 5.11 to 6.1), at least one change has been introduced that has the potential to break existing code. Consult the <a href="./blog.html">news blog</a> (including the <a href="./archive.html">blog archive</a> if the code you are testing is more than a few months old): these contain succinct summaries of the changes associated with each release. Note also that the <a href="https://kingaa.github.io/manuals/pomp/">online manual</a> is kept up to date. There is also the <a href="./upgrade_guide.html"><strong>pomp</strong> version 2 upgrade guide</a> which gives information on how to update codes from versions &lt;2.</p>
 </div>
 <div id="where-in-the-peer-reviewed-literature-is-pomp-described" class="section level2" number="1.5">
 <h2 number="1.5"><span class="header-section-number">1.5</span> Where in the peer-reviewed literature is <strong>pomp</strong> described?</h2>
@@ -430,7 +430,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a></span>
 <span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a>dat <span class="op">|</span><span class="er">&gt;</span></span>
 <span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a><span class="st">  </span><span class="kw">pomp</span>(</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true"></a>    <span class="dt">time=</span><span class="st">&quot;day&quot;</span>,<span class="dt">t0=</span><span class="dv">0</span>,</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true"></a>    <span class="dt">times=</span><span class="st">&quot;day&quot;</span>,<span class="dt">t0=</span><span class="dv">0</span>,</span>
 <span id="cb6-32"><a href="#cb6-32" aria-hidden="true"></a>    <span class="dt">rprocess=</span><span class="kw">euler</span>(sir_step,<span class="dt">delta.t=</span><span class="dv">1</span><span class="op">/</span><span class="dv">12</span>),</span>
 <span id="cb6-33"><a href="#cb6-33" aria-hidden="true"></a>    <span class="dt">rinit=</span>sir_init,</span>
 <span id="cb6-34"><a href="#cb6-34" aria-hidden="true"></a>    <span class="dt">rmeasure=</span>rmeas,</span>
@@ -518,7 +518,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-45"><a href="#cb9-45" aria-hidden="true"></a></span>
 <span id="cb9-46"><a href="#cb9-46" aria-hidden="true"></a>dat <span class="op">|</span><span class="er">&gt;</span></span>
 <span id="cb9-47"><a href="#cb9-47" aria-hidden="true"></a><span class="st">  </span><span class="kw">pomp</span>(</span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true"></a>    <span class="dt">time=</span><span class="st">&quot;day&quot;</span>,<span class="dt">t0=</span><span class="op">-</span><span class="dv">8</span>,</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true"></a>    <span class="dt">times=</span><span class="st">&quot;day&quot;</span>,<span class="dt">t0=</span><span class="op">-</span><span class="dv">8</span>,</span>
 <span id="cb9-49"><a href="#cb9-49" aria-hidden="true"></a>    <span class="dt">rprocess=</span><span class="kw">euler</span>(sir_step,<span class="dt">delta.t=</span><span class="dv">1</span><span class="op">/</span><span class="dv">12</span>),</span>
 <span id="cb9-50"><a href="#cb9-50" aria-hidden="true"></a>    <span class="dt">rinit=</span>sir_init,</span>
 <span id="cb9-51"><a href="#cb9-51" aria-hidden="true"></a>    <span class="dt">rmeasure=</span>rmeas,</span>
@@ -555,7 +555,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">bind_rows</span>(<span class="kw">c</span>(<span class="dt">day=</span><span class="dv">0</span>,<span class="dt">B=</span><span class="ot">NA</span>)) <span class="op">|</span><span class="er">&gt;</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">arrange</span>(day) <span class="op">|</span><span class="er">&gt;</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">pomp</span>(</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>    <span class="dt">time=</span><span class="st">&quot;day&quot;</span>,<span class="dt">t0=</span><span class="op">-</span><span class="dv">8</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>    <span class="dt">times=</span><span class="st">&quot;day&quot;</span>,<span class="dt">t0=</span><span class="op">-</span><span class="dv">8</span>,</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a>    <span class="dt">rprocess=</span><span class="kw">euler</span>(sir_step,<span class="dt">delta.t=</span><span class="dv">1</span><span class="op">/</span><span class="dv">12</span>),</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>    <span class="dt">rinit=</span>sir_init,</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a>    <span class="dt">rmeasure=</span>rmeas,</span>
