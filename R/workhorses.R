@@ -317,8 +317,8 @@ setMethod(
   definition=function (
     object,
     params,
-    dir = c("fromEst", "toEst"),
-    ...
+    ...,
+    dir = c("fromEst", "toEst")
   ) {
     dir <- match.arg(dir)
     tryCatch(

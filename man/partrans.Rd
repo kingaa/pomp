@@ -9,7 +9,7 @@
 \alias{partrans,objfun-method}
 \title{partrans workhorse}
 \usage{
-\S4method{partrans}{pomp}(object, params, dir = c("fromEst", "toEst"), ...)
+\S4method{partrans}{pomp}(object, params, ..., dir = c("fromEst", "toEst"))
 
 \S4method{partrans}{objfun}(object, ...)
 }
@@ -20,9 +20,9 @@ This will typically be the output of \code{pomp}, \code{simulate}, or one of the
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
 
-\item{dir}{the direction of the transformation to perform.}
-
 \item{...}{additional arguments are ignored.}
+
+\item{dir}{the direction of the transformation to perform.}
 }
 \value{
 If \code{dir=fromEst}, the parameters in \code{params} are assumed to be on the estimation scale and are transformed onto the natural scale.
