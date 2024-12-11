@@ -39,6 +39,10 @@ try(po |>
       SEXP Msg = get_userdata("bob");
       char *msg = CHAR(STRING_ELT(Msg,0));
       Rprintf("%s\n",msg);}"))))
+try(po |> simulate(time=1:3))
+try(po |> simulate(time=1:3,bob=77))
+try(po |> simulate(times=1:3,seed=NULL,nsim=5,77))
+try(po |> pomp(77))
 try(po |>
     simulate(rprocess=onestep(
       Csnippet(r"{double nbasis = *(get_userdata_double("nbasis"));}"))))

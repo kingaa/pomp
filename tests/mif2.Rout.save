@@ -185,8 +185,9 @@ loglik:           NA
 +     drpocess="oops",
 +     dmeasure=function(log,...)0) -> mf3
 + )
-Error : in 'mif2': The argument 'drpocess'is not recognized.
-Use the 'userdata' argument to supply extra objects to basic model components. See '?userdata'.
+Error : in 'mif2': The argument 'drpocess' is not recognized.
+Use the 'userdata' argument to supply extra objects to basic model components.
+See '?userdata'.
 > mif2(po,Nmif=2,Np=50,rw.sd=rw_sd(sigma=0.01),
 +   cooling.type="hyper",cooling.fraction.50=0.1,
 +   dmeasure=function(log,...)0) -> mf3

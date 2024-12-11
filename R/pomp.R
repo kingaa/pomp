@@ -187,11 +187,27 @@ pomp <- function (
   )
     return(as(data,"pomp"))
 
+  extra_args <- list(...)
+  if (length(extra_args)>0L) {
+    nm <- names(extra_args)
+    if (length(nm)==0 || any(nchar(nm)==0))
+      pStop_("Unnamed arguments are not permitted.")
+    else
+      pStop_("The ",
+        ngettext(length(extra_args),"argument ","arguments "),
+        paste(sQuote(nm),collapse=","),
+        ngettext(length(extra_args)," is"," are"),
+        " not recognized.\nUse the ",sQuote("userdata"),
+        " argument to supply extra objects to basic model components.\n",
+        "See ",sQuote("?userdata"),"."
+      )
+  }
+
   if (missing(times)) times <- NULL
 
   tryCatch(
     construct_pomp(
-      data=data,times=times,t0=t0,...,
+      data=data,times=times,t0=t0,
       rinit=rinit,dinit=dinit,
       rprocess=rprocess,dprocess=dprocess,
       rmeasure=rmeasure,dmeasure=dmeasure,
@@ -450,7 +466,6 @@ setMethod(
 
 pomp_internal <- function (
   data,
-  ...,
   times, t0, timename,
   rinit, dinit, rprocess, dprocess,
   rmeasure, dmeasure, emeasure, vmeasure,
@@ -482,17 +497,6 @@ pomp_internal <- function (
   else
     timename <- as.character(timename)
 
-  added.userdata <- list(...)
-  if (length(added.userdata)>0L) {
-    pStop_("The ",
-      ngettext(length(added.userdata),"argument","arguments")," ",
-      paste(sQuote(names(added.userdata)),collapse=","),
-      ngettext(length(added.userdata),"is","are"),
-      " not recognized.\nUse the ",sQuote("userdata"),
-      " argument to supply extra objects to basic model components.",
-      " See ",sQuote("?userdata"),"."
-    )
-  }
   .userdata[names(userdata)] <- userdata
 
   if (!is(rprocess,"rprocPlugin")) {

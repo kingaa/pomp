@@ -103,8 +103,7 @@ Error : in 'simulate': argument is missing, with no default
 +       )
 +     )
 + )
-Error : in 'simulate': The argument is not recognized.
-Use the 'userdata' argument to supply extra objects to basic model components. See '?userdata'.
+Error : in 'simulate': Unnamed arguments are not permitted.
 > 
 > dev.off()
 null device 

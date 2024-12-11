@@ -60,6 +60,18 @@ hello!
 +       char *msg = CHAR(STRING_ELT(Msg,0));
 +       Rprintf("%s\n",msg);}"))))
 Error : in 'simulate': no user-data element 'bob' is found.
+> try(po |> simulate(time=1:3))
+Error : in 'simulate': The argument 'time' is not recognized.
+Use the 'userdata' argument to supply extra objects to basic model components.
+See '?userdata'.
+> try(po |> simulate(time=1:3,bob=77))
+Error : in 'simulate': The arguments 'time','bob' are not recognized.
+Use the 'userdata' argument to supply extra objects to basic model components.
+See '?userdata'.
+> try(po |> simulate(times=1:3,seed=NULL,nsim=5,77))
+Error : in 'simulate': Unnamed arguments are not permitted.
+> try(po |> pomp(77))
+Error : Unnamed arguments are not permitted.
 > try(po |>
 +     simulate(rprocess=onestep(
 +       Csnippet(r"{double nbasis = *(get_userdata_double("nbasis"));}"))))
