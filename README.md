@@ -21,7 +21,7 @@ For installation instructions and user guides, see [the package website](https:/
 
 Related packages:
 
-- [**POMP.jl**](https://github.com/kingaa/POMP.jl):
+- [**PartiallyObservedMarkovProcesses.jl**](https://github.com/kingaa/PartiallyObservedMarkovProcesses.jl):
   Experimental port of **pomp** to Julia
 - [**phylopomp**](https://github.com/kingaa/phylopomp/):
   **pomp** for phylodynamics
