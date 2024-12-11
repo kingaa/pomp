@@ -8,16 +8,16 @@
 \alias{rprior,pomp-method}
 \title{rprior workhorse}
 \usage{
-\S4method{rprior}{pomp}(object, params = coef(object), ...)
+\S4method{rprior}{pomp}(object, ..., params = coef(object))
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
+\item{...}{additional arguments are ignored.}
+
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
-
-\item{...}{additional arguments are ignored.}
 }
 \value{
 A numeric matrix containing the required samples.

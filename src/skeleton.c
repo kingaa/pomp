@@ -341,7 +341,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepx = dim[1];
   if (ntimes != dim[2])
-    err("length of 't' and 3rd dimension of 'x' do not agree.");
+    err("length of 'times' and 3rd dimension of 'x' do not agree.");
 
   PROTECT(params = as_matrix(params));
   dim = INTEGER(GET_DIM(params));

@@ -139,7 +139,7 @@ void eeulermultinom
 {
   double lambda = 0.0;
   int j, k;
-  if ( !R_FINITE(size) || size < 0.0 || !R_FINITE(dt) || dt < 0.0) {
+  if (!R_FINITE(size) || size < 0.0 || !R_FINITE(dt) || dt < 0.0) {
     for (k = 0; k < m; k++) trans[k] = R_NaReal;
     warn("in 'eeulermultinom': NAs produced.");
     return;

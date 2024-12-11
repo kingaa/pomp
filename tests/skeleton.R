@@ -14,7 +14,7 @@ ricker <- simulate(ricker,times=1:500,seed=366829807L)
 x <- states(ricker)
 p <- parmat(coef(ricker),3)
 p["r",] <- exp(c(1,2,4))
-f <- skeleton(ricker,x=x,params=p,t=time(ricker))
+f <- skeleton(ricker,x=x,params=p,times=time(ricker))
 f |>
   melt() |>
   filter(name=="N") |>
@@ -45,7 +45,7 @@ sir() -> sir
 p <- parmat(coef(sir),nrep=3)
 p["beta2",2:3] <- exp(c(3,5))
 trajectory(sir,params=p,times=seq(0,1,length=1000),format="a") -> tj
-skeleton(sir,x=tj,params=p,t=seq(0,1,length=1000)) -> f
+skeleton(sir,x=tj,params=p,times=seq(0,1,length=1000)) -> f
 tj |> apply(c(1,2),diff) |> melt() |> rename(diff=value) |>
   mutate(.id=as.integer(.id)) -> dtj
 f |>

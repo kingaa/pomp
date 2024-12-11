@@ -33,7 +33,7 @@ Type 'q()' to quit R.
 > x <- states(ricker)
 > p <- parmat(coef(ricker),3)
 > p["r",] <- exp(c(1,2,4))
-> f <- skeleton(ricker,x=x,params=p,t=time(ricker))
+> f <- skeleton(ricker,x=x,params=p,times=time(ricker))
 > f |>
 +   melt() |>
 +   filter(name=="N") |>
@@ -66,7 +66,7 @@ Error : 'skeleton' is undefined for 'object' of class 'character'.
 > p <- parmat(coef(sir),nrep=3)
 > p["beta2",2:3] <- exp(c(3,5))
 > trajectory(sir,params=p,times=seq(0,1,length=1000),format="a") -> tj
-> skeleton(sir,x=tj,params=p,t=seq(0,1,length=1000)) -> f
+> skeleton(sir,x=tj,params=p,times=seq(0,1,length=1000)) -> f
 > tj |> apply(c(1,2),diff) |> melt() |> rename(diff=value) |>
 +   mutate(.id=as.integer(.id)) -> dtj
 > f |>
@@ -96,7 +96,7 @@ Error : in 'skeleton': 'skeleton' must return a named numeric vector.
 > try(ricker |> skeleton(x=xx,times=time(ricker),params=parmat(coef(ricker),3)))
 Error : in 'skeleton': 2nd dimensions of 'x' and 'params' are incompatible
 > try(ricker |> skeleton(x=xx,times=time(ricker)[1:5],params=parmat(coef(ricker),2)))
-Error : in 'skeleton': length of 't' and 3rd dimension of 'x' do not agree.
+Error : in 'skeleton': length of 'times' and 3rd dimension of 'x' do not agree.
 > 
 > stopifnot(
 +   ricker |> pomp(skeleton=NULL) |>

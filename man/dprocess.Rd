@@ -10,16 +10,18 @@
 \usage{
 \S4method{dprocess}{pomp}(
   object,
+  ...,
   x = states(object),
   times = time(object),
   params = coef(object),
-  ...,
   log = FALSE
 )
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
+
+\item{...}{additional arguments are ignored.}
 
 \item{x}{an array containing states of the unobserved process.
 The dimensions of \code{x} are \code{nvars} x \code{nrep} x \code{ntimes},
@@ -33,8 +35,6 @@ These must be in non-decreasing order.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
-
-\item{...}{additional arguments are ignored.}
 
 \item{log}{if TRUE, log probabilities are returned.}
 }

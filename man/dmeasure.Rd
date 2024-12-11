@@ -10,17 +10,19 @@
 \usage{
 \S4method{dmeasure}{pomp}(
   object,
+  ...,
   y = obs(object),
   x = states(object),
   times = time(object),
   params = coef(object),
-  ...,
   log = FALSE
 )
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
+
+\item{...}{additional arguments are ignored.}
 
 \item{y}{a matrix containing observations.
 The dimensions of \code{y} are \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observables
@@ -38,8 +40,6 @@ These must be in non-decreasing order.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
-
-\item{\dots}{additional arguments are ignored.}
 
 \item{log}{if TRUE, log probabilities are returned.}
 }

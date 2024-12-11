@@ -34,10 +34,16 @@ po |> pomp(dprocess=NULL) |>
   stopifnot()
 
 po |> rinit(params=coef(po)) -> x0
-freeze(po |>
-         rprocess(params=coef(po),x0=parmat(x0,3),t0=timezero(po),times=time(po),
-           offset=1),
-  seed=3434388L) -> x1
+freeze(
+  po |>
+    rprocess(
+      params=coef(po),
+      x0=parmat(x0,3),
+      t0=timezero(po),
+      times=time(po)
+    ),
+  seed=3434388L
+) -> x1
 
 stopifnot(max(abs(x-x1))==0)
 

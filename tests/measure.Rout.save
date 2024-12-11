@@ -133,7 +133,7 @@ Error : in 'rmeasure': length of 'times' and 3rd dimension of 'x' do not agree.
 > try(rmeasure(po,x=x[1,,,drop=FALSE],times=t,params=p))
 Error : in 'rmeasure': variable 'x2' not found among the state variables.
 > k <- which(names(p)=="tau")
-> try(rmeasure(po,x=x,y=y,times=t,params=p[-k]))
+> try(rmeasure(po,x=x,times=t,params=p[-k]))
 Error : in 'rmeasure': variable 'tau' not found among the parameters.
 > 
 > pp <- parmat(p,5)

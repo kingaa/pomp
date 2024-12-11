@@ -9,17 +9,21 @@
 \usage{
 \S4method{flow}{pomp}(
   object,
+  ...,
   x0,
   t0 = timezero(object),
   times = time(object),
   params = coef(object),
-  ...,
   verbose = getOption("verbose", FALSE)
 )
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
+
+\item{...}{Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
+See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.
+By default, this is the parameter vector stored in \code{object} (see \code{\link[pomp]{coef}}).}
 
 \item{x0}{an array with dimensions \code{nvar} x \code{nrep} giving the initial conditions of the trajectories to be computed.}
 
@@ -32,10 +36,6 @@ By default, this is the full set of observation times (see \code{\link{time}}).}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
-
-\item{...}{Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
-See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.
-By default, this is the parameter vector stored in \code{object} (see \code{\link[pomp]{coef}}).}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

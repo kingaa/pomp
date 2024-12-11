@@ -10,16 +10,18 @@
 \usage{
 \S4method{dinit}{pomp}(
   object,
+  ...,
   params = coef(object),
   t0 = timezero(object),
   x,
-  log = FALSE,
-  ...
+  log = FALSE
 )
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
+
+\item{...}{additional arguments are ignored.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
@@ -34,8 +36,6 @@ and \code{ntimes} is the length of \code{times}.
 One can also pass \code{x} as a named numeric vector, which is equivalent to the \code{nrep=1}, \code{ntimes=1} case.}
 
 \item{log}{if TRUE, log probabilities are returned.}
-
-\item{...}{additional arguments are ignored.}
 }
 \value{
 \code{dinit} returns a 1-D numerical array containing the likelihoods (or log likelihoods if \code{log=TRUE}).

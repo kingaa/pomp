@@ -10,16 +10,18 @@
 \usage{
 \S4method{rprocess}{pomp}(
   object,
+  ...,
   x0 = rinit(object),
   t0 = timezero(object),
   times = time(object),
-  params = coef(object),
-  ...
+  params = coef(object)
 )
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
+
+\item{...}{additional arguments are ignored.}
 
 \item{x0}{an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
 Columns of \code{x0} correspond to states;
@@ -34,8 +36,6 @@ These must be in non-decreasing order.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x0}.}
-
-\item{...}{additional arguments are ignored.}
 }
 \value{
 \code{rprocess} returns a rank-3 array with rownames.

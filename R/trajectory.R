@@ -191,7 +191,7 @@ trajectory_internal <- function (
   pompLoad(object)
   on.exit(pompUnload(object))
 
-  x0 <- rinit(object,params=params,verbose=verbose,.gnsi=.gnsi)
+  x0 <- rinit(object,params=params,.gnsi=.gnsi)
 
   x <- do.call(
     flow,

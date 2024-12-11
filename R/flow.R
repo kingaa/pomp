@@ -64,12 +64,14 @@ setMethod(
   "flow",
   signature=signature(object="pomp"),
   definition=function (
-    object, x0,
+    object,
+    ...,
+    x0,
     t0 = timezero(object),
     times = time(object),
     params = coef(object),
-    ...,
-    verbose = getOption("verbose", FALSE)) {
+    verbose = getOption("verbose", FALSE)
+  ) {
 
     tryCatch(
       flow_internal(object=object,x0=x0,t0=t0,times=times,params=params,
@@ -80,8 +82,13 @@ setMethod(
   }
 )
 
-flow_internal <- function (object, x0, t0, times, params, ...,
-  .gnsi = TRUE, verbose) {
+flow_internal <- function (
+  object,
+  ...,
+  x0, t0, times, params,
+  .gnsi = TRUE,
+  verbose
+) {
 
   verbose <- as.logical(verbose)
 

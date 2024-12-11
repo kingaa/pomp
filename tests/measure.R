@@ -96,7 +96,7 @@ try(rmeasure(po,x=x[,,1],times=t[1],params=p))
 invisible(rmeasure(po,x=x[,,1,drop=FALSE],times=t[1],params=p))
 try(rmeasure(po,x=x[1,,,drop=FALSE],times=t,params=p))
 k <- which(names(p)=="tau")
-try(rmeasure(po,x=x,y=y,times=t,params=p[-k]))
+try(rmeasure(po,x=x,times=t,params=p[-k]))
 
 pp <- parmat(p,5)
 try(rmeasure(po,x=x,times=t,params=pp[,1:3]))

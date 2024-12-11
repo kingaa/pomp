@@ -8,11 +8,13 @@
 \alias{rinit,pomp-method}
 \title{rinit workhorse}
 \usage{
-\S4method{rinit}{pomp}(object, params = coef(object), t0 = timezero(object), nsim = 1, ...)
+\S4method{rinit}{pomp}(object, ..., params = coef(object), t0 = timezero(object), nsim = 1)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
+
+\item{...}{additional arguments are ignored.}
 
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
@@ -20,8 +22,6 @@ Each column is treated as an independent parameter set, in correspondence with t
 \item{t0}{the initial time, i.e., the time corresponding to the initial-state distribution.}
 
 \item{nsim}{optional integer; the number of initial states to simulate per column of \code{params}.}
-
-\item{...}{additional arguments are ignored.}
 }
 \value{
 \code{rinit} returns an \code{nvar} x \code{nsim*ncol(params)} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.

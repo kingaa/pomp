@@ -59,7 +59,7 @@ NULL
 ##' @param params a \code{npar} x \code{nrep} matrix of parameters.
 ##' Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.
 ##' @param log if TRUE, log probabilities are returned.
-##' @param \dots additional arguments are ignored.
+##' @param ... additional arguments are ignored.
 ##' @return
 ##' \code{dmeasure} returns a matrix of dimensions \code{nreps} x \code{ntimes}.
 ##' If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or log likelihood if \code{log = TRUE}) of the observation \code{y[,k]} at time \code{times[k]} given the state \code{x[,j,k]}.
@@ -95,11 +95,11 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (
     object,
+    ...,
     y = obs(object),
     x = states(object),
     times = time(object),
     params = coef(object),
-    ...,
     log = FALSE
   ) {
     tryCatch(
@@ -110,8 +110,12 @@ setMethod(
   }
 )
 
-dmeasure_internal <- function (object, y, x, times, params, ..., log = FALSE,
-  .gnsi = TRUE) {
+dmeasure_internal <- function (
+  object,
+  y, x, times, params,
+  log = FALSE,
+  .gnsi = TRUE
+) {
   storage.mode(y) <- "double"
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
@@ -167,8 +171,8 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (
     object,
-    params = coef(object),
     ...,
+    params = coef(object),
     log = FALSE
   ) {
     tryCatch(
@@ -178,8 +182,12 @@ setMethod(
   }
 )
 
-dprior_internal <- function (object, params, log = FALSE,
-  .gnsi = TRUE, ...) {
+dprior_internal <- function (
+  object,
+  params,
+  log = FALSE,
+  .gnsi = TRUE
+) {
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
@@ -233,10 +241,10 @@ setMethod(
   signature=signature(object="pomp"),
   definition = function (
     object,
+    ...,
     x = states(object),
     times = time(object),
     params = coef(object),
-    ...,
     log = FALSE
   ) {
     tryCatch(
@@ -246,7 +254,12 @@ setMethod(
   }
 )
 
-dprocess_internal <- function (object, x, times, params, log = FALSE, .gnsi = TRUE, ...) {
+dprocess_internal <- function (
+  object,
+  x, times, params,
+  log = FALSE,
+  .gnsi = TRUE
+) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)
@@ -302,7 +315,8 @@ setMethod(
   "partrans",
   signature=signature(object="pomp"),
   definition=function (
-    object, params,
+    object,
+    params,
     dir = c("fromEst", "toEst"),
     ...
   ) {
@@ -314,8 +328,12 @@ setMethod(
   }
 )
 
-partrans_internal <- function (object, params, dir = c("fromEst", "toEst"),
-  .gnsi = TRUE, ...) {
+partrans_internal <- function (
+  object,
+  params,
+  dir = c("fromEst", "toEst"),
+  .gnsi = TRUE
+) {
   if (object@partrans@has) {
     dir <- switch(dir,fromEst=-1L,toEst=1L)
     pompLoad(object)
@@ -374,10 +392,10 @@ setMethod(
   signature=signature("pomp"),
   definition=function (
     object,
+    ...,
     params = coef(object),
     t0 = timezero(object),
-    nsim = 1,
-    ...
+    nsim = 1
   ) {
     tryCatch(
       rinit_internal(object=object,params=params,t0=t0,nsim=nsim,...),
@@ -386,8 +404,12 @@ setMethod(
   }
 )
 
-rinit_internal <- function (object, params, t0, nsim = 1,
-  .gnsi = TRUE, ...) {
+rinit_internal <- function (
+  object,
+  params, t0,
+  nsim = 1,
+  .gnsi = TRUE
+) {
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
@@ -442,11 +464,11 @@ setMethod(
   signature=signature("pomp"),
   definition=function (
     object,
+    ...,
     params = coef(object),
     t0 = timezero(object),
     x,
-    log = FALSE,
-    ...
+    log = FALSE
   ) {
     tryCatch(
       dinit_internal(object=object,x=x,params=params,t0=t0,log=log,...),
@@ -455,7 +477,12 @@ setMethod(
   }
 )
 
-dinit_internal <- function (object, x, params, t0, log, .gnsi = TRUE, ...) {
+dinit_internal <- function (
+  object,
+  x, params, t0,
+  log,
+  .gnsi = TRUE
+) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)
@@ -511,10 +538,10 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (
     object,
+    ...,
     x = states(object),
     times = time(object),
-    params = coef(object),
-    ...
+    params = coef(object)
   ) {
     tryCatch(
       rmeasure_internal(object=object,x=x,times=times,params=params,...),
@@ -523,8 +550,11 @@ setMethod(
   }
 )
 
-rmeasure_internal <- function (object, x, times, params,
-  .gnsi = TRUE, ...) {
+rmeasure_internal <- function (
+  object,
+  x, times, params,
+  .gnsi = TRUE
+) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)
@@ -578,10 +608,10 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (
     object,
+    ...,
     x = states(object),
     times = time(object),
-    params = coef(object),
-    ...
+    params = coef(object)
   ) {
     tryCatch(
       emeasure_internal(object=object,x=x,times=times,params=params,...),
@@ -590,8 +620,11 @@ setMethod(
   }
 )
 
-emeasure_internal <- function (object, x, times, params,
-  .gnsi = TRUE, ...) {
+emeasure_internal <- function (
+  object,
+  x, times, params,
+  .gnsi = TRUE
+) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)
@@ -647,10 +680,10 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (
     object,
+    ...,
     x = states(object),
     times = time(object),
-    params = coef(object),
-    ...
+    params = coef(object)
   ) {
     tryCatch(
       vmeasure_internal(object=object,x=x,times=times,params=params,...),
@@ -659,8 +692,11 @@ setMethod(
   }
 )
 
-vmeasure_internal <- function (object, x, times, params,
-  .gnsi = TRUE, ...) {
+vmeasure_internal <- function (
+  object,
+  x, times, params,
+  .gnsi = TRUE
+) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)
@@ -715,8 +751,8 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (
     object,
-    params = coef(object),
-    ...
+    ...,
+    params = coef(object)
   )
     tryCatch(
       rprior_internal(object=object,params=params,...),
@@ -724,7 +760,11 @@ setMethod(
     )
 )
 
-rprior_internal <- function (object, params, .gnsi = TRUE, ...) {
+rprior_internal <- function (
+  object,
+  params,
+  .gnsi = TRUE
+) {
   storage.mode(params) <- "double"
   pompLoad(object)
   on.exit(pompUnload(object))
@@ -795,11 +835,11 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (
     object,
+    ...,
     x0 = rinit(object),
     t0 = timezero(object),
     times = time(object),
-    params = coef(object),
-    ...
+    params = coef(object)
   ) {
     tryCatch(
       rprocess_internal(object=object,x0=x0,t0=t0,times=times,params=params,...),
@@ -808,8 +848,11 @@ setMethod(
   }
 )
 
-rprocess_internal <- function (object, x0, t0, times, params, ...,
-  .gnsi = TRUE) {
+rprocess_internal <- function (
+  object,
+  x0, t0, times, params,
+  .gnsi = TRUE
+) {
   storage.mode(x0) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)
@@ -869,10 +912,10 @@ setMethod(
   signature=signature("pomp"),
   definition=function (
     object,
+    ...,
     x = states(object),
     times = time(object),
-    params = coef(object),
-    ...
+    params = coef(object)
   )
     tryCatch(
       skeleton_internal(object=object,x=x,times=times,params=params,...),
@@ -880,7 +923,11 @@ setMethod(
     )
 )
 
-skeleton_internal <- function (object, x, times, params, .gnsi = TRUE, ...) {
+skeleton_internal <- function (
+  object,
+  x, times, params,
+  .gnsi = TRUE
+) {
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)

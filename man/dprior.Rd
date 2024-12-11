@@ -8,16 +8,16 @@
 \alias{dprior,pomp-method}
 \title{dprior workhorse}
 \usage{
-\S4method{dprior}{pomp}(object, params = coef(object), ..., log = FALSE)
+\S4method{dprior}{pomp}(object, ..., params = coef(object), log = FALSE)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.
 This will typically be the output of \code{pomp}, \code{simulate}, or one of the \pkg{pomp} inference algorithms.}
 
+\item{...}{additional arguments are ignored.}
+
 \item{params}{a \code{npar} x \code{nrep} matrix of parameters.
 Each column is treated as an independent parameter set, in correspondence with the corresponding column of \code{x}.}
-
-\item{...}{additional arguments are ignored.}
 
 \item{log}{if TRUE, log probabilities are returned.}
 }
