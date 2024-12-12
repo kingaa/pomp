@@ -4,7 +4,7 @@
     traj_objfun(
       est=c("r","sigma","N_0"),
       partrans=parameter_trans(log=c("r","sigma","N_0")),
-      paramnames=c("r","sigma","N_0"),
+      paramnames=c("r","sigma","N_0")
       ) -> f
 
   f(log(c(20,0.3,10)))
