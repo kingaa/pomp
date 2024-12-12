@@ -130,7 +130,7 @@ s1 |>
   )
 
 s2 |>
-  pfilter(Np=1,save.states=TRUE) |>
+  pfilter(Np=1,save.states='filter') |>
   saved_states(format="list") |>
   melt() |>
   pivot_wider() |>

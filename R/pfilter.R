@@ -28,10 +28,10 @@
 ##' @param filter.traj logical; if \code{TRUE}, a filtered trajectory is returned for the state variables and parameters.
 ##' See \code{\link{filter_traj}} for more information.
 ##' @param save.states character;
-##' If \code{save.states="unweighted"}, the state-vector for each unweighted particle at each time is saved.
-##' If \code{save.states="weighted"}, the state-vector for each weighted particle at each time is saved, along with the corresponding weight.
 ##' If \code{save.states="no"}, information on the latent states is not saved.
-##' \code{"FALSE"} is a synonym for \code{"no"} and \code{"TRUE"} is a synonym for \code{"unweighted"}.
+##' If \code{save.states="filter"}, the state-vector for each filtered particle \eqn{X_{n, j}^F} at each time \eqn{n} is saved.
+##' If \code{save.states="prediction"}, the state-vector for each prediction particle \eqn{X_{n, j}^P} at each time \eqn{n} is saved, along with the corresponding weight \eqn{w_{n, j} = f_{Y_n|X_n}(y^*|X_{n, j}^P;\theta)}.
+##' The old values "unweighted", "weighted", TRUE, and FALSE are deprecated and will issue a warning if used, mapping to the new values for backward compatibility.
 ##' To retrieve the saved states, apply \code{\link{saved_states}} to the result of the \code{pfilter} computation.
 ##' @param ... additional arguments are passed to \code{\link{pomp}}.
 ##' This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.
@@ -129,7 +129,7 @@ setMethod(
     pred.var = FALSE,
     filter.mean = FALSE,
     filter.traj = FALSE,
-    save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
+    save.states = c("no", "filter", "prediction"),
     verbose = getOption("verbose", FALSE)
   ) {
 
@@ -168,7 +168,7 @@ setMethod(
     pred.var = FALSE,
     filter.mean = FALSE,
     filter.traj = FALSE,
-    save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
+    save.states = c("no", "filter", "prediction"),
     verbose = getOption("verbose", FALSE)
   ) {
 
@@ -213,7 +213,7 @@ pfilter_internal <- function (
   ...,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
   filter.traj = FALSE, cooling, cooling.m,
-  save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
+  save.states = c("no", "filter", "prediction"),
   .gnsi = TRUE, verbose = FALSE
 ) {
 
@@ -229,8 +229,27 @@ pfilter_internal <- function (
   pred.var <- as.logical(pred.var)
   filter.mean <- as.logical(filter.mean)
   filter.traj <- as.logical(filter.traj)
-  save.states <- as.character(save.states)
-  save.states <- match.arg(save.states)
+  
+  # Necessary for backwards compatability with FALSE and TRUE inputs.
+  save.states <- as.character(save.states)   
+  
+  # Handle default case where entire vector is passed; typically handled by 
+  # match.arg, but I want to allow for deprecated inputs: TRUE, FALSE, weighted, 
+  # unweighted. This condition once previous arguments are removed. 
+  if (length(save.states) > 1) {
+    save.states <- save.states[1]
+  }
+  
+  state_arg_map <- c("FALSE" = "no", "TRUE" = "filter", "weighted" = "prediction", "unweighted" = "filter")
+  
+  # Check if input is deprecated argument, and return warning. 
+  if (save.states %in% names(state_arg_map)) {
+    pWarn_(paste("The", sQuote("save.states"), "value", sQuote(save.states), "is deprecated and will be removed in a future version. Please use", sQuote(unname(state_arg_map[save.states])), "instead." ))
+    save.states <- unname(state_arg_map[save.states])
+  }
+  
+  # Additional check to ensure final value is valid. 
+  save.states <- match.arg(save.states, c("no", "filter", "prediction"))
 
   params <- coef(object)
   times <- time(object,t0=TRUE)
@@ -247,8 +266,8 @@ pfilter_internal <- function (
   x <- init.x
 
   ## set up storage for saving samples from filtering distributions
-  stsav <- save.states %in% c("unweighted","TRUE")
-  wtsav <- save.states == "weighted"
+  stsav <- save.states %in% c("filter")
+  wtsav <- save.states == "prediction"
   if (stsav || wtsav || filter.traj) {
     xparticles <- vector(mode="list",length=ntimes)
     if (wtsav) xweights <- xparticles

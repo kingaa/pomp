@@ -2,9 +2,10 @@
 ##'
 ##' Retrieve latent state trajectories from a particle filter calculation.
 ##'
-##' When one calls \code{\link{pfilter}} with \code{save.states=TRUE}, the latent state vector associated with each particle is saved.
+##' When one calls \code{\link{pfilter}} with \code{save.states="filter"} or \code{save.states="prediction"}, the latent state vector associated with each particle is saved.
 ##' This can be extracted by calling \code{saved_states} on the \sQuote{pfilterd.pomp} object.
-##' These are the \emph{unweighted} particles, saved \emph{after} resampling.
+##' If the filtered particles are saved, these particles are \emph{unweighted}, saved \emph{after} resampling using their normalized weights.
+##' If the argument  \code{save.states="prediction"} was used, the particles correspond to simulations from \code{rprocess}, and their corresponding unnormalized weights are included in the output. 
 ##'
 ##' @name saved_states
 ##' @aliases saved_states,ANY-method saved_states,missing-method
