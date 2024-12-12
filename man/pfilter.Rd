@@ -139,7 +139,7 @@ eff_sample_size(pf)             ## effective sample size
 logLik(pfilter(pf))      	## run it again with 1000 particles
 
 ## run it again with 2000 particles
-pf <- pfilter(pf,Np=2000,filter.mean=TRUE,filter.traj=TRUE,save.states="weighted")
+pf <- pfilter(pf,Np=2000,filter.mean=TRUE,filter.traj=TRUE,save.states="filter")
 fm <- filter_mean(pf) ## extract the filtering means
 ft <- filter_traj(pf) ## one draw from the smoothing distribution
 ss <- saved_states(pf,format="d") ## the latent-state portion of each particle
