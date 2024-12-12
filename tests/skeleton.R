@@ -59,7 +59,7 @@ f |>
   mutate(name=factor(name,levels=c("S","I","R"))) |>
   ggplot(aes(x=deriv,y=diff/0.001,color=factor(.id)))+
   geom_point()+
-  geom_abline(intercept=0,slope=1,color='black')+
+  geom_abline(intercept=0,slope=1,color="black")+
   facet_grid(.id~name,labeller=labeller(.id=label_both))+
   guides(color="none")+
   labs(x="derivative",y="finite difference")+

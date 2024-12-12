@@ -14,12 +14,12 @@ ou2.kalman <- function (x, object, params) {
   p <- params
   p[names(x)] <- x
   x0 <- rinit(object,params=p)
-  A <- matrix(p[c('alpha_1','alpha_2','alpha_3','alpha_4')],2,2)
+  A <- matrix(p[c("alpha_1","alpha_2","alpha_3","alpha_4")],2,2)
   C <- diag(1,2)
-  Q <- matrix(p[c('sigma_1','sigma_2',NA,'sigma_3')],2,2)
+  Q <- matrix(p[c("sigma_1","sigma_2",NA,"sigma_3")],2,2)
   Q[1,2] <- 0
   Q <- tcrossprod(Q)
-  R <- diag(p['tau']^2,2,2)
+  R <- diag(p["tau"]^2,2,2)
   kalmanFilter(object,X0=x0,A=A,C=C,Q=Q,R=R)$logLik
 }
 

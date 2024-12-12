@@ -33,7 +33,7 @@ pfilter(
   pred.mean=TRUE,
   pred.var=TRUE,
   filter.traj=TRUE,
-  save.states=TRUE
+  save.states="filter"
 ) -> pf
 
 stopifnot(

@@ -39,6 +39,9 @@ Type 'q()' to quit R.
 +     pred.var=TRUE,
 +     filter.traj=TRUE
 +   ) -> pf
+Warning message:
+The 'save.states' option 'weighted' is deprecated and will be removed in a future version.
+Use 'prediction' instead. 
 > 
 > pf |> as.data.frame() |> names()
  [1] "time"           "y1"             "y2"             "x1"            
@@ -221,7 +224,7 @@ Error in match.arg(format) : 'arg' should be one of "array", "data.frame"
 +   pivot_wider(names_from=p) |>
 +   ggplot(aes(x=time,y=`0.5`,ymin=`0.05`,ymax=`0.95`,group=name))+
 +   geom_ribbon(alpha=0.5)+
-+   geom_line(color='red')+
++   geom_line(color="red")+
 +   facet_grid(name~.)+
 +   labs(y="")
 > 

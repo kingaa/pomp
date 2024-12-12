@@ -47,10 +47,10 @@ in 'table_lookup': extrapolating at 2.000000e+01.
 > lookup(ct,t=6.1)
     t  x y
 1 6.1 26 4
-> plot(y~t,data=lookup(ct,t=seq(0,10.5,by=0.01)),type='l')
+> plot(y~t,data=lookup(ct,t=seq(0,10.5,by=0.01)),type="l")
 There were 50 or more warnings (use warnings() to see the first 50)
 > lines(seq(0,10),10:0,col="blue",type="s")
-> plot(x~t,data=lookup(ct,t=seq(0,10.5,by=0.01)),type='l')
+> plot(x~t,data=lookup(ct,t=seq(0,10.5,by=0.01)),type="l")
 There were 50 or more warnings (use warnings() to see the first 50)
 > lines(seq(0,10),20:30,col="blue",type="s")
 > 

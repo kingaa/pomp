@@ -30,7 +30,7 @@ Error : in 'bspline_basis': must have nbasis > degree
 > y <- bspline_basis(x,degree=3,nbasis=12,names=letters[1:12])
 > y <- bspline_basis(x,degree=3,nbasis=9,names="basis")
 > y <- bspline_basis(x,degree=3,nbasis=9,names="basis%02d")
-> matplot(x,y,type='l',ylim=c(0,1.1))
+> matplot(x,y,type="l",ylim=c(0,1.1))
 > lines(x,apply(y,1,sum),lwd=2)
 > 
 > x <- seq(-1,2,by=0.01)
@@ -39,7 +39,7 @@ Error : in 'periodic_bspline_basis': 'names' must be of length 1 or 6
 > y <- periodic_bspline_basis(x,nbasis=6,names=tail(letters,6))
 > y <- periodic_bspline_basis(x,nbasis=5,names="spline")
 > y <- periodic_bspline_basis(x,nbasis=5,names="spline%d")
-> matplot(x,y,type='l')
+> matplot(x,y,type="l")
 > 
 > x <- seq(0,1,length=5)
 > try(bspline_basis(x,degree=-1,nbasis=9))
@@ -67,13 +67,13 @@ Error : in 'periodic_bspline_basis': must have deriv >= 0
 > 
 > B <- apply(B,2,function(x)x-x[1])
 > dd <- apply(d,2,function(x){y <- diffinv(x); (head(y,-1)+tail(y,-1))/2*dx})
-> matplot(B,dd,type='l')
+> matplot(B,dd,type="l")
 > abline(a=0,b=1)
 > stopifnot(all(signif(diag(cor(B,dd)),6)==1))
 > 
 > d <- apply(d,2,function(x) x-x[1])
 > dd <- apply(d2,2,function(x){y <- diffinv(x); (head(y,-1)+tail(y,-1))/2*dx})
-> matplot(d,dd,type='l')
+> matplot(d,dd,type="l")
 > abline(a=0,b=1)
 > stopifnot(all(signif(diag(cor(d,dd)),6)==1))
 > 
@@ -84,13 +84,13 @@ Error : in 'periodic_bspline_basis': must have deriv >= 0
 > 
 > B <- apply(B,2,function(x)x-x[1])
 > dd <- apply(d,2,function(x){y <- diffinv(x); (head(y,-1)+tail(y,-1))/2*dx})
-> matplot(B,dd,type='l')
+> matplot(B,dd,type="l")
 > abline(a=0,b=1)
 > stopifnot(all(signif(diag(cor(B,dd)),6)==1))
 > 
 > d <- apply(d,2,function(x) x-x[1])
 > dd <- apply(d2,2,function(x){y <- diffinv(x); (head(y,-1)+tail(y,-1))/2*dx})
-> matplot(d,dd,type='l')
+> matplot(d,dd,type="l")
 > abline(a=0,b=1)
 > stopifnot(all(signif(diag(cor(d,dd)),6)==1))
 > 
@@ -109,7 +109,7 @@ Error : in 'bspline_basis': improper range 'rg'
 > try(bspline_basis(x,degree=1,nbasis=6,rg=c(4,4)))
 Error : in 'bspline_basis': improper range 'rg'
 > B <- bspline_basis(x,degree=1,nbasis=6,rg=c(-1,3))
-> matplot(x,B,type='l')
+> matplot(x,B,type="l")
 > 
 > dev.off()
 null device 

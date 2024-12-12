@@ -159,7 +159,7 @@ pf |>
   pivot_wider(names_from=p) |>
   ggplot(aes(x=time,y=`0.5`,ymin=`0.05`,ymax=`0.95`,group=name))+
   geom_ribbon(alpha=0.5)+
-  geom_line(color='red')+
+  geom_line(color="red")+
   facet_grid(name~.)+
   labs(y="")
 

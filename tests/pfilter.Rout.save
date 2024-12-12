@@ -147,8 +147,8 @@ Error : in 'pfilter': in 'dmeasure': ouch!
 > pfilter(pf,dmeasure=function(log,...) -Inf,filter.mean=TRUE)
 <object of class 'pfilterd_pomp'>
 > 
-> pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
-> pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE,save.states="weighted")
+> pf1 <- pfilter(pf,save.states="filter",filter.traj=TRUE)
+> pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE,save.states="prediction")
 > pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
 +   filter.traj=TRUE)
@@ -282,5 +282,32 @@ Error : in 'forecast': 'emeasure' is a needed basic component.
 > stopifnot(
 +   dim(y)==c(2,100),
 +   dim(y1)==c(1,100)
++ )
+> 
+> set.seed(1); pf_no <- pfilter(ou2, Np = 100, save.states = "no")
+> set.seed(1); pf_false <- pfilter(ou2, Np = 100, save.states = FALSE)
+Warning message:
+The 'save.states' option 'FALSE' is deprecated and will be removed in a future version.
+Use 'no' instead. 
+> set.seed(1); pf_true <- pfilter(ou2, Np = 100, save.states = TRUE)
+Warning message:
+The 'save.states' option 'TRUE' is deprecated and will be removed in a future version.
+Use 'filter' instead. 
+> set.seed(1); pf_unweighted <- pfilter(ou2, Np = 100, save.states = "unweighted")
+Warning message:
+The 'save.states' option 'unweighted' is deprecated and will be removed in a future version.
+Use 'filter' instead. 
+> set.seed(1); pf_filter <- pfilter(ou2, Np = 100, save.states = "filter")
+> set.seed(1); pf_weighted <- pfilter(ou2, Np = 100, save.states = "weighted")
+Warning message:
+The 'save.states' option 'weighted' is deprecated and will be removed in a future version.
+Use 'prediction' instead. 
+> set.seed(1); pf_predict <- pfilter(ou2, Np = 100, save.states = "prediction")
+> stopifnot(
++   all.equal(unlist(saved_states(pf_unweighted)), unlist(saved_states(pf_filter))),
++   all.equal(unlist(saved_states(pf_true)), unlist(saved_states(pf_filter))),
++   all.equal(unlist(saved_states(pf_weighted)[2]), unlist(saved_states(pf_predict)[2])),
++   length(saved_states(pf_no)) == 0,
++   length(saved_states(pf_false)) == 0
 + )
 > 

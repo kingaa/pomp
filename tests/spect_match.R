@@ -28,7 +28,7 @@ stopifnot(f(0)==f(1))
 stopifnot(logLik(f)==-f(0))
 
 f |> spect_objfun(est=c("alpha_1"),seed=580656309) -> f1
-plot(sapply(seq(0.3,1.2,by=0.1),f1),log='y')
+plot(sapply(seq(0.3,1.2,by=0.1),f1),log="y")
 
 f1(1.1)
 plot(spect(f1))

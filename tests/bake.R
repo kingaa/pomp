@@ -150,6 +150,6 @@ stopifnot(
   identical(x5,x6),
   length(out)==2,
   grepl("^NOTE: creating archive directory",out),
-  grepl("results/bob/mary'.",out),
-  grepl("results/results/bob/mary'.",out[2])
+  grepl("results/bob/mary.",out),
+  grepl("results/results/bob/mary.",out[2])
 )

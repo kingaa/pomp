@@ -26,10 +26,10 @@ params <- rbind(a=c(0.7,0.5),b=c(0.8,0.5),c=c(2,5),i=c(0.8,0))
 skeleton(fhn,x=x,times=c(0,3),params=params)
 y <- trajectory(fhn,params=params,ode_control=list(hmax=0.1),format="a")
 invisible(y[,,599:601])
-matplot(time(fhn),t(y["V",,]),type='l',lty=1)
-plot(y[1,,],y[2,,],type='n')
-points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
-points(y[1,2,],y[2,2,],pch='.',cex=3,col='red')
+matplot(time(fhn),t(y["V",,]),type="l",lty=1)
+plot(y[1,,],y[2,,],type="n")
+points(y[1,1,],y[2,1,],pch=".",cex=3,col="black")
+points(y[1,2,],y[2,2,],pch=".",cex=3,col="red")
 
 ## nonautonomous case
 pomp(
@@ -56,10 +56,10 @@ params <- params[c("a","b","c"),]
 invisible(skeleton(fhn1,x=x,times=c(0,3),params=params))
 y <- trajectory(fhn1,params=params,ode_control=list(hmax=0.01),format="a")
 y[,,199:201]
-matplot(time(fhn1),t(y["V",,]),type='l',lty=1)
-plot(y[1,,],y[2,,],type='n')
-points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
-points(y[1,2,],y[2,2,],pch='.',cex=3,col='red')
+matplot(time(fhn1),t(y["V",,]),type="l",lty=1)
+plot(y[1,,],y[2,,],type="n")
+points(y[1,1,],y[2,1,],pch=".",cex=3,col="black")
+points(y[1,2,],y[2,2,],pch=".",cex=3,col="red")
 
 invisible(trajectory(fhn,times=c(1,5),format="a"))
 try(trajectory(fhn,times=numeric(0)))
@@ -84,7 +84,7 @@ try(trajectory())
 
 sir() -> sir
 trajectory(sir,format="data.frame") -> x
-plot(cases~time,data=x,type='l')
+plot(cases~time,data=x,type="l")
 
 gompertz() -> gompertz
 gompertz |> trajectory(format="a") -> x
@@ -98,7 +98,7 @@ gompertz |>
   ) -> po3
 po3 |>
   trajectory(times=seq(1,1000),format="data.frame") -> dat
-plot(X~time,data=dat,subset=(time<100),type='l')
+plot(X~time,data=dat,subset=(time<100),type="l")
 plot(X~Y,data=dat)
 gompertz |>
   pomp(accumvars=c("X")) |>

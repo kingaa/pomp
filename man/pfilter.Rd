@@ -22,7 +22,8 @@
   pred.var = FALSE,
   filter.mean = FALSE,
   filter.traj = FALSE,
-  save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
+  save.states = c("no", "filter", "prediction", "weighted", "unweighted", "FALSE",
+    "TRUE"),
   verbose = getOption("verbose", FALSE)
 )
 
@@ -34,7 +35,8 @@
   pred.var = FALSE,
   filter.mean = FALSE,
   filter.traj = FALSE,
-  save.states = c("no", "weighted", "unweighted", "FALSE", "TRUE"),
+  save.states = c("no", "filter", "prediction", "weighted", "unweighted", "FALSE",
+    "TRUE"),
   verbose = getOption("verbose", FALSE)
 )
 
@@ -86,10 +88,13 @@ For more information, see \link[=dmeasure_spec]{dmeasure specification}.}
 See \code{\link{filter_traj}} for more information.}
 
 \item{save.states}{character;
-If \code{save.states="unweighted"}, the state-vector for each unweighted particle at each time is saved.
-If \code{save.states="weighted"}, the state-vector for each weighted particle at each time is saved, along with the corresponding weight.
-If \code{save.states="no"}, information on the latent states is not saved.
-\code{"FALSE"} is a synonym for \code{"no"} and \code{"TRUE"} is a synonym for \code{"unweighted"}.
+If \code{save.states="no"} (the default), information on the latent states is not saved.
+If \code{save.states="filter"}, the state-vector for each filtered particle \eqn{X_{n,j}^F} at each time \eqn{n} is saved.
+If \code{save.states="prediction"}, the state-vector for each prediction particle \eqn{X_{n,j}^P} at each time \eqn{n} is saved, along with the corresponding weight \eqn{w_{n,j} = f_{Y_n|X_n}(y^*|X_{n, j}^P;\theta)}.
+The options "unweighted", "weighted", TRUE, and FALSE are deprecated and will issue a warning if used, mapping to the new values for backward compatibility.
+The option "unweighted" and TRUE are synonymous with "filter";
+the option "weighted" is synonymous with "prediction";
+the option FALSE is synonymous with "no".
 To retrieve the saved states, apply \code{\link{saved_states}} to the result of the \code{pfilter} computation.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
@@ -139,7 +144,7 @@ eff_sample_size(pf)             ## effective sample size
 logLik(pfilter(pf))      	## run it again with 1000 particles
 
 ## run it again with 2000 particles
-pf <- pfilter(pf,Np=2000,filter.mean=TRUE,filter.traj=TRUE,save.states="weighted")
+pf <- pfilter(pf,Np=2000,filter.mean=TRUE,filter.traj=TRUE,save.states="filter")
 fm <- filter_mean(pf) ## extract the filtering means
 ft <- filter_traj(pf) ## one draw from the smoothing distribution
 ss <- saved_states(pf,format="d") ## the latent-state portion of each particle
