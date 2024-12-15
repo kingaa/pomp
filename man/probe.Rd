@@ -45,7 +45,7 @@
 
 \S4method{probe}{probe_match_objfun}(data, ..., seed, verbose = getOption("verbose", FALSE))
 
-\S4method{probe}{objfun}(data, seed = NULL, ...)
+\S4method{probe}{objfun}(data, ..., seed = NULL)
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,

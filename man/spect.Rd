@@ -54,7 +54,7 @@
 
 \S4method{spect}{spect_match_objfun}(data, ..., seed, verbose = getOption("verbose", FALSE))
 
-\S4method{spect}{objfun}(data, seed = NULL, ...)
+\S4method{spect}{objfun}(data, ..., seed = NULL)
 }
 \arguments{
 \item{data}{either a data frame holding the time series data,

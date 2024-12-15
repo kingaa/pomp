@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 6.0.2}{
+  \itemize{
+    \item The \code{save.states} option to \code{pfilter} has changed.
+    See \code{?pfilter} and \code{?saved_states} for details.
+  }
+}
 \section{Changes in \pkg{pomp} version 6.0.1}{
   \itemize{
     \item In calls to \pkg{pomp} elementary and inference algorithms, it is now necessary to pass all arguments by name.

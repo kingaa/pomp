@@ -100,7 +100,7 @@ setMethod(
 setMethod(
   "simulate",
   signature=signature(object="objfun"),
-  definition=function (object, seed = NULL, ...) {
+  definition=function (object, seed = NULL,...) {
     simulate(as(object,"pomp"),seed=seed,...)
   }
 )
@@ -110,7 +110,7 @@ setMethod(
 setMethod(
   "probe",
   signature=signature(data="objfun"),
-  definition=function (data, seed = NULL, ...) {
+  definition=function (data, ..., seed = NULL) {
     probe(as(data,"pomp"),seed=seed,...)
   }
 )
@@ -130,7 +130,7 @@ setMethod(
 setMethod(
   "spect",
   signature=signature(data="objfun"),
-  definition=function (data, seed = NULL, ...) {
+  definition=function (data, ..., seed = NULL) {
     spect(as(data,"pomp"),seed=seed,...)
   }
 )
@@ -143,7 +143,8 @@ setMethod(
   definition = function (object, ...) {
     object@env$.gnsi <- TRUE
     pompLoad_internal(object@env$object,...)
-  })
+  }
+)
 
 ##' @rdname load
 ##' @export
@@ -153,4 +154,5 @@ setMethod(
   definition = function (object, ...) {
     object@env$.gnsi <- TRUE
     pompUnload_internal(object@env$object,...)
-  })
+  }
+)

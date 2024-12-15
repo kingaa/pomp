@@ -83,8 +83,8 @@ setMethod(
   signature=signature(data="data.frame"),
   definition=function (
     data,
-    Np,
     ...,
+    Np,
     params, rinit, rprocess, dmeasure,
     trigger = 1, target = 0.5,
     verbose = getOption("verbose", FALSE)
@@ -116,8 +116,8 @@ setMethod(
   signature=signature(data="pomp"),
   definition=function (
     data,
-    Np,
     ...,
+    Np,
     trigger = 1, target = 0.5,
     verbose = getOption("verbose", FALSE)
   ) {

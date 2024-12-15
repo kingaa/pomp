@@ -1,5 +1,10 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _6._0._2:
+
+        • The ‘save.states’ option to ‘pfilter’ has changed.  See
+          ‘?pfilter’ and ‘?saved_states’ for details.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _6._0._1:
 
         • In calls to ‘pomp’ elementary and inference algorithms, it is

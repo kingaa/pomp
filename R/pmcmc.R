@@ -222,7 +222,11 @@ setMethod(
 setMethod(
   "continue",
   signature=signature(object="pmcmcd_pomp"),
-  function (object, Nmcmc = 1, ...) {
+  function (
+    object,
+    ...,
+    Nmcmc = 1
+  ) {
 
     ndone <- object@Nmcmc
     accepts <- object@accepts

@@ -11,7 +11,7 @@
 \usage{
 \S4method{continue}{abcd_pomp}(object, ..., Nabc = 1)
 
-\S4method{continue}{pmcmcd_pomp}(object, Nmcmc = 1, ...)
+\S4method{continue}{pmcmcd_pomp}(object, ..., Nmcmc = 1)
 
 \S4method{continue}{mif2d_pomp}(object, ..., Nmif = 1)
 }

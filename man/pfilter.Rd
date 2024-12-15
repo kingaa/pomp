@@ -12,8 +12,8 @@
 \usage{
 \S4method{pfilter}{data.frame}(
   data,
-  Np,
   ...,
+  Np,
   params,
   rinit,
   rprocess,
@@ -40,7 +40,7 @@
   verbose = getOption("verbose", FALSE)
 )
 
-\S4method{pfilter}{pfilterd_pomp}(data, Np, ..., verbose = getOption("verbose", FALSE))
+\S4method{pfilter}{pfilterd_pomp}(data, ..., Np, verbose = getOption("verbose", FALSE))
 
 \S4method{pfilter}{objfun}(data, ...)
 }
@@ -50,6 +50,9 @@ or an object of class \sQuote{pomp},
 i.e., the output of another \pkg{pomp} calculation.
 Internally, \code{data} will be coerced to an array with storage-mode \code{double}.}
 
+\item{...}{additional arguments are passed to \code{\link{pomp}}.
+This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
+
 \item{Np}{the number of particles to use.
 This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
 Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers of length \preformatted{length(time(object,t0=TRUE))} or as a function taking a positive integer argument.
@@ -58,9 +61,6 @@ In the latter case, \code{Np(k)} must be a single positive integer, representing
 \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
 and so on,
 while when \code{T=length(time(object))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.}
-
-\item{...}{additional arguments are passed to \code{\link{pomp}}.
-This allows one to set, unset, or modify \link[=basic_components]{basic model components} within a call to this function.}
 
 \item{params}{optional; named numeric vector of parameters.
 This will be coerced internally to storage mode \code{double}.}
