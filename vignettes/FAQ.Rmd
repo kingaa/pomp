@@ -1,6 +1,8 @@
 ---
 pagetitle: FAQ
 title: ""
+bibliography: pomp.bib
+csl: jss.csl
 params:
   prefix: faq
 output:
@@ -10,8 +12,6 @@ output:
     toc: yes
     toc_depth: 4
     number_sections: true
-bibliography: pomp.bib
-csl: jss.csl
 ---
 
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
@@ -255,8 +255,8 @@ The only difference is in the `dmeasure`:
 library(pomp)
 
 sir_step <- Csnippet("
-  double dN_SI = rbinom(S,1-exp(-Beta*I/N*dt));
-  double dN_IR = rbinom(I,1-exp(-gamma*dt));
+  double dN_SI = rbinom(S,1-exp(-β*I/N*dt));
+  double dN_IR = rbinom(I,1-exp(-γ*dt));
   S -= dN_SI;
   I += dN_SI - dN_IR;
   R += dN_IR;
@@ -270,13 +270,13 @@ sir_init <- Csnippet("
   H = 0;
 ")
 
-rmeas <- Csnippet("B = rbinom(H,rho);")
+rmeas <- Csnippet("B = rbinom(H,ρ);")
 
 dmeas <- Csnippet("
   if (ISNA(B)) {
     lik = (give_log) ? 0 : 1;
   } else {
-    lik = dbinom(B,H,rho,give_log);
+    lik = dbinom(B,H,ρ,give_log);
   }
 ")
 
@@ -288,7 +288,7 @@ dat |>
     rmeasure=rmeas,
     dmeasure=dmeas,
     accumvars="H",
-    paramnames=c("Beta","gamma","N", "rho"),
+    paramnames=c("β","γ","N","ρ"),
     statenames=c("S","I","R","H")
   ) -> sir_na
 ```
@@ -303,7 +303,7 @@ Our simulations now fill in simulated values for the missing data,
 ```{r}
 sir_na |>
   simulate(
-    params=c(Beta=3,gamma=2,rho=0.9,N=2600),
+    params=c(β=3,γ=2,ρ=0.9,N=2600),
     nsim=10,
     format="data.frame",
     include.data=TRUE
@@ -318,7 +318,7 @@ and the particle filter handles the missing data correctly:
 
 ```{r}
 sir_na |>
-  pfilter(Np=1000,params=c(Beta=3,gamma=2,rho=0.9,N=2600)) |>
+  pfilter(Np=1000,params=c(β=3,γ=2,ρ=0.9,N=2600)) |>
   as.data.frame() |>
   pivot_longer(-day) |>
   ggplot(aes(x=day,y=value,color=name))+
@@ -347,8 +347,8 @@ Let's look at the boarding-school flu example to illustrate.
 library(pomp)
 
 sir_step <- Csnippet("
-  double dN_SI = rbinom(S,1-exp(-Beta*I/N*dt));
-  double dN_IR = rbinom(I,1-exp(-gamma*dt));
+  double dN_SI = rbinom(S,1-exp(-β*I/N*dt));
+  double dN_IR = rbinom(I,1-exp(-γ*dt));
   S -= dN_SI;
   I += dN_SI - dN_IR;
   R += dN_IR;
@@ -362,13 +362,13 @@ sir_init <- Csnippet("
   H = 0;
 ")
 
-rmeas <- Csnippet("B = rbinom(H,rho);")
+rmeas <- Csnippet("B = rbinom(H,ρ);")
 
 dmeas <- Csnippet("
   if (ISNA(B)) {
     lik = (give_log) ? 0 : 1;
   } else {
-    lik = dbinom(B,H,rho,give_log);
+    lik = dbinom(B,H,ρ,give_log);
   }")
 
 read.csv(text="
@@ -397,7 +397,7 @@ dat |>
     rmeasure=rmeas,
     dmeasure=dmeas,
     accumvars="H",
-    paramnames=c("Beta","gamma","N", "rho"),
+    paramnames=c("β","γ","N", "ρ"),
     statenames=c("S","I","R","H")
   ) -> bsflu
 ```
@@ -417,7 +417,7 @@ bsflu |>
 
 bsflu |>
   simulate(
-    params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
+    params=c(β=1.5,γ=1,ρ=0.9,N=2600),
     nsim=10,format="d",include.data=TRUE
   ) |>
   ggplot(aes(x=day,y=B,group=.id,color=.id=="data"))+
@@ -446,13 +446,13 @@ dat |>
     rmeasure=rmeas,
     dmeasure=dmeas,
     accumvars="H",
-    paramnames=c("Beta","gamma","N", "rho"),
+    paramnames=c("β","γ","N", "ρ"),
     statenames=c("S","I","R","H")
   ) -> bsflu
 
 bsflu |>
   simulate(
-    params=c(Beta=1.5,gamma=1,rho=0.9,N=2600),
+    params=c(β=1.5,γ=1,ρ=0.9,N=2600),
     nsim=10,format="d",include.data=TRUE
   ) |>
   filter(day>0) |>
@@ -559,7 +559,7 @@ simulate(
   obsnames = "y",
   rprocess=discrete_time(
     step.fun=Csnippet("
-      double e = rnorm(0,sigma);
+      double e = rnorm(0,σ);
       N = exp(log(r)+log(N)-N+e);"),
     delta.t=1
   ),
@@ -572,8 +572,8 @@ simulate(
       if (give_log) lik = log(lik);"
   ),
   statenames = "N",
-  paramnames = c("r", "sigma"),
-  params = c(N_0 = 7, r = 45, sigma = 0.3),
+  paramnames = c("r", "σ"),
+  params = c(N_0 = 7, r = 45, σ = 0.3),
   globals = r"{#include "include/tn.h"}",
   shlib.args = "libs/libtn.so"
 ) -> rick
@@ -724,7 +724,7 @@ warning: "beta" redefined
 
 This is due to a name conflict between a quantity `beta` defined as a model parameter, covariate, data variable, or in some other way defined in a C snippet, and the [*Euler beta function*](https://en.wikipedia.org/wiki/Beta_function), which is defined as `beta` in `Rmath.h` and documented in the [R extensions manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematical-functions).
 To work around this, simply rename the parameter.
-For example, it could be called `Beta` instead.
+For example, it could be called `Beta` or `β` (if your compiler allows it) instead.
 
 ## I get an error saying X "must be a function of the form" Y.  What does this mean?
 
