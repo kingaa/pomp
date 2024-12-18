@@ -231,8 +231,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="multinomial-distribution" class="section level3">
 <h3>Multinomial distribution</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">double</span> dmultinom(<span class="dt">int</span> m, <span class="dt">const</span> <span class="dt">double</span> *prob, <span class="dt">double</span> *x, <span class="dt">int</span> give_log);</span></code></pre></div>
 <p>The <a href="https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API"><strong>R</strong> C API</a> provides a <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions">simulator for the multinomial distribution, <code>rmultinom</code></a>. See the “Rmath.h” header file for information on this facility. <strong>pomp</strong> provides an evaluator for the probability mass function (<code>dmultinom</code>) for this distribution.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">double</span> dmultinom(<span class="dt">int</span> m, <span class="dt">const</span> <span class="dt">double</span> *prob, <span class="dt">double</span> *x, <span class="dt">int</span> give_log);</span></code></pre></div>
 <p>Input:</p>
 <ul>
 <li><code>m</code> is a positive integer, is the dimension of the random variable.</li>
@@ -370,7 +370,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <div id="exponentialgeometric-rate-conversion" class="section level3">
 <h3>Exponential/geometric rate conversion</h3>
 <div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="dt">double</span> exp2geom_rate_correction(<span class="dt">double</span> R, <span class="dt">double</span> dt);</span></code></pre></div>
-<p>This function computes <span class="math inline">\(r\)</span> such that if <span class="math display">\[N \sim \mathrm{Geometric}\left(p=1-e^{-r\,\Delta{t}}\right)\]</span> and <span class="math display">\[T \sim \mathrm{Exponential}\left(\mathrm{rate}=R\right),\]</span> then <span class="math inline">\(\mathbb{E}\left[N\,\Delta{t}\right] = \mathbb{E}\left[T\right]\)</span>. That is, <span class="math inline">\(r\)</span> is the rate for an Euler process that gives the same expected waiting time as the exponential process it approximates. In particular <span class="math inline">\(r \to R\)</span> as <span class="math inline">\(\Delta{t} \to 0\)</span>.</p>
+<p>This function computes <span class="math inline">\(r\)</span> such that if <span class="math display">\[N \sim \mathrm{Geometric}\left(p=1-e^{-r\,\Delta{t}}\right)\]</span> and <span class="math display">\[T \sim \mathrm{Exponential}\left(\mathrm{rate}=R\right),\]</span> then <span class="math inline">\(\mathbb{E}\left[N\,\Delta{t}\right] = \mathbb{E}\left[T\right]\)</span>. That is, <span class="math inline">\(r = \log{(1+R\,\Delta{t})}/{\Delta{t}}\)</span> is the rate for an Euler process that gives the same expected waiting time as the exponential process it approximates. In particular <span class="math inline">\(r \to R\)</span> as <span class="math inline">\(\Delta{t} \to 0\)</span>.</p>
 </div>
 </div>
 <div id="access-to-the-userdata" class="section level2">

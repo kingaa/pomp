@@ -89,6 +89,16 @@
   eprint: "2101.01157"
   doi: "https://doi.org/10.48550/arXiv.2101.01157"
 
+- key: Asfaw2024
+  author: "K. Asfaw, J. Park, A. A. King, and E. L. Ionides"
+  year: "2024"
+  title: "spatPomp: An R package for spatiotemporal partially observed Markov process models"
+  journal: "Journal of Open Source Software"
+  volume: "9"
+  number: "104"
+  pages: "7008"
+  doi: "https://doi.org/10.21105/joss.07008"
+
 - key: AugerMethe2021
   author: "M. Auger-M&eacute;th&eacute;, K. Newman, D. Cole, F. Empacher, R. Gryba, A. A. King, V. Leos-Barajas, J. Mills Flemming, A. Nielsen, G. Petris, and L. Thomas"
   year: "2021"
@@ -1252,9 +1262,9 @@
   pages: "20180270"
   doi: "https://doi.org/10.1098/rstb.2018.0270"
 
-- key: Newman2022
-  author: "K. Newman, R. King, V. Elvira, P. Valpine, R. S. McCrea, and B. J. T. Morgan"
-  year: "2022"
+- key: Newman2023
+  author: "K. Newman, R. King, V. Elvira, P. de Valpine, R. McCrea, and B. J. T. Morgan"
+  year: "2023"
   title: "State-space models for ecological time-series data: Practical model-fitting"
   journal: "Methods in Ecology and Evolution"
   volume: "14"

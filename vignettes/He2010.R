@@ -19,8 +19,8 @@ theme_set(theme_bw())
 
 
 ## ----pomp-install,eval=FALSE--------------------------------------------------
-## library(devtools)
-## install_github("kingaa/pomp")
+# library(devtools)
+# install_github("kingaa/pomp")
 
 
 ## ----prelims,cache=FALSE------------------------------------------------------
@@ -157,7 +157,7 @@ rmeas <- Csnippet("
 ## ----pomp-construction--------------------------------------------------------
 dat |> 
   pomp(t0=with(dat,2*time[1]-time[2]),
-    time="time",
+    times="time",
     rprocess=euler(rproc,delta.t=1/365.25),
     dmeasure=dmeas,
     rmeasure=rmeas,

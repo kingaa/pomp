@@ -123,7 +123,7 @@ library("tidyverse")
 library("grid")
 library("xtable")
 
-stopifnot(packageVersion("pomp")>="5.0")
+stopifnot(packageVersion("pomp")>="6.0")
 
 <<set-opts,include=FALSE,cache=FALSE>>=
 options(
@@ -1835,7 +1835,7 @@ stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   tic <- Sys.time()
   mif1 <- mif2(gomp,Nmif=100,params=theta.guess,
     rw.sd=rw_sd(r=0.02,sigma=0.02,tau=0.05),Np=1000,
-    cooling.type="geometric",cooling.fraction=0.5)
+    cooling.type="geometric",cooling.fraction.50=0.5)
   mif.lik <- pfilter(mif1,Np=10000)
   toc <- Sys.time()
   mif.time <- toc-tic
@@ -2590,8 +2590,8 @@ King AA and Rowan T (2022).
 \newblock \emph{\pkg{subplex}: Unconstrained Optimization Using the Subplex Algorithm}.
 \newblock \proglang{R}~package, \urlprefix\url{https://CRAN.R-project.org/package=subplex}.
 
-\bibitem[{King \emph{et~al.}(2023)King, Ionides, Bret\'o, Ellner, Ferrari, Funk, Johnson, Kendall, Lavine, Nguyen, O'Dea, Reuman, Wearing, and Wood}]{pomp}
-King AA, Ionides EL, Bret\'o CM, Ellner SP, Ferrari MJ, Funk S, Johnson SG, Kendall BE, Lavine M, Nguyen D, O'Dea EB, Reuman DC, Wearing H, Wood SN (2022).
+\bibitem[{King \emph{et~al.}(2024)King, Ionides, Bret\'o, Ellner, Ferrari, Funk, Johnson, Kendall, Lavine, Nguyen, O'Dea, Reuman, Wearing, and Wood}]{pomp}
+King AA, Ionides EL, Bret\'o CM, Ellner SP, Ferrari MJ, Funk S, Johnson SG, Kendall BE, Lavine M, Nguyen D, O'Dea EB, Reuman DC, Wearing H, Wood SN (2024).
 \newblock \emph{{pomp}: {Statistical} Inference for Partially Observed {Markov} Processes}.
 \newblock \proglang{R}~package, \urlprefix\url{https://kingaa.github.io/pomp/}.
 

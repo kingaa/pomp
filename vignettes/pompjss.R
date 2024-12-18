@@ -7,7 +7,7 @@ library("tidyverse")
 library("grid")
 library("xtable")
 
-stopifnot(packageVersion("pomp")>="5.0")
+stopifnot(packageVersion("pomp")>="6.0")
 
 
 ## ----set-opts,include=FALSE,cache=FALSE---------------------------------------
@@ -652,7 +652,7 @@ stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   tic <- Sys.time()
   mif1 <- mif2(gomp,Nmif=100,params=theta.guess,
     rw.sd=rw_sd(r=0.02,sigma=0.02,tau=0.05),Np=1000,
-    cooling.type="geometric",cooling.fraction=0.5)
+    cooling.type="geometric",cooling.fraction.50=0.5)
   mif.lik <- pfilter(mif1,Np=10000)
   toc <- Sys.time()
   mif.time <- toc-tic

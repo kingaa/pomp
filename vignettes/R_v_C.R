@@ -9,7 +9,9 @@ set.seed(56300069)
 
 
 ## ----R1-----------------------------------------------------------------------
-simulate(times=1:100,t0=0,
+simulate(
+  t0=0,
+  times=1:100,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
   rprocess=discrete_time(
     step.fun=function (X,r,K,sigma,...,delta.t) {
@@ -17,7 +19,7 @@ simulate(times=1:100,t0=0,
       S <- exp(-r*delta.t)
       c(X=K^(1-S)*X^S*eps)
     },
-    delta.t=1 
+    delta.t=1
   ),
   rmeasure=function (X, tau, ...) {
     c(Y=rlnorm(n=1,meanlog=log(X),sdlog=tau))
@@ -40,7 +42,8 @@ gompertz |>
 
 ## ----C1-----------------------------------------------------------------------
 simulate(
-  times=0:100,t0=0,
+  t0=0,
+  times=0:100,
   params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
   dmeasure=Csnippet("
     lik = dlnorm(Y,log(X),tau,give_log);"

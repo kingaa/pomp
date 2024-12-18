@@ -11,7 +11,7 @@ params:
 ---
 
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
-source("setup.R", local = knitr::knit_global())
+source("setup.R",local=knitr::knit_global())
 ```
 
 --------------------------------------------------------
@@ -44,13 +44,13 @@ $$\mathbb{E}\left[X\right]=n\,p\qquad\text{and}\qquad\mathrm{Var}\left[X\right]=
 
 ### Multinomial distribution
 
-```{c eval=FALSE}
-double dmultinom(int m, const double *prob, double *x, int give_log);
-```
-
 The [**R** C API](https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API) provides a [simulator for the multinomial distribution, `rmultinom`](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
 See the "Rmath.h" header file for information on this facility.
 **pomp** provides an evaluator for the probability mass function (`dmultinom`) for this distribution.
+
+```{c eval=FALSE}
+double dmultinom(int m, const double *prob, double *x, int give_log);
+```
 
 Input:
 
@@ -289,7 +289,7 @@ $$N \sim \mathrm{Geometric}\left(p=1-e^{-r\,\Delta{t}}\right)$$
 and 
 $$T \sim \mathrm{Exponential}\left(\mathrm{rate}=R\right),$$
 then $\mathbb{E}\left[N\,\Delta{t}\right] = \mathbb{E}\left[T\right]$.
-That is, $r$ is the rate for an Euler process that gives the same expected waiting time as the exponential process it approximates.
+That is, $r = \log{(1+R\,\Delta{t})}/{\Delta{t}}$ is the rate for an Euler process that gives the same expected waiting time as the exponential process it approximates.
 In particular $r \to R$ as $\Delta{t} \to 0$.
 
 

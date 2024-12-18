@@ -1,6 +1,6 @@
 stopifnot(getRversion()>="4.2")
-stopifnot(packageVersion("pomp")>="5.1")
-stopifnot(packageVersion("circumstance")>="0.0.8")
+stopifnot(packageVersion("pomp")>="6.0")
+stopifnot(packageVersion("circumstance")>="0.0.10")
 
 library(knitr)
 opts_chunk$set(

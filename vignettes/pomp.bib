@@ -934,19 +934,18 @@
   owner            = {kingaa},
 }
 
-@Article{Newman2022,
-  author           = {Newman, Ken and King, Ruth and Elvira, V{\'{\i}}ctor and Valpine, Perry and McCrea, Rachel S. and Morgan, Byron J. T.},
+@Article{Newman2023,
+  author           = {Newman, Ken and King, Ruth and Elvira, V{\'{i}}ctor and de Valpine, Perry and McCrea, Rachel{~}S. and Morgan, Byron J. T.},
   journal          = {Methods in Ecology and Evolution},
   title            = {State-space models for ecological time-series data: {Practical} model-fitting},
-  year             = {2022},
-  month            = mar,
+  year             = {2023},
   number           = {1},
   pages            = {26--42},
   volume           = {14},
-  creationdate     = {2022-07-22T07:37:22},
+  creationdate     = {2025-01-03T05:39:45},
   doi              = {10.1111/2041-210x.13833},
   groups           = {pomp},
-  modificationdate = {2024-11-14T08:09:03},
+  modificationdate = {2025-01-03T05:45:58},
   owner            = {kingaa},
 }
 
@@ -3015,6 +3014,21 @@ Conclusions: These results demonstrate large variability in varicella seasonalit
   owner            = {kingaa},
 }
 
+@Article{Asfaw2024,
+  author           = {Asfaw, Kidus and Park, Joonha and King, Aaron A. and Ionides, Edward L.},
+  journal          = {Journal of Open Source Software},
+  title            = {{spatPomp}: An {R} package for spatiotemporal partially observed {Markov} process models},
+  year             = {2024},
+  number           = {104},
+  pages            = {7008},
+  volume           = {9},
+  abstract         = {The development of spatPomp was motivated by the goal of investigating dynamics arising from a collection of spatially distributed, interacting biological populations. The entire population, consisting of the union of these sub-populations over all the spatial locations, is called a metapopulation. Each sub-population may have its own structure, which could correspond to disease status in an epidemiological model or abundance of several species in an ecosystem model. The spatPomp package embeds this goal in a more general problem: inference for spatiotemporal partially observed Markov process (SpatPOMP) models. A POMP model consists of a latent Markov process model, together with a measurement model describing how the data arise from noisy and/or incomplete observation of this latent state. The latent Markov process may be constructed in discrete or continuous time, taking scalar or vector values in a discrete or continuous space. POMP models are also known as state space models, or hidden Markov models. A SpatPOMP model extends the POMP model formulation by adding an index set corresponding to spatial location, so that the state of the SpatPOMP is comprised of a value for each location. We say {\textquotedblleft}unit{\textquotedblright} rather than {\textquotedblleft}spatial location{\textquotedblright} to build our framework in the general context of an arbitrary index set. Measurements are made on each unit, and are assumed to depend only on the latent state value for that unit. The spatPomp R package provides a computational framework for modeling and statistical inference on SpatPOMP models.},
+  creationdate     = {2024-12-21T12:43:41},
+  doi              = {10.21105/joss.07008},
+  groups           = {king, lab, pomp},
+  modificationdate = {2024-12-21T12:43:49},
+}
+
 @Article{Kendall2005,
   author           = {Kendall, Bruce E. and Ellner, Stephen P. and McCauley, Edward and Wood, Simon N. and Briggs, Cheryl J. and Murdoch, William W. and Turchin, Peter},
   journal          = {Ecological Monographs},
@@ -3080,6 +3094,26 @@ Conclusions: These results demonstrate large variability in varicella seasonalit
   doi              = {10.1093/oxfordjournals.aje.a121576},
   modificationdate = {2024-11-14T08:09:03},
   owner            = {kingaa},
+}
+
+@PhdThesis{Liu2024,
+  author           = {Liu, Yuan},
+  school           = {Hong Kong Polytechnic University},
+  title            = {Mathematical modelling of the spread of {SARS-COV-2} variants in {South Africa} and {Brazil}},
+  year             = {2024},
+  type             = {phdthesis},
+  abstract         = {The novel coronavirus that caused this pandemic has infected millions of people and resulted in over a million deaths. Similar to the HIV, Zika virus, Ebola virus, and many influenza strains, the novel coronavirus had already evolved from animals to humans before causing widespread destruction. Our ongoing battle against it continues.
+
+As a Ph.D. student who concentrates on epidemic mathematical modeling, I{\textquoteright}m trying to make some scientific contributions to the world's fight against this intractable infectious disease. My aim with this research is to aid these marginalized regions in promptly mitigating the detrimental effects caused by the COVID-19 virus. I have conducted research on various aspects, including the variations in infection fatality rates and transmission dynamics among different strains of the novel coronavirus, as well as the heterogeneity of in-hospital mortality rates in underdeveloped regions. And I aspire to utilize my theoretical knowledge to assist humanity in overcoming this formidable new virus.
+
+We studied the reduction in the infection fatality rate of the Omicron (B.1.1.529) variant compared with previous variants in South Africa. This research work started when the Omicron variants just emerged, and South Africa was the first place where the virus wreaked havoc. Before we did this work, some previous studies have shown that the variant has enhanced immune evasion ability and transmissibility and reduced severity. In this study, we developed a mathematical model with time-varying transmission rate, vaccination, and immune evasion. We fit the model to report case and death data up to February 6, 2022, to estimate the transmissibility and infection fatality ratio of the Omicron variant in South Africa. As a result, we found that the high relative transmissibility of the Omicron variant was mainly due to its immune evasion ability, whereas its infection fatality rate substantially decreased by approximately 78.7% (95% confidence interval: 66.9%, 85.0%) concerning previous variants.
+
+Another research focuses on the transmissibility of all COVID-19 variants that have been spread in South Africa. The COVID-19 pandemic caused multiple waves of mortality in South Africa, where three genetic variants of SARS-COV-2 and their ancestral strain dominated consecutively. In this research, we fit a state-of-the-art mathematical modeling approach to estimate the time-varying transmissibility of SARS-COV-2 and the relative transmissibility of Beta, Delta, and Omicron variants. As a result, the transmissibilities of the three variants were about 73%, 87%, and 276% higher than their preceding variants. The transmissibility of the Omicron variant is substantially higher than that of previous variants.
+
+In addition to South Africa, we examined the regional variations in COVID-19 in-hospital mortality in Brazil using a multivariate mixed-effect Cox model applied to national inpatient data from February 27, 2020, to March 15, 2022. We compared mortality risks between vaccinated and unvaccinated patients, adjusting for age, state, ethnicity, education, and comorbidities. Our analysis showed age as the primary risk factor for death. Illiterate patients (hazard ratio: 1.63, 95% CI: 1.56-1.70) faced higher risks compared to those with higher education. Common comorbidities, such as liver disease (HR: 1.46, 95% CI: 1.34\--1.59) and immunosuppression (HR: 1.32, 95% CI: 1.26-1.40), increased mortality risk. States like Sergipe (HR: 1.75, 95% CI: 1.46-2.11), Roraima (HR: 1.65, 95% CI: 1.43-1.92), Maranh{\~{a}}o (HR: 1.57, 95% CI: 1.38-1.79), Acre (HR: 1.44, 95% CI: 1.12-1.86), and Rond{\^{o}}nia (HR: 1.26, 95% CI: 1.10-1.44) in the north and northeast had higher mortality risks. Vaccination did not significantly reduce mortality, with varying effectiveness between Sinovac and AstraZeneca across regions. The study highlights regional differences in mortality, the limited impact of vaccination, and the role of social inequality. Ethnic and regional disparities suggest uneven interactions within communities may influence epidemic spread, and vaccine efficacy varies by region.},
+  creationdate     = {2024-12-14T11:41:01},
+  modificationdate = {2024-12-14T11:43:57},
+  url              = {https://theses.lib.polyu.edu.hk/handle/200/13284},
 }
 
 @Article{DomenechdeCelles2019b,

@@ -29,7 +29,7 @@ set.seed(348885445L)
 
 ## ----sim1a--------------------------------------------------------------------
 #| eval: FALSE
-## library(pomp)
+# library(pomp)
 
 ## ----sim1b--------------------------------------------------------------------
 #| warning: true
@@ -715,7 +715,7 @@ r_prof |>
   select(-loglik,-loglik.se) |>
   pivot_longer(-r) |>
   group_by(name) |>
-  summarize(value=predict(loess(value~r),newdata=data.frame(r=2))) |>
+  reframe(value=predict(loess(value~r),newdata=data.frame(r=2))) |>
   ungroup() |>
   pivot_wider() |>
   bind_cols(r=2) -> theta
@@ -888,7 +888,7 @@ chains |>
   mutate(year=time(vpM)[time]) |>
   pivot_wider(names_from=name) |>
   group_by(year) |>
-  summarize(
+  reframe(
     label=c("lo","med","hi"),
     p=c(0.025,0.5,0.975),
     q=wquant(N,probs=p)

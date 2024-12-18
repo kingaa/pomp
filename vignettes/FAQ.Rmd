@@ -15,7 +15,7 @@ output:
 ---
 
 ```{r knitr-opts,include=FALSE,purl=FALSE,cache=FALSE}
-source("setup.R", local = knitr::knit_global())
+source("setup.R",local=knitr::knit_global())
 ```
 ```{r options,include=FALSE,cache=FALSE}
 require(pomp)
@@ -87,7 +87,7 @@ By letting us know when messages are confusing or uninformative, you help us to 
 ## I am running a piece of **pomp** code I got from a guy, but I get errors. What is going on? {#old-code}
 
 Of course, there could be many reasons for this.
-However, you should know that each time the major version number for the packageincreases (e.g., from 5.11 to 6.1), at least one change has been introduced that has the potential to break existing code.
+However, you should know that each time the major version number for the package increases (e.g., from 5.11 to 6.1), at least one change has been introduced that has the potential to break existing code.
 Consult the [news blog](./blog.html) (including the [blog archive](./archive.html) if the code you are testing is more than a few months old):
 these contain succinct summaries of the changes associated with each release.
 Note also that the [online manual](https://kingaa.github.io/manuals/pomp/) is kept up to date.
@@ -331,9 +331,9 @@ sir_na |>
 In the above particle filter computation, notice that the effective sample size (ESS) is full, as it should be, when the missing data contribute no information.
 
 
-## I have t0 much less than t[1].  How do I deal with accumulator variables in this case?  {#t0-much-less-than-t1-accumulators}
+## I have `t0` much less than `t[1]`.  How do I deal with accumulator variables in this case?  {#t0-much-less-than-t1-accumulators}
 
-As described in the documentation ([`?pomp`](https://kingaa.github.io/manuals/pomp/html/pomp.html)), **pomp** allows you to define "accumulator variables" that collect events occurring between observations.
+As described in the documentation ([`?pomp`](https://kingaa.github.io/manuals/pomp/html/pomp.html#:~:text=contains the names of accumulator variables)), **pomp** allows you to define "accumulator variables" that collect events occurring between observations.
 The example [above](#how-to-handle-missing-data) illustrates this.
 
 In that example, we took `t0` equal to the first observation time.
@@ -516,7 +516,7 @@ will result in a random sample from the Euler multinomial distribution (with tim
 In the foregoing, we've assumed that the quantities $N_t$ and $K$ are stored in the integer variables `N` and `K`, respectively, and that the double precision variable `dt` holds the timestep.
 Note that the rules for `step.fun` C snippets guarantee that `dt` will be the operative time step ($\Delta{t}$).
 See [`?rprocess_spec`](https://kingaa.github.io/manuals/pomp/html/rprocess_spec.html) and [`?Csnippet`](https://kingaa.github.io/manuals/pomp/html/csnippet.html) for more information.
-See also the documentation for the [**pomp** C API](https://kingaa.github.io/pomp/C_API.html).
+See also the documentation for the [**pomp** C API](https://kingaa.github.io/pomp/C_API.html#euler-multinomial-distribution).
 
 When the step function is provided as an **R** function, the corresponding call is
 ```{r eval=FALSE}
@@ -605,13 +605,13 @@ Common causes are:
 - the `dmeasure` function or C snippet returning the log likelihood when the likelihood is requested, or vice versa.
 - `lik` has not been set properly. Note that, when the snippet is executed, `lik` will be undefined. In particular, you cannot assume that it has value 0.
 
-See the help ([`?Csnippet`](https://kingaa.github.io/manuals/pomp/html/csnippet.html)) for information on how to properly write `dmeasure` C snippets.
+See the help ([`?dmeasure_spec`](https://kingaa.github.io/manuals/pomp/html/dmeasure_spec.html)) for information on how to properly write `dmeasure` C snippets.
 As of version 1.5.6.3, when this error occurs, the values of the likelihood, parameters, and states are printed.
 If this alone doesn't make the underlying cause clear, explore the model behavior further.
 A useful way to do this is to put [`Rprintf` statements](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Printing) in your `dmeasure` and `rprocess` C snippets to view the values of the data, state variables, and likelihoods.
 [Issue #13](https://github.com/kingaa/pomp/issues/13) has an example.
 
-Remember, `dmeasure` has to be able to return the likelihood---or the log likelihood---upon request!
+Remember, `dmeasure` has to be able to return both the likelihood and the log likelihood upon request!
 
 ## Why can't I run the demos, or other codes that use the C snippet facility? {#why-cant-i-run-csnippets}
 
@@ -689,7 +689,7 @@ In doing so, please [follow the instructions in FAQ 1.1 above](#effective-reques
 ## I get warnings about extrapolation in 'table_lookup'. What is this about? {#extrapolation-warnings}
 
 **pomp** incorporates time-varying covariates via a lookup table.
-Whenever your model needs the value of a covariate at a particular time, it uses the lookup table provided (via the `covar` and `tcovar` options of `pomp`), linearly interpolating if necessary.
+Whenever your model needs the value of a covariate at a particular time, it uses the lookup table provided (via the [`covar`](https://kingaa.github.io/manuals/pomp/html/pomp.html#:~:text=optional covariate table) argument), linearly interpolating if necessary.
 It can happen that the required computation depends on values of the covariates *outside* the time interval covered by the lookup table.
 When this happens, **pomp** does linear extrapolation, with a warning.
 
@@ -881,7 +881,7 @@ Clearly, it is useless to perturb these parameters when $t > t_0$.
 Indeed, it's worse than useless since the perturbations will impede the progress of such parameters toward their maximum-likelihood values.
 Declaring such parameters to be initial value parameters using `ivp` results in perturbations that are only applied at $t = t_0$.
 More generally, there may be parameters for which perturbations should only be applied at certain times.
-The `rw.sd` function allows one to specify (via a simple **R** expression in terms of time `t`) which parameters fall into this category and when and how much they are to be perturbed.
+The `rw_sd` function allows one to specify (via simple **R** expressions in terms of time `time`) which parameters fall into this category and when and how much they are to be perturbed.
 See the [`mif2` manual page](https://kingaa.github.io/manuals/pomp/html/mif2.html) for details.
 
 # Debugging

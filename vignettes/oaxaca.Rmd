@@ -233,7 +233,7 @@ As of v. 1.14.
 - basic particle filtering (AKA sequential importance sampling or sequential Monte Carlo)
 - the approximate Bayesian sequential Monte Carlo algorithm of @Liu2001b
 - the particle Markov chain Monte Carlo method of @Andrieu2010
-- approximate Bayesian computation (ABC) of e.g., @Toni2009a
+- approximate Bayesian computation (ABC) of e.g., @Toni2009
 - the iterated filtering method of @Ionides2006
 - the improved iterated filtering method of @Ionides2015
 - probe-matching methods [@Kendall1999;@Wood2010]
@@ -969,7 +969,7 @@ As of version 2.1:
 - basic particle filtering (AKA sequential importance sampling or sequential Monte Carlo)
 - the approximate Bayesian sequential Monte Carlo algorithm of @Liu2001b
 - the particle Markov chain Monte Carlo method of @Andrieu2010
-- approximate Bayesian computation (ABC) of e.g., @Toni2009a
+- approximate Bayesian computation (ABC) of e.g., @Toni2009
 - the iterated filtering method of @Ionides2015
 - probe-matching methods [@Kendall1999;@Wood2010]
 - the nonlinear forecasting method [@Ellner1998;@Kendall2005]
