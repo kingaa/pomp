@@ -32,7 +32,7 @@
 ##' If \code{save.states="filter"}, the state-vector for each filtered particle \eqn{X_{n,j}^F} at each time \eqn{n} is saved.
 ##' If \code{save.states="prediction"}, the state-vector for each prediction particle \eqn{X_{n,j}^P} at each time \eqn{n} is saved, along with the corresponding weight \eqn{w_{n,j} = f_{Y_n|X_n}(y^*|X_{n, j}^P;\theta)}.
 ##' The options "unweighted", "weighted", TRUE, and FALSE are deprecated and will issue a warning if used, mapping to the new values for backward compatibility.
-##' The option "unweighted" and TRUE are synonymous with "filter";
+##' The options "unweighted" and TRUE are synonymous with "filter";
 ##' the option "weighted" is synonymous with "prediction";
 ##' the option FALSE is synonymous with "no".
 ##' To retrieve the saved states, apply \code{\link{saved_states}} to the result of the \code{pfilter} computation.
