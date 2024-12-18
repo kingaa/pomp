@@ -2,7 +2,7 @@
 % Please edit documentation in R/userdata.R
 \name{userdata}
 \alias{userdata}
-\title{Facilities for making additional information to basic components}
+\title{Facilities for making additional information available to basic model components}
 \description{
 When \acronym{POMP} basic components need information they can't get from parameters or covariates.
 }

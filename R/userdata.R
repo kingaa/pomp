@@ -1,4 +1,4 @@
-##' Facilities for making additional information to basic components
+##' Facilities for making additional information available to basic model components
 ##'
 ##' When \acronym{POMP} basic components need information they can't get from parameters or covariates.
 ##'
