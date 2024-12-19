@@ -4,12 +4,15 @@
 \alias{eulermultinom}
 \alias{reulermultinom}
 \alias{deulermultinom}
+\alias{eeulermultinom}
 \alias{rgammawn}
 \title{Eulermultinomial and gamma-whitenoise distributions}
 \usage{
 reulermultinom(n = 1, size, rate, dt)
 
 deulermultinom(x, size, rate, dt, log = FALSE)
+
+eeulermultinom(size, rate, dt)
 
 rgammawn(n = 1, sigma, dt)
 }
@@ -30,18 +33,17 @@ succumbed to each death process.}
 \item{sigma}{numeric scalar; intensity of the Gamma white noise process.}
 }
 \value{
-\item{reulermultinom}{
-   Returns a \code{length(rate)} by \code{n} matrix.
-   Each column is a different random draw.
-   Each row contains the numbers of individuals that have succumbed to the corresponding process.
-}
-\item{deulermultinom}{
-   Returns a vector (of length equal to the number of columns of \code{x}) containing
-   the probabilities of observing each column of \code{x} given the specified parameters (\code{size}, \code{rate}, \code{dt}).
-}
-\item{rgammawn}{
-   Returns a vector of length \code{n} containing random increments of the integrated Gamma white noise process with intensity \code{sigma}.
-}
+\code{reulermultinom} returns a \code{length(rate)} by \code{n} matrix.
+Each column is a different random draw.
+Each row contains the numbers of individuals that have succumbed to the corresponding process.
+
+\code{deulermultinom} returns a vector (of length equal to the number of columns of \code{x}).
+This contains the probabilities of observing each column of \code{x} given the specified parameters (\code{size}, \code{rate}, \code{dt}).
+
+\code{eeulermultinom} returns a \code{length(rate)}-vector
+containing the expected number of individuals to have succumbed to the corresponding process.
+
+\code{rgammawn} returns a vector of length \code{n} containing random increments of the integrated Gamma white noise process with intensity \code{sigma}.
 }
 \description{
 \pkg{pomp} provides a number of probability distributions that have proved useful in modeling partially observed Markov processes.
@@ -99,18 +101,27 @@ Visit the package homepage to view the \href{https://kingaa.github.io/pomp/C_API
 }
 
 \examples{
+## Simulate 5 realizations of Euler-multinomial random variable:
 
-print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=0.1))
+dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=0.1)
+dn
+
+## Compute the probability mass function at each of the 5 realizations:
+
 deulermultinom(x=dn,size=100,rate=c(1,2,3),dt=0.1)
-## an Euler-multinomial with overdispersed transitions:
+
+## Compute the expectation of an Euler-multinomial:
+
+eeulermultinom(size=100,rate=c(a=1,b=2,c=3),dt=0.1)
+
+## An Euler-multinomial with overdispersed transitions:
+
 dt <- 0.1
 dW <- rgammawn(sigma=0.1,dt=dt)
-print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=dW))
-
+reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=dW)
 }
 \references{
 \Breto2011
-
 \He2010
 }
 \seealso{

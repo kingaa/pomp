@@ -12,6 +12,7 @@ static const R_CallMethodDef callMethods[] = {
   {"load_stack_decr", (DL_FUNC) &load_stack_decr, 1},
   {"R_Euler_Multinom", (DL_FUNC) &R_Euler_Multinom, 4},
   {"D_Euler_Multinom", (DL_FUNC) &D_Euler_Multinom, 5},
+  {"E_Euler_Multinom", (DL_FUNC) &E_Euler_Multinom, 3},
   {"R_GammaWN", (DL_FUNC) &R_GammaWN, 3},
   {"R_BetaBinom", (DL_FUNC) &R_BetaBinom, 4},
   {"D_BetaBinom", (DL_FUNC) &D_BetaBinom, 5},

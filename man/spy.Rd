@@ -16,11 +16,15 @@
 Peek into the inside of one of \pkg{pomp}'s objects.
 }
 \examples{
-ricker() |> spy()
+\donttest{
 
-sir() |> spy()
+  ricker() |> spy()
 
-sir2() |> spy()
+  sir() |> spy()
+
+  sir2() |> spy()
+
+}
 }
 \seealso{
 Csnippet

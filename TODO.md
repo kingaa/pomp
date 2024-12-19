@@ -5,8 +5,7 @@
 ## For pomp:
 
 - Rosenzweig-MacArthur example
-- Make certain error checks in inline codes depend on NDEBUG flag
-- **R** interface to `eeulermultinom`
+- Make certain error checks in inline codes depend on NDEBUG flag?
 - replace `melt` with `data.table::melt`?
 - YAML interface
 - "Getting Started" vignette:

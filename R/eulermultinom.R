@@ -46,7 +46,6 @@
 ##'
 ##' For all of the functions described here, access to the underlying C routines is available:
 ##' see below.
-##'
 ##' @name eulermultinom
 ##' @rdname eulermultinom
 ##' @family implementation information
@@ -59,45 +58,22 @@
 ##' @param x matrix or vector containing number of individuals that have
 ##' succumbed to each death process.
 ##' @param log logical; if TRUE, return logarithm(s) of probabilities.
-##' @return
-##' \item{reulermultinom}{
-##'    Returns a \code{length(rate)} by \code{n} matrix.
-##'    Each column is a different random draw.
-##'    Each row contains the numbers of individuals that have succumbed to the corresponding process.
-##' }
-##' \item{deulermultinom}{
-##'    Returns a vector (of length equal to the number of columns of \code{x}) containing
-##'    the probabilities of observing each column of \code{x} given the specified parameters (\code{size}, \code{rate}, \code{dt}).
-##' }
-##' \item{rgammawn}{
-##'    Returns a vector of length \code{n} containing random increments of the integrated Gamma white noise process with intensity \code{sigma}.
-##' }
-##'
 ##' @section C API:
 ##' An interface for C codes using these functions is provided by the package.
 ##' Visit the package homepage to view the \href{https://kingaa.github.io/pomp/C_API.html}{\pkg{pomp} C API document}.
-##'
 ##' @author Aaron A. King
-##'
 ##' @references
-##'
 ##' \Breto2011
-##'
 ##' \He2010
-##'
 ##' @keywords distribution
-##' @examples
-##'
-##' print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=0.1))
-##' deulermultinom(x=dn,size=100,rate=c(1,2,3),dt=0.1)
-##' ## an Euler-multinomial with overdispersed transitions:
-##' dt <- 0.1
-##' dW <- rgammawn(sigma=0.1,dt=dt)
-##' print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=dW))
-##'
+##' @example examples/eulermultinom.R
 NULL
 
 ##' @rdname eulermultinom
+##' @return
+##' \code{reulermultinom} returns a \code{length(rate)} by \code{n} matrix.
+##' Each column is a different random draw.
+##' Each row contains the numbers of individuals that have succumbed to the corresponding process.
 ##' @export
 reulermultinom <- function (n = 1, size, rate, dt) {
   tryCatch(
@@ -107,6 +83,9 @@ reulermultinom <- function (n = 1, size, rate, dt) {
 }
 
 ##' @rdname eulermultinom
+##' @return
+##' \code{deulermultinom} returns a vector (of length equal to the number of columns of \code{x}).
+##' This contains the probabilities of observing each column of \code{x} given the specified parameters (\code{size}, \code{rate}, \code{dt}).
 ##' @export
 deulermultinom <- function (x, size, rate, dt, log = FALSE) {
   tryCatch(
@@ -116,6 +95,20 @@ deulermultinom <- function (x, size, rate, dt, log = FALSE) {
 }
 
 ##' @rdname eulermultinom
+##' @return
+##' \code{eeulermultinom} returns a \code{length(rate)}-vector
+##' containing the expected number of individuals to have succumbed to the corresponding process.
+##' @export
+eeulermultinom <- function (size, rate, dt) {
+  tryCatch(
+    .Call(P_E_Euler_Multinom,size,rate,dt),
+    error = function (e) pStop(who="eeulermultinom",conditionMessage(e))
+  )
+}
+
+##' @rdname eulermultinom
+##' @return
+##' \code{rgammawn} returns a vector of length \code{n} containing random increments of the integrated Gamma white noise process with intensity \code{sigma}.
 ##' @export
 rgammawn <- function (n = 1, sigma, dt) {
   tryCatch(

@@ -8,6 +8,7 @@ extern SEXP do_dinit(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 /* src/distributions.c */
 extern SEXP R_Euler_Multinom(SEXP, SEXP, SEXP, SEXP);
 extern SEXP D_Euler_Multinom(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP E_Euler_Multinom(SEXP, SEXP, SEXP);
 extern SEXP R_GammaWN(SEXP, SEXP, SEXP);
 extern SEXP R_BetaBinom(SEXP, SEXP, SEXP, SEXP);
 extern SEXP D_BetaBinom(SEXP, SEXP, SEXP, SEXP, SEXP);

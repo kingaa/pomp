@@ -75,6 +75,17 @@ Warning messages:
 [1,]
 [2,]
 [3,]
+> reulermultinom(n=5,size=100,rate=c(1,2,3),dt=Inf)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]   NA   NA   NA   NA   NA
+[2,]   NA   NA   NA   NA   NA
+[3,]   NA   NA   NA   NA   NA
+Warning messages:
+1: in 'reulermultinom': NAs produced. 
+2: in 'reulermultinom': NAs produced. 
+3: in 'reulermultinom': NAs produced. 
+4: in 'reulermultinom': NAs produced. 
+5: in 'reulermultinom': NAs produced. 
 > try(reulermultinom(n=-2,size=100,rate=c(1,2,3),dt=0.1))
 Error : in 'reulermultinom': in 'reulermultinom': 'n' must be a non-negative integer.
 > reulermultinom(n=1,size=100,rate=c(1,2e400,3),dt=0.1)
@@ -184,6 +195,69 @@ in 'deulermultinom': NaNs produced.
 [1] 0
 > deulermultinom(x=c(3,6,3),size=10,rate=c(1,1,0),dt=0.1,log=TRUE)
 [1] -Inf
+> 
+> eeulermultinom(size=100,rate=c(1,2,3),dt=0.1)
+[1]  7.519806 15.039612 22.559418
+> eeulermultinom(size=-3,rate=c(1,2,3),dt=0.1)
+[1] NA NA NA
+Warning message:
+in 'eeulermultinom': NAs produced. 
+> eeulermultinom(size=100,rate=c(1,-2,3),dt=0.1)
+[1] NA NA NA
+Warning message:
+in 'eeulermultinom': NAs produced. 
+> eeulermultinom(size=100,rate=c(1,NA,3),dt=0.1)
+[1] NA NA NA
+Warning message:
+in 'eeulermultinom': NAs produced. 
+> eeulermultinom(size=100.3,rate=c(1,2,3),dt=0.1)
+[1]  7.542365 15.084731 22.627096
+> eeulermultinom(size=100,rate=c(1,2,3),dt=0.1)
+[1]  7.519806 15.039612 22.559418
+> eeulermultinom(size=100,rate=c(1,2,3),dt=Inf)
+[1] NA NA NA
+Warning message:
+in 'eeulermultinom': NAs produced. 
+> eeulermultinom(size=100,rate=c(1,2e400,3),dt=0.1)
+[1] NA NA NA
+Warning message:
+in 'eeulermultinom': NAs produced. 
+> eeulermultinom(size=100,rate=c(1,2,3),dt=c(0.1,0.2,0.3,Inf))
+[1]  7.519806 15.039612 22.559418
+Warning message:
+in 'eeulermultinom': only the first element of 'dt' is meaningful 
+> eeulermultinom(size=100,rate=c(1,2,3),dt=c(0.1,0.2,0.3,0.5))
+[1]  7.519806 15.039612 22.559418
+Warning message:
+in 'eeulermultinom': only the first element of 'dt' is meaningful 
+> eeulermultinom(size=c(100,200,300),rate=c(1,2,3),dt=0.2)
+[1] 11.64676 23.29353 34.94029
+Warning message:
+in 'eeulermultinom': only the first element of 'size' is meaningful 
+> eeulermultinom(size=0,rate=c(1,2,3),dt=0.2)
+[1] 0 0 0
+> eeulermultinom(size=10,rate=c(1,Inf,1),0.1)
+[1] NA NA NA
+Warning message:
+in 'eeulermultinom': NAs produced. 
+> eeulermultinom(size=Inf,rate=c(1,100,1),0.1)
+[1] NA NA NA
+Warning message:
+in 'eeulermultinom': NAs produced. 
+> eeulermultinom(size=NA,rate=c(1,2,3),dt=1)
+[1] NA NA NA
+Warning message:
+in 'eeulermultinom': NAs produced. 
+> eeulermultinom(size=100,rate=c(1,NA,3),dt=1)
+[1] NA NA NA
+Warning message:
+in 'eeulermultinom': NAs produced. 
+> eeulermultinom(size=100,rate=c(1,2,3),dt=NA)
+[1] NA NA NA
+Warning message:
+in 'eeulermultinom': NAs produced. 
+> eeulermultinom(size=100,rate=c(0,0,0,0),dt=1)
+[1] 0 0 0 0
 > 
 > rgammawn(n=5,sigma=2,dt=0.1)
 [1] 2.593438e-18 2.417425e-05 5.489565e-25 1.344180e-18 3.775061e-03
