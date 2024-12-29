@@ -5,6 +5,7 @@
 \alias{bake}
 \alias{stew}
 \alias{freeze}
+\alias{append_data}
 \title{Tools for reproducible computations}
 \usage{
 bake(
@@ -39,11 +40,19 @@ freeze(
   envir = parent.frame(),
   enclos = if (is.list(envir) || is.pairlist(envir)) parent.frame() else baseenv()
 )
+
+append_data(
+  data,
+  file,
+  overwrite = FALSE,
+  dir = getOption("pomp_archive_dir", getwd())
+)
 }
 \arguments{
 \item{file}{Name of the archive file in which the result will be stored or retrieved, as appropriate.
 For \code{bake}, this will contain a single object and hence be an RDS file (extension \sQuote{rds});
-for \code{stew}, this will contain one or more named objects and hence be an RDA file (extension \sQuote{rda}).}
+for \code{stew}, this will contain one or more named objects and hence be an RDA file (extension \sQuote{rda});
+for \code{append_data}, this will be a CSV file.}
 
 \item{expr}{Expression to be evaluated.}
 
@@ -84,6 +93,11 @@ If it does not exist, this directory will be created (with a message).}
     Specifies the enclosure, i.e., where \R looks for objects not found
     in \code{envir}.  This can be \code{NULL} (interpreted as the base
     package environment, \code{\link[base]{baseenv}()}) or an environment.}
+
+\item{data}{data frame}
+
+\item{overwrite}{logical; if \code{TRUE}, \code{data} are written to \code{file}, replacing any existing contents.
+If \code{FALSE}, the \code{data} is appended to the existing contents of \code{file}.}
 }
 \value{
 \code{bake} returns the value of the evaluated expression \code{expr}.
@@ -104,6 +118,8 @@ The time required for execution is also recorded.
 \code{bake} stores this in the \dQuote{system.time} attribute of the archived \R object;
 \code{stew} does so in a hidden variable named \code{.system.time}.
 The timing is obtained using \code{\link{system.time}}.
+
+\code{append_data} returns a data frame containing the new contents of \code{file}, invisibly.
 }
 \description{
 Archiving of computations and control of the random-number generator.

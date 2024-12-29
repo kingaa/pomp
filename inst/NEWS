@@ -1,5 +1,17 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _6._0._4:
+
+        • The new function ‘append_data’ appends a data frame to an
+          existing CSV file (creating the file if it does not exist).
+          This facilitates keeping a database of parameter-space
+          explorations.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _6._0._3:
+
+        • The new function ‘eeulermultinom’ gives the expectation of an
+          Euler-multinomial random variable.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _6._0._2:
 
         • The ‘save.states’ option to ‘pfilter’ has changed.  See

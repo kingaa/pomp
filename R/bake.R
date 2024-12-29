@@ -35,7 +35,8 @@
 ##' Therefore, avoid using \sQuote{pomp} objects as dependencies in \code{bake} and \code{stew}.
 ##' @param file Name of the archive file in which the result will be stored or retrieved, as appropriate.
 ##' For \code{bake}, this will contain a single object and hence be an RDS file (extension \sQuote{rds});
-##' for \code{stew}, this will contain one or more named objects and hence be an RDA file (extension \sQuote{rda}).
+##' for \code{stew}, this will contain one or more named objects and hence be an RDA file (extension \sQuote{rda});
+##' for \code{append_data}, this will be a CSV file.
 ##' @param dir Directory holding archive files;
 ##' by default, this is the current working directory.
 ##' This can also be set using the global option \code{pomp_archive_dir}.
@@ -332,4 +333,39 @@ freeze <- function (expr,
     assign(".Random.seed",save.seed,envir=.GlobalEnv)
   }
   val
+}
+
+##' @rdname bake
+##' @param data data frame
+##' @param overwrite logical; if \code{TRUE}, \code{data} are written to \code{file}, replacing any existing contents.
+##' If \code{FALSE}, the \code{data} is appended to the existing contents of \code{file}.
+##' @return
+##' \code{append_data} returns a data frame containing the new contents of \code{file}, invisibly.
+##' @importFrom data.table fread fwrite rbindlist
+##' @export
+append_data <- function (
+  data,
+  file,
+  overwrite = FALSE,
+  dir = getOption("pomp_archive_dir",getwd())
+) {
+  tryCatch({
+    file <- create_path(dir,file)
+    append <- file.exists(file) && !as.logical(overwrite)
+    if (append) {
+      data <- rbindlist(
+        list(
+          fread(file=file),
+          data
+        ),
+        fill=TRUE,
+        use.names=TRUE
+      )
+    }
+    fwrite(data,file=file)
+  },
+  error=function (e) {
+    pStop(who="append_data",conditionMessage(e))
+  })
+  invisible(data)
 }

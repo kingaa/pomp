@@ -1,5 +1,16 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 6.0.4}{
+  \itemize{
+    \item The new function \code{append_data} appends a data frame to an existing CSV file (creating the file if it does not exist).
+    This facilitates keeping a database of parameter-space explorations.
+  }
+}
+\section{Changes in \pkg{pomp} version 6.0.3}{
+  \itemize{
+    \item The new function \code{eeulermultinom} gives the expectation of an Euler-multinomial random variable.
+  }
+}
 \section{Changes in \pkg{pomp} version 6.0.2}{
   \itemize{
     \item The \code{save.states} option to \code{pfilter} has changed.
