@@ -70,7 +70,7 @@ SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP deltat, SEXP log) {
 
 SEXP E_Euler_Multinom (SEXP size, SEXP rate, SEXP deltat) {
   int ntrans = length(rate);
-  SEXP x, nm;
+  SEXP x;
   if (length(size)>1)
     warn("in 'eeulermultinom': only the first element of 'size' is meaningful");
   if (length(deltat)>1)
@@ -78,11 +78,9 @@ SEXP E_Euler_Multinom (SEXP size, SEXP rate, SEXP deltat) {
   PROTECT(size = AS_NUMERIC(size));
   PROTECT(rate = AS_NUMERIC(rate));
   PROTECT(deltat = AS_NUMERIC(deltat));
-  PROTECT(x = NEW_NUMERIC(ntrans));
-  PROTECT(nm = GET_NAMES(rate));
-  SET_NAMES(x,nm);
+  PROTECT(x = duplicate(rate));
   eeulermultinom(ntrans,*REAL(size),REAL(rate),*REAL(deltat),REAL(x));
-  UNPROTECT(5);
+  UNPROTECT(4);
   return x;
 }
 
