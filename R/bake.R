@@ -363,9 +363,9 @@ append_data <- function (
       )
     }
     fwrite(data,file=file)
+    invisible(fread(file=file))
   },
   error=function (e) {
     pStop(who="append_data",conditionMessage(e))
   })
-  invisible(data)
 }
