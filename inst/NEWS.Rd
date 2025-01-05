@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 6.0.5}{
+  \itemize{
+    \item It is now possible to specify more than one lag in the \code{ivp} function, which is evaluated only when the \code{mif2} perturbations are specified.
+    See \code{?mif2}.
+  }
+}
 \section{Changes in \pkg{pomp} version 6.0.4}{
   \itemize{
     \item The new function \code{append_data} appends a data frame to an existing CSV file (creating the file if it does not exist).
