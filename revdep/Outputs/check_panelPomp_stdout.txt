@@ -1,0 +1,96 @@
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
+* using R version 4.4.3 (2025-02-28)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+* running under: Ubuntu 22.04.5 LTS
+* using session charset: UTF-8
+* using options '--ignore-vignettes --as-cran'
+* checking for file 'panelPomp/DESCRIPTION' ... OK
+* checking extension type ... Package
+* this is package 'panelPomp' version '1.6.0.0'
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package 'panelPomp' can be installed ... [31s/12s] OK
+* used C compiler: 'gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0'
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... NOTE
+unable to verify current time
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of 'data' directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking R/sysdata.rda ... OK
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking pragmas in C/C++ headers and code ... OK
+* checking compilation flags used ... OK
+* checking compiled code ... OK
+* checking installed files from 'inst/doc' ... OK
+* checking files in 'vignettes' ... SKIPPED
+* checking examples ... [146s/19s] OK
+Examples with CPU (user + system) or elapsed time > 5s
+                         user system elapsed
+panelPomp_methods       1.842  9.218   0.885
+unit_objects            1.796  9.258   1.026
+panelRandomWalk         1.812  9.166   0.880
+specific                1.619  8.536   0.743
+panelMeasles            1.656  7.409   1.108
+panelGompertz           1.391  7.274   0.908
+panelPomp               1.429  7.102   0.833
+plot                    1.340  7.057   0.820
+mif2                    1.436  6.872   1.210
+shared-set              1.249  6.705   0.914
+unitLogLik              1.189  6.054   0.994
+pfilter                 1.232  5.948   0.909
+params                  1.184  5.791   0.888
+simulate                1.243  5.622   0.960
+shared                  1.064  5.391   0.932
+panelGompertzLikelihood 1.153  5.267   1.058
+specific-set            0.914  4.589   0.943
+** found \donttest examples: check also with --run-donttest
+* checking for unstated dependencies in 'tests' ... OK
+* checking tests ...
+ [438s/57s] OK
+* checking PDF version of manual ... OK
+* checking HTML version of manual ... OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 NOTE
