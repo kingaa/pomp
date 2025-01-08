@@ -42,6 +42,11 @@ This contains the probabilities of observing each column of \code{x} given the s
 
 \code{eeulermultinom} returns a \code{length(rate)}-vector
 containing the expected number of individuals to have succumbed to the corresponding process.
+With the notation above, if
+\preformatted{
+    dn <- eeulermultinom(size=N,rate=r,dt=dt),
+}
+then the \eqn{k}-th element of the vector \code{dn} will be \eqn{p_k N}{pk N}.
 
 \code{rgammawn} returns a vector of length \code{n} containing random increments of the integrated Gamma white noise process with intensity \code{sigma}.
 }

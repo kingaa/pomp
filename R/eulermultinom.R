@@ -98,6 +98,11 @@ deulermultinom <- function (x, size, rate, dt, log = FALSE) {
 ##' @return
 ##' \code{eeulermultinom} returns a \code{length(rate)}-vector
 ##' containing the expected number of individuals to have succumbed to the corresponding process.
+##' With the notation above, if
+##' \preformatted{
+##'     dn <- eeulermultinom(size=N,rate=r,dt=dt),
+##' }
+##' then the \eqn{k}-th element of the vector \code{dn} will be \eqn{p_k N}{pk N}.
 ##' @export
 eeulermultinom <- function (size, rate, dt) {
   tryCatch(
