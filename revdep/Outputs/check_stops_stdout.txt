@@ -1,0 +1,85 @@
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/stops.Rcheck'
+* using R version 4.4.2 (2024-10-31)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+* running under: Ubuntu 22.04.5 LTS
+* using session charset: UTF-8
+* using options '--ignore-vignettes --as-cran'
+* checking for file 'stops/DESCRIPTION' ... OK
+* this is package 'stops' version '1.8-2'
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package 'stops' can be installed ... [34s/23s] OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... [75s/23s] NOTE
+c_inequality: local variable ‘out’ assigned but may not be used
+c_linearity: local variable ‘x’ assigned but may not be used
+c_linearity: local variable ‘y’ assigned but may not be used
+c_shepardness: local variable ‘confd1’ assigned but may not be used
+c_shepardness: local variable ‘delts1’ assigned but may not be used
+c_shepardness: local variable ‘dhats1’ assigned but may not be used
+c_shepardness: local variable ‘expo’ assigned but may not be used
+c_shepardness: local variable ‘notmiss.iord’ assigned but may not be
+  used
+c_shepardness: local variable ‘wm1’ assigned but may not be used
+ljoptim: local variable ‘n’ assigned but may not be used
+stop_powermds: local variable ‘nu’ assigned but may not be used
+stop_spmddae: local variable ‘ncall’ assigned but may not be used
+tgpoptim: local variable ‘fold’ assigned but may not be used
+tgpoptim: local variable ‘valsorig’ assigned but may not be used
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of 'data' directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking installed files from 'inst/doc' ... OK
+* checking files in 'vignettes' ... SKIPPED
+* checking examples ... [51s/14s] OK
+Examples with CPU (user + system) or elapsed time > 5s
+               user system elapsed
+stops-package 1.637  8.091   0.380
+jackmds.stops 1.107  4.253   0.366
+** found \donttest examples: check also with --run-donttest
+* checking PDF version of manual ... OK
+* checking HTML version of manual ... OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 NOTE

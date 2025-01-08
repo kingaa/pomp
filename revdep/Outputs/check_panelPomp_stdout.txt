@@ -1,0 +1,95 @@
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
+* using R version 4.4.2 (2024-10-31)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    GNU Fortran (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+* running under: Ubuntu 22.04.5 LTS
+* using session charset: UTF-8
+* using options '--ignore-vignettes --as-cran'
+* checking for file 'panelPomp/DESCRIPTION' ... OK
+* checking extension type ... Package
+* this is package 'panelPomp' version '1.5.0.0'
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package 'panelPomp' can be installed ... [24s/10s] OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+panelMeasles : <anonymous>: local variable ‘time’ assigned but may not
+  be used
+panelMeasles: local variable ‘time’ assigned but may not be used
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of 'data' directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking R/sysdata.rda ... OK
+* checking installed files from 'inst/doc' ... OK
+* checking files in 'vignettes' ... SKIPPED
+* checking examples ... [163s/21s] OK
+Examples with CPU (user + system) or elapsed time > 5s
+                                  user system elapsed
+panelRandomWalk                  1.723  9.152   0.875
+pfilter                          1.847  9.005   0.945
+simulate                         1.656  8.189   0.888
+unitlogLik-deprecated            1.729  7.987   1.035
+panelGompertz                    1.575  7.826   0.918
+panelPomp_methods                1.508  7.565   0.869
+params                           1.429  7.535   0.823
+unit_objects                     1.483  7.477   0.887
+panelPomp                        1.412  7.241   0.965
+unitLogLik                       1.467  7.073   0.869
+panelGompertzLikelihood          1.449  7.043   0.910
+panelMeasles                     1.546  6.903   1.067
+shared                           1.396  7.015   0.915
+unitlogLik-pfilterd.ppomp-method 1.263  6.350   0.838
+plot                             1.080  5.810   0.857
+shared-set                       1.089  5.297   0.894
+mif2                             1.021  5.056   1.109
+specific-set                     0.815  4.339   1.047
+specific                         0.913  4.154   1.029
+** found \donttest examples: check also with --run-donttest
+* checking for unstated dependencies in 'tests' ... OK
+* checking tests ...
+ [411s/59s] OK
+* checking PDF version of manual ... OK
+* checking HTML version of manual ... OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 NOTE

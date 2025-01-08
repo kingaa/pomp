@@ -1,0 +1,6 @@
+  Running ‘testthat.R’ [33s/10s]
+
+See
+  '/home/kingaa/projects/Rpkg/pomp/revdep/spaero.Rcheck/00check.log'
+for details.
+
