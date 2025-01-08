@@ -6,7 +6,7 @@
 \alias{deulermultinom}
 \alias{eeulermultinom}
 \alias{rgammawn}
-\title{Eulermultinomial and gamma-whitenoise distributions}
+\title{Eulermultinomial and Gamma-whitenoise distributions}
 \usage{
 reulermultinom(n = 1, size, rate, dt)
 

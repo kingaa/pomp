@@ -1,4 +1,4 @@
-##' Eulermultinomial and gamma-whitenoise distributions
+##' Eulermultinomial and Gamma-whitenoise distributions
 ##'
 ##' \pkg{pomp} provides a number of probability distributions that have proved useful in modeling partially observed Markov processes.
 ##' These include the Euler-multinomial family of distributions and
