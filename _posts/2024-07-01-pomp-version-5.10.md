@@ -6,7 +6,7 @@ title: pomp version 5.10 released
 **pomp** version 5.10 has been released to CRAN and will soon appear on [CRAN mirrors everywhere](https://cran.r-project.org/mirrors.html).
 This release contains a change to the `onestep` rprocess simulator and some minor documentation improvements.
 
-## User-visible change
+### User-visible change
 
 Suppose `P` is a 'pomp' object, with an rprocess component specified as `onestep(f)`, where `f` is a C snippet or **R** function.
 Suppose also that `t==time(P,t0=TRUE)`.
