@@ -10,7 +10,7 @@ This release contains breaking changes as well as some additional features.
 
 #### New interface for `userdata` becomes mandatory
 
-Since version 5.8.4, the manner in which provides extra elements to basic model components (i.e., beyond parameters, latent state variables, covariates, time, and observations, that is the so-called [`userdata`](https://kingaa.github.io/manuals/pomp/html/userdata.html) are supplied has changed. 
+Since version 5.8.4, the manner in which provides extra elements to basic model components (i.e., beyond parameters, latent state variables, covariates, time, and observations: the so-called [`userdata`](https://kingaa.github.io/manuals/pomp/html/userdata.html)) has changed. 
 During a grace period, the old method still worked, though it generated a warning.
 In versions 6.X, an error will be generated.
 To supply additional elements to the basic model components, pass them as elements of a named list via the `userdata` argument, which can be furnished to any [elementary algorithm](https://kingaa.github.io/manuals/pomp/html/elementary_algorithms.html) or [estimation algorithm](https://kingaa.github.io/manuals/pomp/html/estimation_algorithms.html), and of course, to the [pomp constructor](https://kingaa.github.io/manuals/pomp/html/pomp.html) itself.
