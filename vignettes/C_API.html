@@ -27,46 +27,31 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 });
 </script>
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
-  }
-});
-</script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -78,54 +63,53 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {  background-color: #f8f8f8; }
+{ background-color: #f8f8f8; }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ef2929; } /* Alert */
-code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #c4a000; } /* Attribute */
-code span.bn { color: #0000cf; } /* BaseN */
-code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4e9a06; } /* Char */
-code span.cn { color: #000000; } /* Constant */
-code span.co { color: #8f5902; font-style: italic; } /* Comment */
-code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
-code span.dt { color: #204a87; } /* DataType */
-code span.dv { color: #0000cf; } /* DecVal */
-code span.er { color: #a40000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #0000cf; } /* Float */
-code span.fu { color: #000000; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
-code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
-code span.ot { color: #8f5902; } /* Other */
-code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
-code span.sc { color: #000000; } /* SpecialChar */
-code span.ss { color: #4e9a06; } /* SpecialString */
-code span.st { color: #4e9a06; } /* String */
-code span.va { color: #000000; } /* Variable */
-code span.vs { color: #4e9a06; } /* VerbatimString */
-code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ef2929; } 
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.at { color: #204a87; } 
+code span.bn { color: #0000cf; } 
+code span.cf { color: #204a87; font-weight: bold; } 
+code span.ch { color: #4e9a06; } 
+code span.cn { color: #8f5902; } 
+code span.co { color: #8f5902; font-style: italic; } 
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.dt { color: #204a87; } 
+code span.dv { color: #0000cf; } 
+code span.er { color: #a40000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #0000cf; } 
+code span.fu { color: #204a87; font-weight: bold; } 
+code span.im { } 
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } 
+code span.kw { color: #204a87; font-weight: bold; } 
+code span.op { color: #ce5c00; font-weight: bold; } 
+code span.ot { color: #8f5902; } 
+code span.pp { color: #8f5902; font-style: italic; } 
+code span.sc { color: #ce5c00; font-weight: bold; } 
+code span.ss { color: #4e9a06; } 
+code span.st { color: #4e9a06; } 
+code span.va { color: #000000; } 
+code span.vs { color: #4e9a06; } 
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -175,41 +159,49 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="TOC">
 <ul>
-<li><a href="#overview">Overview</a></li>
-<li><a href="#random-variables">Random variables</a>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#random-variables" id="toc-random-variables">Random
+variables</a>
 <ul>
-<li><a href="#beta-binomial-distribution">Beta-binomial distribution</a></li>
-<li><a href="#multinomial-distribution">Multinomial distribution</a></li>
-<li><a href="#euler-multinomial-distribution">Euler-multinomial distribution</a></li>
-<li><a href="#gamma-white-noise">Gamma white noise</a></li>
+<li><a href="#beta-binomial-distribution" id="toc-beta-binomial-distribution">Beta-binomial distribution</a></li>
+<li><a href="#multinomial-distribution" id="toc-multinomial-distribution">Multinomial distribution</a></li>
+<li><a href="#euler-multinomial-distribution" id="toc-euler-multinomial-distribution">Euler-multinomial
+distribution</a></li>
+<li><a href="#gamma-white-noise" id="toc-gamma-white-noise">Gamma white
+noise</a></li>
 </ul></li>
-<li><a href="#splines">Splines</a></li>
-<li><a href="#transformations">Transformations</a>
+<li><a href="#splines" id="toc-splines">Splines</a></li>
+<li><a href="#transformations" id="toc-transformations">Transformations</a>
 <ul>
-<li><a href="#logit-transformation">Logit transformation</a></li>
-<li><a href="#log-barycentric-transformation">Log-barycentric transformation</a></li>
+<li><a href="#logit-transformation" id="toc-logit-transformation">Logit
+transformation</a></li>
+<li><a href="#log-barycentric-transformation" id="toc-log-barycentric-transformation">Log-barycentric
+transformation</a></li>
 </ul></li>
-<li><a href="#convenience-functions">Convenience functions</a>
+<li><a href="#convenience-functions" id="toc-convenience-functions">Convenience functions</a>
 <ul>
-<li><a href="#vector-dot-product">Vector dot product</a></li>
-<li><a href="#exponentialgeometric-rate-conversion">Exponential/geometric rate conversion</a></li>
+<li><a href="#vector-dot-product" id="toc-vector-dot-product">Vector dot
+product</a></li>
+<li><a href="#exponentialgeometric-rate-conversion" id="toc-exponentialgeometric-rate-conversion">Exponential/geometric rate
+conversion</a></li>
 </ul></li>
-<li><a href="#access-to-the-userdata">Access to the userdata</a></li>
-<li><a href="#prototypes-for-basic-model-components">Prototypes for basic model components</a>
+<li><a href="#access-to-the-userdata" id="toc-access-to-the-userdata">Access to the userdata</a></li>
+<li><a href="#prototypes-for-basic-model-components" id="toc-prototypes-for-basic-model-components">Prototypes for basic
+model components</a>
 <ul>
-<li><a href="#indices">Indices</a></li>
-<li><a href="#rinit">rinit</a></li>
-<li><a href="#dinit">dinit</a></li>
-<li><a href="#rprocess">rprocess</a></li>
-<li><a href="#dprocess">dprocess</a></li>
-<li><a href="#skeleton">skeleton</a></li>
-<li><a href="#rmeasure">rmeasure</a></li>
-<li><a href="#dmeasure">dmeasure</a></li>
-<li><a href="#emeasure">emeasure</a></li>
-<li><a href="#vmeasure">vmeasure</a></li>
-<li><a href="#rprior">rprior</a></li>
-<li><a href="#dprior">dprior</a></li>
-<li><a href="#partrans">partrans</a></li>
+<li><a href="#indices" id="toc-indices">Indices</a></li>
+<li><a href="#rinit" id="toc-rinit">rinit</a></li>
+<li><a href="#dinit" id="toc-dinit">dinit</a></li>
+<li><a href="#rprocess" id="toc-rprocess">rprocess</a></li>
+<li><a href="#dprocess" id="toc-dprocess">dprocess</a></li>
+<li><a href="#skeleton" id="toc-skeleton">skeleton</a></li>
+<li><a href="#rmeasure" id="toc-rmeasure">rmeasure</a></li>
+<li><a href="#dmeasure" id="toc-dmeasure">dmeasure</a></li>
+<li><a href="#emeasure" id="toc-emeasure">emeasure</a></li>
+<li><a href="#vmeasure" id="toc-vmeasure">vmeasure</a></li>
+<li><a href="#rprior" id="toc-rprior">rprior</a></li>
+<li><a href="#dprior" id="toc-dprior">dprior</a></li>
+<li><a href="#partrans" id="toc-partrans">partrans</a></li>
 </ul></li>
 </ul>
 </div>
@@ -217,302 +209,488 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <hr />
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p><strong>pomp</strong> provides C entry points to a number of facilities for model specification. Below, we describe these, providing the prototypical function calls and descriptions of their arguments.</p>
-<p>The <a href="#prototypes-for-basic-model-components">final section</a> describes the prototypes for the basic model components. Users wishing to write libraries to hold basic model components must furnish functions of these prototypes that perform the basic model component computations.</p>
+<p><strong>pomp</strong> provides C entry points to a number of
+facilities for model specification. Below, we describe these, providing
+the prototypical function calls and descriptions of their arguments.</p>
+<p>The <a href="#prototypes-for-basic-model-components">final
+section</a> describes the prototypes for the basic model components.
+Users wishing to write libraries to hold basic model components must
+furnish functions of these prototypes that perform the basic model
+component computations.</p>
 </div>
 <div id="random-variables" class="section level2">
 <h2>Random variables</h2>
 <div id="beta-binomial-distribution" class="section level3">
 <h3>Beta-binomial distribution</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="dt">double</span> rbetabinom(<span class="dt">double</span> size, <span class="dt">double</span> prob, <span class="dt">double</span> theta);</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="dt">double</span> dbetabinom(<span class="dt">double</span> x, <span class="dt">double</span> size, <span class="dt">double</span> prob, </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  <span class="dt">double</span> theta, <span class="dt">int</span> give_log);</span></code></pre></div>
-<p><span class="math inline">\(X\)</span> is said to be Beta-binomially distributed with size <span class="math inline">\(n\)</span>, mean probability <span class="math inline">\(p\)</span>, and dispersion parameter <span class="math inline">\(\theta\)</span> if <span class="math display">\[P \sim \mathrm{Beta}\left(\theta\,p,\theta\,(1-p)\right)\]</span> and <span class="math display">\[X|P \sim \mathrm{Binomial}\left(n,P\right).\]</span> If <span class="math inline">\(X\sim\mathrm{BetaBinomial}\left(n,p,\theta\right)\)</span>, then <span class="math display">\[\mathbb{E}\left[X\right]=n\,p\qquad\text{and}\qquad\mathrm{Var}\left[X\right]=n\,p\,(1-p)\,\frac{\theta+n}{\theta+1}.\]</span></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="dt">double</span> rbetabinom<span class="op">(</span><span class="dt">double</span> size<span class="op">,</span> <span class="dt">double</span> prob<span class="op">,</span> <span class="dt">double</span> theta<span class="op">);</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="dt">double</span> dbetabinom<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> size<span class="op">,</span> <span class="dt">double</span> prob<span class="op">,</span> </span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="dt">double</span> theta<span class="op">,</span> <span class="dt">int</span> give_log<span class="op">);</span></span></code></pre></div>
+<p><span class="math inline">\(X\)</span> is said to be Beta-binomially
+distributed with size <span class="math inline">\(n\)</span>, mean
+probability <span class="math inline">\(p\)</span>, and dispersion
+parameter <span class="math inline">\(\theta\)</span> if <span class="math display">\[P \sim
+\mathrm{Beta}\left(\theta\,p,\theta\,(1-p)\right)\]</span> and <span class="math display">\[X|P \sim
+\mathrm{Binomial}\left(n,P\right).\]</span> If <span class="math inline">\(X\sim\mathrm{BetaBinomial}\left(n,p,\theta\right)\)</span>,
+then <span class="math display">\[\mathbb{E}\left[X\right]=n\,p\qquad\text{and}\qquad\mathrm{Var}\left[X\right]=n\,p\,(1-p)\,\frac{\theta+n}{\theta+1}.\]</span></p>
 </div>
 <div id="multinomial-distribution" class="section level3">
 <h3>Multinomial distribution</h3>
-<p>The <a href="https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API"><strong>R</strong> C API</a> provides a <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions">simulator for the multinomial distribution, <code>rmultinom</code></a>. See the “Rmath.h” header file for information on this facility. <strong>pomp</strong> provides an evaluator for the probability mass function (<code>dmultinom</code>) for this distribution.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">double</span> dmultinom(<span class="dt">int</span> m, <span class="dt">const</span> <span class="dt">double</span> *prob, <span class="dt">double</span> *x, <span class="dt">int</span> give_log);</span></code></pre></div>
+<p>The <a href="https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API"><strong>R</strong>
+C API</a> provides a <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions">simulator
+for the multinomial distribution, <code>rmultinom</code></a>. See the
+“Rmath.h” header file for information on this facility.
+<strong>pomp</strong> provides an evaluator for the probability mass
+function (<code>dmultinom</code>) for this distribution.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="dt">double</span> dmultinom<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>prob<span class="op">,</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">int</span> give_log<span class="op">);</span></span></code></pre></div>
 <p>Input:</p>
 <ul>
-<li><code>m</code> is a positive integer, is the dimension of the random variable.</li>
-<li><code>prob</code> is a pointer to an <code>m</code>-vector of probabilities.</li>
-<li><code>x</code> is a pointer to an <code>m</code>-vector containing the data.</li>
+<li><code>m</code> is a positive integer, is the dimension of the random
+variable.</li>
+<li><code>prob</code> is a pointer to an <code>m</code>-vector of
+probabilities.</li>
+<li><code>x</code> is a pointer to an <code>m</code>-vector containing
+the data.</li>
 <li><code>give_log</code> is an integer:
 <ul>
 <li><code>give_log=1</code> if the log probability is desired.</li>
 <li><code>give_log=0</code> if probability is desired.</li>
 </ul></li>
 </ul>
-<p>The return value is the probability or log probability (as requested).</p>
+<p>The return value is the probability or log probability (as
+requested).</p>
 </div>
 <div id="euler-multinomial-distribution" class="section level3">
 <h3>Euler-multinomial distribution</h3>
-<p>The Euler multinomial approximation of a continuous-time, stochastic compartmental model is as follows. Suppose a compartment has occupancy <span class="math inline">\(N_t\)</span> at time <span class="math inline">\(t\)</span> and that there are <span class="math inline">\(K\)</span> ways of exiting the compartment, with per capita rates (hazards) <span class="math inline">\(\mu_1,\dots,\mu_K\)</span>, respectively.</p>
+<p>The Euler multinomial approximation of a continuous-time, stochastic
+compartmental model is as follows. Suppose a compartment has occupancy
+<span class="math inline">\(N_t\)</span> at time <span class="math inline">\(t\)</span> and that there are <span class="math inline">\(K\)</span> ways of exiting the compartment, with
+per capita rates (hazards) <span class="math inline">\(\mu_1,\dots,\mu_K\)</span>, respectively.</p>
 <hr />
 <div class="figure" style="text-align: center">
-<img src="data:image/png;base64,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" alt="**Diagram:** *A single compartment within a compartmental model.  Here, there are $K=2$ paths out of the compartment.*" width="200px" height="200px" />
+<img src="data:image/png;base64,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" alt="**Diagram:** *A single compartment within a compartmental model.  Here, there are $K=2$ paths out of the compartment.*" width="200px" height="200px" />
 <p class="caption">
-<strong>Diagram:</strong> <em>A single compartment within a compartmental model. Here, there are <span class="math inline">\(K=2\)</span> paths out of the compartment.</em>
+<strong>Diagram:</strong> <em>A single compartment within a
+compartmental model. Here, there are <span class="math inline">\(K=2\)</span> paths out of the compartment.</em>
 </p>
 </div>
 <hr />
-<p><a id="eulermultinomial-definition"></a> To make the Euler multinomial approximation, we approximate the total exit rate as constant over a small interval <span class="math inline">\([t,t+\Delta{t})\)</span>. Let the random variable <span class="math inline">\(\Delta{n_k}\)</span>, <span class="math inline">\(k=1,\dots,K\)</span>, be the number that exit by path <span class="math inline">\(k\)</span> in this time interval and <span class="math inline">\(\Delta{n_0}\)</span> be the number that remain. Under this assumption, the vector of numbers of exits, <span class="math inline">\((\Delta{n_{0}},\Delta{n_{1}},\dots,\Delta{n_{K}})\)</span> is multinomially distributed with size <span class="math inline">\(N_t\)</span> and probabilities <span class="math inline">\((p_k)_{k=0}^K\)</span>, where <span class="math display">\[p_0 = \exp\left(-\sum\!\mu_i\,\Delta{t}\right),\]</span> and <span class="math display">\[p_k = \frac{\mu_k}{\sum\!\mu_i}\,\left(1-p_0\right),\qquad k=1,\dots,K.\]</span> By way of shorthand, we say that <span class="math inline">\(\Delta{n}=(\Delta{n_k})_{k=1}^K\)</span> is <em>Euler-multinomially distributed</em> with size <span class="math inline">\(N_t\)</span>, rates <span class="math inline">\(\mu=(\mu_k)_{k=1}^K\)</span>, and time-step <span class="math inline">\(\Delta{t}\)</span> and we write <span class="math display">\[\Delta{n} \sim \mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right).\]</span></p>
-<p>The <strong>pomp</strong> C API provides three functions that relate to the Euler-multinomial distribution. Their descriptions follow.</p>
+<p><a id="eulermultinomial-definition"></a> To make the Euler
+multinomial approximation, we approximate the total exit rate as
+constant over a small interval <span class="math inline">\([t,t+\Delta{t})\)</span>. Let the random variable
+<span class="math inline">\(\Delta{n_k}\)</span>, <span class="math inline">\(k=1,\dots,K\)</span>, be the number that exit by
+path <span class="math inline">\(k\)</span> in this time interval and
+<span class="math inline">\(\Delta{n_0}\)</span> be the number that
+remain. Under this assumption, the vector of numbers of exits, <span class="math inline">\((\Delta{n_{0}},\Delta{n_{1}},\dots,\Delta{n_{K}})\)</span>
+is multinomially distributed with size <span class="math inline">\(N_t\)</span> and probabilities <span class="math inline">\((p_k)_{k=0}^K\)</span>, where <span class="math display">\[p_0 =
+\exp\left(-\sum\!\mu_i\,\Delta{t}\right),\]</span> and <span class="math display">\[p_k =
+\frac{\mu_k}{\sum\!\mu_i}\,\left(1-p_0\right),\qquad
+k=1,\dots,K.\]</span> By way of shorthand, we say that <span class="math inline">\(\Delta{n}=(\Delta{n_k})_{k=1}^K\)</span> is
+<em>Euler-multinomially distributed</em> with size <span class="math inline">\(N_t\)</span>, rates <span class="math inline">\(\mu=(\mu_k)_{k=1}^K\)</span>, and time-step <span class="math inline">\(\Delta{t}\)</span> and we write <span class="math display">\[\Delta{n} \sim
+\mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right).\]</span></p>
+<p>The <strong>pomp</strong> C API provides three functions that relate
+to the Euler-multinomial distribution. Their descriptions follow.</p>
 <div id="simulate-an-euler-multinomial-random-variable" class="section level4">
 <h4>Simulate an Euler-multinomial random variable</h4>
-<p>The <code>reulermultinom</code> function draws a random sample from this distribution. Using the notation above, one has to pack the <span class="math inline">\(K\)</span> rates <span class="math inline">\(\mu_1,\dots,\mu_K\)</span> into contiguous memory locations and retrieve the results in (a different set of) contiguous memory locations. For example, if <code>rate</code> is a <a href="https://www.tutorialspoint.com/cprogramming/c_pointers">pointer</a> to <span class="math inline">\(K\)</span> contiguous memory locations holding the rates and <code>dn</code> is a pointer to <span class="math inline">\(K\)</span> contiguous memory locations ready to hold the results, then</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>reulermultinom(K,N,rate,dt,dn);</span></code></pre></div>
-<p>will result in a random sample from the Euler multinomial distribution (with timestep dt) being stored in <code>dn[0]</code>, …, <code>dn[K-1]</code>. In the foregoing, we’ve assumed that the quantities <span class="math inline">\(N_t\)</span> and <span class="math inline">\(K\)</span> are stored in the integer variables <code>N</code> and <code>K</code>, respectively, and that the double precision variable <code>dt</code> holds the timestep.</p>
+<p>The <code>reulermultinom</code> function draws a random sample from
+this distribution. Using the notation above, one has to pack the <span class="math inline">\(K\)</span> rates <span class="math inline">\(\mu_1,\dots,\mu_K\)</span> into contiguous memory
+locations and retrieve the results in (a different set of) contiguous
+memory locations. For example, if <code>rate</code> is a <a href="https://www.tutorialspoint.com/cprogramming/c_pointers">pointer</a>
+to <span class="math inline">\(K\)</span> contiguous memory locations
+holding the rates and <code>dn</code> is a pointer to <span class="math inline">\(K\)</span> contiguous memory locations ready to
+hold the results, then</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>reulermultinom<span class="op">(</span>K<span class="op">,</span>N<span class="op">,</span>rate<span class="op">,</span>dt<span class="op">,</span>dn<span class="op">);</span></span></code></pre></div>
+<p>will result in a random sample from the Euler multinomial
+distribution (with timestep dt) being stored in <code>dn[0]</code>, …,
+<code>dn[K-1]</code>. In the foregoing, we’ve assumed that the
+quantities <span class="math inline">\(N_t\)</span> and <span class="math inline">\(K\)</span> are stored in the integer variables
+<code>N</code> and <code>K</code>, respectively, and that the double
+precision variable <code>dt</code> holds the timestep.</p>
 <p><a id="reulermultinom-prototype"></a> The prototype is:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">void</span> reulermultinom(<span class="dt">int</span> m, <span class="dt">double</span> size, <span class="dt">const</span> <span class="dt">double</span> *rate,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="dt">double</span> dt, <span class="dt">double</span> *trans);</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="dt">void</span> reulermultinom<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> <span class="dt">double</span> size<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>rate<span class="op">,</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="dt">double</span> dt<span class="op">,</span> <span class="dt">double</span> <span class="op">*</span>trans<span class="op">);</span></span></code></pre></div>
 <p>Input:</p>
 <ul>
-<li><code>m</code>, a positive integer, is number of potential transitions (“deaths”).</li>
-<li><code>size</code>, a positive integer, is the number of individuals at risk.</li>
-<li><code>rate</code> is a pointer to the vector of transition (“death”) rates.</li>
-<li><code>dt</code>, a positive real number, is the duration of time interval.</li>
-<li><code>trans</code> is a pointer to the vector that will hold the random deviate.</li>
+<li><code>m</code>, a positive integer, is number of potential
+transitions (“deaths”).</li>
+<li><code>size</code>, a positive integer, is the number of individuals
+at risk.</li>
+<li><code>rate</code> is a pointer to the vector of transition (“death”)
+rates.</li>
+<li><code>dt</code>, a positive real number, is the duration of time
+interval.</li>
+<li><code>trans</code> is a pointer to the vector that will hold the
+random deviate.</li>
 </ul>
 <p>Output:</p>
-<p>On return, <code>trans[0]</code>, …, <code>trans[m-1]</code> will be the numbers of individuals making each of the respective transitions.</p>
-<p>See <a href="https://kingaa.github.io/manuals/pomp/html/eulermultinom.html"><code>?reulermultinom</code></a> for more on the Euler-multinomial distributions.</p>
-<p><strong>NB:</strong> <code>reulermultinom</code> does not call <code>GetRNGstate()</code> or <code>PutRNGstate()</code> internally. This must be done by the calling program. But note that when <code>reulermultinom</code> is called inside a <strong>pomp</strong> rprocess, there is no need to call either <code>GetRNGState()</code> or <code>PutRNGState()</code>; this is handled by <strong>pomp</strong>.</p>
+<p>On return, <code>trans[0]</code>, …, <code>trans[m-1]</code> will be
+the numbers of individuals making each of the respective
+transitions.</p>
+<p>See <a href="https://kingaa.github.io/manuals/pomp/html/eulermultinom.html"><code>?reulermultinom</code></a>
+for more on the Euler-multinomial distributions.</p>
+<p><strong>NB:</strong> <code>reulermultinom</code> does not call
+<code>GetRNGstate()</code> or <code>PutRNGstate()</code> internally.
+This must be done by the calling program. But note that when
+<code>reulermultinom</code> is called inside a <strong>pomp</strong>
+rprocess, there is no need to call either <code>GetRNGState()</code> or
+<code>PutRNGState()</code>; this is handled by
+<strong>pomp</strong>.</p>
 </div>
 <div id="probability-distribution-of-an-euler-multinomial-random-variable" class="section level4">
-<h4>Probability distribution of an Euler-multinomial random variable</h4>
-<p>If <span class="math inline">\(\Delta{n} \sim \mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right)\)</span>, then the probability it takes a specific value can be computed using the C function <code>deulermultinom</code>. Its prototype is:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">double</span> deulermultinom(<span class="dt">int</span> m, <span class="dt">double</span> size, <span class="dt">const</span> <span class="dt">double</span> *rate,</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>  <span class="dt">double</span> dt, <span class="dt">double</span> *trans, <span class="dt">int</span> give_log);</span></code></pre></div>
+<h4>Probability distribution of an Euler-multinomial random
+variable</h4>
+<p>If <span class="math inline">\(\Delta{n} \sim
+\mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right)\)</span>, then the
+probability it takes a specific value can be computed using the C
+function <code>deulermultinom</code>. Its prototype is:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="dt">double</span> deulermultinom<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> <span class="dt">double</span> size<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>rate<span class="op">,</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="dt">double</span> dt<span class="op">,</span> <span class="dt">double</span> <span class="op">*</span>trans<span class="op">,</span> <span class="dt">int</span> give_log<span class="op">);</span></span></code></pre></div>
 <p>Input:</p>
 <ul>
-<li><code>m</code>, a positive integer, is the number of potential transitions (“deaths”).</li>
-<li><code>size</code>, a positive integer, is the number of individuals at risk.</li>
-<li><code>rate</code> is a pointer to vector of transition (“death”) rates.</li>
-<li><code>dt</code>, a positive real number, is the duration of time interval.</li>
-<li><code>trans</code> is pointer to vector containing the data, which are numbers of individuals making the respective transitions.</li>
+<li><code>m</code>, a positive integer, is the number of potential
+transitions (“deaths”).</li>
+<li><code>size</code>, a positive integer, is the number of individuals
+at risk.</li>
+<li><code>rate</code> is a pointer to vector of transition (“death”)
+rates.</li>
+<li><code>dt</code>, a positive real number, is the duration of time
+interval.</li>
+<li><code>trans</code> is pointer to vector containing the data, which
+are numbers of individuals making the respective transitions.</li>
 <li><code>give_log</code> is an integer:
 <ul>
-<li><code>give_log=0</code> requests that the probability be returned.</li>
-<li><code>give_log=1</code> requests that the log probability to be returned.</li>
+<li><code>give_log=0</code> requests that the probability be
+returned.</li>
+<li><code>give_log=1</code> requests that the log probability to be
+returned.</li>
 </ul></li>
 </ul>
 <p>Output:</p>
-<p>The value returned is the probability or log probability (as requested).</p>
+<p>The value returned is the probability or log probability (as
+requested).</p>
 <p>See also <a href="https://kingaa.github.io/manuals/pomp/html/eulermultinom.html"><code>?deulermultinom</code></a>.</p>
 </div>
 <div id="expectation-of-an-euler-multinomial-random-variable" class="section level4">
 <h4>Expectation of an Euler-multinomial random variable</h4>
-<p>If <span class="math inline">\(\Delta{n} \sim \mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right)\)</span>, then the expectation of its <span class="math inline">\(i\)</span>-th component is <span class="math display">\[\mathbb{E}\left[\Delta{n}_i\right]=p_k N_t,\]</span> where <span class="math inline">\(p_k\)</span> is as <a href="#eulermultinomial-definition">defined above</a>. The C function <code>eeulermultinom</code> computes this. Its prototype is:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">void</span> eeulermultinom(<span class="dt">int</span> m, <span class="dt">double</span> size, <span class="dt">const</span> <span class="dt">double</span> *rate,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  <span class="dt">double</span> dt, <span class="dt">double</span> *trans);</span></code></pre></div>
+<p>If <span class="math inline">\(\Delta{n} \sim
+\mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right)\)</span>, then the
+expectation of its <span class="math inline">\(i\)</span>-th component
+is <span class="math display">\[\mathbb{E}\left[\Delta{n}_i\right]=p_k
+N_t,\]</span> where <span class="math inline">\(p_k\)</span> is as <a href="#eulermultinomial-definition">defined above</a>. The C function
+<code>eeulermultinom</code> computes this. Its prototype is:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="dt">void</span> eeulermultinom<span class="op">(</span><span class="dt">int</span> m<span class="op">,</span> <span class="dt">double</span> size<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>rate<span class="op">,</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="dt">double</span> dt<span class="op">,</span> <span class="dt">double</span> <span class="op">*</span>trans<span class="op">);</span></span></code></pre></div>
 <p>Input:</p>
-<p>The parameters <code>m</code>, <code>size</code>, <code>rate</code>, and <code>dt</code> have the same meaning <a href="#reulermultinom-prototype">as above</a>.</p>
+<p>The parameters <code>m</code>, <code>size</code>, <code>rate</code>,
+and <code>dt</code> have the same meaning <a href="#reulermultinom-prototype">as above</a>.</p>
 <p>Output:</p>
-<p>After a call to <code>eeulermultinom</code>, <code>trans</code> points to an array of <code>double</code>s holding the <em>expected values</em> of the Euler-multinomial random variables.</p>
+<p>After a call to <code>eeulermultinom</code>, <code>trans</code>
+points to an array of <code>double</code>s holding the <em>expected
+values</em> of the Euler-multinomial random variables.</p>
 </div>
 </div>
 <div id="gamma-white-noise" class="section level3">
 <h3>Gamma white noise</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="dt">double</span> rgammawn(<span class="dt">double</span> sigma, <span class="dt">double</span> dt);</span></code></pre></div>
-<p>Corresponding to the <strong>R</strong> function <code>rgammawn</code>, this C function draws a single random increment of a gamma white-noise process. This will have expectation equal to <code>dt</code> and variance <code>sigma^2*dt</code>.</p>
-<p>In particular, when <code>dW = rgammawn(sigma,dt);</code> is executed, <code>mu*dW/dt</code> is a candidate for a random rate process within an Euler-multinomial context, i.e., <code>mu*dW</code> will have expectation <code>mu*dt</code> and variance <code>mu*sigma^2*dt</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="dt">double</span> rgammawn<span class="op">(</span><span class="dt">double</span> sigma<span class="op">,</span> <span class="dt">double</span> dt<span class="op">);</span></span></code></pre></div>
+<p>Corresponding to the <strong>R</strong> function
+<code>rgammawn</code>, this C function draws a single random increment
+of a gamma white-noise process. This will have expectation equal to
+<code>dt</code> and variance <code>sigma^2*dt</code>.</p>
+<p>In particular, when <code>dW = rgammawn(sigma,dt);</code> is
+executed, <code>mu*dW/dt</code> is a candidate for a random rate process
+within an Euler-multinomial context, i.e., <code>mu*dW</code> will have
+expectation <code>mu*dt</code> and variance
+<code>mu*sigma^2*dt</code>.</p>
 </div>
 </div>
 <div id="splines" class="section level2">
 <h2>Splines</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="dt">void</span> bspline_basis_eval(<span class="dt">double</span> x, <span class="dt">double</span> *knots, <span class="dt">int</span> degree,</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>  <span class="dt">int</span> nbasis, <span class="dt">double</span> *y);</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="dt">void</span> bspline_basis_eval_deriv(<span class="dt">double</span> x, <span class="dt">double</span> *knots, <span class="dt">int</span> degree,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>  <span class="dt">int</span> nbasis, <span class="dt">int</span> deriv, <span class="dt">double</span> *y);</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="dt">void</span> periodic_bspline_basis_eval(<span class="dt">double</span> x, <span class="dt">double</span> period, <span class="dt">int</span> degree,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>  <span class="dt">int</span> nbasis, <span class="dt">double</span> *y);</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="dt">void</span> periodic_bspline_basis_eval_deriv(<span class="dt">double</span> x, <span class="dt">double</span> period,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>  <span class="dt">int</span> degree, <span class="dt">int</span> nbasis, <span class="dt">int</span> deriv, <span class="dt">double</span> *y);</span></code></pre></div>
-<p>These functions work with ordinary and periodic B-spline basis functions. For ordinary splines, one passes the spline knots in <code>knots</code>, together with the degree (<code>degree</code>) desired. Note that <code>knots</code> must point to an array of length at least <code>nbasis + degree + 1</code>. The first form evaluates the <code>nbasis</code> B-spline basis functions at <code>x</code>, the values being returned in the array pointed to by <code>y</code>. The second evaluates the order-<code>deriv</code> derivative of each basis function.</p>
-<p>For periodic splines, the period and smoothness of the functions are given by <code>period</code> and <code>degree</code>, respectively. The fundamental domain is always assumed to be <span class="math inline">\([0,T]\)</span>, where <span class="math inline">\(T=\)</span><code>period</code>. The first form evaluates <code>nbasis</code> periodic B-spline basis functions at <code>x</code>, the values being returned in the array pointed to by <code>y</code>. The second evaluates the order-<code>deriv</code> derivative of each basis function.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="dt">void</span> bspline_basis_eval<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> <span class="op">*</span>knots<span class="op">,</span> <span class="dt">int</span> degree<span class="op">,</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="dt">int</span> nbasis<span class="op">,</span> <span class="dt">double</span> <span class="op">*</span>y<span class="op">);</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="dt">void</span> bspline_basis_eval_deriv<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> <span class="op">*</span>knots<span class="op">,</span> <span class="dt">int</span> degree<span class="op">,</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="dt">int</span> nbasis<span class="op">,</span> <span class="dt">int</span> deriv<span class="op">,</span> <span class="dt">double</span> <span class="op">*</span>y<span class="op">);</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="dt">void</span> periodic_bspline_basis_eval<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> period<span class="op">,</span> <span class="dt">int</span> degree<span class="op">,</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="dt">int</span> nbasis<span class="op">,</span> <span class="dt">double</span> <span class="op">*</span>y<span class="op">);</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="dt">void</span> periodic_bspline_basis_eval_deriv<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">double</span> period<span class="op">,</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  <span class="dt">int</span> degree<span class="op">,</span> <span class="dt">int</span> nbasis<span class="op">,</span> <span class="dt">int</span> deriv<span class="op">,</span> <span class="dt">double</span> <span class="op">*</span>y<span class="op">);</span></span></code></pre></div>
+<p>These functions work with ordinary and periodic B-spline basis
+functions. For ordinary splines, one passes the spline knots in
+<code>knots</code>, together with the degree (<code>degree</code>)
+desired. Note that <code>knots</code> must point to an array of length
+at least <code>nbasis + degree + 1</code>. The first form evaluates the
+<code>nbasis</code> B-spline basis functions at <code>x</code>, the
+values being returned in the array pointed to by <code>y</code>. The
+second evaluates the order-<code>deriv</code> derivative of each basis
+function.</p>
+<p>For periodic splines, the period and smoothness of the functions are
+given by <code>period</code> and <code>degree</code>, respectively. The
+fundamental domain is always assumed to be <span class="math inline">\([0,T]\)</span>, where <span class="math inline">\(T=\)</span><code>period</code>. The first form
+evaluates <code>nbasis</code> periodic B-spline basis functions at
+<code>x</code>, the values being returned in the array pointed to by
+<code>y</code>. The second evaluates the order-<code>deriv</code>
+derivative of each basis function.</p>
 </div>
 <div id="transformations" class="section level2">
 <h2>Transformations</h2>
 <div id="logit-transformation" class="section level3">
 <h3>Logit transformation</h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="dt">double</span> logit(<span class="dt">double</span> p);</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="dt">double</span> expit(<span class="dt">double</span> x);</span></code></pre></div>
-<p>The logit transformation is defined by <span class="math display">\[x = \log\frac{p}{1-p}.\]</span> Its inverse is therefore <span class="math display">\[p = \frac{1}{1+e^{-x}}.\]</span></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="dt">double</span> logit<span class="op">(</span><span class="dt">double</span> p<span class="op">);</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="dt">double</span> expit<span class="op">(</span><span class="dt">double</span> x<span class="op">);</span></span></code></pre></div>
+<p>The logit transformation is defined by <span class="math display">\[x
+= \log\frac{p}{1-p}.\]</span> Its inverse is therefore <span class="math display">\[p = \frac{1}{1+e^{-x}}.\]</span></p>
 </div>
 <div id="log-barycentric-transformation" class="section level3">
 <h3>Log-barycentric transformation</h3>
-<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="dt">void</span> to_log_barycentric(<span class="dt">double</span> *xt, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">int</span> n);</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="dt">void</span> from_log_barycentric(<span class="dt">double</span> *xt, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">int</span> n);</span></code></pre></div>
-<p>The log-barycentric transformation takes a vector <span class="math inline">\(X\in\mathbb{R}^n_+\)</span> to a vector <span class="math inline">\(Y\in\mathbb{R}^n\)</span>, where <span class="math display">\[Y_i = \log\frac{X_i}{\sum_j\!X_j}.\]</span> For every <span class="math inline">\(c&gt;0\)</span>, this transformation maps the simplex <span class="math inline">\(\{X\in\mathbb{R}^n_+\;\vert\;\sum_i\!X_i = c\}\)</span> bijectively onto <span class="math inline">\(\mathbb{R}^n\)</span>.</p>
-<p>The pseudo-inverse transformation takes <span class="math inline">\(\mathbb{R}^n\)</span> to the unit simplex <span class="math inline">\(S=\{X\in\mathbb{R}^n_+\;\vert\;\sum_i\!X_i=1\}\)</span>. Specifically, <span class="math display">\[X_i = \frac{e^{Y_i}}{\sum_j\!e^{Y_j}}.\]</span></p>
-<p>Note that if <span class="math inline">\(T:\mathbb{R}^n_+\to\mathbb{R}^n\)</span> is the log-barycentric transformation so defined, <span class="math inline">\(U\)</span> is the pseudo-inverse, and <span class="math inline">\(Id\)</span> denotes the identity map, then <span class="math inline">\(T\circ U=Id:\mathbb{R}^n\to\mathbb{R}^n\)</span> but <span class="math inline">\(U\circ T\ne Id\)</span>. However, if <span class="math inline">\(T\)</span> is restricted to the unit simplex S, then <span class="math inline">\(U\circ{T\vert_{S}}=Id:S\to S\)</span>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="dt">void</span> to_log_barycentric<span class="op">(</span><span class="dt">double</span> <span class="op">*</span>xt<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">int</span> n<span class="op">);</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="dt">void</span> from_log_barycentric<span class="op">(</span><span class="dt">double</span> <span class="op">*</span>xt<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">int</span> n<span class="op">);</span></span></code></pre></div>
+<p>The log-barycentric transformation takes a vector <span class="math inline">\(X\in\mathbb{R}^n_+\)</span> to a vector <span class="math inline">\(Y\in\mathbb{R}^n\)</span>, where <span class="math display">\[Y_i = \log\frac{X_i}{\sum_j\!X_j}.\]</span> For
+every <span class="math inline">\(c&gt;0\)</span>, this transformation
+maps the simplex <span class="math inline">\(\{X\in\mathbb{R}^n_+\;\vert\;\sum_i\!X_i =
+c\}\)</span> bijectively onto <span class="math inline">\(\mathbb{R}^n\)</span>.</p>
+<p>The pseudo-inverse transformation takes <span class="math inline">\(\mathbb{R}^n\)</span> to the unit simplex <span class="math inline">\(S=\{X\in\mathbb{R}^n_+\;\vert\;\sum_i\!X_i=1\}\)</span>.
+Specifically, <span class="math display">\[X_i =
+\frac{e^{Y_i}}{\sum_j\!e^{Y_j}}.\]</span></p>
+<p>Note that if <span class="math inline">\(T:\mathbb{R}^n_+\to\mathbb{R}^n\)</span> is the
+log-barycentric transformation so defined, <span class="math inline">\(U\)</span> is the pseudo-inverse, and <span class="math inline">\(Id\)</span> denotes the identity map, then <span class="math inline">\(T\circ U=Id:\mathbb{R}^n\to\mathbb{R}^n\)</span>
+but <span class="math inline">\(U\circ T\ne Id\)</span>. However, if
+<span class="math inline">\(T\)</span> is restricted to the unit simplex
+S, then <span class="math inline">\(U\circ{T\vert_{S}}=Id:S\to
+S\)</span>.</p>
 <p>Input:</p>
 <ul>
-<li><code>x</code> is a pointer to vector of parameters to be tranformed either to or from log barycentric coordinates.</li>
+<li><code>x</code> is a pointer to vector of parameters to be tranformed
+either to or from log barycentric coordinates.</li>
 <li><code>n</code> is the length of this vector.</li>
-<li><code>xt</code> is a pointer to the vector that will hold the results.</li>
+<li><code>xt</code> is a pointer to the vector that will hold the
+results.</li>
 </ul>
-<p>On return, <code>xt[0]</code>, …, <code>xt[n-1]</code> will contain the transformed coordinates.</p>
+<p>On return, <code>xt[0]</code>, …, <code>xt[n-1]</code> will contain
+the transformed coordinates.</p>
 </div>
 </div>
 <div id="convenience-functions" class="section level2">
 <h2>Convenience functions</h2>
 <div id="vector-dot-product" class="section level3">
 <h3>Vector dot product</h3>
-<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="dt">double</span> dot_product(<span class="dt">int</span> n, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *y);</span></code></pre></div>
-<p>The return value is the dot (inner) product of the <code>n</code>-vectors <code>x</code> and <code>y</code>. By definition, <span class="math display">\[x{\cdot}y = \sum_i\!x_i\,y_i.\]</span></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="dt">double</span> dot_product<span class="op">(</span><span class="dt">int</span> n<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>y<span class="op">);</span></span></code></pre></div>
+<p>The return value is the dot (inner) product of the
+<code>n</code>-vectors <code>x</code> and <code>y</code>. By definition,
+<span class="math display">\[x{\cdot}y = \sum_i\!x_i\,y_i.\]</span></p>
 </div>
 <div id="exponentialgeometric-rate-conversion" class="section level3">
 <h3>Exponential/geometric rate conversion</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="dt">double</span> exp2geom_rate_correction(<span class="dt">double</span> R, <span class="dt">double</span> dt);</span></code></pre></div>
-<p>This function computes <span class="math inline">\(r\)</span> such that if <span class="math display">\[N \sim \mathrm{Geometric}\left(p=1-e^{-r\,\Delta{t}}\right)\]</span> and <span class="math display">\[T \sim \mathrm{Exponential}\left(\mathrm{rate}=R\right),\]</span> then <span class="math inline">\(\mathbb{E}\left[N\,\Delta{t}\right] = \mathbb{E}\left[T\right]\)</span>. That is, <span class="math inline">\(r = \log{(1+R\,\Delta{t})}/{\Delta{t}}\)</span> is the rate for an Euler process that gives the same expected waiting time as the exponential process it approximates. In particular <span class="math inline">\(r \to R\)</span> as <span class="math inline">\(\Delta{t} \to 0\)</span>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="dt">double</span> exp2geom_rate_correction<span class="op">(</span><span class="dt">double</span> R<span class="op">,</span> <span class="dt">double</span> dt<span class="op">);</span></span></code></pre></div>
+<p>This function computes <span class="math inline">\(r\)</span> such
+that if <span class="math display">\[N \sim
+\mathrm{Geometric}\left(p=1-e^{-r\,\Delta{t}}\right)\]</span> and <span class="math display">\[T \sim
+\mathrm{Exponential}\left(\mathrm{rate}=R\right),\]</span> then <span class="math inline">\(\mathbb{E}\left[N\,\Delta{t}\right] =
+\mathbb{E}\left[T\right]\)</span>. That is, <span class="math inline">\(r = \log{(1+R\,\Delta{t})}/{\Delta{t}}\)</span> is
+the rate for an Euler process that gives the same expected waiting time
+as the exponential process it approximates. In particular <span class="math inline">\(r \to R\)</span> as <span class="math inline">\(\Delta{t} \to 0\)</span>.</p>
 </div>
 </div>
 <div id="access-to-the-userdata" class="section level2">
 <h2>Access to the userdata</h2>
-<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">int</span> *get_userdata_int(<span class="dt">const</span> <span class="dt">char</span> *name);</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="dt">const</span> <span class="dt">double</span> *get_userdata_double(<span class="dt">const</span> <span class="dt">char</span> *name);</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="dt">const</span> SEXP get_userdata(<span class="dt">const</span> <span class="dt">char</span> *name);</span></code></pre></div>
-<p>The first function returns a pointer to the integer element of the <code>userdata</code> with the given <code>name</code>. The second retrieves a pointer to a double-precision element of <code>userdata</code> by name. The third form returns a general S expression (<code>SEXP</code>). See <a href="https://kingaa.github.io/manuals/pomp/html/userdata.html"><code>?userdata</code></a> for more information.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>get_userdata_int<span class="op">(</span><span class="dt">const</span> <span class="dt">char</span> <span class="op">*</span>name<span class="op">);</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>get_userdata_double<span class="op">(</span><span class="dt">const</span> <span class="dt">char</span> <span class="op">*</span>name<span class="op">);</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="dt">const</span> SEXP get_userdata<span class="op">(</span><span class="dt">const</span> <span class="dt">char</span> <span class="op">*</span>name<span class="op">);</span></span></code></pre></div>
+<p>The first function returns a pointer to the integer element of the
+<code>userdata</code> with the given <code>name</code>. The second
+retrieves a pointer to a double-precision element of
+<code>userdata</code> by name. The third form returns a general S
+expression (<code>SEXP</code>). See <a href="https://kingaa.github.io/manuals/pomp/html/userdata.html"><code>?userdata</code></a>
+for more information.</p>
 </div>
 <div id="prototypes-for-basic-model-components" class="section level2">
 <h2>Prototypes for basic model components</h2>
-<p><strong>pomp</strong> provides a facility whereby model codes can be compiled into a dynamically linked library for use in pomp objects. Specifically, basic model components are coded as C functions with the following prototypes.</p>
-<p><strong>NB:</strong> These functions should not be used within C snippets!</p>
+<p><strong>pomp</strong> provides a facility whereby model codes can be
+compiled into a dynamically linked library for use in pomp objects.
+Specifically, basic model components are coded as C functions with the
+following prototypes.</p>
+<p><strong>NB:</strong> These functions should not be used within C
+snippets!</p>
 <div id="indices" class="section level3">
 <h3>Indices</h3>
-<p>Each of the following functions is supplied one or more of the <code>stateindex</code>, <code>parindex</code>, <code>covindex</code>, <code>obsindex</code>, <code>vmatindex</code> arguments. Each of these is an integer vector: the integers within are indices giving the positions of specific model variables, according to the user’s specification, the latter being given by means of the <code>statenames</code>, <code>paramnames</code>, <code>covarnames</code>, and <code>obsnames</code> arguments. See <a href="https://kingaa.github.io/manuals/pomp/html/pomp.html"><code>?pomp</code></a> for more explanation. Thus, for example, within the body of a function of prototype <code>pomp_rinit</code> (see below),</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a> x[stateindex[<span class="dv">0</span>]];</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a> x[stateindex[<span class="dv">3</span>]];</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a> p[parindex[<span class="dv">2</span>]];</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a> covars[covindex[<span class="dv">1</span>]];</span></code></pre></div>
-<p>refer to the first state variable, the fourth state variable, the third parameter, and the second covariate, respectively.</p>
+<p>Each of the following functions is supplied one or more of the
+<code>stateindex</code>, <code>parindex</code>, <code>covindex</code>,
+<code>obsindex</code>, <code>vmatindex</code> arguments. Each of these
+is an integer vector: the integers within are indices giving the
+positions of specific model variables, according to the user’s
+specification, the latter being given by means of the
+<code>statenames</code>, <code>paramnames</code>,
+<code>covarnames</code>, and <code>obsnames</code> arguments. See <a href="https://kingaa.github.io/manuals/pomp/html/pomp.html"><code>?pomp</code></a>
+for more explanation. Thus, for example, within the body of a function
+of prototype <code>pomp_rinit</code> (see below),</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a> x<span class="op">[</span>stateindex<span class="op">[</span><span class="dv">0</span><span class="op">]];</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a> x<span class="op">[</span>stateindex<span class="op">[</span><span class="dv">3</span><span class="op">]];</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a> p<span class="op">[</span>parindex<span class="op">[</span><span class="dv">2</span><span class="op">]];</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a> covars<span class="op">[</span>covindex<span class="op">[</span><span class="dv">1</span><span class="op">]];</span></span></code></pre></div>
+<p>refer to the first state variable, the fourth state variable, the
+third parameter, and the second covariate, respectively.</p>
 </div>
 <div id="rinit" class="section level3">
 <h3>rinit</h3>
-<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="dt">void</span> pomp_rinit (<span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p, <span class="dt">double</span> t0,</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">double</span> *covars);</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="dt">void</span> pomp_rinit <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span> <span class="dt">double</span> t0<span class="op">,</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>stateindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>covindex<span class="op">,</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>covars<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>p</code> is a pointer to parameter vector.</li>
 <li><code>t0</code> is the zero time.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>covars</code> is a pointer to a vector containing the (possibly interpolated) values of the covariates at the current time.</li>
-<li><code>x</code> is a vector that will, on return, contain a draw from the initial-state distribution.</li>
+<li><code>stateindex</code>, <code>parindex</code>,
+<code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
+<li><code>covars</code> is a pointer to a vector containing the
+(possibly interpolated) values of the covariates at the current
+time.</li>
+<li><code>x</code> is a vector that will, on return, contain a draw from
+the initial-state distribution.</li>
 </ul>
-<p><strong>NB:</strong> There is no need to call <code>GetRNGstate()</code> or <code>PutRNGstate()</code> in the body of the user-defined function. The RNG is initialized before any call to this function, and the RNG state is written afterward. Inclusion of these calls in the user-defined function may result in significant slowdown.</p>
+<p><strong>NB:</strong> There is no need to call
+<code>GetRNGstate()</code> or <code>PutRNGstate()</code> in the body of
+the user-defined function. The RNG is initialized before any call to
+this function, and the RNG state is written afterward. Inclusion of
+these calls in the user-defined function may result in significant
+slowdown.</p>
 </div>
 <div id="dinit" class="section level3">
 <h3>dinit</h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="dt">void</span> pomp_dinit (<span class="dt">double</span> *loglik, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p, <span class="dt">double</span> t0,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">double</span> *covars);</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="dt">void</span> pomp_dinit <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>loglik<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span> <span class="dt">double</span> t0<span class="op">,</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>stateindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>covindex<span class="op">,</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>covars<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
-<li><code>loglik</code> is a pointer to the scalar that will, on return, contain the log probability density.</li>
+<li><code>loglik</code> is a pointer to the scalar that will, on return,
+contain the log probability density.</li>
 <li><code>x</code> is the state vector at time <code>t</code>.</li>
 <li><code>p</code> is a pointer to parameter vector.</li>
 <li><code>t0</code> is the zero time.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>covars</code> is a pointer to a vector containing the (possibly interpolated) values of the covariates at the current time.</li>
+<li><code>stateindex</code>, <code>parindex</code>,
+<code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
+<li><code>covars</code> is a pointer to a vector containing the
+(possibly interpolated) values of the covariates at the current
+time.</li>
 </ul>
 </div>
 <div id="rprocess" class="section level3">
 <h3>rprocess</h3>
 <div id="step.fun-as-used-by-euler-and-onestep" class="section level4">
-<h4><code>step.fun</code> as used by <code>euler</code> and <code>onestep</code></h4>
-<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="dt">void</span> pomp_onestep_sim (<span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t, <span class="dt">double</span> dt);</span></code></pre></div>
+<h4><code>step.fun</code> as used by <code>euler</code> and
+<code>onestep</code></h4>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="dt">void</span> pomp_onestep_sim <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>stateindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>covindex<span class="op">,</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>covars<span class="op">,</span> <span class="dt">double</span> t<span class="op">,</span> <span class="dt">double</span> dt<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>p</code> is the parameter vector.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
+<li><code>stateindex</code>, <code>parindex</code>,
+<code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 <li><code>covars</code> is the vector of covariates.</li>
 <li><code>t</code> is the time at the beginning of the step.</li>
 <li><code>dt</code> is the step size (duration of the interval).</li>
-<li><code>x</code> is the vector, that will, on return, contain a draw from the state process at time <code>t</code>+<code>dt</code>.</li>
+<li><code>x</code> is the vector, that will, on return, contain a draw
+from the state process at time <code>t</code>+<code>dt</code>.</li>
 </ul>
-<p><strong>NB:</strong> There is no need to call <code>GetRNGstate()</code> or <code>PutRNGstate()</code> in the body of the user-defined function. The RNG is initialized before any call to this function, and the RNG state is written afterward. Inclusion of these calls in the user-defined function may result in significant slowdown.</p>
+<p><strong>NB:</strong> There is no need to call
+<code>GetRNGstate()</code> or <code>PutRNGstate()</code> in the body of
+the user-defined function. The RNG is initialized before any call to
+this function, and the RNG state is written afterward. Inclusion of
+these calls in the user-defined function may result in significant
+slowdown.</p>
 </div>
 <div id="rate.fun-as-used-by-gillespie" class="section level4">
 <h4><code>rate.fun</code> as used by <code>gillespie</code></h4>
-<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="dt">double</span> pomp_ssa_rate_fn (<span class="dt">int</span> event, <span class="dt">double</span> t, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex, </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">double</span> *covars);</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="dt">double</span> pomp_ssa_rate_fn <span class="op">(</span><span class="dt">int</span> event<span class="op">,</span> <span class="dt">double</span> t<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>stateindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>covindex<span class="op">,</span> </span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>covars<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
-<li><code>event</code> is an integer specifying the number of the reaction whose rate is desired (the first is event is 1, not 0).</li>
+<li><code>event</code> is an integer specifying the number of the
+reaction whose rate is desired (the first is event is 1, not 0).</li>
 <li><code>t</code> is the current time.</li>
 <li><code>x</code> is the vector of state variables.</li>
 <li><code>p</code> is the vector of parameters.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
+<li><code>stateindex</code>, <code>parindex</code>,
+<code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
+<li><code>covars</code> is the vector of (possibly interpolated)
+covariates at time <code>t</code>.</li>
 </ul>
 <p>The function returns the rate of the requested reaction.</p>
 </div>
 </div>
 <div id="dprocess" class="section level3">
 <h3>dprocess</h3>
-<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="dt">void</span> pomp_dprocess (<span class="dt">double</span> *loglik,</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">double</span> *x1, <span class="dt">const</span> <span class="dt">double</span> *x2, <span class="dt">double</span> t1, <span class="dt">double</span> t2, <span class="dt">const</span> <span class="dt">double</span> *p,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">double</span> *covars);</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="dt">void</span> pomp_dprocess <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>loglik<span class="op">,</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x1<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x2<span class="op">,</span> <span class="dt">double</span> t1<span class="op">,</span> <span class="dt">double</span> t2<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>stateindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>covindex<span class="op">,</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>covars<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
-<li><code>t1</code>, <code>t2</code> are the times at the beginning and end of the interval, respectively.</li>
-<li><code>x1</code>, <code>x2</code> are the state vectors at time <code>t1</code> and <code>t2</code>, respectively.</li>
+<li><code>t1</code>, <code>t2</code> are the times at the beginning and
+end of the interval, respectively.</li>
+<li><code>x1</code>, <code>x2</code> are the state vectors at time
+<code>t1</code> and <code>t2</code>, respectively.</li>
 <li><code>p</code> is the parameter vector.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
-<li><code>loglik</code> is a pointer to the scalar that will, on return, contain the log probability density.</li>
+<li><code>stateindex</code>, <code>parindex</code>,
+<code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
+<li><code>covars</code> is the vector of (possibly interpolated)
+covariates at time <code>t</code>.</li>
+<li><code>loglik</code> is a pointer to the scalar that will, on return,
+contain the log probability density.</li>
 </ul>
 </div>
 <div id="skeleton" class="section level3">
 <h3>skeleton</h3>
-<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="dt">void</span> pomp_skeleton (<span class="dt">double</span> *f, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="dt">void</span> pomp_skeleton <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>f<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>stateindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>covindex<span class="op">,</span></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>covars<span class="op">,</span> <span class="dt">double</span> t<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>t</code> is the time.</li>
 <li><code>x</code> is the state vector at time <code>t</code>.</li>
 <li><code>p</code> is the parameter parameter vector.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
-<li><code>f</code> is a vector, of the same length as <code>x</code>, that will, on return, contain the value of the map or vectorfield.</li>
+<li><code>stateindex</code>, <code>parindex</code>,
+<code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
+<li><code>covars</code> is the vector of (possibly interpolated)
+covariates at time <code>t</code>.</li>
+<li><code>f</code> is a vector, of the same length as <code>x</code>,
+that will, on return, contain the value of the map or vectorfield.</li>
 </ul>
 </div>
 <div id="rmeasure" class="section level3">
 <h3>rmeasure</h3>
-<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="dt">void</span> pomp_rmeasure (<span class="dt">double</span> *y, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *obsindex, <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex,</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *covindex, <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="dt">void</span> pomp_rmeasure <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>y<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>obsindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>stateindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">,</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>covindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>covars<span class="op">,</span> <span class="dt">double</span> t<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>t</code> is the time at the beginning of the Euler step.</li>
 <li><code>x</code> is the state vector at time <code>t</code>.</li>
 <li><code>p</code> is the parameter vector.</li>
-<li><code>obsindex</code>, <code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
-<li><code>y</code> is a vector that will, on return, contain the simulated observations.</li>
+<li><code>obsindex</code>, <code>stateindex</code>,
+<code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
+<li><code>covars</code> is the vector of (possibly interpolated)
+covariates at time <code>t</code>.</li>
+<li><code>y</code> is a vector that will, on return, contain the
+simulated observations.</li>
 </ul>
-<p><strong>NB:</strong> There is no need to call <code>GetRNGstate()</code> or <code>PutRNGstate()</code> in the body of the user-defined function. The RNG is initialized before any call to this function, and the RNG state is written afterward. Inclusion of these calls in the user-defined function may result in significant slowdown.</p>
+<p><strong>NB:</strong> There is no need to call
+<code>GetRNGstate()</code> or <code>PutRNGstate()</code> in the body of
+the user-defined function. The RNG is initialized before any call to
+this function, and the RNG state is written afterward. Inclusion of
+these calls in the user-defined function may result in significant
+slowdown.</p>
 </div>
 <div id="dmeasure" class="section level3">
 <h3>dmeasure</h3>
-<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="dt">void</span> pomp_dmeasure (<span class="dt">double</span> *lik, <span class="dt">const</span> <span class="dt">double</span> *y, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>  <span class="dt">int</span> give_log, <span class="dt">const</span> <span class="dt">int</span> *obsindex, <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *covindex, <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="dt">void</span> pomp_dmeasure <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>lik<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>y<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="dt">int</span> give_log<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>obsindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>stateindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">,</span></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>covindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>covars<span class="op">,</span> <span class="dt">double</span> t<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
-<li><code>y</code> is the vector of observables at time <code>t</code>.</li>
+<li><code>y</code> is the vector of observables at time
+<code>t</code>.</li>
 <li><code>x</code> is the state vector at time <code>t</code>.</li>
 <li><code>p</code> is the parameter vector.</li>
 <li><code>give_log</code> is an integer:
@@ -520,56 +698,75 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li><code>give_log=1</code> if log probability is desired;</li>
 <li><code>give_log=0</code> if probability is desired.</li>
 </ul></li>
-<li><code>obsindex</code>, <code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
-<li><code>lik</code> is a pointer to a scalar that will, on return, contain the requested likelihood or log likelihood.</li>
+<li><code>obsindex</code>, <code>stateindex</code>,
+<code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
+<li><code>covars</code> is the vector of (possibly interpolated)
+covariates at time <code>t</code>.</li>
+<li><code>lik</code> is a pointer to a scalar that will, on return,
+contain the requested likelihood or log likelihood.</li>
 </ul>
 </div>
 <div id="emeasure" class="section level3">
 <h3>emeasure</h3>
-<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="dt">void</span> pomp_emeasure (<span class="dt">double</span> *e, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *obsindex, <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="dt">void</span> pomp_emeasure <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>e<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>obsindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>stateindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>covindex<span class="op">,</span></span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>covars<span class="op">,</span> <span class="dt">double</span> t<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>t</code> is the time.</li>
 <li><code>x</code> is the state vector at time <code>t</code>.</li>
 <li><code>p</code> is the parameter parameter vector.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
-<li><code>e</code> is a vector, of the same length as <code>x</code>, that will, on return, contain the expected value of the observed variables.</li>
+<li><code>stateindex</code>, <code>parindex</code>,
+<code>covindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
+<li><code>covars</code> is the vector of (possibly interpolated)
+covariates at time <code>t</code>.</li>
+<li><code>e</code> is a vector, of the same length as <code>x</code>,
+that will, on return, contain the expected value of the observed
+variables.</li>
 </ul>
 </div>
 <div id="vmeasure" class="section level3">
 <h3>vmeasure</h3>
-<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="dt">void</span> pomp_vmeasure (<span class="dt">double</span> *v, <span class="dt">const</span> <span class="dt">double</span> *x, <span class="dt">const</span> <span class="dt">double</span> *p,</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">int</span> *vmatindex, <span class="dt">const</span> <span class="dt">int</span> *stateindex, <span class="dt">const</span> <span class="dt">int</span> *parindex, <span class="dt">const</span> <span class="dt">int</span> *covindex,</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a>  <span class="dt">const</span> <span class="dt">double</span> *covars, <span class="dt">double</span> t);</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="dt">void</span> pomp_vmeasure <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>v<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>vmatindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>stateindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>covindex<span class="op">,</span></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>  <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>covars<span class="op">,</span> <span class="dt">double</span> t<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>t</code> is the time.</li>
 <li><code>x</code> is the state vector at time <code>t</code>.</li>
 <li><code>p</code> is the parameter parameter vector.</li>
-<li><code>stateindex</code>, <code>parindex</code>, <code>covindex</code>, <code>vmatindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>covars</code> is the vector of (possibly interpolated) covariates at time <code>t</code>.</li>
-<li><code>v</code> points to a square matrix that will, on return, contain the covariance matrix of the observed variables. In particular, if <span class="math inline">\(X\)</span> is the latent state and the <code>nobs</code> observables are <span class="math inline">\(Y_i\)</span>, then <code>v[vmatindex[i+nobs*j]]</code> contains <span class="math inline">\(\mathrm{Cov}[Y_i,Y_j\;\vert\;X]\)</span>.</li>
-<li>It is the user’s responsibility to ensure that the returned covariance matrix is symmetric: this is not checked.</li>
+<li><code>stateindex</code>, <code>parindex</code>,
+<code>covindex</code>, <code>vmatindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
+<li><code>covars</code> is the vector of (possibly interpolated)
+covariates at time <code>t</code>.</li>
+<li><code>v</code> points to a square matrix that will, on return,
+contain the covariance matrix of the observed variables. In particular,
+if <span class="math inline">\(X\)</span> is the latent state and the
+<code>nobs</code> observables are <span class="math inline">\(Y_i\)</span>, then
+<code>v[vmatindex[i+nobs*j]]</code> contains <span class="math inline">\(\mathrm{Cov}[Y_i,Y_j\;\vert\;X]\)</span>.</li>
+<li>It is the user’s responsibility to ensure that the returned
+covariance matrix is symmetric: this is not checked.</li>
 </ul>
 </div>
 <div id="rprior" class="section level3">
 <h3>rprior</h3>
-<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a><span class="dt">void</span> pomp_rprior (<span class="dt">double</span> *p, <span class="dt">const</span> <span class="dt">int</span> *parindex);</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="dt">void</span> pomp_rprior <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>p</code> is the parameter vector.</li>
 <li><code>parindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
 </ul>
-<p>On return, <code>p</code> will contain a new random draw from the prior distribution.</p>
-<p><strong>NB:</strong> There is no need to call GetRNGstate() or PutRNGstate() in the body of the user-defined function. The RNG is initialized before any call to this function, and the RNG state is written afterward. Inclusion of these calls in the user-defined function may result in significant slowdown.</p>
+<p>On return, <code>p</code> will contain a new random draw from the
+prior distribution.</p>
+<p><strong>NB:</strong> There is no need to call GetRNGstate() or
+PutRNGstate() in the body of the user-defined function. The RNG is
+initialized before any call to this function, and the RNG state is
+written afterward. Inclusion of these calls in the user-defined function
+may result in significant slowdown.</p>
 </div>
 <div id="dprior" class="section level3">
 <h3>dprior</h3>
-<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="dt">void</span> pomp_dprior (<span class="dt">double</span> *lik, <span class="dt">const</span> <span class="dt">double</span> *p, <span class="dt">int</span> give_log, <span class="dt">const</span> <span class="dt">int</span> *parindex);</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="dt">void</span> pomp_dprior <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>lik<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span> <span class="dt">int</span> give_log<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>p</code> is the parameter vector.</li>
@@ -579,17 +776,20 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li><code>give_log=0</code> if probability is desired.</li>
 </ul></li>
 <li><code>parindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>lik</code> is a pointer to a scalar that will, on return, contain the requested probability density or log probability density.</li>
+<li><code>lik</code> is a pointer to a scalar that will, on return,
+contain the requested probability density or log probability
+density.</li>
 </ul>
 </div>
 <div id="partrans" class="section level3">
 <h3>partrans</h3>
-<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a><span class="dt">void</span> pomp_transform (<span class="dt">double</span> *pt, <span class="dt">const</span> <span class="dt">double</span> *p, <span class="dt">const</span> <span class="dt">int</span> *parindex);</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="dt">void</span> pomp_transform <span class="op">(</span><span class="dt">double</span> <span class="op">*</span>pt<span class="op">,</span> <span class="dt">const</span> <span class="dt">double</span> <span class="op">*</span>p<span class="op">,</span> <span class="dt">const</span> <span class="dt">int</span> <span class="op">*</span>parindex<span class="op">);</span></span></code></pre></div>
 <p>Description:</p>
 <ul>
 <li><code>p</code> is the parameter vector.</li>
 <li><code>parindex</code>: see <a href="#indices"><strong>Indices</strong></a>, above.</li>
-<li><code>pt</code> is the vector wherein the results will be returned.</li>
+<li><code>pt</code> is the vector wherein the results will be
+returned.</li>
 </ul>
 </div>
 </div>

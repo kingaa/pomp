@@ -109,7 +109,7 @@ See the [installation instructions](./install.html).
 ## Why do I get an error message about `gfortran` when I try to install **pomp** from source on my Mac? {#mac-gfortran}
 
 Compilation of **pomp** requires a FORTRAN compiler, which has not been installed (or not installed properly) on your system.
-See the [installation instructions](./install.html#important-note-for-mac-os-x-users).
+See the [installation instructions](./install.html#important-note-for-mac-os-users).
 
 ## I am using **R** version X. When I try to install the package, I get the error that "package **pomp** is not available (for R version X)". Yet it is stated that **pomp** is compatible with R(&ge;Y), where X > Y. What is going wrong? {#old-R}
 
