@@ -152,15 +152,14 @@ To use the lower-level \code{gillespie} interface, furnish
     rprocess = gillespie(rate.fun = f, v, hmax = Inf)
 }
 to \code{pomp}, where \code{f} gives the rates of the elementary events.
-Here, \code{f} may be an \R function of the form
-\preformatted{
-    f(j, x, t, params, ...)
-}
+Here, \code{f} may be furnished as an \R function or as a C snippet.
+If \code{f} is an \R function, its arguments should come from the state variables, parameters, covariates, and time.
+It must also have the arguments \sQuote{\code{j}} and \sQuote{\code{...}}.
 When \code{f} is called,
-the integer \code{j} will be the number of the elementary event (corresponding to the column the matrix \code{v}, see below),
-\code{x} will be a named numeric vector containing the value of the state process at time \code{t} and
-\code{params} is a named numeric vector containing parameters.
+the integer \code{j} will indicate the elementary event (corresponding to the column the matrix \code{v}, see below).
 \code{f} should return a single numerical value, representing the rate of that elementary event at that point in state space and time.
+If \code{f} is supplied as a C snippet, the parameters, latent state variables, covariates, and time will be visible in the context wherein the snippet is executed, as will the integer \sQuote{\code{j}}.
+The purpose of the C snippet is to fill the double-precision variable \sQuote{\code{rate}} with the corresponding event rate.
 
 Here, the stoichiometric matrix \code{v} specifies the continuous-time Markov process in terms of its elementary events.
 It should have dimensions \code{nvar} x \code{nevent}, where \code{nvar} is the number of state variables and \code{nevent} is the number of elementary events.
@@ -169,9 +168,6 @@ it will usually comprise the values 1, -1, and 0 according to whether a state va
 The rows of \code{v} should have names corresponding to the state variables.
 If any of the row names of \code{v} cannot be found among the state variables or if any row names of \code{v} are duplicated, an error will occur.
 
-It is also possible to provide a C snippet via the \code{rate.fun} argument to \code{gillespie}.
-Such a snippet should assign the correct value to a \code{rate} variable depending on the value of \code{j}.
-The same variables will be available as for the C code provided to \code{gillespie_hl}.
 This lower-level interface may be preferable if it is easier to write code that calculates the correct rate based on \code{j} rather than to write a snippet for each possible value of \code{j}.
 For example, if the number of possible values of \code{j} is large and the rates vary according to a few simple rules, the lower-level interface may provide the easier way of specifying the model.
 
