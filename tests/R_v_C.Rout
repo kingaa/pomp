@@ -1,6 +1,6 @@
 
-R version 4.4.2 (2024-10-31) -- "Pile of Leaves"
-Copyright (C) 2024 The R Foundation for Statistical Computing
+R version 4.4.3 (2025-02-28) -- "Trophy Case"
+Copyright (C) 2025 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -109,16 +109,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  5.480   0.064   5.544 
+  5.391   0.109   5.501 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.156   0.005   0.161 
+  0.154   0.005   0.160 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.554   0.000   0.554 
+  0.550   0.001   0.551 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.027   0.001   0.028 
+  0.030   0.000   0.029 
 > 
 > dev.off()
 null device 

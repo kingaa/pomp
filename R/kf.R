@@ -58,7 +58,9 @@
 ## r(t) = y*(t) - YM(t)
 ## YV(t) = C PV(t) C^T + R
 ## FV(t)^(-1) = PV(t)^(-1) + C^T R^(-1) C
+##            = (I - K C) PV
 ## K(t) = FV(t) C^T R^(-1)
+##      = PV C^T YV^(-1)
 ## FM(t) = PM(t) + K(t) r(t)
 ##
 ##' @export
@@ -78,42 +80,38 @@ kalmanFilter <- function (
     dim=c(nvar,N),
     dimnames=list(name=names(X0),time=NULL)
   )
-  predMeans <- filterMeans
-  forecast <- array(dim=c(nobs,N),dimnames=dimnames(y))
+  predMeans <- array(
+    dim=c(nvar,N),
+    dimnames=list(name=names(X0),time=NULL)
+  )
+  forecast <- array(
+    dim=c(nobs,N),
+    dimnames=dimnames(y)
+  )
   condlogLik <- numeric(N)
 
-  ri <- solve(R)
-  cric <- crossprod(C,ri)%*%C
   fm <- X0
   fv <- matrix(0,nvar,nvar)
 
   for (k in seq_along(t)) {
 
-    predMeans[,k] <- pm <- A%*%fm      # prediction mean
-    pv <- A%*%tcrossprod(fv,A)+Q       # prediction variance
+    predMeans[,k] <- pm <- A%*%fm # prediction mean
+    pv <- A%*%tcrossprod(fv,A)+Q  # prediction variance
 
-    ## first SVD
-    s1 <- svd_pseudoinv(pv,tol=tol)
-    pvi <- s1$u%*%(t(s1$u)/s1$d)       # prediction precision
-    fvi <- pvi+cric                    # filter precision
+    forecast[,k] <- ym <- C%*%pm # forecast mean
+    resid <- y[,k]-ym            # forecast error
+    yv <- tcrossprod(C%*%pv,C)+R # forecast variance
 
-    forecast[,k] <- ym <- C%*%pm
-    resid <- y[,k]-ym                  # forecast error
-    yv <- tcrossprod(C%*%pv,C)+R       # forecast variance
-
-    ## second SVD
-    s2 <- svd_pseudoinv(yv,tol=tol)
+    ## SVD to invert yv
+    s <- svd_pseudoinv(yv,tol=tol)
 
     condlogLik[k] <- sum(
-      dnorm(x=crossprod(s2$u,resid),mean=0,sd=sqrt(s2$d),log=TRUE)
+      dnorm(x=crossprod(s$u,resid),mean=0,sd=sqrt(s$d),log=TRUE)
     )
 
-    ## third SVD
-    s3 <- svd_pseudoinv(fvi,tol=tol)
-    fv <- s3$u%*%(t(s3$u)/s3$d)        # filter variance
-    K <- fv%*%crossprod(C,ri)          # Kalman gain
-
-    filterMeans[,k] <- fm <- pm+K%*%resid  # filter mean
+    K <- pv%*%crossprod(C,s$inv)          # Kalman gain
+    filterMeans[,k] <- fm <- pm+K%*%resid # filter mean
+    fv <- pv - K%*%C%*%pv                 # filter variance
   }
 
   list(
@@ -136,5 +134,6 @@ svd_pseudoinv <- function (A, tol) {
   v <- s$d/max(s$d) > tol
   s <- svd(A,nv=0,nu=sum(v))
   s$d <- s$d[v]
+  s$inv <- s$u%*%tcrossprod(diag(1/s$d,nrow=length(s$d)),s$u)
   s
 }
