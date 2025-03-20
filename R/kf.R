@@ -106,7 +106,7 @@ kalmanFilter <- function (
     s <- svd_pseudoinv(yv,tol=tol)
 
     condlogLik[k] <- sum(
-      dnorm(x=crossprod(s$u,resid),mean=0,sd=sqrt(s$d),log=TRUE)
+      dnorm(x=s$vt%*%resid,mean=0,sd=sqrt(s$d),log=TRUE)
     )
 
     K <- pv%*%crossprod(C,s$inv)          # Kalman gain
@@ -130,10 +130,10 @@ kalmanFilter <- function (
 }
 
 svd_pseudoinv <- function (A, tol) {
-  s <- svd(A,nv=0,nu=0)
-  v <- s$d/max(s$d) > tol
-  s <- svd(A,nv=0,nu=sum(v))
-  s$d <- s$d[v]
-  s$inv <- s$u%*%tcrossprod(diag(1/s$d,nrow=length(s$d)),s$u)
+  s <- La.svd(A,nu=0,nv=0)
+  n <- sum(s$d > tol*max(s$d))
+  s <- La.svd(A,nu=0,nv=n)
+  s$d <- s$d[seq_len(n)]
+  s$inv <- crossprod(s$vt,s$vt/s$d)
   s
 }

@@ -15,7 +15,6 @@
 ##' @family particle filter methods
 ##' @family estimation methods
 ##' @family methods based on maximization
-##' @importFrom utils head
 ##' @inheritParams pfilter
 ##' @inheritParams pomp
 ##' @param Nmif The number of filtering iterations to perform.
