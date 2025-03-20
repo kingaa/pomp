@@ -39,7 +39,7 @@ static R_INLINE SEXP eval_call (SEXP fn, SEXP args, double *p, int n)
   for (v = 0; v < n; v++, p++, var=CDR(var)) *(REAL(CAR(var))) = *p;
 
   PROTECT(ob = LCONS(fn,args));
-  PROTECT(ans = eval(ob,CLOENV(fn)));
+  PROTECT(ans = eval(ob,R_ClosureEnv(fn)));
 
   UNPROTECT(2);
   return ans;

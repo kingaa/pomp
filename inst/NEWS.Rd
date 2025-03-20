@@ -3,6 +3,7 @@
 \section{Changes in \pkg{pomp} version 6.1.1}{
   \itemize{
     \item The basic Kalman filter (\code{kalmanFilter}) has been refactored, with a roughly 3-fold speed up.
+    \item Some internal changes have been made in anticipation of changes to the C API for R.
   }
 }
 \section{Changes in \pkg{pomp} version 6.0.5}{

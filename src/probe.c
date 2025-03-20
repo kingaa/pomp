@@ -13,7 +13,7 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
 
   for (i = 0; i < nprobe; i++) {
     SET_ELEMENT(vals,i,eval(PROTECT(lang2(VECTOR_ELT(probes,i),data)),
-                            CLOENV(VECTOR_ELT(probes,i))));
+                            R_ClosureEnv(VECTOR_ELT(probes,i))));
     if (!IS_NUMERIC(VECTOR_ELT(vals,i))) {
       err("probe %d returns a non-numeric result",i+1);
     }
@@ -82,7 +82,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params,
 
       // evaluate the probe on the simulated data
       PROTECT(val = eval(PROTECT(lang2(VECTOR_ELT(probes,p),x)),
-                         CLOENV(VECTOR_ELT(probes,p))));
+                         R_ClosureEnv(VECTOR_ELT(probes,p))));
       if (!IS_NUMERIC(val)) {
         err("probe %d returns a non-numeric result.",p+1);
       }

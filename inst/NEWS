@@ -5,6 +5,9 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _6._1._1:
         • The basic Kalman filter (‘kalmanFilter’) has been refactored,
           with a roughly 3-fold speed up.
 
+        • Some internal changes have been made in anticipation of
+          changes to the C API for R.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _6._0._5:
 
         • It is now possible to specify more than one lag in the ‘ivp’

@@ -210,7 +210,7 @@ static double __pomp_Rfun_ssa_ratefn (int j, double t, const double *x, const do
   for (v = 0; v < NCOV; v++, c++, var=CDR(var)) *(REAL(CAR(var))) = *c;
 
   PROTECT(ob = LCONS(RATEFN,ARGS));
-  PROTECT(ans = eval(ob,CLOENV(RATEFN)));
+  PROTECT(ans = eval(ob,R_ClosureEnv(RATEFN)));
 
   if (FIRST) {
     if (LENGTH(ans) != 1)
