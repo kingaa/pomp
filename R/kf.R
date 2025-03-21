@@ -58,7 +58,7 @@
 ## r(t) = y*(t) - YM(t)
 ## YV(t) = C PV(t) C^T + R
 ## FV(t)^(-1) = PV(t)^(-1) + C^T R^(-1) C
-##            = (I - K C) PV
+## FV(t) = (I - K C) PV
 ## K(t) = FV(t) C^T R^(-1)
 ##      = PV C^T YV^(-1)
 ## FM(t) = PM(t) + K(t) r(t)
