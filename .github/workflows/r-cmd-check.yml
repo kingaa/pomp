@@ -39,7 +39,7 @@ jobs:
         config:
           - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,  r: 'release'}
-          - {os: ubuntu-20.04,   r: '4.1.0'}
+          - {os: ubuntu-22.04,   r: '4.1.0'}
           - {os: macOS-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
 
