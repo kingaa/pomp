@@ -12,7 +12,8 @@ gompertz(
   tau = 0.1,
   X_0 = 1,
   times = 1:100,
-  t0 = 0
+  t0 = 0,
+  seed = 299438676L
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ gompertz(
 \item{times}{observation times}
 
 \item{t0}{zero time}
+
+\item{seed}{seed of the random number generator}
 }
 \value{
 A \sQuote{pomp} object with simulated data.

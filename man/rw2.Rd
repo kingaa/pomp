@@ -5,7 +5,16 @@
 \alias{rw2}
 \title{Two-dimensional random-walk process}
 \usage{
-rw2(x1_0 = 0, x2_0 = 0, s1 = 1, s2 = 3, tau = 1, times = 1:100, t0 = 0)
+rw2(
+  x1_0 = 0,
+  x2_0 = 0,
+  s1 = 1,
+  s2 = 3,
+  tau = 1,
+  times = 1:100,
+  t0 = 0,
+  seed = 1376784970L
+)
 }
 \arguments{
 \item{x1_0, x2_0}{initial conditions (i.e., latent state variable values at the zero time \code{t0})}
@@ -17,6 +26,8 @@ rw2(x1_0 = 0, x2_0 = 0, s1 = 1, s2 = 3, tau = 1, times = 1:100, t0 = 0)
 \item{times}{observation times}
 
 \item{t0}{zero time}
+
+\item{seed}{seed of the random number generator}
 }
 \value{
 A \sQuote{pomp} object containing simulated data.

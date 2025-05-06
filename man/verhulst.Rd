@@ -5,7 +5,15 @@
 \alias{verhulst}
 \title{Verhulst-Pearl model}
 \usage{
-verhulst(n_0 = 10000, K = 10000, r = 0.9, sigma = 0.4, tau = 0.1, dt = 0.01)
+verhulst(
+  n_0 = 10000,
+  K = 10000,
+  r = 0.9,
+  sigma = 0.4,
+  tau = 0.1,
+  dt = 0.01,
+  seed = 73658676L
+)
 }
 \arguments{
 \item{n_0}{initial condition}
@@ -19,6 +27,8 @@ verhulst(n_0 = 10000, K = 10000, r = 0.9, sigma = 0.4, tau = 0.1, dt = 0.01)
 \item{tau}{measurement error s.d.}
 
 \item{dt}{Euler timestep}
+
+\item{seed}{seed of the random number generator}
 }
 \value{
 A \sQuote{pomp} object containing the model and simulated data.

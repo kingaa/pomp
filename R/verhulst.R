@@ -21,6 +21,7 @@
 ##' @param tau measurement error s.d.
 ##' @param n_0 initial condition
 ##' @param dt Euler timestep
+##' @param seed seed of the random number generator
 ##' @return
 ##' A \sQuote{pomp} object containing the model and simulated data.
 ##' The following basic components are included in the \sQuote{pomp} object:
@@ -34,9 +35,9 @@ NULL
 ##' @export
 verhulst <- function (
   n_0 = 10000, K = 10000, r = 0.9,
-  sigma = 0.4, tau = 0.1, dt = 0.01)
-{
-
+  sigma = 0.4, tau = 0.1, dt = 0.01,
+  seed=73658676L
+) {
   simulate(
     times=seq(0.1,by=0.1,length=1000),
     t0=0,
@@ -59,7 +60,6 @@ verhulst <- function (
     paramnames=c("r","K","tau","sigma","n_0"),
     statenames=c("n"),
     obsnames="N",
-    seed=73658676L
+    seed=seed
   )
-
 }

@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 6.2.1}{
+  \itemize{
+    \item The built-in examples that use simulated data add a \code{seed} argument to allow changing the simulated data.
+  }
+}
 \section{Changes in \pkg{pomp} version 6.1.1}{
   \itemize{
     \item The basic Kalman filter (\code{kalmanFilter}) has been refactored, with a roughly 3-fold speed up.

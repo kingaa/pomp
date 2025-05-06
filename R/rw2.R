@@ -23,14 +23,20 @@ NULL
 ##' @param tau observation error s.d.
 ##' @param t0 zero time
 ##' @param times observation times
+##' @param seed seed of the random number generator
 ##'
 ##' @export
-rw2 <- function (x1_0 = 0, x2_0 = 0, s1 = 1, s2 = 3, tau = 1,
-  times = 1:100, t0 = 0)
-{
-
+rw2 <- function (
+  x1_0 = 0, x2_0 = 0,
+  s1 = 1, s2 = 3,
+  tau = 1,
+  times = 1:100,
+  t0 = 0,
+  seed=1376784970L
+) {
   simulate(
-    times=times,t0=t0,
+    times=times,
+    t0=t0,
     params=c(x1_0=x1_0,x2_0=x2_0,s1=s1,s2=s2,tau=tau),
     cfile="rw2_source",
     rprocess = onestep(
@@ -63,6 +69,6 @@ rw2 <- function (x1_0 = 0, x2_0 = 0, s1 = 1, s2 = 3, tau = 1,
     statenames=c("x1","x2"),
     obsnames=c("y1","y2"),
     paramnames=c("s1","s2","tau"),
-    seed=1376784970L
+    seed=seed
   )
 }

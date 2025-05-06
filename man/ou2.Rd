@@ -17,7 +17,8 @@ ou2(
   x1_0 = -3,
   x2_0 = 4,
   times = 1:100,
-  t0 = 0
+  t0 = 0,
+  seed = 787832394L
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ That is, \code{alpha_2} is in the lower-left position.}
 \item{times}{vector of observation times}
 
 \item{t0}{the zero time}
+
+\item{seed}{seed of the random number generator}
 }
 \value{
 A \sQuote{pomp} object with simulated data.

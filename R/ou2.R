@@ -30,6 +30,7 @@ NULL
 ##' @param x1_0,x2_0 latent variable values at time \code{t0}
 ##' @param t0 the zero time
 ##' @param times vector of observation times
+##' @param seed seed of the random number generator
 ##'
 ##' @export
 ou2 <- function (
@@ -37,13 +38,14 @@ ou2 <- function (
   sigma_1 = 3, sigma_2 = -0.5, sigma_3 = 2,
   tau = 1,
   x1_0 = -3, x2_0 = 4,
-  times = 1:100, t0 = 0
+  times = 1:100, t0 = 0,
+  seed = 787832394L
 )
 {
-
   simulate(
-    times=times, t0=t0,
-    seed=787832394,
+    times=times,
+    t0=t0,
+    seed=seed,
     rprocess=discrete_time("_ou2_step"),
     dprocess="_ou2_pdf",
     emeasure = "_ou2_emeasure",
@@ -66,5 +68,4 @@ ou2 <- function (
       x1_0=x1_0, x2_0=x2_0
     )
   )
-
 }
