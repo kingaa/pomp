@@ -39,10 +39,11 @@ NULL
 ##' @param X_0 value of the latent state variable \code{X} at the zero time
 ##' @param t0 zero time
 ##' @param times observation times
+##' @param seed seed of the random number generator
 ##'
 ##' @export
 gompertz <- function (K = 1, r = 0.1, sigma = 0.1, tau = 0.1, X_0 = 1,
-  times = 1:100, t0 = 0)
+  times = 1:100, t0 = 0, seed = 299438676L)
 {
 
   simulate(
@@ -62,7 +63,7 @@ gompertz <- function (K = 1, r = 0.1, sigma = 0.1, tau = 0.1, X_0 = 1,
     paramnames=c("r","K","sigma","tau","X_0"),
     obsnames=c("Y"),
     statenames=c("X"),
-    seed=299438676L
+    seed=seed
   )
 
 }
