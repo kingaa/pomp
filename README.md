@@ -16,6 +16,8 @@
 [![manual](https://img.shields.io/badge/manual-HTML-brown)](https://kingaa.github.io/pomp/manual/)
 [![pdf-manual](https://img.shields.io/badge/manual-PDF-brown)](https://kingaa.github.io/pomp/manual/pdf/)
 [![doxygen](https://img.shields.io/badge/doxygen-HTML-brown)](https://kingaa.github.io/manuals/pomp/source/html/index.html)
+[![DOI](https://zenodo.org/badge/38616252.svg)](https://doi.org/10.5281/zenodo.15364461)
+
 
 For installation instructions and user guides, see [the package website](https://kingaa.github.io/pomp/).
 

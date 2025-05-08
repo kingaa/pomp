@@ -29,6 +29,7 @@ c(
     header="Additionally, consider citing the package itself:",
     bibtype="Manual",
     title="{pomp}: {Statistical} Inference for Partially Observed {Markov} Processes",
+    doi="10.5281/zenodo.15364462",
     author=c(
       as.person("Aaron A. King"),
       as.person("Edward L. Ionides"),
@@ -51,7 +52,7 @@ c(
     textVersion=paste0(
       "A. A. King, E. L. Ionides, C. M. Breto, S. P. Ellner, M. J. Ferrari, S. Funk, S. G. Johnson, B. E. Kendall, M. Lavine, D. Nguyen, E. B. O'Dea, D. C. Reuman, H. Wearing, and S. N. Wood"," (",year,"). ",
       "pomp: Statistical Inference for Partially Observed Markov Processes. ",
-      note2,". ",meta$URL
+      note2,". ",meta$URL,". DOI: 10.5281/zenodo.15364462"
     )      
   )
 )
