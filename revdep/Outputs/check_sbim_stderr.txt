@@ -1,0 +1,5 @@
+
+See
+  '/home/kingaa/projects/Rpkg/pomp/revdep/sbim.Rcheck/00check.log'
+for details.
+

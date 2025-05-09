@@ -1,0 +1,5 @@
+
+See
+  '/home/kingaa/projects/Rpkg/pomp/revdep/pomp.Rcheck/00check.log'
+for details.
+
