@@ -1620,6 +1620,13 @@
   number: "20"
   doi: "https://doi.org/10.1073/pnas.2219816120"
 
+- key: VanWyk2025
+  author: "H. Van Wyk, A. F. Brouwer, G. O. Lee, S. M&aacute;rquez, P. Andrade, E. L. Ionides, J. Coloma, and J. N. S. Eisenberg"
+  year: "2025"
+  title: "Early detection of dengue outbreaks: transmission model analysis of a dengue outbreak in a remote setting in Ecuador"
+  journal: "Epidemiology"
+  doi: "https://doi.org/10.1097/ede.0000000000001874"
+
 - key: Wale2019
   author: "N. Wale, M. J. Jones, D. G. Sim, A. F. Read, and A. A. King"
   year: "2019"
