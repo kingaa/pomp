@@ -194,7 +194,7 @@ In particular, when linear, Gaussian approximations are adequate for one's purpo
 It is the class of nonlinear, non-Gaussian POMP models with large state spaces upon which \pkg{pomp} is focused.
 
 A POMP model may be characterized by the transition density for the Markov process and the measurement density\footnote{We use the term ``density'' in this article to encompass both the continuous and discrete cases.
-  Thus, in the latter case, i.e., when state variables and/or measured quantities are discrete, one could replace ``probability density function'' with ``probability mass function''.}.
+Thus, in the latter case, i.e., when state variables and/or measured quantities are discrete, one could replace ``probability density function'' with ``probability mass function''.}.
 However, some methods require only simulation from the transition density whereas others require evaluation of this density.
 Still other methods may not work with the model itself but with an approximation, such as a linearization.
 Algorithms for which the dynamic model is specified only via a simulator are said to be {\it plug-and-play} \citep{Breto2009,He2010}.
@@ -721,7 +721,7 @@ Numerical optimization of the synthetic likelihood is achieved via the \code{pro
     simulator for $f_{X_0}(x_0\giventh\theta)$;
     simulator for $f_{X_n|X_{n-1}}(x_n\given x_{n-1}\giventh\theta)$;
     simulator for $f_{Y_n|X_n}(y_n\given x_{n}\giventh\theta)$;
-%    simulator for $q(\theta^P\given\theta)$;
+    %    simulator for $q(\theta^P\given\theta)$;
     data, $y^*_{1:N}$;
     number of proposals, $M$;
     vector of probes, $\featureFunc=(\featureFunc_1,\dots,\featureFunc_{\Nprobe})$;
@@ -1182,15 +1182,15 @@ stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
   mif1 <- foreach(i=1:10,
     .inorder=FALSE,.packages="pomp",.combine = c,
     .options.multicore=list(set.seed=TRUE)) %dopar% {
-    <<gompertz-mif-inner1>>
-    <<gompertz-mif-inner2>>
-  }
+      <<gompertz-mif-inner1>>
+      <<gompertz-mif-inner2>>
+    }
 
   pf1 <- foreach(mf=mif1,
-  .inorder=TRUE,.packages="pomp",.combine = c,
-  .options.multicore=list(set.seed=TRUE)) %dopar% {
-    <<gompertz-mif-inner3>>
-   }
+    .inorder=TRUE,.packages="pomp",.combine = c,
+    .options.multicore=list(set.seed=TRUE)) %dopar% {
+      <<gompertz-mif-inner3>>
+    }
   toc <- Sys.time()
   mifTime <- toc-tic
 
@@ -1217,10 +1217,10 @@ stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
 <<gompertz-mif-results,echo=FALSE,eval=TRUE,results="hide">>=
 ##' Print out the comparison table.
 rbind(
-      `Truth`=c(signif(theta.true[estpars],3),round(loglik.true,2),round(exact.loglik.truth,2)),
-      `\\code{mif} MLE`=c(signif(theta.mif[estpars],3),round(loglik.mif,2),round(exact.loglik.mif1,2)),
-      `Exact MLE`=c(signif(theta.mle[estpars],3),round(loglik.mle,2),round(exact.loglik.maximized,2))
-     ) -> results.table
+  `Truth`=c(signif(theta.true[estpars],3),round(loglik.true,2),round(exact.loglik.truth,2)),
+  `\\code{mif} MLE`=c(signif(theta.mif[estpars],3),round(loglik.mif,2),round(exact.loglik.mif1,2)),
+  `Exact MLE`=c(signif(theta.mle[estpars],3),round(loglik.mle,2),round(exact.loglik.maximized,2))
+) -> results.table
 pretty.pars <- c(r="$r$",sigma="$\\sigma$",tau="$\\tau$")
 colnames(results.table) <- c(pretty.pars[estpars],"$\\loglikMC$","s.e.","$\\loglik$")
 @
@@ -1234,25 +1234,25 @@ therefore, we will average the likelihoods, not the log likelihoods.
 @
 
 \begin{figure}[t!]
-<<mif-plot,echo=FALSE,cache=TRUE,fig.height=6>>=
-##' Plot the 'mif' diagnostics.
-op <- par(mfrow=c(4,1),mar=c(3,4,0.3,0),mgp=c(2,1,0),
-          bty="l",cex.axis=1.2,cex.lab=1.4)
-loglik <- do.call(cbind, traces(mif1, "loglik"))
-log.r <- do.call(cbind, traces(mif1, "r"))
-log.sigma <- do.call(cbind, traces(mif1, "sigma"))
-log.tau <- do.call(cbind, traces(mif1, "tau"))
-matplot(loglik,type="l",lty=1,xlab="",ylab=expression(log~L),xaxt="n",ylim=max(loglik,na.rm=T)+c(-30,3))
-matplot(log.r,type="l",lty=1,xlab="",ylab=expression(log~r),xaxt="n")
-matplot(log.sigma,type="l",lty=1,xlab="",ylab=expression(log~sigma),xaxt="n")
-matplot(log.tau,type="l",lty=1,xlab="mif iteration",ylab=expression(log~tau))
-par(op)
-@
-\caption{
-  Convergence plots can be used to help diagnose convergence of the iterated filtering (IF) algorithm.
-  These and additional diagnostic plots are produced when \code{plot} is applied to a \class{mif} or \class{mifList} object.
-  \label{fig:mif-plot}
-}
+  <<mif-plot,echo=FALSE,cache=TRUE,fig.height=6>>=
+  ##' Plot the 'mif' diagnostics.
+  op <- par(mfrow=c(4,1),mar=c(3,4,0.3,0),mgp=c(2,1,0),
+    bty="l",cex.axis=1.2,cex.lab=1.4)
+  loglik <- do.call(cbind, traces(mif1, "loglik"))
+  log.r <- do.call(cbind, traces(mif1, "r"))
+  log.sigma <- do.call(cbind, traces(mif1, "sigma"))
+  log.tau <- do.call(cbind, traces(mif1, "tau"))
+  matplot(loglik,type="l",lty=1,xlab="",ylab=expression(log~L),xaxt="n",ylim=max(loglik,na.rm=T)+c(-30,3))
+  matplot(log.r,type="l",lty=1,xlab="",ylab=expression(log~r),xaxt="n")
+  matplot(log.sigma,type="l",lty=1,xlab="",ylab=expression(log~sigma),xaxt="n")
+  matplot(log.tau,type="l",lty=1,xlab="mif iteration",ylab=expression(log~tau))
+  par(op)
+  @
+  \caption{
+    Convergence plots can be used to help diagnose convergence of the iterated filtering (IF) algorithm.
+    These and additional diagnostic plots are produced when \code{plot} is applied to a \class{mif} or \class{mifList} object.
+    \label{fig:mif-plot}
+  }
 \end{figure}
 
 For the calculation above, we have replicated the iterated filtering search, made a careful estimation of the log likelihood, $\loglikMC$, and its standard error using \code{pfilter} at each of the resulting point estimates, and then chosen the parameter corresponding to the highest likelihood as our numerical approximation to the maximum likelihood estimate (MLE).
@@ -1266,8 +1266,8 @@ In this case, we see that the \code{mif} procedure is successfully maximizing th
     <<gompertz-multi-mif-table,echo=FALSE,results="asis">>=
     library(xtable)
     options(
-    xtable.sanitize.text.function=function(x)x,
-    xtable.floating=FALSE
+      xtable.sanitize.text.function=function(x)x,
+      xtable.floating=FALSE
     )
     print(xtable(results.table,align="r|cccccc",digits=c(0,4,4,4,2,2,2)))
     @
@@ -1317,8 +1317,8 @@ PMCMC can then be initialized in this neighborhood to sample from the posterior 
 The following adopts this approach, running 5 independent PMCMC chains using a multivariate normal random walk proposal (with diagonal variance-covariance matrix, see \code{?mvn.diag.rw}).
 <<pmcmc-inner,eval=FALSE,purl=FALSE,echo=FALSE>>=
 pmcmc(gomp, dprior = gompertz.dprior, params = theta.mif,
-      Nmcmc = 40000, Np = 100,
-      proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
+  Nmcmc = 40000, Np = 100,
+  proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
 <<pmcmc-demo,eval=FALSE,purl=FALSE,echo=TRUE>>=
 pmcmc1 <- foreach(i = 1:5, .combine = c) %dopar% {
   <<pmcmc-inner>>
@@ -1345,17 +1345,17 @@ stew(file="pmcmc.rda",seed=334388458L,kind="L'Ecuyer",{
     .combine=c,
     .options.multicore=list(set.seed=TRUE)
   ) %dopar%
-  {
-    <<pmcmc-inner>>
-  }
+    {
+      <<pmcmc-inner>>
+    }
 
-toc <- Sys.time()
-pmcmcTime <- toc-tic
+  toc <- Sys.time()
+  pmcmcTime <- toc-tic
 
-pmcmc.traces <- traces(pmcmc1,  c("r", "sigma", "tau"))
-pmcmc.traces <- window(pmcmc.traces,start=20001,thin=40)
-ess.pmcmc <- effectiveSize(pmcmc.traces)
-rm(pmcmc1,tic,toc)
+  pmcmc.traces <- traces(pmcmc1,  c("r", "sigma", "tau"))
+  pmcmc.traces <- window(pmcmc.traces,start=20001,thin=40)
+  ess.pmcmc <- effectiveSize(pmcmc.traces)
+  rm(pmcmc1,tic,toc)
 })
 <<pmcmc-diagnostics,results="hide",fig.show="hide",echo=FALSE,eval=FALSE,purl=FALSE>>=
 gelman.diag(pmcmc.traces)
@@ -1365,32 +1365,32 @@ hist(rle(unlist(pmcmc.traces[,"r"]))$length)
 @
 
 \begin{figure}[t!]
-<<pmcmc-plot,echo=FALSE,eval=TRUE,results="hide",cache=TRUE>>=
-##' Plot the traces and densities.
-op <- par(mar=c(4,3.5,0,1),mfcol=c(3,2),mgp=c(2.5,1,0),cex.axis=1.5,cex.lab=2)
-traceplot(pmcmc.traces[,"r"],smooth=TRUE,xlab="",ylab=expression(r),lty=1)
-traceplot(pmcmc.traces[,"sigma"],smooth=TRUE,xlab="",ylab=expression(sigma),lty=1)
-traceplot(pmcmc.traces[,"tau"],smooth=TRUE,xlab="PMCMC iteration",ylab=expression(tau),lty=1)
-densplot(pmcmc.traces[,"r"],show.obs=FALSE,xlab="",main="")
-mtext(side=1,line=2,text=expression(r))
-abline(v=coef(gomp,"r"))
-densplot(pmcmc.traces[,"sigma"],show.obs=FALSE,xlab="",main="")
-mtext(side=1,line=2,text=expression(sigma))
-abline(v=coef(gomp,"sigma"))
-densplot(pmcmc.traces[,"tau"],show.obs=FALSE,xlab=expression(tau),main="")
-abline(v=coef(gomp,"tau"))
-par(op)
-@
-\caption{
-  Diagnostic plots for the PMCMC algorithm.
-  The trace plots in the left column show the evolution of $\Sexpr{length(pmcmc.traces)}$ independent MCMC chains after a burn-in period of length $\Sexpr{start(pmcmc.traces)-1}$.
-  Kernel density estimates of the marginal posterior distributions are shown in the right column.
-  The effective sample size of the $\Sexpr{length(pmcmc.traces)}$ MCMC chains combined is lowest for the $r$ variable, being equal to $\Sexpr{signif(min(ess.pmcmc),2)}$:
-  the use of $\Sexpr{end(pmcmc.traces)-1}$ proposal steps in this case is a modest number.
-  The density plots at right show the estimated marginal posterior distributions.
-  The vertical line corresponds to the true value of each parameter.
-  \label{fig:pmcmc-plot}
-}
+  <<pmcmc-plot,echo=FALSE,eval=TRUE,results="hide",cache=TRUE>>=
+  ##' Plot the traces and densities.
+  op <- par(mar=c(4,3.5,0,1),mfcol=c(3,2),mgp=c(2.5,1,0),cex.axis=1.5,cex.lab=2)
+  traceplot(pmcmc.traces[,"r"],smooth=TRUE,xlab="",ylab=expression(r),lty=1)
+  traceplot(pmcmc.traces[,"sigma"],smooth=TRUE,xlab="",ylab=expression(sigma),lty=1)
+  traceplot(pmcmc.traces[,"tau"],smooth=TRUE,xlab="PMCMC iteration",ylab=expression(tau),lty=1)
+  densplot(pmcmc.traces[,"r"],show.obs=FALSE,xlab="",main="")
+  mtext(side=1,line=2,text=expression(r))
+  abline(v=coef(gomp,"r"))
+  densplot(pmcmc.traces[,"sigma"],show.obs=FALSE,xlab="",main="")
+  mtext(side=1,line=2,text=expression(sigma))
+  abline(v=coef(gomp,"sigma"))
+  densplot(pmcmc.traces[,"tau"],show.obs=FALSE,xlab=expression(tau),main="")
+  abline(v=coef(gomp,"tau"))
+  par(op)
+  @
+  \caption{
+    Diagnostic plots for the PMCMC algorithm.
+    The trace plots in the left column show the evolution of $\Sexpr{length(pmcmc.traces)}$ independent MCMC chains after a burn-in period of length $\Sexpr{start(pmcmc.traces)-1}$.
+    Kernel density estimates of the marginal posterior distributions are shown in the right column.
+    The effective sample size of the $\Sexpr{length(pmcmc.traces)}$ MCMC chains combined is lowest for the $r$ variable, being equal to $\Sexpr{signif(min(ess.pmcmc),2)}$:
+    the use of $\Sexpr{end(pmcmc.traces)-1}$ proposal steps in this case is a modest number.
+    The density plots at right show the estimated marginal posterior distributions.
+    The vertical line corresponds to the true value of each parameter.
+    \label{fig:pmcmc-plot}
+  }
 \end{figure}
 
 Comparison with the analysis of \cref{sec:gompertz:mif} reinforces the observation of \citet{Bhadra2010} that PMCMC can require orders of magnitude more computation than iterated filtering.
@@ -1484,9 +1484,9 @@ We construct a list of probes:
 ##' The following are among those recommended by Wood (2010).
 <<probe-list>>=
 plist <- list(probe_marginal("y", ref = obs(rick), transform = sqrt),
-              probe_acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
-              probe_nlar("y", lags = c(1, 1, 1, 2), powers = c(1, 2, 3, 1),
-                         transform = sqrt))
+  probe_acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
+  probe_nlar("y", lags = c(1, 1, 1, 2), powers = c(1, 2, 3, 1),
+    transform = sqrt))
 @
 Each element of \code{plist} is a function of a single argument.
 Each of these functions can be applied to the data in \code{rick} and to simulated data sets.
@@ -1509,28 +1509,28 @@ plot(pb.guess)
 @
 
 \begin{figure}[t!]
-<<ricker-probe-plot,echo=FALSE,cache=TRUE,results="hide",dpi=600,dev.args=list(bg="transparent",pointsize=9),fig.height=4,fig.width=4>>=
-##' An example of 'plot' applied to a 'probed.pomp' object.
-pb <- probe(
-  rick,
-  probes=list(
-    probe_marginal("y",ref=obs(rick),transform=sqrt,order=2),
-    probe_acf("y",lags=c(0,3),transform=sqrt),
-    mean=probe_mean("y",transform=sqrt)
-  ),
-  nsim=1000,
-  seed=803306074L
-)
-plot(pb)
-@
-\caption{
-  Results of \code{plot} on a \class{probed.pomp} object.
-  Above the diagonal, the pairwise scatterplots show the values of the probes on each of the 1000 data sets.
-  The red lines show the values of each of the probes on the data.
-  The panels along the diagonal show the distributions of the probes on the simulated data, together with their values on the data and two-sided $p$~values.
-  The numbers below the diagonal are the Pearson correlations between the corresponding pairs of probes.
-}
-\label{fig:ricker-probe-plot}
+  <<ricker-probe-plot,echo=FALSE,cache=TRUE,results="hide",dpi=600,dev.args=list(bg="transparent",pointsize=9),fig.height=4,fig.width=4>>=
+  ##' An example of 'plot' applied to a 'probed.pomp' object.
+  pb <- probe(
+    rick,
+    probes=list(
+      probe_marginal("y",ref=obs(rick),transform=sqrt,order=2),
+      probe_acf("y",lags=c(0,3),transform=sqrt),
+      mean=probe_mean("y",transform=sqrt)
+    ),
+    nsim=1000,
+    seed=803306074L
+  )
+  plot(pb)
+  @
+  \caption{
+    Results of \code{plot} on a \class{probed.pomp} object.
+    Above the diagonal, the pairwise scatterplots show the values of the probes on each of the 1000 data sets.
+    The red lines show the values of each of the probes on the data.
+    The panels along the diagonal show the distributions of the probes on the simulated data, together with their values on the data and two-sided $p$~values.
+    The numbers below the diagonal are the Pearson correlations between the corresponding pairs of probes.
+  }
+  \label{fig:ricker-probe-plot}
 \end{figure}
 
 An example of a diagnostic plot (using a smaller set of probes) is shown in \cref{fig:ricker-probe-plot}.
@@ -1599,9 +1599,9 @@ stew(file="ricker-comparison.rda",{
 
   foreach (theta=iter(expand_grid(comp,rep=1:10),"row"),
     .combine=rbind) %dopar% {
-    logLik(pfilter(rick,params=theta[-1],Np=10000)) -> pf
-    logLik(probe(rick,params=theta[-1],nsim=10000,probes=plist)) -> pb
-    cbind(theta,pf=pf,pb=pb)
+      logLik(pfilter(rick,params=theta[-1],Np=10000)) -> pf
+      logLik(probe(rick,params=theta[-1],nsim=10000,probes=plist)) -> pb
+      cbind(theta,pf=pf,pb=pb)
     } |>
     group_by(pt,r,sigma,phi,c,N_0,e_0) |>
     summarize(
@@ -1618,13 +1618,13 @@ stew(file="ricker-comparison.rda",{
 @
 \begin{table}[t!]
   \begin{center}
-<<ricker-comparison-show,echo=FALSE,results="asis">>=
-library(xtable)
-colnames(comp) <- c("$r$","$\\sigma$","$\\phi$",
-                    "$\\loglikMC$","s.e.($\\loglikMC$)",
-                    "$\\synloglikMC$","s.e.($\\synloglikMC$)")
-print(xtable(comp[c("Guess","Truth","MLE","MSLE"),],
-  align="r|ccccccc",digits=c(0,1,3,1,1,2,1,2)))
+    <<ricker-comparison-show,echo=FALSE,results="asis">>=
+    library(xtable)
+    colnames(comp) <- c("$r$","$\\sigma$","$\\phi$",
+      "$\\loglikMC$","s.e.($\\loglikMC$)",
+      "$\\synloglikMC$","s.e.($\\synloglikMC$)")
+    print(xtable(comp[c("Guess","Truth","MLE","MSLE"),],
+      align="r|ccccccc",digits=c(0,1,3,1,1,2,1,2)))
 @
   \end{center}
   \caption{\label{tab:ricker-comparison}
@@ -1650,15 +1650,15 @@ One can imagine an adaptive version of ABC which modifies the scaling during the
 We return to the Gompertz model to faciliate comparison between ABC and PMCMC.
 <<abc-load,eval=FALSE,purl=FALSE,echo=FALSE>>=
 plist <- list(probe_mean(var = "Y", transform = sqrt),
-              probe_acf("Y", lags = c(0, 5, 10, 20)),
-              probe_marginal("Y", ref = obs(gomp)))
+  probe_acf("Y", lags = c(0, 5, 10, 20)),
+  probe_marginal("Y", ref = obs(gomp)))
 psim <- probe(gomp, probes = plist, nsim = 500)
 scale.dat <- apply(psim@simvals, 2, sd)
 @
 <<abc-inner,eval=FALSE,purl=FALSE,echo=FALSE>>=
 abc(pomp(gomp, dprior = gompertz.dprior), Nabc = 4e6,
-    probes = plist, epsilon = 2, scale = scale.dat,
-    proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
+  probes = plist, epsilon = 2, scale = scale.dat,
+  proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
 @
 <<abc-demo,eval=FALSE,purl=FALSE,tidy=FALSE>>=
 <<abc-load>>
@@ -1694,13 +1694,13 @@ stew(file="abc.rda",seed=334388458L,kind="L'Ecuyer",{
     <<abc-inner>>
   }
 
-toc <- Sys.time()
-abcTime <- toc-tic
+  toc <- Sys.time()
+  abcTime <- toc-tic
 
-abc.traces <- traces(abc1,c("r","sigma","tau"))
-abc.traces <- window(abc.traces,start=2000001,thin=400)
-ess.abc <- effectiveSize(abc.traces)
-rm(abc1,tic,toc)
+  abc.traces <- traces(abc1,c("r","sigma","tau"))
+  abc.traces <- window(abc.traces,start=2000001,thin=400)
+  ess.abc <- effectiveSize(abc.traces)
+  rm(abc1,tic,toc)
 })
 
 <<abc-diagnostics,results="hide",fig.show="hide",echo=FALSE,eval=FALSE,purl=FALSE>>=
@@ -1711,45 +1711,47 @@ hist(rle(unlist(abc.traces[,"r"]))$length)
 @
 
 \begin{figure}[t!]
-\begin{center}
-<<abc-pmmc-compare,echo=FALSE,fig.width=7,fig.height=3,cache=TRUE>>=
-library("tidyverse")
-library("grid")
-##' Make density plots comparing posteriors from 'abc' and 'pmcmc'.
-bind_rows(
-  pmcmc=pmcmc.traces |> lapply(as.data.frame) |>
-    lapply(rownames_to_column,"iteration") |> bind_rows(.id="chain"),
-  abc=abc.traces |> lapply(as.data.frame) |>
-    lapply(rownames_to_column,"iteration") |> bind_rows(.id="chain"),
-  .id="method"
-) |>
-  gather(variable,value,-method,-chain,-iteration) |>
-  mutate(
-    method=ordered(method,levels=c("pmcmc","abc")),
-    iteration=as.integer(iteration),
-    variable=c(r="log[10]~r",sigma="log[10]~sigma",tau="log[10]~tau")[variable],
-    log.value=log10(value)
-  ) -> traces
+  \begin{center}
+    <<abc-pmmc-compare,echo=FALSE,fig.width=7,fig.height=3,cache=TRUE>>=
+    library("tidyverse")
+    library("grid")
+    ##' Make density plots comparing posteriors from 'abc' and 'pmcmc'.
+    bind_rows(
+      pmcmc=pmcmc.traces |> lapply(as.data.frame) |>
+        lapply(rownames_to_column,"iteration") |> bind_rows(.id="chain"),
+      abc=abc.traces |> lapply(as.data.frame) |>
+        lapply(rownames_to_column,"iteration") |> bind_rows(.id="chain"),
+      .id="method"
+    ) |>
+      gather(variable,value,-method,-chain,-iteration) |>
+      mutate(
+        method=ordered(method,levels=c("pmcmc","abc")),
+        iteration=as.integer(iteration),
+        variable=c(r="log[10]~r",sigma="log[10]~sigma",tau="log[10]~tau")[variable],
+        log.value=log10(value)
+      ) -> traces
 
-coef(gomp,c("r","sigma","tau")) |> as.list() |> as.data.frame() |>
-  gather(variable,value) |>
-  mutate(
-    variable=c(r="log[10]~r",sigma="log[10]~sigma",tau="log[10]~tau")[variable],
-    log.value=log10(value)
-  ) -> truth
+    coef(gomp,c("r","sigma","tau")) |> as.list() |> as.data.frame() |>
+      gather(variable,value) |>
+      mutate(
+        variable=c(r="log[10]~r",sigma="log[10]~sigma",tau="log[10]~tau")[variable],
+        log.value=log10(value)
+      ) -> truth
 
-traces |>
-  ggplot(mapping=aes(x=log.value,linetype=method))+
-  geom_density(adjust=5)+
-  geom_vline(data=truth,mapping=aes(xintercept=log.value))+
-  scale_linetype_manual(values=c(abc=2,pmcmc=1))+
-  facet_grid(~variable,scales="free_x",labeller=label_parsed)+
-  labs(x="",y="",linetype="")+
-  theme_classic()+
-  theme(legend.position=c(0.35,0.7),
+    traces |>
+      ggplot(mapping=aes(x=log.value,linetype=method))+
+      geom_density(adjust=5)+
+      geom_vline(data=truth,mapping=aes(xintercept=log.value))+
+      scale_linetype_manual(values=c(abc=2,pmcmc=1))+
+      facet_grid(~variable,scales="free_x",labeller=label_parsed)+
+      labs(x="",y="",linetype="")+
+      theme_classic()+
+      theme(
+        legend.position.inside=c(0.35,0.7),
         strip.background=element_rect(fill=NA,color=NA),
         strip.text=element_text(size=12),
-        panel.spacing=unit(4,"mm"))
+        panel.spacing=unit(4,"mm")
+      )
 @
 \end{center}
 \caption{
@@ -2176,7 +2178,7 @@ We have assumed a host population size of 500,000 and 10\% reporting efficiency.
 
 \begin{figure}[t!]
 <<sir1-plot,echo=FALSE,fig.height=5>>=
-ops <- options(scipen=-10)
+ops <- options(scipen=-9)
 plot(sir1,mar=c(0,5,2,0))
 options(ops)
 @
@@ -2300,7 +2302,7 @@ The \code{sir2} object we have constructed here contains all the key elements of
 
 \begin{figure}[t!]
 <<sir2-plot,echo=FALSE,fig.height=6.5>>=
-ops <- options(scipen=-10)
+ops <- options(scipen=-9)
 plot(sir2,mar=c(0,5,2,0))
 options(ops)
 @

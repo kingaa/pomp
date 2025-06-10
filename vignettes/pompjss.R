@@ -220,20 +220,20 @@ stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
   mif1 <- foreach(i=1:10,
     .inorder=FALSE,.packages="pomp",.combine = c,
     .options.multicore=list(set.seed=TRUE)) %dopar% {
-    theta.guess <- theta.true
-    theta.guess[estpars] <- rlnorm(n = length(estpars),
-      meanlog = log(theta.guess[estpars]), sdlog = 1)
-    mif2(gomp, Nmif = 100, params = theta.guess, Np = 2000,
-      cooling.fraction.50 = 0.7,
-      rw.sd = rw_sd(r=0.02, sigma=0.02,tau=0.02))
-  }
+      theta.guess <- theta.true
+      theta.guess[estpars] <- rlnorm(n = length(estpars),
+        meanlog = log(theta.guess[estpars]), sdlog = 1)
+      mif2(gomp, Nmif = 100, params = theta.guess, Np = 2000,
+        cooling.fraction.50 = 0.7,
+        rw.sd = rw_sd(r=0.02, sigma=0.02,tau=0.02))
+    }
 
   pf1 <- foreach(mf=mif1,
-  .inorder=TRUE,.packages="pomp",.combine = c,
-  .options.multicore=list(set.seed=TRUE)) %dopar% {
-    pf <- replicate(n = 10, logLik(pfilter(mf, Np = 10000)))
-    logmeanexp(pf)
-   }
+    .inorder=TRUE,.packages="pomp",.combine = c,
+    .options.multicore=list(set.seed=TRUE)) %dopar% {
+      pf <- replicate(n = 10, logLik(pfilter(mf, Np = 10000)))
+      logmeanexp(pf)
+    }
   toc <- Sys.time()
   mifTime <- toc-tic
 
@@ -267,10 +267,10 @@ stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
 ## ----gompertz-mif-results,echo=FALSE,eval=TRUE,results="hide"-----------------
 ##' Print out the comparison table.
 rbind(
-      `Truth`=c(signif(theta.true[estpars],3),round(loglik.true,2),round(exact.loglik.truth,2)),
-      `\\code{mif} MLE`=c(signif(theta.mif[estpars],3),round(loglik.mif,2),round(exact.loglik.mif1,2)),
-      `Exact MLE`=c(signif(theta.mle[estpars],3),round(loglik.mle,2),round(exact.loglik.maximized,2))
-     ) -> results.table
+  `Truth`=c(signif(theta.true[estpars],3),round(loglik.true,2),round(exact.loglik.truth,2)),
+  `\\code{mif} MLE`=c(signif(theta.mif[estpars],3),round(loglik.mif,2),round(exact.loglik.mif1,2)),
+  `Exact MLE`=c(signif(theta.mle[estpars],3),round(loglik.mle,2),round(exact.loglik.maximized,2))
+) -> results.table
 pretty.pars <- c(r="$r$",sigma="$\\sigma$",tau="$\\tau$")
 colnames(results.table) <- c(pretty.pars[estpars],"$\\loglikMC$","s.e.","$\\loglik$")
 
@@ -280,7 +280,7 @@ colnames(results.table) <- c(pretty.pars[estpars],"$\\loglikMC$","s.e.","$\\logl
 ## ----mif-plot,echo=FALSE,cache=TRUE,fig.height=6------------------------------
 ##' Plot the 'mif' diagnostics.
 op <- par(mfrow=c(4,1),mar=c(3,4,0.3,0),mgp=c(2,1,0),
-          bty="l",cex.axis=1.2,cex.lab=1.4)
+  bty="l",cex.axis=1.2,cex.lab=1.4)
 loglik <- do.call(cbind, traces(mif1, "loglik"))
 log.r <- do.call(cbind, traces(mif1, "r"))
 log.sigma <- do.call(cbind, traces(mif1, "sigma"))
@@ -295,8 +295,8 @@ par(op)
 ## ----gompertz-multi-mif-table,echo=FALSE,results="asis"-----------------------
 library(xtable)
 options(
-xtable.sanitize.text.function=function(x)x,
-xtable.floating=FALSE
+  xtable.sanitize.text.function=function(x)x,
+  xtable.floating=FALSE
 )
 print(xtable(results.table,align="r|cccccc",digits=c(0,4,4,4,2,2,2)))
 
@@ -343,19 +343,19 @@ stew(file="pmcmc.rda",seed=334388458L,kind="L'Ecuyer",{
     .combine=c,
     .options.multicore=list(set.seed=TRUE)
   ) %dopar%
-  {
-    pmcmc(gomp, dprior = gompertz.dprior, params = theta.mif,
-          Nmcmc = 40000, Np = 100,
-          proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
-  }
+    {
+      pmcmc(gomp, dprior = gompertz.dprior, params = theta.mif,
+        Nmcmc = 40000, Np = 100,
+        proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
+    }
 
-toc <- Sys.time()
-pmcmcTime <- toc-tic
+  toc <- Sys.time()
+  pmcmcTime <- toc-tic
 
-pmcmc.traces <- traces(pmcmc1,  c("r", "sigma", "tau"))
-pmcmc.traces <- window(pmcmc.traces,start=20001,thin=40)
-ess.pmcmc <- effectiveSize(pmcmc.traces)
-rm(pmcmc1,tic,toc)
+  pmcmc.traces <- traces(pmcmc1,  c("r", "sigma", "tau"))
+  pmcmc.traces <- window(pmcmc.traces,start=20001,thin=40)
+  ess.pmcmc <- effectiveSize(pmcmc.traces)
+  rm(pmcmc1,tic,toc)
 })
 
 
@@ -420,9 +420,9 @@ rick <- simulate(times = seq(0,50,by=1), t0 = 0, seed=73691676L,
 
 ## ----probe-list---------------------------------------------------------------
 plist <- list(probe_marginal("y", ref = obs(rick), transform = sqrt),
-              probe_acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
-              probe_nlar("y", lags = c(1, 1, 1, 2), powers = c(1, 2, 3, 1),
-                         transform = sqrt))
+  probe_acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
+  probe_nlar("y", lags = c(1, 1, 1, 2), powers = c(1, 2, 3, 1),
+    transform = sqrt))
 
 
 ## ----first-probe-comment,include=FALSE----------------------------------------
@@ -494,9 +494,9 @@ stew(file="ricker-comparison.rda",{
 
   foreach (theta=iter(expand_grid(comp,rep=1:10),"row"),
     .combine=rbind) %dopar% {
-    logLik(pfilter(rick,params=theta[-1],Np=10000)) -> pf
-    logLik(probe(rick,params=theta[-1],nsim=10000,probes=plist)) -> pb
-    cbind(theta,pf=pf,pb=pb)
+      logLik(pfilter(rick,params=theta[-1],Np=10000)) -> pf
+      logLik(probe(rick,params=theta[-1],nsim=10000,probes=plist)) -> pb
+      cbind(theta,pf=pf,pb=pb)
     } |>
     group_by(pt,r,sigma,phi,c,N_0,e_0) |>
     summarize(
@@ -508,15 +508,15 @@ stew(file="ricker-comparison.rda",{
     ungroup() |>
     column_to_rownames("pt") |>
     select(-c,-N_0,-e_0) -> comp
-  
+
 })
 
 
 ## ----ricker-comparison-show,echo=FALSE,results="asis"-------------------------
 library(xtable)
 colnames(comp) <- c("$r$","$\\sigma$","$\\phi$",
-                    "$\\loglikMC$","s.e.($\\loglikMC$)",
-                    "$\\synloglikMC$","s.e.($\\synloglikMC$)")
+  "$\\loglikMC$","s.e.($\\loglikMC$)",
+  "$\\synloglikMC$","s.e.($\\synloglikMC$)")
 print(xtable(comp[c("Guess","Truth","MLE","MSLE"),],
   align="r|ccccccc",digits=c(0,1,3,1,1,2,1,2)))
 
@@ -532,8 +532,8 @@ library("pomp")
 ##' Select a set of summary statistics ('probes').
 ##' Use simulations to estimate the scale of variation of these probes.
 plist <- list(probe_mean(var = "Y", transform = sqrt),
-              probe_acf("Y", lags = c(0, 5, 10, 20)),
-              probe_marginal("Y", ref = obs(gomp)))
+  probe_acf("Y", lags = c(0, 5, 10, 20)),
+  probe_marginal("Y", ref = obs(gomp)))
 psim <- probe(gomp, probes = plist, nsim = 500)
 scale.dat <- apply(psim@simvals, 2, sd)
 
@@ -555,17 +555,17 @@ stew(file="abc.rda",seed=334388458L,kind="L'Ecuyer",{
     .options.multicore=list(set.seed=TRUE)
   ) %dopar% {
     abc(pomp(gomp, dprior = gompertz.dprior), Nabc = 4e6,
-        probes = plist, epsilon = 2, scale = scale.dat,
-        proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
+      probes = plist, epsilon = 2, scale = scale.dat,
+      proposal = mvn_diag_rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
   }
 
-toc <- Sys.time()
-abcTime <- toc-tic
+  toc <- Sys.time()
+  abcTime <- toc-tic
 
-abc.traces <- traces(abc1,c("r","sigma","tau"))
-abc.traces <- window(abc.traces,start=2000001,thin=400)
-ess.abc <- effectiveSize(abc.traces)
-rm(abc1,tic,toc)
+  abc.traces <- traces(abc1,c("r","sigma","tau"))
+  abc.traces <- window(abc.traces,start=2000001,thin=400)
+  ess.abc <- effectiveSize(abc.traces)
+  rm(abc1,tic,toc)
 })
 
 
@@ -605,10 +605,12 @@ traces |>
   facet_grid(~variable,scales="free_x",labeller=label_parsed)+
   labs(x="",y="",linetype="")+
   theme_classic()+
-  theme(legend.position=c(0.35,0.7),
-        strip.background=element_rect(fill=NA,color=NA),
-        strip.text=element_text(size=12),
-        panel.spacing=unit(4,"mm"))
+  theme(
+    legend.position.inside=c(0.35,0.7),
+    strip.background=element_rect(fill=NA,color=NA),
+    strip.text=element_text(size=12),
+    panel.spacing=unit(4,"mm")
+  )
 
 
 
@@ -646,46 +648,46 @@ stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
       lags=c(2,3))
     true.sql <- true.nlf(coef(gomp))
 
-  ## start at the truth:
-  theta.guess <- coef(gomp)
+    ## start at the truth:
+    theta.guess <- coef(gomp)
 
-  tic <- Sys.time()
-  mif1 <- mif2(gomp,Nmif=100,params=theta.guess,
-    rw.sd=rw_sd(r=0.02,sigma=0.02,tau=0.05),Np=1000,
-    cooling.type="geometric",cooling.fraction.50=0.5)
-  mif.lik <- pfilter(mif1,Np=10000)
-  toc <- Sys.time()
-  mif.time <- toc-tic
-  units(mif.time) <- "secs"
-  mif.nlf <- nlf_objfun(mif1, ti=100, tf=4000,
+    tic <- Sys.time()
+    mif1 <- mif2(gomp,Nmif=100,params=theta.guess,
+      rw.sd=rw_sd(r=0.02,sigma=0.02,tau=0.05),Np=1000,
+      cooling.type="geometric",cooling.fraction.50=0.5)
+    mif.lik <- pfilter(mif1,Np=10000)
+    toc <- Sys.time()
+    mif.time <- toc-tic
+    units(mif.time) <- "secs"
+    mif.nlf <- nlf_objfun(mif1, ti=100, tf=4000,
       lags=c(2,3))
-  mif.sql <- mif.nlf(coef(mif1))
+    mif.sql <- mif.nlf(coef(mif1))
 
-  tic <- Sys.time()
-  nlfobj <- nlf_objfun(gomp,
+    tic <- Sys.time()
+    nlfobj <- nlf_objfun(gomp,
       ti=100, tf=4000,
       lags=c(2,3))
-  nlf_out <- subplex(par = coef(gomp, estpars, transform=TRUE), fn=nlfobj, control=list(reltol=1e-8))
-  toc <- Sys.time()
-  nlf.time <- toc-tic
-  units(nlf.time) <- "secs"
-  nlf.lik <- pfilter(pomp(gomp, params=coef(nlfobj)),Np=1000)
-  nlf.sql <- nlfobj(coef(nlfobj))
+    nlf_out <- subplex(par = coef(gomp, estpars, transform=TRUE), fn=nlfobj, control=list(reltol=1e-8))
+    toc <- Sys.time()
+    nlf.time <- toc-tic
+    units(nlf.time) <- "secs"
+    nlf.lik <- pfilter(pomp(gomp, params=coef(nlfobj)),Np=1000)
+    nlf.sql <- nlfobj(coef(nlfobj))
 
-  c(
-    trueLik=logLik(true.lik),
-    trueSQL=-true.sql,
-    mifLik=logLik(mif.lik),
-    mifSQL=-mif.sql,
-    nlfLik=logLik(nlf.lik),
-    nlfSQL=-nlf.sql,
-    mifTime=mif.time,
-    nlfTime=nlf.time
-  )
-}
-toc <- Sys.time()
-nlf.mif.time <- toc-tic
-cmp1 <- as.data.frame(cmp1)
+    c(
+      trueLik=logLik(true.lik),
+      trueSQL=-true.sql,
+      mifLik=logLik(mif.lik),
+      mifSQL=-mif.sql,
+      nlfLik=logLik(nlf.lik),
+      nlfSQL=-nlf.sql,
+      mifTime=mif.time,
+      nlfTime=nlf.time
+    )
+  }
+  toc <- Sys.time()
+  nlf.mif.time <- toc-tic
+  cmp1 <- as.data.frame(cmp1)
 })
 
 
@@ -702,7 +704,7 @@ plA <- cmp1 |>
   geom_vline(xintercept=0,linetype=3)+
   expand_limits(x=c(-1,1),y=c(-1,1))+
   labs(y=expression(hat("\u2113")(hat(theta))-hat("\u2113")(theta)),
-       x=expression(hat("\u2113")(tilde(theta))-hat("\u2113")(theta)))+
+    x=expression(hat("\u2113")(tilde(theta))-hat("\u2113")(theta)))+
   theme_classic()
 
 plB <- cmp1 |>
@@ -713,7 +715,7 @@ plB <- cmp1 |>
   geom_vline(xintercept=0,linetype=3)+
   expand_limits(x=c(-1,1),y=c(-1,1))+
   labs(y=expression(hat("\u2113")[Q](hat(theta))-hat("\u2113")[Q](theta)),
-       x=expression(hat("\u2113")[Q](tilde(theta))-hat("\u2113")[Q](theta)))+
+    x=expression(hat("\u2113")[Q](tilde(theta))-hat("\u2113")[Q](theta)))+
   theme_classic()
 
 grid.newpage()
@@ -721,13 +723,13 @@ pushViewport(viewport(layout=grid.layout(1,2)))
 print(plA,vp=viewport(layout.pos.row=1,layout.pos.col=1))
 print(plB,vp=viewport(layout.pos.row=1,layout.pos.col=2))
 grid.text("A",x=unit(0.1,"npc"),y=unit(1,"npc"),
-          vp=viewport(layout.pos.row=1,layout.pos.col=1),
-          hjust=0.5,vjust=1,
-          gp=gpar(fontsize=16,fontface="bold"))
+  vp=viewport(layout.pos.row=1,layout.pos.col=1),
+  hjust=0.5,vjust=1,
+  gp=gpar(fontsize=16,fontface="bold"))
 grid.text("B",x=unit(0.1,"npc"),y=unit(1,"npc"),
-          vp=viewport(layout.pos.row=1,layout.pos.col=2),
-          hjust=0.5,vjust=1,
-          gp=gpar(fontsize=16,fontface="bold"))
+  vp=viewport(layout.pos.row=1,layout.pos.col=2),
+  hjust=0.5,vjust=1,
+  gp=gpar(fontsize=16,fontface="bold"))
 popViewport()
 
 
@@ -792,7 +794,7 @@ sir1 <- simulate(times =seq(0,10,by=1/52), t0 = -1/52,
 
 
 ## ----sir1-plot,echo=FALSE,fig.height=5----------------------------------------
-ops <- options(scipen=-10)
+ops <- options(scipen=-9)
 plot(sir1,mar=c(0,5,2,0))
 options(ops)
 
@@ -859,14 +861,14 @@ sir2 <- simulate(sir1, dmeasure = dmeas, rmeasure = rmeas,
   rinit = seas.rinit, accumvars = c("H", "noise"),
   statenames = c("S", "I", "R", "H", "P", "Phi", "noise"),
   paramnames = c("gamma", "mu", "popsize", "rho", "theta", "sigma",
-                 "S_0", "I_0", "R_0", "b1", "b2", "b3", "iota"),
+    "S_0", "I_0", "R_0", "b1", "b2", "b3", "iota"),
   params = c(popsize = 500000, iota = 5, b1 = 6, b2 = 0.2, b3 = -0.1,
     gamma = 26, mu = 1/50, rho = 0.1, theta = 100, sigma = 0.3,
     S_0 = 0.055, I_0 = 0.002, R_0 = 0.94), seed = 619552910L)
 
 
 ## ----sir2-plot,echo=FALSE,fig.height=6.5--------------------------------------
-ops <- options(scipen=-10)
+ops <- options(scipen=-9)
 plot(sir2,mar=c(0,5,2,0))
 options(ops)
 
@@ -891,4 +893,3 @@ print(pmcmcTime)
 print(abcTime)
 print(nlf.mif.time)
 print(totalSweaveTime)
-
