@@ -1,4 +1,3 @@
-png(filename="baddm-%02d.png",res=100)
 options(digits=2)
 
 library(pomp)
@@ -29,5 +28,3 @@ try(
       partrans=NULL
     )
 )
-
-dev.off()

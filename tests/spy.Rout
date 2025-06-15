@@ -1,5 +1,5 @@
 
-R version 4.4.3 (2025-02-28) -- "Trophy Case"
+R version 4.5.1 (2025-06-13) -- "Great Square Root"
 Copyright (C) 2025 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu
 
@@ -163,8 +163,8 @@ params
 
 
 /* pomp C snippet file: nancy */
-/* Time: 2025-03-19 22:22:43.356 -0400 */
-/* Salt: 14A967C08D5AE20214B66811 */
+/* Time: 2025-06-15 10:14:26.312 -0400 */
+/* Salt: D90AD786CE29DBDDB161F28A */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -235,13 +235,13 @@ pomp object 'sir':
 - covariates: 
   - 421 records of 3 covariates, recorded from t = 0 to 4.2 
   - summary of covariates:
-     seas_1          seas_2          seas_3     
- Min.   :0.042   Min.   :0.042   Min.   :0.042  
- 1st Qu.:0.118   1st Qu.:0.122   1st Qu.:0.099  
- Median :0.335   Median :0.322   Median :0.289  
- Mean   :0.345   Mean   :0.334   Mean   :0.321  
- 3rd Qu.:0.560   3rd Qu.:0.539   3rd Qu.:0.539  
- Max.   :0.667   Max.   :0.667   Max.   :0.667  
+     seas_1           seas_2           seas_3      
+ Min.   :0.0417   Min.   :0.0417   Min.   :0.0417  
+ 1st Qu.:0.1177   1st Qu.:0.1217   1st Qu.:0.0995  
+ Median :0.3349   Median :0.3217   Median :0.2891  
+ Mean   :0.3452   Mean   :0.3342   Mean   :0.3206  
+ 3rd Qu.:0.5604   3rd Qu.:0.5387   3rd Qu.:0.5387  
+ Max.   :0.6667   Max.   :0.6666   Max.   :0.6666  
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
   - defined by a C snippet in library 'sir_source'
@@ -287,8 +287,8 @@ pomp object 'sir':
 
 
 /* pomp C snippet file: sir_source */
-/* Time: 2025-03-19 22:22:43.502 -0400 */
-/* Salt: 78BBB1D1EC302DA2B8D160A1 */
+/* Time: 2025-06-15 10:14:26.414 -0400 */
+/* Salt: 559BC9670D0BFF2996B6A2EB */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -895,13 +895,13 @@ pomp object 'rw2':
 - data:
   - 100 records of 2 observables, recorded from t = 1 to 100 
   - summary of data:
-       y1               y2        
- Min.   :-16.93   Min.   :-13.86  
- 1st Qu.:-11.45   1st Qu.: -4.57  
- Median : -4.15   Median : -1.74  
- Mean   : -5.81   Mean   : -0.92  
- 3rd Qu.: -1.30   3rd Qu.:  3.07  
- Max.   :  3.50   Max.   : 10.26  
+       y1               y2         
+ Min.   :-16.93   Min.   :-13.859  
+ 1st Qu.:-11.45   1st Qu.: -4.569  
+ Median : -4.15   Median : -1.744  
+ Mean   : -5.81   Mean   : -0.925  
+ 3rd Qu.: -1.30   3rd Qu.:  3.066  
+ Max.   :  3.50   Max.   : 10.257  
 - zero time, t0 = 0
 - covariates: <none>
 - initial state simulator, rinit: <default>
@@ -937,8 +937,8 @@ x1_0 x2_0   s1   s2  tau
 
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2025-03-19 22:22:44.296 -0400 */
-/* Salt: 630B75886390C17C8AEE5220 */
+/* Time: 2025-06-15 10:14:27.271 -0400 */
+/* Salt: 9AE28412799E0EF31341FCEF */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1145,13 +1145,13 @@ pomp object 'sir2':
 - covariates: 
   - 1021 records of 3 covariates, recorded from t = 0 to 10.2 
   - summary of covariates:
-     seas_1          seas_2          seas_3     
- Min.   :0.042   Min.   :0.042   Min.   :0.042  
- 1st Qu.:0.118   1st Qu.:0.114   1st Qu.:0.103  
- Median :0.335   Median :0.322   Median :0.302  
- Mean   :0.338   Mean   :0.334   Mean   :0.328  
- 3rd Qu.:0.560   3rd Qu.:0.550   3rd Qu.:0.550  
- Max.   :0.667   Max.   :0.667   Max.   :0.667  
+     seas_1           seas_2           seas_3      
+ Min.   :0.0417   Min.   :0.0417   Min.   :0.0417  
+ 1st Qu.:0.1177   1st Qu.:0.1139   1st Qu.:0.1029  
+ Median :0.3349   Median :0.3217   Median :0.3020  
+ Mean   :0.3382   Mean   :0.3337   Mean   :0.3281  
+ 3rd Qu.:0.5604   3rd Qu.:0.5497   3rd Qu.:0.5497  
+ Max.   :0.6667   Max.   :0.6666   Max.   :0.6666  
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
   - defined by a C snippet in library 'sir2_source'
@@ -1204,8 +1204,8 @@ name    birth susc.death infection inf.death recovery recov.death
 
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2025-03-19 22:22:44.976 -0400 */
-/* Salt: 7DB3D7473B47BA1FE083CC7B */
+/* Time: 2025-06-15 10:14:27.852 -0400 */
+/* Salt: 48B650A709E97E6B277F95E2 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1853,7 +1853,7 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, userdata = list(x0 = as.dou
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_b34a9ad2328d2598c3c1cd4ae40c4bb3'
+  - defined by a C snippet in library 'pomp_43d9f81b8e1c28ae66a247ce54d1519f'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: <undefined>
 - process model density, dprocess: <default>
@@ -1874,9 +1874,9 @@ x_0   a
 - C snippet file  1 :
 
 
-/* pomp C snippet file: pomp_b34a9ad2328d2598c3c1cd4ae40c4bb3 */
-/* Time: 2025-03-19 22:22:45.787 -0400 */
-/* Salt: 2F65637D1998952097298F5D */
+/* pomp C snippet file: pomp_43d9f81b8e1c28ae66a247ce54d1519f */
+/* Time: 2025-06-15 10:14:28.527 -0400 */
+/* Salt: 187EAA4366A6B909F6A8931C */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1902,11 +1902,11 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
  
-void R_init_pomp_b34a9ad2328d2598c3c1cd4ae40c4bb3 (DllInfo *info) {
+void R_init_pomp_43d9f81b8e1c28ae66a247ce54d1519f (DllInfo *info) {
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-  R_RegisterCCallable("pomp_b34a9ad2328d2598c3c1cd4ae40c4bb3", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable("pomp_b34a9ad2328d2598c3c1cd4ae40c4bb3", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-  R_RegisterCCallable("pomp_b34a9ad2328d2598c3c1cd4ae40c4bb3", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_43d9f81b8e1c28ae66a247ce54d1519f", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_43d9f81b8e1c28ae66a247ce54d1519f", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_43d9f81b8e1c28ae66a247ce54d1519f", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
   
 
 }
@@ -1933,13 +1933,13 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, userdata = list(x0 = as.dou
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_9a9df2d3acfc2860dcc63f8865a4e0d9'
+  - defined by a C snippet in library 'pomp_33d82a5c54b9cefcf86c13dc94a27c3e'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: Euler-method process-model simulator
   - timestep = 0.1 
   - step.fun: native function
   - name: '__pomp_stepfn'
-  - defined by a C snippet in library 'pomp_9a9df2d3acfc2860dcc63f8865a4e0d9'
+  - defined by a C snippet in library 'pomp_33d82a5c54b9cefcf86c13dc94a27c3e'
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: <default>
 - measurement model density, dmeasure: <default>
@@ -1958,9 +1958,9 @@ x_0   a
 - C snippet file  1 :
 
 
-/* pomp C snippet file: pomp_9a9df2d3acfc2860dcc63f8865a4e0d9 */
-/* Time: 2025-03-19 22:22:45.840 -0400 */
-/* Salt: E726F32B12E50B088F3CA8F4 */
+/* pomp C snippet file: pomp_33d82a5c54b9cefcf86c13dc94a27c3e */
+/* Time: 2025-06-15 10:14:28.575 -0400 */
+/* Salt: 1E45E215AC93C92B442AA78E */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1998,12 +1998,12 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
  
-void R_init_pomp_9a9df2d3acfc2860dcc63f8865a4e0d9 (DllInfo *info) {
+void R_init_pomp_33d82a5c54b9cefcf86c13dc94a27c3e (DllInfo *info) {
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-  R_RegisterCCallable("pomp_9a9df2d3acfc2860dcc63f8865a4e0d9", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable("pomp_9a9df2d3acfc2860dcc63f8865a4e0d9", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-  R_RegisterCCallable("pomp_9a9df2d3acfc2860dcc63f8865a4e0d9", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-  R_RegisterCCallable("pomp_9a9df2d3acfc2860dcc63f8865a4e0d9", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+  R_RegisterCCallable("pomp_33d82a5c54b9cefcf86c13dc94a27c3e", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_33d82a5c54b9cefcf86c13dc94a27c3e", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_33d82a5c54b9cefcf86c13dc94a27c3e", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_33d82a5c54b9cefcf86c13dc94a27c3e", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
  X0 = *get_userdata_double("x0"); 
 
 }

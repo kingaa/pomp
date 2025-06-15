@@ -13,13 +13,15 @@ set.seed(398585L)
 
 time(gompertz) <- 1:10
 
-smc <- bsmc2(gompertz,
+smc <- bsmc2(
+  gompertz,
   rprior=Csnippet("
     K = runif(0.1,1);
     r = rlnorm(log(0.2),1);
     sigma = rlnorm(log(0.1),0.5);"),
   paramnames=c("r","K","sigma"),
-  Np=1000,smooth=0.05)
+  Np=1000,smooth=0.05
+)
 
 plot(smc,y=NA)
 plot(smc,pars=c("r","K"),thin=20)
