@@ -24,7 +24,7 @@
 ##'   \enumerate{
 ##'     \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation will be defined in the context in which the snippet is executed.
 ##'     \item Moreover, the Boolean variable \code{give_log} will be defined.
-##'     \item The goal of a dmeasure C snippet is to set the value of the \code{lik} variable to the likelihood of the data given the state, if \code{give_log == 0}.
+##'     \item The goal of a dmeasure C snippet is to set the value of the predefined \code{lik} variable to the likelihood of the data given the state, if \code{give_log == 0}.
 ##'     If \code{give_log == 1}, \code{lik} should be set to the log likelihood.
 ##'   }
 ##'

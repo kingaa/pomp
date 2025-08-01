@@ -22,7 +22,7 @@
 ##'
 ##' Using a C snippet is much preferred, due to its much greater computational efficiency.
 ##' See \code{\link{Csnippet}} for general rules on writing C snippets.
-##' The goal of a \dfn{dprocess} C snippet is to fill the variable \code{loglik} with the log probability density.
+##' The goal of a \dfn{dprocess} C snippet is to fill the predefined variable \code{loglik} with the log probability density.
 ##' In the context of such a C snippet, the parameters, and covariates will be defined, as will the times \code{t_1} and \code{t_2}.
 ##' The state variables at time \code{t_1} will have their usual name (see \code{statenames}) with a \dQuote{\code{_1}} appended.
 ##' Likewise, the state variables at time \code{t_2} will have a \dQuote{\code{_2}} appended.
