@@ -30,7 +30,7 @@ They include \describe{
 \link[=elementary_algorithms]{elementary algorithms},
 \link[=estimation_algorithms]{estimation algorithms}
 
-More on \pkg{pomp} workhorse functions: 
+More on \pkg{pomp} workhorse functions:
 \code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},

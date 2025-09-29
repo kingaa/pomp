@@ -33,7 +33,7 @@ setMethod(
   "coef",
   signature=signature(object="listie"),
   definition=function(object, ...) {
-    x <- do.call(cbind,lapply(object,coef))
+    x <- do.call(cbind,lapply(object,coef,...))
     names(dimnames(x)) <- c("name",".id")
     x
   }

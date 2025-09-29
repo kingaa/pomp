@@ -105,7 +105,7 @@ Useful links:
 }
 
 
-More on implementing POMP models: 
+More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},
@@ -127,7 +127,7 @@ More on implementing POMP models:
 \code{\link{userdata}},
 \code{\link{vmeasure_spec}}
 
-More on \pkg{pomp} workhorse functions: 
+More on \pkg{pomp} workhorse functions:
 \code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
@@ -153,7 +153,7 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{probe_match}},
 \code{\link{spect_match}}
 
-More on \pkg{pomp} elementary algorithms: 
+More on \pkg{pomp} elementary algorithms:
 \code{\link{elementary_algorithms}},
 \code{\link{kalman}},
 \code{\link{pfilter}()},

@@ -63,7 +63,7 @@ pf <- pfilter(po,Np=1000)
 logLik(pf)
 }
 \seealso{
-More examples provided with \pkg{pomp}: 
+More examples provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{childhood_disease_data}},
 \code{\link{compartmental_models}},

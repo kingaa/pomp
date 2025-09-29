@@ -144,7 +144,7 @@ More on \pkg{pomp} estimation algorithms:
 \code{\link{probe_match}},
 \code{\link{spect_match}}
 
-More on sequential Monte Carlo methods: 
+More on sequential Monte Carlo methods:
 \code{\link{bsmc2}()},
 \code{\link{cond_logLik}()},
 \code{\link{eff_sample_size}()},

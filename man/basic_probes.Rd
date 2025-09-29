@@ -101,7 +101,7 @@ These can be used directly and as templates for custom probes.
 \Wood2010
 }
 \seealso{
-More on methods based on summary statistics: 
+More on methods based on summary statistics:
 \code{\link{abc}()},
 \code{\link{nlf}},
 \code{\link{probe}()},

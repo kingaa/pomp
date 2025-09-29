@@ -59,7 +59,7 @@ That is, the value \eqn{a_k}{a[k]} of accumulator variable \eqn{a} at times \eqn
 }
 
 \seealso{
-More on \pkg{pomp} workhorse functions: 
+More on \pkg{pomp} workhorse functions:
 \code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
@@ -75,7 +75,7 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{vmeasure}()},
 \code{\link{workhorses}}
 
-More on methods for deterministic process models: 
+More on methods for deterministic process models:
 \code{\link{skeleton}()},
 \code{\link{skeleton_spec}},
 \code{\link{traj_match}},

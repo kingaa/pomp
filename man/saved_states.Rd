@@ -42,7 +42,7 @@ If the filtered particles are saved, these particles are \emph{unweighted}, save
 If the argument  \code{save.states="prediction"} was used, the particles correspond to simulations from \code{rprocess}, and their corresponding unnormalized weights are included in the output.
 }
 \seealso{
-More on sequential Monte Carlo methods: 
+More on sequential Monte Carlo methods:
 \code{\link{bsmc2}()},
 \code{\link{cond_logLik}()},
 \code{\link{eff_sample_size}()},

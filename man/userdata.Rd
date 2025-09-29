@@ -151,7 +151,7 @@ See the example below.
 }
 }
 \seealso{
-More on implementing POMP models: 
+More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},

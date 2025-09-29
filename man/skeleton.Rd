@@ -49,7 +49,7 @@ it does not iterate or integrate (see \code{\link{flow}} and \code{\link{traject
 \seealso{
 Specification of the deterministic skeleton: \link{skeleton_spec}
 
-More on \pkg{pomp} workhorse functions: 
+More on \pkg{pomp} workhorse functions:
 \code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
@@ -65,7 +65,7 @@ More on \pkg{pomp} workhorse functions:
 \code{\link{vmeasure}()},
 \code{\link{workhorses}}
 
-More on methods for deterministic process models: 
+More on methods for deterministic process models:
 \code{\link{flow}()},
 \code{\link{skeleton_spec}},
 \code{\link{traj_match}},

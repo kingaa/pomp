@@ -28,7 +28,7 @@ Sample from the prior probability distribution.
 \seealso{
 Specification of the prior distribution simulator: \link{prior_spec}
 
-More on \pkg{pomp} workhorse functions: 
+More on \pkg{pomp} workhorse functions:
 \code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},

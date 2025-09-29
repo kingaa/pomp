@@ -169,7 +169,7 @@ On the other hand, if one retrieves a stored objective function from a file, or 
 \seealso{
 \code{\link[stats]{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 
-More on methods for deterministic process models: 
+More on methods for deterministic process models:
 \code{\link{flow}()},
 \code{\link{skeleton}()},
 \code{\link{skeleton_spec}},

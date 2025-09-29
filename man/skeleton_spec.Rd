@@ -138,7 +138,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 \seealso{
 \code{\link{skeleton}}
 
-More on implementing POMP models: 
+More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},
@@ -160,7 +160,7 @@ More on implementing POMP models:
 \code{\link{userdata}},
 \code{\link{vmeasure_spec}}
 
-More on methods for deterministic process models: 
+More on methods for deterministic process models:
 \code{\link{flow}()},
 \code{\link{skeleton}()},
 \code{\link{traj_match}},

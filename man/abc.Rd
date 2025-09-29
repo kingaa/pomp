@@ -154,7 +154,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 \Toni2009
 }
 \seealso{
-More on methods based on summary statistics: 
+More on methods based on summary statistics:
 \code{\link{basic_probes}},
 \code{\link{nlf}},
 \code{\link{probe}()},

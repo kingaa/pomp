@@ -47,7 +47,7 @@ Evaluates the initial-state density.
 \seealso{
 Specification of the initial-state distribution: \link{dinit_spec}
 
-More on \pkg{pomp} workhorse functions: 
+More on \pkg{pomp} workhorse functions:
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},
 \code{\link{dprocess}()},

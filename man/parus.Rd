@@ -45,7 +45,7 @@ Original source: McCleer and Perrins (1991).
 \McCleery1991
 }
 \seealso{
-More data sets provided with \pkg{pomp}: 
+More data sets provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{childhood_disease_data}},

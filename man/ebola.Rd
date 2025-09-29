@@ -90,14 +90,14 @@ Here, \eqn{p(R_t | C_t)} is negative binomial with mean \eqn{\rho C_t} and dispe
 \He2010
 }
 \seealso{
-More data sets provided with \pkg{pomp}: 
+More data sets provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{childhood_disease_data}},
 \code{\link{dacca}()},
 \code{\link{parus}}
 
-More examples provided with \pkg{pomp}: 
+More examples provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{childhood_disease_data}},
 \code{\link{compartmental_models}},

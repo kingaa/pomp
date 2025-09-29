@@ -38,6 +38,22 @@ try(coef("bob"))
 try(coef() <- 3)
 try(coef("bob") <- 3)
 
+c(
+  A=ou2(alpha_1=1),
+  B=ou2(tau=2,sigma_1=0)
+) |>
+  coef(
+    pars=c("alpha_1","sigma_3","sigma_1","tau")
+  )
+
+c(
+  A=ou2(alpha_1=1),
+  B=ou2(tau=2,sigma_1=0)
+) |>
+  coef(
+    bob=c("alpha_1","sigma_3","sigma_1","tau")
+  )
+
 try(logLik())
 logLik("bob")
 

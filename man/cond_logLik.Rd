@@ -52,7 +52,7 @@ Thus the conditional log likelihood at time \eqn{t_k} is
 where \eqn{f} is the probability density above.
 }
 \seealso{
-More on sequential Monte Carlo methods: 
+More on sequential Monte Carlo methods:
 \code{\link{bsmc2}()},
 \code{\link{eff_sample_size}()},
 \code{\link{filter_mean}()},

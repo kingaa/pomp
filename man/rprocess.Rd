@@ -57,7 +57,7 @@ The values in \code{times} are the times at which the state of the simulated pro
 \seealso{
 Specification of the process-model simulator: \link{rprocess_spec}
 
-More on \pkg{pomp} workhorse functions: 
+More on \pkg{pomp} workhorse functions:
 \code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},

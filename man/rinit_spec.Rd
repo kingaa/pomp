@@ -82,7 +82,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 \seealso{
 \code{\link{rinit}}
 
-More on implementing POMP models: 
+More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},

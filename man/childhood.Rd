@@ -52,14 +52,14 @@ plot(reports~date,data=ewcitmeas,subset=city=="Liverpool",type='l')
 \seealso{
 \link[=compartmental_models]{compartmental models}, \code{\link{bsflu}}
 
-More data sets provided with \pkg{pomp}: 
+More data sets provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{dacca}()},
 \code{\link{ebola}},
 \code{\link{parus}}
 
-More examples provided with \pkg{pomp}: 
+More examples provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{compartmental_models}},
 \code{\link{dacca}()},

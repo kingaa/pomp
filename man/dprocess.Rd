@@ -48,7 +48,7 @@ Evaluates the probability density of a sequence of consecutive state transitions
 \seealso{
 Specification of the process-model density evaluator: \link{dprocess_spec}
 
-More on \pkg{pomp} workhorse functions: 
+More on \pkg{pomp} workhorse functions:
 \code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},

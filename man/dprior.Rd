@@ -30,7 +30,7 @@ Evaluates the prior probability density.
 \seealso{
 Specification of the prior density evaluator: \link{prior_spec}
 
-More on \pkg{pomp} workhorse functions: 
+More on \pkg{pomp} workhorse functions:
 \code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprocess}()},

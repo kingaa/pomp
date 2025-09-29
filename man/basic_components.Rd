@@ -39,7 +39,7 @@ Help pages detailing each basic model component are provided.
 \link[=elementary_algorithms]{elementary algorithms},
 \link[=estimation_algorithms]{estimation algorithms}.
 
-More on implementing POMP models: 
+More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumvars}},
 \code{\link{betabinomial}},

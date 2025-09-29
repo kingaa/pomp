@@ -59,7 +59,7 @@ The measurements are assumed to be log-normally distributed:
 }
 }
 \seealso{
-More examples provided with \pkg{pomp}: 
+More examples provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{childhood_disease_data}},
 \code{\link{compartmental_models}},

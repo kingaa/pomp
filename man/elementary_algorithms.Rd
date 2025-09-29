@@ -25,7 +25,7 @@ Help pages detailing each elementary algorithm component are provided.
 \link[=workhorses]{workhorse functions},
 \link[=estimation_algorithms]{estimation algorithms}.
 
-More on \pkg{pomp} elementary algorithms: 
+More on \pkg{pomp} elementary algorithms:
 \code{\link{kalman}},
 \code{\link{pfilter}()},
 \code{\link{pomp-package}},

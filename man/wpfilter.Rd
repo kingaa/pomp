@@ -110,7 +110,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 \Arulampalam2002
 }
 \seealso{
-More on \pkg{pomp} elementary algorithms: 
+More on \pkg{pomp} elementary algorithms:
 \code{\link{elementary_algorithms}},
 \code{\link{kalman}},
 \code{\link{pfilter}()},
@@ -120,7 +120,7 @@ More on \pkg{pomp} elementary algorithms:
 \code{\link{spect}()},
 \code{\link{trajectory}()}
 
-More on sequential Monte Carlo methods: 
+More on sequential Monte Carlo methods:
 \code{\link{bsmc2}()},
 \code{\link{cond_logLik}()},
 \code{\link{eff_sample_size}()},

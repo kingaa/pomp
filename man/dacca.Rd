@@ -88,7 +88,7 @@ Medicine and Hygiene.
 \King2008
 }
 \seealso{
-More examples provided with \pkg{pomp}: 
+More examples provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{childhood_disease_data}},
 \code{\link{compartmental_models}},
@@ -100,7 +100,7 @@ More examples provided with \pkg{pomp}:
 \code{\link{rw2}()},
 \code{\link{verhulst}()}
 
-More data sets provided with \pkg{pomp}: 
+More data sets provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{childhood_disease_data}},

@@ -143,7 +143,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 
 \seealso{
-More on \pkg{pomp} elementary algorithms: 
+More on \pkg{pomp} elementary algorithms:
 \code{\link{elementary_algorithms}},
 \code{\link{kalman}},
 \code{\link{pfilter}()},

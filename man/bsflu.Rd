@@ -31,7 +31,7 @@ if (require(tidyr) && require(ggplot2)) {
 \seealso{
 \link[=compartmental_models]{compartmental models}
 
-More data sets provided with \pkg{pomp}: 
+More data sets provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{childhood_disease_data}},
 \code{\link{dacca}()},

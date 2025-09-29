@@ -146,7 +146,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 \Reuman2008
 }
 \seealso{
-More on methods based on summary statistics: 
+More on methods based on summary statistics:
 \code{\link{abc}()},
 \code{\link{basic_probes}},
 \code{\link{nlf}},
@@ -154,7 +154,7 @@ More on methods based on summary statistics:
 \code{\link{probe_match}},
 \code{\link{spect_match}}
 
-More on \pkg{pomp} elementary algorithms: 
+More on \pkg{pomp} elementary algorithms:
 \code{\link{elementary_algorithms}},
 \code{\link{kalman}},
 \code{\link{pfilter}()},

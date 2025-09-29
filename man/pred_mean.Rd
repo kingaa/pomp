@@ -33,7 +33,7 @@ The prediction mean is therefore the expectation of this distribution
 \deqn{E[X(t_k) \vert Y(t_1)=y^*_1,\dots,Y(t_{k-1})=y^*_{k-1}].}{E[Xk | Y1=y1*,\dots,Y(k-1)=y(k-1)*].}
 }
 \seealso{
-More on sequential Monte Carlo methods: 
+More on sequential Monte Carlo methods:
 \code{\link{bsmc2}()},
 \code{\link{cond_logLik}()},
 \code{\link{eff_sample_size}()},

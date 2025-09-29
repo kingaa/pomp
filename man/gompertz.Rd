@@ -59,7 +59,7 @@ plot(gompertz(K=2,r=0.01))
 
 }
 \seealso{
-More examples provided with \pkg{pomp}: 
+More examples provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{childhood_disease_data}},
 \code{\link{compartmental_models}},

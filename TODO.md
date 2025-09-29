@@ -4,6 +4,9 @@
 
 ## For pomp:
 
+- References using new bibtex support for Rd files.
+[R-exts.html#Bibliographic-citations-and-references]
+
 - Rosenzweig-MacArthur example
 - Make certain error checks in inline codes depend on NDEBUG flag?
 - replace `melt` with `data.table::melt`?

@@ -142,7 +142,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 \Wood2010
 }
 \seealso{
-More on \pkg{pomp} elementary algorithms: 
+More on \pkg{pomp} elementary algorithms:
 \code{\link{elementary_algorithms}},
 \code{\link{kalman}},
 \code{\link{pfilter}()},
@@ -152,7 +152,7 @@ More on \pkg{pomp} elementary algorithms:
 \code{\link{trajectory}()},
 \code{\link{wpfilter}()}
 
-More on methods based on summary statistics: 
+More on methods based on summary statistics:
 \code{\link{abc}()},
 \code{\link{basic_probes}},
 \code{\link{nlf}},

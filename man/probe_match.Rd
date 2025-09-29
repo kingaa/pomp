@@ -216,7 +216,7 @@ On the other hand, if one retrieves a stored objective function from a file, or 
 \seealso{
 \code{\link[stats]{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 
-More on methods based on summary statistics: 
+More on methods based on summary statistics:
 \code{\link{abc}()},
 \code{\link{basic_probes}},
 \code{\link{nlf}},

@@ -50,7 +50,7 @@ Thus, \preformatted{
 } only if \code{sum(X) == 1}.
 }
 \seealso{
-More on implementing POMP models: 
+More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},

@@ -144,7 +144,7 @@ For examples, see \code{\link{sir}} and the tutorials on the \href{https://kinga
 \seealso{
 \code{\link{sir}}
 
-More on implementing POMP models: 
+More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{basic_components}},
 \code{\link{betabinomial}},

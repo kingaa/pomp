@@ -87,7 +87,7 @@ plot(blowflies2())
 \Brillinger1980
 }
 \seealso{
-More examples provided with \pkg{pomp}: 
+More examples provided with \pkg{pomp}:
 \code{\link{childhood_disease_data}},
 \code{\link{compartmental_models}},
 \code{\link{dacca}()},
@@ -99,7 +99,7 @@ More examples provided with \pkg{pomp}:
 \code{\link{rw2}()},
 \code{\link{verhulst}()}
 
-More data sets provided with \pkg{pomp}: 
+More data sets provided with \pkg{pomp}:
 \code{\link{bsflu}},
 \code{\link{childhood_disease_data}},
 \code{\link{dacca}()},

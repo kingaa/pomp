@@ -198,7 +198,7 @@ More on full-information (i.e., likelihood-based) methods:
 \code{\link{pmcmc}()},
 \code{\link{wpfilter}()}
 
-More on sequential Monte Carlo methods: 
+More on sequential Monte Carlo methods:
 \code{\link{bsmc2}()},
 \code{\link{cond_logLik}()},
 \code{\link{eff_sample_size}()},

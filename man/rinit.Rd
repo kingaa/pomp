@@ -33,7 +33,7 @@ Samples from the initial-state distribution.
 \seealso{
 _spec of the initial-state distribution: \link{rinit_spec}
 
-More on \pkg{pomp} workhorse functions: 
+More on \pkg{pomp} workhorse functions:
 \code{\link{dinit}()},
 \code{\link{dmeasure}()},
 \code{\link{dprior}()},

@@ -63,7 +63,7 @@ The type of extrapolation performed will be constant or linear according to the 
 }
 
 \seealso{
-More on implementing POMP models: 
+More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},

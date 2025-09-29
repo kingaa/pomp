@@ -46,7 +46,7 @@ Visit the package homepage to view the \href{https://kingaa.github.io/pomp/C_API
 }
 
 \seealso{
-More on implementing POMP models: 
+More on implementing POMP models:
 \code{\link{Csnippet}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},
