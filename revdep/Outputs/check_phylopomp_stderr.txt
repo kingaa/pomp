@@ -1,0 +1,25 @@
+  Running ‘curtail.R’
+  Comparing ‘curtail.Rout’ to ‘curtail.Rout.save’ ...  Running ‘diagram.R’
+  Comparing ‘diagram.Rout’ to ‘diagram.Rout.save’ ...  Running ‘gendat.R’
+  Comparing ‘gendat.Rout’ to ‘gendat.Rout.save’ ...  Running ‘lbdp1.R’
+  Comparing ‘lbdp1.Rout’ to ‘lbdp1.Rout.save’ ...  Running ‘lbdp2.R’ [23s/17s]
+  Comparing ‘lbdp2.Rout’ to ‘lbdp2.Rout.save’ ...  Running ‘lbdp3.R’
+  Comparing ‘lbdp3.Rout’ to ‘lbdp3.Rout.save’ ...  Running ‘lineages.R’
+  Comparing ‘lineages.Rout’ to ‘lineages.Rout.save’ ...  Running ‘moran1.R’ [29s/18s]
+  Comparing ‘moran1.Rout’ to ‘moran1.Rout.save’ ...  Running ‘parse.R’
+  Comparing ‘parse.Rout’ to ‘parse.Rout.save’ ...  Running ‘plot.R’
+  Comparing ‘plot.Rout’ to ‘plot.Rout.save’ ...  Running ‘s2i2r2.R’
+  Comparing ‘s2i2r2.Rout’ to ‘s2i2r2.Rout.save’ ...  Running ‘seir1.R’
+  Comparing ‘seir1.Rout’ to ‘seir1.Rout.save’ ...  Running ‘seir2.R’
+  Comparing ‘seir2.Rout’ to ‘seir2.Rout.save’ ...  Running ‘si2r.R’
+  Comparing ‘si2r.Rout’ to ‘si2r.Rout.save’ ...  Running ‘siir1.R’
+  Comparing ‘siir1.Rout’ to ‘siir1.Rout.save’ ...  Running ‘simulate.R’
+  Comparing ‘simulate.Rout’ to ‘simulate.Rout.save’ ... OK
+  Running ‘sir1.R’
+  Comparing ‘sir1.Rout’ to ‘sir1.Rout.save’ ...  Running ‘twospecies1.R’ [16s/11s]
+  Comparing ‘twospecies1.Rout’ to ‘twospecies1.Rout.save’ ... OK
+
+See
+  '/home/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck/00check.log'
+for details.
+

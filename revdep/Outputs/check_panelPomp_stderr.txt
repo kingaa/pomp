@@ -1,0 +1,50 @@
+  Running ‘_options.R’
+  Comparing ‘_options.Rout’ to ‘_options.Rout.save’ ... OK
+  Running ‘aaa.R’
+  Comparing ‘aaa.Rout’ to ‘aaa.Rout.save’ ... OK
+  Running ‘contacts.R’
+  Comparing ‘contacts.Rout’ to ‘contacts.Rout.save’ ... OK
+  Running ‘get_col_row.R’
+  Comparing ‘get_col_row.Rout’ to ‘get_col_row.Rout.save’ ... OK
+  Running ‘mif2.R’
+  Comparing ‘mif2.Rout’ to ‘mif2.Rout.save’ ... OK
+  Running ‘mif2_intern.R’
+  Comparing ‘mif2_intern.Rout’ to ‘mif2_intern.Rout.save’ ... OK
+  Running ‘mif2_methods.R’
+  Comparing ‘mif2_methods.Rout’ to ‘mif2_methods.Rout.save’ ... OK
+  Running ‘panelGompertz.R’
+  Comparing ‘panelGompertz.Rout’ to ‘panelGompertz.Rout.save’ ... OK
+  Running ‘panelGompertzLikelihood.R’
+  Comparing ‘panelGompertzLikelihood.Rout’ to ‘panelGompertzLikelihood.Rout.save’ ... OK
+  Running ‘panelMeasles.R’ [105s/11s]
+  Comparing ‘panelMeasles.Rout’ to ‘panelMeasles.Rout.save’ ... OK
+  Running ‘panelPomp.R’
+  Comparing ‘panelPomp.Rout’ to ‘panelPomp.Rout.save’ ... OK
+  Running ‘panelPomp_methods.R’
+  Comparing ‘panelPomp_methods.Rout’ to ‘panelPomp_methods.Rout.save’ ... OK
+  Running ‘panelRandomWalk.R’
+  Comparing ‘panelRandomWalk.Rout’ to ‘panelRandomWalk.Rout.save’ ... OK
+  Running ‘panel_designs.R’
+  Comparing ‘panel_designs.Rout’ to ‘panel_designs.Rout.save’ ... OK
+  Running ‘panel_loglik.R’
+  Comparing ‘panel_loglik.Rout’ to ‘panel_loglik.Rout.save’ ... OK
+  Running ‘params.R’
+  Comparing ‘params.Rout’ to ‘params.Rout.save’ ... OK
+  Running ‘pfilter.R’
+  Comparing ‘pfilter.Rout’ to ‘pfilter.Rout.save’ ... OK
+  Running ‘pfilter_methods.R’
+  Comparing ‘pfilter_methods.Rout’ to ‘pfilter_methods.Rout.save’ ... OK
+  Running ‘plot.R’
+  Comparing ‘plot.Rout’ to ‘plot.Rout.save’ ... OK
+  Running ‘pparamArrayMods.R’
+  Comparing ‘pparamArrayMods.Rout’ to ‘pparamArrayMods.Rout.save’ ... OK
+  Running ‘print-results.R’
+  Comparing ‘print-results.Rout’ to ‘print-results.Rout.save’ ... OK
+  Running ‘seeded-results.R’
+  Comparing ‘seeded-results.Rout’ to ‘seeded-results.Rout.save’ ... OK
+  Running ‘simulate.R’
+  Comparing ‘simulate.Rout’ to ‘simulate.Rout.save’ ... OK
+  Running ‘specificShared.R’
+  Comparing ‘specificShared.Rout’ to ‘specificShared.Rout.save’ ... OK
+
+

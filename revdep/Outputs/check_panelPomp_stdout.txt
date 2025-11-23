@@ -1,0 +1,95 @@
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/panelPomp.Rcheck'
+* using R version 4.5.2 (2025-10-31)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using options '--ignore-vignettes --as-cran'
+* checking for file 'panelPomp/DESCRIPTION' ... OK
+* checking extension type ... Package
+* this is package 'panelPomp' version '1.7.0.0'
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package 'panelPomp' can be installed ... OK
+* used C compiler: 'gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0'
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of 'data' directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking R/sysdata.rda ... OK
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking pragmas in C/C++ headers and code ... OK
+* checking compilation flags used ... OK
+* checking compiled code ... OK
+* checking installed files from 'inst/doc' ... OK
+* checking files in 'vignettes' ... SKIPPED
+* checking examples ... [179s/23s] OK
+Examples with CPU (user + system) or elapsed time > 5s
+                         user system elapsed
+unitLogLik              1.672  9.669   1.228
+panelGompertz           1.588  9.172   1.280
+shared-set              1.565  9.186   1.238
+params                  1.508  9.135   1.159
+specific-set            1.478  8.924   1.182
+panelMeasles            1.548  8.831   1.284
+panelPomp               1.494  8.854   1.211
+pfilter                 1.426  8.911   1.229
+panelPomp_methods       1.446  8.854   1.232
+specific                1.422  8.857   1.240
+shared                  1.501  8.774   1.210
+simulate                1.446  8.786   1.158
+plot                    1.441  8.720   1.209
+mif2                    1.482  8.481   1.252
+unit_objects            1.413  8.347   1.173
+panelGompertzLikelihood 1.251  7.183   1.277
+panelRandomWalk         1.146  6.608   1.193
+** found \donttest examples: check also with --run-donttest
+* checking for unstated dependencies in 'tests' ... OK
+* checking tests ...
+ [466s/52s] OK
+* checking PDF version of manual ... OK
+* checking HTML version of manual ... OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: OK

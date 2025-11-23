@@ -1,0 +1,189 @@
+* using log directory '/home/kingaa/projects/Rpkg/pomp/revdep/phylopomp.Rcheck'
+* using R version 4.5.2 (2025-10-31)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using options '--ignore-vignettes --as-cran'
+* checking for file 'phylopomp/DESCRIPTION' ... OK
+* checking extension type ... Package
+* this is package 'phylopomp' version '0.14.9.1'
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package 'phylopomp' can be installed ... [59s/31s] OK
+* used C compiler: 'gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0'
+* used C++ compiler: 'g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0'
+* checking installed package size ... INFO
+  installed size is 10.6Mb
+  sub-directories of 1Mb or more:
+    libs   9.7Mb
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... NOTE
+Non-standard file/directory found at top level:
+  'tmp.R'
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking whether startup messages can be suppressed ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking pragmas in C/C++ headers and code ... OK
+* checking compilation flags used ... OK
+* checking compiled code ... OK
+* checking installed files from 'inst/doc' ... OK
+* checking examples ... ERROR
+Running examples in 'phylopomp-Ex.R' failed
+The error most likely occurred in:
+
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: diagram
+> ### Title: Genealogy process diagram
+> ### Aliases: diagram print.gpdiag
+> 
+> ### ** Examples
+> 
+> runSIR(Beta=3,gamma=0.1,psi=0.2,S0=100,I0=5,R0=0,time=2,t0=0) -> x
+> plot(x,points=TRUE,prune=FALSE)
+> plot_grid(plotlist=list(plot(x,points=TRUE)[[1]],diagram(x)),
++   ncol=1,rel_heights=c(4,1))
+Error in S7::prop(x, "meta")[[i]] : subscript out of bounds
+Calls: plot_grid -> [[ -> [[.ggplot2::gg
+Execution halted
+* checking for unstated dependencies in 'tests' ... OK
+* checking tests ...
+61,65d60
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+779,783d778
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+19,23d18
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+23,27d22
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+17,21d16
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+25,29d24
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+53,57d52
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+41,45d40
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+23,27d22
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+21,25d20
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+23,27d22
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+19,23d18
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+20,24d19
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+19,23d18
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+18,22d17
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+20,24d19
+< Warning message:
+< `aes_()` was deprecated in ggplot2 3.0.0.
+< ℹ Please use tidy evaluation idioms with `aes()`
+< ℹ The deprecated feature was likely used in the ggtree package.
+<   Please report the issue at <https://github.com/YuLab-SMU/ggtree/issues>. 
+ [193s/89s] NOTE
+* checking PDF version of manual ... [8s/31s] OK
+* checking HTML version of manual ... OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 ERROR, 2 NOTEs
