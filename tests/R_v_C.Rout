@@ -1,5 +1,5 @@
 
-R version 4.5.1 (2025-06-13) -- "Great Square Root"
+R version 4.5.2 (2025-10-31) -- "[Not] Part in a Rumble"
 Copyright (C) 2025 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu
 
@@ -109,16 +109,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-   3.02    0.00    3.02 
+  2.836   0.005   2.841 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.072   0.001   0.075 
+  0.072   0.003   0.075 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.307   0.001   0.306 
+  0.291   0.000   0.292 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.014   0.001   0.013 
+  0.012   0.000   0.012 
 > 
 > dev.off()
 null device 
