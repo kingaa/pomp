@@ -25,11 +25,11 @@ Help pages detailing each estimation algorithm are provided.
 \link[=elementary_algorithms]{elementary algorithms}.
 
 More on \pkg{pomp} estimation algorithms:
-\code{\link{abc}()},
-\code{\link{bsmc2}()},
-\code{\link{mif2}()},
+\code{\link[=abc]{abc()}},
+\code{\link[=bsmc2]{bsmc2()}},
+\code{\link[=mif2]{mif2()}},
 \code{\link{nlf}},
-\code{\link{pmcmc}()},
+\code{\link[=pmcmc]{pmcmc()}},
 \code{\link{pomp-package}},
 \code{\link{probe_match}},
 \code{\link{spect_match}}

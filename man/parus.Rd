@@ -49,7 +49,7 @@ More data sets provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{bsflu}},
 \code{\link{childhood_disease_data}},
-\code{\link{dacca}()},
+\code{\link[=dacca]{dacca()}},
 \code{\link{ebola}}
 }
 \concept{pomp datasets}

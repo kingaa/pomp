@@ -34,7 +34,7 @@ if (require(tidyr) && require(ggplot2)) {
 More data sets provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{childhood_disease_data}},
-\code{\link{dacca}()},
+\code{\link[=dacca]{dacca()}},
 \code{\link{ebola}},
 \code{\link{parus}}
 }

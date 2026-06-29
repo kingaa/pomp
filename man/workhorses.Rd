@@ -31,20 +31,20 @@ They include \describe{
 \link[=estimation_algorithms]{estimation algorithms}
 
 More on \pkg{pomp} workhorse functions:
-\code{\link{dinit}()},
-\code{\link{dmeasure}()},
-\code{\link{dprior}()},
-\code{\link{dprocess}()},
-\code{\link{emeasure}()},
-\code{\link{flow}()},
-\code{\link{partrans}()},
+\code{\link[=dinit]{dinit()}},
+\code{\link[=dmeasure]{dmeasure()}},
+\code{\link[=dprior]{dprior()}},
+\code{\link[=dprocess]{dprocess()}},
+\code{\link[=emeasure]{emeasure()}},
+\code{\link[=flow]{flow()}},
+\code{\link[=partrans]{partrans()}},
 \code{\link{pomp-package}},
-\code{\link{rinit}()},
-\code{\link{rmeasure}()},
-\code{\link{rprior}()},
-\code{\link{rprocess}()},
-\code{\link{skeleton}()},
-\code{\link{vmeasure}()}
+\code{\link[=rinit]{rinit()}},
+\code{\link[=rmeasure]{rmeasure()}},
+\code{\link[=rprior]{rprior()}},
+\code{\link[=rprocess]{rprocess()}},
+\code{\link[=skeleton]{skeleton()}},
+\code{\link[=vmeasure]{vmeasure()}}
 }
 \author{
 Aaron A. King

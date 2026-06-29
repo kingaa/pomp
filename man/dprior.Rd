@@ -31,27 +31,27 @@ Evaluates the prior probability density.
 Specification of the prior density evaluator: \link{prior_spec}
 
 More on \pkg{pomp} workhorse functions:
-\code{\link{dinit}()},
-\code{\link{dmeasure}()},
-\code{\link{dprocess}()},
-\code{\link{emeasure}()},
-\code{\link{flow}()},
-\code{\link{partrans}()},
+\code{\link[=dinit]{dinit()}},
+\code{\link[=dmeasure]{dmeasure()}},
+\code{\link[=dprocess]{dprocess()}},
+\code{\link[=emeasure]{emeasure()}},
+\code{\link[=flow]{flow()}},
+\code{\link[=partrans]{partrans()}},
 \code{\link{pomp-package}},
-\code{\link{rinit}()},
-\code{\link{rmeasure}()},
-\code{\link{rprior}()},
-\code{\link{rprocess}()},
-\code{\link{skeleton}()},
-\code{\link{vmeasure}()},
+\code{\link[=rinit]{rinit()}},
+\code{\link[=rmeasure]{rmeasure()}},
+\code{\link[=rprior]{rprior()}},
+\code{\link[=rprocess]{rprocess()}},
+\code{\link[=skeleton]{skeleton()}},
+\code{\link[=vmeasure]{vmeasure()}},
 \code{\link{workhorses}}
 
 More on Bayesian methods:
-\code{\link{abc}()},
-\code{\link{bsmc2}()},
-\code{\link{pmcmc}()},
+\code{\link[=abc]{abc()}},
+\code{\link[=bsmc2]{bsmc2()}},
+\code{\link[=pmcmc]{pmcmc()}},
 \code{\link{prior_spec}},
-\code{\link{rprior}()}
+\code{\link[=rprior]{rprior()}}
 }
 \concept{Bayesian methods}
 \concept{extending the pomp package}

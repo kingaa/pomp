@@ -47,7 +47,7 @@ Visit the package homepage to view the \href{https://kingaa.github.io/pomp/C_API
 
 \seealso{
 More on implementing POMP models:
-\code{\link{Csnippet}},
+\code{\link[=Csnippet]{Csnippet()}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},
 \code{\link{covariates}},
@@ -56,7 +56,7 @@ More on implementing POMP models:
 \code{\link{dprocess_spec}},
 \code{\link{emeasure_spec}},
 \code{\link{eulermultinom}},
-\code{\link{parameter_trans}()},
+\code{\link[=parameter_trans]{parameter_trans()}},
 \code{\link{pomp-package}},
 \code{\link{pomp_constructor}},
 \code{\link{prior_spec}},

@@ -146,12 +146,12 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 More on \pkg{pomp} elementary algorithms:
 \code{\link{elementary_algorithms}},
 \code{\link{kalman}},
-\code{\link{pfilter}()},
+\code{\link[=pfilter]{pfilter()}},
 \code{\link{pomp-package}},
-\code{\link{probe}()},
-\code{\link{spect}()},
-\code{\link{trajectory}()},
-\code{\link{wpfilter}()}
+\code{\link[=probe]{probe()}},
+\code{\link[=spect]{spect()}},
+\code{\link[=trajectory]{trajectory()}},
+\code{\link[=wpfilter]{wpfilter()}}
 }
 \author{
 Aaron A. King

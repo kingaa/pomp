@@ -116,7 +116,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 \code{\link{dprior}} \code{\link{rprior}}
 
 More on implementing POMP models:
-\code{\link{Csnippet}},
+\code{\link[=Csnippet]{Csnippet()}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},
 \code{\link{betabinomial}},
@@ -126,7 +126,7 @@ More on implementing POMP models:
 \code{\link{dprocess_spec}},
 \code{\link{emeasure_spec}},
 \code{\link{eulermultinom}},
-\code{\link{parameter_trans}()},
+\code{\link[=parameter_trans]{parameter_trans()}},
 \code{\link{pomp-package}},
 \code{\link{pomp_constructor}},
 \code{\link{rinit_spec}},
@@ -138,11 +138,11 @@ More on implementing POMP models:
 \code{\link{vmeasure_spec}}
 
 More on Bayesian methods:
-\code{\link{abc}()},
-\code{\link{bsmc2}()},
-\code{\link{dprior}()},
-\code{\link{pmcmc}()},
-\code{\link{rprior}()}
+\code{\link[=abc]{abc()}},
+\code{\link[=bsmc2]{bsmc2()}},
+\code{\link[=dprior]{dprior()}},
+\code{\link[=pmcmc]{pmcmc()}},
+\code{\link[=rprior]{rprior()}}
 }
 \concept{Bayesian methods}
 \concept{implementation information}

@@ -224,25 +224,25 @@ On the other hand, if one retrieves a stored objective function from a file, or 
 \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 
 More on \pkg{pomp} estimation algorithms:
-\code{\link{abc}()},
-\code{\link{bsmc2}()},
+\code{\link[=abc]{abc()}},
+\code{\link[=bsmc2]{bsmc2()}},
 \code{\link{estimation_algorithms}},
-\code{\link{mif2}()},
+\code{\link[=mif2]{mif2()}},
 \code{\link{nlf}},
-\code{\link{pmcmc}()},
+\code{\link[=pmcmc]{pmcmc()}},
 \code{\link{pomp-package}},
 \code{\link{probe_match}}
 
 More on methods based on summary statistics:
-\code{\link{abc}()},
+\code{\link[=abc]{abc()}},
 \code{\link{basic_probes}},
 \code{\link{nlf}},
-\code{\link{probe}()},
+\code{\link[=probe]{probe()}},
 \code{\link{probe_match}},
-\code{\link{spect}()}
+\code{\link[=spect]{spect()}}
 
 More on maximization-based estimation methods:
-\code{\link{mif2}()},
+\code{\link[=mif2]{mif2()}},
 \code{\link{nlf}},
 \code{\link{probe_match}},
 \code{\link{traj_match}}

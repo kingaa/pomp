@@ -161,31 +161,31 @@ More on \pkg{pomp} elementary algorithms:
 \code{\link{elementary_algorithms}},
 \code{\link{kalman}},
 \code{\link{pomp-package}},
-\code{\link{probe}()},
-\code{\link{simulate}()},
-\code{\link{spect}()},
-\code{\link{trajectory}()},
-\code{\link{wpfilter}()}
+\code{\link[=probe]{probe()}},
+\code{\link[=simulate]{simulate()}},
+\code{\link[=spect]{spect()}},
+\code{\link[=trajectory]{trajectory()}},
+\code{\link[=wpfilter]{wpfilter()}}
 
 More on sequential Monte Carlo methods:
-\code{\link{bsmc2}()},
-\code{\link{cond_logLik}()},
-\code{\link{eff_sample_size}()},
-\code{\link{filter_mean}()},
-\code{\link{filter_traj}()},
+\code{\link[=bsmc2]{bsmc2()}},
+\code{\link[=cond_logLik]{cond_logLik()}},
+\code{\link[=eff_sample_size]{eff_sample_size()}},
+\code{\link[=filter_mean]{filter_mean()}},
+\code{\link[=filter_traj]{filter_traj()}},
 \code{\link{kalman}},
-\code{\link{mif2}()},
-\code{\link{pmcmc}()},
-\code{\link{pred_mean}()},
-\code{\link{pred_var}()},
-\code{\link{saved_states}()},
-\code{\link{wpfilter}()}
+\code{\link[=mif2]{mif2()}},
+\code{\link[=pmcmc]{pmcmc()}},
+\code{\link[=pred_mean]{pred_mean()}},
+\code{\link[=pred_var]{pred_var()}},
+\code{\link[=saved_states]{saved_states()}},
+\code{\link[=wpfilter]{wpfilter()}}
 
 More on full-information (i.e., likelihood-based) methods:
-\code{\link{bsmc2}()},
-\code{\link{mif2}()},
-\code{\link{pmcmc}()},
-\code{\link{wpfilter}()}
+\code{\link[=bsmc2]{bsmc2()}},
+\code{\link[=mif2]{mif2()}},
+\code{\link[=pmcmc]{pmcmc()}},
+\code{\link[=wpfilter]{wpfilter()}}
 }
 \author{
 Aaron A. King

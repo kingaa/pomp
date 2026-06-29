@@ -40,7 +40,7 @@ Help pages detailing each basic model component are provided.
 \link[=estimation_algorithms]{estimation algorithms}.
 
 More on implementing POMP models:
-\code{\link{Csnippet}},
+\code{\link[=Csnippet]{Csnippet()}},
 \code{\link{accumvars}},
 \code{\link{betabinomial}},
 \code{\link{covariates}},
@@ -49,7 +49,7 @@ More on implementing POMP models:
 \code{\link{dprocess_spec}},
 \code{\link{emeasure_spec}},
 \code{\link{eulermultinom}},
-\code{\link{parameter_trans}()},
+\code{\link[=parameter_trans]{parameter_trans()}},
 \code{\link{pomp-package}},
 \code{\link{pomp_constructor}},
 \code{\link{prior_spec}},

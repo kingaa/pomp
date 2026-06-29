@@ -171,16 +171,16 @@ In the case of a continuous-time system, the deterministic skeleton is a vector-
 More on \pkg{pomp} elementary algorithms:
 \code{\link{elementary_algorithms}},
 \code{\link{kalman}},
-\code{\link{pfilter}()},
+\code{\link[=pfilter]{pfilter()}},
 \code{\link{pomp-package}},
-\code{\link{probe}()},
-\code{\link{simulate}()},
-\code{\link{spect}()},
-\code{\link{wpfilter}()}
+\code{\link[=probe]{probe()}},
+\code{\link[=simulate]{simulate()}},
+\code{\link[=spect]{spect()}},
+\code{\link[=wpfilter]{wpfilter()}}
 
 More on methods for deterministic process models:
-\code{\link{flow}()},
-\code{\link{skeleton}()},
+\code{\link[=flow]{flow()}},
+\code{\link[=skeleton]{skeleton()}},
 \code{\link{skeleton_spec}},
 \code{\link{traj_match}}
 }

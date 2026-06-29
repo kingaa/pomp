@@ -1,6 +1,6 @@
 
-R version 4.5.2 (2025-10-31) -- "[Not] Part in a Rumble"
-Copyright (C) 2025 The R Foundation for Statistical Computing
+R version 4.6.1 (2026-06-24) -- "Happy Hop"
+Copyright (C) 2026 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -109,16 +109,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  2.836   0.005   2.841 
+  3.584   0.004   3.589 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.072   0.003   0.075 
+  0.086   0.006   0.091 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.291   0.000   0.292 
+  0.352   0.000   0.352 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.012   0.000   0.012 
+  0.015   0.000   0.015 
 > 
 > dev.off()
 null device 

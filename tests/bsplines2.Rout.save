@@ -1,6 +1,6 @@
 
-R version 4.5.2 (2025-10-31) -- "[Not] Part in a Rumble"
-Copyright (C) 2025 The R Foundation for Statistical Computing
+R version 4.6.1 (2026-06-24) -- "Happy Hop"
+Copyright (C) 2026 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -117,8 +117,12 @@ The following objects are masked from 'package:base':
 +   group_by(name) |>
 +   mutate(value=value-value[1]) |>
 +   ungroup() -> x
-`summarise()` has grouped output by 'name'. You can override using the
-`.groups` argument.
+`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by name and time.
+ℹ Output is grouped by name.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(name, time))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.
 > 
 > dat |>
 +   bind_rows(x) |>

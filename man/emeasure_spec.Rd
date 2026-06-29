@@ -56,7 +56,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 \code{\link{emeasure}}
 
 More on implementing POMP models:
-\code{\link{Csnippet}},
+\code{\link[=Csnippet]{Csnippet()}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},
 \code{\link{betabinomial}},
@@ -65,7 +65,7 @@ More on implementing POMP models:
 \code{\link{dmeasure_spec}},
 \code{\link{dprocess_spec}},
 \code{\link{eulermultinom}},
-\code{\link{parameter_trans}()},
+\code{\link[=parameter_trans]{parameter_trans()}},
 \code{\link{pomp-package}},
 \code{\link{pomp_constructor}},
 \code{\link{prior_spec}},

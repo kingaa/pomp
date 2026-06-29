@@ -110,38 +110,38 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 \seealso{
 More on Bayesian methods:
-\code{\link{abc}()},
-\code{\link{dprior}()},
-\code{\link{pmcmc}()},
+\code{\link[=abc]{abc()}},
+\code{\link[=dprior]{dprior()}},
+\code{\link[=pmcmc]{pmcmc()}},
 \code{\link{prior_spec}},
-\code{\link{rprior}()}
+\code{\link[=rprior]{rprior()}}
 
 More on full-information (i.e., likelihood-based) methods:
-\code{\link{mif2}()},
-\code{\link{pfilter}()},
-\code{\link{pmcmc}()},
-\code{\link{wpfilter}()}
+\code{\link[=mif2]{mif2()}},
+\code{\link[=pfilter]{pfilter()}},
+\code{\link[=pmcmc]{pmcmc()}},
+\code{\link[=wpfilter]{wpfilter()}}
 
 More on sequential Monte Carlo methods:
-\code{\link{cond_logLik}()},
-\code{\link{eff_sample_size}()},
-\code{\link{filter_mean}()},
-\code{\link{filter_traj}()},
+\code{\link[=cond_logLik]{cond_logLik()}},
+\code{\link[=eff_sample_size]{eff_sample_size()}},
+\code{\link[=filter_mean]{filter_mean()}},
+\code{\link[=filter_traj]{filter_traj()}},
 \code{\link{kalman}},
-\code{\link{mif2}()},
-\code{\link{pfilter}()},
-\code{\link{pmcmc}()},
-\code{\link{pred_mean}()},
-\code{\link{pred_var}()},
-\code{\link{saved_states}()},
-\code{\link{wpfilter}()}
+\code{\link[=mif2]{mif2()}},
+\code{\link[=pfilter]{pfilter()}},
+\code{\link[=pmcmc]{pmcmc()}},
+\code{\link[=pred_mean]{pred_mean()}},
+\code{\link[=pred_var]{pred_var()}},
+\code{\link[=saved_states]{saved_states()}},
+\code{\link[=wpfilter]{wpfilter()}}
 
 More on \pkg{pomp} estimation algorithms:
-\code{\link{abc}()},
+\code{\link[=abc]{abc()}},
 \code{\link{estimation_algorithms}},
-\code{\link{mif2}()},
+\code{\link[=mif2]{mif2()}},
 \code{\link{nlf}},
-\code{\link{pmcmc}()},
+\code{\link[=pmcmc]{pmcmc()}},
 \code{\link{pomp-package}},
 \code{\link{probe_match}},
 \code{\link{spect_match}}

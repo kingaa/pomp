@@ -106,7 +106,7 @@ Useful links:
 
 
 More on implementing POMP models:
-\code{\link{Csnippet}},
+\code{\link[=Csnippet]{Csnippet()}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},
 \code{\link{betabinomial}},
@@ -116,7 +116,7 @@ More on implementing POMP models:
 \code{\link{dprocess_spec}},
 \code{\link{emeasure_spec}},
 \code{\link{eulermultinom}},
-\code{\link{parameter_trans}()},
+\code{\link[=parameter_trans]{parameter_trans()}},
 \code{\link{pomp_constructor}},
 \code{\link{prior_spec}},
 \code{\link{rinit_spec}},
@@ -128,40 +128,40 @@ More on implementing POMP models:
 \code{\link{vmeasure_spec}}
 
 More on \pkg{pomp} workhorse functions:
-\code{\link{dinit}()},
-\code{\link{dmeasure}()},
-\code{\link{dprior}()},
-\code{\link{dprocess}()},
-\code{\link{emeasure}()},
-\code{\link{flow}()},
-\code{\link{partrans}()},
-\code{\link{rinit}()},
-\code{\link{rmeasure}()},
-\code{\link{rprior}()},
-\code{\link{rprocess}()},
-\code{\link{skeleton}()},
-\code{\link{vmeasure}()},
+\code{\link[=dinit]{dinit()}},
+\code{\link[=dmeasure]{dmeasure()}},
+\code{\link[=dprior]{dprior()}},
+\code{\link[=dprocess]{dprocess()}},
+\code{\link[=emeasure]{emeasure()}},
+\code{\link[=flow]{flow()}},
+\code{\link[=partrans]{partrans()}},
+\code{\link[=rinit]{rinit()}},
+\code{\link[=rmeasure]{rmeasure()}},
+\code{\link[=rprior]{rprior()}},
+\code{\link[=rprocess]{rprocess()}},
+\code{\link[=skeleton]{skeleton()}},
+\code{\link[=vmeasure]{vmeasure()}},
 \code{\link{workhorses}}
 
 More on \pkg{pomp} estimation algorithms:
-\code{\link{abc}()},
-\code{\link{bsmc2}()},
+\code{\link[=abc]{abc()}},
+\code{\link[=bsmc2]{bsmc2()}},
 \code{\link{estimation_algorithms}},
-\code{\link{mif2}()},
+\code{\link[=mif2]{mif2()}},
 \code{\link{nlf}},
-\code{\link{pmcmc}()},
+\code{\link[=pmcmc]{pmcmc()}},
 \code{\link{probe_match}},
 \code{\link{spect_match}}
 
 More on \pkg{pomp} elementary algorithms:
 \code{\link{elementary_algorithms}},
 \code{\link{kalman}},
-\code{\link{pfilter}()},
-\code{\link{probe}()},
-\code{\link{simulate}()},
-\code{\link{spect}()},
-\code{\link{trajectory}()},
-\code{\link{wpfilter}()}
+\code{\link[=pfilter]{pfilter()}},
+\code{\link[=probe]{probe()}},
+\code{\link[=simulate]{simulate()}},
+\code{\link[=spect]{spect()}},
+\code{\link[=trajectory]{trajectory()}},
+\code{\link[=wpfilter]{wpfilter()}}
 }
 \author{
 Aaron A. King

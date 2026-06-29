@@ -54,19 +54,19 @@ If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or log like
 Specification of the measurement density evaluator: \link{dmeasure_spec}
 
 More on \pkg{pomp} workhorse functions:
-\code{\link{dinit}()},
-\code{\link{dprior}()},
-\code{\link{dprocess}()},
-\code{\link{emeasure}()},
-\code{\link{flow}()},
-\code{\link{partrans}()},
+\code{\link[=dinit]{dinit()}},
+\code{\link[=dprior]{dprior()}},
+\code{\link[=dprocess]{dprocess()}},
+\code{\link[=emeasure]{emeasure()}},
+\code{\link[=flow]{flow()}},
+\code{\link[=partrans]{partrans()}},
 \code{\link{pomp-package}},
-\code{\link{rinit}()},
-\code{\link{rmeasure}()},
-\code{\link{rprior}()},
-\code{\link{rprocess}()},
-\code{\link{skeleton}()},
-\code{\link{vmeasure}()},
+\code{\link[=rinit]{rinit()}},
+\code{\link[=rmeasure]{rmeasure()}},
+\code{\link[=rprior]{rprior()}},
+\code{\link[=rprocess]{rprocess()}},
+\code{\link[=skeleton]{skeleton()}},
+\code{\link[=vmeasure]{vmeasure()}},
 \code{\link{workhorses}}
 }
 \concept{extending the pomp package}

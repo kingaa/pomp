@@ -157,31 +157,31 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 More on methods based on summary statistics:
 \code{\link{basic_probes}},
 \code{\link{nlf}},
-\code{\link{probe}()},
+\code{\link[=probe]{probe()}},
 \code{\link{probe_match}},
-\code{\link{spect}()},
+\code{\link[=spect]{spect()}},
 \code{\link{spect_match}}
 
 More on \pkg{pomp} estimation algorithms:
-\code{\link{bsmc2}()},
+\code{\link[=bsmc2]{bsmc2()}},
 \code{\link{estimation_algorithms}},
-\code{\link{mif2}()},
+\code{\link[=mif2]{mif2()}},
 \code{\link{nlf}},
-\code{\link{pmcmc}()},
+\code{\link[=pmcmc]{pmcmc()}},
 \code{\link{pomp-package}},
 \code{\link{probe_match}},
 \code{\link{spect_match}}
 
 More on Markov chain Monte Carlo methods:
-\code{\link{pmcmc}()},
+\code{\link[=pmcmc]{pmcmc()}},
 \code{\link{proposals}}
 
 More on Bayesian methods:
-\code{\link{bsmc2}()},
-\code{\link{dprior}()},
-\code{\link{pmcmc}()},
+\code{\link[=bsmc2]{bsmc2()}},
+\code{\link[=dprior]{dprior()}},
+\code{\link[=pmcmc]{pmcmc()}},
 \code{\link{prior_spec}},
-\code{\link{rprior}()}
+\code{\link[=rprior]{rprior()}}
 }
 \author{
 Edward L. Ionides, Aaron A. King

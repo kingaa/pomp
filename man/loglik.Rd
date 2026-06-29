@@ -69,23 +69,23 @@ When \code{object} is an NLF objective function, i.e., the result of a call to \
 Extract the estimated log likelihood (or related quantity) from a fitted model.
 }
 \seealso{
-Other extraction methods: 
-\code{\link{coef}()},
-\code{\link{cond_logLik}()},
-\code{\link{covmat}()},
-\code{\link{eff_sample_size}()},
-\code{\link{filter_mean}()},
-\code{\link{filter_traj}()},
-\code{\link{forecast}()},
-\code{\link{obs}()},
-\code{\link{pred_mean}()},
-\code{\link{pred_var}()},
-\code{\link{saved_states}()},
-\code{\link{spy}()},
-\code{\link{states}()},
-\code{\link{summary}()},
-\code{\link{time}()},
-\code{\link{timezero}()},
-\code{\link{traces}()}
+Other extraction methods:
+\code{\link[=coef]{coef()}},
+\code{\link[=cond_logLik]{cond_logLik()}},
+\code{\link[=covmat]{covmat()}},
+\code{\link[=eff_sample_size]{eff_sample_size()}},
+\code{\link[=filter_mean]{filter_mean()}},
+\code{\link[=filter_traj]{filter_traj()}},
+\code{\link[=forecast]{forecast()}},
+\code{\link[=obs]{obs()}},
+\code{\link[=pred_mean]{pred_mean()}},
+\code{\link[=pred_var]{pred_var()}},
+\code{\link[=saved_states]{saved_states()}},
+\code{\link[=spy]{spy()}},
+\code{\link[=states]{states()}},
+\code{\link[=summary]{summary()}},
+\code{\link[=time]{time()}},
+\code{\link[=timezero]{timezero()}},
+\code{\link[=traces]{traces()}}
 }
 \concept{extraction methods}

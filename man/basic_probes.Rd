@@ -102,11 +102,11 @@ These can be used directly and as templates for custom probes.
 }
 \seealso{
 More on methods based on summary statistics:
-\code{\link{abc}()},
+\code{\link[=abc]{abc()}},
 \code{\link{nlf}},
-\code{\link{probe}()},
+\code{\link[=probe]{probe()}},
 \code{\link{probe_match}},
-\code{\link{spect}()},
+\code{\link[=spect]{spect()}},
 \code{\link{spect_match}}
 }
 \author{

@@ -109,14 +109,14 @@ available on the \href{https://kingaa.github.io/pomp/}{package website}.
 More examples provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{childhood_disease_data}},
-\code{\link{dacca}()},
+\code{\link[=dacca]{dacca()}},
 \code{\link{ebola}},
-\code{\link{gompertz}()},
-\code{\link{ou2}()},
+\code{\link[=gompertz]{gompertz()}},
+\code{\link[=ou2]{ou2()}},
 \code{\link{pomp_examples}},
-\code{\link{ricker}()},
-\code{\link{rw2}()},
-\code{\link{verhulst}()}
+\code{\link[=ricker]{ricker()}},
+\code{\link[=rw2]{rw2()}},
+\code{\link[=verhulst]{verhulst()}}
 }
 \concept{pomp examples}
 \keyword{models}

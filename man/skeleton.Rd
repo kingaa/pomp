@@ -50,26 +50,26 @@ it does not iterate or integrate (see \code{\link{flow}} and \code{\link{traject
 Specification of the deterministic skeleton: \link{skeleton_spec}
 
 More on \pkg{pomp} workhorse functions:
-\code{\link{dinit}()},
-\code{\link{dmeasure}()},
-\code{\link{dprior}()},
-\code{\link{dprocess}()},
-\code{\link{emeasure}()},
-\code{\link{flow}()},
-\code{\link{partrans}()},
+\code{\link[=dinit]{dinit()}},
+\code{\link[=dmeasure]{dmeasure()}},
+\code{\link[=dprior]{dprior()}},
+\code{\link[=dprocess]{dprocess()}},
+\code{\link[=emeasure]{emeasure()}},
+\code{\link[=flow]{flow()}},
+\code{\link[=partrans]{partrans()}},
 \code{\link{pomp-package}},
-\code{\link{rinit}()},
-\code{\link{rmeasure}()},
-\code{\link{rprior}()},
-\code{\link{rprocess}()},
-\code{\link{vmeasure}()},
+\code{\link[=rinit]{rinit()}},
+\code{\link[=rmeasure]{rmeasure()}},
+\code{\link[=rprior]{rprior()}},
+\code{\link[=rprocess]{rprocess()}},
+\code{\link[=vmeasure]{vmeasure()}},
 \code{\link{workhorses}}
 
 More on methods for deterministic process models:
-\code{\link{flow}()},
+\code{\link[=flow]{flow()}},
 \code{\link{skeleton_spec}},
 \code{\link{traj_match}},
-\code{\link{trajectory}()}
+\code{\link[=trajectory]{trajectory()}}
 }
 \concept{deterministic methods}
 \concept{extending the pomp package}

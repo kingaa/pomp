@@ -244,7 +244,7 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 }
 \seealso{
 More on implementing POMP models:
-\code{\link{Csnippet}},
+\code{\link[=Csnippet]{Csnippet()}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},
 \code{\link{betabinomial}},
@@ -254,7 +254,7 @@ More on implementing POMP models:
 \code{\link{dprocess_spec}},
 \code{\link{emeasure_spec}},
 \code{\link{eulermultinom}},
-\code{\link{parameter_trans}()},
+\code{\link[=parameter_trans]{parameter_trans()}},
 \code{\link{pomp-package}},
 \code{\link{prior_spec}},
 \code{\link{rinit_spec}},

@@ -170,13 +170,13 @@ On the other hand, if one retrieves a stored objective function from a file, or 
 \code{\link[stats]{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 
 More on methods for deterministic process models:
-\code{\link{flow}()},
-\code{\link{skeleton}()},
+\code{\link[=flow]{flow()}},
+\code{\link[=skeleton]{skeleton()}},
 \code{\link{skeleton_spec}},
-\code{\link{trajectory}()}
+\code{\link[=trajectory]{trajectory()}}
 
 More on maximization-based estimation methods:
-\code{\link{mif2}()},
+\code{\link[=mif2]{mif2()}},
 \code{\link{nlf}},
 \code{\link{probe_match}},
 \code{\link{spect_match}}

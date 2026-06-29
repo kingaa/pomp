@@ -64,7 +64,7 @@ The type of extrapolation performed will be constant or linear according to the 
 
 \seealso{
 More on implementing POMP models:
-\code{\link{Csnippet}},
+\code{\link[=Csnippet]{Csnippet()}},
 \code{\link{accumvars}},
 \code{\link{basic_components}},
 \code{\link{betabinomial}},
@@ -73,7 +73,7 @@ More on implementing POMP models:
 \code{\link{dprocess_spec}},
 \code{\link{emeasure_spec}},
 \code{\link{eulermultinom}},
-\code{\link{parameter_trans}()},
+\code{\link[=parameter_trans]{parameter_trans()}},
 \code{\link{pomp-package}},
 \code{\link{pomp_constructor}},
 \code{\link{prior_spec}},
@@ -87,7 +87,7 @@ More on implementing POMP models:
 
 More on interpolation:
 \code{\link{bsplines}},
-\code{\link{lookup}()}
+\code{\link[=lookup]{lookup()}}
 }
 \concept{covariates}
 \concept{implementation information}

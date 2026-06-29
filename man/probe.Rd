@@ -145,19 +145,19 @@ To circumvent this problem, use the \code{\link[=pomp]{cdir}} and \code{\link[=p
 More on \pkg{pomp} elementary algorithms:
 \code{\link{elementary_algorithms}},
 \code{\link{kalman}},
-\code{\link{pfilter}()},
+\code{\link[=pfilter]{pfilter()}},
 \code{\link{pomp-package}},
-\code{\link{simulate}()},
-\code{\link{spect}()},
-\code{\link{trajectory}()},
-\code{\link{wpfilter}()}
+\code{\link[=simulate]{simulate()}},
+\code{\link[=spect]{spect()}},
+\code{\link[=trajectory]{trajectory()}},
+\code{\link[=wpfilter]{wpfilter()}}
 
 More on methods based on summary statistics:
-\code{\link{abc}()},
+\code{\link[=abc]{abc()}},
 \code{\link{basic_probes}},
 \code{\link{nlf}},
 \code{\link{probe_match}},
-\code{\link{spect}()},
+\code{\link[=spect]{spect()}},
 \code{\link{spect_match}}
 }
 \author{

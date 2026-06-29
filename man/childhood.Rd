@@ -55,21 +55,21 @@ plot(reports~date,data=ewcitmeas,subset=city=="Liverpool",type='l')
 More data sets provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{bsflu}},
-\code{\link{dacca}()},
+\code{\link[=dacca]{dacca()}},
 \code{\link{ebola}},
 \code{\link{parus}}
 
 More examples provided with \pkg{pomp}:
 \code{\link{blowflies}},
 \code{\link{compartmental_models}},
-\code{\link{dacca}()},
+\code{\link[=dacca]{dacca()}},
 \code{\link{ebola}},
-\code{\link{gompertz}()},
-\code{\link{ou2}()},
+\code{\link[=gompertz]{gompertz()}},
+\code{\link[=ou2]{ou2()}},
 \code{\link{pomp_examples}},
-\code{\link{ricker}()},
-\code{\link{rw2}()},
-\code{\link{verhulst}()}
+\code{\link[=ricker]{ricker()}},
+\code{\link[=rw2]{rw2()}},
+\code{\link[=verhulst]{verhulst()}}
 }
 \concept{pomp datasets}
 \concept{pomp examples}
