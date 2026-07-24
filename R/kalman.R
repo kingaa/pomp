@@ -6,8 +6,7 @@
 ##' @rdname kalman
 ##' @include pomp_class.R pomp.R workhorses.R
 ##' @importFrom stats dnorm rnorm
-##' @aliases enkf,ANY-method enkf,missing-method
-##' eakf,ANY-method eakf,missing-method
+##' @aliases enkf,ANY-method enkf,missing-method eakf,ANY-method eakf,missing-method
 ##' @author Aaron A. King
 ##' @concept Kalman filter
 ##' @seealso \code{\link{kalmanFilter}}

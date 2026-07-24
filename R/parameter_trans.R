@@ -6,9 +6,7 @@
 ##' @rdname parameter_trans
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R pstop.R undefined.R
-##' @aliases parameter_trans,missing,missing-method
-##' parameter_trans,ANY,ANY-method parameter_trans,ANY,missing-method
-##' parameter_trans,NULL,NULL-method parameter_trans,missing,ANY-method
+##' @aliases parameter_trans,missing,missing-method parameter_trans,ANY,ANY-method parameter_trans,ANY,missing-method parameter_trans,NULL,NULL-method parameter_trans,missing,ANY-method
 ##' @family implementation information
 ##' @seealso \code{\link{partrans}}
 ##' @param toEst,fromEst procedures that perform transformation of model parameters to and from the estimation scale, respectively.

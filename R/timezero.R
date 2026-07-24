@@ -5,8 +5,7 @@
 ##' @name timezero
 ##' @rdname timezero
 ##' @docType methods
-##' @aliases timezero<- timezero,missing-method timezero,ANY-method
-##' timezero<-,missing-method timezero<-,ANY-method
+##' @aliases timezero<- timezero,missing-method timezero,ANY-method timezero<-,missing-method timezero<-,ANY-method
 ##' @family extraction methods
 ##' @return
 ##' the value of the zero time
