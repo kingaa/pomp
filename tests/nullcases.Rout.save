@@ -19,34 +19,38 @@ Type 'q()' to quit R.
 
 > library(pomp)
 > 
-> simulate(times=1:10,t0=0,
-+          statenames="x",
-+          obsnames="y",
-+          params=c(x_0=0),
-+          rprocess=onestep(function(...)c(x=1)),
-+          rmeasure=Csnippet("")
+> simulate(
++   t0=0,
++   times=1:10,
++   statenames="x",
++   obsnames="y",
++   params=c(x_0=0),
++   rprocess=onestep(function(...)c(x=1)),
++   rmeasure=Csnippet("")
 + ) -> s1
-> states(s1)
-    time
-name [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-   x    1    1    1    1    1    1    1    1    1     1
-> obs(s1)
-    time
-name [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-   y   NA   NA   NA   NA   NA   NA   NA   NA   NA    NA
+> x <- states(s1)
+> y <- obs(s1)
+> stopifnot(
++   all(x==1),
++   all(is.na(y)),
++   dim(x)==c(1,10),
++   dim(y)==c(1,10)
++ )
 > 
-> simulate(times=1:10,t0=0,
-+          statenames="x",
-+          params=c(x_0=0),
-+          rprocess=onestep(function(...)c(x=1))
+> simulate(
++   t0=0,
++   times=1:10,
++   statenames="x",
++   params=c(x_0=0),
++   rprocess=onestep(function(...)c(x=1))
 + ) -> s2
 Warning message:
 'rmeasure' unspecified: NAs generated. 
-> states(s2)
-    time
-name [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-   x    1    1    1    1    1    1    1    1    1     1
-> obs(s2)
-      time
-name   [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+> x <- states(s2)
+> y <- obs(s2)
+> stopifnot(
++   all(x==1),
++   dim(x)==c(1,10),
++   dim(y)==c(0,10)
++ )
 > 

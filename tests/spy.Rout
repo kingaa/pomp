@@ -163,8 +163,8 @@ params
 
 
 /* pomp C snippet file: nancy */
-/* Time: 2026-06-29 09:16:06.618 -0400 */
-/* Salt: F0F83CF239CA5207A6573D5A */
+/* Time: 2026-08-18 07:23:19.581 -0400 */
+/* Salt: 545C0149030D146DD53E9FCE */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -287,8 +287,8 @@ pomp object 'sir':
 
 
 /* pomp C snippet file: sir_source */
-/* Time: 2026-06-29 09:16:06.758 -0400 */
-/* Salt: D4E65C58E886AC6C3BFA978C */
+/* Time: 2026-08-18 07:23:19.666 -0400 */
+/* Salt: F459798EC21518E551B40A20 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -937,8 +937,8 @@ x1_0 x2_0   s1   s2  tau
 
 
 /* pomp C snippet file: rw2_source */
-/* Time: 2026-06-29 09:16:07.854 -0400 */
-/* Salt: 330F4DBEF2506CD8D2091E8C */
+/* Time: 2026-08-18 07:23:20.329 -0400 */
+/* Salt: F8A2BBB5A7ED61CA76993371 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1204,8 +1204,8 @@ name    birth susc.death infection inf.death recovery recov.death
 
 
 /* pomp C snippet file: sir2_source */
-/* Time: 2026-06-29 09:16:08.802 -0400 */
-/* Salt: C2255C327ED41EA353858DF5 */
+/* Time: 2026-08-18 07:23:20.839 -0400 */
+/* Salt: 96B36595038C42EE94B81859 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1853,7 +1853,7 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, userdata = list(x0 = as.dou
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_d4d33a6d99bd9d7c4afa3e0761ec6c2f'
+  - defined by a C snippet in library 'pomp_79233609b90ab8e4e03192875e298adc'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: <undefined>
 - process model density, dprocess: <default>
@@ -1874,9 +1874,9 @@ x_0   a
 - C snippet file  1 :
 
 
-/* pomp C snippet file: pomp_d4d33a6d99bd9d7c4afa3e0761ec6c2f */
-/* Time: 2026-06-29 09:16:09.815 -0400 */
-/* Salt: 7D1630D3B23BB5D0F8560E77 */
+/* pomp C snippet file: pomp_79233609b90ab8e4e03192875e298adc */
+/* Time: 2026-08-18 07:23:21.387 -0400 */
+/* Salt: 38D755269B01E2B18C5605FB */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1902,11 +1902,11 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
  
-void R_init_pomp_d4d33a6d99bd9d7c4afa3e0761ec6c2f (DllInfo *info) {
+void R_init_pomp_79233609b90ab8e4e03192875e298adc (DllInfo *info) {
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-  R_RegisterCCallable("pomp_d4d33a6d99bd9d7c4afa3e0761ec6c2f", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable("pomp_d4d33a6d99bd9d7c4afa3e0761ec6c2f", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-  R_RegisterCCallable("pomp_d4d33a6d99bd9d7c4afa3e0761ec6c2f", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_79233609b90ab8e4e03192875e298adc", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_79233609b90ab8e4e03192875e298adc", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_79233609b90ab8e4e03192875e298adc", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
   
 
 }
@@ -1933,13 +1933,13 @@ pomp object 'pomp(data = NULL, t0 = 0, times = 1:10, userdata = list(x0 = as.dou
 - covariates: <none>
 - initial state simulator, rinit: native function
   - name: '__pomp_rinit'
-  - defined by a C snippet in library 'pomp_3395432e4315095685961f3a7c6319e6'
+  - defined by a C snippet in library 'pomp_9ad935f7cc96e249b4587d5f240bfc51'
 - initial state density, dinit: <default>
 - process-model simulator, rprocess: Euler-method process-model simulator
   - timestep = 0.1 
   - step.fun: native function
   - name: '__pomp_stepfn'
-  - defined by a C snippet in library 'pomp_3395432e4315095685961f3a7c6319e6'
+  - defined by a C snippet in library 'pomp_9ad935f7cc96e249b4587d5f240bfc51'
 - process model density, dprocess: <default>
 - measurement model simulator, rmeasure: <default>
 - measurement model density, dmeasure: <default>
@@ -1958,9 +1958,9 @@ x_0   a
 - C snippet file  1 :
 
 
-/* pomp C snippet file: pomp_3395432e4315095685961f3a7c6319e6 */
-/* Time: 2026-06-29 09:16:09.907 -0400 */
-/* Salt: BF5C9992F7D8EDD2E8BBE92E */
+/* pomp C snippet file: pomp_9ad935f7cc96e249b4587d5f240bfc51 */
+/* Time: 2026-08-18 07:23:21.427 -0400 */
+/* Salt: 4C55E2234F1324DEC189C5EF */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h> 
@@ -1998,12 +1998,12 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;} 
 
  
-void R_init_pomp_3395432e4315095685961f3a7c6319e6 (DllInfo *info) {
+void R_init_pomp_9ad935f7cc96e249b4587d5f240bfc51 (DllInfo *info) {
   __pomp_get_userdata_double = (get_userdata_double_t *) R_GetCCallable("pomp","get_userdata_double");
-  R_RegisterCCallable("pomp_3395432e4315095685961f3a7c6319e6", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable("pomp_3395432e4315095685961f3a7c6319e6", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-  R_RegisterCCallable("pomp_3395432e4315095685961f3a7c6319e6", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-  R_RegisterCCallable("pomp_3395432e4315095685961f3a7c6319e6", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+  R_RegisterCCallable("pomp_9ad935f7cc96e249b4587d5f240bfc51", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable("pomp_9ad935f7cc96e249b4587d5f240bfc51", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+  R_RegisterCCallable("pomp_9ad935f7cc96e249b4587d5f240bfc51", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+  R_RegisterCCallable("pomp_9ad935f7cc96e249b4587d5f240bfc51", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
  X0 = *get_userdata_double("x0"); 
 
 }
