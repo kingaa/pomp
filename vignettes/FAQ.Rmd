@@ -81,7 +81,7 @@ Finally, feel free to [submit an issue](https://github.com/kingaa/pomp/issues).
 In doing so, display the error message you get and document how it arises.
 Please [follow the instructions in FAQ 1.1 above](#effective-request).
 
-The pomp developers have a goal of replacing all unhelpful error messages with helpful ones.
+The **pomp** developers have a goal of replacing all unhelpful error messages with helpful ones.
 By letting us know when messages are confusing or uninformative, you help us to make the package more usable.
 
 ## I am running a piece of **pomp** code I got from a guy, but I get errors. What is going on? {#old-code}
@@ -119,7 +119,7 @@ Usually, this warning arises because you are trying to install binaries from a r
 The preferred solution in this case is, again, to upgrade **R**, but if for some reason that is impossible or undesirable, you can always build the package from source using the source code retrieved from the [package website](https://kingaa.github.io/pomp/) or from one of the [CRAN mirrors](https://cran.r-project.org/mirrors.html).
 For more, see the [installation instructions](./install.html).
 
-To be clear: the statement that pomp will work for **R**(>=Y) is a guarantee that the code is compatible with those versions of **R**.
+To be clear: the statement that **pomp** will work for **R**(>=Y) is a guarantee that the code is compatible with those versions of **R**.
 It is not a promise that binaries will always be available for old versions of **R**.
 
 # Implementing POMP models.
@@ -216,7 +216,7 @@ obj |> pfilter(Np=1000) |> logLik()
 ## How do I deal with missing data? {#how-to-handle-missing-data}
 
 Missing data are a common complication.
-**pomp** can handle NAs in the data, but if it is needed, the measurement model probability density function, `dmeasure` must be written so as to deal with NAs appropriately.
+**pomp** can handle NAs in the data, but if it is needed, the measurement model probability density function, `dmeasure`, must be written so as to deal with NAs appropriately.
 For example, look at the following variant of [the SIR model describing the influenza outbreak in a boarding school](https://kingaa.github.io/sbied/stochsim/):
 
 ```{r}
@@ -295,7 +295,7 @@ dat |>
 
 In the above, to check for missing data, we use the `ISNA` macro, which is [part of **R**'s C API](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Missing-and-special-values).
 Note that the `dmeasure` returns a likelihood of 1 (log likelihood 0) for the missing data.
-[What's the probability of seeing something if you don't look?]
+[What is the probability of seeing something if you do not look?]
 When there is an observation, it returns a binomial likelihood as usual.
 
 Our simulations now fill in simulated values for the missing data,
@@ -504,7 +504,7 @@ $$p_k = \frac{\mu_k}{\sum\!\mu_i}\,\left(1-p_0\right),\qquad k=1,\dots,K.$$
 By way of shorthand, we say that $\Delta{n}=(\Delta{n_k})_{k=1}^K$ is *Euler-multinomially distributed* with size $N_t$, rates $\mu=(\mu_k)_{k=1}^K$, and time-step $\Delta{t}$ and we write
 $$\Delta{n} \sim \mathrm{Eulermultinom}\left(N_t,\mu,\Delta{t}\right).$$
 
-When constructing a POMP for a compartmental model using the Euler multinomial approximation, to write the rprocess basic component, one uses the `euler` plugin.
+When constructing a `pomp` object for a compartmental model using the Euler multinomial approximation, to write the rprocess basic component, one uses the `euler` plugin.
 One chooses the time step using the `delta.t` argument.
 In writing the `step.fun` C snippet, one needs *exactly one* call to `reulermultinom` for each compartment of the model.
 Using the notation above, one has to pack the $K$ rates $\mu_1,\dots,\mu_K$ into contiguous memory locations and retrieve the results in (a different set of) contiguous memory locations.
@@ -728,12 +728,12 @@ For example, it could be called `Beta` or `β` (if your compiler allows it) inst
 
 ## I get an error saying X "must be a function of the form" Y.  What does this mean?
 
-The error message displays the "prototype" of the function **pomp** expects.
+The error message displays the "signature" of the function **pomp** expects.
 For example, in the message
 ```{r eval=FALSE}
 Error : in 'sannbox': 'candidate.dist' must be a function of the form 'candidate.dist(par, temp, scale, ...)'.
 ```
-the prototype expected is `candidate.dist(par, temp, scale, ...)`.
+the signature expected is `candidate.dist(par, temp, scale, ...)`.
 This means that a function supplied to the `candidate.dist` argument must have at least the arguments `par`, `temp`, `scale`, and `...`.
 Note that the ellipses (`...`) are necessary.
 Similarly, the error message
@@ -754,7 +754,7 @@ Error : in 'dmeasure': variable 'y2' not found among the observables.
 ```
 or similar messages, wherein a named variable is not found among the parameters, state variables, covariates, or observables, arise when a C snippet-based [workhorse function](https://kingaa.github.io/manuals/pomp/html/workhorses.html), i.e., one that executes a basic model component, cannot find the named variable among the supplied parameters, state variables, covariates, or observables.
 Typically this means that either
-(a) the full vector of model parameters has been supplied neither via the `params` argument nor in the pomp object's `coef` slot;
+(a) the full vector of model parameters has been supplied neither via the `params` argument nor in the `pomp` object's `coef` slot;
 (b) a basic model component that computes state variables (e.g., `rinit` or `rprocess`) is not returning the full vector of state variables;
 (c) the covariate table does not contain the full set of covariates; or
 (d) some data variable is missing.
@@ -840,7 +840,7 @@ See the [`parameter_trans` manual page](https://kingaa.github.io/manuals/pomp/ht
 First, some background on how the iterated filtering (IF2) algorithm works. 
 As its name suggests, IF2 (implemented as `mif2` in **pomp**) essentially iterates a particle filter. 
 It does this `Nmif` times. 
-Crucially, however, it does this not using the exact model you've specified in your pomp object, which has parameters that are constant in time. 
+Crucially, however, it does this not using the exact model you've specified in your `pomp` object, which has parameters that are constant in time. 
 Instead, it filters a model in which the time-constant parameters have been replaced by parameters that take a random walk with intensities given by the `rw.sd` argument. 
 In other words, at each time-step, a random value (normally distributed in the current implementation) with mean zero and s.d. set by `rw.sd` is added to the parameter's value. 
 As the iterations proceed, the intensities are gradually drawn down (according to the "cooling schedule" specified by `cooling.type` and `cooling.factor.50`). 

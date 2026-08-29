@@ -977,13 +977,16 @@
   pages: "77&#x2013;91"
   doi: "https://doi.org/10.1016/j.tpb.2021.11.003"
 
-- key: King2024
+- key: King2026
   author: "A. A. King, Q. Lin, and E. L. Ionides"
-  year: "2024"
+  year: "2026"
   title: "Exact phylodynamic likelihood via structured Markov genealogy processes"
-  journal: "arXiv"
+  journal: "Theoretical Population Biology"
+  volume: "171"
+  pages: "79&#x2013;105"
   eprint: "2405.17032"
-  doi: "https://doi.org/10.48550/arxiv.2405.17032"
+  doi: "https://doi.org/10.1016/j.tpb.2026.07.002"
+  url: "https://github.com/kingaa/structured-genealogy-process-paper"
 
 - key: Knape2012
   author: "J. Knape and P. de Valpine"

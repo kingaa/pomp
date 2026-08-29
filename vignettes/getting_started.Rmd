@@ -201,8 +201,6 @@ We will illustrate this using some simple examples.
 ### Installing the package
 
 To get started, we must install **pomp**, if it is not already installed.
-This package cannot yet be downloaded from CRAN (though that will change in the near future).
-However, the latest version is always available at the package homepage on Github.
 See the [package website for installation instructions](https://kingaa.github.io/pomp/install.html).
 
 ### Important information for Windows and Mac users.
