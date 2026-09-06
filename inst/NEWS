@@ -1,5 +1,11 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _6._4._1:
+
+        • Some tests were adjusted to accommodate changes in R-devel.
+          Specifically, a long-standing bug in `rbinom` was fixed,
+          which changes the results of some ‘pomp’ calculations.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _6._3._1:
 
         • ‘coef’ can now extract parameters by name from a ‘listie’.

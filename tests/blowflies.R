@@ -21,7 +21,8 @@ stopifnot(
     ),
     coef(flies[[1]])
   ),
-  abs(logLik(pf)+1467.82)<0.05
+  getRversion() > "4.6.1" || abs(logLik(pf)+1467.82)<0.05,
+  getRversion() <= "4.6.1" || abs(logLik(pf)+1469.41)<0.05
 )
 
 plot(flies[[2]])
@@ -40,7 +41,8 @@ stopifnot(
     ),
     coef(flies[[2]])
   ),
-  abs(logLik(pf)+1473.66)<0.05
+  getRversion() > "4.6.1" || abs(logLik(pf)+1473.66)<0.05,
+  getRversion() <= "4.6.1" || abs(logLik(pf)+1475.56)<0.05
 )
 
 dev.off()

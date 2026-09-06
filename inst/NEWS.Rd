@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 6.4.1}{
+  \itemize{
+    \item Some tests were adjusted to accommodate changes in R-devel.
+    Specifically, a long-standing bug in `rbinom` was fixed, which changes the results of some \pkg{pomp} calculations.
+  }
+}
 \section{Changes in \pkg{pomp} version 6.3.1}{
   \itemize{
     \item \code{coef} can now extract parameters by name from a \sQuote{listie}.
