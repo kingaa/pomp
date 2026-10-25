@@ -67,4 +67,29 @@ po |>
     rprocess=discrete_time(function(r,N,...) c(N=r*N*exp(-N+rnorm(1))),delta.t=1)
   ) |> plot()
 
+## test agreement between pfilter and wpfilter
+## with zero-weight paraticles
+data.frame(
+  time=1:5,
+  y=0
+) |>
+  pfilter(
+    Np=100,
+    t0=0, times="time",
+    rinit=function(...) c(x=0),
+    rprocess=discrete_time(
+      function (x, ...)
+        c(x = x + rnorm(1))
+    ),
+    dmeasure=function (y, x, ..., log)
+      dunif(y,min=x-1,max=x+1,log=log)
+  ) |>
+  freeze(seed=396137959) -> pf1
+
+pf1 |>
+  wpfilter(Np=100,trigger=1,target=0) |>
+  freeze(seed=396137959) -> pf2
+
+stopifnot(all.equal(logLik(pf1),logLik(pf2)))
+
 dev.off()
