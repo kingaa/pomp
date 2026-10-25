@@ -162,9 +162,13 @@ SEXP wpfilter (SEXP X, SEXP Params, SEXP Weights, SEXP W, SEXP Trigger, SEXP Tar
 
     // compute target resampling weights
     for (k = 0, xw = REAL(W), xW = REAL(Weights); k < nreps; k++, xw++, xW++) {
-      *xw = *xW;
-      *xW *= target;
-      *xw = exp(*xw - *xW);
+      if (*xW == R_NegInf) {
+        *xw = 0;
+      } else {
+        *xw = *xW;
+        *xW *= target;
+        *xw = exp(*xw - *xW);
+      }
     }
 
     // do resampling

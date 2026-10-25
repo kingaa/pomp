@@ -2,6 +2,8 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 6.4.1}{
   \itemize{
+    \item A bug in \code{wpfilter} that surfaced only when some particles have zero likelihood was fixed.
+    Thanks to Deepan Islam (@atpabuser) for finding it and contributing the patch.
     \item Some tests were adjusted to accommodate changes in R-devel.
     Specifically, a long-standing bug in `rbinom` was fixed, which changes the results of some \pkg{pomp} calculations.
   }
