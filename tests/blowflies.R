@@ -11,6 +11,7 @@ coef(flies[[1]])
 plot(simulate(flies[[1]],seed=599688L),var=c("y","R","S","N15"))
 pf <- freeze(pfilter(flies[[1]],Np=1000),seed=599688L)
 plot(pf)
+getRversion()
 logLik(pf)
 stopifnot(
   all.equal(
@@ -21,8 +22,8 @@ stopifnot(
     ),
     coef(flies[[1]])
   ),
-  getRversion() > "4.6.1" || abs(logLik(pf)+1467.82)<0.05,
-  getRversion() <= "4.6.1" || abs(logLik(pf)+1469.41)<0.05
+  getRversion() >= "4.7" || abs(logLik(pf)+1467.82)<0.05,
+  getRversion() < "4.7" || abs(logLik(pf)+1469.41)<0.05
 )
 
 plot(flies[[2]])
@@ -31,6 +32,7 @@ coef(flies[[2]])
 plot(simulate(flies[[2]],seed=599688L),var=c("y","R","S","N8"))
 pf <- freeze(pfilter(flies[[2]],Np=1000),seed=599688L)
 plot(pf)
+getRversion()
 logLik(pf)
 stopifnot(
   all.equal(
@@ -41,8 +43,8 @@ stopifnot(
     ),
     coef(flies[[2]])
   ),
-  getRversion() > "4.6.1" || abs(logLik(pf)+1473.66)<0.05,
-  getRversion() <= "4.6.1" || abs(logLik(pf)+1475.56)<0.05
+  getRversion() >= "4.7" || abs(logLik(pf)+1473.66)<0.05,
+  getRversion() < "4.7" || abs(logLik(pf)+1475.56)<0.05
 )
 
 dev.off()

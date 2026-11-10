@@ -1,5 +1,5 @@
 
-R version 4.6.1 (2026-06-24) -- "Happy Hop"
+R version 4.6.2 (2026-10-29) -- "Diversified Portfolio"
 Copyright (C) 2026 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu
 
@@ -109,16 +109,16 @@ Type 'q()' to quit R.
 > ## ----comparison----------------------------------------------------------
 > system.time(simulate(gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  2.909   0.001   2.911 
+  2.920   0.003   2.924 
 > system.time(simulate(Gompertz,nsim=10000,format="arrays"))
    user  system elapsed 
-  0.072   0.003   0.075 
+  0.071   0.003   0.074 
 > system.time(pfilter(gompertz,Np=1000))
    user  system elapsed 
-  0.296   0.000   0.296 
+  0.304   0.000   0.304 
 > system.time(pfilter(Gompertz,Np=1000))
    user  system elapsed 
-  0.012   0.000   0.012 
+  0.011   0.001   0.012 
 > 
 > dev.off()
 null device 
