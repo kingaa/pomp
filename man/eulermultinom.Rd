@@ -127,6 +127,7 @@ reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=dW)
 }
 \references{
 \Breto2011
+
 \He2010
 }
 \seealso{

@@ -64,6 +64,7 @@
 ##' @author Aaron A. King
 ##' @references
 ##' \Breto2011
+##' 
 ##' \He2010
 ##' @keywords distribution
 ##' @example examples/eulermultinom.R
